@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
       "esnext",
       "esnext.asynciterable",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "esModuleInterop": true,
     "sourceMap": true,
@@ -14,6 +15,7 @@
     "declaration": true,
     "outDir": "dist/main",
     "rootDir": "src",
+    "jsx": "preserve",
     "types": [
       "@types/node",
       "@types/jest"

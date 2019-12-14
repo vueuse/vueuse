@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "outDir": "dist/module",
     "module": "esnext"
   },

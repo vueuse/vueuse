@@ -1,1 +1,3 @@
 dist/
+!/.storybook
+!/.eslintrc.js

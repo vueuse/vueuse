@@ -1,0 +1,104 @@
+html, body, div {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.markdown-body,
+.sb-show-main {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+    padding: 15px;
+  }
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.markdown-body pre {
+  position: relative;
+}
+
+.sb-show-main a,
+.markdown-body a {
+  color: #1ea7fd;
+  transition: color 300ms ease;
+}
+
+a.router-link-exact-active {
+  color: #999;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.fade-enter-active {
+  animation: fade 300ms ease;
+}
+
+.fade-leave-active {
+  animation: fade 300ms ease reverse;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.highlighted-line {
+  display: block;
+  margin: 0 -1em;
+  padding: 0 1em;
+  background-color: #3d3d3d;
+}
+
+pre[class*='language-'],
+code[class*='language-'] {
+  font-family: Menlo, Andale Mono, Consolas, Courier, monospace;
+  font-size: 85%;
+}
+
+code[class*='language-']::before {
+  position: absolute;
+  z-index: 3;
+  top: 0.8em;
+  right: 1em;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+code[class*='language-javascript']::before {
+  content: 'js';
+}
+
+code[class*='language-jsx']::before {
+  content: 'jsx';
+}
+
+code[class*='language-typescript']::before {
+  content: 'ts';
+}
+
+code[class*='language-tsx']::before {
+  content: 'tsx';
+}
+
+button {
+  margin: 0.3em;
+  padding: 0.3em 0.6em;
+}
