@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
       "esnext",
@@ -9,17 +9,21 @@
       "dom"
     ],
     "esModuleInterop": true,
-    "allowJs": true,
     "sourceMap": true,
     "strict": true,
-    "noEmit": true,
-    "baseUrl": ".",
+    "declaration": true,
+    "outDir": "dist/main",
+    "rootDir": "src",
     "types": [
       "@types/node",
       "@types/jest"
     ]
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/**/*.test.ts",
   ]
 }
