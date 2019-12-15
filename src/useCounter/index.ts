@@ -7,7 +7,7 @@ export function useCounter (initialValue = 0) {
   const get = () => count.value
   const set = (val: number) => (count.value = val)
   const reset = (val = initialValue) => {
-    initialValue = val // eslint-disable-line no-param-reassign
+    initialValue = val
     return set(val)
   }
   const actions = { inc, dec, get, set, reset }

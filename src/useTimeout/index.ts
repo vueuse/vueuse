@@ -1,7 +1,6 @@
 import { ref, onUnmounted, getCurrentInstance } from '@vue/composition-api'
 
 export function useTimeout (ms = 1000) {
-  const currentInstance = getCurrentInstance()
   const ready = ref(false)
 
   let timer: any = null
@@ -12,20 +11,21 @@ export function useTimeout (ms = 1000) {
     timer = null
   }
 
-  function setTimer () {
+  function start () {
     clear()
     timer = setTimeout(() => {
       ready.value = true
     }, ms)
   }
 
-  setTimer()
+  start()
 
-  if (currentInstance)
+  if (getCurrentInstance())
     onUnmounted(clear)
 
-  return {
+  return [
     ready,
-    runTimerAgain: setTimer(),
-  }
+    clear,
+    start,
+  ] as const
 }
