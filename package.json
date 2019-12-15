@@ -59,7 +59,7 @@
     "eslint-plugin-jest": "23.1.1",
     "github-markdown-css": "3.0.1",
     "jest": "24.9.0",
-    "markdown-it": "9.1.0",
+    "markdown-it": "10.0.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-link-attributes": "2.1.0",
     "markdown-it-loader": "0.7.0",
