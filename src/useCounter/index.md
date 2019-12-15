@@ -1,7 +1,5 @@
 # useCounter
 
-Vue hook that tracks a numeric value.
-
 ## Usage
 
 ```jsx {6,17}

@@ -8,7 +8,6 @@ import { init } from '../src'
 addParameters({
   options: {
     theme: themes.dark,
-    panelPosition: 'right',
     hierarchySeparator: /\//,
     hierarchyRootSeparator: /\|/,
   },

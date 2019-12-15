@@ -14,6 +14,7 @@ type Inject = {
   reset: Function
 }
 
+// @ts-ignore
 const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 const Demo = createComponent({
