@@ -55,7 +55,7 @@
     "@vue/test-utils": "1.0.0-beta.30",
     "babel-loader": "8.0.6",
     "babel-preset-vue": "2.0.2",
-    "eslint": "6.7.2",
+    "eslint": "6.8.0",
     "eslint-plugin-jest": "23.1.1",
     "github-markdown-css": "3.0.1",
     "jest": "24.9.0",
