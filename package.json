@@ -69,7 +69,7 @@
     "ts-jest": "24.2.0",
     "typescript": "3.7.3",
     "vue": "2.6.11",
-    "vue-loader": "15.7.2",
+    "vue-loader": "15.8.3",
     "vue-template-compiler": "2.6.11",
     "vue-tsx-support": "2.3.2"
   },
