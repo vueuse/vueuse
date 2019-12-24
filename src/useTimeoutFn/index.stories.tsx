@@ -41,4 +41,4 @@ const Demo = createComponent({
 
 storiesOf('Animation|useTimeoutFn', module)
   .add('docs', () => Docs)
-  .add('demo', () => Demo)
+  .add('demo', () => Demo as any)

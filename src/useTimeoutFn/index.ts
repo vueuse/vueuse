@@ -1,5 +1,5 @@
 import { watch } from '../api'
-import { useTimeout } from '..'
+import { useTimeout } from '../useTimeout'
 
 export function useTimeoutFn (
   cb: () => any,

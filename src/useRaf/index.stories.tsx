@@ -7,4 +7,4 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 storiesOf('Animation|useRaf', module)
   .add('docs', () => Docs)
-  // .add('demo', () => Demo)
+  // .add('demo', () => Demo as any)

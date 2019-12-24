@@ -40,11 +40,16 @@ Please [register the Composition API Plugin](https://github.com/vuejs/compositio
 
 You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
 
-- useNow
 - useCounter
+- useIntervalFn
+- useLocalStorage
+- useLocalStoragePlain
+- useNow
 - useRaf
 - useTimeout
 - useTimeoutFn
+- useWindowScroll
+- useWindowSize
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 

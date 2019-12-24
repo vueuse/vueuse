@@ -32,4 +32,4 @@ const Demo = createComponent({
 
 storiesOf('Animation|useNow', module)
   .add('docs', () => Docs)
-  .add('demo', () => Demo)
+  .add('demo', () => Demo as any)

@@ -10,7 +10,6 @@
       "dom.iterable"
     ],
     "esModuleInterop": true,
-    "sourceMap": true,
     "strict": true,
     "declaration": true,
     "outDir": "dist/main",

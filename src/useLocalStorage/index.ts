@@ -18,7 +18,7 @@ export function useLocalStorage<T extends {}> (
   const state = ref<T>(parse(plain.value))
 
   function update () {
-    plain.value = stringify(state.value as T)
+    plain.value = stringify(state.value as any as T)
   }
 
   watch(plain, () => state.value = parse(plain.value), { flush: 'sync', lazy: true })

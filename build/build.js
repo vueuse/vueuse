@@ -49,8 +49,14 @@ async function buildFor (targetVersion, publishCallback) {
   try {
     await fs.remove(distDir)
 
+    consola.info('Commonjs Build')
     exec('tsc -p tsconfig.json', { stdio: 'inherit' })
-    exec('tsc -p tsconfig.module.json', { stdio: 'inherit' })
+
+    consola.info('ESModule Build')
+    exec('tsc -p tsconfig.esm.json', { stdio: 'inherit' })
+
+    consola.info('UMD Build')
+    exec('rollup -c rollup.config.js', { stdio: 'inherit' })
 
     consola.success(`Build for Vue ${targetVersion}.x finished`)
 

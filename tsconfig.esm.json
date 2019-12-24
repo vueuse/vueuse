@@ -2,7 +2,7 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "target": "es5",
-    "outDir": "dist/module",
+    "outDir": "dist/esm",
     "module": "esnext",
     "pretty": true
   },

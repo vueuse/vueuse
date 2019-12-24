@@ -29,4 +29,4 @@ const Demo = createComponent({
 
 storiesOf('Sensors|useNetwork', module)
   .add('docs', () => Docs)
-  .add('demo', () => Demo)
+  .add('demo', () => Demo as any)
