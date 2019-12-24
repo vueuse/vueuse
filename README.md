@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./screenshots/logo.png" alt="logo" width="300"/>
+<img src="https://github.com/antfu/vueuse/blob/master/screenshots/logo.png?raw=true" alt="logo" width="300"/>
 </p>
 
 <p align="center">
@@ -20,21 +20,21 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 We supports both Vue 3.x and Vue 2.x, you can seamlessly upgrade it when you migrate from Vue 2.x to 3.x.
 
-### Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
+### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
 
 ```bash
 npm i @vueuse/core@next
 ```
 
-### Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
+### for Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
 
 ```bash
 npm i @vue/composition-api
-npm i @vueuse/core@2
+npm i @vueuse/core
 ```
 
-[Register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other APIs.
+Please [register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other using APIs.
 
 ## ⚡ Functions
 
@@ -46,7 +46,7 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
 - useTimeout
 - useTimeoutFn
 
-More functions to be added. Please keep turned.
+More functions to be added. Please keep turned. (PRs are also welcome!)
 
 ## 📄 License
 
