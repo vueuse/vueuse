@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "es5",
     "outDir": "dist/module",
-    "module": "esnext"
+    "module": "esnext",
+    "pretty": true
   },
 }
