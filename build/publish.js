@@ -8,13 +8,15 @@ const { selectVersion } = require('./selectVersion')
 async function publishFor (targetVersion) {
   assert([2, 3].includes(targetVersion))
 
-  await buildFor(targetVersion)
+  await buildFor(targetVersion, async () => {
+    console.log(`Publish for Vue ${targetVersion}.x`)
 
-  if (targetVersion === 3)
-    exec('npm publish --access public --tag next')
+    if (targetVersion === 3)
+      exec('npm publish --access public --tag next')
 
-  if (targetVersion === 3)
-    exec('npm publish --access public')
+    if (targetVersion === 2)
+      exec('npm publish --access public')
+  })
 }
 
 async function publishAll () {
@@ -27,7 +29,7 @@ async function cli () {
     const version = await selectVersion()
     if (version)
       await publishFor(version)
-    else
+    else if (version === 0)
       await publishAll()
   }
   catch (e) {

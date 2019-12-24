@@ -12,7 +12,7 @@ const packageJSONDir = path.join(rootDir, 'package.json')
 
 assert(process.cwd() !== __dirname)
 
-async function buildFor (targetVersion) {
+async function buildFor (targetVersion, publishCallback) {
   assert([2, 3].includes(targetVersion))
 
   console.log(`\nBuild for Vue ${targetVersion}.x`)
@@ -51,6 +51,9 @@ async function buildFor (targetVersion) {
 
     exec('tsc -p tsconfig.json')
     exec('tsc -p tsconfig.module.json')
+
+    if (publishCallback)
+      await publishCallback()
   }
   catch (e) {
     console.log(e.stderr.toString())
@@ -73,7 +76,7 @@ async function cli () {
     const version = await selectVersion()
     if (version)
       await buildFor(version)
-    else
+    else if (version === 0)
       await buildAll()
   }
   catch (e) {

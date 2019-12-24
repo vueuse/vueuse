@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 async function selectVersion () {
-  let version = 0
+  let version = -1
+
+  if (process.argv[2] === 'all')
+    return 0
+
   if (process.argv[2])
     version = +process.argv[2].slice(0, 1)
 
