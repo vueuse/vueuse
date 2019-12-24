@@ -17,11 +17,29 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: Install & Lint
       run: |
         npm ci
         npm run lint
-        npm run build --if-present
+      env:
+        CI: true
+    - name: Test for Vue 2.x
+      run: |
+        npm run switch 2
         npm test
+      env:
+        CI: true
+    - name: Test for Vue 3.x
+      run: |
+        npm run switch 3
+        npm test
+      env:
+        CI: true
+    - name: Build for Vue 2.x
+      run: npm run build 2
+      env:
+        CI: true
+    - name: Build for Vue 3.x
+      run: npm run build 3
       env:
         CI: true
