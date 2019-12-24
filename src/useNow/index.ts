@@ -6,21 +6,25 @@ function getTimestamp () {
 
 export function useNow () {
   const now = ref(getTimestamp())
-  let id: number | undefined
+  let started = false
+
+  const update = () => {
+    requestAnimationFrame(() => {
+      now.value = getTimestamp()
+      if (started)
+        update()
+    })
+  }
 
   const start = () => {
-    if (id === undefined) {
-      id = requestAnimationFrame(() => {
-        now.value = getTimestamp()
-      })
+    if (!started) {
+      started = true
+      update()
     }
   }
 
   const stop = () => {
-    if (id !== undefined) {
-      cancelAnimationFrame(id)
-      id = undefined
-    }
+    started = false
   }
 
   start()

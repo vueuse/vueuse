@@ -15,7 +15,8 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 const Demo = createComponent({
   setup () {
-    const [ready] = useTimeout(4000)
+    const [ready] = useTimeout(1000)
+    console.log(ready)
     return {
       ready,
     }
@@ -25,7 +26,7 @@ const Demo = createComponent({
     const { ready } = this
     return (
       <div>
-        <div>Ready: {ready}</div>
+        <div>Ready: {ready.toString()}</div>
       </div>
     )
   },

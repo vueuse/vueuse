@@ -6,9 +6,11 @@ export function useTimeout (ms = 1000) {
   let timer: any = null
 
   function clear () {
-    ready.value = false
-    clearTimeout(timer)
-    timer = null
+    if (timer) {
+      ready.value = false
+      clearTimeout(timer)
+      timer = null
+    }
   }
 
   function start () {
