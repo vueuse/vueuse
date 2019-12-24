@@ -3,23 +3,23 @@
 ## Usage
 
 ```jsx {6,17}
-import { createComponent } from '../api';
-import { useCounter } from '@u3u/vue-hooks';
+import { useCounter } from '@u3u/vue-hooks'
+import { createComponent } from '../api'
 
 const Demo = createComponent({
-  setup() {
-    const [count, { inc, dec, set, reset }] = useCounter();
+  setup () {
+    const [count, { inc, dec, set, reset }] = useCounter()
     return {
       count,
       inc,
       dec,
       set,
       reset,
-    };
+    }
   },
 
-  render() {
-    const { count, inc, dec, set, reset } = this;
+  render () {
+    const { count, inc, dec, set, reset } = this
     return (
       <div>
         <div>count: {count}</div>
@@ -31,9 +31,9 @@ const Demo = createComponent({
         <button onClick={() => reset()}>Reset</button>
         <button onClick={() => reset(25)}>Reset (25)</button>
       </div>
-    );
+    )
   },
-});
+})
 ```
 
 ## Reference

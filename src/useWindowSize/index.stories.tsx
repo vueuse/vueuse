@@ -1,4 +1,3 @@
-/* eslint import/no-extraneous-dependencies: off */
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'

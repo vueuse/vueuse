@@ -1,4 +1,3 @@
-
 import 'vue-tsx-support/enable-check'
 import { RenderContext } from 'vue'
 import { ofType } from 'vue-tsx-support'

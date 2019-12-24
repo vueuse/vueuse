@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const exec = require('child_process').execSync
 const path = require('path')
 const assert = require('assert')

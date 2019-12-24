@@ -10,7 +10,7 @@
     "release": "npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
     "switch": "node ./build/switch",
     "test": "jest",
-    "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue}",
+    "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue,md}",
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-    "{src,.storybook,build}/**/*.{js,ts,tsx,vue}": [
+    "{src,.storybook,build}/**/*.{js,ts,tsx,vue,md}": [
       "eslint --fix",
       "git add"
     ]
@@ -76,8 +76,9 @@
     "babel-preset-vue": "2.0.2",
     "commander": "^4.0.1",
     "consola": "^2.11.1",
-    "eslint": "6.8.0",
+    "eslint": "^6.8.0",
     "eslint-plugin-jest": "23.1.1",
+    "eslint-plugin-markdown": "^1.0.1",
     "fs-extra": "^8.1.0",
     "github-markdown-css": "3.0.1",
     "husky": "3.1.0",
