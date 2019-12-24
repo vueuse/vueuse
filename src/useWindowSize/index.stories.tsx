@@ -10,9 +10,6 @@ type Inject = {
   height: number
 }
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const { width, height } = useWindowSize()
@@ -25,14 +22,20 @@ const Demo = createComponent({
 
   render (this: Vue & Inject) {
     const { width, height } = this
+
+    // @ts-ignore
+    const Docs: any = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div id='demo'>
-        <p>{width} x {height}</p>
+      <div>
+        <div id='demo'>
+          <p>{width} x {height}</p>
+        </div>
+        {Docs}
       </div>
     )
   },
 })
 
 storiesOf('Sensors|useWindowSize', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)

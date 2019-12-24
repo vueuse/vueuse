@@ -13,9 +13,6 @@ type Inject = {
   reset: Function
 }
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const [count, { inc, dec, set, reset }] = useCounter()
@@ -30,21 +27,27 @@ const Demo = createComponent({
 
   render (this: Vue & Inject) {
     const { count, inc, dec, set, reset } = this
+
+    // @ts-ignore
+    const Docs = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div id='demo'>
-        <p>Count: {count}</p>
-        <button onClick={() => inc()}>Increment</button>
-        <button onClick={() => dec()}>Decrement</button>
-        <button onClick={() => inc(5)}>Increment (+5)</button>
-        <button onClick={() => dec(5)}>Decrement (-5)</button>
-        <button onClick={() => set(100)}>Set (100)</button>
-        <button onClick={() => reset()}>Reset</button>
-        <button onClick={() => reset(25)}>Reset (25)</button>
+      <div>
+        <div id='demo'>
+          <p>Count: {count}</p>
+          <button onClick={() => inc()}>Increment</button>
+          <button onClick={() => dec()}>Decrement</button>
+          <button onClick={() => inc(5)}>Increment (+5)</button>
+          <button onClick={() => dec(5)}>Decrement (-5)</button>
+          <button onClick={() => set(100)}>Set (100)</button>
+          <button onClick={() => reset()}>Reset</button>
+          <button onClick={() => reset(25)}>Reset (25)</button>
+        </div>
+        {Docs}
       </div>
     )
   },
 })
 
 storiesOf('State|useCounter', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)

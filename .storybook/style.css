@@ -4,11 +4,9 @@
 @import "tailwindcss/utilities";
 
 
-
-
 #demo {
   padding: 3em;
-
+  background: #282828;
 }
 
 #demo button {
