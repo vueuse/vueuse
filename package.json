@@ -84,7 +84,7 @@
     "prismjs": "1.17.1",
     "rimraf": "3.0.0",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.3",
+    "typescript": "3.7.4",
     "version-bump-prompt": "5.0.6",
     "vue": "2.6.11",
     "vue-loader": "15.7.2",
