@@ -1,13 +1,13 @@
 {
   "name": "@vueuse/core",
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.4",
   "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
   "scripts": {
     "build": "node ./build/build.js",
-    "release": "bump --commit --preid alpha && npm run lint && node ./build/publish.js all",
+    "release": "npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
     "switch": "node ./build/switch",
     "test": "jest",
     "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue}",
