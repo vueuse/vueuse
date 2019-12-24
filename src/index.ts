@@ -1,4 +1,6 @@
 export * from './init'
+export * from './useNow'
+export * from './useRaf'
 export * from './useCounter'
 export * from './useTimeout'
 export * from './useTimeoutFn'
