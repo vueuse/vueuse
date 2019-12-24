@@ -1,7 +1,7 @@
 {
-  "name": "vue-use-utils",
+  "name": "@vueuse/core",
   "version": "0.0.1",
-  "description": "Vue use",
+  "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
@@ -10,28 +10,42 @@
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
     "test": "jest",
-    "lint": "eslint . --ext .js,.ts,.vue,.tsx",
+    "lint": "eslint {src,.storybook}/**/*.{js,ts,tsx,vue}",
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,.storybook}/**/*.{js,ts,tsx,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/vue-use-utils.git"
+    "url": "git+https://github.com/antfu/vueuse.git"
   },
   "keywords": [
-    "vue"
+    "vue",
+    "vue-use",
+    "utils"
   ],
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/antfu/vue-use-utils/issues"
+    "url": "https://github.com/antfu/vueuse/issues"
   },
   "files": [
     "/dist"
   ],
-  "homepage": "https://github.com/antfu/vue-use-utils#readme",
+  "homepage": "https://github.com/antfu/vueuse#readme",
+  "dependencies": {},
   "peerDependencies": {
     "vue": "^2.6.0",
     "@vue/composition-api": "^0.3.0"
@@ -58,7 +72,9 @@
     "eslint": "6.7.2",
     "eslint-plugin-jest": "23.1.1",
     "github-markdown-css": "3.0.1",
+    "husky": "^3.1.0",
     "jest": "24.9.0",
+    "lint-staged": "^9.5.0",
     "markdown-it": "10.0.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-link-attributes": "2.1.0",
@@ -72,6 +88,5 @@
     "vue-loader": "15.7.2",
     "vue-template-compiler": "2.6.11",
     "vue-tsx-support": "2.3.2"
-  },
-  "dependencies": {}
+  }
 }

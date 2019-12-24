@@ -27,5 +27,7 @@
   "exclude": [
     "node_modules",
     "**/**/*.test.ts",
+    "**/**/*.stories.tsx",
+    "**/**/*.md",
   ]
 }
