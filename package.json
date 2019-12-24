@@ -49,7 +49,7 @@
   "peerDependencies": {
     "vue": "^2.6.11",
     "@vue/composition-api": "^0.3.4",
-    "@vue/runtime-dom": "^3.0.0"
+    "@vue/runtime-dom": "^3.0.0-alpha"
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "0.2.10",
