@@ -1,4 +1,4 @@
-export * from './init'
+export { init } from './api'
 export * from './useNow'
 export * from './useRaf'
 export * from './useCounter'
