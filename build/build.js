@@ -4,6 +4,7 @@ const path = require('path')
 const assert = require('assert')
 const fs = require('fs-extra')
 const { switchApi, backupApi, restoreApi } = require('./switch')
+const { selectVersion } = require('./selectVersion')
 
 const rootDir = path.resolve(__dirname, '..')
 const distDir = path.join(rootDir, 'dist')
@@ -69,11 +70,19 @@ async function buildAll () {
 
 async function cli () {
   try {
-    await buildAll()
+    const version = await selectVersion()
+    if (version)
+      await buildFor(version)
+    else
+      await buildAll()
   }
   catch (e) {
     console.error(e)
   }
+}
+
+module.exports = {
+  buildFor,
 }
 
 if (require.main === module)

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
+const assert = require('assert')
 const fs = require('fs-extra')
+const { selectVersion } = require('./selectVersion')
 
 const srcDir = path.resolve(__dirname, '../src')
 
@@ -22,6 +24,8 @@ async function restoreApi () {
 }
 
 async function switchApi (version) {
+  assert([2, 3].includes(version))
+
   await fs.copyFile(
     path.join(srcDir, `api.${version}.ts`),
     path.join(srcDir, 'api.ts'),
@@ -29,23 +33,7 @@ async function switchApi (version) {
 }
 
 async function cli () {
-  let version = 0
-  if (process.argv[2])
-    version = +process.argv[2].slice(0, 1)
-
-  if (!version) {
-    const inquirer = require('inquirer')
-    const result = await inquirer
-      .prompt([{
-        name: 'switch',
-        type: 'list',
-        message: 'Target Vue Api Version',
-        choices: ['2.x', '3.x'],
-      }])
-
-    if (result.switch)
-      version = +result.switch.slice(0, 1)
-  }
+  const version = await selectVersion()
 
   if (version) {
     console.log(`Switch api to ${version}.x`)
