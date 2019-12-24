@@ -33,6 +33,6 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('UI|useWindowSize', module)
+storiesOf('Sensors|useWindowSize', module)
   .add('docs', () => Docs)
   .add('demo', () => Demo)
