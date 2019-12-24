@@ -3,6 +3,7 @@ const exec = require('child_process').execSync
 const path = require('path')
 const assert = require('assert')
 const fs = require('fs-extra')
+const consola = require('consola')
 const { switchApi, backupApi, restoreApi } = require('./switch')
 const { selectVersion } = require('./selectVersion')
 
@@ -14,15 +15,15 @@ assert(process.cwd() !== __dirname)
 
 async function buildFor (targetVersion, publishCallback) {
   assert([2, 3].includes(targetVersion))
-
-  console.log(`\nBuild for Vue ${targetVersion}.x`)
+  consola.log('')
+  consola.info(`Build for Vue ${targetVersion}.x`)
 
   const rawPackageJSON = await fs.readFile(packageJSONDir)
   const packageJSON = JSON.parse(rawPackageJSON)
 
   const version = [targetVersion, ...packageJSON.version.split('.').slice(1)].join('.')
 
-  console.log(version)
+  consola.info(version)
 
   packageJSON.version = version
 
@@ -49,15 +50,15 @@ async function buildFor (targetVersion, publishCallback) {
   try {
     await fs.remove(distDir)
 
-    exec('tsc -p tsconfig.json')
-    exec('tsc -p tsconfig.module.json')
+    exec('tsc -p tsconfig.json', { stdio: 'inherit' })
+    exec('tsc -p tsconfig.module.json', { stdio: 'inherit' })
+
+    consola.success(`Build for Vue ${targetVersion}.x finished`)
 
     if (publishCallback)
       await publishCallback()
   }
   catch (e) {
-    console.log(e.stderr.toString())
-    console.log(e.stdout.toString())
     console.error(e)
   }
 
