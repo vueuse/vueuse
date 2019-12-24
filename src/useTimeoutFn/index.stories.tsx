@@ -17,6 +17,7 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 const Demo = createComponent({
   setup () {
     const { ready, start } = useTimeoutFn(() => {
+      // eslint-disable-next-line no-alert
       alert('Hello')
     }, 3000)
 
