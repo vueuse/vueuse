@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// const exec = require('child_process').execFileSync
+const exec = require('child_process').execSync
 const path = require('path')
 const assert = require('assert')
-const semver = require('semver')
 const fs = require('fs-extra')
 const { switchApi, backupApi, restoreApi } = require('./switch')
 
@@ -20,17 +19,13 @@ async function buildFor (targetVersion) {
   const rawPackageJSON = await fs.readFile(packageJSONDir)
   const packageJSON = JSON.parse(rawPackageJSON)
 
-  const rawVersion = semver.inc(packageJSON.version, 'prerelease', 'alpha')
-  const version = [targetVersion, ...rawVersion.split('.').slice(1)].join('.')
+  const version = [targetVersion, ...packageJSON.version.split('.').slice(1)].join('.')
 
   console.log(version)
 
   packageJSON.version = version
 
-  delete packageJSON.devDependencies
   delete packageJSON.scripts
-  delete packageJSON.husky
-  delete packageJSON['lint-staged']
 
   if (targetVersion === 2) {
     packageJSON.peerDependencies = {
@@ -46,21 +41,30 @@ async function buildFor (targetVersion) {
     }
   }
 
-  await fs.remove(distDir)
+  await backupApi()
+  await switchApi(targetVersion)
+  await fs.writeFile(packageJSONDir, JSON.stringify(packageJSON, null, 2))
 
-  switchApi(targetVersion)
+  try {
+    await fs.remove(distDir)
 
-  // exec('tsc -p tsconfig.json')
-  // exec('tsc -p tsconfig.module.json')
+    exec('tsc -p tsconfig.json')
+    exec('tsc -p tsconfig.module.json')
+  }
+  catch (e) {
+    console.log(e.stderr.toString())
+    console.log(e.stdout.toString())
+    console.error(e)
+  }
+
+  // restore packageJSON
+  await fs.writeFile(packageJSONDir, rawPackageJSON)
+  await restoreApi()
 }
 
 async function buildAll () {
-  await backupApi()
-
   await buildFor(2)
   await buildFor(3)
-
-  await restoreApi()
 }
 
 async function cli () {

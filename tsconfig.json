@@ -26,5 +26,6 @@
     "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
+    "src/api.*.ts",
   ]
 }
