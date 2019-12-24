@@ -36,6 +36,18 @@ npm i @vueuse/core
 
 Please [register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other using APIs.
 
+### CDN
+
+```html
+<!-- For Vue 3.x -->
+<script src="https://unpkg.com/@vueuse/core@next"></script> 
+
+<!-- For Vue 2.x -->
+<script src="https://unpkg.com/@vueuse/core"></script>
+```
+
+It will be exposed to global variable `window.VueUse`
+
 ## ⚡ Functions
 
 You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
