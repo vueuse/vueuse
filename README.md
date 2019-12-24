@@ -34,14 +34,7 @@ npm install @vue/composition-api
 npm install @vueuse/core@2
 ```
 
-Install the polyfill before other APIs
-
-```js
-import Vue from 'vue';
-import VueCompositionApi from '@vue/composition-api';
-
-Vue.use(VueCompositionApi);
-```
+[Register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other APIs.
 
 ## ⚡ Functions
 
