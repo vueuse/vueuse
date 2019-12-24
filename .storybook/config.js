@@ -1,13 +1,13 @@
 import { configure, addParameters } from '@storybook/vue'
-import { themes } from '@storybook/theming'
 import 'github-markdown-css'
 import 'prismjs/themes/prism-tomorrow.css'
 import './style.css'
 import { init } from '../src'
+import theme from './theme'
 
 addParameters({
   options: {
-    theme: themes.dark,
+    theme,
     hierarchySeparator: /\//,
     hierarchyRootSeparator: /\|/,
   },

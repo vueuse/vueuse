@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/antfu/vueuse/blob/master/screenshots/logo.png?raw=true" alt="logo" width="300"/>
+<img src="https://github.com/antfu/vueuse/blob/master/screenshots/logo-vertical.png?raw=true" alt="logo" width="300"/>
 </p>
 
 <p align="center">
