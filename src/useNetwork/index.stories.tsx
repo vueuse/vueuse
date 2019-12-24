@@ -20,7 +20,7 @@ const Demo = createComponent({
   render (this: Vue & NetworkState) {
     const { online, since, downlink, downlinkMax, effectiveType, rtt, type } = this
     return (
-      <div>
+      <div id='demo'>
         <pre lang='json'>{JSON.stringify({ online, since, downlink, downlinkMax, effectiveType, rtt, type }, null, 2)}</pre>
       </div>
     )

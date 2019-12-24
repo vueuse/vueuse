@@ -26,9 +26,9 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { x, y } = this
     return (
-      <div>
-        <div style={{ position: 'fixed' }}>x: {x}</div>
-        <div style={{ position: 'fixed', top: '2em' }}>y: {y}</div>
+      <div id='demo'>
+        <p style={{ position: 'fixed' }}>x: {x}</p>
+        <p style={{ position: 'fixed', top: '4em' }}>y: {y}</p>
         <div style={{ width: '10000px', height: '10000px' }}></div>
       </div>
     )

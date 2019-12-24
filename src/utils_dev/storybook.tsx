@@ -1,6 +1,6 @@
 import 'vue-tsx-support/enable-check'
 import { RenderContext } from 'vue'
-import { ofType } from 'vue-tsx-support'
+import { ofType, TsxComponent } from 'vue-tsx-support'
 
 export interface DocsProps {
   md: { default: string }
@@ -11,4 +11,4 @@ const ShowDocsFunc = ({ props }: RenderContext<DocsProps>) => (
   <div class="markdown-body" domPropsInnerHTML={props.md.default} />
 )
 
-export const ShowDocs = ofType<DocsProps>().convert(ShowDocsFunc as any)
+export const ShowDocs: TsxComponent<Vue, DocsProps, any, any, any> = ofType<DocsProps>().convert(ShowDocsFunc as any)

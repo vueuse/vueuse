@@ -19,7 +19,7 @@ const Demo = createComponent({
 
   render (this: Vue & {store: string }) {
     return (
-      <div>
+      <div id='demo'>
         <input v-model={this.store} type='text'/>
       </div>
     )

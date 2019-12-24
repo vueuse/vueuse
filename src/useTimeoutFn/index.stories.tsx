@@ -29,11 +29,17 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { ready, start } = this
 
+    // @ts-ignore
+    const doc = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div>
-        <div>Please wait 3 seconds</div>
-        <div>Ready: {ready.toString()}</div>
+      <div id='demo'>
+        <p>Please wait 3 seconds</p>
+        <p>Ready: {ready.toString()}</p>
+        <br></br>
         <button onClick={() => start()} disabled={!ready}>Start Again</button>
+
+        {doc}
       </div>
     )
   },

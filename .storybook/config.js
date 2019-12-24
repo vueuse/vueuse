@@ -1,6 +1,6 @@
 import { configure, addParameters } from '@storybook/vue'
 import 'github-markdown-css'
-import 'prismjs/themes/prism-tomorrow.css'
+import './base16-gruvbox.dark.css'
 import './style.css'
 import { init } from '../src'
 import theme from './theme'

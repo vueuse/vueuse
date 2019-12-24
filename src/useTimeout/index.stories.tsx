@@ -27,8 +27,8 @@ const Demo = createComponent({
     const { ready, start } = this
 
     return (
-      <div>
-        <div>Ready: {ready.toString()}</div>
+      <div id='demo'>
+        <p>Ready: {ready.toString()}</p>
         <button onClick={() => start()} disabled={!ready}>Start Again</button>
       </div>
     )

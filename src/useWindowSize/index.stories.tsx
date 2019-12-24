@@ -26,8 +26,8 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { width, height } = this
     return (
-      <div>
-        <div>{width} x {height}</div>
+      <div id='demo'>
+        <p>{width} x {height}</p>
       </div>
     )
   },

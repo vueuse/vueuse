@@ -31,8 +31,8 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { count, inc, dec, set, reset } = this
     return (
-      <div>
-        <div>Count: {count}</div>
+      <div id='demo'>
+        <p>Count: {count}</p>
         <button onClick={() => inc()}>Increment</button>
         <button onClick={() => dec()}>Decrement</button>
         <button onClick={() => inc(5)}>Increment (+5)</button>

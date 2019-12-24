@@ -28,8 +28,8 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { count } = this
     return (
-      <div>
-        <div>Seconds passed: {count}</div>
+      <div id='demo'>
+        <p>Seconds passed: {count}</p>
       </div>
     )
   },

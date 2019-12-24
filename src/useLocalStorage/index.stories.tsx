@@ -25,7 +25,7 @@ const Demo = createComponent({
   render (this: Vue & {state: any; update: any}) {
     const { state } = this
     return (
-      <div>
+      <div id='demo'>
         <input v-model={state.name} type='text'/>
         <input v-model={state.color} type='text'/>
         <input v-model={state.size} type='text'/>

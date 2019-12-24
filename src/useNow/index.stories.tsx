@@ -23,8 +23,8 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { now } = this
     return (
-      <div>
-        <div>Now: {now}</div>
+      <div id='demo'>
+        <p>Now: {now}</p>
       </div>
     )
   },
