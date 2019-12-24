@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, onUnmounted } from '@vue/composition-api'
+import { ref, getCurrentInstance, onUnmounted } from '../api'
 
 function getTimestamp () {
   return +Date.now()

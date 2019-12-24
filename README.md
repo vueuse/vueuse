@@ -23,15 +23,15 @@ We supports both Vue 3.x and Vue 2.x, you can seamlessly upgrade it when you mig
 ### Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
 
 ```bash
-npm install @vueuse/core@next
+npm i @vueuse/core@next
 ```
 
 ### Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
 
 ```bash
-npm install @vue/composition-api
-npm install @vueuse/core@2
+npm i @vue/composition-api
+npm i @vueuse/core@2
 ```
 
 [Register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other APIs.

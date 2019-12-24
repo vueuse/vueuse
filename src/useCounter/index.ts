@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api'
+import { ref } from '../api'
 
 export function useCounter (initialValue = 0) {
   const count = ref(initialValue)

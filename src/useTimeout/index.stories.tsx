@@ -2,7 +2,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '@vue/composition-api'
+import { createComponent } from '../api'
 import { ShowDocs } from '../utils/stories'
 import { useTimeout } from '.'
 

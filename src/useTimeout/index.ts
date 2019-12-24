@@ -1,4 +1,4 @@
-import { ref, onUnmounted, getCurrentInstance } from '@vue/composition-api'
+import { ref, onUnmounted, getCurrentInstance } from '../api'
 
 export function useTimeout (ms = 1000) {
   const ready = ref(false)

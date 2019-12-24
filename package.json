@@ -1,21 +1,20 @@
 {
   "name": "@vueuse/core",
-  "version": "0.0.2-beta.2",
+  "version": "0.0.1",
   "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
   "scripts": {
-    "build": "npm run clean && npm run build:main && npm run build:module",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
-    "release": "bump --commit --tag && npm run build && npm run lint && npm publish --access public",
+    "build": "node ./build/build.js",
+    "release": "bump --commit --tag && npm run lint && node ./build/publish.js",
     "test": "jest",
     "lint": "eslint {src,.storybook}/**/*.{js,ts,tsx,vue}",
     "lint:fix": "npm run lint -- --fix",
+    "switch": "node ./build/switch",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "npm run switch 2 && build-storybook"
   },
   "husky": {
     "hooks": {
@@ -49,7 +48,8 @@
   "dependencies": {},
   "peerDependencies": {
     "vue": "^2.6.0",
-    "@vue/composition-api": "^0.3.0"
+    "@vue/composition-api": "^0.3.0",
+    "@vue/runtime-dom": "^3.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "0.2.10",
@@ -63,17 +63,24 @@
     "@storybook/addons": "5.2.8",
     "@storybook/theming": "5.2.8",
     "@storybook/vue": "5.2.8",
+    "@types/fs-extra": "^8.0.1",
+    "@types/inquirer": "^6.5.0",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.17",
+    "@types/semver": "^6.2.0",
     "@vue/babel-preset-jsx": "1.1.2",
     "@vue/composition-api": "0.3.4",
+    "@vue/runtime-dom": "^3.0.0-alpha.0",
     "@vue/test-utils": "1.0.0-beta.30",
     "babel-loader": "8.0.6",
     "babel-preset-vue": "2.0.2",
+    "commander": "^4.0.1",
     "eslint": "6.7.2",
     "eslint-plugin-jest": "23.1.1",
+    "fs-extra": "^8.1.0",
     "github-markdown-css": "3.0.1",
     "husky": "3.1.0",
+    "inquirer": "^7.0.1",
     "jest": "24.9.0",
     "lint-staged": "9.5.0",
     "markdown-it": "10.0.0",
@@ -83,6 +90,7 @@
     "markdown-it-prism": "2.0.3",
     "prismjs": "1.17.1",
     "rimraf": "3.0.0",
+    "semver": "^7.1.1",
     "ts-jest": "24.2.0",
     "typescript": "3.7.4",
     "version-bump-prompt": "5.0.6",

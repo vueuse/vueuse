@@ -1,4 +1,4 @@
-import { ref, computed } from '@vue/composition-api'
+import { ref, computed } from '../api'
 import { useNow } from '../useNow'
 
 export function useRaf () {

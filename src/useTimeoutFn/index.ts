@@ -1,4 +1,4 @@
-import { watch, Ref } from '@vue/composition-api'
+import { watch, Ref } from '../api'
 import { useTimeout } from '..'
 
 export function useTimeoutFn (
