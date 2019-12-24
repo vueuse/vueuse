@@ -1,3 +1,5 @@
+
+export const isClient = typeof window === 'object'
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const assert = (condition: boolean, ...infos: any[]) => {
   if (!condition) console.warn(...infos)
@@ -10,5 +12,4 @@ export const isObject = (val: any): val is object =>
   toString.call(val) === '[object Object]'
 export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]'
-export const isClient = typeof window !== 'undefined'
 export const now = () => Date.now()

@@ -1,11 +1,11 @@
-import { watch, Ref } from '../api'
+import { watch } from '../api'
 import { useTimeout } from '..'
 
 export function useTimeoutFn (
   cb: () => any,
-  ms?: number,
-): [() => any, () => any, Ref<boolean>] {
-  const [ready, clear, runAgain] = useTimeout(ms)
+  interval?: number,
+) {
+  const { ready, start, stop } = useTimeout(interval)
 
   watch(
     ready,
@@ -15,5 +15,5 @@ export function useTimeoutFn (
     { lazy: true },
   )
 
-  return [clear, runAgain, ready]
+  return { ready, start, stop }
 }

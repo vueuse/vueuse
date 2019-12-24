@@ -4,10 +4,11 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useNow } from '.'
+import { useWindowSize } from '.'
 
 type Inject = {
-  now: number
+  width: number
+  height: number
 }
 
 // @ts-ignore
@@ -15,22 +16,24 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 const Demo = createComponent({
   setup () {
-    const now = useNow()
+    const { width, height } = useWindowSize()
+
     return {
-      now,
+      width,
+      height,
     }
   },
 
   render (this: Vue & Inject) {
-    const { now } = this
+    const { width, height } = this
     return (
       <div>
-        <div>Now: {now}</div>
+        <div>{width} x {height}</div>
       </div>
     )
   },
 })
 
-storiesOf('Animation|useNow', module)
+storiesOf('UI|useWindowSize', module)
   .add('docs', () => Docs)
   .add('demo', () => Demo)

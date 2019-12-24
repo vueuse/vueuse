@@ -4,10 +4,11 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useNow } from '.'
+import { useTimeoutFn } from '.'
 
 type Inject = {
-  now: number
+  ready: boolean
+  start: Function
 }
 
 // @ts-ignore
@@ -15,22 +16,29 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 const Demo = createComponent({
   setup () {
-    const now = useNow()
+    const { ready, start } = useTimeoutFn(() => {
+      alert('Hello')
+    }, 3000)
+
     return {
-      now,
+      ready,
+      start,
     }
   },
 
   render (this: Vue & Inject) {
-    const { now } = this
+    const { ready, start } = this
+
     return (
       <div>
-        <div>Now: {now}</div>
+        <div>Please wait 3 seconds</div>
+        <div>Ready: {ready.toString()}</div>
+        <button onClick={() => start()} disabled={!ready}>Start Again</button>
       </div>
     )
   },
 })
 
-storiesOf('Animation|useNow', module)
+storiesOf('Animation|useTimeoutFn', module)
   .add('docs', () => Docs)
   .add('demo', () => Demo)

@@ -3,7 +3,7 @@ import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
-import { ShowDocs } from '../utils/stories'
+import { ShowDocs } from '../utils_dev/storybook'
 import { useCounter } from '.'
 
 type Inject = {
@@ -46,6 +46,6 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('useCounter', module)
+storiesOf('State|useCounter', module)
   .add('docs', () => Docs)
   .add('demo', () => Demo)

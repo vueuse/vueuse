@@ -1,33 +1,31 @@
 import { ref, onUnmounted, getCurrentInstance } from '../api'
 
-export function useTimeout (ms = 1000) {
+export function useTimeout (interval = 1000, startRightNow = true) {
   const ready = ref(false)
 
   let timer: any = null
 
-  function clear () {
+  function stop () {
+    ready.value = false
     if (timer) {
-      ready.value = false
       clearTimeout(timer)
       timer = null
     }
   }
 
   function start () {
-    clear()
+    stop()
     timer = setTimeout(() => {
       ready.value = true
-    }, ms)
+      timer = null
+    }, interval)
   }
 
-  start()
+  if (startRightNow)
+    start()
 
   if (getCurrentInstance())
-    onUnmounted(clear)
+    onUnmounted(stop)
 
-  return [
-    ready,
-    clear,
-    start,
-  ] as const
+  return { ready, start, stop } as const
 }

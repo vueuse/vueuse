@@ -2,12 +2,12 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../api'
+import { createComponent, ref } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useNow } from '.'
+import { useIntervalFn } from '.'
 
 type Inject = {
-  now: number
+  count: number
 }
 
 // @ts-ignore
@@ -15,22 +15,27 @@ const Docs: any = () => <ShowDocs md={require('./index.md')} />
 
 const Demo = createComponent({
   setup () {
-    const now = useNow()
+    const count = ref(0)
+
+    useIntervalFn(() => {
+      count.value++
+    }, 1000)
+
     return {
-      now,
+      count,
     }
   },
 
   render (this: Vue & Inject) {
-    const { now } = this
+    const { count } = this
     return (
       <div>
-        <div>Now: {now}</div>
+        <div>Seconds passed: {count}</div>
       </div>
     )
   },
 })
 
-storiesOf('Animation|useNow', module)
+storiesOf('Animation|useIntervalFn', module)
   .add('docs', () => Docs)
   .add('demo', () => Demo)
