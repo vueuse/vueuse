@@ -10,9 +10,6 @@ type Inject = {
   start: Function
 }
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const { ready, start } = useTimeout(1000)
@@ -26,15 +23,20 @@ const Demo = createComponent({
   render (this: Vue & Inject) {
     const { ready, start } = this
 
+    // @ts-ignore
+    const Docs = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div id='demo'>
-        <p>Ready: {ready.toString()}</p>
-        <button onClick={() => start()} disabled={!ready}>Start Again</button>
+      <div>
+        <div id='demo'>
+          <p>Ready: {ready.toString()}</p>
+          <button onClick={() => start()} disabled={!ready}>Start Again</button>
+        </div>
+        {Docs}
       </div>
     )
   },
 })
 
 storiesOf('Animation|useTimeout', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)

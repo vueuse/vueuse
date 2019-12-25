@@ -10,9 +10,6 @@ type Inject = {
   y: number
 }
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const { x, y } = useWindowScroll()
@@ -25,10 +22,17 @@ const Demo = createComponent({
 
   render (this: Vue & Inject) {
     const { x, y } = this
+
+    // @ts-ignore
+    const Docs = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div id='demo'>
-        <p style={{ position: 'fixed' }}>x: {x}</p>
-        <p style={{ position: 'fixed', top: '4em' }}>y: {y}</p>
+      <div>
+        <div id='demo' style={{ position: 'fixed' }}>
+          <p>x: {x}</p>
+          <p>y: {y}</p>
+        </div>
+        {Docs}
         <div style={{ width: '10000px', height: '10000px' }}></div>
       </div>
     )
@@ -36,5 +40,4 @@ const Demo = createComponent({
 })
 
 storiesOf('Sensors|useWindowScroll', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)

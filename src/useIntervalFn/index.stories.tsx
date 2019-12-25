@@ -9,9 +9,6 @@ type Inject = {
   count: number
 }
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const count = ref(0)
@@ -27,14 +24,20 @@ const Demo = createComponent({
 
   render (this: Vue & Inject) {
     const { count } = this
+
+    // @ts-ignore
+    const Docs = <ShowDocs md={require('./index.md')} />
+
     return (
-      <div id='demo'>
-        <p>Seconds passed: {count}</p>
+      <div>
+        <div id='demo'>
+          <p>Seconds passed: {count}</p>
+        </div>
+        {Docs}
       </div>
     )
   },
 })
 
 storiesOf('Animation|useIntervalFn', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)
