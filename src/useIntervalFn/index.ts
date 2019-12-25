@@ -21,5 +21,5 @@ export function useIntervalFn (cb: Function, interval = 1000, startRightNow = tr
   if (getCurrentInstance())
     onUnmounted(stop)
 
-  return { start, stop } as const
+  return { start, stop }
 }

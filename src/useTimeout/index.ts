@@ -27,5 +27,5 @@ export function useTimeout (interval = 1000, startRightNow = true) {
   if (getCurrentInstance())
     onUnmounted(stop)
 
-  return { ready, start, stop } as const
+  return { ready, start, stop }
 }

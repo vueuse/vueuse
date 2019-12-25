@@ -9,8 +9,6 @@
       "dom",
       "dom.iterable"
     ],
-    "noEmit": true,
-    "allowJs": false,
     "esModuleInterop": true,
     "strict": true,
     "declaration": true,
@@ -23,7 +21,7 @@
     ]
   },
   "include": [
-    "src"
+    "src",
   ],
   "exclude": [
     "node_modules",
