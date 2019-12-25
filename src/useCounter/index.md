@@ -29,7 +29,6 @@ const Demo = createComponent({
         <button onClick={() => dec(5)}>Decrement (-5)</button>
         <button onClick={() => set(100)}>Set (100)</button>
         <button onClick={() => reset()}>Reset</button>
-        <button onClick={() => reset(25)}>Reset (25)</button>
       </div>
     )
   },

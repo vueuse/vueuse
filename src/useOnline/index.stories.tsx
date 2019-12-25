@@ -3,27 +3,26 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useNetwork, NetworkState } from '.'
+import { useOnline } from '.'
 
 const Demo = createComponent({
   setup () {
-    const network = useNetwork()
+    const online = useOnline()
 
     return {
-      ...network,
+      online,
     }
   },
 
-  render (this: Vue & NetworkState) {
-    const { online, since, downlink, downlinkMax, effectiveType, rtt, type } = this
-
+  render (this: Vue & {online: boolean}) {
+    const { online } = this
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
         <div id='demo'>
-          <pre lang='json'>{JSON.stringify({ online, since, downlink, downlinkMax, effectiveType, rtt, type }, null, 2)}</pre>
+          <p>{ online ? 'Online' : 'Offline'}</p>
         </div>
         {Docs}
       </div>
@@ -31,5 +30,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useNetwork', module)
+storiesOf('Sensors|useOnline', module)
   .add('Demo & Docs', () => Demo as any)

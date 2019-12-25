@@ -3,30 +3,31 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useNow } from '.'
+import { useMouse, MouseState } from '.'
 
 type Inject = {
-  now: number
+  state: MouseState
 }
 
 const Demo = createComponent({
   setup () {
-    const now = useNow()
+    const { state } = useMouse()
+
     return {
-      now,
+      state,
     }
   },
 
   render (this: Vue & Inject) {
-    const { now } = this
+    const { state } = this
 
     // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+    const Docs: any = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
         <div id='demo'>
-          <p>Now: {now}</p>
+          <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
         </div>
         {Docs}
       </div>
@@ -34,5 +35,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Animation|useNow', module)
+storiesOf('Sensors|useMouse', module)
   .add('Demo & Docs', () => Demo as any)

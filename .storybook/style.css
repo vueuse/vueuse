@@ -102,7 +102,7 @@ a.router-link-exact-active {
   display: block;
   margin: 0 -1em;
   padding: 0 1em;
-  background-color: #3d3d3d;
+  background-color: #383838;
 }
 
 pre[class*='language-'],

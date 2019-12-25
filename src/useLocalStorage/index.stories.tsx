@@ -5,9 +5,6 @@ import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
 import { useLocalStorage } from '.'
 
-// @ts-ignore
-const Docs: any = () => <ShowDocs md={require('./index.md')} />
-
 const Demo = createComponent({
   setup () {
     const { state, update } = useLocalStorage('vue-use-locale-storage', {
@@ -24,19 +21,24 @@ const Demo = createComponent({
 
   render (this: Vue & {state: any; update: any}) {
     const { state } = this
-    return (
-      <div id='demo'>
-        <input v-model={state.name} type='text'/>
-        <input v-model={state.color} type='text'/>
-        <input v-model={state.size} type='text'/>
-        <button onClick={() => this.update()} >Save</button>
+    // @ts-ignore
+    const Docs = <ShowDocs md={require('./index.md')} />
 
-        <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
+    return (
+      <div>
+        <div id='demo'>
+          <input v-model={state.name} type='text'/>
+          <input v-model={state.color} type='text'/>
+          <input v-model={state.size} type='text'/>
+          <button onClick={() => this.update()} >Save</button>
+
+          <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
+        </div>
+        {Docs}
       </div>
     )
   },
 })
 
 storiesOf('State|useLocalStorage', module)
-  .add('docs', () => Docs)
-  .add('demo', () => Demo as any)
+  .add('Demo & Docs', () => Demo as any)
