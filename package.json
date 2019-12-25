@@ -9,7 +9,7 @@
   "browser": "dist/umd/index.js",
   "scripts": {
     "build": "node ./build/build.js",
-    "release": "npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
+    "release": "node ./build/import.js && npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
     "switch": "node ./build/switch",
     "test": "jest",
     "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue,md}",
