@@ -5,5 +5,5 @@ export default create({
 
   brandTitle: 'VueUse',
   brandUrl: 'https://github.com/antfu/vueuse',
-  brandImage: 'https://github.com/antfu/vueuse/blob/master/screenshots/logo-horizontal-dark.png?raw=true',
+  brandImage: 'https://github.com/antfu/vueuse/blob/master/screenshots/logo-storybook.png?raw=true',
 })
