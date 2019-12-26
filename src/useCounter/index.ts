@@ -2,6 +2,7 @@ import { ref } from '../api'
 
 export function useCounter (initialValue = 0) {
   const count = ref(initialValue)
+
   const inc = (delta = 1) => (count.value += delta)
   const dec = (delta = 1) => (count.value -= delta)
   const get = () => count.value
@@ -10,7 +11,6 @@ export function useCounter (initialValue = 0) {
     initialValue = val
     return set(val)
   }
-  const actions = { inc, dec, get, set, reset }
 
-  return [count, actions] as const
+  return { count, inc, dec, get, set, reset }
 }

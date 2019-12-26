@@ -15,7 +15,7 @@ type Inject = {
 
 const Demo = createComponent({
   setup () {
-    const [count, { inc, dec, set, reset }] = useCounter()
+    const { count, inc, dec, set, reset } = useCounter()
     return {
       count,
       inc,
