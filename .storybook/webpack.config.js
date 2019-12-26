@@ -10,6 +10,10 @@ module.exports = ({ config }) => {
       {
         loader: require.resolve('markdown-it-loader'),
         options: {
+          html: true,
+          xhtmlOut: true,
+          linkify: true,
+          typographer: true,
           use: [
             prism,
             highlightLines,

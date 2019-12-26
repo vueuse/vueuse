@@ -98,6 +98,16 @@ a.router-link-exact-active {
   }
 }
 
+.markdown-body img {
+  background-color: transparent;
+  box-sizing: inherit;
+  display: inline-block;
+}
+
+li {
+  list-style: disc;
+}
+
 .highlighted-line {
   display: block;
   margin: 0 -1em;
