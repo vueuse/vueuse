@@ -2,7 +2,7 @@ import { configure, addParameters } from '@storybook/vue'
 import 'github-markdown-css'
 import './base16-gruvbox.dark.css'
 import './style.css'
-import { init } from '../src'
+import { init } from '../src/api'
 import theme from './theme'
 
 addParameters({

@@ -1,4 +1,5 @@
-export { init } from './api'
+export const version = '0.0.0-alpha.12'
+
 export * from './useAsyncState'
 export * from './useCounter'
 export * from './useInterval'
