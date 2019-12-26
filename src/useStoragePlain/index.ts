@@ -1,16 +1,16 @@
 import { ref, watch } from '../api'
 
-export function useLocalStoragePlain (key: string, defaultValue?: string) {
+export function useStoragePlain (key: string, defaultValue?: string, storage: Storage = localStorage) {
   const data = ref(defaultValue)
 
   try {
-    const localStorageValue = localStorage.getItem(key)
-    if (!localStorageValue) {
+    const rawValue = storage.getItem(key)
+    if (!rawValue) {
       if (defaultValue)
-        localStorage.setItem(key, defaultValue)
+        storage.setItem(key, defaultValue)
     }
     else {
-      data.value = localStorageValue || undefined
+      data.value = rawValue || undefined
     }
   }
   catch (e) {
@@ -22,9 +22,9 @@ export function useLocalStoragePlain (key: string, defaultValue?: string) {
     () => {
       try {
         if (data.value == null)
-          localStorage.removeItem(key)
+          storage.removeItem(key)
         else
-          localStorage.setItem(key, data.value)
+          storage.setItem(key, data.value)
       }
       catch (e) {
         console.warn(e)

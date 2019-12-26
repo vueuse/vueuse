@@ -30,7 +30,7 @@
 }
 
 #demo p {
-  padding: 0 0.5rem;
+  padding: 0.5rem 0;
   font-size: 1.4em;
   font-family: 'Fira Code', Menlo, Andale Mono, Consolas, Courier, monospace;
 }

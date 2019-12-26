@@ -60,8 +60,8 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
 
 - useCounter
 - useIntervalFn
-- useLocalStorage
-- useLocalStoragePlain
+- useStorage
+- useStoragePlain
 - useNow
 - useRaf
 - useTimeout

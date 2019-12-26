@@ -3,11 +3,11 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useLocalStorage } from '.'
+import { useStorage } from '.'
 
 const Demo = createComponent({
   setup () {
-    const { state, update } = useLocalStorage('vue-use-locale-storage', {
+    const { state, update } = useStorage('vue-use-locale-storage', {
       name: 'Banana',
       color: 'Yellow',
       size: 'Medium',
@@ -40,5 +40,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State|useLocalStorage', module)
+storiesOf('State|useStorage', module)
   .add('Demo & Docs', () => Demo as any)

@@ -42,5 +42,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Animation|useAsyncState', module)
+storiesOf('State|useAsyncState', module)
   .add('Demo & Docs', () => Demo as any)

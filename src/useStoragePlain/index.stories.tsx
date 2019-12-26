@@ -3,11 +3,11 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../utils_dev/storybook'
-import { useLocalStoragePlain } from '.'
+import { useStoragePlain } from '.'
 
 const Demo = createComponent({
   setup () {
-    const store = useLocalStoragePlain('vue-use-locale-storage-plain', 'Hello, this message will persist.')
+    const store = useStoragePlain('vue-use-locale-storage-plain', 'Hello, this message will persist.')
 
     return {
       store,
@@ -30,5 +30,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State|useLocalStoragePlain', module)
+storiesOf('State|useStoragePlain', module)
   .add('Demo & Docs', () => Demo as any)

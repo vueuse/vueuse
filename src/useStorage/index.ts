@@ -1,9 +1,10 @@
 import { ref, watch } from '../api'
-import { useLocalStoragePlain } from '../useLocalStoragePlain'
+import { useStoragePlain } from '../useStoragePlain'
 
-export function useLocalStorage<T extends {}> (
+export function useStorage<T extends {}> (
   key: string,
   defaultValue?: T,
+  storage: Storage = localStorage,
 ) {
   function stringify (data?: T) {
     return data ? JSON.stringify(data) : ''
@@ -13,7 +14,7 @@ export function useLocalStorage<T extends {}> (
     return str ? JSON.parse(str) : (defaultValue || {})
   }
 
-  const plain = useLocalStoragePlain(key, stringify(defaultValue))
+  const plain = useStoragePlain(key, stringify(defaultValue), storage)
 
   const state = ref<T>(parse(plain.value))
 
@@ -28,4 +29,4 @@ export function useLocalStorage<T extends {}> (
   return { state, update }
 }
 
-export default useLocalStorage
+export default useStorage
