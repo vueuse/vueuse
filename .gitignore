@@ -92,3 +92,5 @@ sw.*
 src/api.ts
 src/index.ts
 src/api.backup.ts
+
+storybook-static
