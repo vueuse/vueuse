@@ -20,6 +20,7 @@ module.exports = function (source, u) {
 
   const text = typing
     .replace(/import\(.*?\)\./g, '')
+    .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
 
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 

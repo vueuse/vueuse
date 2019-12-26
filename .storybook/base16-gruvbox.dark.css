@@ -76,13 +76,15 @@ pre[class*="language-"] {
 .token.number {
   color: #d65d0e;
 }
-.token.property {
+.token.property,
+.token.builtin {
   color: #d79921;
 }
-.token.tag {
+.token.tag,
+.token.string {
   color: #458588;
 }
-.token.string {
+.token.function {
   color: #689d6a;
 }
 .token.selector {

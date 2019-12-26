@@ -34,23 +34,6 @@ const Demo = createComponent({
 })
 ```
 
-## Reference
-
-```typescript {6-10}
-function useCounter(
-  initialValue?: number,
-): [
-  Ref<number>,
-  {
-    inc: (delta?: number) => number;
-    dec: (delta?: number) => number;
-    get: () => number;
-    set: (val: number) => number;
-    reset: (val?: number) => number;
-  },
-];
-```
-
 ### `Arguments`
 
 - `initialValue`

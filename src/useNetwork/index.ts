@@ -1,5 +1,6 @@
 import { reactive, onUnmounted, toRefs } from '../api'
 import { off, on } from '../utils'
+import { Refs } from '../types'
 
 export interface NetworkState {
   online: boolean | null
@@ -45,7 +46,7 @@ const defaultState: NetworkState = {
 }
 
 export function useNetwork (initialState: Partial<NetworkState> = {}) {
-  const state = reactive(Object.assign(initialState, defaultState))
+  const state = reactive(Object.assign(initialState, defaultState)) as NetworkState
 
   const updateState = (patch: any) => {
     for (const key of Object.keys(patch))
@@ -87,5 +88,5 @@ export function useNetwork (initialState: Partial<NetworkState> = {}) {
       off(connection, 'change', onConnectionChange)
   })
 
-  return toRefs(state)
+  return toRefs(state as any) as Refs<NetworkState>
 }

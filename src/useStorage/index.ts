@@ -28,5 +28,3 @@ export function useStorage<T extends {}> (
 
   return { state, update }
 }
-
-export default useStorage
