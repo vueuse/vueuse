@@ -3,7 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
-import { ShowDocs } from '../utils_dev/storybook'
+import { ShowDocs } from '../dev/storybook'
 import { useAsyncState } from '.'
 
 type Inject = {
@@ -28,7 +28,7 @@ const Demo = createComponent({
     const { state, ready } = this
 
     // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+    const Docs = <ShowDocs md={require('./index.md')}/>
 
     return (
       <div>

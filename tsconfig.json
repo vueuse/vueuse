@@ -28,7 +28,7 @@
     "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
-    "src/utils_dev",
-    "src/api.*.ts",
+    "src/dev",
+    "src/api.*.ts"
   ]
 }

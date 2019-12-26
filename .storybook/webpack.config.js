@@ -30,6 +30,9 @@ module.exports = ({ config }) => {
           ],
         },
       },
+      {
+        loader: require.resolve('../build/typing-loader'),
+      },
     ],
   })
 

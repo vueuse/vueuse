@@ -2,7 +2,7 @@ import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent, ref } from '../api'
-import { ShowDocs } from '../utils_dev/storybook'
+import { ShowDocs } from '../dev/storybook'
 import { useIntervalFn } from '.'
 
 type Inject = {

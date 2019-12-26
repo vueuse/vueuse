@@ -17,7 +17,7 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "npm run switch 2 && build-storybook"
+    "build-storybook": "npm run build 2 && build-storybook"
   },
   "husky": {
     "hooks": {
@@ -90,6 +90,7 @@
     "inquirer": "7.0.1",
     "jest": "24.9.0",
     "lint-staged": "9.5.0",
+    "loader-utils": "^1.2.3",
     "markdown-it": "10.0.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-link-attributes": "3.0.0",
@@ -98,7 +99,9 @@
     "postcss": "7.0.25",
     "postcss-import": "12.0.1",
     "postcss-loader": "3.0.0",
+    "prettier": "^1.19.1",
     "prismjs": "1.17.1",
+    "raw-loader": "^4.0.0",
     "rimraf": "3.0.0",
     "rollup": "1.27.14",
     "rollup-plugin-local-resolve": "1.0.7",
