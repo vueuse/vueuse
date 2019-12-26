@@ -42,9 +42,7 @@ const Demo = createComponent({
 
         <div id='demo'>
           <p>{text}</p>
-          <br></br>
           <button onClick={() => restart()} disabled={!ready}>Start Again</button>
-
         </div>
         {Docs}
       </div>

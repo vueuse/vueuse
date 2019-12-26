@@ -3,6 +3,8 @@ const fs = require('fs-extra')
 const parser = require('prettier/parser-typescript')
 const prettier = require('prettier/standalone')
 
+const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/src'
+
 module.exports = function (source, u) {
   let request = this._module.request
 
@@ -22,7 +24,13 @@ module.exports = function (source, u) {
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
 
+  const URL = `${GITHUB_URL}/${moduleName}`
+
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 
-  return `${source}\n\n## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\`\n`
+  const typingSection = `## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\``
+
+  const sourceSection = `## Source\n\n[Source](${URL}/index.ts) • [Demo](${URL}/index.stories.tsx) • [Docs](${URL}/index.md)\n`
+
+  return `${source}\n\n${typingSection}\n\n${sourceSection}\n`
 }

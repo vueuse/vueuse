@@ -2,7 +2,7 @@
 
 Reactive LocalStorage/SessionStorage.
 
-Default to LocalStorage
+use `LocalStorage` by default.
 
 ## Usage
 

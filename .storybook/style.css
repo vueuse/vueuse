@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Code|Roboto+Slab:300,600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Fira+Code:300|Roboto+Slab:300,600&display=swap');
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -9,8 +9,16 @@
   background: #282828;
 }
 
+#demo::after {
+  content: 'Demo';
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  opacity: 0.2;
+}
+
 #demo button {
-  @apply bg-green-400 text-black py-2 px-4 border-b-4 border-green-600 rounded;
+  @apply bg-green-400 text-black py-1 px-4 border-b-4 border-green-600 rounded;
 }
 
 #demo button:hover {
@@ -30,9 +38,8 @@
 }
 
 #demo p {
-  padding: 0.5rem 0;
-  font-size: 1.4em;
-  font-family: 'Fira Code', Menlo, Andale Mono, Consolas, Courier, monospace;
+  padding: 0.5rem;
+  font-size: 1.2em;
 }
 
 
@@ -70,7 +77,7 @@ html, body, div, .markdown-body {
 
 .sb-show-main a,
 .markdown-body a {
-  color: #1ea7fd;
+  color: #42b883;
   transition: color 300ms ease;
 }
 
