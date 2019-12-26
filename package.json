@@ -1,12 +1,23 @@
 {
   "name": "@vueuse/core",
-  "version": "3.0.0-alpha.10",
+  "version": "0.0.0-alpha.10",
   "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/esm/index.js",
   "unpkg": "dist/umd/index.js",
   "browser": "dist/umd/index.js",
+  "scripts": {
+    "build": "node ./build/build.js",
+    "release": "node ./build/import.js && npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
+    "switch": "node ./build/switch",
+    "test": "jest",
+    "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue,md}",
+    "lint:fix": "npm run lint -- --fix",
+    "clean": "rimraf dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "npm run switch 2 && build-storybook"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -38,7 +49,8 @@
   "homepage": "https://github.com/antfu/vueuse#readme",
   "dependencies": {},
   "peerDependencies": {
-    "vue": "^3.0.0",
+    "vue": "^2.6.11",
+    "@vue/composition-api": "^0.3.4",
     "@vue/runtime-dom": "^3.0.0"
   },
   "devDependencies": {

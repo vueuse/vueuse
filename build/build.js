@@ -26,8 +26,6 @@ async function buildFor (targetVersion, publishCallback) {
 
   packageJSON.version = version
 
-  delete packageJSON.scripts
-
   if (targetVersion === 2) {
     packageJSON.peerDependencies = {
       vue: '^2.6.0',
