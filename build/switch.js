@@ -2,6 +2,7 @@ const path = require('path')
 const assert = require('assert')
 const fs = require('fs-extra')
 const { selectVersion } = require('./selectVersion')
+const { updateImport } = require('./import')
 
 const srcDir = path.resolve(__dirname, '../src')
 
@@ -29,6 +30,8 @@ async function switchApi (version) {
     path.join(srcDir, `api.${version}.ts`),
     path.join(srcDir, 'api.ts'),
   )
+
+  await updateImport()
 }
 
 async function cli () {

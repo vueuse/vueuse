@@ -40,9 +40,9 @@ async function buildFor (targetVersion, publishCallback) {
     }
   }
 
+  await fs.writeFile(packageJSONDir, JSON.stringify(packageJSON, null, 2))
   await backupApi()
   await switchApi(targetVersion)
-  await fs.writeFile(packageJSONDir, JSON.stringify(packageJSON, null, 2))
 
   try {
     await fs.remove(distDir)

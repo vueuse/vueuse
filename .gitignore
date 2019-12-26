@@ -89,6 +89,6 @@ sw.*
 # Vim swap files
 *.swp
 
-
 src/api.ts
+src/index.ts
 src/api.backup.ts

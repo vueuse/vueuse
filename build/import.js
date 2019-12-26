@@ -17,5 +17,7 @@ async function updateImport () {
   fs.writeFileSync(path.join(srcDir, 'index.ts'), content)
 }
 
+module.exports = { updateImport }
+
 if (require.main === module)
   updateImport()
