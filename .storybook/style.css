@@ -1,4 +1,4 @@
-@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
+@import url('https://fonts.googleapis.com/css?family=Fira+Code|Roboto+Slab:300,600&display=swap');
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -36,8 +36,8 @@
 }
 
 
-html, body, div {
-  font-family: Arial, Helvetica, sans-serif;
+html, body, div, .markdown-body {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
 }
 
 .markdown-body,

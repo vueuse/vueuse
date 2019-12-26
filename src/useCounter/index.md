@@ -1,5 +1,7 @@
 # useCounter
 
+Basic counter with utility functions.
+
 ## Usage
 
 ```jsx {5,16}
@@ -33,17 +35,3 @@ const Demo = createComponent({
   },
 })
 ```
-
-### `Arguments`
-
-- `initialValue`
-
-  Initial value of the counter.
-
-  - Type: `number`
-  - Default: `0`
-
-### `ReturnValue`
-
-0. `Ref<number>`
-1. `Actions`
