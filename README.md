@@ -16,9 +16,15 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 > 🚧 Working in progress...
 
-## 📦 Install
+## 🚀 Features
 
-We supports both Vue 3.x and Vue 2.x, you can seamlessly upgrade it when you migrate from Vue 2.x to 3.x.
+- 0 dependencies ⚡ No worry about your bundle size
+- Fully tree shakable 🌴 Only take what you want
+- Seamless migration 🕶 Use it now! Work for **both** Vue 3.x and 2.x
+- Browser compatible 🌐 No need to setup build tools
+- Intractive demos 🎪 [Check our Storybook!](https://vueuse.netlify.com)
+
+## 📦 Install
 
 ### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
 

@@ -1,4 +1,5 @@
 export { init } from './api'
+export * from './useAsyncState'
 export * from './useCounter'
 export * from './useIntervalFn'
 export * from './useLocalStorage'
