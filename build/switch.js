@@ -7,20 +7,26 @@ const { updateImport } = require('./import')
 const srcDir = path.resolve(__dirname, '../src')
 
 async function backupApi () {
-  await fs.copyFile(
-    path.join(srcDir, 'api.ts'),
-    path.join(srcDir, 'api.backup.ts'),
-  )
+  try {
+    await fs.copyFile(
+      path.join(srcDir, 'api.ts'),
+      path.join(srcDir, 'api.backup.ts'),
+    )
+  }
+  catch {}
 }
 
 async function restoreApi () {
-  await fs.copyFile(
-    path.join(srcDir, 'api.backup.ts'),
-    path.join(srcDir, 'api.ts'),
-  )
-  await fs.remove(
-    path.join(srcDir, 'api.backup.ts'),
-  )
+  try {
+    await fs.copyFile(
+      path.join(srcDir, 'api.backup.ts'),
+      path.join(srcDir, 'api.ts'),
+    )
+    await fs.remove(
+      path.join(srcDir, 'api.backup.ts'),
+    )
+  }
+  catch {}
 }
 
 async function switchApi (version) {

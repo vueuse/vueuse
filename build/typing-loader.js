@@ -23,5 +23,5 @@ module.exports = function (source, u) {
 
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 
-  return `${source}\n\n## Typings\n\n\`\`\`ts\n${formatted.trim()}\n\`\`\`\n`
+  return `${source}\n\n## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\`\n`
 }
