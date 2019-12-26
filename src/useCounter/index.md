@@ -2,9 +2,8 @@
 
 ## Usage
 
-```jsx {6,17}
-import { useCounter } from '@u3u/vue-hooks'
-import { createComponent } from '../api'
+```jsx {5,16}
+import { useCounter } from '@vueuse/core'
 
 const Demo = createComponent({
   setup () {
