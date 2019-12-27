@@ -7,7 +7,7 @@ import { useStoragePlain } from '.'
 
 const Demo = createComponent({
   setup () {
-    const store = useStoragePlain('vue-use-locale-storage-plain', 'Hello, this message will persist.')
+    const store = useStoragePlain('vue-use-locale-storage-plain', 'Hello World!')
 
     return {
       store,
@@ -21,7 +21,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <span>The following message will persist</span>
+          <note>The following message will persist</note>
           <input v-model={this.store} type='text'/>
         </div>
         {Docs}

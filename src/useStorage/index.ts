@@ -1,7 +1,7 @@
 import { ref, watch } from '../api'
 import { useStoragePlain } from '../useStoragePlain'
 
-export function useStorage<T extends {}> (
+export function useStorage<T> (
   key: string,
   defaultValue?: T,
   storage: Storage = localStorage,

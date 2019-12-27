@@ -1,3 +1,5 @@
+export * from './throttle'
+
 export const isClient = typeof window === 'object'
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const assert = (condition: boolean, ...infos: any[]) => {
@@ -12,5 +14,6 @@ export const isObject = (val: any): val is object =>
 export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]'
 export const now = () => Date.now()
+export const timestamp = () => +Date.now()
 export const on = (obj: any, ...args: any[]) => obj.addEventListener(...args)
 export const off = (obj: any, ...args: any[]) => obj.removeEventListener(...args)

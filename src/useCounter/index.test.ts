@@ -8,7 +8,7 @@ describe('useCounter', () => {
 
   it('should be update counter', () => {
     renderHook(() => {
-      const [count, { inc, dec, get, set, reset }] = useCounter()
+      const { count, inc, dec, get, set, reset } = useCounter()
 
       expect(count.value).toBe(0)
       expect(get()).toBe(0)
