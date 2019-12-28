@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { createComponent } from '../api'
+import CompositionAPI from '@vue/composition-api'
+import { createComponent, version } from '../api'
 
 const localVue = createLocalVue()
 
-export default function renderHook<V, Props = unknown, Data = unknown> (
+export function renderHook<V, Props = unknown, Data = unknown> (
   setup: any,
 ) {
   const App = createComponent({
@@ -15,4 +16,9 @@ export default function renderHook<V, Props = unknown, Data = unknown> (
   return shallowMount<Vue & V>(App as any, {
     localVue,
   })
+}
+
+export function testInit () {
+  if (version === 2)
+    Vue.use(CompositionAPI)
 }
