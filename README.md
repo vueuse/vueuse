@@ -24,7 +24,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Fully tree shakable 🌴 Only take what you want
 - Seamless migration 🕶 Use it now! Work for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 No need to setup build tools
-- Intractive demos 🎪 [Check our Storybook!](https://vueuse.netlify.com)
+- Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 
 ## 📦 Install
 
@@ -100,6 +100,17 @@ Thanks for being instrested contributing this project!
 // TODO:
 
 --->
+
+## 🌸 Thanks
+
+This project is heavily inspired by following awesome projects.
+
+- [streamich/react-use](https://github.com/streamich/react-use)
+- [u3u/vue-hooks](https://github.com/u3u/vue-hooks)
+- [shuidi-fed/vue-composition-toolkit](https://github.com/shuidi-fed/vue-composition-toolkit)
+- [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
+
+Thanks!
 
 ## 📄 License
 
