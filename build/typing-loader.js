@@ -15,7 +15,12 @@ module.exports = function (source, u) {
 
   const moduleName = path.basename(path.dirname(request))
 
-  const typing = fs.readFileSync(path.resolve(__dirname, `../dist/esm/${moduleName}/index.d.ts`), 'utf-8')
+  const typingFilepath = path.resolve(__dirname, `../dist/esm/${moduleName}/index.d.ts`)
+
+  if (!fs.existsSync(typingFilepath))
+    return source
+
+  const typing = fs.readFileSync(typingFilepath, 'utf-8')
 
   if (!typing)
     return source

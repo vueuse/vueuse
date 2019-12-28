@@ -22,7 +22,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 - 0 dependencies ⚡ No worry about your bundle size
 - Fully tree shakable 🌴 Only take what you want
-- Seamless migration 🕶 Use it now! Work for **both** Vue 3.x and 2.x
+- Seamless migration 🕶 Use it now! Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 No need to setup build tools
 - Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 

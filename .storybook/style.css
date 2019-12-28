@@ -118,6 +118,27 @@ a.router-link-exact-active {
   display: inline-block;
 }
 
+.markdown-body table {
+  margin: 1em 0;
+}
+
+.markdown-body table td,
+.markdown-body table th {
+  border-color: transparent !important;
+}
+
+.markdown-body table thead tr th {
+  border-bottom: 2px solid #dfe2e5 !important;
+}
+
+.markdown-body table tr {
+  background: transparent;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 li {
   list-style: disc;
 }
