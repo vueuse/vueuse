@@ -39,5 +39,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useWindowScroll', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useWindowScroll', () => Demo as any)

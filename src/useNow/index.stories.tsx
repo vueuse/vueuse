@@ -34,5 +34,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Animation|useNow', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Animation', module)
+  .add('useNow', () => Demo as any)

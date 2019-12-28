@@ -37,5 +37,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useDeviceOrientation', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useDeviceOrientation', () => Demo as any)

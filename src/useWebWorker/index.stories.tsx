@@ -20,5 +20,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Misc|useWebWorker', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Misc', module)
+  .add('useWebWorker', () => Demo as any)

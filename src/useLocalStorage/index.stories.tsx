@@ -17,5 +17,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State|useLocalStorage', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('State', module)
+  .add('useLocalStorage', () => Demo as any)

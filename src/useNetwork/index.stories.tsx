@@ -47,5 +47,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useNetwork', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useNetwork', () => Demo as any)

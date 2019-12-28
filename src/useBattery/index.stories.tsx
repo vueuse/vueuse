@@ -37,5 +37,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useBattery', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useBattery', () => Demo as any)

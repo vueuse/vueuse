@@ -5,5 +5,5 @@ import { ShowDocs } from './dev/storybook'
 // @ts-ignore
 const Docs: any = () => <ShowDocs md={require('../README.md')} />
 
-storiesOf('Docs|Home', module)
+storiesOf('Docs', module)
   .add('Read Me', () => Docs)

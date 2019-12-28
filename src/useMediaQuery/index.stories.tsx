@@ -36,5 +36,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM|useMediaQuery', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('DOM', module)
+  .add('useMediaQuery', () => Demo as any)

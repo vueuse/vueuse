@@ -39,5 +39,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Animation|useIntervalFn', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Animation', module)
+  .add('useIntervalFn', () => Demo as any)

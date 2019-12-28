@@ -31,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM|usePreferredDark', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('DOM', module)
+  .add('usePreferredDark', () => Demo as any)

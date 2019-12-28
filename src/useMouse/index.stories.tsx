@@ -35,5 +35,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useMouse', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useMouse', () => Demo as any)

@@ -43,5 +43,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State|useIdle', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('State', module)
+  .add('useIdle', () => Demo as any)

@@ -35,5 +35,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useGeolocation', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useGeolocation', () => Demo as any)

@@ -31,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM|usePreferredLanguages', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('DOM', module)
+  .add('usePreferredLanguages', () => Demo as any)

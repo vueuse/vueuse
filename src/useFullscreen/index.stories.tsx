@@ -38,5 +38,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM|useFullscreen', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('DOM', module)
+  .add('useFullscreen', () => Demo as any)

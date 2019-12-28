@@ -35,5 +35,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Animation|useRaf', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Animation', module)
+  .add('useRaf', () => Demo as any)

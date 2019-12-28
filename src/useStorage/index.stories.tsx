@@ -40,5 +40,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State|useStorage', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('State', module)
+  .add('useStorage', () => Demo as any)

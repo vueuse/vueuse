@@ -37,5 +37,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors|useWindowSize', module)
-  .add('Demo & Docs', () => Demo as any)
+storiesOf('Sensors', module)
+  .add('useWindowSize', () => Demo as any)
