@@ -3,18 +3,18 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { usePrefersDark } from '.'
+import { usePreferredLanguages } from '.'
 
 const Demo = createComponent({
   setup () {
     return {
-      prefersDark: usePrefersDark(),
+      usePreferredLanguages: usePreferredLanguages(),
     }
   },
 
   render (this: Vue & any) {
     const {
-      prefersDark,
+      usePreferredLanguages,
     } = this
 
     // @ts-ignore
@@ -23,7 +23,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <p>Prefers Dark: {prefersDark.toString()}</p>
+          <p>Preferred Languages: {usePreferredLanguages.join(', ')}</p>
         </div>
         {Docs}
       </div>
@@ -31,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM|usePrefersDark', module)
+storiesOf('DOM|usePreferredLanguages', module)
   .add('Demo & Docs', () => Demo as any)
