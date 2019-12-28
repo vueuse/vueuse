@@ -1,92 +1,74 @@
-import { reactive, onUnmounted, toRefs } from '../api'
-import { off, on } from '../utils'
-import { Refs } from '../types'
+import { onMounted, onUnmounted, ref, Ref } from '@vue/composition-api'
+
+export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
+
+export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  online: boolean | null
-  since: Date | null
-  downlink: number | null
-  downlinkMax: number | null
-  effectiveType: string | null
-  rtt: number | null
-  type: string | null
+  isOnline: boolean
+  offlineAt: number | undefined
+  downlink?: number
+  downlinkMax?: number
+  effectiveType?: NetworkEffectiveType
+  saveData?: boolean
+  type?: NetworkType
 }
 
-const getConnection = () => {
-  if (typeof navigator !== 'object')
-    return null
+export function useNetwork () {
+  const isOnline = ref(true)
+  const saveData = ref(false)
+  const offlineAt: Ref<number | undefined> = ref(undefined)
+  const downlink: Ref<number | undefined> = ref(undefined)
+  const downlinkMax: Ref<number | undefined> = ref(undefined)
+  const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
+  const type: Ref<NetworkType> = ref('unknown')
 
-  const nav = navigator as any
-  return nav.connection || nav.mozConnection || nav.webkitConnection
-}
+  function updateNetworkInformation () {
+    isOnline.value = window.navigator.onLine
+    offlineAt.value = isOnline.value ? undefined : Date.now()
 
-const getConnectionState = (): Partial<NetworkState> => {
-  const connection = getConnection()
-  if (!connection)
-    return {}
+    // skip for non supported browsers.
+    if (!('connection' in window.navigator))
+      return
 
-  const { downlink, downlinkMax, effectiveType, type, rtt } = connection
+    downlink.value = (window.navigator as any).connection.downlink
+    downlinkMax.value = (window.navigator as any).connection.downlinkMax
+    effectiveType.value = (window.navigator as any).connection.effectiveType
+    saveData.value = (window.navigator as any).connection.saveData
+    type.value = (window.navigator as any).connection.type
+  }
+
+  const onOffline = () => {
+    isOnline.value = false
+    offlineAt.value = Date.now()
+  }
+
+  const onOnline = () => {
+    isOnline.value = true
+  }
+
+  onMounted(() => {
+    updateNetworkInformation()
+    window.addEventListener('offline', onOffline)
+    window.addEventListener('online', onOnline)
+    if ('connection' in window.navigator)
+      (window.navigator as any).connection.addEventListener('change', updateNetworkInformation, false)
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('offline', onOffline)
+    window.removeEventListener('online', onOnline)
+    if ('connection' in window.navigator)
+      (window.navigator as any).connection.removeEventListener('change', updateNetworkInformation, false)
+  })
+
   return {
+    isOnline,
+    saveData,
+    offlineAt,
     downlink,
     downlinkMax,
     effectiveType,
     type,
-    rtt,
   }
-}
-
-const defaultState: NetworkState = {
-  online: null,
-  since: null,
-  downlink: null,
-  downlinkMax: null,
-  effectiveType: null,
-  rtt: null,
-  type: null,
-}
-
-export function useNetwork (initialState: Partial<NetworkState> = {}) {
-  const state = reactive(Object.assign(initialState, defaultState)) as NetworkState
-
-  const updateState = (patch: any) => {
-    for (const key of Object.keys(patch))
-      state[key as keyof NetworkState] = patch[key]
-  }
-  const connection = getConnection()
-
-  const onOnline = () => {
-    updateState({
-      online: true,
-      since: new Date(),
-    })
-  }
-  const onOffline = () => {
-    updateState({
-      online: false,
-      since: new Date(),
-    })
-  }
-  const onConnectionChange = () => {
-    updateState(getConnectionState())
-  }
-
-  on(window, 'online', onOnline)
-  on(window, 'offline', onOffline)
-  if (connection) {
-    on(connection, 'change', onConnectionChange)
-    updateState({
-      online: navigator.onLine,
-      since: undefined,
-      ...getConnectionState(),
-    })
-  }
-
-  onUnmounted(() => {
-    off(window, 'online', onOnline)
-    off(window, 'offline', onOffline)
-    if (connection)
-      off(connection, 'change', onConnectionChange)
-  })
-
-  return toRefs(state as any) as Refs<NetworkState>
 }

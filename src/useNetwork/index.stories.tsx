@@ -15,7 +15,15 @@ const Demo = createComponent({
   },
 
   render (this: Vue & NetworkState) {
-    const { online, since, downlink, downlinkMax, effectiveType, rtt, type } = this
+    const {
+      isOnline,
+      offlineAt,
+      downlink,
+      downlinkMax,
+      effectiveType,
+      saveData,
+      type,
+    } = this
 
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
@@ -23,7 +31,15 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <pre lang='json'>{JSON.stringify({ online, since, downlink, downlinkMax, effectiveType, rtt, type }, null, 2)}</pre>
+          <pre lang='json'>{JSON.stringify({
+            isOnline,
+            offlineAt,
+            downlink,
+            downlinkMax,
+            effectiveType,
+            saveData,
+            type,
+          }, null, 2)}</pre>
         </div>
         {Docs}
       </div>

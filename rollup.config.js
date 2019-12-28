@@ -1,4 +1,7 @@
-module.exports = {
+const { uglify } = require('rollup-plugin-uglify')
+const resolve = require('rollup-plugin-local-resolve')
+
+const createDefault = () => ({
   input: 'dist/esm/index.js',
   output: {
     file: 'dist/umd/index.js',
@@ -11,11 +14,22 @@ module.exports = {
     },
   },
   plugins: [
-    require('rollup-plugin-local-resolve')(),
+    resolve(),
   ],
   external: [
     'vue',
     '@vue/composition-api',
     '@vue/runtime-dom',
   ],
+})
+
+const createMinified = () => {
+  const config = createDefault()
+
+  config.output.file = 'dist/umd/index.min.js'
+  config.plugins.push(uglify())
+
+  return config
 }
+
+module.exports = [createDefault(), createMinified()]

@@ -1,6 +1,6 @@
 # useOnline
 
-Reactive online state. A wrapper of `useNetwork`
+> Reactive online state. A wrapper of [`useNetwork`](/?path=/story/sensors-usenetwork--demo-docs)
 
 ## Usage
 
