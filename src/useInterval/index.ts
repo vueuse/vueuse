@@ -1,3 +1,4 @@
+import { onMounted } from '@vue/composition-api'
 import { onUnmounted, getCurrentInstance, ref } from '../api'
 
 export function useInterval (interval = 1000, startRightNow = true) {
@@ -19,7 +20,7 @@ export function useInterval (interval = 1000, startRightNow = true) {
   }
 
   if (startRightNow)
-    start()
+    onMounted(start)
 
   if (getCurrentInstance())
     onUnmounted(stop)
