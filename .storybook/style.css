@@ -139,6 +139,10 @@ a.router-link-exact-active {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+.markdown-body blockquote {
+  color: #8c97a3;
+}
+
 li {
   list-style: disc;
 }
