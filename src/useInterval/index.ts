@@ -1,5 +1,4 @@
-import { onMounted } from '@vue/composition-api'
-import { onUnmounted, getCurrentInstance, ref } from '../api'
+import { onUnmounted, getCurrentInstance, ref, onMounted } from '../api'
 
 export function useInterval (interval = 1000, startRightNow = true) {
   let timer: any = null

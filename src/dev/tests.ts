@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import CompositionAPI from '@vue/composition-api'
 import { createComponent, version } from '../api'
 
 const localVue = createLocalVue()
@@ -20,5 +19,5 @@ export function renderHook<V, Props = unknown, Data = unknown> (
 
 export function testInit () {
   if (version === 2)
-    Vue.use(CompositionAPI)
+    Vue.use(require('@vue/composition-api'))
 }

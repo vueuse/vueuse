@@ -1,5 +1,5 @@
 import { off, on, throttle, timestamp } from '../utils'
-import { ref, onUnmounted } from '../api'
+import { ref, onUnmounted, onMounted } from '../api'
 
 const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60e3
@@ -28,12 +28,14 @@ export function useIdle (ms: number = oneMinute, initialState = false, events: s
       onEvent()
   }
 
-  for (let i = 0; i < events.length; i++)
-    on(window, events[i], onEvent)
+  onMounted(() => {
+    for (let i = 0; i < events.length; i++)
+      on(window, events[i], onEvent)
 
-  on(document, 'visibilitychange', onVisibility)
+    on(document, 'visibilitychange', onVisibility)
 
-  timeout = setTimeout(() => set(true), ms)
+    timeout = setTimeout(() => set(true), ms)
+  })
 
   onUnmounted(() => {
     mounted = false
