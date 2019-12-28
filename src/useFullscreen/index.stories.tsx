@@ -38,5 +38,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM', module)
+storiesOf('Browser', module)
   .add('useFullscreen', () => Demo as any)

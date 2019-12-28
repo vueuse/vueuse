@@ -31,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM', module)
+storiesOf('Browser', module)
   .add('usePreferredLanguages', () => Demo as any)

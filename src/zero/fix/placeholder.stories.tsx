@@ -10,7 +10,7 @@ storiesOf('State|__empty', module)
 storiesOf('Sensors|__empty', module)
   .add('__empty', () => '')
 
-storiesOf('DOM|__empty', module)
+storiesOf('Browser|__empty', module)
   .add('__empty', () => '')
 
 storiesOf('Misc|__empty', module)

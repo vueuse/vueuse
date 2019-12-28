@@ -31,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('DOM', module)
+storiesOf('Browser', module)
   .add('usePreferredDark', () => Demo as any)

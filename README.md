@@ -61,6 +61,7 @@ It will be exposed to global variable `window.VueUse`
 You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
 
 <!--FUNCTIONS_LIST_STARTS-->
+
 - Animation
   - [useInterval](https://vueuse.netlify.com/?path=/story/animation--useinterval)
   - [useIntervalFn](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
@@ -69,11 +70,12 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
   - [useTimeout](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
   - [useTimeoutFn](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
 
-- DOM
-  - [useFullscreen](https://vueuse.netlify.com/?path=/story/dom--usefullscreen)
-  - [useMediaQuery](https://vueuse.netlify.com/?path=/story/dom--usemediaquery)
-  - [usePreferredDark](https://vueuse.netlify.com/?path=/story/dom--usepreferreddark)
-  - [usePreferredLanguages](https://vueuse.netlify.com/?path=/story/dom--usepreferredlanguages)
+- Browser
+  - [useFullscreen](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
+  - [useMediaQuery](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
+  - [usePermission](https://vueuse.netlify.com/?path=/story/browser--usepermission)
+  - [usePreferredDark](https://vueuse.netlify.com/?path=/story/browser--usepreferreddark)
+  - [usePreferredLanguages](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
 
 - Misc
   - [useWebWorker](https://vueuse.netlify.com/?path=/story/misc--usewebworker)

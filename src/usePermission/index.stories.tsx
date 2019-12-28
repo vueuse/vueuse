@@ -3,20 +3,27 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { useMediaQuery } from '.'
+import { usePermission } from '.'
 
 const Demo = createComponent({
   setup () {
     return {
-      isLargeScreen: useMediaQuery('(min-width: 1024px)'),
-      prefersDark: useMediaQuery('(prefers-color-scheme: dark)'),
+      geolocation: usePermission('geolocation'),
+      microphone: usePermission('microphone'),
+      notifications: usePermission('notifications'),
+      camera: usePermission('camera'),
+      midi: usePermission('midi'),
     }
   },
 
   render (this: Vue & any) {
     const {
-      isLargeScreen,
-      prefersDark,
+      geolocation,
+      microphone,
+      notifications,
+      camera,
+      speaker,
+      midi,
     } = this
 
     // @ts-ignore
@@ -26,8 +33,12 @@ const Demo = createComponent({
       <div>
         <div id='demo'>
           <pre lang='json'>{JSON.stringify({
-            isLargeScreen,
-            prefersDark,
+            geolocation,
+            microphone,
+            notifications,
+            camera,
+            speaker,
+            midi,
           }, null, 2)}</pre>
         </div>
         {Docs}
@@ -37,4 +48,4 @@ const Demo = createComponent({
 })
 
 storiesOf('Browser', module)
-  .add('useMediaQuery', () => Demo as any)
+  .add('usePermission', () => Demo as any)
