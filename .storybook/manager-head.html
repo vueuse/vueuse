@@ -1,14 +1,22 @@
 <link rel="shortcut icon" href="https://raw.githubusercontent.com/antfu/vueuse/master/resources/favicon/favicon.ico">
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/antfu/vueuse/master/resources/favicon/android-chrome-192x192.png" sizes="192x192">
 <style>
+@import url('https://fonts.googleapis.com/css?family=Fira+Code:300|Roboto+Slab:300,600&display=swap');
+
 .sidebar-header div:last-child, .sidebar-svg-icon {
   display: none !important;
 }
 .sidebar-header div:first-child img {
   max-width: 110px;
 }
-.sidebar-item, .sidebar-subheading {
-  font-family: monospace;
+.sidebar-item, .sidebar-subheading, #storybook-explorer-searchfield {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+}
+.sidebar-item {
+  letter-spacing: 0.5px;
+}
+.sidebar-subheading {
+  color: rgba(255,255,255,0.3) !important;
 }
 a[title="__empty"] {
   display: none;
