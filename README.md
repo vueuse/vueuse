@@ -60,16 +60,44 @@ It will be exposed to global variable `window.VueUse`
 
 You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
 
-- useCounter
-- useIntervalFn
-- useStorage
-- useStoragePlain
-- useNow
-- useRaf
-- useTimeout
-- useTimeoutFn
-- useWindowScroll
-- useWindowSize
+<!--FUNCTIONS_LIST_STARTS-->
+- Animation
+  - [useInterval](https://vueuse.netlify.com/?path=/story/animation--useinterval)
+  - [useIntervalFn](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
+  - [useNow](https://vueuse.netlify.com/?path=/story/animation--usenow)
+  - [useRaf](https://vueuse.netlify.com/?path=/story/animation--useraf)
+  - [useTimeout](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
+  - [useTimeoutFn](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
+
+- DOM
+  - [useFullscreen](https://vueuse.netlify.com/?path=/story/dom--usefullscreen)
+  - [useMediaQuery](https://vueuse.netlify.com/?path=/story/dom--usemediaquery)
+  - [usePreferredDark](https://vueuse.netlify.com/?path=/story/dom--usepreferreddark)
+  - [usePreferredLanguages](https://vueuse.netlify.com/?path=/story/dom--usepreferredlanguages)
+
+- Misc
+  - [useWebWorker](https://vueuse.netlify.com/?path=/story/misc--usewebworker)
+
+- Sensors
+  - [useBattery](https://vueuse.netlify.com/?path=/story/sensors--usebattery)
+  - [useDeviceOrientation](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
+  - [useGeolocation](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
+  - [useMouse](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
+  - [useNetwork](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
+  - [useOnline](https://vueuse.netlify.com/?path=/story/sensors--useonline)
+  - [useWindowScroll](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
+  - [useWindowSize](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
+
+- State
+  - [useAsyncState](https://vueuse.netlify.com/?path=/story/state--useasyncstate)
+  - [useCounter](https://vueuse.netlify.com/?path=/story/state--usecounter)
+  - [useIdle](https://vueuse.netlify.com/?path=/story/state--useidle)
+  - [useLocalStorage](https://vueuse.netlify.com/?path=/story/state--uselocalstorage)
+  - [useSessionStorage](https://vueuse.netlify.com/?path=/story/state--usesessionstorage)
+  - [useStorage](https://vueuse.netlify.com/?path=/story/state--usestorage)
+  - [useStoragePlain](https://vueuse.netlify.com/?path=/story/state--usestorageplain)
+
+<!--FUNCTIONS_LIST_ENDS-->
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 
