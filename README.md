@@ -16,8 +16,6 @@
 Collection of essential Vue Composition API (inspired by <a href='https://github.com/streamich/react-use' target='__blank'>react-use</a>)
 </p>
 
-> 🚧 Working in progress...
-
 ## 🚀 Features
 
 - 0 dependencies ⚡ No worry about your bundle size
@@ -28,7 +26,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 📦 Install
 
-### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
+### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next)), [*demo here*](https://vueuse-next-example.netlify.com/)
 
 ```bash
 npm i @vueuse/core@next
