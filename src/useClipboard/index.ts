@@ -1,21 +1,14 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, onMounted, onUnmounted } from '../api'
+import { ref } from '../api'
+import { useEventListener } from '../useEventListener'
 
 export function useClipboard () {
   const text = ref('')
   const supported = ref('clipboard' in navigator)
 
-  async function onCopy () {
+  useEventListener('copy', async () => {
     text.value = await navigator.clipboard.readText()
-  }
-
-  onMounted(() => {
-    window.addEventListener('copy', onCopy)
-  })
-
-  onUnmounted(() => {
-    window.removeEventListener('copy', onCopy)
   })
 
   function copy (txt: string) {

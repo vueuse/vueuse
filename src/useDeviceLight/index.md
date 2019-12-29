@@ -4,12 +4,10 @@
 
 ## Usage
 
-The `useDeviceLight` function exposes the following reactive state:
-
 ```js
 import { useDeviceLight } from '@vueuse/core'
 
-const { light } = useDeviceLight()
+const light = useDeviceLight()
 ```
 
 | State | Type     | Description                                                                 |

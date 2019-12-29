@@ -1,18 +1,11 @@
-import { onMounted, onUnmounted, ref } from '../api'
+import { ref } from '../api'
+import { useEventListener } from '../useEventListener'
 
 export function usePreferredLanguages () {
   const value = ref(navigator.languages)
 
-  function handler () {
+  useEventListener('languagechange', () => {
     value.value = navigator.languages
-  }
-
-  onMounted(() => {
-    window.addEventListener('languagechange', handler)
-  })
-
-  onUnmounted(() => {
-    window.removeEventListener('languagechange', handler)
   })
 
   return value

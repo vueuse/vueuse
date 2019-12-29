@@ -1,7 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { onMounted, ref, onUnmounted, Ref } from '../api'
+import { ref, Ref } from '../api'
 import { throttle } from '../utils'
+import { useEventListener } from '../useEventListener'
 
 interface DeviceMotionOptions {
   throttleMs: 10
@@ -26,13 +27,7 @@ export function useDeviceMotion (options: DeviceMotionOptions = { throttleMs: 10
 
   const handler = options.throttleMs ? throttle(options.throttleMs, onDeviceMotion) : onDeviceMotion
 
-  onMounted(() => {
-    window.addEventListener('devicemotion', handler, false)
-  })
-
-  onUnmounted(() => {
-    window.removeEventListener('devicemotion', handler, false)
-  })
+  useEventListener('devicemotion', handler, false)
 
   return {
     acceleration,

@@ -23,7 +23,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <p>Preferred Languages: {usePreferredLanguages.join(', ')}</p>
+          <p>Preferred Languages: <code>{usePreferredLanguages.join(', ')}</code></p>
         </div>
         {Docs}
       </div>

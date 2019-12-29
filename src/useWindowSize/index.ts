@@ -1,20 +1,15 @@
-import { onUnmounted, ref } from '../api'
+import { ref } from '../api'
 import { isClient } from '../utils'
+import { useEventListener } from '../useEventListener'
 
 export function useWindowSize (initialWidth = Infinity, initialHeight = Infinity) {
   const width = ref(isClient ? window.innerWidth : initialWidth)
   const height = ref(isClient ? window.innerWidth : initialHeight)
 
-  if (isClient) {
-    const handler = () => {
+  if (!isClient) {
+    useEventListener('resize', () => {
       width.value = window.innerWidth
       height.value = window.innerHeight
-    }
-
-    window.addEventListener('resize', handler)
-
-    onUnmounted(() => {
-      window.removeEventListener('resize', handler)
     })
   }
 

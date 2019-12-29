@@ -1,21 +1,21 @@
 import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { useBattery, BatteryManager } from '.'
+import { useBattery } from '.'
 
 const Demo = createComponent({
   setup () {
     return useBattery()
   },
 
-  render (this: Vue & BatteryManager) {
+  render (this: any) {
     const {
       charging,
       chargingTime,
       dischargingTime,
       level,
+      supported,
     } = this
 
     // @ts-ignore
@@ -29,6 +29,7 @@ const Demo = createComponent({
             chargingTime,
             dischargingTime,
             level,
+            supported,
           }, null, 2)}</pre>
         </div>
         {Docs}

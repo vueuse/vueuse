@@ -7,7 +7,9 @@ import { useDeviceLight } from '.'
 
 const Demo = createComponent({
   setup () {
-    return useDeviceLight()
+    return {
+      light: useDeviceLight(),
+    }
   },
 
   render (this: Vue & any) {

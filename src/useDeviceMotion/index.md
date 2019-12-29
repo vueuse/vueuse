@@ -4,8 +4,6 @@
 
 ## Usage
 
-The `useDeviceMotion` function exposes the following reactive state:
-
 ```js
 import { useDeviceMotion } from '@vueuse/core'
 

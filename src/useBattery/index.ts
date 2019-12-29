@@ -20,6 +20,7 @@ export function useBattery () {
   const chargingTime = ref(0)
   const dischargingTime = ref(0)
   const level = ref(1)
+  const supported = ref('getBattery' in navigator)
 
   function updateBatteryInfo (this: BatteryManager) {
     charging.value = this.charging
@@ -29,7 +30,7 @@ export function useBattery () {
   }
 
   onMounted(() => {
-    if (!('getBattery' in navigator))
+    if (!supported.value)
       return;
 
     (navigator as NavigatorWithBattery).getBattery().then((battery) => {
@@ -41,7 +42,7 @@ export function useBattery () {
   })
 
   onUnmounted(() => {
-    if (!('getBattery' in navigator))
+    if (!supported.value)
       return;
 
     (navigator as NavigatorWithBattery).getBattery().then((battery) => {
@@ -56,5 +57,6 @@ export function useBattery () {
     chargingTime,
     dischargingTime,
     level,
+    supported,
   }
 }

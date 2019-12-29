@@ -33,7 +33,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <note>For demonstraction purpose, the idle timer is set to 5s.</note>
+          <note>For demonstraction purpose, the idle timer is set to <b>5s</b>.</note>
           <p>Idle: {idle.toString()}</p>
           <p>Inactive: {idledFor}s</p>
         </div>

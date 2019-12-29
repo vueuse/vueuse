@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { onMounted, onUnmounted, ref, Ref } from '../api'
+import { onMounted, ref, Ref } from '../api'
+import { useEventListener } from '../useEventListener'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
@@ -25,44 +26,36 @@ export function useNetwork () {
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
   const type: Ref<NetworkType> = ref('unknown')
 
+  const navigator = window.navigator
+  const connection = 'connection' in navigator ? (navigator as any).connection : undefined
+
   function updateNetworkInformation () {
-    isOnline.value = window.navigator.onLine
+    isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
 
-    // skip for non supported browsers.
-    if (!('connection' in window.navigator))
+    if (!connection)
       return
 
-    downlink.value = (window.navigator as any).connection.downlink
-    downlinkMax.value = (window.navigator as any).connection.downlinkMax
-    effectiveType.value = (window.navigator as any).connection.effectiveType
-    saveData.value = (window.navigator as any).connection.saveData
-    type.value = (window.navigator as any).connection.type
+    downlink.value = connection.downlink
+    downlinkMax.value = connection.downlinkMax
+    effectiveType.value = connection.effectiveType
+    saveData.value = connection.saveData
+    type.value = connection.type
   }
 
-  const onOffline = () => {
+  onMounted(updateNetworkInformation)
+
+  useEventListener('offline', () => {
     isOnline.value = false
     offlineAt.value = Date.now()
-  }
+  })
 
-  const onOnline = () => {
+  useEventListener('online', () => {
     isOnline.value = true
-  }
-
-  onMounted(() => {
-    updateNetworkInformation()
-    window.addEventListener('offline', onOffline)
-    window.addEventListener('online', onOnline)
-    if ('connection' in window.navigator)
-      (window.navigator as any).connection.addEventListener('change', updateNetworkInformation, false)
   })
 
-  onUnmounted(() => {
-    window.removeEventListener('offline', onOffline)
-    window.removeEventListener('online', onOnline)
-    if ('connection' in window.navigator)
-      (window.navigator as any).connection.removeEventListener('change', updateNetworkInformation, false)
-  })
+  if (connection)
+    useEventListener('change', updateNetworkInformation, false, connection)
 
   return {
     isOnline,

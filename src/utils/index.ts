@@ -15,5 +15,3 @@ export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]'
 export const now = () => Date.now()
 export const timestamp = () => +Date.now()
-export const on = (obj: any, ...args: any[]) => obj.addEventListener(...args)
-export const off = (obj: any, ...args: any[]) => obj.removeEventListener(...args)
