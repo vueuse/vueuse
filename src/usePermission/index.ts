@@ -1,23 +1,26 @@
 import { onUnmounted, onMounted, ref } from '../api'
 import { off, on } from '../utils'
 
+type DescriptorNamePolyfill = 'clipboard-read' | 'clipboard-write'
+
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
   | DevicePermissionDescriptor
   | MidiPermissionDescriptor
   | PushPermissionDescriptor
+  | { name: DescriptorNamePolyfill }
 
 type State = PermissionState | ''
 
 const noop = () => {}
 
-export function usePermission (permissionDesc: GeneralPermissionDescriptor | PermissionDescriptor['name']) {
+export function usePermission (permissionDesc: GeneralPermissionDescriptor | PermissionDescriptor['name'] | DescriptorNamePolyfill) {
   let mounted = true
   let permissionStatus: PermissionStatus | null = null
 
   const desc = typeof permissionDesc === 'string'
     ? { name: permissionDesc } as PermissionDescriptor
-    : permissionDesc
+    : permissionDesc as PermissionDescriptor
 
   const state = ref<State>('')
 
