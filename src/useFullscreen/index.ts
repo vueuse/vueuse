@@ -1,3 +1,5 @@
+/* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
+
 import { Ref, ref } from '../api'
 
 export function useFullscreen (target: Ref<HTMLElement> = ref(document.body)) {

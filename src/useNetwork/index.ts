@@ -1,3 +1,5 @@
+/* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
+
 import { onMounted, onUnmounted, ref, Ref } from '../api'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'

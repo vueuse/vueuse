@@ -1,3 +1,5 @@
+/* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
+
 import { ref, onMounted, onUnmounted } from '../api'
 
 export interface BatteryManager extends EventTarget {
