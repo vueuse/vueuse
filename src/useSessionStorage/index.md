@@ -4,4 +4,4 @@
 
 ## Usage
 
-Please refer to [`useStorage`](/?path=/story/state-usestorage--demo-docs)
+Please refer to [`useStorage`](/?path=/story/state--usestorage)

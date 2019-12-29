@@ -3,30 +3,23 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent, ref } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { useMouse } from '.'
+import { useParallax } from '.'
 
 const Demo = createComponent({
   setup () {
     const demoRef = ref(null)
+
     return {
-      ...useMouse(demoRef),
+      ...useParallax({ refEl: demoRef }),
       demo: demoRef,
     }
   },
 
   render (this: Vue & any) {
     const {
-      x,
-      y,
-      documentX,
-      documentY,
-      elementX,
-      elementY,
-      elementPositionX,
-      elementPositionY,
-      elementHeight,
-      elementWidth,
-      isOutside,
+      roll,
+      tilt,
+      source,
     } = this
 
     // @ts-ignore
@@ -34,19 +27,11 @@ const Demo = createComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo' style={{ margin: '20px' }}>
+        <div id='demo' ref='demo'>
           <pre lang='json'>{JSON.stringify({
-            x,
-            y,
-            documentX,
-            documentY,
-            elementX,
-            elementY,
-            elementPositionX,
-            elementPositionY,
-            elementHeight,
-            elementWidth,
-            isOutside,
+            roll,
+            tilt,
+            source,
           }, null, 2)}</pre>
         </div>
         {Docs}
@@ -56,4 +41,4 @@ const Demo = createComponent({
 })
 
 storiesOf('Sensors', module)
-  .add('useMouse', () => Demo as any)
+  .add('useParallax', () => Demo as any)
