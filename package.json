@@ -1,12 +1,12 @@
 {
   "name": "@vueuse/core",
-  "version": "0.0.0-alpha.18",
+  "version": "0.0.0-alpha.19",
   "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/esm/index.js",
   "unpkg": "dist/umd/index.min.js",
-  "browser": "dist/umd/index.min.js",
+  "browser": "dist/esm/index.js",
   "scripts": {
     "build": "node ./build/build",
     "release": "npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
