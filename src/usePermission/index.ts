@@ -1,6 +1,5 @@
-import { onUnmounted, onMounted } from '@vue/composition-api'
+import { onUnmounted, onMounted, ref } from '../api'
 import { off, on } from '../utils'
-import { ref } from '../api'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor

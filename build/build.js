@@ -35,8 +35,7 @@ async function buildFor (targetVersion, publishCallback) {
 
   if (targetVersion === 3) {
     packageJSON.peerDependencies = {
-      vue: '^3.0.0',
-      '@vue/runtime-dom': '^3.0.0',
+      vue: 'next',
     }
   }
 
