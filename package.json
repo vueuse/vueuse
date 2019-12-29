@@ -16,9 +16,10 @@
     "test": "jest",
     "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue,md}",
     "lint:fix": "npm run lint -- --fix",
+    "readme:update": "node ./build/updateReadme",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "npm run build 2 && build-storybook"
+    "storybook:build": "npm run build 2 && build-storybook"
   },
   "husky": {
     "hooks": {

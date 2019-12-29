@@ -69,6 +69,8 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
   - [useTimeoutFn](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
 
 - Browser
+  - [useClipboard](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
+  - [useEventListener](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
   - [useFullscreen](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
   - [useMediaQuery](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
   - [usePermission](https://vueuse.netlify.com/?path=/story/browser--usepermission)
@@ -80,11 +82,14 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
 
 - Sensors
   - [useBattery](https://vueuse.netlify.com/?path=/story/sensors--usebattery)
+  - [useDeviceLight](https://vueuse.netlify.com/?path=/story/sensors--usedevicelight)
+  - [useDeviceMotion](https://vueuse.netlify.com/?path=/story/sensors--usedevicemotion)
   - [useDeviceOrientation](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
   - [useGeolocation](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
   - [useMouse](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
   - [useNetwork](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
   - [useOnline](https://vueuse.netlify.com/?path=/story/sensors--useonline)
+  - [useParallax](https://vueuse.netlify.com/?path=/story/sensors--useparallax)
   - [useWindowScroll](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
   - [useWindowSize](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
 
