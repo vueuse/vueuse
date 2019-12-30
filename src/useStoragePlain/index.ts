@@ -1,21 +1,28 @@
 import { ref, watch } from '../api'
+import { useEventListener } from '../useEventListener'
 
 export function useStoragePlain (key: string, defaultValue?: string, storage: Storage = localStorage) {
   const data = ref(defaultValue)
 
-  try {
-    const rawValue = storage.getItem(key)
-    if (!rawValue) {
-      if (defaultValue)
+  function read () {
+    try {
+      let rawValue = storage.getItem(key)
+      if (!rawValue && defaultValue) {
         storage.setItem(key, defaultValue)
+        rawValue = defaultValue
+      }
+      else {
+        data.value = rawValue || undefined
+      }
     }
-    else {
-      data.value = rawValue || undefined
+    catch (e) {
+      console.warn(e)
     }
   }
-  catch (e) {
-    console.warn(e)
-  }
+
+  read()
+
+  useEventListener('storage', read)
 
   watch(
     data,
