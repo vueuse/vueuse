@@ -2,26 +2,9 @@ import { computed, Ref } from '../api'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouse } from '../useMouse'
 
-interface ParallaxOptions {
-  mouseXMultiplier: number
-  mouseYMultiplier: number
-  deviceAlphaMultiplier: number
-  deviceBetaMultiplier: number
-  refEl?: Ref<Element>
-}
-
-const defaultParallaxOptions: ParallaxOptions = {
-  mouseXMultiplier: 1,
-  mouseYMultiplier: 1,
-  deviceAlphaMultiplier: 0.5,
-  deviceBetaMultiplier: 0.5,
-}
-
-export function useParallax (options?: Partial<ParallaxOptions>) {
-  const _options: ParallaxOptions = Object.assign({}, defaultParallaxOptions, options)
-
+export function useParallax (targetElement?: Ref<Element>) {
   const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation()
-  const { elementX, elementY, elementWidth, elementHeight } = useMouse(_options.refEl, false)
+  const { elementX, elementY, elementWidth, elementHeight } = useMouse(targetElement, false)
 
   const source = computed(() => {
     if (deviceBeta.value != null && deviceBeta.value != null)
@@ -38,7 +21,7 @@ export function useParallax (options?: Partial<ParallaxOptions>) {
   const tilt = computed(() => {
     if (source.value === 'deviceOrientation' && deviceGamma.value != null)
       return deviceGamma.value / 180
-    return (elementY.value - elementHeight.value / 2) / elementHeight.value
+    return -(elementY.value - elementHeight.value / 2) / elementHeight.value
   })
 
   return { roll, tilt, source }

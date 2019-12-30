@@ -1,6 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import axios from 'axios'
+import YAML from 'js-yaml'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../dev/storybook'
@@ -34,7 +35,7 @@ const Demo = createComponent({
       <div>
         <div id='demo'>
           <p>Ready: {ready.toString()}</p>
-          <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
+          <pre lang='json'>{YAML.safeDump(state)}</pre>
         </div>
         {Docs}
       </div>

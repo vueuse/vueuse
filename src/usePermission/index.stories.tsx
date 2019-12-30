@@ -32,14 +32,16 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <pre lang='json'>{JSON.stringify({
-            geolocation,
-            microphone,
-            notifications,
-            camera,
-            speaker,
-            midi,
-          }, null, 2)}</pre>
+          <pre lang='json'>{
+            JSON.stringify({
+              geolocation,
+              microphone,
+              notifications,
+              camera,
+              speaker,
+              midi,
+            }, null, 2)
+          }</pre>
         </div>
         {Docs}
       </div>
