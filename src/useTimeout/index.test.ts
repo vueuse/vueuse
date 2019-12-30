@@ -1,8 +1,8 @@
-import { testInit } from '../dev/tests'
+import { init } from '../api'
 import { useTimeout } from '..'
 
 test('export', () => {
-  testInit()
+  init()
   const { ready } = useTimeout(10)
   expect(ready.value).toEqual(false)
   setTimeout(() => {

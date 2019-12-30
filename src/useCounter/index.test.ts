@@ -1,9 +1,7 @@
-import { renderHook, testInit } from '../dev/tests'
+import { renderHook } from '../dev/tests'
 import { useCounter } from '..'
 
 describe('useCounter', () => {
-  testInit()
-
   it('should be defined', () => {
     expect(useCounter).toBeDefined()
   })
