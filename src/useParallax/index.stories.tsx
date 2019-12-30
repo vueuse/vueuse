@@ -43,7 +43,7 @@ const Demo = createComponent({
       overflow: 'hidden',
       transition: '.3s ease-out all',
       boxShadow: '0 0 20px 0 rgba(255, 255, 255, 0.25)',
-      transform: `rotateX(${tilt * 20}deg) rotateY(${roll * 20}deg)`,
+      transform: `rotateX(${roll * 20}deg) rotateY(${tilt * 20}deg)`,
     }
     const card__window: CSSProperties = {
       overflow: 'hidden',
@@ -63,16 +63,16 @@ const Demo = createComponent({
     }
 
     const img1 = {
-      transform: `translateX(${roll * 10}px) translateY(${tilt * 10}px) scale(1.33)`,
+      transform: `translateX(${tilt * 10}px) translateY(${roll * 10}px) scale(1.33)`,
     }
     const img2 = {
-      transform: `translateX(${roll * 20}px) translateY(${tilt * 20}px) scale(1.33)`,
+      transform: `translateX(${tilt * 20}px) translateY(${roll * 20}px) scale(1.33)`,
     }
     const img3 = {
-      transform: `translateX(${roll * 30}px) translateY(${tilt * 30}px) scale(1.33)`,
+      transform: `translateX(${tilt * 30}px) translateY(${roll * 30}px) scale(1.33)`,
     }
     const img4 = {
-      transform: `translateX(${roll * 40}px) translateY(${tilt * 40}px) scale(1.33)`,
+      transform: `translateX(${tilt * 40}px) translateY(${roll * 40}px) scale(1.33)`,
     }
 
     // @ts-ignore
