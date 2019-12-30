@@ -14,7 +14,7 @@ export function useParallax (targetElement?: Ref<Element>) {
 
   const roll = computed(() => {
     if (source.value === 'deviceOrientation' && deviceBeta.value != null)
-      return deviceBeta.value / 180
+      return -deviceBeta.value / 180
     return -(elementY.value - elementHeight.value / 2) / elementHeight.value
   })
 

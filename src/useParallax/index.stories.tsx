@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/vue'
 import { CSSProperties } from 'react'
 import { createComponent, ref } from '../api'
 import { ShowDocs } from '../dev/storybook'
+import { useMediaQuery } from '../useMediaQuery'
 import { useParallax } from '.'
 
 const Demo = createComponent({
@@ -13,6 +14,7 @@ const Demo = createComponent({
 
     return {
       ...useParallax(demo),
+      isMobile: useMediaQuery('(max-width: 700px)'),
       demo,
     }
   },
@@ -21,6 +23,7 @@ const Demo = createComponent({
     const {
       tilt,
       roll,
+      isMobile,
       source,
     } = this
 
@@ -32,7 +35,7 @@ const Demo = createComponent({
       transition: '.3s ease-out all',
     }
     const container: CSSProperties = {
-      margin: '1rem auto',
+      margin: '3em auto',
       perspective: '300px',
     }
     const card: CSSProperties = {
@@ -61,6 +64,12 @@ const Demo = createComponent({
       width: '100%',
       transition: '.3s ease-out all',
     }
+    const info: CSSProperties = {
+      opacity: 0.4,
+      position: isMobile ? 'inherit' : 'absolute',
+      top: '60px',
+      left: '60px',
+    }
 
     const img1 = {
       transform: `translateX(${tilt * 10}px) translateY(${roll * 10}px) scale(1.33)`,
@@ -81,7 +90,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo' ref='demo' style={demo}>
-          <pre style={{ opacity: 0.4, position: 'absolute', top: '60px', left: '60px' }}>{
+          <pre style={info}>{
             YAML.safeDump({
               tilt,
               roll,
