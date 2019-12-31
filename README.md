@@ -16,6 +16,7 @@
 Collection of essential Vue Composition API (inspired by <a href='https://github.com/streamich/react-use' target='__blank'>react-use</a>)
 </p>
 
+
 ## 🚀 Features
 
 - 0 dependencies ⚡ No worry about your bundle size
@@ -24,40 +25,41 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Browser compatible 🌐 No need to setup build tools
 - Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 
+
 ## 📦 Install
 
 ### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next)), [*demo here*](https://vueuse-next-example.netlify.com/)
 
 ```bash
-npm i @vueuse/core@next
+npm i @vueuse/core@vue3
 ```
 
 ### for Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-
 ```bash
-npm i @vue/composition-api
-npm i @vueuse/core
+npm i @vue/composition-api @vueuse/core@vue2
 ```
 
-Please [register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before other using APIs.
+Please [register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before using APIs.
 
 ### CDN
 
 ```html
 <!-- For Vue 3.x -->
-<script src="https://unpkg.com/@vueuse/core@next"></script> 
+<script src="https://unpkg.com/@vueuse/core@vue3"></script> 
 
 <!-- For Vue 2.x -->
-<script src="https://unpkg.com/@vueuse/core"></script>
+<script src="https://unpkg.com/@vueuse/core@vue2"></script>
 ```
 
-It will be exposed to global variable `window.VueUse`
+It will be exposed to global variable as `window.VueUse`
+
 
 ## ⚡ Functions
 
 You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
 
+<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Animation
@@ -107,6 +109,7 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 
+
 ## 🔬 Technical Details
 
 ### The Versioning
@@ -115,7 +118,7 @@ For every release, it will release two version of this package. The `3.x.x` is u
 
 ### Different between 3.x and 2.x
 
-Since the Composition API will be available in 3.x. Using it in 2.x require you use a polyfill. For 3.x build, we use the API from [`@vue/runtime-dom`](https://www.npmjs.com/package/@vue/runtime-dom), and for 2.x, it's [`@vue/composition-api`](https://www.npmjs.com/package/@vue/composition-api)
+Since the Composition API will be available in 3.x. Using it in 2.x require you use a polyfill. For 3.x build, we use the API from [`@vue/runtime-dom`](https://www.npmjs.com/package/@vue/runtime-dom), and for 2.x, it's [`@vue/composition-api`](https://www.npmjs.com/package/@vue/composition-api). All the functions exported in this package behaves the same.
 
 ```js
 // 3.x build
@@ -125,10 +128,10 @@ import { ref } from '@vue/runtime-dom'
 import { ref } from '@vue/composition-api'
 ```
 
-
 ## 🧱 Contribute
 
 Check out the [**Contributing Guide**](https://vueuse.netlify.com/?path=/story/docs--contributing)
+
 
 ## 🌸 Thanks
 
@@ -140,6 +143,7 @@ This project is heavily inspired by following awesome projects.
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
 
 Thanks!
+
 
 ## 📄 License
 

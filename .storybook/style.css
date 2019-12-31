@@ -152,6 +152,10 @@ li {
   background-color: #2c2c2c;
 }
 
+.markdown-body code {
+  background-color: rgba(27,31,35,.3);
+}
+
 pre[class*='language-'],
 code[class*='language-'] {
   font-family: 'Fira Code', Menlo, Andale Mono, Consolas, Courier, monospace;
