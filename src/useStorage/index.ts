@@ -24,7 +24,7 @@ export function useStorage<T> (
 
   watch(plain, () => state.value = parse(plain.value), { flush: 'sync', lazy: true })
 
-  watch(state, update, { flush: 'sync', lazy: true })
+  watch(state, update, { flush: 'sync', lazy: true, deep: true })
 
-  return { state, update }
+  return state
 }

@@ -7,5 +7,5 @@
 ```jsx
 import { useStorage } from '@vueuse/core'
 
-const { state, update } = useStorage('my-store', { hello: 'hi', greeting: 'Hello' }, sessionStorage)
+const state = useStorage('my-store', { hello: 'hi', greeting: 'Hello' }, sessionStorage)
 ```

@@ -7,7 +7,7 @@ import { useStorage } from '.'
 
 const Demo = createComponent({
   setup () {
-    const { state, update } = useStorage('vue-use-locale-storage', {
+    const state = useStorage('vue-use-locale-storage', {
       name: 'Banana',
       color: 'Yellow',
       size: 'Medium',
@@ -15,7 +15,6 @@ const Demo = createComponent({
 
     return {
       state,
-      update,
     }
   },
 
@@ -30,7 +29,6 @@ const Demo = createComponent({
           <input v-model={state.name} type='text'/>
           <input v-model={state.color} type='text'/>
           <input v-model={state.size} type='text'/>
-          <button onClick={() => this.update()} >Save</button>
 
           <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
         </div>
