@@ -7,8 +7,10 @@ export function useClipboard () {
   const text = ref('')
   const supported = ref('clipboard' in window.navigator)
 
-  useEventListener('copy', async () => {
-    text.value = await window.navigator.clipboard.readText()
+  useEventListener('copy', () => {
+    window.navigator.clipboard.readText().then((value) => {
+      text.value = value
+    })
   })
 
   function copy (txt: string) {

@@ -1,10 +1,33 @@
-import { Ref, watch } from '../api'
-import { useRaf } from '../useRaf'
+import { getCurrentInstance } from '@vue/composition-api'
+import { onUnmounted } from '../api'
 
-export function useRafFn (fn: (elapsed: Ref<number>) => any) {
-  const elapsed = useRaf()
+export function useRafFn (fn: () => any, options: {startNow?: boolean} = {}) {
+  const { startNow } = options
+  let started = false
 
-  watch(() => elapsed, fn)
+  function loop () {
+    if (!started)
+      return
+    fn()
+    requestAnimationFrame(loop)
+  }
 
-  return elapsed
+  function start () {
+    if (!started) {
+      started = true
+      loop()
+    }
+  }
+
+  function stop () {
+    started = false
+  }
+
+  if (startNow)
+    start()
+
+  if (getCurrentInstance())
+    onUnmounted(() => stop())
+
+  return { stop, start }
 }

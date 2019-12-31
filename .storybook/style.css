@@ -48,6 +48,25 @@
   padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 }
 
+#showcase #info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#showcase #info #title {
+  font-size: 1.4em;
+}
+
+#showcase #info #meta {
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+#showcase #info #meta span {
+  padding: 0 10px;
+}
+
 html, body, div, .markdown-body {
   font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
 }

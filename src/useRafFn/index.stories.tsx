@@ -1,23 +1,26 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../api'
+import { createComponent, ref } from '../api'
 import { ShowDocs } from '../dev/storybook'
 import { useRafFn } from '.'
 
 const Demo = createComponent({
   setup () {
-    const elapsed = useRafFn((elapsed) => {
-      console.log(elapsed.value)
+    const count = ref(0)
+    const { start, stop } = useRafFn(() => {
+      count.value += 1
     })
 
     return {
-      elapsed,
+      count,
+      start,
+      stop,
     }
   },
 
   render (this: Vue & any) {
-    const { elapsed } = this
+    const { count } = this
 
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
@@ -25,7 +28,7 @@ const Demo = createComponent({
     return (
       <div>
         <div id='demo'>
-          <p>Elapsed: {elapsed}</p>
+          <p>Count: {count}</p>
         </div>
         {Docs}
       </div>
