@@ -87,6 +87,7 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
   - [useDeviceOrientation](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
   - [useGeolocation](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
   - [useMouse](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
+  - [useMouseInElement](https://vueuse.netlify.com/?path=/story/sensors--usemouseinelement)
   - [useNetwork](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
   - [useOnline](https://vueuse.netlify.com/?path=/story/sensors--useonline)
   - [useParallax](https://vueuse.netlify.com/?path=/story/sensors--useparallax)

@@ -1,14 +1,16 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../api'
+import { createComponent, ref } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { useMouse } from '.'
+import { useMouseInElement } from '.'
 
 const Demo = createComponent({
   setup () {
+    const demoRef = ref(null)
     return {
-      ...useMouse(),
+      ...useMouseInElement(demoRef),
+      demo: demoRef,
     }
   },
 
@@ -16,6 +18,15 @@ const Demo = createComponent({
     const {
       x,
       y,
+      documentX,
+      documentY,
+      elementX,
+      elementY,
+      elementPositionX,
+      elementPositionY,
+      elementHeight,
+      elementWidth,
+      isOutside,
     } = this
 
     // @ts-ignore
@@ -27,6 +38,15 @@ const Demo = createComponent({
           <pre lang='json'>{JSON.stringify({
             x,
             y,
+            documentX,
+            documentY,
+            elementX,
+            elementY,
+            elementPositionX,
+            elementPositionY,
+            elementHeight,
+            elementWidth,
+            isOutside,
           }, null, 2)}</pre>
         </div>
         {Docs}
@@ -36,4 +56,4 @@ const Demo = createComponent({
 })
 
 storiesOf('Sensors', module)
-  .add('useMouse', () => Demo as any)
+  .add('useMouseInElement', () => Demo as any)

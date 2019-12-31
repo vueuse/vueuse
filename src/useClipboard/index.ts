@@ -5,16 +5,16 @@ import { useEventListener } from '../useEventListener'
 
 export function useClipboard () {
   const text = ref('')
-  const supported = ref('clipboard' in navigator)
+  const supported = ref('clipboard' in window.navigator)
 
   useEventListener('copy', async () => {
-    text.value = await navigator.clipboard.readText()
+    text.value = await window.navigator.clipboard.readText()
   })
 
   function copy (txt: string) {
     text.value = txt
 
-    return navigator.clipboard.writeText(txt)
+    return window.navigator.clipboard.writeText(txt)
   }
 
   return {

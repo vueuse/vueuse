@@ -15,7 +15,3 @@ export default {
   },
 }
 ```
-
-## Mouse inside an element 
-
-TODO:
