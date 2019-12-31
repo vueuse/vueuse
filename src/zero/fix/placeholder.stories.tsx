@@ -4,6 +4,9 @@ import { storiesOf } from '@storybook/vue'
 storiesOf('Docs|__empty', module)
   .add('__empty', () => '')
 
+storiesOf('ShowCases|__empty', module)
+  .add('__empty', () => '')
+
 storiesOf('State|__empty', module)
   .add('__empty', () => '')
 
