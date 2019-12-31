@@ -1,37 +1,11 @@
 # useRaf
 
-Reactive time elapsed on each `requestAnimationFrame`.
+> Reactive time elapsed on each `requestAnimationFrame`.
 
 ## Usage
 
 ```jsx
-const Demo = createComponent({
-  setup () {
-    const elapsed = useRaf()
+import { useRaf } from '@vueuse/core'
 
-    return {
-      elapsed,
-    }
-  },
-
-  render (this) {
-    const { elapsed } = this
-
-    return (
-      <div id='demo'>
-        <p>Elapsed: {elapsed}</p>
-      </div>
-    )
-  },
-})
+const elapsed = useRaf()
 ```
-
-
-## Reference
-
-```ts
-useRaf(ms?: number, delay?: number): Ref<number>;
-```
-
-- `ms` &mdash; milliseconds for how long to keep re-rendering component, defaults to `1e12`.
-- `delay` &mdash; delay in milliseconds after which to start re-rendering component, defaults to `0`.
