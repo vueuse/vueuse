@@ -125,15 +125,10 @@ import { ref } from '@vue/runtime-dom'
 import { ref } from '@vue/composition-api'
 ```
 
-<!-- 
 
 ## 🧱 Contribute
 
-Thanks for being instrested contributing this project!
-
-// TODO:
-
---->
+Check out the [**Contributing Guide**](https://vueuse.netlify.com/?path=/story/docs--contributing)
 
 ## 🌸 Thanks
 
