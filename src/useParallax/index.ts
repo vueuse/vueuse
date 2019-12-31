@@ -1,6 +1,6 @@
 import { computed, Ref } from '../api'
 import { useDeviceOrientation } from '../useDeviceOrientation'
-import { useMouse } from '../useMouse'
+import { useMouseInElement } from '../useMouseInElement'
 
 export interface ParallaxOptions {
   deviceOrientationTiltAdjust?: (i: number) => number
@@ -12,7 +12,7 @@ export interface ParallaxOptions {
 
 export function useParallax (options?: ParallaxOptions) {
   const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation()
-  const { elementX, elementY, elementWidth, elementHeight } = useMouse(options?.targetElement, false)
+  const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(options?.targetElement, false)
 
   const source = computed(() => {
     if (deviceBeta.value != null && deviceBeta.value != null)
