@@ -13,7 +13,11 @@ const Demo = createComponent({
     const demo = ref(null)
 
     return {
-      ...useParallax(demo),
+      ...useParallax({
+        deviceOrientationTiltAdjust: i => i * 2,
+        deviceOrientationRollAdjust: i => i * 2,
+        targetElement: demo,
+      }),
       isMobile: useMediaQuery('(max-width: 700px)'),
       demo,
     }

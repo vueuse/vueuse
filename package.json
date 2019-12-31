@@ -61,6 +61,7 @@
   "devDependencies": {
     "@antfu/eslint-config-vue": "0.2.10",
     "@babel/core": "7.7.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@babel/preset-env": "7.7.7",
     "@babel/preset-typescript": "7.7.7",
     "@storybook/addon-actions": "5.2.8",
