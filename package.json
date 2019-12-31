@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "0.0.0-alpha.24",
+  "version": "0.0.0-alpha.25",
   "description": "Collection of essential Vue Composition API",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
