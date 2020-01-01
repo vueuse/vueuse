@@ -2,7 +2,7 @@ import { getCurrentInstance } from '@vue/composition-api'
 import { onUnmounted } from '../api'
 
 export function useRafFn (fn: () => any, options: {startNow?: boolean} = {}) {
-  const { startNow } = options
+  const { startNow = true } = options
   let started = false
 
   function loop () {

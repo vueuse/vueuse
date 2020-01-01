@@ -57,7 +57,10 @@ const Demo = createComponent({
   setup () {
     const canvasRef = ref<HTMLCanvasElement | null>(null)
     const text = ref('VUEUSE')
-    const { x: mouseX, y: mouseY } = useMouse({ initial: { x: -9999, y: -9999 } })
+    const { x: mouseX, y: mouseY } = useMouse({
+      resetOnTouchEnds: true,
+      initial: { x: -9999, y: -9999 },
+    })
     let particles = []
     let amount = 0
     let radius = 1
