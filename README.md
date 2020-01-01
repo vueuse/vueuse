@@ -67,6 +67,7 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
   - [useIntervalFn](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
   - [useNow](https://vueuse.netlify.com/?path=/story/animation--usenow)
   - [useRaf](https://vueuse.netlify.com/?path=/story/animation--useraf)
+  - [useRafFn](https://vueuse.netlify.com/?path=/story/animation--useraffn)
   - [useTimeout](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
   - [useTimeoutFn](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
 
@@ -92,6 +93,7 @@ You can checkout the documents and live demos in [Storybook](https://vueuse.netl
   - [useMouseInElement](https://vueuse.netlify.com/?path=/story/sensors--usemouseinelement)
   - [useNetwork](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
   - [useOnline](https://vueuse.netlify.com/?path=/story/sensors--useonline)
+  - [usePageLeave](https://vueuse.netlify.com/?path=/story/sensors--usepageleave)
   - [useParallax](https://vueuse.netlify.com/?path=/story/sensors--useparallax)
   - [useWindowScroll](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
   - [useWindowSize](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
