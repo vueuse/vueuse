@@ -41,7 +41,7 @@ async function updateReadme () {
   for (const category of Object.keys(categories).sort()) {
     text += `- ${category}\n`
     for (const { name, url } of categories[category])
-      text += `  - [${name}](${url})\n`
+      text += `  - [\`${name}\`](${url})\n`
     text += '\n'
   }
 

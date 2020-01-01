@@ -21,8 +21,8 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 - 0 dependencies ⚡ No worry about your bundle size
 - Fully tree shakable 🌴 Only take what you want
-- Seamless migration 🕶 Use it now! Works for **both** Vue 3.x and 2.x
-- Browser compatible 🌐 No need to setup build tools
+- Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
+- Browser compatible 🌐 Use it with complex build tools
 - Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 
 
@@ -57,55 +57,55 @@ It will be exposed to global variable as `window.VueUse`
 
 ## ⚡ Functions
 
-You can checkout the documents and live demos in [Storybook](https://vueuse.netlify.com/).
+You can checkout the full documents and live demos in [Storybook](https://vueuse.netlify.com/).
 
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Animation
-  - [useInterval](https://vueuse.netlify.com/?path=/story/animation--useinterval)
-  - [useIntervalFn](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
-  - [useNow](https://vueuse.netlify.com/?path=/story/animation--usenow)
-  - [useRaf](https://vueuse.netlify.com/?path=/story/animation--useraf)
-  - [useRafFn](https://vueuse.netlify.com/?path=/story/animation--useraffn)
-  - [useTimeout](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
-  - [useTimeoutFn](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
+  - [`useInterval`](https://vueuse.netlify.com/?path=/story/animation--useinterval)
+  - [`useIntervalFn`](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
+  - [`useNow`](https://vueuse.netlify.com/?path=/story/animation--usenow)
+  - [`useRaf`](https://vueuse.netlify.com/?path=/story/animation--useraf)
+  - [`useRafFn`](https://vueuse.netlify.com/?path=/story/animation--useraffn)
+  - [`useTimeout`](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
+  - [`useTimeoutFn`](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
 
 - Browser
-  - [useClipboard](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
-  - [useEventListener](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
-  - [useFullscreen](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
-  - [useMediaQuery](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
-  - [usePermission](https://vueuse.netlify.com/?path=/story/browser--usepermission)
-  - [usePreferredDark](https://vueuse.netlify.com/?path=/story/browser--usepreferreddark)
-  - [usePreferredLanguages](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
+  - [`useClipboard`](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
+  - [`useEventListener`](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
+  - [`useFullscreen`](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
+  - [`useMediaQuery`](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
+  - [`usePermission`](https://vueuse.netlify.com/?path=/story/browser--usepermission)
+  - [`usePreferredDark`](https://vueuse.netlify.com/?path=/story/browser--usepreferreddark)
+  - [`usePreferredLanguages`](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
 
 - Misc
-  - [useWebWorker](https://vueuse.netlify.com/?path=/story/misc--usewebworker)
+  - [`useWebWorker`](https://vueuse.netlify.com/?path=/story/misc--usewebworker)
 
 - Sensors
-  - [useBattery](https://vueuse.netlify.com/?path=/story/sensors--usebattery)
-  - [useDeviceLight](https://vueuse.netlify.com/?path=/story/sensors--usedevicelight)
-  - [useDeviceMotion](https://vueuse.netlify.com/?path=/story/sensors--usedevicemotion)
-  - [useDeviceOrientation](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
-  - [useGeolocation](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
-  - [useMouse](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
-  - [useMouseInElement](https://vueuse.netlify.com/?path=/story/sensors--usemouseinelement)
-  - [useNetwork](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
-  - [useOnline](https://vueuse.netlify.com/?path=/story/sensors--useonline)
-  - [usePageLeave](https://vueuse.netlify.com/?path=/story/sensors--usepageleave)
-  - [useParallax](https://vueuse.netlify.com/?path=/story/sensors--useparallax)
-  - [useWindowScroll](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
-  - [useWindowSize](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
+  - [`useBattery`](https://vueuse.netlify.com/?path=/story/sensors--usebattery)
+  - [`useDeviceLight`](https://vueuse.netlify.com/?path=/story/sensors--usedevicelight)
+  - [`useDeviceMotion`](https://vueuse.netlify.com/?path=/story/sensors--usedevicemotion)
+  - [`useDeviceOrientation`](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
+  - [`useGeolocation`](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
+  - [`useMouse`](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
+  - [`useMouseInElement`](https://vueuse.netlify.com/?path=/story/sensors--usemouseinelement)
+  - [`useNetwork`](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
+  - [`useOnline`](https://vueuse.netlify.com/?path=/story/sensors--useonline)
+  - [`usePageLeave`](https://vueuse.netlify.com/?path=/story/sensors--usepageleave)
+  - [`useParallax`](https://vueuse.netlify.com/?path=/story/sensors--useparallax)
+  - [`useWindowScroll`](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
+  - [`useWindowSize`](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
 
 - State
-  - [useAsyncState](https://vueuse.netlify.com/?path=/story/state--useasyncstate)
-  - [useCounter](https://vueuse.netlify.com/?path=/story/state--usecounter)
-  - [useIdle](https://vueuse.netlify.com/?path=/story/state--useidle)
-  - [useLocalStorage](https://vueuse.netlify.com/?path=/story/state--uselocalstorage)
-  - [useSessionStorage](https://vueuse.netlify.com/?path=/story/state--usesessionstorage)
-  - [useStorage](https://vueuse.netlify.com/?path=/story/state--usestorage)
-  - [useStoragePlain](https://vueuse.netlify.com/?path=/story/state--usestorageplain)
+  - [`useAsyncState`](https://vueuse.netlify.com/?path=/story/state--useasyncstate)
+  - [`useCounter`](https://vueuse.netlify.com/?path=/story/state--usecounter)
+  - [`useIdle`](https://vueuse.netlify.com/?path=/story/state--useidle)
+  - [`useLocalStorage`](https://vueuse.netlify.com/?path=/story/state--uselocalstorage)
+  - [`useSessionStorage`](https://vueuse.netlify.com/?path=/story/state--usesessionstorage)
+  - [`useStorage`](https://vueuse.netlify.com/?path=/story/state--usestorage)
+  - [`useStoragePlain`](https://vueuse.netlify.com/?path=/story/state--usestorageplain)
 
 <!--FUNCTIONS_LIST_ENDS-->
 
