@@ -1,5 +1,4 @@
-import { onMounted } from '@vue/composition-api'
-import { ref, Ref, watch, computed } from '../api'
+import { onMounted, ref, Ref, watch, computed } from '../api'
 
 export function useCssVar (
   prop: string,
@@ -9,6 +8,7 @@ export function useCssVar (
   const el = computed(() => refEl?.value || document.documentElement)
 
   onMounted(() => {
+    // @ts-ignore
     varRef.value = getComputedStyle(el.value).getPropertyValue(prop)
   })
 
