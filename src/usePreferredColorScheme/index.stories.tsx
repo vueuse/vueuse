@@ -3,19 +3,18 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent } from '../api'
 import { ShowDocs } from '../dev/storybook'
-import { useMouse } from '.'
+import { usePreferredColorScheme } from '.'
 
 const Demo = createComponent({
   setup () {
     return {
-      ...useMouse(),
+      preferredColorScheme: usePreferredColorScheme(),
     }
   },
 
   render (this: Vue & any) {
     const {
-      x,
-      y,
+      preferredColorScheme,
     } = this
 
     // @ts-ignore
@@ -23,11 +22,8 @@ const Demo = createComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo'>
-          <pre lang='json'>{JSON.stringify({
-            x,
-            y,
-          }, null, 2)}</pre>
+        <div id='demo'>
+          <p>Preferred Color Scheme: {preferredColorScheme.toString()}</p>
         </div>
         {Docs}
       </div>
@@ -35,5 +31,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Sensors', module)
-  .add('useMouse', () => Demo as any)
+storiesOf('Browser', module)
+  .add('usePreferredColorScheme', () => Demo as any)

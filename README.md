@@ -22,7 +22,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - 0 dependencies ⚡ No worry about your bundle size
 - Fully tree shakable 🌴 Only take what you want
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
-- Browser compatible 🌐 Use it with complex build tools
+- Browser compatible 🌐 Use it without complex building tools
 - Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 
 ## 🦄 Usage
@@ -52,7 +52,7 @@ new Vue({
 })
 ```
 
-Check out more [functions](#-functions) and [documentations](https://vueuse.netlify.com/).
+Check out [functions](#-functions) and [documentations](https://vueuse.netlify.com/) for more details.
 
 ## 📦 Install
 
@@ -106,6 +106,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
   - [`useFullscreen`](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
   - [`useMediaQuery`](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
   - [`usePermission`](https://vueuse.netlify.com/?path=/story/browser--usepermission)
+  - [`usePreferredColorScheme`](https://vueuse.netlify.com/?path=/story/browser--usepreferredcolorscheme)
   - [`usePreferredDark`](https://vueuse.netlify.com/?path=/story/browser--usepreferreddark)
   - [`usePreferredLanguages`](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
 
@@ -172,6 +173,7 @@ This project is heavily inspired by following awesome projects.
 - [u3u/vue-hooks](https://github.com/u3u/vue-hooks)
 - [shuidi-fed/vue-composition-toolkit](https://github.com/shuidi-fed/vue-composition-toolkit)
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
+- [kripod/react-hooks](https://github.com/kripod/react-hooks)
 
 Thanks!
 

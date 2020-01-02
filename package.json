@@ -9,7 +9,7 @@
   "browser": "dist/esm/index.js",
   "scripts": {
     "build": "node ./build/build",
-    "release": "npm run lint && bump --commit --preid alpha && node ./build/publish.js all",
+    "release": "npm run lint && npm run readme:update && bump --commit --tag --preid alpha && node ./build/publish.js all",
     "switch": "node ./build/switch",
     "import": "node ./build/import",
     "dev": "tsc -p tsconfig.esm.json --watch",
