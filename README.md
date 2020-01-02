@@ -111,6 +111,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
   - [`usePreferredLanguages`](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
 
 - Misc
+  - [`useWebSocket`](https://vueuse.netlify.com/?path=/story/misc--usewebsocket)
   - [`useWebWorker`](https://vueuse.netlify.com/?path=/story/misc--usewebworker)
 
 - Sensors
