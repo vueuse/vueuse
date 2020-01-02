@@ -1,5 +1,5 @@
 import { init } from '../api'
-import { useTimeout } from '..'
+import { useTimeout } from '../useTimeout'
 
 test('export', () => {
   init()
