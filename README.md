@@ -100,6 +100,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
   - [`useTimeoutFn`](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
 
 - Browser
+  - [`useBrowserLocation`](https://vueuse.netlify.com/?path=/story/browser--usebrowserlocation)
   - [`useClipboard`](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
   - [`useEventListener`](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
   - [`useFullscreen`](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
