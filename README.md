@@ -25,6 +25,34 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Browser compatible 🌐 Use it with complex build tools
 - Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
 
+## 🦄 Usage
+
+```ts
+import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
+
+new Vue({
+  setup() {
+    // tracks mouse position
+    const { x, y } = useMouse()
+
+    // is user prefers dark theme
+    const isDark = usePreferredDark()
+
+    // persist state in localStorage
+    const state = useLocalStorage(
+      'my-storage', 
+      {
+        name: 'Apple',
+        color: 'red',
+      },
+    )
+
+    return { x, y, isDark, state }
+  }
+})
+```
+
+Check out more [functions](#-functions) and [documentations](https://vueuse.netlify.com/).
 
 ## 📦 Install
 
