@@ -102,6 +102,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
 - Browser
   - [`useBrowserLocation`](https://vueuse.netlify.com/?path=/story/browser--usebrowserlocation)
   - [`useClipboard`](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
+  - [`useCssVar`](https://vueuse.netlify.com/?path=/story/browser--usecssvar)
   - [`useEventListener`](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
   - [`useFullscreen`](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
   - [`useMediaQuery`](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
