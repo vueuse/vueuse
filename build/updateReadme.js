@@ -4,7 +4,7 @@ const consola = require('consola')
 
 const srcDir = path.resolve(__dirname, '../src')
 const readmePath = path.resolve(__dirname, '../README.md')
-const storybookUrl = 'https://vueuse.netlify.com'
+const storybookUrl = 'https://vueuse.js.org'
 
 async function updateReadme () {
   const functions = fs

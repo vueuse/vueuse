@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858" alt="NPM version" /></a>
-<a href="https://vueuse.netlify.com" target="__blank"><img src="https://img.shields.io/static/v1?label=storybook&message=demos&color=63ba83" alt="Storybook Demos" /></a>
+<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=storybook&message=demos&color=63ba83" alt="Storybook Demos" /></a>
 <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=35495e"/>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img src="https://img.shields.io/github/last-commit/antfu/vueuse.svg?color=a38eed" alt="GitHub last commit" /></a>
 <a href="https://github.com/antfu/vueuse/issues" target="__blank"><img src="https://img.shields.io/github/issues/antfu/vueuse.svg?color=c977be" alt="GitHub issues" /></a>
@@ -23,7 +23,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Fully tree shakable 🌴 Only take what you want
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 Use it without complex building tools
-- Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.netlify.com)
+- Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.js.org)
 
 ## 🦄 Usage
 
@@ -52,7 +52,7 @@ new Vue({
 })
 ```
 
-Check out [functions](#-functions) and [documentations](https://vueuse.netlify.com/) for more details.
+Check out [functions](#-functions) and [documentations](https://vueuse.js.org/) for more details.
 
 ## 📦 Install
 
@@ -85,59 +85,59 @@ It will be exposed to global variable as `window.VueUse`
 
 ## ⚡ Functions
 
-You can checkout the full documents and live demos in [Storybook](https://vueuse.netlify.com/).
+You can checkout the full documents and live demos in [Storybook](https://vueuse.js.org/).
 
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Animation
-  - [`useInterval`](https://vueuse.netlify.com/?path=/story/animation--useinterval)
-  - [`useIntervalFn`](https://vueuse.netlify.com/?path=/story/animation--useintervalfn)
-  - [`useNow`](https://vueuse.netlify.com/?path=/story/animation--usenow)
-  - [`useRaf`](https://vueuse.netlify.com/?path=/story/animation--useraf)
-  - [`useRafFn`](https://vueuse.netlify.com/?path=/story/animation--useraffn)
-  - [`useTimeout`](https://vueuse.netlify.com/?path=/story/animation--usetimeout)
-  - [`useTimeoutFn`](https://vueuse.netlify.com/?path=/story/animation--usetimeoutfn)
+  - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval)
+  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn)
+  - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow)
+  - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf)
+  - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn)
+  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout)
+  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn)
 
 - Browser
-  - [`useBrowserLocation`](https://vueuse.netlify.com/?path=/story/browser--usebrowserlocation)
-  - [`useClipboard`](https://vueuse.netlify.com/?path=/story/browser--useclipboard)
-  - [`useCssVar`](https://vueuse.netlify.com/?path=/story/browser--usecssvar)
-  - [`useEventListener`](https://vueuse.netlify.com/?path=/story/browser--useeventlistener)
-  - [`useFullscreen`](https://vueuse.netlify.com/?path=/story/browser--usefullscreen)
-  - [`useMediaQuery`](https://vueuse.netlify.com/?path=/story/browser--usemediaquery)
-  - [`usePermission`](https://vueuse.netlify.com/?path=/story/browser--usepermission)
-  - [`usePreferredColorScheme`](https://vueuse.netlify.com/?path=/story/browser--usepreferredcolorscheme)
-  - [`usePreferredDark`](https://vueuse.netlify.com/?path=/story/browser--usepreferreddark)
-  - [`usePreferredLanguages`](https://vueuse.netlify.com/?path=/story/browser--usepreferredlanguages)
+  - [`useBrowserLocation`](https://vueuse.js.org/?path=/story/browser--usebrowserlocation)
+  - [`useClipboard`](https://vueuse.js.org/?path=/story/browser--useclipboard)
+  - [`useCssVar`](https://vueuse.js.org/?path=/story/browser--usecssvar)
+  - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener)
+  - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen)
+  - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery)
+  - [`usePermission`](https://vueuse.js.org/?path=/story/browser--usepermission)
+  - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme)
+  - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark)
+  - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages)
 
 - Misc
-  - [`useWebSocket`](https://vueuse.netlify.com/?path=/story/misc--usewebsocket)
-  - [`useWebWorker`](https://vueuse.netlify.com/?path=/story/misc--usewebworker)
+  - [`useWebSocket`](https://vueuse.js.org/?path=/story/misc--usewebsocket)
+  - [`useWebWorker`](https://vueuse.js.org/?path=/story/misc--usewebworker)
 
 - Sensors
-  - [`useBattery`](https://vueuse.netlify.com/?path=/story/sensors--usebattery)
-  - [`useDeviceLight`](https://vueuse.netlify.com/?path=/story/sensors--usedevicelight)
-  - [`useDeviceMotion`](https://vueuse.netlify.com/?path=/story/sensors--usedevicemotion)
-  - [`useDeviceOrientation`](https://vueuse.netlify.com/?path=/story/sensors--usedeviceorientation)
-  - [`useGeolocation`](https://vueuse.netlify.com/?path=/story/sensors--usegeolocation)
-  - [`useMouse`](https://vueuse.netlify.com/?path=/story/sensors--usemouse)
-  - [`useMouseInElement`](https://vueuse.netlify.com/?path=/story/sensors--usemouseinelement)
-  - [`useNetwork`](https://vueuse.netlify.com/?path=/story/sensors--usenetwork)
-  - [`useOnline`](https://vueuse.netlify.com/?path=/story/sensors--useonline)
-  - [`usePageLeave`](https://vueuse.netlify.com/?path=/story/sensors--usepageleave)
-  - [`useParallax`](https://vueuse.netlify.com/?path=/story/sensors--useparallax)
-  - [`useWindowScroll`](https://vueuse.netlify.com/?path=/story/sensors--usewindowscroll)
-  - [`useWindowSize`](https://vueuse.netlify.com/?path=/story/sensors--usewindowsize)
+  - [`useBattery`](https://vueuse.js.org/?path=/story/sensors--usebattery)
+  - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight)
+  - [`useDeviceMotion`](https://vueuse.js.org/?path=/story/sensors--usedevicemotion)
+  - [`useDeviceOrientation`](https://vueuse.js.org/?path=/story/sensors--usedeviceorientation)
+  - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation)
+  - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse)
+  - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement)
+  - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork)
+  - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline)
+  - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave)
+  - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax)
+  - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll)
+  - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize)
 
 - State
-  - [`useAsyncState`](https://vueuse.netlify.com/?path=/story/state--useasyncstate)
-  - [`useCounter`](https://vueuse.netlify.com/?path=/story/state--usecounter)
-  - [`useIdle`](https://vueuse.netlify.com/?path=/story/state--useidle)
-  - [`useLocalStorage`](https://vueuse.netlify.com/?path=/story/state--uselocalstorage)
-  - [`useSessionStorage`](https://vueuse.netlify.com/?path=/story/state--usesessionstorage)
-  - [`useStorage`](https://vueuse.netlify.com/?path=/story/state--usestorage)
-  - [`useStoragePlain`](https://vueuse.netlify.com/?path=/story/state--usestorageplain)
+  - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate)
+  - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter)
+  - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle)
+  - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage)
+  - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage)
+  - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage)
+  - [`useStoragePlain`](https://vueuse.js.org/?path=/story/state--usestorageplain)
 
 <!--FUNCTIONS_LIST_ENDS-->
 
@@ -164,7 +164,7 @@ import { ref } from '@vue/composition-api'
 
 ## 🧱 Contribute
 
-Check out the [**Contributing Guide**](https://vueuse.netlify.com/?path=/story/docs--contributing)
+Check out the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contributing)
 
 
 ## 🌸 Thanks
