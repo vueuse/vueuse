@@ -1,11 +1,11 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="logo" width="300"/>
+<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="logo" width="300"/></a>
 </p>
 
 <p align="center">
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858" alt="NPM version" /></a>
 <a href="https://vueuse.netlify.com" target="__blank"><img src="https://img.shields.io/static/v1?label=storybook&message=demos&color=63ba83" alt="Storybook Demos" /></a>
-<img alt="Dependencies" src="https://img.shields.io/david/antfu/vueuse?color=35495e"/>
+<img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=35495e"/>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img src="https://img.shields.io/github/last-commit/antfu/vueuse.svg?color=a38eed" alt="GitHub last commit" /></a>
 <a href="https://github.com/antfu/vueuse/issues" target="__blank"><img src="https://img.shields.io/github/issues/antfu/vueuse.svg?color=c977be" alt="GitHub issues" /></a>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
@@ -23,7 +23,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Fully tree shakable 🌴 Only take what you want
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 Use it without complex building tools
-- Intractive docs & demos 🎪 [Check out Storybook out!](https://vueuse.netlify.com)
+- Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.netlify.com)
 
 ## 🦄 Usage
 
