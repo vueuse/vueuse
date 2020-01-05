@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig",
-  "compilerOptions": {
-    "target": "es5",
-    "outDir": "dist/esm",
-    "module": "esnext",
-    "pretty": true
-  },
-}

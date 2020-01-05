@@ -7,7 +7,6 @@ const { switchApi, backupApi, restoreApi } = require('./switch')
 const { selectVersion } = require('./selectVersion')
 
 const rootDir = path.resolve(__dirname, '..')
-const distDir = path.join(rootDir, 'dist')
 const packageJSONDir = path.join(rootDir, 'package.json')
 
 assert(process.cwd() !== __dirname)
@@ -44,16 +43,14 @@ async function buildFor (targetVersion, publishCallback) {
   await switchApi(targetVersion)
 
   try {
-    await fs.remove(distDir)
+    consola.info('Clean up')
+    exec('npm run clear', { stdio: 'inherit' })
 
-    consola.info('Commonjs Build')
-    exec('tsc -p tsconfig.json', { stdio: 'inherit' })
+    consola.info('Generate Declarations')
+    exec('tsc --emitDeclarationOnly', { stdio: 'inherit' })
 
-    consola.info('ESModule Build')
-    exec('tsc -p tsconfig.esm.json', { stdio: 'inherit' })
-
-    consola.info('UMD Build')
-    exec('rollup -c rollup.config.js', { stdio: 'inherit' })
+    consola.info('Rollup')
+    exec('rollup -c', { stdio: 'inherit' })
 
     consola.success(`Build for Vue ${targetVersion}.x finished`)
 

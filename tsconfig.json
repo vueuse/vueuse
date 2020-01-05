@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "lib": [
       "esnext",
@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "strict": true,
     "declaration": true,
-    "outDir": "dist/main",
+    "declarationDir": "./typings",
     "rootDir": "packages",
     "jsx": "preserve",
     "types": [
@@ -21,7 +21,6 @@
     ]
   },
   "include": [
-    "node_modules/vue-tsx-support/enable-check.d.ts",
     "packages"
   ],
   "exclude": [
