@@ -22,14 +22,14 @@
   },
   "include": [
     "node_modules/vue-tsx-support/enable-check.d.ts",
-    "src",
+    "packages"
   ],
   "exclude": [
     "node_modules",
     "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
-    "src/dev",
+    "packages/_docs",
     "src/api.*.ts"
   ]
 }

@@ -3,7 +3,7 @@ const fs = require('fs-extra')
 const parser = require('prettier/parser-typescript')
 const prettier = require('prettier/standalone')
 
-const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/src'
+const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/packages/core'
 
 module.exports = function (source, u) {
   let request = this._module.request

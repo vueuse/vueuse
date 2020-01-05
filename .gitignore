@@ -89,8 +89,8 @@ sw.*
 # Vim swap files
 *.swp
 
-src/api.ts
-src/index.ts
-src/api.backup.ts
+packages/api.ts
+packages/api.backup.ts
+packages/core/index.ts
 
 storybook-static

@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const consola = require('consola')
 
-const srcDir = path.resolve(__dirname, '../src')
+const srcDir = path.resolve(__dirname, '../packages/core')
 const readmePath = path.resolve(__dirname, '../README.md')
 const storybookUrl = 'https://vueuse.js.org'
 

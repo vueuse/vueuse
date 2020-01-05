@@ -2,7 +2,7 @@ import { configure, addParameters } from '@storybook/vue'
 import 'github-markdown-css'
 import './base16-gruvbox.dark.css'
 import './style.css'
-import { init } from '../src/api'
+import { init } from '../packages/api'
 import theme from './theme'
 
 addParameters({
@@ -15,4 +15,4 @@ addParameters({
 
 init()
 
-configure(require.context('../src', true, /\.stories\.tsx$/), module)
+configure(require.context('../packages', true, /\.stories\.tsx$/), module)

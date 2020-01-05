@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 const { selectVersion } = require('./selectVersion')
 const { updateImport } = require('./import')
 
-const srcDir = path.resolve(__dirname, '../src')
+const srcDir = path.resolve(__dirname, '../packages')
 
 async function backupApi () {
   try {

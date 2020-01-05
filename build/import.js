@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 
-const srcDir = path.resolve(__dirname, '../src')
+const srcDir = path.resolve(__dirname, '../packages/core')
 const packageFilepath = path.resolve(__dirname, '../package.json')
 
 async function getVersion () {
