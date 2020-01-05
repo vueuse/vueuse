@@ -13,7 +13,7 @@
     "strict": true,
     "declaration": true,
     "outDir": "dist/main",
-    "rootDir": "src",
+    "rootDir": "packages",
     "jsx": "preserve",
     "types": [
       "@types/node",

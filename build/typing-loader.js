@@ -15,7 +15,7 @@ module.exports = function (source, u) {
 
   const moduleName = path.basename(path.dirname(request))
 
-  const typingFilepath = path.resolve(__dirname, `../dist/esm/${moduleName}/index.d.ts`)
+  const typingFilepath = path.resolve(__dirname, `../dist/esm/core/${moduleName}/index.d.ts`)
 
   if (!fs.existsSync(typingFilepath))
     return source
