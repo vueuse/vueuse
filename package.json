@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-    "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md},*.js": [
+    "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js": [
       "eslint --fix",
       "git add"
     ]

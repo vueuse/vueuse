@@ -12,11 +12,11 @@ import { useI18n } from '@vueuse/i18n'
 new Vue({
   setup () {
     const { locale, t } = useI18n()
-    
-    const helloText = computed(()=>t('hello'))
 
-    return { 
-      locale, 
+    const helloText = computed(() => t('hello'))
+
+    return {
+      locale,
       t,
       helloText,
     }
