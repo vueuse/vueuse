@@ -14,7 +14,7 @@
     "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "npm run typings && build-storybook"
+    "storybook:build": "npm run switch 2 && npm run typings && build-storybook"
   },
   "husky": {
     "hooks": {
