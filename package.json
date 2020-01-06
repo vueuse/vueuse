@@ -8,15 +8,15 @@
   "unpkg": "dist/umd/core/index.min.js",
   "browser": "dist/esm/core/index.js",
   "scripts": {
-    "build": "node ./build/build",
-    "release": "npm run lint && npm run readme:update && bump --commit --tag --preid alpha && node ./build/publish.js all",
-    "switch": "node ./build/switch",
-    "import": "node ./build/import",
-    "dev": "tsc -p tsconfig.esm.json --watch",
+    "build": "node ./scripts/build",
+    "release": "npm run lint && npm run readme:update && bump --commit --tag --preid alpha && node ./scripts/publish.js all",
+    "switch": "node ./scripts/switch",
+    "import": "node ./scripts/import",
+    "typings": "tsc --emitDeclarationOnly",
     "test": "jest",
-    "lint": "eslint {src,.storybook,build}/**/*.{js,ts,tsx,vue,md}",
+    "lint": "eslint {pcakages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js",
     "lint:fix": "npm run lint -- --fix",
-    "readme:update": "node ./build/updateReadme",
+    "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "npm run build 2 && build-storybook"
@@ -27,7 +27,7 @@
     }
   },
   "lint-staged": {
-    "{src,.storybook,build}/**/*.{js,ts,tsx,vue,md}": [
+    "{pcakages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md},*.js": [
       "eslint --fix",
       "git add"
     ]
