@@ -11,7 +11,17 @@ import { useI18n } from '@vueuse/i18n'
 
 new Vue({
   setup () {
-    const { locale, t } = useI18n()
+    const { locale, t } = useI18n({
+      locale: 'en',
+      messages: {
+        en: {
+          hello: 'Hello',
+        },
+        zhCN: {
+          hello: '你好',
+        },
+      },
+    })
 
     const helloText = computed(() => t('hello'))
 
