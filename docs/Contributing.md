@@ -35,12 +35,13 @@ Feel free to enhance the existing functions. Please try not to introduce breakin
 
 ## Contributing to new functions
 
-There is some rules for add new functions
+There are some notes for add new functions
 
 - Before you starts working, it's better to open an issue to discuss first.
 - Function name should starts with `use` or `create` in lowercases.
-- The implementation should be placed under `src` as a folder and exposing in `index.ts`
-- Try not to introduce 3-rd party dependencies as this package is aim to be as lightweight as possible. If you do want to introduce them anyway, please open an issue first.
+- The implementation should be placed under `packages/core` as a folder and exposing in `index.ts`
+- In the `core` package, try not to introduce 3-rd party dependencies as this package is aim to be as lightweight as possible. 
+- If you do want to introduce 3-rd party dependencies, please contribute to non-`core` package or create a new package for that.
 
 ## Thanks
 
