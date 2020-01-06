@@ -2,11 +2,6 @@
   "name": "@vueuse/core",
   "version": "0.0.6",
   "description": "Collection of essential Vue Composition API",
-  "main": "dist/main/core/index.js",
-  "typings": "dist/main/core/index.d.ts",
-  "module": "dist/esm/core/index.js",
-  "unpkg": "dist/umd/core/index.min.js",
-  "browser": "dist/esm/core/index.js",
   "scripts": {
     "build": "node ./scripts/build",
     "release": "npm run lint && npm run readme:update && bump --commit --tag --preid alpha && node ./scripts/publish.js all",
@@ -46,9 +41,6 @@
   "bugs": {
     "url": "https://github.com/antfu/vueuse/issues"
   },
-  "files": [
-    "/dist"
-  ],
   "homepage": "https://github.com/antfu/vueuse#readme",
   "dependencies": {},
   "peerDependencies": {
