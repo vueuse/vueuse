@@ -38,7 +38,7 @@ module.exports = ({ config }) => {
         },
       },
       {
-        loader: require.resolve('../build/typing-loader'),
+        loader: require.resolve('../scripts/typing-loader'),
       },
     ],
   })
@@ -49,7 +49,11 @@ module.exports = ({ config }) => {
       {
         loader: require.resolve('babel-loader'),
         options: {
-          presets: ['@babel/env', '@babel/typescript', '@vue/jsx'],
+          presets: [
+            '@babel/env',
+            '@babel/typescript',
+            '@vue/jsx',
+          ],
         },
       },
     ],

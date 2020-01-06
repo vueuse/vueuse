@@ -91,6 +91,9 @@ sw.*
 
 packages/api.ts
 packages/api.backup.ts
-packages/core/index.ts
 
 storybook-static
+
+# Package Indexes
+packages/core/index.ts
+packages/firebase/index.ts

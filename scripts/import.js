@@ -1,7 +1,8 @@
 const path = require('path')
 const fs = require('fs-extra')
+const packages = require('./packages')
 
-const srcDir = path.resolve(__dirname, '../packages/core')
+const srcDir = path.resolve(__dirname, '../packages')
 const packageFilepath = path.resolve(__dirname, '../package.json')
 
 async function getVersion () {
@@ -10,16 +11,20 @@ async function getVersion () {
 }
 
 async function updateImport () {
-  const files = fs
-    .readdirSync(srcDir)
-    .filter(f => f.startsWith('use'))
-    .sort()
+  for (const pkg of packages) {
+    const pkdDir = path.join(srcDir, pkg)
 
-  let content = ''
-  content += `export const version = '${await getVersion()}'\n\n`
-  content += files.map(f => `export * from './${f}'\n`).join('')
+    const files = fs
+      .readdirSync(pkdDir)
+      .filter(f => f.startsWith('use'))
+      .sort()
 
-  fs.writeFileSync(path.join(srcDir, 'index.ts'), content)
+    let content = ''
+    content += `export const version = '${await getVersion()}'\n\n`
+    content += files.map(f => `export * from './${f}'\n`).join('')
+
+    fs.writeFileSync(path.join(pkdDir, 'index.ts'), content)
+  }
 }
 
 module.exports = { updateImport }
