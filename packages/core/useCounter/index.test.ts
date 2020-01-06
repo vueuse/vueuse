@@ -1,5 +1,5 @@
-import { renderHook } from '../dev/tests'
-import { useCounter } from '..'
+import { renderHook } from '../../_docs/tests'
+import { useCounter } from '../useCounter'
 
 describe('useCounter', () => {
   it('should be defined', () => {
