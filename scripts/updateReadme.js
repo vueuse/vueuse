@@ -7,7 +7,11 @@ const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'
 
 async function updateReadme () {
-  for (const [pkg] of packages) {
+  packages.reverse()
+
+  let addOnsList = ''
+
+  for (const [pkg, packageOptions = {}] of packages) {
     const packageDir = path.join(srcDir, pkg)
     const readmePath = pkg === 'core'
       ? path.resolve(__dirname, '../README.md')
@@ -44,17 +48,27 @@ async function updateReadme () {
       })
     }
 
-    let text = '\n\n'
+    let functionList = '\n\n'
+
+    if (pkg !== 'core')
+      addOnsList += `\n- ${packageOptions.name} ([\`@vueuse/${pkg}\`](${storybookUrl}/?path=/story/add-ons-${pkg}--read-me)) - ${packageOptions.description}\n`
 
     for (const category of Object.keys(categories).sort()) {
-      text += `- ${category}\n`
-      for (const { name, url } of categories[category])
-        text += `  - [\`${name}\`](${url})\n`
-      text += '\n'
+      functionList += `- ${category}\n`
+      for (const { name, url } of categories[category]) {
+        functionList += `  - [\`${name}\`](${url})\n`
+        if (pkg !== 'core')
+          addOnsList += `  - [\`${name}\`](${url})\n`
+      }
+      functionList += '\n'
     }
 
     let readme = fs.readFileSync(readmePath, 'utf-8')
-    readme = readme.replace(/<!--FUNCTIONS_LIST_STARTS-->[\s\S]+?<!--FUNCTIONS_LIST_ENDS-->/m, `<!--FUNCTIONS_LIST_STARTS-->${text}<!--FUNCTIONS_LIST_ENDS-->`)
+    readme = readme.replace(/<!--FUNCTIONS_LIST_STARTS-->[\s\S]+?<!--FUNCTIONS_LIST_ENDS-->/m, `<!--FUNCTIONS_LIST_STARTS-->${functionList}<!--FUNCTIONS_LIST_ENDS-->`)
+
+    if (pkg === 'core')
+      readme = readme.replace(/<!--ADDONS_LIST_STARTS-->[\s\S]+?<!--ADDONS_LIST_ENDS-->/m, `<!--ADDONS_LIST_STARTS-->${addOnsList}<!--ADDONS_LIST_ENDS-->`)
+
     fs.writeFileSync(readmePath, readme, 'utf-8')
 
     consola.success(`README.md for "${pkg}" updated`)

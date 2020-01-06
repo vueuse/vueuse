@@ -24,7 +24,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 Use it without complex building tools
 - Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.js.org)
-- Optional [Add-ons](#-add-ons) 🔌 Firebase and more packages in Composition API
+- Optional [Add-ons](#-add-ons) 🔌 Firebase, vue-i18n, etc
 
 ## 🦄 Usage
 
@@ -147,9 +147,18 @@ More functions to be added. Please keep turned. (PRs are also welcome!)
 
 ## 🔌 Add-ons
 
-There are also some optional add-ons you can integrate in.
+The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
 
-- [`Firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me) - enables the realtime bindings for Firebase
+<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--ADDONS_LIST_STARTS-->
+- 🌍 i18n ([`@vueuse/i18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--read-me)) - Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)
+  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n)
+  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n)
+
+- 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - enables realtime bindings for [Firebase](https://firebase.google.com/)
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore)
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb)
+<!--ADDONS_LIST_ENDS-->
 
 ## 🔬 Technical Details
 
