@@ -27,7 +27,7 @@ import { createGlobalState } from '@vueuse/core'
 import { useRTDB } from '@vueuse/firebase'
 
 export const useTodos = createGlobalState(
-  () =>  useRTDB(db.ref('todos')),
+  () => useRTDB(db.ref('todos')),
 )
 ```
 
@@ -38,7 +38,6 @@ import { useTodos } from './store'
 new Vue({
   setup () {
     const todos = useTodos()
-
     return { todos }
   },
 })
