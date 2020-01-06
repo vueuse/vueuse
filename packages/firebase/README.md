@@ -29,6 +29,7 @@ npm i @vueuse/firebase@vue2 firebase
 
 - Firebase
   - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore)
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb)
 
 <!--FUNCTIONS_LIST_ENDS-->
 

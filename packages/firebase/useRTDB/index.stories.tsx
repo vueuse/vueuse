@@ -2,10 +2,10 @@ import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import firebase from 'firebase/app'
-import 'firebase/firestore'
+import 'firebase/database'
 import { createComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useFirestore } from '.'
+import { useRTDB } from '.'
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -14,20 +14,18 @@ if (!firebase.apps.length) {
   })
 }
 
-const db = firebase.firestore()
+const db = firebase.database()
 
 const Demo = createComponent({
   setup () {
     return {
-      todos: useFirestore(db.collection('todos')),
-      user: useFirestore(db.collection('users').doc('ctTVGl9swtW9ghhG7vj6')),
+      todos: useRTDB(db.ref('todos')),
     }
   },
 
   render (this: Vue & any) {
     const {
       todos,
-      user,
     } = this
 
     // @ts-ignore
@@ -38,9 +36,6 @@ const Demo = createComponent({
         <div id='demo'>
           <note>Todos</note>
           <pre>{JSON.stringify(todos, null, 2)}</pre>
-          <br></br>
-          <note>User</note>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
         </div>
         {Docs}
       </div>
@@ -49,4 +44,4 @@ const Demo = createComponent({
 })
 
 storiesOf('Add-ons|Firebase', module)
-  .add('useFirestore', () => Demo as any)
+  .add('useRTDB', () => Demo as any)

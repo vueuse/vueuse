@@ -8,13 +8,13 @@ export type FirebaseDocRef<T> =
   firebase.firestore.DocumentReference<T>
 
 function getData<T> (
-  doc: firebase.firestore.DocumentSnapshot<T> | firebase.firestore.QueryDocumentSnapshot<T>,
+  docRef: firebase.firestore.DocumentSnapshot<T> | firebase.firestore.QueryDocumentSnapshot<T>,
 ) {
-  const data = doc.data()
+  const data = docRef.data()
 
   if (data) {
     Object.defineProperty(data, 'id', {
-      value: doc.id.toString(),
+      value: docRef.id.toString(),
       writable: false,
     })
   }
@@ -23,21 +23,21 @@ function getData<T> (
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (
-  doc: firebase.firestore.DocumentReference<T>,
+  docRef: firebase.firestore.DocumentReference<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T|null>
 export function useFirestore<T extends firebase.firestore.DocumentData> (
-  doc: firebase.firestore.Query<T>,
+  docRef: firebase.firestore.Query<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T[]>
 export function useFirestore<T extends firebase.firestore.DocumentData> (
-  doc: FirebaseDocRef<T>,
+  docRef: FirebaseDocRef<T>,
   errorHandler = (err: Error) => {},
 ) {
-  if (doc instanceof firebase.firestore.DocumentReference) {
+  if (docRef instanceof firebase.firestore.DocumentReference) {
     const data = ref<T|null>(null)
 
-    const close = doc.onSnapshot((snapshot) => {
+    const close = docRef.onSnapshot((snapshot) => {
       // @ts-ignore
       data.value = getData(snapshot) || null
     }, errorHandler)
@@ -51,7 +51,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
   else {
     const data = ref<T[]>([])
 
-    const close = doc.onSnapshot((snapshot) => {
+    const close = docRef.onSnapshot((snapshot) => {
       data.value = snapshot.docs.map(getData).filter(isDef)
     }, errorHandler)
 
