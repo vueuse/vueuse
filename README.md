@@ -24,7 +24,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 Use it without complex building tools
 - Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.js.org)
-- Optional [Add-ons](#-add-ons) 🎛 Firebase, i18n in Composition API as well
+- Optional [Add-ons](#-add-ons) 🔌 Firebase, i18n in Composition API as well
 
 ## 🦄 Usage
 
@@ -132,6 +132,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize)
 
 - State
+  - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate)
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate)
   - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter)
   - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle)
@@ -144,7 +145,7 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 
-## 🧰 Add-ons
+## 🔌 Add-ons
 
 There are also some optional add-ons you can integrate in.
 

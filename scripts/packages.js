@@ -13,5 +13,9 @@ module.exports = [
       firebase: 'firebase',
       'firebase/app': 'firebase',
     },
+    keywords: [
+      'firebase',
+      'vuefire',
+    ],
   }],
 ]
