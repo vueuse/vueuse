@@ -2,11 +2,19 @@
 import typescript from '@rollup/plugin-typescript'
 import { uglify } from 'rollup-plugin-uglify'
 import dts from 'rollup-plugin-dts'
-import packages from './scripts/packages'
+const packages = require('./scripts/packages')
 
 const configs = []
 
-for (const pkg of packages) {
+for (const [pkg, options] of packages) {
+  const globals = {
+    vue: 'Vue',
+    '@vue/composition-api': 'vueCompositionApi',
+    '@vue/runtime-dom': 'Vue',
+    ...(options.globals || {}),
+  }
+  const name = 'VueUse'
+
   configs.push({
     input: `packages/${pkg}/index.ts`,
     output: [
@@ -21,22 +29,14 @@ for (const pkg of packages) {
       {
         file: `dist/${pkg}/index.umd.js`,
         format: 'umd',
-        name: 'VueUse',
-        globals: {
-          vue: 'Vue',
-          '@vue/composition-api': 'vueCompositionApi',
-          '@vue/runtime-dom': 'Vue',
-        },
+        name,
+        globals,
       },
       {
         file: `dist/${pkg}/index.umd.min.js`,
         format: 'umd',
-        name: 'VueUse',
-        globals: {
-          vue: 'Vue',
-          '@vue/composition-api': 'vueCompositionApi',
-          '@vue/runtime-dom': 'Vue',
-        },
+        name,
+        globals,
         plugins: [
           uglify(),
         ],
@@ -49,6 +49,7 @@ for (const pkg of packages) {
       'vue',
       '@vue/composition-api',
       '@vue/runtime-dom',
+      ...(options.external || []),
     ],
   })
 

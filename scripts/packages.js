@@ -1,4 +1,17 @@
 module.exports = [
-  'core',
-  'firebase',
+  ['core', {}],
+
+  ['firebase', {
+    peerDependencies: {
+      firebase: '>=4.0.0',
+    },
+    external: [
+      'firebase',
+      'firebase/app',
+    ],
+    globals: {
+      firebase: 'firebase',
+      'firebase/app': 'firebase',
+    },
+  }],
 ]

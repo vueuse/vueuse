@@ -11,7 +11,7 @@ async function getVersion () {
 }
 
 async function updateImport () {
-  for (const pkg of packages) {
+  for (const [pkg] of packages) {
     const pkdDir = path.join(srcDir, pkg)
 
     const files = fs
