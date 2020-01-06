@@ -38,6 +38,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
     const data = ref<T|null>(null)
 
     const close = doc.onSnapshot((snapshot) => {
+      // @ts-ignore
       data.value = getData(snapshot) || null
     }, errorHandler)
 
