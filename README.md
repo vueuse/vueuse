@@ -24,6 +24,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
 - Browser compatible 🌐 Use it without complex building tools
 - Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.js.org)
+- Optional [Add-ons](#-add-ons) 🎛 Firebase, i18n in Composition API as well
 
 ## 🦄 Usage
 
@@ -52,7 +53,7 @@ new Vue({
 })
 ```
 
-Check out [functions](#-functions) and [documentations](https://vueuse.js.org/) for more details.
+Refer to [functions](#-functions) and [documentations](https://vueuse.js.org/) for more details.
 
 ## 📦 Install
 
@@ -143,6 +144,11 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 
+## 🧰 Add-ons
+
+There are also some optional add-ons you can integrate in.
+
+- [`Firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me) - enables the realtime bindings for Firebase
 
 ## 🔬 Technical Details
 
@@ -164,8 +170,7 @@ import { ref } from '@vue/composition-api'
 
 ## 🧱 Contribute
 
-Check out the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contributing)
-
+See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contribute)
 
 ## 🌸 Thanks
 
