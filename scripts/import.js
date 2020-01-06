@@ -10,7 +10,7 @@ async function getVersion () {
   return JSON.parse(raw).version
 }
 
-async function updateImport () {
+async function updateImport (packageVersion) {
   for (const [pkg] of packages) {
     const pkdDir = path.join(srcDir, pkg)
 
@@ -20,7 +20,7 @@ async function updateImport () {
       .sort()
 
     let content = ''
-    content += `export const version = '${await getVersion()}'\n\n`
+    content += `export const version = '${packageVersion || await getVersion()}'\n\n`
     content += files.map(f => `export * from './${f}'\n`).join('')
 
     fs.writeFileSync(path.join(pkdDir, 'index.ts'), content)

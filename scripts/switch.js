@@ -29,15 +29,15 @@ async function restoreApi () {
   catch {}
 }
 
-async function switchApi (version) {
-  assert([2, 3].includes(version))
+async function switchApi (targetVersion, packageVersion) {
+  assert([2, 3].includes(targetVersion))
 
   await fs.copyFile(
-    path.join(srcDir, `api.${version}.ts`),
+    path.join(srcDir, `api.${targetVersion}.ts`),
     path.join(srcDir, 'api.ts'),
   )
 
-  await updateImport()
+  await updateImport(packageVersion)
 }
 
 async function cli () {

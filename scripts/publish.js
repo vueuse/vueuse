@@ -1,34 +1,34 @@
 const exec = require('child_process').execSync
 const assert = require('assert')
 const path = require('path')
-const fs = require('fs-extra')
 const consola = require('consola')
 const { buildFor } = require('./build')
+const packages = require('./packages')
 const { selectVersion } = require('./selectVersion')
 
-const rootDir = path.resolve(__dirname, '..')
-const packageJSONDir = path.join(rootDir, 'package.json')
+const distDir = path.resolve(__dirname, '..', 'dist')
 
 async function publishFor (targetVueVersion) {
   assert([2, 3].includes(targetVueVersion))
 
-  await buildFor(targetVueVersion, async () => {
+  await buildFor(targetVueVersion, async (targetVersion, packageVersion) => {
     consola.info(`Publish for Vue ${targetVueVersion}.x`)
 
-    const package = JSON.parse(await fs.readFileSync(packageJSONDir, 'utf-8'))
-    const { name, version } = package
+    for (const [pkg] of packages) {
+      const packageDist = path.join(distDir, pkg)
 
-    if (targetVueVersion === 3) {
-      exec('npm publish --access public --tag next', { stdio: 'inherit' })
-      exec(`npm dist-tag add ${name}@${version} vue3`, { stdio: 'inherit' })
+      if (targetVueVersion === 3) {
+        exec('npm publish --access public --tag next', { stdio: 'inherit', cwd: packageDist })
+        exec(`npm dist-tag add @vueuse/${pkg}@${packageVersion} vue3`, { stdio: 'inherit', cwd: packageDist })
+      }
+
+      if (targetVueVersion === 2) {
+        exec('npm publish --access public', { stdio: 'inherit', cwd: packageDist })
+        exec(`npm dist-tag add @vueuse/${pkg}@${packageVersion} vue2`, { stdio: 'inherit', cwd: packageDist })
+      }
+
+      consola.success(`Published @vueuse/${pkg} for Vue ${targetVueVersion}.x`)
     }
-
-    if (targetVueVersion === 2) {
-      exec('npm publish --access public', { stdio: 'inherit' })
-      exec(`npm dist-tag add ${name}@${version} vue2`, { stdio: 'inherit' })
-    }
-
-    consola.success(`Publish for Vue ${targetVueVersion}.x finished`)
   })
 }
 
