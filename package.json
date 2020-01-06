@@ -14,7 +14,7 @@
     "import": "node ./scripts/import",
     "typings": "tsc --emitDeclarationOnly",
     "test": "jest",
-    "lint": "eslint {pcakages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js",
+    "lint": "eslint {packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js",
     "lint:fix": "npm run lint -- --fix",
     "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
@@ -27,7 +27,7 @@
     }
   },
   "lint-staged": {
-    "{pcakages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md},*.js": [
+    "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md},*.js": [
       "eslint --fix",
       "git add"
     ]
