@@ -1,5 +1,8 @@
 {
   "cSpell.words": [
     "vueuse"
+  ],
+  "i18n-ally.localesPaths": [
+    "packages/i18n",
   ]
 }

@@ -1,5 +1,4 @@
-import { getCurrentInstance } from '@vue/composition-api'
-import { onUnmounted } from '../../api'
+import { onUnmounted, getCurrentInstance } from '../../api'
 
 export function useRafFn (fn: () => any, options: {startNow?: boolean} = {}) {
   const { startNow = true } = options
