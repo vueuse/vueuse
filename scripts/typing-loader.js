@@ -39,7 +39,7 @@ module.exports = function (source, u) {
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 
   const head = pkg !== 'core'
-    ? `📦 this function is available in [\`@vueuse/${pkg}\`](https://www.npmjs.com/package/@vueuse/${pkg})\n\n`
+    ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/add-ons-${pkg}--read-me)\n\n`
     : ''
 
   const typingSection = `## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\``
