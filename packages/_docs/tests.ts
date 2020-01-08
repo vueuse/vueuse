@@ -5,7 +5,7 @@ import { createComponent, init } from '../api'
 const localVue = createLocalVue()
 
 export function renderHook<V, Props = unknown, Data = unknown> (
-  setup: any,
+  setup: () => V,
 ) {
   init()
 

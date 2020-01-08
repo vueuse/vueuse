@@ -9,6 +9,7 @@
     "import": "node ./scripts/import",
     "typings": "tsc --emitDeclarationOnly",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint {packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js",
     "lint:fix": "npm run lint -- --fix",
     "readme:update": "node ./scripts/updateReadme",
