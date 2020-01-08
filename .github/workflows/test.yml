@@ -29,12 +29,12 @@ jobs:
         npm test
       env:
         CI: true
-    - name: Test for Vue 3.x
-      run: |
-        npm run switch 3
-        npm test
-      env:
-        CI: true
+    # - name: Test for Vue 3.x
+    #   run: |
+    #     npm run switch 3
+    #     npm test
+    #   env:
+    #     CI: true
     - name: Build for Vue 2.x
       run: npm run build 2
       env:
