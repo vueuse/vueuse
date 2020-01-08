@@ -26,7 +26,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm run publish
+      - run: npm run publich:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -39,8 +39,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-          scope: '@antfu'
+          scope: '@vueuse'
       - run: npm ci
-      - run: npm run publish
+      - run: npm run publich:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
