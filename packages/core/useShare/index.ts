@@ -10,19 +10,16 @@ type ShareOptions = {
   url?: string
 }
 
-const _navigator = (window.navigator as NavigatorWithShare)
+export async function useShare(shareOpts: ShareOptions) {
+  const _navigator = (window.navigator as NavigatorWithShare)
 
-export async function useShare<T>(shareOpts: ShareOptions) {
   if (_navigator && _navigator.share) {
     let granted = true
 
     if (shareOpts.files && _navigator.canShare)
       granted = _navigator.canShare({ files: shareOpts.files })
 
-    if (granted) {
-      _navigator.share(shareOpts)
-        .then(() => console.log('Successful share'))
-        .catch(err => console.log(err.message))
-    }
+    if (granted)
+      return _navigator.share(shareOpts)
   }
 }
