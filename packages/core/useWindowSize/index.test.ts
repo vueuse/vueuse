@@ -21,7 +21,7 @@ describe('useWindowSize', () => {
   })
 
   it('sets handler for window "resize" event', () => {
-    const windowAddEventListener = jest.spyOn(window, 'addEventListener');
+    const windowAddEventListener = jest.spyOn(window, 'addEventListener')
 
     renderHook(() => {
       const { width, height } = useWindowSize(100, 200)
