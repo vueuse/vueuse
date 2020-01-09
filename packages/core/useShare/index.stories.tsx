@@ -6,24 +6,22 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useShare } from '.'
 
 const Demo = createComponent({
-  setup() {
+  setup () {
+    const share = () => useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
+
     return {
-      useShare
+      share,
     }
   },
 
-  render(this: Vue & any) {
-    const {
-      useShare
-    } = this
-
+  render (this: Vue & any) {
     // @ts-ignore
     const Docs: any = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
         <div id='demo' ref='demo'>
-          <button onClick={() => useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })}>Share</button>
+          <button onClick={this.share}>Share</button>
         </div>
         {Docs}
       </div>
