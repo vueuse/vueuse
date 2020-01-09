@@ -19,4 +19,15 @@ describe('useWindowSize', () => {
     expect(wrapper.vm.width).toBe(window.innerWidth)
     expect(wrapper.vm.height).toBe(window.innerHeight)
   })
+
+  it('sets handler for window "resize" event', () => {
+    const windowAddEventListener = jest.spyOn(window, 'addEventListener');
+
+    renderHook(() => {
+      const { width, height } = useWindowSize(100, 200)
+      return { width, height }
+    })
+
+    expect(windowAddEventListener).toHaveBeenCalledWith('resize', expect.anything(), undefined)
+  })
 })
