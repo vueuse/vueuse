@@ -7,7 +7,7 @@
 ```js
 import { useShare } from '@vueuse/core'
 
-function onShare() {
+function onShare () {
   useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
 }
 ```

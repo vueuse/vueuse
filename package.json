@@ -12,7 +12,7 @@
     "typings": "tsc --emitDeclarationOnly",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint {packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js",
+    "lint": "eslint {packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}",
     "lint:fix": "npm run lint -- --fix",
     "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
