@@ -10,8 +10,6 @@ export type GeneralPermissionDescriptor =
   | PushPermissionDescriptor
   | { name: DescriptorNamePolyfill }
 
-type State = PermissionState | ''
-
 const noop = () => {}
 
 export function usePermission (permissionDesc: GeneralPermissionDescriptor | PermissionDescriptor['name'] | DescriptorNamePolyfill) {
@@ -21,7 +19,7 @@ export function usePermission (permissionDesc: GeneralPermissionDescriptor | Per
     ? { name: permissionDesc } as PermissionDescriptor
     : permissionDesc as PermissionDescriptor
 
-  const state = ref<State>('')
+  const state = ref<PermissionState | ''>('')
 
   const onChange = () => {
     if (permissionStatus)
