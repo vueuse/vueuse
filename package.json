@@ -87,7 +87,7 @@
     "firebase": "7.6.2",
     "fs-extra": "8.1.0",
     "github-markdown-css": "3.0.1",
-    "husky": "3.1.0",
+    "husky": "4.0.7",
     "inquirer": "7.0.3",
     "jest": "24.9.0",
     "js-yaml": "3.13.1",
