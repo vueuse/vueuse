@@ -1,6 +1,6 @@
 # 🧱 Contribute
 
-Thanks for being instrested contributing this project!
+Thanks for being interested in contributing to this project!
 
 ## Setup
 
