@@ -3,7 +3,8 @@
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><a href="https://opencollective.com/vueuse" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/vueuse/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858" alt="NPM version" /></a>
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank">
+<img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858" alt="NPM version" /></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=storybook&message=demos&color=63ba83" alt="Storybook Demos" /></a>
 <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=35495e"/>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img src="https://img.shields.io/github/last-commit/antfu/vueuse.svg?color=a38eed" alt="GitHub last commit" /></a>
@@ -195,7 +196,7 @@ This project is heavily inspired by following awesome projects.
 Thanks!
 
 
-## Contributors
+## 👨‍🚀 Contributors
 
 ### Code Contributors
 
