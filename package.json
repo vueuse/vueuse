@@ -89,7 +89,7 @@
     "github-markdown-css": "3.0.1",
     "husky": "4.2.1",
     "inquirer": "7.0.4",
-    "jest": "24.9.0",
+    "jest": "25.1.0",
     "js-yaml": "3.13.1",
     "lint-staged": "10.0.3",
     "markdown-it": "10.0.0",
