@@ -91,7 +91,7 @@
     "inquirer": "7.0.4",
     "jest": "24.9.0",
     "js-yaml": "3.13.1",
-    "lint-staged": "9.5.0",
+    "lint-staged": "10.0.3",
     "markdown-it": "10.0.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-link-attributes": "3.0.0",
