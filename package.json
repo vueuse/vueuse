@@ -108,7 +108,7 @@
     "rollup-plugin-dts": "1.2.1",
     "rollup-plugin-uglify": "6.0.4",
     "tailwindcss": "1.1.4",
-    "ts-jest": "24.3.0",
+    "ts-jest": "25.0.0",
     "typescript": "3.7.5",
     "version-bump-prompt": "5.0.7",
     "vue": "2.6.11",
