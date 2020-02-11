@@ -70,7 +70,7 @@
     "@types/jest": "24.9.1",
     "@types/js-yaml": "3.12.2",
     "@types/node": "13.5.1",
-    "@types/semver": "6.2.1",
+    "@types/semver": "7.1.0",
     "@vue/babel-preset-jsx": "1.1.2",
     "@vue/composition-api": "0.3.4",
     "@vue/runtime-dom": "3.0.0-alpha.4",
