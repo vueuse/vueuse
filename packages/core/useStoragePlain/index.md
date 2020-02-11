@@ -1,6 +1,6 @@
 # useStoragePlain
 
-> Reactive LocalStorage/SessionStorage with plain string values
+> Reactive LocalStorage/SessionStorage with primitives values
 
 ## Usage
 

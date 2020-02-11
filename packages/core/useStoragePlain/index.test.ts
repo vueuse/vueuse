@@ -71,4 +71,18 @@ describe('useStoragePlain', () => {
       expect(ref.value).toBe('0')
     })
   })
+
+  it('string', () => {
+    localStorage.setItem(KEY, '0')
+
+    renderHook(() => {
+      const ref = useStoragePlain(KEY, '1')
+
+      expect(ref.value).toBe('0')
+
+      ref.value = '2'
+
+      expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    })
+  })
 })
