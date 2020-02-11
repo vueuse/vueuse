@@ -10,7 +10,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { counter } = useInterval(200)
 
     return {
@@ -18,7 +18,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { counter } = this
 
     // @ts-ignore

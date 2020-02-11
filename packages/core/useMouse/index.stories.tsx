@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useMouse } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       ...useMouse(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       x,
       y,

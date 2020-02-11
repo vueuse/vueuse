@@ -6,14 +6,14 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useMediaQuery } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       isLargeScreen: useMediaQuery('(min-width: 1024px)'),
       prefersDark: useMediaQuery('(prefers-color-scheme: dark)'),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       isLargeScreen,
       prefersDark,

@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useMouseInElement } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const demoRef = ref(null)
     return {
       ...useMouseInElement(demoRef),
@@ -14,7 +14,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       x,
       y,

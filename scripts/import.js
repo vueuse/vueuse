@@ -5,12 +5,12 @@ const packages = require('./packages')
 const srcDir = path.resolve(__dirname, '../packages')
 const packageFilepath = path.resolve(__dirname, '../package.json')
 
-async function getVersion () {
+async function getVersion() {
   const raw = await fs.readFile(packageFilepath)
   return JSON.parse(raw).version
 }
 
-async function updateImport (packageVersion) {
+async function updateImport(packageVersion) {
   for (const [pkg] of packages) {
     const pkdDir = path.join(srcDir, pkg)
 

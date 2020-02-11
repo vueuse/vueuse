@@ -10,7 +10,7 @@ export interface ParallaxOptions {
   targetElement?: Ref<Element>
 }
 
-export function useParallax (options?: ParallaxOptions) {
+export function useParallax(options?: ParallaxOptions) {
   const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation()
   const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(options?.targetElement, { handleOutside: false })
 

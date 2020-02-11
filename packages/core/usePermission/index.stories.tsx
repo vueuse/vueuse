@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { usePermission } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       geolocation: usePermission('geolocation'),
       microphone: usePermission('microphone'),
@@ -16,7 +16,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       geolocation,
       microphone,

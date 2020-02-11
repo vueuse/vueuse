@@ -6,7 +6,7 @@ const packages = require('./packages')
 const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'
 
-async function updateReadme () {
+async function updateReadme() {
   packages.reverse()
 
   let addOnsList = ''

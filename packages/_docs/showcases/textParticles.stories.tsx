@@ -8,7 +8,7 @@ import { useMouse, useEventListener, useRafFn } from '../../core'
 
 const colors = ['#34495E', '#3D6962', '#468966', '#A3BD86', '#FFF0A5']
 
-function Particle (x, y, ww, wh) {
+function Particle(x, y, ww, wh) {
   this.x = Math.random() * ww
   this.y = Math.random() * wh
   this.dest = {
@@ -24,7 +24,7 @@ function Particle (x, y, ww, wh) {
   this.color = colors[Math.floor(Math.random() * 6)]
 }
 
-Particle.prototype.render = function (ctx, x, y, radius) {
+Particle.prototype.render = function(ctx, x, y, radius) {
   this.accX = (this.dest.x - this.x) / 1000
   this.accY = (this.dest.y - this.y) / 1000
   this.vx += this.accX
@@ -53,7 +53,7 @@ Particle.prototype.render = function (ctx, x, y, radius) {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const canvasRef = ref<HTMLCanvasElement | null>(null)
     const text = ref('VUEUSE')
     const { x: mouseX, y: mouseY } = useMouse({
@@ -70,7 +70,7 @@ const Demo = createComponent({
     let ww = 0
     let wh = 0
 
-    function initScene () {
+    function initScene() {
       ww = canvas.width = window.innerWidth
       wh = canvas.height = window.innerHeight
 
@@ -125,7 +125,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue) {
+  render(this: Vue) {
     return (
       <div id="showcase">
         <canvas ref='canvas'></canvas>

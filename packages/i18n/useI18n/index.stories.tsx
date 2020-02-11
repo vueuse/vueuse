@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useI18n } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useI18n({
       locale: 'en',
       messages: {
@@ -20,7 +20,7 @@ const Demo = createComponent({
     })
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       t,
       locale,

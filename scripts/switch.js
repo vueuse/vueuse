@@ -6,7 +6,7 @@ const { updateImport } = require('./import')
 
 const srcDir = path.resolve(__dirname, '../packages')
 
-async function backupApi () {
+async function backupApi() {
   try {
     await fs.copyFile(
       path.join(srcDir, 'api.ts'),
@@ -16,7 +16,7 @@ async function backupApi () {
   catch {}
 }
 
-async function restoreApi () {
+async function restoreApi() {
   try {
     await fs.copyFile(
       path.join(srcDir, 'api.backup.ts'),
@@ -29,7 +29,7 @@ async function restoreApi () {
   catch {}
 }
 
-async function switchApi (targetVersion, packageVersion) {
+async function switchApi(targetVersion, packageVersion) {
   assert([2, 3].includes(targetVersion))
 
   await fs.copyFile(
@@ -40,7 +40,7 @@ async function switchApi (targetVersion, packageVersion) {
   await updateImport(packageVersion)
 }
 
-async function cli () {
+async function cli() {
   const version = await selectVersion()
 
   if (version) {

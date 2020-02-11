@@ -15,14 +15,14 @@ type NavigatorWithBattery = Navigator & {
 
 const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
-export function useBattery () {
+export function useBattery() {
   const charging = ref(false)
   const chargingTime = ref(0)
   const dischargingTime = ref(0)
   const level = ref(1)
   const supported = ref('getBattery' in navigator)
 
-  function updateBatteryInfo (this: BatteryManager) {
+  function updateBatteryInfo(this: BatteryManager) {
     charging.value = this.charging
     chargingTime.value = this.chargingTime || 0
     dischargingTime.value = this.dischargingTime || 0

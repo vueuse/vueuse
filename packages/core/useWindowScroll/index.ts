@@ -2,7 +2,7 @@ import { ref } from '../../api'
 import { isClient } from '../../utils'
 import { useEventListener } from '../useEventListener'
 
-export function useWindowScroll () {
+export function useWindowScroll() {
   const x = ref(isClient ? window.pageXOffset : 0)
   const y = ref(isClient ? window.pageYOffset : 0)
 

@@ -10,14 +10,14 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const now = useNow()
     return {
       now,
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { now } = this
 
     // @ts-ignore

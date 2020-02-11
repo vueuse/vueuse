@@ -10,7 +10,7 @@
 import { useI18n } from '@vueuse/i18n'
 
 new Vue({
-  setup () {
+  setup() {
     const { locale, t } = useI18n({
       locale: 'en',
       messages: {

@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { usePreferredColorScheme } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       preferredColorScheme: usePreferredColorScheme(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       preferredColorScheme,
     } = this

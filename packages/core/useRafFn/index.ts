@@ -1,24 +1,24 @@
 import { onUnmounted, getCurrentInstance } from '../../api'
 
-export function useRafFn (fn: () => any, options: {startNow?: boolean} = {}) {
+export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   const { startNow = true } = options
   let started = false
 
-  function loop () {
+  function loop() {
     if (!started)
       return
     fn()
     requestAnimationFrame(loop)
   }
 
-  function start () {
+  function start() {
     if (!started) {
       started = true
       loop()
     }
   }
 
-  function stop () {
+  function stop() {
     started = false
   }
 

@@ -8,7 +8,7 @@
 import { useOnline } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const online = useOnline()
 
     return { online }

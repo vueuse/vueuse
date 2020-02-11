@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useDeviceLight } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       light: useDeviceLight(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       light,
     } = this

@@ -11,7 +11,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { ready, start } = useTimeout(1000)
 
     return {
@@ -20,7 +20,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { ready, start } = this
 
     // @ts-ignore

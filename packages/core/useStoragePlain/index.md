@@ -8,7 +8,7 @@
 import { useStoragePlain } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const greeting = useStoragePlain('my-store', 'hello')
 
     greeting.value = 'hi'

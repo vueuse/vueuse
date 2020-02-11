@@ -8,7 +8,7 @@ Tracks whether user is being inactive
 import { useIdle } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const { idle, lastActive } = useIdle(5 * 60 * 1000) // 5 min timer
 
     return { idle }

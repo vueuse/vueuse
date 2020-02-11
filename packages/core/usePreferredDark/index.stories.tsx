@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { usePreferredDark } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       prefersDark: usePreferredDark(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       prefersDark,
     } = this

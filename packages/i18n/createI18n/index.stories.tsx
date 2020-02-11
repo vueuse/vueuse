@@ -18,11 +18,11 @@ const useI18n = createI18n({
 })
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useI18n()
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       t,
       locale,

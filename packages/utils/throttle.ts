@@ -14,7 +14,7 @@
  *
  * @return {Function}  A new, throttled, function.
  */
-export function throttle (delay: number, noTrailing?: boolean | Function, callback?: Function, debounceMode?: boolean) {
+export function throttle(delay: number, noTrailing?: boolean | Function, callback?: Function, debounceMode?: boolean) {
   /*
    * After wrapper has stopped being called, this timeout ensures that
    * `callback` is executed at the proper times in `throttle` and `end`
@@ -27,13 +27,13 @@ export function throttle (delay: number, noTrailing?: boolean | Function, callba
   let lastExec = 0
 
   // Function to clear existing timeout
-  function clearExistingTimeout () {
+  function clearExistingTimeout() {
     if (timeoutID)
       clearTimeout(timeoutID)
   }
 
   // Function to cancel next exec
-  function cancel () {
+  function cancel() {
     clearExistingTimeout()
     cancelled = true
   }
@@ -50,7 +50,7 @@ export function throttle (delay: number, noTrailing?: boolean | Function, callba
    * functionality and when executed will limit the rate at which `callback`
    * is executed.
    */
-  function wrapper (this: any, ...args: any[]) {
+  function wrapper(this: any, ...args: any[]) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this
     const elapsed = Date.now() - lastExec
@@ -69,7 +69,7 @@ export function throttle (delay: number, noTrailing?: boolean | Function, callba
      * If `debounceMode` is true (at begin) this is used to clear the flag
      * to allow future `callback` executions.
      */
-    function clear () {
+    function clear() {
       timeoutID = undefined
     }
 

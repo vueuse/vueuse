@@ -5,7 +5,7 @@ import { createComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 
 const Demo = createComponent({
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     // @ts-ignore
     const Docs: any = <ShowDocs md={require('./index.md')} />
 

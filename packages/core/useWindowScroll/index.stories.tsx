@@ -11,7 +11,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { x, y } = useWindowScroll()
 
     return {
@@ -20,7 +20,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { x, y } = this
 
     // @ts-ignore

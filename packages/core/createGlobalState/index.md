@@ -18,7 +18,7 @@ export const useGlobalState = createGlobalState(
 import { useGlobalState } from './store'
 
 new Vue({
-  setup () {
+  setup() {
     const state = useGlobalState()
     return { state }
   },

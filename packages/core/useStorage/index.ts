@@ -1,16 +1,16 @@
 import { ref, watch } from '../../api'
 import { useStoragePlain } from '../useStoragePlain'
 
-export function useStorage<T> (
+export function useStorage<T>(
   key: string,
   defaultValue?: T,
   storage: Storage = localStorage,
 ) {
-  function stringify (data?: T) {
+  function stringify(data?: T) {
     return data ? JSON.stringify(data) : ''
   }
 
-  function parse (str?: string) {
+  function parse(str?: string) {
     return str ? JSON.parse(str) : (defaultValue || {})
   }
 
@@ -18,7 +18,7 @@ export function useStorage<T> (
 
   const state = ref<T>(parse(plain.value))
 
-  function update () {
+  function update() {
     plain.value = stringify(state.value as any as T)
   }
 

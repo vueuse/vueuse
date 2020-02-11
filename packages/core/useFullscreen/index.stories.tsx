@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useFullscreen } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const el = ref(null)
     const { enterFullscreen, exitFullscreen } = useFullscreen(el)
 
@@ -17,7 +17,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       enterFullscreen,
     } = this

@@ -8,10 +8,10 @@ const { selectVersion } = require('./selectVersion')
 
 const distDir = path.resolve(__dirname, '..', 'dist')
 
-async function publishFor (targetVueVersion) {
+async function publishFor(targetVueVersion) {
   assert([2, 3].includes(targetVueVersion))
 
-  await buildFor(targetVueVersion, async (targetVersion, packageVersion) => {
+  await buildFor(targetVueVersion, async(targetVersion, packageVersion) => {
     consola.info(`Publish for Vue ${targetVueVersion}.x`)
 
     for (const [pkg] of packages) {
@@ -32,12 +32,12 @@ async function publishFor (targetVueVersion) {
   })
 }
 
-async function publishAll () {
+async function publishAll() {
   await publishFor(2)
   await publishFor(3)
 }
 
-async function cli () {
+async function cli() {
   try {
     const version = await selectVersion()
     if (version)

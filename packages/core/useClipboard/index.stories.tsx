@@ -7,7 +7,7 @@ import { usePermission } from '../usePermission'
 import { useClipboard } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       ...useClipboard(),
       permissionRead: usePermission('clipboard-read'),
@@ -16,7 +16,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       text,
       copy,

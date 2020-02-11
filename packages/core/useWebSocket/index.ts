@@ -2,17 +2,17 @@
 
 import { ref, onMounted, onUnmounted, Ref } from '../../api'
 
-export function useWebSocket (url: string) {
+export function useWebSocket(url: string) {
   const data: Ref<any> = ref(null)
   const state: Ref<'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'> = ref('CONNECTING')
   let ws: WebSocket
-  const close: typeof ws.close = function close (code, reason) {
+  const close: typeof ws.close = function close(code, reason) {
     if (!ws) return
 
     ws.close(code, reason)
   }
 
-  const send: typeof ws.send = function send (data) {
+  const send: typeof ws.send = function send(data) {
     if (!ws) return
 
     ws.send(data)

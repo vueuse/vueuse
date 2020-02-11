@@ -14,7 +14,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { count, inc, dec, set, reset } = useCounter()
     return {
       count,
@@ -25,7 +25,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { count, inc, dec, set, reset } = this
 
     // @ts-ignore

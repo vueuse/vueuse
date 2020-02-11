@@ -3,13 +3,13 @@
 
 import Vue from 'vue'
 
-export function createGlobalState<T> (
+export function createGlobalState<T>(
   factory: () => T,
 ) {
   let state: T
 
   const vm = new Vue({
-    setup () {
+    setup() {
       state = factory()
       return { state }
     },

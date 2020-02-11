@@ -6,11 +6,11 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useDeviceOrientation } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useDeviceOrientation()
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       isAbsolute,
       alpha,

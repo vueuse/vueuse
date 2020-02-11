@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { usePreferredLanguages } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       usePreferredLanguages: usePreferredLanguages(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       usePreferredLanguages,
     } = this

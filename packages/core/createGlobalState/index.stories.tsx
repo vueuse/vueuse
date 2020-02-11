@@ -15,7 +15,7 @@ const useState = createGlobalState(() => {
 })
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const state = useState()
 
     return {
@@ -23,7 +23,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & {state: any; update: any}) {
+  render(this: Vue & {state: any; update: any}) {
     const { state } = this
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />

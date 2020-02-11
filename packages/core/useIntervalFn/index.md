@@ -8,7 +8,7 @@ Simple wrapper for `setInterval`
 import { useIntervalFn } from '@vueuse/core'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const counter = ref(0)
 
     const { start, stop } = useIntervalFn(() => {

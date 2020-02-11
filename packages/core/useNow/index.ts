@@ -1,10 +1,10 @@
 import { ref, getCurrentInstance, onUnmounted } from '../../api'
 
-function getTimestamp () {
+function getTimestamp() {
   return +Date.now()
 }
 
-export function useNow () {
+export function useNow() {
   const now = ref(getTimestamp())
   let started = false
 

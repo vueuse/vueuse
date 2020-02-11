@@ -1,7 +1,7 @@
 import { ref } from '../../api'
 import { useTimeoutFn } from '../useTimeoutFn'
 
-export function useAsyncState<T> (
+export function useAsyncState<T>(
   promise: Promise<T>,
   defaultState: T,
   delay = 0,
@@ -10,7 +10,7 @@ export function useAsyncState<T> (
   const state = ref(defaultState)
   const ready = ref(false)
 
-  function run () {
+  function run() {
     promise
       .then((data) => {
         // @ts-ignore

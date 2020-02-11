@@ -1,7 +1,7 @@
 import { watch } from '../../api'
 import { useTimeout } from '../useTimeout'
 
-export function useTimeoutFn (
+export function useTimeoutFn(
   cb: () => any,
   interval?: number,
 ) {

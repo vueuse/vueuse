@@ -2,7 +2,7 @@ import { ref } from '../../api'
 import { isClient } from '../../utils'
 import { useEventListener } from '../useEventListener'
 
-export function useWindowSize (initialWidth = Infinity, initialHeight = Infinity) {
+export function useWindowSize(initialWidth = Infinity, initialHeight = Infinity) {
   const width = ref(isClient ? window.innerWidth : initialWidth)
   const height = ref(isClient ? window.innerHeight : initialHeight)
 

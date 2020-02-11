@@ -36,7 +36,7 @@ export const useTodos = createGlobalState(
 import { useTodos } from './store'
 
 new Vue({
-  setup () {
+  setup() {
     const todos = useTodos()
     return { todos }
   },

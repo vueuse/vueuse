@@ -2,7 +2,7 @@
 
 import { ref, onMounted, onUnmounted, Ref } from '../../api'
 
-export function useGeolocation (options: PositionOptions = {
+export function useGeolocation(options: PositionOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000,
@@ -19,7 +19,7 @@ export function useGeolocation (options: PositionOptions = {
     speed: null,
   })
 
-  function updatePosition (position: Position) {
+  function updatePosition(position: Position) {
     locatedAt.value = position.timestamp
     coords.value = position.coords
     error.value = null

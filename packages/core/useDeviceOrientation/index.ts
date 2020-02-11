@@ -3,7 +3,7 @@
 import { ref, Ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
-export function useDeviceOrientation () {
+export function useDeviceOrientation() {
   const isAbsolute = ref(false)
   const alpha: Ref<number | null> = ref(0)
   const beta: Ref<number | null> = ref(0)

@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useBrowserLocation } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const location = useBrowserLocation()
 
     return {
@@ -14,7 +14,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       location,
     } = this

@@ -12,7 +12,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const defaultText = 'Please wait 3 seconds'
     const text = ref(defaultText)
     const { ready, start } = useTimeoutFn(() => {
@@ -31,7 +31,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { ready, restart, text } = this
 
     // @ts-ignore

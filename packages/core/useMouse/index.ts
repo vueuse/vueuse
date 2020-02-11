@@ -1,7 +1,7 @@
 import { ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
-export function useMouse (options: {
+export function useMouse(options: {
   touch?: boolean
   resetOnTouchEnds?: boolean
   initial?: {x: number; y: number}

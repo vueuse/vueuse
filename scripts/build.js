@@ -16,7 +16,7 @@ const metaFiles = [
 
 assert(process.cwd() !== __dirname)
 
-async function buildMetaFiles (targetVersion, packageVersion) {
+async function buildMetaFiles(targetVersion, packageVersion) {
   for (const [pkg, options] of packages) {
     const packageDist = path.resolve(__dirname, '..', 'dist', pkg)
     const packageSrc = path.resolve(__dirname, '..', 'packages', pkg)
@@ -75,7 +75,7 @@ async function buildMetaFiles (targetVersion, packageVersion) {
   }
 }
 
-async function buildFor (targetVersion, publishCallback) {
+async function buildFor(targetVersion, publishCallback) {
   assert([2, 3].includes(targetVersion))
   consola.log('')
   consola.info(`Build for Vue ${targetVersion}.x`)
@@ -117,12 +117,12 @@ async function buildFor (targetVersion, publishCallback) {
   await restoreApi()
 }
 
-async function buildAll () {
+async function buildAll() {
   await buildFor(2)
   await buildFor(3)
 }
 
-async function cli () {
+async function cli() {
   try {
     const version = await selectVersion()
     if (version)

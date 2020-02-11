@@ -18,7 +18,7 @@ export interface LocationSensorState {
   search?: string
 }
 
-export function useBrowserLocation (target: Ref<HTMLElement> = ref(document.body)) {
+export function useBrowserLocation(target: Ref<HTMLElement> = ref(document.body)) {
   const buildState = (trigger: string) => {
     const { state, length } = history
 

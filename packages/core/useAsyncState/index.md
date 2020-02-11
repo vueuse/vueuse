@@ -9,7 +9,7 @@ import { useAsyncState } from '@vueuse/core'
 import axios from 'axios'
 
 export default {
-  setup () {
+  setup() {
     const { state, ready } = useAsyncState(
       axios
         .get('https://jsonplaceholder.typicode.com/todos/1')

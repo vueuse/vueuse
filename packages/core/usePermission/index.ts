@@ -12,7 +12,7 @@ export type GeneralPermissionDescriptor =
 
 const noop = () => {}
 
-export function usePermission (permissionDesc: GeneralPermissionDescriptor | PermissionDescriptor['name'] | DescriptorNamePolyfill) {
+export function usePermission(permissionDesc: GeneralPermissionDescriptor | PermissionDescriptor['name'] | DescriptorNamePolyfill) {
   let permissionStatus: PermissionStatus | null = null
 
   const desc = typeof permissionDesc === 'string'

@@ -2,7 +2,7 @@
 
 import { ref, onMounted, onUnmounted } from '../../api'
 
-export function useMediaQuery (query: string) {
+export function useMediaQuery(query: string) {
   let mediaQuery!: MediaQueryList
 
   // try to fetch initial value (avoid SSR issues)
@@ -10,7 +10,7 @@ export function useMediaQuery (query: string) {
     mediaQuery = window.matchMedia(query)
 
   const matches = ref(mediaQuery ? mediaQuery.matches : false)
-  function handler (event: MediaQueryListEvent) {
+  function handler(event: MediaQueryListEvent) {
     matches.value = event.matches
   }
 

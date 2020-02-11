@@ -27,7 +27,7 @@ export const useI18n = createI18n({
 import { useI18n } from './i18n'
 
 new Vue({
-  setup () {
+  setup() {
     const { locale, t } = useI18n()
 
     const helloText = computed(() => t('hello'))

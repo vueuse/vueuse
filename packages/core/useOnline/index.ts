@@ -1,6 +1,6 @@
 import { useNetwork } from '../useNetwork'
 
-export function useOnline () {
+export function useOnline() {
   const { isOnline } = useNetwork()
   return isOnline
 }

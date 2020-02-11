@@ -10,7 +10,7 @@ type ShareOptions = {
   url?: string
 }
 
-export async function useShare (shareOpts: ShareOptions) {
+export async function useShare(shareOpts: ShareOptions) {
   const _navigator = (window.navigator as NavigatorWithShare)
 
   if (_navigator && _navigator.share) {

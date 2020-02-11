@@ -5,7 +5,7 @@ const prettier = require('prettier/standalone')
 
 const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 
-module.exports = function (source, u) {
+module.exports = function(source, u) {
   let request = this._module.request
 
   request = request.replace(/\\/g, '/')

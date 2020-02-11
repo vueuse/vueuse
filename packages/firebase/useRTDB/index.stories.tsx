@@ -17,13 +17,13 @@ if (!firebase.apps.length) {
 const db = firebase.database()
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       todos: useRTDB(db.ref('todos')),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       todos,
     } = this

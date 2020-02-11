@@ -1,6 +1,6 @@
 import { ref, Ref, watch } from '../../api'
 
-export function useMouseInElement (target: Ref<Element> = ref(document.body), options: {
+export function useMouseInElement(target: Ref<Element> = ref(document.body), options: {
   handleOutside?: boolean
   touch?: boolean
   resetOnTouchEnds?: boolean

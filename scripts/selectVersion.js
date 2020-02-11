@@ -1,4 +1,4 @@
-async function selectVersion () {
+async function selectVersion() {
   let version = -1
 
   if (process.argv[2] === 'all')

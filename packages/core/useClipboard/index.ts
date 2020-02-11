@@ -3,7 +3,7 @@
 import { ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
-export function useClipboard () {
+export function useClipboard() {
   const text = ref('')
   const supported = ref('clipboard' in window.navigator)
 
@@ -13,7 +13,7 @@ export function useClipboard () {
     })
   })
 
-  function copy (txt: string) {
+  function copy(txt: string) {
     text.value = txt
 
     return window.navigator.clipboard.writeText(txt)

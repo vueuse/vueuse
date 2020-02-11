@@ -7,7 +7,7 @@ Provides handles to cancel and/or reset the timeout.
 
 ```jsx {3}
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { ready, start } = useTimeout(1000)
 
     return {
@@ -16,7 +16,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this) {
+  render(this) {
     const { ready, start } = this
 
     return (

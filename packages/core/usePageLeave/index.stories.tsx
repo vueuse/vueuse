@@ -6,13 +6,13 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { usePageLeave } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       isLeft: usePageLeave(),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       isLeft,
     } = this

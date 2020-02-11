@@ -6,11 +6,11 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useGeolocation } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useGeolocation()
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       coords,
       locatedAt,

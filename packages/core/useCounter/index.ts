@@ -1,6 +1,6 @@
 import { ref } from '../../api'
 
-export function useCounter (initialValue = 0) {
+export function useCounter(initialValue = 0) {
   const count = ref(initialValue)
 
   const inc = (delta = 1) => (count.value += delta)

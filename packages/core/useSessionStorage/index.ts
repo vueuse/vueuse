@@ -1,6 +1,6 @@
 import { useStorage } from '../useStorage'
 
-export function useSessionStorage<T> (
+export function useSessionStorage<T>(
   key: string,
   defaultValue?: T,
 ) {

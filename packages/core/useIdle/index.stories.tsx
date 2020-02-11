@@ -13,7 +13,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { idle, lastActive } = useIdle(5000, false, undefined, 20)
     const now = useNow()
 
@@ -24,7 +24,7 @@ const Demo = createComponent({
     return { idle, lastActive, now, idledFor }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { idle, idledFor } = this
 
     // @ts-ignore

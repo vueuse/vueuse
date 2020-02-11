@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useCssVar } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const el = ref(null)
     const color = useCssVar('--color', el)
 
@@ -24,7 +24,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       switchColor,
       color,

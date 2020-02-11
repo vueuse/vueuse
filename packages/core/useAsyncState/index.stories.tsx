@@ -13,7 +13,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { state, ready } = useAsyncState(
       axios
         .get('https://jsonplaceholder.typicode.com/todos/1')
@@ -25,7 +25,7 @@ const Demo = createComponent({
     return { state, ready }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { state, ready } = this
 
     // @ts-ignore

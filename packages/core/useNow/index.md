@@ -8,7 +8,7 @@ Reactive current timestamp
 import { useNow } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const now = useNow()
 
     return { now }

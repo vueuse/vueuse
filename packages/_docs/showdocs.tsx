@@ -17,7 +17,7 @@ const ShowDocsFunc = ({ props }: RenderContext<DocsProps>) => {
 export const ShowDocs: any = ofType<DocsProps>().convert(ShowDocsFunc as any)
 
 export const redirect = (url: string) => createComponent({
-  setup () {
+  setup() {
     window.open(url, '_blank')
     history.back()
   },

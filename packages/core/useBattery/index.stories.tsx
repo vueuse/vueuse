@@ -5,11 +5,11 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useBattery } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useBattery()
   },
 
-  render (this: any) {
+  render(this: any) {
     const {
       charging,
       chargingTime,

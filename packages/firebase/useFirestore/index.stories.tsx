@@ -17,14 +17,14 @@ if (!firebase.apps.length) {
 const db = firebase.firestore()
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return {
       todos: useFirestore(db.collection('todos')),
       user: useFirestore(db.collection('users').doc('ctTVGl9swtW9ghhG7vj6')),
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       todos,
       user,

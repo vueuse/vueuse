@@ -8,7 +8,7 @@
 import { useMouseInElement } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const { x, y } = useMouseInElement()
 
     return { x, y }

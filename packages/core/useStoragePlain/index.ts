@@ -6,10 +6,10 @@ export function useStoragePlain (key: string, defaultValue: boolean, storage?: S
 export function useStoragePlain (key: string, defaultValue: number, storage?: Storage): Ref<number>
 export function useStoragePlain (key: string, defaultValue: null, storage?: Storage): Ref<any>
 export function useStoragePlain<T extends object> (key: string, defaultValue: T, storage?: Storage): Ref<T>
-export function useStoragePlain<T extends (string|number|boolean|null)> (key: string, defaultValue: T, storage: Storage = localStorage) {
+export function useStoragePlain<T extends(string|number|boolean|null)> (key: string, defaultValue: T, storage: Storage = localStorage) {
   const data = ref<T>(defaultValue)
 
-  function read () {
+  function read() {
     try {
       let rawValue = storage.getItem(key)
       if (rawValue === undefined && defaultValue) {

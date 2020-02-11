@@ -8,7 +8,7 @@ interface DeviceMotionOptions {
   throttleMs: 10
 }
 
-export function useDeviceMotion (options: DeviceMotionOptions = { throttleMs: 10 }) {
+export function useDeviceMotion(options: DeviceMotionOptions = { throttleMs: 10 }) {
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
   const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = ref({ alpha: null, beta: null, gamma: null })
   const interval = ref(0)
@@ -18,7 +18,7 @@ export function useDeviceMotion (options: DeviceMotionOptions = { throttleMs: 10
     z: null,
   })
 
-  function onDeviceMotion (event: DeviceMotionEvent) {
+  function onDeviceMotion(event: DeviceMotionEvent) {
     acceleration.value = event.acceleration
     accelerationIncludingGravity.value = event.accelerationIncludingGravity
     rotationRate.value = event.rotationRate

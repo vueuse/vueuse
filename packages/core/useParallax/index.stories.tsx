@@ -9,7 +9,7 @@ import { useMediaQuery } from '../useMediaQuery'
 import { useParallax } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const demo = ref(null)
 
     return {
@@ -23,7 +23,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       tilt,
       roll,

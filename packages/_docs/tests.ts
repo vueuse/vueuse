@@ -4,7 +4,7 @@ import { createComponent, init } from '../api'
 
 const localVue = createLocalVue()
 
-export function renderHook<V, Props = unknown, Data = unknown> (
+export function renderHook<V, Props = unknown, Data = unknown>(
   setup: () => V,
 ) {
   init()

@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useRafFn } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const count = ref(0)
     const { start, stop } = useRafFn(() => {
       count.value += 1
@@ -19,7 +19,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const { count } = this
 
     // @ts-ignore

@@ -2,7 +2,7 @@ import VueI18n from 'vue-i18n'
 import Vue from 'vue'
 import { ref, watch } from '../../api'
 
-export function createI18n (options?: VueI18n.I18nOptions) {
+export function createI18n(options?: VueI18n.I18nOptions) {
   Vue.use(VueI18n)
   const i18n = new VueI18n(options)
 

@@ -7,7 +7,7 @@ export type FirebaseDocRef<T> =
   firebase.firestore.Query<T> |
   firebase.firestore.DocumentReference<T>
 
-function getData<T> (
+function getData<T>(
   docRef: firebase.firestore.DocumentSnapshot<T> | firebase.firestore.QueryDocumentSnapshot<T>,
 ) {
   const data = docRef.data()
@@ -30,7 +30,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
   docRef: firebase.firestore.Query<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T[]>
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
   errorHandler = (err: Error) => {},
 ) {

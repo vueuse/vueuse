@@ -1,6 +1,6 @@
 import { useStorage } from '../useStorage'
 
-export function useLocalStorage<T> (
+export function useLocalStorage<T>(
   key: string,
   defaultValue?: T,
 ) {

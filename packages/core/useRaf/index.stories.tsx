@@ -10,7 +10,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const elapsed = useRaf()
 
     return {
@@ -18,7 +18,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { elapsed } = this
 
     // @ts-ignore

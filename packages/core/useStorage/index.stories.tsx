@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useStorage } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const state = useStorage('vue-use-locale-storage', {
       name: 'Banana',
       color: 'Yellow',
@@ -18,7 +18,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & {state: any; update: any}) {
+  render(this: Vue & {state: any; update: any}) {
     const { state } = this
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />

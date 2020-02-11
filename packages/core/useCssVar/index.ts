@@ -1,6 +1,6 @@
 import { onMounted, ref, Ref, watch, computed } from '../../api'
 
-export function useCssVar (
+export function useCssVar(
   prop: string,
   refEl?: Ref<Element | null>,
 ) {

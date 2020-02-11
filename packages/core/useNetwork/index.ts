@@ -17,7 +17,7 @@ export interface NetworkState {
   type?: NetworkType
 }
 
-export function useNetwork () {
+export function useNetwork() {
   const isOnline = ref(true)
   const saveData = ref(false)
   const offlineAt: Ref<number | undefined> = ref(undefined)
@@ -29,7 +29,7 @@ export function useNetwork () {
   const navigator = window.navigator
   const connection = 'connection' in navigator ? (navigator as any).connection : undefined
 
-  function updateNetworkInformation () {
+  function updateNetworkInformation() {
     isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
 

@@ -10,7 +10,7 @@ type Inject = {
 }
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const count = ref(0)
 
     useIntervalFn(() => {
@@ -22,7 +22,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & Inject) {
+  render(this: Vue & Inject) {
     const { count } = this
 
     // @ts-ignore

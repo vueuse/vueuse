@@ -1,12 +1,12 @@
 import firebase from 'firebase/app'
 import { ref, onUnmounted } from '../../api'
 
-export function useRTDB (
+export function useRTDB(
   docRef: firebase.database.Reference,
 ) {
   const data = ref<any>(null)
 
-  function update (snapshot: firebase.database.DataSnapshot) {
+  function update(snapshot: firebase.database.DataSnapshot) {
     data.value = snapshot.val()
   }
 

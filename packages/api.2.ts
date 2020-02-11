@@ -5,6 +5,6 @@ export * from '@vue/composition-api'
 
 export const version = 2
 
-export function init () {
+export function init() {
   Vue.use(CompositionAPI)
 }

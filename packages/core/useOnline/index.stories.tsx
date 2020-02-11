@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useOnline } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const online = useOnline()
 
     return {
@@ -14,7 +14,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & {online: boolean}) {
+  render(this: Vue & {online: boolean}) {
     const { online } = this
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />

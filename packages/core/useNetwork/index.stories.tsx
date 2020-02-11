@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useNetwork, NetworkState } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const network = useNetwork()
 
     return {
@@ -14,7 +14,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & NetworkState) {
+  render(this: Vue & NetworkState) {
     const {
       isOnline,
       offlineAt,

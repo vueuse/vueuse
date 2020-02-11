@@ -12,7 +12,7 @@
     "typings": "tsc --emitDeclarationOnly",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint {packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}",
+    "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
     "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
@@ -52,7 +52,7 @@
     "@vue/runtime-dom": "^3.0.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config-vue": "0.2.10",
+    "@antfu/eslint-config-vue": "^0.2.11",
     "@babel/core": "7.8.3",
     "@babel/plugin-proposal-optional-chaining": "7.8.3",
     "@babel/preset-env": "7.8.3",

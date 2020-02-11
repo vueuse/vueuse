@@ -1,7 +1,7 @@
 import { ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
-export function usePageLeave () {
+export function usePageLeave() {
   const isLeft = ref(false)
 
   const handler = (event: MouseEvent) => {

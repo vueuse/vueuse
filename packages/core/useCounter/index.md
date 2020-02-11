@@ -8,7 +8,7 @@ Basic counter with utility functions.
 import { useCounter } from '@vueuse/core'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const { count, inc, dec, set, reset } = useCounter()
     return {
       count,
@@ -19,7 +19,7 @@ const Demo = createComponent({
     }
   },
 
-  render () {
+  render() {
     const { count, inc, dec, set, reset } = this
     return (
       <div>

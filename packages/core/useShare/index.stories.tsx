@@ -6,7 +6,7 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useShare } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     const share = () => useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
 
     return {
@@ -14,7 +14,7 @@ const Demo = createComponent({
     }
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     // @ts-ignore
     const Docs: any = <ShowDocs md={require('./index.md')} />
 

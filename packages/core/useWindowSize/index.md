@@ -8,7 +8,7 @@ Reactive window size
 import { useWindowSize } from '@vueuse/core'
 
 export default {
-  setup () {
+  setup() {
     const { width, height } = useWindowSize()
 
     return { width, height }

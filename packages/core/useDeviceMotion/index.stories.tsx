@@ -6,11 +6,11 @@ import { ShowDocs } from '../../_docs/showdocs'
 import { useDeviceMotion } from '.'
 
 const Demo = createComponent({
-  setup () {
+  setup() {
     return useDeviceMotion()
   },
 
-  render (this: Vue & any) {
+  render(this: Vue & any) {
     const {
       acceleration,
       accelerationIncludingGravity,

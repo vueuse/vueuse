@@ -2,17 +2,17 @@
 
 import { ref, onMounted, onUnmounted, Ref } from '../../api'
 
-export function useWebWorker (url: string) {
+export function useWebWorker(url: string) {
   const data: Ref<any> = ref(null)
   let worker: Worker
 
-  const post: typeof worker.postMessage = function post (val: any) {
+  const post: typeof worker.postMessage = function post(val: any) {
     if (!worker) return
 
     worker.postMessage(val)
   }
 
-  const terminate: typeof worker.terminate = function terminate () {
+  const terminate: typeof worker.terminate = function terminate() {
     if (!worker) return
 
     worker.terminate()

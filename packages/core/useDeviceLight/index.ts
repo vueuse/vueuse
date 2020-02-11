@@ -3,7 +3,7 @@
 import { ref, Ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
-export function useDeviceLight () {
+export function useDeviceLight() {
   const light: Ref<number | null> = ref(null)
 
   useEventListener('devicelight', (event) => {
