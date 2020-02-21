@@ -1,10 +1,10 @@
 const exec = require('child_process').execSync
 const assert = require('assert')
 const path = require('path')
-const consola = require('consola')
 const { buildFor } = require('./build')
 const packages = require('./packages')
 const { selectVersion } = require('./selectVersion')
+const consola = require('consola')
 
 const distDir = path.resolve(__dirname, '..', 'dist')
 
@@ -47,6 +47,7 @@ async function cli() {
   }
   catch (e) {
     console.error(e)
+    process.exit(1)
   }
 }
 
