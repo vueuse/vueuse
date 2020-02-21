@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "node ./scripts/build",
