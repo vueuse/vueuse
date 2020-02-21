@@ -1,16 +1,22 @@
 import { renderHook } from '../../_docs/tests'
-import { useStoragePlain } from '.'
+import { useStorage } from '.'
 
-const KEY = 'key'
+const KEY = 'custom-key'
 
-describe('useStoragePlain', () => {
+describe('useStorage', () => {
   afterEach(() => {
     localStorage.clear()
+    // @ts-ignore
+    localStorage.setItem.mockClear()
+    // @ts-ignore
+    localStorage.getItem.mockClear()
+    // @ts-ignore
+    localStorage.removeItem.mockClear()
   })
 
   it('string', () => {
     renderHook(() => {
-      const ref = useStoragePlain(KEY, 'a')
+      const ref = useStorage(KEY, 'a')
 
       expect(ref.value).toBe('a')
 
@@ -26,7 +32,7 @@ describe('useStoragePlain', () => {
     localStorage.setItem(KEY, '0')
 
     renderHook(() => {
-      const ref = useStoragePlain(KEY, 1)
+      const ref = useStorage(KEY, 1)
 
       expect(ref.value).toBe(0)
 
@@ -48,7 +54,7 @@ describe('useStoragePlain', () => {
     localStorage.setItem(KEY, 'false')
 
     renderHook(() => {
-      const ref = useStoragePlain(KEY, true)
+      const ref = useStorage(KEY, true)
 
       expect(ref.value).toBe(false)
 
@@ -66,7 +72,7 @@ describe('useStoragePlain', () => {
     localStorage.setItem(KEY, '0')
 
     renderHook(() => {
-      const ref = useStoragePlain(KEY, null)
+      const ref = useStorage(KEY, null)
 
       expect(ref.value).toBe('0')
     })
@@ -76,13 +82,44 @@ describe('useStoragePlain', () => {
     localStorage.setItem(KEY, '0')
 
     renderHook(() => {
-      const ref = useStoragePlain(KEY, '1')
+      const ref = useStorage(KEY, '1')
 
       expect(ref.value).toBe('0')
 
       ref.value = '2'
 
       expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    })
+  })
+
+  it('object', () => {
+    expect(localStorage.getItem(KEY)).toEqual(undefined)
+
+    renderHook(() => {
+      const ref = useStorage(KEY, {
+        name: 'a',
+        data: 123,
+      })
+
+      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+      expect(ref.value).toEqual({
+        name: 'a',
+        data: 123,
+      })
+
+      ref.value.name = 'b'
+
+      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+
+      ref.value.data = 321
+
+      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+
+      // @ts-ignore
+      ref.value = null
+
+      expect(localStorage.removeItem).toBeCalledWith(KEY)
     })
   })
 })
