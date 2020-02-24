@@ -87,7 +87,7 @@
     "eslint-plugin-markdown": "1.0.1",
     "firebase": "7.9.1",
     "fs-extra": "8.1.0",
-    "github-markdown-css": "3.0.1",
+    "github-markdown-css": "4.0.0",
     "husky": "4.2.3",
     "inquirer": "7.0.4",
     "jest": "25.1.0",
