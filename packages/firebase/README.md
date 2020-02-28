@@ -27,9 +27,9 @@ npm i @vueuse/firebase<b>@vue2</b> firebase
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
- — Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) - reactive Firestore binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) - reactive Firebase Realtime Database binding
+- Firebase
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--FUNCTIONS_LIST_ENDS-->
 

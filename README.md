@@ -93,55 +93,55 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
- — Animation
-  - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) - reactive counter with every interval fired
-  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) - simple wrapper for `setInterval`
-  - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow) - reactive current timestamp
-  - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf) - reactive time elapsed on every `requestAnimationFrame`
-  - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) - call function on every `requestAnimationFrame`
-  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) - update value after a specified time
-  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn)
+- Animation
+  - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter with every interval fired
+  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — simple wrapper for `setInterval`
+  - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow) — reactive current timestamp
+  - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf) — reactive time elapsed on every `requestAnimationFrame`.
+  - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`.
+  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
+  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
 
- — Browser
-  - [`useBrowserLocation`](https://vueuse.js.org/?path=/story/browser--usebrowserlocation) - reactive browser location
-  - [`useClipboard`](https://vueuse.js.org/?path=/story/browser--useclipboard) - reactive Clipboard API as well as to asynchronously read from and write to the system clipboard
-  - [`useCssVar`](https://vueuse.js.org/?path=/story/browser--usecssvar) - manipulate CSS variables
-  - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener) - use EventListener with ease
-  - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen) - reactive Fullscreen API in full-screen mode
-  - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) - reactive media query
-  - [`usePermission`](https://vueuse.js.org/?path=/story/browser--usepermission) - reactive Permissions API
-  - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme) - reactive prefers-color-scheme media query
-  - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark) - reactive dark theme preference
-  - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages) - reactive Navigator Languages
-  - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) - reactive Web Share API
+- Browser
+  - [`useBrowserLocation`](https://vueuse.js.org/?path=/story/browser--usebrowserlocation) — reactive browser location
+  - [`useClipboard`](https://vueuse.js.org/?path=/story/browser--useclipboard) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
+  - [`useCssVar`](https://vueuse.js.org/?path=/story/browser--usecssvar) — manipulate CSS variables
+  - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener) — use EventListener with ease
+  - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
+  - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) — reactive media query
+  - [`usePermission`](https://vueuse.js.org/?path=/story/browser--usepermission) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
+  - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query.
+  - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark) — reactive dark theme preference.
+  - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
+  - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
 
- — Misc
-  - [`useWebSocket`](https://vueuse.js.org/?path=/story/misc--usewebsocket) - reactive simple WebSocket client
-  - [`useWebWorker`](https://vueuse.js.org/?path=/story/misc--usewebworker) - simple Web Workers registration and communication
+- Misc
+  - [`useWebSocket`](https://vueuse.js.org/?path=/story/misc--usewebsocket) — reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client.
+  - [`useWebWorker`](https://vueuse.js.org/?path=/story/misc--usewebworker) — simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication.
 
- — Sensors
-  - [`useBattery`](https://vueuse.js.org/?path=/story/sensors--usebattery) - reactive Battery Status API
-  - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight) - reactive DeviceLightEvent
-  - [`useDeviceMotion`](https://vueuse.js.org/?path=/story/sensors--usedevicemotion) - reactive DeviceMotionEvent
-  - [`useDeviceOrientation`](https://vueuse.js.org/?path=/story/sensors--usedeviceorientation) - reactive DeviceOrientationEvent
-  - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) - reactive Geolocation API
-  - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) - reactive mouse position
-  - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) - reactive mouse position in an element
-  - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) - reactive Network status
-  - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline) - reactive online state
-  - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave) - reactive state to show whether mouse leaves the page
-  - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax) - create parallax effect easily
-  - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) - reactive window scroll
-  - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) - reactive window size
+- Sensors
+  - [`useBattery`](https://vueuse.js.org/?path=/story/sensors--usebattery) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
+  - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
+  - [`useDeviceMotion`](https://vueuse.js.org/?path=/story/sensors--usedevicemotion) — reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)
+  - [`useDeviceOrientation`](https://vueuse.js.org/?path=/story/sensors--usedeviceorientation) — reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
+  - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
+  - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
+  - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
+  - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) — reactive Network status
+  - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline) — reactive online state
+  - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave) — reactive state to show whether mouse leaves the page.
+  - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax) — create parallax effect easily
+  - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) — reactive window scroll
+  - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
- — State
-  - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) - keep state in global scope to be reused across Vue instances
-  - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate) - reactive async state
-  - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) - basic counter with utility functions
-  - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle)
-  - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) - reactive LocalStorage
-  - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) - reactive SessionStorage
-  - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) - reactive LocalStorage
+- State
+  - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep state in global scope to be reused across Vue instances
+  - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate) — reactive async state
+  - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) — basic counter with utility functions.
+  - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle) — tracks whether user is being inactive
+  - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+  - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+  - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 <!--FUNCTIONS_LIST_ENDS-->
 
@@ -154,12 +154,12 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
 - 🌍 i18n ([`@vueuse/i18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--read-me)) - Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)
-  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) - create a global i18n instance to be reused
-  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) - use vue-i18n instance
+  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) — create a global i18n instance to be reused
+  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) — use vue-i18n instance
 
 - 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - enables realtime bindings for [Firebase](https://firebase.google.com/)
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) - reactive Firestore binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) - reactive Firebase Realtime Database binding
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 <!--ADDONS_LIST_ENDS-->
 
 ## 🔬 Technical Details

@@ -1,5 +1,7 @@
 # useTimeoutFn
 
+> Call function after a given time. 
+
 ```jsx {6-9}
 const Demo = createComponent({
   setup() {

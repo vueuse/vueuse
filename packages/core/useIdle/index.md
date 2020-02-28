@@ -1,6 +1,6 @@
 # useIdle
 
-Tracks whether user is being inactive
+> Tracks whether user is being inactive
 
 ## Usage
 

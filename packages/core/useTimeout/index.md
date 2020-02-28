@@ -1,6 +1,6 @@
 # useTimeout
 
-> Update value after a specified time. Provides handles to cancel and/or reset the timeout.
+> Update value after a given time. Provides handles to cancel and/or reset the timeout.
 
 ## Usage
 

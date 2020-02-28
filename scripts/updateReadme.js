@@ -34,8 +34,7 @@ async function updateReadme() {
         continue
 
       let description = (mdRaw
-        .replace(/\[(.+?)\]\(.*\)/g, '$1')
-        .match(/\n> (.+?)[.,\n]/) || []
+        .match(/\n> (.+?)(?:, |\. |\n)/) || []
       )[1] || ''
 
       if (description.includes('DEPRATED'))
@@ -67,9 +66,9 @@ async function updateReadme() {
       addOnsList += `\n- ${packageOptions.name} ([\`@vueuse/${pkg}\`](${storybookUrl}/?path=/story/add-ons-${pkg}--read-me)) - ${packageOptions.description}\n`
 
     for (const category of Object.keys(categories).sort()) {
-      functionList += ` — ${category}\n`
+      functionList += `- ${category}\n`
       for (const { name, url, description } of categories[category]) {
-        const desc = description ? ` - ${description}` : ''
+        const desc = description ? ` — ${description}` : ''
         functionList += `  - [\`${name}\`](${url})${desc}\n`
         if (pkg !== 'core')
           addOnsList += `  - [\`${name}\`](${url})${desc}\n`

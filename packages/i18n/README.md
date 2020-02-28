@@ -27,9 +27,9 @@ npm i @vueuse/i18n<b>@vue2</b> vue-i18n
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
- — i18n
-  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) - create a global i18n instance to be reused
-  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) - use vue-i18n instance
+- i18n
+  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) — create a global i18n instance to be reused
+  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) — use vue-i18n instance
 
 <!--FUNCTIONS_LIST_ENDS-->
 
