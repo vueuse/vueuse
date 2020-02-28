@@ -34,7 +34,7 @@ async function updateReadme() {
         continue
 
       let description = (mdRaw
-        .match(/\n> (.+?)(?:, |\. |\n)/) || []
+        .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 
       if (description.includes('DEPRATED'))
