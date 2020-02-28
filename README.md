@@ -20,12 +20,13 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- 0 dependencies ⚡ No worry about your bundle size
-- Fully tree shakable 🌴 Only take what you want
-- Seamless migration 🕶 Works for **both** Vue 3.x and 2.x
-- Browser compatible 🌐 Use it without complex building tools
-- Intractive docs & demos 🎪 [Check out the Storybook!](https://vueuse.js.org)
-- Optional [Add-ons](#-add-ons) 🔌 Firebase, vue-i18n, etc
+- ⚡ **0 dependencies**: No worry about your bundle size
+- 🌴 **Fully tree shakable**: Only take what you want
+- 🦾 **Type Strong**: Written in Typescript
+- 🕶 **Seamless migration**: Works for **both** Vue 3.x and 2.x
+- 🌎 **Browser compatible**: Use it though CDN
+- 🎪 **Intractive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
+- 🔌 **Optional [Add-ons](#-add-ons)** Firebase, vue-i18n, etc
 
 ## 🦄 Usage
 
@@ -54,7 +55,7 @@ new Vue({
 })
 ```
 
-Refer to [functions](#-functions) and [documentations](https://vueuse.js.org/) for more details.
+Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org/) for more details.
 
 ## 📦 Install
 
@@ -82,12 +83,12 @@ Please [register the Composition API Plugin](https://github.com/vuejs/compositio
 <script src="https://unpkg.com/@vueuse/core@vue2"></script>
 ```
 
-It will be exposed to global variable as `window.VueUse`
+It will be exposed to global as `window.VueUse`
 
 
 ## ⚡ Functions
 
-You can checkout the full documents and live demos in [Storybook](https://vueuse.js.org/).
+You can check out the full documents and live demos in [Storybook](https://vueuse.js.org/).
 
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
@@ -165,11 +166,11 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 ### The Versioning
 
-For every release, it will release two version of this package. The `3.x.x` is used for Vue 3.x and the `2.x.x` is used for 2.x. We use the major version number to distinguish the different target version will the minor and patch numbers are shared in both packages.
+For every release, it will release two versions of this package. The `3.x.x` is used for Vue 3.x and the `2.x.x` is used for 2.x. We use the major version number to distinguish the different target versions will the minor and patch numbers are shared in both packages.
 
 ### Different between 3.x and 2.x
 
-Since the Composition API will be available in 3.x. Using it in 2.x require you use a polyfill. For 3.x build, we use the API from [`@vue/runtime-dom`](https://www.npmjs.com/package/@vue/runtime-dom), and for 2.x, it's [`@vue/composition-api`](https://www.npmjs.com/package/@vue/composition-api). All the functions exported in this package behaves the same.
+For 3.x build, we use the API from [`@vue/runtime-dom`](https://www.npmjs.com/package/@vue/runtime-dom), and for 2.x, it's [`@vue/composition-api`](https://www.npmjs.com/package/@vue/composition-api). All the functions exported in this package behaves the same.
 
 ```js
 // 3.x build
@@ -185,7 +186,7 @@ See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contri
 
 ## 🌸 Thanks
 
-This project is heavily inspired by following awesome projects.
+This project is heavily inspired by the following awesome projects.
 
 - [streamich/react-use](https://github.com/streamich/react-use)
 - [u3u/vue-hooks](https://github.com/u3u/vue-hooks)
