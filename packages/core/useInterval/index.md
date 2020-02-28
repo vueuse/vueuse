@@ -1,6 +1,6 @@
 # useInterval
 
-> Reactive counter with every interval fired
+> Reactive counter increases on every interval
 
 ## Usage
 

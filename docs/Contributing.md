@@ -41,7 +41,66 @@ There are some notes for adding new functions
 - Function names should start with `use` or `create` in lowercases.
 - The implementation should be placed under `packages/core` as a folder and exposing in `index.ts`
 - In the `core` package, try not to introduce 3-rd party dependencies as this package is aim to be as lightweight as possible. 
-- If you do want to introduce 3-rd party dependencies, please contribute to non-`core` package or create a new package for that.
+- If you do want to introduce 3-rd party dependencies, please contribute to add-ons.
+
+## Contributing to new add-ons
+
+New add-ons are great welcome!
+
+- Create a new folder under `packages/`, name it as your add-on name. 
+- Add add-on details in `scripts/packages.js`
+- Create `README.md` and `readme.stories.tsx` under that folder, `package.json` will be auto generated.
+- Add functions as you would do to the core package.
+- Run `npm run update:readme` to update the docs.
+
+## Project Structure
+
+### Monorepo
+
+We use monorepo for multiple packages
+
+```
+package
+  core/         - the core package
+  firebase/     - the Firebase add-on
+  <whatever>/   - add-ons named <whatever>
+  utils/        - utils
+  api.ts        - generated for API reference, you should always import form this file
+  api.2.ts      - API for Vue 2. DO NOT IMPORT from this file.
+  api.3.ts      - API for Vue 3. DO NOT IMPORT from this file.
+```
+
+### Function Folder
+
+A function folder typicality contains these 4 files:
+
+```bash
+index.ts            # function source code itself
+index.stories.tsx   # storybook demo
+index.test.ts       # jest unit testing
+index.md            # documentation
+```
+
+for `index.ts` you should export the function with name.
+
+```ts
+// DO
+export { useMyFunction }
+
+// DON'T
+export default useMyFunction
+```
+
+for `index.md` the first sentence will be displayed as the short intro in the function list, so try to keep it brief and clear.
+
+```md
+# useMyFunction
+
+> This will be the intro. The detail descriptions...
+```
+
+for `index.stories.tsx`, you can duplicate for the other functions and modify it.
+
 
 ## Thanks
 

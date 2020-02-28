@@ -25,8 +25,8 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - 🦾 **Type Strong**: Written in Typescript
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
 - 🌎 **Browser compatible**: Use it though CDN
-- 🎪 **Intractive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)** Firebase, vue-i18n, etc
+- 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
+- 🔌 **Optional [Add-ons](#-add-ons)**: Firebase, vue-i18n, etc
 
 ## 🦄 Usage
 
@@ -94,7 +94,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Animation
-  - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter with every interval fired
+  - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — simple wrapper for `setInterval`
   - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow) — reactive current timestamp
   - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf) — reactive time elapsed on every `requestAnimationFrame`
@@ -108,7 +108,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useCssVar`](https://vueuse.js.org/?path=/story/browser--usecssvar) — manipulate CSS variables
   - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener) — use EventListener with ease
   - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
-  - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) — reactive media query
+  - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) — reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))
   - [`usePermission`](https://vueuse.js.org/?path=/story/browser--usepermission) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark) — reactive dark theme preference
@@ -127,7 +127,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
-  - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) — reactive Network status
+  - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline) — reactive online state
   - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave) — reactive state to show whether mouse leaves the page
   - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax) — create parallax effect easily

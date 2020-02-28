@@ -1,6 +1,6 @@
 # useMediaQuery
 
-> Reactive media query. The Browser provides features that can test the results of a [media query programmatically](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries), via the MediaQueryList interface and its methods and properties. Once you've created a MediaQueryList object, you can check the result of the query or receive notifications when the result changes.
+> Reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)). Once you've created a MediaQueryList object, you can check the result of the query or receive notifications when the result changes.
 
 ## Usage
 
