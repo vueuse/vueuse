@@ -1,6 +1,6 @@
 # useNow
 
-Reactive current timestamp
+> Reactive current timestamp
 
 ## Usage
 

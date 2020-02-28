@@ -1,6 +1,6 @@
 # useCssVar
 
-> Manipulate css variables in Vue 
+> Manipulate CSS variables
 
 ## Usage
 

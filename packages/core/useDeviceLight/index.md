@@ -1,6 +1,6 @@
 # useDeviceLight
 
-> The [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent) provides web developers with information from photo sensors or similar detectors about ambient light levels near the device. For example this may be useful to adjust the screen's brightness based on the current ambient light level in order to save energy or provide better readability.
+> Reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent). Provide web developers with information from photo sensors or similar detectors about ambient light levels near the device. For example, this may be useful to adjust the screen's brightness based on the current ambient light level in order to save energy or provide better readability.
 
 ## Usage
 

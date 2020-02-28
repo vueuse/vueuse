@@ -1,6 +1,6 @@
 # useAsyncState
 
-Reactive async state. It will not block your setup and will triggers changes once the promise is ready.
+> Reactive async state. It will not block your setup and will triggers changes once the promise is ready.
 
 ## Usage
 

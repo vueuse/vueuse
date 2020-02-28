@@ -1,6 +1,6 @@
 # useIntervalFn
 
-Simple wrapper for `setInterval`
+> Simple wrapper for `setInterval`
 
 ## Usage
 

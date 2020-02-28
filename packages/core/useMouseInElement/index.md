@@ -1,6 +1,6 @@
 # useMouseInElement
 
-> Reactive mouse position in position
+> Reactive mouse position in an element
 
 ## Basic Usage
 

@@ -1,6 +1,6 @@
 # useWindowSize
 
-Reactive window size
+> Reactive window size
 
 ## Usage
 

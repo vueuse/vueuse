@@ -27,10 +27,22 @@ async function updateReadme() {
     const categories = {}
     for (const name of functions) {
       const raw = fs.readFileSync(path.join(packageDir, name, 'index.stories.tsx'), 'utf-8')
+      const mdRaw = fs.readFileSync(path.join(packageDir, name, 'index.md'), 'utf-8')
       const match = /storiesOf\('(.+)'[\s\S]+?\.add\('(.+)'/gm.exec(raw)
 
       if (!match)
         continue
+
+      let description = (mdRaw
+        .replace(/\[(.+?)\]\(.*\)/g, '$1')
+        .match(/\n> (.+?)[.,\n]/) || []
+      )[1] || ''
+
+      if (description.includes('DEPRATED'))
+        continue
+
+      description = description.trim()
+      description = description.charAt(0).toLowerCase() + description.slice(1)
 
       const [, category] = match
 
@@ -45,6 +57,7 @@ async function updateReadme() {
       categories[categoryName].push({
         name,
         url: `${storybookUrl}/?path=/story/${category.replace(/\|/g, '-')}--${name}`.toLowerCase(),
+        description,
       })
     }
 
@@ -54,11 +67,12 @@ async function updateReadme() {
       addOnsList += `\n- ${packageOptions.name} ([\`@vueuse/${pkg}\`](${storybookUrl}/?path=/story/add-ons-${pkg}--read-me)) - ${packageOptions.description}\n`
 
     for (const category of Object.keys(categories).sort()) {
-      functionList += `- ${category}\n`
-      for (const { name, url } of categories[category]) {
-        functionList += `  - [\`${name}\`](${url})\n`
+      functionList += ` — ${category}\n`
+      for (const { name, url, description } of categories[category]) {
+        const desc = description ? ` - ${description}` : ''
+        functionList += `  - [\`${name}\`](${url})${desc}\n`
         if (pkg !== 'core')
-          addOnsList += `  - [\`${name}\`](${url})\n`
+          addOnsList += `  - [\`${name}\`](${url})${desc}\n`
       }
       functionList += '\n'
     }

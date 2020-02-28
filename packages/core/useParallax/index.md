@@ -1,6 +1,6 @@
 # useParallax
 
-> A tool for create parallax effect easily. It will use [useDeviceOrientation](/?path=/story/sensors--usedeviceorientation) first then fallback to [useMouse](/?path=/story/sensors--usemouse).
+> Create parallax effect easily. It will use [useDeviceOrientation](/?path=/story/sensors--usedeviceorientation) first then fallback to [useMouse](/?path=/story/sensors--usemouse).
 
 ## Usage
 

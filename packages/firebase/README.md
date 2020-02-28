@@ -8,17 +8,17 @@
 
 ## 📦 Install
 
-### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
+### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next))
 
-```bash
-npm i @vueuse/firebase@vue3 firebase 
-```
+<pre>
+npm i @vueuse/firebase<b>@vue3</b> firebase 
+</pre>
 
-### for Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
+### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-```bash
-npm i @vueuse/firebase@vue2 firebase
-```
+<pre>
+npm i @vueuse/firebase<b>@vue2</b> firebase
+</pre>
 
 ## ⚡ Functions
 
@@ -27,9 +27,9 @@ npm i @vueuse/firebase@vue2 firebase
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore)
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb)
+ — Firebase
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) - reactive Firestore binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) - reactive Firebase Realtime Database binding
 
 <!--FUNCTIONS_LIST_ENDS-->
 

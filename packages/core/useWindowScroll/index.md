@@ -1,6 +1,6 @@
 # useWindowScroll
 
-Reactive window scroll
+> Reactive window scroll
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # usePreferredDark
 
-> Querying user's prefer color scheme, by using [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query.
+> Reactive dark theme preference.
 
 ## Usage
 

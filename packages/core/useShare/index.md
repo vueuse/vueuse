@@ -1,6 +1,6 @@
 # useShare
 
-> The Browser provides features that can share content in text or file, see more: [Web Share Api](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share).
+> Reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share). The Browser provides features that can share content in text or file.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # useRafFn
 
-> Reactive call function on each `requestAnimationFrame`.
+> Call function on every `requestAnimationFrame`.
 
 ## Usage
 

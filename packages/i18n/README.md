@@ -8,17 +8,17 @@
 
 ## 📦 Install
 
-### for Vue 3.x ([vue-next](https://github.com/vuejs/vue-next))
+### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next))
 
-```bash
-npm i @vueuse/i18n@vue3 vue-i18n 
-```
+<pre>
+npm i @vueuse/i18n<b>@vue3</b> vue-i18n
+</pre>
 
-### for Vue 2.x with [composition-api](https://github.com/vuejs/composition-api) polyfill
+### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-```bash
-npm i @vueuse/i18n@vue2 vue-i18n
-```
+<pre>
+npm i @vueuse/i18n<b>@vue2</b> vue-i18n
+</pre>
 
 ## ⚡ Functions
 
@@ -27,9 +27,9 @@ npm i @vueuse/i18n@vue2 vue-i18n
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- i18n
-  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n)
-  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n)
+ — i18n
+  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) - create a global i18n instance to be reused
+  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) - use vue-i18n instance
 
 <!--FUNCTIONS_LIST_ENDS-->
 

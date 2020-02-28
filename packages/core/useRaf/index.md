@@ -1,6 +1,6 @@
 # useRaf
 
-> Reactive time elapsed on each `requestAnimationFrame`.
+> Reactive time elapsed on every `requestAnimationFrame`.
 
 ## Usage
 
