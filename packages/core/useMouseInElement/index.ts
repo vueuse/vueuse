@@ -35,14 +35,14 @@ export function useMouseInElement(target: Ref<Element> = ref(document.body), opt
         return
 
       x.value = event instanceof MouseEvent ? event.pageX : event.touches[0].clientX
-      y.value = event instanceof MouseEvent ? event.pageX : event.touches[0].clientX
+      y.value = event instanceof MouseEvent ? event.pageY : event.touches[0].clientY
       elementPositionX.value = left + window.pageXOffset
       elementPositionY.value = top + window.pageYOffset
       elementHeight.value = height
       elementWidth.value = width
 
       const elX = x.value - elementPositionX.value
-      const elY = x.value - elementPositionY.value
+      const elY = y.value - elementPositionY.value
       isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
 
       if (handleOutside || !isOutside.value) {
