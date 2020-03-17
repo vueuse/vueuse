@@ -16,6 +16,7 @@
     "lint:fix": "npm run lint -- --fix",
     "readme:update": "node ./scripts/updateReadme",
     "clear": "rimraf dist typings storybook-static",
+    "dev": "start-storybook -p 6006",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "npm run switch 2 && npm run typings && build-storybook"
   },
@@ -48,7 +49,7 @@
   "dependencies": {},
   "peerDependencies": {
     "vue": "^2.6.11",
-    "@vue/composition-api": "^0.3.4 || ^0.4.0",
+    "@vue/composition-api": "^0.4.0",
     "@vue/runtime-dom": "^3.0.0"
   },
   "devDependencies": {

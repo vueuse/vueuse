@@ -1,11 +1,11 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref } from '../../api'
+import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useFullscreen } from '.'
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const el = ref(null)
     const { enterFullscreen, exitFullscreen } = useFullscreen(el)

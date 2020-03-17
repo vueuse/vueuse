@@ -7,7 +7,7 @@
 ```jsx {5,16}
 import { useCounter } from '@vueuse/core'
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { count, inc, dec, set, reset } = useCounter()
     return {

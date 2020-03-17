@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useInterval } from '.'
 
@@ -9,7 +9,7 @@ type Inject = {
   counter: number
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { counter } = useInterval(200)
 

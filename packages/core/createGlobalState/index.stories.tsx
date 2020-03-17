@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useStorage } from '../useStorage'
 import { createGlobalState } from '.'
@@ -14,7 +14,7 @@ const useState = createGlobalState(() => {
   })
 })
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const state = useState()
 

@@ -3,7 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import YAML from 'js-yaml'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useAsyncState } from '.'
 
@@ -12,7 +12,7 @@ type Inject = {
   ready: boolean
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { state, ready } = useAsyncState(
       axios

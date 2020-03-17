@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, computed } from '../../api'
+import { defineComponent, computed } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useNow } from '../useNow'
 import { useIdle } from '.'
@@ -12,7 +12,7 @@ type Inject = {
   idledFor: number
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { idle, lastActive } = useIdle(5000, false, undefined, 20)
     const now = useNow()

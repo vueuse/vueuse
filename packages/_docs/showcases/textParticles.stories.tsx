@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref, watch, onMounted } from '../../api'
+import { defineComponent, ref, watch, onMounted } from '../../api'
 import { useMouse, useEventListener, useRafFn } from '../../core'
 
 // ported from https://codepen.io/Mamboleoo/pen/obWGYr
@@ -52,7 +52,7 @@ Particle.prototype.render = function(ctx, x, y, radius) {
   }
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const canvasRef = ref<HTMLCanvasElement | null>(null)
     const text = ref('VUEUSE')
