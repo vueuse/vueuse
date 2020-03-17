@@ -16,7 +16,7 @@ async function updateImport(packageVersion) {
 
     const files = fs
       .readdirSync(pkdDir)
-      .filter(f => f.startsWith('use'))
+      .filter(f => f.startsWith('use') || f.startsWith('create'))
       .sort()
 
     let content = ''
