@@ -5,23 +5,22 @@
 ## Usage
 
 ```tsx
+import { ref } from '@vue/composition-api';
 import { useElementVisibility } from '@vueuse/core'
 
 export default {
   setup() {
-    const {
-      element: container,
-      elementIsVisible: containerIsVisible,
-    } = useElementVisibility();
+    const target = ref(null);
+    const targetIsVisible = useElementVisibility(target);
 
     return {
-      container,
-      containerIsVisible,
+      target,
+      targetIsVisible,
     }
   },
   render() {
     return (
-      <div ref="container">
+      <div ref="target">
         <h1>Hello world</h1>
       </div>
     )

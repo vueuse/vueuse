@@ -1,7 +1,7 @@
-import { onMounted, ref, watch } from '../../api'
+import { onMounted, ref, Ref, watch } from '../../api'
 import { useWindowScroll } from '../useWindowScroll'
 
-export function useElementVisibility(element = ref<null|HTMLElement>(null)) {
+export function useElementVisibility(element: Ref<Element>) {
   const { x, y } = useWindowScroll()
   const elementIsVisible = ref(false)
 
@@ -25,8 +25,5 @@ export function useElementVisibility(element = ref<null|HTMLElement>(null)) {
 
   watch([x, y], testBoundingClientRect)
 
-  return {
-    element,
-    elementIsVisible,
-  }
+  return elementIsVisible
 }
