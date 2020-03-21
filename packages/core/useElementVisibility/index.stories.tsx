@@ -1,24 +1,18 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref, watch } from '../../api'
+import { createComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useElementVisibility } from '.'
 
 type Inject = {
-  idle: boolean
-  lastActive: number
-  idledFor: number
+  demoIsVisible: boolean
 }
 
 const Demo = createComponent({
   setup() {
     const demo = ref(null)
     const demoIsVisible = useElementVisibility(demo)
-
-    watch(demoIsVisible, () => {
-      console.log(demoIsVisible.value ? 'Entered the viewport' : 'Left the viewport')
-    })
 
     return {
       demo,
@@ -37,10 +31,13 @@ const Demo = createComponent({
           <h1>Hello world</h1>
         </div>
         {Docs}
+        <div id='demo' style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
+          {this.demoIsVisible ? 'In the viewport' : 'Outside the viewport'}
+        </div>
       </div>
     )
   },
 })
 
-storiesOf('State', module)
+storiesOf('Sensors', module)
   .add('useElementVisibility', () => Demo as any)

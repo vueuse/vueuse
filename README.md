@@ -124,6 +124,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
   - [`useDeviceMotion`](https://vueuse.js.org/?path=/story/sensors--usedevicemotion) — reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)
   - [`useDeviceOrientation`](https://vueuse.js.org/?path=/story/sensors--usedeviceorientation) — reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
+  - [`useElementVisibility`](https://vueuse.js.org/?path=/story/sensors--useElementVisibility) — reactive element visibility within viewport
   - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
