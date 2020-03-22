@@ -1,6 +1,6 @@
-import { useTimeoutFn } from '../useTimeoutFn'
+import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from '../../api'
-import { isString } from '../../utils'
+import { clamp, isString, noop } from '../../utils'
 
 type CubicBezier = [number, number, number, number]
 
@@ -9,7 +9,6 @@ type NamedPreset = 'linear' | 'easeInSine' | 'easeOutSine' | 'easeInQuad' | 'eas
 type StateEasingOptions = {
   duration?: number
   easing?: NamedPreset | CubicBezier
-  steps?: number
 }
 
 const cubicBezier = ([p0, p1, p2, p3]: CubicBezier) => {
@@ -69,7 +68,6 @@ export function useStateEasing(baseNumber: Ref<number>, options: StateEasingOpti
   const normalizedOptions = {
     duration: 500,
     easing: 'linear',
-    steps: 0, // <- runs at 30fps when zero
     ...options,
   }
 
@@ -79,19 +77,24 @@ export function useStateEasing(baseNumber: Ref<number>, options: StateEasingOpti
       : normalizedOptions.easing,
   )
 
-  const normalizedSteps = Math.round(normalizedOptions.steps || (normalizedOptions.duration / 1000) * 30)
+  let stop = noop
 
   watch(baseNumber, () => {
+    stop()
+
     const diff = baseNumber.value - number.value
-    const start = number.value
+    const startValue = number.value
+    const startAt = Date.now()
+    const endAt = startAt + normalizedOptions.duration
 
-    for (let i = 0; i <= normalizedSteps; i++) {
-      const t = i / normalizedSteps
+    stop = useRafFn(() => {
+      const now = Date.now()
+      const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
 
-      useTimeoutFn(() => {
-        number.value = Math.round(start + (diff * getValue(t)))
-      }, normalizedOptions.duration * t)
-    }
+      number.value = startValue + (diff * getValue(progress))
+
+      if (progress >= 1) stop()
+    }).stop
   })
 
   return number

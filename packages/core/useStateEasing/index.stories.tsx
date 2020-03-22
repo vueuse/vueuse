@@ -17,7 +17,7 @@ const Demo = createComponent({
     const baseNumber = ref(rand())
 
     const number = useStateEasing(baseNumber, {
-      duration: 500,
+      duration: 5000,
       easing: 'easeInOutCubic',
     })
 
@@ -42,7 +42,7 @@ const Demo = createComponent({
             Change number
           </button>
           <p>Base number: <b>{this.baseNumber.toLocaleString()}</b></p>
-          <p>Transitioned number: <b>{this.number.toLocaleString()}</b></p>
+          <p>Transitioned number: <b>{Math.round(this.number).toLocaleString()}</b></p>
         </div>
         {Docs}
       </div>
