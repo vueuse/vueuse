@@ -10,20 +10,20 @@ type Inject = {
   number: number
 }
 
-const rand = () => Math.floor(Math.random() * (1000000000 - 0) + 0);
+const rand = () => Math.floor(Math.random() * (1000000000 - 0) + 0)
 
 const Demo = createComponent({
   setup() {
-    const baseNumber = ref(rand());
+    const baseNumber = ref(rand())
 
     const number = useStateEasing(baseNumber, {
       duration: 500,
       easing: 'easeInOutCubic',
-    });
+    })
 
     return {
       baseNumber,
-      number
+      number,
     }
   },
 
@@ -47,7 +47,7 @@ const Demo = createComponent({
         {Docs}
       </div>
     )
-  }
+  },
 })
 
 storiesOf('State', module)
