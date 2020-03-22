@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useStateTransition } from '.'
+import { useTransition } from '.'
 
 type Inject = {
   baseNumber: number
@@ -16,7 +16,7 @@ const Demo = createComponent({
   setup() {
     const baseNumber = ref(rand())
 
-    const number = useStateTransition(baseNumber, {
+    const number = useTransition(baseNumber, {
       duration: 1000,
       transition: 'easeInOutExpo',
     })
@@ -50,5 +50,5 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('State', module)
-  .add('useStateTransition', () => Demo as any)
+storiesOf('Animation', module)
+  .add('useTransition', () => Demo as any)

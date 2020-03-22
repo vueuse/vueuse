@@ -1,13 +1,13 @@
-# useStateTransition
+# useTransition
 
 > Transition between values
 
 ## Usage
 
 ```jsx
-import { useStateTransition } from '@vueuse/core'
+import { useTransition } from '@vueuse/core'
 
-useStateTransition(baseNumber, {
+useTransition(baseNumber, {
   duration: 1000,
   transition: 'easeInOutCubic',
 })

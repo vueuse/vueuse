@@ -62,7 +62,7 @@ const presets: { [key in NamedPreset]: CubicBezier } = {
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
-export function useStateTransition(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
+export function useTransition(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
   const number = ref(baseNumber.value)
 
   const normalizedOptions = {
