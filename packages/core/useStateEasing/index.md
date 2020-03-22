@@ -1,3 +1,0 @@
-# useStateEasing
-
-Soon...

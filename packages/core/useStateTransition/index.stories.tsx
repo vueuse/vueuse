@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { createComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useStateEasing } from '.'
+import { useStateTransition } from '.'
 
 type Inject = {
   baseNumber: number
@@ -16,9 +16,9 @@ const Demo = createComponent({
   setup() {
     const baseNumber = ref(rand())
 
-    const number = useStateEasing(baseNumber, {
+    const number = useStateTransition(baseNumber, {
       duration: 5000,
-      easing: 'easeInOutCubic',
+      transition: 'easeInOutCubic',
     })
 
     return {
@@ -51,4 +51,4 @@ const Demo = createComponent({
 })
 
 storiesOf('State', module)
-  .add('useStateEasing', () => Demo as any)
+  .add('useStateTransition', () => Demo as any)

@@ -8,7 +8,7 @@ type NamedPreset = 'linear' | 'easeInSine' | 'easeOutSine' | 'easeInQuad' | 'eas
 
 type StateEasingOptions = {
   duration?: number
-  easing?: NamedPreset | CubicBezier
+  transition?: NamedPreset | CubicBezier
 }
 
 const cubicBezier = ([p0, p1, p2, p3]: CubicBezier) => {
@@ -62,19 +62,19 @@ const presets: { [key in NamedPreset]: CubicBezier } = {
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
-export function useStateEasing(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
+export function useStateTransition(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
   const number = ref(baseNumber.value)
 
   const normalizedOptions = {
     duration: 500,
-    easing: 'linear',
+    transition: 'linear',
     ...options,
   }
 
   const getValue = cubicBezier(
-    isString(normalizedOptions.easing)
-      ? presets[normalizedOptions.easing as NamedPreset]
-      : normalizedOptions.easing,
+    isString(normalizedOptions.transition)
+      ? presets[normalizedOptions.transition as NamedPreset]
+      : normalizedOptions.transition,
   )
 
   let stop = noop
