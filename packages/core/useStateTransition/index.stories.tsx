@@ -10,15 +10,15 @@ type Inject = {
   number: number
 }
 
-const rand = () => Math.floor(Math.random() * (1000000000 - 0) + 0)
+const rand = () => Math.floor(Math.random() * (1000 - 0) + 0)
 
 const Demo = createComponent({
   setup() {
     const baseNumber = ref(rand())
 
     const number = useStateTransition(baseNumber, {
-      duration: 5000,
-      transition: 'easeInOutCubic',
+      duration: 1000,
+      transition: 'easeInOutExpo',
     })
 
     return {
@@ -41,8 +41,8 @@ const Demo = createComponent({
           <button onClick={onClick}>
             Change number
           </button>
-          <p>Base number: <b>{this.baseNumber.toLocaleString()}</b></p>
-          <p>Transitioned number: <b>{Math.round(this.number).toLocaleString()}</b></p>
+          <p>Base number: <b>{this.baseNumber}</b></p>
+          <p>Transitioned number: <b>{Math.round(this.number)}</b></p>
         </div>
         {Docs}
       </div>
