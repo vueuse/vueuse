@@ -1,6 +1,6 @@
 # useStateTransition
 
-Transition state between values.
+> Transition between values
 
 ## Usage
 
