@@ -101,6 +101,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`
   - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
   - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
+  - [`useTransition`](https://vueuse.js.org/?path=/story/animation--usetransition) - transition between values
 
 - Browser
   - [`useBrowserLocation`](https://vueuse.js.org/?path=/story/browser--usebrowserlocation) — reactive browser location
@@ -142,7 +143,6 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle) — tracks whether user is being inactive
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-  - [`useStateTransition`](https://vueuse.js.org/?path=/story/state--usestatetransition) - transition state between values
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 <!--FUNCTIONS_LIST_ENDS-->
