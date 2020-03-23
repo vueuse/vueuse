@@ -7,7 +7,7 @@ export interface ParallaxOptions {
   deviceOrientationRollAdjust?: (i: number) => number
   mouseTiltAdjust?: (i: number) => number
   mouseRollAdjust?: (i: number) => number
-  targetElement?: Ref<Element>
+  targetElement?: Ref<HTMLElement>
 }
 
 export function useParallax(options?: ParallaxOptions) {

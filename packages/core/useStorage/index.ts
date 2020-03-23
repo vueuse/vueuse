@@ -66,7 +66,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
   useEventListener('storage', read)
 
   watch(
-    data,
+    () => data,
     () => {
       try {
         if (data.value == null)

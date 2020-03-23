@@ -1,11 +1,13 @@
 import { ref, Ref, watch } from '../../api'
 
-export function useMouseInElement(target: Ref<Element> = ref(document.body), options: {
-  handleOutside?: boolean
-  touch?: boolean
-  resetOnTouchEnds?: boolean
-  initial?: {x: number; y: number}
-} = {}) {
+export function useMouseInElement(
+  target: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
+  options: {
+    handleOutside?: boolean
+    touch?: boolean
+    resetOnTouchEnds?: boolean
+    initial?: {x: number; y: number}
+  } = {}) {
   const {
     handleOutside = false,
     touch = true,
@@ -21,7 +23,7 @@ export function useMouseInElement(target: Ref<Element> = ref(document.body), opt
   const elementWidth = ref(0)
   const isOutside = ref(false)
 
-  const stop = watch(target, (el: Element, prevEl, onCleanup) => {
+  const stop = watch(target, (el, prevEl, onCleanup) => {
     const moveHandler = (event: MouseEvent | TouchEvent) => {
       const ele = el || document.body
       const {

@@ -24,7 +24,7 @@ export function useNetwork() {
   const downlink: Ref<number | undefined> = ref(undefined)
   const downlinkMax: Ref<number | undefined> = ref(undefined)
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
-  const type: Ref<NetworkType> = ref('unknown')
+  const type: Ref<NetworkType> = ref<NetworkType>('unknown')
 
   const navigator = window.navigator
   const connection = 'connection' in navigator ? (navigator as any).connection : undefined

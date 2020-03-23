@@ -96,7 +96,7 @@ const Demo = defineComponent({
       amount = particles.length
     }
 
-    watch(() => text, initScene, { lazy: true })
+    watch<string>(text, initScene, { lazy: true })
     useEventListener('resize', initScene)
     useEventListener('click', () => {
       radius++
@@ -111,7 +111,7 @@ const Demo = defineComponent({
     }, { startNow: false })
 
     onMounted(() => {
-      canvas = canvasRef.value as HTMLCanvasElement
+      canvas = canvasRef.value as any as HTMLCanvasElement
       ctx = canvas.getContext('2d')
       ww = canvas.width = window.innerWidth
       wh = canvas.height = window.innerHeight

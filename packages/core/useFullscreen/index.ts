@@ -2,7 +2,9 @@
 
 import { Ref, ref } from '../../api'
 
-export function useFullscreen(target: Ref<HTMLElement> = ref(document.body)) {
+export function useFullscreen(
+  target: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
+) {
   const isFullscreen = ref(false)
 
   function exitFullscreen() {
@@ -15,9 +17,11 @@ export function useFullscreen(target: Ref<HTMLElement> = ref(document.body)) {
   function enterFullscreen() {
     exitFullscreen()
 
-    target.value.requestFullscreen().then(() => {
-      isFullscreen.value = true
-    })
+    if (target.value) {
+      target.value.requestFullscreen().then(() => {
+        isFullscreen.value = true
+      })
+    }
   }
 
   return {
