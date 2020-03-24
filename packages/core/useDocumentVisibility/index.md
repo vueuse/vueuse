@@ -10,6 +10,6 @@ import { useDocumentVisibility } from '@vueuse/core'
 export default {
   setup() {
     const visibility = useDocumentVisibility()
-  }
+  },
 }
 ```

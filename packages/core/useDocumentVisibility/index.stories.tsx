@@ -13,14 +13,14 @@ const Demo = defineComponent({
     const visibility = useDocumentVisibility()
 
     const timeout = useTimeoutFn(() => {
-        message.value = startMessage
+      message.value = startMessage
     }, 3000)
 
     watch(visibility, (current, previous) => {
-        if (current === 'visible' && previous === 'hidden') {
-            message.value = 'Welcome back!'
-            timeout.start()
-        }
+      if (current === 'visible' && previous === 'hidden') {
+        message.value = 'Welcome back!'
+        timeout.start()
+      }
     })
 
     return { message }
