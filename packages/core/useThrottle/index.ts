@@ -10,7 +10,7 @@ export function useThrottle<T>(value: Ref<T>, delay = 200) {
   if (delay <= 0)
     return value
 
-  const throttled = ref<T>(value.value) as Ref<T>
+  const throttled: Ref<T> = ref<T>(value.value as T) as Ref<T>
 
   let timer: ReturnType<typeof setTimeout> | undefined
   let hasNextValue = false
@@ -26,9 +26,9 @@ export function useThrottle<T>(value: Ref<T>, delay = 200) {
     }
   }
 
-  watch(value, (newVal) => {
+  watch(value, () => {
     if (!timer) {
-      throttled.value = newVal
+      throttled.value = value.value
       timer = setTimeout(timeoutCallback, delay)
     }
     else {
