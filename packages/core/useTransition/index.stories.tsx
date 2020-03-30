@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref } from '../../api'
+import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useTransition } from '.'
 
@@ -12,7 +12,7 @@ type Inject = {
 
 const rand = () => Math.floor(Math.random() * (1000 - 0) + 0)
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const baseNumber = ref(rand())
 

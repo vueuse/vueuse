@@ -1,5 +1,3 @@
-export * from './throttle'
-
 export const isClient = typeof window === 'object'
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const assert = (condition: boolean, ...infos: any[]) => {
