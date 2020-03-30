@@ -11,7 +11,6 @@ type Inject = {
   baseSort: Function;
   workerSort: Function;
   rotationDegrees: Number;
-  loading: boolean;
 };
 
 const numbers = Array(5000000).fill(1).map(ele => ~~(Math.random() * 1000000));
@@ -34,7 +33,7 @@ const Demo = createComponent({
   },
 
   render(this: Vue & Inject) {
-    const { baseSort, workerSort, rotationDegrees, loading } = this;
+    const { baseSort, workerSort, rotationDegrees } = this;
     // @ts-ignore
     const Docs = <ShowDocs md={require("./index.md")} />;
 
@@ -47,7 +46,6 @@ const Demo = createComponent({
               src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-storybook.png"
             ></img>
           </div>
-          {loading ? "Main Thread Blocked" : "Free Main Thread"}
           <button onClick={() => baseSort()}>
             Normal Sort
           </button>
