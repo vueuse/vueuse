@@ -138,10 +138,10 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
 - Side Effects
-  - [`useDebounce`](https://vueuse.js.org/?path=/story/side%20effects--usedebounce) — debounce execution of a ref value
-  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/side%20effects--usedebouncefn) — debounce execution of a function
-  - [`useThrottle`](https://vueuse.js.org/?path=/story/side%20effects--usethrottle) — throttle changing of a ref value
-  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/side%20effects--usethrottlefn) — throttle execution of a function
+  - [`useDebounce`](https://vueuse.js.org/?path=/story/side-effects--usedebounce) — debounce execution of a ref value
+  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/side-effects--usedebouncefn) — debounce execution of a function
+  - [`useThrottle`](https://vueuse.js.org/?path=/story/side-effects--usethrottle) — throttle changing of a ref value
+  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/side-effects--usethrottlefn) — throttle execution of a function
 
 - State
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep state in global scope to be reused across Vue instances

@@ -55,7 +55,7 @@ async function updateReadme() {
 
       categories[categoryName].push({
         name,
-        url: `${storybookUrl}/?path=/story/${category.replace(/\|/g, '-').replace(/ /g, '%20')}--${name}`.toLowerCase(),
+        url: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-')}--${name}`.toLowerCase(),
         description,
       })
     }
