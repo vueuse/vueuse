@@ -19,6 +19,7 @@ const DEFAULT_OPTIONS: Options = {
 export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
   fn: T, options: Options = DEFAULT_OPTIONS,
 ) => {
+  /* eslint-enable arrow-parens */
   const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
 
   const workerStatus: Ref<WORKER_STATUS> = ref(WORKER_STATUS.PENDING)

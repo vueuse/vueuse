@@ -7,19 +7,18 @@
 ```jsx
 import { useWebWorkerFunction } from '@vueuse/core'
 
+const sortNumbers = nums => nums.sort()
+const numbers = [...Array(5000000)].map(ele => ~~(Math.random() * 1000000))
 
-const sortNumbers = nums => nums.sort();
-const numbers = [...Array(5000000)].map(ele => ~~(Math.random() * 1000000));
-
-export default {
+export default createComponent({
   setup() {
-    const { workerHook } = useWebWorkerFunction(sortNumbers);
+    const { workerHook } = useWebWorkerFunction(sortNumbers)
     return { workerHook }
   },
 
-  const doHeavyLifting = async () => {
-    const data = await workerHook(numbers)
-    ...
-  }
-}
+  doHeavyLifting = async() => {
+    const data = await this.workerHook(numbers)
+    // ...
+  },
+})
 ```
