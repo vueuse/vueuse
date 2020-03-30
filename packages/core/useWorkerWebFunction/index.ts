@@ -24,7 +24,7 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
 
   const workerStatus: Ref<WORKER_STATUS> = ref(WORKER_STATUS.PENDING)
   const promise: Ref<{ [PROMISE_REJECT]?: (result: ReturnType<T> | ErrorEvent) => void;[PROMISE_RESOLVE]?: (result: ReturnType<T>) => void }> = ref({})
-  const timeoutId: Ref<number> = ref(undefined)
+  const timeoutId: Ref<number | undefined> = ref(undefined)
 
   const killWorker = (status = WORKER_STATUS.PENDING) => {
     if (worker.value && worker.value._url) {
