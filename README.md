@@ -61,13 +61,13 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next)), [*demo here*](https://vueuse-next-example.netlify.com/)
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/core<b>@vue3</b>
 </pre>
 
 ### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/core<b>@vue2</b> @vue/composition-api 
 </pre>
 

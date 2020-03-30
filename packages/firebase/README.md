@@ -10,13 +10,13 @@
 
 ### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next))
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/firebase<b>@vue3</b> firebase 
 </pre>
 
 ### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/firebase<b>@vue2</b> firebase
 </pre>
 

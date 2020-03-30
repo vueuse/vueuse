@@ -1,15 +1,15 @@
-# useThrottle
+# useDebounce
 
-> Throttle changing of a ref value.
+> Debounce execution of a ref value.
 
 ## Usage
 
-```jsx {5,16}
-import { useThrottle } from '@vueuse/core'
+```jsx
+import { useDebounce } from '@vueuse/core'
 
 // in setup()
 const input = ref('')
-const throttled = useThrottle(input, 1000)
+const debounced = useDebounce(input, 1000)
 ```
 
 ## Related Functions
@@ -21,5 +21,4 @@ const throttled = useThrottle(input, 1000)
 
 ## Recommended Reading
 
-- [Debounce vs Throttle: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
-- [Debouncing and Throttling Explained Through Examples](https://css-tricks.com/debouncing-throttling-explained-examples/)
+- [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)

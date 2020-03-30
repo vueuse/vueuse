@@ -1,20 +1,20 @@
-# useThrottleFn
+# useDebounceFn
 
-> Throttle execution of a function. Especially useful for rate limiting execution of handlers on events like resize and scroll.
+> Debounce execution of a function.
 >
-> Throttle is a spring that throws balls: after a ball flies out it needs some time to shrink back, so it cannot throw any more balls unless it's ready.
+> Debounce is an overloaded waiter: if you keep asking him your requests will be ignored until you stop and give him some time to think about your latest inquiry.
 
 ## Usage
 
 ```jsx {5,16}
-import { useThrottleFn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
 
 // in setup()
-const throttledFn = useThrottleFn(() => {
-  // do something, it will be called at most 1 time per second
+const debouncedFn = useDebounceFn(() => {
+  // do something
 }, 1000)
 
-document.addEventLisenter('resize', throttledFn)
+document.addEventLisenter('resize', debouncedFn)
 ```
 
 ## Related Functions

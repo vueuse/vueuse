@@ -21,3 +21,6 @@ storiesOf('Misc|__empty', module)
 
 storiesOf('Animation|__empty', module)
   .add('__empty', () => '')
+
+storiesOf('Side Effects|__empty', module)
+  .add('__empty', () => '')

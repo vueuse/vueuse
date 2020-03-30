@@ -1,34 +1,29 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent, ref } from '../../api'
+import { defineComponent, ref, watch } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useThrottleFn } from '.'
+import { useDebounce } from '.'
 
 type Inject = {
-  clicked: number
+  input: string
+  debounced: string
   updated: number
-  clickedFn: Function
-  throttledFn: Function
 }
 
 const Demo = defineComponent({
   setup() {
+    const input = ref('')
+    const debounced = useDebounce(input, 1000)
     const updated = ref(0)
-    const clicked = ref(0)
-    const throttledFn = useThrottleFn(() => {
-      updated.value += 1
-    }, 1000)
 
-    const clickedFn = () => {
-      clicked.value += 1
-      throttledFn()
-    }
+    watch(debounced, () => {
+      updated.value += 1
+    }, { lazy: true })
 
     return {
-      clicked,
-      clickedFn,
-      throttledFn,
+      input,
+      debounced,
       updated,
     }
   },
@@ -40,11 +35,12 @@ const Demo = defineComponent({
     return (
       <div>
         <div id='demo'>
-          <button onClick={() => this.clickedFn()}>Smash me!</button>
+          <input v-model={this.input} placeholder='Try to type anything...'/>
           <note>Delay is set to 1000ms for this demo.</note>
 
-          <p>Button clicked: {this.clicked}</p>
-          <p>Event handler called: {this.updated}</p>
+          <p>Debounced: {this.debounced}</p>
+          <p>Times Updated: {this.updated}</p>
+
         </div>
         {Docs}
       </div>
@@ -53,4 +49,4 @@ const Demo = defineComponent({
 })
 
 storiesOf('Side Effects', module)
-  .add('useThrottleFn', () => Demo as any)
+  .add('useDebounce', () => Demo as any)

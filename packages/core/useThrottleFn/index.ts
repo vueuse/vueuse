@@ -8,18 +8,40 @@
  *
  * @return {Function}  A new, throttled, function.
  */
-export function useThrottleFn<T extends Function>(fn: T, delay = 200): T {
+export function useThrottleFn<T extends Function>(fn: T, delay = 200, trailing = true): T {
   if (delay <= 0)
     return fn
 
   let lastExec = 0
+  let timer: ReturnType<typeof setTimeout> | undefined
+  let lastThis: any
+  let lastArgs: any[]
+
+  function clear() {
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
+    }
+  }
+
+  function timeoutCallback() {
+    clear()
+    fn.apply(lastThis, lastArgs)
+  }
 
   function wrapper(this: any, ...args: any[]) {
     const elapsed = Date.now() - lastExec
 
+    clear()
+
     if (elapsed > delay) {
       lastExec = Date.now()
       fn.apply(this, args)
+    }
+    else if (trailing) {
+      lastArgs = args
+      lastThis = this
+      timer = setTimeout(timeoutCallback, delay)
     }
   }
 

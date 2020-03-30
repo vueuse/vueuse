@@ -175,10 +175,17 @@ li {
   background-color: rgba(27,31,35,.3);
 }
 
+.markdown-body pre,
 pre[class*='language-'],
 code[class*='language-'] {
   font-family: 'Fira Code', Menlo, Andale Mono, Consolas, Courier, monospace;
   font-size: 85%;
+}
+
+.markdown-body pre {
+  hyphens: none;
+  background-color: #282828;
+  color: #d5c4a1;
 }
 
 code[class*='language-']::before {

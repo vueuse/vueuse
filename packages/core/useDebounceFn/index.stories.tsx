@@ -3,32 +3,30 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useThrottleFn } from '.'
+import { useDebounceFn } from '.'
 
 type Inject = {
   clicked: number
   updated: number
   clickedFn: Function
-  throttledFn: Function
 }
 
 const Demo = defineComponent({
   setup() {
     const updated = ref(0)
     const clicked = ref(0)
-    const throttledFn = useThrottleFn(() => {
+    const debouncedFn = useDebounceFn(() => {
       updated.value += 1
     }, 1000)
 
     const clickedFn = () => {
       clicked.value += 1
-      throttledFn()
+      debouncedFn()
     }
 
     return {
       clicked,
       clickedFn,
-      throttledFn,
       updated,
     }
   },
@@ -53,4 +51,4 @@ const Demo = defineComponent({
 })
 
 storiesOf('Side Effects', module)
-  .add('useThrottleFn', () => Demo as any)
+  .add('useDebounceFn', () => Demo as any)
