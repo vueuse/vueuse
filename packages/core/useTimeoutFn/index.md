@@ -3,7 +3,7 @@
 > Call function after a given time. 
 
 ```jsx {6-9}
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const defaultText = 'Please wait 3 seconds'
     const text = ref(defaultText)

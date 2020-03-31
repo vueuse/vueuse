@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { Ref, ref, watch } from '../../api'
+import { Ref, ref } from '../../api'
 import { useEventListener } from '../useEventListener'
 
 export interface LocationSensorState {
@@ -18,7 +18,7 @@ export interface LocationSensorState {
   search?: string
 }
 
-export function useBrowserLocation(target: Ref<HTMLElement> = ref(document.body)) {
+export function useBrowserLocation(target: Ref<HTMLElement> = ref(document.body) as Ref<HTMLElement>) {
   const buildState = (trigger: string) => {
     const { state, length } = history
 
@@ -45,10 +45,6 @@ export function useBrowserLocation(target: Ref<HTMLElement> = ref(document.body)
   useEventListener('popstate', () => state.value = buildState('popstate'))
   useEventListener('pushstate', () => state.value = buildState('pushstate'))
   useEventListener('replacestate', () => state.value = buildState('replacestate'))
-
-  watch(() => state, () => {
-    console.log(state)
-  }, { lazy: true })
 
   return state
 }

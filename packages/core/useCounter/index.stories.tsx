@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useCounter } from '.'
 
@@ -13,7 +13,7 @@ type Inject = {
   reset: Function
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { count, inc, dec, set, reset } = useCounter()
     return {

@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, Ref } from '../../api'
-import { throttle } from '../../utils'
 import { useEventListener } from '../useEventListener'
+import { useThrottleFn } from '../useThrottleFn'
 
 interface DeviceMotionOptions {
   throttleMs: 10
@@ -25,7 +25,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = { throttleMs: 10 
     interval.value = event.interval
   }
 
-  const handler = options.throttleMs ? throttle(options.throttleMs, onDeviceMotion) : onDeviceMotion
+  const handler = useThrottleFn(onDeviceMotion, options.throttleMs)
 
   useEventListener('devicemotion', handler, false)
 

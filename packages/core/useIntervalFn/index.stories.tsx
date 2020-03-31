@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref } from '../../api'
+import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useIntervalFn } from '.'
 
@@ -9,7 +9,7 @@ type Inject = {
   count: number
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const count = ref(0)
 

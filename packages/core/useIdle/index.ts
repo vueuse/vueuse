@@ -1,6 +1,7 @@
-import { throttle, timestamp } from '../../utils'
+import { timestamp } from '../../utils'
 import { ref, onMounted } from '../../api'
 import { useEventListener } from '../useEventListener'
+import { useThrottleFn } from '../useThrottleFn'
 
 const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60e3
@@ -15,12 +16,12 @@ export function useIdle(ms: number = oneMinute, initialState = false, listeningE
     idle.value = newState
   }
 
-  const onEvent = throttle(throttleDelay, () => {
+  const onEvent = useThrottleFn(() => {
     idle.value = false
     clearTimeout(timeout)
     timeout = setTimeout(() => idle.value = true, ms)
     lastActive.value = timestamp()
-  })
+  }, throttleDelay)
 
   for (const eventName of listeningEvents)
     useEventListener(eventName, onEvent)

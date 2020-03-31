@@ -61,13 +61,13 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next)), [*demo here*](https://vueuse-next-example.netlify.com/)
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/core<b>@vue3</b>
 </pre>
 
 ### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
 
-<pre>
+<pre class='language-bash'>
 npm i @vueuse/core<b>@vue2</b> @vue/composition-api 
 </pre>
 
@@ -101,6 +101,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`
   - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
   - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
+  - [`useTransition`](https://vueuse.js.org/?path=/story/animation--usetransition) — transition between values
 
 - Browser
   - [`useBrowserLocation`](https://vueuse.js.org/?path=/story/browser--usebrowserlocation) — reactive browser location
@@ -124,6 +125,8 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
   - [`useDeviceMotion`](https://vueuse.js.org/?path=/story/sensors--usedevicemotion) — reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)
   - [`useDeviceOrientation`](https://vueuse.js.org/?path=/story/sensors--usedeviceorientation) — reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
+  - [`useDocumentVisibility`](https://vueuse.js.org/?path=/story/sensors--usedocumentvisibility) — reactively track [`Document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
+  - [`useElementVisibility`](https://vueuse.js.org/?path=/story/sensors--useelementvisibility) — tracks the visibility of an element within the viewport
   - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
@@ -133,6 +136,12 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax) — create parallax effect easily
   - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
+
+- Side Effects
+  - [`useDebounce`](https://vueuse.js.org/?path=/story/side-effects--usedebounce) — debounce execution of a ref value
+  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/side-effects--usedebouncefn) — debounce execution of a function
+  - [`useThrottle`](https://vueuse.js.org/?path=/story/side-effects--usethrottle) — throttle changing of a ref value
+  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/side-effects--usethrottlefn) — throttle execution of a function
 
 - State
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep state in global scope to be reused across Vue instances

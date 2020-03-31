@@ -80,9 +80,9 @@ async function buildFor(targetVersion, publishCallback) {
   consola.log('')
   consola.info(`Build for Vue ${targetVersion}.x`)
 
+  let err
   const rawPackageJSON = await fs.readFile(packageJSONDir)
   const packageJSON = JSON.parse(rawPackageJSON)
-
   const packageVersion = [targetVersion, ...packageJSON.version.split('.').slice(1)].join('.')
 
   consola.info(packageVersion)
@@ -93,7 +93,7 @@ async function buildFor(targetVersion, publishCallback) {
 
   try {
     consola.info('Clean up')
-    exec('npm run clear', { stdio: 'inherit' })
+    exec('npm run clean', { stdio: 'inherit' })
 
     consola.info('Generate Declarations')
     exec('tsc --emitDeclarationOnly', { stdio: 'inherit' })
@@ -109,12 +109,15 @@ async function buildFor(targetVersion, publishCallback) {
       await publishCallback(targetVersion, packageVersion)
   }
   catch (e) {
-    console.error(e)
+    err = e
   }
-
-  // restore packageJSON
-  await fs.writeFile(packageJSONDir, rawPackageJSON)
-  await restoreApi()
+  finally {
+    // restore packageJSON
+    await fs.writeFile(packageJSONDir, rawPackageJSON)
+    await restoreApi()
+  }
+  if (err)
+    throw err
 }
 
 async function buildAll() {
@@ -132,6 +135,7 @@ async function cli() {
   }
   catch (e) {
     console.error(e)
+    process.exit(1)
   }
 }
 

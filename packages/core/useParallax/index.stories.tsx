@@ -3,12 +3,12 @@ import Vue from 'vue'
 import YAML from 'js-yaml'
 import { storiesOf } from '@storybook/vue'
 import { CSSProperties } from 'react'
-import { createComponent, ref } from '../../api'
+import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useMediaQuery } from '../useMediaQuery'
 import { useParallax } from '.'
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const demo = ref(null)
 

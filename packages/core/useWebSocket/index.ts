@@ -4,7 +4,7 @@ import { ref, onMounted, onUnmounted, Ref } from '../../api'
 
 export function useWebSocket(url: string) {
   const data: Ref<any> = ref(null)
-  const state: Ref<'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'> = ref('CONNECTING')
+  const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'>
   let ws: WebSocket
   const close: typeof ws.close = function close(code, reason) {
     if (!ws) return

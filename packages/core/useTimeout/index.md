@@ -5,7 +5,7 @@
 ## Usage
 
 ```jsx {3}
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { ready, start } = useTimeout(1000)
 

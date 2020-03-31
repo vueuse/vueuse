@@ -7,7 +7,7 @@
 ```jsx
 import { useIntervalFn } from '@vueuse/core'
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const counter = ref(0)
 

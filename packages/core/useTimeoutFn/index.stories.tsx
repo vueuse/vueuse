@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref } from '../../api'
+import { defineComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useTimeoutFn } from '.'
 
@@ -11,7 +11,7 @@ type Inject = {
   text: string
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const defaultText = 'Please wait 3 seconds'
     const text = ref(defaultText)

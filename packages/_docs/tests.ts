@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { createComponent, init } from '../api'
+import { defineComponent, init } from '../api'
 
 const localVue = createLocalVue()
 
@@ -9,7 +9,7 @@ export function renderHook<V, Props = unknown, Data = unknown>(
 ) {
   init()
 
-  const App = createComponent({
+  const App = defineComponent({
     template: '<div ref="app" id="app"></div>',
     setup,
   })

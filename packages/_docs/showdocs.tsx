@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import { RenderContext } from 'vue'
 import { ofType } from 'vue-tsx-support'
-import { createComponent } from '../api'
+import { defineComponent } from '../api'
 
 export interface DocsProps {
   md: any
@@ -16,7 +16,7 @@ const ShowDocsFunc = ({ props }: RenderContext<DocsProps>) => {
 
 export const ShowDocs: any = ofType<DocsProps>().convert(ShowDocsFunc as any)
 
-export const redirect = (url: string) => createComponent({
+export const redirect = (url: string) => defineComponent({
   setup() {
     window.open(url, '_blank')
     history.back()

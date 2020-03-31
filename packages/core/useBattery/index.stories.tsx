@@ -1,10 +1,10 @@
 import 'vue-tsx-support/enable-check'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useBattery } from '.'
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     return useBattery()
   },

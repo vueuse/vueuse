@@ -12,9 +12,13 @@ export function createI18n(options?: VueI18n.I18nOptions) {
 
   const locale = ref(i18n.locale)
 
-  watch(locale, () => {
-    i18n.locale = locale.value
-  }, { lazy: true })
+  watch(
+    locale,
+    () => {
+      i18n.locale = locale.value
+    },
+    { lazy: true },
+  )
 
   return () => ({
     locale,

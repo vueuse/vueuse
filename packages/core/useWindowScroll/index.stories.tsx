@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useWindowScroll } from '.'
 
@@ -10,7 +10,7 @@ type Inject = {
   y: number
 }
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     const { x, y } = useWindowScroll()
 

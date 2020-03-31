@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { createComponent } from '../../api'
+import { defineComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useFirestore } from '.'
 
@@ -16,7 +16,7 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore()
 
-const Demo = createComponent({
+const Demo = defineComponent({
   setup() {
     return {
       todos: useFirestore(db.collection('todos')),
