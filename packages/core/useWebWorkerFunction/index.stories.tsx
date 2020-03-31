@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent,ref } from '../../api'
+import { createComponent, ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useWebWorkerFunction } from './'
 import { useRafFn } from '../useRafFn'
@@ -30,7 +30,7 @@ const Demo = createComponent({
       const data = sortNumbers(numbers)
       console.log('Sorted Array', data)
     }
-    const workerSort = async () => {
+    const workerSort = async() => {
       const data = await workerHook(numbers)
       console.log('Sorted Array', data)
     }

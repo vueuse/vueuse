@@ -73,7 +73,11 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
     }
 
     newWorker.onerror = (e: ErrorEvent) => {
-      promise.value.reject!(e)
+      const {
+        reject = () => {},
+      } = promise.value
+
+      reject(e)
       killWorker(WORKER_STATUS.ERROR)
     }
 
