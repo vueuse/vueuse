@@ -8,8 +8,7 @@ type Options = {
   timeout?: number
   dependencies?: string[]
 }
-const PROMISE_RESOLVE = 'resolve'
-const PROMISE_REJECT = 'reject'
+
 const DEFAULT_OPTIONS: Options = {
   timeout: undefined,
   dependencies: [],
@@ -23,7 +22,7 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
   const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
 
   const workerStatus: Ref<WORKER_STATUS> = ref(WORKER_STATUS.PENDING)
-  const promise: Ref<{ [PROMISE_REJECT]?: (result: ReturnType<T> | ErrorEvent) => void;[PROMISE_RESOLVE]?: (result: ReturnType<T>) => void }> = ref({})
+  const promise: Ref<{ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void }> = ref({})
   const timeoutId: Ref<number | undefined> = ref(undefined)
 
   const killWorker = (status = WORKER_STATUS.PENDING) => {
@@ -47,30 +46,34 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
 
   const generateWorker = () => {
     const {
-      dependencies = DEFAULT_OPTIONS.dependencies,
+      dependencies = DEFAULT_OPTIONS.dependencies || [],
       timeout = DEFAULT_OPTIONS.timeout,
     } = options
-    const blobUrl = createWorkerBlobUrl(fn, dependencies!)
+    const blobUrl = createWorkerBlobUrl(fn, dependencies)
     const newWorker: Worker & { _url?: string } = new Worker(blobUrl)
     newWorker._url = blobUrl
 
     newWorker.onmessage = (e: MessageEvent) => {
+      const {
+        resolve = () => {},
+        reject = () => {},
+      } = promise.value
       const [status, result] = e.data as [WORKER_STATUS, ReturnType<T>]
 
       switch (status) {
         case WORKER_STATUS.SUCCESS:
-          promise.value[PROMISE_RESOLVE]!(result)
+          resolve(result)
           killWorker(status)
           break
         default:
-          promise.value[PROMISE_REJECT]!(result)
+          reject(result)
           killWorker(WORKER_STATUS.ERROR)
           break
       }
     }
 
     newWorker.onerror = (e: ErrorEvent) => {
-      promise.value[PROMISE_REJECT]!(e)
+      promise.value.reject!(e)
       killWorker(WORKER_STATUS.ERROR)
     }
 
@@ -84,8 +87,8 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
 
   const callWorker = (...fnArgs: Parameters<T>) => new Promise<ReturnType<T>>((resolve, reject) => {
     promise.value = {
-      [PROMISE_RESOLVE]: resolve,
-      [PROMISE_REJECT]: reject,
+      resolve,
+      reject,
     }
     worker.value && worker.value.postMessage([[...fnArgs]])
 

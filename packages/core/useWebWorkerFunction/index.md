@@ -1,6 +1,8 @@
 # useWebWorkerFunction
 
-> Run Code in Web Worker. Extract Function in Web Worker and call them via promises.
+> `useWebWorkerFunction()` is a js library (with typescript support) that allows you to use the Web Worker Web API, through React Hooks. This library allows you to run the expensive function without blocking the user interface, using a simple syntax that makes use of Promise
+
+
 
 ## Usage
 

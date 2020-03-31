@@ -1,10 +1,10 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent } from '../../api'
+import { createComponent,ref } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useWebWorkerFunction } from './'
-import { useRaf } from '../useRaf'
+import { useRafFn } from '../useRafFn'
 import { computed } from '@vue/composition-api'
 
 type Inject = {
@@ -19,11 +19,21 @@ const sortNumbers = nums => nums.sort()
 const Demo = createComponent({
   setup() {
     const { workerHook } = useWebWorkerFunction(sortNumbers)
-    const time = useRaf()
-    const rotationDegrees = computed(() => (time.value / 50) % 360)
+    const count = ref(0)
+    useRafFn(() => {
+      count.value += 1
+    })
+    // Spin 360 degrees after 1000 Rafs
+    const rotationDegrees = computed(() => (count.value / 1000) * 360)
 
-    const baseSort = () => sortNumbers(numbers)
-    const workerSort = () => workerHook(numbers)
+    const baseSort = () => {
+      const data = sortNumbers(numbers)
+      console.log('Sorted Array', data)
+    }
+    const workerSort = async () => {
+      const data = await workerHook(numbers)
+      console.log('Sorted Array', data)
+    }
 
     return {
       baseSort,
