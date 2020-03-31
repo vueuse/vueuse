@@ -13,8 +13,8 @@ type Inject = {
   rotationDegrees: number
 }
 
-const numbers = Array(5000000).fill(1).map(ele => ~~(Math.random() * 1000000))
-const sortNumbers = nums => nums.sort()
+const numbers: number[] = Array(5000000).fill(1).map(ele => ~~(Math.random() * 1000000))
+const sortNumbers = (nums: number[]): number[] => nums.sort()
 
 const Demo = createComponent({
   setup() {
@@ -28,11 +28,11 @@ const Demo = createComponent({
 
     const baseSort = () => {
       const data = sortNumbers(numbers)
-      console.log('Sorted Array', data)
+      console.log('Array sorted', data.slice(0, 10))
     }
     const workerSort = async() => {
       const data = await workerHook(numbers)
-      console.log('Sorted Array', data)
+      console.log('Array sorted', data.slice(0, 10))
     }
 
     return {
