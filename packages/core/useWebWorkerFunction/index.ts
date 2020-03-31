@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS: Options = {
 }
 
 /* eslint-disable arrow-parens */
-export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
+export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   fn: T, options: Options = DEFAULT_OPTIONS,
 ) => {
   /* eslint-enable arrow-parens */
@@ -102,7 +102,7 @@ export const useWebWorkerFunction = <T extends (...fnArgs: any[]) => any>(
   const workerHook = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === WORKER_STATUS.RUNNING) {
       /* eslint-disable-next-line no-console */
-      console.error('[useWebWorkerFunction] You can only run one instance of the worker at a time, if you want to run more than one in parallel, create another instance with the hook useWorker(). Read more: https://github.com/alewin/useWorker')
+      console.error('[useWebWorkerFn] You can only run one instance of the worker at a time, if you want to run more than one in parallel, create another instance with the hook useWorker(). Read more: https://github.com/alewin/useWorker')
       /* eslint-disable-next-line prefer-promise-reject-errors */
       return Promise.reject()
     }

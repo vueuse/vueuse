@@ -1,30 +1,24 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { createComponent, ref } from '../../api'
+import { createComponent } from '../../api'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useWebWorkerFunction } from './'
-import { useRafFn } from '../useRafFn'
-import { computed } from '@vue/composition-api'
+import { useWebWorkerFn } from './'
+import { useNow } from '../useNow'
 
 type Inject = {
   baseSort: Function
   workerSort: Function
-  rotationDegrees: number
+  time: number
 }
 
-const numbers: number[] = Array(5000000).fill(1).map(ele => ~~(Math.random() * 1000000))
+const numbers: number[] = [...Array(5000000)].map(_ => ~~(Math.random() * 1000000))
 const sortNumbers = (nums: number[]): number[] => nums.sort()
 
 const Demo = createComponent({
   setup() {
-    const { workerHook } = useWebWorkerFunction(sortNumbers)
-    const count = ref(0)
-    useRafFn(() => {
-      count.value += 1
-    })
-    // Spin 360 degrees after 1000 Rafs
-    const rotationDegrees = computed(() => (count.value / 1000) * 360)
+    const { workerHook } = useWebWorkerFn(sortNumbers)
+    const time = useNow()
 
     const baseSort = () => {
       const data = sortNumbers(numbers)
@@ -38,24 +32,19 @@ const Demo = createComponent({
     return {
       baseSort,
       workerSort,
-      rotationDegrees,
+      time,
     }
   },
 
   render(this: Vue & Inject) {
-    const { baseSort, workerSort, rotationDegrees } = this
+    const { baseSort, workerSort, time } = this
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
         <div id="demo">
-          <div style={{ height: '300px', width: '300px' }}>
-            <img
-              style={{ transform: `rotate(${rotationDegrees}deg)` }}
-              src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-storybook.png"
-            ></img>
-          </div>
+          <div>{time}</div>
           <button onClick={() => baseSort()}>
             Normal Sort
           </button>
@@ -69,4 +58,4 @@ const Demo = createComponent({
   },
 })
 
-storiesOf('Misc', module).add('useWebWorkerFunction', () => Demo as any)
+storiesOf('Misc', module).add('useWebWorkerFn', () => Demo as any)
