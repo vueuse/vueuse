@@ -17,7 +17,7 @@ const sortNumbers = (nums: number[]): number[] => nums.sort()
 
 const Demo = createComponent({
   setup() {
-    const { workerHook } = useWebWorkerFn(sortNumbers)
+    const { workerFn } = useWebWorkerFn(sortNumbers)
     const time = useNow()
 
     const baseSort = () => {
@@ -25,7 +25,7 @@ const Demo = createComponent({
       console.log('Array sorted', data.slice(0, 10))
     }
     const workerSort = async() => {
-      const data = await workerHook(numbers)
+      const data = await workerFn(numbers)
       console.log('Array sorted', data.slice(0, 10))
     }
 

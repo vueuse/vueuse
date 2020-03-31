@@ -1,8 +1,15 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
 import { ref, onMounted, onUnmounted, Ref } from '../../api'
-import WORKER_STATUS from './lib/status'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
+
+export enum WorkerStatus {
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Runing = 'RUNNING',
+  Error = 'ERROR',
+  TimeoutExpired = 'TIMEOUT_EXPIRED',
+}
 
 type Options = {
   timeout?: number
@@ -21,11 +28,11 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   /* eslint-enable arrow-parens */
   const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
 
-  const workerStatus: Ref<WORKER_STATUS> = ref(WORKER_STATUS.PENDING)
+  const workerStatus: Ref<WorkerStatus> = ref(WorkerStatus.Pending)
   const promise: Ref<{ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void }> = ref({})
   const timeoutId: Ref<number | undefined> = ref(undefined)
 
-  const killWorker = (status = WORKER_STATUS.PENDING) => {
+  const workerTerminate = (status = WorkerStatus.Pending) => {
     if (worker.value && worker.value._url) {
       worker.value.terminate()
       URL.revokeObjectURL(worker.value._url)
@@ -37,11 +44,11 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   }
 
   onMounted(() => {
-    killWorker()
+    workerTerminate()
   })
 
   onUnmounted(() => {
-    killWorker()
+    workerTerminate()
   })
 
   const generateWorker = () => {
@@ -58,16 +65,16 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
         resolve = () => {},
         reject = () => {},
       } = promise.value
-      const [status, result] = e.data as [WORKER_STATUS, ReturnType<T>]
+      const [status, result] = e.data as [WorkerStatus, ReturnType<T>]
 
       switch (status) {
-        case WORKER_STATUS.SUCCESS:
+        case WorkerStatus.Success:
           resolve(result)
-          killWorker(status)
+          workerTerminate(status)
           break
         default:
           reject(result)
-          killWorker(WORKER_STATUS.ERROR)
+          workerTerminate(WorkerStatus.Error)
           break
       }
     }
@@ -78,12 +85,12 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
       } = promise.value
 
       reject(e)
-      killWorker(WORKER_STATUS.ERROR)
+      workerTerminate(WorkerStatus.Error)
     }
 
     if (timeout) {
       timeoutId.value = window.setTimeout(() => {
-        killWorker(WORKER_STATUS.TIMEOUT_EXPIRED)
+        workerTerminate(WorkerStatus.TimeoutExpired)
       }, timeout)
     }
     return newWorker
@@ -96,11 +103,11 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
     worker.value && worker.value.postMessage([[...fnArgs]])
 
-    workerStatus.value = (WORKER_STATUS.RUNNING)
+    workerStatus.value = (WorkerStatus.Runing)
   })
 
-  const workerHook = (...fnArgs: Parameters<T>) => {
-    if (workerStatus.value === WORKER_STATUS.RUNNING) {
+  const workerFn = (...fnArgs: Parameters<T>) => {
+    if (workerStatus.value === WorkerStatus.Runing) {
       /* eslint-disable-next-line no-console */
       console.error('[useWebWorkerFn] You can only run one instance of the worker at a time, if you want to run more than one in parallel, create another instance with the hook useWorker(). Read more: https://github.com/alewin/useWorker')
       /* eslint-disable-next-line prefer-promise-reject-errors */
@@ -112,8 +119,8 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   }
 
   return {
-    workerHook,
-    workerStatus: workerStatus.value,
-    killWorker,
+    workerFn,
+    workerStatus,
+    workerTerminate,
   }
 }
