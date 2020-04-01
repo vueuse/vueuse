@@ -119,6 +119,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 - Misc
   - [`useWebSocket`](https://vueuse.js.org/?path=/story/misc--usewebsocket) — reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client
   - [`useWebWorker`](https://vueuse.js.org/?path=/story/misc--usewebworker) — simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication
+  - [`useWebWorkerFn`](https://vueuse.js.org/?path=/story/misc--usewebworkerfn) — run expensive function without blocking the UI
 
 - Sensors
   - [`useBattery`](https://vueuse.js.org/?path=/story/sensors--usebattery) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
