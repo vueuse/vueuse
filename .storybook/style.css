@@ -25,6 +25,14 @@
   @apply bg-green-500 border-green-700;
 }
 
+#demo button.orange {
+  @apply bg-orange-400 text-black py-1 px-4 border-b-4 border-orange-600 rounded;
+}
+
+#demo button.orange:hover {
+  @apply bg-orange-500 border-orange-700;
+}
+
 #demo button[disabled] {
   @apply bg-gray-400 border-gray-600 text-gray-700;
 }
