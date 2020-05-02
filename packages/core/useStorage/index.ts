@@ -3,7 +3,7 @@ import { useEventListener } from '../useEventListener'
 
 const Serializers = {
   boolean: {
-    read: (v: any) => v === 'true',
+    read: (v: any, d: any) => v != null ? v === 'true' : d,
     write: (v: any) => String(v),
   },
   object: {

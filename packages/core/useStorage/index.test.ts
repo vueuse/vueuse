@@ -51,20 +51,20 @@ describe('useStorage', () => {
   })
 
   it('boolean', () => {
-    localStorage.setItem(KEY, 'false')
+    localStorage.removeItem(KEY)
 
     renderHook(() => {
       const ref = useStorage(KEY, true)
 
-      expect(ref.value).toBe(false)
-
-      ref.value = true
-
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
+      expect(ref.value).toBe(true)
 
       ref.value = false
 
       expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
+
+      ref.value = true
+
+      expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
     })
   })
 
