@@ -66,7 +66,7 @@
     "@storybook/addons": "5.3.17",
     "@storybook/theming": "5.3.17",
     "@storybook/vue": "5.3.17",
-    "@types/fs-extra": "8.1.0",
+    "@types/fs-extra": "9.0.1",
     "@types/inquirer": "6.5.0",
     "@types/jest": "25.1.4",
     "@types/js-yaml": "3.12.2",
