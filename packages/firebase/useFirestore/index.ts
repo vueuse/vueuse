@@ -22,15 +22,15 @@ function getData<T>(
   return data
 }
 
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData | firebase.firestore.DocumentData[]> (
   docRef: firebase.firestore.DocumentReference<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T|null>
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData | firebase.firestore.DocumentData[]> (
   docRef: firebase.firestore.Query<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T[]>
-export function useFirestore<T extends firebase.firestore.DocumentData>(
+export function useFirestore<T extends firebase.firestore.DocumentData | firebase.firestore.DocumentData[]>(
   docRef: FirebaseDocRef<T>,
   errorHandler = (err: Error) => {},
 ) {
