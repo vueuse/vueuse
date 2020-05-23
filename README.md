@@ -59,7 +59,7 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ## 📦 Install
 
-### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next)), [*demo here*](https://vueuse-next-example.netlify.com/)
+### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next)), (Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example))
 
 <pre class='language-bash'>
 npm i @vueuse/core<b>@vue3</b>
