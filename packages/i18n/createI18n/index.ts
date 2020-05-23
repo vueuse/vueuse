@@ -17,7 +17,6 @@ export function createI18n(options?: VueI18n.I18nOptions) {
     () => {
       i18n.locale = locale.value
     },
-    { lazy: true },
   )
 
   return () => ({

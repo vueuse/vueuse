@@ -18,7 +18,6 @@ export function useCssVar(
       // @ts-ignore
       el.value && el.value.style && el.value.style.setProperty(prop, val)
     },
-    { lazy: true },
   )
 
   return varRef

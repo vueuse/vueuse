@@ -62,7 +62,7 @@ export function useMouseInElement(
       if (touch)
         document.removeEventListener('touchmove', moveHandler)
     })
-  })
+  }, { immediate: true })
 
   return {
     x,

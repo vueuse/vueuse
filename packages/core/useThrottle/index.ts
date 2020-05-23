@@ -20,7 +20,7 @@ export function useThrottle<T>(value: Ref<T>, delay = 200) {
     throttled.value = value.value
   }, delay)
 
-  watch(value, () => updater(), { lazy: true })
+  watch(value, () => updater())
 
   return throttled
 }

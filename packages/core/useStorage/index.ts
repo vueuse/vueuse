@@ -78,7 +78,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
         console.warn(e)
       }
     },
-    { flush: 'sync', lazy: true, deep: true },
+    { flush: 'sync', deep: true },
   )
 
   return data

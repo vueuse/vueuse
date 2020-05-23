@@ -19,7 +19,7 @@ const Demo = defineComponent({
 
     watch(throttled, () => {
       updated.value += 1
-    }, { lazy: true })
+    })
 
     return {
       input,

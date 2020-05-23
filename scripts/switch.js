@@ -37,7 +37,7 @@ async function switchApi(targetVersion, packageVersion) {
     path.join(srcDir, 'api.ts'),
   )
 
-  await updateImport(packageVersion)
+  await updateImport(targetVersion, packageVersion)
 }
 
 async function cli() {

@@ -23,7 +23,8 @@ export function useElementVisibility(element: Ref<Element>) {
 
   onMounted(testBoundingClientRect)
 
-  watch([x, y], testBoundingClientRect)
+  watch(x, testBoundingClientRect)
+  watch(y, testBoundingClientRect)
 
   return elementIsVisible
 }

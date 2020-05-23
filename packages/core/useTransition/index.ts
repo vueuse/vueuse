@@ -95,7 +95,7 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
 
       if (progress >= 1) stop()
     }).stop
-  })
+  }, { immediate: true })
 
   return number
 }

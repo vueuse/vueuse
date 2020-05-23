@@ -12,7 +12,6 @@ export function useTimeoutFn(
     (maturity) => {
       maturity && cb()
     },
-    { lazy: true },
   )
 
   return { ready, start, stop }
