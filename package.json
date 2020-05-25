@@ -95,7 +95,7 @@
     "jest": "25.1.0",
     "js-yaml": "3.13.1",
     "lint-staged": "10.0.8",
-    "markdown-it": "10.0.0",
+    "markdown-it": "11.0.0",
     "markdown-it-highlight-lines": "1.0.2",
     "markdown-it-link-attributes": "3.0.0",
     "markdown-it-loader": "0.7.0",
