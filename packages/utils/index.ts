@@ -5,6 +5,7 @@ export const assert = (condition: boolean, ...infos: any[]) => {
 }
 const toString = Object.prototype.toString
 export const isBoolean = (val: any): val is boolean => typeof val === 'boolean'
+export const isFunction = (val: any): val is Function => typeof val === 'function'
 export const isNumber = (val: any): val is number => typeof val === 'number'
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isObject = (val: any): val is object =>
