@@ -18,7 +18,7 @@ const track = {
   maxWidth: '20rem',
   padding: '0 0.5rem',
   width: '100%',
-};
+}
 
 const sled = {
   background: '#68d391',
@@ -31,15 +31,15 @@ const sled = {
 
 const Demo = defineComponent({
   setup() {
-    const baseNumber = ref(0);
+    const baseNumber = ref(0)
 
     const easeInOutElastic = (x: number) => {
-      const c5 = (2 * Math.PI) / 4.5;
+      const c5 = (2 * Math.PI) / 4.5
       return x === 0
         ? 0 : x === 1
-        ? 1 : x < 0.5
-        ? -(2 ** ( 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (2 ** (-20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1;
-    };
+          ? 1 : x < 0.5
+            ? -(2 ** (20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (2 ** (-20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1
+    }
 
     const cubicBezierNumber = useTransition(baseNumber, {
       duration: 1500,
@@ -63,7 +63,7 @@ const Demo = defineComponent({
     const Docs = <ShowDocs md={require('./index.md')} />
 
     const onClick = () => {
-      this.baseNumber = this.baseNumber === 100 ? 0 : 100;
+      this.baseNumber = this.baseNumber === 100 ? 0 : 100
     }
 
     return (
