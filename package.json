@@ -112,7 +112,7 @@
     "rollup-plugin-typescript2": "0.26.0",
     "rollup-plugin-uglify": "6.0.4",
     "tailwindcss": "1.2.0",
-    "ts-jest": "25.2.1",
+    "ts-jest": "26.0.0",
     "typescript": "3.8.3",
     "version-bump-prompt": "6.0.3",
     "vue": "2.6.11",
