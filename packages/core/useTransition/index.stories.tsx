@@ -7,7 +7,8 @@ import { useTransition } from '.'
 
 type Inject = {
   baseNumber: number
-  number: number
+  cubicBezierNumber: number
+  customFnNumber: number
 }
 
 const track = {
@@ -24,7 +25,7 @@ const sled = {
   background: '#68d391',
   borderRadius: '50%',
   height: '1rem',
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   transform: 'translateX(-50%)',
   width: '1rem',
 }
@@ -59,7 +60,6 @@ const Demo = defineComponent({
   },
 
   render(this: Vue & Inject) {
-    // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
 
     const onClick = () => {
