@@ -39,4 +39,4 @@ The following transitions are available out of the box. Check out [easings.net](
 - `easeOutBack`
 - `easeInOutBack`
 
-Custom transitions can be provided as an array of numbers. For example, [`[0.75, 0, 0.25, 1]`](https://cubic-bezier.com/#.75,0,.25,1) would be an ease-in-out transition.
+Custom transitions can be provided as an array of numbers, or a custom function. For example, [`[0.75, 0, 0.25, 1]`](https://cubic-bezier.com/#.75,0,.25,1) would be an ease-in-out transition.

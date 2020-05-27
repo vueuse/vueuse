@@ -1,17 +1,19 @@
 import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from '../../api'
-import { clamp, isString, noop } from '../../utils'
+import { clamp, isFunction, isString, noop } from '../../utils'
 
 type CubicBezier = [number, number, number, number]
+
+type EasingFunction = (x: number) => number
 
 type NamedPreset = 'linear' | 'easeInSine' | 'easeOutSine' | 'easeInQuad' | 'easeOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInQuart' | 'easeOutQuart' | 'easeInOutQuart' | 'easeInQuint' | 'easeOutQuint' | 'easeInOutQuint' | 'easeInExpo' | 'easeOutExpo' | 'easeInOutExpo' | 'easeInCirc' | 'easeOutCirc' | 'easeInOutCirc' | 'easeInBack' | 'easeOutBack' | 'easeInOutBack'
 
 type StateEasingOptions = {
   duration?: number
-  transition?: NamedPreset | CubicBezier
+  transition?: EasingFunction | NamedPreset | CubicBezier
 }
 
-const cubicBezier = ([p0, p1, p2, p3]: CubicBezier) => {
+const cubicBezier = ([p0, p1, p2, p3]: CubicBezier): EasingFunction => {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -71,11 +73,13 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
     ...options,
   }
 
-  const getValue = cubicBezier(
-    isString(normalizedOptions.transition)
-      ? presets[normalizedOptions.transition as NamedPreset]
-      : normalizedOptions.transition,
-  )
+  const getValue = isFunction<EasingFunction>(normalizedOptions.transition)
+    ? normalizedOptions.transition
+    : cubicBezier(
+      isString(normalizedOptions.transition)
+        ? presets[normalizedOptions.transition as NamedPreset]
+        : normalizedOptions.transition,
+    )
 
   let stop = noop
 
