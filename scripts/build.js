@@ -59,7 +59,7 @@ async function buildMetaFiles(targetVersion, packageVersion) {
     if (targetVersion === 2) {
       packageJSON.peerDependencies = {
         vue: '^2.6.0',
-        '@vue/composition-api': '>=0.5.0',
+        '@vue/composition-api': '>=0.6.1',
         ...(options.peerDependencies || {}),
       }
     }
