@@ -25,7 +25,7 @@ const sled = {
   background: '#68d391',
   borderRadius: '50%',
   height: '1rem',
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   transform: 'translateX(-50%)',
   width: '1rem',
 }
