@@ -1,4 +1,4 @@
-interface NavigatorWithShare extends Navigator {
+interface NavigatorWithShare {
   share?: (data: ShareOptions) => Promise<void>
   canShare?: (data: ShareOptions) => boolean
 }
