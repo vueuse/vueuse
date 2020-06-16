@@ -7,13 +7,13 @@ Thanks for being interested in contributing to this project!
 Clone this repo to your local machine and install the dependencies.
 
 ```bash
-npm i
+yarn install
 ```
 
 Before you start, you need to init the target Vue API you gonna work with. Normally you would like to starts with Vue 2.x
 
 ```bash
-npm run switch 2
+yarn switch 2
 ```
 
 ## Code Style
@@ -25,7 +25,7 @@ Don't worry about the code style as long as you install the dev dependencies. Gi
 We use Storybook for rapid development and documenting. You can start it locally by
 
 ```bash
-npm run storybook
+yarn storybook
 ```
 
 ## Contributing to existing functions
