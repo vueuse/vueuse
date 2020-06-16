@@ -17,18 +17,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install
-      run: npm ci
+      run: yarn install --frozen-lockfile
     - name: Lint
-      run: npm run lint
+      run: yarn lint
     - name: Test for Vue 2.x
       run: |
-        npm run switch 2
-        npm test
+        yarn switch 2
+        yarn test
     # - name: Test for Vue 3.x
     #   run: |
-    #     npm run switch 3
-    #     npm test
+    #     yarn switch 3
+    #     yarn test
     - name: Build for Vue 2.x
-      run: npm run build 2
+      run: yarn build 2
     - name: Build for Vue 3.x
-      run: npm run build 3
+      run: yarn build 3
