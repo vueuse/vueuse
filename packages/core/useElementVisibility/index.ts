@@ -1,7 +1,7 @@
 import { onMounted, ref, Ref, watch } from '../../api'
 import { useWindowScroll } from '../useWindowScroll'
 
-export function useElementVisibility(element: Ref<Element>) {
+export function useElementVisibility(element: Ref<Element|null|undefined>) {
   const { x, y } = useWindowScroll()
   const elementIsVisible = ref(false)
 
