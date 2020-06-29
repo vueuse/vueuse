@@ -58,7 +58,7 @@
     "@babel/plugin-proposal-optional-chaining": "7.10.1",
     "@babel/preset-env": "7.10.2",
     "@babel/preset-typescript": "7.10.1",
-    "@rollup/plugin-typescript": "4.1.2",
+    "@rollup/plugin-typescript": "5.0.1",
     "@storybook/addon-actions": "5.3.19",
     "@storybook/addon-knobs": "5.3.19",
     "@storybook/addon-links": "5.3.19",
