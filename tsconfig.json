@@ -29,7 +29,7 @@
     "**/**/*.stories.tsx",
     "**/**/*.md",
     "packages/_docs",
-    "src/api.2.ts",
-    "src/api.3.ts"
+    "packages/api.2.ts",
+    "packages/api.3.ts"
   ]
 }
