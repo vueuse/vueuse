@@ -10,12 +10,6 @@ Clone this repo to your local machine and install the dependencies.
 yarn install
 ```
 
-Before you start, you need to init the target Vue API you gonna work with. Normally you would like to starts with Vue 2.x
-
-```bash
-yarn switch 2
-```
-
 ## Code Style
 
 Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.

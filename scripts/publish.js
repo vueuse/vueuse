@@ -12,7 +12,7 @@ async function publish() {
   for (const [pkg] of packages) {
     const packageDist = path.join(distDir, pkg)
 
-    exec('npm publish --access public --tag demi', { stdio: 'inherit', cwd: packageDist })
+    exec('yarn publish --access public --non-interactive', { stdio: 'inherit', cwd: packageDist })
 
     consola.success(`Published @vueuse/${pkg}`)
   }

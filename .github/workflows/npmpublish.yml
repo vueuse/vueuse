@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: 12
       - run: yarn install --frozen-lockfile
-      - run: yarn switch 2
       - run: yarn test
 
   publish-npm:

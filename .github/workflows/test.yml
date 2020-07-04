@@ -20,15 +20,7 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Lint
       run: yarn lint
-    - name: Test for Vue 2.x
-      run: |
-        yarn switch 2
-        yarn test
-    # - name: Test for Vue 3.x
-    #   run: |
-    #     yarn switch 3
-    #     yarn test
-    - name: Build for Vue 2.x
-      run: yarn build 2
-    - name: Build for Vue 3.x
-      run: yarn build 3
+    # - name: Test
+    #   run: yarn test
+    - name: Build
+      run: yarn build

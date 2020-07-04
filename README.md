@@ -59,13 +59,13 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ## 📦 Install
 
-> From v4.0, it's works for Vue 2 & 3 with in a single package which is powered by [Vue Demi](https://github.com/antfu/vue-demi)!
+> From v4.0, it works for Vue 2 & 3 with in a single package with the powered of [Vue Demi](https://github.com/antfu/vue-demi)!
 
 ```bash
 npm i @vueuse/core # yarn add @vueuse/core
 ```
 
-Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example)
+Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
 
 ### CDN
 
