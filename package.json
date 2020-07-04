@@ -6,7 +6,7 @@
     "build": "node ./scripts/build",
     "release:gh": "npm test && bump --commit --tag --push --preid alpha && conventional-github-releaser -p angular",
     "release:local": "npm test && npm run readme:update && bump --commit --tag --preid alpha && npm run publich:ci",
-    "publish:ci": "node ./scripts/publish.js all",
+    "publish:ci": "node ./scripts/publish.js",
     "import": "node ./scripts/import",
     "typings": "tsc --emitDeclarationOnly && node ./scripts/typing-fix",
     "test": "jest",
@@ -17,7 +17,7 @@
     "clean": "rimraf dist typings storybook-static",
     "dev": "start-storybook -p 6006",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "npm run switch 2 && npm run typings && build-storybook"
+    "storybook:build": "npm run typings && build-storybook"
   },
   "husky": {
     "hooks": {

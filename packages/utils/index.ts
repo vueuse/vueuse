@@ -1,4 +1,4 @@
-export const isClient = typeof window === 'object'
+export const isClient = typeof window !== 'undefined'
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const assert = (condition: boolean, ...infos: any[]) => {
   if (!condition) console.warn(...infos)
