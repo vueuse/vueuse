@@ -1,4 +1,4 @@
-import { init } from '../../api'
+import { init } from 'vue-demi'
 import { useTimeout } from '../useTimeout'
 
 test('export', () => {

@@ -3,14 +3,15 @@ import typescript from 'rollup-plugin-typescript2'
 import { uglify } from 'rollup-plugin-uglify'
 import dts from 'rollup-plugin-dts'
 import path from 'path'
-const packages = require('./scripts/packages')
 
+const packages = require('./scripts/packages')
 const configs = []
 
 for (const [pkg, options] of packages) {
   const globals = {
     vue: 'Vue',
-    '@vue/composition-api': 'vueCompositionApi',
+    'vue-demi': 'VueDemi',
+    '@vue/composition-api': 'VueCompositionAPI',
     '@vue/runtime-dom': 'Vue',
     ...(options.globals || {}),
   }
@@ -45,16 +46,16 @@ for (const [pkg, options] of packages) {
     ],
     plugins: [
       typescript({
-        tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+        tsconfig: path.resolve(__dirname, 'tsconfig.rollup.json'),
         tsconfigOverride: {
           declaration: false,
           declarationDir: null,
           declarationMap: false,
         },
-        useTsconfigDeclarationDir: true,
       }),
     ],
     external: [
+      'vue-demi',
       'vue',
       '@vue/composition-api',
       '@vue/runtime-dom',

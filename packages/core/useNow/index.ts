@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance, onUnmounted } from '../../api'
+import { ref, getCurrentInstance, onUnmounted } from 'vue-demi'
 
 function getTimestamp() {
   return +Date.now()

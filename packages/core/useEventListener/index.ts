@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted } from '../../api'
+import { onMounted, onUnmounted } from 'vue-demi'
 
 export function useEventListener<K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void
 export function useEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions, target?: Document): void

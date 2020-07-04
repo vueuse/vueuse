@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { defineComponent } from '../../api'
+import { defineComponent } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useRTDB } from '.'
 

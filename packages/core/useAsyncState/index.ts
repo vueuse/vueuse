@@ -1,4 +1,4 @@
-import { ref } from '../../api'
+import { ref } from 'vue-demi'
 import { useTimeoutFn } from '../useTimeoutFn'
 
 export function useAsyncState<T>(

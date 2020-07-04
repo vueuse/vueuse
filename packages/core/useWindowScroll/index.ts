@@ -1,4 +1,4 @@
-import { ref } from '../../api'
+import { ref } from 'vue-demi'
 import { isClient } from '../../utils'
 import { useEventListener } from '../useEventListener'
 

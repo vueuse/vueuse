@@ -1,6 +1,6 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref, onMounted, onUnmounted, Ref } from '../../api'
+import { ref, onMounted, onUnmounted, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
 export enum WorkerStatus {

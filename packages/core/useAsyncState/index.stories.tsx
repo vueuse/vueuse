@@ -3,7 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import YAML from 'js-yaml'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent } from '../../api'
+import { defineComponent } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useAsyncState } from '.'
 

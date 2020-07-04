@@ -1,4 +1,4 @@
-import { ref, onUnmounted, getCurrentInstance } from '../../api'
+import { ref, onUnmounted, getCurrentInstance } from 'vue-demi'
 
 export function useTimeout(interval = 1000, startRightNow = true) {
   const ready = ref(false)

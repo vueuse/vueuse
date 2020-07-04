@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { computed, defineComponent, ref } from '../../api'
+import { computed, defineComponent, ref } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useTransition } from '.'
 

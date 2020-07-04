@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from '../../api'
+import { ref, Ref, watch, WatchStopHandle } from 'vue-demi'
 
 export function useMouseInElement(
   target: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
@@ -23,7 +23,7 @@ export function useMouseInElement(
   const elementWidth = ref(0)
   const isOutside = ref(false)
 
-  const stop = watch(target, (el, prevEl, onCleanup) => {
+  const stop: WatchStopHandle = watch(target, (el, prevEl, onCleanup) => {
     const moveHandler = (event: MouseEvent | TouchEvent) => {
       const ele = el || document.body
       const {

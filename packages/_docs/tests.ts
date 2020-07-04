@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { defineComponent, init } from '../api'
+import { defineComponent, init } from 'vue-demi'
 
 const localVue = createLocalVue()
 

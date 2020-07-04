@@ -1,5 +1,5 @@
 import firebase from 'firebase/app'
-import { ref, onUnmounted } from '../../api'
+import { ref, onUnmounted } from 'vue-demi'
 
 export function useRTDB(
   docRef: firebase.database.Reference,

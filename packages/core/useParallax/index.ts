@@ -1,4 +1,4 @@
-import { computed, Ref } from '../../api'
+import { computed, Ref, ComputedRef } from 'vue-demi'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
 
@@ -10,7 +10,11 @@ export interface ParallaxOptions {
   targetElement?: Ref<HTMLElement>
 }
 
-export function useParallax(options?: ParallaxOptions) {
+export function useParallax(options?: ParallaxOptions): {
+  roll: ComputedRef<number>
+  tilt: ComputedRef<number>
+  source: ComputedRef<'deviceOrientation' | 'mouse'>
+} {
   const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation()
   const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(options?.targetElement, { handleOutside: false })
 

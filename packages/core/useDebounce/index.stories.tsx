@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent, ref, watch } from '../../api'
+import { defineComponent, ref, watch } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useDebounce } from '.'
 

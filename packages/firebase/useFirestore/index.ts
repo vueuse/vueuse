@@ -1,6 +1,6 @@
 /* eslint-disable handle-callback-err */
 import firebase from 'firebase/app'
-import { ref, onUnmounted, Ref } from '../../api'
+import { ref, onUnmounted, Ref } from 'vue-demi'
 import { isDef } from '../../utils'
 
 export type FirebaseDocRef<T> =

@@ -1,6 +1,6 @@
 import VueI18n from 'vue-i18n'
 import Vue from 'vue'
-import { ref, watch } from '../../api'
+import { ref, watch } from 'vue-demi'
 
 export function createI18n(options?: VueI18n.I18nOptions) {
   Vue.use(VueI18n)

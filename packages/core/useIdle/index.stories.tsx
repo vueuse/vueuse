@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent, computed } from '../../api'
+import { defineComponent, computed } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useNow } from '../useNow'
 import { useIdle } from '.'

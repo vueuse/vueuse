@@ -1,4 +1,4 @@
-import { onUnmounted, getCurrentInstance } from '../../api'
+import { onUnmounted, getCurrentInstance } from 'vue-demi'
 
 export function useIntervalFn(cb: Function, interval = 1000, startRightNow = true) {
   let timer: any = null

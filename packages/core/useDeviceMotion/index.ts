@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref } from '../../api'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
 

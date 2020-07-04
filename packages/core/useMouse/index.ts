@@ -1,4 +1,4 @@
-import { ref } from '../../api'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export function useMouse(options: {
