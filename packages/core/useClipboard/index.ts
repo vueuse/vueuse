@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from '../../api'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export function useClipboard() {

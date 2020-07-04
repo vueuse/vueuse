@@ -1,4 +1,4 @@
-import { reactive } from '../../api'
+import { reactive } from 'vue-demi'
 
 export function createGlobalState<T extends object>(
   factory: () => T,

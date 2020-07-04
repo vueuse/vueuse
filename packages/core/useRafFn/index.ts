@@ -1,4 +1,4 @@
-import { onUnmounted, getCurrentInstance } from '../../api'
+import { onUnmounted, getCurrentInstance } from 'vue-demi'
 
 export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   const { startNow = true } = options

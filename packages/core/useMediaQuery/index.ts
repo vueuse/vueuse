@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, onMounted, onUnmounted } from '../../api'
+import { ref, onMounted, onUnmounted } from 'vue-demi'
 
 export function useMediaQuery(query: string) {
   let mediaQuery!: MediaQueryList

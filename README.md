@@ -59,28 +59,18 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ## 📦 Install
 
-### for Vue 3 ([vue-next](https://github.com/vuejs/vue-next)), (Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example))
+> From v4.0, it works for Vue 2 & 3 with in a single package with the powered of [Vue Demi](https://github.com/antfu/vue-demi)!
 
-<pre class='language-bash'>
-npm i @vueuse/core<b>@vue3</b>
-</pre>
+```bash
+npm i @vueuse/core # yarn add @vueuse/core
+```
 
-### for Vue 2 with [composition-api](https://github.com/vuejs/composition-api) polyfill
-
-<pre class='language-bash'>
-npm i @vueuse/core<b>@vue2</b> @vue/composition-api 
-</pre>
-
-Please [register the Composition API Plugin](https://github.com/vuejs/composition-api#usage) before using APIs.
+Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
 
 ### CDN
 
 ```html
-<!-- For Vue 3 -->
-<script src="https://unpkg.com/@vueuse/core@vue3"></script> 
-
-<!-- For Vue 2 -->
-<script src="https://unpkg.com/@vueuse/core@vue2"></script>
+<script src="https://unpkg.com/@vueuse/core"></script>
 ```
 
 It will be exposed to global as `window.VueUse`
@@ -172,23 +162,6 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 <!--ADDONS_LIST_ENDS-->
 
-## 🔬 Technical Details
-
-### The Versioning
-
-For every release, it will release two versions of this package. The `3.x.x` is used for Vue 3 and the `2.x.x` is used for Vue 2. We use the major version number to distinguish the different target versions will the minor and patch numbers are shared in both packages.
-
-### Different between 3.x and 2.x
-
-For 3.x build, we use the API from [`@vue/runtime-dom`](https://www.npmjs.com/package/@vue/runtime-dom), and for 2.x, it's [`@vue/composition-api`](https://www.npmjs.com/package/@vue/composition-api). All the functions exported in this package behaves the same.
-
-```js
-// 3.x build
-import { ref } from '@vue/runtime-dom'
-
-// 2.x build
-import { ref } from '@vue/composition-api'
-```
 
 ## 🧱 Contribute
 

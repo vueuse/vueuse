@@ -1,4 +1,4 @@
-import { onMounted, ref, Ref, watch, computed } from '../../api'
+import { onMounted, ref, Ref, watch, computed } from 'vue-demi'
 
 export function useCssVar(
   prop: string,

@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from '../../api'
+import { ref, Ref, watch } from 'vue-demi'
 import { useThrottleFn } from '../useThrottleFn'
 
 /**

@@ -3,8 +3,6 @@ const path = require('path')
 const assert = require('assert')
 const fs = require('fs-extra')
 const consola = require('consola')
-const { switchApi, backupApi, restoreApi } = require('./switch')
-const { selectVersion } = require('./selectVersion')
 const packages = require('./packages')
 
 const rootDir = path.resolve(__dirname, '..')
@@ -16,7 +14,7 @@ const metaFiles = [
 
 assert(process.cwd() !== __dirname)
 
-async function buildMetaFiles(targetVersion, packageVersion) {
+async function buildMetaFiles(packageVersion) {
   for (const [pkg, options] of packages) {
     const packageDist = path.resolve(__dirname, '..', 'dist', pkg)
     const packageSrc = path.resolve(__dirname, '..', 'packages', pkg)
@@ -37,6 +35,7 @@ async function buildMetaFiles(targetVersion, packageVersion) {
       typings: 'index.d.ts',
       module: 'index.esm.js',
       unpkg: 'index.umd.min.js',
+      jsdelivr: 'index.umd.min.js',
       browser: 'index.esm.js',
       repository: {
         type: 'git',
@@ -54,84 +53,35 @@ async function buildMetaFiles(targetVersion, packageVersion) {
         url: 'https://github.com/antfu/vueuse/issues',
       },
       homepage: 'https://github.com/antfu/vueuse#readme',
-    }
-
-    if (targetVersion === 2) {
-      packageJSON.peerDependencies = {
-        vue: '^2.6.0',
-        '@vue/composition-api': '>=0.6.3',
-        ...(options.peerDependencies || {}),
-      }
-    }
-
-    if (targetVersion === 3) {
-      packageJSON.peerDependencies = {
-        vue: 'next',
-        ...(options.peerDependencies || {}),
-      }
+      dependencies: {
+        'vue-demi': 'latest',
+      },
     }
 
     await fs.writeFile(path.join(packageDist, 'package.json'), `${JSON.stringify(packageJSON, null, 2)}\n`)
   }
 }
 
-async function buildFor(targetVersion, publishCallback) {
-  assert([2, 3].includes(targetVersion))
-  consola.log('')
-  consola.info(`Build for Vue ${targetVersion}.x`)
-
-  let err
+async function build() {
   const rawPackageJSON = await fs.readFile(packageJSONDir)
   const packageJSON = JSON.parse(rawPackageJSON)
-  const packageVersion = [targetVersion, ...packageJSON.version.split('.').slice(1)].join('.')
+  const packageVersion = packageJSON.version
 
-  consola.info(packageVersion)
+  consola.info('Clean up')
+  exec('yarn clean', { stdio: 'inherit' })
 
-  await fs.writeFile(packageJSONDir, JSON.stringify(packageJSON, null, 2))
-  await backupApi()
-  await switchApi(targetVersion, packageVersion)
+  consola.info('Generate Declarations')
+  exec('yarn typings', { stdio: 'inherit' })
 
-  try {
-    consola.info('Clean up')
-    exec('npm run clean', { stdio: 'inherit' })
+  consola.info('Rollup')
+  exec('rollup -c', { stdio: 'inherit' })
 
-    consola.info('Generate Declarations')
-    exec('tsc --emitDeclarationOnly', { stdio: 'inherit' })
-
-    consola.info('Rollup')
-    exec('rollup -c', { stdio: 'inherit' })
-
-    consola.success(`Build for Vue ${targetVersion}.x finished`)
-
-    await buildMetaFiles(targetVersion, packageVersion)
-
-    if (publishCallback)
-      await publishCallback(targetVersion, packageVersion)
-  }
-  catch (e) {
-    err = e
-  }
-  finally {
-    // restore packageJSON
-    await fs.writeFile(packageJSONDir, rawPackageJSON)
-    await restoreApi()
-  }
-  if (err)
-    throw err
-}
-
-async function buildAll() {
-  await buildFor(2)
-  await buildFor(3)
+  await buildMetaFiles(packageVersion)
 }
 
 async function cli() {
   try {
-    const version = await selectVersion()
-    if (version)
-      await buildFor(version)
-    else if (version === 0)
-      await buildAll()
+    await build()
   }
   catch (e) {
     console.error(e)
@@ -140,7 +90,7 @@ async function cli() {
 }
 
 module.exports = {
-  buildFor,
+  build,
 }
 
 if (require.main === module)

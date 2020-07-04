@@ -1,5 +1,5 @@
 import { useMediaQuery } from '../useMediaQuery'
-import { computed } from '../../api'
+import { computed } from 'vue-demi'
 
 export function usePreferredColorScheme() {
   const isLight = useMediaQuery('(prefers-color-scheme: light)')

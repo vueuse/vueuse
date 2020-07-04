@@ -1,5 +1,5 @@
 import { useStorage } from '../useStorage'
-import { Ref } from '../../api'
+import { Ref } from 'vue-demi'
 
 export function useSessionStorage (key: string, defaultValue: string, storage?: Storage): Ref<string>
 export function useSessionStorage (key: string, defaultValue: boolean, storage?: Storage): Ref<boolean>

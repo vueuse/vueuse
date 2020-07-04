@@ -1,4 +1,4 @@
-import { watch } from '../../api'
+import { watch } from 'vue-demi'
 import { useTimeout } from '../useTimeout'
 
 export function useTimeoutFn(

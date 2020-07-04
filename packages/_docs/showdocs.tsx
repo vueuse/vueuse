@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import { RenderContext } from 'vue'
 import { ofType } from 'vue-tsx-support'
-import { defineComponent } from '../api'
+import { defineComponent } from 'vue-demi'
 
 export interface DocsProps {
   md: any

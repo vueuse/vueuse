@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { Ref, ref } from '../../api'
+import { Ref, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export interface LocationSensorState {

@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { onMounted, ref, Ref } from '../../api'
+import { onMounted, ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'

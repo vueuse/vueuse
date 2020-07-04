@@ -1,4 +1,4 @@
-import { ref } from '../../api'
+import { ref } from 'vue-demi'
 
 export function useCounter(initialValue = 0) {
   const count = ref(initialValue)

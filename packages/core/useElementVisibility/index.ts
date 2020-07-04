@@ -1,4 +1,4 @@
-import { onMounted, ref, Ref, watch } from '../../api'
+import { onMounted, ref, Ref, watch } from 'vue-demi'
 import { useWindowScroll } from '../useWindowScroll'
 
 export function useElementVisibility(element: Ref<Element|null|undefined>) {

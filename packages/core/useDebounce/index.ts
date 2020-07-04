@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from '../../api'
+import { ref, Ref, watch } from 'vue-demi'
 import { useDebounceFn } from '../useDebounceFn'
 
 export function useDebounce<T>(value: Ref<T>, delay = 200): Ref<T> {

@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent } from '../../api'
+import { defineComponent } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useRaf } from '.'
 

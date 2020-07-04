@@ -1,5 +1,5 @@
 import { useRafFn } from '../useRafFn'
-import { Ref, ref, watch } from '../../api'
+import { Ref, ref, watch } from 'vue-demi'
 import { clamp, isFunction, isString, noop } from '../../utils'
 
 type CubicBezier = [number, number, number, number]

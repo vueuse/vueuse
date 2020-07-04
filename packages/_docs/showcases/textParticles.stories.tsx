@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
-import { defineComponent, ref, watch, onMounted } from '../../api'
+import { defineComponent, ref, watch, onMounted } from 'vue-demi'
 import { useMouse, useEventListener, useRafFn } from '../../core'
 
 // ported from https://codepen.io/Mamboleoo/pen/obWGYr

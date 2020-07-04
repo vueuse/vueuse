@@ -1,4 +1,4 @@
-import { onUnmounted, getCurrentInstance, ref, onMounted } from '../../api'
+import { onUnmounted, getCurrentInstance, ref, onMounted } from 'vue-demi'
 
 export function useInterval(interval = 1000, startRightNow = true) {
   let timer: any = null
