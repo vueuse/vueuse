@@ -59,7 +59,7 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ## 📦 Install
 
-> From v4.0, it works for Vue 2 & 3 with in a single package with the powered of [Vue Demi](https://github.com/antfu/vue-demi)!
+> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [Vue Demi](https://github.com/antfu/vue-demi)!
 
 ```bash
 npm i @vueuse/core # yarn add @vueuse/core
