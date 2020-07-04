@@ -4,7 +4,7 @@ const assert = require('assert')
 const fs = require('fs-extra')
 const consola = require('consola')
 const packages = require('./packages')
-const {updateImport} = require('./import')
+const { updateImport } = require('./import')
 
 const rootDir = path.resolve(__dirname, '..')
 const packageJSONDir = path.join(rootDir, 'package.json')

@@ -3,12 +3,6 @@ const fs = require('fs-extra')
 const packages = require('./packages')
 
 const srcDir = path.resolve(__dirname, '../packages')
-const packageFilepath = path.resolve(__dirname, '../package.json')
-
-async function getVersion() {
-  const raw = await fs.readFile(packageFilepath)
-  return JSON.parse(raw).version
-}
 
 async function updateImport() {
   for (const [pkg] of packages) {
