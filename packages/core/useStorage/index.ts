@@ -40,10 +40,12 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
         ? 'string'
         : typeof defaultValue === 'object'
           ? 'object'
-          // @ts-ignore
-          : !Number.isNaN(defaultValue)
-            ? 'number'
-            : 'any'
+          : Array.isArray(defaultValue)
+            ? 'object'
+            // @ts-ignore
+            : !Number.isNaN(defaultValue)
+              ? 'number'
+              : 'any'
 
   function read() {
     try {
@@ -78,7 +80,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
         console.warn(e)
       }
     },
-    { flush: 'sync', deep: true },
+    { flush: 'post', deep: true },
   )
 
   return data
