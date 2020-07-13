@@ -1,11 +1,11 @@
 {
   "name": "@vueuse/core",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "node ./scripts/build",
-    "release:gh": "npm test && bump --commit --tag --push --preid alpha && conventional-github-releaser -p angular",
-    "release:local": "npm test && npm run readme:update && bump --commit --tag --preid alpha && npm run publich:ci",
+    "release:gh": "npm test && bump --commit --tag --push --preid beta && conventional-github-releaser -p angular",
+    "release:local": "npm test && npm run readme:update && bump --commit --tag --preid beta && npm run publich:ci",
     "publish:ci": "node ./scripts/publish.js",
     "import": "node ./scripts/import",
     "typings": "tsc --emitDeclarationOnly && node ./scripts/typing-fix",
