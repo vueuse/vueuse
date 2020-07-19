@@ -3,7 +3,11 @@ import { reactive } from 'vue-demi'
 export function createGlobalState<T extends object>(
   factory: () => T,
 ) {
-  const state = reactive(factory()) as T
+  let state: T
 
-  return () => state
+  return () => {
+    if (!state)
+      state = reactive(factory()) as T
+    return state
+  }
 }
