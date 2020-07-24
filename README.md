@@ -31,9 +31,9 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 ## 🦄 Usage
 
 ```ts
-import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
+import { useMouse, usePreferredDark, useLocalStorage, defineComponent } from '@vueuse/core'
 
-new Vue({
+const Component = defineComponent({
   setup() {
     // tracks mouse position
     const { x, y } = useMouse()
