@@ -148,6 +148,8 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 More functions to be added. Please keep turned. (PRs are also welcome!)
 
+Meanwhile, try also [**vue-composable**](https://github.com/pikax/vue-composable) by [@pikax](https://github.com/pikax)!
+
 ## 🔌 Add-ons
 
 The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
