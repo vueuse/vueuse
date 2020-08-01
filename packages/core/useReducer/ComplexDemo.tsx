@@ -1,7 +1,7 @@
 import 'vue-tsx-support/enable-check'
 import Vue from 'vue'
 import { defineComponent, provide, inject } from 'vue-demi'
-import { useReducer, Action } from '.'
+import { useReducer } from '.'
 
 const initialState = {
   loading: false,
@@ -29,7 +29,7 @@ function reducer(state: any, action: any) {
       state.data.push(action.payload)
       return
     case 'removeItem':
-      state.data = state.data.filter(ele => ele !== action.payload)
+      state.data = state.data.filter((ele: number) => ele !== action.payload)
   }
 }
 
@@ -82,17 +82,18 @@ const ListItem = defineComponent({
     },
   },
   setup() {
-    const dispatch = inject<Function>('dispatch')
-    return { dispatch }
+    const dispatch = inject<Function>('dispatch', () => {})
+    const removeListItem = (id: number) => {
+      dispatch({ type: 'removeItem', payload: id })
+    }
+    return { removeListItem }
   },
-  render(this: Vue & { dispatch: (a: Action) => void; state: any }) {
+  render(this: Vue & { removeListItem: Function }) {
     return (
       <li>
         {this.$props.id}
         <button
-          onClick={() =>
-            this.dispatch({ type: 'removeItem', payload: this.$props.id })
-          }
+          onClick={() => this.removeListItem()}
         >
           Remove Item
         </button>
@@ -103,7 +104,7 @@ const ListItem = defineComponent({
 const AddListItem = defineComponent({
   setup() {
     const dispatch = inject<Function>('dispatch', () => {})
-    const addListItem = (id) => {
+    const addListItem = (id: number) => {
       dispatch({ type: 'addItem', payload: id })
     }
     return { addListItem }
