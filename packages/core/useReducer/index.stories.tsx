@@ -1,16 +1,15 @@
-import "vue-tsx-support/enable-check";
-import Vue from "vue";
-import { storiesOf } from "@storybook/vue";
-import { defineComponent } from "vue-demi";
-import { ShowDocs } from "../../_docs/showdocs";
-import { ComplexDemo } from "./ComplexDemo";
-import { SimpleDemo } from "./SimpleDemo";
-
+import 'vue-tsx-support/enable-check'
+import Vue from 'vue'
+import { storiesOf } from '@storybook/vue'
+import { defineComponent } from 'vue-demi'
+import { ShowDocs } from '../../_docs/showdocs'
+import { ComplexDemo } from './ComplexDemo'
+import { SimpleDemo } from './SimpleDemo'
 
 const Demo = defineComponent({
   render(this: Vue & { state: any; dispatch }) {
     // @ts-ignore
-    const Docs = <ShowDocs md={require("./index.md")} />;
+    const Docs = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
@@ -18,8 +17,8 @@ const Demo = defineComponent({
         {Docs}
         <ComplexDemo />
       </div>
-    );
+    )
   },
-});
+})
 
-storiesOf("State", module).add("useReducer", () => Demo as any);
+storiesOf('State', module).add('useReducer', () => Demo as any)
