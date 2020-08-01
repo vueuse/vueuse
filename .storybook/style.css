@@ -4,12 +4,12 @@
 @import "tailwindcss/utilities";
 
 
-#demo {
+#demo, .demo {
   padding: 3em;
   background: #282828;
 }
 
-#demo::after {
+#demo::after, .demo::after {
   content: 'Demo';
   position: absolute;
   right: 12px;
@@ -17,40 +17,40 @@
   opacity: 0.2;
 }
 
-#demo button {
+#demo button, .demo button {
   @apply bg-green-400 text-black py-1 px-4 border-b-4 border-green-600 rounded;
 }
 
-#demo button:hover {
+#demo button:hover, .demo button:hover  {
   @apply bg-green-500 border-green-700;
 }
 
-#demo button.orange {
+#demo button.orange, .demo button.orange  {
   @apply bg-orange-400 text-black py-1 px-4 border-b-4 border-orange-600 rounded;
 }
 
-#demo button.orange:hover {
+#demo button.orange:hover, .demo button.orange:hover  {
   @apply bg-orange-500 border-orange-700;
 }
 
-#demo button[disabled] {
+#demo button[disabled], .demo button[disabled] {
   @apply bg-gray-400 border-gray-600 text-gray-700;
 }
 
-#demo input {
+#demo input, .demo input {
   @apply bg-transparent appearance-none border border-gray-600 rounded w-full py-2 px-4 my-2 mx-1 text-white leading-tight block;
 }
 
-#demo input:focus {
+#demo input:focus, .demo input:focus {
   @apply outline-none border-green-500;
 }
 
-#demo p {
+#demo p, .demo p {
   padding: 0.3rem 0.5rem;
   font-size: 1.1em;
 }
 
-#demo note {
+#demo note, .demo note {
   display: block;
   opacity: 0.5;
   padding: 0.5rem 0.5rem 0.8rem 0.5rem;
