@@ -10,12 +10,14 @@ const Demo = defineComponent({
   render(this: Vue & { state: any; dispatch }) {
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
+    const ComplexDocs = <ShowDocs md={require('./complex.md')} />
 
     return (
       <div>
         <SimpleDemo />
         {Docs}
         <ComplexDemo />
+        {ComplexDocs}
       </div>
     )
   },

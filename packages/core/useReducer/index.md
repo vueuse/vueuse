@@ -1,6 +1,9 @@
 # useReducer
 
+> This function is inspired by React's buildin useReducer hook. An alternative state management hook wich takes a function to mutate state of type `(state, action) => void` and returns a vue reactive state variable and a `dispatch` method to trigger updates on that state.
 >
+> NOTE: The name reducer is a little misleading because it's not a pure function to update the state in this implementation. Your custom reducers are mutating a reactive vue variable like shown in the example below.
+
 
 ## Usage
 
