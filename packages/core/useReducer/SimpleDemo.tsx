@@ -3,15 +3,18 @@ import Vue from 'vue'
 import { defineComponent } from 'vue-demi'
 import { useReducer, Action } from '.'
 
-const initialState = { count: 0 }
+const initialState: InitialState = { count: 0 }
+type InitialState = {
+  count: number
+}
 
 function reducer(state: any, action: Action): void {
   switch (action.type) {
     case 'increment':
-      (state.count += 1)
+      state.count += 1
       return
     case 'decrement':
-      (state.count -= 1)
+      state.count -= 1
   }
 }
 
@@ -24,10 +27,10 @@ export const SimpleDemo = defineComponent({
       dispatch,
     }
   },
-  render(this: Vue & { state: any; dispatch: (a: Action) => void}) {
+  render(this: Vue & { state: InitialState; dispatch: (a: Action) => void }) {
     return (
       <div id="demo">
-          Count: {this.state.count}
+        Count: {this.state.count}
         <button onClick={() => this.dispatch({ type: 'decrement' })}>-</button>
         <button onClick={() => this.dispatch({ type: 'increment' })}>+</button>
       </div>

@@ -1,13 +1,11 @@
-import { reactive } from 'vue-demi'
+import { reactive, UnwrapRef } from 'vue-demi'
 
 export interface Action {
   type: string
   [propName: string]: any
 }
 
-type StateInterface = any [] | object
-
-export function useReducer(reducer: (state: StateInterface, action: Action,) => void, initialState: StateInterface = {}) {
+export function useReducer<T extends object>(reducer: (state: UnwrapRef<T>, action: Action,) => void, initialState: T) {
   const state = reactive(initialState)
 
   const dispatch = (action: Action): void => {

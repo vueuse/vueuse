@@ -1,49 +1,52 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { defineComponent, provide, inject } from 'vue-demi'
-import { useReducer } from '.'
+import "vue-tsx-support/enable-check";
+import Vue from "vue";
+import { defineComponent, provide, inject } from "vue-demi";
+import { useReducer } from ".";
 
-const initialState = {
+const initialState: ComplexState = {
   loading: false,
   data: [],
-}
+};
+type ComplexState = {
+  loading: boolean;
+  data: number[];
+  error?: Error;
+};
 
 const fetchMock = () =>
   new Promise((resolve, reject) => {
     window.setTimeout(() => {
-      if (Math.random() > 0.5) resolve([1, 2, 3, 4, 5])
-      else reject(new Error('Request Error'))
-    }, 1500)
-  })
+      if (Math.random() > 0.5) resolve([1, 2, 3, 4, 5]);
+      else reject(new Error("Request Error"));
+    }, 1500);
+  });
 
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case 'loadData':
-      state.error = undefined
-      state.loading = true
+    case "loadData":
+      state.error = undefined;
+      state.loading = true;
       return fetchMock()
-        .then(data => (state.data = data))
-        .catch(e => (state.error = e))
-        .finally(() => (state.loading = false))
-    case 'addItem':
-      state.data.push(action.payload)
-      return
-    case 'removeItem':
-      state.data = state.data.filter((ele: number) => ele !== action.payload)
+        .then((data) => (state.data = data))
+        .catch((e) => (state.error = e))
+        .finally(() => (state.loading = false));
+    case "addItem":
+      state.data.push(action.payload);
+      return;
+    case "removeItem":
+      state.data = state.data.filter((ele: number) => ele !== action.payload);
   }
 }
 
 const ErrorUi = defineComponent({
   props: {
-    message: {
-      type: String,
-    },
+    message: String,
   },
   setup() {
-    const dispatch = inject<Function>('dispatch', () => {})
-    const triggerReload = () => dispatch({ type: 'loadData' })
+    const dispatch = inject<Function>("dispatch", () => {});
+    const triggerReload = () => dispatch({ type: "loadData" });
 
-    return { triggerReload }
+    return { triggerReload };
   },
 
   render(this: Vue & { triggerReload: () => void }) {
@@ -52,15 +55,15 @@ const ErrorUi = defineComponent({
         {this.$props.message}
         <button onClick={() => this.triggerReload()}>Reload</button>
       </div>
-    )
+    );
   },
-})
+});
 
 const DataUi = defineComponent({
   props: {
     data: {
       type: Array,
-      default: () => {},
+      default: () => [],
     },
   },
   render(this: Vue) {
@@ -71,43 +74,40 @@ const DataUi = defineComponent({
         ))}
         <AddListItem />
       </ul>
-    )
+    );
   },
-})
+});
 
 const ListItem = defineComponent({
   props: {
     id: {
       type: Number,
+      required: true,
     },
   },
-  setup() {
-    const dispatch = inject<Function>('dispatch', () => {})
-    const removeListItem = (id: number) => {
-      dispatch({ type: 'removeItem', payload: id })
-    }
-    return { removeListItem }
+  setup({ id }) {
+    const dispatch = inject<Function>("dispatch", () => {});
+    const removeListItem = () => {
+      dispatch({ type: "removeItem", payload: id });
+    };
+    return { removeListItem };
   },
   render(this: Vue & { removeListItem: Function }) {
     return (
       <li>
         {this.$props.id}
-        <button
-          onClick={() => this.removeListItem()}
-        >
-          Remove Item
-        </button>
+        <button onClick={() => this.removeListItem()}>Remove Item</button>
       </li>
-    )
+    );
   },
-})
+});
 const AddListItem = defineComponent({
   setup() {
-    const dispatch = inject<Function>('dispatch', () => {})
+    const dispatch = inject<Function>("dispatch", () => {});
     const addListItem = (id: number) => {
-      dispatch({ type: 'addItem', payload: id })
-    }
-    return { addListItem }
+      dispatch({ type: "addItem", payload: id });
+    };
+    return { addListItem };
   },
   render(this: Vue & { addListItem: Function }) {
     return (
@@ -118,31 +118,31 @@ const AddListItem = defineComponent({
           Add List Item
         </button>
       </li>
-    )
+    );
   },
-})
+});
 
 export const ComplexDemo = defineComponent({
   setup() {
-    const { state, dispatch } = useReducer(reducer, initialState)
-    provide('dispatch', dispatch)
-    dispatch({ type: 'loadData' })
+    const { state, dispatch } = useReducer(reducer, initialState);
+    provide("dispatch", dispatch);
+    dispatch({ type: "loadData" });
 
     return {
       state,
-    }
+    };
   },
-  render(this: Vue & { state: any }) {
+  render(this: Vue & { state: ComplexState }) {
     return (
       <div class="demo">
         {this.state.loading ? (
-          'Loading'
+          "Loading"
         ) : this.state.error ? (
           <ErrorUi message={this.state.error.message} />
         ) : (
           <DataUi data={this.state.data} />
         )}
       </div>
-    )
+    );
   },
-})
+});
