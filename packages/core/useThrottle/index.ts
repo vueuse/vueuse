@@ -11,9 +11,6 @@ export function useThrottle<T>(value: Ref<T>, delay = 200) {
   if (delay <= 0)
     return value
 
-  if (delay <= 0)
-    return value
-
   const throttled: Ref<T> = ref(value.value as T) as Ref<T>
 
   const updater = useThrottleFn(() => {
