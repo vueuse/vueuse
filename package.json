@@ -102,7 +102,7 @@
     "postcss-import": "12.0.1",
     "postcss-loader": "3.0.0",
     "prettier": "2.0.5",
-    "prismjs": "1.20.0",
+    "prismjs": "1.21.0",
     "raw-loader": "4.0.1",
     "rimraf": "3.0.2",
     "rollup": "2.16.1",
