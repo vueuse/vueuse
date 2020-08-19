@@ -28,3 +28,7 @@ jobs:
       - run: npm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - run: npm run release:gh
+        env:
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{secrets.GITHUB_TOKEN}}
+

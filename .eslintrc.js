@@ -6,7 +6,7 @@ module.exports = {
     jest: true,
   },
   extends: [
-    '@antfu/eslint-config-vue',
+    '@antfu/eslint-config',
   ],
   plugins: [
     'markdown',
@@ -19,6 +19,7 @@ module.exports = {
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-null': 'off',
     'unicorn/filename-case': 'off',
+    'react/react-in-jsx-scope': 'off',
     'no-new': 'off',
     'import/order': 'off',
   },

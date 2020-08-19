@@ -3,5 +3,14 @@
     "config:base",
     "schedule:weekly",
     "group:allNonMajor"
+  ],
+  "ignoreDeps": [
+    "@storybook/addon-actions",
+    "@storybook/addon-knobs",
+    "@storybook/addon-links",
+    "@storybook/addon-notes",
+    "@storybook/addons",
+    "@storybook/theming",
+    "@storybook/vue"
   ]
 }

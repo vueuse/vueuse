@@ -49,7 +49,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
     return data
   }
   else {
-    const data = ref<T[]>([])
+    const data = ref([]) as Ref<T[]>
 
     const close = docRef.onSnapshot((snapshot) => {
       data.value = snapshot.docs.map(getData).filter(isDef)

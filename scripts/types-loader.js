@@ -20,7 +20,7 @@ module.exports = function(source, u) {
 
   const moduleName = path.basename(path.dirname(request))
 
-  const typingFilepath = path.resolve(__dirname, `../typings/${pkg}/${moduleName}/index.d.ts`)
+  const typingFilepath = path.resolve(__dirname, `../types/packages/${pkg}/${moduleName}/index.d.ts`)
 
   if (!fs.existsSync(typingFilepath))
     return source
