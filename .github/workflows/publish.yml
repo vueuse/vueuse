@@ -1,8 +1,9 @@
 name: Publish Package
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - v*
 
 jobs:
   # test:

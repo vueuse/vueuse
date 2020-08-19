@@ -4,7 +4,8 @@
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "node ./scripts/build",
-    "release:gh": "bump --commit --tag --push --preid beta && conventional-github-releaser -p angular",
+    "release": "npm run readme:update && bump --commit --tag --push --preid beta",
+    "release:gh": "conventional-github-releaser -p angular",
     "release:local": "npm run readme:update && bump --commit --tag --preid beta && npm run publish:ci",
     "publish:ci": "node ./scripts/publish.js",
     "import:generate": "node ./scripts/import",
@@ -14,7 +15,7 @@
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
-    "readme:update": "node ./scripts/updateReadme",
+    "readme:update": "node ./scripts/updateReadme && git add '*/README.md'",
     "clean": "rimraf dist types typings storybook-static",
     "dev": "start-storybook -p 6006",
     "storybook": "start-storybook -p 6006",
