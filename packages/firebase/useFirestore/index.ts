@@ -1,5 +1,4 @@
-/* eslint-disable handle-callback-err */
-import firebase from 'firebase/app'
+import type firebase from 'firebase'
 import { ref, onUnmounted, Ref } from 'vue-demi'
 import { isDef } from '../../utils'
 
@@ -22,6 +21,10 @@ function getData<T>(
   return data
 }
 
+function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.DocumentReference<T> {
+  return Boolean(docRef.parent)
+}
+
 export function useFirestore<T extends firebase.firestore.DocumentData> (
   docRef: firebase.firestore.DocumentReference<T>,
   errorHandler?: (err: Error) => void,
@@ -32,9 +35,9 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
 ): Ref<T[]>
 export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
-  errorHandler = (err: Error) => {},
+  errorHandler = (err: Error) => console.error(err),
 ) {
-  if (docRef instanceof firebase.firestore.DocumentReference) {
+  if (isDocumentReference<T>(docRef)) {
     const data = ref<T|null>(null)
 
     const close = docRef.onSnapshot((snapshot) => {
