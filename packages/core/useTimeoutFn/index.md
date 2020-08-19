@@ -28,7 +28,7 @@ const Demo = defineComponent({
     const { ready, restart, text } = this
 
     return (
-      <div id='demo'>
+      <div id="demo">
         <p>{text}</p>
         <br></br>
         <button onClick={() => restart()} disabled={!ready}>Start Again</button>

@@ -33,9 +33,9 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Ready: {ready.toString()}</p>
-          <pre lang='json'>{YAML.safeDump(state)}</pre>
+          <pre lang="json">{YAML.safeDump(state)}</pre>
         </div>
         {Docs}
       </div>

@@ -22,7 +22,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Preferred Languages: <code>{usePreferredLanguages.join(', ')}</code></p>
         </div>
         {Docs}

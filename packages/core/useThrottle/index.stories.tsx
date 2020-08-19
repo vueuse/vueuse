@@ -34,8 +34,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
-          <input v-model={this.input} placeholder='Try to type anything...'/>
+        <div id="demo">
+          <input v-model={this.input} placeholder="Try to type anything..."/>
           <note>Delay is set to 1000ms for this demo.</note>
 
           <p>Throttled: {this.throttled}</p>

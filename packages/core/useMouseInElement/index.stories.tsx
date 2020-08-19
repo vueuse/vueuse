@@ -34,8 +34,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo' style={{ margin: '20px' }}>
-          <pre lang='json'>{JSON.stringify({
+        <div id="demo" ref="demo" style={{ margin: '20px' }}>
+          <pre lang="json">{JSON.stringify({
             x,
             y,
             documentX,

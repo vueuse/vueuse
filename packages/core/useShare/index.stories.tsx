@@ -20,7 +20,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo'>
+        <div id="demo" ref="demo">
           <button onClick={this.share}>Share</button>
         </div>
         {Docs}

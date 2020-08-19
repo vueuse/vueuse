@@ -27,7 +27,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' style={{ textAlign: 'center' }}>
+        <div id="demo" style={{ textAlign: 'center' }}>
           <video ref="el" src="https://vjs.zencdn.net/v/oceans.mp4" width={400} style={{ margin: '0 auto' }} controls></video>
           <br/>
           <button onClick={enterFullscreen}>Go Fullscreen</button>

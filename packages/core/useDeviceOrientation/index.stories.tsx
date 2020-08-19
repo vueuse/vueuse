@@ -23,8 +23,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
-          <pre lang='json'>{JSON.stringify({
+        <div id="demo">
+          <pre lang="json">{JSON.stringify({
             isAbsolute,
             alpha,
             beta,

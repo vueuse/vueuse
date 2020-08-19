@@ -20,6 +20,7 @@ module.exports = {
     'unicorn/no-null': 'off',
     'unicorn/filename-case': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/no-string-refs': 'off',
     'no-new': 'off',
     'import/order': 'off',
   },

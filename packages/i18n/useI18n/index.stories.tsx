@@ -31,7 +31,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <note>Hello in {locale}</note>
           <p>{t('hello')}</p>
           <br></br>

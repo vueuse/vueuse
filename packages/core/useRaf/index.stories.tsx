@@ -26,7 +26,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Elapsed: {elapsed}</p>
         </div>
         {Docs}

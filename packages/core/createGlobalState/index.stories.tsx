@@ -30,12 +30,12 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
-          <input v-model={state.name} type='text'/>
-          <input v-model={state.color} type='text'/>
-          <input v-model={state.size} type='text'/>
+        <div id="demo">
+          <input v-model={state.name} type="text"/>
+          <input v-model={state.color} type="text"/>
+          <input v-model={state.size} type="text"/>
 
-          <pre lang='json'>{JSON.stringify(state, null, 2)}</pre>
+          <pre lang="json">{JSON.stringify(state, null, 2)}</pre>
         </div>
         {Docs}
       </div>

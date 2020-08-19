@@ -24,8 +24,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
-          <pre lang='json'>{JSON.stringify({
+        <div id="demo">
+          <pre lang="json">{JSON.stringify({
             isLargeScreen,
             prefersDark,
           }, null, 2)}</pre>

@@ -33,7 +33,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Count: {count}</p>
           <button onClick={() => inc()}>Increment</button>
           <button onClick={() => dec()}>Decrement</button>

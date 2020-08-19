@@ -31,14 +31,14 @@ const Demo = defineComponent({
     return (
       <div>
         { supported ? (
-          <div id='demo'>
+          <div id="demo">
             <note>Clipboard Permission: read <b>{permissionRead}</b> | write <b>{permissionWrite}</b></note>
             <p>Current copied: <code>{text || 'none'}</code></p>
-            <input v-model={this.input} type='text'/>
+            <input v-model={this.input} type="text"/>
             <button onClick={() => copy(this.input)} >Copy</button>
           </div>
         ) : (
-          <div id='demo'>
+          <div id="demo">
             <p>Your browser does not support Clipboard API</p>
           </div>
         )}

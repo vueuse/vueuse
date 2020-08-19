@@ -28,7 +28,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
+        <div id="demo" style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
           <p>x: {x}</p>
           <p>y: {y}</p>
         </div>

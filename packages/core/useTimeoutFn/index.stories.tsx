@@ -40,7 +40,7 @@ const Demo = defineComponent({
     return (
       <div>
 
-        <div id='demo'>
+        <div id="demo">
           <p>{text}</p>
           <button onClick={() => restart()} disabled={!ready}>Start Again</button>
         </div>
