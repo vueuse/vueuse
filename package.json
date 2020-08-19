@@ -18,7 +18,7 @@
     "clean": "rimraf dist types typings storybook-static",
     "dev": "start-storybook -p 6006",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "npm run types:generate && build-storybook"
+    "storybook:build": "npm run import:generate && npm run types:generate && build-storybook"
   },
   "husky": {
     "hooks": {
@@ -111,7 +111,6 @@
     "rollup-plugin-uglify": "^6.0.4",
     "tailwindcss": "^1.7.1",
     "ts-jest": "^26.2.0",
-    "tsup": "^3.6.1",
     "typescript": "^3.9.7",
     "version-bump-prompt": "^6.0.6",
     "vue": "^2.6.11",

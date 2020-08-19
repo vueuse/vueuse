@@ -32,11 +32,11 @@ async function buildMetaFiles(packageVersion) {
       name: `@vueuse/${pkg}`,
       description: 'Collection of essential Vue Composition API',
       version: packageVersion,
-      main: 'index.js',
+      main: 'index.cjs.js',
       types: 'index.d.ts',
-      module: 'index.mjs',
-      unpkg: 'index.global.js',
-      jsdelivr: 'index.global.js',
+      module: 'index.esm.js',
+      unpkg: 'index.umd.min.js',
+      jsdelivr: 'index.umd.min.js',
       repository: {
         type: 'git',
         url: 'git+https://github.com/antfu/vueuse.git',
@@ -76,8 +76,7 @@ async function build() {
   exec('yarn run import:generate', { stdio: 'inherit' })
 
   consola.info('Rollup')
-  for (const [pkg] of packages)
-    exec(`npx tsup ./packages/${pkg}/index.ts --dts --format cjs,esm,iife -d dist/${pkg}`, { stdio: 'inherit' })
+  exec('rollup -c', { stdio: 'inherit' })
 
   consola.info('Fix types')
   exec('yarn run types:fix', { stdio: 'inherit' })
