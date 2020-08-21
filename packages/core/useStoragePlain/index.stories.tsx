@@ -20,9 +20,9 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <note>The following message will persist</note>
-          <input v-model={this.store} type='text'/>
+          <input v-model={this.store} type="text"/>
         </div>
         {Docs}
       </div>

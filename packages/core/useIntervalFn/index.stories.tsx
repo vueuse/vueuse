@@ -30,7 +30,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Seconds passed: {count}</p>
         </div>
         {Docs}

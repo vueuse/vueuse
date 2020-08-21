@@ -28,7 +28,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>{width} x {height}</p>
         </div>
         {Docs}

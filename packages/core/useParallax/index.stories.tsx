@@ -93,7 +93,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo' style={demo}>
+        <div id="demo" ref="demo" style={demo}>
           <pre style={info}>{
             YAML.safeDump({
               tilt,
@@ -112,7 +112,7 @@ const Demo = defineComponent({
               </div>
             </div>
           </div>
-          <note style={{ opacity: 1 }}>Credits of image to <a href='https://codepen.io/jaromvogel' target='__blank'>Jarom Vogel</a></note>
+          <note style={{ opacity: 1 }}>Credits of image to <a href="https://codepen.io/jaromvogel" target="__blank">Jarom Vogel</a></note>
         </div>
         {Docs}
       </div>

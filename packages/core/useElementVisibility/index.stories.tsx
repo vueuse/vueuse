@@ -31,7 +31,7 @@ const Demo = defineComponent({
           <h1>Hello world</h1>
         </div>
         {Docs}
-        <div id='demo' style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
+        <div id="demo" style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
           {this.demoIsVisible ? 'In the viewport' : 'Outside the viewport'}
         </div>
       </div>

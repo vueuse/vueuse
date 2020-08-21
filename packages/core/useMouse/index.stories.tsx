@@ -23,8 +23,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo' ref='demo'>
-          <pre lang='json'>{JSON.stringify({
+        <div id="demo" ref="demo">
+          <pre lang="json">{JSON.stringify({
             x,
             y,
           }, null, 2)}</pre>

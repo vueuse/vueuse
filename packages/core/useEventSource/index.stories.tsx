@@ -3,36 +3,22 @@ import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useNow } from '.'
-
-type Inject = {
-  now: number
-}
 
 const Demo = defineComponent({
   setup() {
-    const now = useNow()
-    return {
-      now,
-    }
   },
 
-  render(this: Vue & Inject) {
-    const { now } = this
-
+  render(this: Vue) {
     // @ts-ignore
     const Docs = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
-        <div id="demo">
-          <p>Now: {now}</p>
-        </div>
         {Docs}
       </div>
     )
   },
 })
 
-storiesOf('Animation', module)
-  .add('useNow', () => Demo as any)
+storiesOf('Misc', module)
+  .add('useEventSource', () => Demo as any)

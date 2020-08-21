@@ -161,7 +161,7 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) — create a global i18n instance to be reused
   - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) — use vue-i18n instance
 
-- 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - enables realtime bindings for [Firebase](https://firebase.google.com/)
+- 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for [Firebase](https://firebase.google.com/)
   - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 <!--ADDONS_LIST_ENDS-->

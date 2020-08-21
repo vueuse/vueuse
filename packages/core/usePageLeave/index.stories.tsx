@@ -22,8 +22,8 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
-          <pre lang='json'>{
+        <div id="demo">
+          <pre lang="json">{
             JSON.stringify({
               isLeft,
             }, null, 2)

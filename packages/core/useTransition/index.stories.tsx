@@ -68,7 +68,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <button onClick={onClick}>Transition</button>
 
           <p style={{ marginTop: '1rem' }}>

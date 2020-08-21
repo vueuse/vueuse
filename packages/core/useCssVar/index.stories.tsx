@@ -35,10 +35,10 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           {/*
           // @ts-ignore */}
-          <p ref='el' style="--color:#7fa998; color: var(--color);">Sample text, {color}</p>
+          <p ref="el" style="--color:#7fa998; color: var(--color);">Sample text, {color}</p>
           <button onClick={switchColor}>Switch Color</button>
         </div>
         {Docs}

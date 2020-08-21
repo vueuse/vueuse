@@ -64,7 +64,7 @@ for (const [pkg, options] of packages) {
   })
 
   configs.push({
-    input: `./typings/${pkg}/index.d.ts`,
+    input: `packages/${pkg}/index.ts`,
     output: {
       file: `dist/${pkg}/index.d.ts`,
       format: 'es',

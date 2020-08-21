@@ -17,7 +17,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <strong>Device Pixel Ratio:</strong> { this.pixelRatio }
         </div>
         {Docs}

@@ -28,7 +28,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>Ready: {ready.toString()}</p>
           <button onClick={() => start()} disabled={!ready}>Start Again</button>
         </div>

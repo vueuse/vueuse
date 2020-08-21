@@ -128,13 +128,13 @@ const Demo = defineComponent({
   render(this: Vue) {
     return (
       <div id="showcase">
-        <canvas ref='canvas'></canvas>
+        <canvas ref="canvas"></canvas>
         <div id="info">
           <p id="title">Text Particales</p>
           <p id="meta">
-            <a href='https://codepen.io/Mamboleoo/pen/obWGYr' target='__blank'>Credit</a>
+            <a href="https://codepen.io/Mamboleoo/pen/obWGYr" target="__blank">Credit</a>
             <span>|</span>
-            <a href='https://github.com/antfu/vue-use-utils/blob/master/src/showcases/text_particles.stories.tsx' target='__blank'>Source</a>
+            <a href="https://github.com/antfu/vue-use-utils/blob/master/src/showcases/text_particles.stories.tsx" target="__blank">Source</a>
           </p>
         </div>
       </div>

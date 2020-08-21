@@ -38,7 +38,7 @@ module.exports = ({ config }) => {
         },
       },
       {
-        loader: require.resolve('../scripts/typing-loader'),
+        loader: require.resolve('../scripts/types-loader'),
       },
     ],
   })

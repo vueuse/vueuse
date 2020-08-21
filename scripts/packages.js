@@ -3,7 +3,7 @@ module.exports = [
 
   ['firebase', {
     name: '🔥 Firebase',
-    description: 'enables realtime bindings for [Firebase](https://firebase.google.com/)',
+    description: 'Enables realtime bindings for [Firebase](https://firebase.google.com/)',
     peerDependencies: {
       firebase: '>=4.0.0',
     },

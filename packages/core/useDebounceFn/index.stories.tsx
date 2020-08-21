@@ -37,7 +37,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <button onClick={() => this.clickedFn()}>Smash me!</button>
           <note>Delay is set to 1000ms for this demo.</note>
 

@@ -21,7 +21,7 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div id='demo'>
+        <div id="demo">
           <p>{ online ? 'Online' : 'Offline'}</p>
         </div>
         {Docs}

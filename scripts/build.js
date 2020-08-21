@@ -33,11 +33,10 @@ async function buildMetaFiles(packageVersion) {
       description: 'Collection of essential Vue Composition API',
       version: packageVersion,
       main: 'index.cjs.js',
-      typings: 'index.d.ts',
+      types: 'index.d.ts',
       module: 'index.esm.js',
       unpkg: 'index.umd.min.js',
       jsdelivr: 'index.umd.min.js',
-      browser: 'index.esm.js',
       repository: {
         type: 'git',
         url: 'git+https://github.com/antfu/vueuse.git',
@@ -71,13 +70,16 @@ async function build() {
   const packageVersion = packageJSON.version
 
   consola.info('Clean up')
-  exec('yarn clean', { stdio: 'inherit' })
+  exec('yarn run clean', { stdio: 'inherit' })
 
-  consola.info('Generate Declarations')
-  exec('yarn typings', { stdio: 'inherit' })
+  consola.info('Generate Imports')
+  exec('yarn run import:generate', { stdio: 'inherit' })
 
   consola.info('Rollup')
   exec('rollup -c', { stdio: 'inherit' })
+
+  consola.info('Fix types')
+  exec('yarn run types:fix', { stdio: 'inherit' })
 
   await buildMetaFiles(packageVersion)
 }
