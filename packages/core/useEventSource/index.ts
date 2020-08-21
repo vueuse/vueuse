@@ -4,7 +4,7 @@ export function useEventSource(url: string) {
   const data: Ref<any> = ref(null)
   const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
   let es: EventSource
-  const close: typeof es.close = function close() {
+  const close = () => {
     if (!es) return
 
     es.close()
