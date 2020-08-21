@@ -24,7 +24,7 @@ export function useEventSource(url: string) {
   })
 
   onUnmounted(() => {
-    es.close()
+    close()
   })
 
   return {
