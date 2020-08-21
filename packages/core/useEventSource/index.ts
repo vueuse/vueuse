@@ -21,7 +21,6 @@ export function useEventSource(url: string) {
     }
 
     es.onmessage = (e: MessageEvent) => {
-      console.log('sse', e)
       data.value = e.data
     }
   })
