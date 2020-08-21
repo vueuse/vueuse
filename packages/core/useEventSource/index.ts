@@ -1,7 +1,7 @@
 import { ref, onMounted, onUnmounted, Ref } from 'vue-demi'
 
 export function useEventSource(url: string, events: Array<string> = []) {
-  const data: Ref<[string, any]> = ref([null, null])
+  const data: Ref<any> = ref(null)
   const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
   let es: EventSource
   const close = () => {
