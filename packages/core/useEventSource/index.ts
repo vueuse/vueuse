@@ -5,9 +5,7 @@ export function useEventSource(url: string) {
   const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
   let es: EventSource
   const close = () => {
-    if (!es) return
-
-    es.close()
+    es?.close()
   }
 
   onMounted(() => {
