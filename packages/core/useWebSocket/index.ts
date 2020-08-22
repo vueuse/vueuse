@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, Ref } from 'vue-demi'
-import { maybeOnMounted, maybeOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 export function useWebSocket(url: string) {
   const data: Ref<any> = ref(null)
@@ -19,7 +19,7 @@ export function useWebSocket(url: string) {
     ws.send(data)
   }
 
-  maybeOnMounted(() => {
+  tryOnMounted(() => {
     ws = new WebSocket(url)
     ws.onopen = () => {
       state.value = 'OPEN'
@@ -34,7 +34,7 @@ export function useWebSocket(url: string) {
     }
   })
 
-  maybeOnUnmounted(() => {
+  tryOnUnmounted(() => {
     ws.close()
   })
 

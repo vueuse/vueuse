@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { maybeOnMounted, maybeOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 export interface BatteryManager extends EventTarget {
   charging: boolean
@@ -30,7 +30,7 @@ export function useBattery() {
     level.value = this.level
   }
 
-  maybeOnMounted(() => {
+  tryOnMounted(() => {
     if (!supported.value)
       return;
 
@@ -42,7 +42,7 @@ export function useBattery() {
     })
   })
 
-  maybeOnUnmounted(() => {
+  tryOnUnmounted(() => {
     if (!supported.value)
       return;
 

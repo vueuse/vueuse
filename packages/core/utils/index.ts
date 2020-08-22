@@ -1,4 +1,4 @@
-import { ref, watch, computed, WatchSource, Ref, isRef, getCurrentInstance, onMounted, onUnmounted, nextTick } from 'vue-demi'
+import { watch, computed, WatchSource, Ref, isRef, getCurrentInstance, onMounted, onUnmounted, nextTick, reactive } from 'vue-demi'
 
 export type MaybeRef<T> = T | Ref<T>
 
@@ -13,12 +13,12 @@ export function getValue<T>(v: MaybeRef<T>) {
  * @param fn
  */
 export function explicitComputed<T, S>(source: WatchSource<S>, fn: () => T) {
-  const v = ref(fn())
+  const v = reactive<any>({ value: fn() })
   watch(
     source,
-    () => v.value = fn() as any,
+    () => v.value = fn(),
   )
-  return computed(() => v.value)
+  return computed<T>(() => v.value)
 }
 
 /**
@@ -27,7 +27,7 @@ export function explicitComputed<T, S>(source: WatchSource<S>, fn: () => T) {
  * @param fn
  * @param sync if set to false, it will run in the nextTick() of Vue
  */
-export function maybeOnMounted(fn: () => void, sync = true) {
+export function tryOnMounted(fn: () => void, sync = true) {
   if (getCurrentInstance())
     onMounted(fn)
   else if (sync)
@@ -41,7 +41,7 @@ export function maybeOnMounted(fn: () => void, sync = true) {
  *
  * @param fn
  */
-export function maybeOnUnmounted(fn: Function) {
+export function tryOnUnmounted(fn: Function) {
   if (getCurrentInstance())
     onUnmounted(fn)
 }

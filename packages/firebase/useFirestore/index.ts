@@ -1,6 +1,7 @@
 import type firebase from 'firebase'
-import { ref, onUnmounted, Ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import { isDef } from '../../utils'
+import { tryOnUnmounted } from 'packages/core'
 
 export type FirebaseDocRef<T> =
   firebase.firestore.Query<T> |
@@ -45,7 +46,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
       data.value = getData(snapshot) || null
     }, errorHandler)
 
-    onUnmounted(() => {
+    tryOnUnmounted(() => {
       close()
     })
 
@@ -58,7 +59,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
       data.value = snapshot.docs.map(getData).filter(isDef)
     }, errorHandler)
 
-    onUnmounted(() => {
+    tryOnUnmounted(() => {
       close()
     })
 

@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { maybeOnMounted, maybeOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 export function useInterval(interval = 1000, startRightNow = true) {
   let timer: any = null
@@ -20,9 +20,9 @@ export function useInterval(interval = 1000, startRightNow = true) {
   }
 
   if (startRightNow)
-    maybeOnMounted(start)
+    tryOnMounted(start)
 
-  maybeOnUnmounted(stop)
+  tryOnUnmounted(stop)
 
   return { counter, start, stop }
 }

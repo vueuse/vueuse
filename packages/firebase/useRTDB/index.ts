@@ -1,5 +1,6 @@
 import type firebase from 'firebase'
-import { ref, onUnmounted } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { tryOnUnmounted } from 'packages/core'
 
 export function useRTDB(
   docRef: firebase.database.Reference,
@@ -12,7 +13,7 @@ export function useRTDB(
 
   docRef.on('value', update)
 
-  onUnmounted(() => {
+  tryOnUnmounted(() => {
     docRef.off('value', update)
   })
 

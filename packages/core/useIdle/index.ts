@@ -2,7 +2,7 @@ import { ref } from 'vue-demi'
 import { timestamp } from '../../utils'
 import { useEventListener } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
-import { maybeOnMounted } from '../utils'
+import { tryOnMounted } from '../utils'
 
 const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60e3
@@ -32,7 +32,7 @@ export function useIdle(ms: number = oneMinute, initialState = false, listeningE
       onEvent()
   }, undefined, document)
 
-  maybeOnMounted(() => {
+  tryOnMounted(() => {
     timeout = setTimeout(() => set(true), ms)
   })
 

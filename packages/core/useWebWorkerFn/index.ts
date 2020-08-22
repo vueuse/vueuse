@@ -2,7 +2,7 @@
 
 import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
-import { maybeOnMounted, maybeOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 export enum WorkerStatus {
   Pending = 'PENDING',
@@ -44,11 +44,11 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
   }
 
-  maybeOnMounted(() => {
+  tryOnMounted(() => {
     workerTerminate()
   })
 
-  maybeOnUnmounted(() => {
+  tryOnUnmounted(() => {
     workerTerminate()
   })
 

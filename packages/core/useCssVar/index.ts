@@ -1,5 +1,5 @@
 import { ref, Ref, watch, computed } from 'vue-demi'
-import { maybeOnMounted } from '../utils'
+import { tryOnMounted } from '../utils'
 
 export function useCssVar(
   prop: string,
@@ -8,7 +8,7 @@ export function useCssVar(
   const varRef = ref('')
   const el = computed(() => refEl?.value || document.documentElement)
 
-  maybeOnMounted(() => {
+  tryOnMounted(() => {
     // @ts-ignore
     varRef.value = getComputedStyle(el.value).getPropertyValue(prop)
   })

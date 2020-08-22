@@ -2,7 +2,7 @@
 
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { maybeOnMounted } from '../utils'
+import { tryOnMounted } from '../utils'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
@@ -56,7 +56,7 @@ export function useNetwork() {
   if (connection)
     useEventListener('change', updateNetworkInformation, false, connection)
 
-  maybeOnMounted(updateNetworkInformation)
+  tryOnMounted(updateNetworkInformation)
 
   return {
     isOnline,
