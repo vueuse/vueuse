@@ -1,6 +1,6 @@
 import type firebase from 'firebase'
 import { ref } from 'vue-demi'
-import { tryOnUnmounted } from 'packages/core'
+import { tryOnUnmounted } from '../../core'
 
 export function useRTDB(
   docRef: firebase.database.Reference,

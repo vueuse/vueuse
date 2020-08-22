@@ -1,7 +1,7 @@
 import type firebase from 'firebase'
 import { ref, Ref } from 'vue-demi'
 import { isDef } from '../../utils'
-import { tryOnUnmounted } from 'packages/core'
+import { tryOnUnmounted } from '../../core'
 
 export type FirebaseDocRef<T> =
   firebase.firestore.Query<T> |
