@@ -9,8 +9,7 @@ export interface DocsProps {
 
 const ShowDocsFunc = ({ props }: RenderContext<DocsProps>) => {
   return (
-    // @ts-ignore
-    <div className="markdown-body" domPropsInnerHTML={props.md.default} />
+    <div class="markdown-body" domPropsInnerHTML={props.md.default} />
   )
 }
 

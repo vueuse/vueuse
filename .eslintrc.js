@@ -23,6 +23,7 @@ module.exports = {
     'react/no-string-refs': 'off',
     'no-new': 'off',
     'import/order': 'off',
+    'react/no-unknown-property': 'off',
   },
   overrides: [
     {

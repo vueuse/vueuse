@@ -62,7 +62,7 @@ const Demo = defineComponent({
               </button>
             ) : (
               // @ts-ignore
-              <button onClick={() => workerTerminate()} className="orange">
+              <button onClick={() => workerTerminate()} class="orange">
                 Terminate Worker
               </button>
             )
