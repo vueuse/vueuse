@@ -1,5 +1,6 @@
-import { ref, onMounted, onUnmounted } from 'vue-demi'
+import { ref, onUnmounted } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { maybeOnMounted } from '../utils'
 
 // device pixel ratio statistics from https://www.mydevice.io/
 export const DEVICE_PIXEL_RATIO_SCALES = [
@@ -26,7 +27,7 @@ export function useDevicePixelRatio() {
     pixelRatio.value = window.devicePixelRatio
   }
 
-  onMounted(handleDevicePixelRatio)
+  maybeOnMounted(handleDevicePixelRatio)
 
   useEventListener('resize', handleDevicePixelRatio)
 

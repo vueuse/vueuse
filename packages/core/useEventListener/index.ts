@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted } from 'vue-demi'
+import { maybeOnMounted, maybeOnUnmounted } from '../utils'
 
 export function useEventListener<K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void
 export function useEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions, target?: Document): void
@@ -9,11 +9,11 @@ export function useEventListener(
   options?: boolean | AddEventListenerOptions,
   target: EventTarget = window,
 ) {
-  onMounted(() => {
+  maybeOnMounted(() => {
     target.addEventListener(type, listener, options)
   })
 
-  onUnmounted(() => {
+  maybeOnUnmounted(() => {
     target.removeEventListener(type, listener, options)
   })
 }

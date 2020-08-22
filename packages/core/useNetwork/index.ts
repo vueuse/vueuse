@@ -1,7 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { onMounted, ref, Ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { maybeOnMounted } from '../utils'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
@@ -43,8 +44,6 @@ export function useNetwork() {
     type.value = connection.type
   }
 
-  onMounted(updateNetworkInformation)
-
   useEventListener('offline', () => {
     isOnline.value = false
     offlineAt.value = Date.now()
@@ -56,6 +55,8 @@ export function useNetwork() {
 
   if (connection)
     useEventListener('change', updateNetworkInformation, false, connection)
+
+  maybeOnMounted(updateNetworkInformation)
 
   return {
     isOnline,

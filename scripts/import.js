@@ -10,7 +10,7 @@ async function updateImport() {
 
     const files = fs
       .readdirSync(pkdDir)
-      .filter(f => f.startsWith('use') || f.startsWith('create'))
+      .filter(f => f.match(/^(use|create|utils)/))
       .sort()
 
     let content = ''

@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, onMounted, onUnmounted, Ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
+import { maybeOnMounted, maybeOnUnmounted } from '../utils'
 
 export function useWebWorker(url: string) {
   const data: Ref<any> = ref(null)
@@ -18,7 +19,7 @@ export function useWebWorker(url: string) {
     worker.terminate()
   }
 
-  onMounted(() => {
+  maybeOnMounted(() => {
     worker = new Worker(url)
 
     worker.onmessage = (e: MessageEvent) => {
@@ -26,7 +27,7 @@ export function useWebWorker(url: string) {
     }
   })
 
-  onUnmounted(() => {
+  maybeOnUnmounted(() => {
     worker.terminate()
   })
 

@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, onMounted, onUnmounted, Ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
+import { maybeOnMounted, maybeOnUnmounted } from '../utils'
 
 export function useGeolocation(options: PositionOptions = {
   enableHighAccuracy: true,
@@ -27,7 +28,7 @@ export function useGeolocation(options: PositionOptions = {
 
   let watcher: number
 
-  onMounted(() => {
+  maybeOnMounted(() => {
     if ('geolocation' in navigator) {
       watcher = window.navigator.geolocation.watchPosition(
         updatePosition,
@@ -39,7 +40,7 @@ export function useGeolocation(options: PositionOptions = {
     }
   })
 
-  onUnmounted(() => {
+  maybeOnUnmounted(() => {
     if (watcher)
       window.navigator.geolocation.clearWatch(watcher)
   })

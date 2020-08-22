@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, onMounted, onUnmounted } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { maybeOnMounted, maybeOnUnmounted } from '../utils'
 
 export function useMediaQuery(query: string) {
   let mediaQuery!: MediaQueryList
@@ -14,7 +15,7 @@ export function useMediaQuery(query: string) {
     matches.value = event.matches
   }
 
-  onMounted(() => {
+  maybeOnMounted(() => {
     if (!mediaQuery)
       mediaQuery = window.matchMedia(query)
 
@@ -22,7 +23,7 @@ export function useMediaQuery(query: string) {
     mediaQuery.addListener(handler)
   })
 
-  onUnmounted(() => {
+  maybeOnUnmounted(() => {
     mediaQuery.removeListener(handler)
   })
 
