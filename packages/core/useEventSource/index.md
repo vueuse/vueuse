@@ -7,7 +7,7 @@
 ```js
 import { useEventSource } from '@vueuse/core'
 
-const { state, data, close } = useEventSource('https://event-source-url')
+const { state, data, close } = useEventSource('https://event-source-url', [])
 ```
 
 | State | Type          | Description                                                                                             |

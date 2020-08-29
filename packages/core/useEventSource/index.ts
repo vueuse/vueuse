@@ -1,7 +1,7 @@
 import { ref, Ref, tryOnMounted, tryOnUnMounted } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
-// EventSource Constructor 
+// EventSource Constructor
 // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource
 export function useEventSource(url: string, events: Array<string> = []) {
   const data: Ref<{ event: string | null, data: string | null }> = ref({ event: null, data: null })
@@ -27,7 +27,7 @@ export function useEventSource(url: string, events: Array<string> = []) {
 
     for (let i = 0; i < events.length; i++) {
       const event_name: string = events[i]
-      useEventListener(event_name, (e: Event & {data?: string}) => {
+      useEventListener(event_name, (_e: Event & {data?: string}) => {
         data.value = {event: event_name, data: data}
       })
     }
