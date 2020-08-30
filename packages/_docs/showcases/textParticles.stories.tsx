@@ -134,7 +134,7 @@ const Demo = defineComponent({
           <p id="meta">
             <a href="https://codepen.io/Mamboleoo/pen/obWGYr" target="__blank">Credit</a>
             <span>|</span>
-            <a href="https://github.com/antfu/vue-use-utils/blob/master/src/showcases/text_particles.stories.tsx" target="__blank">Source</a>
+            <a href="https://github.com/antfu/vue-use-utils/blob/master/packages/_docs/showcases/textParticles.stories.tsx" target="__blank">Source</a>
           </p>
         </div>
       </div>

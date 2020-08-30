@@ -1,7 +1,8 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref, onMounted, onUnmounted, Ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 export enum WorkerStatus {
   Pending = 'PENDING',
@@ -43,11 +44,11 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
   }
 
-  onMounted(() => {
+  tryOnMounted(() => {
     workerTerminate()
   })
 
-  onUnmounted(() => {
+  tryOnUnmounted(() => {
     workerTerminate()
   })
 
