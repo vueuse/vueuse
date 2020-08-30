@@ -128,6 +128,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useDocumentVisibility`](https://vueuse.js.org/?path=/story/sensors--usedocumentvisibility) — reactively track [`Document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
   - [`useElementVisibility`](https://vueuse.js.org/?path=/story/sensors--useelementvisibility) — tracks the visibility of an element within the viewport
   - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
+  - [`useIntersectionObserver`](https://vueuse.js.org/?path=/story/sensors--useintersectionobserver) — reactive [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
   - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
