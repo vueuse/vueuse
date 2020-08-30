@@ -7,13 +7,14 @@
 ```js
 import { useEventSource } from '@vueuse/core'
 
-const { state, data, close } = useEventSource('https://event-source-url', [])
+const { status, data, error, close } = useEventSource('https://event-source-url')
 ```
 
 | State | Type          | Description                                                                                             |
 | ----- | ------------- | ------------------------------------------------------------------------------------------------------- |
-| state | `Ref<string>` | A read-only value representing the state of the connection. Possible values are CONNECTING (0), OPEN (1), or CLOSED (2)|
-| data  | `Ref<object>` | Reference to the latest data received via the EventSource, can be watched to respond to incoming messages |
+| status | `Ref<string>` | A read-only value representing the state of the connection. Possible values are CONNECTING (0), OPEN (1), or CLOSED (2)|
+| data   | `Ref<string | null>` | Reference to the latest data received via the EventSource, can be watched to respond to incoming messages |
+| eventSource | `Ref<EventSource | null>` | Reference to the current EventSource instance |
 
 | Method | Signature                                  | Description                            |
 | ------ | ------------------------------------------ | ---------------------------------------|

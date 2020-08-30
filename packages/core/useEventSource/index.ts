@@ -22,7 +22,6 @@ export function useEventSource(url: string, events: Array<string> = []) {
 
   tryOnMounted(() => {
     const es = new EventSource(url)
-    close()
 
     eventSource.value = es
 
