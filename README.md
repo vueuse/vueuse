@@ -17,11 +17,10 @@
 Collection of essential Vue Composition API (inspired by <a href='https://github.com/streamich/react-use' target='__blank'>react-use</a>)
 </p>
 
-<h3 align="center">
-  Sponsored by
-</h3>
 <p align="center">
-  <a href="https://github.com/buzz-js">Roberth González</a>
+  <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'/>
+  </a>
 </p>
 
 
