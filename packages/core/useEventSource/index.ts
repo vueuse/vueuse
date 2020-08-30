@@ -1,45 +1,68 @@
-import { ref, Ref, tryOnMounted, tryOnUnMounted } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { tryOnMounted, tryOnUnmounted } from '../utils'
 
 // EventSource Constructor
 // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource
+
 export function useEventSource(url: string, events: Array<string> = []) {
-  const data: Ref<{ event: string | null, data: string | null }> = ref({ event: null, data: null })
-  const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
-  let es: EventSource
+  const event: Ref<string | null> = ref(null)
+  const data: Ref<string | null> = ref(null)
+  const status = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
+  const eventSource = ref(null) as Ref<EventSource | null>
+  const error = ref(null) as Ref<Event | null>
+
   const close = () => {
-    es?.close()
+    if (eventSource.value) {
+      eventSource.value.close()
+      eventSource.value = null
+      status.value = 'CLOSED'
+    }
   }
 
-  tryOnMounted (() => {
-    es = new EventSource(url)
+  tryOnMounted(() => {
+    const es = new EventSource(url)
+    close()
+
+    eventSource.value = es
+
     es.onopen = () => {
-      state.value = 'OPEN'
+      status.value = 'OPEN'
+      error.value = null
     }
 
-    es.close = es.onerror = () => {
-      state.value = 'CLOSED'
+    es.close = () => {
+      status.value = 'CLOSED'
+    }
+
+    es.onerror = (e) => {
+      status.value = 'CLOSED'
+      error.value = e
     }
 
     es.onmessage = (e: MessageEvent) => {
-      data.value = {event: null, data: e.data}
+      event.value = null
+      data.value = e.data
     }
 
-    for (let i = 0; i < events.length; i++) {
-      const event_name: string = events[i]
-      useEventListener(event_name, (_e: Event & {data?: string}) => {
-        data.value = {event: event_name, data: data}
+    for (const event_name of events) {
+      useEventListener(event_name, (e: Event & { data?: string }) => {
+        event.value = event_name
+        data.value = e.data || null
       })
     }
   })
 
-  tryOnUnMounted (() => {   
+  tryOnUnmounted(() => {
     close()
   })
 
   return {
+    eventSource,
+    event,
     data,
-    state,
+    status,
+    error,
     close,
   }
 }
