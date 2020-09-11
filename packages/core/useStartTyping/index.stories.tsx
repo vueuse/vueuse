@@ -1,26 +1,25 @@
-import "vue-tsx-support/enable-check";
-import { storiesOf } from "@storybook/vue";
-import { defineComponent, ref } from "vue-demi";
-import { ShowDocs } from "../../_docs/showdocs";
-import { useStartTyping } from ".";
+import 'vue-tsx-support/enable-check'
+import { storiesOf } from '@storybook/vue'
+import { defineComponent, ref } from 'vue-demi'
+import { ShowDocs } from '../../_docs/showdocs'
+import { useStartTyping } from '.'
 
 const Demo = defineComponent({
   setup() {
-    const input = ref(null);
+    const input = ref(null)
     useStartTyping(() => {
-      if (!input.value.active) {
-        input.value.focus();
-      }
-    });
+      if (!input.value.active)
+        input.value.focus()
+    })
 
     return {
       input,
-    };
+    }
   },
 
   render() {
     // @ts-ignore
-    const Docs = <ShowDocs md={require("./index.md")} />;
+    const Docs = <ShowDocs md={require('./index.md')} />
 
     return (
       <div>
@@ -30,8 +29,8 @@ const Demo = defineComponent({
         </div>
         {Docs}
       </div>
-    );
+    )
   },
-});
+})
 
-storiesOf("Sensors", module).add("useStartTyping", () => Demo as any);
+storiesOf('Sensors', module).add('useStartTyping', () => Demo as any)

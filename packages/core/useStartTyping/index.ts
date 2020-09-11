@@ -1,28 +1,26 @@
 /* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
-import { onUnmounted, onMounted } from "vue-demi";
+import { onUnmounted, onMounted } from 'vue-demi'
 
 const isFocusedElementEditable = () => {
-  const { activeElement, body } = document;
+  const { activeElement, body } = document
 
-  if (!activeElement) {
-    return false;
-  }
+  if (!activeElement)
+    return false
 
   // If not element has focus, we assume it is not editable, too.
-  if (activeElement === body) {
-    return false;
-  }
+  if (activeElement === body)
+    return false
 
   // Assume <input> and <textarea> elements are editable.
   switch (activeElement.tagName) {
-    case "INPUT":
-    case "TEXTAREA":
-      return true;
+    case 'INPUT':
+    case 'TEXTAREA':
+      return true
   }
 
   // Check if any other focused element id editable.
-  return activeElement.hasAttribute("contenteditable");
-};
+  return activeElement.hasAttribute('contenteditable')
+}
 
 const isTypedCharGood = ({
   keyCode,
@@ -30,33 +28,33 @@ const isTypedCharGood = ({
   ctrlKey,
   altKey,
 }: KeyboardEvent) => {
-  if (metaKey || ctrlKey || altKey) {
-    return false;
-  }
+  if (metaKey || ctrlKey || altKey)
+    return false
+
   // 0...9
-  if (keyCode >= 48 && keyCode <= 57) {
-    return true;
-  }
+  if (keyCode >= 48 && keyCode <= 57)
+    return true
+
   // a...z
-  if (keyCode >= 65 && keyCode <= 90) {
-    return true;
-  }
+  if (keyCode >= 65 && keyCode <= 90)
+    return true
+
   // All other keys.
-  return false;
-};
+  return false
+}
 
 export function useStartTyping(onStartTyping: (event: KeyboardEvent) => void) {
   const keydown = (event: KeyboardEvent) => {
-    !isFocusedElementEditable() &&
-      isTypedCharGood(event) &&
-      onStartTyping(event);
-  };
+    !isFocusedElementEditable()
+      && isTypedCharGood(event)
+      && onStartTyping(event)
+  }
 
   onMounted(() => {
-    document.addEventListener("keydown", keydown);
-  });
+    document.addEventListener('keydown', keydown)
+  })
 
   onUnmounted(() => {
-    document.removeEventListener("keydown", keydown);
-  });
+    document.removeEventListener('keydown', keydown)
+  })
 }
