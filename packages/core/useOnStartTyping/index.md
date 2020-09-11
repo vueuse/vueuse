@@ -1,17 +1,17 @@
-# useStartTyping
+# useOnStartTyping
 
 > detects when user starts typing on a non editable element.
 
 ## Usage
 
 ```jsx
-import { useStartTyping } from '@vueuse/core'
+import { useOnStartTyping } from '@vueuse/core'
 
 const Demo = defineComponent({
   setup() {
     const input = ref(null)
 
-    useStartTyping(() => {
+    useOnStartTyping(() => {
       if (!input.value.active)
         input.value.focus()
     })

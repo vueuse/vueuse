@@ -43,7 +43,7 @@ const isTypedCharGood = ({
   return false
 }
 
-export function useStartTyping(onStartTyping: (event: KeyboardEvent) => void) {
+export function useOnStartTyping(onStartTyping: (event: KeyboardEvent) => void) {
   const keydown = (event: KeyboardEvent) => {
     !isFocusedElementEditable()
       && isTypedCharGood(event)
