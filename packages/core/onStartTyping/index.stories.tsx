@@ -2,12 +2,12 @@ import 'vue-tsx-support/enable-check'
 import { storiesOf } from '@storybook/vue'
 import { defineComponent, ref } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useOnStartTyping } from '.'
+import { onStartTyping } from '.'
 
 const Demo = defineComponent({
   setup() {
     const input = ref(null)
-    useOnStartTyping(() => {
+    onStartTyping(() => {
       if (!input.value.active)
         input.value.focus()
     })

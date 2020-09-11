@@ -1,11 +1,11 @@
-# useOnStartTyping
+# onStartTyping
 
-> detects when user starts typing on a non editable element.
+> Fires when user starts typing on a non editable element.
 
 ## Usage
 
 ```jsx
-import { useOnStartTyping } from '@vueuse/core'
+import { onStartTyping } from '@vueuse/core'
 
 const Demo = defineComponent({
   setup() {

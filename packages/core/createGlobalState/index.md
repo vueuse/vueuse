@@ -14,10 +14,9 @@ export const useGlobalState = createGlobalState(
 ```
 
 ```js
-// app.js
 import { useGlobalState } from './store'
 
-new Vue({
+export default defineComponent({
   setup() {
     const state = useGlobalState()
     return { state }

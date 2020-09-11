@@ -1,5 +1,5 @@
 /* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
-import { onUnmounted, onMounted } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 
 const isFocusedElementEditable = () => {
   const { activeElement, body } = document
@@ -43,18 +43,12 @@ const isTypedCharGood = ({
   return false
 }
 
-export function useOnStartTyping(onStartTyping: (event: KeyboardEvent) => void) {
+export function onStartTyping(callback: (event: KeyboardEvent) => void) {
   const keydown = (event: KeyboardEvent) => {
     !isFocusedElementEditable()
       && isTypedCharGood(event)
-      && onStartTyping(event)
+      && callback(event)
   }
 
-  onMounted(() => {
-    document.addEventListener('keydown', keydown)
-  })
-
-  onUnmounted(() => {
-    document.removeEventListener('keydown', keydown)
-  })
+  useEventListener('keydown', keydown, undefined, document)
 }
