@@ -1,3 +1,15 @@
+# [DEPREACTED]
+
+Please use these packages instead:
+
+- Vue 3: [`vue-i18n` v9](https://github.com/intlify/vue-i18n-next)
+- Vue 2: [`vue-i18n-composable`](https://github.com/intlify/vue-i18n-composable)
+
+---
+
+<details>
+<summary>Lacgay Docs</summary>
+
 # 🌍 @vueuse/i18n
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/i18n?color=a1b858)](https://www.npmjs.com/package/@vueuse/i18n)
@@ -39,3 +51,5 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
 ## 📄 License
 
 [MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
+
+</details>

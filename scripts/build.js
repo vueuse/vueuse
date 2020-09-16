@@ -30,7 +30,7 @@ async function buildMetaFiles(packageVersion) {
 
     const packageJSON = {
       name: `@vueuse/${pkg}`,
-      description: 'Collection of essential Vue Composition API',
+      description: options.description || 'Collection of essential Vue Composition API',
       version: packageVersion,
       main: 'index.cjs.js',
       types: 'index.d.ts',

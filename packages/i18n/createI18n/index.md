@@ -1,4 +1,4 @@
-# createI18n
+# [DEPREACTED] createI18n
 
 > Create a global i18n instance to be reused
 

@@ -32,7 +32,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
 - 🌎 **Browser compatible**: Use it though CDN
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)**: Firebase, vue-i18n, etc
+- 🔌 **Optional [Add-ons](#-add-ons)**
 
 ## 🦄 Usage
 
@@ -165,10 +165,6 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 <!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
-- 🌍 i18n ([`@vueuse/i18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--read-me)) - Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)
-  - [`createI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n) — create a global i18n instance to be reused
-  - [`useI18n`](https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n) — use vue-i18n instance
-
 - 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for [Firebase](https://firebase.google.com/)
   - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding

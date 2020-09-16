@@ -12,6 +12,9 @@ async function updateReadme() {
   let addOnsList = ''
 
   for (const [pkg, packageOptions = {}] of packages) {
+    if (packageOptions.depreacted)
+      continue
+
     const packageDir = path.join(srcDir, pkg)
     const readmePath = pkg === 'core'
       ? path.resolve(__dirname, '../README.md')

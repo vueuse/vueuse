@@ -22,8 +22,9 @@ module.exports = [
   }],
 
   ['i18n', {
+    depreacted: true,
     name: '🌍 i18n',
-    description: 'Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)',
+    description: '[depreacted] Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)',
     peerDependencies: {
       'vue-i18n': '>=6.0.0',
     },
@@ -34,8 +35,7 @@ module.exports = [
       'vue-i18n': 'VueI18n',
     },
     keywords: [
-      'i18n',
-      'vue-i18n',
+      'depreacted',
     ],
   }],
 ]
