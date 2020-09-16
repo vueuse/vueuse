@@ -1,10 +1,6 @@
-import { watch, computed, WatchSource, Ref, isRef, getCurrentInstance, onMounted, onUnmounted, nextTick, reactive } from 'vue-demi'
+import { watch, computed, WatchSource, Ref, getCurrentInstance, onMounted, onUnmounted, nextTick, reactive } from 'vue-demi'
 
 export type MaybeRef<T> = T | Ref<T>
-
-export function getValue<T>(v: MaybeRef<T>) {
-  return isRef(v) ? v.value : v
-}
 
 /**
  * Explicitly define the deps of computed
