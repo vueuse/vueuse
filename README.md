@@ -30,7 +30,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 - 🌴 **Fully tree shakable**: Only take what you want
 - 🦾 **Type Strong**: Written in Typescript
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- 🌎 **Browser compatible**: Use it though CDN
+- 🌎 **Browser compatible**: Use it through CDN
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
 - 🔌 **Optional [Add-ons](#-add-ons)**
 
@@ -157,7 +157,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 <!--FUNCTIONS_LIST_ENDS-->
 
-More functions to be added. Please keep turned. (PRs are also welcome!)
+More functions to be added. Please stay tuned. (PRs are also welcome!)
 
 Meanwhile, try also [**vue-composable**](https://github.com/pikax/vue-composable) by [@pikax](https://github.com/pikax)!
 
