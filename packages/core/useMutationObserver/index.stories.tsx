@@ -5,7 +5,7 @@ import { defineComponent, ref, onMounted } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useMutationObserver } from '.'
 
-const Demo  = defineComponent({
+const Demo = defineComponent({
   setup() {
     const el = ref(null)
     const messages = ref([])
@@ -14,7 +14,7 @@ const Demo  = defineComponent({
 
     useMutationObserver(el, (mutations) => {
       const mutation = mutations[0]
-      if (!mutation) return;
+      if (!mutation) return
 
       messages.value.push(mutation.attributeName)
     }, {
@@ -24,15 +24,15 @@ const Demo  = defineComponent({
     onMounted(() => {
       setTimeout(() => {
         className.value = {
-          'test': true,
-          'test2': true,
+          test: true,
+          test2: true,
         }
       }, 1000)
       setTimeout(() => {
         style.value = {
           backgroundColor: 'red',
         }
-      }, 1500);
+      }, 1500)
     })
 
     return {
@@ -60,8 +60,8 @@ const Demo  = defineComponent({
           // @ts-ignore */}
           <div ref="el" class={className} style={style}>
             {
-              messages.map((text) => (
-                <div>Mutation Attribute: {text}</div>
+              messages.map((text, index) => (
+                <div key={index}>Mutation Attribute: {text}</div>
               ))
             }
           </div>
@@ -69,7 +69,7 @@ const Demo  = defineComponent({
         {Docs}
       </div>
     )
-  }
+  },
 })
 
 storiesOf('Browser', module)
