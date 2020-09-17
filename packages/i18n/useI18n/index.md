@@ -1,4 +1,4 @@
-# [DEPREACTED] useI18n
+# [DEPRECATED] useI18n
 
 > Use vue-i18n instance
 

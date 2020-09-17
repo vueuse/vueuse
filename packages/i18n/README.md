@@ -1,4 +1,4 @@
-# [DEPREACTED]
+# [DEPRECATED]
 
 Please use these packages instead:
 

@@ -8,7 +8,7 @@ const packages = require('./scripts/packages')
 const configs = []
 
 for (const [pkg, options] of packages) {
-  if (options.depreacted)
+  if (options.deprecated)
     continue
 
   const globals = {

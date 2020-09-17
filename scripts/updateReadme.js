@@ -12,7 +12,7 @@ async function updateReadme() {
   let addOnsList = ''
 
   for (const [pkg, packageOptions = {}] of packages) {
-    if (packageOptions.depreacted)
+    if (packageOptions.deprecated)
       continue
 
     const packageDir = path.join(srcDir, pkg)
