@@ -17,6 +17,9 @@ assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles(packageVersion) {
   for (const [pkg, options] of packages) {
+    if (options.deprecated)
+      continue
+
     const packageDist = path.resolve(__dirname, '..', 'dist', pkg)
     const packageSrc = path.resolve(__dirname, '..', 'packages', pkg)
 
