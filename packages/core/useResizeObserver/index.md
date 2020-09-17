@@ -1,6 +1,6 @@
 # useResizeObserver
 
-> Reports changes to the dimensions of an Element content or border box
+> Reports changes to the dimensions of an Element's content or border box
 
 ## Usage
 
@@ -38,3 +38,5 @@ export default defineComponent({
   }
 })
 ```
+
+[ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
