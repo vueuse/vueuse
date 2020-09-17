@@ -8,6 +8,9 @@ const packages = require('./scripts/packages')
 const configs = []
 
 for (const [pkg, options] of packages) {
+  if (options.depreacted)
+    continue
+
   const globals = {
     vue: 'Vue',
     'vue-demi': 'VueDemi',

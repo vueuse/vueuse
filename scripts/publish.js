@@ -9,7 +9,9 @@ const distDir = path.resolve(__dirname, '..', 'dist')
 async function publish() {
   await build()
 
-  for (const [pkg] of packages) {
+  for (const [pkg, { deprecated }] of packages) {
+    if (deprecated)
+      continue
     const packageDist = path.join(distDir, pkg)
 
     exec('yarn publish --access public --non-interactive', { stdio: 'inherit', cwd: packageDist })
