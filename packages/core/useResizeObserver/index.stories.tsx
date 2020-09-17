@@ -5,14 +5,14 @@ import { defineComponent, ref } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
 import { useResizeObserver } from '.'
 
-const Demo  = defineComponent({
+const Demo = defineComponent({
   setup() {
     const el = ref(null)
     const text = ref('')
 
     useResizeObserver(el, (entries) => {
       const entry = entries[0]
-      const { width, height } =  entry.contentRect
+      const { width, height } = entry.contentRect
       text.value = `width: ${width}, height: ${height}`
     })
 
@@ -40,7 +40,7 @@ const Demo  = defineComponent({
         {Docs}
       </div>
     )
-  }
+  },
 })
 
 storiesOf('Browser', module)
