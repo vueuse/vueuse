@@ -107,6 +107,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener) — use EventListener with ease
   - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) — reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))
+  - [`useMutationObserver`](https://vueuse.js.org/?path=/story/browser--usemutationobserver) — watch for changes being made to the DOM tree
   - [`usePermission`](https://vueuse.js.org/?path=/story/browser--usepermission) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark) — reactive dark theme preference
