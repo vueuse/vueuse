@@ -22,7 +22,7 @@ async function updateReadme() {
 
     const functions = fs
       .readdirSync(packageDir)
-      .filter(f => f.startsWith('use') || f.startsWith('create'))
+      .filter(f => f.match(/^(use|create|on)/))
       .sort()
 
     consola.info(`${functions.length} functions found for "${pkg}"`)
