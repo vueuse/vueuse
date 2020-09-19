@@ -33,4 +33,4 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Sensors', module).add('useOnStartTyping', () => Demo as any)
+storiesOf('Sensors', module).add('onStartTyping', () => Demo as any)
