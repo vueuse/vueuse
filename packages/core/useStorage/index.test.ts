@@ -14,12 +14,12 @@ describe('useStorage', () => {
     localStorage.removeItem.mockClear()
   })
 
-  it('string', async () => {
+  it('string', async() => {
     const instance = renderHook(() => {
       const ref = useStorage(KEY, 'a')
 
       return {
-        ref
+        ref,
       }
     }).vm
 
@@ -33,14 +33,14 @@ describe('useStorage', () => {
     expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
   })
 
-  it('number', async () => {
+  it('number', async() => {
     localStorage.setItem(KEY, '0')
 
     const instance = renderHook(() => {
       const ref = useStorage(KEY, 1)
 
       return {
-        ref
+        ref,
       }
     }).vm
 
@@ -62,14 +62,14 @@ describe('useStorage', () => {
     expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')
   })
 
-  it('boolean', async () => {
+  it('boolean', async() => {
     localStorage.removeItem(KEY)
 
     const instance = renderHook(() => {
       const ref = useStorage(KEY, true)
 
       return {
-        ref
+        ref,
       }
     }).vm
 
@@ -96,7 +96,7 @@ describe('useStorage', () => {
     })
   })
 
-  it('string', async () => {
+  it('string', async() => {
     localStorage.setItem(KEY, '0')
 
     const instance = renderHook(() => {
@@ -105,7 +105,7 @@ describe('useStorage', () => {
       expect(ref.value).toBe('0')
 
       return {
-        ref
+        ref,
       }
     }).vm
 
@@ -115,7 +115,7 @@ describe('useStorage', () => {
     expect(localStorage.setItem).toBeCalledWith(KEY, '2')
   })
 
-  it('object', async () => {
+  it('object', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
     const instance = renderHook(() => {
@@ -132,7 +132,7 @@ describe('useStorage', () => {
       })
 
       return {
-        ref
+        ref,
       }
     }).vm
 
