@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import VueCompositionApi from '@vue/composition-api'
-import { defineComponent, createApp } from 'vue-demi'
+import { defineComponent } from 'vue-demi'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
