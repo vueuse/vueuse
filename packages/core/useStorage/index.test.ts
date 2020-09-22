@@ -14,58 +14,76 @@ describe('useStorage', () => {
     localStorage.removeItem.mockClear()
   })
 
-  it('string', () => {
-    renderHook(() => {
+  it('string', async() => {
+    const instance = renderHook(() => {
       const ref = useStorage(KEY, 'a')
 
-      expect(ref.value).toBe('a')
+      return {
+        ref,
+      }
+    }).vm
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
+    expect(instance.ref).toBe('a')
+    expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
 
-      ref.value = 'b'
+    instance.ref = 'b'
+    await instance.$nextTick()
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
-    })
+    expect(instance.ref).toBe('b')
+    expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
   })
 
-  it('number', () => {
+  it('number', async() => {
     localStorage.setItem(KEY, '0')
 
-    renderHook(() => {
+    const instance = renderHook(() => {
       const ref = useStorage(KEY, 1)
 
-      expect(ref.value).toBe(0)
+      return {
+        ref,
+      }
+    }).vm
 
-      ref.value = 2
+    expect(instance.ref).toBe(0)
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    instance.ref = 2
+    await instance.$nextTick()
 
-      ref.value = -1
+    expect(localStorage.setItem).toBeCalledWith(KEY, '2')
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '-1')
+    instance.ref = -1
+    await instance.$nextTick()
 
-      ref.value = 2.3
+    expect(localStorage.setItem).toBeCalledWith(KEY, '-1')
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')
-    })
+    instance.ref = 2.3
+    await instance.$nextTick()
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')
   })
 
-  it('boolean', () => {
+  it('boolean', async() => {
     localStorage.removeItem(KEY)
 
-    renderHook(() => {
+    const instance = renderHook(() => {
       const ref = useStorage(KEY, true)
 
-      expect(ref.value).toBe(true)
+      return {
+        ref,
+      }
+    }).vm
 
-      ref.value = false
+    expect(instance.ref).toBe(true)
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
+    instance.ref = false
+    await instance.$nextTick()
 
-      ref.value = true
+    expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
-    })
+    instance.ref = true
+    await instance.$nextTick()
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
   })
 
   it('null', () => {
@@ -78,24 +96,29 @@ describe('useStorage', () => {
     })
   })
 
-  it('string', () => {
+  it('string', async() => {
     localStorage.setItem(KEY, '0')
 
-    renderHook(() => {
+    const instance = renderHook(() => {
       const ref = useStorage(KEY, '1')
 
       expect(ref.value).toBe('0')
 
-      ref.value = '2'
+      return {
+        ref,
+      }
+    }).vm
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '2')
-    })
+    instance.ref = '2'
+    await instance.$nextTick()
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '2')
   })
 
-  it('object', () => {
+  it('object', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
-    renderHook(() => {
+    const instance = renderHook(() => {
       const ref = useStorage(KEY, {
         name: 'a',
         data: 123,
@@ -108,18 +131,25 @@ describe('useStorage', () => {
         data: 123,
       })
 
-      ref.value.name = 'b'
+      return {
+        ref,
+      }
+    }).vm
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    instance.ref.name = 'b'
+    await instance.$nextTick()
 
-      ref.value.data = 321
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    instance.ref.data = 321
+    await instance.$nextTick()
 
-      // @ts-ignore
-      ref.value = null
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-      expect(localStorage.removeItem).toBeCalledWith(KEY)
-    })
+    // @ts-ignore
+    instance.ref = null
+    await instance.$nextTick()
+
+    expect(localStorage.removeItem).toBeCalledWith(KEY)
   })
 })
