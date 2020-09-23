@@ -37,7 +37,7 @@ export function tryOnMounted(fn: () => void, sync = true) {
  *
  * @param fn
  */
-export function tryOnUnmounted(fn: Function) {
+export function tryOnUnmounted(fn: () => void) {
   if (getCurrentInstance())
     onUnmounted(fn)
 }
