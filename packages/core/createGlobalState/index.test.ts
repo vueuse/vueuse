@@ -162,15 +162,15 @@ describe('createGlobalState', () => {
     localStorage.setItem.mockClear()
 
     vm2.ref = {
-      c: 'c',
-      d: 4,
+      a: 'c',
+      b: 3,
     }
     await vm2.$nextTick()
 
     expect(vm2.ref).toEqual({
-      c: 'c',
-      d: 4,
+      a: 'c',
+      b: 3,
     })
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"c":"c","d":4}')
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"a":"c","b":3}')
   })
 })

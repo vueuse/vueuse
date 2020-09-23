@@ -1,33 +1,29 @@
-import { Vue, createApp, reactive, ref, customRef } from 'vue-demi'
+import { createApp, reactive } from 'vue-demi'
 
-function createInstance<T extends object>(factory: () => T): Vue {
-  return createApp({
+function createInstance<T extends object>(factory: () => T): T {
+  const container = document.createElement('div')
+
+  let state: T = null as any
+
+  createApp({
     setup() {
-      const state = ref(reactive(factory()))
-
-      // Wrap it it in ref again so Vue only unwraps this one
-      const wrappedState = customRef(() => ({
-        get: () => state,
-        set: value => state.value = value,
-      }))
-
-      return {
-        state: wrappedState,
-      }
+      state = reactive(factory()) as T
     },
-    render: () => null,
-  }).mount()
+    render: () => null
+  }).mount(container)
+
+  return state
 }
 
 export function createGlobalState<T extends object>(
   factory: () => T,
 ) {
-  let instance: any = null
+  let instance: T
 
   return () => {
     if (instance == null)
       instance = createInstance(factory)
 
-    return instance.state
+    return instance
   }
 }
