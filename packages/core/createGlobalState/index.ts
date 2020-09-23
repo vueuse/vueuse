@@ -9,7 +9,7 @@ function withScope<T extends object>(factory: () => T): T {
     setup() {
       state = reactive(factory()) as T
     },
-    render: () => null
+    render: () => null,
   }).mount(container)
 
   return state
