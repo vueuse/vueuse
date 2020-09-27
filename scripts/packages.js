@@ -1,6 +1,20 @@
 module.exports = [
   ['core', {}],
-
+  ['rxjs', {
+    name: '🔥 Rxjs',
+    description: 'Enables vue with reactive functions',
+    peerDependencies: {
+      rxjs: '>=6.0.0',
+    },
+    external: [
+      'rxjs',
+      'rxjs/operators',
+    ],
+    keywords: [
+      'rxjs',
+      'reactive',
+    ],
+  }],
   ['firebase', {
     name: '🔥 Firebase',
     description: 'Enables realtime bindings for [Firebase](https://firebase.google.com/)',

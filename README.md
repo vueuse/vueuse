@@ -171,6 +171,10 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 - 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for [Firebase](https://firebase.google.com/)
   - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+
+- 🔥 Rxjs ([`@vueuse/rxjs`](https://vueuse.js.org/?path=/story/add-ons-rxjs--read-me)) - Enables vue with reactive functions
+  - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscritions without worry about unsubscribe to it or memory leaks
 <!--ADDONS_LIST_ENDS-->
 
 
