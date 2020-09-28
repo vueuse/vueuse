@@ -51,9 +51,9 @@ for (const [pkg, options] of packages) {
       typescript({
         tsconfig: path.resolve(__dirname, 'tsconfig.rollup.json'),
         tsconfigOverride: {
-          declaration: false,
-          declarationDir: null,
-          declarationMap: false,
+          compilerOptions: {
+            declaration: false,
+          },
         },
       }),
     ],
