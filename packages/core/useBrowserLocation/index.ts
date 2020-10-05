@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { Ref, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
-export interface LocationSensorState {
+export interface BrowserLocationState {
   trigger: string
   state?: any
   length?: number
@@ -18,8 +18,8 @@ export interface LocationSensorState {
   search?: string
 }
 
-export function useBrowserLocation(target: Ref<HTMLElement> = ref(document.body) as Ref<HTMLElement>) {
-  const buildState = (trigger: string) => {
+export function useBrowserLocation() {
+  const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = history
 
     const { hash, host, hostname, href, origin, pathname, port, protocol, search } = location

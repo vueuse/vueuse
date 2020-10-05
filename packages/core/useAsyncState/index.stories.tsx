@@ -1,47 +1,33 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
 import axios from 'axios'
 import YAML from 'js-yaml'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useAsyncState } from '.'
+import { defineDemo, html } from '../../_docs'
 
-type Inject = {
-  state: object
-  ready: boolean
-}
-
-const Demo = defineComponent({
-  setup() {
-    const { state, ready } = useAsyncState(
-      axios
-        .get('https://jsonplaceholder.typicode.com/todos/1')
-        .then(t => t.data),
-      {},
-      2000,
-    )
-
-    return { state, ready }
+defineDemo(
+  {
+    name: 'useAsyncState',
+    category: 'State',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const { state, ready } = useAsyncState(
+        axios
+          .get('https://jsonplaceholder.typicode.com/todos/1')
+          .then(t => t.data),
+        {},
+        2000,
+      )
 
-  render(this: Vue & Inject) {
-    const { state, ready } = this
-
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')}/>
-
-    return (
+      return { state, ready, YAML }
+    },
+    template: html`
       <div>
-        <div id="demo">
-          <p>Ready: {ready.toString()}</p>
-          <pre lang="json">{YAML.safeDump(state)}</pre>
-        </div>
-        {Docs}
+        <note>Ready: {{ready.toString()}}</note>
+        <pre lang="json" class="ml-2">{{YAML.safeDump(state)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('State', module)
-  .add('useAsyncState', () => Demo as any)
+    `,
+  }),
+)

@@ -1,8 +1,8 @@
 module.exports = [
   ['core', {}],
   ['rxjs', {
-    name: 'Rxjs',
-    description: 'Enables rxjs reactive functions in Vue',
+    name: 'RxJS',
+    description: 'Enables RxJS reactive functions in Vue',
     peerDependencies: {
       rxjs: '>=6.0.0',
     },

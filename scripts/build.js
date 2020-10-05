@@ -78,13 +78,13 @@ async function build() {
   exec('yarn run clean', { stdio: 'inherit' })
 
   consola.info('Generate Imports')
-  exec('yarn run import:generate', { stdio: 'inherit' })
+  exec('yarn run gen', { stdio: 'inherit' })
 
   consola.info('Rollup')
   exec('rollup -c', { stdio: 'inherit' })
 
   consola.info('Fix types')
-  exec('yarn run types:fix', { stdio: 'inherit' })
+  exec('node ./scripts/types-fix', { stdio: 'inherit' })
 
   await buildMetaFiles(packageVersion)
 }
