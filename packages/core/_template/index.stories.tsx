@@ -9,6 +9,7 @@ defineDemo(
     docs: require('./index.md'),
     module,
   },
+  // Vue component for the demo section
   defineComponent({
     setup() {
       return useCounter()

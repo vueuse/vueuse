@@ -1,10 +1,7 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
-import { useStorage } from '../useStorage'
 import { createGlobalState } from '.'
+import { useStorage } from '../useStorage'
 
 const useState = createGlobalState(() => {
   return useStorage('vue-use-locale-storage', {
@@ -14,34 +11,30 @@ const useState = createGlobalState(() => {
   })
 })
 
-const Demo = defineComponent({
-  setup() {
-    const state = useState()
-
-    return {
-      state,
-    }
+defineDemo(
+  {
+    name: 'createGlobalState',
+    category: 'State',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const state = useState()
 
-  render(this: Vue & {state: any; update: any}) {
-    const { state } = this
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+      return {
+        state,
+      }
+    },
 
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <input v-model={state.name} type="text"/>
-          <input v-model={state.color} type="text"/>
-          <input v-model={state.size} type="text"/>
+        <input v-model="state.name" type="text"/>
+        <input v-model="state.color" type="text"/>
+        <input v-model="state.size" type="text"/>
 
-          <pre lang="json">{JSON.stringify(state, null, 2)}</pre>
-        </div>
-        {Docs}
+        <pre lang="json">{{JSON.stringify(state, null, 2)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('State', module)
-  .add('createGlobalState', () => Demo as any)
+    `,
+  }),
+)
