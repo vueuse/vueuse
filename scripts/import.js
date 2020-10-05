@@ -9,8 +9,9 @@ async function updateImport() {
     const pkdDir = path.join(srcDir, pkg)
 
     const files = fs
-      .readdirSync(pkdDir)
-      .filter(f => f.match(/^(use|create|utils|on)/))
+      .readdirSync(pkdDir, { withFileTypes: true })
+      .filter(f => !f.name.startsWith('_') && f.isDirectory())
+      .map(f => f.name)
       .sort()
 
     let content = ''
