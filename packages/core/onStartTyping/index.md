@@ -1,17 +1,21 @@
 # onStartTyping
 
-> Fires when user starts typing on a non editable element.
+> Fires when users start typing on non-editable elements.
 
 ## Usage
 
-```jsx
+```html
+<input ref="input" type="text" placeholder="Start typing to focus" />
+```
+
+```ts
 import { onStartTyping } from '@vueuse/core'
 
-const Demo = defineComponent({
+export default {
   setup() {
     const input = ref(null)
 
-    useOnStartTyping(() => {
+    onStartTyping(() => {
       if (!input.value.active)
         input.value.focus()
     })
@@ -20,13 +24,5 @@ const Demo = defineComponent({
       input,
     }
   },
-  render() {
-    return (
-      <div id="demo">
-        <input ref="input" type="text" placeholder="Start typing to focus" />
-        <input type="text" placeholder="Start typing has no effect here" />
-      </div>
-    )
-  },
-})
+}
 ```

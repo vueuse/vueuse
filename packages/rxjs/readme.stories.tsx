@@ -76,5 +76,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Add-ons|Rxjs', module)
+storiesOf('Add-ons|RxJS', module)
   .add('Read Me', () => Demo as any)

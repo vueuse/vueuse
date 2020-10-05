@@ -4,22 +4,20 @@
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "node ./scripts/build",
-    "release": "npm run readme:update && bump --commit --tag --push --preid beta",
-    "release:gh": "conventional-github-releaser -p angular",
-    "release:local": "npm run readme:update && bump --commit --tag --preid beta && npm run publish:ci",
+    "release": "npm run gen && git add . && bump --commit --tag --push --preid beta",
     "publish:ci": "node ./scripts/publish.js",
-    "import:generate": "node ./scripts/import",
-    "types:fix": "node ./scripts/types-fix",
-    "types:generate": "tsc --emitDeclarationOnly && npm run types:fix",
+    "gen": "run-p gen:*",
+    "gen:import": "node ./scripts/import",
+    "gen:types": "tsc --emitDeclarationOnly && node ./scripts/types-fix",
+    "gen:readme": "node ./scripts/update-readme",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
-    "readme:update": "node ./scripts/updateReadme && git add \"*/README.md\"",
     "clean": "rimraf dist types typings storybook-static",
     "dev": "start-storybook -p 6006",
-    "storybook": "start-storybook -p 6006",
-    "storybook:build": "npm run import:generate && npm run types:generate && build-storybook"
+    "sb": "start-storybook -p 6006",
+    "sb:build": "npm run gen:import && npm run gen:types && build-storybook"
   },
   "husky": {
     "hooks": {
@@ -100,6 +98,7 @@
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-loader": "^0.7.0",
     "markdown-it-prism": "^2.1.1",
+    "npm-run-all": "^4.1.5",
     "postcss": "^7.0.34",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",

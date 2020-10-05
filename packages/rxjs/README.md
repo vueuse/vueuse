@@ -17,7 +17,7 @@ npm i <b>@vueuse/rxjs</b> rxjs
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- Rxjs
+- RxJS
   - [`from`](https://vueuse.js.org/?path=/story/add-ons-rxjs--from) — two wrappers around of the original functions to allow use ref objects
   - [`toObserver`](https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
@@ -31,10 +31,10 @@ You can checkout the full documents and live demos in [Storybook](https://vueuse
 ## 📄 Example
 
 ```ts
-import { ref } from 'vue-demi'
 import { fromEvent, from, useObservable } from '@vueuse/rxjs'
+import { ref } from 'vue-demi'
 import { of, forkJoin } from 'rxjs'
-import { ajax } from "rxjs/ajax"
+import { ajax } from 'rxjs/ajax'
 import { take, mergeMap, concatAll, pluck, map, scan } from 'rxjs/operators'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
@@ -45,7 +45,7 @@ const posts = useObservable(
     mergeMap(() => ajax.getJSON(`${BASE_URL}/posts`).pipe(
       concatAll(),
       take(4),
-      mergeMap(({id, userId, title}) => forkJoin({
+      mergeMap(({ id, userId, title }) => forkJoin({
         id: of(id),
         comments: ajax.getJSON(`${BASE_URL}/posts/${id}/comments`).pipe(
           map(comments => comments.length)

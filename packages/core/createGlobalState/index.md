@@ -1,6 +1,6 @@
 # createGlobalState
 
-> Keep state in global scope to be reused across Vue instances
+> Keep states in the global scope to be reused across Vue instances
 
 ## Usage
 

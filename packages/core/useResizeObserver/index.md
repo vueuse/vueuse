@@ -1,6 +1,6 @@
 # useResizeObserver
 
-> Reports changes to the dimensions of an Element's content or border box
+> Reports changes to the dimensions of an Element's content or the border-box
 
 ## Usage
 

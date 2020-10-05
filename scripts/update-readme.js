@@ -32,7 +32,7 @@ async function updateReadme() {
     for (const name of functions) {
       const raw = fs.readFileSync(path.join(packageDir, name, 'index.stories.tsx'), 'utf-8')
       const mdRaw = fs.readFileSync(path.join(packageDir, name, 'index.md'), 'utf-8')
-      const match = /storiesOf\('(.+)'[\s\S]+?\.add\('(.+)'/gm.exec(raw)
+      const match = /category: '(.+)',/gm.exec(raw) || /storiesOf\('(.+)'[\s\S]+?\.add\('(.+)'/gm.exec(raw)
 
       if (!match)
         continue
