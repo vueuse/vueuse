@@ -1,6 +1,6 @@
 import type firebase from 'firebase'
 import { ref, Ref } from 'vue-demi'
-import { isDef } from '../../utils'
+import { isDef } from '../../_utils'
 import { tryOnUnmounted } from '../../core'
 
 export type FirebaseDocRef<T> =

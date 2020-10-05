@@ -21,8 +21,9 @@ async function updateReadme() {
       : path.join(srcDir, pkg, 'README.md')
 
     const functions = fs
-      .readdirSync(packageDir)
-      .filter(f => f.match(/^(use|create|on)/))
+      .readdirSync(packageDir, { withFileTypes: true })
+      .filter(f => f.isDirectory() && !f.name.startsWith('_') && f.name !== 'utils')
+      .map(f => f.name)
       .sort()
 
     consola.info(`${functions.length} functions found for "${pkg}"`)
@@ -37,6 +38,7 @@ async function updateReadme() {
         continue
 
       let description = (mdRaw
+        .replace(/\r\n/g, '\n')
         .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 

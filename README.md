@@ -87,7 +87,7 @@ It will be exposed to global as `window.VueUse`
 
 You can check out the full documents and live demos in [Storybook](https://vueuse.js.org/).
 
-<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Animation
@@ -141,13 +141,8 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
-- Side Effects
-  - [`useDebounce`](https://vueuse.js.org/?path=/story/side-effects--usedebounce) — debounce execution of a ref value
-  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/side-effects--usedebouncefn) — debounce execution of a function
-  - [`useThrottle`](https://vueuse.js.org/?path=/story/side-effects--usethrottle) — throttle changing of a ref value
-  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/side-effects--usethrottlefn) — throttle execution of a function
-
 - State
+  - [`asyncComputed`](https://vueuse.js.org/?path=/story/state--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep state in global scope to be reused across Vue instances
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate) — reactive async state
   - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) — basic counter with utility functions
@@ -155,6 +150,12 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+
+- Utilities
+  - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
+  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
+  - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
+  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
 
 <!--FUNCTIONS_LIST_ENDS-->
 
@@ -166,11 +167,17 @@ Meanwhile, try also [**vue-composable**](https://github.com/pikax/vue-composable
 
 The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
 
-<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
-- 🔥 Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for [Firebase](https://firebase.google.com/)
+- Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for [Firebase](https://firebase.google.com/)
   - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+
+- Rxjs ([`@vueuse/rxjs`](https://vueuse.js.org/?path=/story/add-ons-rxjs--read-me)) - Enables rxjs reactive functions in Vue
+  - [`from`](https://vueuse.js.org/?path=/story/add-ons-rxjs--from) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 <!--ADDONS_LIST_ENDS-->
 
 

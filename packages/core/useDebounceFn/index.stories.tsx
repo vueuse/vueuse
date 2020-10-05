@@ -50,5 +50,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Side Effects', module)
+storiesOf('Utilities', module)
   .add('useDebounceFn', () => Demo as any)

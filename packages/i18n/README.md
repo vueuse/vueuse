@@ -36,7 +36,7 @@ npm i @vueuse/i18n<b>@vue2</b> vue-i18n
 
 `@vueuse/i18n` provides following functions
 
-<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - i18n

@@ -58,7 +58,9 @@ async function buildMetaFiles(packageVersion) {
       homepage: 'https://github.com/antfu/vueuse#readme',
       dependencies: {
         'vue-demi': 'latest',
+        ...options.dependencies,
       },
+      peerDependencies: options.peerDependencies,
     }
 
     await fs.writeFile(path.join(packageDist, 'package.json'), `${JSON.stringify(packageJSON, null, 2)}\n`)
