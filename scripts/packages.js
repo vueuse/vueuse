@@ -2,7 +2,7 @@ module.exports = [
   ['core', {}],
   ['rxjs', {
     name: 'Rxjs',
-    description: 'Enables vue with reactive functions',
+    description: 'Enables rxjs reactive functions in Vue',
     peerDependencies: {
       rxjs: '>=6.0.0',
     },
@@ -10,6 +10,10 @@ module.exports = [
       'rxjs',
       'rxjs/operators',
     ],
+    globals: {
+      rxjs: 'rxjs',
+      'rxjs/operators': 'rxjs.operator',
+    },
     keywords: [
       'rxjs',
       'reactive',
@@ -34,7 +38,7 @@ module.exports = [
       'vuefire',
     ],
   }],
-
+  // ====== deprecated =====
   ['i18n', {
     deprecated: true,
     name: 'i18n',

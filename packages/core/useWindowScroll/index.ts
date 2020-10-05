@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { isClient } from '../../utils'
+import { isClient } from '../../_utils'
 import { useEventListener } from '../useEventListener'
 
 export function useWindowScroll() {

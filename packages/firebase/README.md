@@ -24,7 +24,7 @@ npm i @vueuse/firebase<b>@vue2</b> firebase
 
 `@vueuse/firebase` provides following functions
 
-<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Firebase

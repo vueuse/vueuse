@@ -1,4 +1,4 @@
-# 🔥 @vueuse/rxjs
+# @vueuse/rxjs
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/firebase?color=a1b858)](https://www.npmjs.com/package/@vueuse/rxjs)
 
@@ -22,16 +22,14 @@ npm i @vueuse/rxjs<b>@vue2</b> rxjs
 
 ## ⚡ Functions
 
-`@vueuse/rxjs` provides following functions
-
-<!--GENEARTED LIST, DO NOT MODIFY MANUALLY-->
+<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Rxjs
   - [`from`](https://vueuse.js.org/?path=/story/add-ons-rxjs--from) — two wrappers around of the original functions to allow use ref objects
   - [`toObserver`](https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver) — sugar function to convert a ref in a observer
   - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscritions without worry about unsubscribe to it or memory leaks
+  - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 <!--FUNCTIONS_LIST_ENDS-->
 

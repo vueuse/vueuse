@@ -22,7 +22,7 @@ async function updateReadme() {
 
     const functions = fs
       .readdirSync(packageDir, { withFileTypes: true })
-      .filter(f => !f.name.startsWith('_') && !f.name.startsWith('utils') && f.isDirectory())
+      .filter(f => f.isDirectory() && !f.name.startsWith('_') && f.name !== 'utils')
       .map(f => f.name)
       .sort()
 
@@ -38,6 +38,7 @@ async function updateReadme() {
         continue
 
       let description = (mdRaw
+        .replace(/\r\n/g, '\n')
         .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 

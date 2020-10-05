@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
-    "readme:update": "node ./scripts/updateReadme && git add '*/README.md'",
+    "readme:update": "node ./scripts/updateReadme && git add \"*/README.md\"",
     "clean": "rimraf dist types typings storybook-static",
     "dev": "start-storybook -p 6006",
     "storybook": "start-storybook -p 6006",
