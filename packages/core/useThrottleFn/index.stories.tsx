@@ -52,5 +52,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Side Effects', module)
+storiesOf('Utilities', module)
   .add('useThrottleFn', () => Demo as any)

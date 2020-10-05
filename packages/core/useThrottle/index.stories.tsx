@@ -48,5 +48,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Side Effects', module)
+storiesOf('Utilities', module)
   .add('useThrottle', () => Demo as any)

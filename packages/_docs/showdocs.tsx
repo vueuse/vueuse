@@ -5,11 +5,12 @@ import { defineComponent } from 'vue-demi'
 
 export interface DocsProps {
   md: any
+  className?: string
 }
 
-const ShowDocsFunc = ({ props }: RenderContext<DocsProps>) => {
+const ShowDocsFunc = ({ props, className = '' }: RenderContext<DocsProps>) => {
   return (
-    <div class="markdown-body" domPropsInnerHTML={props.md.default} />
+    <div class={`markdown-body ${className}`} domPropsInnerHTML={props.md.default} />
   )
 }
 

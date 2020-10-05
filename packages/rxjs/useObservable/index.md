@@ -11,9 +11,11 @@ import { interval } from 'rxjs'
 import { mapTo, startWith, scan } from 'rxjs/operators'
 
 // setup() {
-const count = useObservable(interval(1000).pipe(
-  mapTo(1),
-  startWith(0),
-  scan((total, next) => next + total),
-))
+const count = useObservable(
+  interval(1000).pipe(
+    mapTo(1),
+    startWith(0),
+    scan((total, next) => next + total),
+  )
+)
 ```
