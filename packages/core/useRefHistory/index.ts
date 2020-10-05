@@ -1,12 +1,12 @@
 import { isFunction, timestamp } from '../../_utils'
 import { ref, Ref, watch } from 'vue-demi'
 
-export interface UseHistoryRecord<T> {
+export interface UseRefHistoryRecord<T> {
   value: T
   timestamp: number
 }
 
-export interface UseHistoryOptions {
+export interface UseRefHistoryOptions {
   /**
    * Watch for deep changes, default to false
    */
@@ -25,9 +25,9 @@ export interface UseHistoryOptions {
   limit?: number
 }
 
-export function useHistory<T>(r: Ref<T>, options: UseHistoryOptions = {}) {
-  const history: UseHistoryRecord<T>[] = []
-  const redoHistory: UseHistoryRecord<T>[] = []
+export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) {
+  const history: UseRefHistoryRecord<T>[] = []
+  const redoHistory: UseRefHistoryRecord<T>[] = []
   const tracking = ref(true)
 
   const cloneFn = isFunction(options.clone)
@@ -70,10 +70,10 @@ export function useHistory<T>(r: Ref<T>, options: UseHistoryOptions = {}) {
 
     const state = history.shift()
 
-    if (state) {
-      r.value = state.value
+    if (state)
       redoHistory.unshift(state)
-    }
+    if (history[0])
+      r.value = history[0].value
 
     tracking.value = previous
   }

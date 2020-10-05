@@ -1,12 +1,12 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { useHistory } from '.'
+import { useRefHistory } from '.'
 import { useCounter } from '..'
 import dayjs from 'dayjs'
 
 defineDemo(
   {
-    name: 'useHistory',
+    name: 'useRefHistory',
     category: 'State',
     docs: require('./index.md'),
     module,
@@ -18,7 +18,7 @@ defineDemo(
 
       return {
         ...counter,
-        ...useHistory(counter.count, {
+        ...useRefHistory(counter.count, {
           limit: 10,
         }),
         format,
