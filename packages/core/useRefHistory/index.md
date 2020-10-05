@@ -12,7 +12,7 @@ const counter = ref(0)
 const { history, undo, redo } = useRefHistory(counter, {
   deep: false,
   clone: true,
-  limit: 10 // limit to 10 history
+  limit: 15, // limit to n history records, default to unlimited
 })
 
 counter.value += 1
