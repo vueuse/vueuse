@@ -21,8 +21,9 @@ async function updateReadme() {
       : path.join(srcDir, pkg, 'README.md')
 
     const functions = fs
-      .readdirSync(packageDir)
-      .filter(f => f.match(/^(use|create|on)/))
+      .readdirSync(packageDir, { withFileTypes: true })
+      .filter(f => !f.name.startsWith('_') && !f.name.startsWith('utils') && f.isDirectory())
+      .map(f => f.name)
       .sort()
 
     consola.info(`${functions.length} functions found for "${pkg}"`)
