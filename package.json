@@ -17,7 +17,7 @@
     "clean": "rimraf dist types typings storybook-static",
     "dev": "start-storybook -p 6006",
     "sb": "start-storybook -p 6006",
-    "sb:build": "npm run gen:import && npm run gen:types && build-storybook"
+    "sb:build": "npm run gen && build-storybook"
   },
   "husky": {
     "hooks": {
