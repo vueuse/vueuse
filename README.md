@@ -141,12 +141,6 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
-- Side Effects
-  - [`useDebounce`](https://vueuse.js.org/?path=/story/side-effects--usedebounce) — debounce execution of a ref value
-  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/side-effects--usedebouncefn) — debounce execution of a function
-  - [`useThrottle`](https://vueuse.js.org/?path=/story/side-effects--usethrottle) — throttle changing of a ref value
-  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/side-effects--usethrottlefn) — throttle execution of a function
-
 - State
   - [`asyncComputed`](https://vueuse.js.org/?path=/story/state--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep state in global scope to be reused across Vue instances
@@ -156,6 +150,12 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+
+- Utilities
+  - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
+  - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
+  - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
+  - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
 
 <!--FUNCTIONS_LIST_ENDS-->
 
