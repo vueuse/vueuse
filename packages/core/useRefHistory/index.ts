@@ -22,12 +22,12 @@ export interface UseRefHistoryOptions {
   /**
    * Maximum number of history to be kept. Default to unlimited.
    */
-  limit?: number
+  capacity?: number
 }
 
 export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) {
-  const history: UseRefHistoryRecord<T>[] = []
-  const redoHistory: UseRefHistoryRecord<T>[] = []
+  const prev: UseRefHistoryRecord<T>[] = []
+  const next: UseRefHistoryRecord<T>[] = []
   const tracking = ref(true)
 
   const cloneFn = isFunction(options.clone)
@@ -41,14 +41,14 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     (value) => {
       if (!tracking.value)
         return
-      history.unshift({
+      prev.unshift({
         value: cloneFn(value),
         timestamp: timestamp(),
       })
-      if (options.limit && history.length > options.limit)
-        history.splice(options.limit, Infinity)
-      if (redoHistory.length)
-        redoHistory.splice(0, redoHistory.length)
+      if (options.capacity && prev.length > options.capacity)
+        prev.splice(options.capacity, Infinity)
+      if (next.length)
+        next.splice(0, next.length)
     }, {
       deep: options.deep,
       immediate: true,
@@ -57,8 +57,8 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
   )
 
   const clear = () => {
-    history.splice(0, history.length)
-    redoHistory.splice(0, redoHistory.length)
+    prev.splice(0, prev.length)
+    next.splice(0, next.length)
   }
 
   const pause = () => tracking.value = false
@@ -68,12 +68,12 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     const previous = tracking.value
     tracking.value = false
 
-    const state = history.shift()
+    const state = prev.shift()
 
     if (state)
-      redoHistory.unshift(state)
-    if (history[0])
-      r.value = history[0].value
+      next.unshift(state)
+    if (prev[0])
+      r.value = prev[0].value
 
     tracking.value = previous
   }
@@ -82,19 +82,19 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     const previous = tracking.value
     tracking.value = false
 
-    const state = redoHistory.shift()
+    const state = next.shift()
 
     if (state) {
       r.value = state.value
-      history.unshift(state)
+      prev.unshift(state)
     }
 
     tracking.value = previous
   }
 
   return {
-    history,
-    redoHistory,
+    prev,
+    next,
     tracking,
     clear,
     stop,
