@@ -40,6 +40,7 @@ async function buildMetaFiles(packageVersion) {
       module: 'index.esm.js',
       unpkg: 'index.umd.min.js',
       jsdelivr: 'index.umd.min.js',
+      sideEffects: false,
       repository: {
         type: 'git',
         url: 'git+https://github.com/antfu/vueuse.git',
