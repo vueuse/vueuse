@@ -1,4 +1,4 @@
-import { isFunction, timestamp } from '../utils'
+import { timestamp } from '../utils'
 import { ref, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
@@ -6,50 +6,63 @@ export interface UseRefHistoryRecord<T> {
   timestamp: number
 }
 
-export interface UseRefHistoryOptions {
+export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Watch for deep changes, default to false
    */
   deep?: boolean
 
   /**
-   * Whether to clone the data, default to false. Useful when working with objects.
-   *
-   * A custom clone function could be provided, otherwise uses JSON.parse(JSON.stringify(x))
-   */
-  clone?: boolean | (<T = any>(fn: T) => T)
-
-  /**
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
+
+  /**
+   * Whether to clone the data, default to false. Useful when working with objects.
+   */
+  clone?: boolean
+
+  /**
+   * Serialize data into the histry
+   */
+  dump?: (v: Raw) => Serialized
+  /**
+   * Deserialize data from the histry
+   */
+  parse?: (v: Serialized) => Raw
 }
 
-export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) {
-  const prev: UseRefHistoryRecord<T>[] = []
-  const next: UseRefHistoryRecord<T>[] = []
+const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
+const fnBypass = <F, T>(v: F) => v as unknown as T
+
+export function useRefHistory<Raw, Serialized = Raw>(
+  r: Ref<Raw>,
+  options: UseRefHistoryOptions<Raw, Serialized> = {},
+) {
+  const prev: UseRefHistoryRecord<Serialized>[] = []
+  const next: UseRefHistoryRecord<Serialized>[] = []
   const tracking = ref(true)
 
-  const cloneFn = isFunction(options.clone)
-    ? options.clone
-    : options.clone === true
-      ? (v: any) => JSON.parse(JSON.stringify(v))
-      : (v: any) => v
+  const dump = options.dump || (options.clone ? fnClone : fnBypass)
+  const parse = options.parse || fnBypass
 
   const stop = watch(
     r,
     (value) => {
       if (!tracking.value)
         return
+
       prev.unshift({
-        value: cloneFn(value),
+        value: dump(value),
         timestamp: timestamp(),
       })
+
       if (options.capacity && prev.length > options.capacity)
         prev.splice(options.capacity, Infinity)
       if (next.length)
         next.splice(0, next.length)
-    }, {
+    },
+    {
       deep: options.deep,
       immediate: true,
       flush: 'sync',
@@ -61,8 +74,8 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     next.splice(0, next.length)
   }
 
-  const pause = () => tracking.value = false
-  const resume = () => tracking.value = true
+  const pause = () => (tracking.value = false)
+  const resume = () => (tracking.value = true)
 
   const undo = () => {
     const previous = tracking.value
@@ -73,7 +86,7 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     if (state)
       next.unshift(state)
     if (prev[0])
-      r.value = prev[0].value
+      r.value = parse(prev[0].value)
 
     tracking.value = previous
   }
@@ -85,7 +98,7 @@ export function useRefHistory<T>(r: Ref<T>, options: UseRefHistoryOptions = {}) 
     const state = next.shift()
 
     if (state) {
-      r.value = state.value
+      r.value = parse(state.value)
       prev.unshift(state)
     }
 
