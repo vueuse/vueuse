@@ -19,7 +19,7 @@ Don't worry about the code style as long as you install the dev dependencies. Gi
 We use Storybook for rapid development and documenting. You can start it locally by
 
 ```bash
-yarn storybook
+yarn dev
 ```
 
 ## Contributing to existing functions
