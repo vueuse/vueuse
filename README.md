@@ -114,6 +114,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
   - [`useResizeObserver`](https://vueuse.js.org/?path=/story/browser--useresizeobserver) — reports changes to the dimensions of an Element's content or the border-box
   - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
+  - [`useTitle`](https://vueuse.js.org/?path=/story/browser--usetitle) — reactive document title
 
 - Misc
   - [`useEventSource`](https://vueuse.js.org/?path=/story/misc--useeventsource) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server

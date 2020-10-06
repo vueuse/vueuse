@@ -4,7 +4,7 @@ import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 import { tryOnMounted, tryOnUnmounted } from '../utils'
 
-export enum WorkerStatus {
+export const enum WorkerStatus {
   Pending = 'PENDING',
   Success = 'SUCCESS',
   Runing = 'RUNNING',
