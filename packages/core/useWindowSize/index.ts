@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { isClient } from '../../_utils'
+import { isClient } from '../utils'
 import { useEventListener } from '../useEventListener'
 
 export function useWindowSize(initialWidth = Infinity, initialHeight = Infinity) {

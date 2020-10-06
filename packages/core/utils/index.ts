@@ -1,5 +1,7 @@
 import { watch, computed, WatchSource, Ref, getCurrentInstance, onMounted, onUnmounted, nextTick, reactive } from 'vue-demi'
 
+export * from '../../_utils'
+
 export type MaybeRef<T> = T | Ref<T>
 
 /**

@@ -1,4 +1,4 @@
-import { isFunction, timestamp } from '../../_utils'
+import { isFunction, timestamp } from '../utils'
 import { ref, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
