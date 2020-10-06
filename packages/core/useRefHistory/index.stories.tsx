@@ -19,7 +19,7 @@ defineDemo(
       return {
         ...counter,
         ...useRefHistory(counter.count, {
-          limit: 10,
+          capacity: 10,
         }),
         format,
       }
@@ -31,8 +31,8 @@ defineDemo(
         <button @click="inc()">Increment</button>
         <button @click="dec()">Decrement</button>
         <span class="mx-2">/</span>
-        <button @click="undo()" :disabled='!history.length'>Undo</button>
-        <button @click="redo()" :disabled='!redoHistory.length'>Redo</button>
+        <button @click="undo()" :disabled='!prev.length'>Undo</button>
+        <button @click="redo()" :disabled='!next.length'>Redo</button>
         <br>
         <note>History (limited to 10 records)</note>
         <div class="ml-2">
