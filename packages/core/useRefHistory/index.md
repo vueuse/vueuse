@@ -11,7 +11,7 @@ import { useRefHistory } from '@vueuse/core'
 const counter = ref(0)
 const { prev, undo, redo } = useRefHistory(counter, {
   deep: false,
-  clone: true,
+  clone: false,
   capacity: 15, // limit to n history records, default to unlimited
 })
 
