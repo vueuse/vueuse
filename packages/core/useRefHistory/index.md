@@ -9,7 +9,7 @@ import { ref } from 'vue'
 import { useRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
-const { prev, undo, redo } = useRefHistory(counter, {
+const { history, undo, redo } = useRefHistory(counter, {
   deep: false,
   clone: false,
   capacity: 15, // limit to n history records, default to unlimited
@@ -18,7 +18,7 @@ const { prev, undo, redo } = useRefHistory(counter, {
 counter.value += 1
 counter.value = 10
 
-console.log(prev) // [{ value: 10, timestamp: 1601912898062 }, { value: 1, timestamp: 1601912898061 }]
+console.log(history) // [{ value: 10, timestamp: 1601912898062 }, { value: 1, timestamp: 1601912898061 }]
 
 console.log(counter.value) // 10
 undo()
