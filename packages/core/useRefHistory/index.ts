@@ -39,19 +39,19 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
   current: Ref<Raw>
 
   /**
-   * An array of history records for undo
+   * An array of history records for undo, newest comes to first
    */
-  history: UseRefHistoryRecord<Serialized>[]
+  history: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
    * Same as 'history'
    */
-  undoStack: UseRefHistoryRecord<Serialized>[]
+  undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
    * Records array for redo
    */
-  redoStack: UseRefHistoryRecord<Serialized>[]
+  redoStack: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
    * A ref representing if the tracking is enabled
@@ -115,23 +115,23 @@ export function useRefHistory<Raw, Serialized = Raw>(
   current: Ref<Raw>,
   options: UseRefHistoryOptions<Raw, Serialized> = {},
 ): UseRefHistoryReturn<Raw, Serialized> {
-  const undoStack: UseRefHistoryRecord<Serialized>[] = []
-  const redoStack: UseRefHistoryRecord<Serialized>[] = []
+  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
+  const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const tracking = ref(true)
 
   const _dump = options.dump || (options.clone ? fnClone : fnBypass)
   const _parse = options.parse || fnBypass
 
   const commit = () => {
-    undoStack.unshift({
+    undoStack.value.unshift({
       value: _dump(current.value),
       timestamp: timestamp(),
     })
 
-    if (options.capacity && undoStack.length > options.capacity)
-      undoStack.splice(options.capacity, Infinity)
-    if (redoStack.length)
-      redoStack.splice(0, redoStack.length)
+    if (options.capacity && undoStack.value.length > options.capacity)
+      undoStack.value.splice(options.capacity, Infinity)
+    if (redoStack.value.length)
+      redoStack.value.splice(0, redoStack.value.length)
   }
 
   const _stop = watch(
@@ -158,20 +158,20 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const clear = () => {
-    undoStack.splice(0, undoStack.length)
-    redoStack.splice(0, redoStack.length)
+    undoStack.value.splice(0, undoStack.value.length)
+    redoStack.value.splice(0, redoStack.value.length)
   }
 
   const undo = () => {
     const previous = tracking.value
     tracking.value = false
 
-    const state = undoStack.shift()
+    const state = undoStack.value.shift()
 
     if (state)
-      redoStack.unshift(state)
-    if (undoStack[0])
-      current.value = _parse(undoStack[0].value)
+      redoStack.value.unshift(state)
+    if (undoStack.value[0])
+      current.value = _parse(undoStack.value[0].value)
 
     tracking.value = previous
   }
@@ -180,11 +180,11 @@ export function useRefHistory<Raw, Serialized = Raw>(
     const previous = tracking.value
     tracking.value = false
 
-    const state = redoStack.shift()
+    const state = redoStack.value.shift()
 
     if (state) {
       current.value = _parse(state.value)
-      undoStack.unshift(state)
+      undoStack.value.unshift(state)
     }
 
     tracking.value = previous
@@ -194,7 +194,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     const previous = tracking.value
     tracking.value = false
 
-    const state = redoStack[0]
+    const state = redoStack.value[0]
     if (state)
       current.value = _parse(state.value)
 
