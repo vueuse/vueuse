@@ -9,6 +9,8 @@ export interface UseRefHistoryRecord<T> {
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Watch for deep changes, default to false
+   *
+   * When set to true, it will also create clones for values store in the history
    */
   deep?: boolean
 
@@ -16,11 +18,6 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
-
-  /**
-   * Whether to clone the data, default to false. Useful when working with objects.
-   */
-  clone?: boolean
 
   /**
    * Serialize data into the histry
@@ -32,35 +29,113 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   parse?: (v: Serialized) => Raw
 }
 
+export interface UseRefHistoryReturn<Raw, Serialized> {
+  /**
+   * Bypassed tracking ref from the argument
+   */
+  current: Ref<Raw>
+
+  /**
+   * An array of history records for undo, newest comes to first
+   */
+  history: Ref<UseRefHistoryRecord<Serialized>[]>
+
+  /**
+   * Same as 'history'
+   */
+  undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
+
+  /**
+   * Records array for redo
+   */
+  redoStack: Ref<UseRefHistoryRecord<Serialized>[]>
+
+  /**
+   * A ref representing if the tracking is enabled
+   */
+  isTracking: Ref<boolean>
+
+  /**
+   * Undo changes
+   */
+  undo(): void
+
+  /**
+   * Redo changes
+   */
+  redo(): void
+
+  /**
+   * Clear all the history
+   */
+  clear(): void
+
+  /**
+   * Pause change tracking
+   */
+  pause(): void
+
+  /**
+   * Resume change tracking
+   *
+   * @param [commit] if true, a history record will be create after resuming
+   */
+  resume(commit?: boolean): void
+
+  /**
+   * Create new a new history record
+   */
+  commit(): void
+
+  /**
+   * Reset ref's value with lastest history
+   */
+  reset(): void
+
+  /**
+   * A sugar for auto pause and auto resuming within a function scope
+   *
+   * @param fn
+   */
+  batch(fn: (cancel: (() => void)) => void): void
+
+  /**
+   * Clear the data and stop the watch
+   */
+  dispose(): void
+}
+
 const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
 const fnBypass = <F, T>(v: F) => v as unknown as T
 
 export function useRefHistory<Raw, Serialized = Raw>(
-  r: Ref<Raw>,
+  current: Ref<Raw>,
   options: UseRefHistoryOptions<Raw, Serialized> = {},
-) {
-  const prev: UseRefHistoryRecord<Serialized>[] = []
-  const next: UseRefHistoryRecord<Serialized>[] = []
+): UseRefHistoryReturn<Raw, Serialized> {
+  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
+  const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const tracking = ref(true)
 
-  const dump = options.dump || (options.clone ? fnClone : fnBypass)
-  const parse = options.parse || fnBypass
+  const _dump = options.dump || (options.deep ? fnClone : fnBypass)
+  const _parse = options.parse || fnBypass
 
-  const stop = watch(
-    r,
-    (value) => {
-      if (!tracking.value)
-        return
+  const commit = () => {
+    undoStack.value.unshift({
+      value: _dump(current.value),
+      timestamp: timestamp(),
+    })
 
-      prev.unshift({
-        value: dump(value),
-        timestamp: timestamp(),
-      })
+    if (options.capacity && undoStack.value.length > options.capacity)
+      undoStack.value.splice(options.capacity, Infinity)
+    if (redoStack.value.length)
+      redoStack.value.splice(0, redoStack.value.length)
+  }
 
-      if (options.capacity && prev.length > options.capacity)
-        prev.splice(options.capacity, Infinity)
-      if (next.length)
-        next.splice(0, next.length)
+  const _stop = watch(
+    current,
+    () => {
+      if (tracking.value)
+        commit()
     },
     {
       deep: options.deep,
@@ -69,24 +144,31 @@ export function useRefHistory<Raw, Serialized = Raw>(
     },
   )
 
-  const clear = () => {
-    prev.splice(0, prev.length)
-    next.splice(0, next.length)
+  const pause = () => {
+    tracking.value = false
   }
 
-  const pause = () => (tracking.value = false)
-  const resume = () => (tracking.value = true)
+  const resume = (commitNow?: boolean) => {
+    tracking.value = true
+    if (commitNow)
+      commit()
+  }
+
+  const clear = () => {
+    undoStack.value.splice(0, undoStack.value.length)
+    redoStack.value.splice(0, redoStack.value.length)
+  }
 
   const undo = () => {
     const previous = tracking.value
     tracking.value = false
 
-    const state = prev.shift()
+    const state = undoStack.value.shift()
 
     if (state)
-      next.unshift(state)
-    if (prev[0])
-      r.value = parse(prev[0].value)
+      redoStack.value.unshift(state)
+    if (undoStack.value[0])
+      current.value = _parse(undoStack.value[0].value)
 
     tracking.value = previous
   }
@@ -95,25 +177,62 @@ export function useRefHistory<Raw, Serialized = Raw>(
     const previous = tracking.value
     tracking.value = false
 
-    const state = next.shift()
+    const state = redoStack.value.shift()
 
     if (state) {
-      r.value = parse(state.value)
-      prev.unshift(state)
+      current.value = _parse(state.value)
+      undoStack.value.unshift(state)
     }
 
     tracking.value = previous
   }
 
+  const reset = () => {
+    const previous = tracking.value
+    tracking.value = false
+
+    const state = redoStack.value[0]
+    if (state)
+      current.value = _parse(state.value)
+
+    tracking.value = previous
+  }
+
+  const batch = (fn: (cancel: () => void) => void) => {
+    const previous = tracking.value
+    tracking.value = false
+    let canceled = false
+
+    const cancel = () => canceled = true
+
+    fn(cancel)
+
+    tracking.value = previous
+
+    if (!canceled)
+      commit()
+  }
+
+  const dispose = () => {
+    _stop()
+    clear()
+  }
+
   return {
-    prev,
-    next,
-    tracking,
+    current,
+    undoStack,
+    redoStack,
+    history: undoStack,
+    isTracking: tracking,
+
     clear,
-    stop,
     pause,
     resume,
+    commit,
+    reset,
+    batch,
     undo,
     redo,
+    dispose,
   }
 }
