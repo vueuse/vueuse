@@ -43,29 +43,10 @@ describe('useRefHistory', () => {
     })
   })
 
-  test('object', () => {
+  test('object with deep', () => {
     renderHook(() => {
       const v = ref({ foo: 'bar' })
       const { history } = useRefHistory(v, { deep: true })
-
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].value.foo).toBe('bar')
-
-      v.value.foo = 'foo'
-
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].value.foo).toBe('foo')
-
-      // same reference
-      expect(history.value[1].value.foo).toBe('foo')
-      expect(history.value[0].value).toBe(history.value[1].value)
-    })
-  })
-
-  test('object with clone', () => {
-    renderHook(() => {
-      const v = ref({ foo: 'bar' })
-      const { history } = useRefHistory(v, { deep: true, clone: true })
 
       expect(history.value.length).toBe(1)
       expect(history.value[0].value.foo).toBe('bar')
@@ -86,7 +67,6 @@ describe('useRefHistory', () => {
       const v = ref({ a: 'bar' })
       const { history, undo } = useRefHistory(v, {
         deep: true,
-        clone: true,
         dump: v => JSON.stringify(v),
         parse: (v: string) => JSON.parse(v),
       })
@@ -122,7 +102,7 @@ describe('useRefHistory', () => {
 
   test('without batch', () => {
     const v = ref({ foo: 1, bar: 'one' })
-    const { history } = useRefHistory(v, { deep: true, clone: true })
+    const { history } = useRefHistory(v, { deep: true })
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].value).toEqual({ foo: 1, bar: 'one' })
@@ -138,7 +118,7 @@ describe('useRefHistory', () => {
 
   test('with batch', () => {
     const v = ref({ foo: 1, bar: 'one' })
-    const { history, batch } = useRefHistory(v, { deep: true, clone: true })
+    const { history, batch } = useRefHistory(v, { deep: true })
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].value).toEqual({ foo: 1, bar: 'one' })

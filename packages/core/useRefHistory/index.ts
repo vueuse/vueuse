@@ -9,6 +9,8 @@ export interface UseRefHistoryRecord<T> {
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Watch for deep changes, default to false
+   *
+   * When set to true, it will also create clones for values store in the history
    */
   deep?: boolean
 
@@ -16,11 +18,6 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
-
-  /**
-   * Whether to clone the data, default to false. Useful when working with objects.
-   */
-  clone?: boolean
 
   /**
    * Serialize data into the histry
@@ -119,7 +116,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const tracking = ref(true)
 
-  const _dump = options.dump || (options.clone ? fnClone : fnBypass)
+  const _dump = options.dump || (options.deep ? fnClone : fnBypass)
   const _parse = options.parse || fnBypass
 
   const commit = () => {
