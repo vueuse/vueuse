@@ -76,6 +76,7 @@
     "autoprefixer": "^9.8.6",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
+    "babel-plugin-const-enum": "^1.0.1",
     "babel-preset-vue": "^2.0.2",
     "commander": "^6.1.0",
     "consola": "^2.15.0",

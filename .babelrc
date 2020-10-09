@@ -2,6 +2,12 @@
   "plugins": [
     [
       "@babel/plugin-proposal-optional-chaining"
+    ],
+    [
+      "const-enum",
+      {
+        "transform": "constObject"
+      }
     ]
   ]
 }
