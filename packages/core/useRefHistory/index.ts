@@ -191,7 +191,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     const previous = tracking.value
     tracking.value = false
 
-    const state = redoStack.value[0]
+    const state = undoStack.value[0]
     if (state)
       current.value = _parse(state.value)
 

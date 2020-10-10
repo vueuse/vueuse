@@ -155,3 +155,57 @@ describe('useRefHistory', () => {
     expect(history.value[0].value).toBe(3)
   })
 })
+
+test('reset', () => {
+  renderHook(() => {
+    const v = ref(0)
+    const { history, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].value).toBe(0)
+
+    v.value = 1
+
+    pause()
+
+    v.value = 2
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].value).toBe(1)
+    expect(history.value[1].value).toBe(0)
+
+    reset()
+
+    // v value needs to be the last history point, but history is unchanged
+    expect(v.value).toBe(1)
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].value).toBe(1)
+    expect(history.value[1].value).toBe(0)
+
+    reset()
+
+    // Calling reset twice is a no-op
+    expect(v.value).toBe(1)
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].value).toBe(1)
+
+    // Same test, but with a non empty redoStack
+
+    undo()
+
+    v.value = 2
+
+    reset()
+
+    expect(v.value).toBe(0)
+
+    expect(undoStack.value.length).toBe(1)
+    expect(undoStack.value[0].value).toBe(0)
+
+    expect(redoStack.value.length).toBe(1)
+    expect(redoStack.value[0].value).toBe(1)
+  })
+})
