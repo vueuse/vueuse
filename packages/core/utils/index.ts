@@ -43,3 +43,19 @@ export function tryOnUnmounted(fn: () => void) {
   if (getCurrentInstance())
     onUnmounted(fn)
 }
+
+export function promiseSleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+export function promiseTimeout(ms: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(reject, ms)
+  })
+}
+
+export function invoke<T>(fn: () => T): T {
+  return fn()
+}
