@@ -1,6 +1,6 @@
 # when
 
-> Await ref/reactive changes, a.k.a one time async condition watch.
+> Promised one-time watch for ref changes
 
 ## Usage
 
