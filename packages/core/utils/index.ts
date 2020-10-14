@@ -44,15 +44,12 @@ export function tryOnUnmounted(fn: () => void) {
     onUnmounted(fn)
 }
 
-export function promiseSleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
-export function promiseTimeout(ms: number): Promise<void> {
+export function promiseTimeout(ms: number, throwOnTimeout = false, reason = 'Timeout'): Promise<void> {
   return new Promise((resolve, reject) => {
-    setTimeout(reject, ms)
+    if (throwOnTimeout)
+      setTimeout(() => reject(reason), ms)
+    else
+      setTimeout(resolve, ms)
   })
 }
 
