@@ -158,7 +158,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
-  - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — await ref/reactive changes
+  - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — promised one-time watch for ref changes
 
 <!--FUNCTIONS_LIST_ENDS-->
 
