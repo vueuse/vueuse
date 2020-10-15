@@ -30,10 +30,6 @@ export function useEventSource(url: string, events: Array<string> = []) {
       error.value = null
     }
 
-    es.close = () => {
-      status.value = 'CLOSED'
-    }
-
     es.onerror = (e) => {
       status.value = 'CLOSED'
       error.value = e
