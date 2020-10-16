@@ -16,7 +16,7 @@ const metaFiles = [
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles(packageVersion) {
-  for (const [pkg, options] of packages) {
+  for (const [pkg, options] of packages as any) {
     if (options.deprecated)
       continue
 

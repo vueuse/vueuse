@@ -5,7 +5,7 @@ import { packages } from './packages'
 const srcDir = path.resolve(__dirname, '../packages')
 
 async function updateImport() {
-  for (const [pkg] of packages) {
+  for (const [pkg] of packages as any) {
     const pkdDir = path.join(srcDir, pkg)
 
     const files = fs
