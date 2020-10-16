@@ -1,6 +1,4 @@
-export type PackageInfo = [string, any]
-
-export const packages: PackageInfo[] = [
+export const packages = [
   ['core', {}],
   ['integrations', {
     name: 'Integrations',

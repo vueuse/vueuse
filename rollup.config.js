@@ -1,9 +1,8 @@
 // rollup.config.js
 import typescript from 'rollup-plugin-typescript2'
-import { uglify } from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
-
-const packages = require('./scripts/packages')
+import { packages } from './scripts/packages'
 const configs = []
 
 for (const [pkg, options] of packages) {
@@ -42,7 +41,11 @@ for (const [pkg, options] of packages) {
         name,
         globals,
         plugins: [
-          uglify(),
+          terser({
+            format: {
+              comments: false,
+            },
+          }),
         ],
       },
     ],
