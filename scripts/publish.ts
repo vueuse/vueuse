@@ -9,7 +9,7 @@ const distDir = path.resolve(__dirname, '..', 'dist')
 async function publish() {
   await build()
 
-  for (const [pkg, { deprecated }] of packages) {
+  for (const [pkg, { deprecated }] of packages as any) {
     if (deprecated)
       continue
     const packageDist = path.join(distDir, pkg)
