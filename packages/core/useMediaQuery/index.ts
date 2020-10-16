@@ -11,13 +11,15 @@ function matchMediaListener(mediaQuery: any, handler: (event: MediaQueryListEven
 
   try {
     // Chrome & Firefox
-    mediaQuery.addEventListener('change', handler);
-  } catch (e1) {
+    mediaQuery.addEventListener('change', handler)
+  }
+  catch (e1) {
     try {
       // Safari
-      mediaQuery.addListener(handler);
-    } catch (e2) {
-      console.error(e1, e2);
+      mediaQuery.addListener(handler)
+    }
+    catch (e2) {
+      console.error(e1, e2)
     }
   }
 }
