@@ -5757,6 +5757,21 @@ es6-shim@^0.35.5:
   resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.5.tgz#46f59dc0a84a1c5029e8ff1166ca0a902077a9ab"
   integrity sha512-E9kK/bjtCQRpN1K28Xh4BlmP8egvZBGJJ+9GtnzOwt7mdqtrjHFuVGr7QJfdjBIKqrlU5duPf3pCBoDrkjVYFg==
 
+esbuild-register@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/esbuild-register/-/esbuild-register-1.0.2.tgz#c94dfba7e3355c3df54abd36e2f700baffaea7e5"
+  integrity sha512-2znPqwdKSTl70zcpOlEnuNj56KVS0nUFJQ+IX4Ogj6AyXOi98V/LZ65k+/LQ8VTiQCazBiYq97izFwGiNaP1Og==
+  dependencies:
+    joycon "^2.2.5"
+    pirates "^4.0.1"
+    source-map-support "^0.5.19"
+    strip-json-comments "^3.1.1"
+
+esbuild@^0.6.16:
+  version "0.6.34"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.6.34.tgz#76565a60e006f45d5f273b6e59e61ed0816551f5"
+  integrity sha512-InRdL/Q96pUucPqovJzvuLhquZr6jOn81FDVwFjCKz1rYKIm9OdOC+7Fs4vr6x48vKBl5LzKgtjU39BUpO636A==
+
 escalade@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.0.2.tgz#6a580d70edb87880f22b4c91d0d56078df6962c4"
@@ -6024,6 +6039,20 @@ eslint@^7.10.0:
     table "^5.2.3"
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
+
+esm@^3.2.25:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
+
+esno@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/esno/-/esno-0.2.2.tgz#25d0f88c94d7be710d63fd41e16db671bf71cbdb"
+  integrity sha512-R+RS+y1aGtwpKZk9ZAG8KCsOOCOEFTfYbLUZdeF9VjK38w7ym0SXiCTVCU3oTwUfbGdKz5+1uq92G87G21B8AQ==
+  dependencies:
+    esbuild "^0.6.16"
+    esbuild-register "^1.0.2"
+    esm "^3.2.25"
 
 espree@^6.2.1:
   version "6.2.1"
@@ -8442,6 +8471,11 @@ jest@^26.4.2:
     "@jest/core" "^26.4.2"
     import-local "^3.0.2"
     jest-cli "^26.4.2"
+
+joycon@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/joycon/-/joycon-2.2.5.tgz#8d4cf4cbb2544d7b7583c216fcdfec19f6be1615"
+  integrity sha512-YqvUxoOcVPnCp0VU1/56f+iKSdvIRJYPznH22BdXV3xMk75SFXhWeJkZ8C9XxUWt1b5x2X1SxuFygW1U0FmkEQ==
 
 js-beautify@^1.6.12:
   version "1.12.0"
@@ -11982,7 +12016,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@^0.5.6, source-map-support@~0.5.12:
+source-map-support@^0.5.19, source-map-support@^0.5.6, source-map-support@~0.5.12:
   version "0.5.19"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==

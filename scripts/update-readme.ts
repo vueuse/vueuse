@@ -1,7 +1,7 @@
-const path = require('path')
-const fs = require('fs-extra')
-const consola = require('consola')
-const packages = require('./packages')
+import path from 'path'
+import fs from 'fs-extra'
+import consola from 'consola'
+import { packages } from './packages'
 
 const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'

@@ -1,10 +1,10 @@
-const exec = require('child_process').execSync
-const path = require('path')
-const assert = require('assert')
-const fs = require('fs-extra')
-const consola = require('consola')
-const packages = require('./packages')
-const { updateImport } = require('./import')
+import path from 'path'
+import assert from 'assert'
+import fs from 'fs-extra'
+import consola from 'consola'
+import { packages } from './packages'
+import { updateImport } from './import'
+import { execSync as exec } from 'child_process'
 
 const rootDir = path.resolve(__dirname, '..')
 const packageJSONDir = path.join(rootDir, 'package.json')
@@ -71,7 +71,7 @@ async function buildMetaFiles(packageVersion) {
 async function build() {
   await updateImport()
 
-  const rawPackageJSON = await fs.readFile(packageJSONDir)
+  const rawPackageJSON = await fs.readFile(packageJSONDir, 'utf-8')
   const packageJSON = JSON.parse(rawPackageJSON)
   const packageVersion = packageJSON.version
 
@@ -100,7 +100,7 @@ async function cli() {
   }
 }
 
-module.exports = {
+export {
   build,
 }
 

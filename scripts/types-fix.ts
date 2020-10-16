@@ -1,5 +1,5 @@
-const fg = require('fast-glob')
-const fs = require('fs-extra')
+import fg from 'fast-glob'
+import fs from 'fs-extra'
 
 async function FixTypingOutput() {
   const files = await fg('./{types,dist}/**/*.d.ts', {

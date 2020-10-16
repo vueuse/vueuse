@@ -1,5 +1,22 @@
-module.exports = [
+export type PackageInfo = [string, any]
+
+export const packages: PackageInfo[] = [
   ['core', {}],
+  ['integrations', {
+    name: 'Integrations',
+    description: 'Enables RxJS reactive functions in Vue',
+    peerDependencies: {
+      rxjs: '>=6.0.0',
+    },
+    external: [
+      'rxjs',
+      'rxjs/operators',
+    ],
+    globals: {
+      rxjs: 'rxjs',
+      'rxjs/operators': 'rxjs.operator',
+    },
+  }],
   ['rxjs', {
     name: 'RxJS',
     description: 'Enables RxJS reactive functions in Vue',

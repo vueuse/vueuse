@@ -1,6 +1,6 @@
-const path = require('path')
-const fs = require('fs-extra')
-const packages = require('./packages')
+import path from 'path'
+import fs from 'fs-extra'
+import { packages } from './packages'
 
 const srcDir = path.resolve(__dirname, '../packages')
 
@@ -21,7 +21,7 @@ async function updateImport() {
   }
 }
 
-module.exports = { updateImport }
+export { updateImport }
 
 if (require.main === module)
   updateImport()

@@ -4,7 +4,7 @@ import { ShowDocs } from './showdocs'
 
 export function defineDemo(
   { module, category, name, docs }: { module: NodeModule; category: string; name: string; docs: string},
-  Demo: any,
+  Demo?: any,
 ) {
   const Wrapper = defineComponent({
     render(this: Vue & any) {
@@ -14,7 +14,7 @@ export function defineDemo(
       return (
         <div>
           <div id="demo">
-            <Demo/>
+            {Demo ? <Demo /> : null}
           </div>
           {Docs}
         </div>

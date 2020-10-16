@@ -96,6 +96,4 @@ packages/api.backup.ts
 storybook-static
 
 # Package Indexes
-packages/core/index.ts
-packages/firebase/index.ts
-packages/i18n/index.ts
+packages/*/index.ts

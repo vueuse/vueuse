@@ -181,6 +181,9 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`toObserver`](https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
   - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
+
+- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Enables RxJS reactive functions in Vue
+  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-intergrations--useaxios) — wrapper for `axios`
 <!--ADDONS_LIST_ENDS-->
 
 

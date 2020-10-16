@@ -1,8 +1,8 @@
-const exec = require('child_process').execSync
-const path = require('path')
-const { build } = require('./build')
-const packages = require('./packages')
-const consola = require('consola')
+import { execSync as exec } from 'child_process'
+import path from 'path'
+import { build } from './build'
+import { packages } from './packages'
+import consola from 'consola'
 
 const distDir = path.resolve(__dirname, '..', 'dist')
 
@@ -30,7 +30,7 @@ async function cli() {
   }
 }
 
-module.exports = {
+export {
   publish,
 }
 
