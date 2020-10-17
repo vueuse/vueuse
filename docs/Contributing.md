@@ -22,6 +22,12 @@ We use Storybook for rapid development and documenting. You can start it locally
 yarn dev
 ```
 
+## Online one-click setup
+
+You can use Gitpod(an online IDE which is free for Open Source) for contributing. With a single click it will launch a workspace and automatically clone the `VueUse` repo, run `yarn install` and `yarn dev`.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ## Contributing to existing functions
 
 Feel free to enhance the existing functions. Please try not to introduce breaking changes.
