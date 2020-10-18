@@ -13,7 +13,7 @@ export const packages = [
     ],
     globals: {
       axios: 'axios',
-      'universal-cookie': 'universal-cookie',
+      'universal-cookie': 'UniversalCookie',
     },
     keywords: [
       'axios',
