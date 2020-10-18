@@ -183,8 +183,9 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
   - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
-- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Enables RxJS reactive functions in Vue
+- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Provide vue composition-api wrappers for third party libraries
   - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-intergrations--useaxios) — wrapper for `axios`
+  - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-intergrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
 <!--ADDONS_LIST_ENDS-->
 
 

@@ -2,18 +2,23 @@ export const packages = [
   ['core', {}],
   ['integrations', {
     name: 'Integrations',
-    description: 'Enables RxJS reactive functions in Vue',
+    description: 'Provide vue composition-api wrappers for third party libraries',
     peerDependencies: {
-      rxjs: '>=6.0.0',
+      axios: '>=0.19.2',
+      'universal-cookie': '>=4.0.0',
     },
     external: [
-      'rxjs',
-      'rxjs/operators',
+      'axios',
+      'universal-cookie',
     ],
     globals: {
-      rxjs: 'rxjs',
-      'rxjs/operators': 'rxjs.operator',
+      axios: 'axios',
+      'universal-cookie': 'universal-cookie',
     },
+    keywords: [
+      'axios',
+      'universal-cookie',
+    ],
   }],
   ['rxjs', {
     name: 'RxJS',
