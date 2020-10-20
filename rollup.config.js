@@ -1,8 +1,8 @@
-// rollup.config.js
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
 import { packages } from './scripts/packages'
+
 const configs = []
 
 for (const [pkg, options] of packages) {
@@ -10,33 +10,31 @@ for (const [pkg, options] of packages) {
     continue
 
   const globals = {
-    vue: 'Vue',
     'vue-demi': 'VueDemi',
-    '@vue/composition-api': 'VueCompositionAPI',
-    '@vue/runtime-dom': 'Vue',
+    '@vue/shared': 'VueUseShared',
     ...(options.globals || {}),
   }
-  const name = 'VueUse'
+  const name = pkg === 'core' ? 'VueUse' : `VueUse${options.name}`
 
   configs.push({
     input: `packages/${pkg}/index.ts`,
     output: [
       {
-        file: `dist/${pkg}/index.cjs.js`,
+        file: `packages/${pkg}/dist/index.cjs.js`,
         format: 'cjs',
       },
       {
-        file: `dist/${pkg}/index.esm.js`,
+        file: `packages/${pkg}/dist/index.esm.js`,
         format: 'es',
       },
       {
-        file: `dist/${pkg}/index.umd.js`,
+        file: `packages/${pkg}/dist/index.umd.js`,
         format: 'umd',
         name,
         globals,
       },
       {
-        file: `dist/${pkg}/index.umd.min.js`,
+        file: `packages/${pkg}/dist/index.umd.min.js`,
         format: 'umd',
         name,
         globals,
@@ -70,7 +68,7 @@ for (const [pkg, options] of packages) {
   configs.push({
     input: `packages/${pkg}/index.ts`,
     output: {
-      file: `dist/${pkg}/index.d.ts`,
+      file: `packages/${pkg}/dist/index.d.ts`,
       format: 'es',
     },
     plugins: [

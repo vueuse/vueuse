@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { tryOnMounted, tryOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 
 export function useInterval(interval = 1000, startRightNow = true) {
   let timer: any = null

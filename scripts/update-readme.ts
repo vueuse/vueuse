@@ -2,16 +2,17 @@ import path from 'path'
 import fs from 'fs-extra'
 import consola from 'consola'
 import { packages } from './packages'
+import { listFunctions } from './utils'
 
 const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'
 
 async function updateReadme() {
-  packages.reverse()
+  const pkgs = [...packages].reverse()
 
   let addOnsList = ''
 
-  for (const [pkg, packageOptions = {}] of packages) {
+  for (const [pkg, packageOptions = {}] of pkgs as any) {
     if (packageOptions.deprecated)
       continue
 
@@ -20,11 +21,10 @@ async function updateReadme() {
       ? path.resolve(__dirname, '../README.md')
       : path.join(srcDir, pkg, 'README.md')
 
-    const functions = fs
-      .readdirSync(packageDir, { withFileTypes: true })
-      .filter(f => f.isDirectory() && !f.name.startsWith('_') && f.name !== 'utils')
-      .map(f => f.name)
-      .sort()
+    if (!fs.existsSync(readmePath))
+      continue
+
+    const functions = await listFunctions(packageDir, ['utils'])
 
     consola.info(`${functions.length} functions found for "${pkg}"`)
 
@@ -81,13 +81,13 @@ async function updateReadme() {
       functionList += '\n'
     }
 
-    let readme = fs.readFileSync(readmePath, 'utf-8')
+    let readme = await fs.readFile(readmePath, 'utf-8')
     readme = readme.replace(/<!--FUNCTIONS_LIST_STARTS-->[\s\S]+?<!--FUNCTIONS_LIST_ENDS-->/m, `<!--FUNCTIONS_LIST_STARTS-->${functionList}<!--FUNCTIONS_LIST_ENDS-->`)
 
     if (pkg === 'core')
       readme = readme.replace(/<!--ADDONS_LIST_STARTS-->[\s\S]+?<!--ADDONS_LIST_ENDS-->/m, `<!--ADDONS_LIST_STARTS-->${addOnsList}<!--ADDONS_LIST_ENDS-->`)
 
-    fs.writeFileSync(readmePath, readme, 'utf-8')
+    await fs.writeFile(readmePath, readme, 'utf-8')
 
     consola.success(`README.md for "${pkg}" updated`)
   }

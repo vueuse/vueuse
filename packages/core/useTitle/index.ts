@@ -1,4 +1,4 @@
-import { isClient, isString } from '../utils'
+import { isClient, isString } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 
 export function useTitle(

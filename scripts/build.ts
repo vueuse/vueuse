@@ -7,7 +7,6 @@ import { updateImport } from './import'
 import { execSync as exec } from 'child_process'
 
 const rootDir = path.resolve(__dirname, '..')
-const packageJSONDir = path.join(rootDir, 'package.json')
 
 const metaFiles = [
   'LICENSE',
@@ -15,65 +14,23 @@ const metaFiles = [
 
 assert(process.cwd() !== __dirname)
 
-async function buildMetaFiles(packageVersion) {
+async function buildMetaFiles() {
   for (const [pkg, options] of packages as any) {
     if (options.deprecated)
       continue
 
-    const packageDist = path.resolve(__dirname, '..', 'dist', pkg)
-    const packageSrc = path.resolve(__dirname, '..', 'packages', pkg)
+    const packageDist = path.resolve(__dirname, '..', 'packages', pkg, 'dist')
 
     for (const metaFile of metaFiles)
       await fs.copyFile(path.join(rootDir, metaFile), path.join(packageDist, metaFile))
 
     if (pkg === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
-    else
-      await fs.copyFile(path.join(packageSrc, 'README.md'), path.join(packageDist, 'README.md'))
-
-    const packageJSON = {
-      name: `@vueuse/${pkg}`,
-      description: options.description || 'Collection of essential Vue Composition API',
-      version: packageVersion,
-      main: 'index.cjs.js',
-      types: 'index.d.ts',
-      module: 'index.esm.js',
-      unpkg: 'index.umd.min.js',
-      jsdelivr: 'index.umd.min.js',
-      sideEffects: false,
-      repository: {
-        type: 'git',
-        url: 'git+https://github.com/antfu/vueuse.git',
-      },
-      keywords: [
-        'vue',
-        'vue-use',
-        'utils',
-        ...(options.keywords || []),
-      ],
-      author: 'Anthony Fu<https://github.com/antfu>',
-      license: 'MIT',
-      bugs: {
-        url: 'https://github.com/antfu/vueuse/issues',
-      },
-      homepage: 'https://github.com/antfu/vueuse#readme',
-      dependencies: {
-        'vue-demi': 'latest',
-        ...options.dependencies,
-      },
-      peerDependencies: options.peerDependencies,
-    }
-
-    await fs.writeFile(path.join(packageDist, 'package.json'), `${JSON.stringify(packageJSON, null, 2)}\n`)
   }
 }
 
 async function build() {
   await updateImport()
-
-  const rawPackageJSON = await fs.readFile(packageJSONDir, 'utf-8')
-  const packageJSON = JSON.parse(rawPackageJSON)
-  const packageVersion = packageJSON.version
 
   consola.info('Clean up')
   exec('yarn run clean', { stdio: 'inherit' })
@@ -87,7 +44,7 @@ async function build() {
   consola.info('Fix types')
   exec('npm run types:fix', { stdio: 'inherit' })
 
-  await buildMetaFiles(packageVersion)
+  await buildMetaFiles()
 }
 
 async function cli() {
