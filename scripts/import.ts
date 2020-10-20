@@ -1,23 +1,25 @@
 import path from 'path'
 import fs from 'fs-extra'
 import { packages } from './packages'
+import { listFunctions } from './utils'
 
 const srcDir = path.resolve(__dirname, '../packages')
 
 async function updateImport() {
-  for (const [pkg] of packages as any) {
-    const pkdDir = path.join(srcDir, pkg)
+  for (const [pkg, options] of packages as any) {
+    if (options.autoImport === false)
+      continue
 
-    const files = fs
-      .readdirSync(pkdDir, { withFileTypes: true })
-      .filter(f => !f.name.startsWith('_') && f.isDirectory())
-      .map(f => f.name)
-      .sort()
+    const pkgDir = path.join(srcDir, pkg)
 
-    let content = ''
-    content += files.map(f => `export * from './${f}'\n`).join('')
+    const files = await listFunctions(pkgDir)
 
-    fs.writeFileSync(path.join(pkdDir, 'index.ts'), content)
+    let content = files.map(f => `export * from './${f}'\n`).join('')
+
+    if (pkg === 'core')
+      content += '\nexport * from \'@vueuse/shared\''
+
+    await fs.writeFile(path.join(pkgDir, 'index.ts'), content)
   }
 }
 

@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { timestamp, tryOnMounted } from '../utils'
+import { timestamp, tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
 

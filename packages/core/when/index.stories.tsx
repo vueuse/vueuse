@@ -1,7 +1,7 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
 import { when } from '.'
-import { invoke } from '../utils'
+import { invoke } from '@vueuse/shared'
 import { useCounter } from '../useCounter'
 
 defineDemo(

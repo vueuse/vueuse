@@ -2,7 +2,7 @@
 
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted } from '../utils'
+import { tryOnMounted } from '@vueuse/shared'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 

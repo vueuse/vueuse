@@ -1,7 +1,7 @@
 import { execSync as exec } from 'child_process'
 import path from 'path'
-import { build } from './build'
-import { packages } from './packages'
+import { build } from './scripts/build'
+import { packages } from './scripts/packages'
 import consola from 'consola'
 
 const distDir = path.resolve(__dirname, '..', 'dist')

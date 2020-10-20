@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { when } from '.'
 import { renderHook } from '../../_docs/tests'
-import { invoke } from '../utils'
+import { invoke } from '@vueuse/shared'
 
 describe('when', () => {
   it('should work', (done) => {

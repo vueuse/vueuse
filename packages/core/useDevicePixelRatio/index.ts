@@ -1,6 +1,6 @@
 import { ref, onUnmounted } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { isClient, tryOnMounted } from '../utils'
+import { isClient, tryOnMounted } from '@vueuse/shared'
 
 // device pixel ratio statistics from https://www.mydevice.io/
 export const DEVICE_PIXEL_RATIO_SCALES = [
