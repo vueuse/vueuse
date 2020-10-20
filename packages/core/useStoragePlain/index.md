@@ -1,3 +1,3 @@
 # useStoragePlain
 
-> ⚠ DEPRATED, use `useStorage` instead.
+> ⚠ DEPRECATED, use `useStorage` instead.

@@ -42,7 +42,7 @@ async function updateReadme() {
         .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 
-      if (description.includes('DEPRATED'))
+      if (description.includes('DEPRECATED'))
         continue
 
       description = description.trim()
