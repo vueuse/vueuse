@@ -1,0 +1,6 @@
+tasks:
+  - init: yarn install && yarn build
+    command: yarn dev
+ports:
+  - port: 6006
+    onOpen: open-preview
