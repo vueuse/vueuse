@@ -23,6 +23,14 @@ export const packages: PackageManifest[] = [
     name: 'integrations',
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
+    external: [
+      'axios',
+      'universal-cookie',
+    ],
+    globals: {
+      axios: 'axios',
+      'universal-cookie': 'UniversalCookie',
+    },
   },
   {
     name: 'rxjs',

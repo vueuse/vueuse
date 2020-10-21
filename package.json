@@ -104,7 +104,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "rollup-plugin-uglify": "^6.0.4",
-    "universal-cookie": "^4.0.0",
     "tailwindcss": "^1.9.5",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3",

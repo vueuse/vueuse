@@ -5,7 +5,7 @@ import { useCookies } from './index'
 defineDemo(
   {
     name: 'useCookies',
-    category: 'Add-ons|Intergrations',
+    category: 'Add-ons|Integrations',
     docs: require('./index.md'),
     module,
   },
