@@ -27,15 +27,15 @@
   },
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/integrations#readme",
   "dependencies": {
-    "vue-demi": "latest",
-    "@vueuse/shared": "4.0.0-beta.26"
+    "@vueuse/shared": "4.0.0-beta.26",
+    "vue-demi": "latest"
   },
   "optionalDependencies": {
     "axios": "^0.20.0",
     "universal-cookie": "^4.0.0"
   },
   "devDependencies": {
-    "axios": "^0.20.0",
+    "@types/universal-cookie": "^2.2.0",
     "universal-cookie": "^4.0.0"
   }
 }

@@ -50,13 +50,14 @@ module.exports = ({ config }) => {
         loader: require.resolve('babel-loader'),
         options: {
           plugins: [
-            'const-enum',
+            [
+              'const-enum',
+              {
+                transform: 'constObject',
+              },
+            ],
           ],
-          presets: [
-            '@babel/env',
-            '@babel/typescript',
-            '@vue/jsx',
-          ],
+          presets: ['@babel/env', '@babel/typescript', '@vue/jsx'],
         },
       },
     ],
@@ -80,5 +81,6 @@ module.exports = ({ config }) => {
   })
 
   config.resolve.extensions.push('.ts', '.tsx')
+  config.resolve.symlinks = false
   return config
 }

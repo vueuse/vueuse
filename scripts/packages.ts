@@ -26,6 +26,7 @@ export const packages: PackageManifest[] = [
     external: [
       'axios',
       'universal-cookie',
+      'http',
     ],
     globals: {
       axios: 'axios',

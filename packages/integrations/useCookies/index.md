@@ -70,8 +70,8 @@ Let you optionally specify a list of cookie names your component depend on or th
 
 ### `options` (optional)
 
-- doNotParse (boolean = false): do not convert the cookie into an object no matter what. **Passed as default value to `get`/`getAll` methods.**
-- autoUpdateDependencies (boolean = false): automatically add cookie names ever provided to `get` method. If **true** then you don't need to care about provided `dependencies`.
+- `doNotParse` (boolean = false): do not convert the cookie into an object no matter what. **Passed as default value to `get`/`getAll` methods.**
+- `autoUpdateDependencies` (boolean = false): automatically add cookie names ever provided to `get` method. If **true** then you don't need to care about provided `dependencies`.
 
 ### `cookies` (optional)
 

@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Ref, ref } from 'vue-demi'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export function useAxios<T = any>(
   url: string,

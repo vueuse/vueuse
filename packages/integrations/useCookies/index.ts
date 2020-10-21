@@ -97,11 +97,11 @@ export function useCookies(
   }
 }
 
-const shouldUpdate = (
+function shouldUpdate(
   dependencies: string[] | null,
   newCookies: RawCookies,
   oldCookies: RawCookies,
-) => {
+) {
   if (!dependencies)
     return true
 
