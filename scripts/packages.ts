@@ -23,6 +23,12 @@ export const packages: PackageManifest[] = [
     name: 'integrations',
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
+    external: [
+      'axios',
+    ],
+    globals: {
+      axios: 'axios',
+    },
   },
   {
     name: 'rxjs',
