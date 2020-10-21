@@ -9,7 +9,7 @@
   "scripts": {
     "build": "esno ./scripts/build.ts",
     "build:types": "tsc --emitDeclarationOnly && npm run types:fix",
-    "release": "esno ./scripts/release.ts",
+    "release": "esno ./scripts/release.ts && git push --follow-tags",
     "publish:ci": "esno ./scripts/publish.ts",
     "gen": "run-p gen:*",
     "gen:import": "esno ./scripts/import.ts",
