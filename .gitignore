@@ -91,3 +91,6 @@ sw.*
 *.swp
 
 storybook-static
+
+packages/*/LICENSE
+packages/core/README.md

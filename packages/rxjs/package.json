@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/antfu/vueuse/issues"
   },
-  "homepage": "https://github.com/antfu/vueuse#readme",
+  "homepage": "https://github.com/antfu/vueuse/tree/master/packages/rxjs#readme",
   "dependencies": {
     "vue-demi": "latest",
     "@vueuse/shared": "^4.0.0-beta.24"

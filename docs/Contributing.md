@@ -39,7 +39,7 @@ There are some notes for adding new functions
 
 - Before you start working, it's better to open an issue to discuss first.
 - The implementation should be placed under `packages/core` as a folder and exposing in `index.ts`
-- In the `core` package, try not to introduce 3-rd party dependencies as this package is aim to be as lightweight as possible. 
+- In the `core` package, try not to introduce 3-rd party dependencies as this package is aimed to be as lightweight as possible. 
 - If you do want to introduce 3-rd party dependencies, please contribute to add-ons.
 - You can found the function template under `packages/core/_template/`
 
@@ -48,7 +48,7 @@ There are some notes for adding new functions
 New add-ons are greatly welcome!
 
 - Create a new folder under `packages/`, name it as your add-on name. 
-- Add add-on details in `scripts/packages.js`
+- Add add-on details in `scripts/packages.ts`
 - Create `README.md` and `readme.stories.tsx` under that folder, `package.json` will be auto-generated.
 - Add functions as you would do to the core package.
 - Run `npm run update:readme` to update the docs.
@@ -60,14 +60,11 @@ New add-ons are greatly welcome!
 We use monorepo for multiple packages
 
 ```
-package
-  core/         - the core package
-  firebase/     - the Firebase add-on
-  <whatever>/   - add-ons named <whatever>
-  utils/        - utils
-  api.ts        - generated for API reference, you should always import form this file
-  api.2.ts      - API for Vue 2. DO NOT IMPORT from this file.
-  api.3.ts      - API for Vue 3. DO NOT IMPORT from this file.
+packages
+  shared/         - shared utils across packages
+  core/           - the core package
+  firebase/       - the Firebase add-on
+  [...addons]/    - add-ons named
 ```
 
 ### Function Folder
