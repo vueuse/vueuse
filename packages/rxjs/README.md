@@ -25,9 +25,6 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 <!--FUNCTIONS_LIST_ENDS-->
 
-You can checkout the full documents and live demos in [Storybook](https://vueuse.js.org/).
-
-
 ## 📄 Example
 
 ```ts
@@ -59,3 +56,7 @@ const posts = useObservable(
   )
 )
 ```
+
+## 📄 License
+
+[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
