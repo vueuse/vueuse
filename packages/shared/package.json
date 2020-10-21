@@ -1,6 +1,5 @@
 {
   "name": "@vueuse/shared",
-  "description": "Shared utils for VueUse",
   "version": "4.0.0-beta.24",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
@@ -25,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/antfu/vueuse/issues"
   },
-  "homepage": "https://github.com/antfu/vueuse#readme",
+  "homepage": "https://github.com/antfu/vueuse/tree/master/packages/shared#readme",
   "dependencies": {
     "vue-demi": "latest"
   }

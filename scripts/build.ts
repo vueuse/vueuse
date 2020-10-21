@@ -2,7 +2,7 @@ import path from 'path'
 import assert from 'assert'
 import fs from 'fs-extra'
 import consola from 'consola'
-import { packages } from './packages'
+import { activePackages } from './packages'
 import { updateImport } from './import'
 import { execSync as exec } from 'child_process'
 
@@ -15,16 +15,13 @@ const metaFiles = [
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
-  for (const [pkg, options] of packages as any) {
-    if (options.deprecated)
-      continue
-
-    const packageDist = path.resolve(__dirname, '..', 'packages', pkg, 'dist')
+  for (const { name } of activePackages) {
+    const packageDist = path.resolve(__dirname, '..', 'packages', name)
 
     for (const metaFile of metaFiles)
       await fs.copyFile(path.join(rootDir, metaFile), path.join(packageDist, metaFile))
 
-    if (pkg === 'core')
+    if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
   }
 }
