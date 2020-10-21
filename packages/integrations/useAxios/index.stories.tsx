@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue-demi'
 import { defineDemo, html } from '../../_docs'
-import { useCounter } from '../../core/useCounter'
+import { useAxios } from '.'
 
 defineDemo(
   {
@@ -11,18 +11,14 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useCounter()
-    },
+      const { data, finished } = useAxios('https://jsonplaceholder.typicode.com/todos/1')
 
+      return { data, finished }
+    },
     template: html`
       <div>
-        <p>Count: {{count}}</p>
-        <button @click="inc()">Increment</button>
-        <button @click="dec()">Decrement</button>
-        <button @click="inc(5)">Increment (+5)</button>
-        <button @click="dec(5)">Decrement (-5)</button>
-        <button @click="set(100)">Set (100)</button>
-        <button @click="reset()">Reset</button>
+        <note>Ready: {{finished.toString()}}</note>
+        <pre lang="json" class="ml-2">{{JSON.stringify(data)}}</pre>
       </div>
     `,
   }),

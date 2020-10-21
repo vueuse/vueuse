@@ -18,7 +18,7 @@ npm i <b>@vueuse/integrations</b>
 <!--FUNCTIONS_LIST_STARTS-->
 
 - Integrations
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for `axios`
+  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-integrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
 
 <!--FUNCTIONS_LIST_ENDS-->

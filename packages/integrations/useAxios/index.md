@@ -1,6 +1,6 @@
 # useAxios
 
-> wrapper for `axios`
+> wrapper for [`axios`](https://github.com/axios/axios)
 
 > To use this function, you will need to have [`axios`](https://github.com/axios/axios) installed.
 
@@ -9,5 +9,5 @@
 ```ts
 import { useAxios } from '@vueuse/integrations'
 
-const { data, ready } = useAxios('/api/posts')
+const { data, finished } = useAxios('/api/posts')
 ```
