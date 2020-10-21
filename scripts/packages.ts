@@ -22,15 +22,7 @@ export const packages: PackageManifest[] = [
   {
     name: 'integrations',
     display: 'Integrations',
-    description: 'Enables RxJS reactive functions in Vue',
-    external: [
-      'rxjs',
-      'rxjs/operators',
-    ],
-    globals: {
-      rxjs: 'rxjs',
-      'rxjs/operators': 'rxjs.operator',
-    },
+    description: 'Integration wrappers for utility libraries',
   },
   {
     name: 'rxjs',

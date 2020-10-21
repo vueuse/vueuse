@@ -17,8 +17,8 @@ npm i <b>@vueuse/integrations</b>
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- Intergrations
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-intergrations--useaxios) — wrapper for `axios`
+- Integrations
+  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for `axios`
 
 <!--FUNCTIONS_LIST_ENDS-->
 

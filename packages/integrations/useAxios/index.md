@@ -7,7 +7,7 @@
 ## Usage
 
 ```ts
-import { useAxios } from '@vueuse/intergrations'
+import { useAxios } from '@vueuse/integrations'
 
 const { data, ready } = useAxios('/api/posts')
 ```

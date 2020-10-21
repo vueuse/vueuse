@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "description": "Enables RxJS reactive functions in Vue",
+  "description": "Integration wrappers for utility libraries",
   "version": "4.0.0-beta.25",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
