@@ -14,7 +14,7 @@ npm i <b>@vueuse/firebase</b> firebase
 
 ## ⚡ Functions
 
-`@vueuse/firebase` provides following functions
+`@vueuse/firebase` provides the following functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
@@ -24,9 +24,6 @@ npm i <b>@vueuse/firebase</b> firebase
   - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--FUNCTIONS_LIST_ENDS-->
-
-You can checkout the full documents and live demos in [Storybook](https://vueuse.js.org/).
-
 
 ## 📄 License
 
