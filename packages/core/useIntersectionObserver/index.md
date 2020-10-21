@@ -13,7 +13,7 @@ export default {
     const target = ref(null);
     const targetIsVisible = ref(false);
 
-    useIntersectionObserver({
+    const stopObserver = useIntersectionObserver({
       target: ref,
       onIntersect: ([{ isIntersecting }], observerElement) => {
         targetIsVisible.value = isIntersecting
@@ -45,3 +45,8 @@ export default {
 | rootMargin  | `string`                       | A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections. |
 | threshold   | `number`                       | Either a single number or an array of numbers between 0.0 and 1.0.                                          |
 
+### Return Value
+
+| Description | Type          | Description                      |
+| ----------- | ------------- | -------------------------------- |
+| stopObserve | `() => void`  | A function which stops observer. |

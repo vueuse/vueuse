@@ -7,6 +7,7 @@ import { useIntersectionObserver } from '.'
 
 type Inject = {
   demoIsVisible: boolean
+  stopObserver: () => void
 }
 
 const Demo = defineComponent({
@@ -15,7 +16,7 @@ const Demo = defineComponent({
     const demo = ref(null)
     const demoIsVisible = ref(false)
 
-    useIntersectionObserver({
+    const stopObserver = useIntersectionObserver({
       // root,
       target: demo,
       onIntersect: ([{ isIntersecting }], observerElement) => {
@@ -28,6 +29,7 @@ const Demo = defineComponent({
       root,
       demo,
       demoIsVisible,
+      stopObserver,
     }
   },
   render(this: Vue & Inject) {
@@ -36,26 +38,35 @@ const Demo = defineComponent({
 
     return (
       <div>
-        <div
-          style={{
-            border: '2px dashed #ccc',
-            maxHeight: '100px',
-            margin: '6rem 2rem',
-            overflowY: 'scroll',
-          }}
-          ref="root"
-        >
-          <p style={{ textAlign: 'center' }}>Scroll!</p>
+        <div id="demo">
           <div
             style={{
-              border: '2px dashed #d78a8a',
-              minHeight: '200px',
-              margin: '10rem 2rem',
-              padding: '1rem',
+              border: '2px dashed #ccc',
+              maxHeight: '100px',
+              margin: '0 2rem 1rem',
+              overflowY: 'scroll',
             }}
-            ref="demo"
+            ref="root"
           >
-            <h1>Hello world</h1>
+            <p style={{ textAlign: 'center' }}>Scroll!</p>
+            <div
+              style={{
+                border: '2px dashed #d78a8a',
+                minHeight: '200px',
+                margin: '10rem 2rem',
+                padding: '1rem',
+              }}
+              ref="demo"
+            >
+              <h1>Hello world</h1>
+            </div>
+          </div>
+          <div
+            style={{
+              margin: '0 2rem',
+            }}
+          >
+            <button onClick={this.stopObserver}>Stop Observe</button>
           </div>
         </div>
         {Docs}
