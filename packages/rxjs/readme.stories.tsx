@@ -60,7 +60,7 @@ const Demo = defineComponent({
         <div><b>id: </b>{post.id}</div>
         <div><b>Username: </b>{post.username}</div>
         <div><b>Total comments: </b>{post.comments}</div>
-      </li>
+      </li>,
     ) ?? 'waiting...'
     return (
       <div>

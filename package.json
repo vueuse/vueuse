@@ -41,7 +41,7 @@
     "vue-demi": "^0.2.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.3.4",
+    "@antfu/eslint-config": "^0.4.3",
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-optional-chaining": "^7.12.1",
     "@babel/preset-env": "^7.12.1",

@@ -27,8 +27,8 @@ const Serializers = {
 export function useStorage (key: string, defaultValue: string, storage?: Storage): Ref<string>
 export function useStorage (key: string, defaultValue: boolean, storage?: Storage): Ref<boolean>
 export function useStorage (key: string, defaultValue: number, storage?: Storage): Ref<number>
-export function useStorage<T extends object> (key: string, defaultValue: T, storage?: Storage): Ref<T>
-export function useStorage<T extends null> (key: string, defaultValue: null, storage?: Storage): Ref<any>
+export function useStorage<T> (key: string, defaultValue: T, storage?: Storage): Ref<T>
+export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: Storage): Ref<T>
 export function useStorage<T extends(string|number|boolean|object|null)> (key: string, defaultValue: T, storage: Storage = localStorage) {
   const data = ref<T>(defaultValue)
 
