@@ -1,13 +1,13 @@
-interface NavigatorWithShare {
-  share?: (data: ShareOptions) => Promise<void>
-  canShare?: (data: ShareOptions) => boolean
-}
-
 type ShareOptions = {
   title?: string
   files?: File[]
   text?: string
   url?: string
+}
+
+interface NavigatorWithShare {
+  share?: (data: ShareOptions) => Promise<void>
+  canShare?: (data: ShareOptions) => boolean
 }
 
 export async function useShare(shareOpts: ShareOptions) {
