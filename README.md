@@ -12,7 +12,6 @@
 <a href="https://github.com/antfu/vueuse/issues" target="__blank"><img src="https://img.shields.io/github/issues/antfu/vueuse.svg?color=c977be" alt="GitHub issues" /></a>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
 </p>
-<a href="https://gitpod.io/from-referrer/"><img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod" alt="Gitpod Ready-to-Code"/></a>
 
 <p align="center">
 Collection of essential Vue Composition API (inspired by <a href='https://github.com/streamich/react-use' target='__blank'>react-use</a>)
@@ -183,9 +182,8 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
   - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
-- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Provide vue composition-api wrappers for third party libraries
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-intergrations--useaxios) — wrapper for `axios`
-  - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-intergrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
+- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Integration wrappers for utility libraries
+  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for `axios`
 <!--ADDONS_LIST_ENDS-->
 
 

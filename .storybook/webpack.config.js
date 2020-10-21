@@ -49,6 +49,9 @@ module.exports = ({ config }) => {
       {
         loader: require.resolve('babel-loader'),
         options: {
+          plugins: [
+            'const-enum',
+          ],
           presets: [
             '@babel/env',
             '@babel/typescript',

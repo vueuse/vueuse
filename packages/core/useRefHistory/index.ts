@@ -1,4 +1,4 @@
-import { timestamp } from '../utils'
+import { timestamp } from '@vueuse/shared'
 import { ref, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {

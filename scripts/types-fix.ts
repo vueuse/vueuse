@@ -1,8 +1,8 @@
 import fg from 'fast-glob'
 import fs from 'fs-extra'
 
-async function FixTypingOutput() {
-  const files = await fg('./{types,dist}/**/*.d.ts', {
+export async function fixTypingOutput() {
+  const files = await fg(['types/**/*.d.ts', 'packages/*/dist/*.d.ts'], {
     onlyFiles: true,
   })
 
@@ -13,4 +13,4 @@ async function FixTypingOutput() {
   }
 }
 
-FixTypingOutput()
+fixTypingOutput()

@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { isClient, tryOnUnmounted } from '../utils'
+import { isClient, tryOnUnmounted } from '@vueuse/shared'
 
 export function useMediaQuery(query: string) {
   // try to fetch initial value (avoid SSR issues)

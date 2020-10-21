@@ -17,10 +17,11 @@ npm i <b>@vueuse/integrations</b>
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- Intergrations
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-intergrations--useaxios) — wrapper for `axios`
-  - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-intergrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
+- Integrations
+  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for `axios`
 
 <!--FUNCTIONS_LIST_ENDS-->
 
-You can checkout the full documents and live demos in [Storybook](https://vueuse.js.org/).
+## 📄 License
+
+[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)

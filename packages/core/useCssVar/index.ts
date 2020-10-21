@@ -1,5 +1,5 @@
 import { ref, Ref, watch, computed } from 'vue-demi'
-import { tryOnMounted } from '../utils'
+import { tryOnMounted } from '@vueuse/shared'
 
 export function useCssVar(
   prop: string,

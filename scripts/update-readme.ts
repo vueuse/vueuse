@@ -2,36 +2,36 @@ import path from 'path'
 import fs from 'fs-extra'
 import consola from 'consola'
 import { packages } from './packages'
+import { listFunctions } from './utils'
 
 const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'
 
-async function updateReadme() {
-  packages.reverse()
+export async function updateReadme() {
+  const pkgs = [...packages].reverse()
 
   let addOnsList = ''
 
-  for (const [pkg, packageOptions = {}] of packages) {
-    if (packageOptions.deprecated)
+  for (const { name, display, description, deprecated } of pkgs) {
+    if (deprecated)
       continue
 
-    const packageDir = path.join(srcDir, pkg)
-    const readmePath = pkg === 'core'
+    const packageDir = path.join(srcDir, name)
+    const readmePath = name === 'core'
       ? path.resolve(__dirname, '../README.md')
-      : path.join(srcDir, pkg, 'README.md')
+      : path.join(srcDir, name, 'README.md')
 
-    const functions = fs
-      .readdirSync(packageDir, { withFileTypes: true })
-      .filter(f => f.isDirectory() && !f.name.startsWith('_') && f.name !== 'utils')
-      .map(f => f.name)
-      .sort()
+    if (!fs.existsSync(readmePath))
+      continue
 
-    consola.info(`${functions.length} functions found for "${pkg}"`)
+    const functions = await listFunctions(packageDir, ['utils'])
+
+    consola.info(`${functions.length} functions found for "${name}"`)
 
     const categories = {}
-    for (const name of functions) {
-      const raw = fs.readFileSync(path.join(packageDir, name, 'index.stories.tsx'), 'utf-8')
-      const mdRaw = fs.readFileSync(path.join(packageDir, name, 'index.md'), 'utf-8')
+    for (const fnName of functions) {
+      const raw = fs.readFileSync(path.join(packageDir, fnName, 'index.stories.tsx'), 'utf-8')
+      const mdRaw = fs.readFileSync(path.join(packageDir, fnName, 'index.md'), 'utf-8')
       const match = /category: '(.+)',/gm.exec(raw) || /storiesOf\('(.+)'[\s\S]+?\.add\('(.+)'/gm.exec(raw)
 
       if (!match)
@@ -42,7 +42,7 @@ async function updateReadme() {
         .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 
-      if (description.includes('DEPRATED'))
+      if (description.includes('DEPRECATED'))
         continue
 
       description = description.trim()
@@ -59,41 +59,39 @@ async function updateReadme() {
         categories[categoryName] = []
 
       categories[categoryName].push({
-        name,
-        url: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-')}--${name}`.toLowerCase(),
+        name: fnName,
+        url: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-')}--${fnName}`.toLowerCase(),
         description,
       })
     }
 
     let functionList = '\n\n'
 
-    if (pkg !== 'core')
-      addOnsList += `\n- ${packageOptions.name} ([\`@vueuse/${pkg}\`](${storybookUrl}/?path=/story/add-ons-${pkg}--read-me)) - ${packageOptions.description}\n`
+    if (name !== 'core')
+      addOnsList += `\n- ${display} ([\`@vueuse/${name}\`](${storybookUrl}/?path=/story/add-ons-${name}--read-me)) - ${description}\n`
 
     for (const category of Object.keys(categories).sort()) {
       functionList += `- ${category}\n`
-      for (const { name, url, description } of categories[category]) {
+      for (const { name: categoryName, url, description } of categories[category]) {
         const desc = description ? ` — ${description}` : ''
-        functionList += `  - [\`${name}\`](${url})${desc}\n`
-        if (pkg !== 'core')
-          addOnsList += `  - [\`${name}\`](${url})${desc}\n`
+        functionList += `  - [\`${categoryName}\`](${url})${desc}\n`
+        if (name !== 'core')
+          addOnsList += `  - [\`${categoryName}\`](${url})${desc}\n`
       }
       functionList += '\n'
     }
 
-    let readme = fs.readFileSync(readmePath, 'utf-8')
+    let readme = await fs.readFile(readmePath, 'utf-8')
     readme = readme.replace(/<!--FUNCTIONS_LIST_STARTS-->[\s\S]+?<!--FUNCTIONS_LIST_ENDS-->/m, `<!--FUNCTIONS_LIST_STARTS-->${functionList}<!--FUNCTIONS_LIST_ENDS-->`)
 
-    if (pkg === 'core')
+    if (name === 'core')
       readme = readme.replace(/<!--ADDONS_LIST_STARTS-->[\s\S]+?<!--ADDONS_LIST_ENDS-->/m, `<!--ADDONS_LIST_STARTS-->${addOnsList}<!--ADDONS_LIST_ENDS-->`)
 
-    fs.writeFileSync(readmePath, readme, 'utf-8')
+    await fs.writeFile(readmePath, readme, 'utf-8')
 
-    consola.success(`README.md for "${pkg}" updated`)
+    consola.success(`README.md for "${name}" updated`)
   }
 }
-
-module.exports = { updateReadme }
 
 if (require.main === module)
   updateReadme()

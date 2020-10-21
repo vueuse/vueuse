@@ -1,38 +1,11 @@
-import { execSync as exec } from 'child_process'
+import { execSync } from 'child_process'
 import path from 'path'
-import { build } from './build'
-import { packages } from './packages'
+import { activePackages } from './packages'
 import consola from 'consola'
 
-const distDir = path.resolve(__dirname, '..', 'dist')
+execSync('npm run build', { stdio: 'inherit' })
 
-async function publish() {
-  await build()
-
-  for (const [pkg, { deprecated }] of packages as any) {
-    if (deprecated)
-      continue
-    const packageDist = path.join(distDir, pkg)
-
-    exec('yarn publish --access public --non-interactive', { stdio: 'inherit', cwd: packageDist })
-
-    consola.success(`Published @vueuse/${pkg}`)
-  }
+for (const { name } of activePackages) {
+  execSync('npm publish --access public', { stdio: 'inherit', cwd: path.join('packages', name) })
+  consola.success(`Published @vueuse/${name}`)
 }
-
-async function cli() {
-  try {
-    publish()
-  }
-  catch (e) {
-    console.error(e)
-    process.exit(1)
-  }
-}
-
-export {
-  publish,
-}
-
-if (require.main === module)
-  cli()

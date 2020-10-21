@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted, tryOnUnmounted } from '../utils'
+import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 
 // EventSource Constructor
 // https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource
