@@ -7,7 +7,7 @@ import { listFunctions } from './utils'
 const srcDir = path.resolve(__dirname, '../packages')
 const storybookUrl = 'https://vueuse.js.org'
 
-async function updateReadme() {
+export async function updateReadme() {
   const pkgs = [...packages].reverse()
 
   let addOnsList = ''
@@ -92,8 +92,6 @@ async function updateReadme() {
     consola.success(`README.md for "${name}" updated`)
   }
 }
-
-module.exports = { updateReadme }
 
 if (require.main === module)
   updateReadme()

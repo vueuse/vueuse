@@ -10,6 +10,7 @@ for (const { globals, name, display, external } of activePackages) {
   const umdGlobals = {
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUseShared',
+    '@vueuse/core': 'VueUse',
     ...(globals || {}),
   }
   const umdName = name === 'core' ? 'VueUse' : `VueUse${display}`
@@ -56,10 +57,7 @@ for (const { globals, name, display, external } of activePackages) {
     ],
     external: [
       'vue-demi',
-      'vue',
       '@vueuse/shared',
-      '@vue/composition-api',
-      '@vue/runtime-dom',
       ...(external || []),
     ],
   })
