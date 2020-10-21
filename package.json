@@ -4,12 +4,12 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "4.0.0-beta.24",
+  "version": "4.0.0-beta.25",
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "esno ./scripts/build.ts",
     "build:types": "tsc --emitDeclarationOnly && npm run types:fix",
-    "release": "npm run gen && git add . && bump --commit --tag --push --preid beta",
+    "release": "esno ./scripts/release.ts",
     "publish:ci": "esno ./scripts/publish.ts",
     "gen": "run-p gen:*",
     "gen:import": "esno ./scripts/import.ts",
@@ -32,8 +32,7 @@
   },
   "lint-staged": {
     "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   },
   "author": "Anthony Fu<https://github.com/antfu>",
