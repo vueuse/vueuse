@@ -5,7 +5,7 @@ import { useCounter } from '../../core/useCounter'
 defineDemo(
   {
     name: 'useAxios',
-    category: 'Add-ons|Intergrations',
+    category: 'Add-ons|Integrations',
     docs: require('./index.md'),
     module,
   },
