@@ -13,7 +13,7 @@ type StateEasingOptions = {
   transition?: EasingFunction | NamedPreset | CubicBezier
 }
 
-const cubicBezier = ([p0, p1, p2, p3]: CubicBezier): EasingFunction => {
+function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -27,7 +27,8 @@ const cubicBezier = ([p0, p1, p2, p3]: CubicBezier): EasingFunction => {
 
     for (let i = 0; i < 4; ++i) {
       const currentSlope = getSlope(aGuessT, p0, p2)
-      if (currentSlope === 0) return aGuessT
+      if (currentSlope === 0)
+        return aGuessT
       const currentX = calcBezier(aGuessT, p0, p2) - x
       aGuessT -= currentX / currentSlope
     }
@@ -97,7 +98,8 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
 
       number.value = startValue + (diff * getValue(progress))
 
-      if (progress >= 1) stop()
+      if (progress >= 1)
+        stop()
     }).stop
   }, { immediate: true })
 
