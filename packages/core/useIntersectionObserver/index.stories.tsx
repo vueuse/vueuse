@@ -1,89 +1,64 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useIntersectionObserver } from '.'
+import { defineDemo, html } from '../../_docs'
 
-type Inject = {
-  demoIsVisible: boolean
-  stopObserver: () => void
-}
-
-const Demo = defineComponent({
-  setup() {
-    const root = ref(null)
-    const demo = ref(null)
-    const demoIsVisible = ref(false)
-
-    const stopObserver = useIntersectionObserver({
-      // root,
-      target: demo,
-      onIntersect: ([{ isIntersecting }], observerElement) => {
-        // console.log(observerElement);
-        demoIsVisible.value = isIntersecting
-      },
-    })
-
-    return {
-      root,
-      demo,
-      demoIsVisible,
-      stopObserver,
-    }
+defineDemo(
+  {
+    name: 'useIntersectionObserver',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
-  render(this: Vue & Inject) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+  defineComponent({
+    setup() {
+      const root = ref(null)
+      const demo = ref(null)
+      const demoIsVisible = ref(false)
 
-    return (
-      <div>
-        <div id="demo">
+      const stopObserver = useIntersectionObserver({
+        target: demo,
+        onIntersect: ([{ isIntersecting }], observerElement) => {
+          demoIsVisible.value = isIntersecting
+        },
+        root,
+      })
+
+      return {
+        root,
+        demo,
+        demoIsVisible,
+        stopObserver,
+      }
+    },
+
+    template: html`
+      <div id="demo">
+        <div
+          style="
+            border: 2px dashed #ccc;
+            max-height: 150px;
+            margin: 0 2rem 1rem;
+            overflow-y: scroll;
+          "
+          ref="root"
+        >
+          <p style="text-align: center">Scroll me!</p>
           <div
-            style={{
-              border: '2px dashed #ccc',
-              maxHeight: '100px',
-              margin: '0 2rem 1rem',
-              overflowY: 'scroll',
-            }}
-            ref="root"
+            style="
+              border: 2px dashed #d78a8a;
+              min-height: 200px;
+              margin: 10rem 2rem;
+              padding: 1rem;
+            "
+            ref="demo"
           >
-            <p style={{ textAlign: 'center' }}>Scroll!</p>
-            <div
-              style={{
-                border: '2px dashed #d78a8a',
-                minHeight: '200px',
-                margin: '10rem 2rem',
-                padding: '1rem',
-              }}
-              ref="demo"
-            >
-              <h1>Hello world</h1>
-            </div>
-          </div>
-          <div
-            style={{
-              margin: '0 2rem',
-            }}
-          >
-            <button onClick={this.stopObserver}>Stop Observe</button>
+            <h1>Hello world</h1>
           </div>
         </div>
-        {Docs}
-        <div
-          id="demo"
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            right: 0,
-            padding: '1em 5em 1em 1.5em',
-          }}
-        >
-          {this.demoIsVisible ? 'In the viewport' : 'Outside the viewport'}
+        <div class="text-center">
+          {{ demoIsVisible ? 'Inside the viewport' : 'Outside the viewport'}}
         </div>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module).add('useIntersectionObserver', () => Demo as any)
+    `,
+  }),
+)

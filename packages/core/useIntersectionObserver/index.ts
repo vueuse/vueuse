@@ -2,16 +2,16 @@ import { Ref, watchEffect } from 'vue-demi'
 
 interface IntersectionObserverProps {
   target: Ref<Element|null|undefined>
-  onIntersect: IntersectionObserverCallback
   root?: Ref<Element|null|undefined>
+  onIntersect: IntersectionObserverCallback
   rootMargin?: string
   threshold?: number
 }
 
 export function useIntersectionObserver({
   target,
-  onIntersect,
   root,
+  onIntersect,
   rootMargin = '0px',
   threshold = 0.1,
 }: IntersectionObserverProps) {

@@ -6,7 +6,7 @@
 @import "./base16-gruvbox.dark.css";
 
 #demo {
-  padding: 3em;
+  padding: 2em 3em;
   background: #282828;
 }
 
