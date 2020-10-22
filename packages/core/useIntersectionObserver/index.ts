@@ -15,10 +15,12 @@ export function useIntersectionObserver({
   rootMargin = '0px',
   threshold = 0.1,
 }: IntersectionObserverProps) {
-  let observer: IntersectionObserver
+  let cleanup = () => {}
 
   const stopEffect = watchEffect(() => {
-    observer = new IntersectionObserver(onIntersect, {
+    cleanup()
+
+    const observer = new IntersectionObserver(onIntersect, {
       root: root?.value,
       rootMargin,
       threshold,
@@ -27,10 +29,14 @@ export function useIntersectionObserver({
     const current = target.value
 
     current && observer.observe(current)
+
+    cleanup = () => {
+      observer.disconnect()
+    }
   })
 
   return () => {
-    target.value && observer?.unobserve(target.value)
+    cleanup()
     stopEffect()
   }
 }
