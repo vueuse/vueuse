@@ -1,4 +1,4 @@
-import { Ref, WatchOptions, watch } from 'vue-demi'
+import { WatchOptions, watch, WatchSource } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 
 export interface WhenToMatchOptions {
@@ -7,11 +7,25 @@ export interface WhenToMatchOptions {
   throwOnTimeout?: boolean
 }
 
-export function when<T>(r: Ref<T>) {
+export interface WhenInstance<T> {
+  readonly not: WhenInstance<T>
+
+  toMatch(condition: (v: T | object) => boolean, options?: WhenToMatchOptions): Promise<void>
+  toBe<P>(value: P | T, options?: WhenToMatchOptions): Promise<void>
+  toBeTruthy(options?: WhenToMatchOptions): Promise<void>
+  toBeNull(options?: WhenToMatchOptions): Promise<void>
+  toBeUndefined(options?: WhenToMatchOptions): Promise<void>
+  toBeNaN(options?: WhenToMatchOptions): Promise<void>
+  toContain<P>(value: P, options?: WhenToMatchOptions): Promise<void>
+  changed(options?: WhenToMatchOptions): Promise<void>
+  changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>
+}
+
+export function when<T>(r: WatchSource<T> | object): WhenInstance<T> {
   let isNot = false
 
   function toMatch(
-    condition: (v: T) => boolean,
+    condition: (v: T | object) => boolean,
     { flush = 'sync', timeout, throwOnTimeout }: WhenToMatchOptions = {},
   ): Promise<void> {
     let stop: Function | null = null
@@ -38,7 +52,7 @@ export function when<T>(r: Ref<T>) {
     return Promise.race(promises)
   }
 
-  function toBe(value: T, options?: WhenToMatchOptions) {
+  function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
     return toMatch(v => v === value, options)
   }
 
@@ -47,7 +61,22 @@ export function when<T>(r: Ref<T>) {
   }
 
   function toBeNull(options?: WhenToMatchOptions) {
-    return toMatch(v => v == null, options)
+    return toBe<null>(null, options)
+  }
+
+  function toBeUndefined(options?: WhenToMatchOptions) {
+    return toBe<undefined>(undefined, options)
+  }
+
+  function toBeNaN(options?: WhenToMatchOptions) {
+    return toMatch(Number.isNaN, options)
+  }
+
+  function toContain<P>(value: P, options?: WhenToMatchOptions) {
+    return toMatch((v) => {
+      const array = Array.from(v as any)
+      return array.includes(value)
+    }, options)
   }
 
   function changed(options?: WhenToMatchOptions) {
@@ -67,6 +96,9 @@ export function when<T>(r: Ref<T>) {
     toBe,
     toBeTruthy,
     toBeNull,
+    toBeNaN,
+    toBeUndefined,
+    toContain,
     changed,
     changedTimes,
     get not() {
