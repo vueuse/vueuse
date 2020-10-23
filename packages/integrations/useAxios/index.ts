@@ -1,5 +1,5 @@
 import { Ref, ref } from 'vue-demi'
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 
 export function useAxios<T = any>(
   url: string,
@@ -8,9 +8,16 @@ export function useAxios<T = any>(
   const response = ref<any>(null) as Ref<AxiosResponse<T> | undefined>
   const data = ref<any>(undefined) as Ref<T | undefined>
   const finished = ref(false)
+  const canceled = ref(false)
   const error = ref<AxiosError<T> | undefined>()
 
-  axios(url, config)
+  const cancelToken: CancelTokenSource = axios.CancelToken.source()
+  const cancel = (message?: string) => {
+    cancelToken.cancel(message)
+    canceled.value = true
+  }
+
+  axios(url, { ...config, cancelToken: cancelToken.token })
     .then((r: AxiosResponse<T>) => {
       response.value = r
       data.value = r.data
@@ -26,5 +33,7 @@ export function useAxios<T = any>(
     data,
     error,
     finished,
+    cancel,
+    canceled,
   }
 }
