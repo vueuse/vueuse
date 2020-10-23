@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "description": "Enables realtime bindings for [Firebase](https://firebase.google.com/)",
+  "description": "Enables realtime bindings for Firebase",
   "version": "4.0.0-beta.27",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",

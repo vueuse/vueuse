@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/core",
+  "description": "Collection of essential Vue Composition API",
   "version": "4.0.0-beta.27",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",

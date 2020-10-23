@@ -57,5 +57,4 @@ export * from './useWebWorkerFn'
 export * from './useWindowScroll'
 export * from './useWindowSize'
 export * from './when'
-
 export * from '@vueuse/shared'

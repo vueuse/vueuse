@@ -12,7 +12,7 @@ if (oldVersion === version) {
   process.exit()
 }
 
-execSync('npm run gen', { stdio: 'inherit' })
+execSync('npm run prepare', { stdio: 'inherit' })
 execSync('git add .', { stdio: 'inherit' })
 
 execSync(`git commit -m "chore: release v${version}"`, { stdio: 'inherit' })

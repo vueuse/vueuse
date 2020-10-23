@@ -3,7 +3,6 @@ import assert from 'assert'
 import fs from 'fs-extra'
 import consola from 'consola'
 import { activePackages } from './packages'
-import { updateImport } from './import'
 import { execSync as exec } from 'child_process'
 
 const rootDir = path.resolve(__dirname, '..')
@@ -27,13 +26,11 @@ async function buildMetaFiles() {
 }
 
 async function build() {
-  await updateImport()
-
   consola.info('Clean up')
   exec('yarn run clean', { stdio: 'inherit' })
 
   consola.info('Generate Imports')
-  exec('yarn run gen', { stdio: 'inherit' })
+  exec('yarn run prepare', { stdio: 'inherit' })
 
   consola.info('Rollup')
   exec('npx rollup -c', { stdio: 'inherit' })

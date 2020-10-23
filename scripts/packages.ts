@@ -1,6 +1,7 @@
 export interface PackageManifest {
   name: string
   display: string
+  addon?: boolean
   author?: string
   description?: string
   external?: string[]
@@ -18,11 +19,13 @@ export const packages: PackageManifest[] = [
   {
     name: 'core',
     display: 'VueUse',
+    description: 'Collection of essential Vue Composition API',
   },
   {
     name: 'integrations',
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
+    addon: true,
     external: [
       'axios',
       'universal-cookie',
@@ -37,6 +40,7 @@ export const packages: PackageManifest[] = [
     name: 'rxjs',
     display: 'RxJS',
     description: 'Enables RxJS reactive functions in Vue',
+    addon: true,
     external: [
       'rxjs',
       'rxjs/operators',
@@ -49,7 +53,8 @@ export const packages: PackageManifest[] = [
   {
     name: 'firebase',
     display: 'Firebase',
-    description: 'Enables realtime bindings for [Firebase](https://firebase.google.com/)',
+    description: 'Enables realtime bindings for Firebase',
+    addon: true,
     external: [
       'firebase',
       'firebase/app',
@@ -64,7 +69,8 @@ export const packages: PackageManifest[] = [
     name: 'i18n',
     display: 'i18n',
     deprecated: true,
-    description: '[deprecated] Composition wrapper for [vue-i18n](https://github.com/kazupon/vue-i18n)',
+    description: '[deprecated] Composition wrapper for vue-i18n',
+    addon: true,
     external: [
       'vue-i18n',
     ],
