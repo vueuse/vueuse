@@ -14,7 +14,6 @@ export const packages: PackageManifest[] = [
   {
     name: 'shared',
     display: 'Shared utilities',
-    manualImport: true,
   },
   {
     name: 'core',

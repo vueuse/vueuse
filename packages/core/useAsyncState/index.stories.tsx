@@ -7,7 +7,7 @@ import { defineDemo, html } from '../../_docs'
 defineDemo(
   {
     name: 'useAsyncState',
-    category: 'State',
+    category: 'Utilities',
     docs: require('./index.md'),
     module,
   },

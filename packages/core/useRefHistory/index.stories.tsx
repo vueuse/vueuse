@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 defineDemo(
   {
     name: 'useRefHistory',
-    category: 'State',
+    category: 'Utilities',
     docs: require('./index.md'),
     module,
   },

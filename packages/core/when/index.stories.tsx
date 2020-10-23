@@ -11,7 +11,6 @@ defineDemo(
     docs: require('./index.md'),
     module,
   },
-  // Vue component for the demo section
   defineComponent({
     setup() {
       const el = ref<HTMLElement>(null)

@@ -2,11 +2,16 @@
   "shared": {
     "info": {
       "name": "shared",
-      "display": "Shared utilities",
-      "manualImport": true
+      "display": "Shared utilities"
     },
     "dir": "packages/shared",
-    "categories": {}
+    "categories": {
+      "_utils": [
+        {
+          "name": "utils"
+        }
+      ]
+    }
   },
   "core": {
     "info": {
@@ -16,26 +21,70 @@
     },
     "dir": "packages/core",
     "categories": {
-      "State": [
+      "Utilities": [
         {
           "name": "asyncComputed",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--asynccomputed",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--asynccomputed",
           "description": "like [computed refs](https://composition-api.vuejs.org/api.html#computed)",
           "depreacted": false
         },
+        {
+          "name": "useAsyncState",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--useasyncstate",
+          "description": "reactive async state",
+          "depreacted": false
+        },
+        {
+          "name": "useDebounce",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
+          "description": "debounce execution of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useDebounceFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
+          "description": "debounce execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "useRefHistory",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--userefhistory",
+          "description": "track the change history of a ref",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottle",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
+          "description": "throttle changing of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottleFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
+          "description": "throttle execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "when",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
+          "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
+      "State": [
         {
           "name": "createGlobalState",
           "category": "State",
           "docs": "https://vueuse.js.org/?path=/story/state--createglobalstate",
           "description": "keep states in the global scope to be reused across Vue instances",
-          "depreacted": false
-        },
-        {
-          "name": "useAsyncState",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--useasyncstate",
-          "description": "reactive async state",
           "depreacted": false
         },
         {
@@ -57,13 +106,6 @@
           "category": "State",
           "docs": "https://vueuse.js.org/?path=/story/state--uselocalstorage",
           "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)",
-          "depreacted": false
-        },
-        {
-          "name": "useRefHistory",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--userefhistory",
-          "description": "track the change history of a ref",
           "depreacted": false
         },
         {
@@ -313,43 +355,6 @@
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--usetitle",
           "description": "reactive document title",
-          "depreacted": false
-        }
-      ],
-      "Utilities": [
-        {
-          "name": "useDebounce",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
-          "description": "debounce execution of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounceFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
-          "description": "debounce execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
-          "description": "throttle changing of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottleFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
-          "description": "throttle execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "when",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
-          "description": "promised one-time watch for ref changes",
           "depreacted": false
         }
       ],

@@ -1,4 +1,5 @@
-import { ref, getCurrentInstance, onUnmounted } from 'vue-demi'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 
 function getTimestamp() {
   return +Date.now()
@@ -29,8 +30,7 @@ export function useNow() {
 
   start()
 
-  if (getCurrentInstance())
-    onUnmounted(() => stop())
+  tryOnUnmounted(stop)
 
   return now
 }

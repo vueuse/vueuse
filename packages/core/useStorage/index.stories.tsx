@@ -1,42 +1,35 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useStorage } from '.'
+import { defineDemo, html } from '../../_docs'
 
-const Demo = defineComponent({
-  setup() {
-    const state = useStorage('vue-use-locale-storage', {
-      name: 'Banana',
-      color: 'Yellow',
-      size: 'Medium',
-    })
-
-    return {
-      state,
-    }
+defineDemo(
+  {
+    name: 'useStorage',
+    category: 'State',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const state = useStorage('vue-use-locale-storage', {
+        name: 'Banana',
+        color: 'Yellow',
+        size: 'Medium',
+      })
 
-  render(this: Vue & {state: any; update: any}) {
-    const { state } = this
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+      return {
+        state,
+      }
+    },
 
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <input v-model={state.name} type="text"/>
-          <input v-model={state.color} type="text"/>
-          <input v-model={state.size} type="text"/>
+        <input v-model="state.name" type="text"/>
+        <input v-model="state.color" type="text"/>
+        <input v-model="state.size" type="text"/>
 
-          <pre lang="json">{JSON.stringify(state, null, 2)}</pre>
-        </div>
-        {Docs}
+        <pre lang="json">{{JSON.stringify(state, null, 2)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('State', module)
-  .add('useStorage', () => Demo as any)
+    `,
+  }),
+)

@@ -26,7 +26,4 @@ export function defineDemo(
     .add(name, () => Wrapper as any)
 }
 
-export function html(...data: any[]) {
-  // @ts-ignore
-  return String.raw(...data).trim()
-}
+export const html = String.raw

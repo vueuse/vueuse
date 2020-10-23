@@ -143,19 +143,19 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
 - State
-  - [`asyncComputed`](https://vueuse.js.org/?path=/story/state--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep states in the global scope to be reused across Vue instances
-  - [`useAsyncState`](https://vueuse.js.org/?path=/story/state--useasyncstate) — reactive async state
   - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) — basic counter with utility functions
   - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle) — tracks whether the user is being inactive
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
-  - [`useRefHistory`](https://vueuse.js.org/?path=/story/state--userefhistory) — track the change history of a ref
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 - Utilities
+  - [`asyncComputed`](https://vueuse.js.org/?path=/story/utilities--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
+  - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state
   - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
+  - [`useRefHistory`](https://vueuse.js.org/?path=/story/utilities--userefhistory) — track the change history of a ref
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
   - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — promised one-time watch for ref changes
