@@ -1,5 +1,5 @@
 import { WatchOptions, watch, WatchSource } from 'vue-demi'
-import { promiseTimeout } from '@vueuse/shared'
+import { promiseTimeout } from '../utils'
 
 export interface WhenToMatchOptions {
   flush?: WatchOptions['flush']
