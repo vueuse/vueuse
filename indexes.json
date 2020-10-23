@@ -6,6 +6,50 @@
     },
     "dir": "packages/shared",
     "categories": {
+      "Utilities": [
+        {
+          "name": "controlledComputed",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--controlledcomputed",
+          "description": "explicitly define the deps of computed",
+          "depreacted": false
+        },
+        {
+          "name": "extendRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--extendref",
+          "description": "add extra attributes to Ref",
+          "depreacted": false
+        },
+        {
+          "name": "makeDestructurable",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--makedestructurable",
+          "description": "make isomorphic destructurable for object and array at the same time",
+          "depreacted": false
+        },
+        {
+          "name": "tryOnMounted",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonmounted",
+          "description": "safe `onMounted`",
+          "depreacted": false
+        },
+        {
+          "name": "tryOnUnmounted",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonunmounted",
+          "description": "safe `onUnmounted`",
+          "depreacted": false
+        },
+        {
+          "name": "when",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
+          "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
       "_utils": [
         {
           "name": "utils"
@@ -69,13 +113,6 @@
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
           "description": "throttle execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "when",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
-          "description": "promised one-time watch for ref changes",
           "depreacted": false
         }
       ],

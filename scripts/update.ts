@@ -120,10 +120,13 @@ function stringifyCategories(categories: Record<string, VueUseFunction[]>, title
   let list = ''
 
   for (const category of Object.keys(categories).sort()) {
+    if (category.startsWith('_'))
+      continue
+
     if (title)
       list += `- ${category}\n`
 
-    for (const { name, docs, description, depreacted } of categories[category]) {
+    for (const { name, docs, description, depreacted } of categories[category].sort((a, b) => a.name.localeCompare(b.name))) {
       if (depreacted)
         continue
 
@@ -149,10 +152,25 @@ async function updatePackageREADME(indexes: PackageIndexes) {
   }
 }
 
+function mergeCategories(categories: Record<string, VueUseFunction[]>[]) {
+  const result: Record<string, VueUseFunction[]> = {}
+
+  for (const category of categories) {
+    for (const [key, value] of Object.entries(category)) {
+      if (!result[key])
+        result[key] = value
+      else
+        result[key].push(...value)
+    }
+  }
+
+  return result
+}
+
 async function updateIndexREADME(indexes: PackageIndexes) {
   let readme = await fs.readFile('README.md', 'utf-8')
 
-  const functions = stringifyCategories(indexes.core.categories)
+  const functions = stringifyCategories(mergeCategories([indexes.shared.categories, indexes.core.categories]))
   const addons = Object.values(indexes)
     .filter(i => i.info.addon && !i.info.deprecated)
     .map(({ categories, docs, info: { name, display, description } }) =>

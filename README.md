@@ -152,6 +152,11 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 - Utilities
   - [`asyncComputed`](https://vueuse.js.org/?path=/story/utilities--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
+  - [`controlledComputed`](https://vueuse.js.org/?path=/story/utilities--controlledcomputed) — explicitly define the deps of computed
+  - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
+  - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time
+  - [`tryOnMounted`](https://vueuse.js.org/?path=/story/utilities--tryonmounted) — safe `onMounted`
+  - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/utilities--tryonunmounted) — safe `onUnmounted`
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state
   - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
