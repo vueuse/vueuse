@@ -22,8 +22,6 @@ defineDemo(
       <pre lang="json" ref='demo'>{{ JSON.stringify({
         x,
         y,
-        documentX,
-        documentY,
         elementX,
         elementY,
         elementPositionX,
