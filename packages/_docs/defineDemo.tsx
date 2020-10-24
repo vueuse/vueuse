@@ -13,9 +13,13 @@ export function defineDemo(
 
       return (
         <div>
-          <div id="demo">
-            {Demo ? <Demo /> : null}
-          </div>
+          { Demo
+            ? (
+              <div id="demo">
+                <Demo />
+              </div>)
+            : null
+          }
           {Docs}
         </div>
       )
