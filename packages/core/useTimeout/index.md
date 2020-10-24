@@ -4,8 +4,16 @@
 
 ## Usage
 
-```jsx {3}
-const Demo = defineComponent({
+```html
+<template>
+  <div id="demo">
+    <p>Ready: {{ ready }}</p>
+    <button @click="start" :disabled="!ready">Start Again</button>
+  </div>
+</template>
+
+<script>
+export default {
   setup() {
     const { ready, start } = useTimeout(1000)
 
@@ -13,17 +21,7 @@ const Demo = defineComponent({
       ready,
       start,
     }
-  },
-
-  render(this) {
-    const { ready, start } = this
-
-    return (
-      <div id="demo">
-        <p>Ready: {ready.toString()}</p>
-        <button onClick={() => start()} disabled={!ready}>Start Again</button>
-      </div>
-    )
-  },
-})
+  }
+}
+</script>
 ```

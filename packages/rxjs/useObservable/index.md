@@ -5,7 +5,7 @@
 ## Usage
 
 ```ts
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, startWith, scan } from 'rxjs/operators'

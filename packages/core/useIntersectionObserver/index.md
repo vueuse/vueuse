@@ -4,35 +4,36 @@
 
 ## Usage
 
-```tsx
-import { ref } from '@vue/composition-api';
+```html
+<template>
+  <div ref="target">
+    <h1>Hello world</h1>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
 export default {
   setup() {
-    const target = ref(null);
-    const targetIsVisible = ref(false);
+    const target = ref(null)
+    const targetIsVisible = ref(false)
 
     const stopObserver = useIntersectionObserver({
       target: ref,
       onIntersect: ([{ isIntersecting }], observerElement) => {
         targetIsVisible.value = isIntersecting
       },
-    });
+    })
 
     return {
       target,
       targetIsVisible,
     }
-  },
-  render() {
-    return (
-      <div ref="target">
-        <h1>Hello world</h1>
-      </div>
-    )
   }
 }
+</script>
 ```
 
 [IntersectionObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver)

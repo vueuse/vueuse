@@ -4,8 +4,15 @@
 
 ## Usage
 
-```tsx
-import { ref } from '@vue/composition-api';
+```html
+<template>
+  <div ref="el">
+    {{text}}
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 
 export default defineComponent({
@@ -23,20 +30,9 @@ export default defineComponent({
       el,
       text,
     }
-  },
-
-  render() {
-    const {
-      text,
-    } = this
-
-    return (
-      <div ref="el">
-        {text}
-      </div>
-    )
   }
 })
+</script>
 ```
 
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)

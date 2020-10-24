@@ -10,7 +10,7 @@
 
 ### Common usage
 
-```vue
+```html
 <template>
   <div>
     <strong>locale</strong>: {{ cookies.get('locale') }}
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import { defineComponent } from 'vue-demi'
+  import { defineComponent } from 'vue'
   import { useCookies } from '@vueuse/integrations'
 
   export default defineComponent({
@@ -40,10 +40,9 @@
 
 ```ts
 // universal-cookies.js
-
 import { createCookies } from '@vueuse/integrations'
 
-let useUniversalCookies;
+let useUniversalCookies
 
 const cookiesPlugin = ({ req }) => {
   useUniversalCookies = createCookies(req)

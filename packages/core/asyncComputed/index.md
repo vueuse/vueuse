@@ -5,7 +5,7 @@
 ## Usage
 
 ```js
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { asyncComputed } from '@vueuse/core'
 
 export default {

@@ -29,7 +29,7 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 ```ts
 import { fromEvent, from, useObservable } from '@vueuse/rxjs'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { of, forkJoin } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { take, mergeMap, concatAll, pluck, map, scan } from 'rxjs/operators'
