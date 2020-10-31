@@ -132,6 +132,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useDocumentVisibility`](https://vueuse.js.org/?path=/story/sensors--usedocumentvisibility) — reactively track [`Document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
   - [`useElementVisibility`](https://vueuse.js.org/?path=/story/sensors--useelementvisibility) — tracks the visibility of an element within the viewport
   - [`useGeolocation`](https://vueuse.js.org/?path=/story/sensors--usegeolocation) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
+  - [`useIdle`](https://vueuse.js.org/?path=/story/sensors--useidle) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.js.org/?path=/story/sensors--useintersectionobserver) — detects that a target element's visibility
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
@@ -145,7 +146,6 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 - State
   - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep states in the global scope to be reused across Vue instances
   - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) — basic counter with utility functions
-  - [`useIdle`](https://vueuse.js.org/?path=/story/state--useidle) — tracks whether the user is being inactive
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)

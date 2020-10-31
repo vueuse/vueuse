@@ -43,5 +43,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('State', module)
+storiesOf('Sensors', module)
   .add('useIdle', () => Demo as any)

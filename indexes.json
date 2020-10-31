@@ -132,13 +132,6 @@
           "depreacted": false
         },
         {
-          "name": "useIdle",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--useidle",
-          "description": "tracks whether the user is being inactive",
-          "depreacted": false
-        },
-        {
           "name": "useLocalStorage",
           "category": "State",
           "docs": "https://vueuse.js.org/?path=/story/state--uselocalstorage",
@@ -229,6 +222,13 @@
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usegeolocation",
           "description": "reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)",
+          "depreacted": false
+        },
+        {
+          "name": "useIdle",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--useidle",
+          "description": "tracks whether the user is being inactive",
           "depreacted": false
         },
         {
