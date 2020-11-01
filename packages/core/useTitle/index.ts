@@ -1,11 +1,17 @@
 import { isClient, isString } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
 
 export function useTitle(
-  override: string | null = null,
+  newTitle: Ref<string> | ComputedRef<string> | string | null = null,
   document = isClient ? window.document : null,
 ) {
-  const title = ref<string | null>(isString(override) ? override : document?.title || null)
+  const title = isRef(newTitle)
+    ? newTitle
+    : ref<string | null>(
+      isString(newTitle)
+        ? newTitle
+        : document?.title || null,
+    )
 
   watch(
     title,
