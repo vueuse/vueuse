@@ -221,7 +221,7 @@ Thanks!
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribute](https://vueuse.js.org/?path=/story/docs--contribute)].
 <a href="https://github.com/antfu/vueuse/graphs/contributors"><img src="https://opencollective.com/vueuse/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
