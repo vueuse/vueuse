@@ -6,5 +6,5 @@ defineDemo(
     category: 'Browser',
     docs: require('./index.md'),
     module,
-  }
+  },
 )
