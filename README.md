@@ -105,7 +105,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useClipboard`](https://vueuse.js.org/?path=/story/browser--useclipboard) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useCssVar`](https://vueuse.js.org/?path=/story/browser--usecssvar) — manipulate CSS variables
   - [`useEventListener`](https://vueuse.js.org/?path=/story/browser--useeventlistener) — use EventListener with ease
-  - [`useFavicon`](https://vueuse.js.org/?path=/story/browser--usefavicon) — changes the current favicon
+  - [`useFavicon`](https://vueuse.js.org/?path=/story/browser--usefavicon) — reactive favicon
   - [`useFullscreen`](https://vueuse.js.org/?path=/story/browser--usefullscreen) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaQuery`](https://vueuse.js.org/?path=/story/browser--usemediaquery) — reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))
   - [`useMutationObserver`](https://vueuse.js.org/?path=/story/browser--usemutationobserver) — watch for changes being made to the DOM tree

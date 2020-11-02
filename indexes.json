@@ -325,6 +325,13 @@
           "depreacted": false
         },
         {
+          "name": "useFavicon",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--usefavicon",
+          "description": "reactive favicon",
+          "depreacted": false
+        },
+        {
           "name": "useFullscreen",
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--usefullscreen",
