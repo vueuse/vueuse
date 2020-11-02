@@ -1,4 +1,4 @@
-import { defineDemo, html } from '../../_docs'
+import { defineDemo } from '../../_docs'
 
 defineDemo(
   {
