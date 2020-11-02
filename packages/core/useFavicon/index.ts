@@ -1,28 +1,28 @@
-export function useFavicon(options: {
-  baseUrl?: string
-  rel?: string
-  defaultIcon?: string
-} = {}) {
+import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
+
+export function useFavicon(
+  newIcon: Ref<string> | ComputedRef<string> | string | null,
+  options: { baseUrl?: string; rel?: string } = {},
+) {
   const {
     baseUrl = '/',
     rel = 'icon',
-    defaultIcon = 'favicon.ico',
   } = options
 
-  const setIcon = (icon: string) => {
-    document.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`).forEach((el: HTMLLinkElement) => {
-      el.href = `${baseUrl}${icon}`
-    })
+  const favicon = isRef(newIcon)
+    ? newIcon
+    : ref<string | null>(newIcon)
+
+  const applyIcon = (icon: string) => {
+    document.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
+      .forEach((el: HTMLLinkElement) => { el.href = `${baseUrl}${icon}` })
   }
 
-  const resetIcon = () => {
-    document.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`).forEach((el: HTMLLinkElement) => {
-      el.href = `${baseUrl}${defaultIcon}`
-    })
-  }
+  watch(favicon, (i, o) => {
+    if (i && i !== o) applyIcon(i)
+  }, {
+    immediate: true,
+  })
 
-  return {
-    setIcon,
-    resetIcon,
-  }
+  return favicon
 }
