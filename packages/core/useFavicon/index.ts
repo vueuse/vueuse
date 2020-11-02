@@ -1,3 +1,4 @@
+import { isString } from '@vueuse/shared'
 import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
 
 export function useFavicon(
@@ -19,7 +20,7 @@ export function useFavicon(
   }
 
   watch(favicon, (i, o) => {
-    if (i && i !== o) applyIcon(i)
+    if (isString(i) && i !== o) applyIcon(i)
   }, {
     immediate: true,
   })
