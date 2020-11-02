@@ -12,7 +12,7 @@ const icon = useFavicon()
 icon.value = 'dark.ico' // change current icon
 ```
 
-or
+or passing a `ref` to it
 
 ```jsx
 import { computed } from 'vue'
