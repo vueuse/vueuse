@@ -6,7 +6,7 @@ export function useFavicon(
   options: { baseUrl?: string; rel?: string } = {},
 ) {
   const {
-    baseUrl = '/',
+    baseUrl = '',
     rel = 'icon',
   } = options
 
