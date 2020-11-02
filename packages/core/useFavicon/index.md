@@ -19,7 +19,7 @@ import { computed } from 'vue'
 import { useFavicon, usePreferredDark } from '@vueuse/core'
 
 const isDark = usePreferredDark()
-const favicon = computed(() => isDark.value ? 'dark.ico' : 'light.icon')
+const favicon = computed(() => isDark.value ? 'dark.ico' : 'light.ico')
 
 useFavicon(favicon)
 
