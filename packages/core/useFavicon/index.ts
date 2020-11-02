@@ -2,7 +2,7 @@ import { isString } from '@vueuse/shared'
 import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
 
 export function useFavicon(
-  newIcon: Ref<string> | ComputedRef<string> | string | null,
+  newIcon: Ref<string> | ComputedRef<string> | string | null = null,
   options: { baseUrl?: string; rel?: string } = {},
 ) {
   const {
