@@ -1,6 +1,6 @@
 # useFavicon
 
-> Changes the current favicon
+> Reactive favicon
 
 ## Usage
 
