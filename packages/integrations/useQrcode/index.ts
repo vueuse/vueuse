@@ -3,7 +3,7 @@ import QRCode from 'qrcode'
 
 export function useQRCode(
   text: Ref<string> | ComputedRef<string> | string,
-  options?: QRCode.QRCodeOptions,
+  options?: QRCode.QRCodeToDataURLOptions,
 ) {
   const src = ref(text)
   const result = ref('')
@@ -14,5 +14,5 @@ export function useQRCode(
     immediate: true,
   })
 
-  return src
+  return result
 }

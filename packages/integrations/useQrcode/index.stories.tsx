@@ -11,8 +11,11 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const text = ref('vueuse')
-      const qrcode = useQRCode(text, { errorCorrectionLevel: 'H' })
+      const text = ref('https://vueuse.js.org')
+      const qrcode = useQRCode(text, {
+        errorCorrectionLevel: 'H',
+        margin: 3,
+      })
 
       return {
         qrcode,
@@ -24,6 +27,7 @@ defineDemo(
       <div>
         <input v-model="text" />
         <img
+          class="ml-1 mt-6 mb-2 rounded"
           :src="qrcode"
           alt="QR Code"
         >

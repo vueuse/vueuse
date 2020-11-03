@@ -26,7 +26,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- ⚡ **0 dependencies**: No worry about your bundle size
+- ⚡ **0 dependencies**: Don't worry about your bundle size
 - 🌴 **Fully tree shakable**: Only take what you want
 - 🦾 **Type Strong**: Written in Typescript
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
