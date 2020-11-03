@@ -28,11 +28,13 @@ export const packages: PackageManifest[] = [
     external: [
       'axios',
       'universal-cookie',
+      'qrcode',
       'http',
     ],
     globals: {
       axios: 'axios',
       'universal-cookie': 'UniversalCookie',
+      qrcode: 'QRCode',
     },
   },
   {

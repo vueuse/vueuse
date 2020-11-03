@@ -57,7 +57,6 @@
     "@types/jest": "^26.0.15",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "~14.14.0",
-    "@types/resize-observer-browser": "^0.1.4",
     "@types/semver": "^7.3.4",
     "@vue/babel-preset-jsx": "^1.2.3",
     "@vue/runtime-dom": "^3.0.2",
