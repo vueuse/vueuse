@@ -2,9 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/firebase?color=a1b858)](https://www.npmjs.com/package/@vueuse/firebase)
 
-> This is an add-on of [VueUse](https://github.com/antfu), enables the realtime bindings for Firebase. 
-
-[**Full Documents**](https://vueuse.js.org/)
+> This is an add-on of [VueUse](https://github.com/antfu/vueuse), enables the real-time bindings for Firebase. 
 
 ## 📦 Install
 

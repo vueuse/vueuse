@@ -8,6 +8,13 @@
     "categories": {
       "Utilities": [
         {
+          "name": "biSyncRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--bisyncref",
+          "description": "two-way refs synchronization",
+          "depreacted": false
+        },
+        {
           "name": "controlledComputed",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--controlledcomputed",

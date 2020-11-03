@@ -20,7 +20,7 @@
     "clean": "rimraf dist types typings storybook-static packages/*/dist",
     "dev": "start-storybook -p 6006",
     "sb": "start-storybook -p 6006",
-    "sb:build": "npm run build:types && build-storybook"
+    "sb:build": "cross-env NODE_ENV=production npm run build:types && build-storybook"
   },
   "husky": {
     "hooks": {
@@ -69,6 +69,7 @@
     "commander": "^6.1.0",
     "consola": "^2.15.0",
     "conventional-github-releaser": "^3.1.5",
+    "cross-env": "^7.0.2",
     "dayjs": "^1.9.3",
     "eslint": "^7.11.0",
     "eslint-plugin-jest": "^24.1.0",

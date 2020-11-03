@@ -2,7 +2,7 @@
 
 Please use these packages instead:
 
-- Vue 3: [`vue-i18n` v9](https://github.com/intlify/vue-i18n-next)
+- Vue 3: [`vue-i18n` >=v9.0](https://github.com/intlify/vue-i18n-next)
 - Vue 2: [`vue-i18n-composable`](https://github.com/intlify/vue-i18n-composable)
 
 ---

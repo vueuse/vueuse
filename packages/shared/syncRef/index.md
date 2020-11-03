@@ -18,3 +18,7 @@ source.value = 'foo'
 
 console.log(target.value) // foo
 ```
+
+## Related Functions
+
+- [biSyncRef](https://vueuse.js.org/?path=/story/utilities--bisyncref)

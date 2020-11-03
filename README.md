@@ -154,6 +154,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 - Utilities
   - [`asyncComputed`](https://vueuse.js.org/?path=/story/utilities--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
+  - [`biSyncRef`](https://vueuse.js.org/?path=/story/utilities--bisyncref) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/?path=/story/utilities--controlledcomputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
   - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time

@@ -1,3 +1,4 @@
+export * from './biSyncRef'
 export * from './controlledComputed'
 export * from './extendRef'
 export * from './makeDestructurable'

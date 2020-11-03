@@ -4,6 +4,7 @@ const parser = require('prettier/parser-typescript')
 const prettier = require('prettier/standalone')
 
 const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
+const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
 
 module.exports = function(source, u) {
   let request = this._module.request
@@ -30,6 +31,7 @@ module.exports = function(source, u) {
   if (!typing)
     return source
 
+  // clean up types
   const text = typing
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
@@ -38,9 +40,11 @@ module.exports = function(source, u) {
 
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 
-  const head = pkg !== 'core'
-    ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/add-ons-${pkg}--read-me)\n\n`
-    : ''
+  const head = pkg === 'shared'
+    ? `💡 this function is also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
+    : pkg !== 'core'
+      ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
+      : ''
 
   const typingSection = `## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\``
 
