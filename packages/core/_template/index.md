@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx {5,16}
+```ts
 import { useCounter } from '@vueuse/core'
 
 const { count, inc, dec, set, reset } = useCounter()
