@@ -1,44 +1,39 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref, watch } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useDocumentVisibility } from '.'
 import { useTimeoutFn } from '../useTimeoutFn'
 
-const Demo = defineComponent({
-  setup() {
-    const startMessage = 'Minimize this page and return'
-    const message = ref(startMessage)
-    const visibility = useDocumentVisibility()
-
-    const timeout = useTimeoutFn(() => {
-      message.value = startMessage
-    }, 3000)
-
-    watch(visibility, (current, previous) => {
-      if (current === 'visible' && previous === 'hidden') {
-        message.value = 'Welcome back!'
-        timeout.start()
-      }
-    })
-
-    return { message }
+defineDemo(
+  {
+    name: 'useDocumentVisibility',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
-  render(this: Vue & any) {
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
+  defineComponent({
+    setup() {
+      const startMessage = 'Minimize this page or change the tab and return'
+      const message = ref(startMessage)
+      const visibility = useDocumentVisibility()
 
-    return (
+      const timeout = useTimeoutFn(() => {
+        message.value = startMessage
+      }, 3000)
+
+      watch(visibility, (current, previous) => {
+        if (current === 'visible' && previous === 'hidden') {
+          message.value = 'Welcome back!'
+          timeout.start()
+        }
+      })
+
+      return { message }
+    },
+
+    template: html`
       <div>
-        <div id="demo">
-          <h1>{this.message}</h1>
-        </div>
-        {Docs}
+      <h1>{{message}}</h1>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useDocumentVisibility', () => Demo as any)
+    `,
+  }),
+)
