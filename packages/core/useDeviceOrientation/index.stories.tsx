@@ -11,7 +11,19 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useDeviceOrientation()
+      const {
+        isAbsolute,
+        alpha,
+        beta,
+        gamma,
+      } = useDeviceOrientation()
+
+      return {
+        isAbsolute,
+        alpha,
+        beta,
+        gamma,
+      }
     },
 
     template: html`
