@@ -141,6 +141,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline) — reactive online state
   - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave) — reactive state to show whether mouse leaves the page
   - [`useParallax`](https://vueuse.js.org/?path=/story/sensors--useparallax) — create parallax effect easily
+  - [`useSpeechRecognition`](https://vueuse.js.org/?path=/story/sensors--usespeechrecognition) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useWindowScroll`](https://vueuse.js.org/?path=/story/sensors--usewindowscroll) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
@@ -156,6 +157,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`controlledComputed`](https://vueuse.js.org/?path=/story/utilities--controlledcomputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
   - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time
+  - [`syncRef`](https://vueuse.js.org/?path=/story/utilities--syncref) — keep target refs in sync with a source ref
   - [`tryOnMounted`](https://vueuse.js.org/?path=/story/utilities--tryonmounted) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/utilities--tryonunmounted) — safe `onUnmounted`
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state

@@ -29,6 +29,13 @@
           "depreacted": false
         },
         {
+          "name": "syncRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--syncref",
+          "description": "keep target refs in sync with a source ref",
+          "depreacted": false
+        },
+        {
           "name": "tryOnMounted",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--tryonmounted",
@@ -278,6 +285,13 @@
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--useparallax",
           "description": "create parallax effect easily",
+          "depreacted": false
+        },
+        {
+          "name": "useSpeechRecognition",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--usespeechrecognition",
+          "description": "reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)",
           "depreacted": false
         },
         {
