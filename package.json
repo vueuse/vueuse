@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "4.0.0-beta.34",
+  "version": "4.0.0-beta.35",
   "description": "Collection of essential Vue Composition API",
   "scripts": {
     "build": "esno ./scripts/build.ts",
