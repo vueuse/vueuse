@@ -1,38 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useNow } from '.'
 
-type Inject = {
-  now: number
-}
-
-const Demo = defineComponent({
-  setup() {
-    const now = useNow()
-    return {
-      now,
-    }
+defineDemo(
+  {
+    name: 'useNow',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        now: useNow(),
+      }
+    },
 
-  render(this: Vue & Inject) {
-    const { now } = this
-
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Now: {now}</p>
-        </div>
-        {Docs}
+        <p>Now: {{now}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Animation', module)
-  .add('useNow', () => Demo as any)
+    `,
+  }),
+)
