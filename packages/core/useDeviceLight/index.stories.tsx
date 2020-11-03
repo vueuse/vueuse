@@ -1,37 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useDeviceLight } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      light: useDeviceLight(),
-    }
+defineDemo(
+  {
+    name: 'useDeviceLight',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        light: useDeviceLight(),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      light,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
-            light,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
+        <pre lang="json">{{JSON.stringify({ light }, null, 2)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useDeviceLight', () => Demo as any)
+    `,
+  }),
+)
