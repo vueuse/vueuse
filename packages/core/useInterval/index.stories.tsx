@@ -1,39 +1,23 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useInterval } from '.'
 
-type Inject = {
-  counter: number
-}
-
-const Demo = defineComponent({
-  setup() {
-    const { counter } = useInterval(200)
-
-    return {
-      counter,
-    }
+defineDemo(
+  {
+    name: 'useInterval',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useInterval(200)
+    },
 
-  render(this: Vue & Inject) {
-    const { counter } = this
-
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Interval fired: {counter}</p>
-        </div>
-        {Docs}
+      <p>Interval fired: {{counter}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Animation', module)
-  .add('useInterval', () => Demo as any)
+    `,
+  }),
+)
