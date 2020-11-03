@@ -515,11 +515,13 @@
       "external": [
         "axios",
         "universal-cookie",
+        "qrcode",
         "http"
       ],
       "globals": {
         "axios": "axios",
-        "universal-cookie": "UniversalCookie"
+        "universal-cookie": "UniversalCookie",
+        "qrcode": "QRCode"
       }
     },
     "dir": "packages/integrations",
