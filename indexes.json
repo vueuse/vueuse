@@ -66,6 +66,9 @@
       ],
       "_utils": [
         {
+          "name": "twoWaySyncRef"
+        },
+        {
           "name": "utils"
         }
       ]
