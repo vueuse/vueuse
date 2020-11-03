@@ -1,21 +1,10 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
+import { defineDemo } from '../../_docs'
 
-const Demo = defineComponent({
-  render(this: Vue & {state: any; update: any}) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
-      <div>
-        {Docs}
-      </div>
-    )
+defineDemo(
+  {
+    name: 'useLocalStorage',
+    category: 'State',
+    docs: require('./index.md'),
+    module,
   },
-})
-
-storiesOf('State', module)
-  .add('useLocalStorage', () => Demo as any)
+)
