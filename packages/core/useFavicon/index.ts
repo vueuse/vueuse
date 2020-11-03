@@ -1,13 +1,14 @@
-import { isString } from '@vueuse/shared'
+import { isClient, isString } from '@vueuse/shared'
 import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
 
 export function useFavicon(
   newIcon: Ref<string> | ComputedRef<string> | string | null = null,
-  options: { baseUrl?: string; rel?: string } = {},
+  options: { baseUrl?: string; rel?: string; document?: Document } = {},
 ) {
   const {
     baseUrl = '',
     rel = 'icon',
+    document = isClient ? window.document : null,
   } = options
 
   const favicon = isRef(newIcon)
@@ -15,7 +16,7 @@ export function useFavicon(
     : ref<string | null>(newIcon)
 
   const applyIcon = (icon: string) => {
-    document.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
+    document?.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
       .forEach((el: HTMLLinkElement) => { el.href = `${baseUrl}${icon}` })
   }
 
