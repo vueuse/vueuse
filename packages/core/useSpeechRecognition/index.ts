@@ -63,9 +63,9 @@ export function useSpeechRecognition({
 
     watch(isListening, () => {
       if (isListening.value)
-        recognition.start()
+        recognition!.start()
       else
-        recognition.stop()
+        recognition!.stop()
     })
   }
 
