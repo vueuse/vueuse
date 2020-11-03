@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const parser = require('prettier/parser-typescript')
 const prettier = require('prettier/standalone')
+const indexes = require('../indexes.json')
 
 const GITHUB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
@@ -36,11 +37,13 @@ module.exports = function(source, u) {
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
 
+  const isUtils = !!(indexes.core.categories.Utilities.find(i => i.name === moduleName) || indexes.shared.categories.Utilities.find(i => i.name === moduleName))
+
   const URL = `${GITHUB_URL}/${pkg}/${moduleName}`
 
   const formatted = prettier.format(text, { semi: false, parser: 'typescript', plugins: [parser] })
 
-  const head = pkg === 'shared'
+  const head = isUtils
     ? `💡 this function is also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
     : pkg !== 'core'
       ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
