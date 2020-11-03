@@ -180,24 +180,24 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 <!--ADDONS_LIST_STARTS-->
 
 
-- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Integration wrappers for utility libraries
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-integrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
-  - [`useQrcode`](https://vueuse.js.org/?path=/story/add-ons-integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
+- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/integrations--readme)) - Integration wrappers for utility libraries
+  - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
+  - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useQRCode`](https://vueuse.js.org/?path=/story/integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 
 
-- RxJS ([`@vueuse/rxjs`](https://vueuse.js.org/?path=/story/add-ons-rxjs--read-me)) - Enables RxJS reactive functions in Vue
-  - [`from`](https://vueuse.js.org/?path=/story/add-ons-rxjs--from) — two wrappers around of the original functions to allow use ref objects
-  - [`toObserver`](https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
+- RxJS ([`@vueuse/rxjs`](https://vueuse.js.org/?path=/story/rxjs--readme)) - Enables RxJS reactive functions in Vue
+  - [`from`](https://vueuse.js.org/?path=/story/rxjs--from) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vueuse.js.org/?path=/story/rxjs--toobserver) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.js.org/?path=/story/rxjs--useobservable) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/?path=/story/rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
 
-- Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/add-ons-firebase--read-me)) - Enables realtime bindings for Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+- Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/firebase--readme)) - Enables realtime bindings for Firebase
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/@firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/@firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--ADDONS_LIST_ENDS-->
 

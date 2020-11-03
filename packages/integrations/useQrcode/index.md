@@ -1,25 +1,30 @@
-# useQrcode
+# useQRCode
 
 > wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
-> To use this function, you will need to have [`qrcode`](https://github.com/soldair/node-qrcode) installed.
+## Install 
+
+```bash
+npm i qrcode
+```
 
 ## Usage
 
 ```ts
-import { useQrcode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations'
 
-const qrcode = useQrcode('vueuse')
+// `qrcode` will be a ref of data url
+const qrcode = useQRCode('vueuse')
 ```
 
 or passing a `ref` to it
 
 ```ts
 import { ref } from 'vue'
-import { useQrcode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations'
 
 const text = ref('vueuse')
-const qrcode = useQrcode(text)
+const qrcode = useQRCode(text)
 ```
 
 ```html

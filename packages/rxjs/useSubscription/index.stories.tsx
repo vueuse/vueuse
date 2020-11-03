@@ -6,7 +6,7 @@ import { defineDemo, html } from '../../_docs'
 defineDemo(
   {
     name: 'useSubscription',
-    category: 'Add-ons|RxJS',
+    category: '/Rxjs',
     docs: require('./index.md'),
     module,
   },

@@ -3,8 +3,8 @@ import { defineDemo } from '../_docs'
 
 defineDemo(
   {
-    name: 'Read Me',
-    category: 'Add-ons|Integrations',
+    name: 'README',
+    category: '/Integrations',
     docs: require('./README.md'),
     module,
   },

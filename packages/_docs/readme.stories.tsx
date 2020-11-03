@@ -7,7 +7,7 @@ const README: any = () => <ShowDocs md={require('../../README.md')} />
 const Contribute: any = () => <ShowDocs md={require('../../docs/Contributing.md')} />
 
 storiesOf('Docs', module)
-  .add('Read Me', () => README)
+  .add('README', () => README)
   .add('Contribute', () => Contribute)
   .add('Github', () => redirect('https://github.com/antfu/vueuse'))
   .add('NPM', () => redirect('https://www.npmjs.com/package/@vueuse/core'))

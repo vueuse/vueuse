@@ -1,21 +1,10 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../_docs/showdocs'
+import { defineDemo } from '../_docs'
 
-const Demo = defineComponent({
-  render(this: Vue & any) {
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./README.md')} />
-
-    return (
-      <div>
-        {Docs}
-      </div>
-    )
+defineDemo(
+  {
+    name: 'README',
+    category: '/Firebase',
+    docs: require('./README.md'),
+    module,
   },
-})
-
-storiesOf('Add-ons|Firebase', module)
-  .add('Read Me', () => Demo as any)
+)

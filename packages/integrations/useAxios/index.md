@@ -2,7 +2,11 @@
 
 > wrapper for [`axios`](https://github.com/axios/axios)
 
-> To use this function, you will need to have [`axios`](https://github.com/axios/axios) installed.
+## Install 
+
+```bash
+npm i axios
+```
 
 ## Usage
 

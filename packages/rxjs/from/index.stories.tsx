@@ -9,7 +9,7 @@ import { defineDemo, html } from '../../_docs'
 defineDemo(
   {
     name: 'from',
-    category: 'Add-ons|RxJS',
+    category: '/Rxjs',
     docs: require('./index.md'),
     module,
   },

@@ -1,12 +1,14 @@
 # useCookies
 
-> wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
+> wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
 
-> To use this function, you will need to have [`universal-cookie`](https://www.npmjs.com/package/universal-cookie) installed.
+## Install 
 
-## Getting started
+```bash
+npm i universal-cookie
+```
 
-`npm install universal-cookie`
+## Usage
 
 ### Common usage
 
@@ -74,12 +76,12 @@ Let you optionally specify a list of cookie names your component depend on or th
 
 ### `cookies` (optional)
 
-Let you provide universal-cookie instance (creates a new instance by default)
+Let you provide a `universal-cookie` instance (creates a new instance by default)
 
 ### Info about methods available in the [universal-cookie api docs](https://www.npmjs.com/package/universal-cookie#api---cookies-class)
 
 ## `createCookies([req])`
 
-Creates universal-cookie instance using request (default is window.document.cookie) and returns `useCookies` function with provided universal-cookie instance
+Create a `universal-cookie` instance using request (default is window.document.cookie) and returns `useCookies` function with provided universal-cookie instance
 
 - req (object): Node's [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage) request object

@@ -35,7 +35,7 @@ async function readIndexes() {
     const index: PackageIndex = {
       info,
       dir,
-      docs: info.addon ? `${storybookUrl}/?path=/story/add-ons-${name}--read-me` : undefined,
+      docs: info.addon ? `${storybookUrl}/?path=/story/${name.replace('/', '')}--readme` : undefined,
       categories: {},
     }
 
@@ -83,7 +83,7 @@ async function readIndexes() {
       categories[categoryName].push({
         name: fnName,
         category: categoryName,
-        docs: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-')}--${fnName}`.toLowerCase(),
+        docs: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-').replace('/', '')}--${fnName}`.toLowerCase(),
         description,
         depreacted: description.includes('DEPRECATED'),
       })

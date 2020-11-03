@@ -509,21 +509,28 @@
       }
     },
     "dir": "packages/integrations",
-    "docs": "https://vueuse.js.org/?path=/story/add-ons-integrations--read-me",
+    "docs": "https://vueuse.js.org/?path=/story/integrations--readme",
     "categories": {
-      "Integrations": [
+      "/Integrations": [
         {
           "name": "useAxios",
-          "category": "Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios",
+          "category": "/Integrations",
+          "docs": "https://vueuse.js.org/?path=/story/integrations--useaxios",
           "description": "wrapper for [`axios`](https://github.com/axios/axios)",
           "depreacted": false
         },
         {
           "name": "useCookies",
-          "category": "Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-integrations--usecookies",
-          "description": "wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))",
+          "category": "/Integrations",
+          "docs": "https://vueuse.js.org/?path=/story/integrations--usecookies",
+          "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)",
+          "depreacted": false
+        },
+        {
+          "name": "useQRCode",
+          "category": "/Integrations",
+          "docs": "https://vueuse.js.org/?path=/story/integrations--useqrcode",
+          "description": "wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)",
           "depreacted": false
         }
       ]
@@ -545,34 +552,34 @@
       }
     },
     "dir": "packages/rxjs",
-    "docs": "https://vueuse.js.org/?path=/story/add-ons-rxjs--read-me",
+    "docs": "https://vueuse.js.org/?path=/story/rxjs--readme",
     "categories": {
-      "RxJS": [
+      "/Rxjs": [
         {
           "name": "from",
-          "category": "RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-rxjs--from",
+          "category": "/Rxjs",
+          "docs": "https://vueuse.js.org/?path=/story/rxjs--from",
           "description": "two wrappers around of the original functions to allow use ref objects",
           "depreacted": false
         },
         {
           "name": "toObserver",
-          "category": "RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-rxjs--toobserver",
+          "category": "/Rxjs",
+          "docs": "https://vueuse.js.org/?path=/story/rxjs--toobserver",
           "description": "sugar function to convert a ref in an observer",
           "depreacted": false
         },
         {
           "name": "useObservable",
-          "category": "RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-rxjs--useobservable",
+          "category": "/Rxjs",
+          "docs": "https://vueuse.js.org/?path=/story/rxjs--useobservable",
           "description": "use an Observable",
           "depreacted": false
         },
         {
           "name": "useSubscription",
-          "category": "RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-rxjs--usesubscription",
+          "category": "/Rxjs",
+          "docs": "https://vueuse.js.org/?path=/story/rxjs--usesubscription",
           "description": "uses subscriptions without worry about unsubscribing to it or memory leaks",
           "depreacted": false
         }
@@ -595,20 +602,20 @@
       }
     },
     "dir": "packages/firebase",
-    "docs": "https://vueuse.js.org/?path=/story/add-ons-firebase--read-me",
+    "docs": "https://vueuse.js.org/?path=/story/firebase--readme",
     "categories": {
-      "Firebase": [
+      "@Firebase": [
         {
           "name": "useFirestore",
-          "category": "Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-firebase--usefirestore",
+          "category": "@Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/@firebase--usefirestore",
           "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding",
           "depreacted": false
         },
         {
           "name": "useRTDB",
-          "category": "Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-firebase--usertdb",
+          "category": "@Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/@firebase--usertdb",
           "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding",
           "depreacted": false
         }
@@ -630,20 +637,20 @@
       }
     },
     "dir": "packages/i18n",
-    "docs": "https://vueuse.js.org/?path=/story/add-ons-i18n--read-me",
+    "docs": "https://vueuse.js.org/?path=/story/i18n--readme",
     "categories": {
-      "i18n": [
+      "@i18n": [
         {
           "name": "createI18n",
-          "category": "i18n",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-i18n--createi18n",
+          "category": "@i18n",
+          "docs": "https://vueuse.js.org/?path=/story/@i18n--createi18n",
           "description": "create a global i18n instance to be reused",
           "depreacted": false
         },
         {
           "name": "useI18n",
-          "category": "i18n",
-          "docs": "https://vueuse.js.org/?path=/story/add-ons-i18n--usei18n",
+          "category": "@i18n",
+          "docs": "https://vueuse.js.org/?path=/story/@i18n--usei18n",
           "description": "use vue-i18n instance",
           "depreacted": false
         }

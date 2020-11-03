@@ -1,15 +1,15 @@
-import { ref, Ref, ComputedRef, watch, isRef } from 'vue-demi'
+import { ref, Ref, ComputedRef, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 
-export function useQrcode(text: Ref<string> | ComputedRef<string> | string) {
-  const src = ref('')
+export function useQRCode(
+  text: Ref<string> | ComputedRef<string> | string,
+  options?: QRCode.QRCodeOptions,
+) {
+  const src = ref(text)
+  const result = ref('')
 
-  watch(isRef(text) ? text : () => text, async(value) => {
-    if (value) {
-      src.value = await await QRCode.toDataURL(value, {
-        errorCorrectionLevel: 'H',
-      })
-    }
+  watch(src, async(value) => {
+    result.value = await QRCode.toDataURL(value, options)
   }, {
     immediate: true,
   })

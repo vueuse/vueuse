@@ -45,5 +45,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Add-ons|i18n', module)
+storiesOf('@i18n', module)
   .add('createI18n', () => Demo as any)

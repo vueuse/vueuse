@@ -43,5 +43,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Add-ons|Firebase', module)
+storiesOf('@Firebase', module)
   .add('useRTDB', () => Demo as any)

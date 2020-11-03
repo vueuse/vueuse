@@ -17,9 +17,10 @@ npm i <b>@vueuse/integrations</b>
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- Integrations
-  - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-integrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
+- /Integrations
+  - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
+  - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useQRCode`](https://vueuse.js.org/?path=/story/integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 <!--FUNCTIONS_LIST_ENDS-->
 

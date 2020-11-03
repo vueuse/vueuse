@@ -1,18 +1,18 @@
 import { defineComponent, ref } from 'vue-demi'
 import { defineDemo, html } from '../../_docs'
-import { useQrcode } from './index'
+import { useQRCode } from './index'
 
 defineDemo(
   {
-    name: 'useQrcode',
-    category: 'Add-ons|Integrations',
+    name: 'useQRCode',
+    category: '/Integrations',
     docs: require('./index.md'),
     module,
   },
   defineComponent({
     setup() {
       const text = ref('vueuse')
-      const qrcode = useQrcode(text)
+      const qrcode = useQRCode(text, { errorCorrectionLevel: 'H' })
 
       return {
         qrcode,

@@ -10,7 +10,7 @@ import { fromEvent, from } from '../from'
 defineDemo(
   {
     name: 'toObserver',
-    category: 'Add-ons|RxJS',
+    category: '/Rxjs',
     docs: require('./index.md'),
     module,
   },

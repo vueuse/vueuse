@@ -35,5 +35,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Add-ons|RxJS', module)
+storiesOf('/Rxjs', module)
   .add('useObservable', () => Demo as any)

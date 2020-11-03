@@ -1,26 +1,22 @@
 import 'vue-tsx-support/enable-check'
 import { storiesOf } from '@storybook/vue'
 
-storiesOf('Docs|__empty', module)
-  .add('__empty', () => '')
+const sections = [
+  'Docs',
+  'Showcases',
+  'State',
+  'Sensors',
+  'Browser',
+  'Misc',
+  'Animation',
+  'Utilities',
+  '/Integrations',
+  '/Firebase',
+  '/Rxjs',
+  '/i18n',
+]
 
-storiesOf('ShowCases|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('State|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('Sensors|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('Browser|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('Misc|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('Animation|__empty', module)
-  .add('__empty', () => '')
-
-storiesOf('Utilities|__empty', module)
-  .add('__empty', () => '')
+for (const section of sections) {
+  storiesOf(`${section}|__empty`, module)
+    .add('__empty', () => '')
+}

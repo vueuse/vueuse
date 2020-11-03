@@ -5,7 +5,7 @@ import { useAxios } from '.'
 defineDemo(
   {
     name: 'useAxios',
-    category: 'Add-ons|Integrations',
+    category: '/Integrations',
     docs: require('./index.md'),
     module,
   },

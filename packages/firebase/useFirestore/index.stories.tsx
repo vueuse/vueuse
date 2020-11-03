@@ -48,5 +48,5 @@ const Demo = defineComponent({
   },
 })
 
-storiesOf('Add-ons|Firebase', module)
+storiesOf('@Firebase', module)
   .add('useFirestore', () => Demo as any)
