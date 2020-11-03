@@ -1,39 +1,33 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useObservable } from './index'
 import { interval } from 'rxjs'
 import { mapTo, startWith, scan } from 'rxjs/operators'
+import { defineDemo, html } from '../../_docs'
 
-const Demo = defineComponent({
-  setup() {
-    const count = useObservable(interval(1000).pipe(
-      mapTo(1),
-      startWith(0),
-      scan((total, next) => next + total),
-    ))
-
-    return {
-      count,
-    }
+defineDemo(
+  {
+    name: 'useObservable',
+    category: '/RxJS',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const count = useObservable(interval(1000).pipe(
+        mapTo(1),
+        startWith(0),
+        scan((total, next) => next + total),
+      ))
 
-  render(this: Vue & {count: any; update: any}) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+      return {
+        count,
+      }
+    },
+    template: html`
       <div>
-        <div id="demo">
-          count is: { this.count }
-        </div>
-        {Docs}
+        <note>Update every 1s</note>
+        <p>Counter: {{count}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('/RxJS', module)
-  .add('useObservable', () => Demo as any)
+    `,
+  }),
+)

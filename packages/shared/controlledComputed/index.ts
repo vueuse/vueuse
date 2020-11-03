@@ -3,7 +3,7 @@ import { computed, Ref, ref, watch, WatchSource } from 'vue-demi'
 /**
  * Explicitly define the deps of computed
  *
- * @param effects
+ * @param source
  * @param fn
  */
 export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
@@ -11,6 +11,9 @@ export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
   watch(
     source,
     () => v.value = fn(),
+    {
+      flush: 'sync',
+    },
   )
   return computed<T>(() => v.value)
 }

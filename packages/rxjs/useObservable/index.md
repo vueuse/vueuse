@@ -10,7 +10,7 @@ import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, startWith, scan } from 'rxjs/operators'
 
-// setup() {
+// setup()
 const count = useObservable(
   interval(1000).pipe(
     mapTo(1),

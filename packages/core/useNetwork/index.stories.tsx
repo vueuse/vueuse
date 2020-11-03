@@ -1,51 +1,22 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
-import { useNetwork, NetworkState } from '.'
+import { defineComponent, reactive } from 'vue-demi'
+import { useNetwork } from '.'
+import { defineDemo, html } from '../../_docs'
 
-const Demo = defineComponent({
-  setup() {
-    const network = useNetwork()
-
-    return {
-      ...network,
-    }
+defineDemo(
+  {
+    name: 'useNetwork',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
-
-  render(this: Vue & NetworkState) {
-    const {
-      isOnline,
-      offlineAt,
-      downlink,
-      downlinkMax,
-      effectiveType,
-      saveData,
-      type,
-    } = this
-
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
-      <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
-            isOnline,
-            offlineAt,
-            downlink,
-            downlinkMax,
-            effectiveType,
-            saveData,
-            type,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
-      </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useNetwork', () => Demo as any)
+  defineComponent({
+    setup() {
+      return {
+        network: reactive(useNetwork()),
+      }
+    },
+    template: html`
+      <pre lang="json">{{JSON.stringify(network, null, 2)}}</pre>
+    `,
+  }),
+)

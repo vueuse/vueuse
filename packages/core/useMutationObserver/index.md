@@ -1,10 +1,10 @@
 # useMutationObserver
 
-> Watch for changes being made to the DOM tree
+> Watch for changes being made to the DOM tree. [MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
 
 ## Usage
 
-```tsx
+```ts
 import { ref } from 'vue'
 import { useMutationObserver } from '@vueuse/core'
 
@@ -28,4 +28,4 @@ export default {
 }
 ```
 
-[MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+

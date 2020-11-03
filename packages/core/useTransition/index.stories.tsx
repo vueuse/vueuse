@@ -1,15 +1,6 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import { computed, defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
+import { defineComponent, ref } from 'vue-demi'
 import { useTransition } from '.'
-
-type Inject = {
-  baseNumber: number
-  cubicBezierNumber: number
-  customFnNumber: number
-}
+import { defineDemo, html } from '../../_docs'
 
 const track = {
   background: 'rgba(255, 255, 255, 0.15)',
@@ -30,76 +21,75 @@ const sled = {
   width: '1rem',
 }
 
-const Demo = defineComponent({
-  setup() {
-    const baseNumber = ref(0)
-
-    const easeInOutElastic = (x: number) => {
-      const c5 = (2 * Math.PI) / 4.5
-      return x === 0
-        ? 0 : x === 1
-          ? 1 : x < 0.5
-            ? -(2 ** (20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (2 ** (-20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1
-    }
-
-    const cubicBezierNumber = useTransition(baseNumber, {
-      duration: 1500,
-      transition: [0.75, 0, 0.25, 1],
-    })
-
-    const customFnNumber = useTransition(baseNumber, {
-      duration: 1500,
-      transition: easeInOutElastic,
-    })
-
-    return {
-      baseNumber,
-      cubicBezierNumber,
-      customFnNumber,
-    }
+defineDemo(
+  {
+    name: 'useTransition',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const baseNumber = ref(0)
 
-  render(this: Vue & Inject) {
-    const Docs = <ShowDocs md={require('./index.md')} />
+      const easeInOutElastic = (x: number) => {
+        const c5 = (2 * Math.PI) / 4.5
+        return x === 0
+          ? 0 : x === 1
+            ? 1 : x < 0.5
+              ? -(2 ** (20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (2 ** (-20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1
+      }
 
-    const onClick = () => {
-      this.baseNumber = this.baseNumber === 100 ? 0 : 100
-    }
+      const cubicBezierNumber = useTransition(baseNumber, {
+        duration: 1500,
+        transition: [0.75, 0, 0.25, 1],
+      })
 
-    return (
+      const customFnNumber = useTransition(baseNumber, {
+        duration: 1500,
+        transition: easeInOutElastic,
+      })
+
+      return {
+        toggle() {
+          baseNumber.value = baseNumber.value === 100 ? 0 : 100
+        },
+        baseNumber,
+        cubicBezierNumber,
+        customFnNumber,
+        track,
+        sled,
+      }
+    },
+
+    template: html`
       <div>
-        <div id="demo">
-          <button onClick={onClick}>Transition</button>
+        <button @click="toggle">Transition</button>
 
-          <p style={{ marginTop: '1rem' }}>
-            Base number: <b>{this.baseNumber}</b>
-          </p>
+        <p class="mt-2">
+          Base number: <b>{{ baseNumber }}</b>
+        </p>
 
-          <p style={{ marginTop: '1rem' }}>
-            Cubic bezier curve: <b>{this.cubicBezierNumber}</b>
-          </p>
+        <p class="mt-2">
+          Cubic bezier curve: <b>{{ cubicBezierNumber.toFixed(2) }}</b>
+        </p>
 
-          <div style={track}>
-            <div style={{ position: 'relative' }}>
-              <div style={{ ...sled, left: computed(() => `${this.cubicBezierNumber}%`).value }} />
-            </div>
-          </div>
-
-          <p style={{ marginTop: '1rem' }}>
-            Custom function: <b>{this.customFnNumber}</b>
-          </p>
-
-          <div style={track}>
-            <div style={{ position: 'relative' }}>
-              <div style={{ ...sled, left: computed(() => `${this.customFnNumber}%`).value }} />
-            </div>
+        <div :style="track">
+          <div class="relative">
+            <div :style="{ ...sled, left: cubicBezierNumber + '%' }" />
           </div>
         </div>
-        {Docs}
-      </div>
-    )
-  },
-})
 
-storiesOf('Animation', module)
-  .add('useTransition', () => Demo as any)
+        <p class="mt-2">
+          Custom function: <b>{{ customFnNumber.toFixed(2) }}</b>
+        </p>
+
+        <div :style="track">
+          <div class="relative">
+            <div :style="{ ...sled, left: customFnNumber + '%' }" />
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+)

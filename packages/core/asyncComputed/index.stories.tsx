@@ -31,11 +31,11 @@ defineDemo(
     },
 
     template: html`
-      <p>
-        npm Package: <input :value="packageName" @change="packageName = $event.currentTarget.value"/>
-        <br/>
-        Weekly Downloads: {{ isFetchingDownloads ? '...' : downloads }}
-      </p>
+      <div>
+        <note>npm package name</note>
+        <input :value="packageName" @change="packageName = $event.currentTarget.value"/>
+        <p>Downloads: <b>{{ isFetchingDownloads ? '...' : (downloads + ' / week') }}</b></p>
+      </div>
     `,
   }),
 )

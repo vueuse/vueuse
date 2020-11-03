@@ -17,8 +17,8 @@ defineDemo(
     },
     template: html`
       <div>
-        <note>Ready: {{finished.toString()}}</note>
-        <pre lang="json" class="ml-2">{{JSON.stringify(data)}}</pre>
+        <note>Finished: {{finished.toString()}}</note>
+        <pre lang="json" class="ml-2">{{JSON.stringify(data, null, 2)}}</pre>
       </div>
     `,
   }),

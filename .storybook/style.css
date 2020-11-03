@@ -5,7 +5,7 @@
 @import "github-markdown-css";
 @import "./base16-gruvbox.dark.css";
 
-#demo {
+#demo, .demo {
   padding: 2em 3em;
   background: #282828;
 }

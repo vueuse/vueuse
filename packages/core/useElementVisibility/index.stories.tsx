@@ -1,43 +1,34 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useElementVisibility } from '.'
+import { defineDemo, html } from '../../_docs'
 
-type Inject = {
-  demoIsVisible: boolean
-}
-
-const Demo = defineComponent({
-  setup() {
-    const demo = ref(null)
-    const demoIsVisible = useElementVisibility(demo)
-
-    return {
-      demo,
-      demoIsVisible,
-    }
+defineDemo(
+  {
+    name: 'useElementVisibility',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
-  render(this: Vue & Inject) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')}/>
+  defineComponent({
+    setup() {
+      const demo = ref(null)
+      const demoIsVisible = useElementVisibility(demo)
 
-    return (
+      return {
+        demo,
+        demoIsVisible,
+      }
+    },
+    template: html`
       <div>
-        <div
-          style={{ border: '2px dashed #ccc', margin: '10rem 2rem', padding: '1rem' }}
-          ref="demo">
-          <h1>Hello world</h1>
+        <div class="border border-dashed mb-20 mx-5 px-6 py-5" ref="demo">
+          <h1>Target Element (scroll down)</h1>
         </div>
-        {Docs}
-        <div id="demo" style={{ position: 'fixed', bottom: 0, right: 0, padding: '1em 5em 1em 1.5em' }}>
-          {this.demoIsVisible ? 'In the viewport' : 'Outside the viewport'}
+        <div class="py-20"></div>
+        <div class="demo fixed bottom-0 right-0 pa-3">
+          {{ demoIsVisible ? 'In the viewport' : 'Outside the viewport' }}
         </div>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useElementVisibility', () => Demo as any)
+    `,
+  }),
+)

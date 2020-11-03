@@ -15,12 +15,16 @@ defineDemo(
       const count = ref(0)
       useSubscription(interval(1000).subscribe(() => {
         count.value++
-        console.log(count)
       }))
       return {
         count,
       }
     },
-    template: html`<span>{{count}}</span>`,
+    template: html`
+      <div>
+        <note>Update every 1s</note>
+        <p>Counter: {{count}}</p>
+      </div>
+    `,
   }),
 )

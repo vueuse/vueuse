@@ -12,13 +12,13 @@ console.log(title.value) // print current title
 title.value = 'Hello' // change current title
 ```
 
-Set initial title immediately 
+Set initial title immediately
 
 ```js
-const title = useTitle()
+const title = useTitle('New Title')
 ```
 
-It's also possible to pass a ref
+Pass a `ref` and the title will be updated when the source ref changes
 
 ```js
 import { useTitle } from '@vueuse/core'
