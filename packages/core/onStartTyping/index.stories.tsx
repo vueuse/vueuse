@@ -13,9 +13,8 @@ defineDemo(
     setup() {
       const input = ref(null)
       onStartTyping(() => {
-        if (!input.value.active) {
+        if (!input.value.active)
           input.value.focus()
-        }
       })
 
       return {
@@ -28,5 +27,5 @@ defineDemo(
         <input type="text" placeholder="Start typing has no effect here" />
       </div>
     `,
-  })
+  }),
 )

@@ -18,7 +18,7 @@ defineDemo(
         if (color.value === '#df8543')
           color.value = '#7fa998'
         else
-        color.value = '#df8543'
+          color.value = '#df8543'
       }
 
       return {

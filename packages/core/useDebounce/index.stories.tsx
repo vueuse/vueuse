@@ -20,7 +20,7 @@ defineDemo(
       return {
         input,
         debounced,
-        updated
+        updated,
       }
     },
 
