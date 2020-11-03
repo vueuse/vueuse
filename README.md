@@ -183,6 +183,7 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 - Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/add-ons-integrations--read-me)) - Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.js.org/?path=/story/add-ons-integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.js.org/?path=/story/add-ons-integrations--usecookies) — wrapper for `universal-cookie` module (similar to [react-cookie](https://www.npmjs.com/package/react-cookie))
+  - [`useQrcode`](https://vueuse.js.org/?path=/story/add-ons-integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 
 
