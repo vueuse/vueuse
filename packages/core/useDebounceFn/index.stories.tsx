@@ -34,8 +34,8 @@ defineDemo(
           <button @click="clickedFn">Smash me!</button>
           <note>Delay is set to 1000ms for this demo.</note>
 
-          <p>Button clicked: {{this.clicked}}</p>
-          <p>Event handler called: {{this.updated}}</p>
+          <p>Button clicked: {{clicked}}</p>
+          <p>Event handler called: {{updated}}</p>
       </div>
     `,
   }),

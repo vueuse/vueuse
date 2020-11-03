@@ -29,8 +29,8 @@ defineDemo(
           <input v-model="input"" placeholder="Try to type anything..."/>
           <note>Delay is set to 1000ms for this demo.</note>
 
-          <p>Debounced: {{this.debounced}}</p>
-          <p>Times Updated: {{this.updated}}</p>
+          <p>Debounced: {{debounced}}</p>
+          <p>Times Updated: {{updated}}</p>
       </div>
     `,
   }),
