@@ -1,24 +1,10 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
+import { defineDemo } from '../../_docs'
 
-const Demo = defineComponent({
-  setup() {
+defineDemo(
+  {
+    name: 'useWebSocket',
+    category: 'Misc',
+    docs: require('./index.md'),
+    module,
   },
-
-  render(this: Vue) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
-      <div>
-        {Docs}
-      </div>
-    )
-  },
-})
-
-storiesOf('Misc', module)
-  .add('useWebSocket', () => Demo as any)
+)

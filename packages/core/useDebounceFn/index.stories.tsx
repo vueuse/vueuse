@@ -1,54 +1,42 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useDebounceFn } from '.'
 
-type Inject = {
-  clicked: number
-  updated: number
-  clickedFn: Function
-}
-
-const Demo = defineComponent({
-  setup() {
-    const updated = ref(0)
-    const clicked = ref(0)
-    const debouncedFn = useDebounceFn(() => {
-      updated.value += 1
-    }, 1000)
-
-    const clickedFn = () => {
-      clicked.value += 1
-      debouncedFn()
-    }
-
-    return {
-      clicked,
-      clickedFn,
-      updated,
-    }
+defineDemo(
+  {
+    name: 'useDebounceFn',
+    category: 'Utilities',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const updated = ref(0)
+      const clicked = ref(0)
+      const debouncedFn = useDebounceFn(() => {
+        updated.value += 1
+      }, 1000)
 
-  render(this: Vue & Inject) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+      const clickedFn = () => {
+        clicked.value += 1
+        debouncedFn()
+      }
 
-    return (
+      return {
+        clicked,
+        clickedFn,
+        updated,
+      }
+    },
+
+    template: html`
       <div>
-        <div id="demo">
-          <button onClick={() => this.clickedFn()}>Smash me!</button>
+          <button @click="clickedFn">Smash me!</button>
           <note>Delay is set to 1000ms for this demo.</note>
 
-          <p>Button clicked: {this.clicked}</p>
-          <p>Event handler called: {this.updated}</p>
-        </div>
-        {Docs}
+          <p>Button clicked: {{clicked}}</p>
+          <p>Event handler called: {{updated}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Utilities', module)
-  .add('useDebounceFn', () => Demo as any)
+    `,
+  }),
+)

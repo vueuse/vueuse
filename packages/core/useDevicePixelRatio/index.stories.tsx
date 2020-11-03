@@ -1,30 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useDevicePixelRatio } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const { pixelRatio } = useDevicePixelRatio()
-
-    return { pixelRatio }
+defineDemo(
+  {
+    name: 'useDevicePixelRatio',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
-  render(this: Vue & any) {
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
+  defineComponent({
+    setup() {
+      const { pixelRatio } = useDevicePixelRatio()
 
-    return (
+      return { pixelRatio }
+    },
+
+    template: html`
       <div>
-        <div id="demo">
-          <strong>Device Pixel Ratio:</strong> { this.pixelRatio }
-        </div>
-        {Docs}
+        <strong>Device Pixel Ratio:</strong> {{pixelRatio}}
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useDevicePixelRatio', () => Demo as any)
+    `,
+  }),
+)

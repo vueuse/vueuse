@@ -1,51 +1,38 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useCssVar } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const el = ref(null)
-    const color = useCssVar('--color', el)
-
-    const switchColor = () => {
-      if (color.value === '#df8543')
-        color.value = '#7fa998'
-      else
-        color.value = '#df8543'
-    }
-
-    return {
-      el,
-      color,
-      switchColor,
-    }
+defineDemo(
+  {
+    name: 'useCssVar',
+    category: 'Browser',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const el = ref(null)
+      const color = useCssVar('--color', el)
 
-  render(this: Vue & any) {
-    const {
-      switchColor,
-      color,
-    } = this
+      const switchColor = () => {
+        if (color.value === '#df8543')
+          color.value = '#7fa998'
+        else
+          color.value = '#df8543'
+      }
 
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
+      return {
+        el,
+        color,
+        switchColor,
+      }
+    },
 
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          {/*
-          // @ts-ignore */}
-          <p ref="el" style="--color:#7fa998; color: var(--color);">Sample text, {color}</p>
-          <button onClick={switchColor}>Switch Color</button>
-        </div>
-        {Docs}
+          <p ref="el" style="--color:#7fa998; color: var(--color);">Sample text, {{color}}</p>
+          <button @click="switchColor">Switch Color</button>
       </div>
-    )
-  },
-})
-
-storiesOf('Browser', module)
-  .add('useCssVar', () => Demo as any)
+    `,
+  }),
+)

@@ -1,41 +1,41 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useDeviceOrientation } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return useDeviceOrientation()
+defineDemo(
+  {
+    name: 'useDeviceOrientation',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const {
+        isAbsolute,
+        alpha,
+        beta,
+        gamma,
+      } = useDeviceOrientation()
 
-  render(this: Vue & any) {
-    const {
-      isAbsolute,
-      alpha,
-      beta,
-      gamma,
-    } = this
+      return {
+        isAbsolute,
+        alpha,
+        beta,
+        gamma,
+      }
+    },
 
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
+        <pre lang="json">{{JSON.stringify({
             isAbsolute,
             alpha,
             beta,
             gamma,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
+          }, null, 2)}}
+        </pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useDeviceOrientation', () => Demo as any)
+    `,
+  }),
+)
