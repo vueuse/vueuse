@@ -1,40 +1,30 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useMediaQuery } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      isLargeScreen: useMediaQuery('(min-width: 1024px)'),
-      prefersDark: useMediaQuery('(prefers-color-scheme: dark)'),
-    }
+defineDemo(
+  {
+    name: 'useMediaQuery',
+    category: 'Browser',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        isLargeScreen: useMediaQuery('(min-width: 1024px)'),
+        prefersDark: useMediaQuery('(prefers-color-scheme: dark)'),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      isLargeScreen,
-      prefersDark,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
+        <pre lang="json">{{JSON.stringify({
             isLargeScreen,
             prefersDark,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
+          }, null, 2)}}
+        </pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Browser', module)
-  .add('useMediaQuery', () => Demo as any)
+    `,
+  }),
+)
