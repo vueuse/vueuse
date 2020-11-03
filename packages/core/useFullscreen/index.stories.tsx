@@ -1,42 +1,31 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useFullscreen } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const el = ref(null)
-    const { enterFullscreen, exitFullscreen } = useFullscreen(el)
-
-    return {
-      el,
-      enterFullscreen,
-      exitFullscreen,
-    }
+defineDemo(
+  {
+    name: 'useFullscreen',
+    category: 'Browser',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const el = ref(null)
+      const { enterFullscreen } = useFullscreen(el)
 
-  render(this: Vue & any) {
-    const {
-      enterFullscreen,
-    } = this
+      return {
+        el,
+        enterFullscreen,
+      }
+    },
 
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
-      <div>
-        <div id="demo" style={{ textAlign: 'center' }}>
-          <video ref="el" src="https://vjs.zencdn.net/v/oceans.mp4" width={400} style={{ margin: '0 auto' }} controls></video>
-          <br/>
-          <button onClick={enterFullscreen}>Go Fullscreen</button>
-        </div>
-        {Docs}
+    template: html`
+      <div style="text-align: center;">
+        <video ref="el" src="https://vjs.zencdn.net/v/oceans.mp4" width="400" style="margin: 0 auto;" controls></video>
+        <br/>
+        <button @click="enterFullscreen">Go Fullscreen</button>
       </div>
-    )
-  },
-})
-
-storiesOf('Browser', module)
-  .add('useFullscreen', () => Demo as any)
+    `,
+  }),
+)
