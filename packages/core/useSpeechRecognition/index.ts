@@ -37,7 +37,7 @@ export function useSpeechRecognition({
   let recognition: SpeechRecognition | undefined
 
   if (isSupported) {
-    const recognition = new SpeechRecognition()
+    recognition = new SpeechRecognition()
 
     recognition.continuous = continuous
     recognition.interimResults = interimResults
