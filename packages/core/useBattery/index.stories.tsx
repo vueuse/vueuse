@@ -1,42 +1,30 @@
-import 'vue-tsx-support/enable-check'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useBattery } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return useBattery()
+defineDemo(
+  {
+    name: 'useBattery',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useBattery()
+    },
 
-  render(this: any) {
-    const {
-      charging,
-      chargingTime,
-      dischargingTime,
-      level,
-      supported,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
+          <pre lang="json">{{JSON.stringify({
             charging,
             chargingTime,
             dischargingTime,
             level,
             supported,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
+          }, null, 2)}}
+          </pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useBattery', () => Demo as any)
+    `,
+  }),
+)
