@@ -1,47 +1,38 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, computed } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
-import { useNow } from '../useNow'
 import { useIdle } from '.'
+import { useNow } from '../useNow'
 
-type Inject = {
-  idle: boolean
-  lastActive: number
-  idledFor: number
-}
-
-const Demo = defineComponent({
-  setup() {
-    const { idle, lastActive } = useIdle(5000, false, undefined, 20)
-    const now = useNow()
-
-    const idledFor = computed(() => {
-      return Math.floor((now.value - lastActive.value) / 1000)
-    })
-
-    return { idle, lastActive, now, idledFor }
+defineDemo(
+  {
+    name: 'useIdle',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const { idle, lastActive } = useIdle(5000, false, undefined, 20)
+      const now = useNow()
 
-  render(this: Vue & Inject) {
-    const { idle, idledFor } = this
+      const idledFor = computed(() => {
+        return Math.floor((now.value - lastActive.value) / 1000)
+      })
 
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')}/>
+      return {
+        idle,
+        lastActive,
+        now,
+        idledFor,
+      }
+    },
 
-    return (
+    template: html`
       <div>
-        <div id="demo">
           <note>For demonstraction purpose, the idle timer is set to <b>5s</b>.</note>
-          <p>Idle: {idle.toString()}</p>
-          <p>Inactive: {idledFor}s</p>
-        </div>
-        {Docs}
+          <p>Idle: {{idle.toString()}}</p>
+          <p>Inactive: {{idledFor}}s</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useIdle', () => Demo as any)
+    `,
+  }),
+)
