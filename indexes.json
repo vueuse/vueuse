@@ -570,31 +570,31 @@
     "dir": "packages/rxjs",
     "docs": "https://vueuse.js.org/?path=/story/rxjs--readme",
     "categories": {
-      "/Rxjs": [
+      "/RxJS": [
         {
           "name": "from",
-          "category": "/Rxjs",
+          "category": "/RxJS",
           "docs": "https://vueuse.js.org/?path=/story/rxjs--from",
           "description": "two wrappers around of the original functions to allow use ref objects",
           "depreacted": false
         },
         {
           "name": "toObserver",
-          "category": "/Rxjs",
+          "category": "/RxJS",
           "docs": "https://vueuse.js.org/?path=/story/rxjs--toobserver",
           "description": "sugar function to convert a ref in an observer",
           "depreacted": false
         },
         {
           "name": "useObservable",
-          "category": "/Rxjs",
+          "category": "/RxJS",
           "docs": "https://vueuse.js.org/?path=/story/rxjs--useobservable",
           "description": "use an Observable",
           "depreacted": false
         },
         {
           "name": "useSubscription",
-          "category": "/Rxjs",
+          "category": "/RxJS",
           "docs": "https://vueuse.js.org/?path=/story/rxjs--usesubscription",
           "description": "uses subscriptions without worry about unsubscribing to it or memory leaks",
           "depreacted": false

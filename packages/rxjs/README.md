@@ -17,7 +17,7 @@ npm i <b>@vueuse/rxjs</b> rxjs
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 
-- /Rxjs
+- /RxJS
   - [`from`](https://vueuse.js.org/?path=/story/rxjs--from) — two wrappers around of the original functions to allow use ref objects
   - [`toObserver`](https://vueuse.js.org/?path=/story/rxjs--toobserver) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/?path=/story/rxjs--useobservable) — use an Observable

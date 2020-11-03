@@ -10,10 +10,10 @@ const sections = [
   'Misc',
   'Animation',
   'Utilities',
-  '/Integrations',
-  '/Firebase',
-  '/Rxjs',
-  '/i18n',
+  '@Integrations',
+  '@Firebase',
+  '@i18n',
+  '@RxJS',
 ]
 
 for (const section of sections) {
