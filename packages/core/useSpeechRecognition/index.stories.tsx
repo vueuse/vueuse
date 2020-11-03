@@ -2,8 +2,11 @@ import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref, watch } from 'vue-demi'
 import { useSpeechRecognition } from '.'
 
-function sample(arr: string[], size: number) {
-  const shuffled = arr.slice(0); let i = arr.length; let temp; let index
+function sample<T>(arr: T[], size: number) {
+  const shuffled = arr.slice(0)
+  let i = arr.length
+  let temp: T
+  let index: number
   while (i--) {
     index = Math.floor((i + 1) * Math.random())
     temp = shuffled[index]
