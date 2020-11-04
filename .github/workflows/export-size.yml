@@ -1,0 +1,18 @@
+name: Export Size
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    env:
+      CI_JOB_NUMBER: 1
+    steps:
+      - uses: actions/checkout@v1
+      - uses: antfu/export-size-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          paths: packages/core,packages/shared,packages/integrations,packages/firebase,packages/rxjs
