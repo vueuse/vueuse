@@ -1,5 +1,6 @@
-import { ref, onUnmounted } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useMediaQuery } from '../useMediaQuery'
 import { isClient, tryOnMounted } from '@vueuse/shared'
 
 // device pixel ratio statistics from https://www.mydevice.io/
@@ -37,15 +38,11 @@ export function useDevicePixelRatio() {
 
   DEVICE_PIXEL_RATIO_SCALES.forEach((dppx) => {
     // listen mql events in both sides
-    const mqlMin = window.matchMedia(`screen and (min-resolution: ${dppx}dppx)`)
-    const mqlMax = window.matchMedia(`screen and (max-resolution: ${dppx}dppx)`)
+    const mqlMin = useMediaQuery(`screen and (min-resolution: ${dppx}dppx)`)
+    const mqlMax = useMediaQuery(`screen and (max-resolution: ${dppx}dppx)`)
 
-    mqlMin.addEventListener('change', handleDevicePixelRatio)
-    mqlMax.addEventListener('change', handleDevicePixelRatio)
-
-    onUnmounted(() => {
-      mqlMin.removeEventListener('change', handleDevicePixelRatio)
-      mqlMax.removeEventListener('change', handleDevicePixelRatio)
+    watch([mqlMin, mqlMax], () => {
+      handleDevicePixelRatio()
     })
   })
 
