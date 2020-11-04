@@ -38,7 +38,7 @@ export function useBattery() {
         battery = _battery
         updateBatteryInfo.call(battery)
         for (const event of events)
-          useEventListener(event, updateBatteryInfo, undefined, battery)
+          useEventListener(battery, event, updateBatteryInfo, undefined)
       })
   }
 

@@ -43,8 +43,6 @@ export function useBrowserLocation() {
   const state = ref(buildState('load'))
 
   useEventListener('popstate', () => state.value = buildState('popstate'))
-  useEventListener('pushstate', () => state.value = buildState('pushstate'))
-  useEventListener('replacestate', () => state.value = buildState('replacestate'))
 
   return state
 }

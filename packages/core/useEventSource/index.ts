@@ -41,7 +41,7 @@ export function useEventSource(url: string, events: Array<string> = []) {
     }
 
     for (const event_name of events) {
-      useEventListener(event_name, (e: Event & { data?: string }) => {
+      useEventListener(es, event_name, (e: Event & { data?: string }) => {
         event.value = event_name
         data.value = e.data || null
       })

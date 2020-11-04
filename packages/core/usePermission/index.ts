@@ -32,7 +32,7 @@ export function usePermission(permissionDesc: GeneralPermissionDescriptor | Perm
       .then((status) => {
         permissionStatus = status
         onChange()
-        useEventListener('change', onChange, undefined, permissionStatus)
+        useEventListener(permissionStatus, 'change', onChange, undefined)
       })
       .catch(noop)
   }
