@@ -16,7 +16,7 @@ defineDemo(
         alpha,
         beta,
         gamma,
-      } = useDeviceOrientation()
+      } = useDeviceOrientation(window.parent)
 
       return {
         isAbsolute,
