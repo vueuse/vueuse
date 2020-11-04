@@ -17,11 +17,13 @@ type NavigatorWithBattery = Navigator & {
 const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
 export function useBattery() {
+  const isSupported = 'getBattery' in navigator
+
   const charging = ref(false)
   const chargingTime = ref(0)
   const dischargingTime = ref(0)
   const level = ref(1)
-  const supported = ref('getBattery' in navigator)
+
   let battery: BatteryManager | null
 
   function updateBatteryInfo(this: BatteryManager) {
@@ -31,7 +33,7 @@ export function useBattery() {
     level.value = this.level
   }
 
-  if (supported.value) {
+  if (isSupported) {
     (navigator as NavigatorWithBattery)
       .getBattery()
       .then((_battery) => {
@@ -43,10 +45,10 @@ export function useBattery() {
   }
 
   return {
+    isSupported,
     charging,
     chargingTime,
     dischargingTime,
     level,
-    supported,
   }
 }

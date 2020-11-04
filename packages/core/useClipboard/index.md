@@ -7,12 +7,12 @@
 ```js
 import { useClipboard } from '@vueuse/core'
 
-const { text, copy, supported } = useClipboard()
+const { text, copy, isSupported } = useClipboard()
 ```
 
 | State | Type     | Description                        |
 | ----- | -------- | ---------------------------------- |
-| supported  | `boolean` | the current environment support Clipboard API or not. |
+| isSupported  | `boolean` | the current environment support Clipboard API or not. |
 | text  | `string` | the current text in the clipboard. |
 
 | Method            | Description                                  |

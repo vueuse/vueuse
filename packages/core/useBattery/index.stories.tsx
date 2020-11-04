@@ -1,5 +1,5 @@
 import { defineDemo, html } from '../../_docs'
-import { defineComponent } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import { useBattery } from '.'
 
 defineDemo(
@@ -11,18 +11,14 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useBattery()
+      return {
+        battery: reactive(useBattery()),
+      }
     },
 
     template: html`
       <div>
-          <pre lang="json">{{JSON.stringify({
-            charging,
-            chargingTime,
-            dischargingTime,
-            level,
-            supported,
-          }, null, 2)}}
+          <pre lang="json">{{JSON.stringify(battery, null, 2)}}
           </pre>
       </div>
     `,

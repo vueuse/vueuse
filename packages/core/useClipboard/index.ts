@@ -4,24 +4,27 @@ import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export function useClipboard() {
+  const isSupported = 'clipboard' in navigator
   const text = ref('')
-  const supported = ref('clipboard' in window.navigator)
 
-  useEventListener('copy', () => {
-    window.navigator.clipboard.readText().then((value) => {
-      text.value = value
+  if (isSupported) {
+    useEventListener('copy', () => {
+      window.navigator.clipboard.readText().then((value) => {
+        text.value = value
+      })
     })
-  })
+  }
 
-  function copy(txt: string) {
+  async function copy(txt: string) {
     text.value = txt
 
-    return window.navigator.clipboard.writeText(txt)
+    if (isSupported)
+      await window.navigator.clipboard.writeText(txt)
   }
 
   return {
+    isSupported,
     text,
     copy,
-    supported,
   }
 }
