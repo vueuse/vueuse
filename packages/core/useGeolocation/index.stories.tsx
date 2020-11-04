@@ -1,39 +1,28 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useGeolocation } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return useGeolocation()
+defineDemo(
+  {
+    name: 'useGeolocation',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useGeolocation()
+    },
 
-  render(this: Vue & any) {
-    const {
-      coords,
-      locatedAt,
-      error,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{JSON.stringify({
+        <pre lang="json">{{JSON.stringify({
             coords,
             locatedAt,
             error: error ? error.message : error,
-          }, null, 2)}</pre>
-        </div>
-        {Docs}
+          }, null, 2)}}
+        </pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useGeolocation', () => Demo as any)
+    `,
+  }),
+)
