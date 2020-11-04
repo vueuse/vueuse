@@ -4,7 +4,7 @@ import { isClient } from '@vueuse/shared'
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
-export function useDeviceOrientation(target: Window = window) {
+export function useDeviceOrientation(target: Window | null = isClient ? window : null) {
   const eventTarget = isClient ? target : null
   const isAbsolute = ref(false)
   const alpha: Ref<number | null> = ref(0)
