@@ -19,6 +19,8 @@ export interface NetworkState {
 }
 
 export function useNetwork() {
+  const isSupported = 'connection' in navigator
+
   const isOnline = ref(true)
   const saveData = ref(false)
   const offlineAt: Ref<number | undefined> = ref(undefined)
@@ -27,21 +29,19 @@ export function useNetwork() {
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
   const type: Ref<NetworkType> = ref<NetworkType>('unknown')
 
-  const navigator = window.navigator
-  const connection = 'connection' in navigator ? (navigator as any).connection : undefined
+  const connection = isSupported && (navigator as any).connection
 
   function updateNetworkInformation() {
     isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
 
-    if (!connection)
-      return
-
-    downlink.value = connection.downlink
-    downlinkMax.value = connection.downlinkMax
-    effectiveType.value = connection.effectiveType
-    saveData.value = connection.saveData
-    type.value = connection.type
+    if (connection) {
+      downlink.value = connection.downlink
+      downlinkMax.value = connection.downlinkMax
+      effectiveType.value = connection.effectiveType
+      saveData.value = connection.saveData
+      type.value = connection.type
+    }
   }
 
   useEventListener('offline', () => {
@@ -59,6 +59,7 @@ export function useNetwork() {
   tryOnMounted(updateNetworkInformation)
 
   return {
+    isSupported,
     isOnline,
     saveData,
     offlineAt,
