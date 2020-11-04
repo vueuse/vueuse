@@ -15,10 +15,24 @@ export function useMediaQuery(query: string) {
     matches.value = event.matches
   }
 
-  mediaQuery.addEventListener('change', handler)
+  if ('addEventListener' in mediaQuery) {
+    mediaQuery.addEventListener('change', handler)
+  }
+  else {
+    // @ts-ignore
+    // Adds fallback for Safari < 14 and older browsers
+    mediaQuery.addListener(handler)
+  }
 
   tryOnUnmounted(() => {
-    mediaQuery.addEventListener('change', handler)
+    if ('removeEventListener' in mediaQuery) {
+      mediaQuery.removeEventListener('change', handler)
+    }
+    else {
+      // @ts-ignore
+      // Adds fallback for Safari < 14 and older browsers
+      mediaQuery.removeListener(handler)
+    }
   })
 
   return matches
