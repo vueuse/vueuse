@@ -19,8 +19,7 @@ export function useMediaQuery(query: string) {
     mediaQuery.addEventListener('change', handler)
   }
   else {
-    // @ts-ignore
-    // Adds fallback for Safari < 14 and older browsers
+    // @ts-expect-error - fallback for Safari < 14 and older browsers
     mediaQuery.addListener(handler)
   }
 
@@ -29,8 +28,7 @@ export function useMediaQuery(query: string) {
       mediaQuery.removeEventListener('change', handler)
     }
     else {
-      // @ts-ignore
-      // Adds fallback for Safari < 14 and older browsers
+      // @ts-expect-error - fallback for Safari < 14 and older browsers
       mediaQuery.removeListener(handler)
     }
   })
