@@ -1,4 +1,4 @@
-import { onUnmounted, getCurrentInstance } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 
 export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   const { startNow = true } = options
@@ -25,8 +25,7 @@ export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   if (startNow)
     start()
 
-  if (getCurrentInstance())
-    onUnmounted(() => stop())
+  tryOnMounted(() => stop())
 
   return { stop, start }
 }

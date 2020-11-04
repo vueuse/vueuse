@@ -1,4 +1,5 @@
-import { onMounted, ref, Ref, watch } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
+import { ref, Ref, watch } from 'vue-demi'
 import { useWindowScroll } from '../useWindowScroll'
 
 export function useElementVisibility(element: Ref<Element|null|undefined>) {
@@ -21,7 +22,7 @@ export function useElementVisibility(element: Ref<Element|null|undefined>) {
     }
   }
 
-  onMounted(testBoundingClientRect)
+  tryOnMounted(testBoundingClientRect)
 
   watch(x, testBoundingClientRect)
   watch(y, testBoundingClientRect)

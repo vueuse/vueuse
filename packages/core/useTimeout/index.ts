@@ -1,4 +1,5 @@
-import { ref, onUnmounted, getCurrentInstance } from 'vue-demi'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 
 export function useTimeout(interval = 1000, startRightNow = true) {
   const ready = ref(false)
@@ -24,8 +25,7 @@ export function useTimeout(interval = 1000, startRightNow = true) {
   if (startRightNow)
     start()
 
-  if (getCurrentInstance())
-    onUnmounted(stop)
+  tryOnUnmounted(stop)
 
   return { ready, start, stop }
 }

@@ -1,4 +1,4 @@
-import { onUnmounted, getCurrentInstance } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 
 export function useIntervalFn(cb: Function, interval = 1000, startRightNow = true) {
   let timer: any = null
@@ -18,8 +18,7 @@ export function useIntervalFn(cb: Function, interval = 1000, startRightNow = tru
   if (startRightNow)
     start()
 
-  if (getCurrentInstance())
-    onUnmounted(stop)
+  tryOnMounted(stop)
 
   return { start, stop }
 }
