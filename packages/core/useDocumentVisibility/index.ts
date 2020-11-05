@@ -4,9 +4,9 @@ import { useEventListener } from '../useEventListener'
 export function useDocumentVisibility() {
   const visibility = ref(document.visibilityState)
 
-  useEventListener('visibilitychange', () => {
+  useEventListener(document, 'visibilitychange', () => {
     visibility.value = document.visibilityState
-  }, undefined, document)
+  }, undefined)
 
   return visibility
 }

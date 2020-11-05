@@ -2,38 +2,29 @@
 
 import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
 
-export const enum WorkerStatus {
-  Pending = 'PENDING',
-  Success = 'SUCCESS',
-  Runing = 'RUNNING',
-  Error = 'ERROR',
-  TimeoutExpired = 'TIMEOUT_EXPIRED',
-}
+export type WebWorkerStatus = 'PENDING' | 'SUCCESS' | 'RUNNING' | 'ERROR' | 'TIMEOUT_EXPIRED'
 
-type Options = {
+export type WebWorkerOptions = {
   timeout?: number
   dependencies?: string[]
 }
 
-const DEFAULT_OPTIONS: Options = {
-  timeout: undefined,
-  dependencies: [],
-}
-
-/* eslint-disable arrow-parens */
 export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
-  fn: T, options: Options = DEFAULT_OPTIONS,
+  fn: T,
+  {
+    dependencies = [],
+    timeout,
+  }: WebWorkerOptions = {},
 ) => {
-  /* eslint-enable arrow-parens */
   const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
 
-  const workerStatus: Ref<WorkerStatus> = ref(WorkerStatus.Pending)
+  const workerStatus = ref<WebWorkerStatus>('PENDING')
   const promise: Ref<{ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void }> = ref({})
   const timeoutId: Ref<number | undefined> = ref(undefined)
 
-  const workerTerminate = (status = WorkerStatus.Pending) => {
+  const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url) {
       worker.value.terminate()
       URL.revokeObjectURL(worker.value._url)
@@ -44,19 +35,13 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
   }
 
-  tryOnMounted(() => {
-    workerTerminate()
-  })
+  workerTerminate()
 
   tryOnUnmounted(() => {
     workerTerminate()
   })
 
   const generateWorker = () => {
-    const {
-      dependencies = DEFAULT_OPTIONS.dependencies || [],
-      timeout = DEFAULT_OPTIONS.timeout,
-    } = options
     const blobUrl = createWorkerBlobUrl(fn, dependencies)
     const newWorker: Worker & { _url?: string } = new Worker(blobUrl)
     newWorker._url = blobUrl
@@ -66,16 +51,16 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
         resolve = () => {},
         reject = () => {},
       } = promise.value
-      const [status, result] = e.data as [WorkerStatus, ReturnType<T>]
+      const [status, result] = e.data as [WebWorkerStatus, ReturnType<T>]
 
       switch (status) {
-        case WorkerStatus.Success:
+        case 'SUCCESS':
           resolve(result)
           workerTerminate(status)
           break
         default:
           reject(result)
-          workerTerminate(WorkerStatus.Error)
+          workerTerminate('ERROR')
           break
       }
     }
@@ -86,12 +71,12 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
       } = promise.value
 
       reject(e)
-      workerTerminate(WorkerStatus.Error)
+      workerTerminate('ERROR')
     }
 
     if (timeout) {
       timeoutId.value = window.setTimeout(() => {
-        workerTerminate(WorkerStatus.TimeoutExpired)
+        workerTerminate('TIMEOUT_EXPIRED')
       }, timeout)
     }
     return newWorker
@@ -104,13 +89,13 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
     worker.value && worker.value.postMessage([[...fnArgs]])
 
-    workerStatus.value = (WorkerStatus.Runing)
+    workerStatus.value = 'RUNNING'
   })
 
   const workerFn = (...fnArgs: Parameters<T>) => {
-    if (workerStatus.value === WorkerStatus.Runing) {
+    if (workerStatus.value === 'RUNNING') {
       /* eslint-disable-next-line no-console */
-      console.error('[useWebWorkerFn] You can only run one instance of the worker at a time, if you want to run more than one in parallel, create another instance with the hook useWorker(). Read more: https://github.com/alewin/useWorker')
+      console.error('[useWebWorkerFn] You can only run one instance of the worker at a time.')
       /* eslint-disable-next-line prefer-promise-reject-errors */
       return Promise.reject()
     }

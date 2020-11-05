@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
-import { isClient, tryOnMounted } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 // device pixel ratio statistics from https://www.mydevice.io/
 export const DEVICE_PIXEL_RATIO_SCALES = [
@@ -19,8 +19,12 @@ export const DEVICE_PIXEL_RATIO_SCALES = [
   4,
 ]
 
-export function useDevicePixelRatio() {
-  if (!isClient) {
+export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
+  const {
+    window = defaultWindow,
+  } = options
+
+  if (!window) {
     return {
       pixelRatio: ref(1),
     }
@@ -32,9 +36,7 @@ export function useDevicePixelRatio() {
     pixelRatio.value = window.devicePixelRatio
   }
 
-  tryOnMounted(handleDevicePixelRatio)
-
-  useEventListener('resize', handleDevicePixelRatio)
+  useEventListener('resize', handleDevicePixelRatio, undefined, window)
 
   DEVICE_PIXEL_RATIO_SCALES.forEach((dppx) => {
     // listen mql events in both sides

@@ -1,35 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { usePreferredDark } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      prefersDark: usePreferredDark(),
-    }
+defineDemo(
+  {
+    name: 'usePreferredDark',
+    category: 'Browser',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        prefersDark: usePreferredDark(),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      prefersDark,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Prefers Dark: {prefersDark.toString()}</p>
-        </div>
-        {Docs}
+        <p>Prefers Dark: {{prefersDark.toString()}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Browser', module)
-  .add('usePreferredDark', () => Demo as any)
+    `,
+  }),
+)

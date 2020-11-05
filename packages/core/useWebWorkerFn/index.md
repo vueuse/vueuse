@@ -23,9 +23,9 @@ import { useWebWorkerFn } from '@vueuse/core'
 const fn = dates => dates.sort(dateFns.compareAsc)
 
 const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(fn, {
-  timeout: 50000, // 5 seconds
+  timeout: 5_000, // 5 seconds
   dependencies: [
-    "https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js" // dateFns
+    'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js' // dateFns
   ],
 })
 ```
@@ -56,8 +56,8 @@ Before you start using this function, we suggest you read the [Web Worker](https
 | Name            | Type             | Description                                                |
 | --------------- | ---------------- | ---------------------------------------------------------- |
 | workerFn        | Promise          | The `function` that allows you to run `fn` with web worker |
-| workerStatus    | `workerStatus`   | The status of `workerFn`                                   |
-| workerTerminate | Function         | The function that kill the worker                          |
+| workerStatus    | `WebWorkerStatus`   | The status of `workerFn`                                   |
+| workerTerminate | Function         | The function that kills the worker                          |
 
 ## Credit
 
