@@ -5,7 +5,7 @@ import { useEventListener } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
 
 interface DeviceMotionOptions {
-  throttleMs: 10
+  throttleMs: number
 }
 
 export function useDeviceMotion(options: DeviceMotionOptions = { throttleMs: 10 }) {

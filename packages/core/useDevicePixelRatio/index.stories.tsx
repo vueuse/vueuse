@@ -11,14 +11,14 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { pixelRatio } = useDevicePixelRatio()
-
-      return { pixelRatio }
+      return {
+        pixelRatio: useDevicePixelRatio(),
+      }
     },
 
     template: html`
       <div>
-        <strong>Device Pixel Ratio:</strong> {{pixelRatio}}
+        <strong>Device Pixel Ratio:</strong> <code>{{pixelRatio}}</code>
       </div>
     `,
   }),

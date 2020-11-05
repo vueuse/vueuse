@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { useEventListener } from '../useEventListener'
 
 export interface BatteryManager extends EventTarget {
   charging: boolean
@@ -22,6 +22,7 @@ export function useBattery() {
   const dischargingTime = ref(0)
   const level = ref(1)
   const supported = ref('getBattery' in navigator)
+  let battery: BatteryManager | null
 
   function updateBatteryInfo(this: BatteryManager) {
     charging.value = this.charging
@@ -30,28 +31,16 @@ export function useBattery() {
     level.value = this.level
   }
 
-  tryOnMounted(() => {
-    if (!supported.value)
-      return;
-
-    (navigator as NavigatorWithBattery).getBattery().then((battery) => {
-      updateBatteryInfo.call(battery)
-      events.forEach((evt) => {
-        battery.addEventListener(evt, updateBatteryInfo)
+  if (supported.value) {
+    (navigator as NavigatorWithBattery)
+      .getBattery()
+      .then((_battery) => {
+        battery = _battery
+        updateBatteryInfo.call(battery)
+        for (const event of events)
+          useEventListener(event, updateBatteryInfo, undefined, battery)
       })
-    })
-  })
-
-  tryOnUnmounted(() => {
-    if (!supported.value)
-      return;
-
-    (navigator as NavigatorWithBattery).getBattery().then((battery) => {
-      events.forEach((evt) => {
-        battery.removeEventListener(evt, updateBatteryInfo)
-      })
-    })
-  })
+  }
 
   return {
     charging,

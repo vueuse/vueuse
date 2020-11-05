@@ -226,12 +226,13 @@ Thanks!
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](https://vueuse.js.org/?path=/story/docs--contribute)].
+This project exists thanks to all the people who contribute. [How to Contribute](https://vueuse.js.org/?path=/story/docs--contribute).
+
 <a href="https://github.com/antfu/vueuse/graphs/contributors"><img src="https://opencollective.com/vueuse/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/vueuse/contribute)]
+Become a financial contributor and help us sustain our community. [Contribute via Open Collective](https://opencollective.com/vueuse/contribute)
 
 #### Individuals
 

@@ -96,7 +96,7 @@ const Demo = defineComponent({
       amount = particles.length
     }
 
-    watch<string>(text, initScene, { lazy: true })
+    watch<string>(text, initScene)
     useEventListener('resize', initScene)
     useEventListener('click', () => {
       radius++

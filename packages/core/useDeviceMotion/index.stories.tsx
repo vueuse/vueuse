@@ -1,5 +1,5 @@
 import { defineDemo, html } from '../../_docs'
-import { defineComponent } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import { useDeviceMotion } from '.'
 
 defineDemo(
@@ -11,18 +11,13 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useDeviceMotion()
+      return {
+        motion: reactive(useDeviceMotion()),
+      }
     },
 
     template: html`
-      <pre lang="json">{{
-        JSON.stringify({
-          acceleration,
-          accelerationIncludingGravity,
-          rotationRate,
-          interval,
-        }, null, 2)
-      }}</pre>
+      <pre lang="json">{{JSON.stringify(motion, null, 2)}}</pre>
     `,
   }),
 )

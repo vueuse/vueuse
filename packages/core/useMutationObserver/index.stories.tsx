@@ -1,5 +1,5 @@
 import { defineDemo, html } from '../../_docs'
-import { defineComponent, ref, onMounted } from 'vue-demi'
+import { defineComponent, ref } from 'vue-demi'
 import { useMutationObserver } from '.'
 
 defineDemo(
@@ -26,19 +26,17 @@ defineDemo(
         attributes: true,
       })
 
-      onMounted(() => {
-        setTimeout(() => {
-          className.value = {
-            test: true,
-            test2: true,
-          }
-        }, 1000)
-        setTimeout(() => {
-          style.value = {
-            backgroundColor: 'red',
-          }
-        }, 1550)
-      })
+      setTimeout(() => {
+        className.value = {
+          test: true,
+          test2: true,
+        }
+      }, 1000)
+      setTimeout(() => {
+        style.value = {
+          backgroundColor: 'red',
+        }
+      }, 1550)
 
       return {
         el,
