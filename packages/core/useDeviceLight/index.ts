@@ -2,13 +2,20 @@
 
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useDeviceLight() {
+export function useDeviceLight(options: ConfigurableWindow = {}) {
+  const {
+    window = defaultWindow,
+  } = options
+
   const light: Ref<number | null> = ref(null)
 
-  useEventListener('devicelight', (event) => {
-    light.value = event.value
-  })
+  if (window) {
+    useEventListener('devicelight', (event) => {
+      light.value = event.value
+    }, undefined, window)
+  }
 
   return light
 }
