@@ -1,12 +1,12 @@
 import { ref } from 'vue-demi'
-import { timestamp, tryOnMounted } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import { timestamp } from '@vueuse/shared'
+import { useEventListener, WindowEventName } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
 
-const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
+const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60e3
 
-export function useIdle(ms: number = oneMinute, initialState = false, listeningEvents: string[] = defaultEvents, throttleDelay = 50) {
+export function useIdle(ms: number = oneMinute, initialState = false, listeningEvents: WindowEventName[] = defaultEvents, throttleDelay = 50) {
   const idle = ref(initialState)
   const lastActive = ref(timestamp())
 
@@ -26,14 +26,12 @@ export function useIdle(ms: number = oneMinute, initialState = false, listeningE
   for (const eventName of listeningEvents)
     useEventListener(eventName, onEvent)
 
-  useEventListener('visibilitychange', () => {
+  useEventListener(document, 'visibilitychange', () => {
     if (!document.hidden)
       onEvent()
-  }, undefined, document)
+  }, undefined)
 
-  tryOnMounted(() => {
-    timeout = setTimeout(() => set(true), ms)
-  })
+  timeout = setTimeout(() => set(true), ms)
 
   return { idle, lastActive }
 }
