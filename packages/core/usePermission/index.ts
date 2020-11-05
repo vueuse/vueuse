@@ -1,3 +1,4 @@
+import { noop } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
@@ -10,8 +11,6 @@ export type GeneralPermissionDescriptor =
   | MidiPermissionDescriptor
   | PushPermissionDescriptor
   | { name: DescriptorNamePolyfill }
-
-const noop = () => {}
 
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
