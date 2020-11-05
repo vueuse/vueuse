@@ -1,35 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { usePreferredColorScheme } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      preferredColorScheme: usePreferredColorScheme(),
-    }
+defineDemo(
+  {
+    name: 'usePreferredColorScheme',
+    category: 'Browser',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        preferredColorScheme: usePreferredColorScheme(),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      preferredColorScheme,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Preferred Color Scheme: {preferredColorScheme.toString()}</p>
-        </div>
-        {Docs}
+        <p>Preferred Color Scheme: {{preferredColorScheme.toString()}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Browser', module)
-  .add('usePreferredColorScheme', () => Demo as any)
+    `,
+  }),
+)
