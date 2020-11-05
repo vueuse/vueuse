@@ -1,14 +1,20 @@
-import { isClient, isString } from '@vueuse/shared'
+import { isString } from '@vueuse/shared'
 import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
+
+export interface FaviconOptions extends ConfigurableDocument {
+  baseUrl?: string
+  rel?: string
+}
 
 export function useFavicon(
   newIcon: Ref<string> | ComputedRef<string> | string | null = null,
-  options: { baseUrl?: string; rel?: string; document?: Document } = {},
+  options: FaviconOptions = {},
 ) {
   const {
     baseUrl = '',
     rel = 'icon',
-    document = isClient ? window.document : null,
+    document = defaultDocument,
   } = options
 
   const favicon = isRef(newIcon)

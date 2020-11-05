@@ -3,10 +3,11 @@
 import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 import { tryOnUnmounted } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type WebWorkerStatus = 'PENDING' | 'SUCCESS' | 'RUNNING' | 'ERROR' | 'TIMEOUT_EXPIRED'
 
-export type WebWorkerOptions = {
+export interface WebWorkerOptions extends ConfigurableWindow {
   timeout?: number
   dependencies?: string[]
 }
@@ -16,6 +17,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   {
     dependencies = [],
     timeout,
+    window = defaultWindow,
   }: WebWorkerOptions = {},
 ) => {
   const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
@@ -25,7 +27,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   const timeoutId: Ref<number | undefined> = ref(undefined)
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
-    if (worker.value && worker.value._url) {
+    if (worker.value && worker.value._url && window) {
       worker.value.terminate()
       URL.revokeObjectURL(worker.value._url)
       promise.value = {}
@@ -75,9 +77,10 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
 
     if (timeout) {
-      timeoutId.value = window.setTimeout(() => {
-        workerTerminate('TIMEOUT_EXPIRED')
-      }, timeout)
+      timeoutId.value = setTimeout(
+        () => workerTerminate('TIMEOUT_EXPIRED'),
+        timeout,
+      ) as any
     }
     return newWorker
   }
