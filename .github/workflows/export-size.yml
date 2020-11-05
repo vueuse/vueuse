@@ -16,4 +16,5 @@ jobs:
       - uses: antfu/export-size-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          comment_token: ${{ secrets.COMMENT_TOKEN }}
           paths: packages/core,packages/shared,packages/integrations,packages/firebase,packages/rxjs
