@@ -1,5 +1,6 @@
 /* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
 import { useEventListener } from '../useEventListener'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 const isFocusedElementEditable = () => {
   const { activeElement, body } = document
@@ -43,12 +44,13 @@ const isTypedCharGood = ({
   return false
 }
 
-export function onStartTyping(callback: (event: KeyboardEvent) => void) {
+export function onStartTyping(callback: (event: KeyboardEvent) => void, { document = defaultDocument }: ConfigurableDocument = {}) {
   const keydown = (event: KeyboardEvent) => {
     !isFocusedElementEditable()
       && isTypedCharGood(event)
       && callback(event)
   }
 
-  useEventListener(document, 'keydown', keydown, undefined)
+  if (document)
+    useEventListener(document, 'keydown', keydown, undefined)
 }

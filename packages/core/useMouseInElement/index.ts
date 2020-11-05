@@ -1,18 +1,23 @@
-import { ref, Ref, watch, WatchStopHandle } from 'vue-demi'
+import { ref, Ref, watch } from 'vue-demi'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
+
+export interface MouseInElementOptions extends ConfigurableWindow {
+  handleOutside?: boolean
+  touch?: boolean
+  resetOnTouchEnds?: boolean
+  initial?: {x: number; y: number}
+}
 
 export function useMouseInElement(
-  target: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
-  options: {
-    handleOutside?: boolean
-    touch?: boolean
-    resetOnTouchEnds?: boolean
-    initial?: {x: number; y: number}
-  } = {}) {
+  target?: HTMLElement | Ref<HTMLElement | null>,
+  options: MouseInElementOptions = {}) {
   const {
     handleOutside = false,
     touch = true,
+    window = defaultWindow,
   } = options
 
+  const targetRef = ref(target || window?.document.body)
   const x = ref(0)
   const y = ref(0)
   const elementX = ref(0)
@@ -23,46 +28,54 @@ export function useMouseInElement(
   const elementWidth = ref(0)
   const isOutside = ref(false)
 
-  const stop: WatchStopHandle = watch(target, (el, prevEl, onCleanup) => {
-    const moveHandler = (event: MouseEvent | TouchEvent) => {
-      const ele = el || document.body
-      const {
-        left,
-        top,
-        width,
-        height,
-      } = ele.getBoundingClientRect()
+  let stop = () => {}
 
-      if (event instanceof TouchEvent && event.touches.length <= 0)
-        return
+  if (window) {
+    const document = window.document
 
-      x.value = event instanceof MouseEvent ? event.pageX : event.touches[0].clientX
-      y.value = event instanceof MouseEvent ? event.pageY : event.touches[0].clientY
-      elementPositionX.value = left + window.pageXOffset
-      elementPositionY.value = top + window.pageYOffset
-      elementHeight.value = height
-      elementWidth.value = width
+    stop = watch(
+      targetRef,
+      (el, prevEl, onCleanup) => {
+        const moveHandler = (event: MouseEvent | TouchEvent) => {
+          const ele: HTMLElement = el || document.body
+          const {
+            left,
+            top,
+            width,
+            height,
+          } = ele.getBoundingClientRect()
 
-      const elX = x.value - elementPositionX.value
-      const elY = y.value - elementPositionY.value
-      isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
+          if (event instanceof TouchEvent && event.touches.length <= 0)
+            return
 
-      if (handleOutside || !isOutside.value) {
-        elementX.value = elX
-        elementY.value = elY
-      }
-    }
+          x.value = event instanceof MouseEvent ? event.pageX : event.touches[0].clientX
+          y.value = event instanceof MouseEvent ? event.pageY : event.touches[0].clientY
+          elementPositionX.value = left + window.pageXOffset
+          elementPositionY.value = top + window.pageYOffset
+          elementHeight.value = height
+          elementWidth.value = width
 
-    document.addEventListener('mousemove', moveHandler)
-    if (touch)
-      document.addEventListener('touchmove', moveHandler)
+          const elX = x.value - elementPositionX.value
+          const elY = y.value - elementPositionY.value
+          isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
 
-    onCleanup(() => {
-      document.removeEventListener('mousemove', moveHandler)
-      if (touch)
-        document.removeEventListener('touchmove', moveHandler)
-    })
-  }, { immediate: true })
+          if (handleOutside || !isOutside.value) {
+            elementX.value = elX
+            elementY.value = elY
+          }
+        }
+
+        document.addEventListener('mousemove', moveHandler)
+        if (touch)
+          document.addEventListener('touchmove', moveHandler)
+
+        onCleanup(() => {
+          document.removeEventListener('mousemove', moveHandler)
+          if (touch)
+            document.removeEventListener('touchmove', moveHandler)
+        })
+      }, { immediate: true })
+  }
 
   return {
     x,

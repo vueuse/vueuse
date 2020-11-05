@@ -2,14 +2,16 @@
 
 import { ref } from 'vue-demi'
 import { useEventListener, WindowEventName } from '../useEventListener'
+import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export function useClipboard() {
-  const isSupported = 'clipboard' in navigator
+export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const isSupported = navigator && 'clipboard' in navigator
   const text = ref('')
 
   if (isSupported) {
     useEventListener('copy' as WindowEventName, () => {
-      window.navigator.clipboard.readText().then((value) => {
+      // @ts-expect-error untyped API
+      navigator.clipboard.readText().then((value) => {
         text.value = value
       })
     })
@@ -19,7 +21,8 @@ export function useClipboard() {
     text.value = txt
 
     if (isSupported)
-      await window.navigator.clipboard.writeText(txt)
+      // @ts-expect-error untyped API
+      await navigator.clipboard.writeText(txt)
   }
 
   return {

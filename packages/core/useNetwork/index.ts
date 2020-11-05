@@ -2,6 +2,7 @@
 
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
@@ -17,8 +18,8 @@ export interface NetworkState {
   type?: NetworkType
 }
 
-export function useNetwork() {
-  const isSupported = 'connection' in navigator
+export function useNetwork({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const isSupported = navigator && 'connection' in navigator
 
   const isOnline = ref(true)
   const saveData = ref(false)
@@ -31,6 +32,9 @@ export function useNetwork() {
   const connection = isSupported && (navigator as any).connection
 
   function updateNetworkInformation() {
+    if (!navigator)
+      return
+
     isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
 

@@ -1,12 +1,15 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, Ref } from 'vue-demi'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
+
+export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'
 
 export function useWebSocket(url: string) {
   const data: Ref<any> = ref(null)
-  const state = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'>
+  const state = ref<WebSocketStatus>('CONNECTING')
   let ws: WebSocket
+
   const close: typeof ws.close = function close(code, reason) {
     if (!ws) return
 
@@ -19,20 +22,18 @@ export function useWebSocket(url: string) {
     ws.send(data)
   }
 
-  tryOnMounted(() => {
-    ws = new WebSocket(url)
-    ws.onopen = () => {
-      state.value = 'OPEN'
-    }
+  ws = new WebSocket(url)
+  ws.onopen = () => {
+    state.value = 'OPEN'
+  }
 
-    ws.onclose = ws.onerror = () => {
-      state.value = 'CLOSED'
-    }
+  ws.onclose = ws.onerror = () => {
+    state.value = 'CLOSED'
+  }
 
-    ws.onmessage = (e: MessageEvent) => {
-      data.value = e.data
-    }
-  })
+  ws.onmessage = (e: MessageEvent) => {
+    data.value = e.data
+  }
 
   tryOnUnmounted(() => {
     ws.close()

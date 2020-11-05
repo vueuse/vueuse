@@ -1,10 +1,17 @@
 import { ref } from 'vue-demi'
-import { isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useWindowScroll() {
-  const x = ref(isClient ? window.pageXOffset : 0)
-  const y = ref(isClient ? window.pageYOffset : 0)
+export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {
+  if (!window) {
+    return {
+      x: ref(0),
+      y: ref(0),
+    }
+  }
+
+  const x = ref(window.pageXOffset)
+  const y = ref(window.pageYOffset)
 
   useEventListener(
     'scroll',
@@ -15,7 +22,8 @@ export function useWindowScroll() {
     {
       capture: false,
       passive: true,
-    })
+    },
+  )
 
   return { x, y }
 }

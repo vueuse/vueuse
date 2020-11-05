@@ -1,17 +1,26 @@
 import { ref } from 'vue-demi'
-import { isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useWindowSize(initialWidth = Infinity, initialHeight = Infinity) {
-  const width = ref(isClient ? window.innerWidth : initialWidth)
-  const height = ref(isClient ? window.innerHeight : initialHeight)
+export interface WindowSizeOptions extends ConfigurableWindow {
+  initialWidth?: number
+  initialHeight?: number
+}
 
-  if (isClient) {
-    useEventListener('resize', () => {
-      width.value = window.innerWidth
-      height.value = window.innerHeight
-    })
+export function useWindowSize({ window = defaultWindow, initialWidth = Infinity, initialHeight = Infinity }: WindowSizeOptions = {}) {
+  if (!window) {
+    return {
+      width: ref(initialWidth),
+      height: ref(initialHeight),
+    }
   }
+  const width = ref(window.innerWidth)
+  const height = ref(window.innerHeight)
+
+  useEventListener('resize', () => {
+    width.value = window.innerWidth
+    height.value = window.innerHeight
+  })
 
   return { width, height }
 }

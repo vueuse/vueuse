@@ -84,24 +84,28 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
 
   let stop = noop
 
-  watch(baseNumber, () => {
-    stop()
+  watch(
+    baseNumber,
+    () => {
+      stop()
 
-    const diff = baseNumber.value - number.value
-    const startValue = number.value
-    const startAt = Date.now()
-    const endAt = startAt + normalizedOptions.duration
+      const diff = baseNumber.value - number.value
+      const startValue = number.value
+      const startAt = Date.now()
+      const endAt = startAt + normalizedOptions.duration
 
-    stop = useRafFn(() => {
-      const now = Date.now()
-      const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+      stop = useRafFn(() => {
+        const now = Date.now()
+        const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
 
-      number.value = startValue + (diff * getValue(progress))
+        number.value = startValue + (diff * getValue(progress))
 
-      if (progress >= 1)
-        stop()
-    }).stop
-  }, { immediate: true })
+        if (progress >= 1)
+          stop()
+      }).stop
+    },
+    { immediate: true },
+  )
 
   return number
 }

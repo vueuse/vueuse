@@ -1,5 +1,6 @@
 import { useMediaQuery } from '../useMediaQuery'
+import { ConfigurableWindow } from '../_configurable'
 
-export function usePreferredDark() {
-  return useMediaQuery('(prefers-color-scheme: dark)')
+export function usePreferredDark(options?: ConfigurableWindow) {
+  return useMediaQuery('(prefers-color-scheme: dark)', options)
 }

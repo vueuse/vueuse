@@ -34,7 +34,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
   const handler = useThrottleFn(onDeviceMotion, throttleMs)
 
   if (window)
-    useEventListener('devicemotion', handler, false, window)
+    useEventListener(window, 'devicemotion', handler)
 
   return {
     acceleration,
