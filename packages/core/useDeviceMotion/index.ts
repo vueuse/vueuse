@@ -3,12 +3,18 @@
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useThrottleFn } from '../useThrottleFn'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-interface DeviceMotionOptions {
-  throttleMs: number
+interface DeviceMotionOptions extends ConfigurableWindow {
+  throttleMs?: number
 }
 
-export function useDeviceMotion(options: DeviceMotionOptions = { throttleMs: 10 }) {
+export function useDeviceMotion(options: DeviceMotionOptions = {}) {
+  const {
+    window = defaultWindow,
+    throttleMs = 10,
+  } = options
+
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
   const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = ref({ alpha: null, beta: null, gamma: null })
   const interval = ref(0)
@@ -25,9 +31,10 @@ export function useDeviceMotion(options: DeviceMotionOptions = { throttleMs: 10 
     interval.value = event.interval
   }
 
-  const handler = useThrottleFn(onDeviceMotion, options.throttleMs)
+  const handler = useThrottleFn(onDeviceMotion, throttleMs)
 
-  useEventListener('devicemotion', handler, false)
+  if (window)
+    useEventListener('devicemotion', handler, false, window)
 
   return {
     acceleration,
