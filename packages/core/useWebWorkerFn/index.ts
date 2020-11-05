@@ -4,13 +4,7 @@ import { ref, Ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 
-export enum WorkerStatus {
-  Pending = 'PENDING',
-  Success = 'SUCCESS',
-  Runing = 'RUNNING',
-  Error = 'ERROR',
-  TimeoutExpired = 'TIMEOUT_EXPIRED',
-}
+export type WorkerStatus = 'PENDING' | 'SUCCESS' | 'RUNNING' | 'ERROR' | 'TIMEOUT_EXPIRED'
 
 type Options = {
   timeout?: number
