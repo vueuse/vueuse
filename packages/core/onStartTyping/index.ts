@@ -50,5 +50,5 @@ export function onStartTyping(callback: (event: KeyboardEvent) => void) {
       && callback(event)
   }
 
-  useEventListener('keydown', keydown, undefined, document)
+  useEventListener(document, 'keydown', keydown, undefined)
 }
