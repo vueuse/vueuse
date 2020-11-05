@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
 import { ShowDocs } from '../../_docs/showdocs'
-import { useWebWorkerFn, WorkerStatus } from './'
+import { useWebWorkerFn } from './'
 import { useNow } from '../useNow'
 
 type Inject = {
@@ -56,7 +56,7 @@ const Demo = defineComponent({
             Normal Sort
           </button>
           {
-            workerStatus !== WorkerStatus.Runing ? (
+            workerStatus !== 'RUNNING' ? (
               <button onClick={() => workerSort()}>
                 Worker Sort
               </button>
