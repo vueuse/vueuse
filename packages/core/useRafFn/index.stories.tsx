@@ -1,40 +1,30 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useRafFn } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const count = ref(0)
-    const { start, stop } = useRafFn(() => {
-      count.value += 1
-    })
-
-    return {
-      count,
-      start,
-      stop,
-    }
+defineDemo(
+  {
+    name: 'useRafFn',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const count = ref(0)
+      const { start, stop } = useRafFn(() => {
+        count.value += 1
+      })
 
-  render(this: Vue & any) {
-    const { count } = this
+      return {
+        count, start, stop,
+      }
+    },
 
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Count: {count}</p>
-        </div>
-        {Docs}
+        <p>Count: {{count}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Animation', module)
-  .add('useRafFn', () => Demo as any)
+    `,
+  }),
+)

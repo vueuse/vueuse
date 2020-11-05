@@ -1,39 +1,29 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { usePageLeave } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      isLeft: usePageLeave(),
-    }
+defineDemo(
+  {
+    name: 'usePageLeave',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        isLeft: usePageLeave(),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      isLeft,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <pre lang="json">{
-            JSON.stringify({
-              isLeft,
-            }, null, 2)
-          }</pre>
-        </div>
-        {Docs}
+        <pre lang="json">{{
+          JSON.stringify({
+            isLeft,
+          }, null, 2)
+        }}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('usePageLeave', () => Demo as any)
+    `,
+  }),
+)

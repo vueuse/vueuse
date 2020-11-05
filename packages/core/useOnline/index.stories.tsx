@@ -1,34 +1,25 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useOnline } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const online = useOnline()
-
-    return {
-      online,
-    }
+defineDemo(
+  {
+    name: 'useOnline',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        online: useOnline(),
+      }
+    },
 
-  render(this: Vue & {online: boolean}) {
-    const { online } = this
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>{ online ? 'Online' : 'Offline'}</p>
-        </div>
-        {Docs}
+        <p>{{online ? 'Online' : 'Offline'}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useOnline', () => Demo as any)
+    `,
+  }),
+)
