@@ -10,14 +10,10 @@ export function useMutationObserver(
     const _el = unref(el)
     _el && observer.observe(_el, options)
 
-    onInvalidate(() => {
-      observer.disconnect()
-    })
+    onInvalidate(() => observer.disconnect())
   })
 
-  onBeforeUnmount(() => {
-    stop()
-  })
+  onBeforeUnmount(stop)
 
   return {
     stop,

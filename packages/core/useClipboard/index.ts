@@ -4,9 +4,7 @@ import { ref } from 'vue-demi'
 import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export function useClipboard({
-  navigator = defaultNavigator,
-}: ConfigurableNavigator = {}) {
+export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
   const isSupported = navigator && 'clipboard' in navigator
   const text = ref('')
 

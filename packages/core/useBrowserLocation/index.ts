@@ -2,6 +2,7 @@
 
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface BrowserLocationState {
   trigger: string
@@ -18,11 +19,10 @@ export interface BrowserLocationState {
   search?: string
 }
 
-export function useBrowserLocation() {
+export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
   const buildState = (trigger: string): BrowserLocationState => {
-    const { state, length } = history
-
-    const { hash, host, hostname, href, origin, pathname, port, protocol, search } = location
+    const { state, length } = window?.history || {}
+    const { hash, host, hostname, href, origin, pathname, port, protocol, search } = window?.location || {}
 
     return {
       trigger,
@@ -42,7 +42,8 @@ export function useBrowserLocation() {
 
   const state = ref(buildState('load'))
 
-  useEventListener('popstate', () => state.value = buildState('popstate'))
+  if (window)
+    useEventListener(window, 'popstate', () => state.value = buildState('popstate'))
 
   return state
 }

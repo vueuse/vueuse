@@ -15,7 +15,7 @@ const noop = () => {}
 
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
-  { navigator = defaultNavigator }: ConfigurableNavigator,
+  { navigator = defaultNavigator }: ConfigurableNavigator = {},
 ) {
   let permissionStatus: PermissionStatus | null = null
 
