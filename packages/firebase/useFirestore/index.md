@@ -4,14 +4,13 @@
 
 ## Usage
 
-```js
+```js {7,9}
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import { useFirestore } from '@vueuse/firebase'
 
 const db = firebase.initializeApp({ projectId: 'MY PROJECT ID' }).firestore()
 
-// in setup()
 const todos = useFirestore(db.collection('todos'))
 // or
 const user = useFirestore(db.collection('users').doc('my-user-id'))
@@ -35,11 +34,11 @@ export const useTodos = createGlobalState(
 // app.js
 import { useTodos } from './store'
 
-new Vue({
+export default {
   setup() {
     const todos = useTodos()
 
     return { todos }
   },
-})
+}
 ```

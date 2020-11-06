@@ -4,7 +4,7 @@
 
 ## Usage
 
-```html
+```html {16-20}
 <template>
   <div ref="el">
     {{text}}
@@ -15,7 +15,7 @@
 import { ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 
-export default defineComponent({
+export default {
   setup() {
     const el = ref(null)
     const text = ref('')

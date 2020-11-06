@@ -4,12 +4,18 @@
 
 ## Usage
 
-```jsx
+```js {4}
 import { useDebounce } from '@vueuse/core'
 
-// in setup()
-const input = ref('')
+const input = ref('foo')
 const debounced = useDebounce(input, 1000)
+
+input.value = 'bar'
+console.log(debounced.value) // 'foo'
+
+await sleep(1100)
+
+console.log(debounced.value) // 'bar'
 ```
 
 ## Related Functions

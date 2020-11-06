@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { useRaf } from '@vueuse/core'
 
 const elapsed = useRaf()

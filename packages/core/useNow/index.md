@@ -4,14 +4,10 @@
 
 ## Usage
 
-```jsx
+Returns a ref with current timestamp.
+
+```js
 import { useNow } from '@vueuse/core'
 
-export default {
-  setup() {
-    const now = useNow()
-
-    return { now }
-  },
-}
+const now = useNow()
 ```

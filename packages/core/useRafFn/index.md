@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { useRafFn } from '@vueuse/core'
 
 useRafFn((elapsed) => {

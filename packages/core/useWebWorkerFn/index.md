@@ -7,7 +7,7 @@
 
 ### Basic example
 
-```jsx
+```js
 import { useWebWorkerFn } from '@vueuse/core'
 
 const { workerFn } = useWebWorkerFn(() => {
@@ -17,17 +17,18 @@ const { workerFn } = useWebWorkerFn(() => {
 
 ### With dependencies
 
-```ts
+```ts {7-9}
 import { useWebWorkerFn } from '@vueuse/core'
 
-const fn = dates => dates.sort(dateFns.compareAsc)
-
-const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(fn, {
-  timeout: 50000, // 5 seconds
-  dependencies: [
-    "https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js" // dateFns
-  ],
-})
+const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
+  dates => dates.sort(dateFns.compareAsc), 
+  {
+    timeout: 50000, // 5 seconds
+    dependencies: [
+      'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js' // dateFns
+    ],
+  }
+)
 ```
 
 ## Web Worker
