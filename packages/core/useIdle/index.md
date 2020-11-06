@@ -1,10 +1,10 @@
 # useIdle
 
-> Tracks whether the user is being inactive
+> Tracks whether the user is being inactive.
 
 ## Usage
 
-```jsx
+```js
 import { useIdle } from '@vueuse/core'
 
 export default {
@@ -15,3 +15,5 @@ export default {
   },
 }
 ```
+
+See the typing and jsdoc fore more options

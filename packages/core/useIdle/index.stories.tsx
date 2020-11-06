@@ -12,12 +12,13 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { idle, lastActive } = useIdle(5000, false, undefined, 20)
+      const { idle, lastActive } = useIdle(5000, {
+        throttleDelay: 20,
+      })
+
       const now = useNow()
 
-      const idledFor = computed(() => {
-        return Math.floor((now.value - lastActive.value) / 1000)
-      })
+      const idledFor = computed(() => Math.floor((now.value - lastActive.value) / 1000))
 
       return {
         idle,
@@ -29,8 +30,8 @@ defineDemo(
 
     template: html`
       <div>
-          <note>For demonstraction purpose, the idle timer is set to <b>5s</b>.</note>
-          <p>Idle: {{idle.toString()}}</p>
+          <note>For demonstraction purpose, the idle timout is set to <b>5s</b> in this demo (default 1min).</note>
+          <p>Idle: {{idle}}</p>
           <p>Inactive: {{idledFor}}s</p>
       </div>
     `,
