@@ -12,7 +12,9 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        orientation: reactive(useDeviceOrientation()),
+        orientation: reactive(useDeviceOrientation({
+          window: window.parent,
+        })),
       }
     },
 

@@ -12,7 +12,9 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        motion: reactive(useDeviceMotion()),
+        motion: reactive(useDeviceMotion({
+          window: window.parent,
+        })),
       }
     },
 
