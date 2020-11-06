@@ -12,7 +12,6 @@ const sections = [
   'Utilities',
   '@Integrations',
   '@Firebase',
-  '@i18n',
   '@RxJS',
 ]
 

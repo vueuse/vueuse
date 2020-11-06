@@ -165,13 +165,6 @@
           "docs": "https://vueuse.js.org/?path=/story/state--usestorage",
           "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)",
           "depreacted": false
-        },
-        {
-          "name": "useStoragePlain",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--usestorageplain",
-          "description": "⚠ DEPRECATED",
-          "depreacted": true
         }
       ],
       "Sensors": [
@@ -640,41 +633,6 @@
           "category": "@Firebase",
           "docs": "https://vueuse.js.org/?path=/story/@firebase--usertdb",
           "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "i18n": {
-    "info": {
-      "name": "i18n",
-      "display": "i18n",
-      "deprecated": true,
-      "description": "[deprecated] Composition wrapper for vue-i18n",
-      "addon": true,
-      "external": [
-        "vue-i18n"
-      ],
-      "globals": {
-        "vue-i18n": "VueI18n"
-      }
-    },
-    "dir": "packages/i18n",
-    "docs": "https://vueuse.js.org/?path=/story/i18n--readme",
-    "categories": {
-      "@i18n": [
-        {
-          "name": "createI18n",
-          "category": "@i18n",
-          "docs": "https://vueuse.js.org/?path=/story/@i18n--createi18n",
-          "description": "create a global i18n instance to be reused",
-          "depreacted": false
-        },
-        {
-          "name": "useI18n",
-          "category": "@i18n",
-          "docs": "https://vueuse.js.org/?path=/story/@i18n--usei18n",
-          "description": "use vue-i18n instance",
           "depreacted": false
         }
       ]
