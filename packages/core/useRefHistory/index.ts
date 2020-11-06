@@ -136,6 +136,22 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const isTracking = ref(true)
 
   /** counter for how many following changes to be ignored */
+  // ignoreCounter is incremented before there is a history operation
+  // affecting the current ref value (undo, redo, revert).
+  //
+  // - flush 'sync'
+  // Every time there is a history operation, the sync watcher will
+  // trigger but the change will not be committed because it the
+  // ignoreCounter is not zero. Then it is reset to 0.
+  // syncCounter is not used in this case
+  //
+  // - flush 'pre' and 'post'
+  // syncCounter is incremented in sync with every change to the
+  // current ref value. This let us know how many times the ref
+  // was modified and support chained sync operations. If there
+  // are more sync triggers than the ignore count, the we now
+  // there are modifications in the current ref value that we
+  // need to commit
   const ignoreCounter = ref(0)
   const syncCounter = ref(0)
 
@@ -158,6 +174,9 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const commit = () => {
+    // This guard only applies for flush 'pre' and 'post'
+    // If the user triggers a commit manually, then reset the syncCounter
+    // so we do not trigger an extra commit in the async watcher
     syncCounter.value = ignoreCounter.value
 
     undoStack.value.unshift({
@@ -177,7 +196,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
         current,
         () => {
           if (ignoreCounter.value > 0) {
-            ignoreCounter.value--
+            ignoreCounter.value = 0
             return
           }
 
@@ -198,6 +217,8 @@ export function useRefHistory<Raw, Serialized = Raw>(
       watch(
         current,
         () => {
+          // If a history operation was performed (ignoreCounter > 0) and there are
+          // no other changes to the current ref value afterwards, then ignore this commit
           const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
           ignoreCounter.value = 0
           syncCounter.value = 0
