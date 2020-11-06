@@ -5,7 +5,7 @@ import { useTransition } from '.'
 describe('useTransition', () => {
   it('transitions between values', (done) => {
     const { vm } = renderHook(() => {
-      const baseValue = ref(0);
+      const baseValue = ref(0)
 
       const transitionedValue = useTransition(baseValue, {
         duration: 100,
@@ -14,7 +14,7 @@ describe('useTransition', () => {
 
       return {
         baseValue,
-        transitionedValue
+        transitionedValue,
       }
     })
 
@@ -30,7 +30,7 @@ describe('useTransition', () => {
       // and the transitioned value should be approximately 0.5
       expect(vm.baseValue).toBe(1)
       expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
-      
+
       setTimeout(() => {
         // once the transition is complete, both values should be 1
         expect(vm.baseValue).toBe(1)
