@@ -11,20 +11,26 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const count = ref(0)
+      const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好']
+      const word = ref('Hello')
 
-      useIntervalFn(() => {
-        count.value++
-      }, 1000)
+      const { activated, start, stop } = useIntervalFn(() => {
+        word.value = greetings[Math.round(Math.random() * (greetings.length - 1))]
+      }, 500)
 
       return {
-        count,
+        word,
+        activated,
+        start,
+        stop,
       }
     },
 
     template: html`
       <div>
-        <p>Seconds passed: {{count}}</p>
+        <p>{{word}}</p>
+        <button @click='stop' class="orange" v-if='activated'>Stop</button>
+        <button @click='start' v-if='!activated'>Start</button>
       </div>
     `,
   }),

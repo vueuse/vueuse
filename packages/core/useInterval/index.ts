@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
 
-export function useInterval(interval = 1000, startRightNow = true) {
+export function useInterval(interval = 1000, immediate = true) {
   let timer: any = null
   const counter = ref(0)
 
@@ -19,8 +19,8 @@ export function useInterval(interval = 1000, startRightNow = true) {
     }, interval)
   }
 
-  if (startRightNow)
-    tryOnMounted(start)
+  if (immediate)
+    start()
 
   tryOnUnmounted(stop)
 

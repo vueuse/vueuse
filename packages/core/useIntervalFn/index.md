@@ -1,23 +1,13 @@
 # useIntervalFn
 
-> Simple wrapper for `setInterval`
+> Simple wrapper for `setInterval`.
 
 ## Usage
 
-```jsx
+```js
 import { useIntervalFn } from '@vueuse/core'
 
-const Demo = defineComponent({
-  setup() {
-    const counter = ref(0)
-
-    const { start, stop } = useIntervalFn(() => {
-      counter.value++
-    }, 1000)
-
-    return {
-      counter,
-    }
-  },
-})
+const { start, stop } = useIntervalFn(() => {
+  /* your function */
+}, 1000)
 ```
