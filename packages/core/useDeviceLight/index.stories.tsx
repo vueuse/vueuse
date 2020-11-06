@@ -13,7 +13,7 @@ defineDemo(
     setup() {
       return {
         light: useDeviceLight({
-          window: window.parent
+          window: window.parent,
         }),
       }
     },
