@@ -1,3 +1,4 @@
+import { nextTick } from 'vue-demi'
 import { renderHook } from '../../_docs/tests'
 import { useStorage } from '.'
 
@@ -27,7 +28,7 @@ describe('useStorage', () => {
     expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
 
     instance.ref = 'b'
-    await instance.$nextTick()
+    await nextTick()
 
     expect(instance.ref).toBe('b')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
@@ -47,17 +48,17 @@ describe('useStorage', () => {
     expect(instance.ref).toBe(0)
 
     instance.ref = 2
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2')
 
     instance.ref = -1
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '-1')
 
     instance.ref = 2.3
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')
   })
@@ -76,12 +77,12 @@ describe('useStorage', () => {
     expect(instance.ref).toBe(true)
 
     instance.ref = false
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
 
     instance.ref = true
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
   })
@@ -110,7 +111,7 @@ describe('useStorage', () => {
     }).vm
 
     instance.ref = '2'
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2')
   })
@@ -137,18 +138,18 @@ describe('useStorage', () => {
     }).vm
 
     instance.ref.name = 'b'
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
     instance.ref.data = 321
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
     // @ts-ignore
     instance.ref = null
-    await instance.$nextTick()
+    await nextTick()
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
   })
