@@ -1,3 +1,4 @@
+import { toUnicode } from 'punycode'
 import { ref } from 'vue-demi'
 import { useRefHistory } from '.'
 import { renderHook } from '../../_docs/tests'
@@ -256,11 +257,11 @@ describe('useRefHistory', () => {
   })
 
   test('pre: commit', async() => {
-    renderHook(() => {
-    })
+    const instance = renderHook(() => {
+    }).vm
 
     const v = ref(0)
-    const { commit, history } = useRefHistory(v)
+    const { commit, history, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].value).toBe(0)
@@ -269,6 +270,15 @@ describe('useRefHistory', () => {
 
     expect(history.value.length).toBe(2)
     expect(history.value[0].value).toBe(0)
+    expect(history.value[1].value).toBe(0)
+
+    undo()
+    v.value = 2
+    commit()
+    await instance.$nextTick()
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].value).toBe(2)
     expect(history.value[1].value).toBe(0)
   })
 

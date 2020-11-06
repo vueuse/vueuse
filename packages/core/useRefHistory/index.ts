@@ -147,6 +147,8 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const commit = () => {
+    syncCounter.value = ignoreCounter.value
+
     undoStack.value.unshift({
       value: _dump(current.value),
       timestamp: timestamp(),
@@ -179,12 +181,10 @@ export function useRefHistory<Raw, Serialized = Raw>(
     )
   }
   else {
-    commit()
-
     const _asyncStop = watch(
       current,
       () => {
-        const ignore = ignoreCounter.value === syncCounter.value
+        const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
         ignoreCounter.value = 0
         syncCounter.value = 0
         if (ignore)
@@ -195,6 +195,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
       },
       {
         deep: options.deep,
+        immediate: true,
         flush: _flush,
       },
     )
