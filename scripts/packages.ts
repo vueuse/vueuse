@@ -65,20 +65,6 @@ export const packages: PackageManifest[] = [
       'firebase/app': 'firebase',
     },
   },
-  // ====== deprecated =====
-  {
-    name: 'i18n',
-    display: 'i18n',
-    deprecated: true,
-    description: '[deprecated] Composition wrapper for vue-i18n',
-    addon: true,
-    external: [
-      'vue-i18n',
-    ],
-    globals: {
-      'vue-i18n': 'VueI18n',
-    },
-  },
 ]
 
 export const activePackages = packages.filter(i => !i.deprecated)
