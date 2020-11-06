@@ -15,6 +15,14 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   deep?: boolean
 
   /**
+   * The flush option allows for greater control over the timing of a history point, default to 'pre'
+   *
+   * Possible values: 'pre', 'post', 'sync'
+   * It works in the same way as the flush option in watch and watch effect in vue reactivity
+   */
+  flush?: 'pre' | 'post' | 'sync'
+
+  /**
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
@@ -115,9 +123,28 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const tracking = ref(true)
+  const ignoreCounter = ref(0)
+  const syncCounter = ref(0)
 
+  const _flush = options.flush || 'pre'
   const _dump = options.dump || (options.deep ? fnClone : fnBypass)
   const _parse = options.parse || fnBypass
+
+  const _setCurrentValue = (value: Serialized) => {
+    // If there were already changes in the state, they will be ignored
+    // examples:
+    //   modify, undo
+    //   undo, modify, undo
+    syncCounter.value = ignoreCounter.value
+
+    // We support changes that are done after the last history operation
+    // examples:
+    //   undo, modify
+    //   undo, undo, modify
+    ignoreCounter.value++
+
+    current.value = _parse(value)
+  }
 
   const commit = () => {
     undoStack.value.unshift({
@@ -131,18 +158,61 @@ export function useRefHistory<Raw, Serialized = Raw>(
       redoStack.value.splice(0, redoStack.value.length)
   }
 
-  const _stop = watch(
-    current,
-    () => {
-      if (tracking.value)
-        commit()
-    },
-    {
-      deep: options.deep,
-      immediate: true,
-      flush: 'sync',
-    },
-  )
+  let _stop: () => void
+  if (_flush === 'sync') {
+    _stop = watch(
+      current,
+      () => {
+        if (ignoreCounter.value > 0) {
+          ignoreCounter.value--
+          return
+        }
+
+        if (tracking.value)
+          commit()
+      },
+      {
+        deep: options.deep,
+        immediate: true,
+        flush: 'sync',
+      },
+    )
+  }
+  else {
+    commit()
+
+    const _asyncStop = watch(
+      current,
+      () => {
+        const ignore = ignoreCounter.value === syncCounter.value
+        ignoreCounter.value = 0
+        syncCounter.value = 0
+        if (ignore)
+          return
+
+        if (tracking.value)
+          commit()
+      },
+      {
+        deep: options.deep,
+        flush: _flush,
+      },
+    )
+    const _syncStop = watch(
+      current,
+      () => {
+        syncCounter.value++
+      },
+      {
+        deep: options.deep,
+        flush: 'sync',
+      },
+    )
+    _stop = () => {
+      _asyncStop()
+      _syncStop()
+    }
+  }
 
   const pause = () => {
     tracking.value = false
@@ -160,42 +230,27 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const undo = () => {
-    const previous = tracking.value
-    tracking.value = false
-
     const state = undoStack.value.shift()
 
     if (state)
       redoStack.value.unshift(state)
     if (undoStack.value[0])
-      current.value = _parse(undoStack.value[0].value)
-
-    tracking.value = previous
+      _setCurrentValue(undoStack.value[0].value)
   }
 
   const redo = () => {
-    const previous = tracking.value
-    tracking.value = false
-
     const state = redoStack.value.shift()
 
     if (state) {
-      current.value = _parse(state.value)
+      _setCurrentValue(state.value)
       undoStack.value.unshift(state)
     }
-
-    tracking.value = previous
   }
 
   const reset = () => {
-    const previous = tracking.value
-    tracking.value = false
-
     const state = undoStack.value[0]
     if (state)
-      current.value = _parse(state.value)
-
-    tracking.value = previous
+      _setCurrentValue(state.value)
   }
 
   const batch = (fn: (cancel: () => void) => void) => {
