@@ -7,8 +7,8 @@
 ```js
 import { useShare } from '@vueuse/core'
 
-function onShare() {
-  useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
-}
+const { share, isSupported } = useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
+
+if (isSupported) share()
 ```
 

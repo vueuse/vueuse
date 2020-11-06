@@ -11,14 +11,18 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return {
-        share: () => useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href }),
-      }
+      return useShare({
+        title: 'Hello',
+        text: 'Hello my friend!',
+        url: location.href,
+      })
     },
 
     template: html`
       <div>
-        <button @click="share">Share</button>
+        <button :disabled="!isSupported" @click="share">
+          {{ isSupported ? 'Share' : 'Web share not supported!' }}
+        </button>
       </div>
     `,
   }),

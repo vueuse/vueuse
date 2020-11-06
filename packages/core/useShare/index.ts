@@ -10,16 +10,24 @@ interface NavigatorWithShare {
   canShare?: (data: ShareOptions) => boolean
 }
 
-export async function useShare(shareOpts: ShareOptions) {
+export function useShare(shareOpts: ShareOptions) {
   const _navigator = (window.navigator as NavigatorWithShare)
+  const isSupported = _navigator && _navigator.share
 
-  if (_navigator && _navigator.share) {
-    let granted = true
+  const share = () => {
+    if (isSupported) {
+      let granted = true
 
-    if (shareOpts.files && _navigator.canShare)
-      granted = _navigator.canShare({ files: shareOpts.files })
+      if (shareOpts.files && _navigator.canShare)
+        granted = _navigator.canShare({ files: shareOpts.files })
 
-    if (granted)
-      return _navigator.share(shareOpts)
+      if (granted)
+        return _navigator.share!(shareOpts)
+    }
+  }
+
+  return {
+    isSupported,
+    share,
   }
 }
