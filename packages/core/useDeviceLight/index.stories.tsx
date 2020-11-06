@@ -12,7 +12,9 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        light: useDeviceLight(),
+        light: useDeviceLight({
+          window: window.parent,
+        }),
       }
     },
 

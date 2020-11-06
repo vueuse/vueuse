@@ -12,7 +12,7 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        pixelRatio: useDevicePixelRatio(),
+        pixelRatio: useDevicePixelRatio({ window: window.parent }),
       }
     },
 
