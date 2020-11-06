@@ -4,11 +4,11 @@ Describe your task...
 
 ## Checklist 
 
-This is a checklist of all the functions of VueUse. It's is useful for review or making changes the go through every functions.
+This is a checklist of all the functions of VueUse. It's is useful for review or making changes the go through every function.
 
 <!--LIST_STARTS-->
 
-- [ ] shared (16)
+### shared (16)
   - [ ] asyncComputed
   - [ ] biSyncRef
   - [ ] controlledComputed
@@ -26,7 +26,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] utils
   - [ ] when
 
-- [ ] core (60)
+### core (60)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onStartTyping
@@ -88,22 +88,22 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useWindowScroll
   - [ ] useWindowSize
 
-- [ ] integrations (3)
+### integrations (3)
   - [ ] useAxios
   - [ ] useCookies
   - [ ] useQRCode
 
-- [ ] rxjs (4)
+### rxjs (4)
   - [ ] from
   - [ ] toObserver
   - [ ] useObservable
   - [ ] useSubscription
 
-- [ ] firebase (2)
+### firebase (2)
   - [ ] useFirestore
   - [ ] useRTDB
 
-- [ ] i18n (2)
+### i18n (2)
   - [ ] createI18n
   - [ ] useI18n
 

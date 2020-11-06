@@ -201,7 +201,7 @@ async function updateChecklist(indexes: PackageIndexes) {
 
     functions.sort((a, b) => a.name.localeCompare(b.name))
 
-    list += `- [ ] ${pkg} (${functions.length})\n`
+    list += `### ${pkg} (${functions.length})\n`
 
     for (const { name } of functions)
       list += `  - [ ] ${name}\n`
