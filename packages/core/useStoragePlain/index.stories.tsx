@@ -1,34 +1,26 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useStoragePlain } from '.'
 
-const Demo = defineComponent({
-  setup() {
-    const store = useStoragePlain('vue-use-locale-storage-plain', 'Hello World!')
-
-    return {
-      store,
-    }
+defineDemo(
+  {
+    name: 'useStoragePlain',
+    category: 'State',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        store: useStoragePlain('vue-use-locale-storage-plain', 'Hello World!'),
+      }
+    },
 
-  render(this: Vue & {store: string }) {
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
           <note>The following message will persist</note>
-          <input v-model={this.store} type="text"/>
-        </div>
-        {Docs}
+          <input v-model="store" type="text"/>
       </div>
-    )
-  },
-})
-
-storiesOf('State', module)
-  .add('useStoragePlain', () => Demo as any)
+    `,
+  }),
+)
