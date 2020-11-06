@@ -1,54 +1,39 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useTimeoutFn } from '.'
 
-type Inject = {
-  ready: boolean
-  restart: Function
-  text: string
-}
-
-const Demo = defineComponent({
-  setup() {
-    const defaultText = 'Please wait 3 seconds'
-    const text = ref(defaultText)
-    const { ready, start } = useTimeoutFn(() => {
-      text.value = 'Fired!'
-    }, 3000)
-
-    const restart = () => {
-      text.value = defaultText
-      start()
-    }
-
-    return {
-      ready,
-      restart,
-      text,
-    }
+defineDemo(
+  {
+    name: 'useTimeoutFn',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      const defaultText = 'Please wait 3 seconds'
+      const text = ref(defaultText)
+      const { ready, start } = useTimeoutFn(() => {
+        text.value = 'Fired!'
+      }, 3000)
 
-  render(this: Vue & Inject) {
-    const { ready, restart, text } = this
+      const restart = () => {
+        text.value = defaultText
+        start()
+      }
 
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
+      return {
+        ready,
+        restart,
+        text,
+      }
+    },
 
-    return (
+    template: html`
       <div>
-
-        <div id="demo">
-          <p>{text}</p>
-          <button onClick={() => restart()} disabled={!ready}>Start Again</button>
-        </div>
-        {Docs}
+        <p>{{text}}</p>
+        <button @click="restart()" :disabled="!ready">Start Again</button>
       </div>
-    )
-  },
-})
-
-storiesOf('Animation', module)
-  .add('useTimeoutFn', () => Demo as any)
+    `,
+  }),
+)
