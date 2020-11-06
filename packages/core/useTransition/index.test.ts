@@ -9,7 +9,7 @@ describe('useTransition', () => {
 
       const transitionedValue = useTransition(baseValue, {
         duration: 100,
-        transition: n => n, // a simple linear transition
+        transition: [0, 0, 1, 1], // a simple linear transition
       })
 
       return {
