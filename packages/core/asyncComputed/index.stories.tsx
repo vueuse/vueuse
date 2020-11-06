@@ -11,30 +11,34 @@ defineDemo(
   },
   defineComponent({
     setup(_props) {
-      const packageName = ref('@vueuse/core')
+      const name = ref('@vueuse/core')
+      const isFetching = ref(false)
 
-      const [downloads, isFetchingDownloads] = asyncComputed((onCancel) => {
-        const abortController = new AbortController()
+      const downloads = asyncComputed(
+        async(onCancel) => {
+          const abortController = new AbortController()
 
-        onCancel(() => {
-          abortController.abort()
-        })
+          onCancel(() => abortController.abort())
 
-        return fetch(`https://api.npmjs.org/downloads/point/last-week/${packageName.value}`, {
-          signal: abortController.signal,
-        })
-          .then(response => response.ok ? response.json() : { downloads: '—' })
-          .then(result => result.downloads)
-      }, 0)
+          return await fetch(
+            `https://api.npmjs.org/downloads/point/last-week/${name.value}`,
+            { signal: abortController.signal },
+          )
+            .then(response => response.ok ? response.json() : { downloads: '—' })
+            .then(result => result.downloads)
+        },
+        0,
+        isFetching,
+      )
 
-      return { packageName, downloads, isFetchingDownloads }
+      return { name, downloads, isFetching }
     },
 
     template: html`
       <div>
-        <note>npm package name</note>
-        <input :value="packageName" @change="packageName = $event.currentTarget.value"/>
-        <p>Downloads: <b>{{ isFetchingDownloads ? '...' : (downloads + ' / week') }}</b></p>
+        <note>npm weekly downloads lookup</note>
+        <input v-model="name" placeholder="npm package name"/>
+        <p>Downloads: <b>{{ isFetching ? '...' : (downloads + ' / week') }}</b></p>
       </div>
     `,
   }),
