@@ -1,4 +1,3 @@
-import { toUnicode } from 'punycode'
 import { ref } from 'vue-demi'
 import { useRefHistory } from '.'
 import { renderHook } from '../../_docs/tests'
@@ -282,7 +281,7 @@ describe('useRefHistory', () => {
     expect(history.value[1].value).toBe(0)
   })
 
-  test('pre: pause and resume', async () => {
+  test('pre: pause and resume', async() => {
     const instance = renderHook(() => {
     }).vm
 
