@@ -1,42 +1,24 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
+import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useTimeout } from '.'
 
-type Inject = {
-  ready: boolean
-  start: Function
-}
-
-const Demo = defineComponent({
-  setup() {
-    const { ready, start } = useTimeout(1000)
-
-    return {
-      ready,
-      start,
-    }
+defineDemo(
+  {
+    name: 'useTimeout',
+    category: 'Animation',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useTimeout(1000)
+    },
 
-  render(this: Vue & Inject) {
-    const { ready, start } = this
-
-    // @ts-ignore
-    const Docs = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>Ready: {ready.toString()}</p>
-          <button onClick={() => start()} disabled={!ready}>Start Again</button>
-        </div>
-        {Docs}
+        <p>Ready: {{ready.toString()}}</p>
+        <button @click="start()" :disabled="!ready">Start Again</button>
       </div>
-    )
-  },
-})
-
-storiesOf('Animation', module)
-  .add('useTimeout', () => Demo as any)
+    `,
+  }),
+)
