@@ -11,6 +11,8 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    * Watch for deep changes, default to false
    *
    * When set to true, it will also create clones for values store in the history
+   *
+   * @default false
    */
   deep?: boolean
 
@@ -19,6 +21,8 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    *
    * Possible values: 'pre', 'post', 'sync'
    * It works in the same way as the flush option in watch and watch effect in vue reactivity
+   *
+   * @default 'pre'
    */
   flush?: 'pre' | 'post' | 'sync'
 
@@ -120,15 +124,22 @@ export function useRefHistory<Raw, Serialized = Raw>(
   current: Ref<Raw>,
   options: UseRefHistoryOptions<Raw, Serialized> = {},
 ): UseRefHistoryReturn<Raw, Serialized> {
+  const {
+    deep = false,
+    flush = 'pre',
+    dump = (options.deep ? fnClone : fnBypass),
+    parse = fnBypass,
+  } = options
+
   const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-  const tracking = ref(true)
+  const isTracking = ref(true)
+
+  /** counter for how many following changes to be ignored */
   const ignoreCounter = ref(0)
   const syncCounter = ref(0)
 
-  const _flush = options.flush || 'pre'
-  const _dump = options.dump || (options.deep ? fnClone : fnBypass)
-  const _parse = options.parse || fnBypass
+  const disposables: (() => void)[] = []
 
   const _setCurrentValue = (value: Serialized) => {
     // If there were already changes in the state, they will be ignored
@@ -143,14 +154,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
     //   undo, undo, modify
     ignoreCounter.value++
 
-    current.value = _parse(value)
+    current.value = parse(value)
   }
 
   const commit = () => {
     syncCounter.value = ignoreCounter.value
 
     undoStack.value.unshift({
-      value: _dump(current.value),
+      value: dump(current.value),
       timestamp: timestamp(),
     })
 
@@ -160,67 +171,69 @@ export function useRefHistory<Raw, Serialized = Raw>(
       redoStack.value.splice(0, redoStack.value.length)
   }
 
-  let _stop: () => void
-  if (_flush === 'sync') {
-    _stop = watch(
-      current,
-      () => {
-        if (ignoreCounter.value > 0) {
-          ignoreCounter.value--
-          return
-        }
+  if (flush === 'sync') {
+    disposables.push(
+      watch(
+        current,
+        () => {
+          if (ignoreCounter.value > 0) {
+            ignoreCounter.value--
+            return
+          }
 
-        if (tracking.value)
-          commit()
-      },
-      {
-        deep: options.deep,
-        immediate: true,
-        flush: 'sync',
-      },
+          if (isTracking.value)
+            commit()
+        },
+        {
+          deep,
+          immediate: true,
+          flush: 'sync',
+        },
+      ),
     )
   }
+  // flush for 'pre` and 'post'
   else {
-    const _asyncStop = watch(
-      current,
-      () => {
-        const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
-        ignoreCounter.value = 0
-        syncCounter.value = 0
-        if (ignore)
-          return
+    disposables.push(
+      watch(
+        current,
+        () => {
+          const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
+          ignoreCounter.value = 0
+          syncCounter.value = 0
+          if (ignore)
+            return
 
-        if (tracking.value)
-          commit()
-      },
-      {
-        deep: options.deep,
-        immediate: true,
-        flush: _flush,
-      },
+          if (isTracking.value)
+            commit()
+        },
+        {
+          deep: options.deep,
+          immediate: true,
+          flush,
+        },
+      ),
     )
-    const _syncStop = watch(
-      current,
-      () => {
-        syncCounter.value++
-      },
-      {
-        deep: options.deep,
-        flush: 'sync',
-      },
+    disposables.push(
+      watch(
+        current,
+        () => {
+          syncCounter.value++
+        },
+        {
+          deep: options.deep,
+          flush: 'sync',
+        },
+      ),
     )
-    _stop = () => {
-      _asyncStop()
-      _syncStop()
-    }
   }
 
   const pause = () => {
-    tracking.value = false
+    isTracking.value = false
   }
 
   const resume = (commitNow?: boolean) => {
-    tracking.value = true
+    isTracking.value = true
     if (commitNow)
       commit()
   }
@@ -255,22 +268,22 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const batch = (fn: (cancel: () => void) => void) => {
-    const previous = tracking.value
-    tracking.value = false
+    const previous = isTracking.value
+    isTracking.value = false
     let canceled = false
 
     const cancel = () => canceled = true
 
     fn(cancel)
 
-    tracking.value = previous
+    isTracking.value = previous
 
     if (!canceled)
       commit()
   }
 
   const dispose = () => {
-    _stop()
+    disposables.forEach(fn => fn())
     clear()
   }
 
@@ -279,7 +292,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     undoStack,
     redoStack,
     history: undoStack,
-    isTracking: tracking,
+    isTracking,
 
     clear,
     pause,
