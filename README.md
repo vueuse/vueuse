@@ -136,7 +136,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useIdle`](https://vueuse.js.org/?path=/story/sensors--useidle) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.js.org/?path=/story/sensors--useintersectionobserver) — detects that a target element's visibility
   - [`useMouse`](https://vueuse.js.org/?path=/story/sensors--usemouse) — reactive mouse position
-  - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position in an element
+  - [`useMouseInElement`](https://vueuse.js.org/?path=/story/sensors--usemouseinelement) — reactive mouse position related to an element
   - [`useNetwork`](https://vueuse.js.org/?path=/story/sensors--usenetwork) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.js.org/?path=/story/sensors--useonline) — reactive online state
   - [`usePageLeave`](https://vueuse.js.org/?path=/story/sensors--usepageleave) — reactive state to show whether mouse leaves the page
