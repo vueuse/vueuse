@@ -1,6 +1,6 @@
-export function useDebounceFn<T extends Function>(fn: T, delay = 200): T {
+export function useDebounceFn<T extends Function, D extends number>(fn: T, delay: D = 200 as any ): D extends 0 ? T : () => void {
   if (delay <= 0)
-    return fn
+    return fn as any
 
   let timer: ReturnType<typeof setTimeout> | undefined
 
@@ -16,5 +16,5 @@ export function useDebounceFn<T extends Function>(fn: T, delay = 200): T {
     timer = setTimeout(exec, delay)
   }
 
-  return wrapper as any as T
+  return wrapper as any
 }
