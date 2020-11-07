@@ -1,6 +1,6 @@
 import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from 'vue-demi'
-import { clamp, isFunction, noop } from '@vueuse/shared'
+import { clamp, isFunction } from '@vueuse/shared'
 
 type CubicBezier = [number, number, number, number]
 
@@ -76,30 +76,31 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
     ? normalizedOptions.transition
     : cubicBezier(normalizedOptions.transition)
 
-  let stop = noop
+  let diff = 0
+  let endAt = 0
+  let startAt = 0
+  let startValue = 0
 
-  watch(
-    baseNumber,
-    () => {
+  const { start, stop } = useRafFn(() => {
+    const now = Date.now()
+    const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+
+    number.value = startValue + (diff * getValue(progress))
+
+    if (progress >= 1)
       stop()
+  }, { startNow: false })
 
-      const diff = baseNumber.value - number.value
-      const startValue = number.value
-      const startAt = Date.now()
-      const endAt = startAt + normalizedOptions.duration
+  watch(baseNumber, () => {
+    stop()
 
-      stop = useRafFn(() => {
-        const now = Date.now()
-        const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+    diff = baseNumber.value - number.value
+    startValue = number.value
+    startAt = Date.now()
+    endAt = startAt + normalizedOptions.duration
 
-        number.value = startValue + (diff * getValue(progress))
-
-        if (progress >= 1)
-          stop()
-      }).stop
-    },
-    { immediate: true },
-  )
+    start()
+  })
 
   return number
 }
