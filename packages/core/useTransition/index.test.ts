@@ -59,7 +59,34 @@ describe('useTransition', () => {
 
     setTimeout(() => {
       expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
-      
+
+      setTimeout(() => {
+        expect(vm.transitionedValue).toBe(1)
+        done()
+      }, 100)
+    }, 50)
+  })
+
+  it('supports custom function transitions', (done) => {
+    const { vm } = renderHook(() => {
+      const baseValue = ref(0)
+
+      const transitionedValue = useTransition(baseValue, {
+        duration: 100,
+        transition: n => n,
+      })
+
+      return {
+        baseValue,
+        transitionedValue,
+      }
+    })
+
+    vm.baseValue = 1;
+
+    setTimeout(() => {
+      expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
+
       setTimeout(() => {
         expect(vm.transitionedValue).toBe(1)
         done()
