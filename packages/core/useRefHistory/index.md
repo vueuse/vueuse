@@ -40,7 +40,7 @@ When working with objects or arrays, since changing their attributes does not ch
 ```ts
 const state = ref({
   foo: 1,
-  bar: "bar",
+  bar: 'bar',
 })
 
 const { history, undo, redo } = useRefHistory(state, {
@@ -93,17 +93,17 @@ refHistory.clean() // explicitly clean all the history
 
 ### History Flush Timing
 
-From [Vue's documentation](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing): Vue's reactivity system buffers invalidated effects and flushes them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
+From [Vue's documentation](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
 
 In the same way as `watch`, you can modify the flush timing using the `flush` option.
 
-```
+```ts
 const refHistory = useRefHistory(target, {
   flush: 'sync' // options 'pre' (default), 'post' and 'sync'
 })
 ```
 
-The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
+The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi-step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
 
 ```ts
 const r = ref(0)
@@ -127,12 +127,10 @@ On the other hand, when using flush `'sync'`, you can use `batch(fn)` to generat
 
 ```ts
 const r = ref({ names: [], version: 1 })
-const { history, batch } = useRefHistory(r, {
-  flush: "sync",
-})
+const { history, batch } = useRefHistory(r, { flush: 'sync' })
 
 batch(() => {
-  r.names.push("Lena")
+  r.names.push('Lena')
   r.version++
 })
 
