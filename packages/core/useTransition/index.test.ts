@@ -46,7 +46,7 @@ describe('useTransition', () => {
 
       const transitionedValue = useTransition(baseValue, {
         duration: 100,
-        transition: TransitionPresets.linear
+        transition: TransitionPresets.linear,
       })
 
       return {
@@ -55,7 +55,7 @@ describe('useTransition', () => {
       }
     })
 
-    vm.baseValue = 1;
+    vm.baseValue = 1
 
     setTimeout(() => {
       expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
@@ -82,7 +82,7 @@ describe('useTransition', () => {
       }
     })
 
-    vm.baseValue = 1;
+    vm.baseValue = 1
 
     setTimeout(() => {
       expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
