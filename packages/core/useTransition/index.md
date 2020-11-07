@@ -9,7 +9,7 @@ import { useTransition } from '@vueuse/core'
 
 useTransition(baseNumber, {
   duration: 1000,
-  transition: 'easeInOutCubic',
+  transition: [0.75, 0, 0.25, 1],
 })
 ```
 
