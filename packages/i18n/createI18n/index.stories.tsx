@@ -1,8 +1,5 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
+import { defineDemo, html } from '../../_docs'
 import { createI18n } from '.'
 
 const useI18n = createI18n({
@@ -17,33 +14,25 @@ const useI18n = createI18n({
   },
 })
 
-const Demo = defineComponent({
-  setup() {
-    return useI18n()
+defineDemo(
+  {
+    name: 'createI18n',
+    category: '@i18n',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useI18n()
+    },
 
-  render(this: Vue & any) {
-    const {
-      t,
-      locale,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <note>Hello in {locale}</note>
-          <p>{t('hello')}</p>
-          <br></br>
-          <button onClick={() => this.locale = locale === 'en' ? 'zhCN' : 'en'}>Switch</button>
-        </div>
-        {Docs}
+        <note>Hello in {{locale}}</note>
+        <p>{{t('hello')}}</p>
+        <br></br>
+        <button @click="locale = (locale === 'en' ? 'zhCN' : 'en')">Switch</button>
       </div>
-    )
-  },
-})
-
-storiesOf('@i18n', module)
-  .add('createI18n', () => Demo as any)
+    `,
+  }),
+)
