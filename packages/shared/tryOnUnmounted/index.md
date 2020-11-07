@@ -4,10 +4,9 @@
 
 ## Usage
 
-```jsx
+```js
 import { tryOnUnmounted } from '@vueuse/core'
 
-// same as `onUnmounted`
 tryOnUnmounted(() => {
 
 })

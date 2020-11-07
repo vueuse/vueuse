@@ -4,14 +4,8 @@
 
 ## Usage
 
-```jsx
+```js
 import { useWindowSize } from '@vueuse/core'
 
-export default {
-  setup() {
-    const { width, height } = useWindowSize()
-
-    return { width, height }
-  },
-}
+const { width, height } = useWindowSize()
 ```

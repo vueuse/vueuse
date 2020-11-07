@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { useStorage } from '@vueuse/core'
 
 // bind object

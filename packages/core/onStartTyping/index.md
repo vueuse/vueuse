@@ -8,7 +8,7 @@
 <input ref="input" type="text" placeholder="Start typing to focus" />
 ```
 
-```ts
+```ts {7-10}
 import { onStartTyping } from '@vueuse/core'
 
 export default {

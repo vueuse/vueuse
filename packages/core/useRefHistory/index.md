@@ -4,7 +4,7 @@
 
 ## Usage
 
-```ts
+```ts {5}
 import { ref } from 'vue' 
 import { useRefHistory } from '@vueuse/core'
 

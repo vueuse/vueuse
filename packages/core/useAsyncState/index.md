@@ -4,22 +4,14 @@
 
 ## Usage
 
-```jsx
-import { useAsyncState } from '@vueuse/core'
+```ts
 import axios from 'axios'
+import { useAsyncState } from '@vueuse/core'
 
-export default {
-  setup() {
-    const { state, ready } = useAsyncState(
-      axios
-        .get('https://jsonplaceholder.typicode.com/todos/1')
-        .then(t => t.data),
-      {
-        id: null,
-      },
-    )
-
-    return { state, ready }
-  },
-}
+const { state, ready } = useAsyncState(
+  axios
+    .get('https://jsonplaceholder.typicode.com/todos/1')
+    .then(t => t.data),
+  { id: null },
+)
 ```

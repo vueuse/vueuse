@@ -4,14 +4,8 @@
 
 ## Basic Usage
 
-```jsx
+```js {3}
 import { useMouse } from '@vueuse/core'
 
-export default {
-  setup() {
-    const { x, y } = useMouse()
-
-    return { x, y }
-  },
-}
+const { x, y } = useMouse()
 ```

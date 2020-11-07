@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js {4}
 import { useInterval } from '@vueuse/core'
 
 // count will increase every 200ms

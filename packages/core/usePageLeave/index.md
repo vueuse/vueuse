@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { usePageLeave } from '@vueuse/core'
 
 const isLeft = usePageLeave()

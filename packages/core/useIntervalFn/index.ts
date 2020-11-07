@@ -1,24 +1,32 @@
-import { tryOnMounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 
-export function useIntervalFn(cb: Function, interval = 1000, startRightNow = true) {
+export function useIntervalFn(cb: Function, interval = 1000, immediate = true) {
   let timer: any = null
+  const activated = ref(false)
 
-  function stop() {
+  function clean() {
     if (timer) {
       clearInterval(timer)
       timer = null
     }
   }
 
+  function stop() {
+    activated.value = false
+    clean()
+  }
+
   function start() {
-    stop()
+    activated.value = true
+    clean()
     timer = setInterval(cb, interval)
   }
 
-  if (startRightNow)
+  if (immediate)
     start()
 
-  tryOnMounted(stop)
+  tryOnUnmounted(stop)
 
-  return { start, stop }
+  return { activated, start, stop }
 }

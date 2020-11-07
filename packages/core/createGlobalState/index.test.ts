@@ -1,3 +1,4 @@
+import { nextTick } from 'vue-demi'
 import { renderHook } from '../../_docs/tests'
 import { useStorage } from '../useStorage'
 import { createGlobalState } from '.'
@@ -30,7 +31,7 @@ describe('createGlobalState', () => {
     const vm1 = instance1.vm
 
     vm1.ref = 'b'
-    await vm1.$nextTick()
+    await nextTick()
 
     expect(vm1.ref).toBe('b')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
@@ -52,7 +53,7 @@ describe('createGlobalState', () => {
     const vm2 = instance2.vm
 
     vm2.ref = 'c'
-    await vm2.$nextTick()
+    await nextTick()
 
     expect(vm2.ref).toBe('c')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'c')
@@ -75,7 +76,7 @@ describe('createGlobalState', () => {
     const vm1 = instance1.vm
 
     vm1.ref = 'b'
-    await vm1.$nextTick()
+    await nextTick()
 
     expect(vm1.ref).toBe('b')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
@@ -95,7 +96,7 @@ describe('createGlobalState', () => {
     const vm2 = instance2.vm
 
     vm2.ref = 'c'
-    await vm2.$nextTick()
+    await nextTick()
 
     expect(vm2.ref).toBe('c')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'c')
@@ -123,7 +124,7 @@ describe('createGlobalState', () => {
     const vm1 = instance1.vm
 
     vm1.ref.a = 'b'
-    await vm1.$nextTick()
+    await nextTick()
 
     expect(vm1.ref).toEqual({
       a: 'b',
@@ -151,7 +152,7 @@ describe('createGlobalState', () => {
     const vm2 = instance2.vm
 
     vm2.ref.b = 2
-    await vm2.$nextTick()
+    await nextTick()
 
     expect(vm2.ref).toEqual({
       a: 'b',
@@ -165,7 +166,7 @@ describe('createGlobalState', () => {
       a: 'c',
       b: 3,
     }
-    await vm2.$nextTick()
+    await nextTick()
 
     expect(vm2.ref).toEqual({
       a: 'c',
