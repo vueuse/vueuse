@@ -51,7 +51,7 @@ useTransition(baseNumber, {
 For more complex transitions, a custom function can be provided.
 
 ```js
-const easeOutElastic = n => {
+const easeOutElastic = (n) => {
   return n === 0
     ? 0
     : n === 1
