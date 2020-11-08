@@ -6,10 +6,9 @@
 
 ## Usage
 
-```jsx {5,16}
+```js
 import { useThrottleFn } from '@vueuse/core'
 
-// in setup()
 const throttledFn = useThrottleFn(() => {
   // do something, it will be called at most 1 time per second
 }, 1000)

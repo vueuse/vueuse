@@ -7,7 +7,12 @@
 ```js
 import { useDeviceMotion } from '@vueuse/core'
 
-const { acceleration, accelerationIncludingGravity, rotationRate, interval } = useDeviceMotion()
+const {
+  acceleration,
+  accelerationIncludingGravity,
+  rotationRate,
+  interval,
+} = useDeviceMotion()
 ```
 
 | State                        | Type     | Description                                                                                                          |

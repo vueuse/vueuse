@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, reactive, ref } from 'vue-demi'
 import { useMouseInElement } from '.'
 import { defineDemo, html } from '../../_docs'
 
@@ -13,23 +13,13 @@ defineDemo(
     setup() {
       const demoRef = ref(null)
       return {
-        ...useMouseInElement(demoRef),
         demo: demoRef,
+        mouse: reactive(useMouseInElement(demoRef)),
       }
     },
 
     template: html`
-      <pre lang="json" ref='demo'>{{ JSON.stringify({
-        x,
-        y,
-        elementX,
-        elementY,
-        elementPositionX,
-        elementPositionY,
-        elementHeight,
-        elementWidth,
-        isOutside,
-      }, null, 2) }}</pre>
+      <pre lang="json" ref='demo'>{{ JSON.stringify(mouse, null, 2) }}</pre>
     `,
   }),
 )

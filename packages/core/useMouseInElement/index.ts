@@ -44,12 +44,16 @@ export function useMouseInElement(
             width,
             height,
           } = ele.getBoundingClientRect()
-
-          if (event instanceof TouchEvent && event.touches.length <= 0)
+          if (!(event instanceof MouseEvent) && event.touches.length <= 0)
             return
 
-          x.value = event instanceof MouseEvent ? event.pageX : event.touches[0].clientX
-          y.value = event instanceof MouseEvent ? event.pageY : event.touches[0].clientY
+          x.value = event instanceof MouseEvent
+            ? event.pageX
+            : event.touches[0].clientX
+          y.value = event instanceof MouseEvent
+            ? event.pageY
+            : event.touches[0].clientY
+
           elementPositionX.value = left + window.pageXOffset
           elementPositionY.value = top + window.pageYOffset
           elementHeight.value = height
@@ -74,7 +78,9 @@ export function useMouseInElement(
           if (touch)
             document.removeEventListener('touchmove', moveHandler)
         })
-      }, { immediate: true })
+      },
+      { immediate: true },
+    )
   }
 
   return {

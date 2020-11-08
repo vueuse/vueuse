@@ -1,10 +1,7 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import firebase from 'firebase/app'
 import 'firebase/database'
+import firebase from 'firebase/app'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
+import { defineDemo, html } from '../../_docs'
 import { useRTDB } from '.'
 
 if (!firebase.apps.length) {
@@ -16,32 +13,25 @@ if (!firebase.apps.length) {
 
 const db = firebase.database()
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      todos: useRTDB(db.ref('todos')),
-    }
+defineDemo(
+  {
+    name: 'useRTDB',
+    category: '@Firebase',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        todos: useRTDB(db.ref('todos')),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      todos,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
           <note>Todos</note>
-          <pre>{JSON.stringify(todos, null, 2)}</pre>
-        </div>
-        {Docs}
+          <pre>{{JSON.stringify(todos, null, 2)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('@Firebase', module)
-  .add('useRTDB', () => Demo as any)
+    `,
+  }),
+)

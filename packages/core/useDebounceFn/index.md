@@ -6,10 +6,9 @@
 
 ## Usage
 
-```jsx {5,16}
+```js
 import { useDebounceFn } from '@vueuse/core'
 
-// in setup()
 const debouncedFn = useDebounceFn(() => {
   // do something
 }, 1000)
