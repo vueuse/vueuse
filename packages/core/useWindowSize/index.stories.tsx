@@ -1,41 +1,23 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useWindowSize } from '.'
+import { defineDemo, html } from '../../_docs'
 
-type Inject = {
-  width: number
-  height: number
-}
-
-const Demo = defineComponent({
-  setup() {
-    const { width, height } = useWindowSize()
-
-    return {
-      width,
-      height,
-    }
+defineDemo(
+  {
+    name: 'useWindowSize',
+    category: 'Sensors',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return useWindowSize()
+    },
 
-  render(this: Vue & Inject) {
-    const { width, height } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <p>{width} x {height}</p>
-        </div>
-        {Docs}
+        <p>{{width}} x {{height}}</p>
       </div>
-    )
-  },
-})
-
-storiesOf('Sensors', module)
-  .add('useWindowSize', () => Demo as any)
+    `,
+  }),
+)

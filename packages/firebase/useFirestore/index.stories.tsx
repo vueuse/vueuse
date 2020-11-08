@@ -1,11 +1,8 @@
-import 'vue-tsx-support/enable-check'
-import Vue from 'vue'
-import { storiesOf } from '@storybook/vue'
-import firebase from 'firebase/app'
 import 'firebase/firestore'
+import firebase from 'firebase/app'
 import { defineComponent } from 'vue-demi'
-import { ShowDocs } from '../../_docs/showdocs'
 import { useFirestore } from '.'
+import { defineDemo, html } from '../../_docs'
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -16,37 +13,29 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore()
 
-const Demo = defineComponent({
-  setup() {
-    return {
-      todos: useFirestore(db.collection('todos')),
-      user: useFirestore(db.collection('users').doc('ctTVGl9swtW9ghhG7vj6')),
-    }
+defineDemo(
+  {
+    name: 'useFirestore',
+    category: '@Firebase',
+    docs: require('./index.md'),
+    module,
   },
+  defineComponent({
+    setup() {
+      return {
+        todos: useFirestore(db.collection('todos')),
+        user: useFirestore(db.collection('users').doc('ctTVGl9swtW9ghhG7vj6')),
+      }
+    },
 
-  render(this: Vue & any) {
-    const {
-      todos,
-      user,
-    } = this
-
-    // @ts-ignore
-    const Docs: any = <ShowDocs md={require('./index.md')} />
-
-    return (
+    template: html`
       <div>
-        <div id="demo">
-          <note>Todos</note>
-          <pre>{JSON.stringify(todos, null, 2)}</pre>
-          <br></br>
-          <note>User</note>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </div>
-        {Docs}
+        <note>Todos</note>
+        <pre>{{JSON.stringify(todos, null, 2)}}</pre>
+        <br></br>
+        <note>User</note>
+        <pre>{{JSON.stringify(user, null, 2)}}</pre>
       </div>
-    )
-  },
-})
-
-storiesOf('@Firebase', module)
-  .add('useFirestore', () => Demo as any)
+    `,
+  }),
+)

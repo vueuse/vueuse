@@ -7,7 +7,12 @@
 ```js
 import { useDeviceOrientation } from '@vueuse/core'
 
-const { isAbsolute, alpha, beta, gamma } = useDeviceOrientation()
+const {
+  isAbsolute,
+  alpha,
+  beta,
+  gamma,
+} = useDeviceOrientation()
 ```
 
 | State      | Type     | Description                                                                                                                |

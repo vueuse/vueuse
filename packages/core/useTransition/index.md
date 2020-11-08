@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { useTransition } from '@vueuse/core'
 
 useTransition(baseNumber, {

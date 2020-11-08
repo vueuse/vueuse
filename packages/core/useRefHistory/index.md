@@ -4,8 +4,8 @@
 
 ## Usage
 
-```ts
-import { ref } from 'vue'
+```ts {5}
+import { ref } from 'vue' 
 import { useRefHistory } from '@vueuse/core'
 
 const counter = ref(0)

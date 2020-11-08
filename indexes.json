@@ -256,7 +256,7 @@
           "name": "useMouseInElement",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usemouseinelement",
-          "description": "reactive mouse position in an element",
+          "description": "reactive mouse position related to an element",
           "depreacted": false
         },
         {

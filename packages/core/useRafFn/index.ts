@@ -1,4 +1,4 @@
-import { tryOnMounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
 
 export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   const { startNow = true } = options
@@ -25,7 +25,7 @@ export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
   if (startNow)
     start()
 
-  tryOnMounted(() => stop())
+  tryOnUnmounted(() => stop())
 
   return { stop, start }
 }

@@ -4,10 +4,9 @@
 
 ## Usage
 
-```jsx
+```js
 import { tryOnMounted } from '@vueuse/core'
 
-// same as `onMounted`
 tryOnMounted(() => {
 
 })
