@@ -245,11 +245,11 @@ async function run() {
   const indexes = await readIndexes()
 
   fs.writeJSON('indexes.json', indexes, { spaces: 2 })
-  updateChecklist(indexes)
-  updateImport(indexes)
-  updatePackageREADME(indexes)
-  updateIndexREADME(indexes)
-  updatePackageJSON()
+  await updateChecklist(indexes)
+  await updateImport(indexes)
+  await updatePackageREADME(indexes)
+  await updateIndexREADME(indexes)
+  await updatePackageJSON()
 }
 
 run()
