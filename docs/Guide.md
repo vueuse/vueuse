@@ -1,8 +1,8 @@
 # 💡 Guide
 
-// TODO: intro
+VueUse is a collection of utility functions based on [Composition API](https://v3.vuejs.org/guide/composition-api-introduction.html). We assume you are already familiar with the basic ideas of [Composition API](https://v3.vuejs.org/guide/composition-api-introduction.html) before you continue the read.
 
-[Composition API](https://v3.vuejs.org/guide/composition-api-introduction.html)
+This guide is trying to explain to you some of the philosophy and recommended usages across the entire collection.
 
 ## Destructuring
 
@@ -17,9 +17,9 @@ const { x, y } = useMouse()
 console.log(x.value) // 153
 ```
 
-If you prefer to use them as object properties style, you can wrap the return value with `reactive()` to unwrap the refs. For example:
+If you prefer to use them as object properties style, you can unwrap the refs by using `reactive()`. For example:
 
-```ts {4}
+```ts
 import { reactive } from 'vue' 
 import { useMouse } from '@vueuse/core'
 
@@ -36,7 +36,6 @@ console.log(mouse.x) // 153
 ## Configurable Global Dependencies
 
 From v4.0, functions that access the browser APIs will provide options fields for you to specify the global dependencies (e.g. `window`, `document` and `navigator`). Most of the time, you don't need to configure it, it will use the global instance by default. This configure is useful when working with iframes and testing environments.  
-
 
 ```ts
 // iframes
