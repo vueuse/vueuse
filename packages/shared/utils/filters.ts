@@ -92,12 +92,12 @@ export function throttleFilter(ms: number, trailing = true) {
 /**
  * EventFilter that gives extra controls to pause and resume the filter
  *
- * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
+ * @param extendFilter  Extra filter to apply when the PauseableFilter is active, default to none
  *
  * @example
  *
  */
-export function pausableFilter(extendFilter = bypassFilter) {
+export function pauseableFilter(extendFilter = bypassFilter) {
   const isActive = ref(true)
 
   function pause() {
