@@ -44,6 +44,12 @@ const isTypedCharGood = ({
   return false
 }
 
+/**
+ * Fires when users start typing on non-editable elements.
+ *
+ * @param callback
+ * @param options
+ */
 export function onStartTyping(callback: (event: KeyboardEvent) => void, { document = defaultDocument }: ConfigurableDocument = {}) {
   const keydown = (event: KeyboardEvent) => {
     !isFocusedElementEditable()

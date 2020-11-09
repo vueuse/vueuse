@@ -11,15 +11,16 @@ export type AsyncComputedOnCancel = (cancelCallback: () => void) => void
  * Create an asynchronous computed dependency
  *
  * @param evaluationCallback     The promise-returning callback which generates the computed value
- * @param defaultValue           A default value, used until the first evaluation finishes
+ * @param initialState           The initial state, used until the first evaluation finishes
+ * @param evaluatingRef          A ref passed to received the updates of the async evaluation
  */
 export function asyncComputed<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
-  defaultValue?: T,
+  initialState?: T,
   evaluatingRef?: Ref<boolean>,
 ): Ref<T> {
   let counter = 0
-  const current = ref(defaultValue) as Ref<T>
+  const current = ref(initialState) as Ref<T>
 
   watchEffect(async(onInvalidate) => {
     counter++

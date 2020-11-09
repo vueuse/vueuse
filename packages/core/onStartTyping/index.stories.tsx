@@ -11,10 +11,12 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const input = ref(null)
+      const input = ref<HTMLInputElement | null>(null)
+
       onStartTyping(() => {
+        // @ts-ignore
         if (!input.value.active)
-          input.value.focus()
+          input.value!.focus()
       })
 
       return {

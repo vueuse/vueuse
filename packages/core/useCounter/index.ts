@@ -1,5 +1,10 @@
 import { ref } from 'vue-demi'
 
+/**
+ * Basic counter with utility functions.
+ *
+ * @param [initialValue=0]
+ */
 export function useCounter(initialValue = 0) {
   const count = ref(initialValue)
 

@@ -19,6 +19,11 @@ export interface BrowserLocationState {
   search?: string
 }
 
+/**
+ * Reactive browser location
+ *
+ * @param options
+ */
 export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
