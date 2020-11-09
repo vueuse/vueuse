@@ -1,7 +1,7 @@
+import { useTimeoutFn } from '@vueuse/shared'
 import { defineDemo, html } from '../../_docs'
 import { defineComponent, ref, watch } from 'vue-demi'
 import { useDocumentVisibility } from '.'
-import { useTimeoutFn } from '../useTimeoutFn'
 
 defineDemo(
   {

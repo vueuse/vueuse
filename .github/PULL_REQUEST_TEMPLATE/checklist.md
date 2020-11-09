@@ -8,8 +8,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (16)
-  - [ ] asyncComputed
+### shared (17)
   - [ ] biSyncRef
   - [ ] controlledComputed
   - [ ] extendRef
@@ -17,16 +16,18 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] syncRef
   - [ ] tryOnMounted
   - [ ] tryOnUnmounted
-  - [ ] useAsyncState
   - [ ] useDebounce
   - [ ] useDebounceFn
-  - [ ] useRefHistory
+  - [ ] useInterval
+  - [ ] useIntervalFn
   - [ ] useThrottle
   - [ ] useThrottleFn
+  - [ ] useTimeout
+  - [ ] useTimeoutFn
   - [ ] utils
   - [ ] when
 
-### core (59)
+### core (51)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onStartTyping
@@ -36,8 +37,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useClipboard
   - [ ] useCounter
   - [ ] useCssVar
-  - [ ] useDebounce
-  - [ ] useDebounceFn
   - [ ] useDeviceLight
   - [ ] useDeviceMotion
   - [ ] useDeviceOrientation
@@ -51,8 +50,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useGeolocation
   - [ ] useIdle
   - [ ] useIntersectionObserver
-  - [ ] useInterval
-  - [ ] useIntervalFn
   - [ ] useLocalStorage
   - [ ] useMediaQuery
   - [ ] useMouse
@@ -75,10 +72,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useShare
   - [ ] useSpeechRecognition
   - [ ] useStorage
-  - [ ] useThrottle
-  - [ ] useThrottleFn
-  - [ ] useTimeout
-  - [ ] useTimeoutFn
   - [ ] useTitle
   - [ ] useTransition
   - [ ] useWebSocket

@@ -1,4 +1,4 @@
-import { createFilterWrapper, debounceFilter, FunctionArgs } from '@vueuse/shared'
+import { createFilterWrapper, debounceFilter, FunctionArgs } from '../utils'
 
 /**
  * Debounce execution of a function.

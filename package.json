@@ -13,6 +13,7 @@
     "publish:ci": "esno ./scripts/publish.ts",
     "prepare": "esno ./scripts/update.ts",
     "types:fix": " esno ./scripts/types-fix.ts",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",

@@ -1,7 +1,6 @@
 import { ref } from 'vue-demi'
-import { timestamp } from '@vueuse/shared'
+import { timestamp, useThrottleFn } from '@vueuse/shared'
 import { useEventListener, WindowEventName } from '../useEventListener'
-import { useThrottleFn } from '../useThrottleFn'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']

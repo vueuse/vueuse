@@ -1,4 +1,4 @@
-import { createFilterWrapper, FunctionArgs, throttleFilter } from '@vueuse/shared'
+import { createFilterWrapper, FunctionArgs, throttleFilter } from '../utils'
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting

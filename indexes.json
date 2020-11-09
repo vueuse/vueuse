@@ -57,10 +57,68 @@
           "depreacted": false
         },
         {
+          "name": "useDebounce",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
+          "description": "debounce execution of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useDebounceFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
+          "description": "debounce execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottle",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
+          "description": "throttle changing of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottleFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
+          "description": "throttle execution of a function",
+          "depreacted": false
+        },
+        {
           "name": "when",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--when",
           "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
+      "Animation": [
+        {
+          "name": "useInterval",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--useinterval",
+          "description": "reactive counter increases on every interval",
+          "depreacted": false
+        },
+        {
+          "name": "useIntervalFn",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
+          "description": "simple wrapper for `setInterval`",
+          "depreacted": false
+        },
+        {
+          "name": "useTimeout",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
+          "description": "update value after a given time",
+          "depreacted": false
+        },
+        {
+          "name": "useTimeoutFn",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
+          "description": "call function after a given time",
           "depreacted": false
         }
       ],
@@ -95,38 +153,10 @@
           "depreacted": false
         },
         {
-          "name": "useDebounce",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
-          "description": "debounce execution of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounceFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
-          "description": "debounce execution of a function",
-          "depreacted": false
-        },
-        {
           "name": "useRefHistory",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--userefhistory",
           "description": "track the change history of a ref",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
-          "description": "throttle changing of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottleFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
-          "description": "throttle execution of a function",
           "depreacted": false
         }
       ],
@@ -448,20 +478,6 @@
       ],
       "Animation": [
         {
-          "name": "useInterval",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useinterval",
-          "description": "reactive counter increases on every interval",
-          "depreacted": false
-        },
-        {
-          "name": "useIntervalFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
-          "description": "simple wrapper for `setInterval`",
-          "depreacted": false
-        },
-        {
           "name": "useNow",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usenow",
@@ -480,20 +496,6 @@
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--useraffn",
           "description": "call function on every `requestAnimationFrame`",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeout",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
-          "description": "update value after a given time",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeoutFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
-          "description": "call function after a given time",
           "depreacted": false
         },
         {

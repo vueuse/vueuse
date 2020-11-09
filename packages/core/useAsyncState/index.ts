@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { useTimeoutFn } from '../useTimeoutFn'
+import { useTimeoutFn } from '@vueuse/shared'
 
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once the promise is ready.
