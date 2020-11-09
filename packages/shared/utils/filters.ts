@@ -4,6 +4,17 @@ export interface ConfigurableEventFilter {
   eventFilter?: EventFilter
 }
 
+/**
+ * @internal
+ */
+export function createFilterWrapper<T extends Function>(filter: EventFilter, fn: T) {
+  function wrapper(this: any, ...args: any[]) {
+    filter(() => fn.apply(this, args))
+  }
+
+  return wrapper as any as T
+}
+
 export const bypassFilter: EventFilter = (invoke) => {
   return invoke()
 }
