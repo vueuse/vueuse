@@ -21,8 +21,8 @@ console.log(target.value) // foo
 
 ## Watch options
 
-You can pass a `WatchOptions` object to `syncRef` to configure it in the same way as you do with Vue `watch`.
-The defaults are different from `watch` to align this composable with the way computed references work.
+The options for `syncRef` are similar to `watch`'s `WatchOptions` but with different default values.
+
 ```ts
 export interface SyncRefOptions {
   /**
@@ -45,7 +45,8 @@ export interface SyncRefOptions {
   immediate?: boolean
 }
 ```
-Example using `{ flush: 'pre' }` so the target reference is updated at the end of the current "tick" before rendering starts.
+
+When setting `{ flush: 'pre' }`, the target reference will be updated at [the end of the current "tick"](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) before rendering starts.
 
 ```ts
 import { syncRef } from '@vueuse/core'
@@ -53,7 +54,7 @@ import { syncRef } from '@vueuse/core'
 const source = ref('hello')
 const target = ref('target')
 
-const stop = syncRef(source, target, { flush: 'pre' })
+syncRef(source, target, { flush: 'pre' })
 
 console.log(target.value) // hello
 
