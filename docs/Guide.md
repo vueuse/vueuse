@@ -29,6 +29,10 @@ const mouse = reactive(useMouse())
 console.log(mouse.x) // 153
 ```
 
+## Event Filter
+
+// TODO:
+
 ## Reactive Timing
 
 // TODO:

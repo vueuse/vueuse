@@ -1,20 +1,16 @@
-export function useDebounceFn<T extends Function>(fn: T, delay = 200): T {
-  if (delay <= 0)
-    return fn
+import { createFilterWrapper, debounceFilter, FunctionArgs } from '@vueuse/shared'
 
-  let timer: ReturnType<typeof setTimeout> | undefined
-
-  function wrapper(this: any, ...args: any[]) {
-    const exec = () => {
-      timer = undefined
-      return fn.apply(this, args)
-    }
-
-    if (timer)
-      clearTimeout(timer)
-
-    timer = setTimeout(exec, delay)
-  }
-
-  return wrapper as any as T
+/**
+ * Debounce execution of a function.
+ *
+ * @param  fn          A function to be executed after delay milliseconds debounced.
+ * @param  ms          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+ *
+ * @return A new, debounce, function.
+ */
+export function useDebounceFn<T extends FunctionArgs>(fn: T, ms = 200): T {
+  return createFilterWrapper(
+    debounceFilter(ms),
+    fn,
+  )
 }

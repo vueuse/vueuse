@@ -1,18 +1,16 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
+import { bypassFilter, ConfigurableEventFilter, createFilterWrapper } from '@vueuse/shared'
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { useThrottleFn } from '../useThrottleFn'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-interface DeviceMotionOptions extends ConfigurableWindow {
-  throttleMs?: number
-}
+interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {}
 
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {
   const {
     window = defaultWindow,
-    throttleMs = 10,
+    eventFilter = bypassFilter,
   } = options
 
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
@@ -24,17 +22,19 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     z: null,
   })
 
-  function onDeviceMotion(event: DeviceMotionEvent) {
-    acceleration.value = event.acceleration
-    accelerationIncludingGravity.value = event.accelerationIncludingGravity
-    rotationRate.value = event.rotationRate
-    interval.value = event.interval
+  if (window) {
+    const onDeviceMotion = createFilterWrapper(
+      eventFilter,
+      (event: DeviceMotionEvent) => {
+        acceleration.value = event.acceleration
+        accelerationIncludingGravity.value = event.accelerationIncludingGravity
+        rotationRate.value = event.rotationRate
+        interval.value = event.interval
+      },
+    )
+
+    useEventListener(window, 'devicemotion', onDeviceMotion)
   }
-
-  const handler = useThrottleFn(onDeviceMotion, throttleMs)
-
-  if (window)
-    useEventListener(window, 'devicemotion', handler)
 
   return {
     acceleration,
