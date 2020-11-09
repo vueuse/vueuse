@@ -1,5 +1,6 @@
 import { Ref } from 'vue-demi'
 export * from './is'
+export * from './filters'
 
 export type MaybeRef<T> = T | Ref<T>
 
