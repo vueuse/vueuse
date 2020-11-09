@@ -1,4 +1,4 @@
-import { createFilterWrapper, throttleFilter } from '@vueuse/shared'
+import { createFilterWrapper, FunctionArgs, throttleFilter } from '@vueuse/shared'
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting
@@ -10,7 +10,7 @@ import { createFilterWrapper, throttleFilter } from '@vueuse/shared'
  *
  * @return  A new, throttled, function.
  */
-export function useThrottleFn<T extends Function>(fn: T, ms = 200, trailing = true): T {
+export function useThrottleFn<T extends FunctionArgs>(fn: T, ms = 200, trailing = true): T {
   return createFilterWrapper(
     throttleFilter(ms, trailing),
     fn,

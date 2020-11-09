@@ -1,4 +1,11 @@
-export type EventFilter = (invoke: () => void) => void
+export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
+
+export type EventFilter<Args extends any[] = any[], This = any> = (
+  invoke: () => void,
+  fn: FunctionArgs<Args>,
+  thisArg: This,
+  args: Args
+) => void
 
 export interface ConfigurableEventFilter {
   eventFilter?: EventFilter
@@ -7,9 +14,9 @@ export interface ConfigurableEventFilter {
 /**
  * @internal
  */
-export function createFilterWrapper<T extends Function>(filter: EventFilter, fn: T) {
+export function createFilterWrapper<T extends FunctionArgs>(filter: EventFilter, fn: T) {
   function wrapper(this: any, ...args: any[]) {
-    filter(() => fn.apply(this, args))
+    filter(() => fn.apply(this, args), fn, this, args)
   }
 
   return wrapper as any as T
