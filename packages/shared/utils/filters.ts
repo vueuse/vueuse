@@ -1,3 +1,5 @@
+import { ref } from 'vue-demi'
+
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
 export type EventFilter<Args extends any[] = any[], This = any> = (
@@ -85,4 +87,30 @@ export function throttleFilter(ms: number, trailing = true) {
   }
 
   return filter
+}
+
+/**
+ * EventFilter that gives extra controls to pause and resume the filter
+ *
+ * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
+ *
+ * @example
+ *
+ */
+export function pausableFilter(extendFilter = bypassFilter) {
+  const isActive = ref(true)
+
+  function pause() {
+    isActive.value = false
+  }
+  function resume() {
+    isActive.value = true
+  }
+
+  const eventFilter: EventFilter = (...args) => {
+    if (isActive.value)
+      extendFilter(...args)
+  }
+
+  return { isActive, pause, resume, eventFilter }
 }
