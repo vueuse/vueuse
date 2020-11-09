@@ -4,7 +4,7 @@ export interface SyncRefOptions {
   /**
    * Timing for syncing, same as watch's flush option
    *
-   * @default 'post'
+   * @default 'sync'
    */
   flush?: WatchOptions['flush']
   /**
