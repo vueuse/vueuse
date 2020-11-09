@@ -84,7 +84,7 @@
           "name": "asyncComputed",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--asynccomputed",
-          "description": "like [computed refs](https://composition-api.vuejs.org/api.html#computed)",
+          "description": "computed for async functions",
           "depreacted": false
         },
         {
@@ -135,7 +135,7 @@
           "name": "createGlobalState",
           "category": "State",
           "docs": "https://vueuse.js.org/?path=/story/state--createglobalstate",
-          "description": "keep states in the global scope to be reused across Vue instances",
+          "description": "keep states in the global scope to be reusable across Vue instances",
           "depreacted": false
         },
         {

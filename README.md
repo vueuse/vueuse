@@ -146,14 +146,14 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWindowSize`](https://vueuse.js.org/?path=/story/sensors--usewindowsize) — reactive window size
 
 - State
-  - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep states in the global scope to be reused across Vue instances
+  - [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) — keep states in the global scope to be reusable across Vue instances
   - [`useCounter`](https://vueuse.js.org/?path=/story/state--usecounter) — basic counter with utility functions
   - [`useLocalStorage`](https://vueuse.js.org/?path=/story/state--uselocalstorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/?path=/story/state--usesessionstorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/?path=/story/state--usestorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 - Utilities
-  - [`asyncComputed`](https://vueuse.js.org/?path=/story/utilities--asynccomputed) — like [computed refs](https://composition-api.vuejs.org/api.html#computed)
+  - [`asyncComputed`](https://vueuse.js.org/?path=/story/utilities--asynccomputed) — computed for async functions
   - [`biSyncRef`](https://vueuse.js.org/?path=/story/utilities--bisyncref) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/?path=/story/utilities--controlledcomputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref

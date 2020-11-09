@@ -26,7 +26,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] utils
   - [ ] when
 
-### core (60)
+### core (59)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onStartTyping
@@ -75,7 +75,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useShare
   - [ ] useSpeechRecognition
   - [ ] useStorage
-  - [ ] useStoragePlain
   - [ ] useThrottle
   - [ ] useThrottleFn
   - [ ] useTimeout
@@ -102,9 +101,5 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 ### firebase (2)
   - [ ] useFirestore
   - [ ] useRTDB
-
-### i18n (2)
-  - [ ] createI18n
-  - [ ] useI18n
 
 <!--LIST_ENDS-->
