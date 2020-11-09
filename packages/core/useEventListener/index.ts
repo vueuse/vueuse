@@ -24,9 +24,18 @@ export function useEventListener(
   if (!target)
     return
 
+  let stopped = false
+
   target.addEventListener(type, listener, options)
 
-  tryOnUnmounted(() => {
+  const stop = () => {
+    if (stopped)
+      return
     target.removeEventListener(type, listener, options)
-  })
+    stopped = true
+  }
+
+  tryOnUnmounted(stop)
+
+  return stop
 }

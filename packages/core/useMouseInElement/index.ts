@@ -69,13 +69,17 @@ export function useMouseInElement(
         }
 
         document.addEventListener('mousemove', moveHandler)
-        if (touch)
+        if (touch) {
+          document.addEventListener('touchstart', moveHandler)
           document.addEventListener('touchmove', moveHandler)
+        }
 
         onCleanup(() => {
           document.removeEventListener('mousemove', moveHandler)
-          if (touch)
+          if (touch) {
+            document.removeEventListener('touchstart', moveHandler)
             document.removeEventListener('touchmove', moveHandler)
+          }
         })
       },
       { immediate: true },
