@@ -1,3 +1,5 @@
+import { usePermission } from '../usePermission'
+
 type ShareOptions = {
   title?: string
   files?: File[]
@@ -10,11 +12,11 @@ interface NavigatorWithShare {
   canShare?: (data: ShareOptions) => boolean
 }
 
-export function useShare(shareOpts: ShareOptions) {
+export function useShare() {
   const _navigator = (window.navigator as NavigatorWithShare)
-  const isSupported = _navigator && _navigator.share
+  const isSupported = 'canShare' in _navigator
 
-  const share = () => {
+  const share = (shareOpts: ShareOptions) => {
     if (isSupported) {
       let granted = true
 

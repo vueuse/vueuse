@@ -11,11 +11,16 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useShare({
-        title: 'Hello',
-        text: 'Hello my friend!',
-        url: location.href,
-      })
+      const { share, isSupported } = useShare()
+
+      return {
+        share: () => share({
+          title: 'Hello',
+          text: 'Hello my friend!',
+          url: location.href,
+        }),
+        isSupported
+      }
     },
 
     template: html`
