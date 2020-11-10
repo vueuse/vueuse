@@ -15,9 +15,14 @@ type NavigatorWithBattery = Navigator & {
   getBattery: () => Promise<BatteryManager>
 }
 
-const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
-
+/**
+ * Reactive Battery Status API.
+ *
+ * @param options
+ */
 export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
+
   const isSupported = navigator && 'getBattery' in navigator
 
   const charging = ref(false)

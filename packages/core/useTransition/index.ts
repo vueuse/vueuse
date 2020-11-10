@@ -1,16 +1,14 @@
 import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from 'vue-demi'
-import { clamp, isFunction, isString, noop } from '@vueuse/shared'
+import { clamp, isFunction } from '@vueuse/shared'
 
 type CubicBezier = [number, number, number, number]
 
 type EasingFunction = (x: number) => number
 
-type NamedPreset = 'linear' | 'easeInSine' | 'easeOutSine' | 'easeInQuad' | 'easeOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInQuart' | 'easeOutQuart' | 'easeInOutQuart' | 'easeInQuint' | 'easeOutQuint' | 'easeInOutQuint' | 'easeInExpo' | 'easeOutExpo' | 'easeInOutExpo' | 'easeInCirc' | 'easeOutCirc' | 'easeInOutCirc' | 'easeInBack' | 'easeOutBack' | 'easeInOutBack'
-
 type StateEasingOptions = {
   duration?: number
-  transition?: EasingFunction | NamedPreset | CubicBezier
+  transition?: EasingFunction | CubicBezier
 }
 
 function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
@@ -39,7 +37,7 @@ function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
   return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-const presets: { [key in NamedPreset]: CubicBezier } = {
+export const TransitionPresets: Record<string, CubicBezier> = {
   linear: [0, 0, 1, 1],
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
@@ -70,42 +68,39 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
 
   const normalizedOptions = {
     duration: 500,
-    transition: 'linear',
+    transition: (n: number) => n,
     ...options,
   }
 
   const getValue = isFunction<EasingFunction>(normalizedOptions.transition)
     ? normalizedOptions.transition
-    : cubicBezier(
-      isString(normalizedOptions.transition)
-        ? presets[normalizedOptions.transition as NamedPreset]
-        : normalizedOptions.transition,
-    )
+    : cubicBezier(normalizedOptions.transition)
 
-  let stop = noop
+  let diff = 0
+  let endAt = 0
+  let startAt = 0
+  let startValue = 0
 
-  watch(
-    baseNumber,
-    () => {
+  const { start, stop } = useRafFn(() => {
+    const now = Date.now()
+    const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+
+    number.value = startValue + (diff * getValue(progress))
+
+    if (progress >= 1)
       stop()
+  }, { startNow: false })
 
-      const diff = baseNumber.value - number.value
-      const startValue = number.value
-      const startAt = Date.now()
-      const endAt = startAt + normalizedOptions.duration
+  watch(baseNumber, () => {
+    stop()
 
-      stop = useRafFn(() => {
-        const now = Date.now()
-        const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+    diff = baseNumber.value - number.value
+    startValue = number.value
+    startAt = Date.now()
+    endAt = startAt + normalizedOptions.duration
 
-        number.value = startValue + (diff * getValue(progress))
-
-        if (progress >= 1)
-          stop()
-      }).stop
-    },
-    { immediate: true },
-  )
+    start()
+  })
 
   return number
 }

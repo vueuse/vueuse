@@ -15,14 +15,19 @@ function withScope<T extends object>(factory: () => T): T {
   return state
 }
 
+/**
+ * Keep states in the global scope to be reusable across Vue instances
+ *
+ * @param stateFactory   A factory function to create the state
+ */
 export function createGlobalState<T extends object>(
-  factory: () => T,
+  stateFactory: () => T,
 ) {
   let state: T
 
   return () => {
     if (state == null)
-      state = withScope(factory)
+      state = withScope(stateFactory)
 
     return state
   }

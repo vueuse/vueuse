@@ -1,21 +1,28 @@
 # useMouseInElement
 
-> Reactive mouse position in an element
+> Reactive mouse position related to an element
 
-## Basic Usage
+## Usage
 
-```jsx
+```html {15}
+<template>
+  <div ref="target">
+    <h1>Hello world</h1>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
 
 export default {
   setup() {
-    const { x, y } = useMouseInElement()
+    const el = ref(null)
 
-    return { x, y }
-  },
+    const { x, y, isOutside } = useMouseInElement(el)
+
+    return { x, y, isOutside}
+  }
 }
+</script>
 ```
-
-## Mouse inside an element 
-
-TODO:

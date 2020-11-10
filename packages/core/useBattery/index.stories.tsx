@@ -18,8 +18,7 @@ defineDemo(
 
     template: html`
       <div>
-          <pre lang="json">{{JSON.stringify(battery, null, 2)}}
-          </pre>
+        <pre lang="json">{{JSON.stringify(battery, null, 2)}}</pre>
       </div>
     `,
   }),

@@ -32,12 +32,12 @@ defineDemo(
     setup() {
       const baseNumber = ref(0)
 
-      const easeInOutElastic = (x: number) => {
-        const c5 = (2 * Math.PI) / 4.5
-        return x === 0
-          ? 0 : x === 1
-            ? 1 : x < 0.5
-              ? -(2 ** (20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (2 ** (-20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1
+      const easeOutElastic = (n: number) => {
+        return n === 0
+          ? 0
+          : n === 1
+            ? 1
+            : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
       }
 
       const cubicBezierNumber = useTransition(baseNumber, {
@@ -47,7 +47,7 @@ defineDemo(
 
       const customFnNumber = useTransition(baseNumber, {
         duration: 1500,
-        transition: easeInOutElastic,
+        transition: easeOutElastic,
       })
 
       return {

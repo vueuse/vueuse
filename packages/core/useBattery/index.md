@@ -4,7 +4,7 @@
 
 ## Usage
 
-```jsx
+```js
 import { useBattery } from '@vueuse/core'
 
 const { isCharging, chargingTime, dischargingTime, level } = useBattery()
