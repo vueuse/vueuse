@@ -14,18 +14,18 @@ defineDemo(
       const { share, isSupported } = useShare()
 
       return {
-        share: () => share({
+        startShare: () => share({
           title: 'Hello',
           text: 'Hello my friend!',
           url: location.href,
         }),
-        isSupported
+        isSupported,
       }
     },
 
     template: html`
       <div>
-        <button :disabled="!isSupported" @click="share">
+        <button :disabled="!isSupported" @click="startShare">
           {{ isSupported ? 'Share' : 'Web share not supported!' }}
         </button>
       </div>

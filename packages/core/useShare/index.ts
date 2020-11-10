@@ -1,5 +1,3 @@
-import { usePermission } from '../usePermission'
-
 type ShareOptions = {
   title?: string
   files?: File[]
