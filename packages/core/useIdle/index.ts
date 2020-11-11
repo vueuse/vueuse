@@ -1,12 +1,12 @@
 import { ref } from 'vue-demi'
-import { timestamp, useThrottleFn } from '@vueuse/shared'
+import { ConfigurableEventFilter, createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
 import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000
 
-export interface IdleOptions extends ConfigurableWindow {
+export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Event names that listen to for detected user activity
    *
@@ -25,12 +25,6 @@ export interface IdleOptions extends ConfigurableWindow {
    * @default false
    */
   initialState?: boolean
-  /**
-   * Throttle delay for receiving events (ms)
-   *
-   * @default 50
-   */
-  throttleDelay?: number
 }
 
 /**
@@ -45,8 +39,8 @@ export function useIdle(
     initialState = false,
     listenForVisibilityChange = true,
     events = defaultEvents,
-    throttleDelay = 50,
     window = defaultWindow,
+    eventFilter = throttleFilter(50),
   }: IdleOptions = {},
 ) {
   const idle = ref(initialState)
@@ -54,33 +48,30 @@ export function useIdle(
 
   let timer: any
 
-  const set = (newState: boolean) => {
-    idle.value = newState
-  }
-
-  const onEvent = useThrottleFn(
+  const onEvent = createFilterWrapper(
+    eventFilter,
     () => {
       idle.value = false
       lastActive.value = timestamp()
       clearTimeout(timer)
       timer = setTimeout(() => idle.value = true, timeout)
     },
-    throttleDelay,
   )
 
   if (window) {
+    const document = window.document
     for (const event of events)
       useEventListener(window, event, onEvent)
 
     if (listenForVisibilityChange) {
-      useEventListener(window.document, 'visibilitychange', () => {
-        if (!window.document.hidden)
+      useEventListener(document, 'visibilitychange', () => {
+        if (!document.hidden)
           onEvent()
       })
     }
   }
 
-  timer = setTimeout(() => set(true), timeout)
+  timer = setTimeout(() => idle.value = true, timeout)
 
   return { idle, lastActive }
 }
