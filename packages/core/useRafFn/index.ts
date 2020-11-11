@@ -1,8 +1,39 @@
-import { tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { Pausable, tryOnUnmounted, Fn } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useRafFn(fn: () => any, options: { immediate?: boolean } = {}) {
-  const { immediate = true } = options
+export interface RafFnOptions extends ConfigurableWindow {
+  /**
+   * Start the requestAnimationFrame loop immediately on creation
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
+
+export interface RafFnReturn extends Pausable {
+  /**
+   * @deprecated use pause() instead
+   */
+  stop: Fn
+
+  /**
+   * @deprecated use resume() instead
+   */
+  start: Fn
+}
+
+/**
+ * Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
+ *
+ * @param fn
+ * @param options
+ */
+export function useRafFn(fn: Fn, options: RafFnOptions = {}): RafFnReturn {
+  const {
+    immediate = true,
+    window = defaultWindow,
+  } = options
 
   const isActive = ref(false)
 
@@ -10,7 +41,8 @@ export function useRafFn(fn: () => any, options: { immediate?: boolean } = {}) {
     if (!isActive.value)
       return
     fn()
-    requestAnimationFrame(loop)
+    if (window)
+      window.requestAnimationFrame(loop)
   }
 
   function resume() {
@@ -27,7 +59,13 @@ export function useRafFn(fn: () => any, options: { immediate?: boolean } = {}) {
   if (immediate)
     resume()
 
-  tryOnUnmounted(() => pause())
+  tryOnUnmounted(pause)
 
-  return { isActive, pause, resume, stop: pause, start: resume }
+  return {
+    isActive,
+    pause,
+    resume,
+    stop: pause,
+    start: resume,
+  }
 }

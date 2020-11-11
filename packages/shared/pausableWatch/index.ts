@@ -1,12 +1,9 @@
-import { WatchSource, WatchStopHandle, WatchCallback, Ref } from 'vue-demi'
-import { Fn, MapOldSources, MapSources, pausableFilter } from '../utils'
+import { WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
+import { MapOldSources, MapSources, Pausable, pausableFilter } from '../utils'
 import { watchWithFilter, WatchWithFilterOptions } from '../watchWithFilter'
 
-export interface PausableWatchReturn {
+export interface PausableWatchReturn extends Pausable {
   stop: WatchStopHandle
-  pause: Fn
-  resume: Fn
-  isActive: Ref<Boolean>
 }
 
 // overlads

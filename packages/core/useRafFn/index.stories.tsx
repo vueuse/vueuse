@@ -12,12 +12,14 @@ defineDemo(
   defineComponent({
     setup() {
       const count = ref(0)
-      const { start, stop } = useRafFn(() => {
+      const { pause, resume } = useRafFn(() => {
         count.value += 1
       })
 
       return {
-        count, start, stop,
+        count,
+        pause,
+        resume,
       }
     },
 
