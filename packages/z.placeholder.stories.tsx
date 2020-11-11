@@ -7,6 +7,7 @@ const sections = [
   'Links',
   'Showcases',
   'State',
+  'Component',
   'Sensors',
   'Browser',
   'Misc',
