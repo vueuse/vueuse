@@ -1,17 +1,13 @@
-import { tryOnUnmounted } from '@vueuse/shared'
+import { timestamp, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 
-function getTimestamp() {
-  return +Date.now()
-}
-
 export function useNow() {
-  const now = ref(getTimestamp())
+  const now = ref(timestamp())
   let started = false
 
   const update = () => {
     requestAnimationFrame(() => {
-      now.value = getTimestamp()
+      now.value = timestamp()
       if (started)
         update()
     })

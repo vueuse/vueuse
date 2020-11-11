@@ -1,31 +1,33 @@
 import { tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 
-export function useRafFn(fn: () => any, options: {startNow?: boolean} = {}) {
-  const { startNow = true } = options
-  let started = false
+export function useRafFn(fn: () => any, options: { immediate?: boolean } = {}) {
+  const { immediate = true } = options
+
+  const isActive = ref(false)
 
   function loop() {
-    if (!started)
+    if (!isActive.value)
       return
     fn()
     requestAnimationFrame(loop)
   }
 
-  function start() {
-    if (!started) {
-      started = true
+  function resume() {
+    if (!isActive.value) {
+      isActive.value = true
       loop()
     }
   }
 
-  function stop() {
-    started = false
+  function pause() {
+    isActive.value = false
   }
 
-  if (startNow)
-    start()
+  if (immediate)
+    resume()
 
-  tryOnUnmounted(() => stop())
+  tryOnUnmounted(() => pause())
 
-  return { stop, start }
+  return { isActive, pause, resume }
 }
