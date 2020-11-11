@@ -1,3 +1,4 @@
+import { Fn } from '@vueuse/shared'
 import { ref, watchEffect, Ref } from 'vue-demi'
 
 /**
@@ -5,7 +6,7 @@ import { ref, watchEffect, Ref } from 'vue-demi'
  *
  * @param cancelCallback The provided callback is invoked when a re-evaluation of the computed value is triggered before the previous one finished
  */
-export type AsyncComputedOnCancel = (cancelCallback: () => void) => void
+export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
 /**
  * Create an asynchronous computed dependency

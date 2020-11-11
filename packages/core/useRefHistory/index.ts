@@ -1,4 +1,4 @@
-import { timestamp } from '@vueuse/shared'
+import { Fn, timestamp } from '@vueuse/shared'
 import { ref, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
@@ -109,7 +109,7 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
    *
    * @param fn
    */
-  batch(fn: (cancel: (() => void)) => void): void
+  batch(fn: (cancel: Fn) => void): void
 
   /**
    * Clear the data and stop the watch
@@ -155,7 +155,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const ignoreCounter = ref(0)
   const syncCounter = ref(0)
 
-  const disposables: (() => void)[] = []
+  const disposables: Fn[] = []
 
   const _setCurrentValue = (value: Serialized) => {
     // If there were already changes in the state, they will be ignored
@@ -288,7 +288,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
       _setCurrentValue(state.value)
   }
 
-  const batch = (fn: (cancel: () => void) => void) => {
+  const batch = (fn: (cancel: Fn) => void) => {
     const previous = isTracking.value
     isTracking.value = false
     let canceled = false
