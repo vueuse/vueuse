@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue-demi'
-import { useNow } from '../useNow'
+import { useNow } from '../useTimestamp'
 
 export function useRaf() {
   const now = useNow()

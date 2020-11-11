@@ -1,10 +1,10 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { useNow } from '.'
+import { useTimestamp } from '.'
 
 defineDemo(
   {
-    name: 'useNow',
+    name: 'useTimestamp',
     category: 'Animation',
     docs: require('./index.md'),
     module,
@@ -12,7 +12,7 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        now: useNow(),
+        ...useTimestamp(),
       }
     },
 
