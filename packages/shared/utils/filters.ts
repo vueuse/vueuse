@@ -102,7 +102,7 @@ export function throttleFilter(ms: number, trailing = true) {
  * @example
  *
  */
-export function pauseableFilter(extendFilter = bypassFilter) {
+export function pausableFilter(extendFilter = bypassFilter) {
   const isActive = ref(true)
 
   function pause() {

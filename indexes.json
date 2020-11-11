@@ -69,11 +69,41 @@
           "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
           "description": "throttle execution of a function",
           "depreacted": false
+        }
+      ],
+      "Watch": [
+        {
+          "name": "debouncedWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--debouncedwatch",
+          "description": "debounced watch",
+          "depreacted": false
+        },
+        {
+          "name": "pausableWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",
+          "description": "pausable watch",
+          "depreacted": false
+        },
+        {
+          "name": "throttledWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--throttledwatch",
+          "description": "throttled watch",
+          "depreacted": false
+        },
+        {
+          "name": "watchWithFilter",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--watchwithfilter",
+          "description": "`watch` with additional EventFilter control",
+          "depreacted": false
         },
         {
           "name": "when",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--when",
           "description": "promised one-time watch for ref changes",
           "depreacted": false
         }

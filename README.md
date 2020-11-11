@@ -170,7 +170,13 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useRefHistory`](https://vueuse.js.org/?path=/story/utilities--userefhistory) — track the change history of a ref
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
-  - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — promised one-time watch for ref changes
+
+- Watch
+  - [`debouncedWatch`](https://vueuse.js.org/?path=/story/watch--debouncedwatch) — debounced watch
+  - [`pausableWatch`](https://vueuse.js.org/?path=/story/watch--pausablewatch) — pausable watch
+  - [`throttledWatch`](https://vueuse.js.org/?path=/story/watch--throttledwatch) — throttled watch
+  - [`watchWithFilter`](https://vueuse.js.org/?path=/story/watch--watchwithfilter) — `watch` with additional EventFilter control
+  - [`when`](https://vueuse.js.org/?path=/story/watch--when) — promised one-time watch for ref changes
 
 <!--FUNCTIONS_LIST_ENDS-->
 

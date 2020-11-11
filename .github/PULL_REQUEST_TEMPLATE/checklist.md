@@ -8,12 +8,15 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (17)
+### shared (21)
   - [ ] biSyncRef
   - [ ] controlledComputed
+  - [ ] debouncedWatch
   - [ ] extendRef
   - [ ] makeDestructurable
+  - [ ] pausableWatch
   - [ ] syncRef
+  - [ ] throttledWatch
   - [ ] tryOnMounted
   - [ ] tryOnUnmounted
   - [ ] useDebounce
@@ -25,6 +28,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useTimeout
   - [ ] useTimeoutFn
   - [ ] utils
+  - [ ] watchWithFilter
   - [ ] when
 
 ### core (51)
