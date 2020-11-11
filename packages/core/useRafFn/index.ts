@@ -29,5 +29,5 @@ export function useRafFn(fn: () => any, options: { immediate?: boolean } = {}) {
 
   tryOnUnmounted(() => pause())
 
-  return { isActive, pause, resume }
+  return { isActive, pause, resume, stop: pause, start: resume }
 }
