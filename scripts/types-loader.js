@@ -45,7 +45,7 @@ module.exports = function(source, u) {
 
   const head = isUtils
     ? `💡 this function is also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
-    : pkg !== 'core'
+    : pkg !== 'core' && pkg !== 'shared'
       ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
       : ''
 
