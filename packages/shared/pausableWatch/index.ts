@@ -1,5 +1,5 @@
 import { WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { Fn, MapOldSources, MapSources, pauseableFilter } from '../utils'
+import { Fn, MapOldSources, MapSources, pausableFilter } from '../utils'
 import { watchWithFilter, WatchWithFilterOptions } from '../watchWithFilter'
 
 export interface PausableWatchReturn {
@@ -24,7 +24,7 @@ export function pausableWatch<Immediate extends Readonly<boolean> = false>(
     ...watchOptions
   } = options
 
-  const { eventFilter, pause, resume } = pauseableFilter(filter)
+  const { eventFilter, pause, resume } = pausableFilter(filter)
   const stop = watchWithFilter(
     source,
     cb,

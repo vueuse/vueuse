@@ -12,7 +12,10 @@ import { ref, nextTick } from 'vue'
 
 const source = ref('foo')
 
-const { stop, pause, resume } = pausableWatch(source, (v) => console.log(`Changed to ${v}!`))
+const { stop, pause, resume } = pausableWatch(
+  source,
+  (v) => console.log(`Changed to ${v}!`),
+)
 
 source.value = 'bar'
 await nextTick() // Changed to bar!
