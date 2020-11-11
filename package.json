@@ -21,7 +21,7 @@
     "clean": "rimraf dist types typings storybook-static packages/*/dist",
     "dev": "start-storybook -p 6006",
     "sb": "start-storybook -p 6006",
-    "sb:build": "cross-env NODE_ENV=production npm run build:types && build-storybook"
+    "sb:build": "cross-env NODE_ENV=production npm run build:types && build-storybook && esno scripts/buildRedirects.ts"
   },
   "husky": {
     "hooks": {

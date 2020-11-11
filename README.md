@@ -26,13 +26,14 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- ⚡ **0 dependencies**: Don't worry about your bundle size
-- 🌴 **Fully tree shakable**: Only take what you want
+- ⚡ **Fully tree shakable**: Only take what you want
 - 🦾 **Type Strong**: Written in Typescript
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- 🌎 **Browser compatible**: Use it through CDN
+- 🔋 **SSR Friendly**
+- 🔩 **Flexible**: Configurable event filters, pausable, debounced or throttled. 
+- 🌎 **No bundler required**: Use it via CDN
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)**
+- 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
 
 ## 🦄 Usage
 

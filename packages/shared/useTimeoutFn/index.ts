@@ -4,9 +4,9 @@ import { useTimeout } from '../useTimeout'
 export function useTimeoutFn(
   cb: () => any,
   interval?: number,
-  startRightNow?: boolean,
+  immediate?: boolean,
 ) {
-  const { ready, start, stop } = useTimeout(interval, startRightNow)
+  const { ready, start, stop } = useTimeout(interval, immediate)
 
   watch(
     ready,

@@ -12,9 +12,7 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { idle, lastActive } = useIdle(5000, {
-        throttleDelay: 20,
-      })
+      const { idle, lastActive } = useIdle(5000)
 
       const now = useNow()
 

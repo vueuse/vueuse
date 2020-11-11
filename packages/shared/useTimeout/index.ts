@@ -1,10 +1,10 @@
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 
-export function useTimeout(interval = 1000, startRightNow = true) {
+export function useTimeout(interval = 1000, immediate = true) {
   const ready = ref(false)
 
-  let timer: any = null
+  let timer: ReturnType<typeof setTimeout> | null = null
 
   function stop() {
     ready.value = false
@@ -22,7 +22,7 @@ export function useTimeout(interval = 1000, startRightNow = true) {
     }, interval)
   }
 
-  if (startRightNow)
+  if (immediate)
     start()
 
   tryOnUnmounted(stop)
