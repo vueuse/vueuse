@@ -27,7 +27,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] utils
   - [ ] when
 
-### core (52)
+### core (51)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onStartTyping
@@ -56,7 +56,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useMouseInElement
   - [ ] useMutationObserver
   - [ ] useNetwork
-  - [ ] useNow
   - [ ] useOnline
   - [ ] usePageLeave
   - [ ] useParallax
@@ -64,7 +63,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] usePreferredColorScheme
   - [ ] usePreferredDark
   - [ ] usePreferredLanguages
-  - [ ] useRaf
   - [ ] useRafFn
   - [ ] useRefHistory
   - [ ] useResizeObserver
@@ -72,6 +70,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useShare
   - [ ] useSpeechRecognition
   - [ ] useStorage
+  - [ ] useTimestamp
   - [ ] useTitle
   - [ ] useTransition
   - [ ] useVModel

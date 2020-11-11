@@ -480,24 +480,17 @@
       ],
       "Animation": [
         {
-          "name": "useNow",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usenow",
-          "description": "reactive current timestamp",
-          "depreacted": false
-        },
-        {
-          "name": "useRaf",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useraf",
-          "description": "reactive time elapsed on every `requestAnimationFrame`",
-          "depreacted": false
-        },
-        {
           "name": "useRafFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--useraffn",
           "description": "call function on every `requestAnimationFrame`",
+          "depreacted": false
+        },
+        {
+          "name": "useTimestamp",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimestamp",
+          "description": "reactive current timestamp",
           "depreacted": false
         },
         {
