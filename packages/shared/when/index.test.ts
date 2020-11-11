@@ -27,7 +27,7 @@ describe('when', () => {
 
       invoke(async() => {
         expect(r.value).toBe(0)
-        await when(r).changedTimes(3)
+        await when(r, { flush: 'sync' }).changedTimes(3)
         expect(r.value).toBe(3)
         done()
       })
