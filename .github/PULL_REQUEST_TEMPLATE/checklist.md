@@ -81,6 +81,10 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useWindowScroll
   - [ ] useWindowSize
 
+### router (2)
+  - [ ] useRouteHash
+  - [ ] useRouteQuery
+
 ### integrations (3)
   - [ ] useAxios
   - [ ] useCookies

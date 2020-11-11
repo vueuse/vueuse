@@ -16,7 +16,7 @@ const db = firebase.database()
 defineDemo(
   {
     name: 'useRTDB',
-    category: '@Firebase',
+    category: '/Firebase',
     docs: require('./index.md'),
     module,
   },

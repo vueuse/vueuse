@@ -519,6 +519,40 @@
       ]
     }
   },
+  "router": {
+    "info": {
+      "name": "router",
+      "display": "Router",
+      "description": "Utilities for vue-router",
+      "addon": true,
+      "external": [
+        "vue-router"
+      ],
+      "globals": {
+        "vue-router": "VueRouter"
+      }
+    },
+    "dir": "packages/router",
+    "docs": "https://vueuse.js.org/?path=/story/router--readme",
+    "categories": {
+      "/Router": [
+        {
+          "name": "useRouteHash",
+          "category": "/Router",
+          "docs": "https://vueuse.js.org/?path=/story/router--useroutehash",
+          "description": "shorthand for reactive route.hash",
+          "depreacted": false
+        },
+        {
+          "name": "useRouteQuery",
+          "category": "/Router",
+          "docs": "https://vueuse.js.org/?path=/story/router--useroutequery",
+          "description": "shorthand for reactive route.query",
+          "depreacted": false
+        }
+      ]
+    }
+  },
   "integrations": {
     "info": {
       "name": "integrations",
@@ -633,18 +667,18 @@
     "dir": "packages/firebase",
     "docs": "https://vueuse.js.org/?path=/story/firebase--readme",
     "categories": {
-      "@Firebase": [
+      "/Firebase": [
         {
           "name": "useFirestore",
-          "category": "@Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/@firebase--usefirestore",
+          "category": "/Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/firebase--usefirestore",
           "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding",
           "depreacted": false
         },
         {
           "name": "useRTDB",
-          "category": "@Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/@firebase--usertdb",
+          "category": "/Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/firebase--usertdb",
           "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding",
           "depreacted": false
         }

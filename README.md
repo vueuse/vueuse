@@ -186,6 +186,12 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 <!--ADDONS_LIST_STARTS-->
 
 
+- Router ([`@vueuse/router`](https://vueuse.js.org/?path=/story/router--readme)) - Utilities for vue-router
+  - [`useRouteHash`](https://vueuse.js.org/?path=/story/router--useroutehash) — shorthand for reactive route.hash
+  - [`useRouteQuery`](https://vueuse.js.org/?path=/story/router--useroutequery) — shorthand for reactive route.query
+
+
+
 - Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/integrations--readme)) - Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
@@ -202,8 +208,8 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 
 - Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/firebase--readme)) - Enables realtime bindings for Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/@firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/@firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--ADDONS_LIST_ENDS-->
 
