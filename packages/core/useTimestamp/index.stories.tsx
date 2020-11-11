@@ -1,10 +1,10 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { useRaf } from '.'
+import { useTimestamp } from '.'
 
 defineDemo(
   {
-    name: 'useRaf',
+    name: 'useTimestamp',
     category: 'Animation',
     docs: require('./index.md'),
     module,
@@ -12,13 +12,13 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        elapsed: useRaf(),
+        ...useTimestamp(),
       }
     },
 
     template: html`
       <div>
-        <p>Elapsed: {{elapsed}}</p>
+        <p>Now: {{now}}</p>
       </div>
     `,
   }),

@@ -94,11 +94,10 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 - Animation
   - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — simple wrapper for `setInterval`
-  - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow) — reactive current timestamp
-  - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf) — reactive time elapsed on every `requestAnimationFrame`
   - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`
   - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
   - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
+  - [`useTimestamp`](https://vueuse.js.org/?path=/story/animation--usetimestamp) — reactive current timestamp
   - [`useTransition`](https://vueuse.js.org/?path=/story/animation--usetransition) — transition between values
 
 - Browser
@@ -171,7 +170,13 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useRefHistory`](https://vueuse.js.org/?path=/story/utilities--userefhistory) — track the change history of a ref
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
-  - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — promised one-time watch for ref changes
+
+- Watch
+  - [`debouncedWatch`](https://vueuse.js.org/?path=/story/watch--debouncedwatch) — debounced watch
+  - [`pausableWatch`](https://vueuse.js.org/?path=/story/watch--pausablewatch) — pausable watch
+  - [`throttledWatch`](https://vueuse.js.org/?path=/story/watch--throttledwatch) — throttled watch
+  - [`watchWithFilter`](https://vueuse.js.org/?path=/story/watch--watchwithfilter) — `watch` with additional EventFilter control
+  - [`when`](https://vueuse.js.org/?path=/story/watch--when) — promised one-time watch for ref changes
 
 <!--FUNCTIONS_LIST_ENDS-->
 
