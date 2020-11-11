@@ -117,6 +117,11 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.js.org/?path=/story/browser--usetitle) — reactive document title
 
+- Component
+  - [`tryOnMounted`](https://vueuse.js.org/?path=/story/component--tryonmounted) — safe `onMounted`
+  - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/component--tryonunmounted) — safe `onUnmounted`
+  - [`useVModel`](https://vueuse.js.org/?path=/story/component--usevmodel) — shorthand for v-model binding
+
 - Misc
   - [`useEventSource`](https://vueuse.js.org/?path=/story/misc--useeventsource) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server
   - [`useWebSocket`](https://vueuse.js.org/?path=/story/misc--usewebsocket) — reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client
@@ -159,8 +164,6 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
   - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time
   - [`syncRef`](https://vueuse.js.org/?path=/story/utilities--syncref) — keep target refs in sync with a source ref
-  - [`tryOnMounted`](https://vueuse.js.org/?path=/story/utilities--tryonmounted) — safe `onMounted`
-  - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/utilities--tryonunmounted) — safe `onUnmounted`
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state
   - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function

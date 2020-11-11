@@ -3,7 +3,7 @@ import { defineDemo } from '../../_docs'
 defineDemo(
   {
     name: 'tryOnUnmounted',
-    category: 'Utilities',
+    category: 'Component',
     docs: require('./index.md'),
     module,
   },

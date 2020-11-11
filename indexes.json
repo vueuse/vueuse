@@ -43,20 +43,6 @@
           "depreacted": false
         },
         {
-          "name": "tryOnMounted",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonmounted",
-          "description": "safe `onMounted`",
-          "depreacted": false
-        },
-        {
-          "name": "tryOnUnmounted",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonunmounted",
-          "description": "safe `onUnmounted`",
-          "depreacted": false
-        },
-        {
           "name": "useDebounce",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
@@ -89,6 +75,22 @@
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--when",
           "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
+      "Component": [
+        {
+          "name": "tryOnMounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonmounted",
+          "description": "safe `onMounted`",
+          "depreacted": false
+        },
+        {
+          "name": "tryOnUnmounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonunmounted",
+          "description": "safe `onUnmounted`",
           "depreacted": false
         }
       ],
@@ -503,6 +505,15 @@
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetransition",
           "description": "transition between values",
+          "depreacted": false
+        }
+      ],
+      "Component": [
+        {
+          "name": "useVModel",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--usevmodel",
+          "description": "shorthand for v-model binding",
           "depreacted": false
         }
       ]

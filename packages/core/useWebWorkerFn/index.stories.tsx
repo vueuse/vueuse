@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { defineDemo, html } from '../../_docs'
 import { defineComponent, computed } from 'vue-demi'
-import { useWebWorkerFn, WorkerStatus } from '.'
+import { useWebWorkerFn } from '.'
 import { useNow } from '../useNow'
 
 const numbers: number[] = [...Array(5000000)].map(_ => ~~(Math.random() * 1000000))
@@ -19,7 +19,7 @@ defineDemo(
       const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(sortNumbers)
       const time = useNow()
       const computedTime = computed(() => dayjs(time.value).format('YYYY-MM-DD HH:mm:ss SSS'))
-      const running = computed(() => workerStatus.value === WorkerStatus.Runing)
+      const running = computed(() => workerStatus.value === 'RUNNING')
 
       const baseSort = () => {
         const data = sortNumbers(numbers)

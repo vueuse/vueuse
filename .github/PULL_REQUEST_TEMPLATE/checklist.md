@@ -27,7 +27,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] utils
   - [ ] when
 
-### core (51)
+### core (52)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onStartTyping
@@ -74,6 +74,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useStorage
   - [ ] useTitle
   - [ ] useTransition
+  - [ ] useVModel
   - [ ] useWebSocket
   - [ ] useWebWorker
   - [ ] useWebWorkerFn
