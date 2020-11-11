@@ -24,12 +24,14 @@ const Serializers = {
   },
 }
 
-export function useStorage (key: string, defaultValue: string, storage?: Storage): Ref<string>
-export function useStorage (key: string, defaultValue: boolean, storage?: Storage): Ref<boolean>
-export function useStorage (key: string, defaultValue: number, storage?: Storage): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: Storage): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: Storage): Ref<T>
-export function useStorage<T extends(string|number|boolean|object|null)> (key: string, defaultValue: T, storage: Storage = localStorage) {
+export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
+
+export function useStorage(key: string, defaultValue: string, storage?: StorageLike): Ref<string>
+export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike): Ref<boolean>
+export function useStorage(key: string, defaultValue: number, storage?: StorageLike): Ref<number>
+export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike): Ref<T>
+export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike): Ref<T>
+export function useStorage<T extends(string|number|boolean|object|null)> (key: string, defaultValue: T, storage: StorageLike = localStorage) {
   const data = ref<T>(defaultValue)
 
   const type = defaultValue == null
