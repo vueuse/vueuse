@@ -1,27 +1,9 @@
-import { computed, Ref } from 'vue-demi'
+import { computed, Ref, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
-
-export interface RouteQueryOptions {
-  /**
-   * Mode to update the router query
-   *
-   * @default 'replace'
-   */
-  mode?: 'replace' | 'push'
-
-  /**
-   * Route instance, use `useRoute()` if not given
-   */
-  route?: ReturnType<typeof useRoute>
-
-  /**
-   * Router instance, use `useRouter()` if not given
-   */
-  router?: ReturnType<typeof useRouter>
-}
+import { ReactiveRouteOptions } from '../_types'
 
 export function useRouteQuery(name: string): Ref<null | string | string[]>
-export function useRouteQuery<T extends null | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: RouteQueryOptions): Ref<T>
+export function useRouteQuery<T extends null | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: ReactiveRouteOptions): Ref<T>
 export function useRouteQuery<T extends string | string[]>(
   name: string,
   defaultValue?: T,
@@ -29,7 +11,7 @@ export function useRouteQuery<T extends string | string[]>(
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-  }: RouteQueryOptions = {},
+  }: ReactiveRouteOptions = {},
 ) {
   return computed<any>({
     get() {
@@ -41,7 +23,7 @@ export function useRouteQuery<T extends string | string[]>(
       return data
     },
     set(v) {
-      router[mode]({ query: { [name]: v } })
+      router[unref(mode)]({ query: { ...route.query, [name]: v } })
     },
   })
 }
