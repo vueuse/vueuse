@@ -22,7 +22,7 @@ describe('useRefHistory - sync', () => {
   test('sync: should be able to undo and redo', () => {
     renderHook(() => {
       const v = ref(0)
-      const { undo, redo, history } = useRefHistory(v, { flush: 'sync' })
+      const { undo, redo, history, last } = useRefHistory(v, { flush: 'sync' })
 
       v.value = 2
       v.value = 3
@@ -30,16 +30,22 @@ describe('useRefHistory - sync', () => {
 
       expect(v.value).toBe(4)
       expect(history.value.length).toBe(4)
+      expect(last.value.value).toBe(4)
       undo()
       expect(v.value).toBe(3)
+      expect(last.value.value).toBe(3)
       undo()
       expect(v.value).toBe(2)
+      expect(last.value.value).toBe(2)
       redo()
       expect(v.value).toBe(3)
+      expect(last.value.value).toBe(3)
       redo()
       expect(v.value).toBe(4)
+      expect(last.value.value).toBe(4)
       redo()
       expect(v.value).toBe(4)
+      expect(last.value.value).toBe(4)
     })
   })
 
@@ -136,7 +142,7 @@ describe('useRefHistory - sync', () => {
 
   test('sync: pause and resume', () => {
     const v = ref(1)
-    const { history, pause, resume } = useRefHistory(v, { flush: 'sync' })
+    const { history, pause, resume, last } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].value).toBe(1)
@@ -145,15 +151,18 @@ describe('useRefHistory - sync', () => {
     v.value = 2
 
     expect(history.value.length).toBe(1)
+    expect(last.value.value).toBe(1)
 
     resume()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.value).toBe(1)
 
     v.value = 3
 
     expect(history.value.length).toBe(2)
     expect(history.value[0].value).toBe(3)
+    expect(last.value.value).toBe(3)
   })
 
   test('sync: reset', () => {
@@ -229,7 +238,7 @@ describe('useRefHistory - pre', () => {
 
   test('pre: should be able to undo and redo', async() => {
     const v = ref(0)
-    const { undo, redo, history } = useRefHistory(v)
+    const { undo, redo, history, last } = useRefHistory(v)
 
     v.value = 2
     await nextTick()
@@ -240,21 +249,27 @@ describe('useRefHistory - pre', () => {
 
     expect(v.value).toBe(4)
     expect(history.value.length).toBe(4)
+    expect(last.value.value).toBe(4)
     undo()
     await nextTick()
     expect(v.value).toBe(3)
+    expect(last.value.value).toBe(3)
     undo()
     await nextTick()
     expect(v.value).toBe(2)
+    expect(last.value.value).toBe(2)
     redo()
     await nextTick()
     expect(v.value).toBe(3)
+    expect(last.value.value).toBe(3)
     redo()
     await nextTick()
     expect(v.value).toBe(4)
+    expect(last.value.value).toBe(4)
     redo()
     await nextTick()
     expect(v.value).toBe(4)
+    expect(last.value.value).toBe(4)
   })
 
   test('pre: object with deep', async() => {
@@ -324,7 +339,7 @@ describe('useRefHistory - pre', () => {
 
   test('pre: pause and resume', async() => {
     const v = ref(1)
-    const { history, pause, resume } = useRefHistory(v)
+    const { history, pause, resume, last } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].value).toBe(1)
@@ -334,17 +349,20 @@ describe('useRefHistory - pre', () => {
     await nextTick()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.value).toBe(1)
 
     resume()
     await nextTick()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.value).toBe(1)
 
     v.value = 3
     await nextTick()
 
     expect(history.value.length).toBe(2)
     expect(history.value[0].value).toBe(3)
+    expect(last.value.value).toBe(3)
   })
 
   test('pre: reset', async() => {

@@ -53,6 +53,11 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
   history: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
+  * Last history point, current can be different if paused
+  */
+  last: Ref<UseRefHistoryRecord<Serialized>>
+
+  /**
    * Same as 'history'
    */
   undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
@@ -131,7 +136,21 @@ export function useRefHistory<Raw, Serialized = Raw>(
     parse = fnBypass,
   } = options
 
-  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
+  function _createHistoryRecord(): UseRefHistoryRecord<Serialized> {
+    return {
+      value: dump(current.value),
+      timestamp: timestamp(),
+    }
+  }
+
+  const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
+
+  function _setLastValue(record: UseRefHistoryRecord<Serialized>) {
+    last.value = record
+  }
+
+  // undoStack starts with the current value
+  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([last.value]) as Ref<UseRefHistoryRecord<Serialized>[]>
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const isTracking = ref(true)
 
@@ -157,7 +176,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const disposables: Fn[] = []
 
-  const _setCurrentValue = (value: Serialized) => {
+  const _setCurrentValue = (record: UseRefHistoryRecord<Serialized>) => {
     // If there were already changes in the state, they will be ignored
     // examples:
     //   modify, undo
@@ -170,7 +189,8 @@ export function useRefHistory<Raw, Serialized = Raw>(
     //   undo, undo, modify
     ignoreCounter.value++
 
-    current.value = parse(value)
+    current.value = parse(record.value)
+    _setLastValue(record)
   }
 
   const commit = () => {
@@ -179,17 +199,15 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     syncCounter.value = ignoreCounter.value
 
-    undoStack.value.unshift({
-      value: dump(current.value),
-      timestamp: timestamp(),
-    })
+    const record = _createHistoryRecord()
+    undoStack.value.unshift(record)
+    _setLastValue(record)
 
     if (options.capacity && undoStack.value.length > options.capacity)
       undoStack.value.splice(options.capacity, Infinity)
     if (redoStack.value.length)
       redoStack.value.splice(0, redoStack.value.length)
   }
-
   if (flush === 'sync') {
     disposables.push(
       watch(
@@ -205,7 +223,6 @@ export function useRefHistory<Raw, Serialized = Raw>(
         },
         {
           deep,
-          immediate: true,
           flush: 'sync',
         },
       ),
@@ -230,7 +247,6 @@ export function useRefHistory<Raw, Serialized = Raw>(
         },
         {
           deep: options.deep,
-          immediate: true,
           flush,
         },
       ),
@@ -270,14 +286,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
     if (state)
       redoStack.value.unshift(state)
     if (undoStack.value[0])
-      _setCurrentValue(undoStack.value[0].value)
+      _setCurrentValue(undoStack.value[0])
   }
 
   const redo = () => {
     const state = redoStack.value.shift()
 
     if (state) {
-      _setCurrentValue(state.value)
+      _setCurrentValue(state)
       undoStack.value.unshift(state)
     }
   }
@@ -285,7 +301,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const reset = () => {
     const state = undoStack.value[0]
     if (state)
-      _setCurrentValue(state.value)
+      _setCurrentValue(state)
   }
 
   const batch = (fn: (cancel: Fn) => void) => {
@@ -312,6 +328,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     current,
     undoStack,
     redoStack,
+    last,
     history: undoStack,
     isTracking,
 
