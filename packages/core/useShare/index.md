@@ -9,10 +9,14 @@
 ```js
 import { useShare } from '@vueuse/core'
 
-const { share, isSupported } = useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href })
+const { share, isSupported } = useShare()
 
 function startShare() {
-  if (isSupported) share()
+  share({
+    title: 'Hello',
+    text: 'Hello my friend!',
+    url: location.href,
+  })
 }
 ```
 
