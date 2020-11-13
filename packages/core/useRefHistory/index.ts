@@ -299,9 +299,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const reset = () => {
-    const state = undoStack.value[0]
-    if (state)
-      _setCurrentValue(state)
+    _setCurrentValue(last.value)
   }
 
   const batch = (fn: (cancel: Fn) => void) => {
