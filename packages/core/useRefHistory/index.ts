@@ -2,7 +2,7 @@ import { Fn, timestamp } from '@vueuse/shared'
 import { ref, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
-  value: T
+  snapshot: T
   timestamp: number
 }
 
@@ -138,7 +138,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   function _createHistoryRecord(): UseRefHistoryRecord<Serialized> {
     return {
-      value: dump(current.value),
+      snapshot: dump(current.value),
       timestamp: timestamp(),
     }
   }
@@ -189,7 +189,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     //   undo, undo, modify
     ignoreCounter.value++
 
-    current.value = parse(record.value)
+    current.value = parse(record.snapshot)
     _setLastValue(record)
   }
 

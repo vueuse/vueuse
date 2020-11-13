@@ -20,8 +20,8 @@ counter.value += 1
 await nextTick()
 console.log(history.value)
 /* [
-  { value: 1, timestamp: 1601912898062 }, 
-  { value: 0, timestamp: 1601912898061 }
+  { snapshot: 1, timestamp: 1601912898062 }, 
+  { snapshot: 0, timestamp: 1601912898061 }
 ] */
 ```
 
@@ -52,8 +52,8 @@ state.value.foo = 2
 await nextTick()
 console.log(history.value)
 /* [
-  { value: { foo: 2, bar: 'bar' } },
-  { value: { foo: 1, bar: 'bar' } }
+  { snapshot: { foo: 2, bar: 'bar' } },
+  { snapshot: { foo: 1, bar: 'bar' } }
 ] */
 ```
 
@@ -117,9 +117,9 @@ commit()
 
 console.log(history.value)
 /* [
-  { value: 2 },
-  { value: 1 },
-  { value: 0 },
+  { snapshot: 2 },
+  { snapshot: 1 },
+  { snapshot: 0 },
 ] */
 ```
 
@@ -136,7 +136,7 @@ batch(() => {
 
 console.log(history.value)
 /* [
-  { value: { names: [ 'Lena' ], version: 2 },
-  { value: { names: [], version: 1 },
+  { snapshot: { names: [ 'Lena' ], version: 2 },
+  { snapshot: { names: [], version: 1 },
 ] */
 ```
