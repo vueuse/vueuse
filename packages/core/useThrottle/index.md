@@ -13,10 +13,10 @@ const throttled = useThrottle(input, 1000)
 
 ## Related Functions
 
-- [useThrottle](https://vueuse.js.org/?path=/story/side-effects--usethrottle)
-- [useThrottleFn](https://vueuse.js.org/?path=/story/side-effects--usethrottlefn)
-- [useDebounce](https://vueuse.js.org/?path=/story/side-effects--usedebounce)
-- [useDebounceFn](https://vueuse.js.org/?path=/story/side-effects--usedebouncefn)
+- [useThrottle](https://vueuse.js.org/?path=/story/utilities--usethrottle)
+- [useThrottleFn](https://vueuse.js.org/?path=/story/utilities--usethrottlefn)
+- [useDebounce](https://vueuse.js.org/?path=/story/utilities--usedebounce)
+- [useDebounceFn](https://vueuse.js.org/?path=/story/utilities--usedebouncefn)
 
 ## Recommended Reading
 
