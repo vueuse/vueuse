@@ -1,5 +1,5 @@
 import { Fn, timestamp } from '@vueuse/shared'
-import { ref, Ref, watch } from 'vue-demi'
+import { ref, computed, Ref, watch } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T
@@ -145,12 +145,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
 
-  function _setLastValue(record: UseRefHistoryRecord<Serialized>) {
-    last.value = record
-  }
-
-  // undoStack starts with the current value
-  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([last.value]) as Ref<UseRefHistoryRecord<Serialized>[]>
+  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const isTracking = ref(true)
 
@@ -190,7 +185,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     ignoreCounter.value++
 
     current.value = parse(record.snapshot)
-    _setLastValue(record)
+    last.value = record
   }
 
   const commit = () => {
@@ -199,9 +194,8 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     syncCounter.value = ignoreCounter.value
 
-    const record = _createHistoryRecord()
-    undoStack.value.unshift(record)
-    _setLastValue(record)
+    undoStack.value.unshift(last.value)
+    last.value = _createHistoryRecord()
 
     if (options.capacity && undoStack.value.length > options.capacity)
       undoStack.value.splice(options.capacity, Infinity)
@@ -283,18 +277,18 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const undo = () => {
     const state = undoStack.value.shift()
 
-    if (state)
-      redoStack.value.unshift(state)
-    if (undoStack.value[0])
-      _setCurrentValue(undoStack.value[0])
+    if (state) {
+      redoStack.value.unshift(last.value)
+      _setCurrentValue(state)
+    }
   }
 
   const redo = () => {
     const state = redoStack.value.shift()
 
     if (state) {
+      undoStack.value.unshift(last.value)
       _setCurrentValue(state)
-      undoStack.value.unshift(state)
     }
   }
 
@@ -322,12 +316,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
     clear()
   }
 
+  const history = computed(() => [last.value, ...undoStack.value])
+
   return {
     current,
     undoStack,
     redoStack,
     last,
-    history: undoStack,
+    history,
     isTracking,
 
     clear,

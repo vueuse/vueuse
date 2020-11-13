@@ -168,7 +168,7 @@ describe('useRefHistory - sync', () => {
   test('sync: reset', () => {
     renderHook(() => {
       const v = ref(0)
-      const { history, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
+      const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 
       expect(history.value.length).toBe(1)
       expect(history.value[0].snapshot).toBe(0)
@@ -203,19 +203,22 @@ describe('useRefHistory - sync', () => {
 
       // Same test, but with a non empty redoStack
 
+      v.value = 3
+      commit()
+
       undo()
 
       v.value = 2
 
       reset()
 
-      expect(v.value).toBe(0)
+      expect(v.value).toBe(1)
 
       expect(undoStack.value.length).toBe(1)
       expect(undoStack.value[0].snapshot).toBe(0)
 
       expect(redoStack.value.length).toBe(1)
-      expect(redoStack.value[0].snapshot).toBe(1)
+      expect(redoStack.value[0].snapshot).toBe(3)
     })
   })
 })
@@ -367,7 +370,7 @@ describe('useRefHistory - pre', () => {
 
   test('pre: reset', async() => {
     const v = ref(0)
-    const { history, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
+    const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
     expect(history.value[0].snapshot).toBe(0)
@@ -404,6 +407,9 @@ describe('useRefHistory - pre', () => {
 
     // Same test, but with a non empty redoStack
 
+    v.value = 3
+    commit()
+
     undo()
     await nextTick()
 
@@ -413,13 +419,13 @@ describe('useRefHistory - pre', () => {
     reset()
     await nextTick()
 
-    expect(v.value).toBe(0)
+    expect(v.value).toBe(1)
 
     expect(undoStack.value.length).toBe(1)
     expect(undoStack.value[0].snapshot).toBe(0)
 
     expect(redoStack.value.length).toBe(1)
-    expect(redoStack.value[0].snapshot).toBe(1)
+    expect(redoStack.value[0].snapshot).toBe(3)
   })
 
   test('pre: auto batching', async() => {
