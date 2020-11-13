@@ -37,7 +37,7 @@ defineDemo(
         <note>History (limited to 10 records for demo)</note>
         <div class="ml-2">
           <div v-for='i in history' :key='i.timestamp'>
-            <span class="opacity-50 mr-3 font-mono">{{format(i.timestamp)}}</span> <span class="font-mono">{ value: {{i.value}} }</span>
+            <span class="opacity-50 mr-3 font-mono">{{format(i.timestamp)}}</span> <span class="font-mono">{ value: {{i.snapshot}} }</span>
           </div>
         </div>
       </div>
