@@ -1,19 +1,51 @@
-import { watch } from 'vue-demi'
-import { useTimeout } from '../useTimeout'
+import { ref } from 'vue-demi'
+import { tryOnUnmounted } from '..'
 
+/**
+ * Wrapper for `setTimeout` with controls.
+ *
+ * @param cb
+ * @param interval
+ * @param immediate
+ */
 export function useTimeoutFn(
   cb: () => any,
   interval?: number,
   immediate?: boolean,
 ) {
-  const { ready, start, stop } = useTimeout(interval, immediate)
+  const isActive = ref(false)
 
-  watch(
-    ready,
-    (maturity) => {
-      maturity && cb()
-    },
-  )
+  let timer: number | null = null
 
-  return { ready, start, stop }
+  function clear() {
+    if (timer) {
+      clearTimeout(timer)
+      timer = null
+    }
+  }
+
+  function stop() {
+    isActive.value = false
+    stop()
+  }
+
+  function start() {
+    clear()
+    isActive.value = true
+    timer = setTimeout(() => {
+      timer = null
+      cb()
+    }, interval)
+  }
+
+  if (immediate)
+    start()
+
+  tryOnUnmounted(stop)
+
+  return {
+    isActive,
+    start,
+    stop,
+  }
 }

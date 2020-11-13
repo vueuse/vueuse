@@ -13,7 +13,7 @@ defineDemo(
     setup() {
       const defaultText = 'Please wait 3 seconds'
       const text = ref(defaultText)
-      const { ready, start } = useTimeoutFn(() => {
+      const { start } = useTimeoutFn(() => {
         text.value = 'Fired!'
       }, 3000)
 
@@ -23,7 +23,6 @@ defineDemo(
       }
 
       return {
-        ready,
         restart,
         text,
       }
@@ -32,7 +31,7 @@ defineDemo(
     template: html`
       <div>
         <p>{{text}}</p>
-        <button @click="restart()" :disabled="!ready">Start Again</button>
+        <button @click="restart()">Resetart</button>
       </div>
     `,
   }),

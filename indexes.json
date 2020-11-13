@@ -136,21 +136,21 @@
           "name": "useIntervalFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
-          "description": "simple wrapper for `setInterval`",
+          "description": "wrapper for `setInterval` with controls",
           "depreacted": false
         },
         {
           "name": "useTimeout",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
-          "description": "update value after a given time",
+          "description": "update value after a given time with controls",
           "depreacted": false
         },
         {
           "name": "useTimeoutFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
-          "description": "call function after a given time",
+          "description": "wrapper for `setTimeout` with controls",
           "depreacted": false
         }
       ],

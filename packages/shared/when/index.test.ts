@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { when } from '.'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { invoke } from '@vueuse/shared'
 
 describe('when', () => {
