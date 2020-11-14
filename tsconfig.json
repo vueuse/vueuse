@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": ["ESNext", "DOM"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
@@ -11,6 +11,7 @@
     "rootDir": ".",
     "baseUrl": ".",
     "jsx": "preserve",
+    "skipLibCheck": true,
     "paths": {
       "@vueuse/shared": ["./packages/shared/index.ts"]
     }

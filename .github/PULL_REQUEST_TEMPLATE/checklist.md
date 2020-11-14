@@ -8,12 +8,15 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (17)
+### shared (21)
   - [ ] biSyncRef
   - [ ] controlledComputed
+  - [ ] debouncedWatch
   - [ ] extendRef
   - [ ] makeDestructurable
+  - [ ] pausableWatch
   - [ ] syncRef
+  - [ ] throttledWatch
   - [ ] tryOnMounted
   - [ ] tryOnUnmounted
   - [ ] useDebounce
@@ -25,6 +28,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useTimeout
   - [ ] useTimeoutFn
   - [ ] utils
+  - [ ] watchWithFilter
   - [ ] when
 
 ### core (51)
@@ -56,7 +60,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useMouseInElement
   - [ ] useMutationObserver
   - [ ] useNetwork
-  - [ ] useNow
   - [ ] useOnline
   - [ ] usePageLeave
   - [ ] useParallax
@@ -64,7 +67,6 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] usePreferredColorScheme
   - [ ] usePreferredDark
   - [ ] usePreferredLanguages
-  - [ ] useRaf
   - [ ] useRafFn
   - [ ] useRefHistory
   - [ ] useResizeObserver
@@ -72,13 +74,19 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useShare
   - [ ] useSpeechRecognition
   - [ ] useStorage
+  - [ ] useTimestamp
   - [ ] useTitle
   - [ ] useTransition
+  - [ ] useVModel
   - [ ] useWebSocket
   - [ ] useWebWorker
   - [ ] useWebWorkerFn
   - [ ] useWindowScroll
   - [ ] useWindowSize
+
+### router (2)
+  - [ ] useRouteHash
+  - [ ] useRouteQuery
 
 ### integrations (3)
   - [ ] useAxios

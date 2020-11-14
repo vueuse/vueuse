@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { controlledComputed } from '.'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 
 describe('controlledComputed', () => {
   it('should work', (done) => {

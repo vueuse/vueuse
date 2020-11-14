@@ -33,7 +33,7 @@ const isTypedCharGood = ({
     return false
 
   // 0...9
-  if (keyCode >= 48 && keyCode <= 57)
+  if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105))
     return true
 
   // a...z
@@ -47,6 +47,7 @@ const isTypedCharGood = ({
 /**
  * Fires when users start typing on non-editable elements.
  *
+ * @see   {@link https://vueuse.js.org/onStartTyping}
  * @param callback
  * @param options
  */

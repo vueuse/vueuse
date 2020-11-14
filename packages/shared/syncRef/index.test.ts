@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { syncRef } from '.'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 
 describe('syncRef', () => {
   it('should work', (done) => {

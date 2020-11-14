@@ -1,9 +1,20 @@
-import { WatchOptions, watch, WatchSource } from 'vue-demi'
-import { promiseTimeout } from '../utils'
+import { watch, WatchSource } from 'vue-demi'
+import { ConfigurableFlush, promiseTimeout } from '../utils'
 
-export interface WhenToMatchOptions {
-  flush?: WatchOptions['flush']
+export interface WhenToMatchOptions extends ConfigurableFlush {
+  /**
+   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * 0 for never timed out
+   *
+   * @default 0
+   */
   timeout?: number
+
+  /**
+   * Reject the promise when timeout
+   *
+   * @default false
+   */
   throwOnTimeout?: boolean
 }
 
@@ -21,13 +32,27 @@ export interface WhenInstance<T> {
   changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>
 }
 
-export function when<T>(r: WatchSource<T> | object): WhenInstance<T> {
+/**
+ * Promised one-time watch for ref changes
+ * @param r          ref or watch source
+ * @param options
+ */
+export function when<T>(r: WatchSource<T> | object, rootOptions: WhenToMatchOptions = {}): WhenInstance<T> {
   let isNot = false
 
   function toMatch(
     condition: (v: T | object) => boolean,
-    { flush = 'sync', timeout, throwOnTimeout }: WhenToMatchOptions = {},
+    options: WhenToMatchOptions = {},
   ): Promise<void> {
+    const {
+      flush = 'pre',
+      timeout = 0,
+      throwOnTimeout = false,
+    } = {
+      ...rootOptions,
+      ...options,
+    }
+
     let stop: Function | null = null
     const watcher = new Promise<void>((resolve) => {
       stop = watch(r, (v) => {

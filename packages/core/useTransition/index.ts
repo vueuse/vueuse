@@ -89,7 +89,7 @@ export function useTransition(baseNumber: Ref<number>, options: StateEasingOptio
 
     if (progress >= 1)
       stop()
-  }, { startNow: false })
+  }, { immediate: false })
 
   watch(baseNumber, () => {
     stop()

@@ -21,6 +21,18 @@ export const packages: PackageManifest[] = [
     description: 'Collection of essential Vue Composition API',
   },
   {
+    name: 'router',
+    display: 'Router',
+    description: 'Utilities for vue-router',
+    addon: true,
+    external: [
+      'vue-router',
+    ],
+    globals: {
+      'vue-router': 'VueRouter',
+    },
+  },
+  {
     name: 'integrations',
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',

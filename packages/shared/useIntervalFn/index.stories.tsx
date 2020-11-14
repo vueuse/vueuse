@@ -14,23 +14,19 @@ defineDemo(
       const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好']
       const word = ref('Hello')
 
-      const { activated, start, stop } = useIntervalFn(() => {
-        word.value = greetings[Math.round(Math.random() * (greetings.length - 1))]
-      }, 500)
-
       return {
         word,
-        activated,
-        start,
-        stop,
+        ...useIntervalFn(() => {
+          word.value = greetings[Math.round(Math.random() * (greetings.length - 1))]
+        }, 500),
       }
     },
 
     template: html`
       <div>
         <p>{{word}}</p>
-        <button @click='stop' class="orange" v-if='activated'>Stop</button>
-        <button @click='start' v-if='!activated'>Start</button>
+        <button @click='pause' class="orange" v-if='isActive'>Pause</button>
+        <button @click='resume' v-if='!isActive'>Resume</button>
       </div>
     `,
   }),

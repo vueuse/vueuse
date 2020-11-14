@@ -43,20 +43,6 @@
           "depreacted": false
         },
         {
-          "name": "tryOnMounted",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonmounted",
-          "description": "safe `onMounted`",
-          "depreacted": false
-        },
-        {
-          "name": "tryOnUnmounted",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--tryonunmounted",
-          "description": "safe `onUnmounted`",
-          "depreacted": false
-        },
-        {
           "name": "useDebounce",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
@@ -83,12 +69,58 @@
           "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
           "description": "throttle execution of a function",
           "depreacted": false
+        }
+      ],
+      "Watch": [
+        {
+          "name": "debouncedWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--debouncedwatch",
+          "description": "debounced watch",
+          "depreacted": false
+        },
+        {
+          "name": "pausableWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",
+          "description": "pausable watch",
+          "depreacted": false
+        },
+        {
+          "name": "throttledWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--throttledwatch",
+          "description": "throttled watch",
+          "depreacted": false
+        },
+        {
+          "name": "watchWithFilter",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--watchwithfilter",
+          "description": "`watch` with additional EventFilter control",
+          "depreacted": false
         },
         {
           "name": "when",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--when",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--when",
           "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
+      "Component": [
+        {
+          "name": "tryOnMounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonmounted",
+          "description": "safe `onMounted`",
+          "depreacted": false
+        },
+        {
+          "name": "tryOnUnmounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonunmounted",
+          "description": "safe `onUnmounted`",
           "depreacted": false
         }
       ],
@@ -104,21 +136,21 @@
           "name": "useIntervalFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
-          "description": "simple wrapper for `setInterval`",
+          "description": "wrapper for `setInterval` with controls",
           "depreacted": false
         },
         {
           "name": "useTimeout",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
-          "description": "update value after a given time",
+          "description": "update value after a given time with controls",
           "depreacted": false
         },
         {
           "name": "useTimeoutFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
-          "description": "call function after a given time",
+          "description": "wrapper for `setTimeout` with controls",
           "depreacted": false
         }
       ],
@@ -478,20 +510,6 @@
       ],
       "Animation": [
         {
-          "name": "useNow",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usenow",
-          "description": "reactive current timestamp",
-          "depreacted": false
-        },
-        {
-          "name": "useRaf",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useraf",
-          "description": "reactive time elapsed on every `requestAnimationFrame`",
-          "depreacted": false
-        },
-        {
           "name": "useRafFn",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--useraffn",
@@ -499,10 +517,60 @@
           "depreacted": false
         },
         {
+          "name": "useTimestamp",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimestamp",
+          "description": "reactive current timestamp",
+          "depreacted": false
+        },
+        {
           "name": "useTransition",
           "category": "Animation",
           "docs": "https://vueuse.js.org/?path=/story/animation--usetransition",
           "description": "transition between values",
+          "depreacted": false
+        }
+      ],
+      "Component": [
+        {
+          "name": "useVModel",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--usevmodel",
+          "description": "shorthand for v-model binding",
+          "depreacted": false
+        }
+      ]
+    }
+  },
+  "router": {
+    "info": {
+      "name": "router",
+      "display": "Router",
+      "description": "Utilities for vue-router",
+      "addon": true,
+      "external": [
+        "vue-router"
+      ],
+      "globals": {
+        "vue-router": "VueRouter"
+      }
+    },
+    "dir": "packages/router",
+    "docs": "https://vueuse.js.org/?path=/story/router--readme",
+    "categories": {
+      "/Router": [
+        {
+          "name": "useRouteHash",
+          "category": "/Router",
+          "docs": "https://vueuse.js.org/?path=/story/router--useroutehash",
+          "description": "shorthand for reactive route.hash",
+          "depreacted": false
+        },
+        {
+          "name": "useRouteQuery",
+          "category": "/Router",
+          "docs": "https://vueuse.js.org/?path=/story/router--useroutequery",
+          "description": "shorthand for reactive route.query",
           "depreacted": false
         }
       ]
@@ -622,18 +690,18 @@
     "dir": "packages/firebase",
     "docs": "https://vueuse.js.org/?path=/story/firebase--readme",
     "categories": {
-      "@Firebase": [
+      "/Firebase": [
         {
           "name": "useFirestore",
-          "category": "@Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/@firebase--usefirestore",
+          "category": "/Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/firebase--usefirestore",
           "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding",
           "depreacted": false
         },
         {
           "name": "useRTDB",
-          "category": "@Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/@firebase--usertdb",
+          "category": "/Firebase",
+          "docs": "https://vueuse.js.org/?path=/story/firebase--usertdb",
           "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding",
           "depreacted": false
         }

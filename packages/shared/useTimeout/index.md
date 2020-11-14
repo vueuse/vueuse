@@ -1,27 +1,19 @@
 # useTimeout
 
-> Update value after a given time. Provides handles to cancel and/or reset the timeout.
+> Update value after a given time with controls.
 
 ## Usage
 
-```html
-<template>
-  <div id="demo">
-    <p>Ready: {{ ready }}</p>
-    <button @click="start" :disabled="!ready">Start Again</button>
-  </div>
-</template>
+```js
+import { useTimeout, promiseTimeout } from '@vueuse/core'
 
-<script>
-export default {
-  setup() {
-    const { ready, start } = useTimeout(1000)
+const { ready, start, stop } = useTimeout(1000, true)
+```
 
-    return {
-      ready,
-      start,
-    }
-  }
-}
-</script>
+```js
+console.log(ready.value) // false
+
+await promisedTimeout(1200)
+
+console.log(ready.value) // true
 ```

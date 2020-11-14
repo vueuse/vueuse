@@ -9,12 +9,3 @@ import { useFullscreen } from '@vueuse/core'
 
 const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen()
 ```
-
-| State        | Type      | Description                                      |
-| ------------ | --------- | ------------------------------------------------ |
-| isFullscreen | `Boolean` | If the element is currently in full screen mode. |
-
-| Methods                 | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| `enterFullscreen(void)` | Enters the fullscreen mode for the element.      |
-| `exitFullscreen(void)`  | Exits the fullscreen mode from **all** elements. |

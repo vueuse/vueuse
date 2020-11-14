@@ -63,7 +63,27 @@ motionControl.resume()
 
 ## Reactive Timing
 
-// TODO:
+VueUse composables follow Vue's reactivity system defaults for [flush timing](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) where possible. 
+
+For `watch`-like composables (e.g. `pausableWatch`, `when`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
+
+In the same way as with `watch`, VueUse allows users to configure the timing by passing the `flush` option
+
+```ts
+const { pause, resume } = pausableWatch(
+  () => {
+    // Safely access rendered DOM
+  },
+  { flush: 'post' }
+)
+```
+
+**flush option (default: `'pre'`)**
+- `'pre'`: buffers invalidated effects in the same 'tick' and flushes them before rendering
+- `'post'`: async like 'pre' but fires after component updates so you can access the updated DOM
+- `'sync'`: forces the effect to always trigger synchronously
+
+**Note:** For `computed`-like composables (e.g. `syncRef`, `controlledComputed`), when flush timing is configurable, the default is changed to `{ flush: 'sync' }` to align them with the way computed refs works in Vue.
 
 ## Configurable Global Dependencies
 

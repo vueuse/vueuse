@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { Fn, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -9,7 +10,7 @@ export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> 
 }
 
 export type EventFilter<Args extends any[] = any[], This = any> = (
-  invoke: () => void,
+  invoke: Fn,
   options: FunctionWrapperOptions<Args, This>
 ) => void
 
@@ -98,10 +99,8 @@ export function throttleFilter(ms: number, trailing = true) {
  *
  * @param extendFilter  Extra filter to apply when the PauseableFilter is active, default to none
  *
- * @example
- *
  */
-export function pauseableFilter(extendFilter = bypassFilter) {
+export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {
   const isActive = ref(true)
 
   function pause() {

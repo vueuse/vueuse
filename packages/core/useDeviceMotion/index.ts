@@ -7,6 +7,12 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {}
 
+/**
+ * Reactive DeviceMotionEvent
+ *
+ * @see   {@link https://vueuse.js.org/useDeviceMotion}
+ * @param options
+ */
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {
   const {
     window = defaultWindow,

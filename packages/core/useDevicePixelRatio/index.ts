@@ -18,7 +18,12 @@ const DEVICE_PIXEL_RATIO_SCALES = [
   3.5,
   4,
 ]
-
+/**
+ * Reactively track `window.devicePixelRatio`
+ *
+ * @see   {@link https://vueuse.js.org/useDevicePixelRatio}
+ * @param options
+ */
 export function useDevicePixelRatio({
   window = defaultWindow,
 }: ConfigurableWindow = {}) {
@@ -41,9 +46,7 @@ export function useDevicePixelRatio({
     const mqlMin = useMediaQuery(`screen and (min-resolution: ${dppx}dppx)`)
     const mqlMax = useMediaQuery(`screen and (max-resolution: ${dppx}dppx)`)
 
-    watch([mqlMin, mqlMax], () => {
-      handleDevicePixelRatio()
-    })
+    watch([mqlMin, mqlMax], handleDevicePixelRatio)
   })
 
   return { pixelRatio }

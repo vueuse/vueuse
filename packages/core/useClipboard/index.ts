@@ -7,6 +7,7 @@ import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 /**
  * Reactive Clipboard API
  *
+ * @see   {@link https://vueuse.js.org/useClipboard}
  * @param options
  */
 export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {

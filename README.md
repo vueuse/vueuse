@@ -26,13 +26,14 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- ⚡ **0 dependencies**: Don't worry about your bundle size
-- 🌴 **Fully tree shakable**: Only take what you want
+- ⚡ **Fully tree shakable**: Only take what you want
 - 🦾 **Type Strong**: Written in Typescript
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- 🌎 **Browser compatible**: Use it through CDN
+- 🔋 **SSR Friendly**
+- 🔩 **Flexible**: Configurable event filters, pausable, debounced or throttled. 
+- 🌎 **No bundler required**: Use it via CDN
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)**
+- 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
 
 ## 🦄 Usage
 
@@ -92,12 +93,11 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 - Animation
   - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter increases on every interval
-  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — simple wrapper for `setInterval`
-  - [`useNow`](https://vueuse.js.org/?path=/story/animation--usenow) — reactive current timestamp
-  - [`useRaf`](https://vueuse.js.org/?path=/story/animation--useraf) — reactive time elapsed on every `requestAnimationFrame`
+  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — wrapper for `setInterval` with controls
   - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`
-  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
-  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
+  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time with controls
+  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — wrapper for `setTimeout` with controls
+  - [`useTimestamp`](https://vueuse.js.org/?path=/story/animation--usetimestamp) — reactive current timestamp
   - [`useTransition`](https://vueuse.js.org/?path=/story/animation--usetransition) — transition between values
 
 - Browser
@@ -116,6 +116,11 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useResizeObserver`](https://vueuse.js.org/?path=/story/browser--useresizeobserver) — reports changes to the dimensions of an Element's content or the border-box
   - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.js.org/?path=/story/browser--usetitle) — reactive document title
+
+- Component
+  - [`tryOnMounted`](https://vueuse.js.org/?path=/story/component--tryonmounted) — safe `onMounted`
+  - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/component--tryonunmounted) — safe `onUnmounted`
+  - [`useVModel`](https://vueuse.js.org/?path=/story/component--usevmodel) — shorthand for v-model binding
 
 - Misc
   - [`useEventSource`](https://vueuse.js.org/?path=/story/misc--useeventsource) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server
@@ -159,15 +164,19 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
   - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time
   - [`syncRef`](https://vueuse.js.org/?path=/story/utilities--syncref) — keep target refs in sync with a source ref
-  - [`tryOnMounted`](https://vueuse.js.org/?path=/story/utilities--tryonmounted) — safe `onMounted`
-  - [`tryOnUnmounted`](https://vueuse.js.org/?path=/story/utilities--tryonunmounted) — safe `onUnmounted`
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state
   - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
   - [`useRefHistory`](https://vueuse.js.org/?path=/story/utilities--userefhistory) — track the change history of a ref
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
-  - [`when`](https://vueuse.js.org/?path=/story/utilities--when) — promised one-time watch for ref changes
+
+- Watch
+  - [`debouncedWatch`](https://vueuse.js.org/?path=/story/watch--debouncedwatch) — debounced watch
+  - [`pausableWatch`](https://vueuse.js.org/?path=/story/watch--pausablewatch) — pausable watch
+  - [`throttledWatch`](https://vueuse.js.org/?path=/story/watch--throttledwatch) — throttled watch
+  - [`watchWithFilter`](https://vueuse.js.org/?path=/story/watch--watchwithfilter) — `watch` with additional EventFilter control
+  - [`when`](https://vueuse.js.org/?path=/story/watch--when) — promised one-time watch for ref changes
 
 <!--FUNCTIONS_LIST_ENDS-->
 
@@ -181,6 +190,12 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
+
+
+- Router ([`@vueuse/router`](https://vueuse.js.org/?path=/story/router--readme)) - Utilities for vue-router
+  - [`useRouteHash`](https://vueuse.js.org/?path=/story/router--useroutehash) — shorthand for reactive route.hash
+  - [`useRouteQuery`](https://vueuse.js.org/?path=/story/router--useroutequery) — shorthand for reactive route.query
+
 
 
 - Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/integrations--readme)) - Integration wrappers for utility libraries
@@ -199,8 +214,8 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 
 - Firebase ([`@vueuse/firebase`](https://vueuse.js.org/?path=/story/firebase--readme)) - Enables realtime bindings for Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/@firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/@firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--ADDONS_LIST_ENDS-->
 

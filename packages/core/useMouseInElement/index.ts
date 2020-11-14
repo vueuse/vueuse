@@ -1,4 +1,6 @@
+import { Fn } from '@vueuse/shared'
 import { ref, Ref, watch } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface MouseInElementOptions extends ConfigurableWindow {
@@ -69,14 +71,15 @@ export function useMouseInElement(
           }
         }
 
-        document.addEventListener('mousemove', moveHandler)
-        if (touch)
-          document.addEventListener('touchmove', moveHandler)
+        const disposables: Fn[] = []
+        disposables.push(useEventListener('mousemove', moveHandler))
+        if (touch) {
+          disposables.push(useEventListener('touchstart', moveHandler))
+          disposables.push(useEventListener('touchmove', moveHandler))
+        }
 
         onCleanup(() => {
-          document.removeEventListener('mousemove', moveHandler)
-          if (touch)
-            document.removeEventListener('touchmove', moveHandler)
+          disposables.forEach(f => f())
         })
       },
       { immediate: true },

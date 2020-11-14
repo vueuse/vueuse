@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useTransition, TransitionPresets } from '.'
 
 describe('useTransition', () => {

@@ -12,17 +12,15 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        isLeft: usePageLeave(),
+        isLeft: usePageLeave({
+          window: window.parent,
+        }),
       }
     },
 
     template: html`
       <div>
-        <pre lang="json">{{
-          JSON.stringify({
-            isLeft,
-          }, null, 2)
-        }}</pre>
+        <pre lang="json">{{ { isLeft } }}</pre>
       </div>
     `,
   }),
