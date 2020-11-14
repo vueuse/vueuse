@@ -82,7 +82,7 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
   const {
     duration = 500,
     transition = (n: number) => n,
-  } = options;
+  } = options
 
   const output = ref(source.value)
 
