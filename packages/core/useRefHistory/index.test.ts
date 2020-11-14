@@ -1,3 +1,4 @@
+import { clear } from 'console'
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
 import { renderHook } from '../../_docs/tests'
@@ -22,16 +23,26 @@ describe('useRefHistory - sync', () => {
   test('sync: should be able to undo and redo', () => {
     renderHook(() => {
       const v = ref(0)
-      const { undo, redo, history, last } = useRefHistory(v, { flush: 'sync' })
+      const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
+
+      expect(canUndo.value).toBe(false)
+      expect(canRedo.value).toBe(false)
 
       v.value = 2
       v.value = 3
       v.value = 4
 
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(false)
+
       expect(v.value).toBe(4)
       expect(history.value.length).toBe(4)
       expect(last.value.snapshot).toBe(4)
       undo()
+
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(true)
+
       expect(v.value).toBe(3)
       expect(last.value.snapshot).toBe(3)
       undo()
@@ -43,9 +54,17 @@ describe('useRefHistory - sync', () => {
       redo()
       expect(v.value).toBe(4)
       expect(last.value.snapshot).toBe(4)
+
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(false)
+
       redo()
       expect(v.value).toBe(4)
       expect(last.value.snapshot).toBe(4)
+
+      clear()
+      expect(canUndo.value).toBe(false)
+      expect(canRedo.value).toBe(false)
     })
   })
 
@@ -241,7 +260,10 @@ describe('useRefHistory - pre', () => {
 
   test('pre: should be able to undo and redo', async() => {
     const v = ref(0)
-    const { undo, redo, history, last } = useRefHistory(v)
+    const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v)
+
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
 
     v.value = 2
     await nextTick()
@@ -253,6 +275,8 @@ describe('useRefHistory - pre', () => {
     expect(v.value).toBe(4)
     expect(history.value.length).toBe(4)
     expect(last.value.snapshot).toBe(4)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
     undo()
     await nextTick()
     expect(v.value).toBe(3)
@@ -263,6 +287,8 @@ describe('useRefHistory - pre', () => {
     expect(last.value.snapshot).toBe(2)
     redo()
     await nextTick()
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(true)
     expect(v.value).toBe(3)
     expect(last.value.snapshot).toBe(3)
     redo()
@@ -273,6 +299,13 @@ describe('useRefHistory - pre', () => {
     await nextTick()
     expect(v.value).toBe(4)
     expect(last.value.snapshot).toBe(4)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
+
+    clear()
+
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
   })
 
   test('pre: object with deep', async() => {
