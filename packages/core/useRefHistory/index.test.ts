@@ -9,37 +9,61 @@ describe('useRefHistory - sync', () => {
       const { history } = useRefHistory(v, { flush: 'sync' })
 
       expect(history.value.length).toBe(1)
-      expect(history.value[0].value).toBe(0)
+      expect(history.value[0].snapshot).toBe(0)
 
       v.value = 2
 
       expect(history.value.length).toBe(2)
-      expect(history.value[0].value).toBe(2)
-      expect(history.value[1].value).toBe(0)
+      expect(history.value[0].snapshot).toBe(2)
+      expect(history.value[1].snapshot).toBe(0)
     })
   })
 
   test('sync: should be able to undo and redo', () => {
     renderHook(() => {
       const v = ref(0)
-      const { undo, redo, history } = useRefHistory(v, { flush: 'sync' })
+      const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
+
+      expect(canUndo.value).toBe(false)
+      expect(canRedo.value).toBe(false)
 
       v.value = 2
       v.value = 3
       v.value = 4
 
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(false)
+
       expect(v.value).toBe(4)
       expect(history.value.length).toBe(4)
+      expect(last.value.snapshot).toBe(4)
       undo()
+
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(true)
+
       expect(v.value).toBe(3)
+      expect(last.value.snapshot).toBe(3)
       undo()
       expect(v.value).toBe(2)
+      expect(last.value.snapshot).toBe(2)
       redo()
       expect(v.value).toBe(3)
+      expect(last.value.snapshot).toBe(3)
       redo()
       expect(v.value).toBe(4)
+      expect(last.value.snapshot).toBe(4)
+
+      expect(canUndo.value).toBe(true)
+      expect(canRedo.value).toBe(false)
+
       redo()
       expect(v.value).toBe(4)
+      expect(last.value.snapshot).toBe(4)
+
+      clear()
+      expect(canUndo.value).toBe(false)
+      expect(canRedo.value).toBe(false)
     })
   })
 
@@ -49,16 +73,16 @@ describe('useRefHistory - sync', () => {
       const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
       expect(history.value.length).toBe(1)
-      expect(history.value[0].value.foo).toBe('bar')
+      expect(history.value[0].snapshot.foo).toBe('bar')
 
       v.value.foo = 'foo'
 
       expect(history.value.length).toBe(2)
-      expect(history.value[0].value.foo).toBe('foo')
+      expect(history.value[0].snapshot.foo).toBe('foo')
 
       // different references
-      expect(history.value[1].value.foo).toBe('bar')
-      expect(history.value[0].value).not.toBe(history.value[1].value)
+      expect(history.value[1].snapshot.foo).toBe('bar')
+      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
     })
   })
 
@@ -73,13 +97,13 @@ describe('useRefHistory - sync', () => {
       })
 
       expect(history.value.length).toBe(1)
-      expect(history.value[0].value).toBe('{"a":"bar"}')
+      expect(history.value[0].snapshot).toBe('{"a":"bar"}')
 
       v.value.a = 'foo'
 
       expect(history.value.length).toBe(2)
-      expect(history.value[0].value).toBe('{"a":"foo"}')
-      expect(history.value[1].value).toBe('{"a":"bar"}')
+      expect(history.value[0].snapshot).toBe('{"a":"foo"}')
+      expect(history.value[1].snapshot).toBe('{"a":"bar"}')
 
       undo()
 
@@ -92,13 +116,13 @@ describe('useRefHistory - sync', () => {
     const { commit, history } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
 
     commit()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(0)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
+    expect(history.value[1].snapshot).toBe(0)
   })
 
   test('sync: without batch', () => {
@@ -106,15 +130,15 @@ describe('useRefHistory - sync', () => {
     const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toEqual({ foo: 1, bar: 'one' })
+    expect(history.value[0].snapshot).toEqual({ foo: 1, bar: 'one' })
 
     v.value.foo = 2
     v.value.bar = 'two'
 
     expect(history.value.length).toBe(3)
-    expect(history.value[0].value).toEqual({ foo: 2, bar: 'two' })
-    expect(history.value[1].value).toEqual({ foo: 2, bar: 'one' })
-    expect(history.value[2].value).toEqual({ foo: 1, bar: 'one' })
+    expect(history.value[0].snapshot).toEqual({ foo: 2, bar: 'two' })
+    expect(history.value[1].snapshot).toEqual({ foo: 2, bar: 'one' })
+    expect(history.value[2].snapshot).toEqual({ foo: 1, bar: 'one' })
   })
 
   test('sync: with batch', () => {
@@ -122,7 +146,7 @@ describe('useRefHistory - sync', () => {
     const { history, batch } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toEqual({ foo: 1, bar: 'one' })
+    expect(history.value[0].snapshot).toEqual({ foo: 1, bar: 'one' })
 
     batch(() => {
       v.value.foo = 2
@@ -130,39 +154,42 @@ describe('useRefHistory - sync', () => {
     })
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toEqual({ foo: 2, bar: 'two' })
-    expect(history.value[1].value).toEqual({ foo: 1, bar: 'one' })
+    expect(history.value[0].snapshot).toEqual({ foo: 2, bar: 'two' })
+    expect(history.value[1].snapshot).toEqual({ foo: 1, bar: 'one' })
   })
 
   test('sync: pause and resume', () => {
     const v = ref(1)
-    const { history, pause, resume } = useRefHistory(v, { flush: 'sync' })
+    const { history, pause, resume, last } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(1)
+    expect(history.value[0].snapshot).toBe(1)
 
     pause()
     v.value = 2
 
     expect(history.value.length).toBe(1)
+    expect(last.value.snapshot).toBe(1)
 
     resume()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.snapshot).toBe(1)
 
     v.value = 3
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(3)
+    expect(history.value[0].snapshot).toBe(3)
+    expect(last.value.snapshot).toBe(3)
   })
 
   test('sync: reset', () => {
     renderHook(() => {
       const v = ref(0)
-      const { history, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
+      const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 
       expect(history.value.length).toBe(1)
-      expect(history.value[0].value).toBe(0)
+      expect(history.value[0].snapshot).toBe(0)
 
       v.value = 1
 
@@ -171,8 +198,8 @@ describe('useRefHistory - sync', () => {
       v.value = 2
 
       expect(history.value.length).toBe(2)
-      expect(history.value[0].value).toBe(1)
-      expect(history.value[1].value).toBe(0)
+      expect(history.value[0].snapshot).toBe(1)
+      expect(history.value[1].snapshot).toBe(0)
 
       reset()
 
@@ -180,8 +207,8 @@ describe('useRefHistory - sync', () => {
       expect(v.value).toBe(1)
 
       expect(history.value.length).toBe(2)
-      expect(history.value[0].value).toBe(1)
-      expect(history.value[1].value).toBe(0)
+      expect(history.value[0].snapshot).toBe(1)
+      expect(history.value[1].snapshot).toBe(0)
 
       reset()
 
@@ -189,10 +216,13 @@ describe('useRefHistory - sync', () => {
       expect(v.value).toBe(1)
 
       expect(history.value.length).toBe(2)
-      expect(history.value[1].value).toBe(0)
-      expect(history.value[0].value).toBe(1)
+      expect(history.value[1].snapshot).toBe(0)
+      expect(history.value[0].snapshot).toBe(1)
 
       // Same test, but with a non empty redoStack
+
+      v.value = 3
+      commit()
 
       undo()
 
@@ -200,13 +230,13 @@ describe('useRefHistory - sync', () => {
 
       reset()
 
-      expect(v.value).toBe(0)
+      expect(v.value).toBe(1)
 
       expect(undoStack.value.length).toBe(1)
-      expect(undoStack.value[0].value).toBe(0)
+      expect(undoStack.value[0].snapshot).toBe(0)
 
       expect(redoStack.value.length).toBe(1)
-      expect(redoStack.value[0].value).toBe(1)
+      expect(redoStack.value[0].snapshot).toBe(3)
     })
   })
 })
@@ -217,19 +247,22 @@ describe('useRefHistory - pre', () => {
     const { history } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
 
     v.value = 2
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(2)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
   })
 
   test('pre: should be able to undo and redo', async() => {
     const v = ref(0)
-    const { undo, redo, history } = useRefHistory(v)
+    const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v)
+
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
 
     v.value = 2
     await nextTick()
@@ -240,21 +273,38 @@ describe('useRefHistory - pre', () => {
 
     expect(v.value).toBe(4)
     expect(history.value.length).toBe(4)
+    expect(last.value.snapshot).toBe(4)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
     undo()
     await nextTick()
     expect(v.value).toBe(3)
+    expect(last.value.snapshot).toBe(3)
     undo()
     await nextTick()
     expect(v.value).toBe(2)
+    expect(last.value.snapshot).toBe(2)
     redo()
     await nextTick()
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(true)
     expect(v.value).toBe(3)
+    expect(last.value.snapshot).toBe(3)
     redo()
     await nextTick()
     expect(v.value).toBe(4)
+    expect(last.value.snapshot).toBe(4)
     redo()
     await nextTick()
     expect(v.value).toBe(4)
+    expect(last.value.snapshot).toBe(4)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
+
+    clear()
+
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
   })
 
   test('pre: object with deep', async() => {
@@ -262,17 +312,17 @@ describe('useRefHistory - pre', () => {
     const { history } = useRefHistory(v, { deep: true })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value.foo).toBe('bar')
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
     v.value.foo = 'foo'
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value.foo).toBe('foo')
+    expect(history.value[0].snapshot.foo).toBe('foo')
 
     // different references
-    expect(history.value[1].value.foo).toBe('bar')
-    expect(history.value[0].value).not.toBe(history.value[1].value)
+    expect(history.value[1].snapshot.foo).toBe('bar')
+    expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
   })
 
   test('pre: dump + parse', async() => {
@@ -284,14 +334,14 @@ describe('useRefHistory - pre', () => {
     })
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe('{"a":"bar"}')
+    expect(history.value[0].snapshot).toBe('{"a":"bar"}')
 
     v.value.a = 'foo'
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe('{"a":"foo"}')
-    expect(history.value[1].value).toBe('{"a":"bar"}')
+    expect(history.value[0].snapshot).toBe('{"a":"foo"}')
+    expect(history.value[1].snapshot).toBe('{"a":"bar"}')
 
     undo()
     await nextTick()
@@ -304,13 +354,13 @@ describe('useRefHistory - pre', () => {
     const { commit, history, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
 
     commit()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(0)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
+    expect(history.value[1].snapshot).toBe(0)
 
     undo()
     v.value = 2
@@ -318,41 +368,44 @@ describe('useRefHistory - pre', () => {
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(2)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
   })
 
   test('pre: pause and resume', async() => {
     const v = ref(1)
-    const { history, pause, resume } = useRefHistory(v)
+    const { history, pause, resume, last } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(1)
+    expect(history.value[0].snapshot).toBe(1)
 
     pause()
     v.value = 2
     await nextTick()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.snapshot).toBe(1)
 
     resume()
     await nextTick()
 
     expect(history.value.length).toBe(1)
+    expect(last.value.snapshot).toBe(1)
 
     v.value = 3
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(3)
+    expect(history.value[0].snapshot).toBe(3)
+    expect(last.value.snapshot).toBe(3)
   })
 
   test('pre: reset', async() => {
     const v = ref(0)
-    const { history, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
+    const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
 
     v.value = 1
     await nextTick()
@@ -363,8 +416,8 @@ describe('useRefHistory - pre', () => {
     await nextTick()
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(1)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
     reset()
 
@@ -372,8 +425,8 @@ describe('useRefHistory - pre', () => {
     expect(v.value).toBe(1)
 
     expect(history.value.length).toBe(2)
-    expect(history.value[0].value).toBe(1)
-    expect(history.value[1].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
     reset()
 
@@ -381,10 +434,13 @@ describe('useRefHistory - pre', () => {
     expect(v.value).toBe(1)
 
     expect(history.value.length).toBe(2)
-    expect(history.value[1].value).toBe(0)
-    expect(history.value[0].value).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
+    expect(history.value[0].snapshot).toBe(1)
 
     // Same test, but with a non empty redoStack
+
+    v.value = 3
+    commit()
 
     undo()
     await nextTick()
@@ -395,13 +451,13 @@ describe('useRefHistory - pre', () => {
     reset()
     await nextTick()
 
-    expect(v.value).toBe(0)
+    expect(v.value).toBe(1)
 
     expect(undoStack.value.length).toBe(1)
-    expect(undoStack.value[0].value).toBe(0)
+    expect(undoStack.value[0].snapshot).toBe(0)
 
     expect(redoStack.value.length).toBe(1)
-    expect(redoStack.value[0].value).toBe(1)
+    expect(redoStack.value[0].snapshot).toBe(3)
   })
 
   test('pre: auto batching', async() => {
@@ -409,7 +465,7 @@ describe('useRefHistory - pre', () => {
     const { history } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
-    expect(history.value[0].value).toBe(0)
+    expect(history.value[0].snapshot).toBe(0)
 
     v.value = 1
 
@@ -423,8 +479,8 @@ describe('useRefHistory - pre', () => {
     expect(history.value.length).toBe(2)
     await nextTick()
     expect(history.value.length).toBe(3)
-    expect(history.value[0].value).toBe(3)
-    expect(history.value[1].value).toBe(1)
+    expect(history.value[0].snapshot).toBe(3)
+    expect(history.value[1].snapshot).toBe(1)
 
     await nextTick()
     expect(history.value.length).toBe(3)
