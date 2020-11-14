@@ -2,16 +2,19 @@ import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from 'vue-demi'
 import { clamp, isFunction } from '@vueuse/shared'
 
-type CubicBezier = [number, number, number, number]
+type CubicBezierPoints = [number, number, number, number]
 
-type TransitionEasingFunction = (x: number) => number
+type EasingFunction = (x: number) => number
 
 interface TransitionOptions {
   duration?: number
-  transition?: TransitionEasingFunction | CubicBezier
+  transition?: EasingFunction | CubicBezierPoints
 }
 
-function cubicBezier([p0, p1, p2, p3]: CubicBezier): TransitionEasingFunction {
+/**
+ * Create an easing function from cubic bezier points.
+ */
+function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFunction {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -37,7 +40,12 @@ function cubicBezier([p0, p1, p2, p3]: CubicBezier): TransitionEasingFunction {
   return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-export const TransitionPresets: Record<string, CubicBezier> = {
+/**
+ * Common transitions
+ *
+ * @see   {@link https://easings.net}
+ */
+export const TransitionPresets: Record<string, CubicBezierPoints> = {
   linear: [0, 0, 1, 1],
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
@@ -78,9 +86,9 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
 
   const output = ref(source.value)
 
-  const getValue = isFunction<TransitionEasingFunction>(transition)
+  const getValue = isFunction<EasingFunction>(transition)
     ? transition
-    : cubicBezier(transition)
+    : createEasingFunction(transition)
 
   let diff = 0
   let endAt = 0
