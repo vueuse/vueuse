@@ -47,6 +47,7 @@ const isTypedCharGood = ({
 /**
  * Fires when users start typing on non-editable elements.
  *
+ * @see   {@link https://vueuse.js.org/onStartTyping}
  * @param callback
  * @param options
  */

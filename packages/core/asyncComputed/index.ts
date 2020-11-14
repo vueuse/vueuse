@@ -11,6 +11,7 @@ export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 /**
  * Create an asynchronous computed dependency
  *
+ * @see   {@link https://vueuse.js.org/asyncComputed}
  * @param evaluationCallback     The promise-returning callback which generates the computed value
  * @param initialState           The initial state, used until the first evaluation finishes
  * @param evaluatingRef          A ref passed to received the updates of the async evaluation
