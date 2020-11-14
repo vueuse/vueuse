@@ -1,4 +1,4 @@
-import { Ref, WatchSource } from 'vue-demi'
+import { Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 export type Fn = () => void
 
@@ -19,6 +19,25 @@ export interface Pausable {
    * Resume the effects
    */
   resume: Fn
+}
+
+export interface ConfigurableFlush {
+  /**
+   * Timing for monitoring changes, refer to WatchOptions for more details
+   *
+   * @default 'pre'
+   */
+  flush?: WatchOptions['flush']
+}
+
+export interface ConfigurableFlushSync {
+  /**
+   * Timing for monitoring changes, refer to WatchOptions for more details.
+   * Unlike `watch()`, the default is set to `sync`
+   *
+   * @default 'sync'
+   */
+  flush?: WatchOptions['flush']
 }
 
 // Internal Types

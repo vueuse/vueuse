@@ -1,4 +1,4 @@
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useCounter } from '../useCounter'
 
 describe('useCounter', () => {

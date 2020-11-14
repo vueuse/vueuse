@@ -3,7 +3,10 @@ import { ref, Ref, watch } from 'vue-demi'
 import { useWindowScroll } from '../useWindowScroll'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useElementVisibility(element: Ref<Element|null|undefined>, { window = defaultWindow }: ConfigurableWindow = {}) {
+export function useElementVisibility(
+  element: Ref<Element|null|undefined>,
+  { window = defaultWindow }: ConfigurableWindow = {},
+) {
   const { x, y } = useWindowScroll({ window })
   const elementIsVisible = ref(false)
 

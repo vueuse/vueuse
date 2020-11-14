@@ -1,5 +1,6 @@
+import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { nextTick } from 'vue-demi'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useStorage } from '.'
 
 const KEY = 'custom-key'
@@ -152,5 +153,57 @@ describe('useStorage', () => {
     await nextTick()
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
+  })
+
+  it('eventFilter', async() => {
+    expect(localStorage.getItem(KEY)).toEqual(undefined)
+
+    const instance = renderHook(() => {
+      const ref = useStorage(
+        KEY,
+        {
+          name: 'a',
+          data: 123,
+        },
+        localStorage,
+        {
+          eventFilter: debounceFilter(100),
+        },
+      )
+
+      // set on empty storage
+      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+      expect(ref.value).toEqual({
+        name: 'a',
+        data: 123,
+      })
+
+      return {
+        ref,
+      }
+    }).vm
+
+    await nextTick()
+    await promiseTimeout(300)
+    // @ts-ignore
+    localStorage.setItem.mockClear()
+
+    instance.ref.name = 'b'
+    await nextTick()
+    expect(localStorage.setItem).not.toBeCalled()
+    await promiseTimeout(300)
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+
+    // @ts-ignore
+    localStorage.setItem.mockClear()
+
+    instance.ref.data = 321
+    await nextTick()
+    expect(localStorage.setItem).not.toBeCalled()
+    await promiseTimeout(300)
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
   })
 })

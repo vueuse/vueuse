@@ -1,14 +1,7 @@
-import { WatchOptions, watch, WatchSource } from 'vue-demi'
-import { promiseTimeout } from '../utils'
+import { watch, WatchSource } from 'vue-demi'
+import { ConfigurableFlush, promiseTimeout } from '../utils'
 
-export interface WhenToMatchOptions {
-  /**
-   * Timing for monitoring changes, refer to WatchOptions for more details
-   *
-   * @default 'pre'
-   */
-  flush?: WatchOptions['flush']
-
+export interface WhenToMatchOptions extends ConfigurableFlush {
   /**
    * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out

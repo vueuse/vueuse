@@ -1,6 +1,6 @@
 # useIntervalFn
 
-> Simple wrapper for `setInterval`.
+> Wrapper for `setInterval` with controls
 
 ## Usage
 

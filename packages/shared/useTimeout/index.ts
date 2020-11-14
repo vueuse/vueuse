@@ -1,31 +1,35 @@
-import { tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { useTimeoutFn } from '../useTimeoutFn'
 
+/**
+ * Update value after a given time with controls.
+ *
+ * @param interval
+ * @param immediate
+ */
 export function useTimeout(interval = 1000, immediate = true) {
   const ready = ref(false)
 
-  let timer: ReturnType<typeof setTimeout> | null = null
+  const controls = useTimeoutFn(
+    () => ready.value = true,
+    interval,
+    immediate,
+  )
 
   function stop() {
     ready.value = false
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-    }
+    controls.stop()
   }
 
   function start() {
-    stop()
-    timer = setTimeout(() => {
-      ready.value = true
-      timer = null
-    }, interval)
+    ready.value = false
+    controls.start()
   }
 
-  if (immediate)
-    start()
-
-  tryOnUnmounted(stop)
-
-  return { ready, start, stop }
+  return {
+    ready,
+    isActive: controls.isActive,
+    start,
+    stop,
+  }
 }
