@@ -4,14 +4,14 @@ import { clamp, isFunction } from '@vueuse/shared'
 
 type CubicBezier = [number, number, number, number]
 
-type EasingFunction = (x: number) => number
+type TransitionEasingFunction = (x: number) => number
 
-type StateEasingOptions = {
+interface TransitionOptions {
   duration?: number
-  transition?: EasingFunction | CubicBezier
+  transition?: TransitionEasingFunction | CubicBezier
 }
 
-function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
+function cubicBezier([p0, p1, p2, p3]: CubicBezier): TransitionEasingFunction {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -63,44 +63,50 @@ export const TransitionPresets: Record<string, CubicBezier> = {
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
-export function useTransition(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
-  const number = ref(baseNumber.value)
+/**
+ * Transition between values.
+ *
+ * @see   {@link https://vueuse.js.org/useTransition}
+ * @param source
+ * @param options
+ */
+export function useTransition(source: Ref<number>, options: TransitionOptions = {}) {
+  const {
+    duration = 500,
+    transition = (n: number) => n,
+  } = options;
 
-  const normalizedOptions = {
-    duration: 500,
-    transition: (n: number) => n,
-    ...options,
-  }
+  const output = ref(source.value)
 
-  const getValue = isFunction<EasingFunction>(normalizedOptions.transition)
-    ? normalizedOptions.transition
-    : cubicBezier(normalizedOptions.transition)
+  const getValue = isFunction<TransitionEasingFunction>(transition)
+    ? transition
+    : cubicBezier(transition)
 
   let diff = 0
   let endAt = 0
   let startAt = 0
   let startValue = 0
 
-  const { start, stop } = useRafFn(() => {
+  const { resume, pause } = useRafFn(() => {
     const now = Date.now()
-    const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+    const progress = clamp(1 - ((endAt - now) / duration), 0, 1)
 
-    number.value = startValue + (diff * getValue(progress))
+    output.value = startValue + (diff * getValue(progress))
 
     if (progress >= 1)
-      stop()
+      pause()
   }, { immediate: false })
 
-  watch(baseNumber, () => {
-    stop()
+  watch(source, () => {
+    pause()
 
-    diff = baseNumber.value - number.value
-    startValue = number.value
+    diff = source.value - output.value
+    startValue = output.value
     startAt = Date.now()
-    endAt = startAt + normalizedOptions.duration
+    endAt = startAt + duration
 
-    start()
+    resume()
   })
 
-  return number
+  return output
 }
