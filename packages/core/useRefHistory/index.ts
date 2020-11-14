@@ -1,4 +1,4 @@
-import { Fn, timestamp, WatchWithFilterOptions, createFilterWrapper, bypassFilter, MapSources, MapOldSources } from '@vueuse/shared'
+import { Fn, timestamp, WatchWithFilterOptions, createFilterWrapper, bypassFilter, MapSources, MapOldSources, pausableFilter } from '@vueuse/shared'
 import { ref, computed, Ref, watch, WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
@@ -157,7 +157,6 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-  const isTracking = ref(true)
 
   const _setSource = (record: UseRefHistoryRecord<Serialized>) => {
     // Support changes that are done after the last history operation
@@ -191,21 +190,16 @@ export function useRefHistory<Raw, Serialized = Raw>(
       redoStack.value.splice(0, redoStack.value.length)
   }
 
+  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
+
   const ignorableWatcher = ignorableWatch(
     source,
-    () => {
-      if (isTracking.value)
-        commit()
-    },
-    { deep, flush },
+    commit,
+    { deep, flush, eventFilter },
   )
 
-  const pause = () => {
-    isTracking.value = false
-  }
-
   const resume = (commitNow?: boolean) => {
-    isTracking.value = true
+    resumeTracking()
     if (commitNow)
       commit()
   }
