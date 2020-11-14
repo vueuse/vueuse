@@ -1,8 +1,8 @@
-import type { Subscription } from 'rxjs'
+import type { Unsubscribable } from 'rxjs'
 import { tryOnUnmounted } from '@vueuse/shared'
 
 export function useSubscription(
-  subscription: Subscription,
+  subscription: Unsubscribable,
 ) {
   tryOnUnmounted(() => {
     subscription.unsubscribe()

@@ -33,7 +33,7 @@ const isTypedCharGood = ({
     return false
 
   // 0...9
-  if (keyCode >= 48 && keyCode <= 57)
+  if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105))
     return true
 
   // a...z

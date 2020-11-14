@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/firebase",
   "description": "Enables realtime bindings for Firebase",
-  "version": "4.0.0-beta.40",
+  "version": "4.0.0-beta.41",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.esm.js",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/firebase#readme",
   "dependencies": {
     "vue-demi": "latest",
-    "@vueuse/shared": "4.0.0-beta.40"
+    "@vueuse/shared": "4.0.0-beta.41"
   },
   "peerDependencies": {
     "firebase": ">=4.0.0"
