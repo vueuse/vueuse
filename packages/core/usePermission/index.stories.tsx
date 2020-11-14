@@ -28,7 +28,6 @@ defineDemo(
             microphone,
             notifications,
             camera,
-            speaker,
             midi,
           }, null, 2)
         }}</pre>
