@@ -10,6 +10,6 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   setupFiles: [
-    '<rootDir>/packages/_docs/test.setup.js',
+    '<rootDir>/packages/_tests/test.setup.js',
   ],
 }

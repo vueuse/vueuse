@@ -1,7 +1,7 @@
 import { clear } from 'console'
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 
 describe('useRefHistory - sync', () => {
   test('sync: should record', () => {

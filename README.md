@@ -93,10 +93,10 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 - Animation
   - [`useInterval`](https://vueuse.js.org/?path=/story/animation--useinterval) — reactive counter increases on every interval
-  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — simple wrapper for `setInterval`
+  - [`useIntervalFn`](https://vueuse.js.org/?path=/story/animation--useintervalfn) — wrapper for `setInterval` with controls
   - [`useRafFn`](https://vueuse.js.org/?path=/story/animation--useraffn) — call function on every `requestAnimationFrame`
-  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time
-  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — call function after a given time
+  - [`useTimeout`](https://vueuse.js.org/?path=/story/animation--usetimeout) — update value after a given time with controls
+  - [`useTimeoutFn`](https://vueuse.js.org/?path=/story/animation--usetimeoutfn) — wrapper for `setTimeout` with controls
   - [`useTimestamp`](https://vueuse.js.org/?path=/story/animation--usetimestamp) — reactive current timestamp
   - [`useTransition`](https://vueuse.js.org/?path=/story/animation--usetransition) — transition between values
 

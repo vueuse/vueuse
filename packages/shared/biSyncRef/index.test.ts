@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { biSyncRef } from '.'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 
 describe('biSyncRef', () => {
   it('should work', (done) => {

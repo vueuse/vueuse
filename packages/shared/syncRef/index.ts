@@ -1,12 +1,7 @@
-import { Ref, WatchOptions, watch } from 'vue-demi'
+import { Ref, watch } from 'vue-demi'
+import { ConfigurableFlushSync } from '../utils'
 
-export interface SyncRefOptions {
-  /**
-   * Timing for syncing, same as watch's flush option
-   *
-   * @default 'sync'
-   */
-  flush?: WatchOptions['flush']
+export interface SyncRefOptions extends ConfigurableFlushSync {
   /**
    * Watch deeply
    *

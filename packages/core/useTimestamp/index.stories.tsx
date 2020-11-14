@@ -18,7 +18,7 @@ defineDemo(
 
     template: html`
       <div>
-        <p>Now: {{now}}</p>
+        <p>Now: {{timestamp}}</p>
       </div>
     `,
   }),

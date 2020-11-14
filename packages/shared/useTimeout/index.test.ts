@@ -1,4 +1,4 @@
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useTimeout } from '../useTimeout'
 
 test('export', () => {
