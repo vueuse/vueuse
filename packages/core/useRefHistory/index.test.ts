@@ -1,4 +1,3 @@
-import { clear } from 'console'
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
 import { renderHook } from '../../_tests'
