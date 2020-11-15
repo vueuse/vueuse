@@ -26,9 +26,9 @@ const { state, ready } = useAsyncState(
 > You can use `invoke` to call the async function.
 
 ```js
-import { when, usCounter, invoke } from '@vueuse/core'
+import { when, useCounter, invoke } from '@vueuse/core'
 
-const { count } = usCounter()
+const { count } = useCounter()
 
 invoke(async() => {
   await when(count).toMatch(v => v > 7)
