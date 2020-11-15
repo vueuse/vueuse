@@ -173,6 +173,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
 
 - Watch
   - [`debouncedWatch`](https://vueuse.js.org/?path=/story/watch--debouncedwatch) — debounced watch
+  - [`ignorableWatch`](https://vueuse.js.org/?path=/story/watch--ignorablewatch) — ignorable watch
   - [`pausableWatch`](https://vueuse.js.org/?path=/story/watch--pausablewatch) — pausable watch
   - [`throttledWatch`](https://vueuse.js.org/?path=/story/watch--throttledwatch) — throttled watch
   - [`watchWithFilter`](https://vueuse.js.org/?path=/story/watch--watchwithfilter) — `watch` with additional EventFilter control

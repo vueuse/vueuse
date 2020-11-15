@@ -80,6 +80,13 @@
           "depreacted": false
         },
         {
+          "name": "ignorableWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--ignorablewatch",
+          "description": "ignorable watch",
+          "depreacted": false
+        },
+        {
           "name": "pausableWatch",
           "category": "Watch",
           "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",

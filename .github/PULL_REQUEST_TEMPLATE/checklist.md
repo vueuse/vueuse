@@ -14,6 +14,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] debouncedWatch
   - [ ] extendRef
   - [ ] makeDestructurable
+  - [ ] ignorableWatch
   - [ ] pausableWatch
   - [ ] syncRef
   - [ ] throttledWatch

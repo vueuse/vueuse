@@ -1,5 +1,5 @@
-import { Fn, timestamp } from '@vueuse/shared'
-import { ref, computed, Ref, watch } from 'vue-demi'
+import { Fn, timestamp, pausableFilter, ignorableWatch } from '@vueuse/shared'
+import { ref, computed, Ref } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T
@@ -157,52 +157,29 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-  const isTracking = ref(true)
-
-  /** counter for how many following changes to be ignored */
-  // ignoreCounter is incremented before there is a history operation
-  // affecting the source ref value (undo, redo, revert).
-  //
-  // - flush 'sync'
-  // Every time there is a history operation, the sync watcher will
-  // trigger but the change will not be committed because it the
-  // ignoreCounter is not zero. Then it is reset to 0.
-  // syncCounter is not used in this case
-  //
-  // - flush 'pre' and 'post'
-  // syncCounter is incremented in sync with every change to the
-  // source ref value. This let us know how many times the ref
-  // was modified and support chained sync operations. If there
-  // are more sync triggers than the ignore count, the we now
-  // there are modifications in the source ref value that we
-  // need to commit
-  const ignoreCounter = ref(0)
-  const syncCounter = ref(0)
-
-  const disposables: Fn[] = []
 
   const _setSource = (record: UseRefHistoryRecord<Serialized>) => {
+    // Support changes that are done after the last history operation
+    // examples:
+    //   undo, modify
+    //   undo, undo, modify
     // If there were already changes in the state, they will be ignored
     // examples:
     //   modify, undo
     //   undo, modify, undo
-    syncCounter.value = ignoreCounter.value
+    ignorePrevAsyncUpdates()
 
-    // We support changes that are done after the last history operation
-    // examples:
-    //   undo, modify
-    //   undo, undo, modify
-    ignoreCounter.value++
-
-    source.value = parse(record.snapshot)
+    ignoreUpdates(() => {
+      source.value = parse(record.snapshot)
+    })
     last.value = record
   }
 
   const commit = () => {
     // This guard only applies for flush 'pre' and 'post'
-    // If the user triggers a commit manually, then reset the syncCounter
+    // If the user triggers a commit manually, then reset the watcher
     // so we do not trigger an extra commit in the async watcher
-    syncCounter.value = ignoreCounter.value
+    ignorePrevAsyncUpdates()
 
     undoStack.value.unshift(last.value)
     last.value = _createHistoryRecord()
@@ -212,69 +189,17 @@ export function useRefHistory<Raw, Serialized = Raw>(
     if (redoStack.value.length)
       redoStack.value.splice(0, redoStack.value.length)
   }
-  if (flush === 'sync') {
-    disposables.push(
-      watch(
-        source,
-        () => {
-          if (ignoreCounter.value > 0) {
-            ignoreCounter.value = 0
-            return
-          }
 
-          if (isTracking.value)
-            commit()
-        },
-        {
-          deep,
-          flush: 'sync',
-        },
-      ),
-    )
-  }
-  // flush for 'pre` and 'post'
-  else {
-    disposables.push(
-      watch(
-        source,
-        () => {
-          // If a history operation was performed (ignoreCounter > 0) and there are
-          // no other changes to the source ref value afterwards, then ignore this commit
-          const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
-          ignoreCounter.value = 0
-          syncCounter.value = 0
-          if (ignore)
-            return
+  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
 
-          if (isTracking.value)
-            commit()
-        },
-        {
-          deep: options.deep,
-          flush,
-        },
-      ),
-    )
-    disposables.push(
-      watch(
-        source,
-        () => {
-          syncCounter.value++
-        },
-        {
-          deep: options.deep,
-          flush: 'sync',
-        },
-      ),
-    )
-  }
-
-  const pause = () => {
-    isTracking.value = false
-  }
+  const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
+    source,
+    commit,
+    { deep, flush, eventFilter },
+  )
 
   const resume = (commitNow?: boolean) => {
-    isTracking.value = true
+    resumeTracking()
     if (commitNow)
       commit()
   }
@@ -307,22 +232,20 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const batch = (fn: (cancel: Fn) => void) => {
-    const previous = isTracking.value
-    isTracking.value = false
     let canceled = false
 
     const cancel = () => canceled = true
 
-    fn(cancel)
-
-    isTracking.value = previous
+    ignoreUpdates(() => {
+      fn(cancel)
+    })
 
     if (!canceled)
       commit()
   }
 
   const dispose = () => {
-    disposables.forEach(fn => fn())
+    stop()
     clear()
   }
 
