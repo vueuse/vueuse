@@ -3,6 +3,13 @@ import { ref, Ref, watch } from 'vue-demi'
 import { useWindowScroll } from '../useWindowScroll'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
+/**
+ * Tracks the visibility of an element within the viewport.
+ *
+ * @see   {@link https://vueuse.js.org/useElementVisibility}
+ * @param element
+ * @param options
+ */
 export function useElementVisibility(
   element: Ref<Element|null|undefined>,
   { window = defaultWindow }: ConfigurableWindow = {},
