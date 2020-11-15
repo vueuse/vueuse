@@ -83,7 +83,7 @@ async function readIndexes() {
       categories[categoryName].push({
         name: fnName,
         category: categoryName,
-        docs: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-').replace(/[\@]/g, '')}--${fnName}`.toLowerCase(),
+        docs: `${storybookUrl}/?path=/story/${category.replace(/[|\s]/g, '-').replace(/[/@]/g, '')}--${fnName}`.toLowerCase(),
         description,
         depreacted: description.includes('DEPRECATED'),
       })
