@@ -6207,7 +6207,7 @@ expect@^26.6.0:
     jest-message-util "^26.6.0"
     jest-regex-util "^26.0.0"
 
-export-size@0.4:
+export-size@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/export-size/-/export-size-0.4.0.tgz#4efeb15ff6388acce73d43feed6581a8a4878dac"
   integrity sha512-cxiczSzKKVqDlAK0Zyi+WiCIMSb34YHtV2RxUggBVst12YdxujujAnTm+0P+ZAoxfMVXjVO9T/JHtXcF0GSDqA==
