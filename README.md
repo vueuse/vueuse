@@ -27,11 +27,11 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 ## 🚀 Features
 
 - ⚡ **Fully tree shakable**: Only take what you want
-- 🦾 **Type Strong**: Written in Typescript
-- 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
+- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with detailed [TS Docs](https://github.com/microsoft/tsdoc)
+- 🕶 **Seamless migration**: Works for **both** Vue 3 and 2, via [vue-demi](https://github.com/antfu/vue-demi)
 - 🔋 **SSR Friendly**
-- 🔩 **Flexible**: Configurable event filters, pausable, debounced or throttled. 
-- 🌎 **No bundler required**: Use it via CDN
+- 🔩 **Flexible**: Configurable event filters, pausing, debouncing, throttling or custom ones.
+- 🌎 **No bundler required**: Usable it via CDN
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
 - 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
 
@@ -67,11 +67,11 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 ## 📦 Install
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [Vue Demi](https://github.com/antfu/vue-demi)!
+> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/antfu/vue-demi)!
 
-```bash
-npm i @vueuse/core # yarn add @vueuse/core
-```
+<pre>
+npm i <b>@vueuse/core</b>
+</pre>
 
 Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
 
