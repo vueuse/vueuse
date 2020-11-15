@@ -4,11 +4,15 @@ import { ref, Ref } from 'vue-demi'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export function useGeolocation(positionOptions: PositionOptions = {
+interface PositionOpts extends PositionOptions, ConfigurableNavigator {}
+
+export function useGeolocation(positionOptions: PositionOpts = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000,
-}, { navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  navigator: defaultNavigator,
+}) {
+  const { navigator } = positionOptions
   const isSupported = navigator && 'geolocation' in navigator
 
   const locatedAt: Ref<number | null> = ref(null)
