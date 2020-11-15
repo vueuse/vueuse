@@ -184,17 +184,17 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 
 - Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/integrations--readme)) - Integration wrappers for utility libraries
-  - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
-  - [`useQRCode`](https://vueuse.js.org/?path=/story/integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
+  - [`useAxios`](https://vueuse.js.org/?path=/story//integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
+  - [`useCookies`](https://vueuse.js.org/?path=/story//integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useQRCode`](https://vueuse.js.org/?path=/story//integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 
 
 - RxJS ([`@vueuse/rxjs`](https://vueuse.js.org/?path=/story/rxjs--readme)) - Enables RxJS reactive functions in Vue
-  - [`from`](https://vueuse.js.org/?path=/story/rxjs--from) — two wrappers around of the original functions to allow use ref objects
-  - [`toObserver`](https://vueuse.js.org/?path=/story/rxjs--toobserver) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.js.org/?path=/story/rxjs--useobservable) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/?path=/story/rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`from`](https://vueuse.js.org/?path=/story//rxjs--from) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vueuse.js.org/?path=/story//rxjs--toobserver) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.js.org/?path=/story//rxjs--useobservable) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/?path=/story//rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
 

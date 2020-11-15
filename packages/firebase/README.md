@@ -18,8 +18,8 @@ npm i <b>@vueuse/firebase</b> firebase
 <!--FUNCTIONS_LIST_STARTS-->
 
 - @Firebase
-  - [`useFirestore`](https://vueuse.js.org/?path=/story/@firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vueuse.js.org/?path=/story/@firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+  - [`useFirestore`](https://vueuse.js.org/?path=/story/firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.js.org/?path=/story/firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--FUNCTIONS_LIST_ENDS-->
 

@@ -18,10 +18,10 @@ npm i <b>@vueuse/rxjs</b> rxjs
 <!--FUNCTIONS_LIST_STARTS-->
 
 - /RxJS
-  - [`from`](https://vueuse.js.org/?path=/story/rxjs--from) — two wrappers around of the original functions to allow use ref objects
-  - [`toObserver`](https://vueuse.js.org/?path=/story/rxjs--toobserver) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.js.org/?path=/story/rxjs--useobservable) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/?path=/story/rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`from`](https://vueuse.js.org/?path=/story//rxjs--from) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vueuse.js.org/?path=/story//rxjs--toobserver) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.js.org/?path=/story//rxjs--useobservable) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/?path=/story//rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 <!--FUNCTIONS_LIST_ENDS-->
 
