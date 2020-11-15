@@ -1,11 +1,14 @@
 import dayjs from 'dayjs'
 import { defineDemo, html } from '../../_docs'
-import { defineComponent, computed } from 'vue-demi'
+import { defineComponent, computed, ref } from 'vue-demi'
 import { useWebWorkerFn, WorkerStatus } from '.'
 import { useNow } from '../useNow'
 
-const numbers: number[] = [...Array(5000000)].map(_ => ~~(Math.random() * 1000000))
-const sortNumbers = (nums: number[]): number[] => nums.sort()
+const heavyTask = () => {
+  const randomNumber = () => ~~(Math.random() * 5000000)
+  const numbers: number[] = Array(1000000).fill(undefined).map(randomNumber)
+  return numbers.sort().slice(0, 5)
+}
 
 defineDemo(
   {
@@ -16,22 +19,26 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(sortNumbers)
+      const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask)
       const time = useNow()
       const computedTime = computed(() => dayjs(time.value).format('YYYY-MM-DD HH:mm:ss SSS'))
       const running = computed(() => workerStatus.value === WorkerStatus.Runing)
 
-      const baseSort = () => {
-        const data = sortNumbers(numbers)
-        console.log('Normal sort (top 10 of 5000000)', data.slice(0, 10))
-      }
+      const data = ref()
+      const runner = ref()
 
+      const baseSort = () => {
+        data.value = heavyTask()
+        runner.value = 'Main'
+      }
       const workerSort = async() => {
-        const data = await workerFn(numbers)
-        console.log('Worker sort (top 10 of 5000000)', data.slice(0, 10))
+        data.value = await workerFn()
+        runner.value = 'Worker'
       }
 
       return {
+        data,
+        runner,
         running,
         baseSort,
         workerSort,
@@ -42,8 +49,7 @@ defineDemo(
 
     template: html`
       <div>
-        <p>Current Time: {{computedTime}}</p>
-        <note>Open console to see the sorted result. Clock stops when UI blocking happends.</note>
+        <p>Current Time: <strong></strong>{{computedTime}}</strong></p>
         <button @click="baseSort">
           Normal Sort
         </button>
@@ -53,6 +59,11 @@ defineDemo(
         <button v-else @click="workerTerminate" class="orange">
           Terminate Worker
         </button>
+        <note v-if="!data">Press buttons above to run heavy task. Clock stops when UI blocking happens.</note>
+        <p v-else>
+            Thread: <strong>{{runner}}</strong><br>
+            Result: <strong>{{JSON.stringify(data)}}</strong>
+        </p>
       </div>
     `,
   }),
