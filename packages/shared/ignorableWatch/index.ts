@@ -1,4 +1,4 @@
-import { Fn, WatchWithFilterOptions, createFilterWrapper, bypassFilter, MapSources, MapOldSources, pausableFilter } from '@vueuse/shared'
+import { Fn, WatchWithFilterOptions, createFilterWrapper, bypassFilter, MapSources, MapOldSources } from '@vueuse/shared'
 import { ref, watch, WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
 
 // ignorableWatch(source,callback,options) composable
