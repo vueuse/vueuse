@@ -2,12 +2,15 @@
 
 import { ref, Ref } from 'vue-demi'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export function useGeolocation(options: PositionOptions = {
+export function useGeolocation(positionOptions: PositionOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000,
-}) {
+}, { navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const isSupported = navigator && 'geolocation' in navigator
+
   const locatedAt: Ref<number | null> = ref(null)
   const error = ref<PositionError | null>(null)
   const coords: Ref<Position['coords']> = ref({
@@ -29,25 +32,26 @@ export function useGeolocation(options: PositionOptions = {
   let watcher: number
 
   tryOnMounted(() => {
-    if ('geolocation' in navigator) {
-      watcher = window.navigator.geolocation.watchPosition(
+    if (isSupported) {
+      watcher = navigator!.geolocation.watchPosition(
         updatePosition,
         (err) => {
           error.value = err
         },
-        options,
+        positionOptions,
       )
     }
   })
 
   tryOnUnmounted(() => {
     if (watcher)
-      window.navigator.geolocation.clearWatch(watcher)
+      navigator!.geolocation.clearWatch(watcher)
   })
 
   return {
     coords,
     locatedAt,
     error,
+    isSupported,
   }
 }
