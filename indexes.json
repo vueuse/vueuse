@@ -276,14 +276,14 @@
           "name": "useDevicePixelRatio",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usedevicepixelratio",
-          "description": "reactively track [`Window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)",
+          "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)",
           "depreacted": false
         },
         {
           "name": "useDocumentVisibility",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usedocumentvisibility",
-          "description": "reactively track [`Document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)",
+          "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)",
           "depreacted": false
         },
         {

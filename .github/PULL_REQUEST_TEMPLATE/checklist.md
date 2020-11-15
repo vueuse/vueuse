@@ -8,13 +8,13 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (21)
+### shared (22)
   - [ ] biSyncRef
   - [ ] controlledComputed
   - [ ] debouncedWatch
   - [ ] extendRef
-  - [ ] makeDestructurable
   - [ ] ignorableWatch
+  - [ ] makeDestructurable
   - [ ] pausableWatch
   - [ ] syncRef
   - [ ] throttledWatch
