@@ -33,10 +33,10 @@ async function build() {
   exec('yarn run prepare', { stdio: 'inherit' })
 
   consola.info('Rollup')
-  exec('npx rollup -c', { stdio: 'inherit' })
+  exec('yarn run build:rollup', { stdio: 'inherit' })
 
   consola.info('Fix types')
-  exec('npm run types:fix', { stdio: 'inherit' })
+  exec('yarn run types:fix', { stdio: 'inherit' })
 
   await buildMetaFiles()
 }

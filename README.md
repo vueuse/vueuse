@@ -26,7 +26,7 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- ⚡ **Fully tree shakable**: Only take what you want
+- ⚡ **Fully tree shakable**: Only take what you want, [bundle size for each function](./docs/Export-Size.md)
 - 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with detailed [TS Docs](https://github.com/microsoft/tsdoc)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2, via [vue-demi](https://github.com/antfu/vue-demi)
 - 🔋 **SSR Friendly**
