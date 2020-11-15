@@ -23,7 +23,7 @@ function startShare() {
 
 ### Passing a source ref
 
-You can pass a `ref` to it, changes from of the source ref will be reflected to your sharing options.
+You can pass a `reactive` to it, changes from of the source reactive will be reflected to your sharing options.
 
 ```js {7}
 import { reactive } from 'vue'

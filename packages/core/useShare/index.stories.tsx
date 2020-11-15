@@ -19,7 +19,7 @@ defineDemo(
       const { share, isSupported } = useShare(shareOptions)
 
       return {
-        startShare: () => share().catch(err => null),
+        startShare: () => share().catch(err => err),
         shareOptions,
         isSupported,
       }
