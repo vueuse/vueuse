@@ -1,5 +1,5 @@
 import { defineDemo, html } from '../../_docs'
-import { defineComponent } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import { useShare } from '.'
 
 defineDemo(
@@ -11,20 +11,23 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { share, isSupported } = useShare()
+      const shareOptions = reactive({
+        title: 'Vueuse',
+        text: 'Collection of essential Vue Composition API!',
+        url: location.href,
+      })
+      const { share, isSupported } = useShare(shareOptions)
 
       return {
-        startShare: () => share({
-          title: 'Hello',
-          text: 'Hello my friend!',
-          url: location.href,
-        }),
+        startShare: () => share().catch(err => null),
+        shareOptions,
         isSupported,
       }
     },
 
     template: html`
       <div>
+        <input v-if="isSupported" v-model="shareOptions.text" type="text" placeholder="Note" />
         <button :disabled="!isSupported" @click="startShare">
           {{ isSupported ? 'Share' : 'Web share not supported!' }}
         </button>
