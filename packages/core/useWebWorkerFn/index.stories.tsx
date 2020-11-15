@@ -6,7 +6,7 @@ import { useNow } from '../useNow'
 
 const heavyTask = () => {
   const randomNumber = () => ~~(Math.random() * 5000000)
-  const numbers: number[] = Array(randomNumber()).fill(undefined).map(randomNumber)
+  const numbers: number[] = Array(1000000).fill(undefined).map(randomNumber)
   return numbers.sort().slice(0, 5)
 }
 
