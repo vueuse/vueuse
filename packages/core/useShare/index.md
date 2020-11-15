@@ -23,17 +23,16 @@ function startShare() {
 
 ### Passing a source ref
 
-You can pass a `reactive` to it, changes from of the source reactive will be reflected to your sharing options.
+You can pass a `ref` to it, changes from the source ref will be reflected to your sharing options.
 
 ```js {7}
-import { reactive } from 'vue'
-const shareOptions = reactive<ShareOptions>({ text: 'foo' })
+import { ref } from 'vue'
+
+const shareOptions = ref<ShareOptions>({ text: 'foo' })
 const { share, isSupported } = useShare(shareOptions)
 
-shareOptions.text = 'bar'
+shareOptions.value.text = 'bar'
 
-function startShare() {
-  share()
-}
+share()
 ```
 

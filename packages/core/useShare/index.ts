@@ -1,4 +1,8 @@
-type ShareOptions = {
+import { MaybeRef } from '@vueuse/shared'
+import { ComputedRef, unref } from 'vue-demi'
+import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+
+export interface ShareOptions {
   title?: string
   files?: File[]
   text?: string
@@ -10,13 +14,25 @@ interface NavigatorWithShare {
   canShare?: (data: ShareOptions) => boolean
 }
 
-export function useShare(globalShareOpts?: ShareOptions) {
-  const _navigator = (window.navigator as NavigatorWithShare)
+/**
+ * Reactive Web Share API
+ *
+ * @use   {@link https://vueuse.js.org/useShare}
+ * @param shareOptions
+ * @param options
+ */
+export function useShare(shareOptions?: MaybeRef<ShareOptions> | ComputedRef<ShareOptions>, options: ConfigurableNavigator = {}) {
+  const { navigator = defaultNavigator } = options
+
+  const _navigator = (navigator as NavigatorWithShare)
   const isSupported = 'canShare' in _navigator
 
-  const share = (shareOpts: ShareOptions = {}) => {
+  const share = async(overrideOptions: MaybeRef<ShareOptions> | ComputedRef<ShareOptions> = {}) => {
     if (isSupported) {
-      const data = globalShareOpts || shareOpts
+      const data = {
+        ...unref(shareOptions),
+        ...unref(overrideOptions),
+      }
       let granted = true
 
       if (data.files && _navigator.canShare)
