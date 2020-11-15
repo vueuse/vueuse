@@ -167,9 +167,9 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // examples:
     //   modify, undo
     //   undo, modify, undo
-    ignorableWatcher.reset()
+    ignorePrevAsyncUpdates()
 
-    ignorableWatcher.ignoredUpdate(() => {
+    ignoreUpdates(() => {
       source.value = parse(record.snapshot)
     })
     last.value = record
@@ -179,7 +179,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // This guard only applies for flush 'pre' and 'post'
     // If the user triggers a commit manually, then reset the watcher
     // so we do not trigger an extra commit in the async watcher
-    ignorableWatcher.reset()
+    ignorePrevAsyncUpdates()
 
     undoStack.value.unshift(last.value)
     last.value = _createHistoryRecord()
@@ -192,7 +192,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
 
-  const ignorableWatcher = ignorableWatch(
+  const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
     source,
     commit,
     { deep, flush, eventFilter },
@@ -232,22 +232,20 @@ export function useRefHistory<Raw, Serialized = Raw>(
   }
 
   const batch = (fn: (cancel: Fn) => void) => {
-    const previous = isTracking.value
-    isTracking.value = false
     let canceled = false
 
     const cancel = () => canceled = true
 
-    fn(cancel)
-
-    isTracking.value = previous
+    ignoreUpdates(() => {
+      fn(cancel)
+    })
 
     if (!canceled)
       commit()
   }
 
   const dispose = () => {
-    ignorableWatcher.stop()
+    stop()
     clear()
   }
 
@@ -280,14 +278,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
 // ignorableWatch(source,callback,options) composable
 //
-// Extended watch that exposes a ignoredUpdate(updater) function that allows to update the source without triggering effects
+// Extended watch that exposes a ignoreUpdates(updater) function that allows to update the source without triggering effects
 
 type IgnoredUpdater = (updater: () => void) => void
 
 interface IgnorableWatchReturn {
-  ignoredUpdate: IgnoredUpdater
+  ignoreUpdates: IgnoredUpdater
+  ignorePrevAsyncUpdates: () => void
   stop: WatchStopHandle
-  reset: () => void
 }
 
 function ignorableWatch<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): IgnorableWatchReturn
@@ -309,16 +307,17 @@ function ignorableWatch<Immediate extends Readonly<boolean> = false>(
     cb,
   )
 
-  let ignoredUpdate: IgnoredUpdater
-  let reset: () => void
+  let ignoreUpdates: IgnoredUpdater
+  let ignorePrevAsyncUpdates: () => void
   let stop: () => void
 
   if (watchOptions.flush === 'sync') {
     const ignore = ref(false)
 
-    reset = () => {}
+    // no op for flush: sync
+    ignorePrevAsyncUpdates = () => {}
 
-    ignoredUpdate = (updater: () => void) => {
+    ignoreUpdates = (updater: () => void) => {
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
       ignore.value = true
@@ -352,7 +351,7 @@ function ignorableWatch<Immediate extends Readonly<boolean> = false>(
     const ignoreCounter = ref(0)
     const syncCounter = ref(0)
 
-    reset = () => {
+    ignorePrevAsyncUpdates = () => {
       ignoreCounter.value = syncCounter.value
     }
 
@@ -367,7 +366,7 @@ function ignorableWatch<Immediate extends Readonly<boolean> = false>(
       ),
     )
 
-    ignoredUpdate = (updater: () => void) => {
+    ignoreUpdates = (updater: () => void) => {
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
       const syncCounterPrev = syncCounter.value
@@ -398,5 +397,5 @@ function ignorableWatch<Immediate extends Readonly<boolean> = false>(
     }
   }
 
-  return { stop, ignoredUpdate, reset }
+  return { stop, ignoreUpdates, ignorePrevAsyncUpdates }
 }
