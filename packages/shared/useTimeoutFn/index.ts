@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { tryOnUnmounted } from '..'
+import { tryOnUnmounted } from '../tryOnUnmounted'
 
 /**
  * Wrapper for `setTimeout` with controls.

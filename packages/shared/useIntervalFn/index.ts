@@ -1,5 +1,6 @@
-import { Fn, Pausable, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { tryOnUnmounted } from '../tryOnUnmounted'
+import { Pausable, Fn } from '../utils'
 
 export interface IntervalFnReturn extends Pausable {
   /**
