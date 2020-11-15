@@ -21,7 +21,7 @@ interface NavigatorWithShare {
  * @param shareOptions
  * @param options
  */
-export function useShare(shareOptions?: MaybeRef<ShareOptions> | ComputedRef<ShareOptions>, options: ConfigurableNavigator = {}) {
+export function useShare(shareOptions: MaybeRef<ShareOptions> | ComputedRef<ShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
 
   const _navigator = (navigator as NavigatorWithShare)
