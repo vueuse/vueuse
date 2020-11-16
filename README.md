@@ -1,20 +1,14 @@
 <p align="center">
-<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="logo" width="300"/></a>
+<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composable Utilities" width="400"/></a>
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank">
-<img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858" alt="NPM version" /></a>
-<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=storybook&message=demos&color=63ba83" alt="Storybook Demos" /></a>
-<a href="https://app.netlify.com/" target="__blank"><img src="https://img.shields.io/static/v1?label=deploys%20by&message=netlify&color=00C7B7" alt="Deploys by Netlify" /></a>
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=35495e"/></a>
-<a href="https://github.com/antfu/vueuse" target="__blank"><img src="https://img.shields.io/github/last-commit/antfu/vueuse.svg?color=a38eed" alt="GitHub last commit" /></a>
-<a href="https://github.com/antfu/vueuse/issues" target="__blank"><img src="https://img.shields.io/github/issues/antfu/vueuse.svg?color=c977be" alt="GitHub issues" /></a>
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
+<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
+<img alt="Function Count" src="https://img.shields.io/badge/-84%20functions-13708a"/>
+<br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
-</p>
-
-<p align="center">
-Collection of essential Vue Composition API (inspired by <a href='https://github.com/streamich/react-use' target='__blank'>react-use</a>)
 </p>
 
 <p align="center">
@@ -26,12 +20,12 @@ Collection of essential Vue Composition API (inspired by <a href='https://github
 
 ## 🚀 Features
 
-- ⚡ **Fully tree shakable**: Only take what you want, [bundle size for each function](./docs/Export-Size.md)
-- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with detailed [TS Docs](https://github.com/microsoft/tsdoc)
-- 🕶 **Seamless migration**: Works for **both** Vue 3 and 2, via [vue-demi](https://github.com/antfu/vue-demi)
-- 🔋 **SSR Friendly**
-- 🔩 **Flexible**: Configurable event filters, pausing, debouncing, throttling or custom ones.
+- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](./docs/Export-Size.md)
+- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
+- 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
+- 🔩 **Flexible**: Configurable event filters
 - 🌎 **No bundler required**: Usable it via CDN
+- 🔋 **SSR Friendly**
 - 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
 - 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
 

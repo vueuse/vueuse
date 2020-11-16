@@ -2,6 +2,7 @@
 const prism = require('markdown-it-prism')
 const highlightLines = require('markdown-it-highlight-lines')
 const linkAttributes = require('markdown-it-link-attributes')
+const replaceLink = require('markdown-it-replace-link')
 
 require('prismjs/components/prism-typescript')
 require('prismjs/components/prism-javascript')
@@ -21,6 +22,9 @@ module.exports = ({ config }) => {
           xhtmlOut: true,
           linkify: true,
           typographer: true,
+          replaceLink: (link) => {
+            return link.replace(/resources\/logo-vertical.png/, 'resources/logo-vertical-dark.png')
+          },
           use: [
             prism,
             highlightLines,
@@ -34,6 +38,7 @@ module.exports = ({ config }) => {
                 },
               },
             ],
+            replaceLink,
           ],
         },
       },
