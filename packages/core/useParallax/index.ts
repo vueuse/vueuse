@@ -1,4 +1,4 @@
-import { MaybeRef } from 'packages/shared/dist'
+import { MaybeRef } from '@vueuse/shared'
 import { computed } from 'vue-demi'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'

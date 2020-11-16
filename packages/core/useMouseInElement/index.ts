@@ -1,7 +1,6 @@
-import { MaybeRef } from 'packages/shared/dist'
+import { MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
-import { MouseOptions } from '../dist'
-import { useMouse } from '../useMouse'
+import { MouseOptions, useMouse } from '../useMouse'
 
 export interface MouseInElementOptions extends MouseOptions {
   handleOutside?: boolean

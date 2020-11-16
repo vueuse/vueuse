@@ -346,7 +346,7 @@
           "name": "usePageLeave",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usepageleave",
-          "description": "reactive state to show whether mouse leaves the page",
+          "description": "reactive state to show whether the mouse leaves the page",
           "depreacted": false
         },
         {
