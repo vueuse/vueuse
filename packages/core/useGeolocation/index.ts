@@ -4,15 +4,22 @@ import { ref, Ref } from 'vue-demi'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-interface PositionOpts extends PositionOptions, ConfigurableNavigator {}
+export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 
-export function useGeolocation(positionOptions: PositionOpts = {
-  enableHighAccuracy: true,
-  maximumAge: 30000,
-  timeout: 27000,
-  navigator: defaultNavigator,
-}) {
-  const { navigator } = positionOptions
+/**
+ * Reactive Geolocation API
+ *
+ * @see   {@link https://vueuse.js.org/useGeolocation}
+ * @param options
+ */
+export function useGeolocation(options: GeolocationOptions = {}) {
+  const {
+    enableHighAccuracy = true,
+    maximumAge = 30000,
+    timeout = 27000,
+    navigator = defaultNavigator,
+  } = options
+
   const isSupported = navigator && 'geolocation' in navigator
 
   const locatedAt: Ref<number | null> = ref(null)
@@ -42,20 +49,24 @@ export function useGeolocation(positionOptions: PositionOpts = {
         (err) => {
           error.value = err
         },
-        positionOptions,
+        {
+          enableHighAccuracy,
+          maximumAge,
+          timeout,
+        },
       )
     }
   })
 
   tryOnUnmounted(() => {
-    if (watcher)
-      navigator!.geolocation.clearWatch(watcher)
+    if (watcher && navigator)
+      navigator.geolocation.clearWatch(watcher)
   })
 
   return {
+    isSupported,
     coords,
     locatedAt,
     error,
-    isSupported,
   }
 }
