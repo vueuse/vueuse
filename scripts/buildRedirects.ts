@@ -1,8 +1,16 @@
 import fs from 'fs-extra'
 import indexes from '../indexes.json'
 
+const fixed = [
+  ['/guide', '/?path=/story/docs--guide', '302'],
+  ['/install', '/?path=/story/docs--installation', '302'],
+  ['/size', '/?path=/story/docs--export-size', '302'],
+].map(i => i.join('\n'))
+
 async function buildRedirects() {
-  const lines: string[] = []
+  const lines: string[] = [
+    ...fixed,
+  ]
 
   Object.values(indexes)
     .forEach(i => Object.values(i.categories)

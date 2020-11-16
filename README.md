@@ -1,5 +1,6 @@
 <p align="center">
-<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composable Utilities" width="400"/></a>
+<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"/></a><br>
+Collection of essential Vue Composition Utilities
 </p>
 
 <p align="center">
@@ -32,10 +33,9 @@
 ## 🦄 Usage
 
 ```ts
-import { defineComponent } from 'vue'
 import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
 
-const Component = defineComponent({
+export default {
   setup() {
     // tracks mouse position
     const { x, y } = useMouse()
@@ -44,7 +44,7 @@ const Component = defineComponent({
     const isDark = usePreferredDark()
 
     // persist state in localStorage
-    const state = useLocalStorage(
+    const store = useLocalStorage(
       'my-storage', 
       {
         name: 'Apple',
@@ -52,7 +52,7 @@ const Component = defineComponent({
       },
     )
 
-    return { x, y, isDark, state }
+    return { x, y, isDark, store }
   }
 })
 ```

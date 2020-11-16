@@ -11,10 +11,17 @@ Most of the functions in VueUse returns an object of refs that you can use [ES6'
 ```ts
 import { useMouse } from '@vueuse/core'
 
+// "x" and "y" are refs
 const { x, y } = useMouse()
 
-// "x" and "y" will be "Ref<number>"
-console.log(x.value) // 153
+console.log(x.value)
+
+/* 👆🏻 Destructure / 👇🏼 Reactive Object */
+
+// "x" and "y" will be auto unwrapped, no `.value` needed
+const mouse = reactive(useMouse())
+
+console.log(mouse.x)
 ```
 
 If you prefer to use them as object properties style, you can unwrap the refs by using `reactive()`. For example:
@@ -26,7 +33,7 @@ import { useMouse } from '@vueuse/core'
 const mouse = reactive(useMouse())
 
 // "x" and "y" will be auto unwrapped, no `.value` needed
-console.log(mouse.x) // 153
+console.log(mouse.x)
 ```
 
 ## Event Filters

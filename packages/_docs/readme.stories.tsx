@@ -5,12 +5,14 @@ import { ShowDocs, redirect } from './showdocs'
 const README: any = () => <ShowDocs md={require('../../README.md')} />
 const CONTRIBUTING: any = () => <ShowDocs md={require('../../CONTRIBUTING.md')} />
 const Guide: any = () => <ShowDocs md={require('../../docs/Guide.md')} />
+const ExportSize: any = () => <ShowDocs md={require('../../docs/Export-Size.md')} />
 const Install: any = () => <ShowDocs md={require('../../docs/Install.md')} />
 
 storiesOf('Docs', module)
   .add('Read Me', () => README)
   .add('Installation', () => Install)
   .add('Guide', () => Guide)
+  .add('Export Size', () => ExportSize)
   .add('Contributing', () => CONTRIBUTING)
 
 storiesOf('Links', module)

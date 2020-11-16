@@ -12,6 +12,9 @@ module.exports = function(source, u) {
 
   request = request.replace(/\\/g, '/')
 
+  // replace cover logo to dark mode
+  source = source.toString().replace(/logo-vertical.png/, 'logo-vertical-dark.png')
+
   if (!request.endsWith('/index.md'))
     return source
 
@@ -52,9 +55,6 @@ module.exports = function(source, u) {
   const typingSection = `## Typing\n\n\`\`\`typescript\n${formatted.trim()}\n\`\`\``
 
   const sourceSection = `## Source\n\n[Source](${URL}/index.ts) • [Demo](${URL}/index.stories.tsx) • [Docs](${URL}/index.md)\n`
-
-  // replace cover logo to dark mode
-  source = source.replace(/resources\/logo-vertical.png/, 'resources/logo-vertical-dark.png')
 
   return `${head}${source}\n\n${typingSection}\n\n${sourceSection}\n`
 }
