@@ -53,5 +53,8 @@ module.exports = function(source, u) {
 
   const sourceSection = `## Source\n\n[Source](${URL}/index.ts) • [Demo](${URL}/index.stories.tsx) • [Docs](${URL}/index.md)\n`
 
+  // replace cover logo to dark mode
+  source = source.replace(/resources\/logo-vertical.png/, 'resources/logo-vertical-dark.png')
+
   return `${head}${source}\n\n${typingSection}\n\n${sourceSection}\n`
 }
