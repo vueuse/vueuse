@@ -1,33 +1,35 @@
-import { computed, Ref, ComputedRef } from 'vue-demi'
+import { MaybeRef } from '@vueuse/shared'
+import { computed } from 'vue-demi'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
+import { ConfigurableWindow } from '../_configurable'
 
-export interface ParallaxOptions {
+export interface ParallaxOptions extends ConfigurableWindow {
   deviceOrientationTiltAdjust?: (i: number) => number
   deviceOrientationRollAdjust?: (i: number) => number
   mouseTiltAdjust?: (i: number) => number
   mouseRollAdjust?: (i: number) => number
-  targetElement?: Ref<HTMLElement>
+  targetElement?: MaybeRef<Element | null | undefined>
 }
 
-export function useParallax(options?: ParallaxOptions): {
-  roll: ComputedRef<number>
-  tilt: ComputedRef<number>
-  source: ComputedRef<'deviceOrientation' | 'mouse'>
-} {
-  const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation({ window: window.parent })
-  const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(options?.targetElement, { handleOutside: false })
+export function useParallax(options: ParallaxOptions = {}) {
+  const {
+    targetElement,
+    deviceOrientationTiltAdjust = i => i,
+    deviceOrientationRollAdjust = i => i,
+    mouseTiltAdjust = i => i,
+    mouseRollAdjust = i => i,
+    window,
+  } = options
+
+  const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation({ window })
+  const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(targetElement, { handleOutside: false, window })
 
   const source = computed(() => {
     if (deviceBeta.value != null && deviceBeta.value != null)
       return 'deviceOrientation'
     return 'mouse'
   })
-
-  const deviceOrientationTiltAdjust = options?.deviceOrientationTiltAdjust || (i => i)
-  const deviceOrientationRollAdjust = options?.deviceOrientationRollAdjust || (i => i)
-  const mouseTiltAdjust = options?.mouseTiltAdjust || (i => i)
-  const mouseRollAdjust = options?.mouseRollAdjust || (i => i)
 
   const roll = computed(() => {
     if (source.value === 'deviceOrientation' && deviceBeta.value != null) {

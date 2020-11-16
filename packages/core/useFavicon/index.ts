@@ -1,14 +1,27 @@
-import { isClient, isString } from '@vueuse/shared'
-import { ref, watch, Ref, ComputedRef, isRef } from 'vue-demi'
+import { isString, MaybeRef } from '@vueuse/shared'
+import { ref, watch, isRef } from 'vue-demi'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
+export interface FaviconOptions extends ConfigurableDocument {
+  baseUrl?: string
+  rel?: string
+}
+
+/**
+ * Reactive favicon
+ *
+ * @see   {@link https://vueuse.js.org/useFavicon}
+ * @param newIcon
+ * @param options
+ */
 export function useFavicon(
-  newIcon: Ref<string> | ComputedRef<string> | string | null = null,
-  options: { baseUrl?: string; rel?: string; document?: Document } = {},
+  newIcon: MaybeRef<string | null | undefined> = null,
+  options: FaviconOptions = {},
 ) {
   const {
     baseUrl = '',
     rel = 'icon',
-    document = isClient ? window.document : null,
+    document = defaultDocument,
   } = options
 
   const favicon = isRef(newIcon)
@@ -16,15 +29,19 @@ export function useFavicon(
     : ref<string | null>(newIcon)
 
   const applyIcon = (icon: string) => {
-    document?.head.querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
-      .forEach((el: HTMLLinkElement) => { el.href = `${baseUrl}${icon}` })
+    document?.head
+      .querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
+      .forEach(el => el.href = `${baseUrl}${icon}`)
   }
 
-  watch(favicon, (i, o) => {
-    if (isString(i) && i !== o) applyIcon(i)
-  }, {
-    immediate: true,
-  })
+  watch(
+    favicon,
+    (i, o) => {
+      if (isString(i) && i !== o)
+        applyIcon(i)
+    },
+    { immediate: true },
+  )
 
   return favicon
 }

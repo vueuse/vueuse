@@ -12,6 +12,7 @@ import { useSpeechRecognition } from '@vueuse/core'
 const {
   isSupported,
   isListening,
+  isFinal,
   result,
   start,
   stop

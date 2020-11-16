@@ -1,32 +1,51 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { Ref, ref } from 'vue-demi'
+import { MaybeRef } from '@vueuse/shared'
+import { ref } from 'vue-demi'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
+/**
+ * Reactive Fullscreen API
+ *
+ * @see   {@link https://vueuse.js.org/useFullscreen}
+ * @param target
+ * @param options
+ */
 export function useFullscreen(
-  target: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
+  target?: MaybeRef<Element | null | undefined>,
+  options: ConfigurableDocument = {},
 ) {
+  const { document = defaultDocument } = options
+  const targetRef = ref(target || document?.querySelector('html'))
   const isFullscreen = ref(false)
 
-  function exitFullscreen() {
-    if (document.fullscreenElement)
-      document.exitFullscreen()
+  async function exit() {
+    if (document?.fullscreenElement)
+      await document.exitFullscreen()
 
     isFullscreen.value = false
   }
 
-  function enterFullscreen() {
-    exitFullscreen()
+  async function enter() {
+    exit()
 
-    if (target.value) {
-      target.value.requestFullscreen().then(() => {
-        isFullscreen.value = true
-      })
+    if (targetRef.value) {
+      await targetRef.value.requestFullscreen()
+      isFullscreen.value = true
     }
+  }
+
+  async function toggle() {
+    if (isFullscreen.value)
+      await exit()
+    else
+      await enter()
   }
 
   return {
     isFullscreen,
-    enterFullscreen,
-    exitFullscreen,
+    enter,
+    exit,
+    toggle,
   }
 }

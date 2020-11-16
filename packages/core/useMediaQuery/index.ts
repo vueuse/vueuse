@@ -1,11 +1,18 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { isClient, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useMediaQuery(query: string) {
-  // try to fetch initial value (avoid SSR issues)
-  if (!isClient)
+/**
+ * Reactive Media Query
+ *
+ * @param query
+ * @param options
+ */
+export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
+  if (!window)
     return ref(false)
 
   const mediaQuery = window.matchMedia(query)

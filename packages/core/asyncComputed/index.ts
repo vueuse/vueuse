@@ -1,3 +1,4 @@
+import { Fn } from '@vueuse/shared'
 import { ref, watchEffect, Ref } from 'vue-demi'
 
 /**
@@ -5,26 +6,23 @@ import { ref, watchEffect, Ref } from 'vue-demi'
  *
  * @param cancelCallback The provided callback is invoked when a re-evaluation of the computed value is triggered before the previous one finished
  */
-export type AsyncComputedOnCancel = (cancelCallback: () => void) => void
-
-/**
- * A two-item tuple with the first item being a ref to the computed value and the second item holding a boolean ref, indicating whether the async computed value is currently (re-)evaluated
- */
-export type AsyncComputedResult<T> = [Ref<T>, Ref<boolean>]
+export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
 /**
  * Create an asynchronous computed dependency
  *
+ * @see   {@link https://vueuse.js.org/asyncComputed}
  * @param evaluationCallback     The promise-returning callback which generates the computed value
- * @param defaultValue           A default value, used until the first evaluation finishes
+ * @param initialState           The initial state, used until the first evaluation finishes
+ * @param evaluatingRef          A ref passed to received the updates of the async evaluation
  */
 export function asyncComputed<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
-  defaultValue?: T,
-): AsyncComputedResult<T> {
+  initialState?: T,
+  evaluatingRef?: Ref<boolean>,
+): Ref<T> {
   let counter = 0
-  const current = ref(defaultValue) as Ref<T>
-  const evaluating = ref<boolean>(false)
+  const current = ref(initialState) as Ref<T>
 
   watchEffect(async(onInvalidate) => {
     counter++
@@ -34,24 +32,31 @@ export function asyncComputed<T>(
     try {
       // Defer initial setting of `evaluating` ref
       // to avoid having it as a dependency
-      Promise.resolve().then(() => {
-        evaluating.value = true
-      })
+      if (evaluatingRef) {
+        Promise.resolve().then(() => {
+          evaluatingRef.value = true
+        })
+      }
 
       const result = await evaluationCallback((cancelCallback) => {
         onInvalidate(() => {
-          evaluating.value = false
-          if (!hasFinished) cancelCallback()
+          if (evaluatingRef)
+            evaluatingRef.value = false
+
+          if (!hasFinished)
+            cancelCallback()
         })
       })
 
-      if (counterAtBeginning === counter) current.value = result
+      if (counterAtBeginning === counter)
+        current.value = result
     }
     finally {
-      evaluating.value = false
+      if (evaluatingRef)
+        evaluatingRef.value = false
       hasFinished = true
     }
   })
 
-  return [current, evaluating]
+  return current
 }

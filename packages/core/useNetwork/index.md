@@ -5,17 +5,20 @@
 ## Usage
 
 ```js
-import { useNetwork } from 'vue-use-web'
+import { useNetwork } from '@vueuse/core'
 
 const { isOnline, offlineAt, downlink, downlinkMax, effectiveType, saveData, type } = useNetwork()
+
+console.log(isOnline.value)
 ```
 
-| State         | Type                 | Description                                 |
-| ------------- | -------------------- | ------------------------------------------- |
-| isOnline      | `boolean`            | If the user is currently connected.         |
-| offlineAt     | `Date | undefined`   | The time since the user was last connected. |
-| downlink      | `Number | undefined` | The download speed in Mbps.                 |
-| downlinkMax   | `Number | undefined` | The max reachable download speed in Mbps.   |
-| effectiveType | `string | undefined` | The detected effective speed type.          |
-| saveData      | `boolean| undefined` | If the user activated data saver mode.      |
-| type          | `string | undefined` | The detected connection/network type.       |
+To use as an object, wrapper it with `reactive()`
+
+```js
+import { reactive } from 'vue'
+
+const network = reactive(useNetwork())
+
+console.log(network.isOnline)
+```
+

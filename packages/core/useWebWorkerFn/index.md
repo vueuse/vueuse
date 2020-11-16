@@ -57,8 +57,8 @@ Before you start using this function, we suggest you read the [Web Worker](https
 | Name            | Type             | Description                                                |
 | --------------- | ---------------- | ---------------------------------------------------------- |
 | workerFn        | Promise          | The `function` that allows you to run `fn` with web worker |
-| workerStatus    | `workerStatus`   | The status of `workerFn`                                   |
-| workerTerminate | Function         | The function that kill the worker                          |
+| workerStatus    | `WebWorkerStatus`   | The status of `workerFn`                                   |
+| workerTerminate | Function         | The function that kills the worker                          |
 
 ## Credit
 

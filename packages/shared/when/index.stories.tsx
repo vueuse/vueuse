@@ -7,13 +7,13 @@ import { useCounter } from '../../core/useCounter'
 defineDemo(
   {
     name: 'when',
-    category: 'Utilities',
+    category: 'Watch',
     docs: require('./index.md'),
     module,
   },
   defineComponent({
     setup() {
-      const el = ref<HTMLElement>(null)
+      const el = ref<HTMLElement | null>(null)
       const counter = useCounter()
 
       invoke(async() => {

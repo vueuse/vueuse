@@ -9,7 +9,6 @@ defineDemo(
     docs: require('./index.md'),
     module,
   },
-  // Vue component for the demo section
   defineComponent({
     setup() {
       return {
@@ -21,13 +20,15 @@ defineDemo(
     },
 
     template: html`
-      <div v-if='supported'>
+      <div v-if='isSupported'>
         <note>Clipboard Permission: read <b>{{permissionRead}}</b> | write <b>{{permissionWrite}}</b></note>
         <p>Current copied: <code>{{text || 'none'}}</code></p>
         <input v-model="input" type="text"/>
         <button @click="copy(input)">Copy</button>
       </div>
-      <p v-else>Your browser does not support Clipboard API</p>
+      <p v-else>
+        Your browser does not support Clipboard API
+      </p>
     `,
   }),
 )

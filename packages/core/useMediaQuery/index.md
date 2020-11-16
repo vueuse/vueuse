@@ -8,8 +8,5 @@
 import { useMediaQuery } from '@vueuse/core'
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
 ```
-
-| State   | Type           | Description                  |
-| ------- | -------------- | ---------------------------- |
-| matches | `Ref<boolean>` | If the query matches or not. |

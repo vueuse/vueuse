@@ -21,6 +21,18 @@ export const packages: PackageManifest[] = [
     description: 'Collection of essential Vue Composition API',
   },
   {
+    name: 'router',
+    display: 'Router',
+    description: 'Utilities for vue-router',
+    addon: true,
+    external: [
+      'vue-router',
+    ],
+    globals: {
+      'vue-router': 'VueRouter',
+    },
+  },
+  {
     name: 'integrations',
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
@@ -63,20 +75,6 @@ export const packages: PackageManifest[] = [
     globals: {
       firebase: 'firebase',
       'firebase/app': 'firebase',
-    },
-  },
-  // ====== deprecated =====
-  {
-    name: 'i18n',
-    display: 'i18n',
-    deprecated: true,
-    description: '[deprecated] Composition wrapper for vue-i18n',
-    addon: true,
-    external: [
-      'vue-i18n',
-    ],
-    globals: {
-      'vue-i18n': 'VueI18n',
     },
   },
 ]

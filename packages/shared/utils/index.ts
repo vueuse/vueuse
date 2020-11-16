@@ -1,7 +1,6 @@
-import { Ref } from 'vue-demi'
 export * from './is'
-
-export type MaybeRef<T> = T | Ref<T>
+export * from './filters'
+export * from './types'
 
 export function promiseTimeout(ms: number, throwOnTimeout = false, reason = 'Timeout'): Promise<void> {
   return new Promise((resolve, reject) => {

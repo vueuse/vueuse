@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
 import { defineDemo, html } from '../../_docs'
-import { defineComponent, computed, ref } from 'vue-demi'
-import { useWebWorkerFn, WorkerStatus } from '.'
-import { useNow } from '../useNow'
+import { defineComponent, computed, ref, nextTick } from 'vue-demi'
+import { useWebWorkerFn } from '.'
+import { useTimestamp } from '../useTimestamp'
 
 const heavyTask = () => {
-  const randomNumber = () => ~~(Math.random() * 5000000)
-  const numbers: number[] = Array(1000000).fill(undefined).map(randomNumber)
+  const randomNumber = () => ~~(Math.random() * 5_000_000)
+  const numbers: number[] = Array(5_000_000).fill(undefined).map(randomNumber)
   return numbers.sort().slice(0, 5)
 }
 
@@ -20,18 +20,22 @@ defineDemo(
   defineComponent({
     setup() {
       const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask)
-      const time = useNow()
+      const { timestamp: time } = useTimestamp()
       const computedTime = computed(() => dayjs(time.value).format('YYYY-MM-DD HH:mm:ss SSS'))
-      const running = computed(() => workerStatus.value === WorkerStatus.Runing)
+      const running = computed(() => workerStatus.value === 'RUNNING')
 
       const data = ref()
       const runner = ref()
 
-      const baseSort = () => {
+      const baseSort = async() => {
+        data.value = null
+        await nextTick()
         data.value = heavyTask()
         runner.value = 'Main'
       }
       const workerSort = async() => {
+        data.value = null
+        await nextTick()
         data.value = await workerFn()
         runner.value = 'Worker'
       }
@@ -50,19 +54,19 @@ defineDemo(
     template: html`
       <div>
         <p>Current Time: <strong></strong>{{computedTime}}</strong></p>
+        <note>This is a demo showing sort for large array (5 milion numbers) with or w/o WebWorker.<br>Clock stops when UI blocking happends.</note>
         <button @click="baseSort">
-          Normal Sort
+          Sort in Main Thread
         </button>
         <button v-if="!running" @click="workerSort">
-          Worker Sort
+          Sort in Worker
         </button>
         <button v-else @click="workerTerminate" class="orange">
           Terminate Worker
         </button>
-        <note v-if="!data">Press buttons above to run heavy task. Clock stops when UI blocking happens.</note>
-        <p v-else>
-            Thread: <strong>{{runner}}</strong><br>
-            Result: <strong>{{JSON.stringify(data)}}</strong>
+        <p v-if='data'>
+          Thread: <strong>{{runner}}</strong><br>
+          Result: <strong>{{JSON.stringify(data)}}</strong>
         </p>
       </div>
     `,

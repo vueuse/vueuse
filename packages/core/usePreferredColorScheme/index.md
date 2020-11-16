@@ -9,7 +9,3 @@ import { usePreferredColorScheme } from '@vueuse/core'
 
 const preferredColor = usePreferredColorScheme()
 ```
-
-| State   | Type           | Description                  |
-| ------- | -------------- | ---------------------------- |
-| matches | `Ref<string>` | `dark`, `light` or `no-preference` |

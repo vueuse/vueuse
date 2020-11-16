@@ -1,4 +1,4 @@
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
@@ -8,7 +8,7 @@ describe('useWindowSize', () => {
 
   it('should work', () => {
     const wrapper = renderHook(() => {
-      const { width, height } = useWindowSize(100, 200)
+      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
       expect(width.value).toBe(window.innerWidth)
       expect(height.value).toBe(window.innerHeight)
@@ -24,7 +24,7 @@ describe('useWindowSize', () => {
     const windowAddEventListener = jest.spyOn(window, 'addEventListener')
 
     renderHook(() => {
-      const { width, height } = useWindowSize(100, 200)
+      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
       return { width, height }
     })
 

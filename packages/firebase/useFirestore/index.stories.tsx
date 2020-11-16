@@ -16,7 +16,7 @@ const db = firebase.firestore()
 defineDemo(
   {
     name: 'useFirestore',
-    category: '@Firebase',
+    category: '/Firebase',
     docs: require('./index.md'),
     module,
   },

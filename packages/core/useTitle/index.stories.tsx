@@ -14,7 +14,7 @@ defineDemo(
       return {
         title: useTitle(
           null,
-          window.parent.document,
+          { document: window.parent.document },
         ),
       }
     },

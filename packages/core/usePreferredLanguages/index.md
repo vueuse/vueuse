@@ -9,7 +9,3 @@ import { usePreferredLanguages } from '@vueuse/core'
 
 const languages = usePreferredLanguages()
 ```
-
-| State     | Type       | Description                          |
-| --------- | ---------- | ------------------------------------ |
-| languages | `String[]` | An array of user preferred languages |

@@ -1,19 +1,11 @@
-import 'vue-tsx-support/enable-check'
 import { storiesOf } from '@storybook/vue'
+import { categories } from './_docs/categories'
 
+// this is a hack of storybook to make top level stories
 const sections = [
   'Docs',
-  'Showcases',
-  'State',
-  'Sensors',
-  'Browser',
-  'Misc',
-  'Animation',
-  'Utilities',
-  '@Integrations',
-  '@Firebase',
-  '@i18n',
-  '@RxJS',
+  'Links',
+  ...categories,
 ]
 
 for (const section of sections) {

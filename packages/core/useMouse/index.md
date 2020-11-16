@@ -4,8 +4,15 @@
 
 ## Basic Usage
 
-```js {3}
+```js
 import { useMouse } from '@vueuse/core'
 
-const { x, y } = useMouse()
+const { x, y, source } = useMouse()
 ```
+
+Touching is enabled by default. To make it only detects mouse changes, set `touch` to `false`
+
+```js
+const { x, y } = useMouse({ touch: false })
+```
+

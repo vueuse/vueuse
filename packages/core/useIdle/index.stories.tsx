@@ -1,7 +1,7 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent, computed } from 'vue-demi'
 import { useIdle } from '.'
-import { useNow } from '../useNow'
+import { useTimestamp } from '../useTimestamp'
 
 defineDemo(
   {
@@ -12,12 +12,11 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const { idle, lastActive } = useIdle(5000, false, undefined, 20)
-      const now = useNow()
+      const { idle, lastActive } = useIdle(5000)
 
-      const idledFor = computed(() => {
-        return Math.floor((now.value - lastActive.value) / 1000)
-      })
+      const { timestamp: now } = useTimestamp()
+
+      const idledFor = computed(() => Math.floor((now.value - lastActive.value) / 1000))
 
       return {
         idle,
@@ -29,9 +28,9 @@ defineDemo(
 
     template: html`
       <div>
-          <note>For demonstraction purpose, the idle timer is set to <b>5s</b>.</note>
-          <p>Idle: {{idle.toString()}}</p>
-          <p>Inactive: {{idledFor}}s</p>
+        <note>For demonstraction purpose, the idle timout is set to <b>5s</b> in this demo (default 1min).</note>
+        <p>Idle: {{idle}}</p>
+        <p>Inactive: {{idledFor}}s</p>
       </div>
     `,
   }),

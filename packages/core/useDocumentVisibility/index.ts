@@ -1,12 +1,22 @@
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
-export function useDocumentVisibility() {
+/**
+ * Reactively track `document.visibilityState`
+ *
+ * @see   {@link https://vueuse.js.org/useDocumentVisibility}
+ * @param options
+ */
+export function useDocumentVisibility({ document = defaultDocument }: ConfigurableDocument = {}): Ref<VisibilityState> {
+  if (!document)
+    return ref('visible')
+
   const visibility = ref(document.visibilityState)
 
-  useEventListener('visibilitychange', () => {
+  useEventListener(document, 'visibilitychange', () => {
     visibility.value = document.visibilityState
-  }, undefined, document)
+  })
 
   return visibility
 }

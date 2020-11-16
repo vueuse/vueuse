@@ -1,39 +1,79 @@
 import { ref } from 'vue-demi'
-import { timestamp, tryOnMounted } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import { useThrottleFn } from '../useThrottleFn'
+import { ConfigurableEventFilter, createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
+import { useEventListener, WindowEventName } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
-const oneMinute = 60e3
+const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
+const oneMinute = 60_000
 
-export function useIdle(ms: number = oneMinute, initialState = false, listeningEvents: string[] = defaultEvents, throttleDelay = 50) {
+export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
+  /**
+   * Event names that listen to for detected user activity
+   *
+   * @default ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
+   */
+  events?: WindowEventName[]
+  /**
+   * Listen for document visibility change
+   *
+   * @default true
+   */
+  listenForVisibilityChange?: boolean
+  /**
+   * Initial state of the ref idle
+   *
+   * @default false
+   */
+  initialState?: boolean
+}
+
+/**
+ * Tracks whether the user is being inactive.
+ *
+ * @see   {@link https://vueuse.js.org/useIdle}
+ * @param timeout default to 1 minute
+ * @param options IdleOptions
+ */
+export function useIdle(
+  timeout: number = oneMinute,
+  options: IdleOptions = {},
+) {
+  const {
+    initialState = false,
+    listenForVisibilityChange = true,
+    events = defaultEvents,
+    window = defaultWindow,
+    eventFilter = throttleFilter(50),
+  } = options
   const idle = ref(initialState)
   const lastActive = ref(timestamp())
 
-  let timeout: any
+  let timer: any
 
-  const set = (newState: boolean) => {
-    idle.value = newState
+  const onEvent = createFilterWrapper(
+    eventFilter,
+    () => {
+      idle.value = false
+      lastActive.value = timestamp()
+      clearTimeout(timer)
+      timer = setTimeout(() => idle.value = true, timeout)
+    },
+  )
+
+  if (window) {
+    const document = window.document
+    for (const event of events)
+      useEventListener(window, event, onEvent)
+
+    if (listenForVisibilityChange) {
+      useEventListener(document, 'visibilitychange', () => {
+        if (!document.hidden)
+          onEvent()
+      })
+    }
   }
 
-  const onEvent = useThrottleFn(() => {
-    idle.value = false
-    clearTimeout(timeout)
-    timeout = setTimeout(() => idle.value = true, ms)
-    lastActive.value = timestamp()
-  }, throttleDelay)
-
-  for (const eventName of listeningEvents)
-    useEventListener(eventName, onEvent)
-
-  useEventListener('visibilitychange', () => {
-    if (!document.hidden)
-      onEvent()
-  }, undefined, document)
-
-  tryOnMounted(() => {
-    timeout = setTimeout(() => set(true), ms)
-  })
+  timer = setTimeout(() => idle.value = true, timeout)
 
   return { idle, lastActive }
 }

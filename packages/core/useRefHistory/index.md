@@ -1,6 +1,6 @@
 # useRefHistory
 
-> Track the change history of a ref, also provide undo and redo functionality
+> Track the change history of a ref, also provides undo and redo functionality
 
 ## Usage
 
@@ -10,15 +10,27 @@ import { useRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
 const { history, undo, redo } = useRefHistory(counter)
+```
 
+Internally, `watch` is used to trigger a history point when the ref value is modified. This means that history points are triggered asynchronously batching modifications in the same "tick".
+
+```ts
 counter.value += 1
-counter.value = 10
 
-console.log(history.value) // [{ value: 10, timestamp: 1601912898062 }, { value: 1, timestamp: 1601912898061 }]
+await nextTick()
+console.log(history.value)
+/* [
+  { snapshot: 1, timestamp: 1601912898062 }, 
+  { snapshot: 0, timestamp: 1601912898061 }
+] */
+```
 
-console.log(counter.value) // 10
+You can use `undo` to reset the ref value to the last history point.
+
+```ts
+console.log(counter.value) // 1
 undo()
-console.log(counter.value) // 1 
+console.log(counter.value) // 0
 ```
 
 ### Objects / arrays
@@ -28,7 +40,7 @@ When working with objects or arrays, since changing their attributes does not ch
 ```ts
 const state = ref({
   foo: 1,
-  bar: 'bar'
+  bar: 'bar',
 })
 
 const { history, undo, redo } = useRefHistory(state, {
@@ -37,10 +49,11 @@ const { history, undo, redo } = useRefHistory(state, {
 
 state.value.foo = 2
 
-console.log(history.value) 
+await nextTick()
+console.log(history.value)
 /* [
-  { value: { foo: 2, bar: 'bar' } },
-  { value: { foo: 1, bar: 'bar' } }
+  { snapshot: { foo: 2, bar: 'bar' } },
+  { snapshot: { foo: 1, bar: 'bar' } }
 ] */
 ```
 
@@ -66,15 +79,64 @@ import { useRefHistory } from '@vueuse/core'
 const refHistory = useRefHistory(target, { dump: klona })
 ```
 
-
 ### History Capacity
 
 We will keep all the history by default (unlimited) until you explicitly clean them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
 const refHistory = useRefHistory(target, {
-  capacity: 15 // limit to 15 history records
+  capacity: 15, // limit to 15 history records
 })
 
 refHistory.clean() // explicitly clean all the history
+```
+
+### History Flush Timing
+
+From [Vue's documentation](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
+
+In the same way as `watch`, you can modify the flush timing using the `flush` option.
+
+```ts
+const refHistory = useRefHistory(target, {
+  flush: 'sync' // options 'pre' (default), 'post' and 'sync'
+})
+```
+
+The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi-step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
+
+```ts
+const r = ref(0)
+const { history, commit } = useRefHistory(r)
+
+r.value = 1
+commit()
+
+r.value = 2
+commit()
+
+console.log(history.value)
+/* [
+  { snapshot: 2 },
+  { snapshot: 1 },
+  { snapshot: 0 },
+] */
+```
+
+On the other hand, when using flush `'sync'`, you can use `batch(fn)` to generate a single history point for several sync operations
+
+```ts
+const r = ref({ names: [], version: 1 })
+const { history, batch } = useRefHistory(r, { flush: 'sync' })
+
+batch(() => {
+  r.names.push('Lena')
+  r.version++
+})
+
+console.log(history.value)
+/* [
+  { snapshot: { names: [ 'Lena' ], version: 2 },
+  { snapshot: { names: [], version: 1 },
+] */
 ```

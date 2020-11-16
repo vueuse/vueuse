@@ -1,5 +1,5 @@
 import { nextTick } from 'vue-demi'
-import { renderHook } from '../../_docs/tests'
+import { renderHook } from '../../_tests'
 import { useStorage } from '../useStorage'
 import { createGlobalState } from '.'
 

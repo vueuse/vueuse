@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import { useMouse } from '.'
 import { defineDemo, html } from '../../_docs'
 
@@ -11,11 +11,13 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useMouse()
+      return {
+        mouse: reactive(useMouse()),
+      }
     },
 
     template: html`
-      <pre lang="json">{{ JSON.stringify({ x, y }, null, 2) }}</pre>
+      <pre lang="json">{{ JSON.stringify(mouse, null, 2) }}</pre>
     `,
   }),
 )

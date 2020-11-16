@@ -1,5 +1,7 @@
-import { ref, watch, Ref } from 'vue-demi'
+import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter } from '@vueuse/shared'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const Serializers = {
   boolean: {
@@ -26,12 +28,42 @@ const Serializers = {
 
 export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
-export function useStorage(key: string, defaultValue: string, storage?: StorageLike): Ref<string>
-export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike): Ref<boolean>
-export function useStorage(key: string, defaultValue: number, storage?: StorageLike): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike): Ref<T>
-export function useStorage<T extends(string|number|boolean|object|null)> (key: string, defaultValue: T, storage: StorageLike = localStorage) {
+export interface StorageOptions extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+  /**
+   * Watch for deep changes
+   *
+   * @default true
+   */
+  deep?: boolean
+
+  /**
+   * Listen to storage changes, useful for multiple tabs application
+   *
+   * @default true
+   */
+  listenToStorageChanges?: boolean
+}
+
+export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions): Ref<string>
+export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions): Ref<boolean>
+export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions): Ref<number>
+export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions): Ref<T>
+export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions): Ref<T>
+
+export function useStorage<T extends(string|number|boolean|object|null)> (
+  key: string,
+  defaultValue: T,
+  storage: StorageLike | undefined = defaultWindow?.localStorage,
+  options: StorageOptions = {},
+) {
+  const {
+    flush = 'pre',
+    deep = true,
+    listenToStorageChanges = true,
+    window = defaultWindow,
+    eventFilter,
+  } = options
+
   const data = ref<T>(defaultValue)
 
   const type = defaultValue == null
@@ -44,12 +76,14 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
           ? 'object'
           : Array.isArray(defaultValue)
             ? 'object'
-            // @ts-ignore
             : !Number.isNaN(defaultValue)
               ? 'number'
               : 'any'
 
   function read() {
+    if (!storage)
+      return
+
     try {
       let rawValue = storage.getItem(key)
       if (rawValue === undefined && defaultValue) {
@@ -67,11 +101,15 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
 
   read()
 
-  useEventListener('storage', read)
+  if (window && listenToStorageChanges)
+    useEventListener(window, 'storage', read)
 
-  watch(
+  watchWithFilter(
     data,
     () => {
+      if (!storage) // SSR
+        return
+
       try {
         if (data.value == null)
           storage.removeItem(key)
@@ -82,7 +120,11 @@ export function useStorage<T extends(string|number|boolean|object|null)> (key: s
         console.warn(e)
       }
     },
-    { flush: 'post', deep: true },
+    {
+      flush,
+      deep,
+      eventFilter,
+    },
   )
 
   return data

@@ -38,7 +38,7 @@ module.exports = ({ config }) => {
         },
       },
       {
-        loader: require.resolve('../scripts/types-loader'),
+        loader: require.resolve('../scripts/docs-loader'),
       },
     ],
   })

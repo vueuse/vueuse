@@ -158,7 +158,7 @@ function mergeCategories(categories: Record<string, VueUseFunction[]>[]) {
   for (const category of categories) {
     for (const [key, value] of Object.entries(category)) {
       if (!result[key])
-        result[key] = value
+        result[key] = [...value]
       else
         result[key].push(...value)
     }
@@ -180,6 +180,11 @@ async function updateIndexREADME(indexes: PackageIndexes) {
 
   readme = readme.replace(/<!--FUNCTIONS_LIST_STARTS-->[\s\S]+?<!--FUNCTIONS_LIST_ENDS-->/m, `<!--FUNCTIONS_LIST_STARTS-->\n\n${functions}<!--FUNCTIONS_LIST_ENDS-->`)
   readme = readme.replace(/<!--ADDONS_LIST_STARTS-->[\s\S]+?<!--ADDONS_LIST_ENDS-->/m, `<!--ADDONS_LIST_STARTS-->\n\n${addons}<!--ADDONS_LIST_ENDS-->`)
+
+  // @ts-ignore
+  const functionsCount = Object.values(indexes).flatMap(i => Object.values(i.categories).map(i => i.length)).reduce((a, b) => a + b, 0)
+
+  readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
 
   await fs.writeFile('README.md', readme, 'utf-8')
 }
@@ -245,11 +250,11 @@ async function run() {
   const indexes = await readIndexes()
 
   fs.writeJSON('indexes.json', indexes, { spaces: 2 })
-  updateImport(indexes)
-  updatePackageREADME(indexes)
-  updateIndexREADME(indexes)
-  updateChecklist(indexes)
-  updatePackageJSON()
+  await updateChecklist(indexes)
+  await updateImport(indexes)
+  await updatePackageREADME(indexes)
+  await updateIndexREADME(indexes)
+  await updatePackageJSON()
 }
 
 run()

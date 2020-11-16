@@ -1,19 +1,20 @@
 import { useRafFn } from '../useRafFn'
 import { Ref, ref, watch } from 'vue-demi'
-import { clamp, isFunction, isString, noop } from '@vueuse/shared'
+import { clamp, isFunction } from '@vueuse/shared'
 
-type CubicBezier = [number, number, number, number]
+type CubicBezierPoints = [number, number, number, number]
 
 type EasingFunction = (x: number) => number
 
-type NamedPreset = 'linear' | 'easeInSine' | 'easeOutSine' | 'easeInQuad' | 'easeOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInQuart' | 'easeOutQuart' | 'easeInOutQuart' | 'easeInQuint' | 'easeOutQuint' | 'easeInOutQuint' | 'easeInExpo' | 'easeOutExpo' | 'easeInOutExpo' | 'easeInCirc' | 'easeOutCirc' | 'easeInOutCirc' | 'easeInBack' | 'easeOutBack' | 'easeInOutBack'
-
-type StateEasingOptions = {
+interface TransitionOptions {
   duration?: number
-  transition?: EasingFunction | NamedPreset | CubicBezier
+  transition?: EasingFunction | CubicBezierPoints
 }
 
-function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
+/**
+ * Create an easing function from cubic bezier points.
+ */
+function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFunction {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -39,7 +40,12 @@ function cubicBezier([p0, p1, p2, p3]: CubicBezier): EasingFunction {
   return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-const presets: { [key in NamedPreset]: CubicBezier } = {
+/**
+ * Common transitions
+ *
+ * @see   {@link https://easings.net}
+ */
+export const TransitionPresets: Record<string, CubicBezierPoints> = {
   linear: [0, 0, 1, 1],
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
@@ -65,43 +71,50 @@ const presets: { [key in NamedPreset]: CubicBezier } = {
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
-export function useTransition(baseNumber: Ref<number>, options: StateEasingOptions = {}) {
-  const number = ref(baseNumber.value)
+/**
+ * Transition between values.
+ *
+ * @see   {@link https://vueuse.js.org/useTransition}
+ * @param source
+ * @param options
+ */
+export function useTransition(source: Ref<number>, options: TransitionOptions = {}) {
+  const {
+    duration = 500,
+    transition = (n: number) => n,
+  } = options
 
-  const normalizedOptions = {
-    duration: 500,
-    transition: 'linear',
-    ...options,
-  }
+  const output = ref(source.value)
 
-  const getValue = isFunction<EasingFunction>(normalizedOptions.transition)
-    ? normalizedOptions.transition
-    : cubicBezier(
-      isString(normalizedOptions.transition)
-        ? presets[normalizedOptions.transition as NamedPreset]
-        : normalizedOptions.transition,
-    )
+  const getValue = isFunction<EasingFunction>(transition)
+    ? transition
+    : createEasingFunction(transition)
 
-  let stop = noop
+  let diff = 0
+  let endAt = 0
+  let startAt = 0
+  let startValue = 0
 
-  watch(baseNumber, () => {
-    stop()
+  const { resume, pause } = useRafFn(() => {
+    const now = Date.now()
+    const progress = clamp(1 - ((endAt - now) / duration), 0, 1)
 
-    const diff = baseNumber.value - number.value
-    const startValue = number.value
-    const startAt = Date.now()
-    const endAt = startAt + normalizedOptions.duration
+    output.value = startValue + (diff * getValue(progress))
 
-    stop = useRafFn(() => {
-      const now = Date.now()
-      const progress = clamp(1 - ((endAt - now) / normalizedOptions.duration), 0, 1)
+    if (progress >= 1)
+      pause()
+  }, { immediate: false })
 
-      number.value = startValue + (diff * getValue(progress))
+  watch(source, () => {
+    pause()
 
-      if (progress >= 1)
-        stop()
-    }).stop
-  }, { immediate: true })
+    diff = source.value - output.value
+    startValue = output.value
+    startAt = Date.now()
+    endAt = startAt + duration
 
-  return number
+    resume()
+  })
+
+  return output
 }

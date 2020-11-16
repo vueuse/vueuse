@@ -1,12 +1,27 @@
 import { tryOnMounted } from '@vueuse/shared'
 import { ref, Ref, watch } from 'vue-demi'
 import { useWindowScroll } from '../useWindowScroll'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useElementVisibility(element: Ref<Element|null|undefined>) {
-  const { x, y } = useWindowScroll()
+/**
+ * Tracks the visibility of an element within the viewport.
+ *
+ * @see   {@link https://vueuse.js.org/useElementVisibility}
+ * @param element
+ * @param options
+ */
+export function useElementVisibility(
+  element: Ref<Element|null|undefined>,
+  { window = defaultWindow }: ConfigurableWindow = {},
+) {
+  const { x, y } = useWindowScroll({ window })
   const elementIsVisible = ref(false)
 
   const testBoundingClientRect = () => {
+    if (!window)
+      return
+
+    const document = window.document
     if (!element.value) {
       elementIsVisible.value = false
     }

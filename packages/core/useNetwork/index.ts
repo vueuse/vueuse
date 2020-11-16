@@ -2,23 +2,55 @@
 
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  isOnline: boolean
-  offlineAt: number | undefined
-  downlink?: number
-  downlinkMax?: number
-  effectiveType?: NetworkEffectiveType
-  saveData?: boolean
-  type?: NetworkType
+  isSupported: boolean
+  /**
+   * If the user is currently connected.
+   */
+  isOnline: Ref<boolean>
+  /**
+   * The time since the user was last connected.
+   */
+  offlineAt: Ref<number | undefined>
+  /**
+   * The download speed in Mbps.
+   */
+  downlink: Ref<number | undefined>
+  /**
+   * The max reachable download speed in Mbps.
+   */
+  downlinkMax: Ref<number | undefined>
+  /**
+  * The detected effective speed type.
+  */
+  effectiveType: Ref<NetworkEffectiveType | undefined>
+  /**
+   * If the user activated data saver mode.
+   */
+  saveData: Ref<boolean | undefined>
+  /**
+   * The detected connection/network type.
+   */
+  type: Ref<NetworkType>
 }
 
-export function useNetwork() {
+/**
+ * Reactive Network status
+ *
+ * @see   {@link https://vueuse.js.org/useNetwork}
+ * @param options
+ */
+export function useNetwork(options: ConfigurableWindow = {}): NetworkState {
+  const { window = defaultWindow } = options
+  const navigator = window?.navigator
+  const isSupported = Boolean(navigator && 'connection' in navigator)
+
   const isOnline = ref(true)
   const saveData = ref(false)
   const offlineAt: Ref<number | undefined> = ref(undefined)
@@ -27,38 +59,42 @@ export function useNetwork() {
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
   const type: Ref<NetworkType> = ref<NetworkType>('unknown')
 
-  const navigator = window.navigator
-  const connection = 'connection' in navigator ? (navigator as any).connection : undefined
+  const connection = isSupported && (navigator as any).connection
 
   function updateNetworkInformation() {
+    if (!navigator)
+      return
+
     isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
 
-    if (!connection)
-      return
-
-    downlink.value = connection.downlink
-    downlinkMax.value = connection.downlinkMax
-    effectiveType.value = connection.effectiveType
-    saveData.value = connection.saveData
-    type.value = connection.type
+    if (connection) {
+      downlink.value = connection.downlink
+      downlinkMax.value = connection.downlinkMax
+      effectiveType.value = connection.effectiveType
+      saveData.value = connection.saveData
+      type.value = connection.type
+    }
   }
 
-  useEventListener('offline', () => {
-    isOnline.value = false
-    offlineAt.value = Date.now()
-  })
+  if (window) {
+    useEventListener(window, 'offline', () => {
+      isOnline.value = false
+      offlineAt.value = Date.now()
+    })
 
-  useEventListener('online', () => {
-    isOnline.value = true
-  })
+    useEventListener(window, 'online', () => {
+      isOnline.value = true
+    })
+  }
 
   if (connection)
-    useEventListener('change', updateNetworkInformation, false, connection)
+    useEventListener(connection, 'change', updateNetworkInformation, false)
 
-  tryOnMounted(updateNetworkInformation)
+  updateNetworkInformation()
 
   return {
+    isSupported,
     isOnline,
     saveData,
     offlineAt,

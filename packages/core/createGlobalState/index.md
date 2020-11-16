@@ -1,6 +1,6 @@
 # createGlobalState
 
-> Keep states in the global scope to be reused across Vue instances
+> Keep states in the global scope to be reusable across Vue instances.
 
 ## Usage
 
@@ -14,6 +14,7 @@ export const useGlobalState = createGlobalState(
 ```
 
 ```js
+// component.js
 import { useGlobalState } from './store'
 
 export default defineComponent({

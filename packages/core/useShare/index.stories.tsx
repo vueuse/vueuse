@@ -1,5 +1,5 @@
 import { defineDemo, html } from '../../_docs'
-import { defineComponent } from 'vue-demi'
+import { defineComponent, ref } from 'vue-demi'
 import { useShare } from '.'
 
 defineDemo(
@@ -11,14 +11,26 @@ defineDemo(
   },
   defineComponent({
     setup() {
+      const options = ref({
+        title: 'Vueuse',
+        text: 'Collection of essential Vue Composition API!',
+        url: location.href,
+      })
+      const { share, isSupported } = useShare(options)
+
       return {
-        share: () => useShare({ title: 'Hello', text: 'Hello my friend!', url: location.href }),
+        startShare: () => share().catch(err => err),
+        options,
+        isSupported,
       }
     },
 
     template: html`
       <div>
-        <button @click="share">Share</button>
+        <input v-if="isSupported" v-model="options.text" type="text" placeholder="Note" />
+        <button :disabled="!isSupported" @click="startShare">
+          {{ isSupported ? 'Share' : 'Web share not supported!' }}
+        </button>
       </div>
     `,
   }),

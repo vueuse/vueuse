@@ -7,6 +7,11 @@
 ```js
 import { useEventListener } from '@vueuse/core'
 
-// inside the setup function
 useEventListener('mousemove', (evt) => { console.log(evt) })
+```
+
+Custom Event Target
+
+```ts
+useEventListener(document, 'visibilitychange', (evt) => { console.log(evt) })
 ```

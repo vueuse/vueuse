@@ -7,14 +7,17 @@
 ```js
 import { useFullscreen } from '@vueuse/core'
 
-const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen()
+const { isFullscreen, enter, exit, toggle } = useFullscreen()
 ```
 
-| State        | Type      | Description                                      |
-| ------------ | --------- | ------------------------------------------------ |
-| isFullscreen | `Boolean` | If the element is currently in full screen mode. |
+Fullscreen specified element
 
-| Methods                 | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| `enterFullscreen(void)` | Enters the fullscreen mode for the element.      |
-| `exitFullscreen(void)`  | Exits the fullscreen mode from **all** elements. |
+```ts
+const el = ref<HTMLElement | null>(null)
+
+const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
+```
+
+```html
+<video ref='el'>
+```

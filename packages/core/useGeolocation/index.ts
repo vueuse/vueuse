@@ -2,12 +2,26 @@
 
 import { ref, Ref } from 'vue-demi'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export function useGeolocation(options: PositionOptions = {
-  enableHighAccuracy: true,
-  maximumAge: 30000,
-  timeout: 27000,
-}) {
+export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
+
+/**
+ * Reactive Geolocation API
+ *
+ * @see   {@link https://vueuse.js.org/useGeolocation}
+ * @param options
+ */
+export function useGeolocation(options: GeolocationOptions = {}) {
+  const {
+    enableHighAccuracy = true,
+    maximumAge = 30000,
+    timeout = 27000,
+    navigator = defaultNavigator,
+  } = options
+
+  const isSupported = navigator && 'geolocation' in navigator
+
   const locatedAt: Ref<number | null> = ref(null)
   const error = ref<PositionError | null>(null)
   const coords: Ref<Position['coords']> = ref({
@@ -29,23 +43,28 @@ export function useGeolocation(options: PositionOptions = {
   let watcher: number
 
   tryOnMounted(() => {
-    if ('geolocation' in navigator) {
-      watcher = window.navigator.geolocation.watchPosition(
+    if (isSupported) {
+      watcher = navigator!.geolocation.watchPosition(
         updatePosition,
         (err) => {
           error.value = err
         },
-        options,
+        {
+          enableHighAccuracy,
+          maximumAge,
+          timeout,
+        },
       )
     }
   })
 
   tryOnUnmounted(() => {
-    if (watcher)
-      window.navigator.geolocation.clearWatch(watcher)
+    if (watcher && navigator)
+      navigator.geolocation.clearWatch(watcher)
   })
 
   return {
+    isSupported,
     coords,
     locatedAt,
     error,

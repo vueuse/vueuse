@@ -1,6 +1,6 @@
 # usePageLeave
 
-> Reactive state to show whether mouse leaves the page.
+> Reactive state to show whether the mouse leaves the page.
 
 ## Usage
 

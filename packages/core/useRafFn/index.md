@@ -1,13 +1,13 @@
 # useRafFn
 
-> Call function on every `requestAnimationFrame`.
+> Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
 
 ## Usage
 
 ```js
 import { useRafFn } from '@vueuse/core'
 
-useRafFn((elapsed) => {
+const { pause, resume } = useRafFn((elapsed) => {
   console.log(elapsed.value)
 })
 ```
