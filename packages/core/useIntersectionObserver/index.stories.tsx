@@ -15,13 +15,13 @@ defineDemo(
       const demo = ref(null)
       const demoIsVisible = ref(false)
 
-      const stopObserver = useIntersectionObserver({
-        target: demo,
-        onIntersect: ([{ isIntersecting }], observerElement) => {
+      const stopObserver = useIntersectionObserver(
+        demo,
+        ([{ isIntersecting }], observerElement) => {
           demoIsVisible.value = isIntersecting
         },
-        root,
-      })
+        { root },
+      )
 
       return {
         root,
