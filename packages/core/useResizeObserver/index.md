@@ -22,7 +22,7 @@ export default {
 
     useResizeObserver(el, (entries) => {
       const entry = entries[0]
-      const { width, height } =  entry.contentRect
+      const { width, height } = entry.contentRect
       text.value = `width: ${width}, height: ${height}`
     })
 

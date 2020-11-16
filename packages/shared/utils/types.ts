@@ -1,8 +1,8 @@
-import { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 export type Fn = () => void
 
-export type MaybeRef<T> = T | Ref<T>
+export type MaybeRef<T> = T | Ref<T> | ComputedRef<T>
 
 export interface Pausable {
   /**

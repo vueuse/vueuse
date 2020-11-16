@@ -21,7 +21,7 @@ export default {
 
     const { x, y, isOutside } = useMouseInElement(el)
 
-    return { x, y, isOutside}
+    return { x, y, isOutside }
   }
 }
 </script>

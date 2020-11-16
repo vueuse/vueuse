@@ -6,24 +6,28 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 /**
  * Reactive Fullscreen API
+ *
+ * @see   {@link https://vueuse.js.org/useFullscreen}
+ * @param target
+ * @param options
  */
 export function useFullscreen(
-  target: MaybeRef<Element | null> = ref(document.querySelector('html')),
+  target?: MaybeRef<Element | null | undefined>,
   options: ConfigurableDocument = {},
 ) {
   const { document = defaultDocument } = options
-  const targetRef = ref(target)
+  const targetRef = ref(target || document?.querySelector('html'))
   const isFullscreen = ref(false)
 
-  async function exitFullscreen() {
-    if (document && document.fullscreenElement)
+  async function exit() {
+    if (document?.fullscreenElement)
       await document.exitFullscreen()
 
     isFullscreen.value = false
   }
 
-  async function enterFullscreen() {
-    exitFullscreen()
+  async function enter() {
+    exit()
 
     if (targetRef.value) {
       await targetRef.value.requestFullscreen()
@@ -31,17 +35,17 @@ export function useFullscreen(
     }
   }
 
-  async function toggleFullscreen() {
+  async function toggle() {
     if (isFullscreen.value)
-      await exitFullscreen()
+      await exit()
     else
-      await enterFullscreen()
+      await enter()
   }
 
   return {
     isFullscreen,
-    enterFullscreen,
-    exitFullscreen,
-    toggleFullscreen,
+    enter,
+    exit,
+    toggle,
   }
 }

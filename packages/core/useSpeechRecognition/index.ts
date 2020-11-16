@@ -5,17 +5,42 @@ import { tryOnUnmounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 
 export interface SpeechRecognitionOptions {
+  /**
+   * Controls whether continuous results are returned for each recognition, or only a single result.
+   *
+   * @default true
+   */
   continuous?: boolean
+  /**
+   * Controls whether interim results should be returned (true) or not (false.) Interim results are results that are not yet final
+   *
+   * @default true
+   */
   interimResults?: boolean
+  /**
+   * Langauge for SpeechRecognition
+   *
+   * @default 'en-US'
+   */
   lang?: string
 }
 
-export function useSpeechRecognition({
-  lang = 'en-US',
-  interimResults = true,
-  continuous = true,
-}: SpeechRecognitionOptions = {}) {
+/**
+ * Reactive SpeechRecognition
+ *
+ * @see   {@link https://vueuse.js.org/useSpeechRecognition}
+ * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition|SpeechRecognition}
+ * @param options
+ */
+export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
+  const {
+    lang = 'en-US',
+    interimResults = true,
+    continuous = true,
+  } = options
+
   const isListening = ref(false)
+  const isFinal = ref(false)
   const result = ref('')
   const error = ref(null)
 
@@ -43,9 +68,16 @@ export function useSpeechRecognition({
     recognition.interimResults = interimResults
     recognition.lang = lang
 
+    recognition.onstart = () => {
+      isFinal.value = false
+    }
+
     recognition.onresult = (event) => {
       const transcript = Array.from(event.results)
-        .map(result => result[0])
+        .map((result) => {
+          isFinal.value = result.isFinal
+          return result[0]
+        })
         .map(result => result.transcript)
         .join('')
 
@@ -76,9 +108,11 @@ export function useSpeechRecognition({
   return {
     isSupported,
     isListening,
+    isFinal,
     recognition,
     result,
     error,
+
     toggle,
     start,
     stop,

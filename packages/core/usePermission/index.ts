@@ -12,10 +12,18 @@ export type GeneralPermissionDescriptor =
   | PushPermissionDescriptor
   | { name: DescriptorNamePolyfill }
 
+/**
+ * Reactive Permissions API
+ *
+ * @see   {@link https://vueuse.js.org/usePermission}
+ * @param permissionDesc
+ * @param options
+ */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
-  { navigator = defaultNavigator }: ConfigurableNavigator = {},
+  options: ConfigurableNavigator = {},
 ) {
+  const { navigator = defaultNavigator } = options
   let permissionStatus: PermissionStatus | null = null
 
   const desc = typeof permissionDesc === 'string'
@@ -34,8 +42,8 @@ export function usePermission(
       .query(desc)
       .then((status) => {
         permissionStatus = status
+        useEventListener(permissionStatus, 'change', onChange)
         onChange()
-        useEventListener(permissionStatus, 'change', onChange, undefined)
       })
       .catch(noop)
   }

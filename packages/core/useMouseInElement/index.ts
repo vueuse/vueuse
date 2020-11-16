@@ -1,27 +1,27 @@
-import { Fn } from '@vueuse/shared'
-import { ref, Ref, watch } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { MaybeRef } from 'packages/shared/dist'
+import { ref, watch } from 'vue-demi'
+import { MouseOptions } from '../dist'
+import { useMouse } from '../useMouse'
 
-export interface MouseInElementOptions extends ConfigurableWindow {
+export interface MouseInElementOptions extends MouseOptions {
   handleOutside?: boolean
-  touch?: boolean
-  resetOnTouchEnds?: boolean
-  initial?: {x: number; y: number}
 }
 
+/**
+ * Reactive mouse position related to an element
+ *
+ * @see   {@link https://vueuse.js.org/useMouseInElement}
+ * @param target
+ * @param options
+ */
 export function useMouseInElement(
-  target?: HTMLElement | Ref<HTMLElement | null>,
-  options: MouseInElementOptions = {}) {
-  const {
-    handleOutside = false,
-    touch = true,
-    window = defaultWindow,
-  } = options
+  target?: MaybeRef<Element | null | undefined>,
+  options: MouseInElementOptions = {},
+) {
+  const { handleOutside = true } = options
+  const { x, y, sourceType } = useMouse(options)
 
   const targetRef = ref(target || window?.document.body)
-  const x = ref(0)
-  const y = ref(0)
   const elementX = ref(0)
   const elementY = ref(0)
   const elementPositionX = ref(0)
@@ -33,54 +33,33 @@ export function useMouseInElement(
   let stop = () => {}
 
   if (window) {
-    const document = window.document
-
     stop = watch(
-      targetRef,
-      (el, prevEl, onCleanup) => {
-        const moveHandler = (event: MouseEvent | TouchEvent) => {
-          const ele: HTMLElement = el || document.body
-          const {
-            left,
-            top,
-            width,
-            height,
-          } = ele.getBoundingClientRect()
-          if (!(event instanceof MouseEvent) && event.touches.length <= 0)
-            return
+      [targetRef, x, y],
+      () => {
+        const el = targetRef.value
+        if (!el)
+          return
 
-          x.value = event instanceof MouseEvent
-            ? event.pageX
-            : event.touches[0].clientX
-          y.value = event instanceof MouseEvent
-            ? event.pageY
-            : event.touches[0].clientY
+        const {
+          left,
+          top,
+          width,
+          height,
+        } = el.getBoundingClientRect()
 
-          elementPositionX.value = left + window.pageXOffset
-          elementPositionY.value = top + window.pageYOffset
-          elementHeight.value = height
-          elementWidth.value = width
+        elementPositionX.value = left + window.pageXOffset
+        elementPositionY.value = top + window.pageYOffset
+        elementHeight.value = height
+        elementWidth.value = width
 
-          const elX = x.value - elementPositionX.value
-          const elY = y.value - elementPositionY.value
-          isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
+        const elX = x.value - elementPositionX.value
+        const elY = y.value - elementPositionY.value
+        isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
 
-          if (handleOutside || !isOutside.value) {
-            elementX.value = elX
-            elementY.value = elY
-          }
+        if (handleOutside || !isOutside.value) {
+          elementX.value = elX
+          elementY.value = elY
         }
-
-        const disposables: Fn[] = []
-        disposables.push(useEventListener('mousemove', moveHandler))
-        if (touch) {
-          disposables.push(useEventListener('touchstart', moveHandler))
-          disposables.push(useEventListener('touchmove', moveHandler))
-        }
-
-        onCleanup(() => {
-          disposables.forEach(f => f())
-        })
       },
       { immediate: true },
     )
@@ -89,6 +68,7 @@ export function useMouseInElement(
   return {
     x,
     y,
+    sourceType,
     elementX,
     elementY,
     elementPositionX,

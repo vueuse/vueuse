@@ -13,11 +13,15 @@ export interface TimestampOptions {
 
 /**
  * Reactive current timestamp
+ *
+ * @see   {@link https://vueuse.js.org/useTimestamp}
+ * @param options
  */
 export function useTimestamp(options: TimestampOptions = {}) {
   const { offset = 0 } = options
 
   const ts = ref(timestamp() + offset)
+
   const controls = useRafFn(
     () => ts.value = timestamp() + offset,
     { immediate: true },

@@ -30,19 +30,21 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
 /**
  * Tracks whether the user is being inactive.
  *
+ * @see   {@link https://vueuse.js.org/useIdle}
  * @param timeout default to 1 minute
  * @param options IdleOptions
  */
 export function useIdle(
   timeout: number = oneMinute,
-  {
+  options: IdleOptions = {},
+) {
+  const {
     initialState = false,
     listenForVisibilityChange = true,
     events = defaultEvents,
     window = defaultWindow,
     eventFilter = throttleFilter(50),
-  }: IdleOptions = {},
-) {
+  } = options
   const idle = ref(initialState)
   const lastActive = ref(timestamp())
 

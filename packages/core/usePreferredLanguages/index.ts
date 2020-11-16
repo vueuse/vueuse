@@ -2,7 +2,13 @@ import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function usePreferredLanguages({ window = defaultWindow }: ConfigurableWindow = {}) {
+/**
+ * Reactive Navigator Languages.
+ *
+ * @param options
+ */
+export function usePreferredLanguages(options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
   if (!window)
     return ref('en')
 

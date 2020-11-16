@@ -1,11 +1,11 @@
-import { isString } from '@vueuse/shared'
-import { ref, watch, Ref, ComputedRef } from 'vue-demi'
+import { isString, MaybeRef } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 export function useTitle(
-  newTitle: Ref<string> | ComputedRef<string> | string | null = null,
+  newTitle: MaybeRef<string | null | undefined> = null,
   { document = defaultDocument }: ConfigurableDocument = {},
-): Ref<string | null> {
+) {
   const title = ref(newTitle ?? document?.title ?? null)
 
   watch(

@@ -1,4 +1,5 @@
-import { computed, Ref } from 'vue-demi'
+import { MaybeRef } from 'packages/shared/dist'
+import { computed } from 'vue-demi'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
 import { ConfigurableWindow } from '../_configurable'
@@ -8,7 +9,7 @@ export interface ParallaxOptions extends ConfigurableWindow {
   deviceOrientationRollAdjust?: (i: number) => number
   mouseTiltAdjust?: (i: number) => number
   mouseRollAdjust?: (i: number) => number
-  targetElement?: Ref<HTMLElement>
+  targetElement?: MaybeRef<Element | null | undefined>
 }
 
 export function useParallax(options: ParallaxOptions = {}) {

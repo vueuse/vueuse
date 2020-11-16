@@ -4,7 +4,14 @@ import { ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export function useMediaQuery(query: string, { window = defaultWindow }: ConfigurableWindow = {}) {
+/**
+ * Reactive Media Query
+ *
+ * @param query
+ * @param options
+ */
+export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
   if (!window)
     return ref(false)
 

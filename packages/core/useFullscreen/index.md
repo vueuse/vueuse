@@ -7,5 +7,17 @@
 ```js
 import { useFullscreen } from '@vueuse/core'
 
-const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen()
+const { isFullscreen, enter, exit, toggle } = useFullscreen()
+```
+
+Fullscreen specified element
+
+```ts
+const el = ref<HTMLElement | null>(null)
+
+const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
+```
+
+```html
+<video ref='el'>
 ```

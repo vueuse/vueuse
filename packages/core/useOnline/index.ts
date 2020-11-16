@@ -1,6 +1,13 @@
 import { useNetwork } from '../useNetwork'
+import { ConfigurableWindow } from '../_configurable'
 
-export function useOnline() {
-  const { isOnline } = useNetwork()
+/**
+ * Reactive online state.
+ *
+ * @see   {@link https://vueuse.js.org/useOnline}
+ * @param options
+ */
+export function useOnline(options: ConfigurableWindow = {}) {
+  const { isOnline } = useNetwork(options)
   return isOnline
 }

@@ -2,9 +2,14 @@ import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 
-// EventSource Constructor
-// https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource
-
+/**
+ * Reactive wrapper for EventSource
+ *
+ * @see   {@link https://vueuse.js.org/useEventSource}
+ * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource|EventSource}
+ * @param url
+ * @param events
+ */
 export function useEventSource(url: string, events: Array<string> = []) {
   const event: Ref<string | null> = ref(null)
   const data: Ref<string | null> = ref(null)
