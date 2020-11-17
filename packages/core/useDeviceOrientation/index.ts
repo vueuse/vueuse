@@ -11,7 +11,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  * @param options
  */
 export function useDeviceOrientation({ window = defaultWindow }: ConfigurableWindow = {}) {
-  const isSupported = window && 'DeviceOrientationEvent' in window
+  const isSupported = window && 'DeviceOrientationEvent' in window && 'ontouchstart' in window
 
   const isAbsolute = ref(false)
   const alpha: Ref<number | null> = ref(0)

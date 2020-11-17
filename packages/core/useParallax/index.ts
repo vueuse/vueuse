@@ -12,9 +12,8 @@ export interface ParallaxOptions extends ConfigurableWindow {
   targetElement?: MaybeRef<Element | null | undefined>
 }
 
-export function useParallax(options: ParallaxOptions = {}) {
+export function useParallax(target: MaybeRef<Element | null | undefined>, options: ParallaxOptions = {}) {
   const {
-    targetElement,
     deviceOrientationTiltAdjust = i => i,
     deviceOrientationRollAdjust = i => i,
     mouseTiltAdjust = i => i,
@@ -22,11 +21,11 @@ export function useParallax(options: ParallaxOptions = {}) {
     window,
   } = options
 
-  const { beta: deviceBeta, gamma: deviceGamma } = useDeviceOrientation({ window })
-  const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(targetElement, { handleOutside: false, window })
+  const { beta: deviceBeta, gamma: deviceGamma, isSupported: isOrientationSupported } = useDeviceOrientation({ window })
+  const { elementX, elementY, elementWidth, elementHeight } = useMouseInElement(target, { handleOutside: false, window })
 
   const source = computed(() => {
-    if (deviceBeta.value != null && deviceBeta.value != null)
+    if (isOrientationSupported && deviceBeta.value != null && deviceBeta.value != null)
       return 'deviceOrientation'
     return 'mouse'
   })

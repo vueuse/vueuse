@@ -1,31 +1,18 @@
 import YAML from 'js-yaml'
+import type { CSSProperties } from 'react'
+import { computed, defineComponent, reactive, ref } from 'vue-demi'
 import { defineDemo, html } from '../../_docs'
-import { CSSProperties } from 'react'
-import { defineComponent, ref } from 'vue-demi'
-import { useParallax } from '.'
 import { useMediaQuery } from '../useMediaQuery'
+import { useParallax } from '.'
 
-const demo: CSSProperties = {
+const targetStyle: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   minHeight: '500px',
   transition: '.3s ease-out all',
 }
-const container: CSSProperties = {
-  margin: '3em auto',
-  perspective: '300px',
-}
-const card: CSSProperties = {
-  background: '#fff',
-  height: '20rem',
-  width: '15rem',
-  borderRadius: '5px',
-  overflow: 'hidden',
-  transition: '.3s ease-out all',
-  boxShadow: '0 0 20px 0 rgba(255, 255, 255, 0.25)',
-}
-const card__window: CSSProperties = {
+const cardWindowStyle: CSSProperties = {
   overflow: 'hidden',
   fontSize: '6rem',
   position: 'absolute',
@@ -35,16 +22,15 @@ const card__window: CSSProperties = {
   width: '2em',
   margin: 'auto',
 }
-const img: CSSProperties = {
+const layerBase: CSSProperties = {
   position: 'absolute',
   height: '100%',
   width: '100%',
   transition: '.3s ease-out all',
 }
-const info: CSSProperties = {
-  opacity: 0.4,
-  top: '60px',
-  left: '60px',
+const containerStyle: CSSProperties = {
+  margin: '3em auto',
+  perspective: '300px',
 }
 
 defineDemo(
@@ -57,61 +43,86 @@ defineDemo(
   defineComponent({
     setup() {
       const target = ref(null)
+      const isMobile = useMediaQuery('(max-width: 700px)')
+
+      const parallax = reactive(useParallax(target, {
+        deviceOrientationTiltAdjust: i => i * 2,
+        deviceOrientationRollAdjust: i => i * 2,
+      }))
+
+      const infoStyle = computed<CSSProperties>(() => ({
+        opacity: 0.4,
+        top: '60px',
+        left: '60px',
+        position: isMobile.value ? 'inherit' : 'absolute',
+      }))
+
+      const layer0 = computed(() => ({
+        ...layerBase,
+        transform: `translateX(${parallax.tilt * 10}px) translateY(${parallax.roll * 10}px) scale(1.33)`,
+      }))
+
+      const layer1 = computed(() => ({
+        ...layerBase,
+        transform: `translateX(${parallax.tilt * 20}px) translateY(${parallax.roll * 20}px) scale(1.33)`,
+      }))
+
+      const layer2 = computed(() => ({
+        ...layerBase,
+        transform: `translateX(${parallax.tilt * 30}px) translateY(${parallax.roll * 30}px) scale(1.33)`,
+      }))
+
+      const layer3 = computed(() => ({
+        ...layerBase,
+        transform: `translateX(${parallax.tilt * 40}px) translateY(${parallax.roll * 40}px) scale(1.33)`,
+      }))
+
+      const layer4 = layerBase
+
+      const cardStyle = computed(() => ({
+        background: '#fff',
+        height: '20rem',
+        width: '15rem',
+        borderRadius: '5px',
+        overflow: 'hidden',
+        transition: '.3s ease-out all',
+        boxShadow: '0 0 20px 0 rgba(255, 255, 255, 0.25)',
+        transform: `rotateX(${parallax.roll * 20}deg) rotateY(${parallax.tilt * 20}deg)`,
+      }))
 
       return {
-        ...useParallax({
-          deviceOrientationTiltAdjust: i => i * 2,
-          deviceOrientationRollAdjust: i => i * 2,
-          targetElement: target,
-        }),
-        isMobile: useMediaQuery('(max-width: 700px)'),
-        card__window,
-        container,
         target,
+        parallax,
+        infoStyle,
+        layer0,
+        layer1,
+        layer2,
+        layer3,
+        layer4,
+        cardStyle,
+        cardWindowStyle,
+        containerStyle,
+        targetStyle,
         YAML,
-        demo,
-        info,
-        card,
-        img,
       }
     },
 
     template: html`
       <div>
-        <div ref="demo" :style="demo">
-          <pre :style="{ ...info, position: isMobile ? 'inherit' : 'absolute' }">{{
-            YAML.safeDump({
-              tilt,
-              roll,
-              source,
-            })
-          }}</pre>
-          <div :style="container">
-            <div :style="{ ...card, transform: 'rotateX(' + (roll * 20) + 'deg) rotateY(' + (tilt * 20) + 'deg)' }">
-              <div :style="card__window">
-                <img
-                  :style="{ ...img, transform: 'translateX(' + (tilt * 10) + 'px) translateY(' + (roll * 10) + 'px) scale(1.33)' }"
-                  src="http://jaromvogel.com/images/design/jumping_rabbit/page2layer0.png" alt=""
-                />
-                <img
-                  :style="{ ...img, transform: 'translateX(' + (tilt * 20) + 'px) translateY(' + (roll * 20) + 'px) scale(1.33)' }"
-                  src="http://jaromvogel.com/images/design/jumping_rabbit/page2layer1.png" alt=""
-                />
-                <img
-                  :style="{ ...img, transform: 'translateX(' + (tilt * 30) + 'px) translateY(' + (roll * 30) + 'px) scale(1.33)' }"
-                  src="http://jaromvogel.com/images/design/jumping_rabbit/page2layer2.png" alt=""
-                />
-                <img
-                  :style="{ ...img, transform: 'translateX(' + (tilt * 40) + 'px) translateY(' + (roll * 40) + 'px) scale(1.33)' }"
-                  src="http://jaromvogel.com/images/design/jumping_rabbit/page2layer3.png" alt=""
-                />
-                <img
-                  :style="img" src="http://jaromvogel.com/images/design/jumping_rabbit/page2layer4.png" alt=""
-                />
+        <div ref="target" :style="targetStyle">
+          <pre :style="infoStyle">{{YAML.safeDump(parallax)}}</pre>
+          <div :style="containerStyle">
+            <div :style="cardStyle">
+              <div :style="cardWindowStyle">
+                <img :style="layer0" src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer0.png" alt=""/>
+                <img :style="layer1" src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer1.png" alt=""/>
+                <img :style="layer2" src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer2.png" alt=""/>
+                <img :style="layer3" src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer3.png" alt=""/>
+                <img :style="layer4" src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer4.png" alt=""/>
               </div>
             </div>
           </div>
-          <note style="opacity: 1;">Credits of image to <a href="https://codepen.io/jaromvogel" target="__blank">Jarom Vogel</a></note>
+          <note class="opacity-1">Credit of images to <a href="https://codepen.io/jaromvogel" target="__blank">Jarom Vogel</a></note>
         </div>
       </div>
     `,
