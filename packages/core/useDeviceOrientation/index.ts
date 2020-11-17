@@ -10,13 +10,14 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  * @see   {@link https://vueuse.js.org/useDeviceOrientation}
  * @param options
  */
-export function useDeviceOrientation({ window = defaultWindow }: ConfigurableWindow = {}) {
-  const isSupported = window && 'DeviceOrientationEvent' in window && 'ontouchstart' in window
+export function useDeviceOrientation(options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
+  const isSupported = Boolean(window && 'DeviceOrientationEvent' in window)
 
   const isAbsolute = ref(false)
-  const alpha: Ref<number | null> = ref(0)
-  const beta: Ref<number | null> = ref(0)
-  const gamma: Ref<number | null> = ref(0)
+  const alpha: Ref<number | null> = ref(null)
+  const beta: Ref<number | null> = ref(null)
+  const gamma: Ref<number | null> = ref(null)
 
   if (window && isSupported) {
     useEventListener(window, 'deviceorientation', (event) => {

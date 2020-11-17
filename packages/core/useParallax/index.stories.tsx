@@ -43,12 +43,9 @@ defineDemo(
   defineComponent({
     setup() {
       const target = ref(null)
-      const isMobile = useMediaQuery('(max-width: 700px)')
+      const isMobile = useMediaQuery('(max-width: 700px)', { window: window.parent })
 
-      const parallax = reactive(useParallax(target, {
-        deviceOrientationTiltAdjust: i => i * 2,
-        deviceOrientationRollAdjust: i => i * 2,
-      }))
+      const parallax = reactive(useParallax(target, { window: isMobile.value ? window.parent : window }))
 
       const infoStyle = computed<CSSProperties>(() => ({
         opacity: 0.4,
