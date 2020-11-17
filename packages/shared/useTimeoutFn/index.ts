@@ -26,7 +26,7 @@ export function useTimeoutFn(
 
   function stop() {
     isActive.value = false
-    stop()
+    clear()
   }
 
   function start() {

@@ -1,5 +1,4 @@
 import { ref } from 'vue-demi'
-import { useTimeoutFn } from '@vueuse/shared'
 
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once the promise is ready.
@@ -32,7 +31,7 @@ export function useAsyncState<T>(
   if (!delay)
     run()
   else
-    useTimeoutFn(run, delay)
+    setTimeout(run, delay)
 
   return { state, ready }
 }
