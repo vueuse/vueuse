@@ -9,7 +9,7 @@ export function useLocalStorage<T> (key: string, defaultValue: T, options?: Stor
 export function useLocalStorage<T = unknown> (key: string, defaultValue: null, options?: StorageOptions): Ref<T>
 
 /**
- * Reactive LocalStorage
+ * Reactive LocalStorage.
  *
  * @see   {@link https://vueuse.js.org/useLocalStorage}
  * @param key

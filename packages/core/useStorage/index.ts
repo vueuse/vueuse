@@ -51,7 +51,7 @@ export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLi
 export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions): Ref<T>
 
 /**
- * Reactive LocalStorage/SessionStorage
+ * Reactive LocalStorage/SessionStorage.
  *
  * @see   {@link https://vueuse.js.org/useStorage}
  * @param key

@@ -3,7 +3,7 @@ import { ref, watch } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 /**
- * Reactive document title
+ * Reactive document title.
  *
  * @see   {@link https://vueuse.js.org/useTitle}
  * @param newTitle

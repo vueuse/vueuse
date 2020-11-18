@@ -3,7 +3,7 @@ import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 /**
- * Reactively track `document.visibilityState`
+ * Reactively track `document.visibilityState`.
  *
  * @see   {@link https://vueuse.js.org/useDocumentVisibility}
  * @param options

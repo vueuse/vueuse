@@ -41,7 +41,7 @@ export interface NetworkState {
 }
 
 /**
- * Reactive Network status
+ * Reactive Network status.
  *
  * @see   {@link https://vueuse.js.org/useNetwork}
  * @param options

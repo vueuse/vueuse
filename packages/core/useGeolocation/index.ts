@@ -7,7 +7,7 @@ import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 
 /**
- * Reactive Geolocation API
+ * Reactive Geolocation API.
  *
  * @see   {@link https://vueuse.js.org/useGeolocation}
  * @param options

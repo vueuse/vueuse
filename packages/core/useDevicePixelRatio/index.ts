@@ -19,7 +19,7 @@ const DEVICE_PIXEL_RATIO_SCALES = [
   4,
 ]
 /**
- * Reactively track `window.devicePixelRatio`
+ * Reactively track `window.devicePixelRatio`.
  *
  * @see   {@link https://vueuse.js.org/useDevicePixelRatio}
  * @param options

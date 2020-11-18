@@ -5,7 +5,7 @@ import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
- * Reactive DeviceLightEvent
+ * Reactive DeviceLightEvent.
  *
  * @see   {@link https://vueuse.js.org/useDeviceLight}
  * @param options

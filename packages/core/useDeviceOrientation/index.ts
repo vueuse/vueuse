@@ -5,7 +5,7 @@ import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
- * Reactive DeviceOrientationEvent
+ * Reactive DeviceOrientationEvent.
  *
  * @see   {@link https://vueuse.js.org/useDeviceOrientation}
  * @param options

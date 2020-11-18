@@ -9,7 +9,7 @@ export function useSessionStorage<T> (key: string, defaultValue: T, options?: St
 export function useSessionStorage<T = unknown> (key: string, defaultValue: null, options?: StorageOptions): Ref<T>
 
 /**
- * Reactive SessionStorage
+ * Reactive SessionStorage.
  *
  * @see   {@link https://vueuse.js.org/useSessionStorage}
  * @param key

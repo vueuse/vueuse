@@ -136,7 +136,7 @@ const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
 const fnBypass = <F, T>(v: F) => v as unknown as T
 
 /**
- * Track the change history of a ref, also provides undo and redo functionality
+ * Track the change history of a ref, also provides undo and redo functionality.
  *
  * @see   {@link https://vueuse.js.org/useRefHistory}
  * @param source
