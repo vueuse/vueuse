@@ -12,7 +12,7 @@ type EventType = MouseEvent | TouchEvent
  * @see   {@link https://vueuse.js.org/onClickOutside}
  * @param target
  * @param handler
- * @param window
+ * @param options
  */
 export function onClickOutside(
   target: MaybeRef<Element | null | undefined>,
