@@ -104,10 +104,6 @@ html, body, div, .markdown-body {
   border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-.markdown-body pre {
-  position: relative;
-}
-
 .sb-show-main a,
 .markdown-body a {
   color: #42b883;
