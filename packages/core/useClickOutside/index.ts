@@ -2,6 +2,8 @@ import { Fn, isClient, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
+const events = ['mousedown', 'touchstart'] as const
+
 /**
  * Listen for clicks outside of an element.
  *
@@ -9,9 +11,6 @@ import { useEventListener } from '../useEventListener'
  * @param target
  * @param handler
  */
-
-const events = ['mousedown', 'touchstart'] as const
-
 export function useClickOutside(
   target: MaybeRef<Element | null | undefined>,
   handler: EventListener,
