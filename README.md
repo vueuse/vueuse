@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-84%20functions-13708a"/>
+<img alt="Function Count" src="https://img.shields.io/badge/-85%20functions-13708a"/>
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
 </p>
@@ -123,6 +123,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useWebWorkerFn`](https://vueuse.js.org/?path=/story/misc--usewebworkerfn) — run expensive function without blocking the UI
 
 - Sensors
+  - [`onClickOutside`](https://vueuse.js.org/?path=/story/sensors--onclickoutside) — listen for clicks outside of an element
   - [`onStartTyping`](https://vueuse.js.org/?path=/story/sensors--onstarttyping) — fires when users start typing on non-editable elements
   - [`useBattery`](https://vueuse.js.org/?path=/story/sensors--usebattery) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
   - [`useDeviceLight`](https://vueuse.js.org/?path=/story/sensors--usedevicelight) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)

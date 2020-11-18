@@ -1,5 +1,6 @@
 export * from './asyncComputed'
 export * from './createGlobalState'
+export * from './onClickOutside'
 export * from './onStartTyping'
 export * from './useAsyncState'
 export * from './useBattery'

@@ -238,6 +238,13 @@
       ],
       "Sensors": [
         {
+          "name": "onClickOutside",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--onclickoutside",
+          "description": "listen for clicks outside of an element",
+          "depreacted": false
+        },
+        {
           "name": "onStartTyping",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--onstarttyping",

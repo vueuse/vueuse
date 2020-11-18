@@ -140,3 +140,16 @@ console.log(history.value)
   { snapshot: { names: [], version: 1 },
 ] */
 ```
+
+If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a mutable `splice` in an array. `splice` can generate up to three atomic operations that will be pushed to the ref history.
+
+```ts
+const arr = ref([1,2,3])
+const { history, batch } = useRefHistory(r, { deep: true, flush: 'sync' })
+
+batch(() => {
+  arr.value.splice(1,1) // batch ensures only one history point is generated
+})
+```
+
+Another option is to avoid mutating the original ref value using `arr.value = [...arr.value].splice(1,1)`.
