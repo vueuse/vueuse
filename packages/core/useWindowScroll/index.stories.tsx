@@ -17,8 +17,11 @@ defineDemo(
     template: html`
       <div>
         <note>See scroll values in the lower right corner of the screen.</note>
+        <div style="position: absolute; width: 10000px; height: 10000px;"></div>
         <div id="demo" style="
           position: fixed;
+          top: 100%;
+          left: 100%;
           bottom: 0;
           right: 0;
           padding: 1em 5em 1em 1.5em;
@@ -27,7 +30,6 @@ defineDemo(
           <p>x: {{x}}</p>
           <p>y: {{y}}</p>
         </div>
-        <div style="position: absolute; width: 10000px; height: 10000px;"></div>
       </div>
     `,
   }),
