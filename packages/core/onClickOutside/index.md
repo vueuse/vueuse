@@ -1,6 +1,6 @@
 # onClickOutside
 
-> Listen for clicks outside of an element.
+> Listen for clicks outside of an element. Useful for modal or dropdown.
 
 ## Usage
 
@@ -21,9 +21,8 @@ import { onClickOutside } from '@vueuse/core'
 export default {
   setup() {
     const target = ref(null)
-    const handler = (event) => console.log(event) 
 
-    onClickOutside(target, handler)
+    onClickOutside(target, (event) => console.log(event))
 
     return { target }
   }
