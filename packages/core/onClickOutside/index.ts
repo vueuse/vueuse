@@ -37,11 +37,7 @@ export function onClickOutside(
     handler(event)
   }
 
-  let disposables: Fn[] = []
-
-  events.forEach((event) => {
-    disposables.push(useEventListener(window, event, listener, { passive: true }))
-  })
+  let disposables: Fn[] = events.map((event) => useEventListener(window, event, listener, { passive: true })))
 
   const stop = () => {
     disposables.forEach(stop => stop())
