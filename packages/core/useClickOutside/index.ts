@@ -3,6 +3,7 @@ import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 const events = ['mousedown', 'touchstart'] as const
+type EventType = MouseEvent | TouchEvent
 
 /**
  * Listen for clicks outside of an element.
@@ -13,14 +14,14 @@ const events = ['mousedown', 'touchstart'] as const
  */
 export function useClickOutside(
   target: MaybeRef<Element | null | undefined>,
-  handler: EventListener,
+  handler: (evt: EventType) => void,
 ) {
   if (!isClient)
     return
 
   const targetRef = ref(target)
 
-  const listener = (event: MouseEvent | TouchEvent) => {
+  const listener = (event: EventType) => {
     const elements = event.composedPath()
     if (targetRef.value === event.target || elements.includes(targetRef.value!))
       return
