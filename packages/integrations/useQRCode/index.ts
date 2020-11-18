@@ -2,6 +2,13 @@ import { MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 
+/**
+ * Wrapper for qrcode.
+ *
+ * @see   {@link https://vueuse.js.org/useQRCode}
+ * @param text
+ * @param options
+ */
 export function useQRCode(
   text: MaybeRef<string>,
   options?: QRCode.QRCodeToDataURLOptions,
