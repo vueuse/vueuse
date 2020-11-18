@@ -33,6 +33,15 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
   docRef: firebase.firestore.Query<T>,
   errorHandler?: (err: Error) => void,
 ): Ref<T[]>
+
+/**
+ * Reactive Firestore binding. Making it straightforward to always keep your
+ * local data in sync with remotes databases.
+ *
+ * @see   {@link https://vueuse.js.org/useFirestore}
+ * @param docRef
+ * @param errorHandler
+ */
 export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
   errorHandler = (err: Error) => console.error(err),
