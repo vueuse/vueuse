@@ -1,6 +1,7 @@
-import { Fn, isClient, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
+import { Fn, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const events = ['mousedown', 'touchstart'] as const
 type EventType = MouseEvent | TouchEvent
@@ -11,12 +12,16 @@ type EventType = MouseEvent | TouchEvent
  * @see   {@link https://vueuse.js.org/onClickOutside}
  * @param target
  * @param handler
+ * @param window
  */
 export function onClickOutside(
   target: MaybeRef<Element | null | undefined>,
   handler: (evt: EventType) => void,
+  options: ConfigurableWindow = {},
 ) {
-  if (!isClient)
+  const { window = defaultWindow } = options
+
+  if (!window)
     return
 
   const targetRef = ref(target)
@@ -35,7 +40,7 @@ export function onClickOutside(
   let disposables: Fn[] = []
 
   events.forEach((event) => {
-    disposables.push(useEventListener(event, listener, { passive: true }))
+    disposables.push(useEventListener(window, event, listener, { passive: true }))
   })
 
   const stop = () => {
