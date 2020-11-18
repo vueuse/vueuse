@@ -3,6 +3,12 @@
 import { ref, Ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 
+/**
+ * Simple Web Workers registration and communication.
+ *
+ * @see   {@link https://vueuse.js.org/useWebWorker}
+ * @param url
+ */
 export function useWebWorker(url: string) {
   const data: Ref<any> = ref(null)
   let worker: Worker
