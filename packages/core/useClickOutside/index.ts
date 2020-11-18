@@ -8,11 +8,11 @@ type EventType = MouseEvent | TouchEvent
 /**
  * Listen for clicks outside of an element.
  *
- * @see   {@link https://vueuse.js.org/useClickOutside}
+ * @see   {@link https://vueuse.js.org/onClickOutside}
  * @param target
  * @param handler
  */
-export function useClickOutside(
+export function onClickOutside(
   target: MaybeRef<Element | null | undefined>,
   handler: (evt: EventType) => void,
 ) {
@@ -22,6 +22,9 @@ export function useClickOutside(
   const targetRef = ref(target)
 
   const listener = (event: EventType) => {
+    if (!targetRef.value)
+      return
+
     const elements = event.composedPath()
     if (targetRef.value === event.target || elements.includes(targetRef.value!))
       return
@@ -29,27 +32,18 @@ export function useClickOutside(
     handler(event)
   }
 
-  let listeners: Fn[] = []
+  let disposables: Fn[] = []
 
-  const stopListeners = () => {
-    listeners.forEach(stop => stop())
-    listeners = []
+  events.forEach((event) => {
+    disposables.push(useEventListener(event, listener, { passive: true }))
+  })
+
+  const stop = () => {
+    disposables.forEach(stop => stop())
+    disposables = []
   }
 
-  tryOnUnmounted(stopListeners)
+  tryOnUnmounted(stop)
 
-  watch(
-    targetRef,
-    () => {
-      if (!targetRef.value) {
-        stopListeners()
-        return
-      }
-
-      events.forEach((event) => {
-        listeners.push(useEventListener(event, listener, { passive: true }))
-      })
-    },
-    { immediate: true },
-  )
+  return stop
 }

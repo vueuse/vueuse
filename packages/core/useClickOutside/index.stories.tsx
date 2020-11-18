@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue-demi'
-import { useClickOutside } from '.'
+import { onClickOutside } from '.'
 import { defineDemo, html } from '../../_docs'
 
 const styles = {
@@ -36,7 +36,7 @@ const styles = {
 
 defineDemo(
   {
-    name: 'useClickOutside',
+    name: 'onClickOutside',
     category: 'Sensors',
     docs: require('./index.md'),
     module,
@@ -46,7 +46,7 @@ defineDemo(
       const modal = ref(false)
       const modalRef = ref(null)
 
-      useClickOutside(
+      onClickOutside(
         modalRef,
         (event) => {
           console.log(event)
@@ -57,7 +57,7 @@ defineDemo(
       const dropdown = ref(false)
       const dropdownRef = ref(null)
 
-      useClickOutside(
+      onClickOutside(
         dropdownRef,
         (event) => {
           console.log(event)

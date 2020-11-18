@@ -1,4 +1,4 @@
-# useClickOutside
+# onClickOutside
 
 > Listen for clicks outside of an element.
 
@@ -16,14 +16,14 @@
 
 <script>
 import { ref } from 'vue'
-import { useClickOutside } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 
 export default {
   setup() {
     const target = ref(null)
     const handler = (event) => console.log(event) 
 
-    useClickOutside(target, handler)
+    onClickOutside(target, handler)
 
     return { target }
   }
