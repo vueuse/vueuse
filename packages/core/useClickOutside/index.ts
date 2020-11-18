@@ -1,5 +1,5 @@
 import { Fn, isClient, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 const events = ['mousedown', 'touchstart'] as const
