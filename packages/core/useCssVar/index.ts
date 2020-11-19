@@ -3,7 +3,7 @@ import { MaybeRef, tryOnMounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
- * Manipulate CSS variables
+ * Manipulate CSS variables.
  *
  * @see   {@link https://vueuse.js.org/useCssVar}
  * @param prop

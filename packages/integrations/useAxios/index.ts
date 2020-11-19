@@ -1,6 +1,13 @@
 import { Ref, ref } from 'vue-demi'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 
+/**
+ * Wrapper for axios.
+ *
+ * @see   {@link https://vueuse.js.org/useAxios}
+ * @param url
+ * @param config
+ */
 export function useAxios<T = any>(
   url: string,
   config?: AxiosRequestConfig,

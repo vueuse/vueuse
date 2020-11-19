@@ -5,7 +5,7 @@ import { ref } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 /**
- * Reactive Fullscreen API
+ * Reactive Fullscreen API.
  *
  * @see   {@link https://vueuse.js.org/useFullscreen}
  * @param target

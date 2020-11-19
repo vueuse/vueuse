@@ -26,7 +26,7 @@ export interface MouseOptions extends ConfigurableWindow {
 export type MouseSourceType = 'mouse' | 'touch' | null
 
 /**
- * Reactive mouse position
+ * Reactive mouse position.
  *
  * @see   {@link https://vueuse.js.org/useMouse}
  * @param options

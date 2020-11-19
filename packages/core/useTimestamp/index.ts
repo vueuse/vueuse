@@ -12,7 +12,7 @@ export interface TimestampOptions {
 }
 
 /**
- * Reactive current timestamp
+ * Reactive current timestamp.
  *
  * @see   {@link https://vueuse.js.org/useTimestamp}
  * @param options

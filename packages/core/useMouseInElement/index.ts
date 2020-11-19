@@ -7,7 +7,7 @@ export interface MouseInElementOptions extends MouseOptions {
 }
 
 /**
- * Reactive mouse position related to an element
+ * Reactive mouse position related to an element.
  *
  * @see   {@link https://vueuse.js.org/useMouseInElement}
  * @param target

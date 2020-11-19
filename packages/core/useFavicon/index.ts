@@ -8,7 +8,7 @@ export interface FaviconOptions extends ConfigurableDocument {
 }
 
 /**
- * Reactive favicon
+ * Reactive favicon.
  *
  * @see   {@link https://vueuse.js.org/useFavicon}
  * @param newIcon

@@ -13,7 +13,7 @@ export type GeneralPermissionDescriptor =
   | { name: DescriptorNamePolyfill }
 
 /**
- * Reactive Permissions API
+ * Reactive Permissions API.
  *
  * @see   {@link https://vueuse.js.org/usePermission}
  * @param permissionDesc

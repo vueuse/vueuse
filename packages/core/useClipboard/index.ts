@@ -5,7 +5,7 @@ import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
 /**
- * Reactive Clipboard API
+ * Reactive Clipboard API.
  *
  * @see   {@link https://vueuse.js.org/useClipboard}
  * @param options
