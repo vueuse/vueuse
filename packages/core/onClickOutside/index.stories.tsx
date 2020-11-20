@@ -52,6 +52,7 @@ defineDemo(
           console.log(event)
           modal.value = false
         },
+        { window: window.parent },
       )
 
       const dropdown = ref(false)
@@ -63,6 +64,7 @@ defineDemo(
           console.log(event)
           dropdown.value = false
         },
+        { window: window.parent },
       )
 
       return {

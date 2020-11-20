@@ -6,6 +6,15 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 const events = ['mousedown', 'touchstart'] as const
 type EventType = MouseEvent | TouchEvent
 
+export interface ClickOutsideOptions extends ConfigurableWindow {
+  /**
+   * If you set a custom 'window', it also registers event listeners for the default window.
+   *
+   * @default true
+   */
+  registerDefaultWindow?: boolean
+}
+
 /**
  * Listen for clicks outside of an element.
  *
@@ -17,9 +26,12 @@ type EventType = MouseEvent | TouchEvent
 export function onClickOutside(
   target: MaybeRef<Element | null | undefined>,
   handler: (evt: EventType) => void,
-  options: ConfigurableWindow = {},
+  options: ClickOutsideOptions = {},
 ) {
-  const { window = defaultWindow } = options
+  const {
+    window = defaultWindow,
+    registerDefaultWindow = true,
+  } = options
 
   if (!window)
     return
@@ -37,8 +49,14 @@ export function onClickOutside(
     handler(event)
   }
 
-  let disposables: Fn[] = events
-    .map(event => useEventListener(window, event, listener, { passive: true }))
+  let disposables: Fn[] = []
+
+  events.forEach((event) => {
+    disposables.push(useEventListener(window, event, listener, { passive: true }))
+
+    if (registerDefaultWindow && window !== defaultWindow)
+      disposables.push(useEventListener(event, listener, { passive: true }))
+  })
 
   const stop = () => {
     disposables.forEach(stop => stop())
