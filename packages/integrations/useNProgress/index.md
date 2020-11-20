@@ -7,10 +7,10 @@
 ```js {6}
 import { useNProgress } from '@vueuse/integrations'
 
-const loading = useNProgress()
+const { isLoading } = useNProgress()
 
 function toggle() {
-  loading.value = !loading.value
+  isLoading.value = !isLoading.value
 }
 ```
 
@@ -22,13 +22,15 @@ You can pass a `ref` to it, changes from of the source ref will be reflected to 
 import { ref } from 'vue'
 import { useNProgress } from '@vueuse/integrations'
 
-const loading = ref(false)
+const isLoading = ref(false)
 
-useNProgress(loading)
+useNProgress(isLoading)
 
 function toggle() {
-  loading.value = !loading.value
+  isLoading.value = !isLoading.value
 }
 ```
 
+### Customization
 
+Just edit [nprogress.css](http://ricostacruz.com/nprogress/nprogress.css) to your liking. Tip: you probably only want to find and replace occurrences of #29d.

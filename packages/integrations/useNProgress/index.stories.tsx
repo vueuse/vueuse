@@ -12,15 +12,13 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return {
-        loading: useNProgress(),
-      }
+      return useNProgress()
     },
 
     template: html`
       <div>
         <note>Click to change progress status</note>
-        <button @click='loading = !loading'>{{ !loading ? 'Start' : 'Stop' }}</button>
+        <button @click='isLoading = !isLoading'>{{ !isLoading ? 'Start' : 'Stop' }}</button>
       </div>
     `,
   }),
