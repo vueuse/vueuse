@@ -1,11 +1,11 @@
 import { defineComponent } from 'vue-demi'
 import { defineDemo, html } from '../../_docs'
-import { useProgressBar } from '.'
+import { useNProgress } from '.'
 import './style.css'
 
 defineDemo(
   {
-    name: 'useProgressBar',
+    name: 'useNProgress',
     category: '/Integrations',
     docs: require('./index.md'),
     module,
@@ -13,7 +13,7 @@ defineDemo(
   defineComponent({
     setup() {
       return {
-        loading: useProgressBar(),
+        loading: useNProgress(),
       }
     },
 

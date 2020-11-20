@@ -5,11 +5,11 @@ import { ref, watch, isRef } from 'vue-demi'
 /**
  * Reactive progress bar.
  *
- * @see   {@link https://vueuse.js.org/useProgressBar}
+ * @see   {@link https://vueuse.js.org/useNProgress}
  * @param newIcon
  * @param options
  */
-export function useProgressBar(
+export function useNProgress(
   current: MaybeRef<boolean | null | undefined> = null,
   options?: NProgressOptions | undefined,
 ) {

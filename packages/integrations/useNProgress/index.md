@@ -1,13 +1,13 @@
-# useProgressBar
+# useNProgress
 
 > Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
 
 ## Usage
 
 ```js {6}
-import { useProgressBar } from '@vueuse/integrations'
+import { useNProgress } from '@vueuse/integrations'
 
-const loading = useProgressBar()
+const loading = useNProgress()
 
 function toggle() {
   loading.value = !loading.value
@@ -20,11 +20,11 @@ You can pass a `ref` to it, changes from of the source ref will be reflected to 
 
 ```js {4}
 import { ref } from 'vue'
-import { useProgressBar } from '@vueuse/integrations'
+import { useNProgress } from '@vueuse/integrations'
 
 const loading = ref(false)
 
-useProgressBar(loading)
+useNProgress(loading)
 
 function toggle() {
   loading.value = !loading.value
