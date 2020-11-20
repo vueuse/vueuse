@@ -4,7 +4,7 @@ import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const events = ['mousedown', 'touchstart'] as const
-type EventType = MouseEvent | TouchEvent
+type EventType = WindowEventMap[(typeof events)[number]]
 
 /**
  * Listen for clicks outside of an element.
