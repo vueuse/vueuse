@@ -218,7 +218,7 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 ## 🧱 Contribute
 
-See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contribute)
+See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contributing)
 
 ## 🌸 Thanks
 
@@ -237,7 +237,7 @@ Thanks!
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [How to Contribute](https://vueuse.js.org/?path=/story/docs--contribute).
+This project exists thanks to all the people who contribute. [How to Contribute](https://vueuse.js.org/?path=/story/docs--contributing).
 
 <a href="https://github.com/antfu/vueuse/graphs/contributors"><img src="https://opencollective.com/vueuse/contributors.svg?width=890&button=false" /></a>
 
