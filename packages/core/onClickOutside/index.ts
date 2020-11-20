@@ -1,7 +1,7 @@
 import { Fn, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultDocsWindow } from '../_configurable'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 const events = ['mousedown', 'touchstart'] as const
 type EventType = WindowEventMap[(typeof events)[number]]
@@ -19,7 +19,7 @@ export function onClickOutside(
   handler: (evt: EventType) => void,
   options: ConfigurableWindow = {},
 ) {
-  const { window = defaultDocsWindow } = options
+  const { window = defaultWindow } = options
 
   if (!window)
     return
