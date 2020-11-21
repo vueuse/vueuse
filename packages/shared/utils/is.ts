@@ -12,6 +12,7 @@ export const isObject = (val: any): val is object =>
   toString.call(val) === '[object Object]'
 export const isWindow = (val: any): val is Window =>
   typeof window !== 'undefined' && toString.call(val) === '[object Window]'
+export const isIframe = window !== window.parent
 export const now = () => Date.now()
 export const timestamp = () => +Date.now()
 export const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
