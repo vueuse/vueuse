@@ -33,7 +33,7 @@ export const defaultDocument = /* #__PURE__ */ isClient ? window.document : unde
 export const defaultNavigator = /* #__PURE__ */ isClient ? window.navigator : undefined
 export const defaultLocation = /* #__PURE__ */ isClient ? window.location : undefined
 
-const defaultDocsWindow = /* #__PURE__ */ isClient ? <Window>{
+export const defaultDocsWindow = /* #__PURE__ */ isClient ? <Window>{
   addEventListener: (...args: Parameters<Window['addEventListener']>) => {
     window.addEventListener(...args)
     isIframe && window.parent.addEventListener(...args)
@@ -43,5 +43,3 @@ const defaultDocsWindow = /* #__PURE__ */ isClient ? <Window>{
     isIframe && window.parent.removeEventListener(...args)
   },
 } : undefined
-
-export { defaultDocsWindow }
