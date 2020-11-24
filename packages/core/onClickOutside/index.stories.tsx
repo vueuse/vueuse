@@ -1,6 +1,6 @@
 import { defineComponent, ref } from 'vue-demi'
 import { onClickOutside } from '.'
-import { defineDemo, html } from '../../_docs'
+import { defineDemo, html, jointWindow } from '../../_docs'
 
 const styles = {
   wrapper: {
@@ -52,6 +52,7 @@ defineDemo(
           console.log(event)
           modal.value = false
         },
+        { window: jointWindow },
       )
 
       const dropdown = ref(false)
@@ -63,6 +64,7 @@ defineDemo(
           console.log(event)
           dropdown.value = false
         },
+        { window: jointWindow },
       )
 
       return {
