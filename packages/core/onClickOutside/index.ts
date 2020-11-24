@@ -6,8 +6,6 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 const events = ['mousedown', 'touchstart'] as const
 type EventType = WindowEventMap[(typeof events)[number]]
 
-export interface ClickOutsideOptions extends ConfigurableWindow {}
-
 /**
  * Listen for clicks outside of an element.
  *
@@ -19,7 +17,7 @@ export interface ClickOutsideOptions extends ConfigurableWindow {}
 export function onClickOutside(
   target: MaybeRef<Element | null | undefined>,
   handler: (evt: EventType) => void,
-  options: ClickOutsideOptions = {},
+  options: ConfigurableWindow = {},
 ) {
   const { window = defaultWindow } = options
 
@@ -39,11 +37,8 @@ export function onClickOutside(
     handler(event)
   }
 
-  let disposables: Fn[] = []
-
-  events.forEach((event) => {
-    disposables.push(useEventListener(window, event, listener, { passive: true }))
-  })
+  let disposables: Fn[] = events
+    .map(event => useEventListener(window, event, listener, { passive: true }))
 
   const stop = () => {
     disposables.forEach(stop => stop())
