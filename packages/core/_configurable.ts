@@ -1,4 +1,4 @@
-import { isClient, isIframe } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 
 export interface ConfigurableWindow {
   /*
@@ -32,14 +32,3 @@ export const defaultWindow = /* #__PURE__ */ isClient ? window : undefined
 export const defaultDocument = /* #__PURE__ */ isClient ? window.document : undefined
 export const defaultNavigator = /* #__PURE__ */ isClient ? window.navigator : undefined
 export const defaultLocation = /* #__PURE__ */ isClient ? window.location : undefined
-
-export const defaultDocsWindow = /* #__PURE__ */ isClient ? <Window>{
-  addEventListener: (...args: Parameters<Window['addEventListener']>) => {
-    window.addEventListener(...args)
-    isIframe && window.parent.addEventListener(...args)
-  },
-  removeEventListener: (...args: Parameters<Window['removeEventListener']>) => {
-    window.removeEventListener(...args)
-    isIframe && window.parent.removeEventListener(...args)
-  },
-} : undefined
