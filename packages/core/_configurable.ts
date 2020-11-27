@@ -16,16 +16,16 @@ export interface ConfigurableDocument {
 
 export interface ConfigurableNavigator {
   /*
-   * Specify a custom `document` instance, e.g. working with iframes or in testing environments.
+   * Specify a custom `navigator` instance, e.g. working with iframes or in testing environments.
    */
   navigator?: Navigator
 }
 
 export interface ConfigurableLocation {
   /*
-   * Specify a custom `document` instance, e.g. working with iframes or in testing environments.
+   * Specify a custom `location` instance, e.g. working with iframes or in testing environments.
    */
-  navigator?: Navigator
+  location?: Location
 }
 
 export const defaultWindow = /* #__PURE__ */ isClient ? window : undefined
