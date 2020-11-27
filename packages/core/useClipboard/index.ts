@@ -11,16 +11,20 @@ import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
  * @param options
  */
 export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const events = ['copy', 'cut']
   const isSupported = navigator && 'clipboard' in navigator
   const text = ref('')
 
-  if (isSupported) {
-    useEventListener('copy' as WindowEventName, () => {
-      // @ts-expect-error untyped API
-      navigator.clipboard.readText().then((value) => {
-        text.value = value
-      })
+  function updateText() {
+    // @ts-expect-error untyped API
+    navigator.clipboard.readText().then((value) => {
+      text.value = value
     })
+  }
+
+  if (isSupported) {
+    for (const event of events)
+      useEventListener(event as WindowEventName, updateText)
   }
 
   async function copy(txt: string) {
