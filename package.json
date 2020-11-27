@@ -111,7 +111,7 @@
     "rollup-plugin-uglify": "^6.0.4",
     "tailwindcss": "^1.9.5",
     "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3",
+    "typescript": "^4.1.0",
     "version-bump-prompt": "^6.1.0",
     "vue": "^2.6.12",
     "vue-i18n": "^8.22.1",
