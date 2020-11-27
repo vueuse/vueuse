@@ -23,8 +23,8 @@ export function useGeolocation(options: GeolocationOptions = {}) {
   const isSupported = navigator && 'geolocation' in navigator
 
   const locatedAt: Ref<number | null> = ref(null)
-  const error = ref<PositionError | null>(null)
-  const coords: Ref<Position['coords']> = ref({
+  const error = ref<GeolocationPositionError | null>(null)
+  const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
     latitude: 0,
     longitude: 0,
@@ -34,7 +34,7 @@ export function useGeolocation(options: GeolocationOptions = {}) {
     speed: null,
   })
 
-  function updatePosition(position: Position) {
+  function updatePosition(position: GeolocationPosition) {
     locatedAt.value = position.timestamp
     coords.value = position.coords
     error.value = null
@@ -46,9 +46,7 @@ export function useGeolocation(options: GeolocationOptions = {}) {
     if (isSupported) {
       watcher = navigator!.geolocation.watchPosition(
         updatePosition,
-        (err) => {
-          error.value = err
-        },
+        err => error.value = err,
         {
           enableHighAccuracy,
           maximumAge,
