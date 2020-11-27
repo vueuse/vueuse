@@ -12,14 +12,15 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useNProgress(0.1)
+      return useNProgress()
     },
 
     template: html`
       <div>
         <note>Click to change progress status</note>
-        <button @click='isLoading = !isLoading'>{{ !isLoading ? 'Start' : 'Stop' }}</button>
-        <button v-if="isLoading" @click='remove'>Remove</button>
+        <div class="flex items-center">
+          <button @click='isLoading = !isLoading'>{{ !isLoading ? 'Start' : 'Stop' }}</button>
+        </div>
       </div>
     `,
   }),

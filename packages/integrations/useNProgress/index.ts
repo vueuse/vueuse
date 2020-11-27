@@ -1,6 +1,6 @@
 import nprogress, { NProgressOptions } from 'nprogress'
-import { MaybeRef, tryOnUnmounted, isNumber } from '@vueuse/shared'
-import { ref, watch, isRef } from 'vue-demi'
+import { MaybeRef, tryOnUnmounted, isNumber, isBoolean } from '@vueuse/shared'
+import { ref, isRef, watch } from 'vue-demi'
 
 /**
  * Reactive progress bar.
@@ -15,21 +15,22 @@ export function useNProgress(
 ) {
   const progress = isRef(currentProgress)
     ? currentProgress
-    : ref(currentProgress)
-  const isLoading = ref<boolean>(false)
+    : ref<number|null>(currentProgress)
+  const isLoading = ref<boolean|null>(null)
 
   if (options)
     nprogress.configure(options)
 
-  // watch(isLoading, active => active ? nprogress.start() : nprogress.done())
-
-  watch([progress, isLoading], (n, l) => {
-    if (isNumber(n) && n < 1) {
-      nprogress.set(n)
-      isLoading.value = true
+  watch([progress, isLoading], ([p, l]) => {
+    if (isNumber(p)) {
+      nprogress.set(p)
+      isLoading.value = p < 1
+    }
+    else if (isBoolean(l)) {
+      l ? nprogress.start() : nprogress.done()
     }
     else {
-      isLoading.value = false
+      nprogress.remove()
     }
   }, {
     immediate: true,
@@ -40,8 +41,17 @@ export function useNProgress(
   return {
     isLoading,
     progress,
-    start: () => isLoading.value = true,
-    done: () => isLoading.value = false,
-    remove: () => isLoading.value = false && nprogress.remove,
+    start: () => {
+      progress.value = null
+      isLoading.value = true
+    },
+    done: () => {
+      progress.value = null
+      isLoading.value = false
+    },
+    remove: () => {
+      progress.value = null
+      isLoading.value = null
+    },
   }
 }
