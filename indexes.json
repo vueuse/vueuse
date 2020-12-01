@@ -627,6 +627,13 @@
           "depreacted": false
         },
         {
+          "name": "useNProgress",
+          "category": "/Integrations",
+          "docs": "https://vueuse.js.org/?path=/story/integrations--usenprogress",
+          "description": "reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)",
+          "depreacted": false
+        },
+        {
           "name": "useQRCode",
           "category": "/Integrations",
           "docs": "https://vueuse.js.org/?path=/story/integrations--useqrcode",

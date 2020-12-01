@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-85%20functions-13708a"/>
+<img alt="Function Count" src="https://img.shields.io/badge/-86%20functions-13708a"/>
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
 </p>
@@ -197,6 +197,7 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 - Integrations ([`@vueuse/integrations`](https://vueuse.js.org/?path=/story/integrations--readme)) - Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useNProgress`](https://vueuse.js.org/?path=/story/integrations--usenprogress) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.js.org/?path=/story/integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 

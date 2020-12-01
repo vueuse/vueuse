@@ -90,9 +90,10 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useRouteHash
   - [ ] useRouteQuery
 
-### integrations (3)
+### integrations (4)
   - [ ] useAxios
   - [ ] useCookies
+  - [ ] useNProgress
   - [ ] useQRCode
 
 ### rxjs (4)
