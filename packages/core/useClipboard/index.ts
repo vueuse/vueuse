@@ -28,11 +28,12 @@ export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavig
   }
 
   async function copy(txt: string) {
-    text.value = txt
-
-    if (isSupported)
+    if (isSupported) {
       // @ts-expect-error untyped API
-      await navigator.clipboard.writeText(txt)
+      await navigator.clipboard.writeText(txt).then(() => {
+        text.value = txt
+      })
+    }
   }
 
   return {
