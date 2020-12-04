@@ -8,15 +8,7 @@ import { ref } from 'vue-demi'
  */
 export function useBoolean(initialValue = false) {
   const value = ref(initialValue)
-
   const toggle = () => (value.value = !value.value)
-  const get = () => value.value
-  const set = (val: boolean) => (value.value = val)
 
-  return {
-    value,
-    toggle,
-    get,
-    set,
-  }
+  return [value, toggle]
 }
