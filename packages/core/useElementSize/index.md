@@ -1,6 +1,6 @@
 # useElementSize
 
-> Reactive size of an HTML element. (simple version of `useResizeObserver`)
+> Reactive size of an HTML element.
 
 ## Usage
 

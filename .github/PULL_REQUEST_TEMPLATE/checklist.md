@@ -34,7 +34,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] watchWithFilter
   - [ ] when
 
-### core (53)
+### core (54)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onClickOutside
@@ -49,6 +49,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useDeviceOrientation
   - [ ] useDevicePixelRatio
   - [ ] useDocumentVisibility
+  - [ ] useElementBounding
   - [ ] useElementSize
   - [ ] useElementVisibility
   - [ ] useEventListener

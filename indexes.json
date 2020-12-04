@@ -301,6 +301,20 @@
           "depreacted": false
         },
         {
+          "name": "useElementBounding",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--useelementbounding",
+          "description": "reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element",
+          "depreacted": false
+        },
+        {
+          "name": "useElementSize",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--useelementsize",
+          "description": "reactive size of an HTML element",
+          "depreacted": false
+        },
+        {
           "name": "useElementVisibility",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--useelementvisibility",
@@ -433,13 +447,6 @@
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--usecssvar",
           "description": "manipulate CSS variables",
-          "depreacted": false
-        },
-        {
-          "name": "useElementSize",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useelementsize",
-          "description": "reactive size of an HTML element",
           "depreacted": false
         },
         {

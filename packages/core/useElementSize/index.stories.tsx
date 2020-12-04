@@ -5,7 +5,7 @@ import { useElementSize } from '.'
 defineDemo(
   {
     name: 'useElementSize',
-    category: 'Browser',
+    category: 'Sensors',
     docs: require('./index.md'),
     module,
   },
