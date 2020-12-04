@@ -1,14 +1,14 @@
 import { ref } from 'vue-demi'
 
 /**
- * A boolean switcher with utility functions.
+ * A boolean ref with a toggler
  *
  * @see   {@link https://vueuse.js.org/useToggle}
  * @param [initialValue=false]
  */
 export function useToggle(initialValue = false) {
-  const value = ref(initialValue)
-  const toggle = () => (value.value = !value.value)
+  const boolean = ref(initialValue)
+  const toggle = () => (boolean.value = !boolean.value)
 
-  return [value, toggle]
+  return [boolean, toggle] as const
 }
