@@ -8,7 +8,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (22)
+### shared (24)
   - [ ] biSyncRef
   - [ ] controlledComputed
   - [ ] debouncedWatch
@@ -20,6 +20,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] throttledWatch
   - [ ] tryOnMounted
   - [ ] tryOnUnmounted
+  - [ ] useCounter
   - [ ] useDebounce
   - [ ] useDebounceFn
   - [ ] useInterval
@@ -28,11 +29,12 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useThrottleFn
   - [ ] useTimeout
   - [ ] useTimeoutFn
+  - [ ] useToggle
   - [ ] utils
   - [ ] watchWithFilter
   - [ ] when
 
-### core (52)
+### core (53)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onClickOutside
@@ -41,13 +43,13 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useBattery
   - [ ] useBrowserLocation
   - [ ] useClipboard
-  - [ ] useCounter
   - [ ] useCssVar
   - [ ] useDeviceLight
   - [ ] useDeviceMotion
   - [ ] useDeviceOrientation
   - [ ] useDevicePixelRatio
   - [ ] useDocumentVisibility
+  - [ ] useElementSize
   - [ ] useElementVisibility
   - [ ] useEventListener
   - [ ] useEventSource
@@ -60,6 +62,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useMediaQuery
   - [ ] useMouse
   - [ ] useMouseInElement
+  - [ ] useMousePressed
   - [ ] useMutationObserver
   - [ ] useNetwork
   - [ ] useOnline

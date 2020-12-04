@@ -5,7 +5,7 @@ import { useToggle } from '.'
 defineDemo(
   {
     name: 'useToggle',
-    category: 'State',
+    category: 'Utilities',
     docs: require('./index.md'),
     module,
   },

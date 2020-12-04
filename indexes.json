@@ -43,6 +43,13 @@
           "depreacted": false
         },
         {
+          "name": "useCounter",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usecounter",
+          "description": "basic counter with utility functions",
+          "depreacted": false
+        },
+        {
           "name": "useDebounce",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
@@ -68,6 +75,13 @@
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
           "description": "throttle execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "useToggle",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usetoggle",
+          "description": "a boolean switcher with utility functions",
           "depreacted": false
         }
       ],
@@ -208,13 +222,6 @@
           "depreacted": false
         },
         {
-          "name": "useCounter",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--usecounter",
-          "description": "basic counter with utility functions",
-          "depreacted": false
-        },
-        {
           "name": "useLocalStorage",
           "category": "State",
           "docs": "https://vueuse.js.org/?path=/story/state--uselocalstorage",
@@ -336,6 +343,20 @@
           "depreacted": false
         },
         {
+          "name": "useMousePressed",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--usemousepressed",
+          "description": "reactive mouse pressing state",
+          "depreacted": false
+        },
+        {
+          "name": "useMutationObserver",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--usemutationobserver",
+          "description": "watch for changes being made to the DOM tree",
+          "depreacted": false
+        },
+        {
           "name": "useNetwork",
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--usenetwork",
@@ -361,6 +382,13 @@
           "category": "Sensors",
           "docs": "https://vueuse.js.org/?path=/story/sensors--useparallax",
           "description": "create parallax effect easily",
+          "depreacted": false
+        },
+        {
+          "name": "useResizeObserver",
+          "category": "Sensors",
+          "docs": "https://vueuse.js.org/?path=/story/sensors--useresizeobserver",
+          "description": "reports changes to the dimensions of an Element's content or the border-box",
           "depreacted": false
         },
         {
@@ -408,6 +436,13 @@
           "depreacted": false
         },
         {
+          "name": "useElementSize",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--useelementsize",
+          "description": "reactive size of an HTML element",
+          "depreacted": false
+        },
+        {
           "name": "useEventListener",
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--useeventlistener",
@@ -436,13 +471,6 @@
           "depreacted": false
         },
         {
-          "name": "useMutationObserver",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usemutationobserver",
-          "description": "watch for changes being made to the DOM tree",
-          "depreacted": false
-        },
-        {
           "name": "usePermission",
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--usepermission",
@@ -468,13 +496,6 @@
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--usepreferredlanguages",
           "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)",
-          "depreacted": false
-        },
-        {
-          "name": "useResizeObserver",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useresizeobserver",
-          "description": "reports changes to the dimensions of an Element's content or the border-box",
           "depreacted": false
         },
         {

@@ -5,7 +5,7 @@ import { useMutationObserver } from '.'
 defineDemo(
   {
     name: 'useMutationObserver',
-    category: 'Browser',
+    category: 'Sensors',
     docs: require('./index.md'),
     module,
   },
