@@ -2,7 +2,7 @@ import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
 
-export interface Size {
+export interface ElementSize {
   width: number
   height: number
 }
@@ -10,14 +10,14 @@ export interface Size {
 /**
  * Reactive size of an HTML element.
  *
- * @see   {@link https://vueuse.js.org/useResizeObserver}
+ * @see   {@link https://vueuse.js.org/useElementSize}
  * @param target
  * @param callback
  * @param options
  */
 export function useElementSize(
   target: MaybeRef<Element | null | undefined>,
-  initialSize: Size = { width: Infinity, height: Infinity },
+  initialSize: ElementSize = { width: Infinity, height: Infinity },
   options: ResizeObserverOptions = {},
 ) {
   const width = ref(initialSize.width)
