@@ -11,15 +11,19 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      return useBoolean()
+      const [value, toggle] = useBoolean()
+      return {
+        value,
+        toggle,
+      }
     },
 
     template: html`
       <div>
         <p>Value: {{ value ? 'ON' : 'OFF' }}</p>
         <button @click="toggle()">Toggle</button>
-        <button @click="set(true)">Set ON</button>
-        <button @click="set(false)">Set OFF</button>
+        <button @click="value = true">Set ON</button>
+        <button @click="value = false">Set OFF</button>
       </div>
     `,
   }),

@@ -7,5 +7,5 @@
 ```js
 import { useBoolean } from '@vueuse/core'
 
-const { value, toggle, get, set } = useBoolean()
+const [value, toggle] = useBoolean()
 ```
