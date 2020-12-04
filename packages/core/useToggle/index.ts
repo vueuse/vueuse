@@ -3,10 +3,10 @@ import { ref } from 'vue-demi'
 /**
  * A boolean switcher with utility functions.
  *
- * @see   {@link https://vueuse.js.org/useBoolean}
+ * @see   {@link https://vueuse.js.org/useToggle}
  * @param [initialValue=false]
  */
-export function useBoolean(initialValue = false) {
+export function useToggle(initialValue = false) {
   const value = ref(initialValue)
   const toggle = () => (value.value = !value.value)
 

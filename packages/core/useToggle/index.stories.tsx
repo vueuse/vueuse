@@ -1,17 +1,17 @@
 import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
-import { useBoolean } from '.'
+import { useToggle } from '.'
 
 defineDemo(
   {
-    name: 'useBoolean',
+    name: 'useToggle',
     category: 'State',
     docs: require('./index.md'),
     module,
   },
   defineComponent({
     setup() {
-      const [value, toggle] = useBoolean()
+      const [value, toggle] = useToggle()
       return {
         value,
         toggle,
