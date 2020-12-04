@@ -17,7 +17,7 @@ export interface ElementSize {
  */
 export function useElementSize(
   target: MaybeRef<Element | null | undefined>,
-  initialSize: ElementSize = { width: Infinity, height: Infinity },
+  initialSize: ElementSize = { width: 0, height: 0 },
   options: ResizeObserverOptions = {},
 ) {
   const width = ref(initialSize.width)
