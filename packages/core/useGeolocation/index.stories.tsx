@@ -17,7 +17,15 @@ defineDemo(
     template: html`
       <div>
         <pre lang="json">{{JSON.stringify({
-            coords,
+            coords: {
+              accuracy: coords.accuracy,
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+              altitude: coords.altitude,
+              altitudeAccuracy: coords.altitudeAccuracy,
+              heading: coords.heading,
+              speed: coords.speed,
+            },
             locatedAt,
             error: error ? error.message : error,
           }, null, 2)}}
