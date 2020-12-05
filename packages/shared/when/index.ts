@@ -1,11 +1,4 @@
-import {
-  WatchOptions,
-  watch,
-  WatchSource,
-  isRef,
-  ref,
-  reactive,
-} from "vue-demi";
+import { WatchOptions, watch, WatchSource, isRef } from "vue-demi";
 import { promiseTimeout } from "../utils";
 
 export interface WhenToMatchOptions {
@@ -19,6 +12,8 @@ export interface BaseWhenInstance<T> {
     condition: (v: T) => boolean,
     options?: WhenToMatchOptions
   ): Promise<void>;
+  changed(options?: WhenToMatchOptions): Promise<void>;
+  changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>;
 }
 
 export interface RefWhenInstance<T> extends BaseWhenInstance<T> {
@@ -29,8 +24,6 @@ export interface RefWhenInstance<T> extends BaseWhenInstance<T> {
   toBeNull(options?: WhenToMatchOptions): Promise<void>;
   toBeUndefined(options?: WhenToMatchOptions): Promise<void>;
   toBeNaN(options?: WhenToMatchOptions): Promise<void>;
-  changed(options?: WhenToMatchOptions): Promise<void>;
-  changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>;
 }
 export interface RecordWhenInstance<T> extends BaseWhenInstance<T> {
   readonly not: RecordWhenInstance<T>;
@@ -82,6 +75,18 @@ export function when<T>(r: any): any {
     return Promise.race(promises);
   }
 
+  function changed(options?: WhenToMatchOptions) {
+    return changedTimes(1, options);
+  }
+
+  function changedTimes(n = 1, options?: WhenToMatchOptions) {
+    let count = -1; // skip the immediate check
+    return toMatch(() => {
+      count += 1;
+      return count >= n;
+    }, options);
+  }
+
   if (isRef(r)) {
     function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
       return toMatch((v) => v === value, options);
@@ -101,18 +106,6 @@ export function when<T>(r: any): any {
 
     function toBeNaN(options?: WhenToMatchOptions) {
       return toMatch(Number.isNaN, options);
-    }
-
-    function changed(options?: WhenToMatchOptions) {
-      return changedTimes(1, options);
-    }
-
-    function changedTimes(n = 1, options?: WhenToMatchOptions) {
-      let count = -1; // skip the immediate check
-      return toMatch(() => {
-        count += 1;
-        return count >= n;
-      }, options);
     }
 
     return {
@@ -142,6 +135,8 @@ export function when<T>(r: any): any {
     return {
       toMatch,
       toContain,
+      changed,
+      changedTimes,
       get not() {
         isNot = !isNot;
         return this;
@@ -151,6 +146,8 @@ export function when<T>(r: any): any {
 
   return {
     toMatch,
+    changed,
+    changedTimes,
     get not() {
       isNot = !isNot;
       return this;
