@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/shared",
-  "version": "4.0.0-rc.6",
+  "version": "4.0.0-rc.7",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.esm.js",
