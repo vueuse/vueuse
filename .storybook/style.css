@@ -78,7 +78,6 @@
 
 html, body, div, .markdown-body {
   font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
-  position: relative;
 }
 
 .markdown-body,
@@ -103,10 +102,6 @@ html, body, div, .markdown-body {
 .markdown-body h1,
 .markdown-body h2 {
   border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-.markdown-body pre {
-  position: relative;
 }
 
 .sb-show-main a,

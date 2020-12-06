@@ -1,5 +1,11 @@
 import { Ref, watch } from 'vue-demi'
 
+/**
+ * Two-way refs synchronization.
+ *
+ * @param a
+ * @param b
+ */
 export function biSyncRef<R extends Ref<any>>(a: R, b: R) {
   const flush = 'sync'
 

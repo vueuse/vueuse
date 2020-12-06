@@ -5,7 +5,7 @@ import { useResizeObserver } from '.'
 defineDemo(
   {
     name: 'useResizeObserver',
-    category: 'Browser',
+    category: 'Sensors',
     docs: require('./index.md'),
     module,
   },

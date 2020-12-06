@@ -26,7 +26,7 @@ export interface SpeechRecognitionOptions {
 }
 
 /**
- * Reactive SpeechRecognition
+ * Reactive SpeechRecognition.
  *
  * @see   {@link https://vueuse.js.org/useSpeechRecognition}
  * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition|SpeechRecognition}

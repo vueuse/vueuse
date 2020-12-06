@@ -1,7 +1,7 @@
 import { computed, Ref, ref, watch, WatchSource } from 'vue-demi'
 
 /**
- * Explicitly define the deps of computed
+ * Explicitly define the deps of computed.
  *
  * @param source
  * @param fn

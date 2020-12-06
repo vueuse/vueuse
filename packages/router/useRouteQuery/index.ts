@@ -1,4 +1,4 @@
-import { computed, Ref, unref } from 'vue-demi'
+import { computed, nextTick, Ref, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { ReactiveRouteOptions } from '../_types'
 
@@ -23,7 +23,9 @@ export function useRouteQuery<T extends string | string[]>(
       return data
     },
     set(v) {
-      router[unref(mode)]({ query: { ...route.query, [name]: v } })
+      nextTick(() => {
+        router[unref(mode)]({ query: { ...route.query, [name]: v } })
+      })
     },
   })
 }

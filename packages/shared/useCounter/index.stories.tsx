@@ -5,7 +5,7 @@ import { useCounter } from '.'
 defineDemo(
   {
     name: 'useCounter',
-    category: 'State',
+    category: 'Utilities',
     docs: require('./index.md'),
     module,
   },

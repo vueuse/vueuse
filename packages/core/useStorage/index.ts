@@ -50,6 +50,15 @@ export function useStorage(key: string, defaultValue: number, storage?: StorageL
 export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions): Ref<T>
 export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions): Ref<T>
 
+/**
+ * Reactive LocalStorage/SessionStorage.
+ *
+ * @see   {@link https://vueuse.js.org/useStorage}
+ * @param key
+ * @param defaultValue
+ * @param storage
+ * @param options
+ */
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   defaultValue: T,

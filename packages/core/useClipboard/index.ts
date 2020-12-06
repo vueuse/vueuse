@@ -5,30 +5,34 @@ import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
 /**
- * Reactive Clipboard API
+ * Reactive Clipboard API.
  *
  * @see   {@link https://vueuse.js.org/useClipboard}
  * @param options
  */
 export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+  const events = ['copy', 'cut']
   const isSupported = navigator && 'clipboard' in navigator
   const text = ref('')
 
-  if (isSupported) {
-    useEventListener('copy' as WindowEventName, () => {
-      // @ts-expect-error untyped API
-      navigator.clipboard.readText().then((value) => {
-        text.value = value
-      })
+  function updateText() {
+    // @ts-expect-error untyped API
+    navigator.clipboard.readText().then((value) => {
+      text.value = value
     })
   }
 
-  async function copy(txt: string) {
-    text.value = txt
+  if (isSupported) {
+    for (const event of events)
+      useEventListener(event as WindowEventName, updateText)
+  }
 
-    if (isSupported)
+  async function copy(txt: string) {
+    if (isSupported) {
       // @ts-expect-error untyped API
       await navigator.clipboard.writeText(txt)
+      text.value = txt
+    }
   }
 
   return {

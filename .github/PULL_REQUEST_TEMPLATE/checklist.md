@@ -8,7 +8,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (22)
+### shared (24)
   - [ ] biSyncRef
   - [ ] controlledComputed
   - [ ] debouncedWatch
@@ -20,6 +20,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] throttledWatch
   - [ ] tryOnMounted
   - [ ] tryOnUnmounted
+  - [ ] useCounter
   - [ ] useDebounce
   - [ ] useDebounceFn
   - [ ] useInterval
@@ -28,25 +29,28 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useThrottleFn
   - [ ] useTimeout
   - [ ] useTimeoutFn
+  - [ ] useToggle
   - [ ] utils
   - [ ] watchWithFilter
   - [ ] when
 
-### core (51)
+### core (54)
   - [ ] asyncComputed
   - [ ] createGlobalState
+  - [ ] onClickOutside
   - [ ] onStartTyping
   - [ ] useAsyncState
   - [ ] useBattery
   - [ ] useBrowserLocation
   - [ ] useClipboard
-  - [ ] useCounter
   - [ ] useCssVar
   - [ ] useDeviceLight
   - [ ] useDeviceMotion
   - [ ] useDeviceOrientation
   - [ ] useDevicePixelRatio
   - [ ] useDocumentVisibility
+  - [ ] useElementBounding
+  - [ ] useElementSize
   - [ ] useElementVisibility
   - [ ] useEventListener
   - [ ] useEventSource
@@ -59,6 +63,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useMediaQuery
   - [ ] useMouse
   - [ ] useMouseInElement
+  - [ ] useMousePressed
   - [ ] useMutationObserver
   - [ ] useNetwork
   - [ ] useOnline
@@ -89,9 +94,10 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useRouteHash
   - [ ] useRouteQuery
 
-### integrations (3)
+### integrations (4)
   - [ ] useAxios
   - [ ] useCookies
+  - [ ] useNProgress
   - [ ] useQRCode
 
 ### rxjs (4)

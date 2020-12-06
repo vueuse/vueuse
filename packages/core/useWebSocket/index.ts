@@ -5,6 +5,12 @@ import { tryOnUnmounted } from '@vueuse/shared'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'
 
+/**
+ * Reactive simple WebSocket client.
+ *
+ * @see   {@link https://vueuse.js.org/useWebSocket}
+ * @param url
+ */
 export function useWebSocket(url: string) {
   const data: Ref<any> = ref(null)
   const state = ref<WebSocketStatus>('CONNECTING')
