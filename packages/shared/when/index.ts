@@ -95,7 +95,11 @@ export function when<T>(r: any): any {
     return toMatch(Number.isNaN, options)
   }
 
-  function toContain<P>(value: P, options?: WhenToMatchOptions) {
+  type ElementOf<T> = T extends (infer E)[] ? E : never
+  function toContain<P extends ElementOf<T>>(
+    value: P,
+    options?: WhenToMatchOptions,
+  ) {
     return toMatch((v) => {
       const array = Array.from(v as any)
       return array.includes(value)
