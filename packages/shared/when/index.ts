@@ -75,6 +75,33 @@ export function when<T>(r: any): any {
     return Promise.race(promises);
   }
 
+  function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
+    return toMatch((v) => v === value, options);
+  }
+
+  function toBeTruthy(options?: WhenToMatchOptions) {
+    return toMatch((v) => Boolean(v), options);
+  }
+
+  function toBeNull(options?: WhenToMatchOptions) {
+    return toBe<null>(null, options);
+  }
+
+  function toBeUndefined(options?: WhenToMatchOptions) {
+    return toBe<undefined>(undefined, options);
+  }
+
+  function toBeNaN(options?: WhenToMatchOptions) {
+    return toMatch(Number.isNaN, options);
+  }
+
+  function toContain<P>(value: P, options?: WhenToMatchOptions) {
+    return toMatch((v) => {
+      const array = Array.from(v as any);
+      return array.includes(value);
+    }, options);
+  }
+
   function changed(options?: WhenToMatchOptions) {
     return changedTimes(1, options);
   }
@@ -88,26 +115,6 @@ export function when<T>(r: any): any {
   }
 
   if (isRef(r)) {
-    function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
-      return toMatch((v) => v === value, options);
-    }
-
-    function toBeTruthy(options?: WhenToMatchOptions) {
-      return toMatch((v) => Boolean(v), options);
-    }
-
-    function toBeNull(options?: WhenToMatchOptions) {
-      return toBe<null>(null, options);
-    }
-
-    function toBeUndefined(options?: WhenToMatchOptions) {
-      return toBe<undefined>(undefined, options);
-    }
-
-    function toBeNaN(options?: WhenToMatchOptions) {
-      return toMatch(Number.isNaN, options);
-    }
-
     return {
       toMatch,
       toBe,
@@ -125,13 +132,6 @@ export function when<T>(r: any): any {
   }
 
   if (Array.isArray(r)) {
-    function toContain<P>(value: P, options?: WhenToMatchOptions) {
-      return toMatch((v) => {
-        const array = Array.from(v as any);
-        return array.includes(value);
-      }, options);
-    }
-
     return {
       toMatch,
       toContain,
