@@ -7,7 +7,7 @@
 ```js
 import { useWebSocket } from '@vueuse/core'
 
-const { state, data, send, close } = useWebSocket('ws://websocketurl')
+const { state, data, send, close, ws } = useWebSocket('ws://websocketurl')
 ```
 
 | State | Type          | Description                                                                                             |
@@ -19,3 +19,7 @@ const { state, data, send, close } = useWebSocket('ws://websocketurl')
 | ------ | ------------------------------------------ | -------------------------------------------- |
 | send   | `(data: any) => void`                      | Sends data through the websocket connection. |
 | close  | `(code?: number, reason?: string) => void` | Closes the websocket connection gracefully.  |
+
+| Instance | Type                | Description         |
+| -------- | ------------------- | ------------------- |
+| ws       | `WebSocket<object>` | WebSocket instance. |
