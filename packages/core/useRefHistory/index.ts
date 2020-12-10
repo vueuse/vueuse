@@ -1,10 +1,8 @@
-import { Fn, timestamp, pausableFilter, ignorableWatch } from '@vueuse/shared'
-import { ref, computed, Ref } from 'vue-demi'
+import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
+import { useManualRefHistory, UseRefHistoryRecord } from '../useManualRefHistory'
+import { Ref } from 'vue-demi'
 
-export interface UseRefHistoryRecord<T> {
-  snapshot: T
-  timestamp: number
-}
+export { UseRefHistoryRecord }
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
@@ -132,9 +130,6 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
   dispose(): void
 }
 
-const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
-const fnBypass = <F, T>(v: F) => v as unknown as T
-
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
@@ -149,23 +144,9 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const {
     deep = false,
     flush = 'pre',
-    dump = (options.deep ? fnClone : fnBypass),
-    parse = fnBypass,
   } = options
 
-  function _createHistoryRecord(): UseRefHistoryRecord<Serialized> {
-    return {
-      snapshot: dump(source.value),
-      timestamp: timestamp(),
-    }
-  }
-
-  const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
-
-  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-  const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-
-  const _setSource = (record: UseRefHistoryRecord<Serialized>) => {
+  const setSource = (source: Ref<Raw>, value: Raw) => {
     // Support changes that are done after the last history operation
     // examples:
     //   undo, modify
@@ -177,10 +158,13 @@ export function useRefHistory<Raw, Serialized = Raw>(
     ignorePrevAsyncUpdates()
 
     ignoreUpdates(() => {
-      source.value = parse(record.snapshot)
+      source.value = value
     })
-    last.value = record
   }
+
+  const manualHistory = useManualRefHistory(source, { ...options, clone: deep, setSource })
+
+  const { clear, commit: manualCommit } = manualHistory
 
   const commit = () => {
     // This guard only applies for flush 'pre' and 'post'
@@ -188,13 +172,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     ignorePrevAsyncUpdates()
 
-    undoStack.value.unshift(last.value)
-    last.value = _createHistoryRecord()
-
-    if (options.capacity && undoStack.value.length > options.capacity)
-      undoStack.value.splice(options.capacity, Infinity)
-    if (redoStack.value.length)
-      redoStack.value.splice(0, redoStack.value.length)
+    manualCommit()
   }
 
   const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
@@ -209,33 +187,6 @@ export function useRefHistory<Raw, Serialized = Raw>(
     resumeTracking()
     if (commitNow)
       commit()
-  }
-
-  const clear = () => {
-    undoStack.value.splice(0, undoStack.value.length)
-    redoStack.value.splice(0, redoStack.value.length)
-  }
-
-  const undo = () => {
-    const state = undoStack.value.shift()
-
-    if (state) {
-      redoStack.value.unshift(last.value)
-      _setSource(state)
-    }
-  }
-
-  const redo = () => {
-    const state = redoStack.value.shift()
-
-    if (state) {
-      undoStack.value.unshift(last.value)
-      _setSource(state)
-    }
-  }
-
-  const reset = () => {
-    _setSource(last.value)
   }
 
   const batch = (fn: (cancel: Fn) => void) => {
@@ -256,29 +207,13 @@ export function useRefHistory<Raw, Serialized = Raw>(
     clear()
   }
 
-  const history = computed(() => [last.value, ...undoStack.value])
-
-  const canUndo = computed(() => undoStack.value.length > 0)
-  const canRedo = computed(() => redoStack.value.length > 0)
-
   return {
-    source,
-    undoStack,
-    redoStack,
-    last,
-    history,
+    ...manualHistory,
     isTracking,
-    canUndo,
-    canRedo,
-
-    clear,
     pause,
     resume,
     commit,
-    reset,
     batch,
-    undo,
-    redo,
     dispose,
   }
 }
