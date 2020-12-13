@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue-demi'
+import { computed } from 'vue-demi'
 import { renderHook } from '../../_tests'
 import { asyncComputed } from '.'
 
@@ -45,42 +45,5 @@ describe('asyncComputed', () => {
     // Assert
     expect(func).toBeCalledTimes(1)
     expect(instance.data).toBe('data')
-  })
-
-  it('can cancel', async() => {
-    const cancel = jest.fn()
-
-    let func = jest.fn((onInvalidate, param) => {
-      onInvalidate(() => {
-        cancel()
-      })
-
-      return new Promise((resolve) => setTimeout(() => resolve(param), 100))
-    })
-
-    const instance = renderHook(() => {
-      const param = ref('data')
-      const evaluating = ref(false)
-      const data = asyncComputed((onInvalidate) => func(onInvalidate, param.value), undefined, evaluating)
-
-      return {
-        data,
-        evaluating,
-        param
-      }
-    }).vm
-
-    // Act
-    expect(instance.data).toBeUndefined()
-    await instance.$nextTick()
-
-    expect(func).toBeCalledTimes(1)
-    expect(cancel).not.toBeCalled()
-
-    instance.param = 'new data'
-    await instance.$nextTick()
-
-    expect(func).toBeCalledTimes(2)
-    expect(cancel).toBeCalledTimes(1)
   })
 })
