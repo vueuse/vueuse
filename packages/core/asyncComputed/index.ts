@@ -30,16 +30,16 @@ export function asyncComputed<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   evaluatingRef?: Ref<boolean>,
-  options: AsyncComputedOptions = {}
+  options: AsyncComputedOptions = {},
 ): Ref<T> {
   const {
-    lazy = false
+    lazy = false,
   } = options
   const evaluate = () => {
     const current = ref(initialState) as Ref<T>
     let counter = 0
 
-    watchEffect(async (onInvalidate) => {
+    watchEffect(async(onInvalidate) => {
       counter++
       const counterAtBeginning = counter
       let hasFinished = false
@@ -81,14 +81,14 @@ export function asyncComputed<T>(
     let cached = null as Ref<T> | null
 
     return computed(() => {
-      if (cached) {
+      if (cached)
         return cached.value
-      }
 
       cached = evaluate()
       return cached.value
     })
-  } else {
+  }
+  else {
     return evaluate()
   }
 }

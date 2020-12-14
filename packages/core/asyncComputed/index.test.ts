@@ -122,7 +122,7 @@ describe('asyncComputed', () => {
   })
 
   test('cancel is called', async() => {
-    let onCancel = jest.fn()
+    const onCancel = jest.fn()
 
     const instance = renderHook(() => {
       const data = ref('initial')
@@ -131,16 +131,16 @@ describe('asyncComputed', () => {
 
         const uppercased = data.value.toUpperCase()
 
-        return new Promise(function(resolve) {
+        return new Promise((resolve) => {
           setTimeout(resolve.bind(null, uppercased), 0)
-        });
+        })
       })
       return { data, uppercase }
     }).vm
 
     expect(instance.uppercase).toBeUndefined()
 
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise(resolve => setTimeout(resolve, 0))
 
     expect(instance.uppercase).toBe('INITIAL')
 
@@ -154,13 +154,13 @@ describe('asyncComputed', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise(resolve => setTimeout(resolve, 0))
 
     expect(instance.uppercase).toBe('FINAL')
   })
 
   test('cancel is called for lazy', async() => {
-    let onCancel = jest.fn()
+    const onCancel = jest.fn()
 
     const instance = renderHook(() => {
       const data = ref('initial')
@@ -169,16 +169,16 @@ describe('asyncComputed', () => {
 
         const uppercased = data.value.toUpperCase()
 
-        return new Promise(function(resolve) {
+        return new Promise((resolve) => {
           setTimeout(resolve.bind(null, uppercased), 0)
-        });
+        })
       }, '', undefined, { lazy: true })
       return { data, uppercase }
     }).vm
 
     expect(instance.uppercase).toBe('')
 
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise(resolve => setTimeout(resolve, 0))
 
     expect(instance.uppercase).toBe('INITIAL')
 
@@ -192,7 +192,7 @@ describe('asyncComputed', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise(resolve => setTimeout(resolve, 0))
 
     expect(instance.uppercase).toBe('FINAL')
   })
