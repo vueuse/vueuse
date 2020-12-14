@@ -6,21 +6,15 @@ describe('computed', () => {
   it('is lazy', async() => {
     const func = jest.fn(() => 'data')
 
-    const instance = renderHook(() => {
+    renderHook(() => {
       const data = computed(func)
 
-      return {
-        data,
-      }
-    }).vm
+      expect(func).not.toBeCalled()
 
-    expect(func).not.toBeCalled()
+      expect(data.value).toBe('data')
 
-    // Act
-    expect(instance.data).toBe('data')
-
-    // Assert
-    expect(func).toBeCalledTimes(1)
+      expect(func).toBeCalledTimes(1)
+    })
   })
 })
 
