@@ -22,66 +22,75 @@ describe('asyncComputed', () => {
   test('it is not lazy', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
-    const data = asyncComputed(func)
+    const instance = renderHook(() => {
+      const data = asyncComputed(func)
+      return { data }
+    }).vm
 
     expect(func).toBeCalledTimes(1)
 
-    expect(data.value).toBeUndefined()
+    expect(instance.data).toBeUndefined()
 
     await nextTick()
     await nextTick()
 
-    expect(data.value).toBe('data')
+    expect(instance.data).toBe('data')
   })
 
   test('re-computes when dependency changes', async() => {
-    const counter = ref(1)
-    const double = asyncComputed(() => {
-      const result = counter.value * 2
-      return Promise.resolve(result)
-    })
+    const instance = renderHook(() => {
+      const counter = ref(1)
+      const double = asyncComputed(() => {
+        const result = counter.value * 2
+        return Promise.resolve(result)
+      })
+      return { counter, double }
+    }).vm
 
-    expect(double.value).toBeUndefined()
-
-    await nextTick()
-    await nextTick()
-
-    expect(double.value).toBe(2)
-
-    counter.value = 2
-    expect(double.value).toBe(2)
+    expect(instance.double).toBeUndefined()
 
     await nextTick()
     await nextTick()
 
-    expect(double.value).toBe(4)
+    expect(instance.double).toBe(2)
+
+    instance.counter = 2
+    expect(instance.double).toBe(2)
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.double).toBe(4)
   })
 
   test('triggers', async() => {
-    const counter = ref(1)
-    const double = asyncComputed(() => {
-      const result = counter.value * 2
-      return Promise.resolve(result)
-    })
-    const other = computed(() => {
-      return double.value + 1
-    })
+    const instance = renderHook(() => {
+      const counter = ref(1)
+      const double = asyncComputed(() => {
+        const result = counter.value * 2
+        return Promise.resolve(result)
+      })
+      const other = computed(() => {
+        return double.value + 1
+      })
+      return { counter, double, other }
+    }).vm
 
-    expect(double.value).toBeUndefined()
-
-    await nextTick()
-    await nextTick()
-
-    expect(double.value).toBe(2)
-
-    counter.value = 2
-    expect(double.value).toBe(2)
-    expect(other.value).toBe(3)
+    expect(instance.double).toBeUndefined()
 
     await nextTick()
     await nextTick()
 
-    expect(double.value).toBe(4)
-    expect(other.value).toBe(5)
+    expect(instance.double).toBe(2)
+
+    instance.counter = 2
+    expect(instance.double).toBe(2)
+    expect(instance.other).toBe(3)
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.double).toBe(4)
+    expect(instance.other).toBe(5)
   })
 })
