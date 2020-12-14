@@ -48,60 +48,55 @@ export function asyncComputed<T>(
     evaluating = undefined,
   } = options
 
-  const evaluate = () => {
-    const current = ref(initialState) as Ref<T>
-    let counter = 0
+  const started = ref(!lazy)
+  const current = ref(initialState) as Ref<T>
+  let counter = 0
 
-    watchEffect(async(onInvalidate) => {
-      counter++
-      const counterAtBeginning = counter
-      let hasFinished = false
+  watchEffect(async(onInvalidate) => {
+    if (!started.value)
+      return
 
-      try {
-        // Defer initial setting of `evaluating` ref
-        // to avoid having it as a dependency
-        if (evaluating) {
-          Promise.resolve().then(() => {
-            evaluating.value = true
-          })
-        }
+    counter++
+    const counterAtBeginning = counter
+    let hasFinished = false
 
-        const result = await evaluationCallback((cancelCallback) => {
-          onInvalidate(() => {
-            if (evaluating)
-              evaluating.value = false
-
-            if (!hasFinished)
-              cancelCallback()
-          })
+    try {
+      // Defer initial setting of `evaluating` ref
+      // to avoid having it as a dependency
+      if (evaluating) {
+        Promise.resolve().then(() => {
+          evaluating.value = true
         })
-
-        if (counterAtBeginning === counter)
-          current.value = result
       }
-      finally {
-        if (evaluating)
-          evaluating.value = false
 
-        hasFinished = true
-      }
-    })
+      const result = await evaluationCallback((cancelCallback) => {
+        onInvalidate(() => {
+          if (evaluating)
+            evaluating.value = false
 
-    return current
-  }
+          if (!hasFinished)
+            cancelCallback()
+        })
+      })
+
+      if (counterAtBeginning === counter)
+        current.value = result
+    }
+    finally {
+      if (evaluating)
+        evaluating.value = false
+
+      hasFinished = true
+    }
+  })
 
   if (lazy) {
-    let cached = null as Ref<T> | null
-
     return computed(() => {
-      if (cached)
-        return cached.value
-
-      cached = evaluate()
-      return cached.value
+      started.value = true
+      return current.value
     })
   }
   else {
-    return evaluate()
+    return current
   }
 }

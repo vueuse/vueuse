@@ -1,6 +1,7 @@
 import { ref, computed, nextTick } from 'vue-demi'
 import { renderHook } from '../../_tests'
 import { asyncComputed } from '.'
+import { promiseTimeout } from '@vueuse/shared'
 
 describe('computed', () => {
   it('is lazy', async() => {
@@ -52,6 +53,7 @@ describe('asyncComputed', () => {
 
     // Act
     expect(instance.data).toBeUndefined()
+    await nextTick()
     await nextTick()
 
     // Assert
@@ -155,7 +157,7 @@ describe('asyncComputed', () => {
 
     expect(instance.uppercase).toBeUndefined()
 
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await promiseTimeout(10)
 
     expect(instance.uppercase).toBe('INITIAL')
 
@@ -169,7 +171,7 @@ describe('asyncComputed', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await promiseTimeout(10)
 
     expect(instance.uppercase).toBe('FINAL')
   })
@@ -193,7 +195,7 @@ describe('asyncComputed', () => {
 
     expect(instance.uppercase).toBe('')
 
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await promiseTimeout(10)
 
     expect(instance.uppercase).toBe('INITIAL')
 
@@ -207,7 +209,7 @@ describe('asyncComputed', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await promiseTimeout(10)
 
     expect(instance.uppercase).toBe('FINAL')
   })
