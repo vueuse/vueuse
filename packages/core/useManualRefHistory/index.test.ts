@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref, isReactive } from 'vue-demi'
 import { useManualRefHistory } from '.'
 import { renderHook } from '../../_tests'
 
@@ -169,5 +169,19 @@ describe('useManualRefHistory', () => {
       expect(redoStack.value.length).toBe(1)
       expect(redoStack.value[0].snapshot).toBe(3)
     })
+  })
+
+  test('snapshots should not be reactive', async() => {
+    const v = ref(0)
+    const { history, commit } = useManualRefHistory(v)
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
+
+    v.value = 2
+    commit()
+
+    expect(isReactive(history.value[0])).toBe(false)
+    expect(isReactive(history.value[1])).toBe(false)
   })
 })

@@ -1,5 +1,5 @@
 import { timestamp } from '@vueuse/shared'
-import { ref, computed, Ref } from 'vue-demi'
+import { ref, computed, Ref, markRaw } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T
@@ -119,10 +119,10 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
   } = options
 
   function _createHistoryRecord(): UseRefHistoryRecord<Serialized> {
-    return {
+    return markRaw({
       snapshot: dump(source.value),
       timestamp: timestamp(),
-    }
+    })
   }
 
   const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
