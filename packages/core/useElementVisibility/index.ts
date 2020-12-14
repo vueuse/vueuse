@@ -4,7 +4,7 @@ import { useEventListener } from '../useEventListener'
 import { useWindowScroll } from '../useWindowScroll'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-interface VisibilityTargetOptions extends ConfigurableWindow{
+export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
   scrollTarget?: EventTarget
 }
 
@@ -17,7 +17,7 @@ interface VisibilityTargetOptions extends ConfigurableWindow{
  */
 export function useElementVisibility(
   element: Ref<Element|null|undefined>,
-  { window = defaultWindow, scrollTarget }: VisibilityTargetOptions = {},
+  { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
   const elementIsVisible = ref(false)
 
