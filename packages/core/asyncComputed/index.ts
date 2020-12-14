@@ -1,5 +1,5 @@
 import { Fn } from '@vueuse/shared'
-import { ref, watchEffect, Ref } from 'vue-demi'
+import { ref, isRef, computed, watchEffect, Ref } from 'vue-demi'
 
 /**
  * Handle overlapping async evaluations.
@@ -9,54 +9,99 @@ import { ref, watchEffect, Ref } from 'vue-demi'
 export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
 /**
+ * Additional options for asyncComputed
+ *
+ * @property lazy         Should value be evaluated lazily
+ * @property evaluating   Ref passed to receive the updated of async evaluation
+ */
+export type AsyncComputedOptions = {
+  lazy?: Boolean
+  evaluating?: Ref<boolean>
+}
+
+/**
  * Create an asynchronous computed dependency.
  *
  * @see   {@link https://vueuse.js.org/asyncComputed}
  * @param evaluationCallback     The promise-returning callback which generates the computed value
  * @param initialState           The initial state, used until the first evaluation finishes
- * @param evaluatingRef          A ref passed to received the updates of the async evaluation
+ * @param optionsOrRef           Additional options or a ref passed to receive the updates of the async evaluation
  */
 export function asyncComputed<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
-  evaluatingRef?: Ref<boolean>,
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
 ): Ref<T> {
-  let counter = 0
-  const current = ref(initialState) as Ref<T>
+  let options: AsyncComputedOptions
 
-  watchEffect(async(onInvalidate) => {
-    counter++
-    const counterAtBeginning = counter
-    let hasFinished = false
+  if (isRef(optionsOrRef)) {
+    options = {
+      evaluating: optionsOrRef,
+    }
+  }
+  else {
+    options = optionsOrRef ?? {}
+  }
 
-    try {
-      // Defer initial setting of `evaluating` ref
-      // to avoid having it as a dependency
-      if (evaluatingRef) {
-        Promise.resolve().then(() => {
-          evaluatingRef.value = true
+  const {
+    lazy = false,
+    evaluating = undefined,
+  } = options
+
+  const evaluate = () => {
+    const current = ref(initialState) as Ref<T>
+    let counter = 0
+
+    watchEffect(async(onInvalidate) => {
+      counter++
+      const counterAtBeginning = counter
+      let hasFinished = false
+
+      try {
+        // Defer initial setting of `evaluating` ref
+        // to avoid having it as a dependency
+        if (evaluating) {
+          Promise.resolve().then(() => {
+            evaluating.value = true
+          })
+        }
+
+        const result = await evaluationCallback((cancelCallback) => {
+          onInvalidate(() => {
+            if (evaluating)
+              evaluating.value = false
+
+            if (!hasFinished)
+              cancelCallback()
+          })
         })
+
+        if (counterAtBeginning === counter)
+          current.value = result
       }
+      finally {
+        if (evaluating)
+          evaluating.value = false
 
-      const result = await evaluationCallback((cancelCallback) => {
-        onInvalidate(() => {
-          if (evaluatingRef)
-            evaluatingRef.value = false
+        hasFinished = true
+      }
+    })
 
-          if (!hasFinished)
-            cancelCallback()
-        })
-      })
+    return current
+  }
 
-      if (counterAtBeginning === counter)
-        current.value = result
-    }
-    finally {
-      if (evaluatingRef)
-        evaluatingRef.value = false
-      hasFinished = true
-    }
-  })
+  if (lazy) {
+    let cached = null as Ref<T> | null
 
-  return current
+    return computed(() => {
+      if (cached)
+        return cached.value
+
+      cached = evaluate()
+      return cached.value
+    })
+  }
+  else {
+    return evaluate()
+  }
 }
