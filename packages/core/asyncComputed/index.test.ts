@@ -41,7 +41,7 @@ describe('asyncComputed', () => {
     const func = jest.fn(() => Promise.resolve('data'))
 
     const instance = renderHook(() => {
-      const data = asyncComputed(func, undefined, undefined, { lazy: true })
+      const data = asyncComputed(func, undefined, { lazy: true })
 
       return {
         data,
@@ -82,6 +82,27 @@ describe('asyncComputed', () => {
     await nextTick()
 
     expect(instance.double).toBe(4)
+  })
+
+  test('evaluating works', async() => {
+    const instance = renderHook(() => {
+      const evaluating = ref(false)
+
+      const data = asyncComputed(() =>
+        new Promise(resolve => setTimeout(() => resolve('data'), 0)),
+      undefined,
+      evaluating)
+      return { data, evaluating }
+    }).vm
+
+    await nextTick()
+    expect(instance.data).toBeUndefined()
+    expect(instance.evaluating).toBe(true)
+
+    await new Promise(resolve => setTimeout(resolve, 0))
+
+    expect(instance.evaluating).toBe(false)
+    expect(instance.data).toBe('data')
   })
 
   test('triggers', async() => {
@@ -166,7 +187,7 @@ describe('asyncComputed', () => {
         return new Promise((resolve) => {
           setTimeout(resolve.bind(null, uppercased), 0)
         })
-      }, '', undefined, { lazy: true })
+      }, '', { lazy: true })
       return { data, uppercase }
     }).vm
 
