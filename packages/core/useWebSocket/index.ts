@@ -50,5 +50,6 @@ export function useWebSocket(url: string) {
     state,
     close,
     send,
+    ws,
   }
 }

@@ -206,6 +206,13 @@
           "depreacted": false
         },
         {
+          "name": "useManualRefHistory",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usemanualrefhistory",
+          "description": "manually track the change history of a ref when the using calls `commit()`",
+          "depreacted": false
+        },
+        {
           "name": "useRefHistory",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--userefhistory",

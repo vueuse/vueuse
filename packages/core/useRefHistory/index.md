@@ -81,14 +81,14 @@ const refHistory = useRefHistory(target, { dump: klona })
 
 ### History Capacity
 
-We will keep all the history by default (unlimited) until you explicitly clean them up, you can set the maximal amount of history to be kept by `capacity` options.
+We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
 const refHistory = useRefHistory(target, {
   capacity: 15, // limit to 15 history records
 })
 
-refHistory.clean() // explicitly clean all the history
+refHistory.clear() // explicitly clear all the history
 ```
 
 ### History Flush Timing

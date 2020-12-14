@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-90%20functions-13708a"/>
+<img alt="Function Count" src="https://img.shields.io/badge/-91%20functions-13708a"/>
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
 </p>
@@ -165,6 +165,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`useCounter`](https://vueuse.js.org/?path=/story/utilities--usecounter) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.js.org/?path=/story/utilities--usedebounce) — debounce execution of a ref value
   - [`useDebounceFn`](https://vueuse.js.org/?path=/story/utilities--usedebouncefn) — debounce execution of a function
+  - [`useManualRefHistory`](https://vueuse.js.org/?path=/story/utilities--usemanualrefhistory) — manually track the change history of a ref when the using calls `commit()`
   - [`useRefHistory`](https://vueuse.js.org/?path=/story/utilities--userefhistory) — track the change history of a ref
   - [`useThrottle`](https://vueuse.js.org/?path=/story/utilities--usethrottle) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.js.org/?path=/story/utilities--usethrottlefn) — throttle execution of a function
