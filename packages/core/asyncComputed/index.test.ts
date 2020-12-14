@@ -29,6 +29,7 @@ describe('asyncComputed', () => {
     expect(data.value).toBeUndefined()
 
     await nextTick()
+    await nextTick()
 
     expect(data.value).toBe('data')
   })
@@ -43,12 +44,14 @@ describe('asyncComputed', () => {
     expect(double.value).toBeUndefined()
 
     await nextTick()
+    await nextTick()
 
     expect(double.value).toBe(2)
 
     counter.value = 2
     expect(double.value).toBe(2)
 
+    await nextTick()
     await nextTick()
 
     expect(double.value).toBe(4)
@@ -67,6 +70,7 @@ describe('asyncComputed', () => {
     expect(double.value).toBeUndefined()
 
     await nextTick()
+    await nextTick()
 
     expect(double.value).toBe(2)
 
@@ -74,6 +78,7 @@ describe('asyncComputed', () => {
     expect(double.value).toBe(2)
     expect(other.value).toBe(3)
 
+    await nextTick()
     await nextTick()
 
     expect(double.value).toBe(4)
