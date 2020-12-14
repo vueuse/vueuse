@@ -25,14 +25,32 @@ function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.Docum
   return Boolean(docRef.parent)
 }
 
+export interface FirestoreOptions {
+  errorHandler?: (err: Error) => void
+}
+
 export function useFirestore<T extends firebase.firestore.DocumentData> (
   docRef: firebase.firestore.DocumentReference<T>,
-  errorHandler?: (err: Error) => void,
-): Ref<T|null>
+  initialValue: T,
+  options?: FirestoreOptions
+): Ref<T | null>
 export function useFirestore<T extends firebase.firestore.DocumentData> (
   docRef: firebase.firestore.Query<T>,
-  errorHandler?: (err: Error) => void,
+  initialValue: T[],
+  options?: FirestoreOptions
 ): Ref<T[]>
+
+// nullable initial values
+export function useFirestore<T extends firebase.firestore.DocumentData> (
+  docRef: firebase.firestore.DocumentReference<T>,
+  initialValue?: T | undefined,
+  options?: FirestoreOptions,
+): Ref<T | undefined | null>
+export function useFirestore<T extends firebase.firestore.DocumentData> (
+  docRef: firebase.firestore.Query<T>,
+  initialValue?: T[],
+  options?: FirestoreOptions
+): Ref<T[] | undefined>
 
 /**
  * Reactive Firestore binding. Making it straightforward to always keep your
@@ -44,13 +62,17 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
  */
 export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
-  errorHandler = (err: Error) => console.error(err),
+  initialValue: any = undefined,
+  options: FirestoreOptions = {},
 ) {
+  const {
+    errorHandler = (err: Error) => console.error(err),
+  } = options
+
   if (isDocumentReference<T>(docRef)) {
-    const data = ref<T|null>(null)
+    const data = ref(initialValue) as Ref<T|null|undefined>
 
     const close = docRef.onSnapshot((snapshot) => {
-      // @ts-ignore
       data.value = getData(snapshot) || null
     }, errorHandler)
 
@@ -61,7 +83,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
     return data
   }
   else {
-    const data = ref([]) as Ref<T[]>
+    const data = ref(initialValue) as Ref<T[] | undefined>
 
     const close = docRef.onSnapshot((snapshot) => {
       data.value = snapshot.docs.map(getData).filter(isDef)
