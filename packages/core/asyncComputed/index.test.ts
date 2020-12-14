@@ -1,4 +1,4 @@
-import { computed } from 'vue-demi'
+import { ref, computed, nextTick } from 'vue-demi'
 import { renderHook } from '../../_tests'
 import { asyncComputed } from '.'
 
@@ -25,11 +25,29 @@ describe('computed', () => {
 })
 
 describe('asyncComputed', () => {
-  it('is lazy', async() => {
+  it('is not lazy by default', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
     const instance = renderHook(() => {
       const data = asyncComputed(func)
+      return { data }
+    }).vm
+
+    expect(func).toBeCalledTimes(1)
+
+    expect(instance.data).toBeUndefined()
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.data).toBe('data')
+  })
+
+  it('is lazy if configured', async() => {
+    const func = jest.fn(() => Promise.resolve('data'))
+
+    const instance = renderHook(() => {
+      const data = asyncComputed(func, undefined, undefined, { lazy: true })
 
       return {
         data,
@@ -40,10 +58,142 @@ describe('asyncComputed', () => {
 
     // Act
     expect(instance.data).toBeUndefined()
-    await instance.$nextTick()
+    await nextTick()
 
     // Assert
     expect(func).toBeCalledTimes(1)
     expect(instance.data).toBe('data')
+  })
+
+  it('re-computes when dependency changes', async() => {
+    const instance = renderHook(() => {
+      const counter = ref(1)
+      const double = asyncComputed(() => {
+        const result = counter.value * 2
+        return Promise.resolve(result)
+      })
+      return { counter, double }
+    }).vm
+
+    expect(instance.double).toBeUndefined()
+
+    await nextTick()
+
+    expect(instance.double).toBe(2)
+
+    instance.counter = 2
+    expect(instance.double).toBe(2)
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.double).toBe(4)
+  })
+
+  test('triggers', async() => {
+    const instance = renderHook(() => {
+      const counter = ref(1)
+      const double = asyncComputed(() => {
+        const result = counter.value * 2
+        return Promise.resolve(result)
+      })
+      const other = computed(() => {
+        return double.value + 1
+      })
+      return { counter, double, other }
+    }).vm
+
+    expect(instance.double).toBeUndefined()
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.double).toBe(2)
+
+    instance.counter = 2
+    expect(instance.double).toBe(2)
+    expect(instance.other).toBe(3)
+
+    await nextTick()
+    await nextTick()
+
+    expect(instance.double).toBe(4)
+    expect(instance.other).toBe(5)
+  })
+
+  test('cancel is called', async() => {
+    let onCancel = jest.fn()
+
+    const instance = renderHook(() => {
+      const data = ref('initial')
+      const uppercase = asyncComputed((cancel) => {
+        cancel(() => onCancel())
+
+        const uppercased = data.value.toUpperCase()
+
+        return new Promise(function(resolve) {
+          setTimeout(resolve.bind(null, uppercased), 0)
+        });
+      })
+      return { data, uppercase }
+    }).vm
+
+    expect(instance.uppercase).toBeUndefined()
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(instance.uppercase).toBe('INITIAL')
+
+    instance.data = 'to be cancelled'
+    await nextTick()
+    await nextTick()
+    expect(onCancel).toBeCalledTimes(0)
+
+    instance.data = 'final'
+    await nextTick()
+    await nextTick()
+    expect(onCancel).toBeCalledTimes(1)
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(instance.uppercase).toBe('FINAL')
+  })
+
+  test('cancel is called for lazy', async() => {
+    let onCancel = jest.fn()
+
+    const instance = renderHook(() => {
+      const data = ref('initial')
+      const uppercase = asyncComputed((cancel) => {
+        cancel(() => onCancel())
+
+        const uppercased = data.value.toUpperCase()
+
+        return new Promise(function(resolve) {
+          setTimeout(resolve.bind(null, uppercased), 0)
+        });
+      }, '', undefined, { lazy: true })
+      return { data, uppercase }
+    }).vm
+
+    expect(instance.uppercase).toBe('')
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(instance.uppercase).toBe('INITIAL')
+
+    instance.data = 'to be cancelled'
+    await nextTick()
+    await nextTick()
+    expect(onCancel).toBeCalledTimes(0)
+
+    instance.data = 'final'
+    await nextTick()
+    await nextTick()
+    expect(onCancel).toBeCalledTimes(1)
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(instance.uppercase).toBe('FINAL')
   })
 })
