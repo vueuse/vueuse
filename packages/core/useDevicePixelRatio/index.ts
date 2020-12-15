@@ -39,7 +39,7 @@ export function useDevicePixelRatio({
     pixelRatio.value = window.devicePixelRatio
   }
 
-  useEventListener(window, 'resize', handleDevicePixelRatio)
+  useEventListener(window, 'resize', handleDevicePixelRatio, { passive: true })
 
   DEVICE_PIXEL_RATIO_SCALES.forEach((dppx) => {
     // listen mql events in both sides

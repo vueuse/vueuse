@@ -1,7 +1,6 @@
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, Ref, watch } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { useWindowScroll } from '../useWindowScroll'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
@@ -21,7 +20,7 @@ export function useElementVisibility(
 ) {
   const elementIsVisible = ref(false)
 
-  const testBoundingClientRect = () => {
+  const testBounding = () => {
     if (!window)
       return
 
@@ -41,17 +40,10 @@ export function useElementVisibility(
     }
   }
 
-  tryOnMounted(testBoundingClientRect)
+  tryOnMounted(testBounding)
 
-  if (scrollTarget) {
-    tryOnMounted(() => useEventListener(scrollTarget, 'scroll', testBoundingClientRect, { capture: false, passive: true }))
-  }
-  else {
-    const { x, y } = useWindowScroll({ window })
-
-    watch(x, testBoundingClientRect)
-    watch(y, testBoundingClientRect)
-  }
+  if (window)
+    useEventListener(scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true })
 
   return elementIsVisible
 }

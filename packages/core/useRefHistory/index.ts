@@ -2,8 +2,6 @@ import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
 import { useManualRefHistory, UseRefHistoryRecord } from '../useManualRefHistory'
 import { Ref } from 'vue-demi'
 
-export { UseRefHistoryRecord }
-
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Watch for deep changes, default to false
