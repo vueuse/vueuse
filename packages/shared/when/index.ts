@@ -2,9 +2,27 @@ import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
 import { ElementOf, promiseTimeout, ShallowUnwrapRef, MaybeRef } from '../utils'
 
 export interface WhenToMatchOptions {
-  flush?: WatchOptions['flush']
+  /**
+   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * 0 for never timed out
+   *
+   * @default 0
+   */
   timeout?: number
+
+  /**
+   * Reject the promise when timeout
+   *
+   * @default false
+   */
   throwOnTimeout?: boolean
+
+  /**
+   * `flush` option for internal watch
+   *
+   * @default 'sync'
+   */
+  flush?: WatchOptions['flush']
 }
 
 export interface BaseWhenInstance<T> {
