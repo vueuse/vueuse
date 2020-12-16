@@ -8,8 +8,10 @@ export function promiseTimeout(
   reason = 'Timeout',
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (throwOnTimeout) setTimeout(() => reject(reason), ms)
-    else setTimeout(resolve, ms)
+    if (throwOnTimeout)
+      setTimeout(() => reject(reason), ms)
+    else
+      setTimeout(resolve, ms)
   })
 }
 

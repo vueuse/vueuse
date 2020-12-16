@@ -1,5 +1,6 @@
-import { WatchOptions, watch, WatchSource, isRef } from 'vue-demi'
-import { promiseTimeout } from '../utils'
+import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
+import { MaybeRef } from '../dist'
+import { ElementOf, promiseTimeout, ShallowUnwrapRef } from '../utils'
 
 export interface WhenToMatchOptions {
   flush?: WatchOptions['flush']
@@ -16,34 +17,31 @@ export interface BaseWhenInstance<T> {
   changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>
 }
 
-export interface RefWhenInstance<T> extends BaseWhenInstance<T> {
-  readonly not: RefWhenInstance<T>
+export interface ValueWhenInstance<T> extends BaseWhenInstance<T> {
+  readonly not: ValueWhenInstance<T>
 
-  toBe<P>(value: P | T, options?: WhenToMatchOptions): Promise<void>
+  toBe<P = T>(value: MaybeRef<T | P>, options?: WhenToMatchOptions): Promise<void>
   toBeTruthy(options?: WhenToMatchOptions): Promise<void>
   toBeNull(options?: WhenToMatchOptions): Promise<void>
   toBeUndefined(options?: WhenToMatchOptions): Promise<void>
   toBeNaN(options?: WhenToMatchOptions): Promise<void>
 }
-export interface RecordWhenInstance<T> extends BaseWhenInstance<T> {
-  readonly not: RecordWhenInstance<T>
-}
+
 export interface ArrayWhenInstance<T> extends BaseWhenInstance<T> {
   readonly not: ArrayWhenInstance<T>
 
-  toContain<P>(value: P, options?: WhenToMatchOptions): Promise<void>
+  toContains(value: MaybeRef<ElementOf<ShallowUnwrapRef<T>>>, options?: WhenToMatchOptions): Promise<void>
 }
 
-export function when<T>(r: WatchSource<T>): RefWhenInstance<T>
-export function when<T extends { [key: string]: unknown }>(
-  r: T
-): RecordWhenInstance<T>
 export function when<T extends unknown[]>(r: T): ArrayWhenInstance<T>
+export function when<T extends Ref<unknown[]>>(r: T): ArrayWhenInstance<T>
+export function when<T>(r: WatchSource<T>): ValueWhenInstance<T>
+export function when<T>(r: T): ValueWhenInstance<T>
 export function when<T>(r: any): any {
   let isNot = false
 
   function toMatch(
-    condition: (v: T | object) => boolean,
+    condition: (v: any) => boolean,
     { flush = 'sync', timeout, throwOnTimeout }: WhenToMatchOptions = {},
   ): Promise<void> {
     let stop: Function | null = null
@@ -76,7 +74,7 @@ export function when<T>(r: any): any {
   }
 
   function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
-    return toMatch(v => v === value, options)
+    return toMatch(v => v === unref(value), options)
   }
 
   function toBeTruthy(options?: WhenToMatchOptions) {
@@ -95,14 +93,13 @@ export function when<T>(r: any): any {
     return toMatch(Number.isNaN, options)
   }
 
-  type ElementOf<T> = T extends (infer E)[] ? E : never
-  function toContain<P extends ElementOf<T>>(
-    value: P,
+  function toContains(
+    value: any,
     options?: WhenToMatchOptions,
   ) {
     return toMatch((v) => {
       const array = Array.from(v as any)
-      return array.includes(value)
+      return array.includes(value) || array.includes(unref(value))
     }, options)
   }
 
@@ -118,8 +115,21 @@ export function when<T>(r: any): any {
     }, options)
   }
 
-  if (isRef(r)) {
-    return {
+  if (Array.isArray(unref(r))) {
+    const instance: ArrayWhenInstance<T> = {
+      toMatch,
+      toContains,
+      changed,
+      changedTimes,
+      get not() {
+        isNot = !isNot
+        return this
+      },
+    }
+    return instance
+  }
+  else {
+    const instance: ValueWhenInstance<T> = {
       toMatch,
       toBe,
       toBeTruthy,
@@ -133,28 +143,7 @@ export function when<T>(r: any): any {
         return this
       },
     }
-  }
 
-  if (Array.isArray(r)) {
-    return {
-      toMatch,
-      toContain,
-      changed,
-      changedTimes,
-      get not() {
-        isNot = !isNot
-        return this
-      },
-    }
-  }
-
-  return {
-    toMatch,
-    changed,
-    changedTimes,
-    get not() {
-      isNot = !isNot
-      return this
-    },
+    return instance
   }
 }
