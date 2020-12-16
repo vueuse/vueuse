@@ -1,6 +1,5 @@
 import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
-import { MaybeRef } from '../dist'
-import { ElementOf, promiseTimeout, ShallowUnwrapRef } from '../utils'
+import { ElementOf, promiseTimeout, ShallowUnwrapRef, MaybeRef } from '../utils'
 
 export interface WhenToMatchOptions {
   flush?: WatchOptions['flush']
