@@ -42,11 +42,13 @@ export const packages: PackageManifest[] = [
       'universal-cookie',
       'qrcode',
       'http',
+      'nprogress',
     ],
     globals: {
       axios: 'axios',
       'universal-cookie': 'UniversalCookie',
       qrcode: 'QRCode',
+      nprogress: 'nprogress',
     },
   },
   {
