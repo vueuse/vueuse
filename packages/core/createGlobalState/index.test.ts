@@ -15,7 +15,7 @@ describe('createGlobalState', () => {
   it('should work after dispose 1', async() => {
     const useGlobalState = createGlobalState(() => useStorage(KEY, 'a'))
 
-    const instance1 = renderHook(() => {
+    const vm1 = renderHook(() => {
       const ref = useGlobalState()
 
       expect(ref.value).toBe('a')
@@ -28,8 +28,6 @@ describe('createGlobalState', () => {
       }
     })
 
-    const vm1 = instance1
-
     vm1.ref = 'b'
     await nextTick()
 
@@ -38,7 +36,7 @@ describe('createGlobalState', () => {
     // @ts-ignore
     localStorage.setItem.mockClear()
 
-    instance1.$destroy()
+    vm1.unmount()
 
     const instance2 = renderHook(() => {
       const ref = useGlobalState()
@@ -105,7 +103,7 @@ describe('createGlobalState', () => {
   it('watches deeply', async() => {
     const useGlobalState = createGlobalState(() => useStorage(KEY, { a: 'a', b: 1 }))
 
-    const instance1 = renderHook(() => {
+    const vm1 = renderHook(() => {
       const ref = useGlobalState()
 
       expect(ref.value).toEqual({
@@ -121,8 +119,6 @@ describe('createGlobalState', () => {
       }
     })
 
-    const vm1 = instance1
-
     vm1.ref.a = 'b'
     await nextTick()
 
@@ -134,9 +130,9 @@ describe('createGlobalState', () => {
     // @ts-ignore
     localStorage.setItem.mockClear()
 
-    instance1.$destroy()
+    vm1.unmount()
 
-    const instance2 = renderHook(() => {
+    const vm2 = renderHook(() => {
       const ref = useGlobalState()
 
       expect(ref.value).toEqual({
@@ -148,8 +144,6 @@ describe('createGlobalState', () => {
         ref,
       }
     })
-
-    const vm2 = instance2
 
     vm2.ref.b = 2
     await nextTick()
