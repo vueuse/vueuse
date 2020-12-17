@@ -1,10 +1,10 @@
 import { ref } from 'vue-demi'
 import { syncRef } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('syncRef', () => {
   it('should work', (done) => {
-    renderHook(() => {
+    useSetup(() => {
       const source = ref('foo')
       const target1 = ref('bar')
       const target2 = ref('bar2')

@@ -18,7 +18,8 @@
     "typecheck": "tsc --noEmit",
     "test": "npm run test:2",
     "test:2": "vue-demi-switch 2 && jest",
-    "test:3": "vue-demi-switch 3 vue3 && jest && vue-demi-switch 2",
+    "test:3": "vue-demi-switch 3 vue3 && jest",
+    "test:all": "npm run test:3 && npm run test:2",
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
@@ -46,7 +47,6 @@
     "@vue/composition-api": "^1.0.0-beta.21"
   },
   "devDependencies": {
-    "vue-demi": "^0.5.3",
     "@antfu/eslint-config": "^0.4.3",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",

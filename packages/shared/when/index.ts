@@ -23,6 +23,13 @@ export interface WhenToMatchOptions {
    * @default 'sync'
    */
   flush?: WatchOptions['flush']
+
+  /**
+   * `deep` option for internal watch
+   *
+   * @default 'false'
+   */
+  deep?: WatchOptions['deep']
 }
 
 export interface BaseWhenInstance<T> {
@@ -59,7 +66,7 @@ export function when<T>(r: any): any {
 
   function toMatch(
     condition: (v: any) => boolean,
-    { flush = 'sync', timeout, throwOnTimeout }: WhenToMatchOptions = {},
+    { flush = 'sync', deep = false, timeout, throwOnTimeout }: WhenToMatchOptions = {},
   ): Promise<void> {
     let stop: Function | null = null
     const watcher = new Promise<void>((resolve) => {
@@ -73,6 +80,7 @@ export function when<T>(r: any): any {
         },
         {
           flush,
+          deep,
           immediate: true,
         },
       )

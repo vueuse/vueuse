@@ -1,13 +1,13 @@
 import { ref, computed, nextTick } from 'vue-demi'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 import { asyncComputed } from '.'
 import { promiseTimeout } from '@vueuse/shared'
 
 describe('computed', () => {
-  it('is lazy', async() => {
+  it('is lazy', () => {
     const func = jest.fn(() => 'data')
 
-    renderHook(() => {
+    useSetup(() => {
       const data = computed(func)
 
       expect(func).not.toBeCalled()
@@ -23,7 +23,7 @@ describe('asyncComputed', () => {
   it('is not lazy by default', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const data = asyncComputed(func)
       return { data }
     })
@@ -41,7 +41,7 @@ describe('asyncComputed', () => {
   it('is lazy if configured', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const data = asyncComputed(func, undefined, { lazy: true })
 
       return {
@@ -62,7 +62,7 @@ describe('asyncComputed', () => {
   })
 
   it('re-computes when dependency changes', async() => {
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const counter = ref(1)
       const double = asyncComputed(() => {
         const result = counter.value * 2
@@ -87,7 +87,7 @@ describe('asyncComputed', () => {
   })
 
   test('evaluating works', async() => {
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const evaluating = ref(false)
 
       const data = asyncComputed(() =>
@@ -108,7 +108,7 @@ describe('asyncComputed', () => {
   })
 
   test('triggers', async() => {
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const counter = ref(1)
       const double = asyncComputed(() => {
         const result = counter.value * 2
@@ -141,7 +141,7 @@ describe('asyncComputed', () => {
   test('cancel is called', async() => {
     const onCancel = jest.fn()
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const data = ref('initial')
       const uppercase = asyncComputed((cancel) => {
         cancel(() => onCancel())
@@ -179,7 +179,7 @@ describe('asyncComputed', () => {
   test('cancel is called for lazy', async() => {
     const onCancel = jest.fn()
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const data = ref('initial')
       const uppercase = asyncComputed((cancel) => {
         cancel(() => onCancel())

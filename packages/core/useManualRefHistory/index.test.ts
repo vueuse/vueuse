@@ -1,10 +1,10 @@
 import { ref, isReactive } from 'vue-demi'
 import { useManualRefHistory } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('useManualRefHistory', () => {
   test('should record', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history, commit } = useManualRefHistory(v)
 
@@ -21,7 +21,7 @@ describe('useManualRefHistory', () => {
   })
 
   test('should be able to undo and redo', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { commit, undo, redo, clear, canUndo, canRedo, history, last } = useManualRefHistory(v)
 
@@ -72,7 +72,7 @@ describe('useManualRefHistory', () => {
   })
 
   test('sync: object with deep', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ foo: 'bar' })
       const { commit, history } = useManualRefHistory(v, { clone: true })
 
@@ -92,7 +92,7 @@ describe('useManualRefHistory', () => {
   })
 
   test('dump + parse', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ a: 'bar' })
       const { history, commit, undo } = useManualRefHistory(v, {
         dump: v => JSON.stringify(v),
@@ -116,7 +116,7 @@ describe('useManualRefHistory', () => {
   })
 
   test('reset', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history, commit, undoStack, redoStack, reset, undo } = useManualRefHistory(v)
 

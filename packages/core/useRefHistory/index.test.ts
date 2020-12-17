@@ -1,10 +1,10 @@
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('useRefHistory - sync', () => {
   test('sync: should record', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history } = useRefHistory(v, { flush: 'sync' })
 
@@ -20,7 +20,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: should be able to undo and redo', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
 
@@ -68,7 +68,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: object with deep', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ foo: 'bar' })
       const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
@@ -87,7 +87,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: dump + parse', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ a: 'bar' })
       const { history, undo } = useRefHistory(v, {
         flush: 'sync',
@@ -184,7 +184,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: reset', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 

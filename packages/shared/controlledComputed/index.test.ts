@@ -1,10 +1,10 @@
 import { ref } from 'vue-demi'
 import { controlledComputed } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('controlledComputed', () => {
   it('should work', (done) => {
-    renderHook(() => {
+    useSetup(() => {
       const trigger = ref(0)
       const data = ref('foo')
 
