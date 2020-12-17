@@ -35,6 +35,6 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "devDependencies": {
-    "vue-router": "^4.0.0-rc.2"
+    "vue-router": "^4.0.1"
   }
 }

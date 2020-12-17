@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/rxjs#readme",
   "dependencies": {
-    "vue-demi": "latest",
-    "@vueuse/shared": "4.0.0-rc.10"
+    "@vueuse/shared": "4.0.0-rc.10",
+    "vue-demi": "latest"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0"
   },
   "devDependencies": {
-    "rxjs": "^6.0.0"
+    "rxjs": "^6.6.3"
   }
 }
