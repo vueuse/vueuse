@@ -40,12 +40,13 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "dependencies": {
-    "vue-demi": "^0.5.3"
+    "vue-demi": "latest"
   },
   "optionalDependencies": {
     "@vue/composition-api": "^1.0.0-beta.21"
   },
   "devDependencies": {
+    "vue-demi": "^0.5.3",
     "@antfu/eslint-config": "^0.4.3",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
