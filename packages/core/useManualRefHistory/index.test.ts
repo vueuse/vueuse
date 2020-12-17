@@ -71,10 +71,10 @@ describe('useManualRefHistory', () => {
     })
   })
 
-  test('sync: object with deep', () => {
+  test('object with deep', () => {
     useSetup(() => {
       const v = ref({ foo: 'bar' })
-      const { commit, history } = useManualRefHistory(v, { clone: true })
+      const { commit, undo, history } = useManualRefHistory(v, { clone: true })
 
       expect(history.value.length).toBe(1)
       expect(history.value[0].snapshot.foo).toBe('bar')
@@ -88,6 +88,36 @@ describe('useManualRefHistory', () => {
       // different references
       expect(history.value[1].snapshot.foo).toBe('bar')
       expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+
+      undo()
+
+      // history references should not be equal to the source
+      expect(history.value[0].snapshot).not.toBe(v.value)
+    })
+  })
+
+  test('object with clone function', () => {
+    useSetup(() => {
+      const v = ref({ foo: 'bar' })
+      const { commit, undo, history } = useManualRefHistory(v, { clone: x => JSON.parse(JSON.stringify(x)) })
+
+      expect(history.value.length).toBe(1)
+      expect(history.value[0].snapshot.foo).toBe('bar')
+
+      v.value.foo = 'foo'
+      commit()
+
+      expect(history.value.length).toBe(2)
+      expect(history.value[0].snapshot.foo).toBe('foo')
+
+      // different references
+      expect(history.value[1].snapshot.foo).toBe('bar')
+      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+
+      undo()
+
+      // history references should not be equal to the source
+      expect(history.value[0].snapshot).not.toBe(v.value)
     })
   })
 
