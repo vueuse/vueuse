@@ -1,6 +1,5 @@
 import { ref } from 'vue-demi'
 import { when } from '.'
-import { useSetup } from '../../_tests'
 import { invoke } from '@vueuse/shared'
 
 describe('when', () => {
