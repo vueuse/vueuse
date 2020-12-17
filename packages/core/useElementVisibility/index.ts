@@ -4,7 +4,7 @@ import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: EventTarget
+  scrollTarget?: Ref<Element | null | undefined>
 }
 
 /**
@@ -43,7 +43,7 @@ export function useElementVisibility(
   tryOnMounted(testBounding)
 
   if (window)
-    useEventListener(scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true })
+    tryOnMounted(() => useEventListener(scrollTarget?.value || window, 'scroll', testBounding, { capture: false, passive: true }))
 
   return elementIsVisible
 }
