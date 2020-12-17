@@ -16,8 +16,8 @@ describe('useWindowSize', () => {
       return { width, height }
     })
 
-    expect(wrapper.vm.width).toBe(window.innerWidth)
-    expect(wrapper.vm.height).toBe(window.innerHeight)
+    expect(wrapper.width).toBe(window.innerWidth)
+    expect(wrapper.height).toBe(window.innerHeight)
   })
 
   it('sets handler for window "resize" event', () => {

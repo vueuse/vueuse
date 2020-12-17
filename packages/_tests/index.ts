@@ -1,17 +1,18 @@
-import { createLocalVue, mount } from '@vue/test-utils'
-import VueCompositionApi from '@vue/composition-api'
-import { Vue, defineComponent, UnwrapRef } from 'vue-demi'
+import { defineComponent, createApp, h, isVue2, Vue } from 'vue-demi'
 
-const localVue = createLocalVue()
-localVue.use(VueCompositionApi)
+if (isVue2) {
+  Vue.config.productionTip = false
+  Vue.config.devtools = false
+}
 
-export function renderHook<V>(
-  setup: () => V,
-) {
+export function renderHook<V>(setup: () => V) {
   const App = defineComponent({
+    props: {},
     setup,
-    template: '<div ref="app" id="app"></div>',
+    render() {
+      return h('div', [])
+    },
   })
 
-  return mount<Vue & UnwrapRef<V>>(App as any, { localVue })
+  return createApp(App).mount() as typeof App extends {new (...arg: any[]): infer X} ? X : never
 }

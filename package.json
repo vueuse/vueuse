@@ -38,10 +38,13 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-beta.18",
-    "vue-demi": "^0.4.0"
+    "vue-demi": "^0.5.1"
+  },
+  "optionalDependencies": {
+    "@vue/composition-api": "^1.0.0-beta.21"
   },
   "devDependencies": {
+    "@vue/composition-api": "^1.0.0-beta.21",
     "@antfu/eslint-config": "^0.4.3",
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-optional-chaining": "^7.12.1",
@@ -70,7 +73,6 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-const-enum": "^1.0.1",
     "babel-preset-vue": "^2.0.2",
-    "commander": "^6.1.0",
     "consola": "^2.15.0",
     "conventional-github-releaser": "^3.1.5",
     "cross-env": "^7.0.2",
@@ -80,7 +82,7 @@
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-markdown": "^1.0.2",
     "esm": "^3.2.25",
-    "esno": "^0.2.4",
+    "esno": "^0.3.0",
     "export-size": "^0.4.0",
     "fast-glob": "^3.2.4",
     "firebase": "^7.24.0",

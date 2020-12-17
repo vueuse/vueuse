@@ -2587,10 +2587,10 @@
   optionalDependencies:
     prettier "^1.18.2"
 
-"@vue/composition-api@^1.0.0-beta.18":
-  version "1.0.0-beta.18"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.18.tgz#9c91ed2fc297e643defee95f16c551d457384239"
-  integrity sha512-5Ins/G+un8rZoXRllMquvuihHYUMz7EKxgCPTvJiBRml0gRrOz2eRisQbjzj8fuTC6yeURjySpOKXdVkTV4HJA==
+"@vue/composition-api@^1.0.0-beta.21":
+  version "1.0.0-beta.21"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.21.tgz#d5a3c68afc8b569dfc3eccd69998388bb7f6a16c"
+  integrity sha512-tgbvDpLvKQ1GrII424wsoyzPCsG0oTFf38emMq495SfLY7RmUqhVIl81pvnC5489PPrCxDkbauJHJrhlcXfbTQ==
   dependencies:
     tslib "^2.0.1"
 
@@ -4511,7 +4511,7 @@ commander@^5.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
   integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
 
-commander@^6.0.0, commander@^6.1.0:
+commander@^6.0.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
   integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
@@ -5768,10 +5768,20 @@ esbuild-register@^1.1.0:
     source-map-support "^0.5.19"
     strip-json-comments "^3.1.1"
 
-esbuild@^0.7.17:
-  version "0.7.19"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.7.19.tgz#6f8b94445e06f8bf6125183a877de6046c965abc"
-  integrity sha512-0Ur8ZtuRPwJMj4+VjRLqn5z88WXf+2etZhe4dBA6eYFcdviQefb+Vrd59cTk0VXg08NU/BnAMkalCMHI8lig/A==
+esbuild-register@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/esbuild-register/-/esbuild-register-1.1.1.tgz#7d50e87ac0b9000085d9e6d9a78e4c2223fcce83"
+  integrity sha512-hAPWuaUkPDLXCENc/AigJZaaDCvCkpmghRw8XPyT+rk08JHcIgUrmw1uabbUTfa6B6J9Wo2bFufb01JjbmzcfQ==
+  dependencies:
+    joycon "^2.2.5"
+    pirates "^4.0.1"
+    source-map-support "^0.5.19"
+    strip-json-comments "^3.1.1"
+
+esbuild@^0.8.17:
+  version "0.8.23"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.23.tgz#8c4ccd3abb5f7b4ae9f31c571971517be4ae60d2"
+  integrity sha512-LkgCmotGnhVgRGxjDkTBBYrnJ5stcxK+40cEJGtXUS16hcAWy90cn1qjxKCogzLPJ75gW/L6ejly7VKrMstVGQ==
 
 esbuild@^0.8.7:
   version "0.8.7"
@@ -6048,13 +6058,13 @@ esm@^3.2.25:
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
   integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
-esno@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/esno/-/esno-0.2.4.tgz#b04a368181bc03e5d11d5147106bf0d0ac4f3a48"
-  integrity sha512-XlgsQe2va257kc1xsZg/X22fRyLVRNkCKEXjONoltA7HeXtmhrQ3n19all0eK0X6YRNE8X9qiVyWV0vMLZvY3w==
+esno@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/esno/-/esno-0.3.0.tgz#c818996bdaaf2deaf81413d6f45538ffa6e41b42"
+  integrity sha512-4sF/j8jruQv9jScU8tNkgoDFLjyGxTTB8bmjRmWHyNNygra3WS3X0U1Cc7GuOvfSEjn3NDS57P0LRnzgiupKJg==
   dependencies:
-    esbuild "^0.7.17"
-    esbuild-register "^1.1.0"
+    esbuild "^0.8.17"
+    esbuild-register "^1.1.1"
     esm "^3.2.25"
 
 espree@^6.2.1:
@@ -13431,7 +13441,12 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-demi@^0.4.0, vue-demi@latest:
+vue-demi@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.5.0.tgz#40e5d6b08b2ee18f5dd73fae41aefb839b142855"
+  integrity sha512-NIR8aKBz3ixC/2BhQJmpm8eGJ2mCACNah4ycb953HqGmz+zIl1F9mZIpl1yV6MIC0VIMNxhdFxBbrxM1wFq0oQ==
+
+vue-demi@latest:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.4.0.tgz#074e61674b1ec6d3483d54ba9fd7acc1378a66a2"
   integrity sha512-7xaEKWpcyrbP5fVNFWSgF+gf0bWAfvlhH0Cb08Ec4XeTK6FCplaqXmaRLivzl3ypM0mkNcBAjSgctzMul0hgYg==

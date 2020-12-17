@@ -635,12 +635,14 @@
         "axios",
         "universal-cookie",
         "qrcode",
-        "http"
+        "http",
+        "nprogress"
       ],
       "globals": {
         "axios": "axios",
         "universal-cookie": "UniversalCookie",
-        "qrcode": "QRCode"
+        "qrcode": "QRCode",
+        "nprogress": "nprogress"
       }
     },
     "dir": "packages/integrations",

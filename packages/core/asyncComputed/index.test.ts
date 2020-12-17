@@ -26,7 +26,7 @@ describe('asyncComputed', () => {
     const instance = renderHook(() => {
       const data = asyncComputed(func)
       return { data }
-    }).vm
+    })
 
     expect(func).toBeCalledTimes(1)
 
@@ -47,7 +47,7 @@ describe('asyncComputed', () => {
       return {
         data,
       }
-    }).vm
+    })
 
     expect(func).not.toBeCalled()
 
@@ -69,7 +69,7 @@ describe('asyncComputed', () => {
         return Promise.resolve(result)
       })
       return { counter, double }
-    }).vm
+    })
 
     expect(instance.double).toBeUndefined()
 
@@ -95,7 +95,7 @@ describe('asyncComputed', () => {
       undefined,
       evaluating)
       return { data, evaluating }
-    }).vm
+    })
 
     await nextTick()
     expect(instance.data).toBeUndefined()
@@ -118,7 +118,7 @@ describe('asyncComputed', () => {
         return double.value + 1
       })
       return { counter, double, other }
-    }).vm
+    })
 
     expect(instance.double).toBeUndefined()
 
@@ -153,7 +153,7 @@ describe('asyncComputed', () => {
         })
       })
       return { data, uppercase }
-    }).vm
+    })
 
     expect(instance.uppercase).toBeUndefined()
 
@@ -191,7 +191,7 @@ describe('asyncComputed', () => {
         })
       }, '', { lazy: true })
       return { data, uppercase }
-    }).vm
+    })
 
     expect(instance.uppercase).toBe('')
 

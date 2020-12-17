@@ -19,7 +19,7 @@ describe('useNProgress', () => {
   it('should start state as true', () => {
     const instance = renderHook(() => {
       return useNProgress(0.1)
-    }).vm
+    })
 
     expect(instance.isLoading).toBeTruthy()
     expect(instance.progress).toBe(0.1)
@@ -29,7 +29,7 @@ describe('useNProgress', () => {
     const setProgress = jest.spyOn(nprogress, 'set')
     const instance = renderHook(() => {
       return useNProgress()
-    }).vm
+    })
 
     expect(instance.isLoading).toBeFalsy()
 
@@ -50,7 +50,7 @@ describe('useNProgress', () => {
     const startProgress = jest.spyOn(nprogress, 'start')
     const instance = renderHook(() => {
       return useNProgress()
-    }).vm
+    })
 
     expect(instance.isLoading).toBeFalsy()
 
@@ -87,7 +87,7 @@ describe('useNProgress', () => {
     const removeProgress = jest.spyOn(nprogress, 'remove')
     const instance = renderHook(() => {
       return useNProgress(0)
-    }).vm
+    })
 
     expect(instance.isLoading).toBeTruthy()
     instance.remove()

@@ -23,7 +23,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe('a')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
@@ -44,7 +44,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe(0)
 
@@ -73,7 +73,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe(true)
 
@@ -109,7 +109,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     instance.ref = '2'
     await nextTick()
@@ -136,7 +136,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     instance.ref.name = 'b'
     await nextTick()
@@ -182,7 +182,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     await nextTick()
     await promiseTimeout(300)
