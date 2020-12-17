@@ -1,5 +1,5 @@
 import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
-import { useManualRefHistory, UseRefHistoryRecord } from '../useManualRefHistory'
+import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
 import { Ref } from 'vue-demi'
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
@@ -28,11 +28,18 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   capacity?: number
 
   /**
-   * Serialize data into the histry
+   * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
+   * Default to false
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<Raw>
+  /**
+   * Serialize data into the history
    */
   dump?: (v: Raw) => Serialized
   /**
-   * Deserialize data from the histry
+   * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
 }
@@ -160,7 +167,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     })
   }
 
-  const manualHistory = useManualRefHistory(source, { ...options, clone: deep, setSource })
+  const manualHistory = useManualRefHistory(source, { ...options, clone: options.clone || deep, setSource })
 
   const { clear, commit: manualCommit } = manualHistory
 

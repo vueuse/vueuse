@@ -1,4 +1,4 @@
-import { timestamp } from '@vueuse/shared'
+import { timestamp, isFunction } from '@vueuse/shared'
 import { ref, computed, Ref, markRaw } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
@@ -6,31 +6,32 @@ export interface UseRefHistoryRecord<T> {
   timestamp: number
 }
 
-export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
-  /**
-   * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
-   * Default to false
-   *
-   * @default false
-   */
-  clone?: boolean
+export type CloneFn<F, T=F> = (x: F) => T
 
+export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
 
   /**
-   * Serialize data into the histry
+   * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
+   * Default to false
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<Raw>
+  /**
+   * Serialize data into the history
    */
   dump?: (v: Raw) => Serialized
   /**
-   * Deserialize data from the histry
+   * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
 
   /**
-   * Deserialize data from the histry
+   * Deserialize data from the history
    */
   setSource?: (source: Ref<Raw>, v: Raw) => void
 }
@@ -100,6 +101,17 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
 const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
 const fnBypass = <F, T>(v: F) => v as unknown as T
 const fnSetSource = <F>(source: Ref<F>, value: F) => source.value = value
+
+type FnCloneOrBypass<F, T> = (v: F) => T
+
+function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
+  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<R, S>
+}
+
+function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
+  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<S, R>
+}
+
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
@@ -113,8 +125,8 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
 ): UseManualRefHistoryReturn<Raw, Serialized> {
   const {
     clone = false,
-    dump = clone ? fnClone : fnBypass,
-    parse = fnBypass,
+    dump = defaultDump<Raw, Serialized>(clone),
+    parse = defaultParse<Raw, Serialized>(clone),
     setSource = fnSetSource,
   } = options
 

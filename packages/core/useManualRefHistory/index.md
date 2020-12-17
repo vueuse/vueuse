@@ -31,7 +31,7 @@ console.log(counter.value) // 0
 
 #### History of mutable objects
 
-If you are going to mutate the source, you need to pass a custom clone function or use the `clone` param, that is a shortcut for a minimal clone function `x => JSON.parse(JSON.stringify(x))`.
+If you are going to mutate the source, you need to pass a custom clone function or use `clone` `true` as a param, that is a shortcut for a minimal clone function `x => JSON.parse(JSON.stringify(x))` that will be used in both `dump` and `parse`.
 
 ```ts {5}
 import { ref } from 'vue' 
@@ -54,7 +54,7 @@ For example, using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneD
 import { cloneDeep } from 'lodash-es'
 import { useManualRefHistory } from '@vueuse/core'
 
-const refHistory = useManualRefHistory(target, { dump: cloneDeep })
+const refHistory = useManualRefHistory(target, { clone: cloneDeep })
 ```
 
 Or a more lightweight [`klona`](https://github.com/lukeed/klona):
@@ -63,7 +63,20 @@ Or a more lightweight [`klona`](https://github.com/lukeed/klona):
 import { klona } from 'klona'
 import { useManualRefHistory } from '@vueuse/core'
 
-const refHistory = useManualRefHistory(target, { dump: klona })
+const refHistory = useManualRefHistory(target, { clone: klona })
+```
+
+#### Custom Dump and Parse Function
+
+Instead of using the `clone` param, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
+
+```ts
+import { useManualRefHistory } from '@vueuse/core'
+
+const refHistory = useManualRefHistory(target, { 
+  dump: JSON.stringify,
+  parse: JSON.parse
+})
 ```
 
 ### History Capacity
