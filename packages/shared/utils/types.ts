@@ -3,6 +3,8 @@ import { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 export type Fn = () => void
 
 export type MaybeRef<T> = T | Ref<T> | ComputedRef<T>
+export type ElementOf<T> = T extends (infer E)[] ? E : never
+export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export interface Pausable {
   /**

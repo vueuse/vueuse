@@ -1,8 +1,8 @@
-import { computed, ref, watch } from 'vue-demi'
+import { computed, Ref, ref, watch } from 'vue-demi'
 import { useBrowserLocation } from '..'
 import { useEventListener } from '../useEventListener'
 
-export function useUrlSearchParams(method: 'history'|'hash') {
+export function useUrlSearchParams(method: 'history'|'hash'): Ref<URLSearchParams> {
   const location = useBrowserLocation()
 
   const hashWithoutParams = computed((): string => {

@@ -1,6 +1,6 @@
 import { ref, nextTick } from 'vue-demi'
 import { ignorableWatch } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('ignorableWatch', () => {
   test('ignore async updates', async() => {
@@ -56,7 +56,7 @@ describe('ignorableWatch', () => {
   })
 
   test('ignore sync updates', () => {
-    renderHook(() => {
+    useSetup(() => {
       const source = ref(0)
       const target = ref(0)
       const { ignoreUpdates } = ignorableWatch(source, value => target.value = value, { flush: 'sync' })

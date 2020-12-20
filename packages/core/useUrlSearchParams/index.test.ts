@@ -1,5 +1,5 @@
 import { useUrlSearchParams } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 import each from 'jest-each'
 
 describe('useUrlSearchParams', () => {
@@ -30,30 +30,22 @@ describe('useUrlSearchParams', () => {
     'history',
     'hash',
   ]).describe('each mode', (mode: 'history' | 'hash') => {
-    it('update params on popstate event', () => {
-      const instance = renderHook(() => {
+    test('update params on popstate event', () => {
+      useSetup(() => {
         const params = useUrlSearchParams(mode)
-        return {
-          params,
-        }
-      }).vm
-
-      expect(instance.params.get('foo')).toBe(null)
-      mockPopstate('?foo=bar', '')
-      expect(instance.params.get('foo')).toBe('bar')
+        expect(params.value.get('foo')).toBe(null)
+        mockPopstate('?foo=bar', '')
+        expect(params.value.get('foo')).toBe('bar')
+      })
     })
 
     it('update browser location on params change', () => {
-      const instance = renderHook(() => {
+      useSetup(() => {
         const params = useUrlSearchParams(mode)
-        return {
-          params,
-        }
-      }).vm
-
-      expect(instance.params.get('foo')).toBe(null)
-      instance.params.set('foo', 'bar')
-      expect(instance.params.get('foo')).toBe('bar')
+        expect(params.value.get('foo')).toBe(null)
+        params.value.set('foo', 'bar')
+        expect(params.value.get('foo')).toBe('bar')
+      })
     })
   })
 })

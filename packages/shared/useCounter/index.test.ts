@@ -1,4 +1,4 @@
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 import { useCounter } from '../useCounter'
 
 describe('useCounter', () => {
@@ -7,7 +7,7 @@ describe('useCounter', () => {
   })
 
   it('should be update counter', () => {
-    renderHook(() => {
+    useSetup(() => {
       const { count, inc, dec, get, set, reset } = useCounter()
 
       expect(count.value).toBe(0)

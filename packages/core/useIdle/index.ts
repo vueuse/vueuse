@@ -63,7 +63,7 @@ export function useIdle(
   if (window) {
     const document = window.document
     for (const event of events)
-      useEventListener(window, event, onEvent)
+      useEventListener(window, event, onEvent, { passive: true })
 
     if (listenForVisibilityChange) {
       useEventListener(document, 'visibilitychange', () => {

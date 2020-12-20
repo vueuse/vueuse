@@ -26,7 +26,7 @@ export function useWindowSize({ window = defaultWindow, initialWidth = Infinity,
   useEventListener('resize', () => {
     width.value = window.innerWidth
     height.value = window.innerHeight
-  })
+  }, { passive: true })
 
   return { width, height }
 }

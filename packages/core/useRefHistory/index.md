@@ -79,16 +79,29 @@ import { useRefHistory } from '@vueuse/core'
 const refHistory = useRefHistory(target, { dump: klona })
 ```
 
+#### Custom Dump and Parse Function
+
+Instead of using the `clone` param, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
+
+```ts
+import { useRefHistory } from '@vueuse/core'
+
+const refHistory = useRefHistory(target, { 
+  dump: JSON.stringify,
+  parse: JSON.parse
+})
+```
+
 ### History Capacity
 
-We will keep all the history by default (unlimited) until you explicitly clean them up, you can set the maximal amount of history to be kept by `capacity` options.
+We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
 const refHistory = useRefHistory(target, {
   capacity: 15, // limit to 15 history records
 })
 
-refHistory.clean() // explicitly clean all the history
+refHistory.clear() // explicitly clear all the history
 ```
 
 ### History Flush Timing

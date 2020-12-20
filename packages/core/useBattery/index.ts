@@ -47,7 +47,7 @@ export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigat
         battery = _battery
         updateBatteryInfo.call(battery)
         for (const event of events)
-          useEventListener(battery, event, updateBatteryInfo, undefined)
+          useEventListener(battery, event, updateBatteryInfo, { passive: true })
       })
   }
 

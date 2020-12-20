@@ -37,7 +37,7 @@ const userInfo = asyncComputed(
 
 ### onCancel
 
-When the computed source checked before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporated with the fetch API.
+When the computed source changed before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporated with the fetch API.
 
 ```js
 const packageName = ref('@vueuse/core')
@@ -54,6 +54,23 @@ const downloads = asyncComputed(async(onCancel) => {
     .then(response => response.ok ? response.json() : { downloads: '—' })
     .then(result => result.downloads)
 }, 0)
+```
+
+### Lazy
+
+By default, `asyncComputed` will start resolving immediately on creation, specify `lazy: true` to make it start resolving on the first accessing.
+
+```js
+import { ref } from 'vue'
+import { asyncComputed } from '@vueuse/core'
+
+const evaluating = ref(false)
+
+const userInfo = asyncComputed(
+  async() => { /* your logic */ },
+  null,
+  { lazy: true, evaluating },
+)
 ```
 
 ## Caveats

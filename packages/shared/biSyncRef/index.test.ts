@@ -1,10 +1,10 @@
 import { ref } from 'vue-demi'
 import { biSyncRef } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('biSyncRef', () => {
   it('should work', (done) => {
-    renderHook(() => {
+    useSetup(() => {
       const a = ref('foo')
       const b = ref('bar')
 

@@ -1,8 +1,8 @@
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 import { useTimeout } from '../useTimeout'
 
 test('export', () => {
-  renderHook(() => {})
+  useSetup(() => {})
   const { ready } = useTimeout(10)
   expect(ready.value).toEqual(false)
   setTimeout(() => {

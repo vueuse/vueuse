@@ -1,14 +1,14 @@
 import { ref } from 'vue-demi'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 import { useTransition, TransitionPresets } from '.'
 
 describe('useTransition', () => {
   it('transitions between values', (done) => {
-    const { vm } = renderHook(() => {
+    const vm = useSetup(() => {
       const baseValue = ref(0)
 
       const transitionedValue = useTransition(baseValue, {
-        duration: 100,
+        duration: 80,
         transition: [0, 0, 1, 1], // a simple linear transition
       })
 
@@ -41,11 +41,11 @@ describe('useTransition', () => {
   })
 
   it('exposes named presets', (done) => {
-    const { vm } = renderHook(() => {
+    const vm = useSetup(() => {
       const baseValue = ref(0)
 
       const transitionedValue = useTransition(baseValue, {
-        duration: 100,
+        duration: 80,
         transition: TransitionPresets.linear,
       })
 
@@ -68,11 +68,11 @@ describe('useTransition', () => {
   })
 
   it('supports custom function transitions', (done) => {
-    const { vm } = renderHook(() => {
+    const vm = useSetup(() => {
       const baseValue = ref(0)
 
       const transitionedValue = useTransition(baseValue, {
-        duration: 100,
+        duration: 80,
         transition: n => n,
       })
 
