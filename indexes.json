@@ -573,6 +573,11 @@
           "depreacted": false
         }
       ],
+      "_utils": [
+        {
+          "name": "useUrlSearchParams"
+        }
+      ],
       "Component": [
         {
           "name": "useVModel",
