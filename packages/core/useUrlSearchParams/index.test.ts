@@ -34,7 +34,11 @@ describe('useUrlSearchParams', () => {
       useSetup(() => {
         const params = useUrlSearchParams(mode)
         expect(params.value.get('foo')).toBe(null)
-        mockPopstate('?foo=bar', '')
+        if (mode === 'hash')
+          mockPopstate('', '#/test/?foo=bar')
+        else
+          mockPopstate('?foo=bar', '')
+
         expect(params.value.get('foo')).toBe('bar')
       })
     })
