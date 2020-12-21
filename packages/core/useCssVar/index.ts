@@ -1,5 +1,5 @@
-import { ref, watch, unref } from 'vue-demi'
-import { MaybeRef, tryOnMounted } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
+import { MaybeRef } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
