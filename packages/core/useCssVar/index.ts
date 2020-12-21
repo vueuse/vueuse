@@ -18,20 +18,25 @@ export function useCssVar(
   if (!window)
     return ref('')
 
-  const varRef = ref('')
-  const elRef = ref(unref(el) || window.document.documentElement)
-
-  tryOnMounted(() => {
-    varRef.value = window.getComputedStyle(elRef.value).getPropertyValue(prop)
-  })
+  const variable = ref('')
+  const _el = ref(el || window.document.documentElement)
 
   watch(
-    varRef,
+    _el,
+    () => {
+      if (_el.value)
+        variable.value = window.getComputedStyle(_el.value).getPropertyValue(prop)
+    },
+    { immediate: true },
+  )
+
+  watch(
+    variable,
     (val) => {
-      if (elRef.value?.style)
-        elRef.value.style.setProperty(prop, val)
+      if (_el.value?.style)
+        _el.value.style.setProperty(prop, val)
     },
   )
 
-  return varRef
+  return variable
 }
