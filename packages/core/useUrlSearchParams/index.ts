@@ -36,19 +36,14 @@ export function useUrlSearchParams(
   }
 
   const write = (params: URLSearchParams) => {
-    let url
-    if (mode === 'hash') {
-      url = params.entries().next().done
-        ? `${window.location.pathname}${hashWithoutParams.value}`
-        : `${window.location.pathname}${hashWithoutParams.value}?${params}`
-    }
-    else {
-      url = params.entries().next().done
-        ? `${window.location.pathname}${hashWithoutParams.value}`
-        : `${window.location.pathname}?${params}${hashWithoutParams.value}`
-    }
+    const empty = !params.keys.length
+    const query = empty
+      ? hashWithoutParams.value
+      : (mode === 'hash')
+        ? `${hashWithoutParams.value}?${params}`
+        : `?${params}${hashWithoutParams.value}`
 
-    window.history.replaceState({}, '', url)
+    window.history.replaceState({}, '', window.location.pathname + query)
   }
 
   const params = ref(read()) as Ref<URLSearchParams>
