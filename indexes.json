@@ -525,6 +525,13 @@
           "docs": "https://vueuse.js.org/?path=/story/browser--usetitle",
           "description": "reactive document title",
           "depreacted": false
+        },
+        {
+          "name": "useUrlSearchParams",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--useurlsearchparams",
+          "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)",
+          "depreacted": false
         }
       ],
       "Misc": [
@@ -578,11 +585,6 @@
           "docs": "https://vueuse.js.org/?path=/story/animation--usetransition",
           "description": "transition between values",
           "depreacted": false
-        }
-      ],
-      "_utils": [
-        {
-          "name": "useUrlSearchParams"
         }
       ],
       "Component": [

@@ -18,7 +18,7 @@ export default {
   setup() {
     const params = useUrlSearchParams('history')
     params.value.set('foo', 'bar')
-    return { params } 
+    return { params }
   } 
 }
 </script>

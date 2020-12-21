@@ -11,7 +11,7 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const params = useUrlSearchParams('history')
+      const params = useUrlSearchParams('history', { window: window.parent })
       params.value.set('foo', 'bar')
       return {
         params,
@@ -19,12 +19,11 @@ defineDemo(
     },
 
     template: html`
-        <div>
-          <note>This demo has it's own window object, so you can't see changes in your URL bar</note>
-          <ul>
-            <li v-for="[key, value] in params">{{ key }}={{ value }}</li>
-          </ul>
-        </div>
+      <div>
+        <ul>
+          <li v-for="[key, value] in params">{{ key }}={{ value }}</li>
+        </ul>
+      </div>
     `,
   }),
 )

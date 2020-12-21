@@ -108,6 +108,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
   - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.js.org/?path=/story/browser--usetitle) — reactive document title
+  - [`useUrlSearchParams`](https://vueuse.js.org/?path=/story/browser--useurlsearchparams) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 - Component
   - [`tryOnMounted`](https://vueuse.js.org/?path=/story/component--tryonmounted) — safe `onMounted`
