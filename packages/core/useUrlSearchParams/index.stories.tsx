@@ -1,6 +1,6 @@
-import { defineComponent } from 'vue-demi';
-import { defineDemo, html } from '../../_docs';
-import {useUrlSearchParams} from "."
+import { defineComponent } from 'vue-demi'
+import { defineDemo, html } from '../../_docs'
+import { useUrlSearchParams } from '.'
 
 defineDemo(
   {
@@ -12,9 +12,9 @@ defineDemo(
   defineComponent({
     setup() {
       const params = useUrlSearchParams('history')
-      params.value.set("foo", "bar")
+      params.value.set('foo', 'bar')
       return {
-        params
+        params,
       }
     },
 
@@ -26,5 +26,5 @@ defineDemo(
           </ul>
         </div>
     `,
-  })
+  }),
 )
