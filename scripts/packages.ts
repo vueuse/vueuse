@@ -18,7 +18,7 @@ export const packages: PackageManifest[] = [
   {
     name: 'core',
     display: 'VueUse',
-    description: 'Collection of essential Vue Composition API',
+    description: 'Collection of essential Vue Composition Utilities',
   },
   {
     name: 'router',

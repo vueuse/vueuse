@@ -63,9 +63,11 @@ Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org
 
 > 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/antfu/vue-demi)!
 
+<div class="language-bash">
 <pre>
 npm i <b>@vueuse/core</b>
 </pre>
+</div>
 
 Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
 

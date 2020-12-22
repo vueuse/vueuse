@@ -13,7 +13,7 @@ defineDemo(
     setup() {
       const options = ref({
         title: 'Vueuse',
-        text: 'Collection of essential Vue Composition API!',
+        text: 'Collection of essential Vue Composition Utilities!',
         url: location.href,
       })
       const { share, isSupported } = useShare(options)

@@ -186,7 +186,7 @@
     "info": {
       "name": "core",
       "display": "VueUse",
-      "description": "Collection of essential Vue Composition API"
+      "description": "Collection of essential Vue Composition Utilities"
     },
     "dir": "packages/core",
     "categories": {
