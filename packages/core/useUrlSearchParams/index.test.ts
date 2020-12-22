@@ -30,25 +30,36 @@ describe('useUrlSearchParams', () => {
     'history',
     'hash',
   ]).describe('each mode', (mode: 'history' | 'hash') => {
-    test('update params on popstate event', () => {
+    test('update params on poststate event', () => {
       useSetup(() => {
         const params = useUrlSearchParams(mode)
-        expect(params.value.get('foo')).toBe(null)
+        expect(params.foo).toBeUndefined()
         if (mode === 'hash')
           mockPopstate('', '#/test/?foo=bar')
         else
           mockPopstate('?foo=bar', '')
 
-        expect(params.value.get('foo')).toBe('bar')
+        expect(params.foo).toBe('bar')
       })
     })
 
-    it('update browser location on params change', () => {
+    test('update browser location on params change', () => {
       useSetup(() => {
         const params = useUrlSearchParams(mode)
-        expect(params.value.get('foo')).toBe(null)
-        params.value.set('foo', 'bar')
-        expect(params.value.get('foo')).toBe('bar')
+        expect(params.foo).toBeUndefined()
+        params.foo = 'bar'
+
+        expect(params.foo).toBe('bar')
+      })
+    })
+
+    test('array url search param', () => {
+      useSetup(() => {
+        const params = useUrlSearchParams(mode)
+        expect(params.foo).toBeUndefined()
+        params.foo = ['bar1', 'bar2']
+
+        expect(params.foo).toEqual(['bar1', 'bar2'])
       })
     })
   })
