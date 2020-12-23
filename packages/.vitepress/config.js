@@ -4,6 +4,7 @@ module.exports = {
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   themeConfig: {
+    logo: '/android-chrome-512x512.png',
     repo: 'antfu/vueuse',
     docsDir: 'packages',
     editLinks: true,
@@ -15,33 +16,26 @@ module.exports = {
 }
 
 function getSideBar() {
-  const links = []
+  const links = {}
   for (const { info, categories } of Object.values(indexes)) {
-    const catLinks = []
     for (const [name, functions] of Object.entries(categories)) {
       if (name.startsWith('_'))
         continue
-      catLinks.push({
-        text: name,
-        children: functions.map(i => ({
+
+      if (!links[name]) {
+        links[name] = {
+          text: name.startsWith('/') ? `@${info.display}` : name,
+          children: [],
+        }
+      }
+
+      links[name].children.push(
+        ...functions.map(i => ({
           text: i.name,
           link: `/${info.name}/${i.name}/index.html`,
         })),
-      })
+      )
     }
-
-    // if (catLinks.length === 1) {
-    //   links.push({
-    //     text: info.display,
-    //     children: catLinks[0].children,
-    //   })
-    // }
-    // else {
-    links.push({
-      text: info.display,
-      children: catLinks,
-    })
-    // }
   }
-  return links
+  return Object.values(links)
 }

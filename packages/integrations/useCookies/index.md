@@ -55,7 +55,7 @@ export default cookiesPlugin
 export { useUniversalCookies } // now import and call useUniversalCookies instead of useCookies
 ```
 
-## `useCookies([dependencies], [options], [cookies])`
+## Options
 
 Access and modify cookies using vue composition-api.
 
@@ -78,7 +78,7 @@ Let you optionally specify a list of cookie names your component depend on or th
 
 Let you provide a `universal-cookie` instance (creates a new instance by default)
 
-### Info about methods available in the [universal-cookie api docs](https://www.npmjs.com/package/universal-cookie#api---cookies-class)
+> Info about methods available in the [universal-cookie api docs](https://www.npmjs.com/package/universal-cookie#api---cookies-class)
 
 ## `createCookies([req])`
 
