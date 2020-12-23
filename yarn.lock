@@ -10188,10 +10188,10 @@ vite@^1.0.0-rc.13:
     vue "^3.0.3"
     ws "^7.3.1"
 
-vitepress@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.9.2.tgz#e6fc9142b0af41d53bd8e3713729ba0c2cec5725"
-  integrity sha512-48dwnvWxUZToAZYBmS3rm6MD2C1JG4hZOKY88P8PZj9X1iKLmCEDL/it46p5n4hz2+2jQQUkwJrwiUdqJ3G4LQ==
+"vitepress@npm:@knightly/vitepress@pr190":
+  version "0.9.2-knightly-pr190.202012231221"
+  resolved "https://registry.yarnpkg.com/@knightly/vitepress/-/vitepress-0.9.2-knightly-pr190.202012231221.tgz#f3aa49918a50049b142c3d62734b97043701d29b"
+  integrity sha512-kUt7RUNOkWqYk/tqecO5Ka7a9QsGy/af1mcRAeSoZu2NUnwZlhgjl3FoZJXDh4GBUfZbn7jGUJ9FXAeMLuGaAw==
   dependencies:
     "@docsearch/css" "^1.0.0-alpha.28"
     "@docsearch/js" "^1.0.0-alpha.28"
