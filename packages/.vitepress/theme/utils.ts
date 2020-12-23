@@ -1,4 +1,4 @@
-import { Route } from 'vitepress'
+import type { Route } from 'vitepress'
 
 export const hashRE = /#.*$/
 export const extRE = /(index)?\.(md|html)$/

@@ -1,6 +1,6 @@
 import { FunctionalComponent, h, VNode } from 'vue'
 import { useRoute, useSiteData } from 'vitepress'
-import { DefaultTheme } from '../config'
+import type { DefaultTheme } from '../config'
 import { joinUrl, isActive } from '../utils'
 
 export const SideBarLink: FunctionalComponent<{

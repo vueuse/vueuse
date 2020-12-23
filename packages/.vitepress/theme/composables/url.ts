@@ -8,6 +8,6 @@ export function useUrl() {
   }
 
   return {
-    withBase
+    withBase,
   }
 }
