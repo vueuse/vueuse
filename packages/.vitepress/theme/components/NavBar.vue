@@ -12,6 +12,7 @@
     </div>
 
     <slot name="search" />
+    <dark-mode-switch class="dark-mode-switch" />
   </header>
 </template>
 
@@ -20,6 +21,7 @@ import { defineEmit } from "vue";
 import NavBarTitle from "./NavBarTitle.vue";
 import NavLinks from "./NavLinks.vue";
 import DarkModeSwitch from "./DarkModeSwitch.vue";
+import ToggleSideBarButton from "./ToggleSideBarButton.vue";
 
 defineEmit(["toggle"]);
 </script>
@@ -56,6 +58,9 @@ defineEmit(["toggle"]);
 @media (min-width: 720px) {
   .nav {
     display: flex;
+  }
+  .dark-mode-switch {
+    display: none;
   }
 }
 </style>
