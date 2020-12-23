@@ -12,7 +12,7 @@
     </div>
 
     <slot name="search" />
-    <dark-mode-switch class="dark-mode-switch" />
+    <dark-mode-switch class="navbar__dark-mode" />
   </header>
 </template>
 
@@ -59,7 +59,7 @@ defineEmit(["toggle"]);
   .nav {
     display: flex;
   }
-  .dark-mode-switch {
+  .navbar__dark-mode {
     display: none;
   }
 }
