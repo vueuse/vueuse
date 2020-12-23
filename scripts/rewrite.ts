@@ -2,6 +2,7 @@ import { dirname, join } from 'path'
 import fs from 'fs-extra'
 import prettier from 'prettier'
 import fg from 'fast-glob'
+
 async function rewrite(dir: string) {
   const story = await fs.readFile(join(dir, 'index.stories.tsx'), 'utf-8')
 
@@ -14,7 +15,7 @@ async function rewrite(dir: string) {
 
   setup = setup.replace(/return {\s+([\s\S]+)}$/m, (m) => {
     m = m.replace(/return {\s+([\s\S]+)}$/m, '$1')
-    return `const ` + m.replace(/(\w+): /g, '$1 = ')
+    return `const ${m.replace(/(\w+): /g, '$1 = ')}`
   })
 
   const sfc = prettier.format(
@@ -22,14 +23,13 @@ async function rewrite(dir: string) {
     { parser: 'vue', singleQuote: true, semi: false },
   )
 
-  await fs.writeFile(join(dir, 'Demo.vue'), sfc, 'utf-8')
+  await fs.writeFile(join(dir, 'demo.vue'), sfc, 'utf-8')
   console.log(dir)
 }
 
-async function run(){
+async function run() {
   const files = await fg('packages/*/*/index.stories.tsx')
-
- await Promise.all(files.map(i=>rewrite(dirname(i))))
+  await Promise.all(files.map(i => rewrite(dirname(i))))
 }
 
 run()
