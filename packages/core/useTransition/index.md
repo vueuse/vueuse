@@ -61,6 +61,6 @@ const easeOutElastic = (n) => {
 
 useTransition(baseNumber, {
   duration: 1000,
-  transition: easeInOutElastic,
+  transition: easeOutElastic,
 })
 ```

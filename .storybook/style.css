@@ -38,7 +38,7 @@
   @apply bg-gray-400 border-gray-600 text-gray-600 opacity-50 pointer-events-none;
 }
 
-#demo input {
+#demo input:not([type=radio]) {
   @apply bg-transparent appearance-none border border-gray-600 rounded w-full py-2 px-4 my-2 mx-1 text-white leading-tight block;
 }
 
