@@ -4,8 +4,8 @@ import { useDeviceMotion } from '.'
 
 const motion = reactive(
   useDeviceMotion({
-    window = window.parent,
-  })
+    window: window.parent,
+  }),
 )
 </script>
 

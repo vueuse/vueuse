@@ -4,8 +4,6 @@ import { useElementBounding } from '.'
 
 const el = ref(null)
 const rect = reactive(useElementBounding(el))
-
-const el, rect
 </script>
 
 <template>
@@ -14,8 +12,6 @@ const el, rect
       ref="el"
       class="resize bg-gray-600 bg-opacity-25 select-none p-4 overflow-auto"
       style="width: 300px; height: 300px"
-      >{{ rect }}
-        </pre
-    >
+    >{{ rect }}</pre>
   </div>
 </template>

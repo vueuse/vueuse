@@ -17,12 +17,8 @@ watch(visibility, (current, previous) => {
     timeout.start()
   }
 })
-
-const message
 </script>
 
 <template>
-  <div>
-    <h1>{{ message }}</h1>
-  </div>
+  <h1>{{ message }}</h1>
 </template>

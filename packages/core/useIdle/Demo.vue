@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, computed } from 'vue-demi'
+import { computed } from 'vue-demi'
 import { useIdle } from '.'
 import { useTimestamp } from '../useTimestamp'
 
@@ -8,18 +8,16 @@ const { idle, lastActive } = useIdle(5000)
 const { timestamp: now } = useTimestamp()
 
 const idledFor = computed(() =>
-  Math.floor((now.value - lastActive.value) / 1000)
+  Math.floor((now.value - lastActive.value) / 1000),
 )
-
-const idle, lastActive, now, idledFor
 </script>
 
 <template>
   <div>
-    <note
-      >For demonstraction purpose, the idle timout is set to <b>5s</b> in this
-      demo (default 1min).</note
-    >
+    <note>
+      For demonstraction purpose, the idle timout is set to <b>5s</b> in this
+      demo (default 1min).
+    </note>
     <p>Idle: {{ idle }}</p>
     <p>Inactive: {{ idledFor }}s</p>
   </div>

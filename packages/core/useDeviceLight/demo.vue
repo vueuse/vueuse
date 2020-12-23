@@ -3,7 +3,7 @@ import { defineComponent } from 'vue-demi'
 import { useDeviceLight } from '.'
 
 const light = useDeviceLight({
-  window = window.parent,
+  window: window.parent,
 })
 </script>
 

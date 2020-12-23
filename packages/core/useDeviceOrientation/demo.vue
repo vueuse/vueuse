@@ -4,16 +4,13 @@ import { useDeviceOrientation } from '.'
 
 const orientation = reactive(
   useDeviceOrientation({
-    window = window.parent,
-  })
+    window: window.parent,
+  }),
 )
 </script>
 
 <template>
   <div>
-    <pre lang="json"
-      >{{ JSON.stringify(orientation, null, 2) }}
-        </pre
-    >
+    <pre lang="json">{{ JSON.stringify(orientation, null, 2) }}</pre>
   </div>
 </template>

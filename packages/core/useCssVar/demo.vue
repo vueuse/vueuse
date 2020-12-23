@@ -9,8 +9,6 @@ const switchColor = () => {
   if (color.value === '#df8543') color.value = '#7fa998'
   else color.value = '#df8543'
 }
-
-const el, color, switchColor
 </script>
 
 <template>
@@ -18,6 +16,8 @@ const el, color, switchColor
     <p ref="el" style="--color: #7fa998; color: var(--color)">
       Sample text, {{ color }}
     </p>
-    <button @click="switchColor">Switch Color</button>
+    <button @click="switchColor">
+      Switch Color
+    </button>
   </div>
 </template>

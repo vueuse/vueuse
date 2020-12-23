@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue-demi'
 import { useDevicePixelRatio } from '.'
 
-const pixelRatio = useDevicePixelRatio({ window = window.parent })
+const pixelRatio = useDevicePixelRatio({ window: window.parent })
 </script>
 
 <template>
