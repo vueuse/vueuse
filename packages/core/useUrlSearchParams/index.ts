@@ -1,8 +1,9 @@
-import { computed, reactive, Ref, ref, watch } from 'vue-demi'
+import { computed, reactive } from 'vue-demi'
+import { pausableWatch } from '..'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export type UrlParams = {[key: string]: string[] | string}
+export type UrlParams = Record<string, string[] | string>
 
 /**
  * Reactive URLSearchParams
@@ -11,14 +12,14 @@ export type UrlParams = {[key: string]: string[] | string}
  * @param mode
  * @param options
  */
-export function useUrlSearchParams(
+export function useUrlSearchParams<T extends UrlParams = UrlParams>(
   mode: 'history'|'hash' = 'history',
   options: ConfigurableWindow = {},
-) {
+): T {
   const { window = defaultWindow } = options
 
   if (!window)
-    return {}
+    return reactive(Object.assign({}))
 
   const hashWithoutParams = computed((): string => {
     const hash = window.location.hash || ''
@@ -37,7 +38,17 @@ export function useUrlSearchParams(
     }
   }
 
-  const write = (params: URLSearchParams) => {
+  const write = (params: URLSearchParams, shouldUpdateParamsMap?: boolean) => {
+    pause()
+    if (shouldUpdateParamsMap) {
+      Object.keys(paramsMap).forEach(key => delete paramsMap[key])
+      for (const key of params.keys()) {
+        const paramsForKey = params.getAll(key)
+        // FIXME: strange typing issue
+        paramsMap[key] = paramsForKey.length > 1 ? paramsForKey : (params.get(key) || '')
+      }
+    }
+
     const empty = !params.keys.length
     const query = empty
       ? hashWithoutParams.value
@@ -46,36 +57,32 @@ export function useUrlSearchParams(
         : `?${params}${hashWithoutParams.value}`
 
     window.history.replaceState({}, '', window.location.pathname + query)
+    resume()
   }
 
-  const params = ref(read()) as Ref<URLSearchParams>
-  const paramsMap: UrlParams = reactive<UrlParams>({})
+  let params: URLSearchParams = read()
+  const paramsMap: T = reactive(Object.assign({}))
 
-  const updateParamsMap = () => {
-    Object.keys(paramsMap).forEach(key => delete paramsMap[key])
-    for (const key of params.value.keys()) {
-      const paramsForKey = params.value.getAll(key)
-      paramsMap[key] = paramsForKey.length > 1 ? paramsForKey : (params.value.get(key) || '')
-    }
-  }
+  const { pause, resume } = pausableWatch(
+    paramsMap,
+    () => {
+      params = new URLSearchParams('')
+      Object.keys(paramsMap).forEach((key) => {
+        const mapEntry = paramsMap[key]
+        if (Array.isArray(mapEntry))
+          mapEntry.forEach(value => params.append(key, value))
+        else
+          params.set(key, mapEntry)
+      })
+      write(params)
+    },
+    { deep: true },
+  )
 
   useEventListener(window, 'popstate', () => {
-    params.value = read()
-    updateParamsMap()
-    write(params.value)
+    params = read()
+    write(params, true)
   })
-
-  watch(paramsMap, () => {
-    params.value = new URLSearchParams('')
-    Object.keys(paramsMap).forEach((key) => {
-      const mapEntry = paramsMap[key]
-      if (Array.isArray(mapEntry))
-        mapEntry.forEach(value => params.value.append(key, value))
-      else
-        params.value.set(key, mapEntry)
-    })
-    write(params.value)
-  }, { deep: true })
 
   return paramsMap
 }

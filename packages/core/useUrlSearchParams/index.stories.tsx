@@ -12,7 +12,7 @@ defineDemo(
   defineComponent({
     setup() {
       const params = useUrlSearchParams('history', { window: window.parent })
-      params.value.set('foo', 'bar')
+      params.foo = 'bar'
       return {
         params,
       }
@@ -21,7 +21,7 @@ defineDemo(
     template: html`
       <div>
         <ul>
-          <li v-for="[key, value] in params">{{ key }}={{ value }}</li>
+          <li v-for="key in Object.keys(params)">{{ key }}={{ params[key] }}</li>
         </ul>
       </div>
     `,

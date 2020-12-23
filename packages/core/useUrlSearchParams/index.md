@@ -7,7 +7,7 @@
 ```html {19}
 <template>
   <ul>
-    <li v-for='[key, value] in params'>{{ key }}={{ value }}</li>
+    <li v-for='key in Object.keys(params)'>{{ key }}={{ params[key] }}</li>
   </ul>
 </template>
 
@@ -17,7 +17,7 @@ import { useUrlSearchParams } from '@vueuse/core'
 export default {
   setup() {
     const params = useUrlSearchParams('history')
-    params.value.set('foo', 'bar')
+    params.foo = 'bar'
     return { params }
   } 
 }
