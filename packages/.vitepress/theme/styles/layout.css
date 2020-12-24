@@ -83,7 +83,7 @@ h2 {
   margin-top: 2.25rem;
   margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--c-divider);
-  padding-bottom: .3rem;
+  padding-bottom: 0.3rem;
   line-height: 1.25;
   font-size: 1.65rem;
   /* overflow-x: auto; */
@@ -132,10 +132,10 @@ a:hover {
 
 a.header-anchor {
   float: left;
-  margin-top: .125em;
-  margin-left: -.87em;
-  padding-right: .23em;
-  font-size: .85em;
+  margin-top: 0.125em;
+  margin-left: -0.87em;
+  padding-right: 0.23em;
+  font-size: 0.85em;
   opacity: 0;
 }
 
@@ -188,7 +188,7 @@ blockquote {
   border-left: 0.2rem solid #dfe2e5;
   padding: 0.25rem 0 0.25rem 1rem;
   font-size: 1rem;
-  color: #999;
+  color: var(--c-text);
 }
 
 blockquote > p {

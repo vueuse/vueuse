@@ -8,19 +8,22 @@
 
     <div class="nav">
       <NavLinks />
+      <dark-mode-switch />
     </div>
 
     <slot name="search" />
+    <dark-mode-switch class="navbar__dark-mode" />
   </header>
 </template>
 
 <script setup lang="ts">
-import { defineEmit } from 'vue'
-import NavBarTitle from './NavBarTitle.vue'
-import NavLinks from './NavLinks.vue'
-import ToggleSideBarButton from './ToggleSideBarButton.vue'
+import { defineEmit } from "vue";
+import NavBarTitle from "./NavBarTitle.vue";
+import NavLinks from "./NavLinks.vue";
+import DarkModeSwitch from "./DarkModeSwitch.vue";
+import ToggleSideBarButton from "./ToggleSideBarButton.vue";
 
-defineEmit(['toggle'])
+defineEmit(["toggle"]);
 </script>
 
 <style scoped>
@@ -34,14 +37,13 @@ defineEmit(['toggle'])
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--c-divider);
-  padding: .7rem 1.5rem .7rem 4rem;
+  padding: 0.7rem 1.5rem 0.7rem 4rem;
   height: var(--header-height);
-  background-color: #ffffff;
 }
 
 @media (min-width: 720px) {
   .nav-bar {
-    padding: .7rem 1.5rem;
+    padding: 0.7rem 1.5rem;
   }
 }
 
@@ -55,7 +57,10 @@ defineEmit(['toggle'])
 
 @media (min-width: 720px) {
   .nav {
-    display: block;
+    display: flex;
+  }
+  .navbar__dark-mode {
+    display: none;
   }
 }
 </style>
