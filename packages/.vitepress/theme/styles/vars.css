@@ -52,9 +52,18 @@
   --header-height: 3.6rem;
 }
 
+html.dark {
+  --c-bg: #111;
+  --c-text: #f5f7fa;
+  --c-text-light: #f9f9f9;
+
+  --c-divider-light: rgba(200, 200, 200, .12);
+  --c-divider-dark: rgba(200, 200, 200, .48);
+  --code-bg-color: #191919;
+}
+
 /** Fallback Styles */
 :root {
-
   --c-divider: var(--c-divider-light);
 
   --c-text: var(--c-text-light-1);
@@ -68,5 +77,4 @@
   --code-font-size: 14px;
   --code-inline-bg-color: rgba(27, 31, 35, .05);
   --code-bg-color: #282c34;
-
 }
