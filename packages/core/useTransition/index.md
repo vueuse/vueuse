@@ -65,7 +65,7 @@ useTransition(baseNumber, {
 })
 ```
 
-To choreograph multiple transitions together, define `onStarted` or `onFinished` callbacks.
+To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
 useTransition(baseNumber, {
@@ -76,6 +76,6 @@ useTransition(baseNumber, {
   },
   onFinished() {
     // called after the transition ends
-  }
+  },
 })
 ```
