@@ -119,4 +119,38 @@ describe('useTransition', () => {
     await promiseTimeout(100)
     expect(vm.transitionedValue).toBe(2)
   })
+
+  it('calls onStarted and onFinished callbacks', async() => {
+    const onStarted = jest.fn()
+    const onFinished = jest.fn()
+
+    const vm = useSetup(() => {
+      const baseValue = ref(0)
+
+      const transitionedValue = useTransition(baseValue, {
+        duration: 100,
+        onFinished,
+        onStarted,
+        transition: n => n,
+      })
+
+      return {
+        baseValue,
+        transitionedValue,
+      }
+    })
+
+    expect(onStarted).not.toHaveBeenCalled()
+    expect(onFinished).not.toHaveBeenCalled()
+
+    vm.baseValue = 1
+    await vm.$nextTick()
+
+    expect(onStarted).toHaveBeenCalled()
+    expect(onFinished).not.toHaveBeenCalled()
+
+    await promiseTimeout(150)
+    expect(onStarted.mock.calls.length).toBe(1)
+    expect(onFinished.mock.calls.length).toBe(1)
+  })
 })

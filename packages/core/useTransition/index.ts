@@ -1,6 +1,6 @@
 import { useRafFn } from '../useRafFn'
 import { Ref, ref, unref, watch } from 'vue-demi'
-import { clamp, isFunction, MaybeRef } from '@vueuse/shared'
+import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
 type CubicBezierPoints = [number, number, number, number]
 
@@ -8,6 +8,8 @@ type EasingFunction = (x: number) => number
 
 interface TransitionOptions {
   duration?: MaybeRef<number>
+  onFinished?: () => unknown
+  onStarted?: () => unknown
   transition?: EasingFunction | CubicBezierPoints
 }
 
@@ -81,6 +83,8 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
 export function useTransition(source: Ref<number>, options: TransitionOptions = {}) {
   const {
     duration = 500,
+    onFinished = noop,
+    onStarted = noop,
     transition = (n: number) => n,
   } = options
 
@@ -102,8 +106,10 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
 
     output.value = startValue + (diff * getValue(progress))
 
-    if (progress >= 1)
+    if (progress >= 1) {
       pause()
+      onFinished()
+    }
   }, { immediate: false })
 
   watch(source, () => {
@@ -116,6 +122,7 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
     endAt = startAt + currentDuration
 
     resume()
+    onStarted()
   })
 
   return output
