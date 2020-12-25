@@ -86,6 +86,41 @@ describe('useTransition', () => {
     expect(vm.transitionedValue).toBe(1)
   })
 
+  it('supports dynamic transitions', async() => {
+    const linear = jest.fn(n => n)
+    const easeInQuad = jest.fn(n => n * n)
+    const vm = useSetup(() => {
+      const baseValue = ref(0)
+      const transition = ref(linear)
+
+      const transitionedValue = useTransition(baseValue, {
+        duration: 100,
+        transition,
+      })
+
+      return {
+        baseValue,
+        transition,
+        transitionedValue,
+      }
+    })
+
+    expect(linear).not.toHaveBeenCalled()
+    expect(easeInQuad).not.toHaveBeenCalled()
+
+    vm.baseValue++
+    await vm.$nextTick()
+
+    expect(linear).toHaveBeenCalled()
+    expect(easeInQuad).not.toHaveBeenCalled()
+
+    vm.transition = easeInQuad
+    vm.baseValue++
+    await vm.$nextTick()
+
+    expect(easeInQuad).toHaveBeenCalled()
+  })
+
   it('support dynamic transition durations', async() => {
     const vm = useSetup(() => {
       const baseValue = ref(0)
