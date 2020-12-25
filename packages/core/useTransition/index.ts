@@ -2,10 +2,19 @@ import { useRafFn } from '../useRafFn'
 import { computed, Ref, ref, unref, watch } from 'vue-demi'
 import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
+/**
+ * Cubic bezier points
+ */
 type CubicBezierPoints = [number, number, number, number]
 
-type EasingFunction = (x: number) => number
+/**
+ * Easing function
+ */
+type EasingFunction = (n: number) => number
 
+/**
+ * Transition options
+ */
 interface TransitionOptions {
   duration?: MaybeRef<number>
   onFinished?: () => unknown
