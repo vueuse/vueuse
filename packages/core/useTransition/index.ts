@@ -99,7 +99,7 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
 
   const output = ref(source.value)
 
-  const getValue = computed(() => {
+  const currentTransition = computed(() => {
     const t = unref(transition)
     return isFunction(t) ? t : createEasingFunction(t)
   })
@@ -114,7 +114,7 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
     const now = Date.now()
     const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
 
-    output.value = startValue + (diff * getValue.value(progress))
+    output.value = startValue + (diff * currentTransition.value(progress))
 
     if (progress >= 1) {
       pause()
