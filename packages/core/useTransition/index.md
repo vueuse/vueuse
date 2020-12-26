@@ -64,3 +64,18 @@ useTransition(baseNumber, {
   transition: easeOutElastic,
 })
 ```
+
+To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+
+```js
+useTransition(baseNumber, {
+  duration: 1000,
+  transition: easeOutElastic,
+  onStarted() {
+    // called after the transition starts
+  },
+  onFinished() {
+    // called after the transition ends
+  },
+})
+```
