@@ -1,17 +1,6 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { onClickOutside } from '.'
-
-export const jointWindow = {
-  addEventListener: (...args: Parameters<Window['addEventListener']>) => {
-    window.addEventListener(...args)
-    window.parent.addEventListener(...args)
-  },
-  removeEventListener: (...args: Parameters<Window['removeEventListener']>) => {
-    window.removeEventListener(...args)
-    window.parent.removeEventListener(...args)
-  },
-} as Window
 
 const modal = ref(false)
 const modalRef = ref(null)
@@ -22,7 +11,6 @@ onClickOutside(
     console.log(event)
     modal.value = false
   },
-  { window: jointWindow },
 )
 
 const dropdown = ref(false)
@@ -34,7 +22,6 @@ onClickOutside(
     console.log(event)
     dropdown.value = false
   },
-  { window: jointWindow },
 )
 </script>
 

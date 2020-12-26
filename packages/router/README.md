@@ -14,10 +14,10 @@ npm i <b>@vueuse/router</b> vue-router@4
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-
 - /Router
-  - [`useRouteHash`](https://vueuse.js.org/?path=/story/router--useroutehash) — shorthand for reactive route.hash
-  - [`useRouteQuery`](https://vueuse.js.org/?path=/story/router--useroutequery) — shorthand for reactive route.query
+  - [`useRouteHash`](https://vueuse.js.org/router/useRouteHash) — shorthand for reactive route.hash
+  - [`useRouteQuery`](https://vueuse.js.org/router/useRouteQuery) — shorthand for reactive route.query
+
 
 <!--FUNCTIONS_LIST_ENDS-->
 

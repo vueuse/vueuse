@@ -1,3 +1,11 @@
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+💡 this function is also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
+
+
+<!--HEAD_ENDS-->
+
 # controlledComputed
 
 > Explicitly define the deps of computed.
@@ -29,3 +37,27 @@ source.value = 'bar'
 
 console.log(computedRef.value) // 1
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+/**
+ * Explicitly define the deps of computed.
+ *
+ * @param source
+ * @param fn
+ */
+export declare function controlledComputed<T, S>(
+  source: WatchSource<S>,
+  fn: () => T
+): ComputedRef<T>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/controlledComputed/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/controlledComputed/index.md)
+
+
+<!--FOOTER_ENDS-->

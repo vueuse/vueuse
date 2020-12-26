@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { usePreferredColorScheme } from '.'
 
-const preferredColorScheme = usePreferredColorScheme()
+const colroScheme = usePreferredColorScheme()
 </script>
 
 <template>
-  <div>
-    <p>Preferred Color Scheme: {{ preferredColorScheme.toString() }}</p>
-  </div>
+  <p>Preferred Color Scheme: {{ colroScheme.toString() }}</p>
 </template>

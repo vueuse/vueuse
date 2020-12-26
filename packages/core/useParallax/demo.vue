@@ -1,18 +1,45 @@
 <script setup lang="ts">
 import YAML from 'js-yaml'
-import type { CSSProperties } from 'react'
-import { computed, defineComponent, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref, CSSProperties } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
 import { useParallax } from '.'
 
 const target = ref(null)
-const isMobile = useMediaQuery('(max-width: 700px)', { window: window.parent })
+const isMobile = useMediaQuery('(max-width: 700px)')
 
 const parallax = reactive(
-  useParallax(target, { window: isMobile.value ? window.parent : window })
+  useParallax(target, { window: isMobile.value ? window : window }),
 )
 
-const infoStyle = computed<CSSProperties>(() => ({
+const targetStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  minHeight: '500px',
+  transition: '.3s ease-out all',
+}
+const cardWindowStyle: CSSProperties = {
+  overflow: 'hidden',
+  fontSize: '6rem',
+  position: 'absolute',
+  top: 'calc(50% - 1em)',
+  left: 'calc(50% - 1em)',
+  height: '2em',
+  width: '2em',
+  margin: 'auto',
+}
+const layerBase: CSSProperties = {
+  position: 'absolute',
+  height: '100%',
+  width: '100%',
+  transition: '.3s ease-out all',
+}
+const containerStyle: CSSProperties = {
+  margin: '3em auto',
+  perspective: '300px',
+}
+
+const infoStyle = computed(() => ({
   opacity: 0.4,
   top: '60px',
   left: '60px',
@@ -61,20 +88,6 @@ const cardStyle = computed(() => ({
     parallax.tilt * 20
   }deg)`,
 }))
-
-const target,
-  parallax,
-  infoStyle,
-  layer0,
-  layer1,
-  layer2,
-  layer3,
-  layer4,
-  cardStyle,
-  cardWindowStyle,
-  containerStyle,
-  targetStyle,
-  YAML
 </script>
 
 <template>
@@ -88,36 +101,37 @@ const target,
               :style="layer0"
               src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer0.png"
               alt=""
-            />
+            >
             <img
               :style="layer1"
               src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer1.png"
               alt=""
-            />
+            >
             <img
               :style="layer2"
               src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer2.png"
               alt=""
-            />
+            >
             <img
               :style="layer3"
               src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer3.png"
               alt=""
-            />
+            >
             <img
               :style="layer4"
               src="https://jaromvogel.com/images/design/jumping_rabbit/page2layer4.png"
               alt=""
-            />
+            >
           </div>
         </div>
       </div>
-      <note class="opacity-1"
-        >Credit of images to
-        <a href="https://codepen.io/jaromvogel" target="__blank"
-          >Jarom Vogel</a
-        ></note
-      >
+      <div class="note opacity-1">
+        Credit of images to
+        <a
+          href="https://codepen.io/jaromvogel"
+          target="__blank"
+        >Jarom Vogel</a>
+      </div>
     </div>
   </div>
 </template>

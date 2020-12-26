@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue-demi'
 import { useNProgress } from '.'
 
-return useNProgress()
+const { isLoading } = useNProgress()
 </script>
 
 <template>

@@ -1,3 +1,11 @@
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+💡 this function is also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
+
+
+<!--HEAD_ENDS-->
+
 # extendRef
 
 > Add extra attributes to Ref.
@@ -32,3 +40,47 @@ extended.extra === 'extra'
 extended.extra = 'new data' // will trigger update
 extraRef.value === 'new data'
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+export interface ExtendRefOptions<Unwrap extends boolean = boolean> {
+  /**
+   * Is the extends properties enumerable
+   *
+   * @default false
+   */
+  enumerable?: boolean
+  /**
+   * Unwrap for Ref properties
+   *
+   * @default true
+   */
+  unwrap?: Unwrap
+}
+/**
+ * Overlad 1: Unwrap set to false
+ */
+export declare function extendRef<
+  R extends Ref<any>,
+  Extend extends object,
+  Options extends ExtendRefOptions<false>
+>(ref: R, extend: Extend, options: Options): ShallowUnwrapRef<Extend> & R
+/**
+ * Overlad 2: Unwrap unset or set to true
+ */
+export declare function extendRef<
+  R extends Ref<any>,
+  Extend extends object,
+  Options extends ExtendRefOptions
+>(ref: R, extend: Extend, options: Options): Extend & R
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/extendRef/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/extendRef/index.md)
+
+
+<!--FOOTER_ENDS-->

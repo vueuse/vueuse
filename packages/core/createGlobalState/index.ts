@@ -1,16 +1,23 @@
 import { createApp, reactive } from 'vue-demi'
+import { defaultDocument } from '../_configurable'
 
 function withScope<T extends object>(factory: () => T): T {
-  const container = document.createElement('div')
-
   let state: T = null as any
 
-  createApp({
-    setup() {
-      state = reactive(factory()) as T
-    },
-    render: () => null,
-  }).mount(container)
+  const document = defaultDocument
+
+  if (document) {
+    const container = document.createElement('div')
+    createApp({
+      setup() {
+        state = reactive(factory()) as T
+      },
+      render: () => null,
+    }).mount(container)
+  }
+  else {
+    state = reactive(factory()) as T
+  }
 
   return state
 }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineComponent, onMounted, Ref, ref } from 'vue-demi'
 import { useSubscription } from '../useSubscription'
-import { from, fromEvent } from './index'
-import { toObserver } from '../toObserver/index'
+import { toObserver } from '../toObserver'
+import { from, fromEvent } from '.'
 import { interval } from 'rxjs'
 import {
   mapTo,

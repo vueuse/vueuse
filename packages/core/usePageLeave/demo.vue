@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { usePageLeave } from '.'
 
-const isLeft = usePageLeave({
-  window = window.parent,
-})
+const isLeft = usePageLeave()
 </script>
 
 <template>
-  <div>
-    <pre lang="json">{{ { isLeft } }}</pre>
-  </div>
+  <pre lang="json">{{ { isLeft } }}</pre>
 </template>

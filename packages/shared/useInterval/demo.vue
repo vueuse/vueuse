@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { useInterval } from '.'
 
-return useInterval(200)
+const { counter } = useInterval(200)
 </script>
 
 <template>

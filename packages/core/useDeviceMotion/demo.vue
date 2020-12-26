@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { defineComponent, reactive } from 'vue-demi'
+import { reactive } from 'vue-demi'
 import { useDeviceMotion } from '.'
 
-const motion = reactive(
-  useDeviceMotion({
-    window: window.parent,
-  }),
-)
+const motion = reactive(useDeviceMotion())
 </script>
 
 <template>

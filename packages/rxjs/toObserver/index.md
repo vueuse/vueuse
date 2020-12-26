@@ -1,3 +1,17 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
+
+
+<!--HEAD_ENDS-->
+
+
 # toObserver
 
 > Sugar function to convert a ref in an observer
@@ -24,3 +38,18 @@ useSubscription(
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 ) 
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+export declare function toObserver<T>(value: Ref<T>): NextObserver<T>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.md)
+
+
+<!--FOOTER_ENDS-->

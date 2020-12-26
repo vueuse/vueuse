@@ -1,3 +1,13 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useDevicePixelRatio
 
 > Reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)
@@ -17,3 +27,28 @@ export default {
   },
 }
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+/**
+ * Reactively track `window.devicePixelRatio`.
+ *
+ * @see   {@link https://vueuse.js.org/useDevicePixelRatio}
+ * @param options
+ */
+export declare function useDevicePixelRatio({
+  window,
+}?: ConfigurableWindow): {
+  pixelRatio: Ref<number>
+}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useDevicePixelRatio/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useDevicePixelRatio/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useDevicePixelRatio/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { useDevicePixelRatio } from '.'
 
-const pixelRatio = useDevicePixelRatio({ window: window.parent })
+const pixelRatio = useDevicePixelRatio()
 </script>
 
 <template>

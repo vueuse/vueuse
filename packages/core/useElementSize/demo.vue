@@ -7,13 +7,11 @@ const { width, height } = useElementSize(el)
 </script>
 
 <template>
-  <div>
-    <pre>
-      width: {{ width }}
-      height: {{ height }}
-    </pre>
-    <textarea ref="el" disabled />
-  </div>
+  <pre>
+    width: {{ width }}
+    height: {{ height }}
+  </pre>
+  <textarea ref="el" disabled />
 </template>
 
 <style scoped>

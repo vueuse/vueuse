@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useCssVar } from '.'
 
 const el = ref(null)
 const color = useCssVar('--color', el)
 
 const switchColor = () => {
-  if (color.value === '#df8543') color.value = '#7fa998'
-  else color.value = '#df8543'
+  if (color.value === '#df8543')
+    color.value = '#7fa998'
+  else
+    color.value = '#df8543'
 }
 </script>
 

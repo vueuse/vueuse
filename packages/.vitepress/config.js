@@ -17,24 +17,19 @@ module.exports = {
 
 function getSideBar() {
   const links = {}
-  for (const { info, categories } of Object.values(indexes)) {
-    for (const [name, functions] of Object.entries(categories)) {
-      if (name.startsWith('_'))
-        continue
+  const { categories } = indexes
+  for (const name of categories) {
+    if (name.startsWith('_'))
+      continue
 
-      if (!links[name]) {
-        links[name] = {
-          text: name.startsWith('/') ? `@${info.display}` : name,
-          children: [],
-        }
-      }
+    const functions = indexes.functions.filter(i => i.category === name && !i.internal)
 
-      links[name].children.push(
-        ...functions.map(i => ({
-          text: i.name,
-          link: `/${info.name}/${i.name}/index.html`,
-        })),
-      )
+    links[name] = {
+      text: name,
+      children: functions.map(i => ({
+        text: i.name,
+        link: `/${i.package}/${i.name}/index.html`,
+      })),
     }
   }
   return Object.values(links)

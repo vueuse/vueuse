@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useClipboard } from '.'
 import { usePermission } from '..'
+
+const input = ref('')
 
 const { text, isSupported, copy } = useClipboard()
 const permissionRead = usePermission('clipboard-read')
 const permissionWrite = usePermission('clipboard-write')
-const input = ref('')
 </script>
 
 <template>

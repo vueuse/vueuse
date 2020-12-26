@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useTimeoutFn } from '.'
 
 const defaultText = 'Please wait 3 seconds'
@@ -12,13 +12,11 @@ const restart = () => {
   text.value = defaultText
   start()
 }
-
-const restart, text
 </script>
 
 <template>
-  <div>
-    <p>{{ text }}</p>
-    <button @click="restart()">Resetart</button>
-  </div>
+  <p>{{ text }}</p>
+  <button @click="restart()">
+    Restart
+  </button>
 </template>

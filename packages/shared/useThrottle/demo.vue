@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useThrottle } from '.'
 
 const input = ref('')
@@ -9,13 +9,11 @@ const updated = ref(0)
 watch(throttled, () => {
   updated.value += 1
 })
-
-const input, throttled, updated
 </script>
 
 <template>
   <div>
-    <input v-model="input" placeholder="Try to type anything..." />
+    <input v-model="input" placeholder="Try to type anything...">
     <note>Delay is set to 1000ms for this demo.</note>
 
     <p>Throttled: {{ throttled }}</p>

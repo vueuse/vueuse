@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useResizeObserver } from '.'
 
 const el = ref(null)
@@ -10,24 +10,22 @@ useResizeObserver(el, (entries) => {
   const { width, height } = entry.contentRect
   text.value = `width: ${width}, height: ${height}`
 })
-
-const el, text
 </script>
 
 <template>
-  <div>
-    <textarea
-      ref="el"
-      style="
-        resize: both;
-        background: transparent;
-        padding: 10px;
-        border: 1px solid #ffffff33;
-        width: 300px;
-      "
-      disabled
-      >{{ text }}
-        </textarea
-    >
-  </div>
+  <textarea
+    ref="el"
+    v-model="text"
+    disabled
+  />
 </template>
+
+<style scoped>
+textarea {
+  resize: both;
+  background: transparent;
+  padding: 10px;
+  border: 1px solid #ffffff33;
+  width: 300px;
+}
+</style>

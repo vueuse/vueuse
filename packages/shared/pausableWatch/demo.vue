@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { pausableWatch } from '.'
 import { onStartTyping } from '../../core'
 
@@ -8,45 +8,47 @@ const log = ref('')
 
 const source = ref('')
 
-const clear = () => {
-  log.value = ''
-}
-
-const { pause, resume, isActive } = pausableWatch(
+const watcher = pausableWatch(
   source,
-  (v) => (log.value += `Changed to "${v}"\n`)
+  v => (log.value += `Changed to "${v}"\n`),
 )
 
 onStartTyping(() => input.value?.focus())
 
-const input,
-  log,
-  source,
-  clear,
-  pause = () => {
-    log.value += 'Paused\n'
-    pause()
-  },
-  resume = () => {
-    log.value += 'Resumed\n'
-    resume()
-  },
-  isActive
+const clear = () => {
+  log.value = ''
+}
+const pause = () => {
+  log.value += 'Paused\n'
+  watcher.pause()
+}
+const resume = () => {
+  log.value += 'Resumed\n'
+  watcher.resume()
+}
+
+const { isActive } = watcher
 </script>
 
 <template>
   <div>
     <input
-      v-model="source"
       ref="input"
+      v-model="source"
       placeholder="Type something to trigger the watch"
-    />
+    >
 
-    <button @click="pause" :disabled="!isActive" class="orange">Pause</button>
-    <button @click="resume" :disabled="isActive">Resume</button>
-    <button @click="clear">Clear Log</button>
+    <button :disabled="!isActive" class="orange" @click="pause">
+      Pause
+    </button>
+    <button :disabled="isActive" @click="resume">
+      Resume
+    </button>
+    <button @click="clear">
+      Clear Log
+    </button>
 
-    <br />
+    <br>
 
     <note>Log</note>
 

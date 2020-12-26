@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { onStartTyping } from '.'
 
 const input = ref<HTMLInputElement | null>(null)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, reactive, ref } from 'vue-demi'
+import { reactive, ref } from 'vue-demi'
 import { useElementBounding } from '.'
 
 const el = ref(null)

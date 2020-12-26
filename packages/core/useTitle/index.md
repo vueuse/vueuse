@@ -1,3 +1,13 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useTitle
 
 > Reactive document title.
@@ -31,3 +41,28 @@ const title = computed(() => {
 
 useTitle(title) // document title will match with the ref "title"
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+/**
+ * Reactive document title.
+ *
+ * @see   {@link https://vueuse.js.org/useTitle}
+ * @param newTitle
+ * @param options
+ */
+export declare function useTitle(
+  newTitle?: MaybeRef<string | null | undefined>,
+  { document }?: ConfigurableDocument
+): Ref<string | null | undefined>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/index.md)
+
+
+<!--FOOTER_ENDS-->

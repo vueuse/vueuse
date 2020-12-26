@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { useDeviceLight } from '.'
 
-const light = useDeviceLight({
-  window: window.parent,
-})
+const light = useDeviceLight()
 </script>
 
 <template>
-  <div>
-    <pre lang="json">{{ JSON.stringify({ light }, null, 2) }}</pre>
-  </div>
+  <pre lang="json">{{ JSON.stringify({ light }, null, 2) }}</pre>
 </template>

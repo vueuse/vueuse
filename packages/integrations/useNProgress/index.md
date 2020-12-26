@@ -1,3 +1,17 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
+
+
+<!--HEAD_ENDS-->
+
+
 # useNProgress
 
 > Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
@@ -44,3 +58,34 @@ useNProgress(null, {
   // ...
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+/**
+ * Reactive progress bar.
+ *
+ * @see   {@link https://vueuse.js.org/useNProgress}
+ * @param currentProgress
+ * @param options
+ */
+export declare function useNProgress(
+  currentProgress?: MaybeRef<number | null | undefined>,
+  options?: NProgressOptions | undefined
+): {
+  isLoading: Ref<boolean | null>
+  progress: Ref<number | null | undefined>
+  start: () => void
+  done: () => void
+  remove: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
+
+
+<!--FOOTER_ENDS-->

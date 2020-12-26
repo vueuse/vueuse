@@ -1,3 +1,17 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
+
+
+<!--HEAD_ENDS-->
+
+
 # from / fromEvent
 
 > Two wrappers around of the original functions to allow use ref objects
@@ -24,3 +38,24 @@ useSubscription(
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+export declare function from<T>(
+  value: ObservableInput<T> | Ref<T>
+): Observable<T>
+export declare function fromEvent<T extends HTMLElement>(
+  value: Ref<T>,
+  event: string
+): Observable<Event>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.md)
+
+
+<!--FOOTER_ENDS-->

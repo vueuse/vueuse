@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { useTitle } from '.'
 
-const title = useTitle(null, { document = window.parent.document })
+const title = useTitle(null)
 </script>
 
 <template>
-  <div>
-    <note>Title</note>
-    <input v-model="title" />
-  </div>
+  <note>Title</note>
+  <input v-model="title">
 </template>

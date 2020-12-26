@@ -28,13 +28,7 @@ import NextAndPrevLinks from './NextAndPrevLinks.vue'
 
 @media (min-width: 720px) {
   .page {
-    margin-left: 16.4rem;
-  }
-}
-
-@media (min-width: 960px) {
-  .page {
-    margin-left: 20rem;
+    margin-left: var(--sidebar-width);
   }
 }
 

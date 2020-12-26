@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, onMounted, Ref, ref } from 'vue-demi'
-import { useSubscription } from '../useSubscription'
-import { toObserver } from '../toObserver/index'
+import { onMounted, Ref, ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import {
   mapTo,
@@ -10,6 +8,8 @@ import {
   startWith,
   map,
 } from 'rxjs/operators'
+import { useSubscription } from '../useSubscription'
+import { toObserver } from '.'
 import { fromEvent, from } from '../from'
 
 const count = ref(0)
@@ -30,12 +30,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <button @click="count++">
-      count is: {{ count }}
-    </button>
-    <button ref="button">
-      stop
-    </button>
-  </div>
+  <button @click="count++">
+    count is: {{ count }}
+  </button>
+  <button ref="button">
+    stop
+  </button>
 </template>

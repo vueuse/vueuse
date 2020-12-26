@@ -17,13 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmit } from "vue";
-import NavBarTitle from "./NavBarTitle.vue";
-import NavLinks from "./NavLinks.vue";
-import DarkModeSwitch from "./DarkModeSwitch.vue";
-import ToggleSideBarButton from "./ToggleSideBarButton.vue";
+import { defineEmit } from 'vue'
+import NavBarTitle from './NavBarTitle.vue'
+import NavLinks from './NavLinks.vue'
+import DarkModeSwitch from './DarkModeSwitch.vue'
+import ToggleSideBarButton from './ToggleSideBarButton.vue'
 
-defineEmit(["toggle"]);
+defineEmit(['toggle'])
 </script>
 
 <style scoped>
@@ -39,6 +39,7 @@ defineEmit(["toggle"]);
   border-bottom: 1px solid var(--c-divider);
   padding: 0.7rem 1.5rem 0.7rem 4rem;
   height: var(--header-height);
+  background-color: var(--c-bg);
 }
 
 @media (min-width: 720px) {

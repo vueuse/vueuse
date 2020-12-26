@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useMutationObserver } from '.'
 
 const el = ref(null)
-const messages = ref([])
+const messages = ref<string[]>([])
 const className = ref({})
 const style = ref({})
 
@@ -12,13 +12,12 @@ useMutationObserver(
   (mutations) => {
     const mutation = mutations[0]
 
-    if (!mutation) return
+    if (!mutation)
+      return
 
-    messages.value.push(mutation.attributeName)
+    messages.value.push(mutation.attributeName!)
   },
-  {
-    attributes: true,
-  }
+  { attributes: true },
 )
 
 setTimeout(() => {
@@ -27,13 +26,12 @@ setTimeout(() => {
     test2: true,
   }
 }, 1000)
+
 setTimeout(() => {
   style.value = {
     backgroundColor: 'red',
   }
 }, 1550)
-
-const el, messages, className, style
 </script>
 
 <template>

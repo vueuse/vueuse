@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useThrottleFn } from '.'
 
 const updated = ref(0)
@@ -12,13 +12,13 @@ const clickedFn = () => {
   clicked.value += 1
   throttledFn()
 }
-
-const clicked, clickedFn, throttledFn, updated
 </script>
 
 <template>
   <div>
-    <button @click="clickedFn">Smash me!</button>
+    <button @click="clickedFn">
+      Smash me!
+    </button>
     <note>Delay is set to 1000ms for this demo.</note>
 
     <p>Button clicked: {{ clicked }}</p>

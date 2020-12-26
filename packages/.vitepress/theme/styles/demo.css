@@ -1,0 +1,18 @@
+.demo {
+  --width: 100vw;
+  --margin-left: -1.5rem;
+
+  width: var(--width);
+  margin-left: var(--margin-left);
+  background: rgba(125,125,125,0.04);
+  padding: 1em 2em;
+  border-bottom: 1px solid var(--c-divider);
+}
+
+@media (min-width: 720px) {
+  .demo {
+    --width: calc(100vw - var(--sidebar-width));
+    --content-width: min(48rem, var(--width));
+    --margin-left: calc(calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem);
+  }
+}

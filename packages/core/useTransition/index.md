@@ -1,3 +1,13 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useTransition
 
 > Transition between values
@@ -64,3 +74,41 @@ useTransition(baseNumber, {
   transition: easeInOutElastic,
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+declare type CubicBezierPoints = [number, number, number, number]
+declare type EasingFunction = (x: number) => number
+interface TransitionOptions {
+  duration?: number
+  transition?: EasingFunction | CubicBezierPoints
+}
+/**
+ * Common transitions
+ *
+ * @see   {@link https://easings.net}
+ */
+export declare const TransitionPresets: Record<string, CubicBezierPoints>
+/**
+ * Transition between values.
+ *
+ * @see   {@link https://vueuse.js.org/useTransition}
+ * @param source
+ * @param options
+ */
+export declare function useTransition(
+  source: Ref<number>,
+  options?: TransitionOptions
+): Ref<number>
+export {}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/index.md)
+
+
+<!--FOOTER_ENDS-->

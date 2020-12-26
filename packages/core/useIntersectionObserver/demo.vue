@@ -16,18 +16,16 @@ const stopObserver = useIntersectionObserver(
 </script>
 
 <template>
-  <div>
-    <div ref="root" class="root">
-      <p style="text-align: center">
-        Scroll me!
-      </p>
-      <div ref="target" class="target">
-        <h1>Hello world</h1>
-      </div>
+  <div ref="root" class="root">
+    <p class="text-center">
+      Scroll me!
+    </p>
+    <div ref="target" class="target">
+      <h1>Hello world</h1>
     </div>
-    <div class="text-center">
-      {{ isVisible ? "Inside the viewport" : "Outside the viewport" }}
-    </div>
+  </div>
+  <div class="text-center">
+    {{ isVisible ? "Inside the viewport" : "Outside the viewport" }}
   </div>
 </template>
 

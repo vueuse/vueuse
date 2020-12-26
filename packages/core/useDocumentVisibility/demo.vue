@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useTimeoutFn } from '@vueuse/shared'
-import { defineComponent, ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useDocumentVisibility } from '.'
+import { useTimeoutFn } from '..'
 
 const startMessage = 'Minimize this page or change the tab and return'
 const message = ref(startMessage)

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { createGlobalState } from '.'
 import { useStorage } from '../useStorage'
 

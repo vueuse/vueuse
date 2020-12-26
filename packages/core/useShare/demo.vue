@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useShare } from '.'
 
 const options = ref({
@@ -7,11 +7,10 @@ const options = ref({
   text: 'Collection of essential Vue Composition Utilities!',
   url: location.href,
 })
-const { share, isSupported } = useShare(options)
 
-const startShare = () => share().catch((err) => err),
-  options,
-  isSupported
+const startShare = () => share().catch(err => err)
+
+const { share, isSupported } = useShare(options)
 </script>
 
 <template>
@@ -21,7 +20,7 @@ const startShare = () => share().catch((err) => err),
       v-model="options.text"
       type="text"
       placeholder="Note"
-    />
+    >
     <button :disabled="!isSupported" @click="startShare">
       {{ isSupported ? 'Share' : 'Web share not supported!' }}
     </button>

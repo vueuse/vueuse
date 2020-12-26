@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios'
 import YAML from 'js-yaml'
-import { defineComponent } from 'vue-demi'
 import { useAsyncState } from '.'
 
 const { state, ready } = useAsyncState(

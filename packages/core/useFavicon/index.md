@@ -1,3 +1,13 @@
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useFavicon
 
 > Reactive favicon
@@ -35,3 +45,32 @@ const icon = useFavicon(source)
 console.log(icon === source) // true
 ```
 
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+export interface FaviconOptions extends ConfigurableDocument {
+  baseUrl?: string
+  rel?: string
+}
+/**
+ * Reactive favicon.
+ *
+ * @see   {@link https://vueuse.js.org/useFavicon}
+ * @param newIcon
+ * @param options
+ */
+export declare function useFavicon(
+  newIcon?: MaybeRef<string | null | undefined>,
+  options?: FaviconOptions
+): Ref<string | null | undefined>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useFavicon/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useFavicon/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useFavicon/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,7 +1,7 @@
 <template>
   <button class="switch" @click="toggle">
-    <moon v-if="isDark" />
-    <sun v-else />
+    <moon v-show="isDark" />
+    <sun v-show="!isDark" />
   </button>
 </template>
 

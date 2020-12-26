@@ -1,3 +1,7 @@
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
 # tryOnUnmounted
 
 > Safe `onUnmounted`. Call `onUnmounted()` if it's inside a component lifecycle, if not, do nothing
@@ -11,3 +15,23 @@ tryOnUnmounted(() => {
 
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+## Typing
+
+```typescript
+/**
+ * Call onUnmounted() if it's inside a component lifecycle, if not, do nothing
+ *
+ * @param fn
+ */
+export declare function tryOnUnmounted(fn: Fn): void
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/tryOnUnmounted/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/tryOnUnmounted/index.md)
+
+
+<!--FOOTER_ENDS-->

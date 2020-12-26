@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, reactive } from 'vue-demi'
+import { reactive } from 'vue-demi'
 import { useNetwork } from '.'
 
 const network = reactive(useNetwork())
