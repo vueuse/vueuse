@@ -62,5 +62,19 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toEqual(['bar1', 'bar2'])
       })
     })
+
+    test('generic url search params', () => {
+      useSetup(() => {
+        interface CustomUrlParams extends Record<string, any> {
+          customFoo: number | undefined
+        }
+
+        const params = useUrlSearchParams<CustomUrlParams>(mode)
+        expect(params.customFoo).toBeUndefined()
+        params.customFoo = 42
+
+        expect(params.customFoo).toEqual(42)
+      })
+    })
   })
 })

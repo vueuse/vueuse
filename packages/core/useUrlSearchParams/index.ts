@@ -12,7 +12,7 @@ export type UrlParams = Record<string, string[] | string>
  * @param mode
  * @param options
  */
-export function useUrlSearchParams<T extends UrlParams = UrlParams>(
+export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   mode: 'history'|'hash' = 'history',
   options: ConfigurableWindow = {},
 ): T {
@@ -44,8 +44,7 @@ export function useUrlSearchParams<T extends UrlParams = UrlParams>(
       Object.keys(paramsMap).forEach(key => delete paramsMap[key])
       for (const key of params.keys()) {
         const paramsForKey = params.getAll(key)
-        // FIXME: strange typing issue
-        paramsMap[key] = paramsForKey.length > 1 ? paramsForKey : (params.get(key) || '')
+        writeToParamsMap(key, paramsForKey.length > 1 ? paramsForKey : (params.get(key) || ''))
       }
     }
 
@@ -62,6 +61,8 @@ export function useUrlSearchParams<T extends UrlParams = UrlParams>(
 
   let params: URLSearchParams = read()
   const paramsMap: T = reactive(Object.assign({}))
+
+  const writeToParamsMap = (key: keyof T, value: any) => paramsMap[key] = value
 
   const { pause, resume } = pausableWatch(
     paramsMap,
