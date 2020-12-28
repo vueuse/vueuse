@@ -23,9 +23,9 @@ export function usePageLeave(options: ConfigurableWindow = {}) {
   }
 
   if (window) {
-    useEventListener(window, 'mouseout', handler)
-    useEventListener(window.document, 'mouseleave', handler)
-    useEventListener(window.document, 'mouseenter', handler)
+    useEventListener(window, 'mouseout', handler, { passive: true })
+    useEventListener(window.document, 'mouseleave', handler, { passive: true })
+    useEventListener(window.document, 'mouseenter', handler, { passive: true })
   }
 
   return isLeft

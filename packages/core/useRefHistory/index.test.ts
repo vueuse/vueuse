@@ -1,10 +1,10 @@
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../_tests'
 
 describe('useRefHistory - sync', () => {
   test('sync: should record', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history } = useRefHistory(v, { flush: 'sync' })
 
@@ -20,7 +20,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: should be able to undo and redo', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
 
@@ -68,9 +68,9 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: object with deep', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ foo: 'bar' })
-      const { history } = useRefHistory(v, { flush: 'sync', deep: true })
+      const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
 
       expect(history.value.length).toBe(1)
       expect(history.value[0].snapshot.foo).toBe('bar')
@@ -83,11 +83,45 @@ describe('useRefHistory - sync', () => {
       // different references
       expect(history.value[1].snapshot.foo).toBe('bar')
       expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+
+      undo()
+
+      // history references should not be equal to the source
+      expect(history.value[0].snapshot).not.toBe(v.value)
+    })
+  })
+
+  test('sync: shallow watch with clone', () => {
+    useSetup(() => {
+      const v = ref({ foo: 'bar' })
+      const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
+
+      expect(history.value.length).toBe(1)
+      expect(history.value[0].snapshot.foo).toBe('bar')
+
+      v.value.foo = 'foo'
+
+      expect(history.value.length).toBe(1)
+      expect(history.value[0].snapshot.foo).toBe('bar')
+
+      v.value = { foo: 'foo' }
+
+      expect(history.value.length).toBe(2)
+      expect(history.value[0].snapshot.foo).toBe('foo')
+
+      // different references
+      expect(history.value[1].snapshot.foo).toBe('bar')
+      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+
+      undo()
+
+      // history references should not be equal to the source
+      expect(history.value[0].snapshot).not.toBe(v.value)
     })
   })
 
   test('sync: dump + parse', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref({ a: 'bar' })
       const { history, undo } = useRefHistory(v, {
         flush: 'sync',
@@ -184,7 +218,7 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: reset', () => {
-    renderHook(() => {
+    useSetup(() => {
       const v = ref(0)
       const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 

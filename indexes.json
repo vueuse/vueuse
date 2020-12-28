@@ -206,6 +206,13 @@
           "depreacted": false
         },
         {
+          "name": "useManualRefHistory",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usemanualrefhistory",
+          "description": "manually track the change history of a ref when the using calls `commit()`",
+          "depreacted": false
+        },
+        {
           "name": "useRefHistory",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--userefhistory",
@@ -518,6 +525,13 @@
           "docs": "https://vueuse.js.org/?path=/story/browser--usetitle",
           "description": "reactive document title",
           "depreacted": false
+        },
+        {
+          "name": "useUrlSearchParams",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--useurlsearchparams",
+          "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)",
+          "depreacted": false
         }
       ],
       "Misc": [
@@ -628,12 +642,14 @@
         "axios",
         "universal-cookie",
         "qrcode",
-        "http"
+        "http",
+        "nprogress"
       ],
       "globals": {
         "axios": "axios",
         "universal-cookie": "UniversalCookie",
-        "qrcode": "QRCode"
+        "qrcode": "QRCode",
+        "nprogress": "nprogress"
       }
     },
     "dir": "packages/integrations",
