@@ -31,6 +31,7 @@ defineDemo(
   defineComponent({
     setup() {
       const baseNumber = ref(0)
+      const duration = ref(1000)
 
       const easeOutElastic = (n: number) => {
         return n === 0
@@ -41,12 +42,12 @@ defineDemo(
       }
 
       const cubicBezierNumber = useTransition(baseNumber, {
-        duration: 1500,
+        duration,
         transition: [0.75, 0, 0.25, 1],
       })
 
       const customFnNumber = useTransition(baseNumber, {
-        duration: 1500,
+        duration,
         transition: easeOutElastic,
       })
 
@@ -57,6 +58,7 @@ defineDemo(
         baseNumber,
         cubicBezierNumber,
         customFnNumber,
+        duration,
         track,
         sled,
       }
@@ -65,6 +67,19 @@ defineDemo(
     template: html`
       <div>
         <button @click="toggle">Transition</button>
+
+        <p class="mt-2">
+          Duration:
+          <label class="ml-2">
+            <input v-model="duration" type="radio" :value="1000" /> 1000ms
+          </label>
+          <label class="ml-2">
+            <input v-model="duration" type="radio" :value="5000" /> 5000ms
+          </label>
+          <label class="ml-2">
+            <input v-model="duration" type="radio" :value="10000" /> 10000ms
+          </label>
+        </p>
 
         <p class="mt-2">
           Base number: <b>{{ baseNumber }}</b>
