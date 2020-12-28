@@ -525,6 +525,13 @@
           "docs": "https://vueuse.js.org/?path=/story/browser--usetitle",
           "description": "reactive document title",
           "depreacted": false
+        },
+        {
+          "name": "useUrlSearchParams",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--useurlsearchparams",
+          "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)",
+          "depreacted": false
         }
       ],
       "Misc": [
