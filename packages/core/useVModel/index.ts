@@ -11,7 +11,7 @@ import { computed, getCurrentInstance } from 'vue-demi'
 export function useVModel<P extends object, K extends keyof P>(
   props: P,
   key: K,
-  emit?: (name: string, value: any) => void
+  emit?: (name: string, value: any) => void,
 ) {
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
