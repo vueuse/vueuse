@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 💡 this function is also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
@@ -58,7 +53,7 @@ export declare function useAsyncState<T>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useAsyncState/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useAsyncState/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useAsyncState/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useAsyncState/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useAsyncState/index.md)
 
 
 <!--FOOTER_ENDS-->

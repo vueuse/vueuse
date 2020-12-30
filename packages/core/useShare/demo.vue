@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
 import { useShare } from '.'
+import { isClient } from '..'
 
 const options = ref({
   title: 'Vueuse',
   text: 'Collection of essential Vue Composition Utilities!',
-  url: location.href,
+  url: isClient ? location.href : '',
 })
 
 const startShare = () => share().catch(err => err)
