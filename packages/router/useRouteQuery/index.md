@@ -23,7 +23,7 @@ search.value = 'foobar' // router.replace({ query: { search: 'foobar' } })
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useRouteQuery(

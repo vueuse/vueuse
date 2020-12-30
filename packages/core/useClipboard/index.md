@@ -31,7 +31,7 @@ const { text, copy, isSupported } = useClipboard()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

@@ -51,7 +51,7 @@ export async function getFunctionFooter(pkg: string, name: string) {
 
   const types = await getTypeDefinition(pkg, name)
 
-  const typingSection = types && `## Typing\n\n\`\`\`typescript\n${types.trim()}\n\`\`\``
+  const typingSection = types && `## Type Declarations\n\n\`\`\`typescript\n${types.trim()}\n\`\`\``
 
   const links = ([
     ['Source', `${URL}/index.ts`],

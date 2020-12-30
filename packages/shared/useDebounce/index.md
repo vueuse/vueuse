@@ -45,7 +45,7 @@ console.log(debounced.value) // 'bar'
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useDebounce<T>(value: Ref<T>, ms?: number): Ref<T>

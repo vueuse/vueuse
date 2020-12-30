@@ -43,7 +43,7 @@ extraRef.value === 'new data'
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface ExtendRefOptions<Unwrap extends boolean = boolean> {

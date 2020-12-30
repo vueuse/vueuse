@@ -36,7 +36,7 @@ export default {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface ParallaxOptions extends ConfigurableWindow {

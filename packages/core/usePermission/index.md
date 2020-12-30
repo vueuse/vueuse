@@ -22,7 +22,7 @@ const microphoneAccess = usePermission('microphone')
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 declare type DescriptorNamePolyfill = "clipboard-read" | "clipboard-write"

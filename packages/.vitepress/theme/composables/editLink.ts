@@ -17,14 +17,13 @@ export function useEditLink() {
       repo,
       docsDir = '',
       docsBranch = 'master',
-      docsRepo = repo
+      docsRepo = repo,
     } = site.value.themeConfig
 
     const { relativePath } = page.value
 
-    if (!showEditLink || !relativePath || !repo) {
+    if (!showEditLink || !relativePath || !repo)
       return null
-    }
 
     return createUrl(repo, docsRepo, docsDir, docsBranch, relativePath)
   })
@@ -35,7 +34,7 @@ export function useEditLink() {
 
   return {
     url,
-    text
+    text,
   }
 }
 
@@ -44,7 +43,7 @@ function createUrl(
   docsRepo: string,
   docsDir: string,
   docsBranch: string,
-  path: string
+  path: string,
 ): string {
   return bitbucketRE.test(repo)
     ? createBitbucketUrl(repo, docsRepo, docsDir, docsBranch, path)
@@ -56,18 +55,18 @@ function createGitHubUrl(
   docsRepo: string,
   docsDir: string,
   docsBranch: string,
-  path: string
+  path: string,
 ): string {
   const base = isExternal(docsRepo)
     ? docsRepo
     : `https://github.com/${docsRepo}`
 
   return (
-    base.replace(endingSlashRE, '') +
-    `/edit` +
-    `/${docsBranch}/` +
-    (docsDir ? docsDir.replace(endingSlashRE, '') + '/' : '') +
-    path
+    `${base.replace(endingSlashRE, '')
+    }/edit`
+    + `/${docsBranch}/${
+      docsDir ? `${docsDir.replace(endingSlashRE, '')}/` : ''
+    }${path}`
   )
 }
 
@@ -76,16 +75,16 @@ function createBitbucketUrl(
   docsRepo: string,
   docsDir: string,
   docsBranch: string,
-  path: string
+  path: string,
 ): string {
   const base = isExternal(docsRepo) ? docsRepo : repo
 
   return (
-    base.replace(endingSlashRE, '') +
-    `/src` +
-    `/${docsBranch}/` +
-    (docsDir ? docsDir.replace(endingSlashRE, '') + '/' : '') +
-    path +
-    `?mode=edit&spa=0&at=${docsBranch}&fileviewer=file-view-default`
+    `${base.replace(endingSlashRE, '')
+    }/src`
+    + `/${docsBranch}/${
+      docsDir ? `${docsDir.replace(endingSlashRE, '')}/` : ''
+    }${path
+    }?mode=edit&spa=0&at=${docsBranch}&fileviewer=file-view-default`
   )
 }

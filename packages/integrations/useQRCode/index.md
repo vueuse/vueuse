@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
@@ -48,7 +43,7 @@ const qrcode = useQRCode(text)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**
@@ -66,7 +61,7 @@ export declare function useQRCode(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.md)
 
 
 <!--FOOTER_ENDS-->

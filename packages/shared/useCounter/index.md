@@ -26,7 +26,7 @@ const { count, inc, dec, set, reset } = useCounter()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

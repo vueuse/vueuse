@@ -48,7 +48,7 @@ console.log(icon === source) // true
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface FaviconOptions extends ConfigurableDocument {

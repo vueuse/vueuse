@@ -44,7 +44,7 @@ useTitle(title) // document title will match with the ref "title"
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

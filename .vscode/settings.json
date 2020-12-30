@@ -4,7 +4,6 @@
     "iframes",
     "vueuse"
   ],
-  "i18n-ally.localesPaths": [
-    "packages/i18n",
-  ]
+  "prettier.enable": false,
+  "vetur.validation.interpolation": false,
 }

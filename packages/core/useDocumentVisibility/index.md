@@ -22,7 +22,7 @@ const visibility = useDocumentVisibility()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

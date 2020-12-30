@@ -78,7 +78,7 @@ await when(ref).not.toBeTruthy()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface WhenToMatchOptions {

@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
@@ -41,7 +36,7 @@ useSubscription(
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function from<T>(
@@ -55,7 +50,7 @@ export declare function fromEvent<T extends HTMLElement>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.md)
 
 
 <!--FOOTER_ENDS-->

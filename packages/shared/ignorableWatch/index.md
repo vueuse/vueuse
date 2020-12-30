@@ -84,7 +84,7 @@ await nextTick() // logs: Changed to after!
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type IgnoredUpdater = (updater: () => void) => void

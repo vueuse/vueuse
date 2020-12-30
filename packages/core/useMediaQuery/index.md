@@ -23,7 +23,7 @@ const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

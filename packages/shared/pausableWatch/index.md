@@ -43,7 +43,7 @@ await nextTick() // Changed to hello!
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface PausableWatchReturn extends Pausable {

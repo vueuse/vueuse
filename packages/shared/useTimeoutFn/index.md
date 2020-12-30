@@ -22,7 +22,7 @@ const { isActive, start, stop } = useTimeoutFn(() => {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

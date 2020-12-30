@@ -22,7 +22,7 @@ const isLeft = usePageLeave()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

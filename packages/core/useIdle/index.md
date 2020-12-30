@@ -24,7 +24,7 @@ console.log(idle.value) // true or false
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface IdleOptions

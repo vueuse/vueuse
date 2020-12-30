@@ -22,7 +22,7 @@ const { timestamp, pause, resume } = useTimestamp({ offset: 0 })
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface TimestampOptions {

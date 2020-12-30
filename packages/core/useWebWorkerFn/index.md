@@ -71,7 +71,7 @@ This function is a Vue port of https://github.com/alewin/useWorker by Alessio Ko
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type WebWorkerStatus =

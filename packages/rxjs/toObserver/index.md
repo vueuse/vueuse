@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
@@ -41,7 +36,7 @@ useSubscription(
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function toObserver<T>(value: Ref<T>): NextObserver<T>
@@ -49,7 +44,7 @@ export declare function toObserver<T>(value: Ref<T>): NextObserver<T>
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/toObserver/index.md)
 
 
 <!--FOOTER_ENDS-->

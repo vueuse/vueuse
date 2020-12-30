@@ -35,7 +35,7 @@ console.log(network.isOnline)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type NetworkType =

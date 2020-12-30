@@ -41,7 +41,7 @@ export default {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {

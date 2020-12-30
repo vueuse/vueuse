@@ -39,7 +39,7 @@ export default {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface MouseInElementOptions extends MouseOptions {

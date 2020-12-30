@@ -26,7 +26,7 @@ const light = useDeviceLight()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

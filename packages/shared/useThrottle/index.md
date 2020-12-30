@@ -39,7 +39,7 @@ const throttled = useThrottle(input, 1000)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

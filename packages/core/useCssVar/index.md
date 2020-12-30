@@ -23,7 +23,7 @@ const color = useCssVar('--color', el)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

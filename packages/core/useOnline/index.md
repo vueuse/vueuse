@@ -22,7 +22,7 @@ const online = useOnline()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

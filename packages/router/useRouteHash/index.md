@@ -23,7 +23,7 @@ search.value = 'foobar' // router.replace({ hash: 'foobar' })
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useRouteHash(

@@ -37,7 +37,7 @@ export default defineComponent({
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

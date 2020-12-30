@@ -35,7 +35,7 @@ state.value = null
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type StorageLike = Pick<

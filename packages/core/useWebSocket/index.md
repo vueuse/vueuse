@@ -30,7 +30,7 @@ const { state, data, send, close, ws } = useWebSocket('ws://websocketurl')
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type WebSocketStatus =

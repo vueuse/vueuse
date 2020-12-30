@@ -34,7 +34,7 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

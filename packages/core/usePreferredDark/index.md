@@ -22,7 +22,7 @@ const isDark = usePreferredDark()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

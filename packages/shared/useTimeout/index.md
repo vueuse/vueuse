@@ -30,7 +30,7 @@ console.log(ready.value) // true
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

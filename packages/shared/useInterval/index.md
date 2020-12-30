@@ -23,7 +23,7 @@ const { counter } = useInterval(200)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useInterval(

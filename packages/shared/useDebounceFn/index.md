@@ -43,7 +43,7 @@ document.addEventLisenter('resize', debouncedFn)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

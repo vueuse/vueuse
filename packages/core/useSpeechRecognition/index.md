@@ -43,7 +43,7 @@ The following shows the default values of the options, they will be directly pas
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface SpeechRecognitionOptions {

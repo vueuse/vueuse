@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
@@ -36,7 +31,7 @@ useSubscription(
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useSubscription(subscription: Unsubscribable): void
@@ -44,7 +39,7 @@ export declare function useSubscription(subscription: Unsubscribable): void
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.md)
 
 
 <!--FOOTER_ENDS-->

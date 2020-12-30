@@ -183,7 +183,7 @@ Another option is to avoid mutating the original ref value using `arr.value = [.
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {

@@ -22,7 +22,7 @@ const { width, height } = useWindowSize()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface WindowSizeOptions extends ConfigurableWindow {

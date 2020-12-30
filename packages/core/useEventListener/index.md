@@ -22,7 +22,7 @@ useEventListener(document, 'visibilitychange', (evt) => { console.log(evt) })
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 interface InferEventTarget<Events> {

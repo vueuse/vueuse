@@ -24,7 +24,7 @@ const { pause, resume } = useRafFn((elapsed) => {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface RafFnOptions extends ConfigurableWindow {

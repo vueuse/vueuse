@@ -31,7 +31,7 @@ const { data, post, terminate } = useWebWorker('/path/to/worker.js')
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

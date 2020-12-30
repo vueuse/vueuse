@@ -22,7 +22,7 @@ const preferredColor = usePreferredColorScheme()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare type ColorSchemeType = "dark" | "light" | "no-preference"

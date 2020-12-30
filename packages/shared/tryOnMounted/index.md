@@ -18,7 +18,7 @@ tryOnMounted(() => {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

@@ -42,7 +42,7 @@ export default {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 declare const events: readonly ["mousedown", "touchstart"]

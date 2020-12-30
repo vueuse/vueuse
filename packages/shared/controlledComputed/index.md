@@ -40,7 +40,7 @@ console.log(computedRef.value) // 1
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

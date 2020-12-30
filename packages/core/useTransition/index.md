@@ -92,7 +92,7 @@ useTransition(baseNumber, {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 declare type CubicBezierPoints = [number, number, number, number]

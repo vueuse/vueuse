@@ -89,7 +89,7 @@ const userInfo = asyncComputed(
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

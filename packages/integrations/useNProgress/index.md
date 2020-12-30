@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
@@ -61,7 +56,7 @@ useNProgress(null, {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**
@@ -85,7 +80,7 @@ export declare function useNProgress(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
 
 
 <!--FOOTER_ENDS-->

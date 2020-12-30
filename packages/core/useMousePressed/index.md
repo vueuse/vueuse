@@ -57,7 +57,7 @@ export default {
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface MousePressedOptions extends ConfigurableWindow {

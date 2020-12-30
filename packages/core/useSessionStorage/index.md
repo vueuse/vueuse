@@ -12,7 +12,7 @@ Please refer to [`useStorage`](/?path=/story/state--usestorage)
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useSessionStorage(

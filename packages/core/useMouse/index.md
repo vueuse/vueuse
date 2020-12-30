@@ -29,7 +29,7 @@ const { x, y } = useMouse({ touch: false })
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface MouseOptions extends ConfigurableWindow {

@@ -604,6 +604,13 @@
       "description": "transition between values"
     },
     {
+      "name": "useUrlSearchParams",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useUrlSearchParams",
+      "category": "Browser",
+      "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)"
+    },
+    {
       "name": "useVModel",
       "package": "core",
       "docs": "https://vueuse.js.org/core/useVModel",

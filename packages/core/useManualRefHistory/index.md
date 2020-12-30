@@ -108,7 +108,7 @@ refHistory.clear() // explicitly clear all the history
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface UseRefHistoryRecord<T> {

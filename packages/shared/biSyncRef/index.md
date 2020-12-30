@@ -43,7 +43,7 @@ console.log(b.value) // bar
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

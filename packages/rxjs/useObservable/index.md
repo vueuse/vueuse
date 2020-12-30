@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
@@ -36,7 +31,7 @@ const count = useObservable(
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export declare function useObservable<H>(
@@ -46,7 +41,7 @@ export declare function useObservable<H>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.md)
 
 
 <!--FOOTER_ENDS-->

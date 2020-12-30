@@ -7,9 +7,7 @@ import { useParallax } from '.'
 const target = ref(null)
 const isMobile = useMediaQuery('(max-width: 700px)')
 
-const parallax = reactive(
-  useParallax(target, { window: isMobile.value ? window : window }),
-)
+const parallax = reactive(useParallax(target))
 
 const targetStyle: CSSProperties = {
   display: 'flex',

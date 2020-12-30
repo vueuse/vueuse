@@ -26,7 +26,7 @@ const { status, data, error, close } = useEventSource('https://event-source-url'
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**

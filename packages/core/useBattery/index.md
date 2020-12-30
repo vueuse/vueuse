@@ -38,7 +38,7 @@ Our applications normally are not empathetic to battery level, we can make a few
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface BatteryManager extends EventTarget {

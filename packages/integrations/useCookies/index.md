@@ -1,9 +1,4 @@
-<!--DEMO_STARTS-->
-<script setup>
-import Demo from './demo.vue'
-</script>
-<DemoContainer><Demo/></DemoContainer>
-<!--DEMO_ENDS-->
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
@@ -102,7 +97,7 @@ Create a `universal-cookie` instance using request (default is window.document.c
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /// <reference types="node" />
@@ -181,7 +176,7 @@ export declare function useCookies(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.md)
 
 
 <!--FOOTER_ENDS-->

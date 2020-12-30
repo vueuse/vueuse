@@ -87,7 +87,7 @@ console.log(target.value) // foo <- changed!
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface SyncRefOptions extends ConfigurableFlushSync {

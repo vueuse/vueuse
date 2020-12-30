@@ -32,7 +32,7 @@ const { coords, locatedAt, error } = useGeolocation()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 export interface GeolocationOptions

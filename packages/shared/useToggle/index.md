@@ -26,7 +26,7 @@ const [value, toggle] = useToggle()
 
 
 <!--FOOTER_STARTS-->
-## Typing
+## Type Declarations
 
 ```typescript
 /**
