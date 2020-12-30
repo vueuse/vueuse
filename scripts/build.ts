@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import consola from 'consola'
 import { activePackages } from './packages'
 import { execSync as exec } from 'child_process'
-import { updateImport } from './update'
+import { updateImport } from './utils'
 import indexes from './function-indexes'
 
 const rootDir = path.resolve(__dirname, '..')
@@ -32,7 +32,7 @@ async function build() {
   exec('yarn run clean', { stdio: 'inherit' })
 
   consola.info('Generate Imports')
-  updateImport(indexes)
+  await updateImport(indexes)
 
   consola.info('Rollup')
   exec('yarn run build:rollup', { stdio: 'inherit' })
