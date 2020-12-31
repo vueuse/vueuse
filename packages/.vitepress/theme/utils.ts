@@ -1,5 +1,3 @@
-import type { Route } from 'vitepress'
-
 export const hashRE = /#.*$/
 export const extRE = /(index)?\.(md|html)$/
 export const endingSlashRE = /\/$/
@@ -17,7 +15,7 @@ export function isExternal(path: string): boolean {
   return outboundRE.test(path)
 }
 
-export function isActive(route: Route, path?: string): boolean {
+export function isActive(route: any, path?: string): boolean {
   if (path === undefined)
     return false
 

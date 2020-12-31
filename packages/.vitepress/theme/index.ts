@@ -11,6 +11,7 @@ import './styles/demo.css'
 import './styles/custom-blocks.css'
 import './styles/sidebar-links.css'
 import './styles/prism-nord.css'
+import './styles/utils.css'
 
 const theme: Theme = {
   Layout,

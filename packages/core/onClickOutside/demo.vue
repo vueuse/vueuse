@@ -30,7 +30,7 @@ onClickOutside(
     <button @click="modal = true">
       Open Modal
     </button>
-    <div class="relative" style="display: inline-block">
+    <div class="relative inline-block ml-2">
       <button @click="dropdown = true">
         Open Dropdown
       </button>

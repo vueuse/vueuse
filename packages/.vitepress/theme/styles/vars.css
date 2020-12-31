@@ -4,6 +4,8 @@
   /**
    * Colors
    * --------------------------------------------------------------------- */
+  --c-bg: #fff;
+  --c-bg-secondary: #f3f5f7;
 
   --c-white: #ffffff;
   --c-black: #000000;
@@ -16,7 +18,14 @@
   --c-text-light-3: #90a4b7;
 
   --c-brand: #3eaf7c;
+  --c-brand-active: #37a372;
+  --c-brand-dark: #30855e;
   --c-brand-light: #4abf8a;
+
+  --c-disabled-bg: #e5e5e5;
+  --c-disabled-fg: #666;
+
+  --code-inline-bg-color: rgba(27, 31, 35, .05);
 
   /**
    * Typography
@@ -55,12 +64,17 @@
 
 html.dark {
   --c-bg: #111;
+  --c-bg-secondary: #222;
   --c-text: #f5f7fa;
   --c-text-light: #f9f9f9;
 
   --c-divider-light: rgba(200, 200, 200, .12);
   --c-divider-dark: rgba(200, 200, 200, .48);
   --code-bg-color: #191919;
+  --code-inline-bg-color: rgba(255, 255, 255, .08);
+
+  --c-disabled-bg: #333;
+  --c-disabled-fg: #aaa;
 }
 
 /** Fallback Styles */

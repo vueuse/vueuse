@@ -1,14 +1,14 @@
 .custom-block.tip,
 .custom-block.warning,
 .custom-block.danger {
-  margin: 1rem 0;
+  margin: 2rem 0 1rem 0;
   border-left: .5rem solid;
   padding: .1rem 1.5rem;
   overflow-x: auto;
 }
 
 .custom-block.tip {
-  background-color: #f3f5f7;
+  background-color: var(--c-bg-secondary);
   border-color: #42b983;
 }
 
@@ -65,6 +65,5 @@
 }
 
 .custom-block-title {
-  margin-bottom: -.4rem;
-  font-weight: 600;
+  display: none;
 }

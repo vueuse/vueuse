@@ -1,8 +1,11 @@
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
+::: tip
 💡 this function is also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
 
+
+:::
 
 <!--HEAD_ENDS-->
 

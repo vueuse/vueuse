@@ -54,6 +54,7 @@ li > div[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  background: none;
 }
 
 [class*='language-'] pre {

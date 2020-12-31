@@ -5,7 +5,5 @@ const { timestamp } = useTimestamp()
 </script>
 
 <template>
-  <div>
-    <p>Now: {{ timestamp }}</p>
-  </div>
+  <div>Timestamp: {{ timestamp }}</div>
 </template>

@@ -170,16 +170,16 @@ table {
 }
 
 tr {
-  border-top: 1px solid #dfe2e5;
+  border-top: 1px solid var(--c-divider-light);
 }
 
 tr:nth-child(2n) {
-  background-color: #f6f8fa;
+  background-color: var(--code-inline-bg-color);
 }
 
 th,
 td {
-  border: 1px solid #dfe2e5;
+  border: 1px solid var(--c-divider-light);
   padding: 0.6em 1em;
 }
 

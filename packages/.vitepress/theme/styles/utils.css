@@ -1,0 +1,12 @@
+.text-center {
+  text-align: center;
+}
+.inline-block {
+  display: inline-block;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.relative {
+  position: relative;
+}

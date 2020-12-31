@@ -36,11 +36,14 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
 export async function getFunctionHead(pkg: string, name: string, indexes: PackageIndexes) {
   const isUtils = indexes.functions.find(i => i.name === name)?.category === 'Utilities'
 
-  const head = isUtils
+  let head = isUtils
     ? `💡 this function is also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
     : pkg !== 'core' && pkg !== 'shared'
       ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
       : ''
+
+  if (head)
+    head = `::: tip\n${head}\n:::\n`
 
   return head
 }
@@ -96,7 +99,7 @@ export async function readIndexes() {
 
     const pkg: VueUsePackage = {
       ...info,
-      dir: relative(dir, DIR_ROOT),
+      dir: relative(DIR_ROOT, dir),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
     }
 

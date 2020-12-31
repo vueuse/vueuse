@@ -7,5 +7,5 @@ const { pause, resume } = useRafFn(() => count.value += 1)
 </script>
 
 <template>
-  <p>Count: {{ count }}</p>
+  <div>Count: {{ count }}</div>
 </template>

@@ -1,8 +1,11 @@
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
+::: tip
 📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
 
+
+:::
 
 <!--HEAD_ENDS-->
 

@@ -8,7 +8,7 @@ const config: UserConfig = {
       'nprogress',
       'tslib',
       'universal-cookie',
-      'firebase',
+      // 'firebase',
       'rxjs',
       'axios',
     ],
