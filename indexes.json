@@ -3,13 +3,13 @@
     "shared": {
       "name": "shared",
       "display": "Shared utilities",
-      "dir": "/Users/antfu/Github/vueuse/packages/shared"
+      "dir": "packages/shared"
     },
     "core": {
       "name": "core",
       "display": "VueUse",
       "description": "Collection of essential Vue Composition Utilities",
-      "dir": "/Users/antfu/Github/vueuse/packages/core"
+      "dir": "packages/core"
     },
     "router": {
       "name": "router",
@@ -22,7 +22,7 @@
       "globals": {
         "vue-router": "VueRouter"
       },
-      "dir": "/Users/antfu/Github/vueuse/packages/router",
+      "dir": "packages/router",
       "docs": "https://vueuse.js.org/router/README.html"
     },
     "integrations": {
@@ -43,7 +43,7 @@
         "qrcode": "QRCode",
         "nprogress": "nprogress"
       },
-      "dir": "/Users/antfu/Github/vueuse/packages/integrations",
+      "dir": "packages/integrations",
       "docs": "https://vueuse.js.org/integrations/README.html"
     },
     "rxjs": {
@@ -59,7 +59,7 @@
         "rxjs": "rxjs",
         "rxjs/operators": "rxjs.operator"
       },
-      "dir": "/Users/antfu/Github/vueuse/packages/rxjs",
+      "dir": "packages/rxjs",
       "docs": "https://vueuse.js.org/rxjs/README.html"
     },
     "firebase": {
@@ -75,7 +75,7 @@
         "firebase": "firebase",
         "firebase/app": "firebase"
       },
-      "dir": "/Users/antfu/Github/vueuse/packages/firebase",
+      "dir": "packages/firebase",
       "docs": "https://vueuse.js.org/firebase/README.html"
     }
   },

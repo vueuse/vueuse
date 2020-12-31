@@ -1,4 +1,4 @@
-import { resolve, join } from 'path'
+import { resolve, join, relative } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
@@ -10,6 +10,7 @@ import prettier from 'prettier'
 const DOCS_URL = 'https://vueuse.js.org'
 const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
+const DIR_ROOT = resolve(__dirname, '..')
 const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
@@ -95,7 +96,7 @@ export async function readIndexes() {
 
     const pkg: VueUsePackage = {
       ...info,
-      dir,
+      dir: relative(dir, DIR_ROOT),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
     }
 
