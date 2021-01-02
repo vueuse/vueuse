@@ -13,7 +13,7 @@ defineDemo(
   },
   defineComponent({
     setup() {
-      const [twitchScriptTag] = useScriptTag(
+      useScriptTag(
         'https://player.twitch.tv/js/embed/v1.js',
         // This is called on script tag loaded.
         (el: HTMLScriptElement) => {
