@@ -1,6 +1,10 @@
-import { isString, MaybeRef, tryOnMounted } from '@vueuse/shared'
+import { isFunction, isString, MaybeRef, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
+
+export interface UseScriptTagOptions {
+  loadOnMounted?: boolean
+}
 
 /**
  * Async script tag loading.
@@ -10,14 +14,20 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
  */
 export function useScriptTag(
   src: MaybeRef<string>,
-  { document = defaultDocument }: ConfigurableDocument = {},
+  onLoaded: Function,
+  {
+    loadOnMounted = true,
+  }: UseScriptTagOptions = {},
+  {
+    document = defaultDocument,
+  }: ConfigurableDocument = {},
 ) {
   const scriptTag = ref<HTMLScriptElement | null>()
 
   /**
    * Load the script specified via `src`.
    */
-  const loadScript: Promise<HTMLScriptElement> = new Promise(
+  const loadScript = (): Promise<HTMLScriptElement> => new Promise(
     (resolve, reject) => {
       if (!document) {
         reject(new Error('No document found!'))
@@ -44,7 +54,7 @@ export function useScriptTag(
       else if (el.hasAttribute('data-loaded')) {
         scriptTag.value = el
         resolve(el)
-        return
+        return scriptTag.value
       }
 
       el.addEventListener('error', () => reject(new Error('Error while loading script!')))
@@ -56,14 +66,17 @@ export function useScriptTag(
         }
       })
 
-      if (shouldAppend) document.head.appendChild(el)
+      if (shouldAppend) {
+        scriptTag.value = document.head.appendChild(el)
+        return scriptTag.value
+      }
     },
   )
 
   /**
    * Unload the script specified by `src`.
    */
-  const unloadScript: Promise<boolean> = new Promise((resolve, reject) => {
+  const unloadScript = (): Promise<boolean> => new Promise((resolve, reject) => {
     if (!document) {
       reject(new Error('No document found!'))
       return
@@ -76,19 +89,24 @@ export function useScriptTag(
 
     const el: HTMLScriptElement | null | undefined = scriptTag.value
 
-    if (!el) {
-      reject(new Error('Script not loaded yet!'))
-      return
-    }
+    if (!el) return
 
     document.head.removeChild(el)
 
     resolve(true)
   })
 
-  tryOnMounted(async() => await loadScript)
+  tryOnMounted(async() => {
+    if (loadOnMounted) {
+      const el = await loadScript()
 
-  tryOnMounted(async() => await unloadScript)
+      if (onLoaded && isFunction(onLoaded)) onLoaded(el)
+    }
+  })
+
+  tryOnUnmounted(async() => {
+    if (loadOnMounted) await unloadScript()
+  })
 
   return [scriptTag, loadScript, unloadScript]
 }
