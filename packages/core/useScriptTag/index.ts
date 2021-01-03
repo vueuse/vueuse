@@ -105,7 +105,7 @@ export function useScriptTag(
   })
 
   tryOnUnmounted(async() => {
-    if (loadOnMounted) await unloadScript()
+    await unloadScript()
   })
 
   return [scriptTag, loadScript, unloadScript]
