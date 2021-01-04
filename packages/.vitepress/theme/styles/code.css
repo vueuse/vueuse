@@ -86,6 +86,7 @@ li > div[class*='language-'] {
   font-family: var(--code-font-family);
   font-size: var(--code-font-size);
   user-select: none;
+  overflow: hidden;
 }
 
 .highlight-lines .highlighted {
