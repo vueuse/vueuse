@@ -1,27 +1,53 @@
 # reactify
 
-> Convert plain function into reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+> Converts plain function into reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
 
 ## Usage
 
-This is an example of implementing a reactive [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
+Basic example
 
 ```ts
 import { reactify } from '@vueuse/core'
 
+// a plain function
+function add(a: number, b: number) {
+  return a + b
+}
+
+const reactiveAdd = reactify(add)
+
+const a = ref(1)
+const b = ref(2)
+
+// now it accept refs
+const sum = reactiveAdd(a, b)
+
+console.log(sum.value) // 3
+
+a.value = 5
+
+console.log(sum.value) // 7
+```
+
+An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
+
+```ts
+import { reactify } from '@vueuse/core'
+
+// converts plain function into reactive function
 const pow = reactify(Math.pow)
 const sqrt = reactify(Math.sqrt)
 const add = reactify((a: number, b: number) => a + b)
 
 const a = ref(3)
 const b = ref(4)
-
+// pythagorean theorem - 3² + 4² = 5²
 const c = sqrt(add(pow(a, 2), pow(b, 2)))
 console.log(c.value) // 5
 
+// 5:12:13
 a.value = 5
 b.value = 12
-
 console.log(c.value) // 13
 ```
 
