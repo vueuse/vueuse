@@ -34,14 +34,12 @@ An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia
 ```ts
 import { reactify } from '@vueuse/core'
 
-// converts plain function into reactive function
 const pow = reactify(Math.pow)
 const sqrt = reactify(Math.sqrt)
 const add = reactify((a: number, b: number) => a + b)
 
 const a = ref(3)
 const b = ref(4)
-// pythagorean theorem - 3² + 4² = 5²
 const c = sqrt(add(pow(a, 2), pow(b, 2)))
 console.log(c.value) // 5
 
