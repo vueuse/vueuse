@@ -21,10 +21,10 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     useSetup(() => {
-      const [twitchTagElement] = useScriptTag(src, () => {}, { loadOnMounted: true })
+      const { scriptTag } = useScriptTag(src, () => {}, { loadOnMounted: true })
 
       return {
-        twitchTagElement,
+        scriptTag,
       }
     })
 
@@ -44,16 +44,16 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     const vm = useSetup(() => {
-      const [twitchTagElement, twitchLoadScript, twitchUnloadScript] = useScriptTag(src, () => {}, { loadOnMounted: false })
+      const { scriptTag, loadScript, unloadScript } = useScriptTag(src, () => {}, { loadOnMounted: false })
 
       return {
-        twitchTagElement,
-        twitchLoadScript,
-        twitchUnloadScript,
+        scriptTag,
+        loadScript,
+        unloadScript,
       }
     })
 
-    await vm.twitchLoadScript(false)
+    await vm.loadScript(false)
 
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
 
@@ -63,7 +63,7 @@ describe('useScriptTag', () => {
 
     expect(removeChildListener).toBeCalled()
 
-    expect(vm.twitchTagElement).toBeUndefined()
+    expect(vm.scriptTag).toBeUndefined()
   })
 
   it('should remove script tag on unload call', async() => {
@@ -74,29 +74,29 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     const vm = useSetup(() => {
-      const [
-        twitchTagElement,
-        twitchLoadScript,
-        twitchUnloadScript,
-      ] = useScriptTag(src, () => {}, { loadOnMounted: false })
+      const {
+        scriptTag,
+        loadScript,
+        unloadScript,
+      } = useScriptTag(src, () => {}, { loadOnMounted: false })
 
       return {
-        twitchTagElement,
-        twitchLoadScript,
-        twitchUnloadScript,
+        scriptTag,
+        loadScript,
+        unloadScript,
       }
     })
 
-    await vm.twitchLoadScript(false)
+    await vm.loadScript(false)
 
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
 
-    await vm.twitchUnloadScript()
+    await vm.unloadScript()
 
     expect(scriptTagElement()).toBeNull()
 
     expect(removeChildListener).toBeCalled()
 
-    expect(vm.twitchTagElement).toBeUndefined()
+    expect(vm.scriptTag).toBeUndefined()
   })
 })
