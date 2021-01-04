@@ -2,7 +2,7 @@
 
 <!--HEAD_STARTS-->
 ::: tip
-📦 this function is available in [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
+available in add-on [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
 
 
 :::

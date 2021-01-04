@@ -7,7 +7,7 @@ import Demo from './demo.vue'
 
 <!--HEAD_STARTS-->
 ::: tip
-💡 this function is also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
+also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
 
 
 :::

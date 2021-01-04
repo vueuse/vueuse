@@ -37,9 +37,9 @@ export async function getFunctionHead(pkg: string, name: string, indexes: Packag
   const isUtils = indexes.functions.find(i => i.name === name)?.category === 'Utilities'
 
   let head = isUtils
-    ? `💡 this function is also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
+    ? `also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
     : pkg !== 'core' && pkg !== 'shared'
-      ? `📦 this function is available in [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
+      ? `available in add-on [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
       : ''
 
   if (head)
@@ -258,7 +258,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
-  let readme = await fs.readFile('docs/functions.md', 'utf-8')
+  let readme = await fs.readFile('packages/functions.md', 'utf-8')
 
   const coreFunctions = functions.filter(i => ['core', 'shared'].includes(i.package))
 
@@ -274,7 +274,7 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   readme = replacer(readme, functionListMD, 'FUNCTIONS_LIST')
   readme = replacer(readme, addons, 'ADDONS_LIST')
 
-  await fs.writeFile('docs/functions.md', readme, 'utf-8')
+  await fs.writeFile('packages/functions.md', readme, 'utf-8')
 }
 
 export async function updateFunctionREADME(indexes: PackageIndexes) {

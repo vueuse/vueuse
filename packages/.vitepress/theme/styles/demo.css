@@ -95,7 +95,7 @@
   margin-bottom: -0.5rem;
 }
 
-.demo pre {
+.demo pre, .demo .code-block {
   opacity: 0.8;
   background: var(--code-inline-bg-color);
   padding: 0.5rem;

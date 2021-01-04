@@ -95,11 +95,22 @@ useTransition(baseNumber, {
 ## Type Declarations
 
 ```typescript
+/**
+ * Cubic bezier points
+ */
 declare type CubicBezierPoints = [number, number, number, number]
-declare type EasingFunction = (x: number) => number
+/**
+ * Easing function
+ */
+declare type EasingFunction = (n: number) => number
+/**
+ * Transition options
+ */
 interface TransitionOptions {
-  duration?: number
-  transition?: EasingFunction | CubicBezierPoints
+  duration?: MaybeRef<number>
+  onFinished?: () => unknown
+  onStarted?: () => unknown
+  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 /**
  * Common transitions

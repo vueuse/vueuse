@@ -18,6 +18,6 @@ const switchColor = () => {
     Sample text, {{ color }}
   </div>
   <button @click="switchColor">
-    Switch Color
+    Change Color
   </button>
 </template>

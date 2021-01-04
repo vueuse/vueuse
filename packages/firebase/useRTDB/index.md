@@ -2,7 +2,7 @@
 
 <!--HEAD_STARTS-->
 ::: tip
-📦 this function is available in [`@vueuse/firebase`](/?path=/story/firebase--readme)
+available in add-on [`@vueuse/firebase`](/?path=/story/firebase--readme)
 
 
 :::

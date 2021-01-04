@@ -30,7 +30,21 @@ export default {
 
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export declare type UrlParams = Record<string, string[] | string>
+/**
+ * Reactive URLSearchParams
+ *
+ * @see   {@link https://vueuse.js.org/useUrlSearchParams}
+ * @param mode
+ * @param options
+ */
+export declare function useUrlSearchParams<
+  T extends Record<string, any> = UrlParams
+>(mode?: "history" | "hash", options?: ConfigurableWindow): T
+```
 
 ## Source
 

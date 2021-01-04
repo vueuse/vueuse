@@ -1,7 +1,5 @@
 
-## ⚡ Functions
-
-You can check out the full documents and live demos in [Storybook](https://vueuse.js.org/).
+## Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->

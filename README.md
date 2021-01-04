@@ -6,7 +6,7 @@ Collection of essential Vue Composition Utilities
 <p align="center">
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>&nbsp;
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>&nbsp;
-<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos"></a>&nbsp;
+<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>&nbsp;
 <img alt="Function Count" src="https://img.shields.io/badge/-91%20functions-13708a">
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
@@ -57,7 +57,7 @@ export default {
 })
 ```
 
-Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org/) for more details.
+Refer to [functions list](https://vueuse.js.org/functions) or [documentations](https://vueuse.js.org/) for more details.
 
 ## 📦 Install
 
@@ -79,7 +79,7 @@ It will be exposed to global as `window.VueUse`
 
 ## 🧱 Contribute
 
-See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contributing)
+See the [**Contributing Guide**](https://vueuse.js.org/contributing)
 
 ## 🌸 Thanks
 

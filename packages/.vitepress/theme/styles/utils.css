@@ -7,8 +7,27 @@
 .ml-2 {
   margin-left: 0.5rem;
 }
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.opacity-50 {
+  opacity: 50;
+}
+.font-mono {
+  font-family: monospace;
 }
 .relative {
   position: relative;

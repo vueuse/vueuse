@@ -33,13 +33,7 @@ const languages = usePreferredLanguages()
  */
 export declare function usePreferredLanguages(
   options?: ConfigurableWindow
-):
-  | Ref<string>
-  | Ref<
-      readonly string[] & {
-        [Symbol.iterator]: () => IterableIterator<string>
-      }
-    >
+): Ref<readonly string[]>
 ```
 
 ## Source

@@ -2,7 +2,7 @@
 
 <!--HEAD_STARTS-->
 ::: tip
-📦 this function is available in [`@vueuse/integrations`](/?path=/story/integrations--readme)
+available in add-on [`@vueuse/integrations`](/?path=/story/integrations--readme)
 
 
 :::

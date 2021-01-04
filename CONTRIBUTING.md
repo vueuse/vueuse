@@ -1,4 +1,8 @@
-# 🧱 Contributing
+---
+sidebar: auto
+---
+
+# Contributing
 
 Thanks for being interested in contributing to this project!
 
@@ -16,7 +20,7 @@ Don't worry about the code style as long as you install the dev dependencies. Gi
 
 ## Development 
 
-We use Storybook for rapid development and documenting. You can start it locally by
+We use Vitepress for rapid development and documenting. You can start it locally by
 
 ```bash
 yarn dev
@@ -50,7 +54,7 @@ New add-ons are greatly welcome!
 
 - Create a new folder under `packages/`, name it as your add-on name. 
 - Add add-on details in `scripts/packages.ts`
-- Create `README.md` and `readme.stories.tsx` under that folder.
+- Create `README.md` under that folder.
 - Add functions as you would do to the core package.
 - Run `yarn prepare` to update the docs.
 
@@ -76,7 +80,7 @@ A function folder typicality contains these 4 files:
 
 ```bash
 index.ts            # function source code itself
-index.stories.tsx   # storybook demo
+demo.vue            # documentation demo
 index.test.ts       # jest unit testing
 index.md            # documentation
 ```
@@ -98,8 +102,6 @@ for `index.md` the first sentence will be displayed as the short intro in the fu
 
 > This will be the intro. The detail descriptions...
 ```
-
-for `index.stories.tsx`, you can duplicate for the other functions and modify it.
 
 
 ## Thanks

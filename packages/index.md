@@ -1,10 +1,10 @@
 ---
 home: true
 actionText: Functions
-actionLink: /functions/
+actionLink: /functions
 
 altActionText: Get Started
-altActionLink: /guide/
+altActionLink: /guide
 
 features:
   - title: 🕶 Seamless migration
@@ -13,16 +13,18 @@ features:
     details: Only take what you want
   - title: 🦾 Type Strong
     details: Written in TypeScript, with TS Docs
-  - title: 🛠 Flexible
-    details: Configurable event filters and targets
-  - title: ☁️ No bundler required
-    details: Usable via CDN
   - title: 🔋 SSR Friendly
-    details: Work perfectly with Serve-side rendering / generation
+    details: Works perfectly with Serve-side rendering / generation
   - title: 🎪 Interactive demos
     details: Documentation of functions also come with interactive demos!
   - title: 🔌 Add-ons
     details: Support various add-ons like Router, Firebase, RxJS, etc.
+  - title: 🛠 Flexible
+    details: Configurable event filters and targets
+  - title: ☁️ No bundler required
+    details: Usable via CDN
+  - title: 🎛 Feature Rich
+    details: 90+ functions for you to choice
 
 
 footer: MIT Licensed | Copyright © 2020-Present Anthony Fu

@@ -46,7 +46,7 @@ The following shows the default values of the options, they will be directly pas
 ## Type Declarations
 
 ```typescript
-export interface SpeechRecognitionOptions {
+export interface SpeechRecognitionOptions extends ConfigurableWindow {
   /**
    * Controls whether continuous results are returned for each recognition, or only a single result.
    *

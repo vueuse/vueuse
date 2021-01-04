@@ -2,7 +2,7 @@
 
 <!--HEAD_STARTS-->
 ::: tip
-📦 this function is available in [`@vueuse/router`](/?path=/story/router--readme)
+available in add-on [`@vueuse/router`](/?path=/story/router--readme)
 
 
 :::

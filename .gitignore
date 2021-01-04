@@ -91,5 +91,5 @@ sw.*
 *.swp
 
 packages/*/LICENSE
-packages/*.md
+packages/contributing.md
 packages/core/README.md

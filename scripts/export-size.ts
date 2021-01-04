@@ -40,7 +40,7 @@ async function run() {
     md += '\n\n'
   }
 
-  await fs.writeFile('docs/Export-Size.md', md, 'utf-8')
+  await fs.writeFile('packages/Export-Size.md', md, 'utf-8')
 }
 
 run()
