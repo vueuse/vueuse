@@ -44,7 +44,7 @@ function getSideBar() {
       text: name,
       children: functions.map(i => ({
         text: i.name,
-        link: `/${i.package}/${i.name}/index.html`,
+        link: `/${i.package}/${i.name}/`,
       })),
     })
   }

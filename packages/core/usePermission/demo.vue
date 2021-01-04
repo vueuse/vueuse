@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import { usePermission } from '.'
+import { computed, reactive } from 'vue-demi'
+import YAML from 'js-yaml'
 
 const geolocation = usePermission('geolocation')
 const microphone = usePermission('microphone')
 const notifications = usePermission('notifications')
 const camera = usePermission('camera')
 const midi = usePermission('midi')
+
+const code = computed(() => YAML.safeDump(reactive({
+  geolocation,
+  microphone,
+  notifications,
+  camera,
+  midi,
+})))
 </script>
 
 <template>
-  <pre lang="json">{{
-    JSON.stringify(
-      {
-        geolocation,
-        microphone,
-        notifications,
-        camera,
-        midi,
-      },
-      null,
-      2
-    )
-  }}</pre>
+  <pre>{{ code }}</pre>
 </template>

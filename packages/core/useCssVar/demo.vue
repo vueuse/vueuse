@@ -14,12 +14,10 @@ const switchColor = () => {
 </script>
 
 <template>
-  <div>
-    <p ref="el" style="--color: #7fa998; color: var(--color)">
-      Sample text, {{ color }}
-    </p>
-    <button @click="switchColor">
-      Switch Color
-    </button>
+  <div ref="el" style="--color: #7fa998; color: var(--color)">
+    Sample text, {{ color }}
   </div>
+  <button @click="switchColor">
+    Switch Color
+  </button>
 </template>

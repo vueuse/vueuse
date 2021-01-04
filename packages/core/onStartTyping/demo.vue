@@ -12,8 +12,6 @@ onStartTyping(() => {
 </script>
 
 <template>
-  <div>
-    <input ref="input" type="text" placeholder="Start typing to focus">
-    <input type="text" placeholder="Start typing has no effect here">
-  </div>
+  <input ref="input" type="text" placeholder="Start typing to focus">
+  <input type="text" placeholder="Start typing has no effect here">
 </template>

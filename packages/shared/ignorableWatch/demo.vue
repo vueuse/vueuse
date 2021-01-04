@@ -26,23 +26,20 @@ const ignoredUpdate = () => {
 </script>
 
 <template>
-  <div>
-    <p>{{ 'source value: ' + source }}</p>
+  <div>Value: {{ source }}</div>
+  <button @click="update">
+    Update
+  </button>
+  <button class="orange" @click="ignoredUpdate">
+    Ignored Update
+  </button>
+  <button @click="clear">
+    Clear Log
+  </button>
 
-    <button @click="update">
-      Update
-    </button>
-    <button class="orange" @click="ignoredUpdate">
-      Ignored Update
-    </button>
-    <button @click="clear">
-      Clear Log
-    </button>
+  <br>
 
-    <br>
+  <note>Log</note>
 
-    <note>Log</note>
-
-    <pre>{{ log }}</pre>
-  </div>
+  <pre>{{ log }}</pre>
 </template>

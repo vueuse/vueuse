@@ -15,8 +15,8 @@ const toggle = () => isDark.value = !isDark.value
 
 <style scoped>
 .switch {
-  font-size: 1.2em;
-  margin-left: 2rem;
+  font-size: 1.1em;
+  margin-left: 1rem;
   border: 0;
   outline: none;
   background: none;

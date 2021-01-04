@@ -8,7 +8,7 @@ export function useNextAndPrevLinks() {
   const page = usePageData()
 
   const path = computed(() => {
-    return removeExtention(ensureStartingSlash(page.value.relativePath))
+    return ensureStartingSlash(page.value.relativePath)
   })
 
   const candidates = computed(() => {
@@ -25,18 +25,16 @@ export function useNextAndPrevLinks() {
 
   const next = computed(() => {
     if (
-      site.value.themeConfig.nextLinks !== false &&
-      index.value > -1 &&
-      index.value < candidates.value.length - 1
-    ) {
+      site.value.themeConfig.nextLinks !== false
+      && index.value > -1
+      && index.value < candidates.value.length - 1
+    )
       return candidates.value[index.value + 1]
-    }
   })
 
   const prev = computed(() => {
-    if (site.value.themeConfig.prevLinks !== false && index.value > 0) {
+    if (site.value.themeConfig.prevLinks !== false && index.value > 0)
       return candidates.value[index.value - 1]
-    }
   })
 
   const hasLinks = computed(() => !!next.value || !!prev.value)
@@ -44,6 +42,6 @@ export function useNextAndPrevLinks() {
   return {
     next,
     prev,
-    hasLinks
+    hasLinks,
   }
 }

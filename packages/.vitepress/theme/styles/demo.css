@@ -5,8 +5,19 @@
   width: var(--width);
   margin-left: var(--margin-left);
   background: rgba(125,125,125,0.04);
-  padding: 2em 2em;
+  padding: 2em 3em;
   border-bottom: 1px solid var(--c-divider);
+  position: relative;
+}
+
+.demo::after {
+  content: "DEMO";
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  opacity: 0.3;
+  font-size: 0.9rem;
+  font-family: monospace;
 }
 
 @media (min-width: 720px) {
@@ -33,6 +44,12 @@
   vertical-align: middle;
 }
 
+.demo button.orange {
+  --c-brand: #db7a12;
+  --c-brand-dark: #a35518;
+  --c-brand-active: #c4661d;
+}
+
 .demo button:hover {
   background-color: var(--c-brand-active);
 }
@@ -56,6 +73,7 @@
 
 .demo input {
   display: block;
+  min-width: 20rem;
   font-size: 1.05rem;
   padding: 0.5em 1em 0.4em 1em;
   border: 1px solid var(--c-divider-light);
@@ -66,6 +84,7 @@
   color: var(--c-text);
 }
 
+
 .demo input:focus {
   border: 1px solid var(--c-divider-dark);
 }
@@ -74,4 +93,11 @@
   opacity: 0.5;
   font-size: 0.9rem;
   margin-bottom: -0.5rem;
+}
+
+.demo pre {
+  opacity: 0.8;
+  background: var(--code-inline-bg-color);
+  padding: 0.5rem;
+  border-radius: 4px;
 }

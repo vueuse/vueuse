@@ -5,7 +5,8 @@ const languages = usePreferredLanguages()
 </script>
 
 <template>
-  <p>
-    Preferred Languages: <code>{{ languages.join(', ') }}</code>
-  </p>
+  <div>Preferred Languages:</div>
+  <div style="padding: 0.5rem 0;">
+    <code v-for="lang in languages" :key="lang" style="margin-right: 0.5rem">{{ lang }}</code>
+  </div>
 </template>

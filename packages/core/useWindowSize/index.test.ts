@@ -1,4 +1,4 @@
-import { useSetup } from '../../.tests'
+import { useSetup } from '../../.test'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {

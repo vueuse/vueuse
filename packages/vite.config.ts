@@ -7,6 +7,7 @@ const config: UserConfig = {
       'qrcode',
       'nprogress',
       'tslib',
+      'js-yaml',
       'universal-cookie',
       // 'firebase',
       'rxjs',

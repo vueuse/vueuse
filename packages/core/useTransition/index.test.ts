@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { useSetup } from '../../.tests'
+import { useSetup } from '../../.test'
 import { useTransition, TransitionPresets } from '.'
 import { promiseTimeout } from '../../shared/utils'
 
