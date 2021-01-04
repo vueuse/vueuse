@@ -1,5 +1,5 @@
 import { ref, computed, nextTick } from 'vue-demi'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.tests'
 import { asyncComputed } from '.'
 import { promiseTimeout } from '@vueuse/shared'
 

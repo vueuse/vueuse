@@ -16,7 +16,7 @@
       "@vueuse/shared": ["./packages/shared/index.ts"]
     }
   },
-  "include": ["packages"],
+  "include": ["packages", "packages/.tests"],
   "exclude": [
     "node_modules",
     "**/**/*.test.ts",

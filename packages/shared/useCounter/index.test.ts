@@ -1,4 +1,4 @@
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.tests'
 import { useCounter } from '../useCounter'
 
 describe('useCounter', () => {

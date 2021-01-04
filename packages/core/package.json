@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/antfu/vueuse#readme",
   "dependencies": {
-    "vue-demi": "latest",
-    "@vueuse/shared": "4.0.1"
+    "@vueuse/shared": "4.0.2",
+    "vue-demi": "latest"
   }
 }

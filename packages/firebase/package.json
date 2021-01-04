@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/firebase#readme",
   "dependencies": {
-    "vue-demi": "latest",
-    "@vueuse/shared": "4.0.1"
+    "@vueuse/shared": "4.0.2",
+    "vue-demi": "latest"
   },
   "peerDependencies": {
     "firebase": ">=4.0.0"
