@@ -1,6 +1,10 @@
+import { resolve } from 'path'
 import { UserConfig } from 'vite'
 
 const config: UserConfig = {
+  alias: {
+    '@vueuse/shared': resolve(__dirname, 'shared'),
+  },
   optimizeDeps: {
     include: [
       'vue-demi',
