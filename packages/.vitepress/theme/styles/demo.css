@@ -22,9 +22,9 @@
 
 @media (min-width: 720px) {
   .demo {
-    --width: calc(100vw - var(--sidebar-width));
-    --content-width: min(48rem, var(--width));
-    --margin-left: calc(calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem);
+    --width: calc(100vw - var(--sidebar-width)) !important;
+    --content-width: min(48rem, var(--width)) !important;
+    --margin-left: calc(calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem) !important;
   }
 }
 

@@ -1,5 +1,5 @@
 import fs from 'fs-extra'
-import { readIndexes, updateFunctionREADME, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
+import { readIndexes, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
 
 async function run() {
   const indexes = await readIndexes()
@@ -8,6 +8,7 @@ async function run() {
   await updateImport(indexes)
   await updatePackageREADME(indexes)
   await updateIndexREADME(indexes)
+  await updateFunctionsMD(indexes)
   await updateFunctionREADME(indexes)
   await updatePackageJSON()
 }

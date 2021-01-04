@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "4.0.2",
+    "@vueuse/shared": "4.0.1",
     "vue-demi": "latest"
   },
   "optionalDependencies": {

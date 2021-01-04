@@ -21,7 +21,12 @@ module.exports = {
     editLinks: true,
     editLinkText: 'Edit this page on GitHub',
     lastUpdated: 'Last Updated',
-    nav: [{ text: 'Home', link: '/' }],
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'Guide', link: '/guide' },
+      { text: 'Functions', link: '/functions' },
+      { text: 'Contribute', link: '/contributing' },
+    ],
     sidebar: getSideBar(),
   },
 }

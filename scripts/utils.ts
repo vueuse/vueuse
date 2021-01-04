@@ -250,6 +250,16 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
 export async function updateIndexREADME({ packages, functions }: PackageIndexes) {
   let readme = await fs.readFile('README.md', 'utf-8')
 
+  const functionsCount = functions.filter(i => !i.internal).length
+
+  readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
+
+  await fs.writeFile('README.md', readme, 'utf-8')
+}
+
+export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
+  let readme = await fs.readFile('docs/functions.md', 'utf-8')
+
   const coreFunctions = functions.filter(i => ['core', 'shared'].includes(i.package))
 
   const functionListMD = stringifyFunctions(coreFunctions)
@@ -264,11 +274,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
   readme = replacer(readme, functionListMD, 'FUNCTIONS_LIST')
   readme = replacer(readme, addons, 'ADDONS_LIST')
 
-  const functionsCount = functions.filter(i => !i.internal).length
-
-  readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
-
-  await fs.writeFile('README.md', readme, 'utf-8')
+  await fs.writeFile('docs/functions.md', readme, 'utf-8')
 }
 
 export async function updateFunctionREADME(indexes: PackageIndexes) {
