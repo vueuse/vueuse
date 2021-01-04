@@ -2,8 +2,8 @@ import { isString, MaybeRef, tryOnMounted, tryOnUnmounted } from '@vueuse/shared
 import { ref } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
-export interface UseScriptTagOptions {
-  loadOnMounted?: boolean
+export interface UseScriptTagOptions extends ConfigurableDocument {
+  immediate?: boolean
 }
 
 /**
@@ -16,11 +16,9 @@ export function useScriptTag(
   src: MaybeRef<string>,
   onLoaded: Function = () => {},
   {
-    loadOnMounted = true,
-  }: UseScriptTagOptions = {},
-  {
+    immediate = true,
     document = defaultDocument,
-  }: ConfigurableDocument = {},
+  }: UseScriptTagOptions = {},
 ) {
   const scriptTag = ref<HTMLScriptElement>()
 
@@ -115,7 +113,7 @@ export function useScriptTag(
     })
 
   tryOnMounted(async() => {
-    if (loadOnMounted) await loadScript()
+    if (immediate) await loadScript()
   })
 
   tryOnUnmounted(async() => {
