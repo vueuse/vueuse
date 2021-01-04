@@ -4,6 +4,27 @@
   box-sizing: border-box;
 }
 
+* {
+  scrollbar-color: var(--c-divider-light) var(--c-bg);
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-divider-light);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-divider-dark);
+}
+
 html {
   line-height: 1.4;
   font-size: 16px;
