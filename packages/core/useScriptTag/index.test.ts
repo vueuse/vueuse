@@ -21,7 +21,7 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     useSetup(() => {
-      const { scriptTag } = useScriptTag(src, () => {}, { loadOnMounted: true })
+      const { scriptTag } = useScriptTag(src, () => {}, { immediate: true })
 
       return {
         scriptTag,
@@ -44,7 +44,7 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     const vm = useSetup(() => {
-      const { scriptTag, loadScript, unloadScript } = useScriptTag(src, () => {}, { loadOnMounted: false })
+      const { scriptTag, loadScript, unloadScript } = useScriptTag(src, () => {}, { immediate: false })
 
       return {
         scriptTag,
@@ -78,7 +78,7 @@ describe('useScriptTag', () => {
         scriptTag,
         loadScript,
         unloadScript,
-      } = useScriptTag(src, () => {}, { loadOnMounted: false })
+      } = useScriptTag(src, () => {}, { immediate: false })
 
       return {
         scriptTag,
