@@ -1,6 +1,6 @@
-import { defineDemo, html } from '../../_docs'
 import { defineComponent } from 'vue-demi'
 import { useScriptTag } from '.'
+import { defineDemo, html } from '../../_docs'
 
 declare const Twitch: any
 
