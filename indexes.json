@@ -2,10 +2,198 @@
   "packages": {
     "shared": {
       "name": "shared",
+<<<<<<< HEAD
       "display": "Shared utilities",
       "dir": "packages/shared"
     },
     "core": {
+=======
+      "display": "Shared utilities"
+    },
+    "dir": "packages/shared",
+    "categories": {
+      "Utilities": [
+        {
+          "name": "biSyncRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--bisyncref",
+          "description": "two-way refs synchronization",
+          "depreacted": false
+        },
+        {
+          "name": "controlledComputed",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--controlledcomputed",
+          "description": "explicitly define the deps of computed",
+          "depreacted": false
+        },
+        {
+          "name": "extendRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--extendref",
+          "description": "add extra attributes to Ref",
+          "depreacted": false
+        },
+        {
+          "name": "makeDestructurable",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--makedestructurable",
+          "description": "make isomorphic destructurable for object and array at the same time",
+          "depreacted": false
+        },
+        {
+          "name": "syncRef",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--syncref",
+          "description": "keep target refs in sync with a source ref",
+          "depreacted": false
+        },
+        {
+          "name": "useCounter",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usecounter",
+          "description": "basic counter with utility functions",
+          "depreacted": false
+        },
+        {
+          "name": "useDebounce",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
+          "description": "debounce execution of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useDebounceFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
+          "description": "debounce execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottle",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
+          "description": "throttle changing of a ref value",
+          "depreacted": false
+        },
+        {
+          "name": "useThrottleFn",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
+          "description": "throttle execution of a function",
+          "depreacted": false
+        },
+        {
+          "name": "useToggle",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--usetoggle",
+          "description": "a boolean switcher with utility functions",
+          "depreacted": false
+        }
+      ],
+      "Watch": [
+        {
+          "name": "debouncedWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--debouncedwatch",
+          "description": "debounced watch",
+          "depreacted": false
+        },
+        {
+          "name": "ignorableWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--ignorablewatch",
+          "description": "ignorable watch",
+          "depreacted": false
+        },
+        {
+          "name": "pausableWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",
+          "description": "pausable watch",
+          "depreacted": false
+        },
+        {
+          "name": "throttledWatch",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--throttledwatch",
+          "description": "throttled watch",
+          "depreacted": false
+        },
+        {
+          "name": "watchWithFilter",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--watchwithfilter",
+          "description": "`watch` with additional EventFilter control",
+          "depreacted": false
+        },
+        {
+          "name": "when",
+          "category": "Watch",
+          "docs": "https://vueuse.js.org/?path=/story/watch--when",
+          "description": "promised one-time watch for ref changes",
+          "depreacted": false
+        }
+      ],
+      "_utils": [
+        {
+          "name": "reactify"
+        },
+        {
+          "name": "utils"
+        }
+      ],
+      "Component": [
+        {
+          "name": "tryOnMounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonmounted",
+          "description": "safe `onMounted`",
+          "depreacted": false
+        },
+        {
+          "name": "tryOnUnmounted",
+          "category": "Component",
+          "docs": "https://vueuse.js.org/?path=/story/component--tryonunmounted",
+          "description": "safe `onUnmounted`",
+          "depreacted": false
+        }
+      ],
+      "Animation": [
+        {
+          "name": "useInterval",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--useinterval",
+          "description": "reactive counter increases on every interval",
+          "depreacted": false
+        },
+        {
+          "name": "useIntervalFn",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
+          "description": "wrapper for `setInterval` with controls",
+          "depreacted": false
+        },
+        {
+          "name": "useTimeout",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
+          "description": "update value after a given time with controls",
+          "depreacted": false
+        },
+        {
+          "name": "useTimeoutFn",
+          "category": "Animation",
+          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
+          "description": "wrapper for `setTimeout` with controls",
+          "depreacted": false
+        }
+      ]
+    }
+  },
+  "core": {
+    "info": {
+>>>>>>> master
       "name": "core",
       "display": "VueUse",
       "description": "Collection of essential Vue Composition Utilities",

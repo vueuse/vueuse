@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue-demi'
+import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
