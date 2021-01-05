@@ -35,11 +35,6 @@ export function useScriptTag(
         return
       }
 
-      if (!src) {
-        reject(new Error('No src found!'))
-        return
-      }
-
       let shouldAppend = false
 
       let el: HTMLScriptElement = <HTMLScriptElement>(
@@ -92,11 +87,6 @@ export function useScriptTag(
     new Promise((resolve, reject) => {
       if (!document) {
         reject(new Error('No document found!'))
-        return
-      }
-
-      if (!src) {
-        reject(new Error('No src found!'))
         return
       }
 
