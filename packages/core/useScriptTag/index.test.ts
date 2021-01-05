@@ -44,16 +44,16 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeNull()
 
     const vm = useSetup(() => {
-      const { scriptTag, loadScript, unloadScript } = useScriptTag(src, () => {}, { immediate: false })
+      const { scriptTag, load, unload } = useScriptTag(src, () => {}, { immediate: false })
 
       return {
         scriptTag,
-        loadScript,
-        unloadScript,
+        load,
+        unload,
       }
     })
 
-    await vm.loadScript(false)
+    await vm.load(false)
 
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
 
@@ -76,22 +76,22 @@ describe('useScriptTag', () => {
     const vm = useSetup(() => {
       const {
         scriptTag,
-        loadScript,
-        unloadScript,
+        load,
+        unload,
       } = useScriptTag(src, () => {}, { immediate: false })
 
       return {
         scriptTag,
-        loadScript,
-        unloadScript,
+        load,
+        unload,
       }
     })
 
-    await vm.loadScript(false)
+    await vm.load(false)
 
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
 
-    await vm.unloadScript()
+    await vm.unload()
 
     expect(scriptTagElement()).toBeNull()
 
