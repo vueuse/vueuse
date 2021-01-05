@@ -129,6 +129,14 @@
           "depreacted": false
         }
       ],
+      "_utils": [
+        {
+          "name": "reactify"
+        },
+        {
+          "name": "utils"
+        }
+      ],
       "Component": [
         {
           "name": "tryOnMounted",
@@ -173,11 +181,6 @@
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
           "description": "wrapper for `setTimeout` with controls",
           "depreacted": false
-        }
-      ],
-      "_utils": [
-        {
-          "name": "utils"
         }
       ]
     }
