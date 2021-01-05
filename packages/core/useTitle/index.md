@@ -1,3 +1,7 @@
+---
+category: Browser
+---
+
 <!--DEMO_STARTS-->
 <script setup>
 import Demo from './demo.vue'

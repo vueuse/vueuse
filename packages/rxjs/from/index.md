@@ -1,10 +1,12 @@
+---
+category: '@RxJS'
+---
+
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 ::: tip
-available in add-on [`@vueuse/rxjs`](/?path=/story/rxjs--readme)
-
-
+available in add-on [`@vueuse/rxjs`](/rxjs/)
 :::
 
 <!--HEAD_ENDS-->

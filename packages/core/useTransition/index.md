@@ -1,3 +1,7 @@
+---
+category: Animation
+---
+
 <!--DEMO_STARTS-->
 <script setup>
 import Demo from './demo.vue'

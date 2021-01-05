@@ -6,6 +6,7 @@ import { activePackages, packages } from './packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from './types'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
+import YAML from 'js-yaml'
 
 const DOCS_URL = 'https://vueuse.js.org'
 const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
@@ -34,13 +35,16 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
 }
 
 export async function getFunctionHead(pkg: string, name: string, indexes: PackageIndexes) {
-  const isUtils = indexes.functions.find(i => i.name === name)?.category === 'Utilities'
+  // const isUtils = indexes.functions.find(i => i.name === name)?.category === 'Utilities'
+  // let head = isUtils
+  //   ? `also available in [Vue Reactivity](${VUE_REACTIVITY_USE})`
+  //   : pkg !== 'core' && pkg !== 'shared'
+  //     ? `available in add-on [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)`
+  //     : ''
 
-  let head = isUtils
-    ? `also available in [Vue Reactivity](${VUE_REACTIVITY_USE})\n\n`
-    : pkg !== 'core' && pkg !== 'shared'
-      ? `available in add-on [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)\n\n`
-      : ''
+  let head = pkg !== 'core' && pkg !== 'shared'
+    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/)`
+    : ''
 
   if (head)
     head = `::: tip\n${head}\n:::\n`
@@ -107,7 +111,6 @@ export async function readIndexes() {
 
     for (const fnName of functions) {
       const mdPath = join(dir, fnName, 'index.md')
-      const storyPath = join(dir, fnName, 'index.stories.tsx')
 
       const fn: VueUseFunction = {
         name: fnName,
@@ -122,14 +125,10 @@ export async function readIndexes() {
 
       fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}`
 
-      const storyRaw = await fs.readFile(storyPath, 'utf-8')
       const mdRaw = await fs.readFile(join(dir, fnName, 'index.md'), 'utf-8')
-      const match = /category: '(.+)',/gm.exec(storyRaw) || /storiesOf\('(.+)'[\s\S]+?\.add\('(.+)'/gm.exec(storyRaw)
-
-      // TODO: load category from frontmatter
-      const [, category] = match
 
       const { content: md, data: frontmatter } = matter(mdRaw)
+      const category = frontmatter.category
 
       let description = (md
         .replace(/\r\n/g, '\n')
@@ -139,7 +138,7 @@ export async function readIndexes() {
       description = description.trim()
       description = description.charAt(0).toLowerCase() + description.slice(1)
 
-      fn.category = category
+      fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
 
       if (description.includes('DEPRECATED'))
@@ -198,7 +197,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
       continue
 
     if (title)
-      list += `- ${category}\n`
+      list += `### ${category}\n`
 
     const categoryFunctions = functions.filter(i => i.category === category).sort((a, b) => a.name.localeCompare(b.name))
     for (const { name, docs, description, depreacted } of categoryFunctions) {
@@ -239,7 +238,7 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
     if (!fs.existsSync(readmePath))
       continue
 
-    const functionMD = stringifyFunctions(functions.filter(i => i.package === name))
+    const functionMD = stringifyFunctions(functions.filter(i => i.package === name), false)
     let readme = await fs.readFile(readmePath, 'utf-8')
     readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
 
@@ -266,7 +265,7 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
-      return `\n- ${display} ([\`@vueuse/${name}\`](${docs})) - ${description}\n${
+      return `\n### ${display} ([\`@vueuse/${name}\`](${docs}))\n${description}\n${
         stringifyFunctions(functions.filter(i => i.package === name), false)}`
     })
     .join('\n')
@@ -301,6 +300,12 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     if (hasTypes)
       readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')
+
+    const { content, data } = matter(readme)
+
+    data.category = fn.category
+
+    readme = `---\n${YAML.safeDump(data)}---\n\n${content.trim()}`
 
     await fs.writeFile(mdPath, readme, 'utf-8')
   }

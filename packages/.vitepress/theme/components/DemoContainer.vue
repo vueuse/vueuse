@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div class="demo wide">
     <slot />
     <div v-if="error" class="error">
       {{ error }}

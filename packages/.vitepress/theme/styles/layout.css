@@ -148,6 +148,10 @@ a {
   color: var(--c-brand);
 }
 
+a code {
+  color: var(--c-brand-dark);
+}
+
 a:hover {
   text-decoration: underline;
 }

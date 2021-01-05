@@ -1,13 +1,10 @@
+---
+category: Utilities
+---
+
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
-<!--HEAD_STARTS-->
-::: tip
-also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
-
-
-:::
-
-<!--HEAD_ENDS-->
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
 
 # extendRef
 

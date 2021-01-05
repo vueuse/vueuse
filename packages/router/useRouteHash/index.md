@@ -1,10 +1,12 @@
+---
+category: '@Router'
+---
+
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 ::: tip
-available in add-on [`@vueuse/router`](/?path=/story/router--readme)
-
-
+available in add-on [`@vueuse/router`](/router/)
 :::
 
 <!--HEAD_ENDS-->

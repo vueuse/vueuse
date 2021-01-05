@@ -5,8 +5,10 @@ const languages = usePreferredLanguages()
 </script>
 
 <template>
-  <div>Preferred Languages:</div>
-  <div style="padding: 0.5rem 0;">
-    <code v-for="lang in languages" :key="lang" style="margin-right: 0.5rem">{{ lang }}</code>
+  <note class="mb-2">
+    Preferred Languages:
+  </note>
+  <div>
+    <code v-for="lang in languages" :key="lang" class="mr-2">{{ lang }}</code>
   </div>
 </template>

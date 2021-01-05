@@ -14,7 +14,6 @@ npm i <b>@vueuse/router</b> vue-router@4
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-- /Router
   - [`useRouteHash`](https://vueuse.js.org/router/useRouteHash) — shorthand for reactive route.hash
   - [`useRouteQuery`](https://vueuse.js.org/router/useRouteQuery) — shorthand for reactive route.query
 
@@ -23,4 +22,4 @@ npm i <b>@vueuse/router</b> vue-router@4
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

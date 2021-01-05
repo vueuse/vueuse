@@ -3,7 +3,7 @@ import { ref, watch } from 'vue-demi'
 import { useDocumentVisibility } from '.'
 import { useTimeoutFn } from '..'
 
-const startMessage = 'Minimize this page or change the tab and return'
+const startMessage = '💡 Minimize the page or switch tab then return'
 const message = ref(startMessage)
 const visibility = useDocumentVisibility()
 
@@ -13,12 +13,12 @@ const timeout = useTimeoutFn(() => {
 
 watch(visibility, (current, previous) => {
   if (current === 'visible' && previous === 'hidden') {
-    message.value = 'Welcome back!'
+    message.value = '🎉 Welcome back!'
     timeout.start()
   }
 })
 </script>
 
 <template>
-  <h1>{{ message }}</h1>
+  <div>{{ message }}</div>
 </template>

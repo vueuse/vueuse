@@ -25,7 +25,7 @@
   --c-disabled-bg: #e5e5e5;
   --c-disabled-fg: #666;
 
-  --code-inline-bg-color: rgba(27, 31, 35, .05);
+  --code-inline-bg-color: rgba(27, 31, 35, .04);
 
   /**
    * Typography
@@ -71,7 +71,7 @@ html.dark {
   --c-divider-light: rgba(200, 200, 200, .12);
   --c-divider-dark: rgba(200, 200, 200, .48);
   --code-bg-color: #191919;
-  --code-inline-bg-color: rgba(255, 255, 255, .08);
+  --code-inline-bg-color: rgba(255, 255, 255, .04);
 
   --c-disabled-bg: #333;
   --c-disabled-fg: #aaa;
@@ -90,6 +90,5 @@ html.dark {
   --code-line-height: 24px;
   --code-font-family: var(--font-family-mono);
   --code-font-size: 14px;
-  --code-inline-bg-color: rgba(27, 31, 35, .05);
   --code-bg-color: #282c34;
 }

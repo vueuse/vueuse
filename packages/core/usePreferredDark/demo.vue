@@ -5,5 +5,8 @@ const prefersDark = usePreferredDark()
 </script>
 
 <template>
-  <p>Prefers Dark: {{ prefersDark }}</p>
+  <note class="mb-2">
+    Prefers Dark:
+  </note>
+  <code>{{ prefersDark }}</code>
 </template>

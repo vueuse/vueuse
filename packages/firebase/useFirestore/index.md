@@ -1,10 +1,12 @@
+---
+category: '@Firebase'
+---
+
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 ::: tip
-available in add-on [`@vueuse/firebase`](/?path=/story/firebase--readme)
-
-
+available in add-on [`@vueuse/firebase`](/firebase/)
 :::
 
 <!--HEAD_ENDS-->

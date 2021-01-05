@@ -1,9 +1,9 @@
 
-## Functions
+# Core Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-- Animation
+### Animation
   - [`useInterval`](https://vueuse.js.org/shared/useInterval) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.js.org/shared/useIntervalFn) — wrapper for `setInterval` with controls
   - [`useRafFn`](https://vueuse.js.org/core/useRafFn) — call function on every `requestAnimationFrame`
@@ -12,7 +12,7 @@
   - [`useTimestamp`](https://vueuse.js.org/core/useTimestamp) — reactive current timestamp
   - [`useTransition`](https://vueuse.js.org/core/useTransition) — transition between values
 
-- Browser
+### Browser
   - [`useBrowserLocation`](https://vueuse.js.org/core/useBrowserLocation) — reactive browser location
   - [`useClipboard`](https://vueuse.js.org/core/useClipboard) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useCssVar`](https://vueuse.js.org/core/useCssVar) — manipulate CSS variables
@@ -28,18 +28,18 @@
   - [`useTitle`](https://vueuse.js.org/core/useTitle) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.js.org/core/useUrlSearchParams) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
-- Component
+### Component
   - [`tryOnMounted`](https://vueuse.js.org/shared/tryOnMounted) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.js.org/shared/tryOnUnmounted) — safe `onUnmounted`
   - [`useVModel`](https://vueuse.js.org/core/useVModel) — shorthand for v-model binding
 
-- Misc
+### Misc
   - [`useEventSource`](https://vueuse.js.org/core/useEventSource) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server
   - [`useWebSocket`](https://vueuse.js.org/core/useWebSocket) — reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client
   - [`useWebWorker`](https://vueuse.js.org/core/useWebWorker) — simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication
   - [`useWebWorkerFn`](https://vueuse.js.org/core/useWebWorkerFn) — run expensive function without blocking the UI
 
-- Sensors
+### Sensors
   - [`onClickOutside`](https://vueuse.js.org/core/onClickOutside) — listen for clicks outside of an element
   - [`onStartTyping`](https://vueuse.js.org/core/onStartTyping) — fires when users start typing on non-editable elements
   - [`useBattery`](https://vueuse.js.org/core/useBattery) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
@@ -67,18 +67,19 @@
   - [`useWindowScroll`](https://vueuse.js.org/core/useWindowScroll) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/core/useWindowSize) — reactive window size
 
-- State
+### State
   - [`createGlobalState`](https://vueuse.js.org/core/createGlobalState) — keep states in the global scope to be reusable across Vue instances
   - [`useLocalStorage`](https://vueuse.js.org/core/useLocalStorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.js.org/core/useSessionStorage) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.js.org/core/useStorage) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
-- Utilities
+### Utilities
   - [`asyncComputed`](https://vueuse.js.org/core/asyncComputed) — computed for async functions
   - [`biSyncRef`](https://vueuse.js.org/shared/biSyncRef) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/shared/controlledComputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/shared/extendRef) — add extra attributes to Ref
   - [`makeDestructurable`](https://vueuse.js.org/shared/makeDestructurable) — make isomorphic destructurable for object and array at the same time
+  - [`reactify`](https://vueuse.js.org/shared/reactify) — converts plain function into reactive function
   - [`syncRef`](https://vueuse.js.org/shared/syncRef) — keep target refs in sync with a source ref
   - [`useAsyncState`](https://vueuse.js.org/core/useAsyncState) — reactive async state
   - [`useCounter`](https://vueuse.js.org/shared/useCounter) — basic counter with utility functions
@@ -90,7 +91,7 @@
   - [`useThrottleFn`](https://vueuse.js.org/shared/useThrottleFn) — throttle execution of a function
   - [`useToggle`](https://vueuse.js.org/shared/useToggle) — a boolean switcher with utility functions
 
-- Watch
+### Watch
   - [`debouncedWatch`](https://vueuse.js.org/shared/debouncedWatch) — debounced watch
   - [`ignorableWatch`](https://vueuse.js.org/shared/ignorableWatch) — ignorable watch
   - [`pausableWatch`](https://vueuse.js.org/shared/pausableWatch) — pausable watch
@@ -105,20 +106,22 @@ More functions to be added. Please stay tuned. (PRs are also welcome!)
 
 Meanwhile, try also [**vue-composable**](https://github.com/pikax/vue-composable) by [@pikax](https://github.com/pikax)!
 
-## 🔌 Add-ons
+# Add-ons
 
 The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
 
-- Router ([`@vueuse/router`](https://vueuse.js.org/router/README.html)) - Utilities for vue-router
+### Router ([`@vueuse/router`](https://vueuse.js.org/router/README.html))
+Utilities for vue-router
   - [`useRouteHash`](https://vueuse.js.org/router/useRouteHash) — shorthand for reactive route.hash
   - [`useRouteQuery`](https://vueuse.js.org/router/useRouteQuery) — shorthand for reactive route.query
 
 
 
-- Integrations ([`@vueuse/integrations`](https://vueuse.js.org/integrations/README.html)) - Integration wrappers for utility libraries
+### Integrations ([`@vueuse/integrations`](https://vueuse.js.org/integrations/README.html))
+Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.js.org/integrations/useAxios) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.js.org/integrations/useCookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
   - [`useNProgress`](https://vueuse.js.org/integrations/useNProgress) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
@@ -126,7 +129,8 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 
 
-- RxJS ([`@vueuse/rxjs`](https://vueuse.js.org/rxjs/README.html)) - Enables RxJS reactive functions in Vue
+### RxJS ([`@vueuse/rxjs`](https://vueuse.js.org/rxjs/README.html))
+Enables RxJS reactive functions in Vue
   - [`from`](https://vueuse.js.org/rxjs/from) — two wrappers around of the original functions to allow use ref objects
   - [`toObserver`](https://vueuse.js.org/rxjs/toObserver) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/rxjs/useObservable) — use an Observable
@@ -134,7 +138,8 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 
 
 
-- Firebase ([`@vueuse/firebase`](https://vueuse.js.org/firebase/README.html)) - Enables realtime bindings for Firebase
+### Firebase ([`@vueuse/firebase`](https://vueuse.js.org/firebase/README.html))
+Enables realtime bindings for Firebase
   - [`useFirestore`](https://vueuse.js.org/firebase/useFirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/firebase/useRTDB) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 

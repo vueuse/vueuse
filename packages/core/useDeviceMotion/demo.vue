@@ -6,5 +6,8 @@ const motion = reactive(useDeviceMotion())
 </script>
 
 <template>
+  <note class="mb-2">
+    Device Motion:
+  </note>
   <pre lang="json">{{ JSON.stringify(motion, null, 2) }}</pre>
 </template>

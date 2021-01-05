@@ -1,3 +1,7 @@
+---
+category: Utilities
+---
+
 <!--DEMO_STARTS-->
 <script setup>
 import Demo from './demo.vue'
@@ -5,14 +9,7 @@ import Demo from './demo.vue'
 <DemoContainer><Demo/></DemoContainer>
 <!--DEMO_ENDS-->
 
-<!--HEAD_STARTS-->
-::: tip
-also available in [Vue Reactivity](https://github.com/vue-reactivity/use)
-
-
-:::
-
-<!--HEAD_ENDS-->
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
 
 
 # useDebounce

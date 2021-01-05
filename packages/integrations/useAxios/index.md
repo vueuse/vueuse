@@ -1,10 +1,12 @@
+---
+category: '@Integrations'
+---
+
 <!--DEMO_STARTS--><!--DEMO_ENDS-->
 
 <!--HEAD_STARTS-->
 ::: tip
-available in add-on [`@vueuse/integrations`](/?path=/story/integrations--readme)
-
-
+available in add-on [`@vueuse/integrations`](/integrations/)
 :::
 
 <!--HEAD_ENDS-->

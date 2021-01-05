@@ -2,12 +2,17 @@
   --width: 100vw;
   --margin-left: -1.5rem;
 
-  width: var(--width);
-  margin-left: var(--margin-left);
   background: rgba(125,125,125,0.04);
   padding: 2em 3em;
-  border-bottom: 1px solid var(--c-divider);
   position: relative;
+  border: 1px solid var(--c-divider);
+}
+
+.demo.wide {
+  width: var(--width);
+  margin-left: var(--margin-left);
+  border: none;
+  border-bottom: 1px solid var(--c-divider);
 }
 
 .demo::after {
@@ -100,4 +105,5 @@
   background: var(--code-inline-bg-color);
   padding: 0.5rem;
   border-radius: 4px;
+  font-size: 0.95rem;
 }

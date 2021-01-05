@@ -5,5 +5,8 @@ const light = useDeviceLight()
 </script>
 
 <template>
-  <pre lang="json">{{ JSON.stringify({ light }, null, 2) }}</pre>
+  <note class="mb-2">
+    Device Light:
+  </note>
+  <code>{{ `${light}` }}</code>
 </template>

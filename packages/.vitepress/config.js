@@ -37,7 +37,7 @@ function getSideBar() {
 
   categories
     .sort((a, b) => categoriesOrder.indexOf(a) - categoriesOrder.indexOf(b))
-    .sort((a, b) => a.startsWith('/') ? 1 : b.startsWith('/') ? -1 : 0)
+    .sort((a, b) => a.startsWith('@') ? 1 : b.startsWith('@') ? -1 : 0)
 
   for (const name of categories) {
     if (name.startsWith('_'))
@@ -51,6 +51,7 @@ function getSideBar() {
         text: i.name,
         link: `/${i.package}/${i.name}/`,
       })),
+      link: name.startsWith('@') ? `/${functions[0].package}/README` : undefined,
     })
   }
 

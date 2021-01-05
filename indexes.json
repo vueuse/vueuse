@@ -2,198 +2,10 @@
   "packages": {
     "shared": {
       "name": "shared",
-<<<<<<< HEAD
       "display": "Shared utilities",
       "dir": "packages/shared"
     },
     "core": {
-=======
-      "display": "Shared utilities"
-    },
-    "dir": "packages/shared",
-    "categories": {
-      "Utilities": [
-        {
-          "name": "biSyncRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--bisyncref",
-          "description": "two-way refs synchronization",
-          "depreacted": false
-        },
-        {
-          "name": "controlledComputed",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--controlledcomputed",
-          "description": "explicitly define the deps of computed",
-          "depreacted": false
-        },
-        {
-          "name": "extendRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--extendref",
-          "description": "add extra attributes to Ref",
-          "depreacted": false
-        },
-        {
-          "name": "makeDestructurable",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--makedestructurable",
-          "description": "make isomorphic destructurable for object and array at the same time",
-          "depreacted": false
-        },
-        {
-          "name": "syncRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--syncref",
-          "description": "keep target refs in sync with a source ref",
-          "depreacted": false
-        },
-        {
-          "name": "useCounter",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usecounter",
-          "description": "basic counter with utility functions",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounce",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
-          "description": "debounce execution of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounceFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
-          "description": "debounce execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
-          "description": "throttle changing of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottleFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
-          "description": "throttle execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "useToggle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usetoggle",
-          "description": "a boolean switcher with utility functions",
-          "depreacted": false
-        }
-      ],
-      "Watch": [
-        {
-          "name": "debouncedWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--debouncedwatch",
-          "description": "debounced watch",
-          "depreacted": false
-        },
-        {
-          "name": "ignorableWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--ignorablewatch",
-          "description": "ignorable watch",
-          "depreacted": false
-        },
-        {
-          "name": "pausableWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",
-          "description": "pausable watch",
-          "depreacted": false
-        },
-        {
-          "name": "throttledWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--throttledwatch",
-          "description": "throttled watch",
-          "depreacted": false
-        },
-        {
-          "name": "watchWithFilter",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--watchwithfilter",
-          "description": "`watch` with additional EventFilter control",
-          "depreacted": false
-        },
-        {
-          "name": "when",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--when",
-          "description": "promised one-time watch for ref changes",
-          "depreacted": false
-        }
-      ],
-      "_utils": [
-        {
-          "name": "reactify"
-        },
-        {
-          "name": "utils"
-        }
-      ],
-      "Component": [
-        {
-          "name": "tryOnMounted",
-          "category": "Component",
-          "docs": "https://vueuse.js.org/?path=/story/component--tryonmounted",
-          "description": "safe `onMounted`",
-          "depreacted": false
-        },
-        {
-          "name": "tryOnUnmounted",
-          "category": "Component",
-          "docs": "https://vueuse.js.org/?path=/story/component--tryonunmounted",
-          "description": "safe `onUnmounted`",
-          "depreacted": false
-        }
-      ],
-      "Animation": [
-        {
-          "name": "useInterval",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useinterval",
-          "description": "reactive counter increases on every interval",
-          "depreacted": false
-        },
-        {
-          "name": "useIntervalFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
-          "description": "wrapper for `setInterval` with controls",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeout",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
-          "description": "update value after a given time with controls",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeoutFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
-          "description": "wrapper for `setTimeout` with controls",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "core": {
-    "info": {
->>>>>>> master
       "name": "core",
       "display": "VueUse",
       "description": "Collection of essential Vue Composition Utilities",
@@ -268,10 +80,10 @@
     }
   },
   "categories": [
-    "/Firebase",
-    "/Integrations",
-    "/Router",
-    "/RxJS",
+    "@Firebase",
+    "@Integrations",
+    "@Router",
+    "@RxJS",
     "Animation",
     "Browser",
     "Component",
@@ -330,6 +142,13 @@
       "docs": "https://vueuse.js.org/shared/pausableWatch",
       "category": "Watch",
       "description": "pausable watch"
+    },
+    {
+      "name": "reactify",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/reactify",
+      "category": "Utilities",
+      "description": "converts plain function into reactive function"
     },
     {
       "name": "syncRef",
@@ -844,84 +663,84 @@
       "name": "useRouteHash",
       "package": "router",
       "docs": "https://vueuse.js.org/router/useRouteHash",
-      "category": "/Router",
+      "category": "@Router",
       "description": "shorthand for reactive route.hash"
     },
     {
       "name": "useRouteQuery",
       "package": "router",
       "docs": "https://vueuse.js.org/router/useRouteQuery",
-      "category": "/Router",
+      "category": "@Router",
       "description": "shorthand for reactive route.query"
     },
     {
       "name": "useAxios",
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useAxios",
-      "category": "/Integrations",
+      "category": "@Integrations",
       "description": "wrapper for [`axios`](https://github.com/axios/axios)"
     },
     {
       "name": "useCookies",
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useCookies",
-      "category": "/Integrations",
+      "category": "@Integrations",
       "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
     },
     {
       "name": "useNProgress",
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useNProgress",
-      "category": "/Integrations",
+      "category": "@Integrations",
       "description": "reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)"
     },
     {
       "name": "useQRCode",
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useQRCode",
-      "category": "/Integrations",
+      "category": "@Integrations",
       "description": "wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)"
     },
     {
       "name": "from",
       "package": "rxjs",
       "docs": "https://vueuse.js.org/rxjs/from",
-      "category": "/RxJS",
+      "category": "@RxJS",
       "description": "two wrappers around of the original functions to allow use ref objects"
     },
     {
       "name": "toObserver",
       "package": "rxjs",
       "docs": "https://vueuse.js.org/rxjs/toObserver",
-      "category": "/RxJS",
+      "category": "@RxJS",
       "description": "sugar function to convert a ref in an observer"
     },
     {
       "name": "useObservable",
       "package": "rxjs",
       "docs": "https://vueuse.js.org/rxjs/useObservable",
-      "category": "/RxJS",
+      "category": "@RxJS",
       "description": "use an Observable"
     },
     {
       "name": "useSubscription",
       "package": "rxjs",
       "docs": "https://vueuse.js.org/rxjs/useSubscription",
-      "category": "/RxJS",
+      "category": "@RxJS",
       "description": "uses subscriptions without worry about unsubscribing to it or memory leaks"
     },
     {
       "name": "useFirestore",
       "package": "firebase",
       "docs": "https://vueuse.js.org/firebase/useFirestore",
-      "category": "/Firebase",
+      "category": "@Firebase",
       "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
     },
     {
       "name": "useRTDB",
       "package": "firebase",
       "docs": "https://vueuse.js.org/firebase/useRTDB",
-      "category": "/Firebase",
+      "category": "@Firebase",
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
     }
   ]

@@ -5,5 +5,8 @@ const colroScheme = usePreferredColorScheme()
 </script>
 
 <template>
-  <p>Preferred Color Scheme: {{ colroScheme.toString() }}</p>
+  <note class="mb-2">
+    Preferred Color Scheme:
+  </note>
+  <code>{{ colroScheme }}</code>
 </template>

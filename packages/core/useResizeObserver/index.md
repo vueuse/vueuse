@@ -1,3 +1,7 @@
+---
+category: Sensors
+---
+
 <!--DEMO_STARTS-->
 <script setup>
 import Demo from './demo.vue'
