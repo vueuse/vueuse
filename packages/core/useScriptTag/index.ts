@@ -120,5 +120,5 @@ export function useScriptTag(
     await unloadScript()
   })
 
-  return { scriptTag, loadScript, unloadScript } as const
+  return { scriptTag, loadScript, unloadScript }
 }
