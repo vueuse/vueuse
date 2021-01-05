@@ -4,6 +4,11 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   immediate?: boolean
+  async: boolean
+  type: string
+  crossorigin?: 'anonymous' | 'use-credentials'
+  referrerpolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
+  nomodule?: boolean
 }
 
 /**
@@ -17,8 +22,10 @@ export function useScriptTag(
   onLoaded: Function = () => {},
   {
     immediate = true,
+    async = true,
     document = defaultDocument,
-  }: UseScriptTagOptions = {},
+    type = 'text/javascript',
+  }: UseScriptTagOptions,
 ) {
   const scriptTag = ref<HTMLScriptElement>()
 
@@ -43,8 +50,8 @@ export function useScriptTag(
 
       if (!el) {
         el = document.createElement('script')
-        el.type = 'text/javascript'
-        el.async = true
+        el.type = type
+        el.async = async
         el.src = isString(src) ? src : src.value
         shouldAppend = true
       }
