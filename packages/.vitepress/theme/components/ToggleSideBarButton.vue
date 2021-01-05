@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  emits: ['toggle']
+  emits: ['toggle'],
 }
 </script>
 

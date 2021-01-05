@@ -15,18 +15,18 @@ export function useNavLink(item: DefaultTheme.NavItemWithLink) {
       class: {
         active:
           normalizePath(withBase(item.link)) === normalizePath(route.path),
-        isExternal
+        isExternal,
       },
       href: isExternal ? item.link : withBase(item.link),
-      target: item.target || isExternal ? `_blank` : null,
-      rel: item.rel || isExternal ? `noopener noreferrer` : null,
-      'aria-label': item.ariaLabel
+      target: item.target || isExternal ? '_blank' : null,
+      rel: item.rel || isExternal ? 'noopener noreferrer' : null,
+      'aria-label': item.ariaLabel,
     }
   })
 
   return {
     props,
-    isExternal
+    isExternal,
   }
 }
 
@@ -36,9 +36,8 @@ function normalizePath(path: string): string {
     .replace(/\?.*$/, '')
     .replace(/\.html$/, '')
 
-  if (path.endsWith('/')) {
+  if (path.endsWith('/'))
     path += 'index'
-  }
 
   return path
 }

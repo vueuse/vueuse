@@ -35,9 +35,9 @@ export default defineComponent({
     return {
       hasLastUpdated,
       prefix,
-      datetime
+      datetime,
     }
-  }
+  },
 })
 </script>
 

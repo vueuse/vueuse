@@ -17,7 +17,7 @@ export function useActiveSidebarLinks() {
       const [isActive, hash] = isAnchorActive(i, anchor, nextAnchor)
 
       if (isActive) {
-        history.replaceState(null, document.title, hash ? hash : ' ')
+        history.replaceState(null, document.title, hash || ' ')
         activateLink(hash)
         return
       }
@@ -30,9 +30,8 @@ export function useActiveSidebarLinks() {
 
     activeLink = document.querySelector(`.sidebar a[href="${hash}"]`)
 
-    if (!activeLink) {
+    if (!activeLink)
       return
-    }
 
     activeLink.classList.add('active')
 
@@ -42,7 +41,8 @@ export function useActiveSidebarLinks() {
     if (rootLi && rootLi !== activeLink.parentElement) {
       rootActiveLink = rootLi.querySelector('a')
       rootActiveLink && rootActiveLink.classList.add('active')
-    } else {
+    }
+    else {
       rootActiveLink = null
     }
   }
@@ -68,7 +68,7 @@ export function useActiveSidebarLinks() {
 
 function getSidebarLinks(): HTMLAnchorElement[] {
   return [].slice.call(
-    document.querySelectorAll('.sidebar a.sidebar-link-item')
+    document.querySelectorAll('.sidebar a.sidebar-link-item'),
   )
 }
 
@@ -76,7 +76,7 @@ function getAnchors(sidebarLinks: HTMLAnchorElement[]): HTMLAnchorElement[] {
   return [].slice
     .call(document.querySelectorAll('.header-anchor'))
     .filter((anchor: HTMLAnchorElement) =>
-      sidebarLinks.some((sidebarLink) => sidebarLink.hash === anchor.hash)
+      sidebarLinks.some(sidebarLink => sidebarLink.hash === anchor.hash),
     ) as HTMLAnchorElement[]
 }
 
@@ -93,21 +93,18 @@ function getAnchorTop(anchor: HTMLAnchorElement): number {
 function isAnchorActive(
   index: number,
   anchor: HTMLAnchorElement,
-  nextAnchor: HTMLAnchorElement
+  nextAnchor: HTMLAnchorElement,
 ): [boolean, string | null] {
   const scrollTop = window.scrollY
 
-  if (index === 0 && scrollTop === 0) {
+  if (index === 0 && scrollTop === 0)
     return [true, null]
-  }
 
-  if (scrollTop < getAnchorTop(anchor)) {
+  if (scrollTop < getAnchorTop(anchor))
     return [false, null]
-  }
 
-  if (!nextAnchor || scrollTop < getAnchorTop(nextAnchor)) {
+  if (!nextAnchor || scrollTop < getAnchorTop(nextAnchor))
     return [true, decodeURIComponent(anchor.hash)]
-  }
 
   return [false, null]
 }
@@ -117,9 +114,8 @@ function throttleAndDebounce(fn: () => void, delay: number): () => void {
   let called = false
 
   return () => {
-    if (timeout) {
+    if (timeout)
       clearTimeout(timeout)
-    }
 
     if (!called) {
       fn()
@@ -127,7 +123,8 @@ function throttleAndDebounce(fn: () => void, delay: number): () => void {
       setTimeout(() => {
         called = false
       }, delay)
-    } else {
+    }
+    else {
       timeout = setTimeout(fn, delay)
     }
   }
