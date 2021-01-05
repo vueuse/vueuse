@@ -95,7 +95,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
 
     try {
       let rawValue = storage.getItem(key)
-      if (rawValue === undefined && defaultValue) {
+      if (rawValue == null && defaultValue) {
         rawValue = Serializers[type].write(defaultValue)
         storage.setItem(key, rawValue)
       }
