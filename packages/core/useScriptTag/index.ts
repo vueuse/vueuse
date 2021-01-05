@@ -61,19 +61,13 @@ export function useScriptTag(
         return el
       }
 
-      el.addEventListener('error', () =>
-        reject(new Error('Error while loading script!')),
-      )
-      el.addEventListener('abort', () =>
-        reject(new Error('Script load aborted!')),
-      )
+      el.addEventListener('error', event => reject)
+      el.addEventListener('abort', event => reject)
       el.addEventListener('load', () => {
-        if (el) {
-          el.setAttribute('data-loaded', 'true')
-          scriptTag.value = el
-          if (onLoaded) onLoaded(el)
-          resolve(el)
-        }
+        el.setAttribute('data-loaded', 'true')
+        scriptTag.value = el
+        if (onLoaded) onLoaded(el)
+        resolve(el)
       })
 
       if (shouldAppend) el = document.head.appendChild(el)
