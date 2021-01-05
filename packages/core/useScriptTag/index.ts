@@ -144,14 +144,10 @@ export function useScriptTag(
     })
 
   // Try to load the script onMounted.
-  tryOnMounted(async() => {
-    if (immediate) await load()
-  })
+  if (immediate) tryOnMounted(async() => load())
 
   // Try to unload the script onUnMounted.
-  tryOnUnmounted(async() => {
-    await unload()
-  })
+  tryOnUnmounted(async() => unload())
 
   return { scriptTag, load, unload, loadingPromise }
 }
