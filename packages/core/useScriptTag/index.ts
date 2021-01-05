@@ -6,9 +6,10 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   immediate?: boolean
   async: boolean
   type: string
-  crossorigin?: 'anonymous' | 'use-credentials'
-  referrerpolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
-  nomodule?: boolean
+  crossOrigin?: 'anonymous' | 'use-credentials'
+  referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
+  noModule?: boolean
+  defer?: boolean
 }
 
 /**
@@ -25,6 +26,10 @@ export function useScriptTag(
     async = true,
     document = defaultDocument,
     type = 'text/javascript',
+    crossOrigin,
+    referrerPolicy,
+    noModule,
+    defer,
   }: UseScriptTagOptions,
 ) {
   const scriptTag = ref<HTMLScriptElement>()
@@ -48,19 +53,28 @@ export function useScriptTag(
         document.querySelector(`script[src="${src}"]`)
       )
 
+      // Script tag found, preparing the element for appending
       if (!el) {
         el = document.createElement('script')
         el.type = type
         el.async = async
         el.src = isString(src) ? src : src.value
+
+        if (defer) el.defer = defer
+        if (crossOrigin) el.crossOrigin = crossOrigin
+        if (noModule) el.noModule = noModule
+        if (referrerPolicy) el.referrerPolicy = referrerPolicy
+
         shouldAppend = true
       }
+      // Script tag already exists, resolve the loading Promise with it.
       else if (el.hasAttribute('data-loaded')) {
         scriptTag.value = el
         resolve(el)
         return el
       }
 
+      // Event listeners
       el.addEventListener('error', event => reject)
       el.addEventListener('abort', event => reject)
       el.addEventListener('load', () => {
