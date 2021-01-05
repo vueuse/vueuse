@@ -34,71 +34,86 @@ export function useScriptTag(
 ) {
   const scriptTag = ref<HTMLScriptElement>()
 
+  let loadingPromise: Promise<HTMLScriptElement | boolean> | null = null
+
   /**
    * Load the script specified via `src`.
    *
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> =>
-    new Promise((resolve, reject) => {
-      // Some little closure for resolving the Promise.
-      const resolveWithElement = (el: HTMLScriptElement) => {
-        scriptTag.value = el
-        resolve(el)
-        return el
-      }
+  const loadScript = (waitForScriptLoad: boolean): Promise<HTMLScriptElement | boolean> => new Promise((resolve, reject) => {
+    // Some little closure for resolving the Promise.
+    const resolveWithElement = (el: HTMLScriptElement) => {
+      scriptTag.value = el
+      resolve(el)
+      return el
+    }
 
-      // Check if document actually exists, otherwise resolve the Promise (SSR Support).
-      if (!document) {
-        resolve(false)
-        return
-      }
+    // Check if document actually exists, otherwise resolve the Promise (SSR Support).
+    if (!document) {
+      resolve(false)
+      return
+    }
 
-      // Local variable defining if the <script> tag should be appended or not.
-      let shouldAppend = false
+    // Local variable defining if the <script> tag should be appended or not.
+    let shouldAppend = false
 
-      let el: HTMLScriptElement = <HTMLScriptElement>(
-        document.querySelector(`script[src="${src}"]`)
-      )
+    let el: HTMLScriptElement = <HTMLScriptElement>(
+      document.querySelector(`script[src="${src}"]`)
+    )
 
-      // Script tag found, preparing the element for appending
-      if (!el) {
-        // Create element and set required attributes
-        el = document.createElement('script')
-        el.type = type
-        el.async = async
-        el.src = isString(src) ? src : src.value
-        // Optional attributes
-        if (defer) el.defer = defer
-        if (crossOrigin) el.crossOrigin = crossOrigin
-        if (noModule) el.noModule = noModule
-        if (referrerPolicy) el.referrerPolicy = referrerPolicy
-        // Enables shouldAppend
-        shouldAppend = true
-      }
-      // Script tag already exists, resolve the loading Promise with it.
-      else if (el.hasAttribute('data-loaded')) {
-        resolveWithElement(el)
-      }
+    // Script tag found, preparing the element for appending
+    if (!el) {
+      // Create element and set required attributes
+      el = document.createElement('script')
+      el.type = type
+      el.async = async
+      el.src = isString(src) ? src : src.value
+      // Optional attributes
+      if (defer) el.defer = defer
+      if (crossOrigin) el.crossOrigin = crossOrigin
+      if (noModule) el.noModule = noModule
+      if (referrerPolicy) el.referrerPolicy = referrerPolicy
+      // Enables shouldAppend
+      shouldAppend = true
+    }
+    // Script tag already exists, resolve the loading Promise with it.
+    else if (el.hasAttribute('data-loaded')) {
+      resolveWithElement(el)
+    }
 
-      // Event listeners
-      el.addEventListener('error', event => reject(event))
-      el.addEventListener('abort', event => reject(event))
-      el.addEventListener('load', () => {
-        el.setAttribute('data-loaded', 'true')
+    // Event listeners
+    el.addEventListener('error', event => reject(event))
+    el.addEventListener('abort', event => reject(event))
+    el.addEventListener('load', () => {
+      el.setAttribute('data-loaded', 'true')
 
-        if (onLoaded) onLoaded(el)
+      if (onLoaded) onLoaded(el)
 
-        resolveWithElement(el)
-      })
-
-      // Append the <script> tag to head.
-      if (shouldAppend) el = document.head.appendChild(el)
-
-      // If script load awaiting isn't needed, we can resolve the Promise.
-      if (!waitForScriptLoad) resolveWithElement(el)
+      resolveWithElement(el)
     })
+
+    // Append the <script> tag to head.
+    if (shouldAppend) el = document.head.appendChild(el)
+
+    // If script load awaiting isn't needed, we can resolve the Promise.
+    if (!waitForScriptLoad) resolveWithElement(el)
+  })
+
+  /**
+   * Exposed singleton wrapper for `loadScript`, avoiding calling it twice.
+   *
+   * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
+   * @returns Promise<HTMLScriptElement>
+   */
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
+    if (loadingPromise) return loadingPromise
+
+    loadingPromise = loadScript(waitForScriptLoad)
+
+    return loadingPromise
+  }
 
   /**
    * Unload the script specified by `src`.
@@ -138,5 +153,5 @@ export function useScriptTag(
     await unload()
   })
 
-  return { scriptTag, load, unload }
+  return { scriptTag, load, unload, loadingPromise }
 }
