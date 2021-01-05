@@ -9,7 +9,7 @@ import { useScriptTag } from '@vueuse/core'
 
 export default defineComponent({
   setup() {
-    const [twitchScriptTag] = useScriptTag(
+    const { scriptTag } = useScriptTag(
       'https://player.twitch.tv/js/embed/v1.js',
       // This is called on script tag loaded.
       (el: HTMLScriptElement) => {
@@ -42,7 +42,7 @@ export default defineComponent({
     const twitchEmbed = ref<Element>()
     const twitchEmbedVisible = ref(false)
 
-    const [twitchScriptTag, loadTwitchScriptTag, unloadTwitchScriptTag] = useScriptTag(
+    const { scriptTag, load, unload } = useScriptTag(
       'https://player.twitch.tv/js/embed/v1.js',
       // This is called on script tag loaded.
       () => {
@@ -53,7 +53,7 @@ export default defineComponent({
         })
       },
       {
-        loadOnMounted: false,
+        immediate: false,
       },
     )
 
@@ -67,8 +67,8 @@ export default defineComponent({
     watch(
       twitchEmbedVisible.value,
       async(newVal) => {
-        if (newVal) await loadTwitchScriptTag()
-        else await unloadTwitchScriptTag()
+        if (newVal) await load()
+        else await unload()
       },
     )
 
