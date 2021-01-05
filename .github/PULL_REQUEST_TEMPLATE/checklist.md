@@ -8,15 +8,18 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 
 <!--LIST_STARTS-->
 
-### shared (25)
+### shared (28)
   - [ ] biSyncRef
   - [ ] controlledComputed
   - [ ] debouncedWatch
   - [ ] extendRef
+  - [ ] get
   - [ ] ignorableWatch
   - [ ] makeDestructurable
   - [ ] pausableWatch
   - [ ] reactify
+  - [ ] reactifyObject
+  - [ ] set
   - [ ] syncRef
   - [ ] throttledWatch
   - [ ] tryOnMounted
@@ -112,5 +115,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
 ### firebase (2)
   - [ ] useFirestore
   - [ ] useRTDB
+
+### reactified (0)
 
 <!--LIST_ENDS-->

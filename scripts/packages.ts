@@ -79,6 +79,13 @@ export const packages: PackageManifest[] = [
       'firebase/app': 'firebase',
     },
   },
+  {
+    name: 'reactified',
+    display: 'Reactified',
+    description: 'Reactified built-in functions & utilities',
+    addon: true,
+    manualImport: true,
+  },
 ]
 
 export const activePackages = packages.filter(i => !i.deprecated)
