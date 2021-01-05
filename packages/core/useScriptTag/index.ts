@@ -35,7 +35,7 @@ export function useScriptTag(
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const loadScript = (waitForScriptLoad = true): Promise<HTMLScriptElement> =>
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement> =>
     new Promise((resolve, reject) => {
       if (!document) {
         reject(new Error('No document found!'))
@@ -84,7 +84,7 @@ export function useScriptTag(
    *
    * @returns Promise<boolean>
    */
-  const unloadScript = (): Promise<boolean> =>
+  const unload = (): Promise<boolean> =>
     new Promise((resolve, reject) => {
       if (!document) {
         reject(new Error('No document found!'))
@@ -104,12 +104,12 @@ export function useScriptTag(
     })
 
   tryOnMounted(async() => {
-    if (immediate) await loadScript()
+    if (immediate) await load()
   })
 
   tryOnUnmounted(async() => {
-    await unloadScript()
+    await unload()
   })
 
-  return { scriptTag, loadScript, unloadScript }
+  return { scriptTag, load, unload }
 }
