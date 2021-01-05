@@ -4,8 +4,8 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   immediate?: boolean
-  async: boolean
-  type: string
+  async?: boolean
+  type?: string
   crossOrigin?: 'anonymous' | 'use-credentials'
   referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
   noModule?: boolean
@@ -42,11 +42,20 @@ export function useScriptTag(
    */
   const load = (waitForScriptLoad = true): Promise<HTMLScriptElement> =>
     new Promise((resolve, reject) => {
+      // Some little closure for resolving the Promise.
+      const resolveWithElement = (el: HTMLScriptElement) => {
+        scriptTag.value = el
+        resolve(el)
+        return el
+      }
+
+      // Check if document actually exists, otherwise reject the Promise.
       if (!document) {
         reject(new Error('No document found!'))
         return
       }
 
+      // Local variable defining if the <script> tag should be appended or not.
       let shouldAppend = false
 
       let el: HTMLScriptElement = <HTMLScriptElement>(
@@ -55,42 +64,40 @@ export function useScriptTag(
 
       // Script tag found, preparing the element for appending
       if (!el) {
+        // Create element and set required attributes
         el = document.createElement('script')
         el.type = type
         el.async = async
         el.src = isString(src) ? src : src.value
-
+        // Optional attributes
         if (defer) el.defer = defer
         if (crossOrigin) el.crossOrigin = crossOrigin
         if (noModule) el.noModule = noModule
         if (referrerPolicy) el.referrerPolicy = referrerPolicy
-
+        // Enables shouldAppend
         shouldAppend = true
       }
       // Script tag already exists, resolve the loading Promise with it.
       else if (el.hasAttribute('data-loaded')) {
-        scriptTag.value = el
-        resolve(el)
-        return el
+        resolveWithElement(el)
       }
 
       // Event listeners
-      el.addEventListener('error', event => reject)
-      el.addEventListener('abort', event => reject)
+      el.addEventListener('error', event => reject(event))
+      el.addEventListener('abort', event => reject(event))
       el.addEventListener('load', () => {
         el.setAttribute('data-loaded', 'true')
-        scriptTag.value = el
+
         if (onLoaded) onLoaded(el)
-        resolve(el)
+
+        resolveWithElement(el)
       })
 
+      // Append the <script> tag to head.
       if (shouldAppend) el = document.head.appendChild(el)
 
-      if (!waitForScriptLoad) {
-        scriptTag.value = el
-        resolve(el)
-        return el
-      }
+      // If script load awaiting isn't needed, we can resolve the Promise.
+      if (!waitForScriptLoad) resolveWithElement(el)
     })
 
   /**
@@ -100,27 +107,33 @@ export function useScriptTag(
    */
   const unload = (): Promise<boolean> =>
     new Promise((resolve, reject) => {
+      // Check if document actually exists, otherwise reject the Promise.
       if (!document) {
         reject(new Error('No document found!'))
         return
       }
 
+      // Check if script tag actually exists, otherwise resolve the Promise.
       if (!scriptTag.value) {
         resolve(true)
         return
       }
 
+      // Remove the <script> tag from the document head.
       document.head.removeChild(scriptTag.value)
 
+      // Reset the <script> tag reference.
       scriptTag.value = undefined
 
       resolve(true)
     })
 
+  // Try to load the script onMounted.
   tryOnMounted(async() => {
     if (immediate) await load()
   })
 
+  // Try to unload the script onUnMounted.
   tryOnUnmounted(async() => {
     await unload()
   })
