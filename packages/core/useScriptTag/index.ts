@@ -30,7 +30,7 @@ export function useScriptTag(
     referrerPolicy,
     noModule,
     defer,
-  }: UseScriptTagOptions,
+  }: UseScriptTagOptions = {},
 ) {
   const scriptTag = ref<HTMLScriptElement>()
 
