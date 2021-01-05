@@ -1,6 +1,6 @@
 # reactify
 
-> Converts plain function into reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+> Converts plain function into a reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
 
 ## Usage
 
@@ -10,16 +10,16 @@ Basic example
 import { reactify } from '@vueuse/core'
 
 // a plain function
-function add(a: number, b: number) {
+function add(a: number, b: number): number {
   return a + b
 }
 
+// now it accept refs and returns a computed ref
+// (a: number | Ref<number>, b: number | Ref<number>) => ComputedRef<number>
 const reactiveAdd = reactify(add)
 
 const a = ref(1)
 const b = ref(2)
-
-// now it accept refs
 const sum = reactiveAdd(a, b)
 
 console.log(sum.value) // 3
@@ -49,7 +49,7 @@ b.value = 12
 console.log(c.value) // 13
 ```
 
-You can do it this way:
+You can also do it this way:
 
 ```ts
 import { reactify } from '@vueuse/core'
@@ -65,7 +65,7 @@ const c = reactify(pythagorean)(a, b)
 console.log(c.value) // 5
 ```
 
-This is another example of making reactive `stringify`
+Another example of making reactive `stringify`
 
 ```ts
 import { reactify } from '@vueuse/core'
