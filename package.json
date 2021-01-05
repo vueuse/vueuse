@@ -72,7 +72,7 @@
     "@vue/runtime-dom": "^3.0.4",
     "@vue/test-utils": "^1.1.2",
     "autoprefixer": "^9.8.6",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "babel-plugin-const-enum": "^1.0.1",
     "babel-preset-vue": "^2.0.2",
