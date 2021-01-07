@@ -6,8 +6,10 @@ const config: UserConfig = {
     '@vueuse/shared': resolve(__dirname, 'shared'),
   },
   optimizeDeps: {
-    include: [
+    exclude: [
       'vue-demi',
+    ],
+    include: [
       'qrcode',
       'nprogress',
       'tslib',
