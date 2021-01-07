@@ -69,7 +69,7 @@ export function useScriptTag(
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = isString(src) ? src : src.value
+      el.src = unref(src)
       // Optional attributes
       if (defer) el.defer = defer
       if (crossOrigin) el.crossOrigin = crossOrigin
