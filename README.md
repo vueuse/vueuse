@@ -106,7 +106,7 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`usePreferredColorScheme`](https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/?path=/story/browser--usepreferreddark) — reactive dark theme preference
   - [`usePreferredLanguages`](https://vueuse.js.org/?path=/story/browser--usepreferredlanguages) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
-  - [`useScriptTag`](https://vueuse.js.org/?path=/story/browser--usescripttag) — async script tag loading
+  - [`useScriptTag`](https://vueuse.js.org/?path=/story/browser--usescripttag) — script tag injecting
   - [`useShare`](https://vueuse.js.org/?path=/story/browser--useshare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.js.org/?path=/story/browser--usetitle) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.js.org/?path=/story/browser--useurlsearchparams) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
