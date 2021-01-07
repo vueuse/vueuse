@@ -541,6 +541,13 @@
           "depreacted": false
         },
         {
+          "name": "useScriptTag",
+          "category": "Browser",
+          "docs": "https://vueuse.js.org/?path=/story/browser--usescripttag",
+          "description": "async script tag loading",
+          "depreacted": false
+        },
+        {
           "name": "useShare",
           "category": "Browser",
           "docs": "https://vueuse.js.org/?path=/story/browser--useshare",

@@ -38,7 +38,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] watchWithFilter
   - [ ] when
 
-### core (56)
+### core (57)
   - [ ] asyncComputed
   - [ ] createGlobalState
   - [ ] onClickOutside
@@ -81,6 +81,7 @@ This is a checklist of all the functions of VueUse. It's is useful for review or
   - [ ] useRafFn
   - [ ] useRefHistory
   - [ ] useResizeObserver
+  - [ ] useScriptTag
   - [ ] useSessionStorage
   - [ ] useShare
   - [ ] useSpeechRecognition
