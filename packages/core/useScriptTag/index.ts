@@ -32,7 +32,7 @@ export function useScriptTag(
     defer,
   }: UseScriptTagOptions = {},
 ) {
-  const scriptTag = ref<HTMLScriptElement>()
+  const scriptTag = ref<HTMLScriptElement | null>(null)
 
   let loadingPromise: Promise<HTMLScriptElement | boolean> | null = null
 
