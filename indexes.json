@@ -123,6 +123,13 @@
       "description": "add extra attributes to Ref"
     },
     {
+      "name": "get",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/get",
+      "category": "Utilities",
+      "description": "shorthand for accessing `ref.value`"
+    },
+    {
       "name": "ignorableWatch",
       "package": "shared",
       "docs": "https://vueuse.js.org/shared/ignorableWatch",
@@ -148,7 +155,21 @@
       "package": "shared",
       "docs": "https://vueuse.js.org/shared/reactify",
       "category": "Utilities",
-      "description": "converts plain function into reactive function"
+      "description": "converts plain function into a reactive function"
+    },
+    {
+      "name": "reactifyObject",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/reactifyObject",
+      "category": "Utilities",
+      "description": "apply `reactify` to an object"
+    },
+    {
+      "name": "set",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/set",
+      "category": "Utilities",
+      "description": "shorthand for `ref.value = x`"
     },
     {
       "name": "syncRef",
@@ -560,6 +581,13 @@
       "docs": "https://vueuse.js.org/core/useResizeObserver",
       "category": "Sensors",
       "description": "reports changes to the dimensions of an Element's content or the border-box"
+    },
+    {
+      "name": "useScriptTag",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useScriptTag",
+      "category": "Browser",
+      "description": "script tag injecting"
     },
     {
       "name": "useSessionStorage",

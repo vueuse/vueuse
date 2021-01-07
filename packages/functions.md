@@ -24,6 +24,7 @@
   - [`usePreferredColorScheme`](https://vueuse.js.org/core/usePreferredColorScheme) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/core/usePreferredDark) — reactive dark theme preference
   - [`usePreferredLanguages`](https://vueuse.js.org/core/usePreferredLanguages) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
+  - [`useScriptTag`](https://vueuse.js.org/core/useScriptTag) — script tag injecting
   - [`useShare`](https://vueuse.js.org/core/useShare) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.js.org/core/useTitle) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.js.org/core/useUrlSearchParams) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
@@ -78,8 +79,11 @@
   - [`biSyncRef`](https://vueuse.js.org/shared/biSyncRef) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/shared/controlledComputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/shared/extendRef) — add extra attributes to Ref
+  - [`get`](https://vueuse.js.org/shared/get) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.js.org/shared/makeDestructurable) — make isomorphic destructurable for object and array at the same time
-  - [`reactify`](https://vueuse.js.org/shared/reactify) — converts plain function into reactive function
+  - [`reactify`](https://vueuse.js.org/shared/reactify) — converts plain function into a reactive function
+  - [`reactifyObject`](https://vueuse.js.org/shared/reactifyObject) — apply `reactify` to an object
+  - [`set`](https://vueuse.js.org/shared/set) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.js.org/shared/syncRef) — keep target refs in sync with a source ref
   - [`useAsyncState`](https://vueuse.js.org/core/useAsyncState) — reactive async state
   - [`useCounter`](https://vueuse.js.org/shared/useCounter) — basic counter with utility functions

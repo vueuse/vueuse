@@ -301,9 +301,9 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
     if (hasTypes)
       readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')
 
-    const { content, data } = matter(readme)
+    const { content, data = {} } = matter(readme)
 
-    data.category = fn.category
+    data.category = fn.category || 'Unknown'
 
     readme = `---\n${YAML.safeDump(data)}---\n\n${content.trim()}`
 
