@@ -224,9 +224,6 @@ The core package aims to be lightweight and dependence free. While the add-ons a
   - [`useFirestore`](https://vueuse.js.org/?path=/story/firebase--usefirestore) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/?path=/story/firebase--usertdb) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
-
-
-- Reactified ([`@vueuse/reactified`](https://vueuse.js.org/?path=/story/reactified--readme)) - Reactified built-in functions & utilities
 <!--ADDONS_LIST_ENDS-->
 
 

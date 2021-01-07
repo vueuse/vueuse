@@ -800,17 +800,5 @@
         }
       ]
     }
-  },
-  "reactified": {
-    "info": {
-      "name": "reactified",
-      "display": "Reactified",
-      "description": "Reactified built-in functions & utilities",
-      "addon": true,
-      "manualImport": true
-    },
-    "dir": "packages/reactified",
-    "docs": "https://vueuse.js.org/?path=/story/reactified--readme",
-    "categories": {}
   }
 }
