@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-93%20functions-13708a"/>
+<img alt="Function Count" src="https://img.shields.io/badge/-96%20functions-13708a"/>
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
 </p>
@@ -160,7 +160,11 @@ You can check out the full documents and live demos in [Storybook](https://vueus
   - [`biSyncRef`](https://vueuse.js.org/?path=/story/utilities--bisyncref) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/?path=/story/utilities--controlledcomputed) — explicitly define the deps of computed
   - [`extendRef`](https://vueuse.js.org/?path=/story/utilities--extendref) — add extra attributes to Ref
+  - [`get`](https://vueuse.js.org/?path=/story/utilities--get) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.js.org/?path=/story/utilities--makedestructurable) — make isomorphic destructurable for object and array at the same time
+  - [`reactify`](https://vueuse.js.org/?path=/story/utilities--reactify) — converts plain function into a reactive function
+  - [`reactifyObject`](https://vueuse.js.org/?path=/story/utilities--reactifyobject) — apply `reactify` to an object
+  - [`set`](https://vueuse.js.org/?path=/story/utilities--set) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.js.org/?path=/story/utilities--syncref) — keep target refs in sync with a source ref
   - [`useAsyncState`](https://vueuse.js.org/?path=/story/utilities--useasyncstate) — reactive async state
   - [`useCounter`](https://vueuse.js.org/?path=/story/utilities--usecounter) — basic counter with utility functions

@@ -29,10 +29,38 @@
           "depreacted": false
         },
         {
+          "name": "get",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--get",
+          "description": "shorthand for accessing `ref.value`",
+          "depreacted": false
+        },
+        {
           "name": "makeDestructurable",
           "category": "Utilities",
           "docs": "https://vueuse.js.org/?path=/story/utilities--makedestructurable",
           "description": "make isomorphic destructurable for object and array at the same time",
+          "depreacted": false
+        },
+        {
+          "name": "reactify",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--reactify",
+          "description": "converts plain function into a reactive function",
+          "depreacted": false
+        },
+        {
+          "name": "reactifyObject",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--reactifyobject",
+          "description": "apply `reactify` to an object",
+          "depreacted": false
+        },
+        {
+          "name": "set",
+          "category": "Utilities",
+          "docs": "https://vueuse.js.org/?path=/story/utilities--set",
+          "description": "shorthand for `ref.value = x`",
           "depreacted": false
         },
         {
@@ -129,14 +157,6 @@
           "depreacted": false
         }
       ],
-      "_utils": [
-        {
-          "name": "reactify"
-        },
-        {
-          "name": "utils"
-        }
-      ],
       "Component": [
         {
           "name": "tryOnMounted",
@@ -181,6 +201,11 @@
           "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
           "description": "wrapper for `setTimeout` with controls",
           "depreacted": false
+        }
+      ],
+      "_utils": [
+        {
+          "name": "utils"
         }
       ]
     }
