@@ -128,6 +128,8 @@ export function useScriptTag(
         return
       }
 
+      loadingPromise = null
+
       // Check if script tag actually exists, otherwise resolve the Promise.
       if (!scriptTag.value) {
         resolve(true)
