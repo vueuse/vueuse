@@ -1,11 +1,36 @@
-import { isString, MaybeRef, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { MaybeRef, noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ref, unref } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
+  /**
+   * Load the script immediately
+   *
+   * @default true
+   */
   immediate?: boolean
+
+  /**
+   * Add `async` attribute to the script tag
+   *
+   * @default true
+   */
   async?: boolean
+
+  /**
+   * Script type
+   *
+   * @default 'text/javascript'
+   */
   type?: string
+
+  /**
+   * Manual controls the timing of loading and unloading
+   *
+   * @default false
+   */
+  manual?: boolean
+
   crossOrigin?: 'anonymous' | 'use-credentials'
   referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
   noModule?: boolean
@@ -20,21 +45,23 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  */
 export function useScriptTag(
   src: MaybeRef<string>,
-  onLoaded: Function = () => {},
-  {
+  onLoaded: (el: HTMLScriptElement) => void = noop,
+  options: UseScriptTagOptions = {},
+) {
+  const {
     immediate = true,
-    async = true,
-    document = defaultDocument,
+    manual = false,
     type = 'text/javascript',
+    async = true,
     crossOrigin,
     referrerPolicy,
     noModule,
     defer,
-  }: UseScriptTagOptions = {},
-) {
+    document = defaultDocument,
+  } = options
   const scriptTag = ref<HTMLScriptElement | null>(null)
 
-  let loadingPromise: Promise<HTMLScriptElement | boolean> | null = null
+  let _promise: Promise<HTMLScriptElement | boolean> | null = null
 
   /**
    * Load the script specified via `src`.
@@ -59,22 +86,25 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el: HTMLScriptElement = <HTMLScriptElement>(
-      document.querySelector(`script[src="${src}"]`)
-    )
+    let el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
 
-    // Script tag found, preparing the element for appending
+    // Script tag not found, preparing the element for appending
     if (!el) {
-      // Create element and set required attributes
       el = document.createElement('script')
       el.type = type
       el.async = async
       el.src = unref(src)
+
       // Optional attributes
-      if (defer) el.defer = defer
-      if (crossOrigin) el.crossOrigin = crossOrigin
-      if (noModule) el.noModule = noModule
-      if (referrerPolicy) el.referrerPolicy = referrerPolicy
+      if (defer)
+        el.defer = defer
+      if (crossOrigin)
+        el.crossOrigin = crossOrigin
+      if (noModule)
+        el.noModule = noModule
+      if (referrerPolicy)
+        el.referrerPolicy = referrerPolicy
+
       // Enables shouldAppend
       shouldAppend = true
     }
@@ -90,15 +120,16 @@ export function useScriptTag(
       el.setAttribute('data-loaded', 'true')
 
       onLoaded(el)
-
       resolveWithElement(el)
     })
 
     // Append the <script> tag to head.
-    if (shouldAppend) el = document.head.appendChild(el)
+    if (shouldAppend)
+      el = document.head.appendChild(el)
 
     // If script load awaiting isn't needed, we can resolve the Promise.
-    if (!waitForScriptLoad) resolveWithElement(el)
+    if (!waitForScriptLoad)
+      resolveWithElement(el)
   })
 
   /**
@@ -108,48 +139,32 @@ export function useScriptTag(
    * @returns Promise<HTMLScriptElement>
    */
   const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
-    if (loadingPromise) return loadingPromise
+    if (!_promise)
+      _promise = loadScript(waitForScriptLoad)
 
-    loadingPromise = loadScript(waitForScriptLoad)
-
-    return loadingPromise
+    return _promise
   }
 
   /**
    * Unload the script specified by `src`.
-   *
-   * @returns Promise<boolean>
    */
-  const unload = (): Promise<boolean> =>
-    new Promise((resolve) => {
-      // Check if document actually exists, otherwise reject the Promise.
-      if (!document) {
-        resolve(false)
-        return
-      }
+  const unload = () => {
+    if (!document)
+      return
 
-      loadingPromise = null
+    _promise = null
 
-      // Check if script tag actually exists, otherwise resolve the Promise.
-      if (!scriptTag.value) {
-        resolve(true)
-        return
-      }
-
-      // Remove the <script> tag from the document head.
+    if (scriptTag.value) {
       document.head.removeChild(scriptTag.value)
+      scriptTag.value = null
+    }
+  }
 
-      // Reset the <script> tag reference.
-      scriptTag.value = undefined
+  if (immediate && !manual)
+    tryOnMounted(load)
 
-      resolve(true)
-    })
+  if (!manual)
+    tryOnUnmounted(unload)
 
-  // Try to load the script onMounted.
-  if (immediate) tryOnMounted(async() => load())
-
-  // Try to unload the script onUnMounted.
-  tryOnUnmounted(async() => unload())
-
-  return { scriptTag, load, unload, loadingPromise }
+  return { scriptTag, load, unload }
 }

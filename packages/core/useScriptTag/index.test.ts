@@ -2,7 +2,7 @@ import { useScriptTag } from '.'
 import { useSetup } from '../../_tests'
 
 describe('useScriptTag', () => {
-  const src = 'https://player.twitch.tv/js/embed/v1.js'
+  const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
   const scriptTagElement = (): HTMLScriptElement | null =>
     document.head.querySelector(`script[src="${src}"]`)
@@ -63,7 +63,7 @@ describe('useScriptTag', () => {
 
     expect(removeChildListener).toBeCalled()
 
-    expect(vm.scriptTag).toBeUndefined()
+    expect(vm.scriptTag).toBeNull()
   })
 
   it('should remove script tag on unload call', async() => {
@@ -97,6 +97,6 @@ describe('useScriptTag', () => {
 
     expect(removeChildListener).toBeCalled()
 
-    expect(vm.scriptTag).toBeUndefined()
+    expect(vm.scriptTag).toBeNull()
   })
 })
