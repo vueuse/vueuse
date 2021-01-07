@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
+import { isClient } from '../utils'
 
 /**
  * Wrapper for `setTimeout` with controls.
@@ -38,7 +39,7 @@ export function useTimeoutFn(
     }, interval)
   }
 
-  if (immediate)
+  if (immediate && isClient)
     start()
 
   tryOnUnmounted(stop)

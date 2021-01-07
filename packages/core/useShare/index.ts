@@ -25,7 +25,7 @@ export function useShare(shareOptions: MaybeRef<ShareOptions> = {}, options: Con
   const { navigator = defaultNavigator } = options
 
   const _navigator = (navigator as NavigatorWithShare)
-  const isSupported = 'canShare' in _navigator
+  const isSupported = _navigator && 'canShare' in _navigator
 
   const share = async(overrideOptions: MaybeRef<ShareOptions> = {}) => {
     if (isSupported) {

@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
-import { Pausable, Fn } from '../utils'
+import { Pausable, Fn, isClient } from '../utils'
 
 export interface IntervalFnReturn extends Pausable {
   /**
@@ -43,7 +43,7 @@ export function useIntervalFn(cb: Fn, interval = 1000, immediate = true): Interv
     timer = setInterval(cb, interval)
   }
 
-  if (immediate)
+  if (immediate && isClient)
     resume()
 
   tryOnUnmounted(pause)

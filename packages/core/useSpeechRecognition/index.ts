@@ -3,8 +3,9 @@
 
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export interface SpeechRecognitionOptions {
+export interface SpeechRecognitionOptions extends ConfigurableWindow {
   /**
    * Controls whether continuous results are returned for each recognition, or only a single result.
    *
@@ -37,6 +38,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
     lang = 'en-US',
     interimResults = true,
     continuous = true,
+    window = defaultWindow,
   } = options
 
   const isListening = ref(false)
@@ -56,13 +58,13 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
     isListening.value = false
   }
 
-  const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition
+  const SpeechRecognition = window && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
   const isSupported = Boolean(SpeechRecognition)
 
   let recognition: SpeechRecognition | undefined
 
   if (isSupported) {
-    recognition = new SpeechRecognition()
+    recognition = new SpeechRecognition() as SpeechRecognition
 
     recognition.continuous = continuous
     recognition.interimResults = interimResults

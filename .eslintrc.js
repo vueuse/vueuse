@@ -25,6 +25,7 @@ module.exports = {
     'no-new': 'off',
     'import/order': 'off',
     'react/no-unknown-property': 'off',
+    'spaced-comment': ['error', 'always', { exceptions: ['@__PURE__'] }],
   },
   overrides: [
     {
