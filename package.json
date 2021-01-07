@@ -4,7 +4,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "description": "Collection of essential Vue Composition API",
   "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
     "build": "esno ./scripts/build.ts",
@@ -94,6 +93,7 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^8.2.3",
     "postcss-import": "^14.0.0",
+    "postcss-nested": "^5.0.3",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.36.1",

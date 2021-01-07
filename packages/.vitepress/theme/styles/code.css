@@ -19,6 +19,7 @@ code .token.inserted {
 div[class*='language-'] {
   position: relative;
   margin: 1rem -1.5rem;
+  color: var(--c-text);
   background-color: var(--code-bg-color);
   overflow-x: auto;
 }
@@ -90,7 +91,7 @@ li > div[class*='language-'] {
 }
 
 .highlight-lines .highlighted {
-  background-color: rgba(0, 0, 0, .66);
+  background-color: var(--code-highlight);
 }
 
 /* Line numbers mode */
