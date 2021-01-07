@@ -89,7 +89,7 @@ export function useScriptTag(
     el.addEventListener('load', () => {
       el.setAttribute('data-loaded', 'true')
 
-      if (onLoaded) onLoaded(el)
+      onLoaded(el)
 
       resolveWithElement(el)
     })
