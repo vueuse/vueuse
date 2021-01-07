@@ -38,11 +38,11 @@ export default {
  * @param key
  * @param emit
  */
-export declare function useVModel<P extends object>(
+export declare function useVModel<P extends object, K extends keyof P>(
   props: P,
-  key: keyof P,
+  key: K,
   emit?: (name: string, value: any) => void
-): WritableComputedRef<unknown>
+): WritableComputedRef<P[K]>
 ```
 
 ## Source
