@@ -38,7 +38,7 @@ const config = {
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
     ['meta', { property: 'og:title', content: 'VueUse' }],
-    ['meta', { property: 'og:image', content: 'https://vitepress--netlify.app/og.png' }],
+    ['meta', { property: 'og:image', content: 'https://vitepress--vueuse.netlify.app/og.png' }],
     ['meta', { property: 'og:description', content: 'Collection of essential Vue Composition Utilities' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
