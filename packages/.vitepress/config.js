@@ -1,3 +1,4 @@
+// @ts-check
 const indexes = require('../../indexes.json')
 
 const categoriesOrder = [
@@ -11,7 +12,10 @@ const categoriesOrder = [
   'Misc',
 ]
 
-module.exports = {
+/**
+ * @type {import('vitepress').UserConfig}
+ */
+const config = {
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   themeConfig: {
@@ -29,6 +33,16 @@ module.exports = {
     ],
     sidebar: getSideBar(),
   },
+  head: [
+    ['link', { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png' }],
+    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
+    ['meta', { name: 'author', content: 'Anthony Fu' }],
+    ['meta', { property: 'og:title', content: 'VueUse' }],
+    ['meta', { property: 'og:image', content: 'https://vitepress--netlify.app/og.png' }],
+    ['meta', { property: 'og:description', content: 'Collection of essential Vue Composition Utilities' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:creator', content: '@antfu7' }],
+  ],
 }
 
 function getSideBar() {
@@ -57,3 +71,5 @@ function getSideBar() {
 
   return links
 }
+
+module.exports = config
