@@ -23,7 +23,7 @@
         "vue-router": "VueRouter"
       },
       "dir": "packages/router",
-      "docs": "https://vitepress--vueuse.js.org/router/README.html"
+      "docs": "https://vitepress--vueuse..netlify.app/router/README.html"
     },
     "integrations": {
       "name": "integrations",
@@ -44,7 +44,7 @@
         "nprogress": "nprogress"
       },
       "dir": "packages/integrations",
-      "docs": "https://vitepress--vueuse.js.org/integrations/README.html"
+      "docs": "https://vitepress--vueuse..netlify.app/integrations/README.html"
     },
     "rxjs": {
       "name": "rxjs",
@@ -60,7 +60,7 @@
         "rxjs/operators": "rxjs.operator"
       },
       "dir": "packages/rxjs",
-      "docs": "https://vitepress--vueuse.js.org/rxjs/README.html"
+      "docs": "https://vitepress--vueuse..netlify.app/rxjs/README.html"
     },
     "firebase": {
       "name": "firebase",
@@ -76,7 +76,7 @@
         "firebase/app": "firebase"
       },
       "dir": "packages/firebase",
-      "docs": "https://vitepress--vueuse.js.org/firebase/README.html"
+      "docs": "https://vitepress--vueuse..netlify.app/firebase/README.html"
     }
   },
   "categories": [
@@ -97,175 +97,175 @@
     {
       "name": "biSyncRef",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/biSyncRef/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/biSyncRef/",
       "category": "Utilities",
       "description": "two-way refs synchronization"
     },
     {
       "name": "controlledComputed",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/controlledComputed/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/controlledComputed/",
       "category": "Utilities",
       "description": "explicitly define the deps of computed"
     },
     {
       "name": "debouncedWatch",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/debouncedWatch/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/debouncedWatch/",
       "category": "Watch",
       "description": "debounced watch"
     },
     {
       "name": "extendRef",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/extendRef/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/extendRef/",
       "category": "Utilities",
       "description": "add extra attributes to Ref"
     },
     {
       "name": "get",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/get/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/get/",
       "category": "Utilities",
       "description": "shorthand for accessing `ref.value`"
     },
     {
       "name": "ignorableWatch",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/ignorableWatch/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/ignorableWatch/",
       "category": "Watch",
       "description": "ignorable watch"
     },
     {
       "name": "makeDestructurable",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/makeDestructurable/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/makeDestructurable/",
       "category": "Utilities",
       "description": "make isomorphic destructurable for object and array at the same time"
     },
     {
       "name": "pausableWatch",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/pausableWatch/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/pausableWatch/",
       "category": "Watch",
       "description": "pausable watch"
     },
     {
       "name": "reactify",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/reactify/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/reactify/",
       "category": "Utilities",
       "description": "converts plain function into a reactive function"
     },
     {
       "name": "reactifyObject",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/reactifyObject/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/reactifyObject/",
       "category": "Utilities",
       "description": "apply `reactify` to an object"
     },
     {
       "name": "set",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/set/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/set/",
       "category": "Utilities",
       "description": "shorthand for `ref.value = x`"
     },
     {
       "name": "syncRef",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/syncRef/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/syncRef/",
       "category": "Utilities",
       "description": "keep target refs in sync with a source ref"
     },
     {
       "name": "throttledWatch",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/throttledWatch/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/throttledWatch/",
       "category": "Watch",
       "description": "throttled watch"
     },
     {
       "name": "tryOnMounted",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/tryOnMounted/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/tryOnMounted/",
       "category": "Component",
       "description": "safe `onMounted`"
     },
     {
       "name": "tryOnUnmounted",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/tryOnUnmounted/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/tryOnUnmounted/",
       "category": "Component",
       "description": "safe `onUnmounted`"
     },
     {
       "name": "useCounter",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useCounter/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useCounter/",
       "category": "Utilities",
       "description": "basic counter with utility functions"
     },
     {
       "name": "useDebounce",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useDebounce/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useDebounce/",
       "category": "Utilities",
       "description": "debounce execution of a ref value"
     },
     {
       "name": "useDebounceFn",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useDebounceFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useDebounceFn/",
       "category": "Utilities",
       "description": "debounce execution of a function"
     },
     {
       "name": "useInterval",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useInterval/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useInterval/",
       "category": "Animation",
       "description": "reactive counter increases on every interval"
     },
     {
       "name": "useIntervalFn",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useIntervalFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useIntervalFn/",
       "category": "Animation",
       "description": "wrapper for `setInterval` with controls"
     },
     {
       "name": "useThrottle",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useThrottle/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useThrottle/",
       "category": "Utilities",
       "description": "throttle changing of a ref value"
     },
     {
       "name": "useThrottleFn",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useThrottleFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useThrottleFn/",
       "category": "Utilities",
       "description": "throttle execution of a function"
     },
     {
       "name": "useTimeout",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useTimeout/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useTimeout/",
       "category": "Animation",
       "description": "update value after a given time with controls"
     },
     {
       "name": "useTimeoutFn",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useTimeoutFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useTimeoutFn/",
       "category": "Animation",
       "description": "wrapper for `setTimeout` with controls"
     },
     {
       "name": "useToggle",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/useToggle/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/useToggle/",
       "category": "Utilities",
       "description": "a boolean switcher with utility functions"
     },
@@ -277,497 +277,497 @@
     {
       "name": "watchWithFilter",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/watchWithFilter/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/watchWithFilter/",
       "category": "Watch",
       "description": "`watch` with additional EventFilter control"
     },
     {
       "name": "when",
       "package": "shared",
-      "docs": "https://vitepress--vueuse.js.org/shared/when/",
+      "docs": "https://vitepress--vueuse..netlify.app/shared/when/",
       "category": "Watch",
       "description": "promised one-time watch for ref changes"
     },
     {
       "name": "asyncComputed",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/asyncComputed/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/asyncComputed/",
       "category": "Utilities",
       "description": "computed for async functions"
     },
     {
       "name": "createGlobalState",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/createGlobalState/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/createGlobalState/",
       "category": "State",
       "description": "keep states in the global scope to be reusable across Vue instances"
     },
     {
       "name": "onClickOutside",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/onClickOutside/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/onClickOutside/",
       "category": "Sensors",
       "description": "listen for clicks outside of an element"
     },
     {
       "name": "onStartTyping",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/onStartTyping/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/onStartTyping/",
       "category": "Sensors",
       "description": "fires when users start typing on non-editable elements"
     },
     {
       "name": "useAsyncState",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useAsyncState/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useAsyncState/",
       "category": "Utilities",
       "description": "reactive async state"
     },
     {
       "name": "useBattery",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useBattery/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useBattery/",
       "category": "Sensors",
       "description": "reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)"
     },
     {
       "name": "useBrowserLocation",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useBrowserLocation/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useBrowserLocation/",
       "category": "Browser",
       "description": "reactive browser location"
     },
     {
       "name": "useClipboard",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useClipboard/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useClipboard/",
       "category": "Browser",
       "description": "reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)"
     },
     {
       "name": "useCssVar",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useCssVar/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useCssVar/",
       "category": "Browser",
       "description": "manipulate CSS variables"
     },
     {
       "name": "useDeviceLight",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useDeviceLight/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useDeviceLight/",
       "category": "Sensors",
       "description": "reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)"
     },
     {
       "name": "useDeviceMotion",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useDeviceMotion/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useDeviceMotion/",
       "category": "Sensors",
       "description": "reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)"
     },
     {
       "name": "useDeviceOrientation",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useDeviceOrientation/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useDeviceOrientation/",
       "category": "Sensors",
       "description": "reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)"
     },
     {
       "name": "useDevicePixelRatio",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useDevicePixelRatio/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useDevicePixelRatio/",
       "category": "Sensors",
       "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)"
     },
     {
       "name": "useDocumentVisibility",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useDocumentVisibility/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useDocumentVisibility/",
       "category": "Sensors",
       "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)"
     },
     {
       "name": "useElementBounding",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useElementBounding/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useElementBounding/",
       "category": "Sensors",
       "description": "reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element"
     },
     {
       "name": "useElementSize",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useElementSize/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useElementSize/",
       "category": "Sensors",
       "description": "reactive size of an HTML element"
     },
     {
       "name": "useElementVisibility",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useElementVisibility/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useElementVisibility/",
       "category": "Sensors",
       "description": "tracks the visibility of an element within the viewport"
     },
     {
       "name": "useEventListener",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useEventListener/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useEventListener/",
       "category": "Browser",
       "description": "use EventListener with ease"
     },
     {
       "name": "useEventSource",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useEventSource/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useEventSource/",
       "category": "Misc",
       "description": "an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server"
     },
     {
       "name": "useFavicon",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useFavicon/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useFavicon/",
       "category": "Browser",
       "description": "reactive favicon"
     },
     {
       "name": "useFullscreen",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useFullscreen/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useFullscreen/",
       "category": "Browser",
       "description": "reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)"
     },
     {
       "name": "useGeolocation",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useGeolocation/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useGeolocation/",
       "category": "Sensors",
       "description": "reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)"
     },
     {
       "name": "useIdle",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useIdle/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useIdle/",
       "category": "Sensors",
       "description": "tracks whether the user is being inactive"
     },
     {
       "name": "useIntersectionObserver",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useIntersectionObserver/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useIntersectionObserver/",
       "category": "Sensors",
       "description": "detects that a target element's visibility"
     },
     {
       "name": "useLocalStorage",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useLocalStorage/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useLocalStorage/",
       "category": "State",
       "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)"
     },
     {
       "name": "useManualRefHistory",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useManualRefHistory/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useManualRefHistory/",
       "category": "Utilities",
       "description": "manually track the change history of a ref when the using calls `commit()`"
     },
     {
       "name": "useMediaQuery",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useMediaQuery/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useMediaQuery/",
       "category": "Browser",
       "description": "reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))"
     },
     {
       "name": "useMouse",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useMouse/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useMouse/",
       "category": "Sensors",
       "description": "reactive mouse position"
     },
     {
       "name": "useMouseInElement",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useMouseInElement/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useMouseInElement/",
       "category": "Sensors",
       "description": "reactive mouse position related to an element"
     },
     {
       "name": "useMousePressed",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useMousePressed/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useMousePressed/",
       "category": "Sensors",
       "description": "reactive mouse pressing state"
     },
     {
       "name": "useMutationObserver",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useMutationObserver/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useMutationObserver/",
       "category": "Sensors",
       "description": "watch for changes being made to the DOM tree"
     },
     {
       "name": "useNetwork",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useNetwork/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useNetwork/",
       "category": "Sensors",
       "description": "reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)"
     },
     {
       "name": "useOnline",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useOnline/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useOnline/",
       "category": "Sensors",
       "description": "reactive online state"
     },
     {
       "name": "usePageLeave",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/usePageLeave/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/usePageLeave/",
       "category": "Sensors",
       "description": "reactive state to show whether the mouse leaves the page"
     },
     {
       "name": "useParallax",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useParallax/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useParallax/",
       "category": "Sensors",
       "description": "create parallax effect easily"
     },
     {
       "name": "usePermission",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/usePermission/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/usePermission/",
       "category": "Browser",
       "description": "reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)"
     },
     {
       "name": "usePreferredColorScheme",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/usePreferredColorScheme/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/usePreferredColorScheme/",
       "category": "Browser",
       "description": "reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query"
     },
     {
       "name": "usePreferredDark",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/usePreferredDark/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/usePreferredDark/",
       "category": "Browser",
       "description": "reactive dark theme preference"
     },
     {
       "name": "usePreferredLanguages",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/usePreferredLanguages/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/usePreferredLanguages/",
       "category": "Browser",
       "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)"
     },
     {
       "name": "useRafFn",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useRafFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useRafFn/",
       "category": "Animation",
       "description": "call function on every `requestAnimationFrame`"
     },
     {
       "name": "useRefHistory",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useRefHistory/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useRefHistory/",
       "category": "Utilities",
       "description": "track the change history of a ref"
     },
     {
       "name": "useResizeObserver",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useResizeObserver/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useResizeObserver/",
       "category": "Sensors",
       "description": "reports changes to the dimensions of an Element's content or the border-box"
     },
     {
       "name": "useScriptTag",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useScriptTag/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useScriptTag/",
       "category": "Browser",
       "description": "script tag injecting"
     },
     {
       "name": "useSessionStorage",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useSessionStorage/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useSessionStorage/",
       "category": "State",
       "description": "reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)"
     },
     {
       "name": "useShare",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useShare/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useShare/",
       "category": "Browser",
       "description": "reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)"
     },
     {
       "name": "useSpeechRecognition",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useSpeechRecognition/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useSpeechRecognition/",
       "category": "Sensors",
       "description": "reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)"
     },
     {
       "name": "useStorage",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useStorage/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useStorage/",
       "category": "State",
       "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)"
     },
     {
       "name": "useTimestamp",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useTimestamp/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useTimestamp/",
       "category": "Animation",
       "description": "reactive current timestamp"
     },
     {
       "name": "useTitle",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useTitle/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useTitle/",
       "category": "Browser",
       "description": "reactive document title"
     },
     {
       "name": "useTransition",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useTransition/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useTransition/",
       "category": "Animation",
       "description": "transition between values"
     },
     {
       "name": "useUrlSearchParams",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useUrlSearchParams/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useUrlSearchParams/",
       "category": "Browser",
       "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)"
     },
     {
       "name": "useVModel",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useVModel/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useVModel/",
       "category": "Component",
       "description": "shorthand for v-model binding"
     },
     {
       "name": "useWebSocket",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useWebSocket/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useWebSocket/",
       "category": "Misc",
       "description": "reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client"
     },
     {
       "name": "useWebWorker",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useWebWorker/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useWebWorker/",
       "category": "Misc",
       "description": "simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication"
     },
     {
       "name": "useWebWorkerFn",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useWebWorkerFn/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useWebWorkerFn/",
       "category": "Misc",
       "description": "run expensive function without blocking the UI"
     },
     {
       "name": "useWindowScroll",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useWindowScroll/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useWindowScroll/",
       "category": "Sensors",
       "description": "reactive window scroll"
     },
     {
       "name": "useWindowSize",
       "package": "core",
-      "docs": "https://vitepress--vueuse.js.org/core/useWindowSize/",
+      "docs": "https://vitepress--vueuse..netlify.app/core/useWindowSize/",
       "category": "Sensors",
       "description": "reactive window size"
     },
     {
       "name": "useRouteHash",
       "package": "router",
-      "docs": "https://vitepress--vueuse.js.org/router/useRouteHash/",
+      "docs": "https://vitepress--vueuse..netlify.app/router/useRouteHash/",
       "category": "@Router",
       "description": "shorthand for reactive route.hash"
     },
     {
       "name": "useRouteQuery",
       "package": "router",
-      "docs": "https://vitepress--vueuse.js.org/router/useRouteQuery/",
+      "docs": "https://vitepress--vueuse..netlify.app/router/useRouteQuery/",
       "category": "@Router",
       "description": "shorthand for reactive route.query"
     },
     {
       "name": "useAxios",
       "package": "integrations",
-      "docs": "https://vitepress--vueuse.js.org/integrations/useAxios/",
+      "docs": "https://vitepress--vueuse..netlify.app/integrations/useAxios/",
       "category": "@Integrations",
       "description": "wrapper for [`axios`](https://github.com/axios/axios)"
     },
     {
       "name": "useCookies",
       "package": "integrations",
-      "docs": "https://vitepress--vueuse.js.org/integrations/useCookies/",
+      "docs": "https://vitepress--vueuse..netlify.app/integrations/useCookies/",
       "category": "@Integrations",
       "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
     },
     {
       "name": "useNProgress",
       "package": "integrations",
-      "docs": "https://vitepress--vueuse.js.org/integrations/useNProgress/",
+      "docs": "https://vitepress--vueuse..netlify.app/integrations/useNProgress/",
       "category": "@Integrations",
       "description": "reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)"
     },
     {
       "name": "useQRCode",
       "package": "integrations",
-      "docs": "https://vitepress--vueuse.js.org/integrations/useQRCode/",
+      "docs": "https://vitepress--vueuse..netlify.app/integrations/useQRCode/",
       "category": "@Integrations",
       "description": "wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)"
     },
     {
       "name": "from",
       "package": "rxjs",
-      "docs": "https://vitepress--vueuse.js.org/rxjs/from/",
+      "docs": "https://vitepress--vueuse..netlify.app/rxjs/from/",
       "category": "@RxJS",
       "description": "two wrappers around of the original functions to allow use ref objects"
     },
     {
       "name": "toObserver",
       "package": "rxjs",
-      "docs": "https://vitepress--vueuse.js.org/rxjs/toObserver/",
+      "docs": "https://vitepress--vueuse..netlify.app/rxjs/toObserver/",
       "category": "@RxJS",
       "description": "sugar function to convert a ref in an observer"
     },
     {
       "name": "useObservable",
       "package": "rxjs",
-      "docs": "https://vitepress--vueuse.js.org/rxjs/useObservable/",
+      "docs": "https://vitepress--vueuse..netlify.app/rxjs/useObservable/",
       "category": "@RxJS",
       "description": "use an Observable"
     },
     {
       "name": "useSubscription",
       "package": "rxjs",
-      "docs": "https://vitepress--vueuse.js.org/rxjs/useSubscription/",
+      "docs": "https://vitepress--vueuse..netlify.app/rxjs/useSubscription/",
       "category": "@RxJS",
       "description": "uses subscriptions without worry about unsubscribing to it or memory leaks"
     },
     {
       "name": "useFirestore",
       "package": "firebase",
-      "docs": "https://vitepress--vueuse.js.org/firebase/useFirestore/",
+      "docs": "https://vitepress--vueuse..netlify.app/firebase/useFirestore/",
       "category": "@Firebase",
       "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
     },
     {
       "name": "useRTDB",
       "package": "firebase",
-      "docs": "https://vitepress--vueuse.js.org/firebase/useRTDB/",
+      "docs": "https://vitepress--vueuse..netlify.app/firebase/useRTDB/",
       "category": "@Firebase",
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
     }

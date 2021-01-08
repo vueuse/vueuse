@@ -14,10 +14,10 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`from`](https://vitepress--vueuse.js.org/rxjs/from/) — two wrappers around of the original functions to allow use ref objects
-  - [`toObserver`](https://vitepress--vueuse.js.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vitepress--vueuse.js.org/rxjs/useObservable/) — use an Observable
-  - [`useSubscription`](https://vitepress--vueuse.js.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`from`](https://vitepress--vueuse..netlify.app/rxjs/from/) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vitepress--vueuse..netlify.app/rxjs/toObserver/) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vitepress--vueuse..netlify.app/rxjs/useObservable/) — use an Observable
+  - [`useSubscription`](https://vitepress--vueuse..netlify.app/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
 <!--FUNCTIONS_LIST_ENDS-->

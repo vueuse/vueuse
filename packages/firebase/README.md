@@ -16,8 +16,8 @@ npm i <b>@vueuse/firebase</b> firebase
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`useFirestore`](https://vitepress--vueuse.js.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vitepress--vueuse.js.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+  - [`useFirestore`](https://vitepress--vueuse..netlify.app/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vitepress--vueuse..netlify.app/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 
 <!--FUNCTIONS_LIST_ENDS-->

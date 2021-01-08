@@ -8,7 +8,7 @@ import YAML from 'js-yaml'
 import { activePackages, packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
-const DOCS_URL = 'https://vitepress--vueuse.js.org'
+const DOCS_URL = 'https://vitepress--vueuse..netlify.app'
 const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 // const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
 
