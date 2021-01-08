@@ -8,7 +8,7 @@ import YAML from 'js-yaml'
 import { activePackages, packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
-const DOCS_URL = 'https://vueuse.js.org'
+const DOCS_URL = 'https://vitepress--vueuse.js.org'
 const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 // const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
 
@@ -124,7 +124,7 @@ export async function readIndexes() {
         continue
       }
 
-      fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}`
+      fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
 
       const mdRaw = await fs.readFile(join(dir, fnName, 'index.md'), 'utf-8')
 

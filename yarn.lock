@@ -152,6 +152,16 @@
     "@antfu/eslint-config-react" "^0.4.3"
     "@antfu/eslint-config-vue" "^0.4.3"
 
+"@antfu/ni@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@antfu/ni/-/ni-0.4.1.tgz#859133af105b694f9cc6d0e10f1573f2489e317a"
+  integrity sha512-1yPgCz4UxyC+QVwoCUmJqP2u85PV7H+WXFKSNlse5oiq4EVoS0Cd66e3h4C1UKh8QguNKRi/WutxVx+6XTKgPQ==
+  dependencies:
+    find-up "^5.0.0"
+    ini "^1.3.8"
+    inquirer "^7.3.3"
+    terminal-link "^2.1.1"
+
 "@arr/every@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@arr/every/-/every-1.0.1.tgz#22fe1f8e6355beca6c7c7bde965eb15cf994387b"
@@ -5279,7 +5289,7 @@ inherits@2, inherits@^2.0.0, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, 
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-ini@^1.3.2, ini@^1.3.4:
+ini@^1.3.2, ini@^1.3.4, ini@^1.3.8:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
@@ -9023,7 +9033,7 @@ tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.0.tgz#5c373d281d9c672848213d0e037d1c4165ab426b"
   integrity sha512-FBk4IesMV1rBxX2tfiK8RAmogtWn53puLOQlvO8XuwlgxcYbP4mVPS9Ph4aeamSyyVjOl24aYWAuc8U5kCVwMw==
 
-terminal-link@^2.0.0:
+terminal-link@^2.0.0, terminal-link@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/terminal-link/-/terminal-link-2.1.1.tgz#14a64a27ab3c0df933ea546fba55f2d078edc994"
   integrity sha512-un0FmiRUQNr5PJqy9kP7c40F5BOfpGlYTrxonDChEZB7pzZxRNp/bt+ymiy9/npwXya9KH99nJ/GXFIiUkYGFQ==

@@ -108,7 +108,9 @@ export declare type Reactify<T> = T extends (...args: infer A) => infer R
     ) => ComputedRef<R>
   : never
 /**
- * Converts plain function into a reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+ * Converts plain function into a reactive function.
+ * The converted function accepts refs as it's arguments
+ * and returns a ComputedRef, with proper typing.
  *
  * @param fn - Source function
  */
