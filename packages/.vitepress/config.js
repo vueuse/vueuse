@@ -42,6 +42,7 @@ const config = {
     ['meta', { property: 'og:description', content: 'Collection of essential Vue Composition Utilities' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
+    ['meta', { name: 'twitter:image', content: 'https://vitepress--vueuse.netlify.app/og.png' }],
   ],
 }
 
