@@ -108,6 +108,7 @@
     "version-bump-prompt": "^6.1.0",
     "vitepress": "npm:@knightly/vitepress@pr203",
     "vue": "^3.0.5",
+    "vue-chemistry": "^0.1.3",
     "vue2": "npm:vue@2"
   }
 }

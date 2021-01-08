@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import YAML from 'js-yaml'
-import { computed, reactive, ref, CSSProperties } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
+import type { CSSProperties } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
 import { useParallax } from '.'
 
@@ -39,8 +40,8 @@ const containerStyle: CSSProperties = {
 
 const infoStyle = computed(() => ({
   opacity: 0.4,
-  top: '60px',
-  left: '60px',
+  top: '20px',
+  left: '40px',
   position: isMobile.value ? 'inherit' : 'absolute',
 }))
 
@@ -79,6 +80,7 @@ const cardStyle = computed(() => ({
   height: '20rem',
   width: '15rem',
   borderRadius: '5px',
+  border: '1px solid #cdcdcd',
   overflow: 'hidden',
   transition: '.3s ease-out all',
   boxShadow: '0 0 20px 0 rgba(255, 255, 255, 0.25)',

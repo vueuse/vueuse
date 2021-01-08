@@ -6,16 +6,14 @@ export type Reactify<T> = T extends (...args: infer A) => infer R
   : never
 
 /**
- * Converts plain function into a reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+ * Converts plain function into a reactive function.
+ * The converted function accepts refs as it's arguments
+ * and returns a ComputedRef, with proper typing.
  *
  * @param fn - Source function
  */
 export function reactify<T extends Function>(fn: T): Reactify<T> {
-  const wrapper = function(this: any, ...args: any[]) {
-    return computed(() => {
-      return fn.apply(this, args.map(i => unref(i)))
-    })
+  return function(this: any, ...args: any[]) {
+    return computed(() => fn.apply(this, args.map(i => unref(i))))
   } as Reactify<T>
-
-  return wrapper
 }

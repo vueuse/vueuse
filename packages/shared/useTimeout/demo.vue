@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeout } from '.'
 
-const { ready } = useTimeout(1000)
+const { ready, start } = useTimeout(1000)
 </script>
 
 <template>

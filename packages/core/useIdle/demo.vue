@@ -13,10 +13,12 @@ const idledFor = computed(() =>
 </script>
 
 <template>
-  <div class="note">
+  <note class="mb-2">
     For demonstraction purpose, the idle timout is set to <b>5s</b> in this
     demo (default 1min).
+  </note>
+  <div class="mb-2">
+    Idle: <code>{{ idle }}</code>
   </div>
-  <p>Idle: {{ idle }}</p>
-  <p>Inactive: {{ idledFor }}s</p>
+  <div>Inactive: <b class="text-primary">{{ idledFor }}s</b></div>
 </template>

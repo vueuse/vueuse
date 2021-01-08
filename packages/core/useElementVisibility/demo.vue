@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
+import { ternary } from 'vue-chemistry/boolean'
 import { useElementVisibility } from '.'
 
-const demo = ref(null)
-const demoIsVisible = useElementVisibility(demo)
+const el = ref(null)
+const isVisible = useElementVisibility(el)
+const text = ternary(isVisible, 'inside', 'outside')
 </script>
 
 <template>
-  <div ref="demo" class="border border-dashed mb-20 mx-5 px-6 py-5">
-    <div>Target Element (scroll down)</div>
+  <div ref="el" style="height: 200px">
+    <note class="mb-2">
+      Info on the right bottom corner
+    </note>
+    <div class="area">
+      Target Element (scroll down)
+    </div>
   </div>
-  <div class="py-20" />
-  <div class="demo fixed bottom-0 right-0 pa-3">
-    {{ demoIsVisible ? 'In the viewport' : 'Outside the viewport' }}
+  <div class="float">
+    Element <b>{{ text }}</b> the viewport
   </div>
 </template>

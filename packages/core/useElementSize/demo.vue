@@ -1,25 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { reactive, ref } from 'vue-demi'
+import { stringify } from 'vue-chemistry/json'
 import { useElementSize } from '.'
 
 const el = ref(null)
-const { width, height } = useElementSize(el)
+const size = reactive(useElementSize(el))
+const text = stringify(size, null, 2)
 </script>
 
 <template>
-  <pre>
-    width: {{ width }}
-    height: {{ height }}
-  </pre>
-  <textarea ref="el" disabled />
+  <note class="mb-2">
+    Resize the box to see changes
+  </note>
+  <textarea ref="el" class="resizer" v-text="text" />
 </template>
-
-<style scoped>
-textarea {
-  resize: both;
-  background: transparent;
-  padding: 10px;
-  border: 1px solid #ffffff33;
-  width: 300px;
-}
-</style>

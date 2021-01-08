@@ -8,24 +8,13 @@ const text = ref('')
 useResizeObserver(el, (entries) => {
   const [entry] = entries
   const { width, height } = entry.contentRect
-  text.value = `width: ${width}, height: ${height}`
+  text.value = `width: ${width}\nheight: ${height}`
 })
 </script>
 
 <template>
-  <textarea
-    ref="el"
-    v-model="text"
-    disabled
-  />
+  <note class="mb-2">
+    Resize the box to see changes
+  </note>
+  <textarea ref="el" class="resizer" v-text="text" />
 </template>
-
-<style scoped>
-textarea {
-  resize: both;
-  background: transparent;
-  padding: 10px;
-  border: 1px solid #ffffff33;
-  width: 300px;
-}
-</style>

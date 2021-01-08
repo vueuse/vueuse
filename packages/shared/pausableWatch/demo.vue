@@ -32,10 +32,12 @@ const { isActive } = watcher
 
 <template>
   <div>
+    <note class="mb-2">
+      Type something below to trigger the watch
+    </note>
     <input
       ref="input"
       v-model="source"
-      placeholder="Type something to trigger the watch"
     >
 
     <button :disabled="!isActive" class="orange" @click="pause">
@@ -48,6 +50,7 @@ const { isActive } = watcher
       Clear Log
     </button>
 
+    <br>
     <br>
 
     <note>Log</note>

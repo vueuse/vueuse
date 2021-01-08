@@ -10,6 +10,12 @@ category: Utilities
 
 > Converts plain function into a reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
 
+::: tip
+Interested to see some application or looking for some pre-reactified functions? 
+
+Check out [⚗️ Vue Chemistry](https://github.com/antfu/vue-chemistry)!
+:::
+
 ## Usage
 
 Basic example

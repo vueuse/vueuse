@@ -41,7 +41,7 @@
     </Page>
   </div>
 
-  <Debug />
+  <!-- <Debug /> -->
 </template>
 
 <script setup lang="ts">

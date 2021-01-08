@@ -71,16 +71,24 @@ const { isListening, isSupported, stop, result } = speech
         Stop
       </button>
       <div v-if="isListening" class="mt-4">
-        <note>
+        <note class="mb-2">
           <b>Please say a color</b>
         </note>
-        <note class="-mt-4">
+        <note class="mb-2">
           try: {{ sampled.join(', ') }}
         </note>
-        <p class="mx-1 pa-3 rounded" :style="{ background: color }">
+        <p class="tag" :style="{ background: color }">
           {{ result }}
         </p>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.tag {
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.5rem;
+  border-radius: 4px;
+}
+</style>

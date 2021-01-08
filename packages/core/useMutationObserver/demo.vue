@@ -29,7 +29,7 @@ setTimeout(() => {
 
 setTimeout(() => {
   style.value = {
-    backgroundColor: 'red',
+    color: 'red',
   }
 }, 1550)
 </script>
