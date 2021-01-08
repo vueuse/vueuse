@@ -3,7 +3,7 @@ import { getExportsSize } from 'export-size'
 import filesize from 'filesize'
 import fs from 'fs-extra'
 import { version } from '../package.json'
-import { packages } from './packages'
+import { packages } from '../meta/packages'
 
 // yarn build first
 async function run() {

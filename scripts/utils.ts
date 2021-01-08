@@ -2,15 +2,16 @@ import { resolve, join, relative } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
-import { activePackages, packages } from './packages'
-import { PackageIndexes, VueUseFunction, VueUsePackage } from './types'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
+import { activePackages, packages } from '../meta/packages'
+import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.js.org'
 const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
 // const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
+
 const DIR_ROOT = resolve(__dirname, '..')
 const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
@@ -320,6 +321,7 @@ export async function updatePackageJSON() {
     const packageJSON = await fs.readJSON(packageJSONPath)
 
     packageJSON.version = version
+    packageJSON.funding = 'https://github.com/sponsors/antfu'
     packageJSON.description = description || packageJSON.description
     packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
     packageJSON.bugs = {

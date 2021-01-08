@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/integrations",
+  "version": "4.0.5",
   "description": "Integration wrappers for utility libraries",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
@@ -41,5 +42,6 @@
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.4",
     "universal-cookie": "^4.0.4"
-  }
+  },
+  "funding": "https://github.com/sponsors/antfu"
 }

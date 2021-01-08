@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/rxjs",
+  "version": "4.0.5",
   "description": "Enables RxJS reactive functions in Vue",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
@@ -32,5 +33,6 @@
   },
   "devDependencies": {
     "rxjs": "^6.6.3"
-  }
+  },
+  "funding": "https://github.com/sponsors/antfu"
 }

@@ -35,9 +35,8 @@ const [value, toggle] = useToggle()
  * @see   {@link https://vueuse.js.org/useToggle}
  * @param [initialValue=false]
  */
-export declare function useToggle(
-  initialValue?: boolean
-): readonly [Ref<boolean>, () => boolean]
+export declare function useToggle(value: Ref<boolean>): Fn
+export declare function useToggle(initialValue?: boolean): [Ref<boolean>, Fn]
 ```
 
 ## Source

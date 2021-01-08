@@ -2,7 +2,7 @@
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
-import { activePackages } from './packages'
+import { activePackages } from '../meta/packages'
 
 const configs = []
 
@@ -13,6 +13,7 @@ for (const { globals, name, display, external } of activePackages) {
     '@vueuse/core': 'VueUse',
     ...(globals || {}),
   }
+
   const umdName = name === 'core' ? 'VueUse' : `VueUse${display}`
 
   configs.push({

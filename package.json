@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/monorepo",
   "private": true,
+  "version": "4.0.5",
   "workspaces": [
     "packages/*"
   ],
@@ -12,8 +13,9 @@
     "release": "esno ./scripts/release.ts && git push --follow-tags",
     "publish:ci": "esno ./scripts/publish.ts",
     "update": "esno ./scripts/update.ts",
+    "update:full": "npm run build:types && esno ./scripts/update.ts",
     "size": " esno ./scripts/export-size.ts",
-    "types:fix": " esno ./scripts/types-fix.ts",
+    "types:fix": " esno ./scripts/fix-types.ts",
     "typecheck": "tsc --noEmit",
     "test": "npm run test:2",
     "test:2": "vue-demi-switch 2 vue2 && jest",
@@ -22,11 +24,10 @@
     "test:watch": "jest --watch",
     "lint": "eslint './{packages,scripts}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "npm run lint -- --fix",
-    "clean": "rimraf dist types typings packages/*/dist",
+    "clean": "rimraf dist types packages/*/dist",
     "dev": "npm run docs",
-    "docs": "npm run docs:prepare && vitepress dev packages",
-    "docs:prepare": "esno ./scripts/docs.ts",
-    "docs:build": "npm run docs:prepare && vitepress build packages"
+    "docs": "vitepress dev packages",
+    "docs:build": "vitepress build packages"
   },
   "husky": {
     "hooks": {
@@ -41,7 +42,7 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "dependencies": {
-    "vue-demi": "latest"
+    "vue-demi": "^0.6.0"
   },
   "optionalDependencies": {
     "@vue/composition-api": "^1.0.0-beta.24"

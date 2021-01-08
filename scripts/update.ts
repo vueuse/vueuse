@@ -11,6 +11,8 @@ async function run() {
   await updateFunctionsMD(indexes)
   await updateFunctionREADME(indexes)
   await updatePackageJSON()
+
+  await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')
 }
 
 run()

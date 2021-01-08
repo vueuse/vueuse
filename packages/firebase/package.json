@@ -32,5 +32,7 @@
   },
   "peerDependencies": {
     "firebase": ">=4.0.0"
-  }
+  },
+  "version": "4.0.5",
+  "funding": "https://github.com/sponsors/antfu"
 }
