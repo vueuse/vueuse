@@ -18,7 +18,7 @@ features:
   - title: ☁️ No bundler required
     details: Usable via CDN
   - title: 🎛 Feature Rich
-    details: 90+ functions for you to choose
+    details: 90+ functions for you to choose from
   - title: 🔋 SSR Friendly
     details: Works perfectly with Serve-side rendering / generation
   - title: 🎪 Interactive demos
