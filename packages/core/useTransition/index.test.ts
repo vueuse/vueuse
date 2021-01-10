@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { useSetup } from '../../.test'
+import { promiseTimeout } from '@vueuse/shared'
 import { useTransition, TransitionPresets } from '.'
-import { promiseTimeout } from '../../shared/utils'
 
 describe('useTransition', () => {
   it('transitions between values', async() => {

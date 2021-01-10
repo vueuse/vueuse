@@ -13,7 +13,9 @@
     "jsx": "preserve",
     "skipLibCheck": true,
     "paths": {
-      "@vueuse/shared": ["./packages/shared/index.ts"]
+      "@vueuse/shared": ["./packages/shared/index.ts"],
+      "@vueuse/shared/*": ["./packages/shared/*"],
+      "@vueuse/core/*": ["./packages/core/*"]
     }
   },
   "include": [

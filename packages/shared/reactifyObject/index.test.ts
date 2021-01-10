@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { reactifyObject } from '.'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 
 describe('reactifyObject', () => {
   it('Math', () => {
