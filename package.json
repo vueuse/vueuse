@@ -28,7 +28,7 @@
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr docs",
     "docs": "vitepress dev packages",
-    "docs:build": "nr update && vitepress build packages && nr build:redirects"
+    "docs:build": "nr update && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts"
   },
   "husky": {
     "hooks": {
