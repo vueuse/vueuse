@@ -6,7 +6,6 @@ import { useIntersectionObserver } from '.'
 const root = ref(null)
 const target = ref(null)
 const isVisible = ref(false)
-const text = ternary(isVisible, 'inside', 'outside')
 
 const stopObserver = useIntersectionObserver(
   target,
@@ -15,6 +14,8 @@ const stopObserver = useIntersectionObserver(
   },
   { root },
 )
+
+const text = ternary(isVisible, 'inside', 'outside')
 </script>
 
 <template>

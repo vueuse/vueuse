@@ -1,5 +1,7 @@
 import { resolve } from 'path'
 import { UserConfig } from 'vite'
+import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
+import Components from 'vite-plugin-components'
 
 const config: UserConfig = {
   alias: {
@@ -26,6 +28,18 @@ const config: UserConfig = {
     },
   },
   plugins: [
+    Components({
+      dirs: [
+        // resolve(__dirname, '.vitepress/theme/components'),
+      ],
+      customLoaderMatcher: id => id.endsWith('.md'),
+      customComponentResolvers: [
+        ViteIconsResolver({
+          componentPrefix: '',
+        }),
+      ],
+    }),
+    Icons(),
     {
       name: 'vueuse-md-transform',
       enforce: 'pre',

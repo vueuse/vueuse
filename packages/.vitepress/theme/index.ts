@@ -1,4 +1,3 @@
-import type { Theme } from 'vitepress'
 import Layout from './Layout.vue'
 import NotFound from './NotFound.vue'
 import DemoContainer from './components/DemoContainer.vue'
@@ -13,7 +12,7 @@ import './styles/sidebar-links.css'
 import './styles/prism.css'
 import './styles/utils.css'
 
-const theme: Theme = {
+const theme = {
   Layout,
   NotFound,
   enhanceApp({ app }) {

@@ -1335,6 +1335,16 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
+"@iconify/json-tools@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
+  integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
+
+"@iconify/json@^1.1.284":
+  version "1.1.284"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.284.tgz#d8a70ed9cfc76a03bbc00fabdca19cc0a9134760"
+  integrity sha512-NjTud7YfBbZrsib5AB35Qp5fgy2FKv4suRRetqXFZxuFdTcxEje8CiMQVdB8rFLMrx96lfY0dX4VDSB7luYwVw==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -3578,6 +3588,13 @@ debug@^3.1.0:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
+
+debug@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
+  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
+  dependencies:
+    ms "2.1.2"
 
 decamelize-keys@^1.0.0, decamelize-keys@^1.1.0:
   version "1.1.0"
@@ -9592,6 +9609,22 @@ vfile@^2.0.0:
     replace-ext "1.0.0"
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
+
+vite-plugin-components@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/vite-plugin-components/-/vite-plugin-components-0.6.5.tgz#f31d657e55cbb22bd0c1595c9e19aa67ff6a7384"
+  integrity sha512-trXI1ljY83Yf4vr4tU7Ll9l5siBP49tHU9YwyoP0UWASFLk+gSr49hDXn7bP72KpjKzSH7d0KZ+X+1k6mofiBQ==
+  dependencies:
+    debug "^4.3.2"
+    fast-glob "^3.2.4"
+    minimatch "^3.0.4"
+
+vite-plugin-icons@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-icons/-/vite-plugin-icons-0.2.1.tgz#6d2d4d1271428e6347b96a7d9b51dbe9f87f1f8f"
+  integrity sha512-ZIJ8G2AHwEDt4oDST46E6Uy7W2EtVyoe1hzmJMkutbq3esUkcYVoYydT6Y12lhq1ppnVnShkbc0XzfKqolfCSg==
+  dependencies:
+    "@iconify/json-tools" "^1.0.10"
 
 vite@^2.0.0-beta.8:
   version "2.0.0-beta.12"

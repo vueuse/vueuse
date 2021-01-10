@@ -81,7 +81,7 @@
   - [`extendRef`](https://vueuse.js.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.js.org/shared/get/) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.js.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
-  - [`reactify`](https://vueuse.js.org/shared/reactify/) — converts plain function into a reactive function
+  - [`reactify`](https://vueuse.js.org/shared/reactify/) — converts plain functions into reactive functions
   - [`reactifyObject`](https://vueuse.js.org/shared/reactifyObject/) — apply `reactify` to an object
   - [`set`](https://vueuse.js.org/shared/set/) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.js.org/shared/syncRef/) — keep target refs in sync with a source ref

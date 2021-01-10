@@ -8,20 +8,33 @@
 
     <div class="nav">
       <NavLinks />
-      <dark-mode-switch />
+    </div>
+
+    <div class="nav-icons">
+      <div v-if="repo" class="item">
+        <a class="icon-button" :href="repo.link" target="_blank">
+          <carbon-logo-github />
+        </a>
+      </div>
+
+      <div class="item">
+        <dark-mode-switch />
+      </div>
     </div>
 
     <slot name="search" />
-    <dark-mode-switch class="navbar__dark-mode" />
   </header>
 </template>
 
 <script setup lang="ts">
 import { defineEmit } from 'vue'
+import { useRepo } from '../composables/repo'
 import NavBarTitle from './NavBarTitle.vue'
 import NavLinks from './NavLinks.vue'
-import DarkModeSwitch from './DarkModeSwitch.vue'
 import ToggleSideBarButton from './ToggleSideBarButton.vue'
+import DarkModeSwitch from './DarkModeSwitch.vue'
+
+const repo = useRepo()
 
 defineEmit(['toggle'])
 </script>
@@ -63,5 +76,17 @@ defineEmit(['toggle'])
   .navbar__dark-mode {
     display: none;
   }
+}
+
+.nav-icons {
+  display: flex;
+  padding: 2px 0 0;
+  align-items: center;
+  border-bottom: 0;
+  margin-left: 12px;
+}
+
+.nav-icons .item{
+  padding-left: 12px;
 }
 </style>

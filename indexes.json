@@ -155,7 +155,7 @@
       "package": "shared",
       "docs": "https://vueuse.js.org/shared/reactify/",
       "category": "Utilities",
-      "description": "converts plain function into a reactive function"
+      "description": "converts plain functions into reactive functions"
     },
     {
       "name": "reactifyObject",

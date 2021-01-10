@@ -3,6 +3,7 @@ import { ternary } from 'vue-chemistry/boolean'
 import { useOnline } from '.'
 
 const online = useOnline()
+
 const clazz = ternary(online, 'text-primary', 'text-gray')
 const text = ternary(online, 'Online', 'Offline')
 </script>

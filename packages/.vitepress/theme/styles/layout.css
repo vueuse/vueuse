@@ -260,3 +260,20 @@ form {
   width: 100vw;
   height: 100vh;
 }
+
+.icon-button {
+  display: flex;
+  font-size: 1.05rem;
+  border: 0;
+  outline: none;
+  background: none;
+  color: var(--c-text);
+  opacity: 0.8;
+  cursor: pointer;
+}
+.icon-button:hover {
+  opacity: 1;
+}
+.icon-button svg {
+  margin: auto;
+}
