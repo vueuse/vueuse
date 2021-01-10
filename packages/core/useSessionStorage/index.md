@@ -12,8 +12,7 @@ category: State
 
 ## Usage
 
-Please refer to [`useStorage`](/?path=/story/state--usestorage)
-
+Please refer to `useStorage`
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

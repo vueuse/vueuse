@@ -31,7 +31,7 @@
     <NavLink
       v-if="hasAltAction"
       :item="{ link: data.altActionLink, text: data.altActionText }"
-      class="action mx-2"
+      class="action alt mx-2"
     />
   </header>
 </template>
@@ -140,6 +140,7 @@ const hasAltAction = computed(() => data.value.altActionLink && data.value.altAc
   line-height: 40px;
   font-size: 1.1rem;
   font-weight: 500;
+  border: 0;
   color: #ffffff;
   background-color: var(--c-brand);
   transition: background-color 0.1s ease;
@@ -149,5 +150,13 @@ const hasAltAction = computed(() => data.value.altActionLink && data.value.altAc
   text-decoration: none;
   color: #ffffff;
   background-color: var(--c-brand-light);
+}
+
+.action.alt :deep(.item) {
+  background-color: #476582;
+}
+
+.action.alt :deep(.item:hover) {
+  background-color: #304a64;
 }
 </style>

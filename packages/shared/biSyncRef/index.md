@@ -39,7 +39,7 @@ console.log(b.value) // bar
 
 ## Related Functions
 
-- [syncRef](https://vueuse.js.org/?path=/story/utilities--syncref)
+- `syncRef`
 
 
 <!--FOOTER_STARTS-->

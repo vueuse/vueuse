@@ -8,6 +8,7 @@
     "strict": true,
     "declaration": true,
     "declarationDir": "./types",
+    "resolveJsonModule": true,
     "rootDir": ".",
     "baseUrl": ".",
     "jsx": "preserve",

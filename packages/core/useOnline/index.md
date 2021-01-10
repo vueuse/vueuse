@@ -14,7 +14,7 @@ import Demo from './demo.vue'
 
 # useOnline
 
-> Reactive online state. A wrapper of [`useNetwork`](/?path=/story/sensors--usenetwork)
+> Reactive online state. A wrapper of `useNetwork`.
 
 ## Usage
 

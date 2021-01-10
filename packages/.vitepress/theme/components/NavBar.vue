@@ -86,7 +86,7 @@ defineEmit(['toggle'])
   margin-left: 12px;
 }
 
-.nav-icons .item{
+.nav-icons .item {
   padding-left: 12px;
 }
 </style>

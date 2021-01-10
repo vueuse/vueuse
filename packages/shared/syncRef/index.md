@@ -83,7 +83,7 @@ console.log(target.value) // foo <- changed!
 
 ## Related Functions
 
-- [biSyncRef](https://vueuse.js.org/?path=/story/utilities--bisyncref)
+- `biSyncRef`
 
 
 <!--FOOTER_STARTS-->

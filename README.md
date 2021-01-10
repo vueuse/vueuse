@@ -4,9 +4,9 @@ Collection of essential Vue Composition Utilities
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>&nbsp;
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>&nbsp;
-<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>&nbsp;
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
+<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
 <img alt="Function Count" src="https://img.shields.io/badge/-96%20functions-13708a">
 <br>
 <a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
@@ -21,14 +21,14 @@ Collection of essential Vue Composition Utilities
 
 ## 🚀 Features
 
-- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](./docs/Export-Size.md)
-- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
+- 🎪 [**Interactive docs & demos**](https://vueuse.js.org)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- 🔩 **Flexible**: Configurable event filters
-- 🌎 **No bundler required**: Usable via CDN
+- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](https://vueuse.js.org/export-size)
+- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
-- 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
+- 🌎 **No bundler required**: Usable via CDN
+- 🔩 **Flexible**: Configurable event filters and targets
+- 🔌 **Optional [Add-ons](https://vueuse.js.org/functions#add-ons)**: Router, Firebase, RxJS, etc.
 
 ## 🦄 Usage
 
@@ -98,7 +98,7 @@ Thanks!
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [How to Contribute](https://vueuse.js.org/?path=/story/docs--contributing).
+This project exists thanks to all the people who contribute. [How to Contribute](http://localhost:3000/contributing).
 
 <a href="https://github.com/antfu/vueuse/graphs/contributors"><img src="https://opencollective.com/vueuse/contributors.svg?width=890&button=false" ></a>
 

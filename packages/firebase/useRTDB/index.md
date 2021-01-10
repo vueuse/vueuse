@@ -33,7 +33,7 @@ const todos = useRTDB(db.ref('todos'))
 
 ## Share across instances
 
-You can reuse the firebase reference by using [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) from the core package
+You can reuse the firebase reference by using `createGlobalState` from the core package
 
 ```js
 // store.js

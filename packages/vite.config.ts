@@ -3,6 +3,7 @@ import { UserConfig } from 'vite'
 import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
 import Components from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
+import { functionNames, getFunction } from '../meta/function-indexes'
 
 const config: UserConfig = {
   alias: {
@@ -48,7 +49,20 @@ const config: UserConfig = {
         if (!id.endsWith('.md'))
           return null
 
-        return code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
+        // linkify function names
+        if (!id.endsWith('functions.md')) {
+          code = code.replace(
+            new RegExp(`\`({${functionNames.join('|')}})\``, 'g'),
+            (_, name) => {
+              const fn = getFunction(name)!
+              return `[\`${fn.name}\`](${fn.docs})`
+            },
+          )
+        }
+        // convert links to relative
+        code = code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
+
+        return code
       },
     },
     VitePWA({

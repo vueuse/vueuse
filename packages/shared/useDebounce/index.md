@@ -34,10 +34,10 @@ console.log(debounced.value) // 'bar'
 
 ## Related Functions
 
-- [useThrottle](https://vueuse.js.org/?path=/story/utilities--usethrottle)
-- [useThrottleFn](https://vueuse.js.org/?path=/story/utilities--usethrottlefn)
-- [useDebounce](https://vueuse.js.org/?path=/story/utilities--usedebounce)
-- [useDebounceFn](https://vueuse.js.org/?path=/story/utilities--usedebouncefn)
+- `useThrottle`
+- `useThrottleFn`
+- `useDebounce`
+- `useDebounceFn`
 
 ## Recommended Reading
 

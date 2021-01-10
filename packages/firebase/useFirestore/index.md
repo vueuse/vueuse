@@ -31,7 +31,7 @@ const user = useFirestore(db.collection('users').doc('my-user-id'))
 
 ## Share across instances
 
-You can reuse the firebase reference by using [`createGlobalState`](https://vueuse.js.org/?path=/story/state--createglobalstate) from the core package
+You can reuse the firebase reference by using `createGlobalState` from the core package
 
 ```js
 // store.js

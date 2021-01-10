@@ -13,7 +13,7 @@ category: Misc
 
 ## Related Functions
 
-Try out our higher level [useWebWorkerFn](https://vueuse.js.org/?path=/story/misc--usewebworkerfn).
+Try out the high-level `useWebWorkerFn`
 
 ## Usage
 

@@ -14,7 +14,7 @@ import Demo from './demo.vue'
 
 # useParallax
 
-> Create parallax effect easily. It uses [useDeviceOrientation](/?path=/story/sensors--usedeviceorientation) and fallback to [useMouse](/?path=/story/sensors--usemouse) if orientation is not supported.
+> Create parallax effect easily. It uses `useDeviceOrientation` and fallback to `useMouse` if orientation is not supported.
 
 ## Usage
 

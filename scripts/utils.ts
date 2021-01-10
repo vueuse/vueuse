@@ -32,18 +32,18 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
 
-  return prettier.format(types, { semi: false, parser: 'typescript', plugins: [parser] }).trim()
+  return prettier.format(
+    types,
+    {
+      semi: false,
+      parser: 'typescript',
+      plugins: [parser],
+    },
+  ).trim()
 }
 
-export async function getFunctionHead(pkg: string, name: string, indexes: PackageIndexes) {
-  // const isUtils = indexes.functions.find(i => i.name === name)?.category === 'Utilities'
-  // let head = isUtils
-  //   ? `also available in [Vue Reactivity](${VUE_REACTIVITY_USE})`
-  //   : pkg !== 'core' && pkg !== 'shared'
-  //     ? `available in add-on [\`@vueuse/${pkg}\`](/?path=/story/${pkg}--readme)`
-  //     : ''
-
-  let head = pkg !== 'core' && pkg !== 'shared'
+export async function getFunctionHead(pkg: string) {
+  let head = packages.find(p=>p.name === pkg).addon
     ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/)`
     : ''
 
