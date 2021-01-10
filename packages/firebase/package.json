@@ -1,11 +1,13 @@
 {
   "name": "@vueuse/firebase",
   "description": "Enables realtime bindings for Firebase",
+  "version": "4.0.5",
   "main": "dist/index.cjs.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.esm.js",
   "unpkg": "dist/index.umd.min.js",
   "jsdelivr": "dist/index.umd.min.js",
+  "funding": "https://github.com/sponsors/antfu",
   "files": [
     "dist"
   ],
@@ -28,11 +30,10 @@
   },
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/firebase#readme",
   "dependencies": {
-    "vue-demi": "latest"
+    "vue-demi": "latest",
+    "@vueuse/shared": "4.0.5"
   },
   "peerDependencies": {
     "firebase": ">=4.0.0"
-  },
-  "version": "4.0.5",
-  "funding": "https://github.com/sponsors/antfu"
+  }
 }

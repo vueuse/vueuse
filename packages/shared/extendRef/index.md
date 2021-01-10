@@ -12,6 +12,8 @@ category: Utilities
 
 ## Usage
 
+> This function is **NOT compatible with Vue 2**.
+
 > Please note the extra attribute will not be accessible in Vue's template.
 
 ```ts

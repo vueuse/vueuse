@@ -20,6 +20,7 @@
     "vue-use",
     "utils"
   ],
+  "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "bugs": {
@@ -27,7 +28,7 @@
   },
   "homepage": "https://github.com/antfu/vueuse#readme",
   "dependencies": {
-    "vue-demi": "latest"
-  },
-  "funding": "https://github.com/sponsors/antfu"
+    "vue-demi": "latest",
+    "@vueuse/shared": "4.0.5"
+  }
 }

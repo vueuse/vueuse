@@ -1,8 +1,15 @@
-import { Ref } from 'vue-demi'
+import { unref } from 'vue-demi'
+import { MaybeRef } from '..'
 
 /**
  * Shorthand for accessing `ref.value`
  */
-export function get<T>(ref: Ref<T>): T {
-  return ref.value
+export function get<T>(ref: MaybeRef<T>): T
+export function get<T, K extends keyof T>(ref: MaybeRef<T>, key: K): T[K]
+
+export function get(obj: MaybeRef<any>, key?: string | number | symbol) {
+  if (key == null)
+    return unref(obj)
+
+  return unref(obj)[key]
 }

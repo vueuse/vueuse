@@ -1,10 +1,10 @@
 {
   "name": "@vueuse/monorepo",
   "private": true,
-  "version": "4.0.5",
   "workspaces": [
     "packages/*"
   ],
+  "version": "4.0.5",
   "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
     "build": "esno scripts/build.ts",
