@@ -2,10 +2,6 @@
 category: Component
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # tryOnUnmounted
 
 > Safe `onUnmounted`. Call `onUnmounted()` if it's inside a component lifecycle, if not, do nothing

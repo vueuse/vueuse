@@ -2,10 +2,6 @@
 category: Misc
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # useEventSource
 
 > An [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server, which sends events in text/event-stream format.

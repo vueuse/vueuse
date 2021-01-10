@@ -2,10 +2,6 @@
 category: Component
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # useVModel
 
 > Shorthand for v-model binding, props + emit -> ref

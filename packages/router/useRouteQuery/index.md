@@ -2,15 +2,6 @@
 category: '@Router'
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS-->
-::: tip
-available in add-on [`@vueuse/router`](/router/)
-:::
-
-<!--HEAD_ENDS-->
-
 # useRouteQuery
 
 > Shorthand for reactive route.query 

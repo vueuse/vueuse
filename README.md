@@ -93,7 +93,6 @@ This project is heavily inspired by the following awesome projects.
 
 Thanks!
 
-
 ## 👨‍🚀 Contributors
 
 ### Code Contributors

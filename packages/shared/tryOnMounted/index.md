@@ -2,10 +2,6 @@
 category: Component
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # tryOnMounted
 
 > Safe `onMounted`. Call `onMounted()` if it's inside a component lifecycle, if not, run just call the function

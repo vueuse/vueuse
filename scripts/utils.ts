@@ -32,23 +32,29 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
 
-  return prettier.format(
-    types,
-    {
-      semi: false,
-      parser: 'typescript',
-      plugins: [parser],
-    },
-  ).trim()
+  return prettier
+    .format(
+      types,
+      {
+        semi: false,
+        parser: 'typescript',
+        plugins: [parser],
+      },
+    )
+    .trim()
 }
 
-export async function getFunctionHead(pkg: string) {
-  let head = packages.find(p=>p.name === pkg).addon
-    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/)`
+export function hasDemo(pkg: string, name: string) {
+  return fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
+}
+
+export function getFunctionHead(pkg: string, name: string) {
+  let head = packages.find(p => p.name === pkg)?.addon
+    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
     : ''
 
   if (head)
-    head = `::: tip\n${head}\n:::\n`
+    head = `\n::: tip\n${head}\n:::\n`
 
   return head
 }
@@ -68,7 +74,7 @@ export async function getFunctionFooter(pkg: string, name: string) {
     ['Docs', `${URL}/index.md`],
   ])
     .filter(i => i)
-    .map(i => `[${i[0]}](${i[1]})`).join(' • ')
+    .map(i => `[${i![0]}](${i![1]})`).join(' • ')
 
   const sourceSection = `## Source\n\n${links}\n`
 
@@ -291,13 +297,12 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     let readme = await fs.readFile(mdPath, 'utf-8')
 
-    readme = replacer(readme, await getFunctionHead(fn.package, fn.name, indexes), 'HEAD', 'head')
+    // readme = replacer(readme, await getFunctionHead(fn.package), 'HEAD', 'head')
+    // let DEMO = ''
+    // if (fs.existsSync(demoPath))
+    //   DEMO = '<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>'
 
-    let DEMO = ''
-    if (fs.existsSync(demoPath))
-      DEMO = '<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>'
-
-    readme = replacer(readme, DEMO, 'DEMO', 'head')
+    // readme = replacer(readme, DEMO, 'DEMO', 'head')
 
     if (hasTypes)
       readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')

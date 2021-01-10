@@ -4,6 +4,7 @@ import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
 import Components from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
 import { functionNames, getFunction } from '../meta/function-indexes'
+import { getFunctionHead, hasDemo } from '../scripts/utils'
 
 const config: UserConfig = {
   alias: {
@@ -50,17 +51,31 @@ const config: UserConfig = {
           return null
 
         // linkify function names
-        if (!id.endsWith('functions.md')) {
-          code = code.replace(
-            new RegExp(`\`({${functionNames.join('|')}})\``, 'g'),
-            (_, name) => {
-              const fn = getFunction(name)!
-              return `[\`${fn.name}\`](${fn.docs})`
-            },
-          )
-        }
+        code = code.replace(
+          new RegExp(`\`({${functionNames.join('|')}})\`(.)`, 'g'),
+          (_, name, ending) => {
+            if (ending === ']') // already a link
+              return _
+            const fn = getFunction(name)!
+            return `[\`${fn.name}\`](${fn.docs})`
+          },
+        )
         // convert links to relative
         code = code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
+
+        const [pkg, name, i] = id.split('/').slice(-3)
+
+        if (functionNames.includes(name) && i === 'index.md') {
+          const frontmatterEnds = code.indexOf('---\n\n') + 4
+          let header = ''
+          if (hasDemo(pkg, name))
+            header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>\n'
+
+          header += getFunctionHead(pkg, name)
+
+          if (header)
+            code = code.slice(0, frontmatterEnds) + header + code.slice(frontmatterEnds)
+        }
 
         return code
       },

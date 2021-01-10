@@ -2,10 +2,6 @@
 category: Utilities
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # reactify
 
 > Converts plain functions into reactive functions. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.

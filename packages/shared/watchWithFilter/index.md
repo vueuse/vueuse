@@ -2,10 +2,6 @@
 category: Watch
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # watchWithFilter
 
 > `watch` with additional EventFilter control.

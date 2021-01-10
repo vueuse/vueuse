@@ -2,10 +2,6 @@
 category: State
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # useLocalStorage
 
 > Reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). 

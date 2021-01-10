@@ -2,15 +2,6 @@
 category: '@Firebase'
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS-->
-::: tip
-available in add-on [`@vueuse/firebase`](/firebase/)
-:::
-
-<!--HEAD_ENDS-->
-
 # useFirestore
 
 > Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making it straightforward to **always keep your local data in sync** with remotes databases.

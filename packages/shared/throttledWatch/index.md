@@ -2,10 +2,6 @@
 category: Watch
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # throttledWatch
 
 > Throttled watch.

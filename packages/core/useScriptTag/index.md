@@ -2,10 +2,6 @@
 category: Browser
 ---
 
-<!--DEMO_STARTS--><!--DEMO_ENDS-->
-
-<!--HEAD_STARTS--><!--HEAD_ENDS-->
-
 # useScriptTag
 
 > Script tag injecting.
