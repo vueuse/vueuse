@@ -1,3 +1,17 @@
+---
+category: '@RxJS'
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+::: tip
+available in add-on [`@vueuse/rxjs`](/rxjs/)
+:::
+
+<!--HEAD_ENDS-->
+
+
 # from / fromEvent
 
 > Two wrappers around of the original functions to allow use ref objects
@@ -24,3 +38,24 @@ useSubscription(
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function from<T>(
+  value: ObservableInput<T> | Ref<T>
+): Observable<T>
+export declare function fromEvent<T extends HTMLElement>(
+  value: Ref<T>,
+  event: string
+): Observable<Event>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.md)
+
+
+<!--FOOTER_ENDS-->

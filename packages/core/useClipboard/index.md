@@ -1,3 +1,17 @@
+---
+category: Browser
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useClipboard
 
 > Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API). Provides the ability to respond to clipboard commands (cut, copy, and paste) as well as to asynchronously read from and write to the system clipboard. Access to the contents of the clipboard is gated behind the Permissions API without user permission, reading or altering the clipboard contents is not permitted.
@@ -18,3 +32,30 @@ const { text, copy, isSupported } = useClipboard()
 | Method            | Description                                  |
 | -------------------- | -------------------------------------------- |
 | `copy(str: string)` | Writes the given string it in the clipboard. |
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactive Clipboard API.
+ *
+ * @see   {@link https://vueuse.js.org/useClipboard}
+ * @param options
+ */
+export declare function useClipboard({
+  navigator,
+}?: ConfigurableNavigator): {
+  isSupported: boolean | undefined
+  text: Ref<string>
+  copy: (txt: string) => Promise<void>
+}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useClipboard/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useClipboard/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useClipboard/index.md)
+
+
+<!--FOOTER_ENDS-->

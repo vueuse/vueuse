@@ -4,8 +4,6 @@
 
 > This is an add-on of [VueUse](https://github.com/antfu), enables of a natural way the use of RxJS.
 
-[**Full Documents**](https://vueuse.js.org/)
-
 ## 📦 Install
 
 <pre class='language-bash'>
@@ -16,12 +14,11 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
+  - [`from`](https://vueuse.js.org/rxjs/from/) — two wrappers around of the original functions to allow use ref objects
+  - [`toObserver`](https://vueuse.js.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.js.org/rxjs/useObservable/) — use an Observable
+  - [`useSubscription`](https://vueuse.js.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
-- /RxJS
-  - [`from`](https://vueuse.js.org/?path=/story/rxjs--from) — two wrappers around of the original functions to allow use ref objects
-  - [`toObserver`](https://vueuse.js.org/?path=/story/rxjs--toobserver) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.js.org/?path=/story/rxjs--useobservable) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/?path=/story/rxjs--usesubscription) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 <!--FUNCTIONS_LIST_ENDS-->
 
@@ -59,4 +56,4 @@ const posts = useObservable(
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

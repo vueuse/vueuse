@@ -1,3 +1,17 @@
+---
+category: Utilities
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useDebounce
 
 > Debounce execution of a ref value.
@@ -28,3 +42,18 @@ console.log(debounced.value) // 'bar'
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useDebounce<T>(value: Ref<T>, ms?: number): Ref<T>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/index.md)
+
+
+<!--FOOTER_ENDS-->

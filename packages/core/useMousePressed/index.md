@@ -1,3 +1,17 @@
+---
+category: Sensors
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useMousePressed
 
 > Reactive mouse pressing state. Triggered by `mousedown` `touchstart` on target element and released by `mouseup` `mouseleave` `touchend` `touchcancel` on window.
@@ -44,3 +58,47 @@ export default {
 })
 </script>
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface MousePressedOptions extends ConfigurableWindow {
+  /**
+   * Listen to `touchstart` `touchend` events
+   *
+   * @default true
+   */
+  touch?: boolean
+  /**
+   * Initial values
+   *
+   * @default false
+   */
+  initialValue?: boolean
+  /**
+   * Element target to be capture the click
+   */
+  target?: MaybeRef<Element | null | undefined>
+}
+/**
+ * Reactive mouse position.
+ *
+ * @see   {@link https://vueuse.js.org/useMousePressed}
+ * @param options
+ */
+export declare function useMousePressed(
+  options?: MousePressedOptions
+): {
+  pressed: Ref<boolean>
+  sourceType: Ref<MouseSourceType>
+}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useMousePressed/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useMousePressed/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useMousePressed/index.md)
+
+
+<!--FOOTER_ENDS-->

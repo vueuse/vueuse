@@ -1,3 +1,11 @@
+---
+category: Watch
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
 # watchWithFilter
 
 > `watch` with additional EventFilter control.
@@ -17,3 +25,44 @@ watchWithFilter(
   }
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface WatchWithFilterOptions<Immediate>
+  extends WatchOptions<Immediate>,
+    ConfigurableEventFilter {}
+export declare function watchWithFilter<
+  T extends Readonly<WatchSource<unknown>[]>,
+  Immediate extends Readonly<boolean> = false
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: WatchWithFilterOptions<Immediate>
+): WatchStopHandle
+export declare function watchWithFilter<
+  T,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>
+): WatchStopHandle
+export declare function watchWithFilter<
+  T extends object,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>
+): WatchStopHandle
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/watchWithFilter/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/watchWithFilter/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,3 +1,17 @@
+---
+category: Watch
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # when
 
 > Promised one-time watch for ref changes
@@ -65,3 +79,76 @@ await when(ref).toBeNull()
 await when(ref).not.toBeNull()
 await when(ref).not.toBeTruthy()
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface WhenToMatchOptions {
+  /**
+   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * 0 for never timed out
+   *
+   * @default 0
+   */
+  timeout?: number
+  /**
+   * Reject the promise when timeout
+   *
+   * @default false
+   */
+  throwOnTimeout?: boolean
+  /**
+   * `flush` option for internal watch
+   *
+   * @default 'sync'
+   */
+  flush?: WatchOptions["flush"]
+  /**
+   * `deep` option for internal watch
+   *
+   * @default 'false'
+   */
+  deep?: WatchOptions["deep"]
+}
+export interface BaseWhenInstance<T> {
+  toMatch(
+    condition: (v: T) => boolean,
+    options?: WhenToMatchOptions
+  ): Promise<void>
+  changed(options?: WhenToMatchOptions): Promise<void>
+  changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>
+}
+export interface ValueWhenInstance<T> extends BaseWhenInstance<T> {
+  readonly not: ValueWhenInstance<T>
+  toBe<P = T>(
+    value: MaybeRef<T | P>,
+    options?: WhenToMatchOptions
+  ): Promise<void>
+  toBeTruthy(options?: WhenToMatchOptions): Promise<void>
+  toBeNull(options?: WhenToMatchOptions): Promise<void>
+  toBeUndefined(options?: WhenToMatchOptions): Promise<void>
+  toBeNaN(options?: WhenToMatchOptions): Promise<void>
+}
+export interface ArrayWhenInstance<T> extends BaseWhenInstance<T> {
+  readonly not: ArrayWhenInstance<T>
+  toContains(
+    value: MaybeRef<ElementOf<ShallowUnwrapRef<T>>>,
+    options?: WhenToMatchOptions
+  ): Promise<void>
+}
+export declare function when<T extends unknown[]>(r: T): ArrayWhenInstance<T>
+export declare function when<T extends Ref<unknown[]>>(
+  r: T
+): ArrayWhenInstance<T>
+export declare function when<T>(r: WatchSource<T>): ValueWhenInstance<T>
+export declare function when<T>(r: T): ValueWhenInstance<T>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/when/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/when/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/when/index.md)
+
+
+<!--FOOTER_ENDS-->

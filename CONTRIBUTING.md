@@ -1,8 +1,14 @@
-# 🧱 Contributing
+---
+sidebar: auto
+---
+
+# Contributing
 
 Thanks for being interested in contributing to this project!
 
-## Setup
+## Development 
+
+### Setup
 
 Clone this repo to your local machine and install the dependencies.
 
@@ -10,30 +16,19 @@ Clone this repo to your local machine and install the dependencies.
 yarn install
 ```
 
-## Code Style
-
-Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.
-
-## Development 
-
-We use Storybook for rapid development and documenting. You can start it locally by
+We use Vitepress for rapid development and documenting. You can start it locally by
 
 ```bash
 yarn dev
 ```
 
-## Online one-click setup
+## Contributing
 
-You can use Gitpod(an online IDE which is free for Open Source) for contributing. With a single click it will launch a workspace and automatically clone the `VueUse` repo, run `yarn install` and `yarn dev`.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
-
-## Contributing to existing functions
+### Existing functions
 
 Feel free to enhance the existing functions. Please try not to introduce breaking changes.
 
-
-## Contributing to new functions
+### New functions
 
 There are some notes for adding new functions
 
@@ -44,13 +39,13 @@ There are some notes for adding new functions
 - You can found the function template under `packages/core/_template/`, detailed explanation in the [Function Foloder](#function-folder) section.
 - Run `yarn prepare` to update the docs.
 
-## Contributing to new add-ons
+### New add-ons
 
 New add-ons are greatly welcome!
 
 - Create a new folder under `packages/`, name it as your add-on name. 
 - Add add-on details in `scripts/packages.ts`
-- Create `README.md` and `readme.stories.tsx` under that folder.
+- Create `README.md` under that folder.
 - Add functions as you would do to the core package.
 - Run `yarn prepare` to update the docs.
 
@@ -76,7 +71,7 @@ A function folder typicality contains these 4 files:
 
 ```bash
 index.ts            # function source code itself
-index.stories.tsx   # storybook demo
+demo.vue            # documentation demo
 index.test.ts       # jest unit testing
 index.md            # documentation
 ```
@@ -99,8 +94,9 @@ for `index.md` the first sentence will be displayed as the short intro in the fu
 > This will be the intro. The detail descriptions...
 ```
 
-for `index.stories.tsx`, you can duplicate for the other functions and modify it.
+## Code Style
 
+Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.
 
 ## Thanks
 

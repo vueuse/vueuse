@@ -1,6 +1,20 @@
+---
+category: Utilities
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
 # reactify
 
-> Converts plain function into a reactive function. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+> Converts plain functions into reactive functions. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+
+::: tip
+Interested to see some application or looking for some pre-reactified functions? 
+
+Check out [⚗️ Vue Chemistry](https://github.com/antfu/vue-chemistry)!
+:::
 
 ## Usage
 
@@ -81,3 +95,31 @@ obj.value = { foo: "bar" }
 
 console.log(dumped.value) // '{"foo":"bar"}'
 ```
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare type Reactify<T> = T extends (...args: infer A) => infer R
+  ? (
+      ...args: {
+        [K in keyof A]: MaybeRef<A[K]>
+      }
+    ) => ComputedRef<R>
+  : never
+/**
+ * Converts plain function into a reactive function.
+ * The converted function accepts refs as it's arguments
+ * and returns a ComputedRef, with proper typing.
+ *
+ * @param fn - Source function
+ */
+export declare function reactify<T extends Function>(fn: T): Reactify<T>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/reactify/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/reactify/index.md)
+
+
+<!--FOOTER_ENDS-->

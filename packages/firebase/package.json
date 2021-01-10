@@ -7,6 +7,7 @@
   "module": "dist/index.esm.js",
   "unpkg": "dist/index.umd.min.js",
   "jsdelivr": "dist/index.umd.min.js",
+  "funding": "https://github.com/sponsors/antfu",
   "files": [
     "dist"
   ],

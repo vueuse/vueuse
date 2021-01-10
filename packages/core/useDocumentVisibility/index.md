@@ -1,3 +1,17 @@
+---
+category: Sensors
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useDocumentVisibility
 
 > Reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
@@ -9,3 +23,26 @@ import { useDocumentVisibility } from '@vueuse/core'
 
 const visibility = useDocumentVisibility()
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactively track `document.visibilityState`.
+ *
+ * @see   {@link https://vueuse.js.org/useDocumentVisibility}
+ * @param options
+ */
+export declare function useDocumentVisibility({
+  document,
+}?: ConfigurableDocument): Ref<VisibilityState>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useDocumentVisibility/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useDocumentVisibility/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useDocumentVisibility/index.md)
+
+
+<!--FOOTER_ENDS-->

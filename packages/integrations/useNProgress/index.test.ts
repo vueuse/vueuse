@@ -1,4 +1,4 @@
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useNProgress } from './index'
 import { nextTick } from 'vue-demi'
 import nprogress from 'nprogress'

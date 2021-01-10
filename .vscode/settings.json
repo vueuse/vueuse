@@ -1,10 +1,20 @@
 {
   "cSpell.words": [
+    "Demi",
     "Unsubscribable",
     "iframes",
     "vueuse"
   ],
-  "i18n-ally.localesPaths": [
-    "packages/i18n",
-  ]
+  "prettier.enable": false,
+  "vetur.validation.interpolation": false,
+  "grammarly.userWords": [
+    "VueUse",
+    "composables",
+    "destructurable",
+    "github",
+    "isSupported",
+    "monorepo",
+    "prepublish",
+    "vue"
+  ],
 }

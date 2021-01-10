@@ -17,11 +17,11 @@ const Serializers = {
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any, d: any) => v ?? d,
+    read: (v: any, d: any) => v != null ? v : d,
     write: (v: any) => String(v),
   },
   string: {
-    read: (v: any, d: any) => v ?? d,
+    read: (v: any, d: any) => v != null ? v : d,
     write: (v: any) => String(v),
   },
 }

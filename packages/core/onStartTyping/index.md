@@ -1,3 +1,17 @@
+---
+category: Sensors
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # onStartTyping
 
 > Fires when users start typing on non-editable elements.
@@ -26,3 +40,28 @@ export default {
   },
 }
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Fires when users start typing on non-editable elements.
+ *
+ * @see   {@link https://vueuse.js.org/onStartTyping}
+ * @param callback
+ * @param options
+ */
+export declare function onStartTyping(
+  callback: (event: KeyboardEvent) => void,
+  { document }?: ConfigurableDocument
+): void
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/onStartTyping/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/onStartTyping/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/onStartTyping/index.md)
+
+
+<!--FOOTER_ENDS-->

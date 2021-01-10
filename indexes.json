@@ -1,640 +1,17 @@
 {
-  "shared": {
-    "info": {
+  "packages": {
+    "shared": {
       "name": "shared",
-      "display": "Shared utilities"
+      "display": "Shared utilities",
+      "dir": "packages/shared"
     },
-    "dir": "packages/shared",
-    "categories": {
-      "Utilities": [
-        {
-          "name": "biSyncRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--bisyncref",
-          "description": "two-way refs synchronization",
-          "depreacted": false
-        },
-        {
-          "name": "controlledComputed",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--controlledcomputed",
-          "description": "explicitly define the deps of computed",
-          "depreacted": false
-        },
-        {
-          "name": "extendRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--extendref",
-          "description": "add extra attributes to Ref",
-          "depreacted": false
-        },
-        {
-          "name": "get",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--get",
-          "description": "shorthand for accessing `ref.value`",
-          "depreacted": false
-        },
-        {
-          "name": "makeDestructurable",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--makedestructurable",
-          "description": "make isomorphic destructurable for object and array at the same time",
-          "depreacted": false
-        },
-        {
-          "name": "reactify",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--reactify",
-          "description": "converts plain function into a reactive function",
-          "depreacted": false
-        },
-        {
-          "name": "reactifyObject",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--reactifyobject",
-          "description": "apply `reactify` to an object",
-          "depreacted": false
-        },
-        {
-          "name": "set",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--set",
-          "description": "shorthand for `ref.value = x`",
-          "depreacted": false
-        },
-        {
-          "name": "syncRef",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--syncref",
-          "description": "keep target refs in sync with a source ref",
-          "depreacted": false
-        },
-        {
-          "name": "useCounter",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usecounter",
-          "description": "basic counter with utility functions",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounce",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebounce",
-          "description": "debounce execution of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useDebounceFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usedebouncefn",
-          "description": "debounce execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottle",
-          "description": "throttle changing of a ref value",
-          "depreacted": false
-        },
-        {
-          "name": "useThrottleFn",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usethrottlefn",
-          "description": "throttle execution of a function",
-          "depreacted": false
-        },
-        {
-          "name": "useToggle",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usetoggle",
-          "description": "a boolean switcher with utility functions",
-          "depreacted": false
-        }
-      ],
-      "Watch": [
-        {
-          "name": "debouncedWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--debouncedwatch",
-          "description": "debounced watch",
-          "depreacted": false
-        },
-        {
-          "name": "ignorableWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--ignorablewatch",
-          "description": "ignorable watch",
-          "depreacted": false
-        },
-        {
-          "name": "pausableWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--pausablewatch",
-          "description": "pausable watch",
-          "depreacted": false
-        },
-        {
-          "name": "throttledWatch",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--throttledwatch",
-          "description": "throttled watch",
-          "depreacted": false
-        },
-        {
-          "name": "watchWithFilter",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--watchwithfilter",
-          "description": "`watch` with additional EventFilter control",
-          "depreacted": false
-        },
-        {
-          "name": "when",
-          "category": "Watch",
-          "docs": "https://vueuse.js.org/?path=/story/watch--when",
-          "description": "promised one-time watch for ref changes",
-          "depreacted": false
-        }
-      ],
-      "Component": [
-        {
-          "name": "tryOnMounted",
-          "category": "Component",
-          "docs": "https://vueuse.js.org/?path=/story/component--tryonmounted",
-          "description": "safe `onMounted`",
-          "depreacted": false
-        },
-        {
-          "name": "tryOnUnmounted",
-          "category": "Component",
-          "docs": "https://vueuse.js.org/?path=/story/component--tryonunmounted",
-          "description": "safe `onUnmounted`",
-          "depreacted": false
-        }
-      ],
-      "Animation": [
-        {
-          "name": "useInterval",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useinterval",
-          "description": "reactive counter increases on every interval",
-          "depreacted": false
-        },
-        {
-          "name": "useIntervalFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useintervalfn",
-          "description": "wrapper for `setInterval` with controls",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeout",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeout",
-          "description": "update value after a given time with controls",
-          "depreacted": false
-        },
-        {
-          "name": "useTimeoutFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimeoutfn",
-          "description": "wrapper for `setTimeout` with controls",
-          "depreacted": false
-        }
-      ],
-      "_utils": [
-        {
-          "name": "utils"
-        }
-      ]
-    }
-  },
-  "core": {
-    "info": {
+    "core": {
       "name": "core",
       "display": "VueUse",
-      "description": "Collection of essential Vue Composition API"
+      "description": "Collection of essential Vue Composition Utilities",
+      "dir": "packages/core"
     },
-    "dir": "packages/core",
-    "categories": {
-      "Utilities": [
-        {
-          "name": "asyncComputed",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--asynccomputed",
-          "description": "computed for async functions",
-          "depreacted": false
-        },
-        {
-          "name": "useAsyncState",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--useasyncstate",
-          "description": "reactive async state",
-          "depreacted": false
-        },
-        {
-          "name": "useManualRefHistory",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--usemanualrefhistory",
-          "description": "manually track the change history of a ref when the using calls `commit()`",
-          "depreacted": false
-        },
-        {
-          "name": "useRefHistory",
-          "category": "Utilities",
-          "docs": "https://vueuse.js.org/?path=/story/utilities--userefhistory",
-          "description": "track the change history of a ref",
-          "depreacted": false
-        }
-      ],
-      "State": [
-        {
-          "name": "createGlobalState",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--createglobalstate",
-          "description": "keep states in the global scope to be reusable across Vue instances",
-          "depreacted": false
-        },
-        {
-          "name": "useLocalStorage",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--uselocalstorage",
-          "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)",
-          "depreacted": false
-        },
-        {
-          "name": "useSessionStorage",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--usesessionstorage",
-          "description": "reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)",
-          "depreacted": false
-        },
-        {
-          "name": "useStorage",
-          "category": "State",
-          "docs": "https://vueuse.js.org/?path=/story/state--usestorage",
-          "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)",
-          "depreacted": false
-        }
-      ],
-      "Sensors": [
-        {
-          "name": "onClickOutside",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--onclickoutside",
-          "description": "listen for clicks outside of an element",
-          "depreacted": false
-        },
-        {
-          "name": "onStartTyping",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--onstarttyping",
-          "description": "fires when users start typing on non-editable elements",
-          "depreacted": false
-        },
-        {
-          "name": "useBattery",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usebattery",
-          "description": "reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)",
-          "depreacted": false
-        },
-        {
-          "name": "useDeviceLight",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usedevicelight",
-          "description": "reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)",
-          "depreacted": false
-        },
-        {
-          "name": "useDeviceMotion",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usedevicemotion",
-          "description": "reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)",
-          "depreacted": false
-        },
-        {
-          "name": "useDeviceOrientation",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usedeviceorientation",
-          "description": "reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)",
-          "depreacted": false
-        },
-        {
-          "name": "useDevicePixelRatio",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usedevicepixelratio",
-          "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)",
-          "depreacted": false
-        },
-        {
-          "name": "useDocumentVisibility",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usedocumentvisibility",
-          "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)",
-          "depreacted": false
-        },
-        {
-          "name": "useElementBounding",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useelementbounding",
-          "description": "reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element",
-          "depreacted": false
-        },
-        {
-          "name": "useElementSize",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useelementsize",
-          "description": "reactive size of an HTML element",
-          "depreacted": false
-        },
-        {
-          "name": "useElementVisibility",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useelementvisibility",
-          "description": "tracks the visibility of an element within the viewport",
-          "depreacted": false
-        },
-        {
-          "name": "useGeolocation",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usegeolocation",
-          "description": "reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)",
-          "depreacted": false
-        },
-        {
-          "name": "useIdle",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useidle",
-          "description": "tracks whether the user is being inactive",
-          "depreacted": false
-        },
-        {
-          "name": "useIntersectionObserver",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useintersectionobserver",
-          "description": "detects that a target element's visibility",
-          "depreacted": false
-        },
-        {
-          "name": "useMouse",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usemouse",
-          "description": "reactive mouse position",
-          "depreacted": false
-        },
-        {
-          "name": "useMouseInElement",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usemouseinelement",
-          "description": "reactive mouse position related to an element",
-          "depreacted": false
-        },
-        {
-          "name": "useMousePressed",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usemousepressed",
-          "description": "reactive mouse pressing state",
-          "depreacted": false
-        },
-        {
-          "name": "useMutationObserver",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usemutationobserver",
-          "description": "watch for changes being made to the DOM tree",
-          "depreacted": false
-        },
-        {
-          "name": "useNetwork",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usenetwork",
-          "description": "reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)",
-          "depreacted": false
-        },
-        {
-          "name": "useOnline",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useonline",
-          "description": "reactive online state",
-          "depreacted": false
-        },
-        {
-          "name": "usePageLeave",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usepageleave",
-          "description": "reactive state to show whether the mouse leaves the page",
-          "depreacted": false
-        },
-        {
-          "name": "useParallax",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useparallax",
-          "description": "create parallax effect easily",
-          "depreacted": false
-        },
-        {
-          "name": "useResizeObserver",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--useresizeobserver",
-          "description": "reports changes to the dimensions of an Element's content or the border-box",
-          "depreacted": false
-        },
-        {
-          "name": "useSpeechRecognition",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usespeechrecognition",
-          "description": "reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)",
-          "depreacted": false
-        },
-        {
-          "name": "useWindowScroll",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usewindowscroll",
-          "description": "reactive window scroll",
-          "depreacted": false
-        },
-        {
-          "name": "useWindowSize",
-          "category": "Sensors",
-          "docs": "https://vueuse.js.org/?path=/story/sensors--usewindowsize",
-          "description": "reactive window size",
-          "depreacted": false
-        }
-      ],
-      "Browser": [
-        {
-          "name": "useBrowserLocation",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usebrowserlocation",
-          "description": "reactive browser location",
-          "depreacted": false
-        },
-        {
-          "name": "useClipboard",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useclipboard",
-          "description": "reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)",
-          "depreacted": false
-        },
-        {
-          "name": "useCssVar",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usecssvar",
-          "description": "manipulate CSS variables",
-          "depreacted": false
-        },
-        {
-          "name": "useEventListener",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useeventlistener",
-          "description": "use EventListener with ease",
-          "depreacted": false
-        },
-        {
-          "name": "useFavicon",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usefavicon",
-          "description": "reactive favicon",
-          "depreacted": false
-        },
-        {
-          "name": "useFullscreen",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usefullscreen",
-          "description": "reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)",
-          "depreacted": false
-        },
-        {
-          "name": "useMediaQuery",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usemediaquery",
-          "description": "reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))",
-          "depreacted": false
-        },
-        {
-          "name": "usePermission",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usepermission",
-          "description": "reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)",
-          "depreacted": false
-        },
-        {
-          "name": "usePreferredColorScheme",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usepreferredcolorscheme",
-          "description": "reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query",
-          "depreacted": false
-        },
-        {
-          "name": "usePreferredDark",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usepreferreddark",
-          "description": "reactive dark theme preference",
-          "depreacted": false
-        },
-        {
-          "name": "usePreferredLanguages",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usepreferredlanguages",
-          "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)",
-          "depreacted": false
-        },
-        {
-          "name": "useScriptTag",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usescripttag",
-          "description": "script tag injecting",
-          "depreacted": false
-        },
-        {
-          "name": "useShare",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useshare",
-          "description": "reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)",
-          "depreacted": false
-        },
-        {
-          "name": "useTitle",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--usetitle",
-          "description": "reactive document title",
-          "depreacted": false
-        },
-        {
-          "name": "useUrlSearchParams",
-          "category": "Browser",
-          "docs": "https://vueuse.js.org/?path=/story/browser--useurlsearchparams",
-          "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)",
-          "depreacted": false
-        }
-      ],
-      "Misc": [
-        {
-          "name": "useEventSource",
-          "category": "Misc",
-          "docs": "https://vueuse.js.org/?path=/story/misc--useeventsource",
-          "description": "an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server",
-          "depreacted": false
-        },
-        {
-          "name": "useWebSocket",
-          "category": "Misc",
-          "docs": "https://vueuse.js.org/?path=/story/misc--usewebsocket",
-          "description": "reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client",
-          "depreacted": false
-        },
-        {
-          "name": "useWebWorker",
-          "category": "Misc",
-          "docs": "https://vueuse.js.org/?path=/story/misc--usewebworker",
-          "description": "simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication",
-          "depreacted": false
-        },
-        {
-          "name": "useWebWorkerFn",
-          "category": "Misc",
-          "docs": "https://vueuse.js.org/?path=/story/misc--usewebworkerfn",
-          "description": "run expensive function without blocking the UI",
-          "depreacted": false
-        }
-      ],
-      "Animation": [
-        {
-          "name": "useRafFn",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--useraffn",
-          "description": "call function on every `requestAnimationFrame`",
-          "depreacted": false
-        },
-        {
-          "name": "useTimestamp",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetimestamp",
-          "description": "reactive current timestamp",
-          "depreacted": false
-        },
-        {
-          "name": "useTransition",
-          "category": "Animation",
-          "docs": "https://vueuse.js.org/?path=/story/animation--usetransition",
-          "description": "transition between values",
-          "depreacted": false
-        }
-      ],
-      "Component": [
-        {
-          "name": "useVModel",
-          "category": "Component",
-          "docs": "https://vueuse.js.org/?path=/story/component--usevmodel",
-          "description": "shorthand for v-model binding",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "router": {
-    "info": {
+    "router": {
       "name": "router",
       "display": "Router",
       "description": "Utilities for vue-router",
@@ -644,31 +21,11 @@
       ],
       "globals": {
         "vue-router": "VueRouter"
-      }
+      },
+      "dir": "packages/router",
+      "docs": "https://vueuse.js.org/router/README.html"
     },
-    "dir": "packages/router",
-    "docs": "https://vueuse.js.org/?path=/story/router--readme",
-    "categories": {
-      "/Router": [
-        {
-          "name": "useRouteHash",
-          "category": "/Router",
-          "docs": "https://vueuse.js.org/?path=/story/router--useroutehash",
-          "description": "shorthand for reactive route.hash",
-          "depreacted": false
-        },
-        {
-          "name": "useRouteQuery",
-          "category": "/Router",
-          "docs": "https://vueuse.js.org/?path=/story/router--useroutequery",
-          "description": "shorthand for reactive route.query",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "integrations": {
-    "info": {
+    "integrations": {
       "name": "integrations",
       "display": "Integrations",
       "description": "Integration wrappers for utility libraries",
@@ -685,45 +42,11 @@
         "universal-cookie": "UniversalCookie",
         "qrcode": "QRCode",
         "nprogress": "nprogress"
-      }
+      },
+      "dir": "packages/integrations",
+      "docs": "https://vueuse.js.org/integrations/README.html"
     },
-    "dir": "packages/integrations",
-    "docs": "https://vueuse.js.org/?path=/story/integrations--readme",
-    "categories": {
-      "/Integrations": [
-        {
-          "name": "useAxios",
-          "category": "/Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/integrations--useaxios",
-          "description": "wrapper for [`axios`](https://github.com/axios/axios)",
-          "depreacted": false
-        },
-        {
-          "name": "useCookies",
-          "category": "/Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/integrations--usecookies",
-          "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)",
-          "depreacted": false
-        },
-        {
-          "name": "useNProgress",
-          "category": "/Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/integrations--usenprogress",
-          "description": "reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)",
-          "depreacted": false
-        },
-        {
-          "name": "useQRCode",
-          "category": "/Integrations",
-          "docs": "https://vueuse.js.org/?path=/story/integrations--useqrcode",
-          "description": "wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "rxjs": {
-    "info": {
+    "rxjs": {
       "name": "rxjs",
       "display": "RxJS",
       "description": "Enables RxJS reactive functions in Vue",
@@ -735,45 +58,11 @@
       "globals": {
         "rxjs": "rxjs",
         "rxjs/operators": "rxjs.operator"
-      }
+      },
+      "dir": "packages/rxjs",
+      "docs": "https://vueuse.js.org/rxjs/README.html"
     },
-    "dir": "packages/rxjs",
-    "docs": "https://vueuse.js.org/?path=/story/rxjs--readme",
-    "categories": {
-      "/RxJS": [
-        {
-          "name": "from",
-          "category": "/RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/rxjs--from",
-          "description": "two wrappers around of the original functions to allow use ref objects",
-          "depreacted": false
-        },
-        {
-          "name": "toObserver",
-          "category": "/RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/rxjs--toobserver",
-          "description": "sugar function to convert a ref in an observer",
-          "depreacted": false
-        },
-        {
-          "name": "useObservable",
-          "category": "/RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/rxjs--useobservable",
-          "description": "use an Observable",
-          "depreacted": false
-        },
-        {
-          "name": "useSubscription",
-          "category": "/RxJS",
-          "docs": "https://vueuse.js.org/?path=/story/rxjs--usesubscription",
-          "description": "uses subscriptions without worry about unsubscribing to it or memory leaks",
-          "depreacted": false
-        }
-      ]
-    }
-  },
-  "firebase": {
-    "info": {
+    "firebase": {
       "name": "firebase",
       "display": "Firebase",
       "description": "Enables realtime bindings for Firebase",
@@ -785,27 +74,702 @@
       "globals": {
         "firebase": "firebase",
         "firebase/app": "firebase"
-      }
-    },
-    "dir": "packages/firebase",
-    "docs": "https://vueuse.js.org/?path=/story/firebase--readme",
-    "categories": {
-      "/Firebase": [
-        {
-          "name": "useFirestore",
-          "category": "/Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/firebase--usefirestore",
-          "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding",
-          "depreacted": false
-        },
-        {
-          "name": "useRTDB",
-          "category": "/Firebase",
-          "docs": "https://vueuse.js.org/?path=/story/firebase--usertdb",
-          "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding",
-          "depreacted": false
-        }
-      ]
+      },
+      "dir": "packages/firebase",
+      "docs": "https://vueuse.js.org/firebase/README.html"
     }
-  }
+  },
+  "categories": [
+    "@Firebase",
+    "@Integrations",
+    "@Router",
+    "@RxJS",
+    "Animation",
+    "Browser",
+    "Component",
+    "Misc",
+    "Sensors",
+    "State",
+    "Utilities",
+    "Watch"
+  ],
+  "functions": [
+    {
+      "name": "biSyncRef",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/biSyncRef/",
+      "category": "Utilities",
+      "description": "two-way refs synchronization"
+    },
+    {
+      "name": "controlledComputed",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/controlledComputed/",
+      "category": "Utilities",
+      "description": "explicitly define the deps of computed"
+    },
+    {
+      "name": "debouncedWatch",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/debouncedWatch/",
+      "category": "Watch",
+      "description": "debounced watch"
+    },
+    {
+      "name": "extendRef",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/extendRef/",
+      "category": "Utilities",
+      "description": "add extra attributes to Ref"
+    },
+    {
+      "name": "get",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/get/",
+      "category": "Utilities",
+      "description": "shorthand for accessing `ref.value`"
+    },
+    {
+      "name": "ignorableWatch",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/ignorableWatch/",
+      "category": "Watch",
+      "description": "ignorable watch"
+    },
+    {
+      "name": "makeDestructurable",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/makeDestructurable/",
+      "category": "Utilities",
+      "description": "make isomorphic destructurable for object and array at the same time"
+    },
+    {
+      "name": "pausableWatch",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/pausableWatch/",
+      "category": "Watch",
+      "description": "pausable watch"
+    },
+    {
+      "name": "reactify",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/reactify/",
+      "category": "Utilities",
+      "description": "converts plain functions into reactive functions"
+    },
+    {
+      "name": "reactifyObject",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/reactifyObject/",
+      "category": "Utilities",
+      "description": "apply `reactify` to an object"
+    },
+    {
+      "name": "set",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/set/",
+      "category": "Utilities",
+      "description": "shorthand for `ref.value = x`"
+    },
+    {
+      "name": "syncRef",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/syncRef/",
+      "category": "Utilities",
+      "description": "keep target refs in sync with a source ref"
+    },
+    {
+      "name": "throttledWatch",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/throttledWatch/",
+      "category": "Watch",
+      "description": "throttled watch"
+    },
+    {
+      "name": "tryOnMounted",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/tryOnMounted/",
+      "category": "Component",
+      "description": "safe `onMounted`"
+    },
+    {
+      "name": "tryOnUnmounted",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/tryOnUnmounted/",
+      "category": "Component",
+      "description": "safe `onUnmounted`"
+    },
+    {
+      "name": "useCounter",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useCounter/",
+      "category": "Utilities",
+      "description": "basic counter with utility functions"
+    },
+    {
+      "name": "useDebounce",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useDebounce/",
+      "category": "Utilities",
+      "description": "debounce execution of a ref value"
+    },
+    {
+      "name": "useDebounceFn",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useDebounceFn/",
+      "category": "Utilities",
+      "description": "debounce execution of a function"
+    },
+    {
+      "name": "useInterval",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useInterval/",
+      "category": "Animation",
+      "description": "reactive counter increases on every interval"
+    },
+    {
+      "name": "useIntervalFn",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useIntervalFn/",
+      "category": "Animation",
+      "description": "wrapper for `setInterval` with controls"
+    },
+    {
+      "name": "useThrottle",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useThrottle/",
+      "category": "Utilities",
+      "description": "throttle changing of a ref value"
+    },
+    {
+      "name": "useThrottleFn",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useThrottleFn/",
+      "category": "Utilities",
+      "description": "throttle execution of a function"
+    },
+    {
+      "name": "useTimeout",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useTimeout/",
+      "category": "Animation",
+      "description": "update value after a given time with controls"
+    },
+    {
+      "name": "useTimeoutFn",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useTimeoutFn/",
+      "category": "Animation",
+      "description": "wrapper for `setTimeout` with controls"
+    },
+    {
+      "name": "useToggle",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/useToggle/",
+      "category": "Utilities",
+      "description": "a boolean switcher with utility functions"
+    },
+    {
+      "name": "utils",
+      "package": "shared",
+      "internal": true
+    },
+    {
+      "name": "watchWithFilter",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/watchWithFilter/",
+      "category": "Watch",
+      "description": "`watch` with additional EventFilter control"
+    },
+    {
+      "name": "when",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/when/",
+      "category": "Watch",
+      "description": "promised one-time watch for ref changes"
+    },
+    {
+      "name": "asyncComputed",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/asyncComputed/",
+      "category": "Utilities",
+      "description": "computed for async functions"
+    },
+    {
+      "name": "createGlobalState",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/createGlobalState/",
+      "category": "State",
+      "description": "keep states in the global scope to be reusable across Vue instances"
+    },
+    {
+      "name": "onClickOutside",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/onClickOutside/",
+      "category": "Sensors",
+      "description": "listen for clicks outside of an element"
+    },
+    {
+      "name": "onStartTyping",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/onStartTyping/",
+      "category": "Sensors",
+      "description": "fires when users start typing on non-editable elements"
+    },
+    {
+      "name": "useAsyncState",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useAsyncState/",
+      "category": "Utilities",
+      "description": "reactive async state"
+    },
+    {
+      "name": "useBattery",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useBattery/",
+      "category": "Sensors",
+      "description": "reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)"
+    },
+    {
+      "name": "useBrowserLocation",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useBrowserLocation/",
+      "category": "Browser",
+      "description": "reactive browser location"
+    },
+    {
+      "name": "useClipboard",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useClipboard/",
+      "category": "Browser",
+      "description": "reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)"
+    },
+    {
+      "name": "useCssVar",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useCssVar/",
+      "category": "Browser",
+      "description": "manipulate CSS variables"
+    },
+    {
+      "name": "useDeviceLight",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDeviceLight/",
+      "category": "Sensors",
+      "description": "reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)"
+    },
+    {
+      "name": "useDeviceMotion",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDeviceMotion/",
+      "category": "Sensors",
+      "description": "reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)"
+    },
+    {
+      "name": "useDeviceOrientation",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDeviceOrientation/",
+      "category": "Sensors",
+      "description": "reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)"
+    },
+    {
+      "name": "useDevicePixelRatio",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDevicePixelRatio/",
+      "category": "Sensors",
+      "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)"
+    },
+    {
+      "name": "useDocumentVisibility",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDocumentVisibility/",
+      "category": "Sensors",
+      "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)"
+    },
+    {
+      "name": "useElementBounding",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useElementBounding/",
+      "category": "Sensors",
+      "description": "reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element"
+    },
+    {
+      "name": "useElementSize",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useElementSize/",
+      "category": "Sensors",
+      "description": "reactive size of an HTML element"
+    },
+    {
+      "name": "useElementVisibility",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useElementVisibility/",
+      "category": "Sensors",
+      "description": "tracks the visibility of an element within the viewport"
+    },
+    {
+      "name": "useEventListener",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useEventListener/",
+      "category": "Browser",
+      "description": "use EventListener with ease"
+    },
+    {
+      "name": "useEventSource",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useEventSource/",
+      "category": "Misc",
+      "description": "an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server"
+    },
+    {
+      "name": "useFavicon",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useFavicon/",
+      "category": "Browser",
+      "description": "reactive favicon"
+    },
+    {
+      "name": "useFullscreen",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useFullscreen/",
+      "category": "Browser",
+      "description": "reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)"
+    },
+    {
+      "name": "useGeolocation",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useGeolocation/",
+      "category": "Sensors",
+      "description": "reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)"
+    },
+    {
+      "name": "useIdle",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useIdle/",
+      "category": "Sensors",
+      "description": "tracks whether the user is being inactive"
+    },
+    {
+      "name": "useIntersectionObserver",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useIntersectionObserver/",
+      "category": "Sensors",
+      "description": "detects that a target element's visibility"
+    },
+    {
+      "name": "useLocalStorage",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useLocalStorage/",
+      "category": "State",
+      "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)"
+    },
+    {
+      "name": "useManualRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useManualRefHistory/",
+      "category": "Utilities",
+      "description": "manually track the change history of a ref when the using calls `commit()`"
+    },
+    {
+      "name": "useMediaQuery",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useMediaQuery/",
+      "category": "Browser",
+      "description": "reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))"
+    },
+    {
+      "name": "useMouse",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useMouse/",
+      "category": "Sensors",
+      "description": "reactive mouse position"
+    },
+    {
+      "name": "useMouseInElement",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useMouseInElement/",
+      "category": "Sensors",
+      "description": "reactive mouse position related to an element"
+    },
+    {
+      "name": "useMousePressed",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useMousePressed/",
+      "category": "Sensors",
+      "description": "reactive mouse pressing state"
+    },
+    {
+      "name": "useMutationObserver",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useMutationObserver/",
+      "category": "Sensors",
+      "description": "watch for changes being made to the DOM tree"
+    },
+    {
+      "name": "useNetwork",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useNetwork/",
+      "category": "Sensors",
+      "description": "reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)"
+    },
+    {
+      "name": "useOnline",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useOnline/",
+      "category": "Sensors",
+      "description": "reactive online state"
+    },
+    {
+      "name": "usePageLeave",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/usePageLeave/",
+      "category": "Sensors",
+      "description": "reactive state to show whether the mouse leaves the page"
+    },
+    {
+      "name": "useParallax",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useParallax/",
+      "category": "Sensors",
+      "description": "create parallax effect easily"
+    },
+    {
+      "name": "usePermission",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/usePermission/",
+      "category": "Browser",
+      "description": "reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)"
+    },
+    {
+      "name": "usePreferredColorScheme",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/usePreferredColorScheme/",
+      "category": "Browser",
+      "description": "reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query"
+    },
+    {
+      "name": "usePreferredDark",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/usePreferredDark/",
+      "category": "Browser",
+      "description": "reactive dark theme preference"
+    },
+    {
+      "name": "usePreferredLanguages",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/usePreferredLanguages/",
+      "category": "Browser",
+      "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)"
+    },
+    {
+      "name": "useRafFn",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useRafFn/",
+      "category": "Animation",
+      "description": "call function on every `requestAnimationFrame`"
+    },
+    {
+      "name": "useRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useRefHistory/",
+      "category": "Utilities",
+      "description": "track the change history of a ref"
+    },
+    {
+      "name": "useResizeObserver",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useResizeObserver/",
+      "category": "Sensors",
+      "description": "reports changes to the dimensions of an Element's content or the border-box"
+    },
+    {
+      "name": "useScriptTag",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useScriptTag/",
+      "category": "Browser",
+      "description": "script tag injecting"
+    },
+    {
+      "name": "useSessionStorage",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useSessionStorage/",
+      "category": "State",
+      "description": "reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)"
+    },
+    {
+      "name": "useShare",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useShare/",
+      "category": "Browser",
+      "description": "reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)"
+    },
+    {
+      "name": "useSpeechRecognition",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useSpeechRecognition/",
+      "category": "Sensors",
+      "description": "reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)"
+    },
+    {
+      "name": "useStorage",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useStorage/",
+      "category": "State",
+      "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)"
+    },
+    {
+      "name": "useTimestamp",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useTimestamp/",
+      "category": "Animation",
+      "description": "reactive current timestamp"
+    },
+    {
+      "name": "useTitle",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useTitle/",
+      "category": "Browser",
+      "description": "reactive document title"
+    },
+    {
+      "name": "useTransition",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useTransition/",
+      "category": "Animation",
+      "description": "transition between values"
+    },
+    {
+      "name": "useUrlSearchParams",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useUrlSearchParams/",
+      "category": "Browser",
+      "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)"
+    },
+    {
+      "name": "useVModel",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useVModel/",
+      "category": "Component",
+      "description": "shorthand for v-model binding"
+    },
+    {
+      "name": "useWebSocket",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWebSocket/",
+      "category": "Misc",
+      "description": "reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client"
+    },
+    {
+      "name": "useWebWorker",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWebWorker/",
+      "category": "Misc",
+      "description": "simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication"
+    },
+    {
+      "name": "useWebWorkerFn",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWebWorkerFn/",
+      "category": "Misc",
+      "description": "run expensive function without blocking the UI"
+    },
+    {
+      "name": "useWindowScroll",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWindowScroll/",
+      "category": "Sensors",
+      "description": "reactive window scroll"
+    },
+    {
+      "name": "useWindowSize",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWindowSize/",
+      "category": "Sensors",
+      "description": "reactive window size"
+    },
+    {
+      "name": "useRouteHash",
+      "package": "router",
+      "docs": "https://vueuse.js.org/router/useRouteHash/",
+      "category": "@Router",
+      "description": "shorthand for reactive route.hash"
+    },
+    {
+      "name": "useRouteQuery",
+      "package": "router",
+      "docs": "https://vueuse.js.org/router/useRouteQuery/",
+      "category": "@Router",
+      "description": "shorthand for reactive route.query"
+    },
+    {
+      "name": "useAxios",
+      "package": "integrations",
+      "docs": "https://vueuse.js.org/integrations/useAxios/",
+      "category": "@Integrations",
+      "description": "wrapper for [`axios`](https://github.com/axios/axios)"
+    },
+    {
+      "name": "useCookies",
+      "package": "integrations",
+      "docs": "https://vueuse.js.org/integrations/useCookies/",
+      "category": "@Integrations",
+      "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
+    },
+    {
+      "name": "useNProgress",
+      "package": "integrations",
+      "docs": "https://vueuse.js.org/integrations/useNProgress/",
+      "category": "@Integrations",
+      "description": "reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)"
+    },
+    {
+      "name": "useQRCode",
+      "package": "integrations",
+      "docs": "https://vueuse.js.org/integrations/useQRCode/",
+      "category": "@Integrations",
+      "description": "wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)"
+    },
+    {
+      "name": "from",
+      "package": "rxjs",
+      "docs": "https://vueuse.js.org/rxjs/from/",
+      "category": "@RxJS",
+      "description": "two wrappers around of the original functions to allow use ref objects"
+    },
+    {
+      "name": "toObserver",
+      "package": "rxjs",
+      "docs": "https://vueuse.js.org/rxjs/toObserver/",
+      "category": "@RxJS",
+      "description": "sugar function to convert a ref in an observer"
+    },
+    {
+      "name": "useObservable",
+      "package": "rxjs",
+      "docs": "https://vueuse.js.org/rxjs/useObservable/",
+      "category": "@RxJS",
+      "description": "use an Observable"
+    },
+    {
+      "name": "useSubscription",
+      "package": "rxjs",
+      "docs": "https://vueuse.js.org/rxjs/useSubscription/",
+      "category": "@RxJS",
+      "description": "uses subscriptions without worry about unsubscribing to it or memory leaks"
+    },
+    {
+      "name": "useFirestore",
+      "package": "firebase",
+      "docs": "https://vueuse.js.org/firebase/useFirestore/",
+      "category": "@Firebase",
+      "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
+    },
+    {
+      "name": "useRTDB",
+      "package": "firebase",
+      "docs": "https://vueuse.js.org/firebase/useRTDB/",
+      "category": "@Firebase",
+      "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
+    }
+  ]
 }

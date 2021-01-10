@@ -16,14 +16,15 @@
       "@vueuse/shared": ["./packages/shared/index.ts"]
     }
   },
-  "include": ["packages"],
+  "include": [
+    "packages"
+  ],
   "exclude": [
     "node_modules",
     "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
-    "packages/_docs",
-    "packages/api.2.ts",
-    "packages/api.3.ts"
+    "packages/.test",
+    "packages/_docs"
   ]
 }

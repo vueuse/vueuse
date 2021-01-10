@@ -3,7 +3,7 @@ import { getExportsSize } from 'export-size'
 import filesize from 'filesize'
 import fs from 'fs-extra'
 import { version } from '../package.json'
-import { packages } from './packages'
+import { packages } from '../meta/packages'
 
 // yarn build first
 async function run() {
@@ -40,7 +40,7 @@ async function run() {
     md += '\n\n'
   }
 
-  await fs.writeFile('docs/Export-Size.md', md, 'utf-8')
+  await fs.writeFile('packages/Export-Size.md', md, 'utf-8')
 }
 
 run()

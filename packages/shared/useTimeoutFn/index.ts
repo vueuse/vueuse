@@ -12,7 +12,7 @@ import { isClient } from '../utils'
 export function useTimeoutFn(
   cb: () => any,
   interval?: number,
-  immediate?: boolean,
+  immediate = true,
 ) {
   const isActive = ref(false)
 

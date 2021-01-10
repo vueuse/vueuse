@@ -27,5 +27,6 @@
   "homepage": "https://github.com/antfu/vueuse/tree/master/packages/shared#readme",
   "dependencies": {
     "vue-demi": "latest"
-  }
+  },
+  "funding": "https://github.com/sponsors/antfu"
 }

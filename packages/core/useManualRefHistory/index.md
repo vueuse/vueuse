@@ -1,3 +1,17 @@
+---
+category: Utilities
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useManualRefHistory
 
 > Manually track the change history of a ref when the using calls `commit()`, also provides undo and redo functionality
@@ -91,3 +105,108 @@ const refHistory = useManualRefHistory(target, {
 refHistory.clear() // explicitly clear all the history
 ```
 
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface UseRefHistoryRecord<T> {
+  snapshot: T
+  timestamp: number
+}
+export declare type CloneFn<F, T = F> = (x: F) => T
+export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
+  /**
+   * Maximum number of history to be kept. Default to unlimited.
+   */
+  capacity?: number
+  /**
+   * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
+   * Default to false
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<Raw>
+  /**
+   * Serialize data into the history
+   */
+  dump?: (v: Raw) => Serialized
+  /**
+   * Deserialize data from the history
+   */
+  parse?: (v: Serialized) => Raw
+  /**
+   * Deserialize data from the history
+   */
+  setSource?: (source: Ref<Raw>, v: Raw) => void
+}
+export interface UseManualRefHistoryReturn<Raw, Serialized> {
+  /**
+   * Bypassed tracking ref from the argument
+   */
+  source: Ref<Raw>
+  /**
+   * An array of history records for undo, newest comes to first
+   */
+  history: Ref<UseRefHistoryRecord<Serialized>[]>
+  /**
+   * Last history point, source can be different if paused
+   */
+  last: Ref<UseRefHistoryRecord<Serialized>>
+  /**
+   * Same as 'history'
+   */
+  undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
+  /**
+   * Records array for redo
+   */
+  redoStack: Ref<UseRefHistoryRecord<Serialized>[]>
+  /**
+   * A ref representing if undo is possible (non empty undoStack)
+   */
+  canUndo: Ref<boolean>
+  /**
+   * A ref representing if redo is possible (non empty redoStack)
+   */
+  canRedo: Ref<boolean>
+  /**
+   * Undo changes
+   */
+  undo(): void
+  /**
+   * Redo changes
+   */
+  redo(): void
+  /**
+   * Clear all the history
+   */
+  clear(): void
+  /**
+   * Create new a new history record
+   */
+  commit(): void
+  /**
+   * Reset ref's value with lastest history
+   */
+  reset(): void
+}
+/**
+ * Track the change history of a ref, also provides undo and redo functionality.
+ *
+ * @see   {@link https://vueuse.js.org/useManualRefHistory}
+ * @param source
+ * @param options
+ */
+export declare function useManualRefHistory<Raw, Serialized = Raw>(
+  source: Ref<Raw>,
+  options?: UseManualRefHistoryOptions<Raw, Serialized>
+): UseManualRefHistoryReturn<Raw, Serialized>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useManualRefHistory/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useManualRefHistory/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useManualRefHistory/index.md)
+
+
+<!--FOOTER_ENDS-->

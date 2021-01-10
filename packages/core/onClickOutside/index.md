@@ -1,10 +1,24 @@
+---
+category: Sensors
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # onClickOutside
 
 > Listen for clicks outside of an element. Useful for modal or dropdown.
 
 ## Usage
 
-```html {19}
+```html {18}
 <template>
   <div ref="target">
     Hello world
@@ -29,3 +43,33 @@ export default {
 }
 </script>
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+declare const events: readonly ["mousedown", "touchstart"]
+declare type EventType = WindowEventMap[typeof events[number]]
+/**
+ * Listen for clicks outside of an element.
+ *
+ * @see   {@link https://vueuse.js.org/onClickOutside}
+ * @param target
+ * @param handler
+ * @param options
+ */
+export declare function onClickOutside(
+  target: MaybeRef<Element | null | undefined>,
+  handler: (evt: EventType) => void,
+  options?: ConfigurableWindow
+): (() => void) | undefined
+export {}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/onClickOutside/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/onClickOutside/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/onClickOutside/index.md)
+
+
+<!--FOOTER_ENDS-->

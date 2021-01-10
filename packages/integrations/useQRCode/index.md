@@ -1,3 +1,17 @@
+---
+category: '@Integrations'
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+::: tip
+available in add-on [`@vueuse/integrations`](/integrations/)
+:::
+
+<!--HEAD_ENDS-->
+
+
 # useQRCode
 
 > wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
@@ -31,3 +45,28 @@ const qrcode = useQRCode(text)
 <input v-model="text" >
 <img :src="qrcode" />
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Wrapper for qrcode.
+ *
+ * @see   {@link https://vueuse.js.org/useQRCode}
+ * @param text
+ * @param options
+ */
+export declare function useQRCode(
+  text: MaybeRef<string>,
+  options?: QRCode.QRCodeToDataURLOptions
+): Ref<string>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useQRCode/index.md)
+
+
+<!--FOOTER_ENDS-->

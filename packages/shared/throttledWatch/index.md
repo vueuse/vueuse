@@ -1,3 +1,11 @@
+---
+category: Watch
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
 # throttledWatch
 
 > Throttled watch.
@@ -29,3 +37,45 @@ watchWithFilter(
   }
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface ThrottledWatchOptions<Immediate>
+  extends WatchOptions<Immediate> {
+  throttle?: number
+}
+export declare function throttledWatch<
+  T extends Readonly<WatchSource<unknown>[]>,
+  Immediate extends Readonly<boolean> = false
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: ThrottledWatchOptions<Immediate>
+): WatchStopHandle
+export declare function throttledWatch<
+  T,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: ThrottledWatchOptions<Immediate>
+): WatchStopHandle
+export declare function throttledWatch<
+  T extends object,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: ThrottledWatchOptions<Immediate>
+): WatchStopHandle
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/throttledWatch/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/throttledWatch/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,3 +1,17 @@
+---
+category: Watch
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # ignorableWatch
 
 > Ignorable watch
@@ -71,3 +85,47 @@ source.value = 'after'
 
 await nextTick() // logs: Changed to after!
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare type IgnoredUpdater = (updater: () => void) => void
+export interface IgnorableWatchReturn {
+  ignoreUpdates: IgnoredUpdater
+  ignorePrevAsyncUpdates: () => void
+  stop: WatchStopHandle
+}
+export declare function ignorableWatch<
+  T extends Readonly<WatchSource<unknown>[]>,
+  Immediate extends Readonly<boolean> = false
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: WatchWithFilterOptions<Immediate>
+): IgnorableWatchReturn
+export declare function ignorableWatch<
+  T,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>
+): IgnorableWatchReturn
+export declare function ignorableWatch<
+  T extends object,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>
+): IgnorableWatchReturn
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/index.md)
+
+
+<!--FOOTER_ENDS-->

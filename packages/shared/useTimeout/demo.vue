@@ -1,0 +1,14 @@
+<script setup lang="ts">
+import { useTimeout } from '.'
+
+const { ready, start } = useTimeout(1000)
+</script>
+
+<template>
+  <div>
+    <p>Ready: {{ ready.toString() }}</p>
+    <button :disabled="!ready" @click="start()">
+      Start Again
+    </button>
+  </div>
+</template>

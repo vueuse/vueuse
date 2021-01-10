@@ -1,6 +1,6 @@
 import { ref, nextTick } from 'vue-demi'
 import { useRefHistory } from '.'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 
 describe('useRefHistory - sync', () => {
   test('sync: should record', () => {

@@ -14,15 +14,14 @@ npm i <b>@vueuse/integrations</b>
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
+  - [`useAxios`](https://vueuse.js.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
+  - [`useCookies`](https://vueuse.js.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useNProgress`](https://vueuse.js.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
+  - [`useQRCode`](https://vueuse.js.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
-- /Integrations
-  - [`useAxios`](https://vueuse.js.org/?path=/story/integrations--useaxios) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useCookies`](https://vueuse.js.org/?path=/story/integrations--usecookies) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
-  - [`useNProgress`](https://vueuse.js.org/?path=/story/integrations--usenprogress) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
-  - [`useQRCode`](https://vueuse.js.org/?path=/story/integrations--useqrcode) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 <!--FUNCTIONS_LIST_ENDS-->
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

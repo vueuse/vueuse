@@ -1,3 +1,17 @@
+---
+category: '@RxJS'
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+::: tip
+available in add-on [`@vueuse/rxjs`](/rxjs/)
+:::
+
+<!--HEAD_ENDS-->
+
+
 # useSubscription
 
 > Uses subscriptions without worry about unsubscribing to it or memory leaks.
@@ -19,3 +33,18 @@ useSubscription(
     })
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useSubscription(subscription: Unsubscribable): void
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useSubscription/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,3 +1,17 @@
+---
+category: '@RxJS'
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS-->
+::: tip
+available in add-on [`@vueuse/rxjs`](/rxjs/)
+:::
+
+<!--HEAD_ENDS-->
+
+
 # useObservable
 
 > Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
@@ -19,3 +33,20 @@ const count = useObservable(
   )
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useObservable<H>(
+  observable: Observable<H>
+): Readonly<Ref<H>>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.md)
+
+
+<!--FOOTER_ENDS-->

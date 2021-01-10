@@ -1,3 +1,17 @@
+---
+category: Sensors
+---
+
+<!--DEMO_STARTS-->
+<script setup>
+import Demo from './demo.vue'
+</script>
+<DemoContainer><Demo/></DemoContainer>
+<!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
+
 # useResizeObserver
 
 > Reports changes to the dimensions of an Element's content or the border-box
@@ -36,3 +50,64 @@ export default {
 ```
 
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface ResizeObserverSize {
+  readonly inlineSize: number
+  readonly blockSize: number
+}
+export interface ResizeObserverEntry {
+  readonly target: Element
+  readonly contentRect: DOMRectReadOnly
+  readonly borderBoxSize?: ReadonlyArray<ResizeObserverSize>
+  readonly contentBoxSize?: ReadonlyArray<ResizeObserverSize>
+  readonly devicePixelContentBoxSize?: ReadonlyArray<ResizeObserverSize>
+}
+export declare type ResizeObserverCallback = (
+  entries: ReadonlyArray<ResizeObserverEntry>,
+  observer: ResizeObserver
+) => void
+export interface ResizeObserverOptions extends ConfigurableWindow {
+  /**
+   * Sets which box model the observer will observe changes to. Possible values
+   * are `content-box` (the default), and `border-box`.
+   *
+   * @default 'content-box'
+   */
+  box?: "content-box" | "border-box"
+}
+declare class ResizeObserver {
+  constructor(callback: ResizeObserverCallback)
+  disconnect(): void
+  observe(target: Element, options?: ResizeObserverOptions): void
+  unobserve(target: Element): void
+}
+/**
+ * Reports changes to the dimensions of an Element's content or the border-box
+ *
+ * @see   {@link https://vueuse.js.org/useResizeObserver}
+ * @param target
+ * @param callback
+ * @param options
+ */
+export declare function useResizeObserver(
+  target: MaybeRef<Element | null | undefined>,
+  callback: ResizeObserverCallback,
+  options?: ResizeObserverOptions
+): {
+  isSupported: boolean | undefined
+  stop: () => void
+}
+export {}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useResizeObserver/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useResizeObserver/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useResizeObserver/index.md)
+
+
+<!--FOOTER_ENDS-->

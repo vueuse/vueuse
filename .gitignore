@@ -90,7 +90,6 @@ sw.*
 # Vim swap files
 *.swp
 
-storybook-static
-
 packages/*/LICENSE
+packages/contributing.md
 packages/core/README.md

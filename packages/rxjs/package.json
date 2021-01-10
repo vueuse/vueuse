@@ -34,5 +34,6 @@
   },
   "devDependencies": {
     "rxjs": "^6.6.3"
-  }
+  },
+  "funding": "https://github.com/sponsors/antfu"
 }

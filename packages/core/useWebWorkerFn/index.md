@@ -1,3 +1,11 @@
+---
+category: Misc
+---
+
+<!--DEMO_STARTS--><!--DEMO_ENDS-->
+
+<!--HEAD_STARTS--><!--HEAD_ENDS-->
+
 # useWebWorkerFn
 
 > Run expensive function without blocking the UI, using a simple syntax that makes use of Promise. A port of [alewin/useWorker](https://github.com/alewin/useWorker).
@@ -64,3 +72,42 @@ Before you start using this function, we suggest you read the [Web Worker](https
 
 This function is a Vue port of https://github.com/alewin/useWorker by Alessio Koci, with the help of [@Donskelle](https://github.com/Donskelle) to migration.
 
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare type WebWorkerStatus =
+  | "PENDING"
+  | "SUCCESS"
+  | "RUNNING"
+  | "ERROR"
+  | "TIMEOUT_EXPIRED"
+export interface WebWorkerOptions extends ConfigurableWindow {
+  timeout?: number
+  dependencies?: string[]
+}
+/**
+ * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
+ *
+ * @see   {@link https://vueuse.js.org/useWebWorkerFn}
+ * @param fn
+ * @param options
+ */
+export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
+  fn: T,
+  { dependencies, timeout, window }?: WebWorkerOptions
+) => {
+  workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
+  workerStatus: Ref<WebWorkerStatus>
+  workerTerminate: (status?: WebWorkerStatus) => void
+}
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.md)
+
+
+<!--FOOTER_ENDS-->
