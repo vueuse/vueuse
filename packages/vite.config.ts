@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import { UserConfig } from 'vite'
 import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
 import Components from 'vite-plugin-components'
+import { VitePWA } from 'vite-plugin-pwa'
 
 const config: UserConfig = {
   alias: {
@@ -30,7 +31,7 @@ const config: UserConfig = {
   plugins: [
     Components({
       dirs: [
-        // resolve(__dirname, '.vitepress/theme/components'),
+        '.vitepress/theme/components',
       ],
       customLoaderMatcher: id => id.endsWith('.md'),
       customComponentResolvers: [
@@ -50,6 +51,26 @@ const config: UserConfig = {
         return code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
       },
     },
+    VitePWA({
+      outDir: '.vitepress/dist',
+      manifest: {
+        name: 'VueUse',
+        short_name: 'VueUse',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+    }),
   ],
 }
 

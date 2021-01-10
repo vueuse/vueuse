@@ -1,5 +1,5 @@
 import { unref } from 'vue-demi'
-import { MaybeRef } from '..'
+import { MaybeRef } from '../utils'
 
 /**
  * Shorthand for accessing `ref.value`

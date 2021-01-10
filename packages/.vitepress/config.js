@@ -19,7 +19,7 @@ const config = {
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   themeConfig: {
-    logo: '/android-chrome-512x512.png',
+    logo: '/favicon.svg',
     repo: 'antfu/vueuse',
     docsDir: 'packages',
     editLinks: true,
