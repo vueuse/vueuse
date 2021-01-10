@@ -6,7 +6,6 @@ category: Misc
 
 > Run expensive function without blocking the UI, using a simple syntax that makes use of Promise. A port of [alewin/useWorker](https://github.com/alewin/useWorker).
 
-
 ## Usage
 
 ### Basic example

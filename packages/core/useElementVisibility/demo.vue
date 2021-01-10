@@ -6,6 +6,7 @@ import { useElementVisibility } from '.'
 const el = ref(null)
 const isVisible = useElementVisibility(el)
 const text = ternary(isVisible, 'inside', 'outside')
+const className = ternary(isVisible, 'text-primary', 'text-orange')
 </script>
 
 <template>
@@ -18,6 +19,6 @@ const text = ternary(isVisible, 'inside', 'outside')
     </div>
   </div>
   <div class="float">
-    Element <b>{{ text }}</b> the viewport
+    Element <b :class="className">{{ text }}</b> the viewport
   </div>
 </template>

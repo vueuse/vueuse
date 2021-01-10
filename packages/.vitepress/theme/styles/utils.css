@@ -54,6 +54,9 @@
 .text-primary {
   color: var(--c-brand);
 }
+.text-orange {
+color: #db8742;
+}
 .select-none {
   user-select: none;
 }

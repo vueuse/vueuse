@@ -47,7 +47,7 @@ New add-ons are greatly welcome!
 - Add add-on details in `scripts/packages.ts`
 - Create `README.md` under that folder.
 - Add functions as you would do to the core package.
-- Run `yarn prepare` to update the docs.
+- Commit and submit as a PR.
 
 ## Project Structure
 
