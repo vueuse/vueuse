@@ -2,7 +2,6 @@
 category: '@RxJS'
 ---
 
-
 # from / fromEvent
 
 > Two wrappers around of the original functions to allow use ref objects

@@ -2,7 +2,6 @@
 category: Browser
 ---
 
-
 # useFavicon
 
 > Reactive favicon

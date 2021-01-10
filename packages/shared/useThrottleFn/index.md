@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # useThrottleFn
 
 > Throttle execution of a function. Especially useful for rate limiting execution of handlers on events like resize and scroll.

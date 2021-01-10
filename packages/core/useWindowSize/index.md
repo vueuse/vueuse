@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useWindowSize
 
 > Reactive window size

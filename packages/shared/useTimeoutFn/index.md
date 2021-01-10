@@ -2,7 +2,6 @@
 category: Animation
 ---
 
-
 # useTimeoutFn
 
 > Wrapper for `setTimeout` with controls.

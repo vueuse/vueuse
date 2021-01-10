@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # useThrottle
 
 > Throttle changing of a ref value.

@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useWindowScroll
 
 > Reactive window scroll

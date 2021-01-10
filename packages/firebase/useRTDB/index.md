@@ -2,7 +2,6 @@
 category: '@Firebase'
 ---
 
-
 # useRTDB
 
 > Reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding. Making it straightforward to **always keep your local data in sync** with remotes databases.

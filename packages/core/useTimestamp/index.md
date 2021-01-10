@@ -2,7 +2,6 @@
 category: Animation
 ---
 
-
 # useTimestamp
 
 > Reactive current timestamp

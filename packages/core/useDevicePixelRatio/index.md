@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useDevicePixelRatio
 
 > Reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)

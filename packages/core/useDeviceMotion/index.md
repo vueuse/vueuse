@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useDeviceMotion
 
 > Reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent). Provide web developers with information about the speed of changes for the device's position and orientation.

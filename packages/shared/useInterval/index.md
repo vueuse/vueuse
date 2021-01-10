@@ -2,7 +2,6 @@
 category: Animation
 ---
 
-
 # useInterval
 
 > Reactive counter increases on every interval

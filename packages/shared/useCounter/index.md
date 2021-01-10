@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # useCounter
 
 > Basic counter with utility functions.

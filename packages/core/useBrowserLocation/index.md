@@ -2,7 +2,6 @@
 category: Browser
 ---
 
-
 # useBrowserLocation
 
 > Reactive browser location

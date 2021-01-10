@@ -5,9 +5,9 @@ const categoriesOrder = [
   'Browser',
   'Sensors',
   'Animation',
+  'State',
   'Component',
   'Watch',
-  'State',
   'Utilities',
   'Misc',
 ]
@@ -29,6 +29,7 @@ const config = {
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide' },
       { text: 'Functions', link: '/functions' },
+      { text: 'Add-ons', link: '/add-ons' },
       { text: 'Contribute', link: '/contributing' },
     ],
     sidebar: getSideBar(),

@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useMouse
 
 > Reactive mouse position

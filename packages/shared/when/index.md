@@ -2,7 +2,6 @@
 category: Watch
 ---
 
-
 # when
 
 > Promised one-time watch for ref changes

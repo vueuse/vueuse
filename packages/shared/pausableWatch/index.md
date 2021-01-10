@@ -2,7 +2,6 @@
 category: Watch
 ---
 
-
 # pausableWatch
 
 > Pausable watch

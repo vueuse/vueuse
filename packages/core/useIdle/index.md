@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useIdle
 
 > Tracks whether the user is being inactive.

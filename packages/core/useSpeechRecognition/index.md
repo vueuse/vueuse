@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useSpeechRecognition
 
 > Reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition).

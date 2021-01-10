@@ -2,7 +2,6 @@
 category: Animation
 ---
 
-
 # useTimeout
 
 > Update value after a given time with controls.

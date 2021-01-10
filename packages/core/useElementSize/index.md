@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useElementSize
 
 > Reactive size of an HTML element.

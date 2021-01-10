@@ -2,7 +2,6 @@
 category: Browser
 ---
 
-
 # useCssVar
 
 > Manipulate CSS variables

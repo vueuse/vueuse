@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # useRefHistory
 
 > Track the change history of a ref, also provides undo and redo functionality

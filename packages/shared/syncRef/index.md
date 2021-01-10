@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # syncRef
 
 > Keep target refs in sync with a source ref

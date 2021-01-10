@@ -2,7 +2,6 @@
 category: Utilities
 ---
 
-
 # useAsyncState
 
 > Reactive async state. Will not block your setup function and will triggers changes once the promise is ready.

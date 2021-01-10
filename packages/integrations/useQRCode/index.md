@@ -2,7 +2,6 @@
 category: '@Integrations'
 ---
 
-
 # useQRCode
 
 > wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)

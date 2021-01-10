@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # onStartTyping
 
 > Fires when users start typing on non-editable elements.

@@ -2,7 +2,6 @@
 category: '@Integrations'
 ---
 
-
 # useNProgress
 
 > Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)

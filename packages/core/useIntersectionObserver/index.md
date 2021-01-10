@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useIntersectionObserver
 
 > Detects that a target element's visibility.

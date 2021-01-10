@@ -28,7 +28,7 @@ Collection of essential Vue Composition Utilities
 - 🔋 **SSR Friendly**
 - 🌎 **No bundler required**: Usable via CDN
 - 🔩 **Flexible**: Configurable event filters and targets
-- 🔌 **Optional [Add-ons](https://vueuse.js.org/functions#add-ons)**: Router, Firebase, RxJS, etc.
+- 🔌 **Optional [Add-ons](https://vueuse.js.org/add-ons)**: Router, Firebase, RxJS, etc.
 
 ## 🦄 Usage
 

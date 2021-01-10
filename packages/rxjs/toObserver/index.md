@@ -2,7 +2,6 @@
 category: '@RxJS'
 ---
 
-
 # toObserver
 
 > Sugar function to convert a ref in an observer

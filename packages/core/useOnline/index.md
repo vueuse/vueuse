@@ -2,7 +2,6 @@
 category: Sensors
 ---
 
-
 # useOnline
 
 > Reactive online state. A wrapper of `useNetwork`.

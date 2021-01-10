@@ -49,7 +49,7 @@ export function hasDemo(pkg: string, name: string) {
 }
 
 export function getFunctionHead(pkg: string, name: string) {
-  let head = packages.find(p => p.name === pkg)?.addon
+  let head = packages.find(p => p.name === pkg)!.addon
     ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
     : ''
 
@@ -207,6 +207,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
       list += `### ${category}\n`
 
     const categoryFunctions = functions.filter(i => i.category === category).sort((a, b) => a.name.localeCompare(b.name))
+
     for (const { name, docs, description, depreacted } of categoryFunctions) {
       if (depreacted)
         continue
@@ -264,11 +265,16 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
-  let readme = await fs.readFile('packages/functions.md', 'utf-8')
+  let mdFn = await fs.readFile('packages/functions.md', 'utf-8')
 
   const coreFunctions = functions.filter(i => ['core', 'shared'].includes(i.package))
-
   const functionListMD = stringifyFunctions(coreFunctions)
+
+  mdFn = replacer(mdFn, functionListMD, 'FUNCTIONS_LIST')
+  await fs.writeFile('packages/functions.md', mdFn, 'utf-8')
+
+  let mdAddons = await fs.readFile('packages/add-ons.md', 'utf-8')
+
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
@@ -277,10 +283,9 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
     })
     .join('\n')
 
-  readme = replacer(readme, functionListMD, 'FUNCTIONS_LIST')
-  readme = replacer(readme, addons, 'ADDONS_LIST')
+  mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
 
-  await fs.writeFile('packages/functions.md', readme, 'utf-8')
+  await fs.writeFile('packages/add-ons.md', mdAddons, 'utf-8')
 }
 
 export async function updateFunctionREADME(indexes: PackageIndexes) {
