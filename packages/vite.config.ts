@@ -19,6 +19,7 @@ const config: UserConfig = {
       'nprogress',
       'tslib',
       'js-yaml',
+      'dayjs',
       'universal-cookie',
       // 'firebase',
       'rxjs',

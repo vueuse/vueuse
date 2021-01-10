@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { useQRCode } from './index'
+import { useQRCode } from '.'
 
 const text = ref('https://vueuse.js.org')
 const qrcode = useQRCode(text, {
@@ -10,6 +10,9 @@ const qrcode = useQRCode(text, {
 </script>
 
 <template>
+  <note>
+    Text content for QRCode
+  </note>
   <input v-model="text">
-  <img class="ml-1 mt-6 mb-2 rounded" :src="qrcode" alt="QR Code">
+  <img v-if="text" class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code">
 </template>

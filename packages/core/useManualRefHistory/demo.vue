@@ -17,7 +17,7 @@ const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(co
   <button @click="dec()">
     Decrement
   </button>
-  <span class="mx-2">/</span>
+  <span class="ml-2">/</span>
   <button @click="commit()">
     Commit
   </button>

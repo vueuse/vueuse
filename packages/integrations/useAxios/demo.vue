@@ -9,5 +9,5 @@ const { data, finished } = useAxios(
 
 <template>
   <note>Finished: {{ finished.toString() }}</note>
-  <pre lang="json" class="ml-2">{{ JSON.stringify(data, null, 2) }}</pre>
+  <pre lang="json">{{ JSON.stringify(data, null, 2) }}</pre>
 </template>
