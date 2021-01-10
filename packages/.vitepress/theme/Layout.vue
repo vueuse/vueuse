@@ -2,7 +2,9 @@
   <div class="theme" :class="pageClasses">
     <NavBar v-if="showNavbar" @toggle="toggleSidebar">
       <template #search>
-        <slot name="navbar-search" />
+        <slot name="navbar-search">
+          <AlgoliaSearchBox v-if="theme.algolia" :options="theme.algolia" />
+        </slot>
       </template>
     </NavBar>
 
@@ -66,6 +68,10 @@ const siteData = useSiteData<DefaultTheme.Config>()
 const siteRouteData = useSiteDataByRoute()
 const theme = computed(() => siteData.value.themeConfig)
 const page = usePageData()
+
+const AlgoliaSearchBox = defineAsyncComponent(
+  () => import('./components/AlgoliaSearchBox.vue'),
+)
 
 // custom layout
 const isCustomLayout = computed(() => !!route.data.frontmatter.customLayout)

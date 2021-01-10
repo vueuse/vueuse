@@ -32,6 +32,10 @@ const config = {
       { text: 'Contribute', link: '/contributing' },
     ],
     sidebar: getSideBar(),
+    // algolia: {
+    //   apiKey: '',
+    //   indexName: 'vueuse',
+    // },
   },
   head: [
     ['link', { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png' }],
