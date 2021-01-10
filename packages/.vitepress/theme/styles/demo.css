@@ -35,6 +35,7 @@
   }
 }
 
+
 .demo {
   p {
     margin: 0.5rem 0 ;
@@ -60,9 +61,9 @@
   }
 
   button.orange {
-    --c-brand: #db7a12;
-    --c-brand-dark: #a35518;
-    --c-brand-active: #c4661d;
+    --c-brand: #db8742;
+    --c-brand-dark: #ad6e39;
+    --c-brand-active: #d67e36;
   }
 
   button:hover {
@@ -107,7 +108,7 @@
   .note {
     opacity: 0.7;
     font-size: 0.9rem;
-    margin-bottom: -0.5rem;
+    margin-bottom: -0.2rem;
   }
 
   pre,
@@ -125,6 +126,8 @@
     width: 200px;
     height: 200px;
     border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    background: white;
     outline: none;
     white-space: pre;
     overflow-wrap: normal;
@@ -147,5 +150,13 @@
     border-width: 2px;
     border-style: dashed;
     padding: 1rem;
+  }
+}
+
+
+html.dark .demo {
+  .resizer {
+    background: #222;
+    color: white;
   }
 }

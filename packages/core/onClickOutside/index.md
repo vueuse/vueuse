@@ -18,7 +18,7 @@ import Demo from './demo.vue'
 
 ## Usage
 
-```html {19}
+```html {18}
 <template>
   <div ref="target">
     Hello world

@@ -26,5 +26,5 @@ features:
   - title: 🔌 Add-ons
     details: Support various add-ons like Router, Firebase, RxJS, etc.
 
-footer: MIT Licensed | Copyright © 2020-Present Anthony Fu
+footer: MIT Licensed | Copyright © 2020-PRESENT Anthony Fu
 ---

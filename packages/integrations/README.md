@@ -14,10 +14,10 @@ npm i <b>@vueuse/integrations</b>
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`useAxios`](https://vitepress--vueuse..netlify.app/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useCookies`](https://vitepress--vueuse..netlify.app/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
-  - [`useNProgress`](https://vitepress--vueuse..netlify.app/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
-  - [`useQRCode`](https://vitepress--vueuse..netlify.app/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
+  - [`useAxios`](https://vueuse.js.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
+  - [`useCookies`](https://vueuse.js.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useNProgress`](https://vueuse.js.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
+  - [`useQRCode`](https://vueuse.js.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 
 <!--FUNCTIONS_LIST_ENDS-->

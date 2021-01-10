@@ -61,10 +61,10 @@ const toggle = () => {
 
 <style scoped>
 .track {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(125, 125, 125, 0.3);
   border-radius: 1rem;
   height: 1rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
   max-width: 20rem;
   padding: 0 0.5rem;
   width: 100%;

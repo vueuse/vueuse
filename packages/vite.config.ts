@@ -25,6 +25,18 @@ const config: UserConfig = {
       overlay: false,
     },
   },
+  plugins: [
+    {
+      name: 'vueuse-md-transform',
+      enforce: 'pre',
+      transform(code, id) {
+        if (!id.endsWith('.md'))
+          return null
+
+        return code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
+      },
+    },
+  ],
 }
 
 export default config
