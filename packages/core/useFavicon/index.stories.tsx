@@ -20,7 +20,7 @@ defineDemo(
       )
 
       useFavicon(favicon, {
-        baseUrl: 'https://raw.githubusercontent.com/antfu/vueuse/master/resources/favicon/',
+        baseUrl: '/',
         rel: 'icon',
         document: window.parent.document,
       })

@@ -13,8 +13,8 @@
 
     <p align="center">
       <a href="https://github.com/antfu/vueuse">
-        <img v-if="isDark" src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
-        <img v-else src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
+        <img v-if="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
+        <img v-else src="/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
       </a>
       <br>
     </p>

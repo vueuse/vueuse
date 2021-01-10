@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
+<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/packages/public/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
 Collection of essential Vue Composition Utilities
 </p>
 
