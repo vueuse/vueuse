@@ -15,9 +15,12 @@ import './styles/utils.css'
 const theme = {
   Layout,
   NotFound,
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     app.component('DemoContainer', DemoContainer)
     app.component('Note', Note)
+
+    // @ts-ignore
+    import('vite-plugin-editor-nav/client').then(i => i.default(router))
   },
 }
 

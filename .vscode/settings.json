@@ -17,4 +17,6 @@
     "prepublish",
     "vue"
   ],
+  "as-fs.enabled": true,
+  "as-fs.path": "packages/.vitepress/.editor-as-fs"
 }

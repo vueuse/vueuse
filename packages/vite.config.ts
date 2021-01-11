@@ -5,6 +5,7 @@ import Components from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
 import { functionNames, getFunction } from '../meta/function-indexes'
 import { getFunctionHead, hasDemo } from '../scripts/utils'
+import EditorNav from 'vite-plugin-editor-nav'
 
 const config: UserConfig = {
   alias: {
@@ -100,6 +101,10 @@ const config: UserConfig = {
           },
         ],
       },
+    }),
+    EditorNav({
+      preset: 'vitepress',
+      editorStatePath: 'packages/.vitepress/.editor-as-fs',
     }),
   ],
 }

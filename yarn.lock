@@ -4057,7 +4057,7 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild-register@^1.1.1, esbuild-register@^1.2.1:
+esbuild-register@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/esbuild-register/-/esbuild-register-1.2.1.tgz#a430decedd7cb83ecf05141c7a7050b990724d41"
   integrity sha512-Pg00Woeg+2hpRyZkxSjvBUIabQ6DZIdCUgeBCzWgYfiFCnetQF8Cmrr5/+M/rMJCP/trhNlV0Kc4KnbYssIrFg==
@@ -4067,7 +4067,7 @@ esbuild-register@^1.1.1, esbuild-register@^1.2.1:
     source-map-support "^0.5.19"
     strip-json-comments "^3.1.1"
 
-esbuild@^0.8.17, esbuild@^0.8.26, esbuild@^0.8.7:
+esbuild@^0.8.26, esbuild@^0.8.29, esbuild@^0.8.7:
   version "0.8.31"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.31.tgz#c21e7adb3ad283c951a53de7ad64a5ae2df2ed34"
   integrity sha512-7EIU0VdUxltwivjVezX3HgeNzeIVR1snkrAo57WdUnuBMykdzin5rTrxwCDM6xQqj0RL/HjOEm3wFr2ijHKeaA==
@@ -4334,14 +4334,13 @@ esm@^3.2.25:
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
   integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
-esno@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/esno/-/esno-0.3.0.tgz#c818996bdaaf2deaf81413d6f45538ffa6e41b42"
-  integrity sha512-4sF/j8jruQv9jScU8tNkgoDFLjyGxTTB8bmjRmWHyNNygra3WS3X0U1Cc7GuOvfSEjn3NDS57P0LRnzgiupKJg==
+esno@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/esno/-/esno-0.4.0.tgz#3d5473e65895f3e917818b4b8e1a9465a4ce72a7"
+  integrity sha512-YBT1akVDWC+jIYgwwb2LjOQT0OuMU1ejWr1ygcO0FCqUfRjRSAIKgDEp9io7tnpbaedXIpGjgA9yFOuqvwEjAw==
   dependencies:
-    esbuild "^0.8.17"
-    esbuild-register "^1.1.1"
-    esm "^3.2.25"
+    esbuild "^0.8.29"
+    esbuild-register "^1.2.1"
 
 espree@^6.2.1:
   version "6.2.1"
@@ -9751,6 +9750,14 @@ vite-plugin-components@^0.6.6:
     fast-glob "^3.2.4"
     minimatch "^3.0.4"
 
+vite-plugin-editor-nav@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-editor-nav/-/vite-plugin-editor-nav-0.0.2.tgz#aff83af61a8c2d0a94dda6d1a6d8866e2f0f1039"
+  integrity sha512-K1jWv1Ddx05d37UQN60VEPa5K7oMgwU1cY+12PNKOBdPe3hOFedr8wbEdKnYwJOcnwd+CXARnshZjQVPfpwK/Q==
+  dependencies:
+    debug "^4.3.2"
+    fast-glob "^3.2.4"
+
 vite-plugin-icons@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/vite-plugin-icons/-/vite-plugin-icons-0.2.1.tgz#6d2d4d1271428e6347b96a7d9b51dbe9f87f1f8f"
@@ -9758,10 +9765,10 @@ vite-plugin-icons@^0.2.1:
   dependencies:
     "@iconify/json-tools" "^1.0.10"
 
-vite-plugin-pwa@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.3.4.tgz#b5f33acea1fadb82ff30c97879abcfd0800411d8"
-  integrity sha512-pRSPUGqSe1yR8NnbAEXvYtAGIRFJuCfMaLtH4p4PsiAZ6X2IwRCDCK/uXOWYz3T/bHHIJWI7Mee029MqX+k3Zw==
+vite-plugin-pwa@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.3.5.tgz#a1700e60ab91fa5fa92d0bdf7102ac87187ac00e"
+  integrity sha512-mabDRu/rk6w/f5eXGlNzD8GJCw8kKeg82UTLmaUYj3M7G5eKvyRYTXVPY2TPe1WWPMTE1c3Ypw9iL4QDV707Ww==
   dependencies:
     debug "^4.3.2"
     fast-glob "^3.2.4"
