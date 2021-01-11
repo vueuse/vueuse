@@ -21,17 +21,17 @@ export function useNProgress(
   if (options)
     nprogress.configure(options)
 
-  watch([progress, isLoading], ([p, l]) => {
-    if (isNumber(p)) {
-      nprogress.set(p)
-      isLoading.value = p < 1
-    }
-    else if (isBoolean(l)) {
+  const setProgress = nprogress.set
+  nprogress.set = (n: number) => {
+    progress.value = n
+    return setProgress.call(nprogress, n)
+  }
+
+  watch(isLoading, (l) => {
+    if (isBoolean(l))
       l ? nprogress.start() : nprogress.done()
-    }
-    else {
+    else
       nprogress.remove()
-    }
   }, {
     immediate: true,
   })
