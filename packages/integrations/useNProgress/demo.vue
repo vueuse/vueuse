@@ -10,7 +10,7 @@ const { isLoading, progress } = useNProgress()
   <note class="mb-2">
     Click to change progress status
   </note>
-  <button style="position: relative" @click="isLoading = !isLoading">
+  <button @click="isLoading = !isLoading">
     {{ !isLoading ? 'Start' : 'Stop' }}
   </button>
   <b v-if="isLoading" class="ml-2">{{ (progress * 100).toFixed(0) }}%</b>
