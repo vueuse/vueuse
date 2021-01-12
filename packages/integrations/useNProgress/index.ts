@@ -24,20 +24,18 @@ export function useNProgress(
   const setProgress = nprogress.set
   nprogress.set = (n: number) => {
     progress.value = n
-    isLoading.value = n < 1
     return setProgress.call(nprogress, n)
   }
 
   watchEffect(() => {
-    if (isBoolean(isLoading.value)) {
-      isLoading.value && !progress.value
-        ? nprogress.start()
-        : nprogress.done()
-    }
-
     if (isNumber(progress.value)) {
       isLoading.value = progress.value < 1
       setProgress.call(nprogress, progress.value)
+    }
+    else if (isBoolean(isLoading.value)) {
+      isLoading.value
+        ? nprogress.start()
+        : nprogress.done()
     }
   })
 
