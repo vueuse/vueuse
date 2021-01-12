@@ -1,6 +1,6 @@
 import nprogress, { NProgressOptions } from 'nprogress'
 import { MaybeRef, tryOnUnmounted, isNumber, isBoolean } from '@vueuse/shared'
-import { ref, isRef, watch } from 'vue-demi'
+import { ref, isRef, watchEffect } from 'vue-demi'
 
 /**
  * Reactive progress bar.
@@ -24,16 +24,21 @@ export function useNProgress(
   const setProgress = nprogress.set
   nprogress.set = (n: number) => {
     progress.value = n
+    isLoading.value = n < 1
     return setProgress.call(nprogress, n)
   }
 
-  watch(isLoading, (l) => {
-    if (isBoolean(l))
-      l ? nprogress.start() : nprogress.done()
-    else
-      nprogress.remove()
-  }, {
-    immediate: true,
+  watchEffect(() => {
+    if (isBoolean(isLoading.value)) {
+      isLoading.value && !progress.value
+        ? nprogress.start()
+        : nprogress.done()
+    }
+
+    if (isNumber(progress.value)) {
+      isLoading.value = progress.value < 1
+      setProgress.call(nprogress, progress.value)
+    }
   })
 
   tryOnUnmounted(nprogress.remove)
@@ -52,6 +57,8 @@ export function useNProgress(
     remove: () => {
       progress.value = null
       isLoading.value = null
+
+      nprogress.remove()
     },
   }
 }

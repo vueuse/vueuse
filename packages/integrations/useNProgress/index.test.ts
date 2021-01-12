@@ -83,7 +83,7 @@ describe('useNProgress', () => {
     })
   })
 
-  it('should remove and remove progress bar', async() => {
+  it('should remove progress bar', async() => {
     const removeProgress = jest.spyOn(nprogress, 'remove')
     const instance = useSetup(() => {
       return useNProgress(0)
