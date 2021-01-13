@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.284":
-  version "1.1.284"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.284.tgz#d8a70ed9cfc76a03bbc00fabdca19cc0a9134760"
-  integrity sha512-NjTud7YfBbZrsib5AB35Qp5fgy2FKv4suRRetqXFZxuFdTcxEje8CiMQVdB8rFLMrx96lfY0dX4VDSB7luYwVw==
+"@iconify/json@^1.1.285":
+  version "1.1.285"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.285.tgz#2f1665c9f3ce4cd9eb2e0c980c0ac8955ce520fc"
+  integrity sha512-ABoWg/GibeN3hzTvvzd9oSmSo3V8Hyb3f0LMMUD195xlrd8083nBzFFhA12EfEMnxNsouj6ZtvlgIDnYWEXRow==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -1846,10 +1846,10 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
-"@types/js-yaml@^3.12.6":
-  version "3.12.6"
-  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.12.6.tgz#7f10c926aa41e189a2755c4c7fcf8e4573bd7ac1"
-  integrity sha512-cK4XqrLvP17X6c0C8n4iTbT59EixqyXL3Fk8/Rsk4dF3oX4dg70gYUXrXVUUHpnsGMPNlTQMqf+TVmNPX6FmSQ==
+"@types/js-yaml@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-4.0.0.tgz#d1a11688112091f2c711674df3a65ea2f47b5dfb"
+  integrity sha512-4vlpCM5KPCL5CfGmTbpjwVKbISRYhduEJvvUWsH5EB7QInhEj94XPZ3ts/9FPiLZFqYO0xoW4ZL8z2AabTGgJA==
 
 "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.5":
   version "7.0.6"
@@ -2394,6 +2394,11 @@ argparse@^1.0.7:
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 arr-diff@^4.0.0:
   version "4.0.0"
@@ -6214,13 +6219,20 @@ js-beautify@^1.6.12:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-yaml@^3.11.0, js-yaml@^3.13.1, js-yaml@^3.14.1:
+js-yaml@^3.11.0, js-yaml@^3.13.1:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
   integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js-yaml@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.0.0.tgz#f426bc0ff4b4051926cd588c71113183409a121f"
+  integrity sha512-pqon0s+4ScYUvX30wxQi3PogGFAlUyH0awepWvwkj4jD4v+ova3RiYw8bmA6x2rDrEaj8i/oWKoRxpVNW+Re8Q==
+  dependencies:
+    argparse "^2.0.1"
 
 jsbn@~0.1.0:
   version "0.1.1"
@@ -9765,10 +9777,10 @@ vite-plugin-icons@^0.2.1:
   dependencies:
     "@iconify/json-tools" "^1.0.10"
 
-vite-plugin-pwa@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.3.5.tgz#a1700e60ab91fa5fa92d0bdf7102ac87187ac00e"
-  integrity sha512-mabDRu/rk6w/f5eXGlNzD8GJCw8kKeg82UTLmaUYj3M7G5eKvyRYTXVPY2TPe1WWPMTE1c3Ypw9iL4QDV707Ww==
+vite-plugin-pwa@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.3.6.tgz#a522af3fd5461991907f6829975b437f2c847339"
+  integrity sha512-GDgT8jFGHUz2j11I7Z0W+X5mnkaUoMVitJ/UjN/ezjy9HcXrvxaIVnhzMdESJSv+dxy4DD9ymD91cF9Ei6//cQ==
   dependencies:
     debug "^4.3.2"
     fast-glob "^3.2.4"
@@ -9820,10 +9832,10 @@ vite@^2.0.0-beta.8:
     vite "^2.0.0-beta.8"
     vue "^3.0.5"
 
-vue-chemistry@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/vue-chemistry/-/vue-chemistry-0.1.3.tgz#55f86240ab37408fcee86dee4e36f4b24448b7c4"
-  integrity sha512-CZQKBqO171poDpSyNkBhbIejUE3pCVEY9UQ6qjEyVZ962gHHquo1Sl89UO2+hdOf58fs2HunOT9kS0/yknXjrg==
+vue-chemistry@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vue-chemistry/-/vue-chemistry-0.1.4.tgz#6f8091b15eba7d89e44e142334f627fbdbef5e78"
+  integrity sha512-EaosgmkBIjJgAs/pkqJq1p6q1jXqqgB57nJQvdThmvgpXQqU7v6j0SuFgKYjYxakEOAdu8RgWiWKf41gqOhdqQ==
   dependencies:
     "@vueuse/shared" "^4.0.4"
     vue-demi latest

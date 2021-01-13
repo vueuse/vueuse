@@ -93,7 +93,7 @@ const cardStyle = computed(() => ({
 <template>
   <div>
     <div ref="target" :style="targetStyle">
-      <pre :style="infoStyle">{{ YAML.safeDump(parallax) }}</pre>
+      <pre :style="infoStyle">{{ YAML.dump(parallax) }}</pre>
       <div :style="containerStyle">
         <div :style="cardStyle">
           <div :style="cardWindowStyle">

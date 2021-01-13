@@ -13,6 +13,6 @@ const { state, ready } = useAsyncState(
 <template>
   <div>
     <note>Ready: {{ ready.toString() }}</note>
-    <pre lang="json" class="ml-2">{{ YAML.safeDump(state) }}</pre>
+    <pre lang="json" class="ml-2">{{ YAML.dump(state) }}</pre>
   </div>
 </template>

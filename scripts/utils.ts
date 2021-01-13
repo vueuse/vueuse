@@ -316,7 +316,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.safeDump(data)}---\n\n${content.trim()}`
+    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`
 
     await fs.writeFile(mdPath, readme, 'utf-8')
   }

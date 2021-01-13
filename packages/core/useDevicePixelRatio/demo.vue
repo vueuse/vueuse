@@ -4,7 +4,7 @@ import YAML from 'js-yaml'
 import { useDevicePixelRatio } from '.'
 
 const pixelRatio = reactive(useDevicePixelRatio())
-const code = YAML.safeDump(pixelRatio)
+const code = YAML.dump(pixelRatio)
 </script>
 
 <template>

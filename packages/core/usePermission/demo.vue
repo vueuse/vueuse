@@ -9,7 +9,7 @@ const notifications = usePermission('notifications')
 const camera = usePermission('camera')
 const midi = usePermission('midi')
 
-const code = computed(() => YAML.safeDump(reactive({
+const code = computed(() => YAML.dump(reactive({
   geolocation,
   microphone,
   notifications,
