@@ -60,12 +60,13 @@ describe('useNProgress', () => {
   })
 
   it('should start progress bar', () => {
-    useSetup(() => {
+    useSetup(async() => {
       const startProgress = jest.spyOn(nprogress, 'start')
       const { start, isLoading } = useNProgress()
 
       expect(isLoading.value).toBeFalsy()
       start()
+      await nextTick()
       expect(startProgress).toBeCalled()
       expect(isLoading.value).toBeTruthy()
     })
@@ -83,7 +84,7 @@ describe('useNProgress', () => {
     })
   })
 
-  it('should remove and remove progress bar', async() => {
+  it('should remove progress bar', async() => {
     const removeProgress = jest.spyOn(nprogress, 'remove')
     const instance = useSetup(() => {
       return useNProgress(0)
