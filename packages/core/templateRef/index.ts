@@ -25,7 +25,7 @@ export function templateRef<T extends Element | Element[] | typeof Vue | typeof 
   const $target = ref(initialValue) as Ref<T | null | undefined>
 
   const sync = () => {
-    $target.value = instance?.proxy?.$refs[key] as T
+    $target.value = instance?.proxy?.$refs[key] as T ?? initialValue
   }
 
   onMounted(() => sync())
