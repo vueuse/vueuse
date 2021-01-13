@@ -772,9 +772,9 @@
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
     },
     {
-      "name": "useReactiveRefs",
+      "name": "templateRef",
       "package": "core",
-      "docs": "https://vueuse.js.org/core/useReactiveRefs",
+      "docs": "https://vueuse.js.org/core/templateRef",
       "category": "Component",
       "description": "> Use reactive $refs in Vue 2,3"
     }
