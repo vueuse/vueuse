@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { stringify } from '@vueuse/docs-utils'
 import dayjs from 'dayjs'
 import { defineComponent, computed, ref, nextTick } from 'vue-demi'
 import { useWebWorkerFn } from '.'
@@ -50,6 +51,6 @@ const workerSort = async() => {
   </button>
   <p v-if="data">
     Thread: <strong>{{ runner }}</strong><br>
-    Result: <strong>{{ JSON.stringify(data) }}</strong>
+    Result: <strong>{{ data }}</strong>
   </p>
 </template>

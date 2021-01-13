@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue-demi'
-import { stringify } from 'vue-chemistry/json'
+import { stringify } from '@vueuse/docs-utils'
 import { useElementBounding } from '.'
 
 const el = ref(null)
 const rect = reactive(useElementBounding(el))
-const text = stringify(rect, null, 2)
+const text = stringify(rect)
 </script>
 
 <template>

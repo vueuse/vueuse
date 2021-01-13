@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stringify } from 'vue-chemistry/json'
+import { stringify } from '@vueuse/docs-utils'
 import { ref, computed, reactive } from 'vue-demi'
 import { useMousePressed } from '.'
 import { useToggle } from '..'
@@ -13,12 +13,12 @@ const target = computed<Element | null>(() => {
 })
 
 const mouse = reactive(useMousePressed({ target }))
-const text = stringify(mouse, null, 2)
+const text = stringify(mouse)
 </script>
 
 <template>
   <div ref="el" class="select-none">
-    <pre>{{ text }}</pre>
+    <pre lang="yaml">{{ text }}</pre>
     <div>
       Tracking on
       <button class="ml-2 button small" @click="toggle">

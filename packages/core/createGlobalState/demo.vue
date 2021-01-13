@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { createGlobalState } from '.'
 import { useStorage } from '../useStorage'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive } from 'vue-demi'
 
 const useState = createGlobalState(() => {
   return useStorage('vue-use-locale-storage', {
@@ -11,6 +13,7 @@ const useState = createGlobalState(() => {
 })
 
 const state = useState()
+const text = stringify(state)
 </script>
 
 <template>
@@ -19,6 +22,6 @@ const state = useState()
     <input v-model="state.color" type="text">
     <input v-model="state.size" type="text">
 
-    <pre lang="json">{{ JSON.stringify(state, null, 2) }}</pre>
+    <pre lang="yaml">{{ text }}</pre>
   </div>
 </template>

@@ -10,6 +10,7 @@ import EditorNav from 'vite-plugin-editor-nav'
 const config: UserConfig = {
   alias: {
     '@vueuse/shared': resolve(__dirname, 'shared'),
+    '@vueuse/docs-utils': resolve(__dirname, '.vitepress/utils.ts'),
   },
   optimizeDeps: {
     exclude: [

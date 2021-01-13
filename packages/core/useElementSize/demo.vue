@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue-demi'
-import { stringify } from 'vue-chemistry/json'
+import { stringify } from '@vueuse/docs-utils'
 import { useElementSize } from '.'
 
 const el = ref(null)
 const size = reactive(useElementSize(el))
-const text = stringify(size, null, 2)
+const text = stringify(size)
 </script>
 
 <template>
