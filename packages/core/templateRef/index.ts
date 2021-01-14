@@ -1,33 +1,32 @@
-import { getCurrentInstance, onMounted, onUpdated, Vue, customRef, ComputedRef } from 'vue-demi'
+import { getCurrentInstance, onMounted, onUpdated, Vue, customRef, Ref } from 'vue-demi'
 
 /**
- * Use template ref in Vue 2, 3
+ * Shorthand for binding ref to template element.
  *
- * @see   {@link https://vueuse.js.org/core/templateRef}
+ * @see   {@link https://vueuse.js.org/templateRef}
  * @param key
  * @param initialValue
  */
 export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null>(
   key: string,
   initialValue: T | null = null,
-): ComputedRef<T | null> {
+): Readonly<Ref<T>> {
   const instance = getCurrentInstance()
-  let trigger = () => {}
+  let _trigger = () => {}
 
-  const element = customRef((_track, _trigger) => {
-    trigger = _trigger
+  const element = customRef((track, trigger) => {
+    _trigger = trigger
     return {
       get() {
-        _track()
+        track()
         return instance?.proxy?.$refs[key] ?? initialValue
       },
       set() {},
     }
-    // mark as readonly
-  }) as ComputedRef<T | null>
+  })
 
-  onMounted(trigger)
-  onUpdated(trigger)
+  onMounted(_trigger)
+  onUpdated(_trigger)
 
-  return element
+  return element as Readonly<Ref<T>>
 }

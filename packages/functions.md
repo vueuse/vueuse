@@ -30,10 +30,10 @@
   - [`useUrlSearchParams`](https://vueuse.js.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ### Component
+  - [`templateRef`](https://vueuse.js.org/core/templateRef/) — shorthand for binding ref to template element
   - [`tryOnMounted`](https://vueuse.js.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.js.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`useVModel`](https://vueuse.js.org/core/useVModel/) — shorthand for v-model binding
-  - [`templateRef`](https://vueuse.js.org/core/templateRef/) - Use template ref in Vue 2, 3
 
 ### Misc
   - [`useEventSource`](https://vueuse.js.org/core/useEventSource/) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server
