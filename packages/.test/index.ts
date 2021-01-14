@@ -7,18 +7,16 @@ if (isVue2) {
   Vue.config.devtools = false
 }
 
-type InstanceType<V> = V extends {new (...arg: any[]): infer X} ? X : never
-type VM<V> = InstanceType<V> & {unmount(): void}
+type InstanceType<V> = V extends { new (...arg: any[]): infer X } ? X : never
+type VM<V> = InstanceType<V> & { unmount(): void }
 
 export function mount<V>(Comp: V) {
   const el = document.createElement('div')
   const app = createApp(Comp)
 
-  type C = typeof Comp
-
   // @ts-ignore
   const unmount = () => app.unmount(el)
-  const comp = app.mount(el) as any as VM<C>
+  const comp = app.mount(el) as any as VM<V>
   comp.unmount = unmount
   return comp
 }

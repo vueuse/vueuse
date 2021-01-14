@@ -25,6 +25,7 @@ module.exports = {
     'import/order': 'off',
     'react/no-unknown-property': 'off',
     'vue/no-deprecated-functional-template': 'off',
+    'vue/one-component-per-file': 'off',
     'spaced-comment': ['error', 'always', { exceptions: ['@__PURE__'] }],
   },
   overrides: [

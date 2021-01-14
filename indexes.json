@@ -317,6 +317,13 @@
       "description": "fires when users start typing on non-editable elements"
     },
     {
+      "name": "templateRef",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/templateRef/",
+      "category": "Component",
+      "description": "shorthand for binding ref to template element"
+    },
+    {
       "name": "useAsyncState",
       "package": "core",
       "docs": "https://vueuse.js.org/core/useAsyncState/",
