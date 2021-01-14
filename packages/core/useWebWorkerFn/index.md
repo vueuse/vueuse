@@ -102,7 +102,7 @@ export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useWebWorkerFn/index.md)
 
 
 <!--FOOTER_ENDS-->
