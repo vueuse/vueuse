@@ -35,7 +35,7 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "devDependencies": {
-    "vue-router": "^4.0.2"
+    "vue-router": "^4.0.3"
   },
   "funding": "https://github.com/sponsors/antfu"
 }

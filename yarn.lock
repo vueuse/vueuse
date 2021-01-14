@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.285":
-  version "1.1.285"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.285.tgz#2f1665c9f3ce4cd9eb2e0c980c0ac8955ce520fc"
-  integrity sha512-ABoWg/GibeN3hzTvvzd9oSmSo3V8Hyb3f0LMMUD195xlrd8083nBzFFhA12EfEMnxNsouj6ZtvlgIDnYWEXRow==
+"@iconify/json@^1.1.286":
+  version "1.1.286"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.286.tgz#a8e06519d1a3640fa9de4018988c20ec004d517b"
+  integrity sha512-XzWW987sNiCeTmoN7YAh09iFbGtOWjjD0CQqDdDQksyGI+43HLC8PA/B5TCCYPN+Ysc2XLm+ddO5aTb3cb0zeA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -2158,10 +2158,10 @@
     "@vue/compiler-dom" "3.0.5"
     "@vue/shared" "3.0.5"
 
-"@vue/composition-api@^1.0.0-beta.25":
-  version "1.0.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.25.tgz#fb8fcce4df9ee6c617320d4e49bf6f802a2aa8fa"
-  integrity sha512-Dmbq9jMS82BUrrjOkofRJtHOunq711HRJRwjyoWEVPh/UkKa5MdHqV8UcICsQTN8ExqmDBREvkzdon3jH1G0IA==
+"@vue/composition-api@^1.0.0-beta.26":
+  version "1.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.26.tgz#7a6027aa4b62c3017cd5991d8bebc2cdb3f67ade"
+  integrity sha512-mLCon9CNE1/dUwo12KDjsQ9ezxOJIaVv6gnfGxieaJbE8LqZVFnBFK19pGclvg2NreDrOhU4sPNt3FNRJo21Dg==
   dependencies:
     tslib "^2.0.3"
 
@@ -9857,10 +9857,10 @@ vue-eslint-parser@^7.1.1:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-router@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.2.tgz#5702bf8fa14535b80142fde226bf41a84917b1f4"
-  integrity sha512-LCsTSb5H25dZCxjsLasM9UED1BTg9vyTnp0Z9UhwC6QoqgLuHr/ySf7hjI/V0j2+xCKqJtecfmpghk6U8I2e4w==
+vue-router@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.3.tgz#8b26050c88b2dec7e27a88835f71046b365823ec"
+  integrity sha512-AD1OjtVPyQHTSpoRsEGfPpxRQwhAhxcacOYO3zJ3KNkYP/r09mileSp6kdMQKhZWP2cFsPR3E2M3PZguSN5/ww==
 
 "vue2@npm:vue@2":
   version "2.6.12"

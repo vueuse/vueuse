@@ -46,7 +46,7 @@
     "vue-demi": "^0.6.0"
   },
   "optionalDependencies": {
-    "@vue/composition-api": "^1.0.0-beta.25"
+    "@vue/composition-api": "^1.0.0-beta.26"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.4.3",
@@ -55,7 +55,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-typescript": "^7.12.7",
-    "@iconify/json": "^1.1.285",
+    "@iconify/json": "^1.1.286",
     "@rollup/plugin-replace": "^2.3.4",
     "@rollup/plugin-typescript": "^8.1.0",
     "@types/fs-extra": "^9.0.6",
@@ -65,7 +65,7 @@
     "@types/node": "~14.14.20",
     "@types/semver": "^7.3.4",
     "@vue/babel-preset-jsx": "^1.2.4",
-    "@vue/composition-api": "^1.0.0-beta.25",
+    "@vue/composition-api": "^1.0.0-beta.26",
     "@vue/runtime-dom": "^3.0.5",
     "@vue/test-utils": "^1.1.2",
     "autoprefixer": "^10.2.1",
