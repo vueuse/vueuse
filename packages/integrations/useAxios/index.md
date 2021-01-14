@@ -47,7 +47,7 @@ export declare function useAxios<T = any>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useAxios/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useAxios/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useAxios/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useAxios/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useAxios/index.md)
 
 
 <!--FOOTER_ENDS-->

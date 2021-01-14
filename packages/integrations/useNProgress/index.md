@@ -65,17 +65,17 @@ export declare function useNProgress(
   currentProgress?: MaybeRef<number | null | undefined>,
   options?: NProgressOptions | undefined
 ): {
-  isLoading: Ref<boolean | null>
+  isLoading: WritableComputedRef<boolean>
   progress: Ref<number | null | undefined>
-  start: () => void
-  done: () => void
+  start: () => nprogress.NProgress
+  done: (force?: boolean | undefined) => nprogress.NProgress
   remove: () => void
 }
 ```
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
+[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
 
 
 <!--FOOTER_ENDS-->

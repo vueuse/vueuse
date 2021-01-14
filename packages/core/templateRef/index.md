@@ -56,3 +56,26 @@ import { ref } from 'vue'
 const target = ref<HTMLElement | null>(null)
 </script>
 ```
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Shorthand for binding ref to template element.
+ *
+ * @see   {@link https://vueuse.js.org/templateRef}
+ * @param key
+ * @param initialValue
+ */
+export declare function templateRef<
+  T extends Element | Element[] | typeof Vue | typeof Vue[] | null
+>(key: string, initialValue?: T | null): Readonly<Ref<T>>
+```
+
+## Source
+
+[Source](https://github.com/antfu/vueuse/blob/master/packages/core/templateRef/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/templateRef/index.md)
+
+
+<!--FOOTER_ENDS-->

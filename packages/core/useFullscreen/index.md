@@ -42,6 +42,7 @@ export declare function useFullscreen(
   target?: MaybeRef<Element | null | undefined>,
   options?: ConfigurableDocument
 ): {
+  isSupported: boolean
   isFullscreen: Ref<boolean>
   enter: () => Promise<void>
   exit: () => Promise<void>
