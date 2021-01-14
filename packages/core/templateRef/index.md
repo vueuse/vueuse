@@ -8,7 +8,7 @@ category: Component
 
 ## Usage
 
-```ts
+```tsx
 import { templateRef } from '@vueuse/core'
 
 export default {

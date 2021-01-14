@@ -1,4 +1,4 @@
-import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vue, onUnmounted } from 'vue-demi'
+import { getCurrentInstance, onMounted, onUpdated, Vue, customRef, ComputedRef } from 'vue-demi'
 
 /**
  * Use template ref in Vue 2, 3
@@ -7,24 +7,27 @@ import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vu
  * @param key
  * @param initialValue
  */
-export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null | undefined>(
+export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null>(
   key: string,
-  initialValue: T,
-): Ref<T> {
+  initialValue: T | null = null,
+): ComputedRef<T | null> {
   const instance = getCurrentInstance()
-  const $target = ref(initialValue) as Ref<T>
+  let trigger = () => {}
 
-  const sync = () => {
-    $target.value = instance?.proxy?.$refs[key] as T ?? initialValue
-  }
+  const element = customRef((_track, _trigger) => {
+    trigger = _trigger
+    return {
+      get() {
+        _track()
+        return instance?.proxy?.$refs[key] ?? initialValue
+      },
+      set() {},
+    }
+    // mark as readonly
+  }) as ComputedRef<T | null>
 
-  onMounted(() => sync())
+  onMounted(trigger)
+  onUpdated(trigger)
 
-  onUpdated(() => sync())
-
-  onBeforeUnmount(() => sync())
-
-  onUnmounted(() => sync())
-
-  return $target
+  return element
 }
