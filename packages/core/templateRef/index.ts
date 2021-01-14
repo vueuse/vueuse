@@ -1,4 +1,4 @@
-import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vue } from 'vue-demi'
+import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vue, onUnmounted } from 'vue-demi'
 
 /**
  * Use reactive $refs in Vue 2,3
@@ -23,6 +23,8 @@ export function templateRef<T extends Element | Element[] | typeof Vue | typeof 
   onUpdated(() => sync())
 
   onBeforeUnmount(() => sync())
+
+  onUnmounted(() => sync())
 
   return $target
 }
