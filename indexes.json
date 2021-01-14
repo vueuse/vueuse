@@ -776,7 +776,7 @@
       "package": "core",
       "docs": "https://vueuse.js.org/core/templateRef",
       "category": "Component",
-      "description": "> Use reactive $refs in Vue 2,3"
+      "description": "> Use template ref in Vue 2, 3"
     }
   ]
 }

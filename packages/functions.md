@@ -33,7 +33,7 @@
   - [`tryOnMounted`](https://vueuse.js.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.js.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`useVModel`](https://vueuse.js.org/core/useVModel/) — shorthand for v-model binding
-  - [`templateRef`](https://vueuse.js.org/core/templateRef/) - Use reactive $refs in Vue 2,3
+  - [`templateRef`](https://vueuse.js.org/core/templateRef/) - Use template ref in Vue 2, 3
 
 ### Misc
   - [`useEventSource`](https://vueuse.js.org/core/useEventSource/) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server

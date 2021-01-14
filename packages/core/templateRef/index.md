@@ -4,7 +4,7 @@ category: Component
 
 # templateRef
 
-> Use reactive $refs in Vue 2,3
+> Use template ref in Vue 2, 3
 
 ## Usage
 

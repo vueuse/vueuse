@@ -1,7 +1,7 @@
 import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vue, onUnmounted } from 'vue-demi'
 
 /**
- * Use reactive $refs in Vue 2,3
+ * Use template ref in Vue 2, 3
  *
  * @see   {@link https://vueuse.js.org/core/templateRef}
  * @param key
