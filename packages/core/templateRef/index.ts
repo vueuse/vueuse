@@ -1,15 +1,5 @@
 import { ref, Ref, getCurrentInstance, onMounted, onUpdated, onBeforeUnmount, Vue } from 'vue-demi'
 
-export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[]>(
-  key: string,
-  initialValue: T,
-): Ref<T>
-
-export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null | undefined>(
-  key: string,
-  initialValue?: T,
-): Ref<T>
-
 /**
  * Use reactive $refs in Vue 2,3
  *
@@ -19,10 +9,10 @@ export function templateRef<T extends Element | Element[] | typeof Vue | typeof 
  */
 export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null | undefined>(
   key: string,
-  initialValue: any = undefined,
-) {
+  initialValue: T,
+): Ref<T> {
   const instance = getCurrentInstance()
-  const $target = ref(initialValue) as Ref<T | null | undefined>
+  const $target = ref(initialValue) as Ref<T>
 
   const sync = () => {
     $target.value = instance?.proxy?.$refs[key] as T ?? initialValue
