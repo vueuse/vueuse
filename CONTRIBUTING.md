@@ -36,8 +36,9 @@ There are some notes for adding new functions
 - The implementation should be placed under `packages/core` as a folder and exposing in `index.ts`
 - In the `core` package, try not to introduce 3-rd party dependencies as this package is aimed to be as lightweight as possible.
 - If you do want to introduce 3-rd party dependencies, please contribute to add-ons.
-- You can found the function template under `packages/core/_template/`, detailed explanation in the [Function Foloder](#function-folder) section.
-- Run `yarn prepare` to update the docs.
+- You can found the function template under `packages/core/_template/`, details explained in the [Function Foloder](#function-folder) section.
+
+> Please note you don't need to update the `indexes.json` or packages' `index.ts`. They are auto generated.
 
 ### New add-ons
 
