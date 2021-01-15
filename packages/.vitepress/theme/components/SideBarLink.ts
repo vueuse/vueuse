@@ -1,4 +1,4 @@
-import { FunctionalComponent, h, VNode } from 'vue'
+import { FunctionalComponent, h, VNode } from 'vue-demi'
 import { useRoute, useSiteData } from 'vitepress'
 import type { DefaultTheme } from '../config'
 import { joinUrl, isActive } from '../utils'

@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, onUpdated } from 'vue'
+import { onMounted, onUnmounted, onUpdated } from 'vue-demi'
 
 export function useActiveSidebarLinks() {
   let rootActiveLink: HTMLAnchorElement | null = null

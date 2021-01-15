@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed } from 'vue-demi'
 import { useSiteDataByRoute, usePageData } from 'vitepress'
 import { endingSlashRE, isNullish, isExternal } from '../utils'
 

@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed } from 'vue-demi'
 import { useRoute } from 'vitepress'
 import type { DefaultTheme } from '../config'
 import { isExternal as isExternalCheck } from '../utils'

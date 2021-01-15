@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed } from 'vue-demi'
 import { useSiteDataByRoute } from 'vitepress'
 import type { DefaultTheme } from '../config'
 

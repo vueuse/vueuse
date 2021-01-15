@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed } from 'vue-demi'
 import { useRoute, useSiteDataByRoute } from 'vitepress'
 // import { Header } from '/@types/shared'
 import { useActiveSidebarLinks } from '../composables/activeSidebarLink'
