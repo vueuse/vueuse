@@ -68,9 +68,10 @@ const target = ref<HTMLElement | null>(null)
  * @param key
  * @param initialValue
  */
-export declare function templateRef<
-  T extends Element | Element[] | typeof Vue | typeof Vue[] | null
->(key: string, initialValue?: T | null): Readonly<Ref<T>>
+export declare function templateRef<T extends Element | null>(
+  key: string,
+  initialValue?: T | null
+): Readonly<Ref<T>>
 ```
 
 ## Source
