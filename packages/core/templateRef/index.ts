@@ -1,4 +1,4 @@
-import { getCurrentInstance, onMounted, onUpdated, Vue, customRef, Ref } from 'vue-demi'
+import { getCurrentInstance, onMounted, onUpdated, customRef, Ref } from 'vue-demi'
 
 /**
  * Shorthand for binding ref to template element.
@@ -7,7 +7,7 @@ import { getCurrentInstance, onMounted, onUpdated, Vue, customRef, Ref } from 'v
  * @param key
  * @param initialValue
  */
-export function templateRef<T extends Element | Element[] | typeof Vue | typeof Vue[] | null>(
+export function templateRef<T extends Element | null>(
   key: string,
   initialValue: T | null = null,
 ): Readonly<Ref<T>> {
