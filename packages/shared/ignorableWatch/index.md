@@ -115,7 +115,7 @@ export declare function ignorableWatch<
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/ignorableWatch/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/ignorableWatch/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/ignorableWatch/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/ignorableWatch/index.md)
 
 
 <!--FOOTER_ENDS-->

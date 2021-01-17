@@ -59,7 +59,7 @@ export declare function useWebSocket(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useWebSocket/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useWebSocket/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useWebSocket/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useWebSocket/index.md)
 
 
 <!--FOOTER_ENDS-->

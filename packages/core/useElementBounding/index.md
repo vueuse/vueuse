@@ -61,7 +61,7 @@ export declare function useElementBounding(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useElementBounding/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useElementBounding/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useElementBounding/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementBounding/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementBounding/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementBounding/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -61,7 +61,7 @@ export declare function useIdle(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useIdle/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useIdle/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useIdle/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useIdle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useIdle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useIdle/index.md)
 
 
 <!--FOOTER_ENDS-->

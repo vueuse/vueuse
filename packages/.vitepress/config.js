@@ -20,7 +20,7 @@ const config = {
   description: 'Collection of essential Vue Composition Utilities',
   themeConfig: {
     logo: '/favicon.svg',
-    repo: 'antfu/vueuse',
+    repo: 'vueuse/vueuse',
     docsDir: 'packages',
     editLinks: true,
     editLinkText: 'Edit this page on GitHub',

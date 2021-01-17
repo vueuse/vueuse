@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/router?color=a1b858)](https://www.npmjs.com/package/@vueuse/router)
 
-> This is an add-on of [VueUse](https://github.com/antfu/vueuse), providing utilities for vue-router (Vue 3 Only).
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), providing utilities for vue-router (Vue 3 Only).
 
 ## 📦 Install
 
@@ -22,4 +22,4 @@ npm i <b>@vueuse/router</b> vue-router@4
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

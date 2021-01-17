@@ -79,7 +79,7 @@ export declare function useIntersectionObserver(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useIntersectionObserver/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useIntersectionObserver/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useIntersectionObserver/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useIntersectionObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useIntersectionObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useIntersectionObserver/index.md)
 
 
 <!--FOOTER_ENDS-->

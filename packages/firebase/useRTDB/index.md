@@ -65,7 +65,7 @@ export declare function useRTDB<T = any>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/firebase/useRTDB/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useRTDB/index.md)
 
 
 <!--FOOTER_ENDS-->

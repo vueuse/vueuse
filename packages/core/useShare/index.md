@@ -70,7 +70,7 @@ export declare function useShare(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useShare/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useShare/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useShare/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/index.md)
 
 
 <!--FOOTER_ENDS-->

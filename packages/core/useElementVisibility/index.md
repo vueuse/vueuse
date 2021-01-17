@@ -56,7 +56,7 @@ export declare function useElementVisibility(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useElementVisibility/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useElementVisibility/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useElementVisibility/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementVisibility/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementVisibility/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementVisibility/index.md)
 
 
 <!--FOOTER_ENDS-->

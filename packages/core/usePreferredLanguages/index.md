@@ -32,7 +32,7 @@ export declare function usePreferredLanguages(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/usePreferredLanguages/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/usePreferredLanguages/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/usePreferredLanguages/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredLanguages/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredLanguages/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredLanguages/index.md)
 
 
 <!--FOOTER_ENDS-->

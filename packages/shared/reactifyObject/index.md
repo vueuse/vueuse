@@ -48,7 +48,7 @@ export declare function reactifyObject<T extends object>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/reactifyObject/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/reactifyObject/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/reactifyObject/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/reactifyObject/index.md)
 
 
 <!--FOOTER_ENDS-->

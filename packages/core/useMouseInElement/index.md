@@ -66,7 +66,7 @@ export declare function useMouseInElement(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useMouseInElement/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useMouseInElement/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useMouseInElement/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/index.md)
 
 
 <!--FOOTER_ENDS-->

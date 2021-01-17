@@ -106,7 +106,3 @@
 
 
 <!--FUNCTIONS_LIST_ENDS-->
-
-More functions to be added. Please stay tuned. (PRs are also welcome!)
-
-Meanwhile, try also [**vue-composable**](https://github.com/pikax/vue-composable) by [@pikax](https://github.com/pikax)!

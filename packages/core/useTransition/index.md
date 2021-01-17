@@ -128,7 +128,7 @@ export {}
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useTransition/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/index.md)
 
 
 <!--FOOTER_ENDS-->

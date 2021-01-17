@@ -31,7 +31,7 @@ export declare function useToggle(initialValue?: boolean): [Ref<boolean>, Fn]
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useToggle/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useToggle/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useToggle/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useToggle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useToggle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useToggle/index.md)
 
 
 <!--FOOTER_ENDS-->

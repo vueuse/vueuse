@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/integrations?color=a1b858)](https://www.npmjs.com/package/@vueuse/integrations)
 
-> This is an add-on of [VueUse](https://github.com/antfu/vueuse), providing integration wrappers for utility libraries.
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), providing integration wrappers for utility libraries.
 
 ## 📦 Install
 
@@ -24,4 +24,4 @@ npm i <b>@vueuse/integrations</b>
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

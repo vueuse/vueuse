@@ -42,7 +42,7 @@ export declare function makeDestructurable<
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/makeDestructurable/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/makeDestructurable/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/makeDestructurable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/makeDestructurable/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -36,7 +36,7 @@ export declare function useDeviceLight({
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceLight/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceLight/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceLight/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceLight/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceLight/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceLight/index.md)
 
 
 <!--FOOTER_ENDS-->

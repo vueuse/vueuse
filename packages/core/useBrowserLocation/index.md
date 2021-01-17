@@ -59,7 +59,7 @@ export declare function useBrowserLocation({
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useBrowserLocation/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useBrowserLocation/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useBrowserLocation/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useBrowserLocation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useBrowserLocation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useBrowserLocation/index.md)
 
 
 <!--FOOTER_ENDS-->

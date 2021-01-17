@@ -60,7 +60,7 @@ export declare function useBattery({
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useBattery/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useBattery/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useBattery/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useBattery/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useBattery/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useBattery/index.md)
 
 
 <!--FOOTER_ENDS-->

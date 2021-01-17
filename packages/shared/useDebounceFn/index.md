@@ -52,7 +52,7 @@ export declare function useDebounceFn<T extends FunctionArgs>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounceFn/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounceFn/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounceFn/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -9,7 +9,7 @@ import { activePackages, packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.js.org'
-const GITHUB_BLOB_URL = 'https://github.com/antfu/vueuse/blob/master/packages'
+const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/master/packages'
 // const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
 
 const DIR_ROOT = resolve(__dirname, '..')
@@ -335,11 +335,11 @@ export async function updatePackageJSON() {
     packageJSON.description = description || packageJSON.description
     packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
     packageJSON.bugs = {
-      url: 'https://github.com/antfu/vueuse/issues',
+      url: 'https://github.com/vueuse/vueuse/issues',
     }
     packageJSON.homepage = name === 'core'
-      ? 'https://github.com/antfu/vueuse#readme'
-      : `https://github.com/antfu/vueuse/tree/master/packages/${name}#readme`
+      ? 'https://github.com/vueuse/vueuse#readme'
+      : `https://github.com/vueuse/vueuse/tree/master/packages/${name}#readme`
 
     for (const key of Object.keys(packageJSON.dependencies)) {
       if (key.startsWith('@vueuse/'))

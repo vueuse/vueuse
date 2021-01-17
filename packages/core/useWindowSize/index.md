@@ -41,7 +41,7 @@ export declare function useWindowSize({
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useWindowSize/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useWindowSize/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useWindowSize/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowSize/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowSize/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowSize/index.md)
 
 
 <!--FOOTER_ENDS-->

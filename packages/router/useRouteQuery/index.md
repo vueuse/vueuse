@@ -32,7 +32,7 @@ export declare function useRouteQuery<
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/router/useRouteQuery/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/router/useRouteQuery/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/router/useRouteQuery/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/router/useRouteQuery/index.md)
 
 
 <!--FOOTER_ENDS-->

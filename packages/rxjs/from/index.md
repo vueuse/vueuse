@@ -45,7 +45,7 @@ export declare function fromEvent<T extends HTMLElement>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/from/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/from/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/from/index.md)
 
 
 <!--FOOTER_ENDS-->

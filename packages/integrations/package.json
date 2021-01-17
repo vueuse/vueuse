@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git"
   },
   "keywords": [
     "vue",
@@ -23,9 +23,9 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/antfu/vueuse/issues"
+    "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/antfu/vueuse/tree/master/packages/integrations#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/master/packages/integrations#readme",
   "dependencies": {
     "@vueuse/shared": "4.0.8",
     "vue-demi": "latest"

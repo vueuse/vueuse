@@ -121,7 +121,7 @@ export declare function asyncComputed<T>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/asyncComputed/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/asyncComputed/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/asyncComputed/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/asyncComputed/index.md)
 
 
 <!--FOOTER_ENDS-->

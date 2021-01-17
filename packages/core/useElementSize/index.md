@@ -66,7 +66,7 @@ export declare function useElementSize(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useElementSize/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useElementSize/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useElementSize/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/index.md)
 
 
 <!--FOOTER_ENDS-->

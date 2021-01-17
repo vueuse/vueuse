@@ -82,7 +82,7 @@ export declare function useFirestore<T extends firebase.firestore.DocumentData>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/firebase/useFirestore/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/firebase/useFirestore/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useFirestore/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useFirestore/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -52,7 +52,7 @@ export declare function useDeviceOrientation(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceOrientation/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceOrientation/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useDeviceOrientation/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceOrientation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceOrientation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceOrientation/index.md)
 
 
 <!--FOOTER_ENDS-->

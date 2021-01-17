@@ -68,7 +68,7 @@ export declare function useParallax(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useParallax/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useParallax/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useParallax/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useParallax/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useParallax/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useParallax/index.md)
 
 
 <!--FOOTER_ENDS-->

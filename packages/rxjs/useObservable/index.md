@@ -36,7 +36,7 @@ export declare function useObservable<H>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/rxjs/useObservable/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useObservable/index.md)
 
 
 <!--FOOTER_ENDS-->

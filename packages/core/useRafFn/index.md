@@ -51,7 +51,7 @@ export declare function useRafFn(fn: Fn, options?: RafFnOptions): RafFnReturn
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useRafFn/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useRafFn/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useRafFn/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useRafFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useRafFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useRafFn/index.md)
 
 
 <!--FOOTER_ENDS-->

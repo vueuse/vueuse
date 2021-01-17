@@ -30,7 +30,7 @@ export declare function useRouteHash(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/router/useRouteHash/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/router/useRouteHash/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/router/useRouteHash/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/router/useRouteHash/index.md)
 
 
 <!--FOOTER_ENDS-->

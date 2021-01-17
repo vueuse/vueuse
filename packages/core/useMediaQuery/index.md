@@ -35,7 +35,7 @@ export declare function useMediaQuery(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useMediaQuery/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useMediaQuery/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useMediaQuery/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMediaQuery/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMediaQuery/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMediaQuery/index.md)
 
 
 <!--FOOTER_ENDS-->

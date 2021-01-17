@@ -32,7 +32,7 @@ export declare function get<T, K extends keyof T>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/get/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/get/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/get/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/get/index.md)
 
 
 <!--FOOTER_ENDS-->

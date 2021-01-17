@@ -84,7 +84,7 @@ export declare function useSpeechRecognition(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useSpeechRecognition/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useSpeechRecognition/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useSpeechRecognition/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -35,7 +35,7 @@ export declare function useInterval(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useInterval/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useInterval/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useInterval/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useInterval/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useInterval/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useInterval/index.md)
 
 
 <!--FOOTER_ENDS-->

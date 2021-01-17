@@ -47,7 +47,7 @@ export declare function createGlobalState<T extends object>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/createGlobalState/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/createGlobalState/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/createGlobalState/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/createGlobalState/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/createGlobalState/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/createGlobalState/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -75,7 +75,7 @@ export declare function useNProgress(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useNProgress/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/index.md)
 
 
 <!--FOOTER_ENDS-->

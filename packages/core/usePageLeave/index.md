@@ -30,7 +30,7 @@ export declare function usePageLeave(options?: ConfigurableWindow): Ref<boolean>
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/usePageLeave/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/usePageLeave/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/usePageLeave/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/usePageLeave/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/usePageLeave/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/usePageLeave/index.md)
 
 
 <!--FOOTER_ENDS-->

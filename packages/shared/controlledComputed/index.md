@@ -53,7 +53,7 @@ export declare function controlledComputed<T, S>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/controlledComputed/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/controlledComputed/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/controlledComputed/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/controlledComputed/index.md)
 
 
 <!--FOOTER_ENDS-->

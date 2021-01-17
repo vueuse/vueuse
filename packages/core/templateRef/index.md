@@ -76,7 +76,7 @@ export declare function templateRef<T extends Element | null>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/templateRef/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/templateRef/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/templateRef/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/templateRef/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -56,7 +56,7 @@ export declare function useTitle(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useTitle/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/index.md)
 
 
 <!--FOOTER_ENDS-->

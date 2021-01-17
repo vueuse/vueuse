@@ -47,7 +47,7 @@ export declare function useIntervalFn(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useIntervalFn/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useIntervalFn/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useIntervalFn/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useIntervalFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useIntervalFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useIntervalFn/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -171,7 +171,7 @@ export declare function useCookies(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/integrations/useCookies/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useCookies/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useCookies/index.md)
 
 
 <!--FOOTER_ENDS-->

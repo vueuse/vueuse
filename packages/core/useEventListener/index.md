@@ -119,7 +119,7 @@ export {}
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useEventListener/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useEventListener/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useEventListener/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useEventListener/index.md)
 
 
 <!--FOOTER_ENDS-->

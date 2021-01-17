@@ -43,7 +43,7 @@ export declare function useSessionStorage<T = unknown>(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/core/useSessionStorage/index.ts) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/core/useSessionStorage/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useSessionStorage/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useSessionStorage/index.md)
 
 
 <!--FOOTER_ENDS-->

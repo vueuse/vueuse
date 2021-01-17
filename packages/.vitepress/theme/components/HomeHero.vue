@@ -12,7 +12,7 @@
     </p> -->
 
     <p align="center">
-      <a href="https://github.com/antfu/vueuse">
+      <a href="https://github.com/vueuse/vueuse">
         <img v-if="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
         <img v-else src="/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
       </a>

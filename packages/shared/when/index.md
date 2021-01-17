@@ -138,7 +138,7 @@ export declare function when<T>(r: T): ValueWhenInstance<T>
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/when/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/when/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/when/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/when/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/when/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/when/index.md)
 
 
 <!--FOOTER_ENDS-->

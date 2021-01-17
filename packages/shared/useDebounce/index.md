@@ -43,7 +43,7 @@ export declare function useDebounce<T>(value: Ref<T>, ms?: number): Ref<T>
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useDebounce/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounce/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounce/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounce/index.md)
 
 
 <!--FOOTER_ENDS-->

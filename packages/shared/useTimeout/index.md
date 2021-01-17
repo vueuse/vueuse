@@ -46,7 +46,7 @@ export declare function useTimeout(
 
 ## Source
 
-[Source](https://github.com/antfu/vueuse/blob/master/packages/shared/useTimeout/index.ts) • [Demo](https://github.com/antfu/vueuse/blob/master/packages/shared/useTimeout/demo.vue) • [Docs](https://github.com/antfu/vueuse/blob/master/packages/shared/useTimeout/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeout/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeout/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeout/index.md)
 
 
 <!--FOOTER_ENDS-->

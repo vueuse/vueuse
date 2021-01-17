@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/packages/public/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
+<a href="https://github.com/vueuse/vueuse"><img src="https://raw.githubusercontent.com/vueuse/vueuse/master/packages/public/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
 Collection of essential Vue Composition Utilities
 </p>
 
@@ -9,7 +9,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
 <img alt="Function Count" src="https://img.shields.io/badge/-97%20functions-13708a">
 <br>
-<a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
+<a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
 
 <p align="center">
@@ -61,13 +61,13 @@ Refer to [functions list](https://vueuse.js.org/functions) or [documentations](h
 
 ## 📦 Install
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/antfu/vue-demi)!
+> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
 
 ```bash
 npm i @vueuse/core
 ```
 
-Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
+Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 
@@ -91,7 +91,7 @@ This project is heavily inspired by the following awesome projects.
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
 - [kripod/react-hooks](https://github.com/kripod/react-hooks)
 
-And thanks to [all the contributors on GitHub](https://github.com/antfu/vueuse/graphs/contributors)!
+And thanks to [all the contributors on GitHub](https://github.com/vueuse/vueuse/graphs/contributors)!
 
 ## 👨‍🚀 Contributors
 
@@ -101,4 +101,4 @@ And thanks to [all the contributors on GitHub](https://github.com/antfu/vueuse/g
 
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
