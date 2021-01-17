@@ -30,6 +30,7 @@ const config = {
       { text: 'Guide', link: '/guide' },
       { text: 'Functions', link: '/functions' },
       { text: 'Add-ons', link: '/add-ons' },
+      { text: 'Ecosystem', link: '/ecosystem' },
       { text: 'Contribute', link: '/contributing' },
     ],
     sidebar: getSideBar(),
