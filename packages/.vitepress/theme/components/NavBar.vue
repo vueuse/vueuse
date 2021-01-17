@@ -1,8 +1,8 @@
 <template>
-  <header class="nav-bar">
+  <header class="nav-bar" :class="{ root: isRoot }">
     <ToggleSideBarButton @toggle="$emit('toggle')" />
 
-    <NavBarTitle />
+    <NavBarTitle v-if="!isRoot" />
 
     <div class="flex-grow" />
 
@@ -27,14 +27,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmit } from 'vue'
+import { defineEmit, toRef } from 'vue'
+import { useRoute } from 'vitepress'
 import { useRepo } from '../composables/repo'
 import NavBarTitle from './NavBarTitle.vue'
 import NavLinks from './NavLinks.vue'
 import ToggleSideBarButton from './ToggleSideBarButton.vue'
 import DarkModeSwitch from './DarkModeSwitch.vue'
+import { is } from 'vue-chemistry/boolean'
 
 const repo = useRepo()
+const route = useRoute()
+const isRoot = is(toRef(route, 'path'), '/')
 
 defineEmit(['toggle'])
 </script>
@@ -55,9 +59,14 @@ defineEmit(['toggle'])
   background-color: var(--c-bg);
 }
 
+.nav-bar.root {
+  border-color: transparent;
+  background-color: var(--c-bg-semi);
+}
+
 @media (min-width: 720px) {
   .nav-bar {
-    padding: 0.7rem 1.5rem;
+    padding: 0.7rem 0.8rem 0.7rem 1.5rem;
   }
 }
 

@@ -64,20 +64,20 @@ const hasAltAction = computed(() => data.value.altActionLink && data.value.altAc
 
 <style scoped>
 .home-hero {
-  margin: 2.5rem 0 2.75rem;
+  margin: 0rem 0 2.75rem;
   padding: 0 1.5rem;
   text-align: center;
 }
 
 @media (min-width: 420px) {
   .home-hero {
-    margin: 3.5rem 0;
+    margin: 0rem 0;
   }
 }
 
 @media (min-width: 720px) {
   .home-hero {
-    margin: 4rem 0 4.25rem;
+    margin: 0rem 0 4.25rem;
   }
 }
 
