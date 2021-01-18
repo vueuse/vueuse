@@ -3,7 +3,7 @@ import { ref } from 'vue-demi'
 import { useFullscreen } from '.'
 
 const el = ref(null)
-const { toggle } = useFullscreen(el)
+const { enter } = useFullscreen(el)
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const { toggle } = useFullscreen(el)
     />
     <br>
     <br>
-    <button @click="toggle">
+    <button @click="enter">
       Go Fullscreen
     </button>
   </div>
