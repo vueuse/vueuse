@@ -1,0 +1,58 @@
+import { JwtHeader, JwtPayload } from 'jwt-decode'
+import { useSetup } from '../../_tests'
+import { useJwt } from '.'
+import { ref } from 'vue-demi'
+
+interface CustomJwtHeader extends JwtHeader {
+  foo: string
+}
+
+interface CustomJwtPayload extends JwtPayload {
+  foo: string
+}
+
+describe('useJwt', () => {
+  const encodedJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
+
+  test('decoded jwt', () => {
+    useSetup(() => {
+      const { header, payload } = useJwt(encodedJwt)
+      expect(header.value.alg).toBe('HS256')
+      // TODO: remove ignore after issue is fixed in jwt-decode
+      // @ts-ignore
+      expect(header.value.typ).toBe('JWT')
+      expect(payload.value.sub).toBe('1234567890')
+      expect(payload.value.iat).toBe(1516239022)
+    })
+  })
+
+  test('decode jwt fallback', () => {
+    useSetup(() => {
+      const { header, payload } = useJwt(ref('bad-token'))
+      expect(header.value).toMatchObject({})
+      expect(payload.value).toMatchObject({})
+    })
+  })
+
+  const encodedCustomJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImZvbyI6ImJhciJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJmb28iOiJiYXIifQ.S5QwvREUfgEdpB1ljG_xN6NI3HubQ79xx6J1J4dsJmg')
+
+  test('decoded jwt with custom fields', () => {
+    useSetup(() => {
+      const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(encodedCustomJwt)
+      expect(header.value.foo).toBe('bar')
+      expect(payload.value.foo).toBe('bar')
+    })
+  })
+
+  test('reactivity', () => {
+    useSetup(() => {
+      const jwt = ref(encodedJwt.value)
+      const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(jwt)
+      expect(header.value.foo).toBeUndefined()
+      expect(payload.value.foo).toBeUndefined()
+      jwt.value = encodedCustomJwt.value
+      expect(header.value.foo).toBe('bar')
+      expect(payload.value.foo).toBe('bar')
+    })
+  })
+})

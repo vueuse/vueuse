@@ -671,6 +671,13 @@
           "depreacted": false
         },
         {
+          "name": "useJwt",
+          "category": "/Integrations",
+          "docs": "https://vueuse.js.org/?path=/story/integrations--usejwt",
+          "description": "wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)",
+          "depreacted": false
+        },
+        {
           "name": "useNProgress",
           "category": "/Integrations",
           "docs": "https://vueuse.js.org/?path=/story/integrations--usenprogress",
