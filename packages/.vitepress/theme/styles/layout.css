@@ -277,3 +277,7 @@ form {
 .icon-button svg {
   margin: auto;
 }
+.external-link {
+  font-size: 0.95rem;
+  opacity: 0.7;
+}

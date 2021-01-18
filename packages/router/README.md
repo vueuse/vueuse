@@ -4,13 +4,13 @@
 
 > This is an add-on of [VueUse](https://github.com/vueuse/vueuse), providing utilities for vue-router (Vue 3 Only).
 
-## 📦 Install
+## Install
 
 <pre class='language-bash'>
 npm i <b>@vueuse/router</b> vue-router@4
 </pre>
 
-## ⚡ Functions
+## Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
@@ -20,6 +20,6 @@ npm i <b>@vueuse/router</b> vue-router@4
 
 <!--FUNCTIONS_LIST_ENDS-->
 
-## 📄 License
+## License
 
 [MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

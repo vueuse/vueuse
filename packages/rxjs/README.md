@@ -4,13 +4,13 @@
 
 > This is an add-on of [VueUse](https://github.com/antfu), enables of a natural way the use of RxJS.
 
-## 📦 Install
+## Install
 
 <pre class='language-bash'>
 npm i <b>@vueuse/rxjs</b> rxjs
 </pre>
 
-## ⚡ Functions
+## Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
@@ -22,7 +22,7 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 <!--FUNCTIONS_LIST_ENDS-->
 
-## 📄 Example
+## Example
 
 ```ts
 import { fromEvent, from, useObservable } from '@vueuse/rxjs'
@@ -54,6 +54,6 @@ const posts = useObservable(
 )
 ```
 
-## 📄 License
+## License
 
 [MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
