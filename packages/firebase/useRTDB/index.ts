@@ -2,14 +2,19 @@ import type firebase from 'firebase'
 import { Ref, ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 
+export interface RTDBOptions {
+  autoDispose? : true
+}
+
 /**
  * Reactive Firebase Realtime Database binding.
  *
- * @see   {@link https://vueuse.js.org/useRTDB}
  * @param docRef
+ * @param options
  */
 export function useRTDB<T = any>(
   docRef: firebase.database.Reference,
+  options: RTDBOptions = {},
 ) {
   const data = ref(undefined) as Ref<T | undefined>
 
@@ -19,9 +24,10 @@ export function useRTDB<T = any>(
 
   docRef.on('value', update)
 
-  tryOnUnmounted(() => {
-    docRef.off('value', update)
-  })
-
+  if (options.autoDispose) {
+    tryOnUnmounted(() => {
+      docRef.off('value', update)
+    })
+  }
   return data
 }

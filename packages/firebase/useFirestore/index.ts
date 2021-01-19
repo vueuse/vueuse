@@ -27,6 +27,7 @@ function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.Docum
 
 export interface FirestoreOptions {
   errorHandler?: (err: Error) => void
+  autoDispose? : true
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (
@@ -58,7 +59,8 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
  *
  * @see   {@link https://vueuse.js.org/useFirestore}
  * @param docRef
- * @param errorHandler
+ * @param initialValue
+ * @param options
  */
 export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
@@ -67,6 +69,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
 ) {
   const {
     errorHandler = (err: Error) => console.error(err),
+    autoDispose = true,
   } = options
 
   if (isDocumentReference<T>(docRef)) {
@@ -89,10 +92,11 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
       data.value = snapshot.docs.map(getData).filter(isDef)
     }, errorHandler)
 
-    tryOnUnmounted(() => {
-      close()
-    })
-
+    if (autoDispose) {
+      tryOnUnmounted(() => {
+        close()
+      })
+    }
     return data
   }
 }
