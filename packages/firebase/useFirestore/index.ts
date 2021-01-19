@@ -27,7 +27,7 @@ function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.Docum
 
 export interface FirestoreOptions {
   errorHandler?: (err: Error) => void
-  autoDispose? : true
+  autoDispose? : boolean
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (

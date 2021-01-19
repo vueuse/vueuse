@@ -3,7 +3,7 @@ import { Ref, ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 
 export interface RTDBOptions {
-  autoDispose? : true
+  autoDispose? : boolean
 }
 
 /**
@@ -16,6 +16,9 @@ export function useRTDB<T = any>(
   docRef: firebase.database.Reference,
   options: RTDBOptions = {},
 ) {
+  const {
+    autoDispose = true,
+  } = options
   const data = ref(undefined) as Ref<T | undefined>
 
   function update(snapshot: firebase.database.DataSnapshot) {
@@ -24,7 +27,7 @@ export function useRTDB<T = any>(
 
   docRef.on('value', update)
 
-  if (options.autoDispose) {
+  if (autoDispose) {
     tryOnUnmounted(() => {
       docRef.off('value', update)
     })
