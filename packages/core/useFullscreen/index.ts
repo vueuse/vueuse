@@ -2,6 +2,7 @@
 
 import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 type FunctionMap = [
@@ -75,7 +76,7 @@ export function useFullscreen(
   const isFullscreen = ref(false)
   let isSupported = false
 
-  let map: FunctionMap
+  let map: FunctionMap = functionsMap[0]
 
   if (!document) {
     isSupported = false
@@ -90,11 +91,13 @@ export function useFullscreen(
     }
   }
 
+  const [REQUEST, EXIT, ELEMENT, _, EVENT] = map
+
   async function exit() {
     if (!isSupported)
       return
-    if (document?.[map[2]]) // fullscreenElement
-      await document[map[1]]() // exit
+    if (document?.[ELEMENT])
+      await document[EXIT]()
 
     isFullscreen.value = false
   }
@@ -106,7 +109,7 @@ export function useFullscreen(
     await exit()
 
     if (targetRef.value) {
-      await targetRef.value![map[0]]() // requestFullScreen
+      await targetRef.value[REQUEST]()
       isFullscreen.value = true
     }
   }
@@ -116,6 +119,12 @@ export function useFullscreen(
       await exit()
     else
       await enter()
+  }
+
+  if (document) {
+    useEventListener(document, EVENT, () => {
+      isFullscreen.value = !!document?.[ELEMENT]
+    }, false)
   }
 
   return {
