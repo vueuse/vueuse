@@ -4,7 +4,7 @@ category: Component
 
 # templateRef
 
-> Shorthand for binding ref to template element.
+Shorthand for binding ref to template element.
 
 ## Usage
 

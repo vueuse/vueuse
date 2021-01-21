@@ -4,7 +4,7 @@ category: Utilities
 
 # controlledComputed
 
-> Explicitly define the deps of computed.
+Explicitly define the deps of computed.
 
 ## Usage
 

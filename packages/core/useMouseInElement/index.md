@@ -4,7 +4,7 @@ category: Sensors
 
 # useMouseInElement
 
-> Reactive mouse position related to an element
+Reactive mouse position related to an element
 
 ## Usage
 

@@ -29,7 +29,7 @@ Integration wrappers for utility libraries
 
 ### RxJS - [`@vueuse/rxjs`](https://vueuse.js.org/rxjs/README.html)
 Enables RxJS reactive functions in Vue
-  - [`from`](https://vueuse.js.org/rxjs/from/) — two wrappers around of the original functions to allow use ref objects
+  - [`from`](https://vueuse.js.org/rxjs/from/) — / fromEvent
   - [`toObserver`](https://vueuse.js.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/rxjs/useObservable/) — use an Observable
   - [`useSubscription`](https://vueuse.js.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks

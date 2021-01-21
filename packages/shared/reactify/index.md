@@ -4,7 +4,7 @@ category: Utilities
 
 # reactify
 
-> Converts plain functions into reactive functions. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+Converts plain functions into reactive functions. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
 
 ::: tip
 Interested to see some application or looking for some pre-reactified functions? 

@@ -4,7 +4,7 @@ category: Browser
 
 # useScriptTag
 
-> Script tag injecting.
+Script tag injecting.
 
 ## Usage
 

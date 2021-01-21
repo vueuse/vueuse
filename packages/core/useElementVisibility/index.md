@@ -4,7 +4,7 @@ category: Sensors
 
 # useElementVisibility
 
-> Tracks the visibility of an element within the viewport.
+Tracks the visibility of an element within the viewport.
 
 ## Usage
 

@@ -4,7 +4,7 @@ category: Utilities
 
 # useDebounce
 
-> Debounce execution of a ref value.
+Debounce execution of a ref value.
 
 ## Usage
 

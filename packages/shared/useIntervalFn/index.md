@@ -4,7 +4,7 @@ category: Animation
 
 # useIntervalFn
 
-> Wrapper for `setInterval` with controls
+Wrapper for `setInterval` with controls
 
 ## Usage
 

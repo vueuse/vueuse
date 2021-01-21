@@ -741,7 +741,7 @@
       "package": "rxjs",
       "docs": "https://vueuse.js.org/rxjs/from/",
       "category": "@RxJS",
-      "description": "two wrappers around of the original functions to allow use ref objects"
+      "description": "/ fromEvent"
     },
     {
       "name": "toObserver",

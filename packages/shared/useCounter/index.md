@@ -4,7 +4,7 @@ category: Utilities
 
 # useCounter
 
-> Basic counter with utility functions.
+Basic counter with utility functions.
 
 ## Usage
 

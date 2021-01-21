@@ -139,7 +139,7 @@ export async function readIndexes() {
 
       let description = (md
         .replace(/\r\n/g, '\n')
-        .match(/\n> (.+?)(?:, |\. |\n|\.\n)/) || []
+        .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || []
       )[1] || ''
 
       description = description.trim()

@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # useObservable
 
-> Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
+Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
 
 ## Usage
 

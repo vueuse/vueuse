@@ -4,7 +4,7 @@ category: Browser
 
 # usePreferredDark
 
-> Reactive dark theme preference.
+Reactive dark theme preference.
 
 ## Usage
 

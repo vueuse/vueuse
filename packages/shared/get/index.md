@@ -4,7 +4,7 @@ category: Utilities
 
 # get
 
-> Shorthand for accessing `ref.value`
+Shorthand for accessing `ref.value`
 
 ## Usage
 

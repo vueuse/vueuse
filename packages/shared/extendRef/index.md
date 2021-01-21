@@ -4,7 +4,7 @@ category: Utilities
 
 # extendRef
 
-> Add extra attributes to Ref.
+Add extra attributes to Ref.
 
 ## Usage
 

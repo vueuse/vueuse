@@ -4,7 +4,7 @@ category: Component
 
 # tryOnMounted
 
-> Safe `onMounted`. Call `onMounted()` if it's inside a component lifecycle, if not, run just call the function
+Safe `onMounted`. Call `onMounted()` if it's inside a component lifecycle, if not, run just call the function
 
 ## Usage
 

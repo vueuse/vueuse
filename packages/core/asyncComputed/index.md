@@ -4,7 +4,7 @@ category: Utilities
 
 # asyncComputed
 
-> Computed for async functions
+Computed for async functions
 
 ## Usage
 

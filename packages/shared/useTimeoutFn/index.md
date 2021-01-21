@@ -4,7 +4,7 @@ category: Animation
 
 # useTimeoutFn
 
-> Wrapper for `setTimeout` with controls.
+Wrapper for `setTimeout` with controls.
 
 ```js
 import { useTimeoutFn } from '@vueuse/core'

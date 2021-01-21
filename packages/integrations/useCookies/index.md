@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useCookies
 
-> wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
+wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
 
 ## Install 
 
