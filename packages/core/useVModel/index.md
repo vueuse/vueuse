@@ -31,12 +31,12 @@ export default {
  *
  * @see   {@link https://vueuse.js.org/useVModel}
  * @param props
- * @param key
+ * @param key (default 'value' in vue2.x and 'modelValue' in vue3.x)
  * @param emit
  */
 export declare function useVModel<P extends object, K extends keyof P>(
   props: P,
-  key: K,
+  key?: K,
   emit?: (name: string, value: any) => void
 ): WritableComputedRef<P[K]>
 ```
