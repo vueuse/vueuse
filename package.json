@@ -36,8 +36,11 @@
     }
   },
   "lint-staged": {
-    "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md} *.js": [
+    "{packages,.storybook,scripts}/**/*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
+    ],
+    "*.js":[
+        "eslint --fix"
     ]
   },
   "author": "Anthony Fu<https://github.com/antfu>",
