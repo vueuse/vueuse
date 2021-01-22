@@ -1,3 +1,7 @@
+---
+category: '@Integrations'
+---
+
 # useJwt
 
 > Wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
