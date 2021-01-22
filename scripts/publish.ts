@@ -1,6 +1,6 @@
 import { execSync } from 'child_process'
 import path from 'path'
-import { activePackages } from './packages'
+import { activePackages } from '../meta/packages'
 import consola from 'consola'
 
 execSync('npm run build', { stdio: 'inherit' })

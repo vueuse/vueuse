@@ -15,16 +15,13 @@ export function useCssVar(
   el?: MaybeRef<HTMLElement | null>,
   { window = defaultWindow }: ConfigurableWindow = {},
 ) {
-  if (!window)
-    return ref('')
-
   const variable = ref('')
-  const _el = ref(el || window.document.documentElement)
+  const _el = ref(el || window?.document?.documentElement)
 
   watch(
     _el,
     () => {
-      if (_el.value)
+      if (_el.value && window)
         variable.value = window.getComputedStyle(_el.value).getPropertyValue(prop)
     },
     { immediate: true },

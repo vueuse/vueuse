@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
+import { isClient } from '../utils'
 
 /**
  * Wrapper for `setTimeout` with controls.
@@ -11,7 +12,7 @@ import { tryOnUnmounted } from '../tryOnUnmounted'
 export function useTimeoutFn(
   cb: () => any,
   interval?: number,
-  immediate?: boolean,
+  immediate = true,
 ) {
   const isActive = ref(false)
 
@@ -38,7 +39,7 @@ export function useTimeoutFn(
     }, interval)
   }
 
-  if (immediate)
+  if (immediate && isClient)
     start()
 
   tryOnUnmounted(stop)

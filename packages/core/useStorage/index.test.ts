@@ -1,6 +1,6 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { nextTick } from 'vue-demi'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useStorage } from '.'
 
 const KEY = 'custom-key'

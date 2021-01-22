@@ -2,7 +2,63 @@
 
 import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
+
+type FunctionMap = [
+  'requestFullscreen',
+  'exitFullscreen',
+  'fullscreenElement',
+  'fullscreenEnabled',
+  'fullscreenchange',
+  'fullscreenerror',
+]
+
+// from: https://github.com/sindresorhus/screenfull.js/blob/master/src/screenfull.js
+const functionsMap: FunctionMap[] = [
+  [
+    'requestFullscreen',
+    'exitFullscreen',
+    'fullscreenElement',
+    'fullscreenEnabled',
+    'fullscreenchange',
+    'fullscreenerror',
+  ],
+  // New WebKit
+  [
+    'webkitRequestFullscreen',
+    'webkitExitFullscreen',
+    'webkitFullscreenElement',
+    'webkitFullscreenEnabled',
+    'webkitfullscreenchange',
+    'webkitfullscreenerror',
+  ],
+  // Old WebKit
+  [
+    'webkitRequestFullScreen',
+    'webkitCancelFullScreen',
+    'webkitCurrentFullScreenElement',
+    'webkitCancelFullScreen',
+    'webkitfullscreenchange',
+    'webkitfullscreenerror',
+  ],
+  [
+    'mozRequestFullScreen',
+    'mozCancelFullScreen',
+    'mozFullScreenElement',
+    'mozFullScreenEnabled',
+    'mozfullscreenchange',
+    'mozfullscreenerror',
+  ],
+  [
+    'msRequestFullscreen',
+    'msExitFullscreen',
+    'msFullscreenElement',
+    'msFullscreenEnabled',
+    'MSFullscreenChange',
+    'MSFullscreenError',
+  ],
+] as any
 
 /**
  * Reactive Fullscreen API.
@@ -18,19 +74,42 @@ export function useFullscreen(
   const { document = defaultDocument } = options
   const targetRef = ref(target || document?.querySelector('html'))
   const isFullscreen = ref(false)
+  let isSupported = false
+
+  let map: FunctionMap = functionsMap[0]
+
+  if (!document) {
+    isSupported = false
+  }
+  else {
+    for (const m of functionsMap) {
+      if (m[1] in document) {
+        map = m
+        isSupported = true
+        break
+      }
+    }
+  }
+
+  const [REQUEST, EXIT, ELEMENT, _, EVENT] = map
 
   async function exit() {
-    if (document?.fullscreenElement)
-      await document.exitFullscreen()
+    if (!isSupported)
+      return
+    if (document?.[ELEMENT])
+      await document[EXIT]()
 
     isFullscreen.value = false
   }
 
   async function enter() {
-    exit()
+    if (!isSupported)
+      return
+
+    await exit()
 
     if (targetRef.value) {
-      await targetRef.value.requestFullscreen()
+      await targetRef.value[REQUEST]()
       isFullscreen.value = true
     }
   }
@@ -42,7 +121,14 @@ export function useFullscreen(
       await enter()
   }
 
+  if (document) {
+    useEventListener(document, EVENT, () => {
+      isFullscreen.value = !!document?.[ELEMENT]
+    }, false)
+  }
+
   return {
+    isSupported,
     isFullscreen,
     enter,
     exit,

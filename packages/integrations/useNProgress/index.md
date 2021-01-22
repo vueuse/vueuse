@@ -1,6 +1,10 @@
+---
+category: '@Integrations'
+---
+
 # useNProgress
 
-> Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
+Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
 
 ## Usage
 
@@ -44,3 +48,34 @@ useNProgress(null, {
   // ...
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactive progress bar.
+ *
+ * @see   {@link https://vueuse.js.org/useNProgress}
+ * @param currentProgress
+ * @param options
+ */
+export declare function useNProgress(
+  currentProgress?: MaybeRef<number | null | undefined>,
+  options?: NProgressOptions | undefined
+): {
+  isLoading: WritableComputedRef<boolean>
+  progress: Ref<number | null | undefined>
+  start: () => nprogress.NProgress
+  done: (force?: boolean | undefined) => nprogress.NProgress
+  remove: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useNProgress/index.md)
+
+
+<!--FOOTER_ENDS-->

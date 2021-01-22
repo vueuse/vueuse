@@ -1,5 +1,5 @@
 import { nextTick } from 'vue-demi'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useStorage } from '../useStorage'
 import { createGlobalState } from '.'
 

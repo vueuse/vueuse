@@ -40,7 +40,7 @@ export function asyncComputed<T>(
     }
   }
   else {
-    options = optionsOrRef ?? {}
+    options = optionsOrRef || {}
   }
 
   const {

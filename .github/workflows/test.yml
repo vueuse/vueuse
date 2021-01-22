@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12, 14]
 
     steps:
     - uses: actions/checkout@v1
@@ -29,7 +29,7 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Lint
       run: yarn lint
-    - name: Test Vue 2
-      run: yarn run test:2
     - name: Test Vue 3
       run: yarn run test:3
+    - name: Test Vue 2
+      run: yarn run test:2

@@ -1,34 +1,36 @@
 <p align="center">
-<a href="https://github.com/antfu/vueuse"><img src="https://raw.githubusercontent.com/antfu/vueuse/master/resources/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"/></a><br>
+<a href="https://github.com/vueuse/vueuse"><img src="https://raw.githubusercontent.com/vueuse/vueuse/master/packages/public/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
 Collection of essential Vue Composition Utilities
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version" /></a>
-<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="/></a>
-<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Storybook Demos" /></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-93%20functions-13708a"/>
+
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
+<a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
+<img alt="Function Count" src="https://img.shields.io/badge/-97%20functions-13708a">
+
 <br>
-<a href="https://github.com/antfu/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/antfu/vueuse?style=social"></a>
+<a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'/>
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'>
   </a>
 </p>
 
 
 ## 🚀 Features
 
-- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](./docs/Export-Size.md)
-- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
+- 🎪 [**Interactive docs & demos**](https://vueuse.js.org)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- 🔩 **Flexible**: Configurable event filters
-- 🌎 **No bundler required**: Usable it via CDN
+- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](https://vueuse.js.org/export-size)
+- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
-- 🎪 **Interactive docs & demos**: [Check out the Storybook!](https://vueuse.js.org)
-- 🔌 **Optional [Add-ons](#-add-ons)**: Router, Firebase, RxJS, etc.
+- 🌎 **No bundler required**: Usable via CDN
+- 🔩 **Flexible**: Configurable event filters and targets
+- 🔌 **Optional [Add-ons](https://vueuse.js.org/add-ons)**: Router, Firebase, RxJS, etc.
 
 ## 🦄 Usage
 
@@ -57,17 +59,17 @@ export default {
 })
 ```
 
-Refer to [functions list](#-functions) or [documentations](https://vueuse.js.org/) for more details.
+Refer to [functions list](https://vueuse.js.org/functions) or [documentations](https://vueuse.js.org/) for more details.
 
 ## 📦 Install
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/antfu/vue-demi)!
+> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
 
-<pre>
-npm i <b>@vueuse/core</b>
-</pre>
+```bash
+npm i @vueuse/core
+```
 
-Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](https://github.com/antfu/vueuse-next-example) / Vue 2 Demo: [Vue CLI](https://github.com/antfu/vueuse-vue2-example)
+Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 
@@ -77,6 +79,7 @@ Vue 3 Demo: [Vite](https://github.com/antfu/vite-vueuse-starter), [Webpack](http
 
 It will be exposed to global as `window.VueUse`
 
+<<<<<<< HEAD
 
 ## ⚡ Functions
 
@@ -224,9 +227,11 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 <!--ADDONS_LIST_ENDS-->
 
 
+=======
+>>>>>>> master
 ## 🧱 Contribute
 
-See the [**Contributing Guide**](https://vueuse.js.org/?path=/story/docs--contributing)
+See the [**Contributing Guide**](https://vueuse.js.org/contributing)
 
 ## 🌸 Thanks
 
@@ -238,40 +243,14 @@ This project is heavily inspired by the following awesome projects.
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
 - [kripod/react-hooks](https://github.com/kripod/react-hooks)
 
-Thanks!
-
+And thanks to [all the contributors on GitHub](https://github.com/vueuse/vueuse/graphs/contributors)!
 
 ## 👨‍🚀 Contributors
 
-### Code Contributors
-
-This project exists thanks to all the people who contribute. [How to Contribute](https://vueuse.js.org/?path=/story/docs--contributing).
-
-<a href="https://github.com/antfu/vueuse/graphs/contributors"><img src="https://opencollective.com/vueuse/contributors.svg?width=890&button=false" /></a>
-
-### Financial Contributors
-
-Become a financial contributor and help us sustain our community. [Contribute via Open Collective](https://opencollective.com/vueuse/contribute)
-
-#### Individuals
+### Financial Contributors on Open Collective
 
 <a href="https://opencollective.com/vueuse"><img src="https://opencollective.com/vueuse/individuals.svg?width=890"></a>
 
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/vueuse/contribute)]
-
-<a href="https://opencollective.com/vueuse/organization/0/website"><img src="https://opencollective.com/vueuse/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/1/website"><img src="https://opencollective.com/vueuse/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/2/website"><img src="https://opencollective.com/vueuse/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/3/website"><img src="https://opencollective.com/vueuse/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/4/website"><img src="https://opencollective.com/vueuse/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/5/website"><img src="https://opencollective.com/vueuse/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/6/website"><img src="https://opencollective.com/vueuse/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/7/website"><img src="https://opencollective.com/vueuse/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/8/website"><img src="https://opencollective.com/vueuse/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/vueuse/organization/9/website"><img src="https://opencollective.com/vueuse/organization/9/avatar.svg"></a>
-
 ## 📄 License
 
-[MIT License](https://github.com/antfu/vueuse/blob/master/LICENSE) © 2019-2020 [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

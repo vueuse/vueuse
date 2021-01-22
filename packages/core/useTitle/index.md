@@ -1,6 +1,10 @@
+---
+category: Browser
+---
+
 # useTitle
 
-> Reactive document title.
+Reactive document title.
 
 ## Usage
 
@@ -31,3 +35,28 @@ const title = computed(() => {
 
 useTitle(title) // document title will match with the ref "title"
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactive document title.
+ *
+ * @see   {@link https://vueuse.js.org/useTitle}
+ * @param newTitle
+ * @param options
+ */
+export declare function useTitle(
+  newTitle?: MaybeRef<string | null | undefined>,
+  { document }?: ConfigurableDocument
+): Ref<string | null | undefined>
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useTitle/index.md)
+
+
+<!--FOOTER_ENDS-->
