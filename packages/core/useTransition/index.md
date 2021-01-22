@@ -1,3 +1,7 @@
+---
+category: Animation
+---
+
 # useTransition
 
 > Transition between values
@@ -61,6 +65,70 @@ const easeOutElastic = (n) => {
 
 useTransition(baseNumber, {
   duration: 1000,
-  transition: easeInOutElastic,
+  transition: easeOutElastic,
 })
 ```
+
+To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+
+```js
+useTransition(baseNumber, {
+  duration: 1000,
+  transition: easeOutElastic,
+  onStarted() {
+    // called after the transition starts
+  },
+  onFinished() {
+    // called after the transition ends
+  },
+})
+```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Cubic bezier points
+ */
+declare type CubicBezierPoints = [number, number, number, number]
+/**
+ * Easing function
+ */
+declare type EasingFunction = (n: number) => number
+/**
+ * Transition options
+ */
+interface TransitionOptions {
+  duration?: MaybeRef<number>
+  onFinished?: () => unknown
+  onStarted?: () => unknown
+  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
+}
+/**
+ * Common transitions
+ *
+ * @see   {@link https://easings.net}
+ */
+export declare const TransitionPresets: Record<string, CubicBezierPoints>
+/**
+ * Transition between values.
+ *
+ * @see   {@link https://vueuse.js.org/useTransition}
+ * @param source
+ * @param options
+ */
+export declare function useTransition(
+  source: Ref<number>,
+  options?: TransitionOptions
+): Ref<number>
+export {}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useTransition/index.md)
+
+
+<!--FOOTER_ENDS-->

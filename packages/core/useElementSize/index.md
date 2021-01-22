@@ -1,3 +1,7 @@
+---
+category: Sensors
+---
+
 # useElementSize
 
 > Reactive size of an HTML element.
@@ -32,3 +36,37 @@ export default {
 ```
 
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface ElementSize {
+  width: number
+  height: number
+}
+/**
+ * Reactive size of an HTML element.
+ *
+ * @see   {@link https://vueuse.js.org/useElementSize}
+ * @param target
+ * @param callback
+ * @param options
+ */
+export declare function useElementSize(
+  target: MaybeRef<Element | null | undefined>,
+  initialSize?: ElementSize,
+  options?: ResizeObserverOptions
+): {
+  width: Ref<number>
+  height: Ref<number>
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useElementSize/index.md)
+
+
+<!--FOOTER_ENDS-->

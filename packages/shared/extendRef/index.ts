@@ -1,4 +1,5 @@
 import { isRef, Ref, ShallowUnwrapRef } from 'vue-demi'
+import { __onlyVue3 } from '../utils/compatibility'
 
 export interface ExtendRefOptions<Unwrap extends boolean = boolean> {
   /**
@@ -27,6 +28,8 @@ export function extendRef<R extends Ref<any>, Extend extends object, Options ext
 
 // implementation
 export function extendRef<R extends Ref<any>, Extend extends object>(ref: R, extend: Extend, { enumerable = false, unwrap = true }: ExtendRefOptions = {}) {
+  __onlyVue3()
+
   for (const [key, value] of Object.entries(extend)) {
     if (key === 'value')
       continue

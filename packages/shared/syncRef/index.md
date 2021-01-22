@@ -1,3 +1,7 @@
+---
+category: Utilities
+---
+
 # syncRef
 
 > Keep target refs in sync with a source ref
@@ -69,4 +73,43 @@ console.log(target.value) // foo <- changed!
 
 ## Related Functions
 
-- [biSyncRef](https://vueuse.js.org/?path=/story/utilities--bisyncref)
+- `biSyncRef`
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface SyncRefOptions extends ConfigurableFlushSync {
+  /**
+   * Watch deeply
+   *
+   * @default false
+   */
+  deep?: boolean
+  /**
+   * Sync values immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
+/**
+ * Keep target ref(s) in sync with the source ref
+ *
+ * @param source source ref
+ * @param targets
+ */
+export declare function syncRef<R extends Ref<any>>(
+  source: R,
+  targets: R | R[],
+  { flush, deep, immediate }?: SyncRefOptions
+): WatchStopHandle
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/index.md)
+
+
+<!--FOOTER_ENDS-->

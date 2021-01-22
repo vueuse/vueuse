@@ -1,6 +1,7 @@
 import { MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import { MouseOptions, useMouse } from '../useMouse'
+import { defaultWindow } from '../_configurable'
 
 export interface MouseInElementOptions extends MouseOptions {
   handleOutside?: boolean
@@ -17,7 +18,10 @@ export function useMouseInElement(
   target?: MaybeRef<Element | null | undefined>,
   options: MouseInElementOptions = {},
 ) {
-  const { handleOutside = true } = options
+  const {
+    handleOutside = true,
+    window = defaultWindow,
+  } = options
   const { x, y, sourceType } = useMouse(options)
 
   const targetRef = ref(target || window?.document.body)

@@ -1,6 +1,6 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { nextTick } from 'vue-demi'
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useStorage } from '.'
 
 const KEY = 'custom-key'
@@ -17,13 +17,13 @@ describe('useStorage', () => {
   })
 
   it('string', async() => {
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(KEY, 'a')
 
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe('a')
     expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
@@ -38,13 +38,13 @@ describe('useStorage', () => {
   it('number', async() => {
     localStorage.setItem(KEY, '0')
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(KEY, 1)
 
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe(0)
 
@@ -67,13 +67,13 @@ describe('useStorage', () => {
   it('boolean', async() => {
     localStorage.removeItem(KEY)
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(KEY, true)
 
       return {
         ref,
       }
-    }).vm
+    })
 
     expect(instance.ref).toBe(true)
 
@@ -91,7 +91,7 @@ describe('useStorage', () => {
   it('null', () => {
     localStorage.setItem(KEY, '0')
 
-    renderHook(() => {
+    useSetup(() => {
       const ref = useStorage(KEY, null)
 
       expect(ref.value).toBe('0')
@@ -101,7 +101,7 @@ describe('useStorage', () => {
   it('string', async() => {
     localStorage.setItem(KEY, '0')
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(KEY, '1')
 
       expect(ref.value).toBe('0')
@@ -109,7 +109,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     instance.ref = '2'
     await nextTick()
@@ -120,7 +120,7 @@ describe('useStorage', () => {
   it('object', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(KEY, {
         name: 'a',
         data: 123,
@@ -136,7 +136,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     instance.ref.name = 'b'
     await nextTick()
@@ -158,7 +158,7 @@ describe('useStorage', () => {
   it('eventFilter', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       const ref = useStorage(
         KEY,
         {
@@ -182,7 +182,7 @@ describe('useStorage', () => {
       return {
         ref,
       }
-    }).vm
+    })
 
     await nextTick()
     await promiseTimeout(300)

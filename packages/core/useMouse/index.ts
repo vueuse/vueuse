@@ -43,29 +43,30 @@ export function useMouse(options: MouseOptions = {}) {
   const y = ref(initialValue.y)
   const sourceType = ref<MouseSourceType>(null)
 
-  if (window) {
-    useEventListener(window, 'mousemove', (event) => {
-      x.value = event.pageX
-      y.value = event.pageY
-      sourceType.value = 'mouse'
-    })
+  const mouseHandler = (event: MouseEvent) => {
+    x.value = event.pageX
+    y.value = event.pageY
+    sourceType.value = 'mouse'
+  }
+  const reset = () => {
+    x.value = initialValue.x
+    y.value = initialValue.y
+  }
+  const touchHandler = (event: TouchEvent) => {
+    if (event.touches.length > 0) {
+      x.value = event.touches[0].clientX
+      y.value = event.touches[0].clientY
+      sourceType.value = 'touch'
+    }
+  }
 
+  if (window) {
+    useEventListener(window, 'mousemove', mouseHandler, { passive: true })
     if (touch) {
-      const touchHandler = (event: TouchEvent) => {
-        if (event.touches.length > 0) {
-          x.value = event.touches[0].clientX
-          y.value = event.touches[0].clientY
-          sourceType.value = 'touch'
-        }
-      }
-      useEventListener(window, 'touchstart', touchHandler)
-      useEventListener(window, 'touchmove', touchHandler)
-      if (resetOnTouchEnds) {
-        useEventListener(window, 'touchend', () => {
-          x.value = initialValue.x
-          y.value = initialValue.y
-        })
-      }
+      useEventListener(window, 'touchstart', touchHandler, { passive: true })
+      useEventListener(window, 'touchmove', touchHandler, { passive: true })
+      if (resetOnTouchEnds)
+        useEventListener(window, 'touchend', reset, { passive: true })
     }
   }
 

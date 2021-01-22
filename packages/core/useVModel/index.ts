@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, isVue3 } from 'vue-demi'
+import { computed, getCurrentInstance } from 'vue-demi'
 
 /**
  * Shorthand for v-model binding, props + emit -> ref
@@ -8,11 +8,16 @@ import { computed, getCurrentInstance, isVue3 } from 'vue-demi'
  * @param key
  * @param emit
  */
-export function useVModel<P extends object>(props: P, key: keyof P, emit?: (name: string, value: any) => void) {
+export function useVModel<P extends object, K extends keyof P>(
+  props: P,
+  key: K,
+  emit?: (name: string, value: any) => void,
+) {
+  const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
-  const _emit = emit || isVue3 ? getCurrentInstance()?.emit : getCurrentInstance()?.$emit
+  const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
 
-  return computed({
+  return computed<P[K]>({
     get() {
       return props[key]
     },

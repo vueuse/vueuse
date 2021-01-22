@@ -1,3 +1,7 @@
+---
+category: Sensors
+---
+
 # useSpeechRecognition
 
 > Reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition).
@@ -30,3 +34,57 @@ The following shows the default values of the options, they will be directly pas
   continuous: true,
 }
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface SpeechRecognitionOptions extends ConfigurableWindow {
+  /**
+   * Controls whether continuous results are returned for each recognition, or only a single result.
+   *
+   * @default true
+   */
+  continuous?: boolean
+  /**
+   * Controls whether interim results should be returned (true) or not (false.) Interim results are results that are not yet final
+   *
+   * @default true
+   */
+  interimResults?: boolean
+  /**
+   * Langauge for SpeechRecognition
+   *
+   * @default 'en-US'
+   */
+  lang?: string
+}
+/**
+ * Reactive SpeechRecognition.
+ *
+ * @see   {@link https://vueuse.js.org/useSpeechRecognition}
+ * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition|SpeechRecognition}
+ * @param options
+ */
+export declare function useSpeechRecognition(
+  options?: SpeechRecognitionOptions
+): {
+  isSupported: boolean
+  isListening: Ref<boolean>
+  isFinal: Ref<boolean>
+  recognition: SpeechRecognition | undefined
+  result: Ref<string>
+  error: Ref<null>
+  toggle: (value?: boolean) => void
+  start: () => void
+  stop: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useSpeechRecognition/index.md)
+
+
+<!--FOOTER_ENDS-->

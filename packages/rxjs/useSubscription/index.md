@@ -1,3 +1,7 @@
+---
+category: '@RxJS'
+---
+
 # useSubscription
 
 > Uses subscriptions without worry about unsubscribing to it or memory leaks.
@@ -19,3 +23,18 @@ useSubscription(
     })
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useSubscription(subscription: Unsubscribable): void
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useSubscription/index.md)
+
+
+<!--FOOTER_ENDS-->

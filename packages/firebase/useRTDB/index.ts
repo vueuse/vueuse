@@ -1,5 +1,5 @@
 import type firebase from 'firebase'
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 
 /**
@@ -8,10 +8,10 @@ import { tryOnUnmounted } from '@vueuse/shared'
  * @see   {@link https://vueuse.js.org/useRTDB}
  * @param docRef
  */
-export function useRTDB(
+export function useRTDB<T = any>(
   docRef: firebase.database.Reference,
 ) {
-  const data = ref<any>(null)
+  const data = ref(undefined) as Ref<T | undefined>
 
   function update(snapshot: firebase.database.DataSnapshot) {
     data.value = snapshot.val()

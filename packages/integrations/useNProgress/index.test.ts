@@ -1,4 +1,4 @@
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useNProgress } from './index'
 import { nextTick } from 'vue-demi'
 import nprogress from 'nprogress'
@@ -9,7 +9,7 @@ describe('useNProgress', () => {
   })
 
   it('should start state as false', () => {
-    renderHook(() => {
+    useSetup(() => {
       const { isLoading } = useNProgress()
 
       expect(isLoading.value).toBeFalsy()
@@ -17,9 +17,9 @@ describe('useNProgress', () => {
   })
 
   it('should start state as true', () => {
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       return useNProgress(0.1)
-    }).vm
+    })
 
     expect(instance.isLoading).toBeTruthy()
     expect(instance.progress).toBe(0.1)
@@ -27,9 +27,9 @@ describe('useNProgress', () => {
 
   it('should track the manual progress', async() => {
     const setProgress = jest.spyOn(nprogress, 'set')
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       return useNProgress()
-    }).vm
+    })
 
     expect(instance.isLoading).toBeFalsy()
 
@@ -48,9 +48,9 @@ describe('useNProgress', () => {
 
   it('should update progress state', async() => {
     const startProgress = jest.spyOn(nprogress, 'start')
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       return useNProgress()
-    }).vm
+    })
 
     expect(instance.isLoading).toBeFalsy()
 
@@ -60,19 +60,20 @@ describe('useNProgress', () => {
   })
 
   it('should start progress bar', () => {
-    renderHook(() => {
+    useSetup(async() => {
       const startProgress = jest.spyOn(nprogress, 'start')
       const { start, isLoading } = useNProgress()
 
       expect(isLoading.value).toBeFalsy()
       start()
+      await nextTick()
       expect(startProgress).toBeCalled()
       expect(isLoading.value).toBeTruthy()
     })
   })
 
   it('should done and remove progress bar', () => {
-    renderHook(() => {
+    useSetup(() => {
       const setProgress = jest.spyOn(nprogress, 'set')
       const { done, isLoading } = useNProgress(0)
 
@@ -83,11 +84,11 @@ describe('useNProgress', () => {
     })
   })
 
-  it('should remove and remove progress bar', async() => {
+  it('should remove progress bar', async() => {
     const removeProgress = jest.spyOn(nprogress, 'remove')
-    const instance = renderHook(() => {
+    const instance = useSetup(() => {
       return useNProgress(0)
-    }).vm
+    })
 
     expect(instance.isLoading).toBeTruthy()
     instance.remove()

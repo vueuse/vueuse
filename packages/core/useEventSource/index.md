@@ -1,3 +1,7 @@
+---
+category: Misc
+---
+
 # useEventSource
 
 > An [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server, which sends events in text/event-stream format.
@@ -19,3 +23,36 @@ const { status, data, error, close } = useEventSource('https://event-source-url'
 | Method | Signature                                  | Description                            |
 | ------ | ------------------------------------------ | ---------------------------------------|
 | close  | `() => void` | Closes the EventSource connection gracefully.  |
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactive wrapper for EventSource.
+ *
+ * @see   {@link https://vueuse.js.org/useEventSource}
+ * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource|EventSource}
+ * @param url
+ * @param events
+ */
+export declare function useEventSource(
+  url: string,
+  events?: Array<string>
+): {
+  eventSource: Ref<EventSource | null>
+  event: Ref<string | null>
+  data: Ref<string | null>
+  status: Ref<"OPEN" | "CONNECTING" | "CLOSED">
+  error: Ref<Event | null>
+  close: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useEventSource/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useEventSource/index.md)
+
+
+<!--FOOTER_ENDS-->

@@ -1,3 +1,7 @@
+---
+category: Sensors
+---
+
 # useMutationObserver
 
 > Watch for changes being made to the DOM tree. [MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
@@ -29,3 +33,37 @@ export default {
 ```
 
 
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface MutationObserverOptions
+  extends MutationObserverInit,
+    ConfigurableWindow {}
+/**
+ * Watch for changes being made to the DOM tree.
+ *
+ * @see   {@link https://vueuse.js.org/useMutationObserver}
+ * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver|MutationObserver MDN}
+ * @param el
+ * @param callback
+ * @param options
+ */
+export declare function useMutationObserver(
+  el: MaybeRef<HTMLElement | null | undefined>,
+  callback: MutationCallback,
+  options?: MutationObserverOptions
+): {
+  isSupported: boolean | undefined
+  stop: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/index.md)
+
+
+<!--FOOTER_ENDS-->

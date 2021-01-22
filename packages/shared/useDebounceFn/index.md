@@ -1,3 +1,7 @@
+---
+category: Utilities
+---
+
 # useDebounceFn
 
 > Debounce execution of a function.
@@ -18,11 +22,37 @@ document.addEventLisenter('resize', debouncedFn)
 
 ## Related Functions
 
-- [useThrottle](https://vueuse.js.org/?path=/story/utilities--usethrottle)
-- [useThrottleFn](https://vueuse.js.org/?path=/story/utilities--usethrottlefn)
-- [useDebounce](https://vueuse.js.org/?path=/story/utilities--usedebounce)
-- [useDebounceFn](https://vueuse.js.org/?path=/story/utilities--usedebouncefn)
+- `useThrottle`
+- `useThrottleFn`
+- `useDebounce`
+- `useDebounceFn`
 
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Debounce execution of a function.
+ *
+ * @param  fn          A function to be executed after delay milliseconds debounced.
+ * @param  ms          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+ *
+ * @return A new, debounce, function.
+ */
+export declare function useDebounceFn<T extends FunctionArgs>(
+  fn: T,
+  ms?: number
+): T
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useDebounceFn/index.md)
+
+
+<!--FOOTER_ENDS-->

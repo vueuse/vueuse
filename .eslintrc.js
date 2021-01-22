@@ -5,9 +5,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    '@antfu/eslint-config',
-  ],
+  extends: '@antfu/eslint-config',
   plugins: [
     'markdown',
     'jest',
@@ -16,6 +14,7 @@ module.exports = {
     'no-alert': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-null': 'off',
@@ -25,6 +24,9 @@ module.exports = {
     'no-new': 'off',
     'import/order': 'off',
     'react/no-unknown-property': 'off',
+    'vue/no-deprecated-functional-template': 'off',
+    'vue/one-component-per-file': 'off',
+    'spaced-comment': ['error', 'always', { exceptions: ['@__PURE__'] }],
   },
   overrides: [
     {

@@ -1,14 +1,25 @@
 import { useRafFn } from '../useRafFn'
-import { Ref, ref, watch } from 'vue-demi'
-import { clamp, isFunction } from '@vueuse/shared'
+import { computed, Ref, ref, unref, watch } from 'vue-demi'
+import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
+/**
+ * Cubic bezier points
+ */
 type CubicBezierPoints = [number, number, number, number]
 
-type EasingFunction = (x: number) => number
+/**
+ * Easing function
+ */
+type EasingFunction = (n: number) => number
 
+/**
+ * Transition options
+ */
 interface TransitionOptions {
-  duration?: number
-  transition?: EasingFunction | CubicBezierPoints
+  duration?: MaybeRef<number>
+  onFinished?: () => unknown
+  onStarted?: () => unknown
+  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
 /**
@@ -81,15 +92,19 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
 export function useTransition(source: Ref<number>, options: TransitionOptions = {}) {
   const {
     duration = 500,
+    onFinished = noop,
+    onStarted = noop,
     transition = (n: number) => n,
   } = options
 
   const output = ref(source.value)
 
-  const getValue = isFunction<EasingFunction>(transition)
-    ? transition
-    : createEasingFunction(transition)
+  const currentTransition = computed(() => {
+    const t = unref(transition)
+    return isFunction(t) ? t : createEasingFunction(t)
+  })
 
+  let currentDuration = 0
   let diff = 0
   let endAt = 0
   let startAt = 0
@@ -97,23 +112,27 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
 
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
-    const progress = clamp(1 - ((endAt - now) / duration), 0, 1)
+    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
 
-    output.value = startValue + (diff * getValue(progress))
+    output.value = startValue + (diff * currentTransition.value(progress))
 
-    if (progress >= 1)
+    if (progress >= 1) {
       pause()
+      onFinished()
+    }
   }, { immediate: false })
 
   watch(source, () => {
     pause()
 
+    currentDuration = unref(duration)
     diff = source.value - output.value
     startValue = output.value
     startAt = Date.now()
-    endAt = startAt + duration
+    endAt = startAt + currentDuration
 
     resume()
+    onStarted()
   })
 
   return output

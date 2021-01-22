@@ -1,0 +1,162 @@
+.demo {
+  --width: 100vw;
+  --margin-left: -1.5rem;
+
+  background: rgba(125, 125, 125, 0.04);
+  padding: 2em 3em;
+  position: relative;
+  border: 1px solid var(--c-divider);
+}
+
+.demo.wide {
+  width: var(--width);
+  margin-left: var(--margin-left);
+  border: none;
+  border-bottom: 1px solid var(--c-divider);
+}
+
+.demo::after {
+  content: "DEMO";
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  opacity: 0.3;
+  font-size: 0.9rem;
+  font-family: monospace;
+}
+
+@media (min-width: 720px) {
+  .demo {
+    --width: calc(100vw - var(--sidebar-width)) !important;
+    --content-width: min(48rem, var(--width)) !important;
+    --margin-left: calc(
+      calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem
+    ) !important;
+  }
+}
+
+
+.demo {
+  p {
+    margin: 0.5rem 0 ;
+  }
+
+  button {
+    padding: 0.5em 1em 0.4em 1em;
+    background-color: var(--c-brand);
+    border: none;
+    outline: none;
+    color: white;
+    margin: 0.5rem 0;
+    border-bottom: 2px solid var(--c-brand-dark);
+    text-shadow: 1px 1px 1px var(--c-brand-dark);
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    vertical-align: middle;
+  }
+
+  button.small {
+    padding: 0.25em 0.7em 0.2em 0.7em;
+  }
+
+  button.orange {
+    --c-brand: #db8742;
+    --c-brand-dark: #ad6e39;
+    --c-brand-active: #d67e36;
+  }
+
+  button:hover {
+    background-color: var(--c-brand-active);
+  }
+
+  button:active {
+    border-bottom: 0;
+    border-top: 2px solid var(--c-brand-dark);
+  }
+  button ~ button {
+    margin-left: 0.5rem;
+  }
+  button[disabled],
+  button.disabled {
+    cursor: default;
+    background-color: var(--c-disabled-bg);
+    color: var(--c-disabled-fg);
+    border-bottom: 2px solid var(--c-divider-light);
+    pointer-events: none;
+    text-shadow: none;
+    border-top: 0;
+  }
+
+  input {
+    display: block;
+    min-width: 20rem;
+    font-size: 1.05rem;
+    padding: 0.5em 1em 0.4em 1em;
+    border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    margin: 1rem 0;
+    outline: none;
+    background: var(--c-bg);
+    color: var(--c-text);
+  }
+
+  input:focus {
+    border: 1px solid var(--c-divider-dark);
+  }
+
+  .note {
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-bottom: -0.2rem;
+  }
+
+  pre,
+  .code-block {
+    opacity: 0.8;
+    background: var(--code-inline-bg-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+  }
+
+  .resizer {
+    resize: both;
+    padding: 1rem;
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    background: white;
+    outline: none;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow: hidden;
+    overflow-x: hidden;
+  }
+
+  .float {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    border: 1px solid var(--c-divider-light);
+    background: var(--c-bg);
+    z-index: 100;
+    min-width: 100px;
+  }
+
+  .area {
+    border-width: 2px;
+    border-style: dashed;
+    padding: 1rem;
+  }
+}
+
+
+html.dark .demo {
+  .resizer {
+    background: #222;
+    color: white;
+  }
+}

@@ -1,3 +1,7 @@
+---
+category: Watch
+---
+
 # debouncedWatch
 
 > Debounced watch
@@ -29,3 +33,45 @@ watchWithFilter(
   }
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface DebouncedWatchOptions<Immediate>
+  extends WatchOptions<Immediate> {
+  debounce?: number
+}
+export declare function debouncedWatch<
+  T extends Readonly<WatchSource<unknown>[]>,
+  Immediate extends Readonly<boolean> = false
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: DebouncedWatchOptions<Immediate>
+): WatchStopHandle
+export declare function debouncedWatch<
+  T,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: DebouncedWatchOptions<Immediate>
+): WatchStopHandle
+export declare function debouncedWatch<
+  T extends object,
+  Immediate extends Readonly<boolean> = false
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: DebouncedWatchOptions<Immediate>
+): WatchStopHandle
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/debouncedWatch/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/debouncedWatch/index.md)
+
+
+<!--FOOTER_ENDS-->

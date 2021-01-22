@@ -1,4 +1,4 @@
-import { renderHook } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
@@ -7,7 +7,7 @@ describe('useWindowSize', () => {
   })
 
   it('should work', () => {
-    const wrapper = renderHook(() => {
+    const wrapper = useSetup(() => {
       const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
       expect(width.value).toBe(window.innerWidth)
@@ -16,18 +16,18 @@ describe('useWindowSize', () => {
       return { width, height }
     })
 
-    expect(wrapper.vm.width).toBe(window.innerWidth)
-    expect(wrapper.vm.height).toBe(window.innerHeight)
+    expect(wrapper.width).toBe(window.innerWidth)
+    expect(wrapper.height).toBe(window.innerHeight)
   })
 
   it('sets handler for window "resize" event', () => {
     const windowAddEventListener = jest.spyOn(window, 'addEventListener')
 
-    renderHook(() => {
+    useSetup(() => {
       const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
       return { width, height }
     })
 
-    expect(windowAddEventListener).toHaveBeenCalledWith('resize', expect.anything(), undefined)
+    expect(windowAddEventListener).toHaveBeenCalledWith('resize', expect.anything(), { passive: true })
   })
 })

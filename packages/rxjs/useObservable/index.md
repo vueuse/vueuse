@@ -1,3 +1,7 @@
+---
+category: '@RxJS'
+---
+
 # useObservable
 
 > Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
@@ -19,3 +23,20 @@ const count = useObservable(
   )
 )
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useObservable<H>(
+  observable: Observable<H>
+): Readonly<Ref<H>>
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useObservable/index.md)
+
+
+<!--FOOTER_ENDS-->
