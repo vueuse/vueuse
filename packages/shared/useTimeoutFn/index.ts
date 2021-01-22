@@ -39,7 +39,7 @@ export function useTimeoutFn(
     timer = setTimeout(() => {
       isPending.value = false
       timer = null
-      // eslint-disable-next-line
+      // eslint-disable-next-line standard/no-callback-literal
       cb(...args)
     }, interval)
   }
