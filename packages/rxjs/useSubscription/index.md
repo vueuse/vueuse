@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # useSubscription
 
-> Uses subscriptions without worry about unsubscribing to it or memory leaks.
+Uses subscriptions without worry about unsubscribing to it or memory leaks.
 
 ## Usage
 

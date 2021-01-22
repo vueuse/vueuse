@@ -20,6 +20,8 @@
   font-weight: 600;
   color: var(--c-text);
   vertical-align: center;
+  white-space: nowrap;
+  margin-right: 2rem;
 }
 
 .nav-bar-title:hover {
@@ -27,7 +29,7 @@
 }
 
 .logo {
-  margin-right: .75rem;
+  margin-right: .5rem;
   height: 2.2rem;
   vertical-align: middle;
 }

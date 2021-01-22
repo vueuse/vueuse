@@ -4,7 +4,7 @@ category: Animation
 
 # useRafFn
 
-> Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
+Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
 
 ## Usage
 

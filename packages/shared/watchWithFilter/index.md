@@ -4,7 +4,7 @@ category: Watch
 
 # watchWithFilter
 
-> `watch` with additional EventFilter control.
+`watch` with additional EventFilter control.
 
 ## Usage
 

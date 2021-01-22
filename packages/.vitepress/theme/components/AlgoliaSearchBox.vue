@@ -133,18 +133,7 @@ function initialize(userOptions: any) {
   padding-top: 1px;
 }
 
-@media (min-width: 720px) {
-  .algolia-search-box {
-    padding-left: 8px;
-    min-width: 176.3px; /* avoid layout shift */
-  }
-}
-
 @media (min-width: 751px) {
-  .algolia-search-box {
-    padding-left: 8px;
-  }
-
   .algolia-search-box .DocSearch-Button-Placeholder {
     padding-left: 8px;
     font-size: 0.9rem;
@@ -153,11 +142,32 @@ function initialize(userOptions: any) {
 }
 
 .DocSearch {
+  --docsearch-container-background: rgba(220,220,220,0.6);
+  --docsearch-modal-background: var(--c-bg);
+  --docsearch-modal-shadow: var(--c-bg);
+  --docsearch-hit-color: var(--c-text-light);
+  --docsearch-footer-background: rgba(125,125,125,0.1);
+  --docsearch-footer-shadow: rgba(125,125,125,0.1);
+  --docsearch-hit-background: rgba(125,125,125,0.1);
+  --docsearch-hit-shadow: none;
   --docsearch-primary-color: #42b983;
   --docsearch-highlight-color: var(--docsearch-primary-color);
+  --docsearch-searchbox-background: rgba(125,125,125,0.05);
+  --docsearch-searchbox-focus-background: rgba(125,125,125,0.05);
   --docsearch-searchbox-shadow: inset 0 0 0 2px var(--docsearch-primary-color);
   --docsearch-text-color: var(--c-text-light);
   --docsearch-muted-color: var(--c-text-lighter);
-  --docsearch-searchbox-background: #f2f2f2;
+  --docsearch-key-gradient: rgba(125,125,125,0.1);
+  --docsearch-key-shadow: rgba(125,125,125,0.3);
+  margin-left: 0.6rem;
+  margin-right: -0.2rem;
+}
+
+html.dark .DocSearch {
+  --docsearch-container-background: rgba(0,0,0,0.8);
+}
+
+.DocSearch-Button-Key {
+  padding-bottom: 0;
 }
 </style>

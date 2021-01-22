@@ -4,7 +4,7 @@ category: Watch
 
 # when
 
-> Promised one-time watch for ref changes
+Promised one-time watch for ref changes
 
 ## Usage
 

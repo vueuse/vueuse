@@ -4,7 +4,7 @@ category: Browser
 
 # useUrlSearchParams
 
-> Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ## Usage
 

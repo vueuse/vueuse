@@ -26,7 +26,7 @@ const config = {
     editLinkText: 'Edit this page on GitHub',
     lastUpdated: 'Last Updated',
     nav: [
-      { text: 'Home', link: '/' },
+      // { text: 'Home', link: '/' },s
       { text: 'Guide', link: '/guide' },
       { text: 'Functions', link: '/functions' },
       { text: 'Add-ons', link: '/add-ons' },
@@ -34,10 +34,10 @@ const config = {
       { text: 'Contribute', link: '/contributing' },
     ],
     sidebar: getSideBar(),
-    // algolia: {
-    //   apiKey: '',
-    //   indexName: 'vueuse',
-    // },
+    algolia: {
+      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      indexName: 'vueuse',
+    },
   },
   head: [
     ['link', { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png' }],

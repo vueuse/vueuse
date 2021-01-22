@@ -4,7 +4,7 @@ category: '@Router'
 
 # useRouteQuery
 
-> Shorthand for reactive route.query 
+Shorthand for reactive route.query
 
 ## Usage
 

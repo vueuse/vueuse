@@ -4,7 +4,7 @@ category: Browser
 
 # useCssVar
 
-> Manipulate CSS variables
+Manipulate CSS variables
 
 ## Usage
 

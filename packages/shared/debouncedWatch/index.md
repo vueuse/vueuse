@@ -4,7 +4,7 @@ category: Watch
 
 # debouncedWatch
 
-> Debounced watch
+Debounced watch
 
 ## Usage
 

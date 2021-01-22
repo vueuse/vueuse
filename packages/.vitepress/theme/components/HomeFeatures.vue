@@ -65,7 +65,7 @@ const features = computed(() => {
 }
 
 .home-hero + .home-features .wrapper {
-  border-top: 1px solid var(--c-divider);
+  /* border-top: 1px solid var(--c-divider); */
   padding-top: 2.5rem;
 }
 

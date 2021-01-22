@@ -4,7 +4,7 @@ category: Animation
 
 # useTransition
 
-> Transition between values
+Transition between values
 
 ## Usage
 

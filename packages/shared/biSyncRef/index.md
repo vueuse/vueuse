@@ -4,7 +4,7 @@ category: Utilities
 
 # biSyncRef
 
-> Two-way refs synchronization.
+Two-way refs synchronization.
 
 ## Usage
 

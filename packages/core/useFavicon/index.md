@@ -4,7 +4,7 @@ category: Browser
 
 # useFavicon
 
-> Reactive favicon
+Reactive favicon
 
 ## Usage
 

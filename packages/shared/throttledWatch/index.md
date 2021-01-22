@@ -4,7 +4,7 @@ category: Watch
 
 # throttledWatch
 
-> Throttled watch.
+Throttled watch.
 
 ## Usage
 

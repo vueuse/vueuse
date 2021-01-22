@@ -4,7 +4,7 @@ category: Utilities
 
 # set
 
-> Shorthand for `ref.value = x`
+Shorthand for `ref.value = x`
 
 ## Usage
 

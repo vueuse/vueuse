@@ -4,7 +4,7 @@ category: Utilities
 
 # useToggle
 
-> A boolean switcher with utility functions.
+A boolean switcher with utility functions.
 
 ## Usage
 
