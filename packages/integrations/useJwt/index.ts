@@ -4,7 +4,7 @@ import { computed, Ref } from 'vue-demi'
 /**
  * Reactive decoced jwt token.
  *
- * @see {@link https://vueuse.js.org/useJwt}
+ * @see {@link https://vueuse.js.org/integrations/useJwt/}
  * @param jwt
  */
 export function useJwt<Payload extends object = JwtPayload, Header extends object = JwtHeader>(encodedJwt: Ref<string>) {
