@@ -727,7 +727,7 @@
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useJwt/",
       "category": "@Integrations",
-      "description": "> Wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)"
+      "description": "> wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)"
     },
     {
       "name": "useNProgress",
