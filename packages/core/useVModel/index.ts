@@ -5,7 +5,7 @@ import { computed, getCurrentInstance, isVue2 } from 'vue-demi'
  *
  * @see   {@link https://vueuse.js.org/useVModel}
  * @param props
- * @param key default 'value' in vue2.x and 'modelValue' in vue3.x
+ * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
  */
 export function useVModel<P extends object, K extends keyof P>(
