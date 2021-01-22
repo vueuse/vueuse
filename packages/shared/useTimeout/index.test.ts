@@ -1,4 +1,4 @@
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 import { useTimeout } from '../useTimeout'
 
 test('export', () => {

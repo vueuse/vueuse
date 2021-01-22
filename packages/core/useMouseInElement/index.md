@@ -1,6 +1,10 @@
+---
+category: Sensors
+---
+
 # useMouseInElement
 
-> Reactive mouse position related to an element
+Reactive mouse position related to an element
 
 ## Usage
 
@@ -26,3 +30,43 @@ export default {
 }
 </script>
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface MouseInElementOptions extends MouseOptions {
+  handleOutside?: boolean
+}
+/**
+ * Reactive mouse position related to an element.
+ *
+ * @see   {@link https://vueuse.js.org/useMouseInElement}
+ * @param target
+ * @param options
+ */
+export declare function useMouseInElement(
+  target?: MaybeRef<Element | null | undefined>,
+  options?: MouseInElementOptions
+): {
+  x: Ref<number>
+  y: Ref<number>
+  sourceType: Ref<MouseSourceType>
+  elementX: Ref<number>
+  elementY: Ref<number>
+  elementPositionX: Ref<number>
+  elementPositionY: Ref<number>
+  elementHeight: Ref<number>
+  elementWidth: Ref<number>
+  isOutside: Ref<boolean>
+  stop: () => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouseInElement/index.md)
+
+
+<!--FOOTER_ENDS-->

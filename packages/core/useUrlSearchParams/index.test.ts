@@ -1,5 +1,5 @@
 import { useUrlSearchParams } from '.'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 import each from 'jest-each'
 
 describe('useUrlSearchParams', () => {

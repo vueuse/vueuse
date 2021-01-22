@@ -1,6 +1,10 @@
+---
+category: Browser
+---
+
 # useShare
 
-> Reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share). The Browser provides features that can share content in text or file.
+Reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share). The Browser provides features that can share content in text or file.
 
 > The `share` method has to be called following a user gesture like a button click. It can’t simply be called on page load for example. That’s in place to help prevent abuse.
 
@@ -36,3 +40,37 @@ shareOptions.value.text = 'bar'
 share()
 ```
 
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export interface ShareOptions {
+  title?: string
+  files?: File[]
+  text?: string
+  url?: string
+}
+/**
+ * Reactive Web Share API.
+ *
+ * @use   {@link https://vueuse.js.org/useShare}
+ * @param shareOptions
+ * @param options
+ */
+export declare function useShare(
+  shareOptions?: MaybeRef<ShareOptions>,
+  options?: ConfigurableNavigator
+): {
+  isSupported: boolean
+  share: (overrideOptions?: MaybeRef<ShareOptions>) => Promise<void>
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useShare/index.md)
+
+
+<!--FOOTER_ENDS-->

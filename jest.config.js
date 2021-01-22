@@ -10,7 +10,7 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   setupFiles: [
-    '<rootDir>/packages/_tests/test.setup.js',
+    '<rootDir>/packages/.test/test.setup.js',
   ],
   testURL: 'https://vueuse.js.org',
 }

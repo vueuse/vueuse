@@ -2,7 +2,7 @@ import { MaybeRef } from '@vueuse/shared'
 import { computed, ComputedRef, reactive } from 'vue-demi'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
-import { ConfigurableWindow } from '../_configurable'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface ParallaxOptions extends ConfigurableWindow {
   deviceOrientationTiltAdjust?: (i: number) => number
@@ -42,7 +42,7 @@ export function useParallax(
     deviceOrientationRollAdjust = i => i,
     mouseTiltAdjust = i => i,
     mouseRollAdjust = i => i,
-    window,
+    window = defaultWindow,
   } = options
 
   const orientation = reactive(useDeviceOrientation({ window }))

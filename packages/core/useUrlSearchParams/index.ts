@@ -1,5 +1,5 @@
 import { computed, reactive } from 'vue-demi'
-import { pausableWatch } from '..'
+import { pausableWatch } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 

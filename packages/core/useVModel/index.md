@@ -1,6 +1,10 @@
+---
+category: Component
+---
+
 # useVModel
 
-> Shorthand for v-model binding, props + emit -> ref
+Shorthand for v-model binding, props + emit -> ref
 
 ## Usage
 
@@ -16,3 +20,30 @@ export default {
   },
 }
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Shorthand for v-model binding, props + emit -> ref
+ *
+ * @see   {@link https://vueuse.js.org/useVModel}
+ * @param props
+ * @param key
+ * @param emit
+ */
+export declare function useVModel<P extends object, K extends keyof P>(
+  props: P,
+  key: K,
+  emit?: (name: string, value: any) => void
+): WritableComputedRef<P[K]>
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useVModel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useVModel/index.md)
+
+
+<!--FOOTER_ENDS-->

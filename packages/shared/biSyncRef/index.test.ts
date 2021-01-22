@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { biSyncRef } from '.'
-import { useSetup } from '../../_tests'
+import { useSetup } from '../../.test'
 
 describe('biSyncRef', () => {
   it('should work', (done) => {

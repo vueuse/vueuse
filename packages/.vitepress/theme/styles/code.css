@@ -1,0 +1,215 @@
+code {
+  margin: 0;
+  border-radius: 3px;
+  padding: .25rem .5rem;
+  font-family: var(--code-font-family);
+  font-size: .85em;
+  color: var(--c-text-light);
+  background-color: var(--code-inline-bg-color);
+}
+
+code .token.deleted {
+  color: #ec5975;
+}
+
+code .token.inserted {
+  color: var(--c-brand);
+}
+
+div[class*='language-'] {
+  position: relative;
+  margin: 1rem -1.5rem;
+  color: var(--c-text);
+  background-color: var(--code-bg-color);
+  overflow-x: auto;
+}
+
+li > div[class*='language-'] {
+  border-radius: 6px 0 0 6px;
+  margin: 1rem -1.5rem 1rem -1.25rem;
+}
+
+@media (min-width: 420px) {
+  div[class*='language-'] {
+    margin: 1rem 0;
+    border-radius: 6px;
+  }
+
+  li > div[class*='language-'] {
+    margin: 1rem 0 1rem 0rem;
+    border-radius: 6px;
+  }
+}
+
+[class*='language-'] pre,
+[class*='language-'] code {
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  background: none;
+}
+
+[class*='language-'] pre {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  overflow-x: auto;
+}
+
+[class*='language-'] code {
+  padding: 0;
+  line-height: var(--code-line-height);
+  font-size: var(--code-font-size);
+  color: #eee;
+}
+
+/* Line highlighting */
+
+.highlight-lines {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1.25rem 0;
+  width: 100%;
+  line-height: var(--code-line-height);
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
+  user-select: none;
+  overflow: hidden;
+}
+
+.highlight-lines .highlighted {
+  background-color: var(--code-highlight);
+}
+
+/* Line numbers mode */
+
+div[class*='language-'].line-numbers-mode {
+  padding-left: 3.5rem;
+}
+
+.line-numbers-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  border-right: 1px solid rgba(0, 0, 0, .5);
+  padding: 1.25rem 0;
+  width: 3.5rem;
+  text-align: center;
+  line-height: var(--code-line-height);
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
+  color: #888;
+}
+
+/* Language marker */
+
+[class*='language-']:before {
+  position: absolute;
+  top: .6em;
+  right: 1em;
+  z-index: 2;
+  font-size: .8rem;
+  color: #888;
+}
+
+[class~='language-html']:before,
+[class~='language-markup']:before {
+  content: 'html';
+}
+
+[class~='language-md']:before,
+[class~='language-markdown']:before {
+  content: 'md';
+}
+
+[class~='language-css']:before {
+  content: 'css';
+}
+
+[class~='language-sass']:before {
+  content: 'sass';
+}
+
+[class~='language-scss']:before {
+  content: 'scss';
+}
+
+[class~='language-less']:before {
+  content: 'less';
+}
+
+[class~='language-stylus']:before {
+  content: 'styl';
+}
+
+[class~='language-js']:before,
+[class~='language-typescript']:before {
+  content: 'js';
+}
+
+[class~='language-ts']:before,
+[class~='language-typescript']:before {
+  content: 'ts';
+}
+
+[class~='language-json']:before {
+  content: 'json';
+}
+
+[class~='language-rb']:before,
+[class~='language-ruby']:before {
+  content: 'rb';
+}
+
+[class~='language-py']:before,
+[class~='language-python']:before {
+  content: 'py';
+}
+
+[class~='language-sh']:before,
+[class~='language-bash']:before {
+  content: 'sh';
+}
+
+[class~='language-php']:before {
+  content: 'php';
+}
+
+[class~='language-go']:before {
+  content: 'go';
+}
+
+[class~='language-rust']:before {
+  content: 'rust';
+}
+
+[class~='language-java']:before {
+  content: 'java';
+}
+
+[class~='language-c']:before {
+  content: 'c';
+}
+
+[class~='language-yaml']:before {
+  content: 'yaml';
+}
+
+[class~='language-dockerfile']:before {
+  content: 'dockerfile';
+}

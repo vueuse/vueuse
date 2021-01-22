@@ -17,11 +17,11 @@ const Serializers = {
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any, d: any) => v ?? d,
+    read: (v: any, d: any) => v != null ? v : d,
     write: (v: any) => String(v),
   },
   string: {
-    read: (v: any, d: any) => v ?? d,
+    read: (v: any, d: any) => v != null ? v : d,
     write: (v: any) => String(v),
   },
 }
@@ -95,7 +95,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
 
     try {
       let rawValue = storage.getItem(key)
-      if (rawValue === undefined && defaultValue) {
+      if (rawValue == null && defaultValue) {
         rawValue = Serializers[type].write(defaultValue)
         storage.setItem(key, rawValue)
       }
