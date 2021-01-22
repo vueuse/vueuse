@@ -22,7 +22,7 @@ export function useVModel<P extends object, K extends keyof P>(
 
   return computed<P[K]>({
     get() {
-      return props[key as K]
+      return props[key!]
     },
     set(value) {
       _emit(`update:${key}`, value)
