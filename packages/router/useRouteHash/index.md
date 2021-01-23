@@ -4,7 +4,7 @@ category: '@Router'
 
 # useRouteHash
 
-> Shorthand for reactive route.hash 
+Shorthand for reactive route.hash 
 
 ## Usage
 

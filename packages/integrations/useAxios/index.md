@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useAxios
 
-> wrapper for [`axios`](https://github.com/axios/axios)
+wrapper for [`axios`](https://github.com/axios/axios)
 
 ## Install 
 

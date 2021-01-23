@@ -62,7 +62,7 @@ Refer to [functions list](./functions) for more details.
 
 ### Destructuring
 
-Most of the functions in VueUse returns an object of refs that you can use [ES6's object destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax to take what you want. For example:
+Most of the functions in VueUse returns an **object of refs** that you can use [ES6's object destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax to take what you need. For example:
 
 ```ts
 import { useMouse } from '@vueuse/core'
@@ -72,12 +72,9 @@ const { x, y } = useMouse()
 
 console.log(x.value)
 
-/* 👆🏻 Destructure / 👇🏼 Reactive Object */
+const mouse = useMouse()
 
-// "x" and "y" will be auto unwrapped, no `.value` needed
-const mouse = reactive(useMouse())
-
-console.log(mouse.x)
+console.log(mouse.x.value)
 ```
 
 If you prefer to use them as object properties style, you can unwrap the refs by using `reactive()`. For example:
@@ -121,25 +118,25 @@ const motion = useDeviceMotion({ eventFilter: motionControl.eventFilter })
 
 motionControl.pause() 
 
-// motion updates will be paused
+// motion updates paused
 
 motionControl.resume()
 
-// motion updates will be resumed
+// motion updates resumed
 ```
 
 ### Reactive Timing
 
-VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) where possible. 
+VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) where possible.
 
 For `watch`-like composables (e.g. `pausableWatch`, `when`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
 
-In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option
+In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option:
 
 ```ts
 const { pause, resume } = pausableWatch(
   () => {
-    // Safely access rendered DOM
+    // Safely access updated DOM
   },
   { flush: 'post' }
 )
@@ -154,7 +151,7 @@ const { pause, resume } = pausableWatch(
 
 ### Configurable Global Dependencies
 
-From v4.0, functions that access the browser APIs will provide options fields for you to specify the global dependencies (e.g. `window`, `document` and `navigator`). Most of the time, you don't need to configure it, it will use the global instance by default. This configure is useful when working with iframes and testing environments.
+From v4.0, functions that access the browser APIs will provide an option fields for you to specify the global dependencies (e.g. `window`, `document` and `navigator`). It will use the global instance by default, so for most of the time, you don't need to worry about it. This configure is useful when working with iframes and testing environments.
 
 ```ts
 // accessing parent context

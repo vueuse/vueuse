@@ -4,7 +4,7 @@ category: Utilities
 
 # reactifyObject
 
-> Apply `reactify` to an object
+Apply `reactify` to an object
 
 ## Usage
 

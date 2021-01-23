@@ -7,6 +7,10 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 ### Head - [`@vueuse/head`](https://github.com/vueuse/head) <carbon-link class="external-link"/>
 Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](https://github.com/egoist)
 
+### Sound - [`@vueuse/sound`](https://github.com/vueuse/sound) <carbon-link class="external-link"/>
+Vue composable for playing sound effects. Created and maintained by [@Tahul](https://github.com/Tahul)
+
+
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
 ### Router - [`@vueuse/router`](https://vueuse.js.org/router/README.html)
@@ -25,7 +29,7 @@ Integration wrappers for utility libraries
 
 ### RxJS - [`@vueuse/rxjs`](https://vueuse.js.org/rxjs/README.html)
 Enables RxJS reactive functions in Vue
-  - [`from`](https://vueuse.js.org/rxjs/from/) — two wrappers around of the original functions to allow use ref objects
+  - [`from`](https://vueuse.js.org/rxjs/from/) — / fromEvent
   - [`toObserver`](https://vueuse.js.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.js.org/rxjs/useObservable/) — use an Observable
   - [`useSubscription`](https://vueuse.js.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks

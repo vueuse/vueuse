@@ -4,7 +4,7 @@ category: State
 
 # useSessionStorage
 
-> Reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). 
+Reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). 
 
 ## Usage
 

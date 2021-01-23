@@ -4,7 +4,7 @@ category: Browser
 
 # useBrowserLocation
 
-> Reactive browser location
+Reactive browser location
 
 ## Usage
 

@@ -4,7 +4,7 @@ category: Browser
 
 # useTitle
 
-> Reactive document title.
+Reactive document title.
 
 ## Usage
 

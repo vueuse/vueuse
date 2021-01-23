@@ -4,7 +4,7 @@ category: '@Firebase'
 
 # useFirestore
 
-> Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making it straightforward to **always keep your local data in sync** with remotes databases.
+Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making it straightforward to **always keep your local data in sync** with remotes databases.
 
 ## Usage
 

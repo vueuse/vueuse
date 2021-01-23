@@ -4,7 +4,7 @@ category: Animation
 
 # useTimestamp
 
-> Reactive current timestamp
+Reactive current timestamp
 
 ## Usage
 

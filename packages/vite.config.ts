@@ -8,13 +8,16 @@ import { getFunctionHead, hasDemo } from '../scripts/utils'
 import EditorNav from 'vite-plugin-editor-nav'
 
 const config: UserConfig = {
-  alias: {
-    '@vueuse/shared': resolve(__dirname, 'shared'),
-    '@vueuse/docs-utils': resolve(__dirname, '.vitepress/utils.ts'),
-  },
+  alias: [
+    { find: '@vueuse/shared', replacement: resolve(__dirname, 'shared/index.ts') },
+    { find: '@vueuse/core', replacement: resolve(__dirname, 'core/index.ts') },
+    { find: '@vueuse/docs-utils', replacement: resolve(__dirname, '.vitepress/utils.ts') },
+  ],
   optimizeDeps: {
     exclude: [
       'vue-demi',
+      '@vueuse/shared',
+      '@vueuse/core',
     ],
     include: [
       'qrcode',

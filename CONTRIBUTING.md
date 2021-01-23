@@ -92,7 +92,7 @@ for `index.md` the first sentence will be displayed as the short intro in the fu
 ```md
 # useMyFunction
 
-> This will be the intro. The detail descriptions...
+This will be the intro. The detail descriptions...
 ```
 
 ## Code Style

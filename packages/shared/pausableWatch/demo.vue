@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
 import { pausableWatch } from '.'
-import { onStartTyping } from '../../core'
+import { onStartTyping } from '@vueuse/core'
 
 const input = ref<HTMLInputElement | null>()
 const log = ref('')

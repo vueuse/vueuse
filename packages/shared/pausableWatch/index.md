@@ -4,7 +4,7 @@ category: Watch
 
 # pausableWatch
 
-> Pausable watch
+Pausable watch
 
 ## Usage
 

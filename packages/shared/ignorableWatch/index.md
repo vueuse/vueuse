@@ -4,7 +4,7 @@ category: Watch
 
 # ignorableWatch
 
-> Ignorable watch
+Ignorable watch
 
 ## Usage
 

@@ -1,4 +1,4 @@
-import { MaybeRef } from '@vueuse/shared'
+import { MaybeRef, isClient } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 
@@ -19,7 +19,7 @@ export function useQRCode(
   watch(
     src,
     async(value) => {
-      if (src.value)
+      if (src.value && isClient)
         result.value = await QRCode.toDataURL(value, options)
     },
     { immediate: true },
