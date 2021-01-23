@@ -340,6 +340,18 @@ export async function updatePackageJSON() {
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/master/packages/${name}#readme`
+    packageJSON.main = './dist/index.cjs.js'
+    packageJSON.types = './dist/index.d.ts'
+    packageJSON.module = './dist/index.esm.js'
+    packageJSON.unpkg = './dist/index.umd.min.js'
+    packageJSON.jsdelivr = './dist/index.umd.min.js'
+    packageJSON.exports = {
+      '.': {
+        import: './dist/index.esm.js',
+        require: './dist/index.cjs.js',
+      },
+      './': './',
+    }
 
     for (const key of Object.keys(packageJSON.dependencies)) {
       if (key.startsWith('@vueuse/'))

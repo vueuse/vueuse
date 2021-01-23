@@ -2,11 +2,11 @@
   "name": "@vueuse/core",
   "version": "4.0.8",
   "description": "Collection of essential Vue Composition Utilities",
-  "main": "dist/index.cjs.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.esm.js",
-  "unpkg": "dist/index.umd.min.js",
-  "jsdelivr": "dist/index.umd.min.js",
+  "main": "./dist/index.cjs.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.esm.js",
+  "unpkg": "./dist/index.umd.min.js",
+  "jsdelivr": "./dist/index.umd.min.js",
   "sideEffects": false,
   "files": [
     "dist"
@@ -30,5 +30,12 @@
   "dependencies": {
     "vue-demi": "latest",
     "@vueuse/shared": "4.0.8"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./": "./"
   }
 }
