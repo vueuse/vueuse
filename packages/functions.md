@@ -16,6 +16,7 @@
   - [`useBrowserLocation`](https://vueuse.js.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.js.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useCssVar`](https://vueuse.js.org/core/useCssVar/) — manipulate CSS variables
+  - [`useDark`](https://vueuse.js.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.js.org/core/useEventListener/) — use EventListener with ease
   - [`useFavicon`](https://vueuse.js.org/core/useFavicon/) — reactive favicon
   - [`useFullscreen`](https://vueuse.js.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)

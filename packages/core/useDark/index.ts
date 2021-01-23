@@ -1,10 +1,10 @@
 import { computed, ref, watch } from 'vue-demi'
-import { StorageLike, useStorage } from '../useStorage'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { StorageLike, StorageOptions, useStorage } from '../useStorage'
+import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
-import { tryOnMounted } from '../dist'
+import { tryOnMounted } from '@vueuse/shared'
 
-export interface UseDarkOptions extends ConfigurableWindow {
+export interface UseDarkOptions extends StorageOptions {
   /**
    * CSS Selector for the target element applying to
    *
@@ -75,12 +75,13 @@ export function useDark(options: UseDarkOptions = {}) {
     window = defaultWindow,
     storage = defaultWindow?.localStorage,
     storageKey = 'vueuse-color-scheme',
+    listenToStorageChanges = true,
   } = options
 
   const preferredDark = usePreferredDark({ window })
   const store = storageKey == null
     ? ref<ColorSchemes>('auto')
-    : useStorage<ColorSchemes>(storageKey, 'auto', storage)
+    : useStorage<ColorSchemes>(storageKey, 'auto', storage, { window, listenToStorageChanges })
 
   const isDark = computed<boolean>({
     get() {
@@ -96,8 +97,6 @@ export function useDark(options: UseDarkOptions = {}) {
     },
   })
 
-  const isAuto = computed(() => store.value === 'auto')
-
   const onChanged = options.onChanged || ((v: boolean) => {
     const el = window?.document.querySelector(selector)
     if (attribute === 'class') {
@@ -112,8 +111,5 @@ export function useDark(options: UseDarkOptions = {}) {
 
   tryOnMounted(() => onChanged(isDark.value))
 
-  return {
-    isDark,
-    isAuto,
-  }
+  return isDark
 }
