@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSiteDataByRoute, useFrontmatter } from 'vitepress'
-import { isDark } from '../composables/darkmode'
+import { isDark } from '../composables/dark'
 import NavLink from './NavLink.vue'
 
 const site = useSiteDataByRoute()
