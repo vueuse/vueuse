@@ -7,7 +7,7 @@
 
 <script setup lang='ts'>
 import { isDark } from '../composables/darkmode'
-import { useToggle } from '../../../shared'
+import { useToggle } from '@vueuse/core'
 
 const toggle = useToggle(isDark)
 </script>

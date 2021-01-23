@@ -1,5 +1,5 @@
 import { watch, computed, Ref } from 'vue-demi'
-import { usePreferredDark, useStorage } from '../../../core'
+import { usePreferredDark, useStorage } from '@vueuse/core'
 
 export const colorSchema = useStorage('color-schema', 'auto') as Ref<'auto' | 'dark' | 'light'>
 

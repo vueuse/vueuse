@@ -1,78 +1,77 @@
-code {
-  margin: 0;
+/* https://github.com/antfu/prism-theme-vars */
+@import 'prism-theme-vars/base.css';
+@import 'prism-theme-vars/marker.css';
+
+:root {
+  --prism-font-family: 'Input Mono', monospace;
+}
+
+html:not(.dark) {
+  --prism-foreground: #393a34;
+  --prism-background: #f0f0f050;
+  --prism-comment: #b8c4b8;
+  --prism-string: #c67b5d;
+  --prism-literal: #3a9c9b;
+  --prism-keyword: #248459;
+  --prism-function: #849145;
+  --prism-deleted: #a14f55;
+  --prism-class: #2b91af;
+  --prism-builtin: #a52727;
+  --prism-property: #ad502b;
+  --prism-namespace: #c96880;
+  --prism-punctuation: #8e8f8b;
+  --prism-decorator: #bd8f8f;
+  --prism-json-property: #698c96;
+  --prism-inline-background: #f8f8f8;
+  --prism-line-highlight-background: #f2f2f2;
+}
+
+html.dark {
+  --prism-scheme: dark;
+  --prism-foreground: #d4cfbf;
+  --prism-background: #22222220;
+  --prism-inline-background: #141414;
+  --prism-comment: #758575;
+  --prism-string: #ce9178;
+  --prism-literal: #4fb09d;
+  --prism-keyword: #4d9375;
+  --prism-function: #c2c275;
+  --prism-deleted: #a14f55;
+  --prism-class: #5ebaa8;
+  --prism-builtin: #cb7676;
+  --prism-property: #dd8e6e;
+  --prism-namespace: #c96880;
+  --prism-punctuation: #d4d4d4;
+  --prism-decorator: #bd8f8f;
+  --prism-regex: #ab5e3f;
+  --prism-json-property: #6b8b9e;
+  --prism-line-number: #888888;
+  --prism-line-number-gutter: #eeeeee;
+  --prism-line-highlight-background: #202020;
+  --prism-selection-background: #444444;
+}
+
+/* Overrides */
+
+:not(pre) > code {
+  background: var(--prism-inline-background);
+  padding: 1px 6px;
   border-radius: 3px;
-  padding: .25rem .5rem;
-  font-family: var(--code-font-family);
-  font-size: .85em;
-  color: var(--c-text-light);
-  background-color: var(--code-inline-bg-color);
 }
 
-code .token.deleted {
-  color: #ec5975;
-}
-
-code .token.inserted {
-  color: var(--c-brand);
+a > code {
+  color: var(--c-brand-dark);
 }
 
 div[class*='language-'] {
   position: relative;
-  margin: 1rem -1.5rem;
-  color: var(--c-text);
-  background-color: var(--code-bg-color);
-  overflow-x: auto;
 }
 
-li > div[class*='language-'] {
-  border-radius: 6px 0 0 6px;
-  margin: 1rem -1.5rem 1rem -1.25rem;
-}
-
-@media (min-width: 420px) {
-  div[class*='language-'] {
-    margin: 1rem 0;
-    border-radius: 6px;
-  }
-
-  li > div[class*='language-'] {
-    margin: 1rem 0 1rem 0rem;
-    border-radius: 6px;
-  }
-}
-
-[class*='language-'] pre,
-[class*='language-'] code {
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  word-wrap: normal;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
-  background: none;
-}
-
-[class*='language-'] pre {
-  position: relative;
-  z-index: 1;
+div[class*='language-'] pre {
   margin: 0;
-  padding: 1.25rem 1.5rem;
-  background: transparent;
-  overflow-x: auto;
+  z-index: 1;
 }
 
-[class*='language-'] code {
-  padding: 0;
-  line-height: var(--code-line-height);
-  font-size: var(--code-font-size);
-  color: #eee;
-}
 
 /* Line highlighting */
 
@@ -81,135 +80,16 @@ li > div[class*='language-'] {
   top: 0;
   bottom: 0;
   left: 0;
-  padding: 1.25rem 0;
+  padding: var(--prism-block-padding-y) 0;
   width: 100%;
-  line-height: var(--code-line-height);
-  font-family: var(--code-font-family);
-  font-size: var(--code-font-size);
+  line-height: var(--prism-line-height);
+  font-family: var(--prism-font-family);
+  font-size: var(--prism-font-size);
   user-select: none;
   overflow: hidden;
+  z-index: -1;
 }
 
 .highlight-lines .highlighted {
-  background-color: var(--code-highlight);
-}
-
-/* Line numbers mode */
-
-div[class*='language-'].line-numbers-mode {
-  padding-left: 3.5rem;
-}
-
-.line-numbers-wrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 3;
-  border-right: 1px solid rgba(0, 0, 0, .5);
-  padding: 1.25rem 0;
-  width: 3.5rem;
-  text-align: center;
-  line-height: var(--code-line-height);
-  font-family: var(--code-font-family);
-  font-size: var(--code-font-size);
-  color: #888;
-}
-
-/* Language marker */
-
-[class*='language-']:before {
-  position: absolute;
-  top: .6em;
-  right: 1em;
-  z-index: 2;
-  font-size: .8rem;
-  color: #888;
-}
-
-[class~='language-html']:before,
-[class~='language-markup']:before {
-  content: 'html';
-}
-
-[class~='language-md']:before,
-[class~='language-markdown']:before {
-  content: 'md';
-}
-
-[class~='language-css']:before {
-  content: 'css';
-}
-
-[class~='language-sass']:before {
-  content: 'sass';
-}
-
-[class~='language-scss']:before {
-  content: 'scss';
-}
-
-[class~='language-less']:before {
-  content: 'less';
-}
-
-[class~='language-stylus']:before {
-  content: 'styl';
-}
-
-[class~='language-js']:before,
-[class~='language-typescript']:before {
-  content: 'js';
-}
-
-[class~='language-ts']:before,
-[class~='language-typescript']:before {
-  content: 'ts';
-}
-
-[class~='language-json']:before {
-  content: 'json';
-}
-
-[class~='language-rb']:before,
-[class~='language-ruby']:before {
-  content: 'rb';
-}
-
-[class~='language-py']:before,
-[class~='language-python']:before {
-  content: 'py';
-}
-
-[class~='language-sh']:before,
-[class~='language-bash']:before {
-  content: 'sh';
-}
-
-[class~='language-php']:before {
-  content: 'php';
-}
-
-[class~='language-go']:before {
-  content: 'go';
-}
-
-[class~='language-rust']:before {
-  content: 'rust';
-}
-
-[class~='language-java']:before {
-  content: 'java';
-}
-
-[class~='language-c']:before {
-  content: 'c';
-}
-
-[class~='language-yaml']:before {
-  content: 'yaml';
-}
-
-[class~='language-dockerfile']:before {
-  content: 'dockerfile';
+  background-color: var(--prism-line-highlight-background);
 }

@@ -1,4 +1,7 @@
 dist/
+node_modules
+node_modules/
+patches/
 !packages/.vitepress
 !/.eslintrc.js
 !/rollup.config.js
