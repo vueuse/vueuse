@@ -10,11 +10,12 @@ import { isClient } from '../utils'
  * @param immediate
  */
 export function useTimeoutFn(
-  cb: () => any,
+  cb: (...args: unknown[]) => any,
   interval?: number,
   immediate = true,
 ) {
   const isActive = ref(false)
+  const isPending = ref(false)
 
   let timer: number | null = null
 
@@ -27,15 +28,19 @@ export function useTimeoutFn(
 
   function stop() {
     isActive.value = false
+    isPending.value = false
     clear()
   }
 
-  function start() {
+  function start(...args: unknown[]) {
     clear()
     isActive.value = true
+    isPending.value = true
     timer = setTimeout(() => {
+      isPending.value = false
       timer = null
-      cb()
+      // eslint-disable-next-line standard/no-callback-literal
+      cb(...args)
     }, interval)
   }
 
