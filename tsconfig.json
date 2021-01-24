@@ -16,6 +16,7 @@
     "paths": {
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"],
+      "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
       "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
     }
@@ -28,6 +29,7 @@
     "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
+    "**/dist",
     "packages/.test",
     "packages/_docs"
   ]

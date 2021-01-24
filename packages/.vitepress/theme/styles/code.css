@@ -22,7 +22,7 @@ html:not(.dark) {
   --prism-punctuation: #8e8f8b;
   --prism-decorator: #bd8f8f;
   --prism-json-property: #698c96;
-  --prism-inline-background: #f8f8f8;
+  --prism-inline-background: rgba(125,125,125,0.05);
   --prism-line-highlight-background: #f2f2f2;
 }
 
@@ -30,7 +30,7 @@ html.dark {
   --prism-scheme: dark;
   --prism-foreground: #d4cfbf;
   --prism-background: #22222220;
-  --prism-inline-background: #141414;
+  --prism-inline-background: rgba(125,125,125,0.1);
   --prism-comment: #758575;
   --prism-string: #ce9178;
   --prism-literal: #4fb09d;
