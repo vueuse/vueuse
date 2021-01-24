@@ -1,6 +1,17 @@
-import { ref } from 'vue-demi'
+import { Fn } from '@vueuse/shared'
+import { Ref, ref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
 import { isClient } from '../utils'
+
+export interface TimeoutFnResult {
+  start: Fn
+  stop: Fn
+  isPending: Ref<boolean>
+  /**
+   * @deprecated use `isPending` instead
+   */
+  isActive: Ref<boolean>
+}
 
 /**
  * Wrapper for `setTimeout` with controls.
@@ -13,8 +24,7 @@ export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
   interval?: number,
   immediate = true,
-) {
-  const isActive = ref(false)
+): TimeoutFnResult {
   const isPending = ref(false)
 
   let timer: number | null = null
@@ -27,14 +37,12 @@ export function useTimeoutFn(
   }
 
   function stop() {
-    isActive.value = false
     isPending.value = false
     clear()
   }
 
   function start(...args: unknown[]) {
     clear()
-    isActive.value = true
     isPending.value = true
     timer = setTimeout(() => {
       isPending.value = false
@@ -50,8 +58,9 @@ export function useTimeoutFn(
   tryOnUnmounted(stop)
 
   return {
-    isActive,
+    isPending,
     start,
     stop,
+    isActive: isPending,
   }
 }
