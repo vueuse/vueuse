@@ -95,6 +95,9 @@ const refHistory = useManualRefHistory(target, {
 refHistory.clear() // explicitly clear all the history
 ```
 
+## Related Functions
+
+- `useRefHistory`
 
 
 <!--FOOTER_STARTS-->

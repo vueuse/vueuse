@@ -78,6 +78,7 @@ await nextTick() // logs: Changed to after!
 
 ## Recommended Readings
 
+- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@matias-capeletto](https://github.com/matias-capeletto)
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
