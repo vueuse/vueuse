@@ -19,6 +19,15 @@ const { isPending, start, stop } = useTimeoutFn(() => {
 ## Type Declarations
 
 ```typescript
+export interface TimeoutFnResult {
+  start: Fn
+  stop: Fn
+  isPending: Ref<boolean>
+  /**
+   * @deprecated use `isPending` instead
+   */
+  isActive: Ref<boolean>
+}
 /**
  * Wrapper for `setTimeout` with controls.
  *
@@ -27,14 +36,10 @@ const { isPending, start, stop } = useTimeoutFn(() => {
  * @param immediate
  */
 export declare function useTimeoutFn(
-  cb: () => any,
+  cb: (...args: unknown[]) => any,
   interval?: number,
   immediate?: boolean
-): {
-  isActive: Ref<boolean>
-  start: () => void
-  stop: () => void
-}
+): TimeoutFnResult
 ```
 
 ## Source
