@@ -30,3 +30,32 @@ export default defineComponent({
   },
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * Reactive decoced jwt token.
+ *
+ * @see {@link https://vueuse.js.org/integrations/useJwt/}
+ * @param jwt
+ */
+export declare function useJwt<
+  Payload extends object = JwtPayload,
+  Header extends object = JwtHeader
+>(
+  encodedJwt: Ref<string>
+): {
+  header: ComputedRef<Header>
+  payload: ComputedRef<Payload>
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/index.md)
+
+
+<!--FOOTER_ENDS-->
