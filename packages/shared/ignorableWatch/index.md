@@ -42,10 +42,10 @@ await nextTick() // logs: Changed to logged!
 
 ## Flush timing
 
-`ignorableWatch` accepts the same options as `watch` and uses the same defaults. 
-So, by default the composable works using `flush: 'pre'`. 
+`ignorableWatch` accepts the same options as `watch` and uses the same defaults.
+So, by default the composable works using `flush: 'pre'`.
 
-## ignorePrevAsyncUpdates
+## `ignorePrevAsyncUpdates`
 
 This feature is only for async flush `'pre'` and `'post'`. If `flush: 'sync'` is used, `ignorePrevAsyncUpdates()` is a no-op as the watch will trigger immediately after each update to the source. It is still provided for sync flush so the code can be more generic.
 
@@ -76,6 +76,9 @@ source.value = 'after'
 await nextTick() // logs: Changed to after!
 ```
 
+## Recommended Readings
+
+- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@matias-capeletto](https://github.com/matias-capeletto)
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

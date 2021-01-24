@@ -359,6 +359,13 @@
       "description": "manipulate CSS variables"
     },
     {
+      "name": "useDark",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useDark/",
+      "category": "Browser",
+      "description": "reactive dark mode with auto data persistence"
+    },
+    {
       "name": "useDeviceLight",
       "package": "core",
       "docs": "https://vueuse.js.org/core/useDeviceLight/",

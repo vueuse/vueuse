@@ -171,6 +171,14 @@ batch(() => {
 
 Another option is to avoid mutating the original ref value using `arr.value = [...arr.value].splice(1,1)`.
 
+## Related Functions
+
+- `useManualRefHistory`
+
+## Recommended Readings
+
+- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@matias-capeletto](https://github.com/matias-capeletto)
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -250,7 +250,7 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
     let readme = await fs.readFile(readmePath, 'utf-8')
     readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
 
-    await fs.writeFile(readmePath, readme, 'utf-8')
+    await fs.writeFile(readmePath, `${readme.trim()}\n`, 'utf-8')
   }
 }
 
@@ -261,7 +261,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
 
-  await fs.writeFile('README.md', readme, 'utf-8')
+  await fs.writeFile('README.md', `${readme.trim()}\n`, 'utf-8')
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
@@ -318,7 +318,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`
 
-    await fs.writeFile(mdPath, readme, 'utf-8')
+    await fs.writeFile(mdPath, `${readme.trim()}\n`, 'utf-8')
   }
 }
 
@@ -340,6 +340,18 @@ export async function updatePackageJSON() {
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/master/packages/${name}#readme`
+    packageJSON.main = './dist/index.cjs.js'
+    packageJSON.types = './dist/index.d.ts'
+    packageJSON.module = './dist/index.esm.js'
+    packageJSON.unpkg = './dist/index.umd.min.js'
+    packageJSON.jsdelivr = './dist/index.umd.min.js'
+    packageJSON.exports = {
+      '.': {
+        import: './dist/index.esm.js',
+        require: './dist/index.cjs.js',
+      },
+      './': './',
+    }
 
     for (const key of Object.keys(packageJSON.dependencies)) {
       if (key.startsWith('@vueuse/'))
