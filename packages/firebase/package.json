@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/master/packages/firebase#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/firebase#readme",
   "dependencies": {
     "vue-demi": "latest",
     "@vueuse/shared": "4.0.10"

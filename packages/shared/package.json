@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/master/packages/shared#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/shared#readme",
   "dependencies": {
     "vue-demi": "latest"
   },
