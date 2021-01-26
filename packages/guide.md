@@ -95,7 +95,7 @@ These show the general configurations for most of the functions in VueUse.
 
 ### Event Filters
 
-From v4.0, we provide the Event Filters system to give the flexibility to control when will events get triggered. For example, you can use `throttleFilter` and `throttleFilter` to control the event trigger rate:
+From v4.0, we provide the Event Filters system to give the flexibility to control when will events get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
 
 ```ts
 import { throttleFilter, debounceFilter, useLocalStorage, useMouse } from '@vueuse/core'
