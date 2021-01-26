@@ -1,5 +1,6 @@
-import jwt_decode, { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
-import { computed, Ref } from 'vue-demi'
+import { MaybeRef } from './../../shared/utils/types'
+import jwt_decode, { InvalidTokenError, JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
+import { computed, ref, Ref } from 'vue-demi'
 
 /**
  * Reactive decoced jwt token.
@@ -7,19 +8,22 @@ import { computed, Ref } from 'vue-demi'
  * @see {@link https://vueuse.js.org/integrations/useJwt/}
  * @param jwt
  */
-export function useJwt<Payload extends object = JwtPayload, Header extends object = JwtHeader>(encodedJwt: Ref<string>) {
+export function useJwt<Payload extends object = JwtPayload, Header extends object = JwtHeader>(encodedJwt: MaybeRef<string>, onError?: (error: InvalidTokenError) => void) {
+  const encodedJwtRef = ref(encodedJwt)
+
   const decodeWithFallback = <T extends object>(encodedJwt: string, options?: JwtDecodeOptions) => {
     try {
       return jwt_decode<T>(encodedJwt, options)
     }
     catch (err) {
+      if (onError) onError(err)
       return Object.assign({})
     }
   }
 
-  const header = computed((): Header => decodeWithFallback<Header>(encodedJwt.value, { header: true }))
+  const header = computed(() => decodeWithFallback<Header>(encodedJwtRef.value, { header: true }))
 
-  const payload = computed((): Payload => decodeWithFallback<Payload>(encodedJwt.value))
+  const payload = computed(() => decodeWithFallback<Payload>(encodedJwtRef.value))
 
   return {
     header,

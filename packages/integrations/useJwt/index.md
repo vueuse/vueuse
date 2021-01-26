@@ -9,10 +9,7 @@ wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
 ## Install
 
 ```bash
-# npm project
 npm install jwt-decode
-# yarn project
-yarn install jwt-decode
 ```
 
 ## Usage
