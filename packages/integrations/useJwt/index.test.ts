@@ -17,13 +17,13 @@ describe('useJwt', () => {
   test('decoded jwt', () => {
     useSetup(() => {
       const { header, payload } = useJwt(encodedJwt)
-      expect(header.value.alg).toBe('HS256')
+      expect(header.value?.alg).toBe('HS256')
       // NOTE: ts-ignore can be removed as soon as jwt-decode > v3.1.2 was released
       // see: https://github.com/auth0/jwt-decode/pull/115
       // @ts-ignore
-      expect(header.value.typ).toBe('JWT')
-      expect(payload.value.sub).toBe('1234567890')
-      expect(payload.value.iat).toBe(1516239022)
+      expect(header.value?.typ).toBe('JWT')
+      expect(payload.value?.sub).toBe('1234567890')
+      expect(payload.value?.iat).toBe(1516239022)
     })
   })
 
@@ -31,8 +31,8 @@ describe('useJwt', () => {
     useSetup(() => {
       const mockCallback = jest.fn()
       const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
-      expect(header.value).toMatchObject({})
-      expect(payload.value).toMatchObject({})
+      expect(header.value).toMatchObject(null)
+      expect(payload.value).toMatchObject(null)
 
       expect(mockCallback.mock.calls.length).toBeGreaterThan(0)
     })
@@ -43,8 +43,8 @@ describe('useJwt', () => {
   test('decoded jwt with custom fields', () => {
     useSetup(() => {
       const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(encodedCustomJwt)
-      expect(header.value.foo).toBe('bar')
-      expect(payload.value.foo).toBe('bar')
+      expect(header.value?.foo).toBe('bar')
+      expect(payload.value?.foo).toBe('bar')
     })
   })
 
@@ -52,11 +52,11 @@ describe('useJwt', () => {
     useSetup(() => {
       const jwt = ref(encodedJwt.value)
       const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(jwt)
-      expect(header.value.foo).toBeUndefined()
-      expect(payload.value.foo).toBeUndefined()
+      expect(header.value?.foo).toBeUndefined()
+      expect(payload.value?.foo).toBeUndefined()
       jwt.value = encodedCustomJwt.value
-      expect(header.value.foo).toBe('bar')
-      expect(payload.value.foo).toBe('bar')
+      expect(header.value?.foo).toBe('bar')
+      expect(payload.value?.foo).toBe('bar')
     })
   })
 })
