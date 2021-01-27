@@ -31,8 +31,8 @@ describe('useJwt', () => {
     useSetup(() => {
       const mockCallback = jest.fn()
       const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
-      expect(header.value).toMatchObject(null)
-      expect(payload.value).toMatchObject(null)
+      expect(header.value).toBe(null)
+      expect(payload.value).toBe(null)
 
       expect(mockCallback.mock.calls.length).toBeGreaterThan(0)
     })
