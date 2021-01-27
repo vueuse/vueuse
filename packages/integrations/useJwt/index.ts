@@ -17,7 +17,7 @@ export function useJwt<Payload extends object = JwtPayload, Header extends objec
     }
     catch (err) {
       if (onError) onError(err)
-      return Object.assign({})
+      return {} as T
     }
   }
 
