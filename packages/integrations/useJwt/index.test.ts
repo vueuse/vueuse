@@ -30,7 +30,7 @@ describe('useJwt', () => {
   test('decode jwt error', () => {
     useSetup(() => {
       const mockCallback = jest.fn()
-      const { header, payload } = useJwt(ref('bad-token'), mockCallback)
+      const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
       expect(header.value).toMatchObject({})
       expect(payload.value).toMatchObject({})
 
