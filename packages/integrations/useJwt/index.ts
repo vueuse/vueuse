@@ -3,7 +3,7 @@ import jwt_decode, { InvalidTokenError, JwtDecodeOptions, JwtHeader, JwtPayload 
 import { computed, ref, Ref } from 'vue-demi'
 
 /**
- * Reactive decoced jwt token.
+ * Reactive decoded jwt token.
  *
  * @see {@link https://vueuse.js.org/integrations/useJwt/}
  * @param jwt
