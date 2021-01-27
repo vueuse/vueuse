@@ -5,7 +5,7 @@ import { useMouseInElement } from '.'
 
 const demo = ref(null)
 const mouse = reactive(useMouseInElement(demo))
-const tesxt = stringify(mouse)
+const text = stringify(mouse)
 </script>
 
 <template>
