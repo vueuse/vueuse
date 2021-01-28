@@ -13,8 +13,8 @@
 
     <p align="center">
       <a href="https://github.com/vueuse/vueuse">
-        <img v-if="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
-        <img v-else src="/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
+        <img v-show="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
+        <img v-show="!isDark" src="/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
       </a>
       <br>
     </p>
@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSiteDataByRoute, useFrontmatter } from 'vitepress'
-import { isDark } from '../composables/darkmode'
+import { isDark } from '../composables/dark'
 import NavLink from './NavLink.vue'
 
 const site = useSiteDataByRoute()

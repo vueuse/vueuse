@@ -9,7 +9,7 @@ import { activePackages, packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.js.org'
-const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/master/packages'
+const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 // const VUE_REACTIVITY_USE = 'https://github.com/vue-reactivity/use'
 
 const DIR_ROOT = resolve(__dirname, '..')
@@ -250,7 +250,7 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
     let readme = await fs.readFile(readmePath, 'utf-8')
     readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
 
-    await fs.writeFile(readmePath, readme, 'utf-8')
+    await fs.writeFile(readmePath, `${readme.trim()}\n`, 'utf-8')
   }
 }
 
@@ -261,7 +261,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
 
-  await fs.writeFile('README.md', readme, 'utf-8')
+  await fs.writeFile('README.md', `${readme.trim()}\n`, 'utf-8')
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
@@ -318,7 +318,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`
 
-    await fs.writeFile(mdPath, readme, 'utf-8')
+    await fs.writeFile(mdPath, `${readme.trim()}\n`, 'utf-8')
   }
 }
 
@@ -339,7 +339,7 @@ export async function updatePackageJSON() {
     }
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
-      : `https://github.com/vueuse/vueuse/tree/master/packages/${name}#readme`
+      : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
     packageJSON.main = './dist/index.cjs.js'
     packageJSON.types = './dist/index.d.ts'
     packageJSON.module = './dist/index.esm.js'

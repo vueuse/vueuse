@@ -16,7 +16,7 @@ export function useEditLink() {
     const {
       repo,
       docsDir = '',
-      docsBranch = 'master',
+      docsBranch = 'main',
       docsRepo = repo,
     } = site.value.themeConfig
 

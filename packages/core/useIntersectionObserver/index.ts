@@ -65,7 +65,7 @@ export function useIntersectionObserver(
       )
       observer!.observe(newValue)
     }
-  })
+  }, { immediate: true, flush: 'post' })
 
   const stop = () => {
     cleanup()

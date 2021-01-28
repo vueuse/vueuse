@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "description": "Collection of essential Vue Composition Utilities",
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/vueuse/vueuse#readme",
   "dependencies": {
     "vue-demi": "latest",
-    "@vueuse/shared": "4.0.9"
+    "@vueuse/shared": "4.0.10"
   },
   "exports": {
     ".": {

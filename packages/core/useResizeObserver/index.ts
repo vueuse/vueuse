@@ -68,7 +68,7 @@ export function useResizeObserver(
       observer = new window.ResizeObserver(callback)
       observer!.observe(newValue, observerOptions)
     }
-  }, { immediate: true })
+  }, { immediate: true, flush: 'post' })
 
   const stop = () => {
     cleanup()

@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.290":
-  version "1.1.290"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.290.tgz#14a568464f7d21fe644540aba29f3fa52a9c4080"
-  integrity sha512-CZkFvzNvAk56No7gWldVCDrh+tz8zmCA0bBH0UDf4APVFwxofR/Ri7vPWB1Lj9fTiMlavYYGkz0oTIWYTH+CyQ==
+"@iconify/json@^1.1.291":
+  version "1.1.291"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.291.tgz#d0f328cd800139068ff4c617734773ee0d3f2e3a"
+  integrity sha512-7OIO57UeHsmOY6mPC7NTnWtDfrRyUyAzK1OFLEGP0d/d+DUFsQfpGJUkIYchRKg3z0W78LssnkBv+UeYqTwSXA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -9904,10 +9904,10 @@ vite-plugin-icons@^0.2.1:
   dependencies:
     "@iconify/json-tools" "^1.0.10"
 
-vite-plugin-pwa@^0.3.10:
-  version "0.3.10"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.3.10.tgz#254f29ae1f449874e6cbcc3be23881edec32984b"
-  integrity sha512-UMvOTsTQumIy1yJ7imIEsjdealbeOzc30PjNK1By4aEuRUHCI2kJ7Mmh8xUbLJWSLVaUfIKIG1zguk5cpmD3SQ==
+vite-plugin-pwa@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.4.0.tgz#be7723315beed00ca7f9d23b24c5b1356276747c"
+  integrity sha512-+qsqpR6QgkxY8IdSyjHDGz5L5+3pbXKVP2KztqMeamu8Rpki45kEUMrdhloFSPiSNA7L+xS/U6WDyNe+u0IP4A==
   dependencies:
     debug "^4.3.2"
     fast-glob "^3.2.5"

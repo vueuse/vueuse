@@ -37,7 +37,7 @@ export namespace DefaultTheme {
     docsDir?: string
 
     /**
-     * If your docs are in a different branch. Defaults to `master`.
+     * If your docs are in a different branch. Defaults to `main`.
      *
      * @example `"next"`
      */

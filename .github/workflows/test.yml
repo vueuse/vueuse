@@ -3,13 +3,13 @@ name: Unit Test
 on:
   push:
     branches:
-      - master
+      - main
       - main
       - dev
 
   pull_request:
     branches:
-      - master
+      - main
       - main
       - dev
 

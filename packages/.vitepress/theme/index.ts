@@ -2,6 +2,7 @@ import Layout from './Layout.vue'
 import NotFound from './NotFound.vue'
 import DemoContainer from './components/DemoContainer.vue'
 import Note from './components/Note.vue'
+import { handleRedirects } from './redirects'
 
 import './styles/vars.css'
 import './styles/layout.css'
@@ -17,6 +18,9 @@ const theme = {
   enhanceApp({ app, router }) {
     app.component('DemoContainer', DemoContainer)
     app.component('Note', Note)
+
+    if (typeof window !== 'undefined')
+      handleRedirects(router)
 
     // @ts-ignore
     import('vite-plugin-editor-nav/client').then(i => i.default(router))
