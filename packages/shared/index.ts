@@ -1,5 +1,6 @@
 export * from './biSyncRef'
 export * from './controlledComputed'
+export * from './controlledRef'
 export * from './debouncedWatch'
 export * from './extendRef'
 export * from './get'

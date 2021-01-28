@@ -109,6 +109,13 @@
       "description": "explicitly define the deps of computed"
     },
     {
+      "name": "controlledRef",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/controlledRef/",
+      "category": "Utilities",
+      "description": "fine-grained controls over ref and its reactivity"
+    },
+    {
       "name": "debouncedWatch",
       "package": "shared",
       "docs": "https://vueuse.js.org/shared/debouncedWatch/",
@@ -489,7 +496,7 @@
       "package": "core",
       "docs": "https://vueuse.js.org/core/useMediaQuery/",
       "category": "Browser",
-      "description": "reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))"
+      "description": "reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)"
     },
     {
       "name": "useMouse",

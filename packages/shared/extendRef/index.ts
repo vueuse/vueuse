@@ -20,11 +20,11 @@ export interface ExtendRefOptions<Unwrap extends boolean = boolean> {
 /**
  * Overlad 1: Unwrap set to false
  */
-export function extendRef<R extends Ref<any>, Extend extends object, Options extends ExtendRefOptions<false>>(ref: R, extend: Extend, options: Options): ShallowUnwrapRef<Extend> & R
+export function extendRef<R extends Ref<any>, Extend extends object, Options extends ExtendRefOptions<false>>(ref: R, extend: Extend, options?: Options): ShallowUnwrapRef<Extend> & R
 /**
  * Overlad 2: Unwrap unset or set to true
  */
-export function extendRef<R extends Ref<any>, Extend extends object, Options extends ExtendRefOptions>(ref: R, extend: Extend, options: Options): Extend & R
+export function extendRef<R extends Ref<any>, Extend extends object, Options extends ExtendRefOptions>(ref: R, extend: Extend, options?: Options): Extend & R
 
 // implementation
 export function extendRef<R extends Ref<any>, Extend extends object>(ref: R, extend: Extend, { enumerable = false, unwrap = true }: ExtendRefOptions = {}) {

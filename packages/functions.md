@@ -20,7 +20,7 @@
   - [`useEventListener`](https://vueuse.js.org/core/useEventListener/) — use EventListener with ease
   - [`useFavicon`](https://vueuse.js.org/core/useFavicon/) — reactive favicon
   - [`useFullscreen`](https://vueuse.js.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
-  - [`useMediaQuery`](https://vueuse.js.org/core/useMediaQuery/) — reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))
+  - [`useMediaQuery`](https://vueuse.js.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
   - [`usePermission`](https://vueuse.js.org/core/usePermission/) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.js.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/core/usePreferredDark/) — reactive dark theme preference
@@ -80,6 +80,7 @@
   - [`asyncComputed`](https://vueuse.js.org/core/asyncComputed/) — computed for async functions
   - [`biSyncRef`](https://vueuse.js.org/shared/biSyncRef/) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/shared/controlledComputed/) — explicitly define the deps of computed
+  - [`controlledRef`](https://vueuse.js.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`extendRef`](https://vueuse.js.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.js.org/shared/get/) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.js.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
