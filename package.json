@@ -18,7 +18,7 @@
     "size": " esno scripts/export-size.ts",
     "types:fix": " esno scripts/fix-types.ts",
     "typecheck": "tsc --noEmit",
-    "test": "nr test:2",
+    "test": "nr test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
     "test:3": "vue-demi-switch 3 && jest",
     "test:all": "nr test:3 && nr test:2",
