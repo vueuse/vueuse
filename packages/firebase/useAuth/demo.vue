@@ -15,7 +15,8 @@ if (!firebase.apps.length) {
   })
 }
 
-const { isAuthenticated, authenticationStatus, signInWithPopup, user, signOut } = useAuth(firebase)
+const { signInWithPopup, signOut } = firebase.auth()
+const { isAuthenticated, authenticationStatus, user } = useAuth(firebase)
 
 const userData = computed(() => {
   if (user.value) {
