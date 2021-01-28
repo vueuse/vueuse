@@ -33,7 +33,7 @@ export declare function usePreferredColorScheme(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredColorScheme/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredColorScheme/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/usePreferredColorScheme/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/index.md)
 
 
 <!--FOOTER_ENDS-->

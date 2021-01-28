@@ -71,7 +71,7 @@ export declare function throttledWatch<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/throttledWatch/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/throttledWatch/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/throttledWatch/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/throttledWatch/index.md)
 
 
 <!--FOOTER_ENDS-->

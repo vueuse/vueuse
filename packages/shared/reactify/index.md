@@ -115,7 +115,7 @@ export declare function reactify<T extends Function>(fn: T): Reactify<T>
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/reactify/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/reactify/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactify/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactify/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -30,7 +30,7 @@ export declare function useOnline(options?: ConfigurableWindow): Ref<boolean>
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useOnline/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useOnline/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useOnline/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useOnline/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useOnline/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useOnline/index.md)
 
 
 <!--FOOTER_ENDS-->

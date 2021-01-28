@@ -311,7 +311,7 @@ export declare function useRefHistory<Raw, Serialized = Raw>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useRefHistory/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useRefHistory/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useRefHistory/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useRefHistory/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useRefHistory/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useRefHistory/index.md)
 
 
 <!--FOOTER_ENDS-->

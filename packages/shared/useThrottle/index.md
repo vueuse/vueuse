@@ -43,7 +43,7 @@ export declare function useThrottle<T>(value: Ref<T>, delay?: number): Ref<T>
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottle/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottle/index.md)
 
 
 <!--FOOTER_ENDS-->

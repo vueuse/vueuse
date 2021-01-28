@@ -56,7 +56,7 @@ export declare function useQRCode(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useQRCode/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useQRCode/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useQRCode/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.md)
 
 
 <!--FOOTER_ENDS-->

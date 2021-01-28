@@ -489,7 +489,7 @@
       "package": "core",
       "docs": "https://vueuse.js.org/core/useMediaQuery/",
       "category": "Browser",
-      "description": "reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))"
+      "description": "reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)"
     },
     {
       "name": "useMouse",

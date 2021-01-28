@@ -51,7 +51,7 @@ export declare function onStartTyping(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/onStartTyping/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/onStartTyping/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/onStartTyping/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/onStartTyping/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/onStartTyping/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/onStartTyping/index.md)
 
 
 <!--FOOTER_ENDS-->

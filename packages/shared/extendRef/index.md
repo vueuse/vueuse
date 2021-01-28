@@ -78,7 +78,7 @@ export declare function extendRef<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/extendRef/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/extendRef/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/extendRef/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/extendRef/index.md)
 
 
 <!--FOOTER_ENDS-->

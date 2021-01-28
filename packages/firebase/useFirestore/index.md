@@ -58,12 +58,13 @@ export default {
 ## Type Declarations
 
 ```typescript
+export interface FirestoreOptions {
+  errorHandler?: (err: Error) => void
+  autoDispose?: boolean
+}
 export declare type FirebaseDocRef<T> =
   | firebase.firestore.Query<T>
   | firebase.firestore.DocumentReference<T>
-export interface FirestoreOptions {
-  errorHandler?: (err: Error) => void
-}
 export declare function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: firebase.firestore.DocumentReference<T>,
   initialValue: T,
@@ -88,7 +89,7 @@ export declare function useFirestore<T extends firebase.firestore.DocumentData>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useFirestore/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useFirestore/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useFirestore/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useFirestore/index.md)
 
 
 <!--FOOTER_ENDS-->

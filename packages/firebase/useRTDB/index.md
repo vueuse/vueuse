@@ -56,20 +56,24 @@ new Vue({
 ## Type Declarations
 
 ```typescript
+export interface RTDBOptions {
+  autoDispose?: boolean
+}
 /**
  * Reactive Firebase Realtime Database binding.
  *
- * @see   {@link https://vueuse.js.org/useRTDB}
  * @param docRef
+ * @param options
  */
 export declare function useRTDB<T = any>(
-  docRef: firebase.database.Reference
+  docRef: firebase.database.Reference,
+  options?: RTDBOptions
 ): Ref<T | undefined>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/firebase/useRTDB/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.md)
 
 
 <!--FOOTER_ENDS-->

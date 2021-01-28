@@ -48,7 +48,7 @@ export declare function useAsyncState<T>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useAsyncState/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useAsyncState/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useAsyncState/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useAsyncState/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useAsyncState/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useAsyncState/index.md)
 
 
 <!--FOOTER_ENDS-->

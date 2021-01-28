@@ -55,7 +55,7 @@ export {}
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceMotion/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceMotion/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useDeviceMotion/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.md)
 
 
 <!--FOOTER_ENDS-->

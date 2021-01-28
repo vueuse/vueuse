@@ -34,7 +34,7 @@ export declare function useSubscription(subscription: Unsubscribable): void
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/useSubscription/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useSubscription/index.md)
 
 
 <!--FOOTER_ENDS-->

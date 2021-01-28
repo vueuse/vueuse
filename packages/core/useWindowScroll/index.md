@@ -35,7 +35,7 @@ export declare function useWindowScroll({
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowScroll/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowScroll/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useWindowScroll/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useWindowScroll/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useWindowScroll/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useWindowScroll/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -89,7 +89,7 @@ export declare function useNetwork(options?: ConfigurableWindow): NetworkState
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useNetwork/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useNetwork/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useNetwork/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useNetwork/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useNetwork/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useNetwork/index.md)
 
 
 <!--FOOTER_ENDS-->

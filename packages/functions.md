@@ -20,7 +20,7 @@
   - [`useEventListener`](https://vueuse.js.org/core/useEventListener/) — use EventListener with ease
   - [`useFavicon`](https://vueuse.js.org/core/useFavicon/) — reactive favicon
   - [`useFullscreen`](https://vueuse.js.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
-  - [`useMediaQuery`](https://vueuse.js.org/core/useMediaQuery/) — reactive [Media Query]((https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries))
+  - [`useMediaQuery`](https://vueuse.js.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
   - [`usePermission`](https://vueuse.js.org/core/usePermission/) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.js.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.js.org/core/usePreferredDark/) — reactive dark theme preference
