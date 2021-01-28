@@ -14,7 +14,7 @@ export interface FirebaseAuthOptions {
   user: Ref<firebase.User | null>
 }
 
-export function useAuth(instance: typeof firebase): UseAuth {
+export function useAuth(instance: typeof firebase) {
   const authenticationStatus = ref<FirebaseAuthStatus>(FirebaseAuthStatus.Pending)
   const isAuthenticated = computed(() => authenticationStatus.value === FirebaseAuthStatus.Authenticated)
   const user = ref<firebase.User | null>(null)
