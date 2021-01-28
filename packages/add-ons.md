@@ -38,6 +38,7 @@ Enables RxJS reactive functions in Vue
 
 ### Firebase - [`@vueuse/firebase`](https://vueuse.js.org/firebase/README.html)
 Enables realtime bindings for Firebase
+  - [`useAuth`](https://vueuse.js.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
   - [`useFirestore`](https://vueuse.js.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 

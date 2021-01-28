@@ -16,6 +16,7 @@ npm i <b>@vueuse/firebase</b> firebase
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
+  - [`useAuth`](https://vueuse.js.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
   - [`useFirestore`](https://vueuse.js.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.js.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
