@@ -2,6 +2,11 @@ import type firebase from 'firebase'
 import { ref, Ref } from 'vue-demi'
 import { isDef, tryOnUnmounted } from '@vueuse/shared'
 
+export interface FirestoreOptions {
+  errorHandler?: (err: Error) => void
+  autoDispose? : boolean
+}
+
 export type FirebaseDocRef<T> =
   firebase.firestore.Query<T> |
   firebase.firestore.DocumentReference<T>
@@ -23,10 +28,6 @@ function getData<T>(
 
 function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.DocumentReference<T> {
   return Boolean(docRef.parent)
-}
-
-export interface FirestoreOptions {
-  errorHandler?: (err: Error) => void
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (
@@ -58,7 +59,8 @@ export function useFirestore<T extends firebase.firestore.DocumentData> (
  *
  * @see   {@link https://vueuse.js.org/useFirestore}
  * @param docRef
- * @param errorHandler
+ * @param initialValue
+ * @param options
  */
 export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: FirebaseDocRef<T>,
@@ -67,6 +69,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
 ) {
   const {
     errorHandler = (err: Error) => console.error(err),
+    autoDispose = true,
   } = options
 
   if (isDocumentReference<T>(docRef)) {
@@ -89,10 +92,11 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
       data.value = snapshot.docs.map(getData).filter(isDef)
     }, errorHandler)
 
-    tryOnUnmounted(() => {
-      close()
-    })
-
+    if (autoDispose) {
+      tryOnUnmounted(() => {
+        close()
+      })
+    }
     return data
   }
 }

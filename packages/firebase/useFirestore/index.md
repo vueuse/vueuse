@@ -16,13 +16,20 @@ import { useFirestore } from '@vueuse/firebase'
 const db = firebase.initializeApp({ projectId: 'MY PROJECT ID' }).firestore()
 
 const todos = useFirestore(db.collection('todos'))
-// or
+
+// or for doc reference
 const user = useFirestore(db.collection('users').doc('my-user-id'))
 ```
 
 ## Share across instances
 
-You can reuse the firebase reference by using `createGlobalState` from the core package
+You can reuse the db reference by passing `autoDispose: false`
+
+```ts
+const todos = useFirestore(db.collection('todos'), undefined, { autoDispose: false })
+```
+
+or use `createGlobalState` from the core package
 
 ```js
 // store.js
@@ -41,7 +48,6 @@ import { useTodos } from './store'
 export default {
   setup() {
     const todos = useTodos()
-
     return { todos }
   },
 }
