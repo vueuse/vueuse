@@ -730,6 +730,13 @@
       "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
     },
     {
+      "name": "useJwt",
+      "package": "integrations",
+      "docs": "https://vueuse.js.org/integrations/useJwt/",
+      "category": "@Integrations",
+      "description": "wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)"
+    },
+    {
       "name": "useNProgress",
       "package": "integrations",
       "docs": "https://vueuse.js.org/integrations/useNProgress/",
