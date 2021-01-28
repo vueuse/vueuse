@@ -15,6 +15,12 @@ const { isDark } = useDark()
 const toggleDark = useToggle(isDark)
 ```
 
+## Behavior
+
+`useDark` combines with `usePreferredDark` and `useStorage`. On start up, it reads the value from localStorage/sessionStorage(the key is configurable) to see if there is user configured color scheme, if not, it will use users' system preferences. When you change the `isDark` ref, it will update the corresponding element's attribute and then store the preference to storage for persistence.
+
+> Please note `useDark` only handles the DOM attribute changes for you to apply proper selector in your CSS. It does NOT handles the actually style, theme or CSS for you.
+
 ## Configuration
 
 By default, it uses [Tailwind CSS favored dark mode](https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually), which enables dark mode when class `dark` is applied to the `html` tag, for example:
@@ -59,7 +65,7 @@ If the configuration above still not fitting to your needs, you can use `onChang
 ```ts
 const isDark = useDark({
   onChanged(dark: boolean) {
-    // update the dom or something
+    // update the dom, call the API or something
   }
 })
 ```
