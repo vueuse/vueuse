@@ -3,8 +3,8 @@ import { computed, reactive } from 'vue-demi'
 import { useMediaQuery } from '.'
 import YAML from 'js-yaml'
 
-const isLargeScreen = useMediaQuery('(min-width = 1024px)')
-const prefersDark = useMediaQuery('(prefers-color-scheme = dark)')
+const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')
 
 const code = computed(() => YAML.dump(reactive({
   isLargeScreen,

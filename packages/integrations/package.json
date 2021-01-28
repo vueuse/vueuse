@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/master/packages/integrations#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
     "@vueuse/shared": "4.0.10",
     "vue-demi": "latest"
