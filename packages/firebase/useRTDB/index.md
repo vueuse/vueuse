@@ -21,9 +21,13 @@ const db = firebase
 const todos = useRTDB(db.ref('todos'))
 ```
 
-## Share across instances
+You can reuse the db reference by passing `autoDispose: false`
 
-You can reuse the firebase reference by using `createGlobalState` from the core package
+```ts
+const todos = useRTDB(db.collection('todos'), { autoDispose: false })
+```
+
+or use `createGlobalState` from the core package
 
 ```js
 // store.js

@@ -2,6 +2,11 @@ import type firebase from 'firebase'
 import { ref, Ref } from 'vue-demi'
 import { isDef, tryOnUnmounted } from '@vueuse/shared'
 
+export interface FirestoreOptions {
+  errorHandler?: (err: Error) => void
+  autoDispose? : boolean
+}
+
 export type FirebaseDocRef<T> =
   firebase.firestore.Query<T> |
   firebase.firestore.DocumentReference<T>
@@ -23,11 +28,6 @@ function getData<T>(
 
 function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.DocumentReference<T> {
   return Boolean(docRef.parent)
-}
-
-export interface FirestoreOptions {
-  errorHandler?: (err: Error) => void
-  autoDispose? : boolean
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (
