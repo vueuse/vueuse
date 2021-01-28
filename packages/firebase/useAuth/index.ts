@@ -8,7 +8,7 @@ export enum FirebaseAuthStatus {
   Unauthenticated = 'unauthenticated',
 }
 
-interface UseAuth {
+export interface FirebaseAuthOptions {
   authenticationStatus: Ref<FirebaseAuthStatus>
   isAuthenticated: ComputedRef<boolean>
   user: Ref<firebase.User | null>
