@@ -71,7 +71,7 @@ export declare function pausableWatch<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/pausableWatch/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/pausableWatch/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/pausableWatch/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/pausableWatch/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/pausableWatch/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/pausableWatch/index.md)
 
 
 <!--FOOTER_ENDS-->

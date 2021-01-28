@@ -47,7 +47,7 @@ export declare function useTimestamp(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useTimestamp/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useTimestamp/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useTimestamp/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTimestamp/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useTimestamp/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTimestamp/index.md)
 
 
 <!--FOOTER_ENDS-->

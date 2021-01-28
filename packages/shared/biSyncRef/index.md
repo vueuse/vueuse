@@ -47,7 +47,7 @@ export declare function biSyncRef<R extends Ref<any>>(a: R, b: R): () => void
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/biSyncRef/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/biSyncRef/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/biSyncRef/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/biSyncRef/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/biSyncRef/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/biSyncRef/index.md)
 
 
 <!--FOOTER_ENDS-->

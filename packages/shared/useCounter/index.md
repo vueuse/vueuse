@@ -39,7 +39,7 @@ export declare function useCounter(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useCounter/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useCounter/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useCounter/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -44,7 +44,7 @@ export declare function useTimeoutFn(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeoutFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeoutFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useTimeoutFn/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useTimeoutFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useTimeoutFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useTimeoutFn/index.md)
 
 
 <!--FOOTER_ENDS-->

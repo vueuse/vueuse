@@ -88,7 +88,7 @@ export declare function useMousePressed(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMousePressed/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMousePressed/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMousePressed/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/index.md)
 
 
 <!--FOOTER_ENDS-->

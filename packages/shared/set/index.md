@@ -32,7 +32,7 @@ export declare function set<O extends object, K extends keyof O>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/set/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/set/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/set/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/set/index.md)
 
 
 <!--FOOTER_ENDS-->

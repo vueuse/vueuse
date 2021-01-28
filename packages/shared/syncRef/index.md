@@ -109,7 +109,7 @@ export declare function syncRef<R extends Ref<any>>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/syncRef/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/syncRef/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/syncRef/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/syncRef/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.291":
-  version "1.1.291"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.291.tgz#d0f328cd800139068ff4c617734773ee0d3f2e3a"
-  integrity sha512-7OIO57UeHsmOY6mPC7NTnWtDfrRyUyAzK1OFLEGP0d/d+DUFsQfpGJUkIYchRKg3z0W78LssnkBv+UeYqTwSXA==
+"@iconify/json@^1.1.292":
+  version "1.1.292"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.292.tgz#e8bb92b192653cacc14bd47f8cdb5068210dac21"
+  integrity sha512-OJjtA6q2G/BaQaiyFlb6/tzr4cBlBNYdXJeV7hEx3U8Xqb6hwRMWn5NbujkotVQbxslefwTS4fEHN28cha0ajA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -7997,10 +7997,10 @@ pretty@^2.0.0:
     extend-shallow "^2.0.1"
     js-beautify "^1.6.12"
 
-prism-theme-vars@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/prism-theme-vars/-/prism-theme-vars-0.1.3.tgz#4efb45d478595cce5627de00cf9d8e255207d27a"
-  integrity sha512-gJFyDHitVmx4KfHlkfG9yrZBuU7nQtcPeP/wh40OZUZEavM5dw6GAhldlMJIVNpDSsrIT9Nk4BHAn7VRPivHtQ==
+prism-theme-vars@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/prism-theme-vars/-/prism-theme-vars-0.1.4.tgz#7f0a563dc70c4ef5f70fe2ede198d5e6912c4bdd"
+  integrity sha512-Hu2fmxd1J4gJdgzRf+/VHeDXiLpyJN0fp7cOdcN7+S92fGnF5PXol3d4/zXLQkaYc6ZAO0MW/Vqq5qssU/X52g==
 
 prismjs@^1.20.0:
   version "1.23.0"
@@ -9909,10 +9909,10 @@ vite-plugin-icons@^0.2.1:
   dependencies:
     "@iconify/json-tools" "^1.0.10"
 
-vite-plugin-pwa@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.4.0.tgz#be7723315beed00ca7f9d23b24c5b1356276747c"
-  integrity sha512-+qsqpR6QgkxY8IdSyjHDGz5L5+3pbXKVP2KztqMeamu8Rpki45kEUMrdhloFSPiSNA7L+xS/U6WDyNe+u0IP4A==
+vite-plugin-pwa@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.4.1.tgz#eae03c4dd10cd51600c08fd1aaa179a92577c456"
+  integrity sha512-UvcdW93FT0+2dRSLasQtvJepBwXj+UTcvzBekca6YuVdn/MTdEX01J/QqPL+v3KUZBnNM2MAOFpLIkZ3wi9t8g==
   dependencies:
     debug "^4.3.2"
     fast-glob "^3.2.5"

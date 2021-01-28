@@ -42,7 +42,7 @@ export declare function useDevicePixelRatio({
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useDevicePixelRatio/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useDevicePixelRatio/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useDevicePixelRatio/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/index.md)
 
 
 <!--FOOTER_ENDS-->

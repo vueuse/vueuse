@@ -63,7 +63,7 @@ export declare function useMutationObserver(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMutationObserver/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useMutationObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useMutationObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useMutationObserver/index.md)
 
 
 <!--FOOTER_ENDS-->

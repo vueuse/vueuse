@@ -43,7 +43,7 @@ export declare function useVModel<P extends object, K extends keyof P>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useVModel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useVModel/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -52,7 +52,7 @@ export declare function useFullscreen(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useFullscreen/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useFullscreen/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useFullscreen/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/index.md)
 
 
 <!--FOOTER_ENDS-->

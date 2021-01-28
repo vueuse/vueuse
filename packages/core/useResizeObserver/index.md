@@ -97,7 +97,7 @@ export {}
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useResizeObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useResizeObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useResizeObserver/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useResizeObserver/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useResizeObserver/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useResizeObserver/index.md)
 
 
 <!--FOOTER_ENDS-->

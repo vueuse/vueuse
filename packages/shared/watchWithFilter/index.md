@@ -58,7 +58,7 @@ export declare function watchWithFilter<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/watchWithFilter/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/watchWithFilter/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/watchWithFilter/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/watchWithFilter/index.md)
 
 
 <!--FOOTER_ENDS-->

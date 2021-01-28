@@ -31,7 +31,7 @@ export declare function tryOnUnmounted(fn: Fn): void
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/tryOnUnmounted/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/tryOnUnmounted/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnUnmounted/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnUnmounted/index.md)
 
 
 <!--FOOTER_ENDS-->

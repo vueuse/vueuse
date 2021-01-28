@@ -55,7 +55,7 @@ export declare function useThrottleFn<T extends FunctionArgs>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottleFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottleFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/useThrottleFn/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottleFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottleFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useThrottleFn/index.md)
 
 
 <!--FOOTER_ENDS-->

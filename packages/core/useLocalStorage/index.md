@@ -44,7 +44,7 @@ export declare function useLocalStorage<T = unknown>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useLocalStorage/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useLocalStorage/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useLocalStorage/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useLocalStorage/index.md)
 
 
 <!--FOOTER_ENDS-->

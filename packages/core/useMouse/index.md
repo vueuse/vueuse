@@ -65,7 +65,7 @@ export declare function useMouse(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouse/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouse/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useMouse/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useMouse/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useMouse/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useMouse/index.md)
 
 
 <!--FOOTER_ENDS-->

@@ -32,7 +32,7 @@ export declare function tryOnMounted(fn: Fn, sync?: boolean): void
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/tryOnMounted/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/tryOnMounted/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnMounted/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnMounted/index.md)
 
 
 <!--FOOTER_ENDS-->

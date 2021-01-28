@@ -64,7 +64,7 @@ export declare function useFavicon(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useFavicon/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useFavicon/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useFavicon/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/index.md)
 
 
 <!--FOOTER_ENDS-->

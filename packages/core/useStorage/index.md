@@ -87,7 +87,7 @@ export declare function useStorage<T = unknown>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useStorage/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useStorage/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useStorage/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useStorage/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useStorage/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useStorage/index.md)
 
 
 <!--FOOTER_ENDS-->

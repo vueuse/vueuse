@@ -59,7 +59,7 @@ export {}
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/onClickOutside/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/onClickOutside/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/onClickOutside/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/index.md)
 
 
 <!--FOOTER_ENDS-->

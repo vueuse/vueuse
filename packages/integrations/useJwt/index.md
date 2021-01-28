@@ -33,26 +33,41 @@ export default defineComponent({
 ## Type Declarations
 
 ```typescript
+export interface JwtOptions<Fallback> {
+  /**
+   * Value returned when encounter error on decoding
+   *
+   * @default null
+   */
+  fallbackValue?: Fallback
+  /**
+   * Error callback for decoding
+   */
+  onError?: (error: InvalidTokenError) => void
+}
+export interface JwtResult<Payload, Header, Fallback> {
+  header: ComputedRef<Header | Fallback>
+  payload: ComputedRef<Payload | Fallback>
+}
 /**
- * Reactive decoced jwt token.
+ * Reactive decoded jwt token.
  *
- * @see {@link https://vueuse.js.org/integrations/useJwt/}
+ * @see {@link https://vueuse.js.org/useJwt}
  * @param jwt
  */
 export declare function useJwt<
   Payload extends object = JwtPayload,
-  Header extends object = JwtHeader
+  Header extends object = JwtHeader,
+  Fallback = null
 >(
-  encodedJwt: Ref<string>
-): {
-  header: ComputedRef<Header>
-  payload: ComputedRef<Payload>
-}
+  encodedJwt: MaybeRef<string>,
+  options?: JwtOptions<Fallback>
+): JwtResult<Payload, Header, Fallback>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/integrations/useJwt/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useJwt/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useJwt/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useJwt/index.md)
 
 
 <!--FOOTER_ENDS-->

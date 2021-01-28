@@ -39,7 +39,7 @@ export declare function toObserver<T>(value: Ref<T>): NextObserver<T>
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/toObserver/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/rxjs/toObserver/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/toObserver/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/toObserver/index.md)
 
 
 <!--FOOTER_ENDS-->

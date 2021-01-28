@@ -136,7 +136,7 @@ export declare function useDark(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/core/useDark/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/master/packages/core/useDark/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/core/useDark/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDark/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDark/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDark/index.md)
 
 
 <!--FOOTER_ENDS-->
