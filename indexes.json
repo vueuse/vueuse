@@ -109,6 +109,13 @@
       "description": "explicitly define the deps of computed"
     },
     {
+      "name": "controlledRef",
+      "package": "shared",
+      "docs": "https://vueuse.js.org/shared/controlledRef/",
+      "category": "Utilities",
+      "description": "fine-grained controls over ref and its reactivity"
+    },
+    {
       "name": "debouncedWatch",
       "package": "shared",
       "docs": "https://vueuse.js.org/shared/debouncedWatch/",

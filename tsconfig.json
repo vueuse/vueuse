@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
     "declaration": true,
     "declarationDir": "./types",
     "resolveJsonModule": true,

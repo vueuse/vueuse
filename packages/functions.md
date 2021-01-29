@@ -79,6 +79,7 @@
   - [`asyncComputed`](https://vueuse.js.org/core/asyncComputed/) — computed for async functions
   - [`biSyncRef`](https://vueuse.js.org/shared/biSyncRef/) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.js.org/shared/controlledComputed/) — explicitly define the deps of computed
+  - [`controlledRef`](https://vueuse.js.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`extendRef`](https://vueuse.js.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.js.org/shared/get/) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.js.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
