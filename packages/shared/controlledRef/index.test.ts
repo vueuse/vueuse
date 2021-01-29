@@ -4,9 +4,10 @@ import { controlledRef } from '.'
 import { useSetup } from '../../.test'
 
 describe('controlledRef', () => {
-  if (isVue2)
+  if (isVue2) {
+    it('skipped', () => {})
     return
-
+  }
   it('should act like normal ref', () => {
     useSetup(() => {
       let dummy = 0
