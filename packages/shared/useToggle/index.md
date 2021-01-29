@@ -17,7 +17,7 @@ const [value, toggle] = useToggle()
 When you pass a ref, `useToggle` will return a simple toggle function instead:
 
 ```js
-import { useToggle } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
