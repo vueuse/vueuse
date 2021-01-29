@@ -28,11 +28,33 @@ console.log(doubled.value) // 84 (doesn't update)
 
 // get value without tracking the reactivity
 watchEffect(() => {
-  console.log(num.get(false))
+  console.log(num.peek())
 }) // 30
 
 num.value = 50 // watch effect wouldn't be triggered since it collected nothing.
 console.log(doubled.value) // 100 (updated again since it's a reactive set)
+```
+
+### `peek`, `lay`, `untrackedGet`, `silentSet`
+
+We also provide some shorthands for doing the get/set without track/triggering the reactivity system. The following lines are equivalent.
+
+```ts
+const foo = controlledRef('foo')
+```
+
+```ts
+// getting
+foo.get(false)
+foo.untrackedGet()
+foo.peek() // an alias for `untrackedGet`
+```
+
+```ts
+// setting
+foo.set('bar', false)
+foo.silentSet('bar')
+foo.lay('bar') // an alias for `silentSet`
 ```
 
 ## Configurations
