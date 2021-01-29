@@ -1,5 +1,4 @@
 import { isRef, Ref, ref } from 'vue-demi'
-import { Fn } from '../utils'
 
 /**
  * A boolean ref with a toggler
@@ -7,10 +6,10 @@ import { Fn } from '../utils'
  * @see   {@link https://vueuse.js.org/useToggle}
  * @param [initialValue=false]
  */
-export function useToggle(value: Ref<boolean>): Fn
-export function useToggle(initialValue?: boolean): [Ref<boolean>, Fn]
+export function useToggle(value: Ref<boolean>): () => boolean
+export function useToggle(initialValue?: boolean): [Ref<boolean>, () => boolean]
 
-export function useToggle(initialValue: boolean | Ref<boolean> = false): any {
+export function useToggle(initialValue: boolean | Ref<boolean> = false) {
   if (isRef(initialValue)) {
     return () => (initialValue.value = !initialValue.value)
   }
