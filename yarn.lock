@@ -1378,10 +1378,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.292":
-  version "1.1.292"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.292.tgz#e8bb92b192653cacc14bd47f8cdb5068210dac21"
-  integrity sha512-OJjtA6q2G/BaQaiyFlb6/tzr4cBlBNYdXJeV7hEx3U8Xqb6hwRMWn5NbujkotVQbxslefwTS4fEHN28cha0ajA==
+"@iconify/json@^1.1.293":
+  version "1.1.293"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.293.tgz#f61583bb9de76fbdb3495aa7f6883a49d85c73fd"
+  integrity sha512-0xRreoBhdMSwVP3UhPX7x5+NqpN6vrS5/UJgH4uvvLd/QlEnrfkxUy3Ld33LUXMdu1rDZwTPt6MPbbfgWkQusw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -8595,10 +8595,10 @@ rollup@^2.25.0, rollup@^2.33.2, rollup@^2.35.1:
   optionalDependencies:
     fsevents "~2.1.2"
 
-rollup@^2.38.0:
-  version "2.38.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.38.0.tgz#57942d5a10826cb12ed1f19c261f774efa502d2d"
-  integrity sha512-ay9zDiNitZK/LNE/EM2+v5CZ7drkB2xyDljvb1fQJCGnq43ZWRkhxN145oV8GmoW1YNi4sA/1Jdkr2LfawJoXw==
+rollup@^2.38.1:
+  version "2.38.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.38.1.tgz#ecea0f7ce6ef2c1f023fdb79524eb7aeb670ea79"
+  integrity sha512-q07T6vU/V1kqM8rGRRyCgEvIQcIAXoKIE5CpkYAlHhfiWM1Iuh4dIPWpIbqFngCK6lwAB2aYHiUVhIbSWHQWhw==
   optionalDependencies:
     fsevents "~2.1.2"
 
@@ -9919,10 +9919,10 @@ vite-plugin-pwa@^0.4.1:
     pretty-bytes "^5.5.0"
     workbox-build "^6.0.2"
 
-vite@^2.0.0-beta.32:
-  version "2.0.0-beta.44"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.0.0-beta.44.tgz#df3846160066a121d85dbc8ec11c9fa9a71347f2"
-  integrity sha512-NTzmP7HEKDg3J5r3I22f87jK3ugPVEU81BQ8hWn3hNWU0msCziUlj7aHwItSUEbQA+ymqO3TBO2fN7Aa+OKckQ==
+vite@^2.0.0-beta.56:
+  version "2.0.0-beta.56"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.0.0-beta.56.tgz#b254ec4647ae1383d7c5b6f3fdb01f8971b5bcdd"
+  integrity sha512-MX20PSXT6wTfq37B9d/iTmfAut4kBT6DOquw60zVFRtnO7hR9sNmkM6pmoNyVuYJrlkhKZZqoO2DnYs3C7LKCw==
   dependencies:
     esbuild "^0.8.34"
     postcss "^8.2.1"
@@ -9931,10 +9931,10 @@ vite@^2.0.0-beta.32:
   optionalDependencies:
     fsevents "~2.1.2"
 
-vitepress@^0.11.4:
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.11.4.tgz#0ca9c406d0f0f10cf7baa4117184d05890bc75dc"
-  integrity sha512-WvofLFpPxgaaHeAF72uv2XHKtuQ7ouwJu2n3wuDyAOwU1BeyL9YpnVQPBw/L7LAjApJe9bdbK7om0J/hloXN0g==
+vitepress@^0.11.5:
+  version "0.11.5"
+  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.11.5.tgz#1973058ff50fab8702438361c5a5f1c1df336be1"
+  integrity sha512-QElAGDxXcvn3G1UrW6VKWX6hd748+07cU1mMH5/gRN/QDdXTVAyt5Ulxmo+IXAmrZQhN5nvvY7jCWWJIDNXQOA==
   dependencies:
     "@docsearch/css" "^1.0.0-alpha.28"
     "@docsearch/js" "^1.0.0-alpha.28"
@@ -9961,7 +9961,7 @@ vitepress@^0.11.4:
     prismjs "^1.20.0"
     sirv "^1.0.10"
     slash "^3.0.0"
-    vite "^2.0.0-beta.32"
+    vite "^2.0.0-beta.56"
     vue "^3.0.5"
 
 vue-chemistry@^0.2.0:

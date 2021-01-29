@@ -96,21 +96,43 @@ const num = controlledRef(0, {
 ## Type Declarations
 
 ```typescript
+export interface ControlledRefOptions<T> {
+  /**
+   * Callback function before the ref changing.
+   *
+   * Returning `false` to dismiss the change.
+   */
+  onBeforeChange?: (value: T, oldValue: T) => void | boolean
+  /**
+   * Callback function after the ref changed
+   *
+   * This happends synchronously, with less overhead compare to `watch`
+   */
+  onChanged?: (value: T, oldValue: T) => void
+}
 /**
  * Explicitly define the deps of computed.
  *
  * @param source
  * @param fn
  */
-export declare function controlledComputed<T, S>(
-  source: WatchSource<S>,
-  fn: () => T
-): ComputedRef<T>
+export declare function controlledRef<T>(
+  initial: T,
+  options?: ControlledRefOptions<T>
+): ShallowUnwrapRef<{
+  get: (tracking?: boolean) => T
+  set: (value: T, triggering?: boolean) => void
+  untrackedGet: () => T
+  silentSet: (v: T) => void
+  peek: () => T
+  lay: (v: T) => void
+}> &
+  Ref<T>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/master/packages/shared/controlledComputed/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/master/packages/shared/controlledComputed/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/controlledRef/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/controlledRef/index.md)
 
 
 <!--FOOTER_ENDS-->
