@@ -4,32 +4,30 @@ category: '@Firebase'
 
 # useAuth
 
-Reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding 
+Reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding. It provides a reactive `user` and `isAuthenticated` so you
+can easily react to changes in the users authentication status. 
 
 ## Usage
 
 ```html
 <script setup lang="ts">
 import firebase from 'firebase'
-import { useAuth } from '@vueuse/firebase'
+import { useAuth } from '.'
 
-// Ensure your firebase application is initialized using `firebaes.initialize`
+const { auth } = firebase
+const { GoogleAuthProvider } = auth
 
-const { user, isAuthenticated, signInWithPopup, signOut } = useAuth(firebase)
+const { isAuthenticated, user } = useAuth()
 
-const signin = () => {
-  signInWithPopup(new firebase.auth.GoogleAuthProvider())
-}
-
+const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
 </script>
 
-<tempalte>
-  <div>
-    <button v-if="!isAuthenticated" @click="signin">Sign in with Google</button>
-    <div v-else>
-      You are authenticated!
-      <button @click="signOut()">Sign Out</button>
-    </div>
+<template>
+  <pre v-if="isAuthenticated">{{ user }}</pre>
+  <div v-else>
+    <button @click="signIn">
+      Sign In with Google
+    </button>
   </div>
 </template>
 ```
@@ -37,24 +35,12 @@ const signin = () => {
 <!--FOOTER_STARTS-->
 ## Type Declarations
 ```ts
-interface UseAuth {
-  authenticationStatus: Ref<FirebaseAuthStatus>
+export interface FirebaseAuthOptions {
   isAuthenticated: ComputedRef<boolean>
   user: Ref<firebase.User | null>
-
-  signInAnonymously(): Promise<firebase.auth.UserCredential>
-  signInWithCredential(credential: firebase.auth.AuthCredential): Promise<firebase.auth.UserCredential>
-  signInWithCustomToken(token: string): Promise<firebase.auth.UserCredential>
-  signInWithEmailAndPassword(email: string, password: string): Promise<firebase.auth.UserCredential>
-  signInWithEmailLink(email: string, emailLink?: string | undefined): Promise<firebase.auth.UserCredential>
-  signInWithPhoneNumber(phoneNumber: string, applicationVerifier: firebase.auth.ApplicationVerifier): Promise<firebase.auth.ConfirmationResult>
-  signInWithRedirect(provider: firebase.auth.AuthProvider): Promise<void>
-  signInWithPopup(provider: firebase.auth.AuthProvider): Promise<firebase.auth.UserCredential>
-  signOut(): Promise<void>
-  createUserWithEmailAndPassword(email: string, password: string): void
 }
 
-export declare function useAuth(instance: typeof firebase): UseAuth
+export declare function useAuth(): FirebaseAuthOptions
 ```
 
 ## Source

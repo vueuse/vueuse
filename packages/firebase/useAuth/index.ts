@@ -1,47 +1,21 @@
 import { computed, ComputedRef, ref, Ref } from 'vue'
-import type firebase from 'firebase'
+import firebase from 'firebase'
 import 'firebase/auth'
 
-export enum FirebaseAuthStatus {
-  Pending = 'pending',
-  Authenticated = 'authenticated',
-  Unauthenticated = 'unauthenticated',
-}
-
 export interface FirebaseAuthOptions {
-  authenticationStatus: Ref<FirebaseAuthStatus>
   isAuthenticated: ComputedRef<boolean>
   user: Ref<firebase.User | null>
 }
 
-export function useAuth(instance: typeof firebase) {
-  const authenticationStatus = ref<FirebaseAuthStatus>(FirebaseAuthStatus.Pending)
-  const isAuthenticated = computed(() => authenticationStatus.value === FirebaseAuthStatus.Authenticated)
-  const user = ref<firebase.User | null>(null)
+export function useAuth() {
+  const { auth } = firebase
 
-  const { auth } = instance
+  const user = ref<firebase.User | null>(auth().currentUser)
+  const isAuthenticated = computed(() => !!user.value)
 
-  // Initial check to see if user is signed in
-  if (instance.auth().currentUser)
-    authenticationStatus.value = FirebaseAuthStatus.Authenticated
-  else
-    authenticationStatus.value = FirebaseAuthStatus.Unauthenticated
-
-  instance
-    .auth()
-    .onIdTokenChanged((authUser) => {
-      if (authUser) {
-        user.value = authUser
-        authenticationStatus.value = FirebaseAuthStatus.Authenticated
-      }
-      else {
-        user.value = null
-        authenticationStatus.value = FirebaseAuthStatus.Unauthenticated
-      }
-    })
+  auth().onIdTokenChanged(authUser => user.value = authUser)
 
   return {
-    authenticationStatus,
     isAuthenticated,
     user,
   }
