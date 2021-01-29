@@ -50,7 +50,7 @@ describe('controlledRef', () => {
       expect(ref.value).toBe(1)
       expect(dummy).toBe(0)
 
-      ref.set(10, true)
+      ref.lay(10)
 
       expect(ref.value).toBe(10)
       expect(dummy).toBe(1)
@@ -64,12 +64,12 @@ describe('controlledRef', () => {
       const ref = controlledRef(0)
 
       watchEffect(() => {
-        ref.value
+        ref.get()
         dummy1 += 1
       })
 
       watchEffect(() => {
-        ref.get(false)
+        ref.peek()
         dummy2 += 1
       })
 

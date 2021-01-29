@@ -65,11 +65,38 @@ export function controlledRef<T>(initial: T, options: ControlledRefOptions<T> = 
       trigger()
   }
 
+  /**
+   * Get the value without tracked in the reactivity system
+   */
+  const untrackedGet = () => get(false)
+  /**
+   * Set the value without triggering the reactivity system
+   */
+  const silentSet = (v: T) => set(v, false)
+
+  /**
+   * Get the value without tracked in the reactivity system.
+   *
+   * Alias for `untrackedGet()`
+   */
+  const peek = () => get(false)
+
+  /**
+   * Set the value without triggering the reactivity system
+   *
+   * Alias for `silentSet(v)`
+   */
+  const lay = (v: T) => set(v, false)
+
   return extendRef(
     ref,
     {
       get,
       set,
+      untrackedGet,
+      silentSet,
+      peek,
+      lay,
     },
     { enumerable: true },
   )
