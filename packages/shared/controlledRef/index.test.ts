@@ -45,12 +45,12 @@ describe('controlledRef', () => {
       expect(ref.value).toBe(0)
       expect(dummy).toBe(0)
 
-      ref.set(1, false)
+      ref.lay(42)
 
-      expect(ref.value).toBe(1)
+      expect(ref.value).toBe(42)
       expect(dummy).toBe(0)
 
-      ref.lay(10)
+      ref.set(10)
 
       expect(ref.value).toBe(10)
       expect(dummy).toBe(1)
