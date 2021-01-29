@@ -1,4 +1,3 @@
-
 # Core Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
@@ -107,3 +106,7 @@
 
 
 <!--FUNCTIONS_LIST_ENDS-->
+
+<br>
+
+More functions avaliable in [Add-ons](./add-ons).

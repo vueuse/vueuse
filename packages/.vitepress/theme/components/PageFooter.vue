@@ -3,9 +3,9 @@
     <div class="edit">
       <EditLink />
     </div>
-    <div class="updated">
+    <!-- <div class="updated">
       <LastUpdated />
-    </div>
+    </div> -->
   </footer>
 </template>
 

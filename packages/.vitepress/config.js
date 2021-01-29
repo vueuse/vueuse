@@ -23,7 +23,7 @@ const config = {
     repo: 'vueuse/vueuse',
     docsDir: 'packages',
     editLinks: true,
-    editLinkText: 'Edit this page on GitHub',
+    editLinkText: 'Edit this page',
     lastUpdated: 'Last Updated',
     nav: [
       // { text: 'Home', link: '/' },s
