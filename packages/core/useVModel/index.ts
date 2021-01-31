@@ -8,10 +8,10 @@ import { computed, getCurrentInstance, isVue2 } from 'vue-demi'
  * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
  */
-export function useVModel<P extends object, K extends keyof P>(
+export function useVModel<P extends object, K extends keyof P, Name extends string>(
   props: P,
   key?: K,
-  emit?: (name: string, value: any) => void,
+  emit?: (name: Name, ...args: any[]) => void,
 ) {
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
