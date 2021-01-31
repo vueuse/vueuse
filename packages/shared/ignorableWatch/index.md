@@ -24,7 +24,7 @@ const { stop, ignoreUpdates } = ignorableWatch(
 source.value = 'bar'
 await nextTick() // logs: Changed to bar!
 
-ignoreUpdates( () => {
+ignoreUpdates(() => {
   source.value = 'foobar'
 })
 await nextTick() // (nothing happened)
@@ -32,7 +32,7 @@ await nextTick() // (nothing happened)
 source.value = 'hello'
 await nextTick() // logs: Changed to hello!
 
-ignoreUpdates( () => {
+ignoreUpdates(() => {
   source.value = 'ignored'
 })
 source.value = 'logged'
@@ -64,7 +64,7 @@ source.value = 'bar'
 await nextTick() // logs: Changed to bar!
 
 source.value = 'good'
-source.value = 'bye'
+source.value = 'by'
 ignorePrevAsyncUpdates()
 
 await nextTick() // (nothing happened)

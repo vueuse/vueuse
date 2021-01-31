@@ -52,8 +52,11 @@ export function useTimeoutFn(
     }, interval)
   }
 
-  if (immediate && isClient)
-    start()
+  if (immediate) {
+    isPending.value = true
+    if (isClient)
+      start()
+  }
 
   tryOnUnmounted(stop)
 
