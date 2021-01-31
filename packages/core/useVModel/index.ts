@@ -16,16 +16,27 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
   const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
+  let event: string | undefined
 
-  if (!key)
-    key = (isVue2 ? 'value' : 'modelValue') as K
+  if (!key) {
+    if (isVue2) {
+      const modelOptions = vm?.proxy?.$options?.model
+      key = modelOptions?.value || 'value' as K
+      event = modelOptions?.event
+    }
+    else {
+      key = 'modelValue' as K
+    }
+  }
+
+  event = event || `update:${key}`
 
   return computed<P[K]>({
     get() {
       return props[key!]
     },
     set(value) {
-      _emit(`update:${key}`, value)
+      _emit(event, value)
     },
   })
 }
