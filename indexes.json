@@ -786,6 +786,13 @@
       "description": "uses subscriptions without worry about unsubscribing to it or memory leaks"
     },
     {
+      "name": "useAuth",
+      "package": "firebase",
+      "docs": "https://vueuse.js.org/firebase/useAuth/",
+      "category": "@Firebase",
+      "description": "reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding"
+    },
+    {
       "name": "useFirestore",
       "package": "firebase",
       "docs": "https://vueuse.js.org/firebase/useFirestore/",
