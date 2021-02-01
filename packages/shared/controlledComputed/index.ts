@@ -1,4 +1,5 @@
-import { computed, Ref, ref, watch, WatchSource } from 'vue-demi'
+import { ComputedRef, customRef, ref, watch, WatchSource } from 'vue-demi'
+import { Fn } from '../utils'
 
 /**
  * Explicitly define the deps of computed.
@@ -7,13 +8,34 @@ import { computed, Ref, ref, watch, WatchSource } from 'vue-demi'
  * @param fn
  */
 export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
-  const v = ref(fn()) as Ref<T>
+  let v: T = undefined!
+  let track: Fn
+  let trigger: Fn
+  const dirty = ref(true)
+
   watch(
     source,
-    () => v.value = fn(),
-    {
-      flush: 'sync',
+    () => {
+      dirty.value = true
+      trigger()
     },
+    { flush: 'sync' },
   )
-  return computed<T>(() => v.value)
+
+  return customRef<T>((_track, _trigger) => {
+    track = _track
+    trigger = _trigger
+
+    return {
+      get() {
+        if (dirty.value) {
+          v = fn()
+          dirty.value = false
+        }
+        track()
+        return v
+      },
+      set() {},
+    }
+  }) as ComputedRef<T>
 }
