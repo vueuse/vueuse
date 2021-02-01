@@ -34,7 +34,9 @@ const toggleDark = useToggle(isDark)
  * @param [initialValue=false]
  */
 export declare function useToggle(value: Ref<boolean>): () => boolean
-export declare function useToggle(initialValue?: boolean): [Ref<boolean>, () => boolean]
+export declare function useToggle(
+  initialValue?: boolean
+): [Ref<boolean>, () => boolean]
 ```
 
 ## Source

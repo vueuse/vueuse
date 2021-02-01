@@ -34,10 +34,14 @@ export default {
  * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
  */
-export declare function useVModel<P extends object, K extends keyof P>(
+export declare function useVModel<
+  P extends object,
+  K extends keyof P,
+  Name extends string
+>(
   props: P,
   key?: K,
-  emit?: (name: string, value: any) => void
+  emit?: (name: Name, ...args: any[]) => void
 ): WritableComputedRef<P[K]>
 ```
 
