@@ -7,13 +7,20 @@ export interface FirebaseAuthOptions {
   user: Ref<firebase.User | null>
 }
 
-export function useAuth() {
-  const { auth } = firebase
+export function useAuth(authInstance?: typeof firebase.auth | firebase.auth.Auth) {
+  let auth: firebase.auth.Auth = firebase.auth()
 
-  const user = ref<firebase.User | null>(auth().currentUser)
+  if (authInstance) {
+    if (authInstance instanceof Function)
+      auth = authInstance()
+    else
+      auth = authInstance
+  }
+
+  const user = ref<firebase.User | null>(auth.currentUser)
   const isAuthenticated = computed(() => !!user.value)
 
-  auth().onIdTokenChanged(authUser => user.value = authUser)
+  auth.onIdTokenChanged(authUser => user.value = authUser)
 
   return {
     isAuthenticated,

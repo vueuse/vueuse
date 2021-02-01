@@ -32,6 +32,12 @@ const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
 </template>
 ```
 
+Using a different firebaes auth instance
+```ts
+import firebase from 'firebase'
+const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase.auth())
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 ```ts
@@ -41,6 +47,7 @@ export interface FirebaseAuthOptions {
 }
 
 export declare function useAuth(): FirebaseAuthOptions
+export declare function useAuth(authInstance?: typeof firebase.auth | firebase.auth.Auth): FirebaseAuthOptions
 ```
 
 ## Source
