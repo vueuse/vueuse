@@ -8,13 +8,16 @@ export interface FirebaseAuthOptions {
 }
 
 export function useAuth(authInstance?: typeof firebase.auth | firebase.auth.Auth) {
-  let auth: firebase.auth.Auth = firebase.auth()
+  let auth: firebase.auth.Auth
 
   if (authInstance) {
     if (authInstance instanceof Function)
       auth = authInstance()
     else
       auth = authInstance
+  }
+  else {
+    auth = firebase.auth()
   }
 
   const user = ref<firebase.User | null>(auth.currentUser)
