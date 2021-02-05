@@ -39,7 +39,7 @@ export function useMouseInElement(
     stop = watch(
       [targetRef, x, y],
       () => {
-        const el = targetRef.value
+        const el = targetRef.value.$el || targetRef.value
         if (!el)
           return
 
