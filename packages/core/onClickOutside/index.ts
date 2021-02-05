@@ -31,7 +31,8 @@ export function onClickOutside(
       return
 
     const elements = event.composedPath()
-    if (targetRef.value === event.target || elements.includes(targetRef.value!))
+    const el = targetRef.value.$el || targetRef.value
+    if (el === event.target || elements.includes(el))
       return
 
     handler(event)
