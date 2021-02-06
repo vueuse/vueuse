@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "4.0.12",
+  "version": "4.1.0",
   "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
     "build": "esno scripts/build.ts",
