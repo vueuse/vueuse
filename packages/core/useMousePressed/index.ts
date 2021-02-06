@@ -1,5 +1,4 @@
-import { Fn } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref, computed } from 'vue-demi'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { MouseSourceType } from '../useMouse'
@@ -39,56 +38,43 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     window = defaultWindow,
   } = options
 
-  const target = ref(options.target)
   const pressed = ref(initialValue)
   const sourceType = ref<MouseSourceType>(null)
 
-  let listeners: Fn[] = []
-
-  if (window) {
-    const cleanup = () => {
-      listeners.forEach(f => f())
-      listeners = []
+  if (!window) {
+    return {
+      pressed,
+      sourceType,
     }
-    const onReleased = () => {
-      pressed.value = false
-      sourceType.value = null
-    }
+  }
 
-    watch(
-      target,
+  const onReleased = () => {
+    pressed.value = false
+    sourceType.value = null
+  }
+
+  const target = computed(() => unrefElement(options.target) || window)
+
+  useEventListener(window, 'mouseleave', onReleased, { passive: true })
+  useEventListener(window, 'mouseup', onReleased, { passive: true })
+  useEventListener(target, 'mousedown',
+    () => {
+      pressed.value = true
+      sourceType.value = 'mouse'
+    },
+    { passive: true },
+  )
+
+  if (touch) {
+    useEventListener(window, 'touchend', onReleased, { passive: true })
+    useEventListener(window, 'touchcancel', onReleased, { passive: true })
+    useEventListener(target, 'touchstart',
       () => {
-        cleanup()
-
-        const el = unrefElement(target) || window
-        listeners.push(useEventListener(el, 'mousedown',
-          () => {
-            pressed.value = true
-            sourceType.value = 'mouse'
-          },
-          { passive: true },
-        ))
-
-        if (touch) {
-          listeners.push(useEventListener(el, 'touchstart',
-            () => {
-              pressed.value = true
-              sourceType.value = 'touch'
-            },
-            { passive: true },
-          ))
-        }
+        pressed.value = true
+        sourceType.value = 'touch'
       },
-      { immediate: true },
+      { passive: true },
     )
-
-    useEventListener(window, 'mouseleave', onReleased, { passive: true })
-    useEventListener(window, 'mouseup', onReleased, { passive: true })
-
-    if (touch) {
-      useEventListener(window, 'touchend', onReleased, { passive: true })
-      useEventListener(window, 'touchcancel', onReleased, { passive: true })
-    }
   }
 
   return {

@@ -109,7 +109,7 @@ export declare function useEventListener<Names extends string>(
  * @param options
  */
 export declare function useEventListener(
-  target: EventTarget,
+  target: MaybeRef<EventTarget>,
   event: string,
   listener: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
