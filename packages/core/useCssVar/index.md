@@ -30,7 +30,7 @@ const color = useCssVar('--color', el)
  */
 export declare function useCssVar(
   prop: string,
-  el?: MaybeRef<HTMLElement | null>,
+  target?: MaybeElementRef,
   { window }?: ConfigurableWindow
 ): Ref<string>
 ```
