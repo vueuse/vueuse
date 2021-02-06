@@ -1,5 +1,5 @@
 import { watch } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { noop, tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 
@@ -40,36 +40,43 @@ export function useIntersectionObserver(
     window = defaultWindow,
   } = options
 
-  let observer: IntersectionObserver | undefined
   const isSupported = window && 'IntersectionObserver' in window
 
-  const cleanup = () => {
-    if (observer) {
-      observer.disconnect()
-      observer = undefined
-    }
-  }
+  let cleanup = noop
 
-  const stopWatch = watch(
-    () => unrefElement(target),
-    (el) => {
-      cleanup()
+  const stopWatch = isSupported
+    ? watch(
+      () => ({
+        el: unrefElement(target),
+        root: unrefElement(root),
+      }),
+      ({ el, root }) => {
+        cleanup()
 
-      if (isSupported && window && el) {
-      // @ts-expect-error missing type
-        observer = new window.IntersectionObserver(
+        if (!el)
+          return
+
+        console.log(el, root)
+
+        // @ts-expect-error missing type
+        const observer = new window.IntersectionObserver(
           callback,
           {
-            root: unrefElement(root),
+            root,
             rootMargin,
             threshold,
           },
         )
-        observer!.observe(el)
-      }
-    },
-    { immediate: true, flush: 'post' },
-  )
+        observer.observe(el)
+
+        cleanup = () => {
+          observer.disconnect()
+          cleanup = noop
+        }
+      },
+      { immediate: true, flush: 'post' },
+    )
+    : noop
 
   const stop = () => {
     cleanup()

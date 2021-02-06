@@ -11,5 +11,5 @@ export type MaybeElementRef = MaybeRef<Element | VueInstance | undefined | null>
  */
 export function unrefElement(elRef: MaybeElementRef) {
   const plain = unref(elRef)
-  return (plain as VueInstance)?.$el ?? plain ?? undefined
+  return (plain as VueInstance)?.$el ?? plain
 }

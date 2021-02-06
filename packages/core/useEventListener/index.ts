@@ -1,4 +1,5 @@
-import { Fn, isString, tryOnUnmounted } from '@vueuse/shared'
+import { Fn, isString, MaybeRef, noop, tryOnUnmounted } from '@vueuse/shared'
+import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 interface InferEventTarget<Events> {
@@ -71,10 +72,10 @@ export function useEventListener<Names extends string>(target: InferEventTarget<
  * @param listener
  * @param options
  */
-export function useEventListener(target: EventTarget, event: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener(target: MaybeRef<EventTarget>, event: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): Fn
 
 export function useEventListener(...args: any[]) {
-  let target: EventTarget | undefined
+  let target: MaybeRef<EventTarget> | undefined
   let event: string
   let listener: any
   let options: any
@@ -90,16 +91,24 @@ export function useEventListener(...args: any[]) {
   if (!target)
     return
 
-  let stopped = false
+  let cleanup = noop
 
-  target.addEventListener(event, listener, options)
+  watch(
+    () => unref(target),
+    (el) => {
+      cleanup()
+      if (!el)
+        return
 
-  const stop = () => {
-    if (stopped)
-      return
-    target!.removeEventListener(event, listener, options)
-    stopped = true
-  }
+      el.addEventListener(event, listener, options)
+
+      cleanup = () => {
+        el.removeEventListener(event, listener, options)
+        cleanup = noop
+      }
+    },
+    { immediate: true },
+  )
 
   tryOnUnmounted(stop)
 

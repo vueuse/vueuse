@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { ternary } from 'vue-chemistry/boolean'
+import { ternary } from 'vue-chemistry'
 import { useIntersectionObserver } from '.'
 
 const root = ref(null)
 const target = ref(null)
 const isVisible = ref(false)
 
-const stopObserver = useIntersectionObserver(
+useIntersectionObserver(
   target,
-  ([{ isIntersecting }], observerElement) => {
+  ([{ isIntersecting }]) => {
     isVisible.value = isIntersecting
   },
   { root },
