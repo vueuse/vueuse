@@ -3,7 +3,7 @@ import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-const events = ['mousedown', 'touchstart'] as const
+const events = ['mousedown', 'touchstart', 'pointerdown'] as const
 type EventType = WindowEventMap[(typeof events)[number]]
 
 /**
