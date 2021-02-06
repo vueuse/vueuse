@@ -1,5 +1,6 @@
-import { MaybeRef, tryOnUnmounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { watch } from 'vue-demi'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface MutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
@@ -9,17 +10,16 @@ export interface MutationObserverOptions extends MutationObserverInit, Configura
  *
  * @see   {@link https://vueuse.js.org/useMutationObserver}
  * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver|MutationObserver MDN}
- * @param el
+ * @param target
  * @param callback
  * @param options
  */
 export function useMutationObserver(
-  el: MaybeRef<HTMLElement | null | undefined>,
+  target: MaybeElementRef,
   callback: MutationCallback,
   options: MutationObserverOptions = {},
 ) {
   const { window = defaultWindow, ...mutationOptions } = options
-  const elRef = ref(el)
   let observer: MutationObserver | undefined
   const isSupported = window && 'IntersectionObserver' in window
 
@@ -31,14 +31,14 @@ export function useMutationObserver(
   }
 
   const stopWatch = watch(
-    elRef,
-    (newEl) => {
+    () => unrefElement(target),
+    (el) => {
       cleanup()
 
-      if (isSupported && window && newEl) {
+      if (isSupported && window && el) {
         // @ts-expect-error missing type
         observer = new window.MutationObserver(callback)
-        observer!.observe(newEl, mutationOptions)
+        observer!.observe(el, mutationOptions)
       }
     },
     { immediate: true },

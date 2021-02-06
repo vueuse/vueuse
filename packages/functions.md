@@ -33,6 +33,7 @@
   - [`templateRef`](https://vueuse.js.org/core/templateRef/) — shorthand for binding ref to template element
   - [`tryOnMounted`](https://vueuse.js.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.js.org/shared/tryOnUnmounted/) — safe `onUnmounted`
+  - [`unrefElement`](https://vueuse.js.org/core/unrefElement/) — unref for dom element
   - [`useVModel`](https://vueuse.js.org/core/useVModel/) — shorthand for v-model binding
 
 ### Misc

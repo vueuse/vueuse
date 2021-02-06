@@ -296,18 +296,10 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
   for (const fn of indexes.functions) {
     const mdPath = `packages/${fn.package}/${fn.name}/index.md`
-    const demoPath = `packages/${fn.package}/${fn.name}/demo.vue`
     if (!fs.existsSync(mdPath))
       continue
 
     let readme = await fs.readFile(mdPath, 'utf-8')
-
-    // readme = replacer(readme, await getFunctionHead(fn.package), 'HEAD', 'head')
-    // let DEMO = ''
-    // if (fs.existsSync(demoPath))
-    //   DEMO = '<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>'
-
-    // readme = replacer(readme, DEMO, 'DEMO', 'head')
 
     if (hasTypes)
       readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')

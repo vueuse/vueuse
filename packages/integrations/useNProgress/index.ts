@@ -1,5 +1,5 @@
 import nprogress, { NProgressOptions } from 'nprogress'
-import { MaybeRef, tryOnUnmounted, isNumber, isBoolean } from '@vueuse/shared'
+import { MaybeRef, tryOnUnmounted, isNumber } from '@vueuse/shared'
 import { ref, isRef, watchEffect, computed } from 'vue-demi'
 
 /**

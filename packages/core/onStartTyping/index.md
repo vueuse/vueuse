@@ -45,7 +45,7 @@ export default {
  */
 export declare function onStartTyping(
   callback: (event: KeyboardEvent) => void,
-  { document }?: ConfigurableDocument
+  options?: ConfigurableDocument
 ): void
 ```
 

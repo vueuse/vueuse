@@ -70,7 +70,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
   /**
    * Element target to be capture the click
    */
-  target?: MaybeRef<Element | null | undefined>
+  target?: MaybeElementRef
 }
 /**
  * Reactive mouse position.

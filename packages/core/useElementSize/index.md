@@ -55,7 +55,7 @@ export interface ElementSize {
  * @param options
  */
 export declare function useElementSize(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   initialSize?: ElementSize,
   options?: ResizeObserverOptions
 ): {

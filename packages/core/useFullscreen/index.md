@@ -39,7 +39,7 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
  * @param options
  */
 export declare function useFullscreen(
-  target?: MaybeRef<Element | null | undefined>,
+  target?: MaybeElementRef,
   options?: ConfigurableDocument
 ): {
   isSupported: boolean

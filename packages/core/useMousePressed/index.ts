@@ -1,5 +1,6 @@
-import { Fn, MaybeRef } from '@vueuse/shared'
+import { Fn } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { MouseSourceType } from '../useMouse'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -22,7 +23,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
   /**
    * Element target to be capture the click
    */
-  target?: MaybeRef<Element | null |undefined>
+  target?: MaybeElementRef
 }
 
 /**
@@ -59,8 +60,8 @@ export function useMousePressed(options: MousePressedOptions = {}) {
       () => {
         cleanup()
 
-        const t = target.value || window
-        listeners.push(useEventListener(t, 'mousedown',
+        const el = unrefElement(target) || window
+        listeners.push(useEventListener(el, 'mousedown',
           () => {
             pressed.value = true
             sourceType.value = 'mouse'
@@ -69,7 +70,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
         ))
 
         if (touch) {
-          listeners.push(useEventListener(t, 'touchstart',
+          listeners.push(useEventListener(el, 'touchstart',
             () => {
               pressed.value = true
               sourceType.value = 'touch'

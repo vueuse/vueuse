@@ -1,5 +1,6 @@
-import { MaybeRef, tryOnUnmounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { tryOnUnmounted } from '@vueuse/shared'
+import { watch } from 'vue-demi'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface ResizeObserverSize {
@@ -44,13 +45,12 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   callback: ResizeObserverCallback,
   options: ResizeObserverOptions = {},
 ) {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
-  const targetRef = ref(target)
   const isSupported = window && 'ResizeObserver' in window
 
   const cleanup = () => {
@@ -60,15 +60,19 @@ export function useResizeObserver(
     }
   }
 
-  const stopWatch = watch(targetRef, (newValue) => {
-    cleanup()
+  const stopWatch = watch(
+    () => unrefElement(target),
+    (el) => {
+      cleanup()
 
-    if (isSupported && window && newValue) {
-      // @ts-expect-error missing type
-      observer = new window.ResizeObserver(callback)
-      observer!.observe(newValue, observerOptions)
-    }
-  }, { immediate: true, flush: 'post' })
+      if (isSupported && window && el) {
+        // @ts-expect-error missing type
+        observer = new window.ResizeObserver(callback)
+        observer!.observe(el, observerOptions)
+      }
+    },
+    { immediate: true, flush: 'post' },
+  )
 
   const stop = () => {
     cleanup()

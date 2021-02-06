@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { MaybeElementRef } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
@@ -68,7 +68,7 @@ const functionsMap: FunctionMap[] = [
  * @param options
  */
 export function useFullscreen(
-  target?: MaybeRef<Element | null | undefined>,
+  target?: MaybeElementRef,
   options: ConfigurableDocument = {},
 ) {
   const { document = defaultDocument } = options
@@ -91,7 +91,7 @@ export function useFullscreen(
     }
   }
 
-  const [REQUEST, EXIT, ELEMENT, _, EVENT] = map
+  const [REQUEST, EXIT, ELEMENT,, EVENT] = map
 
   async function exit() {
     if (!isSupported)

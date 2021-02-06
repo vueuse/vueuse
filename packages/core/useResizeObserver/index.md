@@ -85,7 +85,7 @@ declare class ResizeObserver {
  * @param options
  */
 export declare function useResizeObserver(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   callback: ResizeObserverCallback,
   options?: ResizeObserverOptions
 ): {

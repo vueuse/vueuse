@@ -28,17 +28,25 @@ const { text, copy, isSupported } = useClipboard()
 ## Type Declarations
 
 ```typescript
+export interface ClipboardOptions extends ConfigurableNavigator {
+  /**
+   * Enabled reading for clipboard
+   *
+   * @default true
+   */
+  read?: boolean
+}
 /**
  * Reactive Clipboard API.
  *
  * @see   {@link https://vueuse.js.org/useClipboard}
  * @param options
  */
-export declare function useClipboard({
-  navigator,
-}?: ConfigurableNavigator): {
+export declare function useClipboard(
+  options?: ClipboardOptions
+): {
   isSupported: boolean | undefined
-  text: Ref<string>
+  text: ComputedRef<string>
   copy: (txt: string) => Promise<void>
 }
 ```

@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { MouseOptions, useMouse } from '../useMouse'
 import { defaultWindow } from '../_configurable'
 
@@ -15,7 +15,7 @@ export interface MouseInElementOptions extends MouseOptions {
  * @param options
  */
 export function useMouseInElement(
-  target?: MaybeRef<Element | null | undefined>,
+  target?: MaybeElementRef,
   options: MouseInElementOptions = {},
 ) {
   const {
@@ -24,7 +24,7 @@ export function useMouseInElement(
   } = options
   const { x, y, sourceType } = useMouse(options)
 
-  const targetRef = ref(target || window?.document.body)
+  const targetRef = ref(target ?? window?.document.body)
   const elementX = ref(0)
   const elementY = ref(0)
   const elementPositionX = ref(0)
@@ -39,7 +39,7 @@ export function useMouseInElement(
     stop = watch(
       [targetRef, x, y],
       () => {
-        const el = targetRef.value
+        const el = unrefElement(targetRef)
         if (!el)
           return
 

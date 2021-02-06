@@ -23,7 +23,7 @@ const isFocusedElementEditable = () => {
   return activeElement.hasAttribute('contenteditable')
 }
 
-const isTypedCharGood = ({
+const isTypedCharValid = ({
   keyCode,
   metaKey,
   ctrlKey,
@@ -51,10 +51,12 @@ const isTypedCharGood = ({
  * @param callback
  * @param options
  */
-export function onStartTyping(callback: (event: KeyboardEvent) => void, { document = defaultDocument }: ConfigurableDocument = {}) {
+export function onStartTyping(callback: (event: KeyboardEvent) => void, options: ConfigurableDocument = {}) {
+  const { document = defaultDocument } = options
+
   const keydown = (event: KeyboardEvent) => {
     !isFocusedElementEditable()
-      && isTypedCharGood(event)
+      && isTypedCharValid(event)
       && callback(event)
   }
 

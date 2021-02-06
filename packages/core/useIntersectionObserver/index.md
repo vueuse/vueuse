@@ -49,7 +49,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeRef<Element | null | undefined>
+  root?: MaybeElementRef
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
    */
@@ -68,7 +68,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
  * @param options
  */
 export declare function useIntersectionObserver(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   callback: IntersectionObserverCallback,
   options?: IntersectionObserverOptions
 ): {

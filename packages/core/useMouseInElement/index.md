@@ -47,7 +47,7 @@ export interface MouseInElementOptions extends MouseOptions {
  * @param options
  */
 export declare function useMouseInElement(
-  target?: MaybeRef<Element | null | undefined>,
+  target?: MaybeElementRef,
   options?: MouseInElementOptions
 ): {
   x: Ref<number>

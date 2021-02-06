@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { MaybeElementRef } from '../unrefElement'
 import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
 
 export interface ElementSize {
@@ -16,7 +16,7 @@ export interface ElementSize {
  * @param options
  */
 export function useElementSize(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   initialSize: ElementSize = { width: 0, height: 0 },
   options: ResizeObserverOptions = {},
 ) {

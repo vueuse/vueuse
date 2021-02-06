@@ -47,12 +47,12 @@ export interface MutationObserverOptions
  *
  * @see   {@link https://vueuse.js.org/useMutationObserver}
  * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver|MutationObserver MDN}
- * @param el
+ * @param target
  * @param callback
  * @param options
  */
 export declare function useMutationObserver(
-  el: MaybeRef<HTMLElement | null | undefined>,
+  target: MaybeElementRef,
   callback: MutationCallback,
   options?: MutationObserverOptions
 ): {

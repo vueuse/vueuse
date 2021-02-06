@@ -45,7 +45,7 @@ export default {
  * @param options
  */
 export declare function useElementBounding(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   options?: ResizeObserverOptions
 ): {
   x: Ref<number>

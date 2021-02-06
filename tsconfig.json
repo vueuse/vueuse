@@ -15,6 +15,7 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "skipLibCheck": true,
+    "noUnusedLocals": true,
     "paths": {
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"],

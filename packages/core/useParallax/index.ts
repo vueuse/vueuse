@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
 import { computed, ComputedRef, reactive } from 'vue-demi'
+import { MaybeElementRef } from '../unrefElement'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -34,7 +34,7 @@ export interface ParallaxReturn {
  * @param options
  */
 export function useParallax(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   options: ParallaxOptions = {},
 ): ParallaxReturn {
   const {

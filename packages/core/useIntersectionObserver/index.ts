@@ -1,12 +1,13 @@
-import { ref, unref, watch } from 'vue-demi'
-import { MaybeRef, tryOnUnmounted } from '@vueuse/shared'
+import { watch } from 'vue-demi'
+import { tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 
 export interface IntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeRef<Element|null|undefined>
+  root?: MaybeElementRef
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
@@ -28,7 +29,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   callback: IntersectionObserverCallback,
   options: IntersectionObserverOptions = {},
 ) {
@@ -40,7 +41,6 @@ export function useIntersectionObserver(
   } = options
 
   let observer: IntersectionObserver | undefined
-  const targetRef = ref(target)
   const isSupported = window && 'IntersectionObserver' in window
 
   const cleanup = () => {
@@ -50,22 +50,26 @@ export function useIntersectionObserver(
     }
   }
 
-  const stopWatch = watch(targetRef, (newValue) => {
-    cleanup()
+  const stopWatch = watch(
+    () => unrefElement(target),
+    (el) => {
+      cleanup()
 
-    if (isSupported && window && newValue) {
+      if (isSupported && window && el) {
       // @ts-expect-error missing type
-      observer = new window.IntersectionObserver(
-        callback,
-        {
-          root: unref(root),
-          rootMargin,
-          threshold,
-        },
-      )
-      observer!.observe(newValue)
-    }
-  }, { immediate: true, flush: 'post' })
+        observer = new window.IntersectionObserver(
+          callback,
+          {
+            root: unrefElement(root),
+            rootMargin,
+            threshold,
+          },
+        )
+        observer!.observe(el)
+      }
+    },
+    { immediate: true, flush: 'post' },
+  )
 
   const stop = () => {
     cleanup()

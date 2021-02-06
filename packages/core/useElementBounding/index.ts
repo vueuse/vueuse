@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { MaybeElementRef } from '../unrefElement'
 import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
 
 /**
@@ -11,7 +11,7 @@ import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
  * @param options
  */
 export function useElementBounding(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   options: ResizeObserverOptions = {},
 ) {
   const height = ref(0)

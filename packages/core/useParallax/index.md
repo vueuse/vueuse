@@ -61,7 +61,7 @@ export interface ParallaxReturn {
  * @param options
  */
 export declare function useParallax(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   options?: ParallaxOptions
 ): ParallaxReturn
 ```

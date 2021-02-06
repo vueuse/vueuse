@@ -1,5 +1,5 @@
-import { Fn, MaybeRef, tryOnUnmounted } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { Fn, tryOnUnmounted } from '@vueuse/shared'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -15,7 +15,7 @@ type EventType = WindowEventMap[(typeof events)[number]]
  * @param options
  */
 export function onClickOutside(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeElementRef,
   handler: (evt: EventType) => void,
   options: ConfigurableWindow = {},
 ) {
@@ -24,14 +24,12 @@ export function onClickOutside(
   if (!window)
     return
 
-  const targetRef = ref(target)
-
   const listener = (event: EventType) => {
-    if (!targetRef.value)
+    const el = unrefElement(target)
+    if (!el)
       return
 
-    const elements = event.composedPath()
-    if (targetRef.value === event.target || elements.includes(targetRef.value!))
+    if (el === event.target || event.composedPath().includes(el))
       return
 
     handler(event)
