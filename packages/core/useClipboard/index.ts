@@ -1,8 +1,17 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from 'vue-demi'
+import { ComputedRef, ref } from 'vue-demi'
 import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+
+export interface ClipboardOptions extends ConfigurableNavigator {
+  /**
+   * Enabled reading for clipboard
+   *
+   * @default true
+   */
+  read?: boolean
+}
 
 /**
  * Reactive Clipboard API.
@@ -10,7 +19,12 @@ import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
  * @see   {@link https://vueuse.js.org/useClipboard}
  * @param options
  */
-export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
+export function useClipboard(options: ClipboardOptions = {}) {
+  const {
+    navigator = defaultNavigator,
+    read = true,
+  } = options
+
   const events = ['copy', 'cut']
   const isSupported = navigator && 'clipboard' in navigator
   const text = ref('')
@@ -22,7 +36,7 @@ export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavig
     })
   }
 
-  if (isSupported) {
+  if (isSupported && read) {
     for (const event of events)
       useEventListener(event as WindowEventName, updateText)
   }
@@ -37,7 +51,7 @@ export function useClipboard({ navigator = defaultNavigator }: ConfigurableNavig
 
   return {
     isSupported,
-    text,
+    text: text as ComputedRef<string>,
     copy,
   }
 }
