@@ -12,7 +12,7 @@ Reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/Web
 import { useWebSocket } from '@vueuse/core'
 
 const { state, data, send, close, ws } = useWebSocket({
-  url: 'ws://websocketurl'
+  url: 'ws://websocketurl',
 })
 ```
 
