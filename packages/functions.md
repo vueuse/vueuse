@@ -38,7 +38,7 @@
 
 ### Misc
   - [`useEventSource`](https://vueuse.js.org/core/useEventSource/) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server
-  - [`useWebSocket`](https://vueuse.js.org/core/useWebSocket/) — reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client
+  - [`useWebSocket`](https://vueuse.js.org/core/useWebSocket/) — reactive [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client
   - [`useWebWorker`](https://vueuse.js.org/core/useWebWorker/) — simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication
   - [`useWebWorkerFn`](https://vueuse.js.org/core/useWebWorkerFn/) — run expensive function without blocking the UI
 
