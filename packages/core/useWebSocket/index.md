@@ -11,7 +11,9 @@ Reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/Web
 ```js
 import { useWebSocket } from '@vueuse/core'
 
-const { state, data, send, close, ws } = useWebSocket('ws://websocketurl')
+const { state, data, send, close, ws } = useWebSocket({
+  url: 'ws://websocketurl'
+})
 ```
 
 | State | Type          | Description                                                                                             |
@@ -38,14 +40,23 @@ export declare type WebSocketStatus =
   | "CONNECTING"
   | "CLOSING"
   | "CLOSED"
+
+interface WebSocketOptions {
+  url: string
+  openCallBack?: (ws?: WebSocket) => void
+  enablePing: boolean // default: true.
+  pingIntervalSeconds: number // default: 10.
+  enableAutoReConnect: boolean // default: true.
+  defaultMaxLoseMsgTimes: number // default: 5.
+}
+
 /**
  * Reactive simple WebSocket client.
  *
  * @see   {@link https://vueuse.js.org/useWebSocket}
- * @param url
  */
 export declare function useWebSocket(
-  url: string
+  options: WebSocketOptions
 ): {
   data: Ref<any>
   state: Ref<WebSocketStatus>
