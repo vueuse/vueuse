@@ -38,7 +38,7 @@ export function useWebSocket(options: WebSocketOptions) {
   let ws: WebSocket
   let normalClose = false
   let lockReconnect = false
-  let pingIntervalId: number
+  let pingIntervalId: NodeJS.Timeout
   let loseMsgTimes = 0
 
   const waitConnection = (state = WebSocket.OPEN, cb?: (ws: WebSocket) => void) => {
