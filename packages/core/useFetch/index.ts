@@ -128,7 +128,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok)
-          throw new Error(fetchResponse.statusText || 'Something went wrong!')
+          throw new Error(fetchResponse.statusText)
       })
       .catch(fetchError => error.value = fetchError.message)
       .finally(() => {
