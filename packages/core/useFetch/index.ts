@@ -10,7 +10,7 @@ interface UseFetchReturn {
   /**
    * The statusCode of the HTTP fetch response
    */
-  status: Ref<number | null>
+  statusCode: Ref<number | null>
 
   /**
    * The raw response of the fetch response
