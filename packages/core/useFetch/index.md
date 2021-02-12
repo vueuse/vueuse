@@ -11,7 +11,7 @@ Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 ```ts
 import { useFetch } from '@vueuse/core'
 
-const { isFinished, status, error, data } = useFetch(url)
+const { isFinished, statusCode, error, data } = useFetch(url)
 ```
 
 Prevent auto-calling the fetch request and do it manually instead

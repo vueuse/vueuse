@@ -88,7 +88,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
 
   const isFinished = ref(false)
   const isFetching = ref(false)
-  const status = ref<number | null>(null)
+  const statusCode = ref<number | null>(null)
   const response = ref<Response | null>(null)
   const error = ref<any>(null)
   const data = ref<string | object | null>(null)
@@ -97,7 +97,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
     return supportsAbort && isFetching.value
   })
 
-  let controller: AbortController | null
+  let controller: AbortController | undefined
 
   const abort = () => {
     if (supportsAbort && controller instanceof AbortController)
@@ -119,7 +119,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
     fetch(unref(url), fetchOptions)
       .then((fetchResponse) => {
         response.value = fetchResponse
-        status.value = fetchResponse.status
+        statusCode.value = fetchResponse.status
 
         const contentType = fetchResponse.headers.get('content-type')
 
@@ -151,7 +151,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
 
   return {
     isFinished,
-    status,
+    statusCode,
     response,
     error,
     data,
