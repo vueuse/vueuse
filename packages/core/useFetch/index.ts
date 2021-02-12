@@ -8,12 +8,12 @@ interface UseFetchReturn {
   isFinished: Ref<boolean>
 
   /**
-   * The status of the fetch request
+   * The statusCode of the HTTP fetch response
    */
   status: Ref<number | null>
 
   /**
-   * The raw response of the fetch request
+   * The raw response of the fetch response
    */
   response: Ref<Response | null>
 
@@ -72,17 +72,17 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { autoFetch: true, autoRefetch: false }
+  let options: UseFetchOptions = { immediate: true, refetch: false }
 
-  if (args[0]) {
-    if ('autoFetch' in args[0] || 'autoRefetch' in args[0])
+  if (args.length > 0) {
+    if ('immediate' in args[0] || 'refetch' in args[0])
       options = { ...options, ...args[0] }
     else
       fetchOptions = args[0]
   }
 
-  if (args[1]) {
-    if ('autoFetch' in args[1] || 'autoRefetch' in args[1])
+  if (args.length > 1) {
+    if ('immediate' in args[1] || 'refetch' in args[1])
       options = { ...options, ...args[1] }
   }
 
@@ -138,13 +138,13 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
   }
 
   if (isRef(url)) {
-    if (isRef(options.autoRefetch))
-      watch([options.autoRefetch, url], () => unref(options.autoRefetch) && execute())
-    else if (options.autoRefetch)
+    if (isRef(options.refetch))
+      watch([options.refetch, url], () => unref(options.refetch) && execute())
+    else if (options.refetch)
       watch(url, () => execute())
   }
 
-  if (options.autoFetch)
+  if (options.immediate)
     execute()
 
   return {

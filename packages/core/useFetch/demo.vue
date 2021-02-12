@@ -5,11 +5,11 @@ import { useToggle } from '@vueuse/shared'
 import { useFetch } from '.'
 
 const url = ref('https://httpbin.org/get')
-const autoRefetch = ref(false)
+const refetch = ref(false)
 
-const toggleRefetch = useToggle(autoRefetch)
+const toggleRefetch = useToggle(refetch)
 
-const { isFinished, canAbort, isFetching, status, error, data, execute, abort } = useFetch(url, { method: 'GET' }, { autoFetch: false, autoRefetch })
+const { isFinished, canAbort, isFetching, status, error, data, execute, abort } = useFetch(url, { method: 'GET' }, { immediate: false, refetch })
 
 const text = stringify(reactive({
   isFinished,
@@ -51,10 +51,10 @@ const text = stringify(reactive({
       Execute
     </button>
     <button @click="toggleRefetch">
-      <carbon-checkmark v-if="autoRefetch" />
+      <carbon-checkmark v-if="refetch" />
       <carbon-error v-else />
 
-      <span class="ml-2">{{ autoRefetch ? 'Autrefetch On': 'Autrefetch Off' }}</span>
+      <span class="ml-2">{{ refetch ? 'Refetch On': 'Refetch Off' }}</span>
     </button>
     <button v-if="canAbort" class="orange" @click="abort">
       Abort

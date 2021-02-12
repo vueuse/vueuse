@@ -19,7 +19,7 @@ Prevent auto-calling the fetch request and do it manually instead
 ```ts
 import { useFetch } from '@vueuse/core'
 
-const { execute, data } = useFetch(url, { autoFetch: false })
+const { execute, data } = useFetch(url, { immediate: false })
 
 execute()
 ```
@@ -31,7 +31,7 @@ import { useFetch } from '@vueuse/core'
 
 const url = ref('https://httpbin.org/get')
 
-const { data } = useFetch(url, { autoRefetch: true })
+const { data } = useFetch(url, { refetch: true })
 
 setTimeout(() => {
   // Request will be fetched again
@@ -49,7 +49,7 @@ const { execute, data } = useFetch(url,
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   },
-  { autoFetch: false })
+  { immediate: false })
 
 
 ```
