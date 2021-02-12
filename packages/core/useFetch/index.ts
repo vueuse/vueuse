@@ -100,7 +100,7 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
   let controller: AbortController | undefined
 
   const abort = () => {
-    if (supportsAbort && controller instanceof AbortController)
+    if (supportsAbort && controller)
       controller.abort()
   }
 
