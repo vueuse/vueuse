@@ -51,21 +51,22 @@ interface UseFetchReturn {
 interface UseFetchOptions {
   /**
    * Will automatically run fetch when `useFetch` is used
-   * Default: true
+   *
+   * @default true
    */
   autoFetch?: boolean
 
   /**
    * Will automatically refetch when the URL is changed if the url is a ref
-   * Default: false
+   *
+   * @default false
    */
   autoRefetch?: MaybeRef<boolean>
 }
 
 export function useFetch(url: MaybeRef<string>): UseFetchReturn
 export function useFetch(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn
-export function useFetch(url: MaybeRef<string>, options: RequestInit): UseFetchReturn
-export function useFetch(url: MaybeRef<string>, options: RequestInit, useFetchOptions: UseFetchOptions): UseFetchReturn
+export function useFetch(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn
 
 export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn {
   const supportsAbort = typeof AbortController === 'function'
