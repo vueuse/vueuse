@@ -139,12 +139,13 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
       })
   }
 
-  if (isRef(url)) {
-    if (isRef(options.refetch))
-      watch([options.refetch, url], () => unref(options.refetch) && execute())
-    else if (options.refetch)
-      watch(url, () => execute())
-  }
+watch(
+()=>{
+unref(url)
+unref(options.refetch)
+}, 
+() => unref(options.refetch) && execute()
+)
 
   if (options.immediate)
     execute()
