@@ -61,7 +61,7 @@ interface UseFetchOptions {
    *
    * @default false
    */
-  autoRefetch?: MaybeRef<boolean>
+  refetch?: MaybeRef<boolean>
 }
 
 export function useFetch(url: MaybeRef<string>): UseFetchReturn
