@@ -54,7 +54,7 @@ interface UseFetchOptions {
    *
    * @default true
    */
-  autoFetch?: boolean
+  immediate?: boolean
 
   /**
    * Will automatically refetch when the URL is changed if the url is a ref
