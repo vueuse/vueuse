@@ -108,6 +108,8 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
     isFetching.value = true
     isFinished.value = false
     error.value = null
+    statusCode.value = null
+    controller = undefined
 
     if (supportsAbort) {
       controller = new AbortController()
