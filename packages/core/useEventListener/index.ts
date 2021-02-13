@@ -110,7 +110,7 @@ export function useEventListener(...args: any[]) {
     { immediate: true },
   )
 
-  tryOnUnmounted(stop)
+  tryOnUnmounted(cleanup)
 
-  return stop
+  return cleanup
 }
