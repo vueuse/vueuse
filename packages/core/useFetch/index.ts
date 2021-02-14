@@ -139,13 +139,10 @@ export function useFetch(url: MaybeRef<string>, ...args: any[]): UseFetchReturn 
       })
   }
 
-watch(
-()=>{
-unref(url)
-unref(options.refetch)
-}, 
-() => unref(options.refetch) && execute()
-)
+  watch(() => {
+    unref(url)
+    unref(options.refetch)
+  }, () => unref(options.refetch) && execute(), { deep: true })
 
   if (options.immediate)
     execute()
@@ -161,4 +158,22 @@ unref(options.refetch)
     abort,
     execute,
   }
+}
+
+/**
+ * Not sure about this yet, still need more feedback. But this would provide a basic
+ * wrapper for making post requets using the useFetch function
+ */
+export function usePostJson(url: string, json: object, options: RequestInit = {}) {
+  return useFetch(url, {
+    method: 'POST',
+    body: JSON.stringify(json),
+    ...options,
+    headers: {
+      ...('headers' in options ? options.headers : {}),
+      'Content-Type': 'application/json',
+    },
+  }, {
+    immediate: false,
+  })
 }
