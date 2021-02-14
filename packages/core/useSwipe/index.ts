@@ -11,11 +11,6 @@ export enum SwipeDirection {
 /**
  * Reactive swipe detection.
  *
- * Regarding to https://docs.google.com/document/d/12-HPlSIF7-ISY8TQHtuQ3IqDi-isZVI0Yzv5zwl90VU/mobilebasic
- * this will only work in hybrid mode (touch- + mouse-events) if 'touchmove' event handler calls preventDefault.
- * If you are looking for simpler touch gesture cases like scroll-x or scroll-y, it's worth a try looking
- * at this css solution https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action
- *
  * @see {@link https://vueuse.js.org/useSwipe}
  * @param target
  * @param options
@@ -37,7 +32,7 @@ export function useSwipe(
   const diffX = computed(() => coordsStart.value[0] - coordsEnd.value[0])
   const diffY = computed(() => coordsStart.value[1] - coordsEnd.value[1])
 
-  const isThresholdExeeded = computed(() => Math.max(Math.abs(diffX.value), Math.abs(diffY.value)) >= (threshold || 20))
+  const isThresholdExeeded = computed(() => Math.max(Math.abs(diffX.value), Math.abs(diffY.value)) >= (threshold || 0))
 
   const isSwiping = ref(false)
 

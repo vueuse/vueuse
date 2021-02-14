@@ -650,7 +650,7 @@
       "package": "core",
       "docs": "https://vueuse.js.org/core/useSwipe/",
       "category": "Sensors",
-      "description": "Reactive swipe detection."
+      "description": "reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)"
     },
     {
       "name": "useTimestamp",

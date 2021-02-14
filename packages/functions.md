@@ -67,6 +67,7 @@
   - [`useParallax`](https://vueuse.js.org/core/useParallax/) — create parallax effect easily
   - [`useResizeObserver`](https://vueuse.js.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
   - [`useSpeechRecognition`](https://vueuse.js.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
+  - [`useSwipe`](https://vueuse.js.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useWindowScroll`](https://vueuse.js.org/core/useWindowScroll/) — reactive window scroll
   - [`useWindowSize`](https://vueuse.js.org/core/useWindowSize/) — reactive window size
 
