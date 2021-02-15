@@ -1,7 +1,6 @@
-import { onMounted } from 'vue-demi'
+import { computed, onBeforeMount, onBeforeUnmount, ref, unref, watch } from 'vue-demi'
 import { noop } from './../../shared/utils/is'
 
-import { computed, onBeforeUnmount, ref, unref, watch } from 'vue'
 import { MaybeRef } from '..'
 
 export enum SwipeDirection {
@@ -60,10 +59,12 @@ export function useSwipe(
   }
 
   const onTouchMove = (e: TouchEvent) => {
-    isSwiping.value = true
     coordsEnd.value = getTouchEventCoords(e)
-    if (direction.value && onSwipe) onSwipe(e)
-    else e.preventDefault()
+    if (direction.value) {
+      isSwiping.value = true
+      onSwipe?.(e)
+    }
+    else { e.preventDefault() }
   }
 
   const onTouchEnd = (e: TouchEvent) => {
@@ -79,7 +80,7 @@ export function useSwipe(
     el.addEventListener('touchend', onTouchEnd, { capture: true })
   }
 
-  onMounted(() => addListeners(targetRef.value))
+  onBeforeMount(() => addListeners(targetRef.value))
 
   const removeListeners = (el: HTMLElement | undefined | null) => {
     if (!el) return
