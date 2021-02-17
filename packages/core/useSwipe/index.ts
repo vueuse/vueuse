@@ -1,7 +1,8 @@
-import { computed, onBeforeMount, onBeforeUnmount, ref, unref, watch } from 'vue-demi'
 import { noop } from './../../shared/utils/is'
+import { computed, reactive, ref } from 'vue-demi'
 
 import { MaybeRef } from '..'
+import { useEventListener } from '../useEventListener'
 
 export enum SwipeDirection {
   UP = 'UP', RIGHT = 'RIGHT', DOWN = 'DOWN', LEFT = 'LEFT'
@@ -15,21 +16,22 @@ export enum SwipeDirection {
  * @param options
  */
 export function useSwipe(
-  target: MaybeRef<HTMLElement | null | undefined>,
-  options?: {
+  target: MaybeRef<EventTarget>,
+  options: {
     threshold?: number
+    preventScrolling: boolean
     onSwipe?: (e: TouchEvent) => void
     onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
-  },
+  } = { preventScrolling: false },
 ) {
-  const targetRef = ref(target)
   const { threshold, onSwipe, onSwipeEnd } = options || {}
+  const isPassiveEventSupported = checkPassiveEventSupport()
 
-  const coordsStart = ref([0, 0])
-  const coordsEnd = ref([0, 0])
+  const coordsStart = reactive({ x: 0, y: 0 })
+  const coordsEnd = reactive({ x: 0, y: 0 })
 
-  const diffX = computed(() => coordsStart.value[0] - coordsEnd.value[0])
-  const diffY = computed(() => coordsStart.value[1] - coordsEnd.value[1])
+  const diffX = computed(() => coordsStart.x - coordsEnd.x)
+  const diffY = computed(() => coordsStart.y - coordsEnd.y)
 
   const isThresholdExeeded = computed(() => Math.max(Math.abs(diffX.value), Math.abs(diffY.value)) >= (threshold || 0))
 
@@ -53,67 +55,65 @@ export function useSwipe(
 
   const getTouchEventCoords = (e: TouchEvent) => [e.touches[0].clientX, e.touches[0].clientY]
 
-  const onTouchStart = (e: TouchEvent) => {
-    coordsStart.value = getTouchEventCoords(e)
-    coordsEnd.value = coordsStart.value
+  const updateCoordsStart = (x: number, y: number) => {
+    coordsStart.x = x
+    coordsStart.y = y
   }
 
-  const onTouchMove = (e: TouchEvent) => {
-    coordsEnd.value = getTouchEventCoords(e)
+  const updateCoordsEnd = (x: number, y: number) => {
+    coordsEnd.x = x
+    coordsEnd.y = y
+  }
+
+  let listenerOptions: { passive?: boolean; capture?: boolean}
+  if (options.preventScrolling) listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
+  else listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
+
+  useEventListener(target, 'touchstart', (e: Event) => {
+    if (listenerOptions.capture && !listenerOptions.passive) e.preventDefault()
+    const [x, y] = getTouchEventCoords(e as TouchEvent)
+    updateCoordsStart(x, y)
+    updateCoordsEnd(x, y)
+  }, listenerOptions)
+
+  useEventListener(target, 'touchmove', (e: Event) => {
+    const [x, y] = getTouchEventCoords(e as TouchEvent)
+    updateCoordsEnd(x, y)
     if (direction.value) {
       isSwiping.value = true
-      onSwipe?.(e)
+      onSwipe?.(e as TouchEvent)
     }
-    else { e.preventDefault() }
-  }
+  }, listenerOptions)
 
-  const onTouchEnd = (e: TouchEvent) => {
+  useEventListener(target, 'touchend', (e: Event) => {
     isSwiping.value = false
     if (direction.value)
-      onSwipeEnd?.(e, direction.value)
-  }
-
-  const addListeners = (el: HTMLElement | undefined | null) => {
-    if (!el) return
-    el.addEventListener('touchstart', onTouchStart, { capture: true })
-    el.addEventListener('touchmove', onTouchMove, { capture: false })
-    el.addEventListener('touchend', onTouchEnd, { capture: true })
-  }
-
-  onBeforeMount(() => addListeners(targetRef.value))
-
-  const removeListeners = (el: HTMLElement | undefined | null) => {
-    if (!el) return
-    el.removeEventListener('touchstart', onTouchStart)
-    el.removeEventListener('touchmove', onTouchMove)
-    el.removeEventListener('touchend', onTouchEnd)
-  }
-
-  onBeforeUnmount(() => removeListeners(targetRef.value))
-
-  let cleanup = noop
-
-  watch(
-    () => unref(targetRef),
-    (el) => {
-      cleanup()
-      if (!el)
-        return
-
-      addListeners(el)
-
-      cleanup = () => {
-        removeListeners(el)
-        cleanup = noop
-      }
-    },
-    { immediate: true },
-  )
+      onSwipeEnd?.(e as TouchEvent, direction.value)
+  }, listenerOptions)
 
   return {
     isSwiping,
     direction,
-    lengthX: computed(() => Math.ceil(diffX.value)),
-    lengthY: computed(() => Math.ceil(diffY.value)),
+    coordsStart,
+    coordsEnd,
+    lengthX: diffX,
+    lengthY: diffY,
   }
+}
+
+// NOTE: this is a polyfil for passive event handler detection
+// Source: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+function checkPassiveEventSupport() {
+  let supportsPassive = false
+  try {
+    const opts = Object.defineProperty({}, 'passive', {
+      get() {
+        supportsPassive = true
+      },
+    })
+    window.addEventListener('testPassive', noop, opts)
+    window.removeEventListener('testPassive', noop, opts)
+  }
+  catch (e) {}
+  return supportsPassive
 }

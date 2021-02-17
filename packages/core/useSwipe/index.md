@@ -25,18 +25,6 @@ Reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/
 </script>
 ```
 
-## Limitations
-
-By default scrolling will not work anymore while swiping the on the event target. 
-If you want to keep the scrolling functionality, you simply can pass a custom `onSwipe`
-event handler function in the `options`, which does not call `preventDefault`.
-
-Regarding to this [`document`](https://docs.google.com/document/d/12-HPlSIF7-ISY8TQHtuQ3IqDi-isZVI0Yzv5zwl90VU/mobilebasic)
-mouse events only will work if the 'touchmove' event handler calls preventDefault.
-If you are looking for simpler touch gesture cases like scroll-x or scroll-y, it's worth a try looking
-at this [`css solution`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action)
-
-
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
@@ -55,15 +43,24 @@ export declare enum SwipeDirection {
  * @param options
  */
 export declare function useSwipe(
-  target: MaybeRef<HTMLElement | null | undefined>,
+  target: MaybeRef<EventTarget>,
   options?: {
     threshold?: number
+    preventScrolling: boolean
     onSwipe?: (e: TouchEvent) => void
     onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
   }
 ): {
   isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
+  coordsStart: {
+    x: number
+    y: number
+  }
+  coordsEnd: {
+    x: number
+    y: number
+  }
   lengthX: ComputedRef<number>
   lengthY: ComputedRef<number>
 }

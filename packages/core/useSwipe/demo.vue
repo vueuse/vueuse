@@ -25,8 +25,6 @@ const onSwipe = (e: TouchEvent) => {
       left.value = '0'
       opacity.value = 1
     }
-    // Prevent scrolling
-    e.preventDefault()
   }
 }
 
@@ -41,7 +39,7 @@ const onSwipeEnd = (e: TouchEvent, direction: SwipeDirection) => {
   }
 }
 
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { onSwipe, onSwipeEnd })
+const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { preventScrolling: false, onSwipe, onSwipeEnd })
 </script>
 
 <template>
