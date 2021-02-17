@@ -18,11 +18,11 @@ export enum SwipeDirection {
 export function useSwipe(
   target: MaybeRef<EventTarget>,
   options: {
+    preventScrolling?: boolean
     threshold?: number
-    preventScrolling: boolean
     onSwipe?: (e: TouchEvent) => void
     onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
-  } = { preventScrolling: false },
+  } = {},
 ) {
   const { threshold, onSwipe, onSwipeEnd } = options || {}
   const isPassiveEventSupported = checkPassiveEventSupport()
@@ -101,7 +101,7 @@ export function useSwipe(
   }
 }
 
-// NOTE: this is a polyfil for passive event handler detection
+// NOTE: this is a polyfill for passive event support detection
 // Source: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
 function checkPassiveEventSupport() {
   let supportsPassive = false

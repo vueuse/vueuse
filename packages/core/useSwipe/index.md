@@ -45,8 +45,8 @@ export declare enum SwipeDirection {
 export declare function useSwipe(
   target: MaybeRef<EventTarget>,
   options?: {
+    preventScrolling?: boolean
     threshold?: number
-    preventScrolling: boolean
     onSwipe?: (e: TouchEvent) => void
     onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
   }
