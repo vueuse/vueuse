@@ -35,6 +35,30 @@ export declare enum SwipeDirection {
   DOWN = "DOWN",
   LEFT = "LEFT",
 }
+export interface SwipeOptions extends ConfigurableWindow {
+  /**
+   * Register events as passive
+   *
+   * @default true
+   */
+  passive?: boolean
+  /**
+   * @default 50
+   */
+  threshold?: number
+  /**
+   * Callback on swipe start
+   */
+  onSwipeStart?: (e: TouchEvent) => void
+  /**
+   * Callback on swipe moves
+   */
+  onSwipe?: (e: TouchEvent) => void
+  /**
+   * Callback on swipe ends
+   */
+  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+}
 /**
  * Reactive swipe detection.
  *
@@ -44,12 +68,7 @@ export declare enum SwipeDirection {
  */
 export declare function useSwipe(
   target: MaybeRef<EventTarget>,
-  options?: {
-    passive?: boolean
-    threshold?: number
-    onSwipe?: (e: TouchEvent) => void
-    onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
-  }
+  options?: SwipeOptions
 ): {
   isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
@@ -63,6 +82,7 @@ export declare function useSwipe(
   }
   lengthX: ComputedRef<number>
   lengthY: ComputedRef<number>
+  stop: () => void
 }
 ```
 

@@ -17,7 +17,7 @@ export interface SwipeOptions extends ConfigurableWindow {
   passive?: boolean
 
   /**
-   * @default 0
+   * @default 50
    */
   threshold?: number
 
@@ -105,29 +105,33 @@ export function useSwipe(
   else
     listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
-  useEventListener(target, 'touchstart', (e: TouchEvent) => {
-    if (listenerOptions.capture && !listenerOptions.passive)
-      e.preventDefault()
-    const [x, y] = getTouchEventCoords(e)
-    updateCoordsStart(x, y)
-    updateCoordsEnd(x, y)
-    onSwipeStart?.(e)
-  }, listenerOptions)
+  const stops = [
+    useEventListener(target, 'touchstart', (e: TouchEvent) => {
+      if (listenerOptions.capture && !listenerOptions.passive)
+        e.preventDefault()
+      const [x, y] = getTouchEventCoords(e)
+      updateCoordsStart(x, y)
+      updateCoordsEnd(x, y)
+      onSwipeStart?.(e)
+    }, listenerOptions),
 
-  useEventListener(target, 'touchmove', (e: TouchEvent) => {
-    const [x, y] = getTouchEventCoords(e)
-    updateCoordsEnd(x, y)
-    if (direction.value) {
-      isSwiping.value = true
-      onSwipe?.(e)
-    }
-  }, listenerOptions)
+    useEventListener(target, 'touchmove', (e: TouchEvent) => {
+      const [x, y] = getTouchEventCoords(e)
+      updateCoordsEnd(x, y)
+      if (direction.value) {
+        isSwiping.value = true
+        onSwipe?.(e)
+      }
+    }, listenerOptions),
 
-  useEventListener(target, 'touchend', (e: TouchEvent) => {
-    isSwiping.value = false
-    if (direction.value)
-      onSwipeEnd?.(e, direction.value)
-  }, listenerOptions)
+    useEventListener(target, 'touchend', (e: TouchEvent) => {
+      isSwiping.value = false
+      if (direction.value)
+        onSwipeEnd?.(e, direction.value)
+    }, listenerOptions),
+  ]
+
+  const stop = () => stops.forEach(s => s())
 
   return {
     isSwiping,
@@ -136,6 +140,7 @@ export function useSwipe(
     coordsEnd,
     lengthX: diffX,
     lengthY: diffY,
+    stop,
   }
 }
 

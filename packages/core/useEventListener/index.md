@@ -31,6 +31,9 @@ interface InferEventTarget<Events> {
 }
 export declare type WindowEventName = keyof WindowEventMap
 export declare type DocumentEventName = keyof DocumentEventMap
+export declare type GeneralEventListener<E = Event> = {
+  (evt: E): void
+}
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
@@ -94,7 +97,7 @@ export declare function useEventListener<E extends keyof DocumentEventMap>(
 export declare function useEventListener<Names extends string>(
   target: InferEventTarget<Names>,
   event: Names,
-  listener: EventListenerOrEventListenerObject,
+  listener: GeneralEventListener<EventType>,
   options?: boolean | AddEventListenerOptions
 ): Fn
 /**
@@ -108,10 +111,10 @@ export declare function useEventListener<Names extends string>(
  * @param listener
  * @param options
  */
-export declare function useEventListener(
+export declare function useEventListener<EventType = Event>(
   target: MaybeRef<EventTarget>,
   event: string,
-  listener: EventListenerOrEventListenerObject,
+  listener: GeneralEventListener<EventType>,
   options?: boolean | AddEventListenerOptions
 ): Fn
 export {}
