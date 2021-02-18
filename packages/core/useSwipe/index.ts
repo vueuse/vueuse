@@ -1,7 +1,6 @@
-import { noop } from './../../shared/utils/is'
+import { noop, MaybeRef } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue-demi'
 
-import { MaybeRef } from '..'
 import { useEventListener } from '../useEventListener'
 
 export enum SwipeDirection {
@@ -18,13 +17,13 @@ export enum SwipeDirection {
 export function useSwipe(
   target: MaybeRef<EventTarget>,
   options: {
-    preventScrolling?: boolean
+    passive?: boolean
     threshold?: number
     onSwipe?: (e: TouchEvent) => void
     onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
   } = {},
 ) {
-  const { threshold, onSwipe, onSwipeEnd } = options || {}
+  const { threshold, onSwipe, onSwipeEnd, passive = true } = options || {}
   const isPassiveEventSupported = checkPassiveEventSupport()
 
   const coordsStart = reactive({ x: 0, y: 0 })
@@ -66,7 +65,7 @@ export function useSwipe(
   }
 
   let listenerOptions: { passive?: boolean; capture?: boolean}
-  if (options.preventScrolling) listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
+  if (!passive) listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
   else listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
   useEventListener(target, 'touchstart', (e: Event) => {
@@ -101,19 +100,19 @@ export function useSwipe(
   }
 }
 
-// NOTE: this is a polyfill for passive event support detection
-// Source: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+/**
+ * This is a polyfill for passive event support detection
+ * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md}
+ */
 function checkPassiveEventSupport() {
   let supportsPassive = false
-  try {
-    const opts = Object.defineProperty({}, 'passive', {
-      get() {
-        supportsPassive = true
-      },
-    })
-    window.addEventListener('testPassive', noop, opts)
-    window.removeEventListener('testPassive', noop, opts)
+  const optionsBlock: AddEventListenerOptions = {
+    get passive() {
+      supportsPassive = true
+      return false
+    },
   }
-  catch (e) {}
+  document.addEventListener('x', noop, optionsBlock)
+  document.removeEventListener('x', noop)
   return supportsPassive
 }

@@ -39,7 +39,7 @@ const onSwipeEnd = (e: TouchEvent, direction: SwipeDirection) => {
   }
 }
 
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { preventScrolling: false, onSwipe, onSwipeEnd })
+const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { passive: false, onSwipe, onSwipeEnd })
 </script>
 
 <template>
