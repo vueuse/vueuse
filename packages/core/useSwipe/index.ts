@@ -2,9 +2,39 @@ import { noop, MaybeRef } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export enum SwipeDirection {
   UP = 'UP', RIGHT = 'RIGHT', DOWN = 'DOWN', LEFT = 'LEFT'
+}
+
+export interface SwipeOptions extends ConfigurableWindow {
+  /**
+   * Register events as passive
+   *
+   * @default true
+   */
+  passive?: boolean
+
+  /**
+   * @default 0
+   */
+  threshold?: number
+
+  /**
+   * Callback on swipe start
+   */
+  onSwipeStart?: (e: TouchEvent) => void
+
+  /**
+   * Callback on swipe moves
+   */
+  onSwipe?: (e: TouchEvent) => void
+
+  /**
+   * Callback on swipe ends
+   */
+  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
 }
 
 /**
@@ -16,15 +46,16 @@ export enum SwipeDirection {
  */
 export function useSwipe(
   target: MaybeRef<EventTarget>,
-  options: {
-    passive?: boolean
-    threshold?: number
-    onSwipe?: (e: TouchEvent) => void
-    onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
-  } = {},
+  options: SwipeOptions = {},
 ) {
-  const { threshold, onSwipe, onSwipeEnd, passive = true } = options || {}
-  const isPassiveEventSupported = checkPassiveEventSupport()
+  const {
+    threshold = 50,
+    onSwipe,
+    onSwipeEnd,
+    onSwipeStart,
+    passive = true,
+    window = defaultWindow,
+  } = options
 
   const coordsStart = reactive({ x: 0, y: 0 })
   const coordsEnd = reactive({ x: 0, y: 0 })
@@ -32,23 +63,24 @@ export function useSwipe(
   const diffX = computed(() => coordsStart.x - coordsEnd.x)
   const diffY = computed(() => coordsStart.y - coordsEnd.y)
 
-  const isThresholdExeeded = computed(() => Math.max(Math.abs(diffX.value), Math.abs(diffY.value)) >= (threshold || 0))
+  const { max, abs } = Math
+  const isThresholdExceeded = computed(() => max(abs(diffX.value), abs(diffY.value)) >= threshold)
 
   const isSwiping = ref(false)
 
   const direction = computed(() => {
-    if (isThresholdExeeded.value) {
-      if (Math.abs(diffX.value) > Math.abs(diffY.value)) {
-        if (diffX.value > 0) return SwipeDirection.LEFT
-        return SwipeDirection.RIGHT
-      }
-      else {
-        if (diffY.value > 0) return SwipeDirection.UP
-        else return SwipeDirection.DOWN
-      }
+    if (!isThresholdExceeded.value)
+      return null
+
+    if (abs(diffX.value) > abs(diffY.value)) {
+      return diffX.value > 0
+        ? SwipeDirection.LEFT
+        : SwipeDirection.RIGHT
     }
     else {
-      return null
+      return diffY.value > 0
+        ? SwipeDirection.UP
+        : SwipeDirection.DOWN
     }
   })
 
@@ -65,29 +97,36 @@ export function useSwipe(
   }
 
   let listenerOptions: { passive?: boolean; capture?: boolean}
-  if (!passive) listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
-  else listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
-  useEventListener(target, 'touchstart', (e: Event) => {
-    if (listenerOptions.capture && !listenerOptions.passive) e.preventDefault()
-    const [x, y] = getTouchEventCoords(e as TouchEvent)
+  const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
+
+  if (!passive)
+    listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
+  else
+    listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
+
+  useEventListener(target, 'touchstart', (e: TouchEvent) => {
+    if (listenerOptions.capture && !listenerOptions.passive)
+      e.preventDefault()
+    const [x, y] = getTouchEventCoords(e)
     updateCoordsStart(x, y)
     updateCoordsEnd(x, y)
+    onSwipeStart?.(e)
   }, listenerOptions)
 
-  useEventListener(target, 'touchmove', (e: Event) => {
-    const [x, y] = getTouchEventCoords(e as TouchEvent)
+  useEventListener(target, 'touchmove', (e: TouchEvent) => {
+    const [x, y] = getTouchEventCoords(e)
     updateCoordsEnd(x, y)
     if (direction.value) {
       isSwiping.value = true
-      onSwipe?.(e as TouchEvent)
+      onSwipe?.(e)
     }
   }, listenerOptions)
 
-  useEventListener(target, 'touchend', (e: Event) => {
+  useEventListener(target, 'touchend', (e: TouchEvent) => {
     isSwiping.value = false
     if (direction.value)
-      onSwipeEnd?.(e as TouchEvent, direction.value)
+      onSwipeEnd?.(e, direction.value)
   }, listenerOptions)
 
   return {
@@ -104,7 +143,9 @@ export function useSwipe(
  * This is a polyfill for passive event support detection
  * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md}
  */
-function checkPassiveEventSupport() {
+function checkPassiveEventSupport(document?: Document) {
+  if (!document)
+    return false
   let supportsPassive = false
   const optionsBlock: AddEventListenerOptions = {
     get passive() {
