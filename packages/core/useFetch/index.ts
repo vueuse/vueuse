@@ -99,7 +99,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     payload: undefined as unknown,
     payloadType: 'json' as PayloadType,
   }
-  let initialized = false
 
   if (args.length > 0) {
     if ('immediate' in args[0] || 'refetch' in args[0])
@@ -130,7 +129,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   const execute = () => {
-    initialized = true
     isFetching.value = true
     isFinished.value = false
     error.value = null
@@ -213,21 +211,15 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   const setMethod = (method: string) => (payload?: unknown, payloadType?: PayloadType) => {
-    if (initialized) {
-      config.method = method
-      config.payload = payload
-      config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
-      return shell as any
-    }
-    return undefined
+    config.method = method
+    config.payload = payload
+    config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
+    return shell as any
   }
 
   const setType = (type: DataType) => () => {
-    if (initialized) {
-      config.type = type
-      return base as any
-    }
-    return undefined
+    config.type = type
+    return base as any
   }
 
   const shell: UseFetchReturn<T> = {
@@ -249,22 +241,4 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     setTimeout(execute, 0)
 
   return shell
-}
-
-/**
- * Not sure about this yet, still need more feedback. But this would provide a basic
- * wrapper for making post requets using the useFetch function
- */
-export function usePostJson(url: string, json: object, options: RequestInit = {}) {
-  return useFetch(url, {
-    method: 'POST',
-    body: JSON.stringify(json),
-    ...options,
-    headers: {
-      ...('headers' in options ? options.headers : {}),
-      'Content-Type': 'application/json',
-    },
-  }, {
-    immediate: false,
-  })
 }

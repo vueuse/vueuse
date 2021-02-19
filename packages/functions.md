@@ -18,6 +18,7 @@
   - [`useDark`](https://vueuse.js.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.js.org/core/useEventListener/) — use EventListener with ease
   - [`useFavicon`](https://vueuse.js.org/core/useFavicon/) — reactive favicon
+  - [`useFetch`](https://vueuse.js.org/core/useFetch/) — reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) with support for [aborting requests](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort)
   - [`useFullscreen`](https://vueuse.js.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaQuery`](https://vueuse.js.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
   - [`usePermission`](https://vueuse.js.org/core/usePermission/) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)

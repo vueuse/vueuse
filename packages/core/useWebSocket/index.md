@@ -51,7 +51,7 @@ export declare function useWebSocket(
   state: Ref<WebSocketStatus>
   close: (code?: number | undefined, reason?: string | undefined) => void
   send: (
-    data: string | Blob | ArrayBuffer | SharedArrayBuffer | ArrayBufferView
+    data: string | Blob | ArrayBufferView | ArrayBuffer | SharedArrayBuffer
   ) => void
   ws: WebSocket
 }

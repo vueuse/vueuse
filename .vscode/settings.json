@@ -18,5 +18,6 @@
     "vue"
   ],
   "as-fs.enabled": true,
-  "as-fs.path": "packages/.vitepress/.editor-as-fs"
+  "as-fs.path": "packages/.vitepress/.editor-as-fs",
+  "volar.tsPlugin": true
 }
