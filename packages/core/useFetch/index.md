@@ -24,6 +24,37 @@ const { execute, data } = useFetch(url, { immediate: false })
 execute()
 ```
 
+Fetch as Blob
+
+```ts
+import { useFetch } from '@vueuse/core'
+
+const { execute, data } = useFetch(url).blob()
+```
+
+Post a JSON
+
+```ts
+import { useFetch } from '@vueuse/core'
+
+const { execute, data } = useFetch(url)
+  .post({ message: 'Hello' })
+  .json()
+```
+
+Abort a fetch
+
+```ts
+import { useFetch } from '@vueuse/core'
+
+const { execute, data, isFetching, abort } = useFetch(url)
+
+setTimeout(() => {
+  // timeout!
+  abort()
+}, 1000)
+```
+
 Automatically refetch when your URL is a ref
 
 ```ts
@@ -39,20 +70,6 @@ setTimeout(() => {
 }, 5000)
 ```
 
-Using normal fetch request options
-
-```ts
-import { useFetch } from '@vueuse/core'
-
-const { execute, data } = useFetch(url,
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  },
-  { immediate: false })
-
-
-```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
