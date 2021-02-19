@@ -1,4 +1,5 @@
 import { Fn, isString, MaybeRef, noop, tryOnUnmounted } from '@vueuse/shared'
+import { EventType } from 'js-yaml'
 import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -9,6 +10,10 @@ interface InferEventTarget<Events> {
 
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
+
+export type GeneralEventListener<E = Event> = {
+  (evt: E): void
+}
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -59,7 +64,7 @@ export function useEventListener<E extends keyof DocumentEventMap>(target: Docum
  * @param listener
  * @param options
  */
-export function useEventListener<Names extends string>(target: InferEventTarget<Names>, event: Names, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<Names extends string>(target: InferEventTarget<Names>, event: Names, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -72,7 +77,7 @@ export function useEventListener<Names extends string>(target: InferEventTarget<
  * @param listener
  * @param options
  */
-export function useEventListener(target: MaybeRef<EventTarget>, event: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<EventType = Event>(target: MaybeRef<EventTarget>, event: string, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
 
 export function useEventListener(...args: any[]) {
   let target: MaybeRef<EventTarget> | undefined
@@ -93,7 +98,7 @@ export function useEventListener(...args: any[]) {
 
   let cleanup = noop
 
-  const stopWatch = watch(
+  watch(
     () => unref(target),
     (el) => {
       cleanup()
@@ -109,11 +114,6 @@ export function useEventListener(...args: any[]) {
     },
     { immediate: true },
   )
-
-  const stop = () => {
-    stopWatch()
-    cleanup()
-  }
 
   tryOnUnmounted(stop)
 
