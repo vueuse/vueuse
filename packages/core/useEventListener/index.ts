@@ -98,7 +98,7 @@ export function useEventListener(...args: any[]) {
 
   let cleanup = noop
 
-  watch(
+  const stopWatch = watch(
     () => unref(target),
     (el) => {
       cleanup()
@@ -114,6 +114,11 @@ export function useEventListener(...args: any[]) {
     },
     { immediate: true },
   )
+
+  const stop = () => {
+    stopWatch()
+    cleanup()
+  }
 
   tryOnUnmounted(stop)
 
