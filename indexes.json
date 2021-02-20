@@ -646,6 +646,13 @@
       "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)"
     },
     {
+      "name": "useSwipe",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useSwipe/",
+      "category": "Sensors",
+      "description": "reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)"
+    },
+    {
       "name": "useTimestamp",
       "package": "core",
       "docs": "https://vueuse.js.org/core/useTimestamp/",
