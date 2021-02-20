@@ -42,7 +42,6 @@ const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase
 ## Type Declarations
 
 ```typescript
-import "firebase/auth"
 export interface FirebaseAuthOptions {
   isAuthenticated: ComputedRef<boolean>
   user: Ref<firebase.User | null>

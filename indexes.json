@@ -35,13 +35,15 @@
         "universal-cookie",
         "qrcode",
         "http",
-        "nprogress"
+        "nprogress",
+        "jwt-decode"
       ],
       "globals": {
         "axios": "axios",
         "universal-cookie": "UniversalCookie",
         "qrcode": "QRCode",
-        "nprogress": "nprogress"
+        "nprogress": "nprogress",
+        "jwt-decode": "jwt_decode"
       },
       "dir": "packages/integrations",
       "docs": "https://vueuse.js.org/integrations/README.html"

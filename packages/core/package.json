@@ -1,12 +1,12 @@
 {
   "name": "@vueuse/core",
-  "version": "4.1.1",
+  "version": "4.2.0-beta.2",
   "description": "Collection of essential Vue Composition Utilities",
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.esm.js",
-  "unpkg": "./dist/index.umd.min.js",
-  "jsdelivr": "./dist/index.umd.min.js",
+  "unpkg": "./dist/index.iife.min.js",
+  "jsdelivr": "./dist/index.iife.min.js",
   "sideEffects": false,
   "files": [
     "dist"
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/vueuse/vueuse#readme",
   "dependencies": {
     "vue-demi": "latest",
-    "@vueuse/shared": "4.1.1"
+    "@vueuse/shared": "4.2.0-beta.2"
   },
   "exports": {
     ".": {
