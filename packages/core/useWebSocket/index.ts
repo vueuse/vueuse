@@ -1,55 +1,231 @@
-/* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
-
 import { ref, Ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { Fn, tryOnUnmounted, useIntervalFn } from '@vueuse/shared'
 
-export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSING' | 'CLOSED'
+export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+
+export interface WebSocketOptions {
+  onConnected?: (ws: WebSocket) => void
+  onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
+  onError?: (ws: WebSocket, event: Event) => void
+  onMessage?: (ws: WebSocket, event: MessageEvent) => void
+
+  /**
+   * Send heartbeat for every x mileseconds passed
+   *
+   * @default false
+   */
+  heartbeat?: boolean | {
+    /**
+     * Message for the heartbeat
+     *
+     * @default 'ping'
+     */
+    message?: string
+
+    /**
+     * Interval, in mileseconds
+     *
+     * @default 1000
+     */
+    interval?: number
+  }
+
+  /**
+   * Enabled auto reconnect
+   *
+   * @default false
+   */
+  autoReconnect?: boolean | {
+    /**
+     * Maximum retry times.
+     *
+     * @default -1
+     */
+    retries?: number
+
+    /**
+     * Delay for reconnect, in mileseconds
+     *
+     * @default 1000
+     */
+    delay?: number
+
+    /**
+     * On maximum retry times reached.
+     */
+    onFailed?: Fn
+  }
+}
+
+export interface WebSocketResult<T> {
+  /**
+   * Reference to the latest data received via the websocket,
+   * can be watched to respond to incoming messages
+   */
+  data: Ref<T | null>
+
+  /**
+   * The current websocket status, can be only one of:
+   * 'OPEN', 'CONNECTING', 'CLOSED'
+   */
+  status: Ref<WebSocketStatus>
+
+  /**
+   * Closes the websocket connection gracefully.
+   */
+  close: WebSocket['close']
+
+  /**
+   * Reopen the websocket connection.
+   * If there the current one is active, will close it before opening a new one.
+   */
+  open: Fn
+
+  /**
+   * Sends data through the websocket connection.
+   *
+   * @param data
+   * @param useBuffer when the socket is not yet open, store the data into the buffer and sent them one connected. Default to true.
+   */
+  send: (data: string | ArrayBuffer | Blob, useBuffer?: boolean) => boolean
+
+  /**
+   * Reference to the WebSocket instance.
+   */
+  ws: Ref<WebSocket | undefined>
+}
+
+function resolveNestedOptions<T>(options: T | true): T {
+  if (options === true)
+    return {} as T
+  return options
+}
 
 /**
- * Reactive simple WebSocket client.
+ * Reactive WebSocket client.
  *
  * @see   {@link https://vueuse.js.org/useWebSocket}
  * @param url
  */
-export function useWebSocket(url: string) {
-  const data: Ref<any> = ref(null)
-  const state = ref<WebSocketStatus>('CONNECTING')
-  let ws: WebSocket
+export function useWebSocket<Data = any>(
+  url: string,
+  options: WebSocketOptions = {},
+): WebSocketResult<Data> {
+  const {
+    onConnected,
+    onDisconnected,
+    onError,
+    onMessage,
+  } = options
 
-  const close: typeof ws.close = function close(code, reason) {
-    if (!ws) return
+  const data: Ref<Data | null> = ref(null)
+  const status = ref<WebSocketStatus>('CONNECTING')
+  const wsRef = ref<WebSocket | undefined>()
 
-    ws.close(code, reason)
+  let heartbeatPause: Fn | undefined
+  let heartbeatResume: Fn | undefined
+
+  let explicitlyClosed = false
+  let retried = 0
+
+  let bufferedData: (string | ArrayBuffer | Blob)[] = []
+
+  const close: WebSocket['close'] = (code, reason) => {
+    if (!wsRef.value)
+      return
+    explicitlyClosed = true
+    heartbeatPause?.()
+    wsRef.value.close(code, reason)
   }
 
-  const send: typeof ws.send = function send(data) {
-    if (!ws) return
-
-    ws.send(data)
+  const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
+    if (!wsRef.value || status.value !== 'OPEN') {
+      if (useBuffer)
+        bufferedData.push(data)
+      return false
+    }
+    _sendBuffer()
+    wsRef.value.send(data)
+    return true
   }
 
-  ws = new WebSocket(url)
-  ws.onopen = () => {
-    state.value = 'OPEN'
+  const _sendBuffer = () => {
+    if (bufferedData.length && wsRef.value && status.value !== 'OPEN') {
+      for (const buffer of bufferedData)
+        wsRef.value.send(buffer)
+      bufferedData = []
+    }
   }
 
-  ws.onclose = ws.onerror = () => {
-    state.value = 'CLOSED'
+  const _init = () => {
+    const ws = new WebSocket(url)
+    wsRef.value = ws
+    status.value = 'CONNECTING'
+    explicitlyClosed = false
+
+    ws.onopen = () => {
+      status.value = 'OPEN'
+      onConnected?.(ws!)
+      heartbeatResume?.()
+      _sendBuffer()
+    }
+
+    ws.onclose = (ev) => {
+      status.value = 'CLOSED'
+      wsRef.value = undefined
+      onDisconnected?.(ws, ev)
+
+      if (!explicitlyClosed && options.autoReconnect) {
+        const {
+          retries = -1,
+          delay = 1000,
+          onFailed,
+        } = resolveNestedOptions(options.autoReconnect)
+        retried += 1
+
+        if (retries < 0 || retried < retries)
+          setTimeout(_init, delay)
+        else
+          onFailed?.()
+      }
+    }
+
+    ws.onerror = (e) => {
+      onError?.(ws!, e)
+    }
+
+    ws.onmessage = (e: MessageEvent) => {
+      data.value = e.data
+      onMessage?.(ws!, e)
+    }
   }
 
-  ws.onmessage = (e: MessageEvent) => {
-    data.value = e.data
+  if (options.heartbeat) {
+    const {
+      message = 'ping',
+      interval = 1000,
+    } = resolveNestedOptions(options.heartbeat)
+
+    const { pause, resume } = useIntervalFn(() => send(message, false), interval, false)
+
+    heartbeatPause = pause
+    heartbeatResume = resume
   }
 
-  tryOnUnmounted(() => {
-    ws.close()
-  })
+  const open = () => {
+    close()
+    retried = 0
+    _init()
+  }
+
+  tryOnUnmounted(close)
 
   return {
     data,
-    state,
+    status,
     close,
     send,
-    ws,
+    open,
+    ws: wsRef,
   }
 }

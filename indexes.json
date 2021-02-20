@@ -692,7 +692,7 @@
       "package": "core",
       "docs": "https://vueuse.js.org/core/useWebSocket/",
       "category": "Misc",
-      "description": "reactive simple [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client"
+      "description": "reactive [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/WebSocket) client"
     },
     {
       "name": "useWebWorker",
