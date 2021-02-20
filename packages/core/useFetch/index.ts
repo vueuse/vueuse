@@ -99,6 +99,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     payload: undefined as unknown,
     payloadType: 'json' as PayloadType,
   }
+  let initialized = false
 
   if (args.length > 0) {
     if ('immediate' in args[0] || 'refetch' in args[0])
@@ -129,6 +130,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   const execute = () => {
+    initialized = true
     isFetching.value = true
     isFinished.value = false
     error.value = null
@@ -211,15 +213,21 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   const setMethod = (method: string) => (payload?: unknown, payloadType?: PayloadType) => {
-    config.method = method
-    config.payload = payload
-    config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
-    return shell as any
+    if (!initialized) {
+      config.method = method
+      config.payload = payload
+      config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
+      return shell as any
+    }
+    return undefined
   }
 
   const setType = (type: DataType) => () => {
-    config.type = type
-    return base as any
+    if (!initialized) {
+      config.type = type
+      return base as any
+    }
+    return undefined
   }
 
   const shell: UseFetchReturn<T> = {
