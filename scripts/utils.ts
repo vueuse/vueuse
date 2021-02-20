@@ -335,8 +335,8 @@ export async function updatePackageJSON() {
     packageJSON.main = './dist/index.cjs.js'
     packageJSON.types = './dist/index.d.ts'
     packageJSON.module = './dist/index.esm.js'
-    packageJSON.unpkg = './dist/index.umd.min.js'
-    packageJSON.jsdelivr = './dist/index.umd.min.js'
+    packageJSON.unpkg = './dist/index.iife.min.js'
+    packageJSON.jsdelivr = './dist/index.iife.min.js'
     packageJSON.exports = {
       '.': {
         import: './dist/index.esm.js',

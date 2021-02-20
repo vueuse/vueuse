@@ -2,19 +2,29 @@
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
+import { Plugin } from 'rollup'
 import { activePackages } from '../meta/packages'
+import fs from 'fs'
 
+const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs = []
 
-for (const { globals, name, display, external } of activePackages) {
-  const umdGlobals = {
+const injectVueDemi: Plugin = {
+  name: 'inject-vue-demi',
+  renderChunk(code) {
+    return `${VUE_DEMI_IIFE};\n;${code}`
+  },
+}
+
+for (const { globals, name, external } of activePackages) {
+  const iifeGlobals = {
     'vue-demi': 'VueDemi',
-    '@vueuse/shared': 'VueUseShared',
+    '@vueuse/shared': 'VueUse',
     '@vueuse/core': 'VueUse',
     ...(globals || {}),
   }
 
-  const umdName = name === 'core' ? 'VueUse' : `VueUse${display}`
+  const iifeName = 'VueUse'
 
   configs.push({
     input: `packages/${name}/index.ts`,
@@ -28,17 +38,23 @@ for (const { globals, name, display, external } of activePackages) {
         format: 'es',
       },
       {
-        file: `packages/${name}/dist/index.umd.js`,
-        format: 'umd',
-        name: umdName,
-        globals: umdGlobals,
+        file: `packages/${name}/dist/index.iife.js`,
+        format: 'iife',
+        name: iifeName,
+        extend: true,
+        globals: iifeGlobals,
+        plugins: [
+          injectVueDemi,
+        ],
       },
       {
-        file: `packages/${name}/dist/index.umd.min.js`,
-        format: 'umd',
-        name: umdName,
-        globals: umdGlobals,
+        file: `packages/${name}/dist/index.iife.min.js`,
+        format: 'iife',
+        name: iifeName,
+        extend: true,
+        globals: iifeGlobals,
         plugins: [
+          injectVueDemi,
           terser({
             format: {
               comments: false,
@@ -71,6 +87,11 @@ for (const { globals, name, display, external } of activePackages) {
     },
     plugins: [
       dts(),
+    ],
+    external: [
+      'vue-demi',
+      '@vueuse/shared',
+      ...(external || []),
     ],
   })
 }

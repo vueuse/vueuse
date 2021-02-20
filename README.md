@@ -18,7 +18,6 @@ Collection of essential Vue Composition Utilities
   </a>
 </p>
 
-
 ## 🚀 Features
 
 - 🎪 [**Interactive docs & demos**](https://vueuse.js.org)
@@ -45,7 +44,7 @@ export default {
 
     // persist state in localStorage
     const store = useLocalStorage(
-      'my-storage', 
+      'my-storage',
       {
         name: 'Apple',
         color: 'red',
@@ -72,6 +71,7 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 ### CDN
 
 ```html
+<script src="https://unpkg.com/@vueuse/shared"></script>
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 

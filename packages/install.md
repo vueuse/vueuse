@@ -11,6 +11,7 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 ### CDN
 
 ```html
+<script src="https://unpkg.com/@vueuse/shared"></script>
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 

@@ -81,7 +81,7 @@
     "esbuild-register": "^2.0.0",
     "eslint": "^7.20.0",
     "eslint-plugin-jest": "^24.1.5",
-    "eslint-plugin-markdown": "^2.0.0",
+    "eslint-plugin-markdown": "^1.0.2",
     "esm": "^3.2.25",
     "esno": "^0.4.4",
     "export-size": "^0.4.0",
