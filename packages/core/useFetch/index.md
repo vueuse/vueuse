@@ -75,17 +75,17 @@ setTimeout(() => {
 ## Type Declarations
 
 ```typescript
-interface UseFetchReturn {
+interface UseFetchReturnBase<T> {
   /**
    * Indicates if the fetch request has finished
    */
   isFinished: Ref<boolean>
   /**
-   * The status of the fetch request
+   * The statusCode of the HTTP fetch response
    */
-  status: Ref<number | null>
+  statusCode: Ref<number | null>
   /**
-   * The raw response of the fetch request
+   * The raw response of the fetch response
    */
   response: Ref<Response | null>
   /**
@@ -95,7 +95,7 @@ interface UseFetchReturn {
   /**
    * The fetch response body, may either be JSON or text
    */
-  data: Ref<object | string | null>
+  data: Ref<T | null>
   /**
    * Indicates if the request is currently being fetched.
    */
@@ -113,32 +113,47 @@ interface UseFetchReturn {
    */
   execute: Fn
 }
-interface UseFetchOptions {
+declare type PayloadType = "text" | "json" | "formData"
+interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
+  json<JSON = any>(): UseFetchReturnBase<JSON>
+  text(): UseFetchReturnBase<string>
+  blob(): UseFetchReturnBase<Blob>
+  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
+  formData(): UseFetchReturnBase<FormData>
+}
+export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
+  get(): UseFetchReturnMethodConfigured<T>
+  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+  delete(
+    payload?: unknown,
+    type?: PayloadType
+  ): UseFetchReturnMethodConfigured<T>
+}
+export interface UseFetchOptions {
   /**
    * Will automatically run fetch when `useFetch` is used
-   * Default: true
+   *
+   * @default true
    */
-  autoFetch?: boolean
+  immediate?: boolean
   /**
    * Will automatically refetch when the URL is changed if the url is a ref
-   * Default: false
+   *
+   * @default false
    */
-  autoRefetch?: MaybeRef<boolean>
+  refetch?: MaybeRef<boolean>
 }
-export declare function useFetch(url: MaybeRef<string>): UseFetchReturn
-export declare function useFetch(
+export declare function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
+export declare function useFetch<T>(
   url: MaybeRef<string>,
   useFetchOptions: UseFetchOptions
-): UseFetchReturn
-export declare function useFetch(
-  url: MaybeRef<string>,
-  options: RequestInit
-): UseFetchReturn
-export declare function useFetch(
+): UseFetchReturn<T>
+export declare function useFetch<T>(
   url: MaybeRef<string>,
   options: RequestInit,
-  useFetchOptions: UseFetchOptions
-): UseFetchReturn
+  useFetchOptions?: UseFetchOptions
+): UseFetchReturn<T>
 export {}
 ```
 
