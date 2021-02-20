@@ -112,7 +112,7 @@ export declare function useEventListener<Names extends string>(
  * @param options
  */
 export declare function useEventListener<EventType = Event>(
-  target: MaybeRef<EventTarget>,
+  target: MaybeRef<EventTarget | null | undefined>,
   event: string,
   listener: GeneralEventListener<EventType>,
   options?: boolean | AddEventListenerOptions
