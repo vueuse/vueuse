@@ -1,6 +1,5 @@
 import { noop, MaybeRef } from '@vueuse/shared'
-import { computed, reactive, ref, readonly } from 'vue-demi'
-import { ComputedRef } from '__VLS_vue'
+import { computed, reactive, ref, ComputedRef } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'

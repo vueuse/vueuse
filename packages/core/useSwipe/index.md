@@ -18,9 +18,9 @@ Reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/
 <script>
   setup() {
     const el = ref(null)
-    const { direction } = useSwipe(el)
+    const { isSwiping, direction } = useSwipe(el)
 
-    return { el, direction }
+    return { el, isSwiping, direction }
   } 
 </script>
 ```
@@ -59,6 +59,22 @@ export interface SwipeOptions extends ConfigurableWindow {
    */
   onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
 }
+export interface SwipeReturn {
+  isPassiveEventSupported: boolean
+  isSwiping: ComputedRef<boolean>
+  direction: ComputedRef<SwipeDirection | null>
+  coordsStart: {
+    readonly x: number
+    readonly y: number
+  }
+  coordsEnd: {
+    readonly x: number
+    readonly y: number
+  }
+  lengthX: ComputedRef<number>
+  lengthY: ComputedRef<number>
+  stop: () => void
+}
 /**
  * Reactive swipe detection.
  *
@@ -67,9 +83,10 @@ export interface SwipeOptions extends ConfigurableWindow {
  * @param options
  */
 export declare function useSwipe(
-  target: MaybeRef<EventTarget>,
+  target: MaybeRef<EventTarget | null | undefined>,
   options?: SwipeOptions
 ): {
+  isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
   coordsStart: {
