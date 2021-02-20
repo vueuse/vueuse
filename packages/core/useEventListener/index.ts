@@ -77,7 +77,7 @@ export function useEventListener<Names extends string>(target: InferEventTarget<
  * @param listener
  * @param options
  */
-export function useEventListener<EventType = Event>(target: MaybeRef<EventTarget>, event: string, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<EventType = Event>(target: MaybeRef<EventTarget | null | undefined>, event: string, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
 
 export function useEventListener(...args: any[]) {
   let target: MaybeRef<EventTarget> | undefined

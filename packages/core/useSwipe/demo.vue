@@ -44,7 +44,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { passive: f
 
 <template>
   <div>
-    <div ref="container" class="container">
+    <div ref="container" class="container select-none">
       <button @click="reset">
         Reset
       </button>

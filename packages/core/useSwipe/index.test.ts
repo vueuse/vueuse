@@ -9,7 +9,23 @@ describe('useSwipe', () => {
   document.body.appendChild(target)
 
   const mockTouchEventInit = (x: number, y: number): TouchEventInit => ({
-    touches: [{ clientX: x, clientY: y, altitudeAngle: 0, azimuthAngle: 0, force: 0, identifier: 0, pageX: 0, pageY: 0, radiusX: 0, radiusY: 0, rotationAngle: 0, screenX: 0, screenY: 0, target, touchType: 'direct' }],
+    touches: [{
+      clientX: x,
+      clientY: y,
+      altitudeAngle: 0,
+      azimuthAngle: 0,
+      force: 0,
+      identifier: 0,
+      pageX: 0,
+      pageY: 0,
+      radiusX: 0,
+      radiusY: 0,
+      rotationAngle: 0,
+      screenX: 0,
+      screenY: 0,
+      target,
+      touchType: 'direct',
+    }],
   })
 
   const mockTouchStart = (x: number, y: number) => new TouchEvent('touchstart', mockTouchEventInit(x, y))
@@ -34,7 +50,7 @@ describe('useSwipe', () => {
     onSwipeEnd = jest.fn((e: TouchEvent, direction: SwipeDirection) => {})
   })
 
-  it('threshold not exeeded', () => {
+  it('threshold not exceeded', () => {
     useSetup(() => {
       useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
@@ -45,7 +61,7 @@ describe('useSwipe', () => {
     })
   })
 
-  it('threshold exeeded', () => {
+  it('threshold exceeded', () => {
     useSetup(() => {
       useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
@@ -56,7 +72,7 @@ describe('useSwipe', () => {
     })
   })
 
-  it('reactiviy', () => {
+  it('reactivity', () => {
     useSetup(() => {
       const { isSwiping, direction, lengthX, lengthY } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 

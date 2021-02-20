@@ -1,11 +1,15 @@
 import { noop, MaybeRef } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref, readonly } from 'vue-demi'
+import { ComputedRef } from '__VLS_vue'
 
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export enum SwipeDirection {
-  UP = 'UP', RIGHT = 'RIGHT', DOWN = 'DOWN', LEFT = 'LEFT'
+  UP = 'UP',
+  RIGHT = 'RIGHT',
+  DOWN = 'DOWN',
+  LEFT = 'LEFT'
 }
 
 export interface SwipeOptions extends ConfigurableWindow {
@@ -37,6 +41,23 @@ export interface SwipeOptions extends ConfigurableWindow {
   onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
 }
 
+export interface SwipeReturn {
+  isPassiveEventSupported: boolean
+  isSwiping: ComputedRef<boolean>
+  direction: ComputedRef<SwipeDirection | null>
+  coordsStart: {
+    readonly x: number
+    readonly y: number
+  }
+  coordsEnd: {
+    readonly x: number
+    readonly y: number
+  }
+  lengthX: ComputedRef<number>
+  lengthY: ComputedRef<number>
+  stop: () => void
+}
+
 /**
  * Reactive swipe detection.
  *
@@ -45,7 +66,7 @@ export interface SwipeOptions extends ConfigurableWindow {
  * @param options
  */
 export function useSwipe(
-  target: MaybeRef<EventTarget>,
+  target: MaybeRef<EventTarget | null | undefined>,
   options: SwipeOptions = {},
 ) {
   const {
@@ -96,7 +117,7 @@ export function useSwipe(
     coordsEnd.y = y
   }
 
-  let listenerOptions: { passive?: boolean; capture?: boolean}
+  let listenerOptions: { passive?: boolean; capture?: boolean }
 
   const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
 
@@ -134,6 +155,7 @@ export function useSwipe(
   const stop = () => stops.forEach(s => s())
 
   return {
+    isPassiveEventSupported,
     isSwiping,
     direction,
     coordsStart,
