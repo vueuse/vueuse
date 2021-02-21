@@ -17,8 +17,8 @@ const theme = {
     if (typeof window !== 'undefined')
       handleRedirects(router)
 
-    // @ts-ignore
-    import('vite-plugin-editor-nav/client').then(i => i.default(router))
+    // @ts-ignore: TODO: bring it back
+    // import('vite-plugin-editor-nav/client').then(i => i.default(router))
   },
 }
 
