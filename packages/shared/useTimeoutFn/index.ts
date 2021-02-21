@@ -49,7 +49,7 @@ export function useTimeoutFn(
       timer = null
       // eslint-disable-next-line standard/no-callback-literal
       cb(...args)
-    }, interval)
+    }, interval) as unknown as number
   }
 
   if (immediate) {

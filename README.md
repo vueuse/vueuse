@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
 <a href="https://vueuse.js.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-102%20functions-13708a">
+<img alt="Function Count" src="https://img.shields.io/badge/-103%20functions-13708a">
 <br>
 <a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
@@ -17,7 +17,6 @@ Collection of essential Vue Composition Utilities
     <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'>
   </a>
 </p>
-
 
 ## 🚀 Features
 
@@ -45,7 +44,7 @@ export default {
 
     // persist state in localStorage
     const store = useLocalStorage(
-      'my-storage', 
+      'my-storage',
       {
         name: 'Apple',
         color: 'red',
@@ -72,6 +71,7 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 ### CDN
 
 ```html
+<script src="https://unpkg.com/@vueuse/shared"></script>
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 

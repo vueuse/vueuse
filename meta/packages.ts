@@ -33,12 +33,14 @@ export const packages: PackageManifest[] = [
       'qrcode',
       'http',
       'nprogress',
+      'jwt-decode',
     ],
     globals: {
       axios: 'axios',
       'universal-cookie': 'UniversalCookie',
       qrcode: 'QRCode',
       nprogress: 'nprogress',
+      'jwt-decode': 'jwt_decode',
     },
   },
   {
