@@ -8,17 +8,10 @@ describe('useFetch', () => {
   }
 
   test('basic get request', async() => {
-    const { statusCode } = useFetch(urls.get)
+    const { statusCode, execute } = useFetch(urls.get, { immediate: false })
 
-    /**
-     * Since we are using refs here not sure about the best way to wait for a change?
-     * Is there a defined way to do this yet or should we make some sort of util?
-     *
-     * If there isn't maybe we could have a util that does something like
-     *
-     * await waitForRefChange(statusCode)
-     *
-     * expect(statusCode.value).toBe(200)
-     */
+    await execute()
+
+    expect(statusCode.value).toBe(200)
   })
 })

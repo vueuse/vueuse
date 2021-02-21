@@ -45,7 +45,7 @@ interface UseFetchReturnBase<T> {
   /**
    * Manually call the fetch
    */
-  execute: Fn
+  execute: () => Promise<any>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -164,31 +164,38 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    fetch(
-      unref(url),
-      {
-        ...defaultFetchOptions,
-        ...fetchOptions,
-        headers: {
-          ...defaultFetchOptions.headers,
-          ...fetchOptions?.headers,
+    return new Promise((resolve, reject) => {
+      fetch(
+        unref(url),
+        {
+          ...defaultFetchOptions,
+          ...fetchOptions,
+          headers: {
+            ...defaultFetchOptions.headers,
+            ...fetchOptions?.headers,
+          },
         },
-      },
-    )
-      .then((fetchResponse) => {
-        response.value = fetchResponse
+      )
+        .then((fetchResponse) => {
+          response.value = fetchResponse
 
-        fetchResponse[config.type]().then(text => data.value = text as any)
+          fetchResponse[config.type]().then(text => data.value = text as any)
 
-        // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-        if (!fetchResponse.ok)
-          throw new Error(fetchResponse.statusText)
-      })
-      .catch(fetchError => error.value = fetchError.message)
-      .finally(() => {
-        isFinished.value = true
-        isFetching.value = false
-      })
+          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+          if (!fetchResponse.ok)
+            throw new Error(fetchResponse.statusText)
+
+          resolve(fetchResponse)
+        })
+        .catch((fetchError) => {
+          error.value = fetchError.message
+          reject(fetchError)
+        })
+        .finally(() => {
+          isFinished.value = true
+          isFetching.value = false
+        })
+    })
   }
 
   watch(
