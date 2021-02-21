@@ -112,7 +112,7 @@
     "ts-jest": "^26.5.1",
     "typescript": "^4.1.5",
     "version-bump-prompt": "^6.1.0",
-    "vite-plugin-components": "^0.6.12",
+    "vite-plugin-components": "^0.6.14",
     "vite-plugin-editor-nav": "^0.0.4",
     "vite-plugin-icons": "^0.2.2",
     "vite-plugin-pwa": "^0.5.2",

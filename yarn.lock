@@ -3005,6 +3005,13 @@
     lodash "^4.17.15"
     pretty "^2.0.0"
 
+"@vueuse/shared@^4.0.4":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-4.1.1.tgz#58e4333d5ab45927e25578fad83bc81cecfea475"
+  integrity sha512-M1bNwOaJZypu/AUYKrOU87pQLRp8VgMYHQyL1hVc6V3hi3ZcUBSjZuyFVaUdxGk0OeA0NPzHoYbByTMrpxElug==
+  dependencies:
+    vue-demi latest
+
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
@@ -10769,10 +10776,10 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-vite-plugin-components@^0.6.12:
-  version "0.6.12"
-  resolved "https://registry.yarnpkg.com/vite-plugin-components/-/vite-plugin-components-0.6.12.tgz#c3b4d59c78e399cf1c7e2816d63aa5b54621267b"
-  integrity sha512-KTqUseGaeMPlq6KpvAso0VIAtI7KgZQWHB3JZXlsMYdvoy9nrqRBGQPpTd5/dadfWl3LF3PsuDuxGFzQwXd3Kg==
+vite-plugin-components@^0.6.14:
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/vite-plugin-components/-/vite-plugin-components-0.6.14.tgz#6807b49b6b64e4d610862fe892ede2dc011431f3"
+  integrity sha512-Xhfuwckd1p8/Mj7mRs/wZZx15CZPYljOl/BWwpvMayFlx52lez28y6QQF3/mPXbtWDK3YuNLGp6xUpMnRJ00gQ==
   dependencies:
     chokidar "^3.5.1"
     debug "^4.3.2"
