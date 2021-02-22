@@ -55,7 +55,7 @@ export interface ShareOptions {
 /**
  * Reactive Web Share API.
  *
- * @use   {@link https://vueuse.js.org/useShare}
+ * @use   {@link https://vueuse.org/useShare}
  * @param shareOptions
  * @param options
  */

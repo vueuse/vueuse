@@ -3,9 +3,10 @@
   command = "npm run build && npm run docs:build"
 
 [[redirects]]
-  from = "/v4.1.1/*"
-  to = "https://6028131f303ad00007a6228b--vueuse.netlify.app/:slug"
-  status = 200
+  from = "https://vueuse.js.org/*"
+  to = "https://vueuse.org/:splat"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/*"

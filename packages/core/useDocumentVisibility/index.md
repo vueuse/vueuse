@@ -22,7 +22,7 @@ const visibility = useDocumentVisibility()
 /**
  * Reactively track `document.visibilityState`.
  *
- * @see   {@link https://vueuse.js.org/useDocumentVisibility}
+ * @see   {@link https://vueuse.org/useDocumentVisibility}
  * @param options
  */
 export declare function useDocumentVisibility({

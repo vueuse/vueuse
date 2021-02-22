@@ -3,7 +3,7 @@ import { useSetup } from '../../.test'
 import each from 'jest-each'
 
 describe('useUrlSearchParams', () => {
-  const baseURL = 'https://vueuse.js.org'
+  const baseURL = 'https://vueuse.org'
 
   beforeEach(() => {
     Object.defineProperty(window, 'location', {

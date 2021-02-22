@@ -26,7 +26,7 @@ export interface RafFnReturn extends Pausable {
 /**
  * Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
  *
- * @see   {@link https://vueuse.js.org/useRafFn}
+ * @see   {@link https://vueuse.org/useRafFn}
  * @param fn
  * @param options
  */

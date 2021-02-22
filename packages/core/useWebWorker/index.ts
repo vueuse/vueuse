@@ -6,7 +6,7 @@ import { tryOnUnmounted } from '@vueuse/shared'
 /**
  * Simple Web Workers registration and communication.
  *
- * @see   {@link https://vueuse.js.org/useWebWorker}
+ * @see   {@link https://vueuse.org/useWebWorker}
  * @param url
  */
 export function useWebWorker(url: string) {

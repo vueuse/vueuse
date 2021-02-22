@@ -12,5 +12,5 @@ module.exports = {
   setupFiles: [
     '<rootDir>/packages/.test/test.setup.js',
   ],
-  testURL: 'https://vueuse.js.org',
+  testURL: 'https://vueuse.org',
 }

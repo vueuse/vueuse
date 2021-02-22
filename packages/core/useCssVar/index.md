@@ -23,7 +23,7 @@ const color = useCssVar('--color', el)
 /**
  * Manipulate CSS variables.
  *
- * @see   {@link https://vueuse.js.org/useCssVar}
+ * @see   {@link https://vueuse.org/useCssVar}
  * @param prop
  * @param el
  * @param options

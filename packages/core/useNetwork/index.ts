@@ -43,7 +43,7 @@ export interface NetworkState {
 /**
  * Reactive Network status.
  *
- * @see   {@link https://vueuse.js.org/useNetwork}
+ * @see   {@link https://vueuse.org/useNetwork}
  * @param options
  */
 export function useNetwork(options: ConfigurableWindow = {}): NetworkState {

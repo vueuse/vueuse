@@ -8,7 +8,7 @@ export type UrlParams = Record<string, string[] | string>
 /**
  * Reactive URLSearchParams
  *
- * @see   {@link https://vueuse.js.org/useUrlSearchParams}
+ * @see   {@link https://vueuse.org/useUrlSearchParams}
  * @param mode
  * @param options
  */

@@ -5,7 +5,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive state to show whether mouse leaves the page.
  *
- * @see   {@link https://vueuse.js.org/usePageLeave}
+ * @see   {@link https://vueuse.org/usePageLeave}
  * @param options
  */
 export function usePageLeave(options: ConfigurableWindow = {}) {

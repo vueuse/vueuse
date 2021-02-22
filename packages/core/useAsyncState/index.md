@@ -29,7 +29,7 @@ const { state, ready } = useAsyncState(
  * Reactive async state. Will not block your setup function and will triggers changes once
  * the promise is ready.
  *
- * @see   {@link https://vueuse.js.org/useAsyncState}
+ * @see   {@link https://vueuse.org/useAsyncState}
  * @param promise         The promise / async function to be resolved
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param delay           Delay (ms)

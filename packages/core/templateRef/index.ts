@@ -3,7 +3,7 @@ import { getCurrentInstance, onMounted, onUpdated, customRef, Ref } from 'vue-de
 /**
  * Shorthand for binding ref to template element.
  *
- * @see   {@link https://vueuse.js.org/templateRef}
+ * @see   {@link https://vueuse.org/templateRef}
  * @param key
  * @param initialValue
  */

@@ -11,7 +11,7 @@ export function useLocalStorage<T = unknown> (key: string, defaultValue: null, o
 /**
  * Reactive LocalStorage.
  *
- * @see   {@link https://vueuse.js.org/useLocalStorage}
+ * @see   {@link https://vueuse.org/useLocalStorage}
  * @param key
  * @param defaultValue
  * @param options
