@@ -85,5 +85,8 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     write(params, true)
   })
 
+  // Update the paramsMap with initial values
+  write(params, true)
+
   return paramsMap
 }

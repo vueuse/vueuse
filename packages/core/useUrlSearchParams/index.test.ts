@@ -30,6 +30,18 @@ describe('useUrlSearchParams', () => {
     'history',
     'hash',
   ]).describe('each mode', (mode: 'history' | 'hash') => {
+    test('return initial params', () => {
+      useSetup(() => {
+        if (mode === 'hash')
+          mockPopstate('', '#/test/?foo=bar')
+        else
+          mockPopstate('?foo=bar', '')
+      })
+
+      const params = useUrlSearchParams(mode)
+      expect(params.foo).toBe('bar')
+    })
+
     test('update params on poststate event', () => {
       useSetup(() => {
         const params = useUrlSearchParams(mode)
