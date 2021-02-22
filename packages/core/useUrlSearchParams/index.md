@@ -51,7 +51,7 @@ export declare function useUrlSearchParams<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.md)
 
 
 <!--FOOTER_ENDS-->
