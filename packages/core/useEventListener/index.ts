@@ -1,5 +1,4 @@
 import { Fn, isString, MaybeRef, noop, tryOnUnmounted } from '@vueuse/shared'
-import { EventType } from 'js-yaml'
 import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -64,7 +63,7 @@ export function useEventListener<E extends keyof DocumentEventMap>(target: Docum
  * @param listener
  * @param options
  */
-export function useEventListener<Names extends string>(target: InferEventTarget<Names>, event: Names, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<Names extends string, EventType = Event>(target: InferEventTarget<Names>, event: Names, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
