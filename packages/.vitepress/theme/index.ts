@@ -9,6 +9,7 @@ import './styles/demo.css'
 import './styles/custom-blocks.css'
 import './styles/sidebar-links.css'
 import './styles/utils.css'
+import 'windi.css'
 
 const theme = {
   Layout,

@@ -29,7 +29,7 @@ html:not(.dark) {
 html.dark {
   --prism-scheme: dark;
   --prism-foreground: #d4cfbf;
-  --prism-background: #22222220;
+  --prism-background: #33333330;
   --prism-inline-background: rgba(125,125,125,0.1);
   --prism-comment: #758575;
   --prism-string: #ce9178;
