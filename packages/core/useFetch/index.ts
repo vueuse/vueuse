@@ -38,6 +38,11 @@ interface UseFetchReturnBase<T> {
   canAbort: ComputedRef<boolean>
 
   /**
+   * Indicates if the fetch request was aborted
+   */
+  aborted: Ref<boolean>
+
+  /**
    * Abort the fetch request
    */
   abort: Fn
@@ -115,6 +120,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   const isFinished = ref(false)
   const isFetching = ref(false)
+  const aborted = ref(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = ref<any>(null)
@@ -125,8 +131,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let controller: AbortController | undefined
 
   const abort = () => {
-    if (supportsAbort && controller)
+    if (supportsAbort && controller) {
+      aborted.value = true
       controller.abort()
+    }
   }
 
   const execute = () => {
@@ -135,6 +143,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     isFinished.value = false
     error.value = null
     statusCode.value = null
+    aborted.value = false
     controller = undefined
 
     if (supportsAbort) {
@@ -164,31 +173,38 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    return fetch(
-      unref(url),
-      {
-        ...defaultFetchOptions,
-        ...fetchOptions,
-        headers: {
-          ...defaultFetchOptions.headers,
-          ...fetchOptions?.headers,
+    return new Promise((resolve) => {
+      fetch(
+        unref(url),
+        {
+          ...defaultFetchOptions,
+          ...fetchOptions,
+          headers: {
+            ...defaultFetchOptions.headers,
+            ...fetchOptions?.headers,
+          },
         },
-      },
-    )
-      .then((fetchResponse) => {
-        response.value = fetchResponse
+      )
+        .then(async(fetchResponse) => {
+          response.value = fetchResponse
+          statusCode.value = fetchResponse.status
 
-        fetchResponse[config.type]().then(text => data.value = text as any)
+          await fetchResponse[config.type]().then(text => data.value = text as any)
 
-        // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-        if (!fetchResponse.ok)
-          throw new Error(fetchResponse.statusText)
-      })
-      .catch(fetchError => error.value = fetchError.message)
-      .finally(() => {
-        isFinished.value = true
-        isFetching.value = false
-      })
+          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+          if (!fetchResponse.ok)
+            throw new Error(fetchResponse.statusText)
+
+          resolve(fetchResponse)
+        })
+        .catch((fetchError) => {
+          error.value = fetchError.message || fetchError.name
+        })
+        .finally(() => {
+          isFinished.value = true
+          isFetching.value = false
+        })
+    })
   }
 
   watch(
@@ -208,6 +224,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     data,
     isFetching,
     canAbort,
+    aborted,
     abort,
     execute,
   }
