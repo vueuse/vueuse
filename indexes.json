@@ -711,6 +711,13 @@
       "description": "run expensive function without blocking the UI"
     },
     {
+      "name": "useWebcam",
+      "package": "core",
+      "docs": "https://vueuse.js.org/core/useWebcam/",
+      "category": "Sensors",
+      "description": "use Web Camera by [MediaDevices.getUserMedia()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)"
+    },
+    {
       "name": "useWindowScroll",
       "package": "core",
       "docs": "https://vueuse.js.org/core/useWindowScroll/",
