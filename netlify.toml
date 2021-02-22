@@ -3,6 +3,11 @@
   command = "npm run build && npm run docs:build"
 
 [[redirects]]
+  from = "/v4.1.1/*"
+  to = "https://6028131f303ad00007a6228b--vueuse.netlify.app/:slug"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
