@@ -22,7 +22,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     if (isVue2) {
       const modelOptions = vm?.proxy?.$options?.model
       key = modelOptions?.value || 'value' as K
-      event = modelOptions?.event
+      event = modelOptions?.event || 'input'
     }
     else {
       key = 'modelValue' as K
