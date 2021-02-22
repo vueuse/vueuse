@@ -11,7 +11,9 @@ Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLS
 ```html {19}
 <template>
   <ul>
-    <li v-for='key in Object.keys(params)'>{{ key }}={{ params[key] }}</li>
+    <li v-for='key in Object.keys(params)' :key="key">
+      { key }}={{ params[key] }}
+    </li>
   </ul>
 </template>
 
@@ -22,6 +24,7 @@ export default {
   setup() {
     const params = useUrlSearchParams('history')
     params.foo = 'bar'
+    params.vueuse = 'awesome'
     return { params }
   } 
 }
@@ -48,7 +51,7 @@ export declare function useUrlSearchParams<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useUrlSearchParams/index.md)
 
 
 <!--FOOTER_ENDS-->
