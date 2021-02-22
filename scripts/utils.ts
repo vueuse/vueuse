@@ -277,7 +277,7 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
-      return `### ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
+      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
         stringifyFunctions(functions.filter(i => i.package === name), false)}`
     })
     .join('\n')
