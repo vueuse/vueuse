@@ -94,7 +94,10 @@ export declare function useEventListener<E extends keyof DocumentEventMap>(
  * @param listener
  * @param options
  */
-export declare function useEventListener<Names extends string>(
+export declare function useEventListener<
+  Names extends string,
+  EventType = Event
+>(
   target: InferEventTarget<Names>,
   event: Names,
   listener: GeneralEventListener<EventType>,
