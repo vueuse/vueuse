@@ -7,8 +7,12 @@ The core package aims to be lightweight and dependence free. While the add-ons a
 ### Head - [`@vueuse/head`](https://github.com/vueuse/head) <carbon-link class="external-link"/>
 Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](https://github.com/egoist)
 
+
+### Motion - [`@vueuse/motion`](https://github.com/vueuse/motion) <carbon-link class="external-link"/>
+Vue composables putting your components in motion. Created and maintained by [@Tahul](https://github.com/Tahul)
+
 ### Sound - [`@vueuse/sound`](https://github.com/vueuse/sound) <carbon-link class="external-link"/>
-Vue composable for playing sound effects. Created and maintained by [@Tahul](https://github.com/Tahul)
+Vue composables for playing sound effects. Created and maintained by [@Tahul](https://github.com/Tahul)
 
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
