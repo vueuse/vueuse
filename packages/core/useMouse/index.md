@@ -51,7 +51,7 @@ export declare type MouseSourceType = "mouse" | "touch" | null
 /**
  * Reactive mouse position.
  *
- * @see   {@link https://vueuse.js.org/useMouse}
+ * @see   {@link https://vueuse.org/useMouse}
  * @param options
  */
 export declare function useMouse(

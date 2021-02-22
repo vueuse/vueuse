@@ -39,7 +39,7 @@ export interface ClipboardOptions extends ConfigurableNavigator {
 /**
  * Reactive Clipboard API.
  *
- * @see   {@link https://vueuse.js.org/useClipboard}
+ * @see   {@link https://vueuse.org/useClipboard}
  * @param options
  */
 export declare function useClipboard(

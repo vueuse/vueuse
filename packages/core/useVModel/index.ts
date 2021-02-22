@@ -3,7 +3,7 @@ import { computed, getCurrentInstance, isVue2 } from 'vue-demi'
 /**
  * Shorthand for v-model binding, props + emit -> ref
  *
- * @see   {@link https://vueuse.js.org/useVModel}
+ * @see   {@link https://vueuse.org/useVModel}
  * @param props
  * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
@@ -22,7 +22,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     if (isVue2) {
       const modelOptions = vm?.proxy?.$options?.model
       key = modelOptions?.value || 'value' as K
-      event = modelOptions?.event
+      event = modelOptions?.event || 'input'
     }
     else {
       key = 'modelValue' as K

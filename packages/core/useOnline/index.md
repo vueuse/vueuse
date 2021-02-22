@@ -22,7 +22,7 @@ const online = useOnline()
 /**
  * Reactive online state.
  *
- * @see   {@link https://vueuse.js.org/useOnline}
+ * @see   {@link https://vueuse.org/useOnline}
  * @param options
  */
 export declare function useOnline(options?: ConfigurableWindow): Ref<boolean>

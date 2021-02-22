@@ -35,7 +35,7 @@ export interface GeolocationOptions
 /**
  * Reactive Geolocation API.
  *
- * @see   {@link https://vueuse.js.org/useGeolocation}
+ * @see   {@link https://vueuse.org/useGeolocation}
  * @param options
  */
 export declare function useGeolocation(

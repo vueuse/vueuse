@@ -4,7 +4,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource
 /**
  * Wrapper for axios.
  *
- * @see   {@link https://vueuse.js.org/useAxios}
+ * @see   {@link https://vueuse.org/useAxios}
  * @param url
  * @param config
  */

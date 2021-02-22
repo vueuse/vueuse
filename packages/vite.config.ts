@@ -5,14 +5,17 @@ import Components from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
 import { functionNames, getFunction } from '../meta/function-indexes'
 import { getFunctionHead, hasDemo } from '../scripts/utils'
+import WindiCSS from 'vite-plugin-windicss'
 import EditorNav from 'vite-plugin-editor-nav'
 
 const config: UserConfig = {
-  alias: [
-    { find: '@vueuse/shared', replacement: resolve(__dirname, 'shared/index.ts') },
-    { find: '@vueuse/core', replacement: resolve(__dirname, 'core/index.ts') },
-    { find: '@vueuse/docs-utils', replacement: resolve(__dirname, '.vitepress/utils.ts') },
-  ],
+  resolve: {
+    alias: [
+      { find: '@vueuse/shared', replacement: resolve(__dirname, 'shared/index.ts') },
+      { find: '@vueuse/core', replacement: resolve(__dirname, 'core/index.ts') },
+      { find: '@vueuse/docs-utils', replacement: resolve(__dirname, '.vitepress/utils.ts') },
+    ],
+  },
   optimizeDeps: {
     exclude: [
       'vue-demi',
@@ -20,15 +23,16 @@ const config: UserConfig = {
       '@vueuse/core',
     ],
     include: [
-      'qrcode',
-      'nprogress',
-      'tslib',
-      'js-yaml',
-      'dayjs',
-      'universal-cookie',
-      // 'firebase',
-      'rxjs',
       'axios',
+      'dayjs',
+      'js-yaml',
+      'nprogress',
+      'qrcode',
+      'rxjs',
+      'tslib',
+      'universal-cookie',
+      'vue-chemistry',
+      'vue-chemistry/boolean',
     ],
   },
   server: {
@@ -105,6 +109,12 @@ const config: UserConfig = {
           },
         ],
       },
+    }),
+    WindiCSS({
+      scan: {
+        dirs: ['.vitepress'],
+      },
+      preflight: false,
     }),
     EditorNav({
       preset: 'vitepress',

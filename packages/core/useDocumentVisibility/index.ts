@@ -5,7 +5,7 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
 /**
  * Reactively track `document.visibilityState`.
  *
- * @see   {@link https://vueuse.js.org/useDocumentVisibility}
+ * @see   {@link https://vueuse.org/useDocumentVisibility}
  * @param options
  */
 export function useDocumentVisibility({ document = defaultDocument }: ConfigurableDocument = {}): Ref<VisibilityState> {

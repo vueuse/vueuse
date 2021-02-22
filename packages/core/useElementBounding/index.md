@@ -39,7 +39,7 @@ export default {
 /**
  * Reactive size of an HTML element.
  *
- * @see   {@link https://vueuse.js.org/useElementSize}
+ * @see   {@link https://vueuse.org/useElementSize}
  * @param target
  * @param callback
  * @param options

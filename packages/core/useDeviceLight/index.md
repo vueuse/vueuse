@@ -26,7 +26,7 @@ const light = useDeviceLight()
 /**
  * Reactive DeviceLightEvent.
  *
- * @see   {@link https://vueuse.js.org/useDeviceLight}
+ * @see   {@link https://vueuse.org/useDeviceLight}
  * @param options
  */
 export declare function useDeviceLight({

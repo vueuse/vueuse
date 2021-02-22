@@ -115,7 +115,7 @@ export declare const TransitionPresets: Record<string, CubicBezierPoints>
 /**
  * Transition between values.
  *
- * @see   {@link https://vueuse.js.org/useTransition}
+ * @see   {@link https://vueuse.org/useTransition}
  * @param source
  * @param options
  */

@@ -47,7 +47,7 @@ const isTypedCharValid = ({
 /**
  * Fires when users start typing on non-editable elements.
  *
- * @see   {@link https://vueuse.js.org/onStartTyping}
+ * @see   {@link https://vueuse.org/onStartTyping}
  * @param callback
  * @param options
  */

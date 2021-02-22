@@ -1,7 +1,5 @@
 import Layout from './Layout.vue'
 import NotFound from './NotFound.vue'
-import DemoContainer from './components/DemoContainer.vue'
-import Note from './components/Note.vue'
 import { handleRedirects } from './redirects'
 
 import './styles/vars.css'
@@ -11,19 +9,17 @@ import './styles/demo.css'
 import './styles/custom-blocks.css'
 import './styles/sidebar-links.css'
 import './styles/utils.css'
+import 'windi.css'
 
 const theme = {
   Layout,
   NotFound,
   enhanceApp({ app, router }) {
-    app.component('DemoContainer', DemoContainer)
-    app.component('Note', Note)
-
     if (typeof window !== 'undefined')
       handleRedirects(router)
 
-    // @ts-ignore
-    import('vite-plugin-editor-nav/client').then(i => i.default(router))
+    // @ts-ignore: TODO: bring it back
+    // import('vite-plugin-editor-nav/client').then(i => i.default(router))
   },
 }
 
