@@ -25,6 +25,11 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   let instance: AxiosInstance = axios
 
   if (args.length > 0) {
+    /**
+     * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
+     * so instead we are checking if there is a `requset` on the object to see if it is an
+     * axios instance
+     */
     if ('request' in args[0])
       instance = args[0]
     else
