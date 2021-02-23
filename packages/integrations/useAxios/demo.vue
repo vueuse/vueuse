@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { defineComponent } from 'vue-demi'
 import { useAxios } from '.'
 
 const { data, finished } = useAxios(

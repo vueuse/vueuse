@@ -20,6 +20,31 @@ import { useAxios } from '@vueuse/integrations'
 const { data, finished } = useAxios('/api/posts')
 ```
 
+or use an instance of axios
+
+```ts
+import axios from 'axios'
+import { useAxios } from '@vueuse/integrations'
+
+const instance = axios.create({
+  baseUrl: '/api'
+})
+
+const { data, finished } = useAxios('/posts', instance)
+```
+
+use an instance of axios with config options
+
+```ts
+import axios from 'axios'
+import { useAxios } from '@vueuse/integrations'
+
+const instance = axios.create({
+  baseUrl: '/api'
+})
+
+const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
