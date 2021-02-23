@@ -71,7 +71,7 @@ const config: UserConfig = {
           },
         )
         // convert links to relative
-        code = code.replace(/https?:\/\/vueuse\.js\.org\//g, '/')
+        code = code.replace(/https?:\/\/vueuse\.org\//g, '/')
 
         const [pkg, name, i] = id.split('/').slice(-3)
 

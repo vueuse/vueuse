@@ -79,6 +79,7 @@ export namespace DefaultTheme {
 
   export interface NavItemWithLink extends NavItemBase {
     link: string
+    exact?: boolean
   }
 
   export interface NavItemWithChildren extends NavItemBase {

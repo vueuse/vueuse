@@ -17,7 +17,6 @@ const theme = {
   enhanceApp({ app, router }) {
     if (typeof window !== 'undefined')
       handleRedirects(router)
-
     // @ts-ignore: TODO: bring it back
     // import('vite-plugin-editor-nav/client').then(i => i.default(router))
   },

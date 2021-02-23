@@ -36,7 +36,19 @@ const config = {
           { text: 'Contribute', link: '/contributing' },
         ],
       },
-      { text: 'Functions', link: '/functions' },
+      {
+        text: 'Functions',
+        link: '/functions',
+        items: indexes.categories
+          .filter(f => !f.startsWith('@'))
+          .map((c) => {
+            return {
+              text: c,
+              exact: true,
+              link: `/functions#${c.toLowerCase()}`,
+            }
+          }),
+      },
       { text: 'Add-ons', link: '/add-ons' },
       { text: 'Ecosystem', link: '/ecosystem' },
       {
