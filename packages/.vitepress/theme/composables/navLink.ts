@@ -15,10 +15,13 @@ export function useNavLink(item: DefaultTheme.NavItemWithLink) {
   const props = computed(() => {
     // eslint-disable-next-line no-unused-expressions
     counter.value
+    const hash = typeof window !== 'undefined'
+      ? location.hash || ''
+      : ''
     return {
       class: {
         active: item.exact
-          ? normalizePathWithHash(withBase(item.link)) === normalizePathWithHash(route.path + location.hash || '')
+          ? normalizePathWithHash(withBase(item.link)) === normalizePathWithHash(route.path + hash)
           : normalizePath(withBase(item.link)) === normalizePath(route.path),
         isExternal,
       },
