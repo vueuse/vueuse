@@ -42,9 +42,9 @@ const { props: linkProps, isExternal } = useNavLink(item)
     white-space: nowrap;
   }
 
-  .item.active .arrow {
+  /* .item.active .arrow {
     opacity: 1;
-  }
+  } */
 }
 
 .item:hover,

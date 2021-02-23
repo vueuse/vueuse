@@ -1,5 +1,7 @@
 // @ts-check
+require('esbuild-register')
 const indexes = require('../../indexes.json')
+const { currentVersion, versions } = require('../../meta/versions')
 
 const categoriesOrder = [
   'Browser',
@@ -27,11 +29,31 @@ const config = {
     lastUpdated: 'Last Updated',
     nav: [
       // { text: 'Home', link: '/' },s
-      { text: 'Guide', link: '/guide' },
+      {
+        text: 'Guide',
+        items: [
+          { text: 'Get Started', link: '/guide' },
+          { text: 'Contribute', link: '/contributing' },
+        ],
+      },
       { text: 'Functions', link: '/functions' },
       { text: 'Add-ons', link: '/add-ons' },
       { text: 'Ecosystem', link: '/ecosystem' },
-      { text: 'Contribute', link: '/contributing' },
+      {
+        text: `v${currentVersion}`,
+        items: versions.map((i) => {
+          if (i.version === currentVersion) {
+            return {
+              text: `v${i.version} (Current)`,
+              link: '/',
+            }
+          }
+          return {
+            text: `v${i.version}`,
+            link: i.link,
+          }
+        }),
+      },
     ],
     sidebar: getSideBar(),
     algolia: {

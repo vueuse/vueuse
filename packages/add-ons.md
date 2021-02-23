@@ -1,4 +1,3 @@
-
 # Add-ons
 
 The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
