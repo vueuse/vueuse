@@ -50,24 +50,27 @@ const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
 ## Type Declarations
 
 ```typescript
-/**
- * Wrapper for axios.
- *
- * @see   {@link https://vueuse.org/useAxios}
- * @param url
- * @param config
- */
+interface UseAxiosReturn<T> {
+  response: Ref<AxiosResponse<T> | undefined>
+  data: Ref<T | undefined>
+  finished: Ref<boolean>
+  canceled: Ref<boolean>
+  error: Ref<AxiosError<T> | undefined>
+}
 export declare function useAxios<T = any>(
   url: string,
   config?: AxiosRequestConfig
-): {
-  response: Ref<AxiosResponse<T> | undefined>
-  data: Ref<T | undefined>
-  error: Ref<AxiosError<T> | undefined>
-  finished: Ref<boolean>
-  cancel: (message?: string | undefined) => void
-  canceled: Ref<boolean>
-}
+): UseAxiosReturn<T>
+export declare function useAxios<T = any>(
+  url: string,
+  instance?: AxiosInstance
+): UseAxiosReturn<T>
+export declare function useAxios<T = any>(
+  url: string,
+  config: AxiosRequestConfig,
+  instance: AxiosInstance
+): UseAxiosReturn<T>
+export {}
 ```
 
 ## Source
