@@ -32,7 +32,7 @@ const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
 </template>
 ```
 
-Using a different firebaes auth instance
+Using a different firebase auth instance
 ```ts
 import firebase from 'firebase'
 const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase.auth())
