@@ -14,10 +14,10 @@ npm i <b>@vueuse/rxjs</b> rxjs
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`from`](https://vueuse.js.org/rxjs/from/) — / fromEvent
-  - [`toObserver`](https://vueuse.js.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.js.org/rxjs/useObservable/) — use an Observable
-  - [`useSubscription`](https://vueuse.js.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
+  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
+  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
+  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
 <!--FUNCTIONS_LIST_ENDS-->

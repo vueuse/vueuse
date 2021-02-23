@@ -138,7 +138,7 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
- * @see   {@link https://vueuse.js.org/useRefHistory}
+ * @see   {@link https://vueuse.org/useRefHistory}
  * @param source
  * @param options
  */

@@ -105,13 +105,17 @@ interface UseFetchReturnBase<T> {
    */
   canAbort: ComputedRef<boolean>
   /**
+   * Indicates if the fetch request was aborted
+   */
+  aborted: Ref<boolean>
+  /**
    * Abort the fetch request
    */
   abort: Fn
   /**
    * Manually call the fetch
    */
-  execute: Fn
+  execute: () => Promise<any>
 }
 declare type PayloadType = "text" | "json" | "formData"
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {

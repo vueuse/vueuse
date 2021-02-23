@@ -35,6 +35,11 @@
   }
 }
 
+.note {
+  opacity: 0.7;
+  font-size: 0.9rem;
+  margin-bottom: -0.2rem;
+}
 
 .demo {
   p {
@@ -103,12 +108,6 @@
 
   input:focus {
     border: 1px solid var(--c-divider-dark);
-  }
-
-  .note {
-    opacity: 0.7;
-    font-size: 0.9rem;
-    margin-bottom: -0.2rem;
   }
 
   pre,

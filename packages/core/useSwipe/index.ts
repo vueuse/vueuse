@@ -60,7 +60,7 @@ export interface SwipeReturn {
 /**
  * Reactive swipe detection.
  *
- * @see {@link https://vueuse.js.org/useSwipe}
+ * @see {@link https://vueuse.org/useSwipe}
  * @param target
  * @param options
  */

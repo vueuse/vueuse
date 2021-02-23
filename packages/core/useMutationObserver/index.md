@@ -45,7 +45,7 @@ export interface MutationObserverOptions
 /**
  * Watch for changes being made to the DOM tree.
  *
- * @see   {@link https://vueuse.js.org/useMutationObserver}
+ * @see   {@link https://vueuse.org/useMutationObserver}
  * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver|MutationObserver MDN}
  * @param target
  * @param callback

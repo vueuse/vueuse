@@ -22,7 +22,7 @@ const languages = usePreferredLanguages()
 /**
  * Reactive Navigator Languages.
  *
- * @see   {@link https://vueuse.js.org/usePreferredLanguages}
+ * @see   {@link https://vueuse.org/usePreferredLanguages}
  * @param options
  */
 export declare function usePreferredLanguages(

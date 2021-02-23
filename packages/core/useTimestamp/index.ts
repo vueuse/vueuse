@@ -14,7 +14,7 @@ export interface TimestampOptions {
 /**
  * Reactive current timestamp.
  *
- * @see   {@link https://vueuse.js.org/useTimestamp}
+ * @see   {@link https://vueuse.org/useTimestamp}
  * @param options
  */
 export function useTimestamp(options: TimestampOptions = {}) {

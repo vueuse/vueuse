@@ -37,7 +37,7 @@ const { data, post, terminate } = useWebWorker('/path/to/worker.js')
 /**
  * Simple Web Workers registration and communication.
  *
- * @see   {@link https://vueuse.js.org/useWebWorker}
+ * @see   {@link https://vueuse.org/useWebWorker}
  * @param url
  */
 export declare function useWebWorker(

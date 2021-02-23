@@ -8,7 +8,7 @@ export type UrlParams = Record<string, string[] | string>
 /**
  * Reactive URLSearchParams
  *
- * @see   {@link https://vueuse.js.org/useUrlSearchParams}
+ * @see   {@link https://vueuse.org/useUrlSearchParams}
  * @param mode
  * @param options
  */
@@ -84,6 +84,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     params = read()
     write(params, true)
   })
+
+  // Update the paramsMap with initial values
+  write(params, true)
 
   return paramsMap
 }

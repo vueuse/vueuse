@@ -5,7 +5,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive window scroll.
  *
- * @see   {@link https://vueuse.js.org/useWindowScroll}
+ * @see   {@link https://vueuse.org/useWindowScroll}
  * @param options
  */
 export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {

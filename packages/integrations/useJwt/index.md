@@ -52,7 +52,7 @@ export interface JwtResult<Payload, Header, Fallback> {
 /**
  * Reactive decoded jwt token.
  *
- * @see {@link https://vueuse.js.org/useJwt}
+ * @see {@link https://vueuse.org/useJwt}
  * @param jwt
  */
 export declare function useJwt<

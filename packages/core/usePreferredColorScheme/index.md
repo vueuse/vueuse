@@ -23,7 +23,7 @@ export declare type ColorSchemeType = "dark" | "light" | "no-preference"
 /**
  * Reactive prefers-color-scheme media query.
  *
- * @see   {@link https://vueuse.js.org/usePreferredColorScheme}
+ * @see   {@link https://vueuse.org/usePreferredColorScheme}
  * @param [options]
  */
 export declare function usePreferredColorScheme(

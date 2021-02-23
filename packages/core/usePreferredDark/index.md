@@ -22,7 +22,7 @@ const isDark = usePreferredDark()
 /**
  * Reactive dark theme preference.
  *
- * @see   {@link https://vueuse.js.org/usePreferredDark}
+ * @see   {@link https://vueuse.org/usePreferredDark}
  * @param [options]
  */
 export declare function usePreferredDark(

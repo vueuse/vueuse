@@ -2,7 +2,7 @@
 import { ref } from 'vue-demi'
 import { useQRCode } from '.'
 
-const text = ref('https://vueuse.js.org')
+const text = ref('https://vueuse.org')
 const qrcode = useQRCode(text, {
   errorCorrectionLevel: 'H',
   margin: 3,

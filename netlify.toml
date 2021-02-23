@@ -3,6 +3,12 @@
   command = "npm run build && npm run docs:build"
 
 [[redirects]]
+  from = "https://vueuse.js.org/*"
+  to = "https://vueuse.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
