@@ -4,8 +4,6 @@ import type { DefaultTheme } from '../config'
 import { isExternal as isExternalCheck } from '../utils'
 import { useUrl } from '../composables/url'
 
-const counter = ref(0)
-
 export function useNavLink(item: Ref<DefaultTheme.NavItemWithLink>) {
   const route = useRoute()
   const { withBase } = useUrl()
@@ -13,12 +11,6 @@ export function useNavLink(item: Ref<DefaultTheme.NavItemWithLink>) {
   const isExternal = isExternalCheck(item.value.link)
 
   const props = computed(() => {
-    // eslint-disable-next-line no-unused-expressions
-    counter.value
-    const hash = typeof window !== 'undefined'
-      ? location.hash || ''
-      : ''
-
     const routePath = normalizePath(`/${route.data.relativePath}`)
 
     let active = false
@@ -46,7 +38,6 @@ export function useNavLink(item: Ref<DefaultTheme.NavItemWithLink>) {
   })
 
   return {
-    trigger: () => counter.value += 1,
     props,
     isExternal,
   }

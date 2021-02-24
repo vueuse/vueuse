@@ -1,6 +1,6 @@
 <template>
   <div class="nav-dropdown-link-item">
-    <a class="item" v-bind="linkProps" @click="trigger">
+    <a class="item" v-bind="linkProps">
       <span class="arrow" />
       <span class="text">{{ item.text }}</span>
       <span class="icon"><OutboundLink v-if="isExternal" /></span>
@@ -20,7 +20,7 @@ const props = defineProps<{
 
 const propsRefs = toRefs(props)
 
-const { props: linkProps, isExternal, trigger } = useNavLink(propsRefs.item)
+const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
 </script>
 
 <style scoped>
