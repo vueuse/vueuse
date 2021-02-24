@@ -112,7 +112,8 @@ const config: UserConfig = {
     }),
     WindiCSS({
       scan: {
-        dirs: ['.vitepress'],
+        dirs: ['.'],
+        exclude: ['dist'],
       },
       preflight: false,
     }),
