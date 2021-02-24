@@ -13,7 +13,7 @@ Similar to `watch`, but offering an extra option `throttle` which will be applie
 ```ts
 import { throttledWatch } from '@vueuse/core'
 
-debouncedWatch(
+throttledWatch(
   source,
   () => { console.log('changed!') },
   { throttle: 500 }
