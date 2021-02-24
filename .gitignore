@@ -93,5 +93,6 @@ sw.*
 packages/*/LICENSE
 packages/contributing.md
 packages/core/README.md
+packages/recent-updated.md
 .as-fs
 .editor-as-fs

@@ -62,19 +62,22 @@ const config = {
       },
       {
         text: `v${currentVersion}`,
-        items: versions.map((i) => {
-          if (i.version === currentVersion) {
-            return {
-              text: `v${i.version} (Current)`,
-              activeMatch: '/', // always active
-              link: '/',
+        items: [
+          { text: 'What\'s news', link: '/recent-updated' },
+          ...versions.map((i) => {
+            if (i.version === currentVersion) {
+              return {
+                text: `v${i.version} (Current)`,
+                activeMatch: '/', // always active
+                link: '/',
+              }
             }
-          }
-          return {
-            text: `v${i.version}`,
-            link: i.link,
-          }
-        }),
+            return {
+              text: `v${i.version}`,
+              link: i.link,
+            }
+          }),
+        ],
       },
     ],
     sidebar: getSideBar(),

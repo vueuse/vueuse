@@ -14,7 +14,8 @@
     "release": "esno scripts/release.ts && git push --follow-tags",
     "publish:ci": "esno scripts/publish.ts",
     "update": "esno scripts/update.ts",
-    "update:full": "nr build:types && esno scripts/update.ts",
+    "update:full": "nr build:types && esno scripts/update.ts && update:recent",
+    "update:recent": "esno scripts/recent-updated.ts",
     "size": " esno scripts/export-size.ts",
     "types:fix": " esno scripts/fix-types.ts",
     "typecheck": "tsc --noEmit",
@@ -28,7 +29,7 @@
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr docs",
     "docs": "vitepress dev packages",
-    "docs:build": "nr update && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts"
+    "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts"
   },
   "husky": {
     "hooks": {
@@ -94,6 +95,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-uglify": "^6.0.4",
+    "simple-git": "^2.35.2",
     "ts-jest": "^26.5.1",
     "typescript": "^4.1.5",
     "vite-plugin-components": "^0.6.14",
