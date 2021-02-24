@@ -7,16 +7,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, toRefs } from 'vue'
 import type { DefaultTheme } from '../config'
 import { useNavLink } from '../composables/navLink'
 import OutboundLink from './icons/OutboundLink.vue'
 
-const { item } = defineProps<{
+const props = defineProps<{
   item: DefaultTheme.NavItemWithLink
 }>()
 
-const { props: linkProps, isExternal } = useNavLink(item)
+const propsRefs = toRefs(props)
+
+const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
 </script>
 
 <style scoped>

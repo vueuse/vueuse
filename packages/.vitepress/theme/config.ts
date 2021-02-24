@@ -75,11 +75,11 @@ export namespace DefaultTheme {
     target?: string
     rel?: string
     ariaLabel?: string
+    activeMatch?: string
   }
 
   export interface NavItemWithLink extends NavItemBase {
     link: string
-    exact?: boolean
   }
 
   export interface NavItemWithChildren extends NavItemBase {

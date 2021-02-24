@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue-demi'
+import { computed, Ref, ref } from 'vue-demi'
 import { useRoute } from 'vitepress'
 import type { DefaultTheme } from '../config'
 import { isExternal as isExternalCheck } from '../utils'
@@ -6,11 +6,11 @@ import { useUrl } from '../composables/url'
 
 const counter = ref(0)
 
-export function useNavLink(item: DefaultTheme.NavItemWithLink) {
+export function useNavLink(item: Ref<DefaultTheme.NavItemWithLink>) {
   const route = useRoute()
   const { withBase } = useUrl()
 
-  const isExternal = isExternalCheck(item.link)
+  const isExternal = isExternalCheck(item.value.link)
 
   const props = computed(() => {
     // eslint-disable-next-line no-unused-expressions
@@ -18,17 +18,30 @@ export function useNavLink(item: DefaultTheme.NavItemWithLink) {
     const hash = typeof window !== 'undefined'
       ? location.hash || ''
       : ''
+
+    const routePath = normalizePath(`/${route.data.relativePath}`)
+
+    let active = false
+    if (item.value.activeMatch) {
+      active = new RegExp(item.value.activeMatch).test(routePath)
+    }
+    else {
+      const itemPath = normalizePath(withBase(item.value.link))
+      active
+        = itemPath === '/'
+          ? itemPath === routePath
+          : routePath.startsWith(itemPath)
+    }
+
     return {
       class: {
-        active: item.exact
-          ? normalizePathWithHash(withBase(item.link)) === normalizePathWithHash(route.path + hash)
-          : normalizePath(withBase(item.link)) === normalizePath(route.path),
+        active,
         isExternal,
       },
-      href: isExternal ? item.link : withBase(item.link),
-      target: item.target || isExternal ? '_blank' : null,
-      rel: item.rel || isExternal ? 'noopener noreferrer' : null,
-      'aria-label': item.ariaLabel,
+      href: isExternal ? item.value.link : withBase(item.value.link),
+      target: item.value.target || isExternal ? '_blank' : null,
+      rel: item.value.rel || isExternal ? 'noopener noreferrer' : null,
+      'aria-label': item.value.ariaLabel,
     }
   })
 
@@ -40,15 +53,11 @@ export function useNavLink(item: DefaultTheme.NavItemWithLink) {
 }
 
 function normalizePath(path: string): string {
-  path = path
+  return path
     .replace(/#.*$/, '')
     .replace(/\?.*$/, '')
-    .replace(/\.html$/, '')
-
-  if (path.endsWith('/'))
-    path += 'index'
-
-  return path
+    .replace(/\.(html|md)$/, '')
+    .replace(/\/index$/, '/')
 }
 
 function normalizePathWithHash(path: string): string {

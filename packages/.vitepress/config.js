@@ -44,19 +44,29 @@ const config = {
           .map((c) => {
             return {
               text: c,
-              exact: true,
+              activeMatch: '___', // never active
               link: `/functions#${c.toLowerCase()}`,
             }
           }),
       },
-      { text: 'Add-ons', link: '/add-ons' },
-      { text: 'Ecosystem', link: '/ecosystem' },
+      {
+        text: 'Add-ons',
+        link: '/add-ons',
+      },
+      {
+        text: 'More',
+        items: [
+          { text: 'Ecosystem', link: '/ecosystem' },
+          { text: 'Bundle Size', link: '/export-size' },
+        ],
+      },
       {
         text: `v${currentVersion}`,
         items: versions.map((i) => {
           if (i.version === currentVersion) {
             return {
               text: `v${i.version} (Current)`,
+              activeMatch: '/', // always active
               link: '/',
             }
           }
