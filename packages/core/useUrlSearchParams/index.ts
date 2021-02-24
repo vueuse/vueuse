@@ -40,15 +40,10 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
 
   const write = (params: URLSearchParams, shouldUpdateParamsMap?: boolean) => {
     pause()
-    if (shouldUpdateParamsMap) {
-      Object.keys(paramsMap).forEach(key => delete paramsMap[key])
-      for (const key of params.keys()) {
-        const paramsForKey = params.getAll(key)
-        writeToParamsMap(key, paramsForKey.length > 1 ? paramsForKey : (params.get(key) || ''))
-      }
-    }
+    if (shouldUpdateParamsMap)
+      updateParamsMap()
 
-    const empty = !params.keys.length
+    const empty = !params.keys().next()
     const query = empty
       ? hashWithoutParams.value
       : (mode === 'hash')
@@ -63,6 +58,16 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   const paramsMap: T = reactive(Object.assign({}))
 
   const writeToParamsMap = (key: keyof T, value: any) => paramsMap[key] = value
+
+  const updateParamsMap = () => {
+    Object.keys(paramsMap).forEach(key => delete paramsMap[key])
+    for (const key of params.keys()) {
+      const paramsForKey = params.getAll(key)
+      writeToParamsMap(key, paramsForKey.length > 1 ? paramsForKey : (params.get(key) || ''))
+    }
+  }
+  // Update the paramsMap with initial values
+  updateParamsMap()
 
   const { pause, resume } = pausableWatch(
     paramsMap,
@@ -84,9 +89,6 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     params = read()
     write(params, true)
   })
-
-  // Update the paramsMap with initial values
-  write(params, true)
 
   return paramsMap
 }
