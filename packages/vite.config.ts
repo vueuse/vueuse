@@ -112,8 +112,8 @@ const config: UserConfig = {
     }),
     WindiCSS({
       scan: {
-        dirs: ['.vitepress'],
-        include: ['core/**/*.vue'],
+        dirs: ['.'],
+        exclude: ['dist'],
       },
       preflight: false,
     }),
