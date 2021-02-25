@@ -1,0 +1,20 @@
+import { ToRefs } from 'vue-demi'
+import { useVModel } from '../useVModel'
+
+/**
+ * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
+ *
+ * @see   {@link https://vueuse.org/useVModels}
+ * @param props
+ * @param emit
+ */
+export function useVModels<P extends object, Name extends string>(
+  props: P,
+  emit?: (name: Name, ...args: any[]) => void,
+): ToRefs<P> {
+  const ret: any = {}
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in props)
+    ret[key] = useVModel(props, key, emit)
+  return ret
+}
