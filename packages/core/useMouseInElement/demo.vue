@@ -11,5 +11,5 @@ const text = stringify(mouse)
 
 <template>
   <CompA ref="target" />
-  <pre ref="demo" lang="yaml">{{ text }}</pre>
+  <pre lang="yaml">{{ text }}</pre>
 </template>
