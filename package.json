@@ -43,6 +43,9 @@
       "eslint --fix"
     ]
   },
+  "resolutions": {
+    "esbuild": "0.8.53"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.4.3",
     "@antfu/ni": "^0.5.4",
