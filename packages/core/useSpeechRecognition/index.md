@@ -75,7 +75,7 @@ export declare function useSpeechRecognition(
   isFinal: Ref<boolean>
   recognition: SpeechRecognition | undefined
   result: Ref<string>
-  error: Ref<null>
+  error: Ref<SpeechRecognitionErrorEvent | undefined>
   toggle: (value?: boolean) => void
   start: () => void
   stop: () => void

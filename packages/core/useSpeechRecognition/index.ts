@@ -2,7 +2,7 @@
 // by https://github.com/wobsoriano
 
 import { tryOnUnmounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { Ref, ref, watch, shallowRef } from 'vue-demi'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface SpeechRecognitionOptions extends ConfigurableWindow {
@@ -44,7 +44,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')
-  const error = ref<SpeechRecognitionErrorEvent | undefined>(undefined)
+  const error = shallowRef(undefined) as Ref<SpeechRecognitionErrorEvent | undefined>
 
   const toggle = (value = !isListening.value) => {
     isListening.value = value
