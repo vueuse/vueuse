@@ -40,7 +40,7 @@ export declare function usePermission(
     | GeneralPermissionDescriptor
     | GeneralPermissionDescriptor["name"],
   options?: ConfigurableNavigator
-): Ref<"" | "denied" | "granted" | "prompt">
+): Ref<"" | PermissionState>
 export {}
 ```
 
