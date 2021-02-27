@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once
@@ -11,28 +11,43 @@ import { ref } from 'vue-demi'
  * @param catchFn         Error handling callback
  */
 export function useAsyncState<T>(
-  promise: Promise<T>,
+  promise: Promise<T> | (() => Promise<T>),
   initialState: T,
   delay = 0,
   catchFn = (e: Error) => {},
 ) {
-  const state = ref(initialState)
+  const state = ref(initialState) as Ref<T>
   const ready = ref(false)
+  const error = ref<Error | undefined>(undefined)
 
-  function run() {
-    promise
+  function _run() {
+    const _promise = typeof promise === 'function'
+      ? promise()
+      : promise
+
+    _promise
       .then((data) => {
         // @ts-ignore
         state.value = data
         ready.value = true
       })
-      .catch(catchFn)
+      .catch((e) => {
+        error.value = e
+        catchFn(e)
+      })
   }
 
-  if (!delay)
-    run()
-  else
-    setTimeout(run, delay)
+  function rerun(delay = 0) {
+    state.value = initialState
+    error.value = undefined
+    ready.value = false
+    if (!delay)
+      _run()
+    else
+      setTimeout(_run, delay)
+  }
 
-  return { state, ready }
+  rerun(delay)
+
+  return { state, ready, error, rerun }
 }
