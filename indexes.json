@@ -697,6 +697,13 @@
       "description": "shorthand for v-model binding"
     },
     {
+      "name": "useVModels",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useVModels/",
+      "category": "Component",
+      "description": "shorthand for props v-model binding"
+    },
+    {
       "name": "useWebSocket",
       "package": "core",
       "docs": "https://vueuse.org/core/useWebSocket/",
