@@ -1,4 +1,4 @@
-import { noop } from '@vueuse/shared'
+import { noop, promiseTimeout } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue-demi'
 
 export interface AsyncStateOptions {
@@ -49,31 +49,28 @@ export function useAsyncState<T>(
   const isReady = ref(false)
   const error = ref<Error | undefined>(undefined)
 
-  function _run() {
+  async function execute(delay = 0) {
+    state.value = initialState
+    error.value = undefined
+    isReady.value = false
+
+    if (!delay)
+      await promiseTimeout(delay)
+
     const _promise = typeof promise === 'function'
       ? promise()
       : promise
 
-    _promise
-      .then((data) => {
-        // @ts-ignore
-        state.value = data
-        isReady.value = true
-      })
-      .catch((e) => {
-        error.value = e
-        onError(e)
-      })
-  }
-
-  function execute(delay = 0) {
-    state.value = initialState
-    error.value = undefined
-    isReady.value = false
-    if (!delay)
-      _run()
-    else
-      setTimeout(_run, delay)
+    try {
+      const data = await _promise
+      // @ts-ignore
+      state.value = data
+      isReady.value = true
+    }
+    catch (e) {
+      error.value = e
+      onError(e)
+    }
   }
 
   if (immediate)
