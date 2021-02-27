@@ -44,7 +44,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')
-  const error = ref(null)
+  const error = ref<SpeechRecognitionErrorEvent | undefined>(undefined)
 
   const toggle = (value = !isListening.value) => {
     isListening.value = value
@@ -84,11 +84,11 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
         .join('')
 
       result.value = transcript
-      error.value = null
+      error.value = undefined
     }
 
     recognition.onerror = (event) => {
-      error.value = event.error
+      error.value = event
     }
 
     recognition.onend = () => {
