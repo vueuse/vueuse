@@ -40,6 +40,7 @@
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
+  - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
 ### Misc
   - [`useEventSource`](https://vueuse.org/core/useEventSource/) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server

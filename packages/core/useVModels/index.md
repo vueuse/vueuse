@@ -4,19 +4,23 @@ category: Component
 
 # useVModels
 
-Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
+Shorthand for props v-model binding. Think it like `toRefs(props)` but changes will also triggers emit.
 
 ## Usage
 
 ```js
-import { useVModel } from '@vueuse/core'
+import { useVModels } from '@vueuse/core'
 
 export default {
+  props: {
+    foo: String,
+    bar: Number,
+  },
   setup(props, { emit }) {
-    const { modal } = useVModel(props)
+    const { foo, bar } = useVModels(props)
 
-    console.log(modal.value) // props.data
-    data.value = 'foo' // emit('update:data', 'foo')
+    console.log(foo.value) // props.data
+    foo.value = 'foo' // emit('update:foo', 'foo')
   },
 }
 ```
@@ -31,27 +35,21 @@ export default {
 
 ```typescript
 /**
- * Shorthand for v-model binding, props + emit -> ref
+ * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
  *
- * @see   {@link https://vueuse.org/useVModel}
+ * @see   {@link https://vueuse.org/useVModels}
  * @param props
- * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
  */
-export declare function useVModel<
-  P extends object,
-  K extends keyof P,
-  Name extends string
->(
+export declare function useVModels<P extends object, Name extends string>(
   props: P,
-  key?: K,
   emit?: (name: Name, ...args: any[]) => void
-): WritableComputedRef<P[K]>
+): ToRefs<P>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModels/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModels/index.md)
 
 
 <!--FOOTER_ENDS-->
