@@ -25,6 +25,27 @@ const { state, ready } = useAsyncState(
 ## Type Declarations
 
 ```typescript
+export interface AsyncStateOptions {
+  /**
+   * Delay for executing the promise. In milliseconds.
+   *
+   * @default 0
+   */
+  delay?: number
+  /**
+   * Excute the promise right after the function is invoked.
+   * Will apply the delay if any.
+   *
+   * When set to false, you will need to execute it manually.
+   *
+   * @default true
+   */
+  immediate?: boolean
+  /**
+   * Callback when error is caught.
+   */
+  onError?: (e: Error) => void
+}
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once
  * the promise is ready.
@@ -32,17 +53,26 @@ const { state, ready } = useAsyncState(
  * @see   {@link https://vueuse.org/useAsyncState}
  * @param promise         The promise / async function to be resolved
  * @param initialState    The initial state, used until the first evaluation finishes
- * @param delay           Delay (ms)
- * @param catchFn         Error handling callback
+ * @param options
  */
 export declare function useAsyncState<T>(
-  promise: Promise<T>,
+  promise: Promise<T> | (() => Promise<T>),
   initialState: T,
-  delay?: number,
-  catchFn?: (e: Error) => void
+  options?: AsyncStateOptions
 ): {
-  state: Ref<UnwrapRef<T>>
+  state: Ref<T>
+  isReady: Ref<boolean>
+  /** @deprecated, use isReady instead */
   ready: Ref<boolean>
+  error: Ref<
+    | {
+        name: string
+        message: string
+        stack?: string | undefined
+      }
+    | undefined
+  >
+  execute: (delay?: number) => void
 }
 ```
 
