@@ -1,35 +1,37 @@
 {
   "name": "@vueuse/monorepo",
+  "version": "4.2.2",
   "private": true,
+  "description": "Collection of essential Vue Composition Utilities",
+  "license": "MIT",
+  "author": "Anthony Fu<https://github.com/antfu>",
   "workspaces": [
     "packages/*"
   ],
-  "version": "4.2.2",
-  "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
     "build": "esno scripts/build.ts",
+    "build:redirects": "esno scripts/redirects.ts",
     "build:rollup": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
-    "build:redirects": "esno scripts/redirects.ts",
-    "release": "esno scripts/release.ts && git push --follow-tags",
+    "clean": "rimraf dist types packages/*/dist",
+    "dev": "nr docs",
+    "docs": "vitepress dev packages",
+    "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
+    "lint": "eslint './{packages,scripts}/**/*.{js,ts,tsx,vue,md}'",
+    "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
-    "update": "esno scripts/update.ts",
-    "update:full": "nr build:types && esno scripts/update.ts && nr update:recent",
-    "update:recent": "esno scripts/recent-updated.ts",
+    "release": "esno scripts/release.ts && git push --follow-tags",
     "size": " esno scripts/export-size.ts",
-    "types:fix": " esno scripts/fix-types.ts",
-    "typecheck": "tsc --noEmit",
     "test": "nr test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
     "test:3": "vue-demi-switch 3 && jest",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "jest --watch",
-    "lint": "eslint './{packages,scripts}/**/*.{js,ts,tsx,vue,md}'",
-    "lint:fix": "nr lint --fix",
-    "clean": "rimraf dist types packages/*/dist",
-    "dev": "nr docs",
-    "docs": "vitepress dev packages",
-    "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts"
+    "typecheck": "tsc --noEmit",
+    "types:fix": " esno scripts/fix-types.ts",
+    "update": "esno scripts/update.ts",
+    "update:full": "nr build:types && esno scripts/update.ts && nr update:recent",
+    "update:recent": "esno scripts/recent-updated.ts"
   },
   "husky": {
     "hooks": {
@@ -40,14 +42,6 @@
     "{packages,.vitepress,scripts}/**/*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
     ]
-  },
-  "author": "Anthony Fu<https://github.com/antfu>",
-  "license": "MIT",
-  "dependencies": {
-    "vue-demi": "^0.6.2"
-  },
-  "optionalDependencies": {
-    "@vue/composition-api": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.4.3",
@@ -106,6 +100,7 @@
     "vitepress": "^0.12.2",
     "vue": "^3.0.6",
     "vue-chemistry": "^0.2.2",
+    "vue-demi": "^0.6.2",
     "vue2": "npm:vue@2"
   }
 }
