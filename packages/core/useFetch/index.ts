@@ -292,7 +292,7 @@ function joinPaths(start: string, end: string): string {
   return `${start}${end}`
 }
 
-export function createFetch(config: CreateFetchOptions) {
+export function createFetch(config: CreateFetchOptions = {}) {
   let options = config.options || {}
   let fetchOptions = config.fetchOptions || {}
 
