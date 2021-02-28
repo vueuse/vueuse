@@ -93,7 +93,7 @@ export interface CreateFetchOptions {
   /**
    * The base URL that will be prefixed to all urls
    */
-  baseUrl: MaybeRef<string>
+  baseUrl?: MaybeRef<string>
 
   /**
    * Default Options for the useFetch function
@@ -297,7 +297,7 @@ export function createFetch(config: CreateFetchOptions) {
   let fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => joinPaths(unref(config.baseUrl), unref(url)))
+    const computedUrl = computed(() => config.baseUrl ? joinPaths(unref(config.baseUrl), unref(url)) : unref(url))
 
     // Merge properties into a single object
     if (args.length > 0) {
