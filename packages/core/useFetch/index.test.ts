@@ -1,4 +1,4 @@
-import { useFetch } from '.'
+import { useFetch, createFetch } from '.'
 import fetchMock from 'jest-fetch-mock'
 import { when } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
@@ -32,7 +32,7 @@ describe('useFetch', () => {
   })
 
   test('should have an error on 400', async() => {
-    fetchMock.mockResponse('Hello World', { status: 400 })
+    fetchMock.mockResponse('', { status: 400 })
 
     const { error, statusCode, isFinished } = useFetch('https://example.com')
 
@@ -54,7 +54,7 @@ describe('useFetch', () => {
   })
 
   test('should not call if immediate is false', async() => {
-    fetchMock.mockResponse('Hello World')
+    fetchMock.mockResponse('')
 
     useFetch('https://example.com', { immediate: false })
     await nextTick()
@@ -63,7 +63,7 @@ describe('useFetch', () => {
   })
 
   test('should refetch if refetch is set to true', async() => {
-    fetchMock.mockResponse('Hello World')
+    fetchMock.mockResponse('')
 
     const url = ref('https://example.com')
     const { isFinished } = useFetch(url, { refetch: true })
@@ -74,5 +74,17 @@ describe('useFetch', () => {
     await when(isFinished).toBe(true)
 
     expect(fetchMock).toBeCalledTimes(2)
+  })
+
+  test('should create an instance of useFetch with a base url', async() => {
+    fetchMock.mockResponse('')
+
+    const useMyFetch = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: { Authorization: 'test' } } })
+    const { isFinished } = useMyFetch('test', { headers: { 'Accept-Language': 'en-US' } })
+
+    await when(isFinished).toBe(true)
+
+    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'test', 'Accept-Language': 'en-US' })
+    expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
   })
 })

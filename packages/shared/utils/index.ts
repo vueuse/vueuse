@@ -18,3 +18,7 @@ export function promiseTimeout(
 export function invoke<T>(fn: () => T): T {
   return fn()
 }
+
+export function containsProp(obj: object, ...props: string[]) {
+  return props.some(k => k in obj)
+}

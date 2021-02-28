@@ -72,7 +72,7 @@ export declare function useAsyncState<T>(
       }
     | undefined
   >
-  execute: (delay?: number) => void
+  execute: (delay?: number) => Promise<void>
 }
 ```
 

@@ -1,5 +1,5 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef } from '@vueuse/shared'
+import { Fn, MaybeRef, containsProp } from '@vueuse/shared/utils'
 
 interface UseFetchReturnBase<T> {
   /**
@@ -89,6 +89,69 @@ export interface UseFetchOptions {
   refetch?: MaybeRef<boolean>
 }
 
+export interface CreateFetchOptions {
+  /**
+   * The base URL that will be prefixed to all urls
+   */
+  baseUrl?: MaybeRef<string>
+
+  /**
+   * Default Options for the useFetch function
+   */
+  options?: UseFetchOptions
+
+  /**
+   * Options for the fetch request
+   */
+  fetchOptions?: RequestInit
+}
+
+/**
+ * !!!IMPORTANT!!!
+ *
+ * If you update the UseFetchOptions interface, be sure to update this object
+ * to include the new options
+ */
+function isFetchOptions(obj: object): obj is UseFetchOptions {
+  return containsProp(obj, 'immediate', 'refetch')
+}
+
+export function createFetch(config: CreateFetchOptions = {}) {
+  let options = config.options || {}
+  let fetchOptions = config.fetchOptions || {}
+
+  function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
+    const computedUrl = computed(() => config.baseUrl
+      ? joinPaths(unref(config.baseUrl), unref(url))
+      : unref(url),
+    )
+
+    // Merge properties into a single object
+    if (args.length > 0) {
+      if (isFetchOptions(args[0])) {
+        options = { ...options, ...args[0] }
+      }
+      else {
+        fetchOptions = {
+          ...fetchOptions,
+          ...args[0],
+          headers: {
+            ...(fetchOptions.headers || {}),
+            ...(args[0].headers || {}),
+          },
+        }
+      }
+    }
+
+    if (args.length > 1 && isFetchOptions(args[1]))
+      options = { ...options, ...args[1] }
+
+    return useFetch(computedUrl, fetchOptions, options)
+  }
+
+  return useFactoryFetch as typeof useFetch
+}
+
 export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
@@ -107,14 +170,14 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let initialized = false
 
   if (args.length > 0) {
-    if ('immediate' in args[0] || 'refetch' in args[0])
+    if (isFetchOptions(args[0]))
       options = { ...options, ...args[0] }
     else
       fetchOptions = args[0]
   }
 
   if (args.length > 1) {
-    if ('immediate' in args[1] || 'refetch' in args[1])
+    if (isFetchOptions(args[1]))
       options = { ...options, ...args[1] }
   }
 
@@ -266,4 +329,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     setTimeout(execute, 0)
 
   return shell
+}
+
+function joinPaths(start: string, end: string): string {
+  if (!start.endsWith('/') && !end.startsWith('/'))
+    return `${start}/${end}`
+
+  return `${start}${end}`
 }
