@@ -1,6 +1,5 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef } from '@vueuse/shared'
-import { containsProp } from '@vueuse/shared/utils'
+import { Fn, MaybeRef, containsProp } from '@vueuse/shared/utils'
 
 interface UseFetchReturnBase<T> {
   /**
@@ -308,16 +307,17 @@ export function createFetch(config: CreateFetchOptions = {}) {
   let fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl 
-      ? joinPaths(unref(config.baseUrl), unref(url)) 
-      : unref(URL)
+    const computedUrl = computed(() => config.baseUrl
+      ? joinPaths(unref(config.baseUrl), unref(url))
+      : unref(URL),
     )
 
     // Merge properties into a single object
     if (args.length > 0) {
-      if (isFetchOptions(args[0])) { 
-        options = { ...options, ...args[0] } 
-      } else {
+      if (isFetchOptions(args[0])) {
+        options = { ...options, ...args[0] }
+      }
+      else {
         fetchOptions = {
           ...fetchOptions,
           ...args[0],
