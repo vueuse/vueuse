@@ -1,5 +1,5 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp } from '@vueuse/shared/utils'
+import { Fn, MaybeRef, containsProp } from '@vueuse/shared'
 
 interface UseFetchReturnBase<T> {
   /**
