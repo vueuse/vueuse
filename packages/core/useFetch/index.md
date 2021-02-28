@@ -70,9 +70,10 @@ setTimeout(() => {
 }, 5000)
 ```
 
-Create a custom useFetch instance with default values
+Create a custom `useFetch` instance with default values
 
 ```ts
+// foo.ts
 import { createFetch } from '@vueuse/core'
 
 export const useMyFetch = createFetch({
@@ -81,6 +82,14 @@ export const useMyFetch = createFetch({
     Authorization: 'my-token',
   }
 })
+```
+
+```ts
+// bar.ts
+import { useMyFetch } from './foo'
+
+// will request `https://my-api.com/posts` with token
+const { data } = useFetch('/posts')
 ```
 
 <!--FOOTER_STARTS-->
@@ -160,6 +169,23 @@ export interface UseFetchOptions {
    */
   refetch?: MaybeRef<boolean>
 }
+export interface CreateFetchOptions {
+  /**
+   * The base URL that will be prefixed to all urls
+   */
+  baseUrl?: MaybeRef<string>
+  /**
+   * Default Options for the useFetch function
+   */
+  options?: UseFetchOptions
+  /**
+   * Options for the fetch request
+   */
+  fetchOptions?: RequestInit
+}
+export declare function createFetch(
+  config?: CreateFetchOptions
+): typeof useFetch
 export declare function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
 export declare function useFetch<T>(
   url: MaybeRef<string>,

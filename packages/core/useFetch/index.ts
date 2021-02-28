@@ -116,6 +116,42 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch')
 }
 
+export function createFetch(config: CreateFetchOptions = {}) {
+  let options = config.options || {}
+  let fetchOptions = config.fetchOptions || {}
+
+  function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
+    const computedUrl = computed(() => config.baseUrl
+      ? joinPaths(unref(config.baseUrl), unref(url))
+      : unref(url),
+    )
+
+    // Merge properties into a single object
+    if (args.length > 0) {
+      if (isFetchOptions(args[0])) {
+        options = { ...options, ...args[0] }
+      }
+      else {
+        fetchOptions = {
+          ...fetchOptions,
+          ...args[0],
+          headers: {
+            ...(fetchOptions.headers || {}),
+            ...(args[0].headers || {}),
+          },
+        }
+      }
+    }
+
+    if (args.length > 1 && isFetchOptions(args[1]))
+      options = { ...options, ...args[1] }
+
+    return useFetch(computedUrl, fetchOptions, options)
+  }
+
+  return useFactoryFetch as typeof useFetch
+}
+
 export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
@@ -300,42 +336,4 @@ function joinPaths(start: string, end: string): string {
     return `${start}/${end}`
 
   return `${start}${end}`
-}
-
-export function createFetch(config: CreateFetchOptions = {}) {
-  let options = config.options || {}
-  let fetchOptions = config.fetchOptions || {}
-
-  function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl
-      ? joinPaths(unref(config.baseUrl), unref(url))
-      : unref(URL),
-    )
-
-    // Merge properties into a single object
-    if (args.length > 0) {
-      if (isFetchOptions(args[0])) {
-        options = { ...options, ...args[0] }
-      }
-      else {
-        fetchOptions = {
-          ...fetchOptions,
-          ...args[0],
-          headers: {
-            ...(fetchOptions.headers || {}),
-            ...(args[0].headers || {}),
-          },
-        }
-      }
-    }
-
-    if (args.length > 1) {
-      if (isFetchOptions(args[1]))
-        options = { ...options, ...args[1] }
-    }
-
-    return useFetch(computedUrl, fetchOptions, options)
-  }
-
-  return useFactoryFetch as typeof useFetch
 }
