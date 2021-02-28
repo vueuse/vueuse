@@ -330,5 +330,5 @@ export function createFetch(config: CreateFetchOptions) {
     return useFetch(computedUrl, fetchOptions, options)
   }
 
-  return useFactoryFetch
+  return useFactoryFetch as typeof useFetch
 }
