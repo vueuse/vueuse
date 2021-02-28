@@ -84,8 +84,6 @@ describe('useFetch', () => {
 
     await when(isFinished).toBe(true)
 
-    console.log(fetchMock.mock.calls[0][1])
-
     expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'test', 'Accept-Language': 'en-US' })
     expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
   })
