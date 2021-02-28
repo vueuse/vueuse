@@ -308,12 +308,16 @@ export function createFetch(config: CreateFetchOptions = {}) {
   let fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl ? joinPaths(unref(config.baseUrl), unref(url)) : unref(url))
+    const computedUrl = computed(() => config.baseUrl 
+      ? joinPaths(unref(config.baseUrl), unref(url)) 
+      : unref(URL)
+    )
 
     // Merge properties into a single object
     if (args.length > 0) {
-      if (isFetchOptions(args[0])) { options = { ...options, ...args[0] } }
-      else {
+      if (isFetchOptions(args[0])) { 
+        options = { ...options, ...args[0] } 
+      } else {
         fetchOptions = {
           ...fetchOptions,
           ...args[0],
