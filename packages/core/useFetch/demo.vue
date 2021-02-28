@@ -9,8 +9,6 @@ const refetch = ref(false)
 
 const toggleRefetch = useToggle(refetch)
 
-// const { isFinished, canAbort, isFetching, statusCode, error, data, execute, abort } = useFetch(url, { immediate: false, refetch })
-
 const {
   data,
   error,
@@ -20,7 +18,7 @@ const {
   isFinished,
   canAbort,
   execute,
-} = useFetch(url, { immediate: false, refetch }).get()
+} = useFetch(url, { refetch }).get()
 
 const text = stringify(reactive({
   isFinished,

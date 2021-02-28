@@ -89,6 +89,23 @@ export interface UseFetchOptions {
   refetch?: MaybeRef<boolean>
 }
 
+export interface CreateFetchOptions {
+  /**
+   * The base URL that will be prefixed to all urls
+   */
+  baseUrl: MaybeRef<string>
+
+  /**
+   * Default Options for the useFetch function
+   */
+  options?: UseFetchOptions
+
+  /**
+   * Options for the fetch request
+   */
+  fetchOptions?: RequestInit
+}
+
 export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
@@ -266,4 +283,52 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     setTimeout(execute, 0)
 
   return shell
+}
+
+function joinPaths(start: string, end: string): string {
+  if (!start.endsWith('/') && !end.startsWith('/'))
+    return `${start}/${end}`
+
+  return `${start}${end}`
+}
+
+export function createFetch(config: CreateFetchOptions) {
+  let options = config.options || {}
+  let fetchOptions = config.fetchOptions || {}
+
+  /**
+   * The types here are a little complicated to get working properly
+   * Let me know if you have any ideas on how to simplify this.
+   */
+  function useFactoryFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
+  function useFactoryFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
+  function useFactoryFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
+
+  function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
+    const computedUrl = computed(() => joinPaths(unref(config.baseUrl), unref(url)))
+
+    // Merge properties into a single object
+    if (args.length > 0) {
+      if ('immediate' in args[0] || 'refetch' in args[0]) { options = { ...options, ...args[0] } }
+      else {
+        fetchOptions = {
+          ...fetchOptions,
+          ...args[0],
+          headers: {
+            ...(fetchOptions.headers || {}),
+            ...(args[0].headers || {}),
+          },
+        }
+      }
+    }
+
+    if (args.length > 1) {
+      if ('immediate' in args[1] || 'refetch' in args[1])
+        options = { ...options, ...args[1] }
+    }
+
+    return useFetch(computedUrl, fetchOptions, options)
+  }
+
+  return useFactoryFetch
 }

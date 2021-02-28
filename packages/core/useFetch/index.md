@@ -70,6 +70,18 @@ setTimeout(() => {
 }, 5000)
 ```
 
+Create a custom useFetch instance with default values
+
+```ts
+import { createFetch } from '@vueuse/core'
+
+export const useMyFetch = createFetch({
+  baseUrl: 'https://my-api.com',
+  headers: {
+    Authorization: 'my-token',
+  }
+})
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
