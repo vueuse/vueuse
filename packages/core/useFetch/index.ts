@@ -296,14 +296,6 @@ export function createFetch(config: CreateFetchOptions) {
   let options = config.options || {}
   let fetchOptions = config.fetchOptions || {}
 
-  /**
-   * The types here are a little complicated to get working properly
-   * Let me know if you have any ideas on how to simplify this.
-   */
-  function useFactoryFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
-  function useFactoryFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
-  function useFactoryFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
-
   function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
     const computedUrl = computed(() => joinPaths(unref(config.baseUrl), unref(url)))
 
