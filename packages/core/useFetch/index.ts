@@ -1,5 +1,6 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
 import { Fn, MaybeRef } from '@vueuse/shared'
+import { containsProp } from '@vueuse/shared/utils'
 
 interface UseFetchReturnBase<T> {
   /**
@@ -106,6 +107,16 @@ export interface CreateFetchOptions {
   fetchOptions?: RequestInit
 }
 
+/**
+ * !!!IMPORTANT!!!
+ *
+ * If you update the UseFetchOptions interface, be sure to update this object
+ * to include the new options
+ */
+function isFetchOptions(obj: object): obj is UseFetchOptions {
+  return containsProp(obj, 'immediate', 'refetch')
+}
+
 export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
 export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
@@ -124,14 +135,14 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let initialized = false
 
   if (args.length > 0) {
-    if ('immediate' in args[0] || 'refetch' in args[0])
+    if (isFetchOptions(args[0]))
       options = { ...options, ...args[0] }
     else
       fetchOptions = args[0]
   }
 
   if (args.length > 1) {
-    if ('immediate' in args[1] || 'refetch' in args[1])
+    if (isFetchOptions(args[1]))
       options = { ...options, ...args[1] }
   }
 
@@ -301,7 +312,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
 
     // Merge properties into a single object
     if (args.length > 0) {
-      if ('immediate' in args[0] || 'refetch' in args[0]) { options = { ...options, ...args[0] } }
+      if (isFetchOptions(args[0])) { options = { ...options, ...args[0] } }
       else {
         fetchOptions = {
           ...fetchOptions,
@@ -315,7 +326,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
     }
 
     if (args.length > 1) {
-      if ('immediate' in args[1] || 'refetch' in args[1])
+      if (isFetchOptions(args[1]))
         options = { ...options, ...args[1] }
     }
 
