@@ -93,7 +93,7 @@ export function useEventListener(...args: any[]) {
   }
 
   if (!target)
-    return
+    return noop
 
   let cleanup = noop
 
@@ -111,7 +111,7 @@ export function useEventListener(...args: any[]) {
         cleanup = noop
       }
     },
-    { immediate: true },
+    { immediate: true, flush: 'post' },
   )
 
   const stop = () => {
