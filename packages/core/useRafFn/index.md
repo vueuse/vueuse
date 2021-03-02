@@ -9,10 +9,14 @@ Call function on every `requestAnimationFrame`. With controls of pausing and res
 ## Usage
 
 ```js
+import { ref } from 'vue'
 import { useRafFn } from '@vueuse/core'
 
-const { pause, resume } = useRafFn((elapsed) => {
-  console.log(elapsed.value)
+const count = ref(0)
+
+const { pause, resume } = useRafFn(() => {
+  count.value++
+  console.log(count.value)
 })
 ```
 
