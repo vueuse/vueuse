@@ -11,7 +11,6 @@
   - [`useIntervalFn`](https://vueuse.org/shared/useIntervalFn/) — wrapper for `setInterval` with controls
   - [`useNow`](https://vueuse.org/core/useNow/) — reactive current Date instance
   - [`useRafFn`](https://vueuse.org/core/useRafFn/) — call function on every `requestAnimationFrame`
-  - [`useTimeAgo`](https://vueuse.org/core/useTimeAgo/) — reactive time ago
   - [`useTimeout`](https://vueuse.org/shared/useTimeout/) — update value after a given time with controls
   - [`useTimeoutFn`](https://vueuse.org/shared/useTimeoutFn/) — wrapper for `setTimeout` with controls
   - [`useTimestamp`](https://vueuse.org/core/useTimestamp/) — reactive current timestamp
@@ -43,6 +42,9 @@
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
+
+### Formatters
+  - [`useTimeAgo`](https://vueuse.org/core/useTimeAgo/) — reactive time ago
 
 ### Misc
   - [`useEventSource`](https://vueuse.org/core/useEventSource/) — an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) or [Server-Sent-Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instance opens a persistent connection to an HTTP server

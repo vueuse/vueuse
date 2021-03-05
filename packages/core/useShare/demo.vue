@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
+import { isClient } from '@vueuse/shared'
 import { useShare } from '.'
-import { isClient } from '..'
 
 const options = ref({
   title: 'Vueuse',
@@ -23,7 +23,7 @@ const { share, isSupported } = useShare(options)
       placeholder="Note"
     >
     <button :disabled="!isSupported" @click="startShare">
-      {{ isSupported ? 'Share' : 'Web share not supported!' }}
+      {{ isSupported ? 'Share' : 'Web share is not supported in your browser' }}
     </button>
   </div>
 </template>

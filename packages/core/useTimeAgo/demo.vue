@@ -14,7 +14,7 @@ const timeAgo = useTimeAgo(value)
   </div>
   <input v-model="slider" class="slider" type="range" min="-3800" max="3800">
   <div class="text-center opacity-50">
-    {{ slider ** 3 }}
+    {{ slider ** 3 }}ms
   </div>
 </template>
 
@@ -22,7 +22,7 @@ const timeAgo = useTimeAgo(value)
 .slider {
   -webkit-appearance: none;
   width: 100%;
-  background: rgba(125, 125, 125, 0.3);
+  background: rgba(125, 125, 125, 0.1);
   border-radius: 1rem;
   height: 1rem;
   opacity: 0.8;
@@ -38,9 +38,9 @@ const timeAgo = useTimeAgo(value)
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 1.2rem;
-  height: 1.2rem;
-  background: #68d391;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: var(--c-brand);
   cursor: pointer;
   border-radius: 50%;
 }

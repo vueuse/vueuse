@@ -71,7 +71,7 @@ const toggle = () => {
 }
 
 .sled {
-  background: #68d391;
+  background: var(--c-brand);
   border-radius: 50%;
   height: 1rem;
   position: absolute;

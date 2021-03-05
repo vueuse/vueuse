@@ -89,6 +89,7 @@
     "Animation",
     "Browser",
     "Component",
+    "Formatters",
     "Misc",
     "Sensors",
     "State",
@@ -672,7 +673,7 @@
       "name": "useTimeAgo",
       "package": "core",
       "docs": "https://vueuse.org/core/useTimeAgo/",
-      "category": "Animation",
+      "category": "Formatters",
       "description": "reactive time ago"
     },
     {
