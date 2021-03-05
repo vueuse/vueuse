@@ -11,7 +11,7 @@ watch(debounced, () => (updated.value += 1))
 
 <template>
   <div>
-    <input v-model="input" placeholder="Try to type anything...">
+    <input v-model="input" placeholder="Try to type anything..." type="text">
     <note>Delay is set to 1000ms for this demo.</note>
 
     <p>Debounced: {{ debounced }}</p>

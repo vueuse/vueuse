@@ -9,6 +9,6 @@ biSyncRef(a, b)
 </script>
 
 <template>
-  <input v-model="a" placeholder="A">
-  <input v-model="b" placeholder="B">
+  <input v-model="a" placeholder="A" type="text">
+  <input v-model="b" placeholder="B" type="text">
 </template>

@@ -38,6 +38,8 @@ export function useIntervalFn(cb: Fn, interval = 1000, immediate = true): Interv
   }
 
   function resume() {
+    if (interval <= 0)
+      return
     isActive.value = true
     clean()
     timer = setInterval(cb, interval)

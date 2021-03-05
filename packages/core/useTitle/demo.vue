@@ -6,5 +6,5 @@ const title = useTitle(null)
 
 <template>
   <note>Title</note>
-  <input v-model="title">
+  <input v-model="title" type="text">
 </template>

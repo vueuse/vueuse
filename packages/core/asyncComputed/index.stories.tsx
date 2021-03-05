@@ -37,7 +37,7 @@ defineDemo(
     template: html`
       <div>
         <note>npm weekly downloads lookup</note>
-        <input v-model="name" placeholder="npm package name"/>
+        <input v-model="name" type="text" placeholder="npm package name"/>
         <p>Downloads: <b>{{ isFetching ? '...' : (downloads + ' / week') }}</b></p>
       </div>
     `,

@@ -93,7 +93,7 @@
     border-top: 0;
   }
 
-  input {
+  input[type='text'] {
     display: block;
     min-width: 20rem;
     font-size: 1.05rem;
