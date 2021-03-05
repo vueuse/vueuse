@@ -91,12 +91,15 @@ const DEFAULT_MESSAGES: TimeAgoMessages = {
 const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
 
 /**
- * Reactive time ago.
+ * Reactive time ago formatter.
  *
  * @see   {@link https://vueuse.org/useTimeAgo}
  * @param options
  */
-export function useTimeAgo(time: MaybeRef<Date | number>, options: TimeAgoOptions = {}) {
+export function useTimeAgo(
+  time: MaybeRef<Date | number | string>,
+  options: TimeAgoOptions = {},
+) {
   const {
     max,
     updateInterval = 30_000,
@@ -107,7 +110,7 @@ export function useTimeAgo(time: MaybeRef<Date | number>, options: TimeAgoOption
   const { abs, round } = Math
   const { now } = useNow({ interval: updateInterval })
 
-  function getTimeago(from: Date | number, now: Date | number) {
+  function getTimeago(from: Date, now: Date) {
     const diff = +now - +from
     const absDiff = abs(diff)
 
@@ -130,11 +133,10 @@ export function useTimeAgo(time: MaybeRef<Date | number>, options: TimeAgoOption
     }
   }
 
-  function applyFormat(name: keyof TimeAgoMessages, val: number | string, past = true) {
+  function applyFormat(name: keyof TimeAgoMessages, val: number | string, isPast: boolean) {
     const formatter = messages[name]
     if (typeof formatter === 'function')
-      // @ts-expect-error ???
-      return formatter(val)
+      return formatter(val as never, isPast)
     return formatter.replace('{0}', val.toString())
   }
 
@@ -146,5 +148,5 @@ export function useTimeAgo(time: MaybeRef<Date | number>, options: TimeAgoOption
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  return computed(() => getTimeago(unref(time), unref(now.value)))
+  return computed(() => getTimeago(new Date(unref(time)), unref(now.value)))
 }
