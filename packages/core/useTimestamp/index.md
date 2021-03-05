@@ -26,6 +26,12 @@ export interface TimestampOptions {
    * @default 0
    */
   offset?: number
+  /**
+   * Update interval, or use requestAnimationFrame
+   *
+   * @default requestAnimationFrame
+   */
+  interval?: "requestAnimationFrame" | number
 }
 /**
  * Reactive current timestamp.
@@ -36,8 +42,6 @@ export interface TimestampOptions {
 export declare function useTimestamp(
   options?: TimestampOptions
 ): {
-  stop: Fn
-  start: Fn
   isActive: Ref<boolean>
   pause: Fn
   resume: Fn
