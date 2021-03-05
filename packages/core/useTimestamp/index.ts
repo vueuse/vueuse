@@ -1,8 +1,15 @@
 import { Pausable, timestamp, useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 
-export interface TimestampOptions {
+export interface TimestampOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+
   /**
    * Offset value adding to the value
    *
@@ -24,8 +31,11 @@ export interface TimestampOptions {
  * @see https://vueuse.org/useTimestamp
  * @param options
  */
-export function useTimestamp(options: TimestampOptions = {}) {
+export function useTimestamp(options?: TimestampOptions<false>): Ref<number>
+export function useTimestamp(options: TimestampOptions<true>): { timestamp: Ref<number> } & Pausable
+export function useTimestamp(options: TimestampOptions<boolean> = {}) {
   const {
+    controls: exposeControls = false,
     offset = 0,
     interval = 'requestAnimationFrame',
   } = options
@@ -38,8 +48,13 @@ export function useTimestamp(options: TimestampOptions = {}) {
     ? useRafFn(update, { immediate: true })
     : useIntervalFn(update, interval, true)
 
-  return {
-    timestamp: ts,
-    ...controls,
+  if (exposeControls) {
+    return {
+      timestamp: ts,
+      ...controls,
+    }
+  }
+  else {
+    return ts
   }
 }
