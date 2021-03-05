@@ -10,6 +10,7 @@ const categoriesOrder = [
   'State',
   'Component',
   'Watch',
+  'Formatters',
   'Utilities',
   'Misc',
 ]
