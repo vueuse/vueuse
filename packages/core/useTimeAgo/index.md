@@ -70,13 +70,13 @@ export interface TimeAgoOptions {
   messages?: TimeAgoMessages
 }
 /**
- * Reactive time ago.
+ * Reactive time ago formatter.
  *
  * @see   {@link https://vueuse.org/useTimeAgo}
  * @param options
  */
 export declare function useTimeAgo(
-  time: MaybeRef<Date | number>,
+  time: MaybeRef<Date | number | string>,
   options?: TimeAgoOptions
 ): ComputedRef<string | undefined>
 ```
