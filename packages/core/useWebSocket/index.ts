@@ -150,7 +150,7 @@ export function useWebSocket<Data = any>(
   }
 
   const _sendBuffer = () => {
-    if (bufferedData.length && wsRef.value && status.value !== 'OPEN') {
+    if (bufferedData.length && wsRef.value && status.value === 'OPEN') {
       for (const buffer of bufferedData)
         wsRef.value.send(buffer)
       bufferedData = []
