@@ -14,7 +14,6 @@
 
 .custom-block.warning {
   border-color: #e7c000;
-  color: #6b5900;
   background-color: rgba(255, 229, 100, .3);
 }
 
@@ -28,7 +27,6 @@
 
 .custom-block.danger {
   border-color: #c00;
-  color: #4d0000;
   background-color: #ffe6e6;
 }
 

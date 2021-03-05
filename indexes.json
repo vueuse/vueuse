@@ -550,6 +550,13 @@
       "description": "reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)"
     },
     {
+      "name": "useNow",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useNow/",
+      "category": "Animation",
+      "description": "reactive current Date instance"
+    },
+    {
       "name": "useOnline",
       "package": "core",
       "docs": "https://vueuse.org/core/useOnline/",
@@ -660,6 +667,13 @@
       "docs": "https://vueuse.org/core/useSwipe/",
       "category": "Sensors",
       "description": "reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)"
+    },
+    {
+      "name": "useTimeAgo",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useTimeAgo/",
+      "category": "Animation",
+      "description": "reactive time ago"
     },
     {
       "name": "useTimestamp",

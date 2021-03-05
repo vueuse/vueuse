@@ -9,7 +9,9 @@
 ### Animation
   - [`useInterval`](https://vueuse.org/shared/useInterval/) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.org/shared/useIntervalFn/) — wrapper for `setInterval` with controls
+  - [`useNow`](https://vueuse.org/core/useNow/) — reactive current Date instance
   - [`useRafFn`](https://vueuse.org/core/useRafFn/) — call function on every `requestAnimationFrame`
+  - [`useTimeAgo`](https://vueuse.org/core/useTimeAgo/) — reactive time ago
   - [`useTimeout`](https://vueuse.org/shared/useTimeout/) — update value after a given time with controls
   - [`useTimeoutFn`](https://vueuse.org/shared/useTimeoutFn/) — wrapper for `setTimeout` with controls
   - [`useTimestamp`](https://vueuse.org/core/useTimestamp/) — reactive current timestamp
