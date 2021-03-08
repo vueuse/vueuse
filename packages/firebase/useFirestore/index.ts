@@ -27,7 +27,7 @@ function getData<T>(
 }
 
 function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.DocumentReference<T> {
-  return Boolean(docRef.parent)
+  return (docRef.path.match(/\//g) || []).length % 2 !== 0
 }
 
 export function useFirestore<T extends firebase.firestore.DocumentData> (
