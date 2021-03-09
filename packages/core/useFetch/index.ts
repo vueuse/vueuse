@@ -212,8 +212,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (supportsAbort) {
       controller = new AbortController()
       fetchOptions = {
-        signal: controller.signal,
         ...fetchOptions,
+        signal: controller.signal,
       }
     }
 
