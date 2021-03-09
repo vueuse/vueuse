@@ -9,11 +9,12 @@ const source = ref(0)
 const { ignoreUpdates } = ignorableWatch(
   source,
   v => (log.value += `Changed to "${v}"\n`),
+  { flush: 'sync' },
 )
 
 const clear = () => {
-  log.value = ''
   source.value = 0
+  log.value = ''
 }
 const update = () => {
   source.value++
@@ -34,7 +35,7 @@ const ignoredUpdate = () => {
     Ignored Update
   </button>
   <button @click="clear">
-    Clear Log
+    Reset
   </button>
 
   <br>
