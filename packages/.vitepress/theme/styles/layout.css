@@ -8,10 +8,10 @@
   scrollbar-color: var(--c-divider-light) var(--c-bg);
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: var(--scrollbar-width);
 }
 ::-webkit-scrollbar:horizontal {
-  height: 6px;
+  height: var(--scrollbar-width);
 }
 ::-webkit-scrollbar-track {
   background: var(--c-bg);

@@ -27,7 +27,7 @@
 
 @media (min-width: 720px) {
   .demo {
-    --width: calc(100vw - var(--sidebar-width)) !important;
+    --width: calc(100vw - var(--sidebar-width) - var(--scrollbar-width)) !important;
     --content-width: min(48rem, var(--width)) !important;
     --margin-left: calc(
       calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem
