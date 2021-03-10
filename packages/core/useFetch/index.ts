@@ -87,6 +87,8 @@ export interface UseFetchOptions {
    * @default false
    */
   refetch?: MaybeRef<boolean>
+
+  beforeFetch?: (url: string, options: RequestInit) => Promise<{ url: string; options: RequestInit }>
 }
 
 export interface CreateFetchOptions {
@@ -113,7 +115,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch')
+  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch')
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
@@ -198,7 +200,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       controller.abort()
   }
 
-  const execute = () => {
+  const execute = async() => {
     initialized = true
     isFetching.value = true
     isFinished.value = false
@@ -235,15 +237,21 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
+    let _url = unref(url)
+    let _fetchOptions = fetchOptions
+
+    if (options.beforeFetch)
+      ({ url: _url, options: _fetchOptions } = await options.beforeFetch(_url, _fetchOptions))
+
     return new Promise((resolve) => {
       fetch(
-        unref(url),
+        _url,
         {
           ...defaultFetchOptions,
-          ...fetchOptions,
+          ..._fetchOptions,
           headers: {
             ...defaultFetchOptions.headers,
-            ...fetchOptions?.headers,
+            ..._fetchOptions?.headers,
           },
         },
       )
