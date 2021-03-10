@@ -194,10 +194,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let controller: AbortController | undefined
 
   const abort = () => {
-    if (supportsAbort && controller) {
-      aborted.value = true
+    if (supportsAbort && controller)
       controller.abort()
-    }
   }
 
   const execute = () => {
@@ -211,9 +209,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     if (supportsAbort) {
       controller = new AbortController()
+      controller.signal.onabort = () => aborted.value = true
       fetchOptions = {
-        signal: controller.signal,
         ...fetchOptions,
+        signal: controller.signal,
       }
     }
 

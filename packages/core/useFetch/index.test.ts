@@ -45,7 +45,14 @@ describe('useFetch', () => {
   test('should abort request and set aborted to true', async() => {
     fetchMock.mockResponse(() => new Promise(resolve => setTimeout(() => resolve({ body: 'ok' }), 1000)))
 
-    const { aborted, abort, isFinished } = useFetch('https://example.com')
+    const { aborted, abort, isFinished, execute } = useFetch('https://example.com')
+
+    setTimeout(() => abort(), 0)
+
+    await when(isFinished).toBe(true)
+    expect(aborted.value).toBe(true)
+
+    execute()
 
     setTimeout(() => abort(), 0)
 
