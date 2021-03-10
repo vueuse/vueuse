@@ -31,7 +31,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (mode === 'hash') {
       const hash = window.location.hash || ''
       const index = hash.indexOf('?')
-      return new URLSearchParams(index ? hash.substring(index + 1) : '')
+      return new URLSearchParams(index >= 0 ? hash.substring(index + 1) : '')
     }
     else {
       return new URLSearchParams(window.location.search || '')

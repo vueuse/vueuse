@@ -89,4 +89,16 @@ describe('useUrlSearchParams', () => {
       })
     })
   })
+
+  test('hash url without params', () => {
+    useSetup(() => {
+      window.location.hash = '#/test/'
+      const params = useUrlSearchParams('hash')
+      expect(params).toEqual({})
+
+      const newHash = '#/change/?foo=bar'
+      window.location.hash = newHash
+      expect(window.location.hash).toBe(newHash)
+    })
+  })
 })
