@@ -39,9 +39,11 @@ const { data, post, terminate } = useWebWorker('/path/to/worker.js')
  *
  * @see   {@link https://vueuse.org/useWebWorker}
  * @param url
+ * @param options
  */
 export declare function useWebWorker(
-  url: string
+  url: string,
+  options?: WorkerOptions
 ): {
   data: Ref<any>
   post: {
