@@ -241,13 +241,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    const isCanceled = ref(false)
-    const context = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled.value = true } }
+    let isCanceled = false
+    const context = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
-    if (isCanceled.value)
+    if (isCanceled)
       return Promise.resolve()
 
     return new Promise((resolve) => {
