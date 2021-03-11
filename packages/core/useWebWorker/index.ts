@@ -8,8 +8,9 @@ import { tryOnUnmounted } from '@vueuse/shared'
  *
  * @see   {@link https://vueuse.org/useWebWorker}
  * @param url
+ * @param options
  */
-export function useWebWorker(url: string) {
+export function useWebWorker(url: string, options?: WorkerOptions) {
   const data: Ref<any> = ref(null)
   let worker: Worker
 
@@ -27,7 +28,7 @@ export function useWebWorker(url: string) {
     worker.terminate()
   }
 
-  worker = new Worker(url)
+  worker = new Worker(url, options)
 
   worker.onmessage = (e: MessageEvent) => {
     data.value = e.data
