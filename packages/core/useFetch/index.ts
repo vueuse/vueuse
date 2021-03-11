@@ -92,7 +92,7 @@ export interface UseFetchOptions {
   /**
    * Will run immediately before the fetch request is dispatched
    */
-  beforeFetch?: (ctx: Context, abort: Fn) => Promise<Partial<Context>> | Partial<Context>
+  beforeFetch?: (ctx: Context) => Promise<Partial<Context>> | Partial<Context>
 }
 
 export interface CreateFetchOptions {
@@ -241,20 +241,20 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    let context = { url: unref(url), options: fetchOptions, cancel: abort }
+    const context = { url: unref(url), options: fetchOptions, cancel: abort }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
     return new Promise((resolve) => {
       fetch(
-        _url,
+        context.url,
         {
           ...defaultFetchOptions,
-          ..._fetchOptions,
+          ...context.options,
           headers: {
             ...defaultFetchOptions.headers,
-            ..._fetchOptions?.headers,
+            ...context.options?.headers,
           },
         },
       )
