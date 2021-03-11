@@ -50,7 +50,7 @@ interface Unit {
 }
 
 const UNITS: Unit[] = [
-  { max: 90000, value: 1000, name: 'second' },
+  { max: 60000, value: 1000, name: 'second' },
   { max: 2760000, value: 60000, name: 'minute' },
   { max: 72000000, value: 3600000, name: 'hour' },
   { max: 518400000, value: 86400000, name: 'day' },
