@@ -241,15 +241,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    let _url = unref(url)
-    let _fetchOptions = fetchOptions
+    let context = { url: unref(url), options: fetchOptions, cancel: abort }
 
-    if (options.beforeFetch) {
-      const { url: maybeUrl, options: maybeOptions } = await options.beforeFetch({ url: _url, options: _fetchOptions }, abort)
-
-      _url = maybeUrl || _url
-      _fetchOptions = maybeOptions || _fetchOptions
-    }
+    if (options.beforeFetch)
+      Object.assign(context, await options.beforeFetch(context))
 
     return new Promise((resolve) => {
       fetch(
