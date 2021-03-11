@@ -88,7 +88,10 @@ export interface UseFetchOptions {
    */
   refetch?: MaybeRef<boolean>
 
-  beforeFetch?: (url: string, options: RequestInit) => Promise<{ url: string; options: RequestInit }>
+  /**
+   * Will run immediately before the fetch request is dispatched
+   */
+  beforeFetch?: (url: string, options: RequestInit, abort: Fn) => Promise<{ url: string; options: RequestInit }> | ({ url: string; options: RequestInit })
 }
 
 export interface CreateFetchOptions {
@@ -241,7 +244,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     let _fetchOptions = fetchOptions
 
     if (options.beforeFetch)
-      ({ url: _url, options: _fetchOptions } = await options.beforeFetch(_url, _fetchOptions))
+      ({ url: _url, options: _fetchOptions } = await options.beforeFetch(_url, _fetchOptions, abort))
 
     return new Promise((resolve) => {
       fetch(
