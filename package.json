@@ -28,7 +28,7 @@
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit",
-    "types:fix": " esno scripts/fix-types.ts",
+    "types:fix": "esno scripts/fix-types.ts",
     "update": "esno scripts/update.ts",
     "update:full": "nr build:types && esno scripts/update.ts && nr update:recent",
     "update:recent": "esno scripts/recent-updated.ts"
@@ -96,7 +96,6 @@
     "ts-jest": "^26.5.2",
     "typescript": "^4.2.2",
     "vite-plugin-components": "^0.7.4",
-    "vite-plugin-editor-nav": "^0.0.4",
     "vite-plugin-icons": "^0.3.1",
     "vite-plugin-pwa": "^0.5.5",
     "vite-plugin-windicss": "^0.5.4",

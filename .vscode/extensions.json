@@ -2,6 +2,6 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "bierner.lit-html",
-    "antfu.as-fs",
+    "antfu.vite",
   ]
 }

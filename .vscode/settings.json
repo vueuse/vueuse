@@ -6,7 +6,6 @@
     "vueuse"
   ],
   "prettier.enable": false,
-  "vetur.validation.interpolation": false,
   "grammarly.userWords": [
     "VueUse",
     "composables",
@@ -17,7 +16,9 @@
     "prepublish",
     "vue"
   ],
-  "as-fs.enabled": true,
-  "as-fs.path": "packages/.vitepress/.editor-as-fs",
-  "volar.tsPlugin": true
+  "volar.tsPlugin": true,
+  "vite.vitepress": true,
+  "vite.vitepressBase": "packages",
+  "vite.vitepressAutoRouting": true,
+  "vite.buildCommand": "npm run docs:build"
 }

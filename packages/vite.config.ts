@@ -6,7 +6,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { functionNames, getFunction } from '../meta/function-indexes'
 import { getFunctionHead, hasDemo } from '../scripts/utils'
 import WindiCSS from 'vite-plugin-windicss'
-import EditorNav from 'vite-plugin-editor-nav'
 
 const config: UserConfig = {
   resolve: {
@@ -116,10 +115,6 @@ const config: UserConfig = {
         exclude: ['dist'],
       },
       preflight: false,
-    }),
-    EditorNav({
-      preset: 'vitepress',
-      editorStatePath: 'packages/.vitepress/.editor-as-fs',
     }),
   ],
 }

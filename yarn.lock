@@ -8220,14 +8220,6 @@ vite-plugin-components@^0.7.4:
     fast-glob "npm:@knightly/fast-glob@master"
     minimatch "^3.0.4"
 
-vite-plugin-editor-nav@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/vite-plugin-editor-nav/-/vite-plugin-editor-nav-0.0.4.tgz#10efdc567b5610af721ab487b61f8f5ba49eddd1"
-  integrity sha512-oVDk9630R50kUrdWUL7tldMQZTDukZcTEhKG3+Lgaus7ZcvbpKpLvMSnuqlIKoEeQ/n7Rk4R0gbpI55zokwcGA==
-  dependencies:
-    debug "^4.3.2"
-    fast-glob "^3.2.5"
-
 vite-plugin-icons@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/vite-plugin-icons/-/vite-plugin-icons-0.3.1.tgz#62ee8594214eb59e11d0db48a680a0dbb6e85a79"
