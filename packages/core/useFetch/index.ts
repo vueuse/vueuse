@@ -55,6 +55,7 @@ interface UseFetchReturnBase<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type PayloadType = 'text' | 'json' | 'formData'
+type Context = { url: string; options: RequestInit }
 
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
   // type
@@ -91,7 +92,7 @@ export interface UseFetchOptions {
   /**
    * Will run immediately before the fetch request is dispatched
    */
-  beforeFetch?: (url: string, options: RequestInit, abort: Fn) => Promise<{ url: string; options: RequestInit }> | ({ url: string; options: RequestInit })
+  beforeFetch?: (ctx: Context, abort: Fn) => Promise<Context> | Context
 }
 
 export interface CreateFetchOptions {
@@ -244,7 +245,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     let _fetchOptions = fetchOptions
 
     if (options.beforeFetch)
-      ({ url: _url, options: _fetchOptions } = await options.beforeFetch(_url, _fetchOptions, abort))
+      ({ url: _url, options: _fetchOptions } = await options.beforeFetch({ url: _url, options: _fetchOptions }, abort))
 
     return new Promise((resolve) => {
       fetch(
