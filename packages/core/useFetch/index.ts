@@ -73,6 +73,23 @@ export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
   delete(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
 }
 
+export interface BeforeFetchContext {
+  /**
+   * The computed url of the current request
+   */
+  url: string
+
+  /**
+   * The requset options of the current request
+   */
+  options: RequestInit
+
+  /**
+   * Cancels the current requset
+   */
+  cancel: Fn
+}
+
 export interface UseFetchOptions {
   /**
    * Will automatically run fetch when `useFetch` is used
@@ -87,6 +104,11 @@ export interface UseFetchOptions {
    * @default false
    */
   refetch?: MaybeRef<boolean>
+
+  /**
+   * Will run immediately before the fetch request is dispatched
+   */
+  beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext>> | Partial<BeforeFetchContext>
 }
 
 export interface CreateFetchOptions {
@@ -113,7 +135,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch')
+  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch')
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
@@ -198,7 +220,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       controller.abort()
   }
 
-  const execute = () => {
+  const execute = async() => {
     initialized = true
     isFetching.value = true
     isFinished.value = false
@@ -235,15 +257,24 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
+    let isCanceled = false
+    const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
+
+    if (options.beforeFetch)
+      Object.assign(context, await options.beforeFetch(context))
+
+    if (isCanceled)
+      return Promise.resolve()
+
     return new Promise((resolve) => {
       fetch(
-        unref(url),
+        context.url,
         {
           ...defaultFetchOptions,
-          ...fetchOptions,
+          ...context.options,
           headers: {
             ...defaultFetchOptions.headers,
-            ...fetchOptions?.headers,
+            ...context.options?.headers,
           },
         },
       )
