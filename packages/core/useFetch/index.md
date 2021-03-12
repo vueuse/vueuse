@@ -171,6 +171,10 @@ export interface BeforeFetchContext {
 }
 export interface UseFetchOptions {
   /**
+   * Fetch function
+   */
+  fetch?: typeof window.fetch
+  /**
    * Will automatically run fetch when `useFetch` is used
    *
    * @default true

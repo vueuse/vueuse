@@ -1,5 +1,6 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
 import { Fn, MaybeRef, containsProp } from '@vueuse/shared'
+import { defaultWindow } from '../_configurable'
 
 interface UseFetchReturnBase<T> {
   /**
@@ -91,6 +92,11 @@ export interface BeforeFetchContext {
 }
 
 export interface UseFetchOptions {
+  /**
+   * Fetch function
+   */
+  fetch?: typeof window.fetch
+
   /**
    * Will automatically run fetch when `useFetch` is used
    *
@@ -203,6 +209,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       options = { ...options, ...args[1] }
   }
 
+  const {
+    fetch = defaultWindow?.fetch,
+  } = options
+
   const isFinished = ref(false)
   const isFetching = ref(false)
   const aborted = ref(false)
@@ -263,7 +273,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
-    if (isCanceled)
+    if (isCanceled || !fetch)
       return Promise.resolve()
 
     return new Promise((resolve) => {

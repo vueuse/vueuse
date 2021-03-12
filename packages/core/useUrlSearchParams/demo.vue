@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useUrlSearchParams } from '.'
 
-const params = useUrlSearchParams('history', { window: window.parent })
+const params = useUrlSearchParams('history')
 params.foo = 'bar'
 params.vueuse = 'awesome'
 </script>
