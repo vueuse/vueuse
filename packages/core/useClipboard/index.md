@@ -11,30 +11,47 @@ Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipbo
 ```js
 import { useClipboard } from '@vueuse/core'
 
-const { text, copy, isSupported } = useClipboard()
+const source = ref('Hello')
+const { text, copy, copied, isSupported } = useClipboard({ source })
 ```
 
-| State | Type     | Description                        |
-| ----- | -------- | ---------------------------------- |
-| isSupported  | `boolean` | the current environment support Clipboard API or not. |
-| text  | `string` | the current text in the clipboard. |
-
-| Method            | Description                                  |
-| -------------------- | -------------------------------------------- |
-| `copy(str: string)` | Writes the given string it in the clipboard. |
-
+```html
+<button @click='copy'>
+  <!-- by default, `copied` will be reset in 1.5s -->
+  <span v-if='!copied'>Copy</span>
+  <span v-else>Copied!</span>
+</button>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
 ```typescript
-export interface ClipboardOptions extends ConfigurableNavigator {
+export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
    * @default true
    */
   read?: boolean
+  /**
+   * Copy source
+   */
+  source?: Source
+  /**
+   * Mileseconds to reset state of `copied` ref
+   *
+   * @default 1500
+   */
+  copiedDuring?: number
+}
+export interface ClipboardReturn<Optional> {
+  isSupported: boolean
+  text: ComputedRef<string>
+  copied: ComputedRef<boolean>
+  copy: Optional extends true
+    ? (text?: string) => Promise<void>
+    : (text: string) => Promise<void>
 }
 /**
  * Reactive Clipboard API.
@@ -43,12 +60,11 @@ export interface ClipboardOptions extends ConfigurableNavigator {
  * @param options
  */
 export declare function useClipboard(
-  options?: ClipboardOptions
-): {
-  isSupported: boolean | undefined
-  text: ComputedRef<string>
-  copy: (txt: string) => Promise<void>
-}
+  options?: ClipboardOptions<undefined>
+): ClipboardReturn<false>
+export declare function useClipboard(
+  options: ClipboardOptions<MaybeRef<string>>
+): ClipboardReturn<true>
 ```
 
 ## Source
