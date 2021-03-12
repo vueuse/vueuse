@@ -155,6 +155,20 @@ export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
     type?: PayloadType
   ): UseFetchReturnMethodConfigured<T>
 }
+export interface BeforeFetchContext {
+  /**
+   * The computed url of the current request
+   */
+  url: string
+  /**
+   * The requset options of the current request
+   */
+  options: RequestInit
+  /**
+   * Cancels the current requset
+   */
+  cancel: Fn
+}
 export interface UseFetchOptions {
   /**
    * Will automatically run fetch when `useFetch` is used
@@ -168,6 +182,12 @@ export interface UseFetchOptions {
    * @default false
    */
   refetch?: MaybeRef<boolean>
+  /**
+   * Will run immediately before the fetch request is dispatched
+   */
+  beforeFetch?: (
+    ctx: BeforeFetchContext
+  ) => Promise<Partial<BeforeFetchContext>> | Partial<BeforeFetchContext>
 }
 export interface CreateFetchOptions {
   /**
