@@ -55,7 +55,6 @@ interface UseFetchReturnBase<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type PayloadType = 'text' | 'json' | 'formData'
-type Context = { url: string; options: RequestInit, cancel: () => void }
 
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
   // type
@@ -72,6 +71,23 @@ export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
   post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
   put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
   delete(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+}
+
+export interface BeforeFetchContext {
+  /**
+   * The computed url of the current request
+   */
+  url: string
+
+  /**
+   * The requset options of the current request
+   */
+  options: RequestInit
+
+  /**
+   * Cancels the current requset
+   */
+  cancel: Fn
 }
 
 export interface UseFetchOptions {
@@ -92,7 +108,7 @@ export interface UseFetchOptions {
   /**
    * Will run immediately before the fetch request is dispatched
    */
-  beforeFetch?: (ctx: Context) => Promise<Partial<Context>> | Partial<Context>
+  beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext>> | Partial<BeforeFetchContext>
 }
 
 export interface CreateFetchOptions {
@@ -242,7 +258,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     let isCanceled = false
-    const context = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
