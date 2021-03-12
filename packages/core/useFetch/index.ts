@@ -55,7 +55,7 @@ interface UseFetchReturnBase<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type PayloadType = 'text' | 'json' | 'formData'
-type Context = { url: string; options: RequestInit }
+type Context = { url: string; options: RequestInit, cancel: () => void }
 
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
   // type
