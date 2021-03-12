@@ -7,7 +7,7 @@ const state = useStorage('vue-use-locale-storage', {
   color: 'Yellow',
   size: 'Medium',
 })
-const text = stringify(state)
+const text = stringify(state.value)
 </script>
 
 <template>
@@ -16,6 +16,6 @@ const text = stringify(state)
     <input v-model="state.color" type="text">
     <input v-model="state.size" type="text">
 
-    <pre lang="json">{{ stringify(state) }}</pre>
+    <pre lang="json">{{ text }}</pre>
   </div>
 </template>
