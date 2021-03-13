@@ -2,94 +2,113 @@
 category: Browser
 ---
 
+
 # useFetch
 
-Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) with support for [aborting requests](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort), in browsers that support it.
+Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
+they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
+
+[[toc]]
 
 ## Usage
 
+### Basic Usage
+The `useFetch` funciton can be used by simply providing a url. The url can be either a string or a `ref`. The `data`
+object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will
+indicate if the request is loading.
 ```ts
 import { useFetch } from '@vueuse/core'
 
-const { isFinished, statusCode, error, data } = useFetch(url)
+const { isFetching, error, data } = useFetch(url)
 ```
 
-Prevent auto-calling the fetch request and do it manually instead
-
+### Refetching on URL change
+Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another
+request when the url is changed.
 ```ts
-import { useFetch } from '@vueuse/core'
+const url = ref('https://my-api.com/user/1') 
 
-const { execute, data } = useFetch(url, { immediate: false })
+const { data } = useFetch(url, { refetch: true })
+
+url.value = 'https://my-api.com/user/2' // Will trigger another request
+```
+
+### Prevent request from firing immediately
+Setting the `immediate` option to false will prevent the request from firing until the `execute`
+function is called.
+```ts
+const { execute } = useFetch(url, { immediate: false })
 
 execute()
 ```
 
-Fetch as Blob
-
+### Aborting a request
+A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates
+if the request can be aborted
 ```ts
-import { useFetch } from '@vueuse/core'
-
-const { execute, data } = useFetch(url).blob()
-```
-
-Post a JSON
-
-```ts
-import { useFetch } from '@vueuse/core'
-
-const { execute, data } = useFetch(url)
-  .post({ message: 'Hello' })
-  .json()
-```
-
-Abort a fetch
-
-```ts
-import { useFetch } from '@vueuse/core'
-
-const { execute, data, isFetching, abort } = useFetch(url)
+const { abort, canAbort } = useFetch(url)
 
 setTimeout(() => {
-  // timeout!
-  abort()
-}, 1000)
+  if (canAbort.value)
+    abort()
+}, 100)
 ```
 
-Automatically refetch when your URL is a ref
-
+### Intercepting a request
+The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
 ```ts
-import { useFetch } from '@vueuse/core'
+const { data } = useFetch(url, {
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = await getMyToken()
 
-const url = ref('https://httpbin.org/get')
+    if (!myToken)
+      cancel()
 
-const { data } = useFetch(url, { refetch: true })
+    options.headers.Authorization = `Bearer ${myToken}`
 
-setTimeout(() => {
-  // Request will be fetched again
-  url.value = 'https://httpbin.org/status/500'
-}, 5000)
-```
-
-Create a custom `useFetch` instance with default values
-
-```ts
-// foo.ts
-import { createFetch } from '@vueuse/core'
-
-export const useMyFetch = createFetch({
-  baseUrl: 'https://my-api.com',
-  headers: {
-    Authorization: 'my-token',
+    return {
+      options
+    }
   }
 })
 ```
 
-```ts
-// bar.ts
-import { useMyFetch } from './foo'
+### Setting the request method and return type
+The requset method and return type can be set by adding the appropite methods to the end of `useFetch`
 
-// will request `https://my-api.com/posts` with token
-const { data } = useFetch('/posts')
+```ts
+// Request will be sent with GET method and data will be parsed as JSON
+const { data } = useFetch(url).get().json()
+
+// Request will be sent with POST method and data will be parsed as text
+const { data } = useFetch(url).post().text()
+
+// Or set the method using the options
+
+// Request will be sent with GET method and data will be parsed as blob
+const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
+```
+
+### Creating a custom instance
+The `createFetch` function will return a useFetch function with whatever preconfigured options that are provided to it.
+This is useful for interacting with API's thoughout an application that uses the same base URL or needs Authorization headers.
+```ts
+const useMyFetch = createFetch({ 
+  baseUrl: 'https://my-api.com', 
+  options: {
+    async beforeFetch({ options }) {
+      const myToken = await getMyToken()
+      options.headers.Authorization = `Bearer ${myToken}`
+
+      return { options }
+    },
+  }, 
+  fetchOptions: {
+    mode: 'cors',
+  },
+})
+
+const { isFetching, error, data } = useMyFetch('users')
 ```
 
 <!--FOOTER_STARTS-->
