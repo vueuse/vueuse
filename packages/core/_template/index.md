@@ -9,3 +9,7 @@ import { useCounter } from '@vueuse/core'
 
 const { count, inc, dec, set, reset } = useCounter()
 ```
+
+<!--FOOTER_STARTS-->
+
+<!--FOOTER_ENDS-->
