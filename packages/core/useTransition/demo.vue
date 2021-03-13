@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { rand } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { useTransition, TransitionPresets } from '.'
 
 const duration = 1500
 
 const baseNumber = ref(0)
 
-const baseVector = ref([50, 50])
+const baseVector = ref([0, 0])
 
 const easeOutElastic = (n: number) => {
   return n === 0
@@ -27,7 +27,10 @@ const customFnNumber = useTransition(baseNumber, {
   transition: easeOutElastic,
 })
 
-const transitionedVector = useTransition(baseVector, { duration })
+const vector = useTransition(baseVector, {
+  duration,
+  transition: TransitionPresets.easeOutExpo,
+})
 
 const toggle = () => {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
@@ -42,14 +45,10 @@ const toggle = () => {
     </button>
 
     <p class="mt-2">
-      Base number: <b>{{ baseNumber }}</b>
-    </p>
-
-    <p class="mt-2">
       Cubic bezier curve: <b>{{ cubicBezierNumber.toFixed(2) }}</b>
     </p>
 
-    <div class="track">
+    <div class="track number">
       <div class="relative">
         <div class="sled" :style="{ left: cubicBezierNumber + '%' }" />
       </div>
@@ -59,26 +58,29 @@ const toggle = () => {
       Custom function: <b>{{ customFnNumber.toFixed(2) }}</b>
     </p>
 
-    <div class="track">
+    <div class="track number">
       <div class="relative">
         <div class="sled" :style="{ left: customFnNumber + '%' }" />
       </div>
     </div>
 
     <p class="mt-2">
-      Vector: <b>[{{ transitionedVector[0].toFixed(2) }}, {{ transitionedVector[1].toFixed(2) }}]</b>
+      Vector: <b>[{{ vector[0].toFixed(2) }}, {{ vector[1].toFixed(2) }}]</b>
     </p>
+
+    <div class="track vector">
+      <div class="relative">
+        <div class="sled" :style="{ left: vector[0] + '%', top: vector[1] + '%' }" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .track {
   background: rgba(125, 125, 125, 0.3);
-  border-radius: 1rem;
-  height: 1rem;
-  margin: 0.5rem 0;
+  border-radius: 0.5rem;
   max-width: 20rem;
-  padding: 0 0.5rem;
   width: 100%;
 }
 
@@ -87,7 +89,28 @@ const toggle = () => {
   border-radius: 50%;
   height: 1rem;
   position: absolute;
-  transform: translateX(-50%);
   width: 1rem;
+}
+
+.number.track {
+  height: 1rem;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+}
+
+.number.track .sled {
+  transform: translateX(-50%);
+}
+
+.vector.track {
+  padding: 0.5rem;
+}
+
+.vector.track .relative {
+  padding-bottom: 56.25%;
+}
+
+.vector.track .sled {
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>
