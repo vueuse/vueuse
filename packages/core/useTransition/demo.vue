@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { rand } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useTransition } from '.'
 
+const duration = 1500
+
 const baseNumber = ref(0)
+
+const baseVector = ref([50, 50])
 
 const easeOutElastic = (n: number) => {
   return n === 0
@@ -13,17 +18,20 @@ const easeOutElastic = (n: number) => {
 }
 
 const cubicBezierNumber = useTransition(baseNumber, {
-  duration: 1500,
+  duration,
   transition: [0.75, 0, 0.25, 1],
 })
 
 const customFnNumber = useTransition(baseNumber, {
-  duration: 1500,
+  duration,
   transition: easeOutElastic,
 })
 
+const transitionedVector = useTransition(baseVector, { duration })
+
 const toggle = () => {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
+  baseVector.value = [rand(0, 100), rand(0, 100)]
 }
 </script>
 
@@ -56,6 +64,10 @@ const toggle = () => {
         <div class="sled" :style="{ left: customFnNumber + '%' }" />
       </div>
     </div>
+
+    <p class="mt-2">
+      Vector: <b>[{{ transitionedVector[0].toFixed(2) }}, {{ transitionedVector[1].toFixed(2) }}]</b>
+    </p>
   </div>
 </template>
 
