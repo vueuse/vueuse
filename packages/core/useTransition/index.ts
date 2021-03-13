@@ -135,7 +135,7 @@ export function useTransition<T extends Ref<number | number[]>>(source: T, optio
 
     resume()
     onStarted()
-  })
+  }, { deep: true })
 
   return Array.isArray(source.value)
     ? computed(() => outputVector.value as UnwrapRef<T>)
