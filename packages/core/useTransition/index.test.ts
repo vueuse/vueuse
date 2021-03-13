@@ -208,22 +208,18 @@ describe('useTransition', () => {
     vm.baseVector = [1, 1]
 
     await promiseTimeout(50)
-
     expect(vm.transitionedVector[0] > 0 && vm.transitionedVector[0] < 1).toBe(true)
     expect(vm.transitionedVector[1] > 0 && vm.transitionedVector[1] < 1).toBe(true)
 
     await promiseTimeout(100)
-
     expect(vm.transitionedVector).toEqual([1, 1])
 
-    vm.baseVector[0] = 0
+    vm.baseVector.splice(0, 1, 0)
 
     await promiseTimeout(50)
-
     expect(vm.transitionedVector[0] > 0 && vm.transitionedVector[0] < 1).toBe(true)
 
     await promiseTimeout(100)
-
     expect(vm.transitionedVector).toEqual([0, 1])
   })
 })
