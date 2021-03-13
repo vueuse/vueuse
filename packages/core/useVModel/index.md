@@ -26,6 +26,15 @@ export default {
 ## Type Declarations
 
 ```typescript
+export interface VModelOptions {
+  /**
+   * When passive is set to `true`, it will use `watch` to sync with props and ref.
+   * Instead of relying on the `v-model` or `.sync` to work.
+   *
+   * @default false
+   */
+  passive?: boolean
+}
 /**
  * Shorthand for v-model binding, props + emit -> ref
  *
@@ -41,8 +50,9 @@ export declare function useVModel<
 >(
   props: P,
   key?: K,
-  emit?: (name: Name, ...args: any[]) => void
-): WritableComputedRef<P[K]>
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: VModelOptions
+): Ref<UnwrapRef<P[K]>> | WritableComputedRef<P[K]>
 ```
 
 ## Source

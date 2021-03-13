@@ -464,7 +464,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useFetch/",
       "category": "Browser",
-      "description": "reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) with support for [aborting requests](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort)"
+      "description": "reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests"
     },
     {
       "name": "useFullscreen",

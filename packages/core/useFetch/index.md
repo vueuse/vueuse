@@ -2,7 +2,6 @@
 category: Browser
 ---
 
-
 # useFetch
 
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
@@ -210,7 +209,10 @@ export interface UseFetchOptions {
    */
   beforeFetch?: (
     ctx: BeforeFetchContext
-  ) => Promise<Partial<BeforeFetchContext>> | Partial<BeforeFetchContext>
+  ) =>
+    | Promise<Partial<BeforeFetchContext> | void>
+    | Partial<BeforeFetchContext>
+    | void
 }
 export interface CreateFetchOptions {
   /**

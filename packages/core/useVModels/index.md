@@ -43,7 +43,8 @@ export default {
  */
 export declare function useVModels<P extends object, Name extends string>(
   props: P,
-  emit?: (name: Name, ...args: any[]) => void
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: VModelOptions
 ): ToRefs<P>
 ```
 
