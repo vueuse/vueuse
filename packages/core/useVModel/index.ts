@@ -1,4 +1,14 @@
-import { computed, getCurrentInstance, isVue2 } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+
+export interface VModelOptions {
+  /**
+   * When passive is set to `true`, it will use `watch` to sync with props and ref.
+   * Instead of relying on the `v-model` or `.sync` to work.
+   *
+   * @default false
+   */
+  passive?: boolean
+}
 
 /**
  * Shorthand for v-model binding, props + emit -> ref
@@ -12,7 +22,12 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   props: P,
   key?: K,
   emit?: (name: Name, ...args: any[]) => void,
+  options: VModelOptions = {},
 ) {
+  const {
+    passive = false,
+  } = options
+
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
   const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
@@ -31,12 +46,25 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = event || `update:${key}`
 
-  return computed<P[K]>({
-    get() {
-      return props[key!]
-    },
-    set(value) {
-      _emit(event, value)
-    },
-  })
+  if (passive) {
+    const proxy = ref<P[K]>(props[key!])
+
+    watch(() => props[key!], v => proxy.value = v as any)
+    watch(proxy, (v) => {
+      if (v !== props[key!])
+        _emit(event, v)
+    })
+
+    return proxy
+  }
+  else {
+    return computed<P[K]>({
+      get() {
+        return props[key!]
+      },
+      set(value) {
+        _emit(event, value)
+      },
+    })
+  }
 }

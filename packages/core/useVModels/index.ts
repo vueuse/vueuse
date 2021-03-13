@@ -1,5 +1,5 @@
 import { ToRefs } from 'vue-demi'
-import { useVModel } from '../useVModel'
+import { useVModel, VModelOptions } from '../useVModel'
 
 /**
  * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
@@ -11,10 +11,11 @@ import { useVModel } from '../useVModel'
 export function useVModels<P extends object, Name extends string>(
   props: P,
   emit?: (name: Name, ...args: any[]) => void,
+  options: VModelOptions = {},
 ): ToRefs<P> {
   const ret: any = {}
   // eslint-disable-next-line no-restricted-syntax
   for (const key in props)
-    ret[key] = useVModel(props, key, emit)
+    ret[key] = useVModel(props, key, emit, options)
   return ret
 }
