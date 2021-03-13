@@ -1,5 +1,5 @@
 import { useRafFn } from '../useRafFn'
-import { computed, Ref, ref, unref, watch } from 'vue-demi'
+import { computed, Ref, ref, unref, UnwrapRef, watch } from 'vue-demi'
 import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
 /**
@@ -89,7 +89,7 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
  * @param source
  * @param options
  */
-export function useTransition(source: Ref<number | number[]>, options: TransitionOptions = {}) {
+export function useTransition<T extends Ref<number | number[]>>(source: T, options: TransitionOptions = {}) {
   const {
     duration = 500,
     onFinished = noop,
@@ -137,5 +137,7 @@ export function useTransition(source: Ref<number | number[]>, options: Transitio
     onStarted()
   })
 
-  return computed(() => Array.isArray(source.value) ? outputVector.value : outputVector.value[0])
+  return Array.isArray(source.value)
+    ? computed(() => outputVector.value as UnwrapRef<T>)
+    : computed(() => outputVector.value[0] as UnwrapRef<T>)
 }
