@@ -94,4 +94,38 @@ describe('useFetch', () => {
     expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'test', 'Accept-Language': 'en-US' })
     expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
   })
+
+  test('should run the beforeFetch function and add headers to the request', async() => {
+    fetchMock.mockResponse('')
+
+    const { isFinished } = useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
+      beforeFetch({ options }) {
+        options.headers = {
+          ...options.headers,
+          Authorization: 'my-auth-token',
+        }
+
+        return { options }
+      },
+    })
+
+    await when(isFinished).toBe(true)
+
+    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'my-auth-token', 'Accept-Language': 'en-US' })
+  })
+
+  test('should run the beforeFetch function and cancel the request', async() => {
+    fetchMock.mockResponse('')
+
+    const { execute } = useFetch('https://example.com', {
+      immediate: false,
+      beforeFetch({ cancel }) {
+        cancel()
+      },
+    })
+
+    await execute()
+
+    expect(fetchMock).toBeCalledTimes(0)
+  })
 })

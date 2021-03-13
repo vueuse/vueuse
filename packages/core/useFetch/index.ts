@@ -114,7 +114,7 @@ export interface UseFetchOptions {
   /**
    * Will run immediately before the fetch request is dispatched
    */
-  beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext>> | Partial<BeforeFetchContext>
+  beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
 }
 
 export interface CreateFetchOptions {
