@@ -12,7 +12,7 @@ they are fired, automatically refetch requests when the url changes, and create 
 ## Usage
 
 ### Basic Usage
-The `useFetch` funciton can be used by simply providing a url. The url can be either a string or a `ref`. The `data`
+The `useFetch` function can be used by simply providing a url. The url can be either a string or a `ref`. The `data`
 object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will
 indicate if the request is loading.
 ```ts
@@ -73,7 +73,7 @@ const { data } = useFetch(url, {
 ```
 
 ### Setting the request method and return type
-The requset method and return type can be set by adding the appropite methods to the end of `useFetch`
+The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
 ```ts
 // Request will be sent with GET method and data will be parsed as JSON
@@ -89,8 +89,8 @@ const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
 ```
 
 ### Creating a custom instance
-The `createFetch` function will return a useFetch function with whatever preconfigured options that are provided to it.
-This is useful for interacting with API's thoughout an application that uses the same base URL or needs Authorization headers.
+The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it.
+This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
 ```ts
 const useMyFetch = createFetch({ 
   baseUrl: 'https://my-api.com', 
