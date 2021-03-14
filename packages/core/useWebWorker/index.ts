@@ -2,15 +2,25 @@
 
 import { ref, Ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
  * Simple Web Workers registration and communication.
  *
  * @see   {@link https://vueuse.org/useWebWorker}
  * @param url
+ * @param workerOptions
  * @param options
  */
-export function useWebWorker(url: string, options?: WorkerOptions) {
+export function useWebWorker(
+  url: string,
+  workerOptions?: WorkerOptions,
+  options: ConfigurableWindow = {},
+) {
+  const {
+    window = defaultWindow,
+  } = options
+
   const data: Ref<any> = ref(null)
   let worker: Worker
 
@@ -28,15 +38,18 @@ export function useWebWorker(url: string, options?: WorkerOptions) {
     worker.terminate()
   }
 
-  worker = new Worker(url, options)
+  if (window) {
+    // @ts-expect-error untyped
+    worker = new window.Worker(url, workerOptions)
 
-  worker.onmessage = (e: MessageEvent) => {
-    data.value = e.data
+    worker.onmessage = (e: MessageEvent) => {
+      data.value = e.data
+    }
+
+    tryOnUnmounted(() => {
+      worker.terminate()
+    })
   }
-
-  tryOnUnmounted(() => {
-    worker.terminate()
-  })
 
   return {
     data,
