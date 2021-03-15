@@ -81,7 +81,7 @@ export declare type WebWorkerStatus =
   | "TIMEOUT_EXPIRED"
 export interface WebWorkerOptions extends ConfigurableWindow {
   timeout?: number
-  dependencies: string[]
+  dependencies?: string[]
 }
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.

@@ -14,7 +14,7 @@ export type WebWorkerStatus =
 
 export interface WebWorkerOptions extends ConfigurableWindow {
   timeout?: number
-  dependencies: string[]
+  dependencies?: string[]
 }
 
 /**
