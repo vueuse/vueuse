@@ -11,7 +11,7 @@ Transition between values
 ```js
 import { useTransition, TransitionPresets } from '@vueuse/core'
 
-useTransition(baseNumber, {
+useTransition(source, {
   duration: 1000,
   transition: TransitionPresets.easeInOutCubic,
 })
@@ -46,8 +46,7 @@ The following transitions are available via the `TransitionPresets` constant.
 Custom transitions can be defined using cubic bezier curves. Transitions defined this way work the same as [CSS easing functions](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function).
 
 ```js
-useTransition(baseNumber, {
-  duration: 1000,
+useTransition(source, {
   transition: [0.75, 0, 0.25, 1],
 })
 ```
@@ -63,8 +62,7 @@ const easeOutElastic = (n) => {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-useTransition(baseNumber, {
-  duration: 1000,
+useTransition(source, {
   transition: easeOutElastic,
 })
 ```
@@ -72,9 +70,7 @@ useTransition(baseNumber, {
 To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
-useTransition(baseNumber, {
-  duration: 1000,
-  transition: easeOutElastic,
+useTransition(source, {
   onStarted() {
     // called after the transition starts
   },
@@ -119,10 +115,10 @@ export declare const TransitionPresets: Record<string, CubicBezierPoints>
  * @param source
  * @param options
  */
-export declare function useTransition(
-  source: Ref<number>,
+export declare function useTransition<T extends Ref<number | number[]>>(
+  source: T,
   options?: TransitionOptions
-): Ref<number>
+): ComputedRef<UnwrapRef<T>>
 export {}
 ```
 

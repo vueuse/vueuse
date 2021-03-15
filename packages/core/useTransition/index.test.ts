@@ -143,4 +143,38 @@ describe('useTransition', () => {
     expect(onStarted.mock.calls.length).toBe(1)
     expect(onFinished.mock.calls.length).toBe(1)
   })
+
+  it('transitions between vectors', async() => {
+    const vm = useSetup(() => {
+      const baseVector = ref([0, 0])
+
+      const transitionedVector = useTransition(baseVector, {
+        duration: 100,
+      })
+
+      return {
+        baseVector,
+        transitionedVector,
+      }
+    })
+
+    expect(vm.transitionedVector).toEqual([0, 0])
+
+    vm.baseVector = [1, 1]
+
+    await promiseTimeout(50)
+    expect(vm.transitionedVector[0] > 0 && vm.transitionedVector[0] < 1).toBe(true)
+    expect(vm.transitionedVector[1] > 0 && vm.transitionedVector[1] < 1).toBe(true)
+
+    await promiseTimeout(100)
+    expect(vm.transitionedVector).toEqual([1, 1])
+
+    vm.baseVector.splice(0, 1, 0)
+
+    await promiseTimeout(50)
+    expect(vm.transitionedVector[0] > 0 && vm.transitionedVector[0] < 1).toBe(true)
+
+    await promiseTimeout(100)
+    expect(vm.transitionedVector).toEqual([0, 1])
+  })
 })

@@ -1,5 +1,5 @@
 import { useRafFn } from '../useRafFn'
-import { computed, Ref, ref, unref, watch } from 'vue-demi'
+import { computed, Ref, ref, unref, UnwrapRef, watch } from 'vue-demi'
 import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
 /**
@@ -89,7 +89,7 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
  * @param source
  * @param options
  */
-export function useTransition(source: Ref<number>, options: TransitionOptions = {}) {
+export function useTransition<T extends Ref<number | number[]>>(source: T, options: TransitionOptions = {}) {
   const {
     duration = 500,
     onFinished = noop,
@@ -97,7 +97,9 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
     transition = (n: number) => n,
   } = options
 
-  const output = ref(source.value)
+  const sourceVector = computed(() => Array.isArray(source.value) ? source.value : [source.value])
+
+  const outputVector = ref(sourceVector.value.slice(0))
 
   const currentTransition = computed(() => {
     const t = unref(transition)
@@ -105,16 +107,16 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
   })
 
   let currentDuration = 0
-  let diff = 0
+  let diff: number[] = []
   let endAt = 0
   let startAt = 0
-  let startValue = 0
+  let startValue: number[] = []
 
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
     const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
 
-    output.value = startValue + (diff * currentTransition.value(progress))
+    outputVector.value = startValue.map((val, i) => val + (diff[i] * currentTransition.value(progress)))
 
     if (progress >= 1) {
       pause()
@@ -122,18 +124,20 @@ export function useTransition(source: Ref<number>, options: TransitionOptions = 
     }
   }, { immediate: false })
 
-  watch(source, () => {
+  watch(sourceVector, () => {
     pause()
 
     currentDuration = unref(duration)
-    diff = source.value - output.value
-    startValue = output.value
+    diff = outputVector.value.map((n, i) => sourceVector.value[i] - outputVector.value[i])
+    startValue = outputVector.value.slice(0)
     startAt = Date.now()
     endAt = startAt + currentDuration
 
     resume()
     onStarted()
-  })
+  }, { deep: true })
 
-  return output
+  return Array.isArray(source.value)
+    ? computed(() => outputVector.value as UnwrapRef<T>)
+    : computed(() => outputVector.value[0] as UnwrapRef<T>)
 }
