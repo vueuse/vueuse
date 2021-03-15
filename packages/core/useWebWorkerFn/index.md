@@ -26,7 +26,7 @@ import { useWebWorkerFn } from '@vueuse/core'
 const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
   dates => dates.sort(dateFns.compareAsc), 
   {
-    timeout: 50000, // 5 seconds
+    timeout: 50000,
     dependencies: [
       'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js' // dateFns
     ],
@@ -59,7 +59,7 @@ Before you start using this function, we suggest you read the [Web Worker](https
 
 | Name            | Type             | Description                                                |
 | --------------- | ---------------- | ---------------------------------------------------------- |
-| workerFn        | Promise          | The `function` that allows you to run `fn` with web worker |
+| workerFn        | Promise          | The `function` that allows you to run `fn` within web worker |
 | workerStatus    | `WebWorkerStatus`   | The status of `workerFn`                                   |
 | workerTerminate | Function         | The function that kills the worker                          |
 
@@ -81,7 +81,7 @@ export declare type WebWorkerStatus =
   | "TIMEOUT_EXPIRED"
 export interface WebWorkerOptions extends ConfigurableWindow {
   timeout?: number
-  dependencies?: string[]
+  dependencies: string[]
 }
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
@@ -92,7 +92,7 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  { dependencies, timeout, window }?: WebWorkerOptions
+  { dependencies = [], timeout, window = defaultWindow }: Partial<WebWorkerOptions> = {},
 ) => {
   workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
   workerStatus: Ref<WebWorkerStatus>

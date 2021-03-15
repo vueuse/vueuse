@@ -1,15 +1,20 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref, Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export type WebWorkerStatus = 'PENDING' | 'SUCCESS' | 'RUNNING' | 'ERROR' | 'TIMEOUT_EXPIRED'
+export type WebWorkerStatus =
+  | 'PENDING'
+  | 'SUCCESS'
+  | 'RUNNING'
+  | 'ERROR'
+  | 'TIMEOUT_EXPIRED'
 
 export interface WebWorkerOptions extends ConfigurableWindow {
   timeout?: number
-  dependencies?: string[]
+  dependencies: string[]
 }
 
 /**
@@ -21,17 +26,12 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  {
-    dependencies = [],
-    timeout,
-    window = defaultWindow,
-  }: WebWorkerOptions = {},
+  { dependencies = [], timeout, window = defaultWindow }: Partial<WebWorkerOptions> = {},
 ) => {
-  const worker: Ref<Worker & { _url?: string } | undefined> = ref(undefined)
-
+  const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise: Ref<{ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void }> = ref({})
-  const timeoutId: Ref<number | undefined> = ref(undefined)
+  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void })>({})
+  const timeoutId = ref<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url && window) {
@@ -56,10 +56,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     newWorker._url = blobUrl
 
     newWorker.onmessage = (e: MessageEvent) => {
-      const {
-        resolve = () => {},
-        reject = () => {},
-      } = promise.value
+      const { resolve = () => {}, reject = () => {} } = promise.value
       const [status, result] = e.data as [WebWorkerStatus, ReturnType<T>]
 
       switch (status) {
@@ -75,9 +72,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     }
 
     newWorker.onerror = (e: ErrorEvent) => {
-      const {
-        reject = () => {},
-      } = promise.value
+      const { reject = () => {} } = promise.value
 
       reject(e)
       workerTerminate('ERROR')
@@ -92,20 +87,23 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     return newWorker
   }
 
-  const callWorker = (...fnArgs: Parameters<T>) => new Promise<ReturnType<T>>((resolve, reject) => {
-    promise.value = {
-      resolve,
-      reject,
-    }
-    worker.value && worker.value.postMessage([[...fnArgs]])
+  const callWorker = (...fnArgs: Parameters<T>) =>
+    new Promise<ReturnType<T>>((resolve, reject) => {
+      promise.value = {
+        resolve,
+        reject,
+      }
+      worker.value && worker.value.postMessage([[...fnArgs]])
 
-    workerStatus.value = 'RUNNING'
-  })
+      workerStatus.value = 'RUNNING'
+    })
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {
       /* eslint-disable-next-line no-console */
-      console.error('[useWebWorkerFn] You can only run one instance of the worker at a time.')
+      console.error(
+        '[useWebWorkerFn] You can only run one instance of the worker at a time.',
+      )
       /* eslint-disable-next-line prefer-promise-reject-errors */
       return Promise.reject()
     }
