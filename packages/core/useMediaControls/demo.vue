@@ -22,13 +22,13 @@ const controls = useMediaControls(video, {
   tracks: [
     {
       default: true,
-      src: './data/subtitles.vtt',
+      src: 'https://gist.githubusercontent.com/jacobclevenger/a85a65a82d87d7c098e1a0972ef1f726/raw/f135ca4b6ce78552d80b515d68af5f5e5e2eb7c5/sentil-subtitles.vtt',
       kind: 'subtitles',
       label: 'English',
       srcLang: 'en',
     },
     {
-      src: './data/subtitles-fr.vtt',
+      src: 'https://gist.githubusercontent.com/jacobclevenger/38f32925d20c683bf77ba33ff737891b/raw/0505e841cbbc3a4a598584b57ab411d29bfdcf0d/subtitles-fr.vtt',
       kind: 'subtitles',
       label: 'French',
       srcLang: 'fr',
@@ -67,7 +67,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
     @keydown.left="currentTime -= 10"
   >
     <div class="relative bg-black">
-      <video ref="video" class="w-full block" @click="playing = !playing" />
+      <video ref="video" crossorigin="anonymous" class="w-full block" @click="playing = !playing" />
       <div v-if="waiting" class="absolute inset-0 grid place-items-center pointer-events-none bg-black bg-opacity-20">
         <Spinner />
       </div>
