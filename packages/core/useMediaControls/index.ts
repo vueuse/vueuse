@@ -2,6 +2,11 @@ import { watch, ref, unref } from 'vue-demi'
 import { isObject, MaybeRef, isString, ignorableWatch, isNumber } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
+/**
+ * Many of the jsdoc definitions here are modified version of the
+ * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+ */
+
 interface UseMediaSource {
   /**
    * The source url for the media
