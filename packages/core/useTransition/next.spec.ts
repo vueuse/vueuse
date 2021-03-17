@@ -112,7 +112,7 @@ describe('useTransition', () => {
     easingFn.value = second
     source.value = 2
 
-    await promiseTimeout(50)
+    await promiseTimeout(100)
     expect(first).not.toHaveBeenCalled()
     expect(second).toHaveBeenCalled()
   })
@@ -140,5 +140,31 @@ describe('useTransition', () => {
     expect(transition.value).toBe(2)
   })
 
-  it.todo('fires onStarted and onFinished callbacks')
+  it('fires onStarted and onFinished callbacks', async() => {
+    const source = ref(0)
+    const onStarted = jest.fn()
+    const onFinished = jest.fn()
+
+    useTransition(source, {
+      duration: 100,
+      onStarted,
+      onFinished,
+    })
+
+    expect(onStarted).not.toHaveBeenCalled()
+    expect(onFinished).not.toHaveBeenCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(onStarted).toHaveBeenCalled()
+    expect(onFinished).not.toHaveBeenCalled()
+
+    onStarted.mockReset()
+    onFinished.mockReset()
+
+    await promiseTimeout(100)
+    expect(onStarted).not.toHaveBeenCalled()
+    expect(onFinished).toHaveBeenCalled()
+  })
 })
