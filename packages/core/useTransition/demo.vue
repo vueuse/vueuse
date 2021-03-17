@@ -107,7 +107,7 @@ const toggle = () => {
 }
 
 .vector.track .relative {
-  padding-bottom: 56.25%;
+  padding-bottom: 30%;
 }
 
 .vector.track .sled {
