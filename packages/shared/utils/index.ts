@@ -15,6 +15,10 @@ export function promiseTimeout(
   })
 }
 
+export function identity<T>(arg: T): T {
+  return arg
+}
+
 export function invoke<T>(fn: () => T): T {
   return fn()
 }

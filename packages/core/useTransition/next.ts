@@ -1,5 +1,7 @@
-import { computed, ComputedRef, ref, Ref, unref } from 'vue-demi'
-import { isNumber, MaybeRef } from '@vueuse/shared'
+/* eslint-disable */
+import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
+import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop } from '@vueuse/shared'
+import { useRafFn } from '../useRafFn'
 
 /**
  * Cubic bezier points
@@ -41,8 +43,8 @@ export type TransitionOptions = {
  *
  * @see   {@link https://easings.net}
  */
-export const TransitionPresets: Record<string, CubicBezierPoints> = {
-  linear: [0, 0, 1, 1],
+export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunction> = {
+  linear,
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
   easeInOutSine: [0.37, 0, 0.63, 1],
@@ -69,6 +71,35 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
+/**
+ * Create an easing function from cubic bezier points.
+ */
+ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFunction {
+  const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
+  const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
+  const c = (a1: number) => 3 * a1
+
+  const calcBezier = (t: number, a1: number, a2: number) => ((a(a1, a2) * t + b(a1, a2)) * t + c(a1)) * t
+
+  const getSlope = (t: number, a1: number, a2: number) => 3 * a(a1, a2) * t * t + 2 * b(a1, a2) * t + c(a1)
+
+  const getTforX = (x: number) => {
+    let aGuessT = x
+
+    for (let i = 0; i < 4; ++i) {
+      const currentSlope = getSlope(aGuessT, p0, p2)
+      if (currentSlope === 0)
+        return aGuessT
+      const currentX = calcBezier(aGuessT, p0, p2) - x
+      aGuessT -= currentX / currentSlope
+    }
+
+    return aGuessT
+  }
+
+  return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
+}
+
 // option 1: reactive number
 export function useTransition(source: Ref<number>, options?: TransitionOptions): ComputedRef<number>
 
@@ -82,9 +113,29 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: Tran
  * Transition between values.
  */
 export function useTransition(
-  source: Ref<number> | MaybeRef<number>[] | Ref<number[]>,
+  source: Ref<number | number[]> | MaybeRef<number>[],
   options: TransitionOptions = {},
 ): ComputedRef<number | { [K in keyof typeof source]: number } | number[]> {
+  const {
+    duration = 1000,
+    onFinished = noop,
+    onStarted = noop,
+    transition = linear
+  } = options
+
+  // current transition values
+  let currentDuration = 0
+  let diffVector: number[] = []
+  let endAt = 0
+  let startAt = 0
+  let startVector: number[] = []
+
+  // current easing function
+  const currentTransition = computed(() => {
+    const t = unref(transition)
+    return isFunction(t) ? t : createEasingFunction(t)
+  })
+
   // raw source value
   const sourceValue = computed(() => {
     const s = unref(source)
@@ -94,7 +145,38 @@ export function useTransition(
   // normalized source vector
   const sourceVector = computed(() => isNumber(sourceValue.value) ? [sourceValue.value] : sourceValue.value)
 
-  return computed(() => isNumber(sourceValue.value) ? sourceVector.value[0] : sourceVector.value)
+  // transitioned output vector
+  const outputVector = ref(sourceVector.value.slice(0))
+
+  // transition loop
+  const { resume, pause } = useRafFn(() => {
+    const now = Date.now()
+    
+    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
+    
+    outputVector.value = startVector.map((val, i) => val + (diffVector[i] * currentTransition.value(progress)))
+
+    if (progress >= 1) {
+      pause()
+      onFinished()
+    }
+  }, { immediate: false })
+
+  // start the animation loop when source vector changes
+  watch(sourceVector, () => {
+    pause()
+
+    currentDuration = unref(duration)
+    diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
+    startVector = outputVector.value.slice(0)
+    startAt = Date.now()
+    endAt = startAt + currentDuration
+
+    resume()
+    onStarted()
+  }, { deep: true })
+
+  return computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
 }
 
 /* eslint-disable no-unused-expressions */
