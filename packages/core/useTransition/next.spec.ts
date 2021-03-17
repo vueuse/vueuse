@@ -66,7 +66,25 @@ describe('useTransition', () => {
     expect(easeInBack.value).toBe(1)
   })
 
-  it.todo('supports custom easing functions')
+  it('supports custom easing functions', async() => {
+    const source = ref(0)
+    const linear = jest.fn(n => n)
+    const transition = useTransition(source, {
+      duration: 100,
+      transition: linear,
+    })
+
+    expect(linear).not.toHaveBeenCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(linear).toHaveBeenCalled()
+    expectBetween(transition.value, 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(1)
+  })
 
   it.todo('supports dynamic transitions')
 
