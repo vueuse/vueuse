@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
 import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
@@ -74,7 +73,7 @@ export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunctio
 /**
  * Create an easing function from cubic bezier points.
  */
- function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFunction {
+function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFunction {
   const a = (a1: number, a2: number) => 1 - 3 * a2 + 3 * a1
   const b = (a1: number, a2: number) => 3 * a2 - 6 * a1
   const c = (a1: number) => 3 * a1
@@ -120,7 +119,7 @@ export function useTransition(
     duration = 1000,
     onFinished = noop,
     onStarted = noop,
-    transition = linear
+    transition = linear,
   } = options
 
   // current transition values
@@ -151,9 +150,8 @@ export function useTransition(
   // transition loop
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
-    
     const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
-    
+
     outputVector.value = startVector.map((val, i) => val + (diffVector[i] * currentTransition.value(progress)))
 
     if (progress >= 1) {
@@ -178,13 +176,3 @@ export function useTransition(
 
   return computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
 }
-
-/* eslint-disable no-unused-expressions */
-// option 1: number
-useTransition(ref(1)).value
-
-// option 2: [number, number, number]
-useTransition([1, ref(2), computed(() => 2)]).value
-
-// option 3: number[]
-useTransition(ref([1, 2, 3])).value
