@@ -23,7 +23,22 @@ describe('useTransition', () => {
     expect(transition.value).toBe(1)
   })
 
-  it.todo('transitions between vectors')
+  it('transitions between vectors', async() => {
+    const source = ref([0, 0])
+    const transition = useTransition(source, { duration: 100 })
+
+    expect(transition.value).toEqual([0, 0])
+
+    source.value = [1, 1]
+
+    await promiseTimeout(50)
+    expectBetween(transition.value[0], 0, 1)
+    expectBetween(transition.value[1], 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value[0]).toBe(1)
+    expect(transition.value[1]).toBe(1)
+  })
 
   it.todo('supports cubic bezier curves')
 
