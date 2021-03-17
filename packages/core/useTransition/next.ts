@@ -122,13 +122,6 @@ export function useTransition(
     transition = linear,
   } = options
 
-  // current transition values
-  let currentDuration = 0
-  let diffVector: number[] = []
-  let endAt = 0
-  let startAt = 0
-  let startVector: number[] = []
-
   // current easing function
   const currentTransition = computed(() => {
     const t = unref(transition)
@@ -147,12 +140,19 @@ export function useTransition(
   // transitioned output vector
   const outputVector = ref(sourceVector.value.slice(0))
 
+  // current transition values
+  let currentDuration: number
+  let diffVector: number[]
+  let endAt: number
+  let startAt: number
+  let startVector: number[]
+
   // transition loop
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
     const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
 
-    outputVector.value = startVector.map((val, i) => val + (diffVector[i] * currentTransition.value(progress)))
+    outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
 
     if (progress >= 1) {
       pause()
