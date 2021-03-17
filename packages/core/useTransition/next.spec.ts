@@ -117,7 +117,28 @@ describe('useTransition', () => {
     expect(second).toHaveBeenCalled()
   })
 
-  it.todo('supports dynamic durations')
+  it('supports dynamic durations', async() => {
+    const source = ref(0)
+    const duration = ref(100)
+    const transition = useTransition(source, { duration })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expectBetween(transition.value, 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(1)
+
+    duration.value = 200
+    source.value = 2
+
+    await promiseTimeout(150)
+    expectBetween(transition.value, 1, 2)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(2)
+  })
 
   it.todo('fires onStarted and onFinished callbacks')
 })
