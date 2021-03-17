@@ -86,7 +86,36 @@ describe('useTransition', () => {
     expect(transition.value).toBe(1)
   })
 
-  it.todo('supports dynamic transitions')
+  it('supports dynamic transitions', async() => {
+    const source = ref(0)
+    const first = jest.fn(n => n)
+    const second = jest.fn(n => n)
+    const easingFn = ref(first)
+
+    useTransition(source, {
+      duration: 100,
+      transition: easingFn,
+    })
+
+    expect(first).not.toHaveBeenCalled()
+    expect(second).not.toHaveBeenCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(first).toHaveBeenCalled()
+    expect(second).not.toHaveBeenCalled()
+
+    first.mockReset()
+    second.mockReset()
+
+    easingFn.value = second
+    source.value = 2
+
+    await promiseTimeout(50)
+    expect(first).not.toHaveBeenCalled()
+    expect(second).toHaveBeenCalled()
+  })
 
   it.todo('supports dynamic durations')
 
