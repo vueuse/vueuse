@@ -40,7 +40,31 @@ describe('useTransition', () => {
     expect(transition.value[1]).toBe(1)
   })
 
-  it.todo('supports cubic bezier curves')
+  it('supports cubic bezier curves', async() => {
+    const source = ref(0)
+
+    // https://cubic-bezier.com/#0,2,0,1
+    const easeOutBack = useTransition(source, {
+      duration: 100,
+      transition: [0, 2, 0, 1],
+    })
+
+    // https://cubic-bezier.com/#1,0,1,-1
+    const easeInBack = useTransition(source, {
+      duration: 100,
+      transition: [1, 0, 1, -1],
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expectBetween(easeOutBack.value, 1, 2)
+    expectBetween(easeInBack.value, -1, 0)
+
+    await promiseTimeout(100)
+    expect(easeOutBack.value).toBe(1)
+    expect(easeInBack.value).toBe(1)
+  })
 
   it.todo('supports custom easing functions')
 
