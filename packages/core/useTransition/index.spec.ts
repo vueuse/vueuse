@@ -184,4 +184,24 @@ describe('useTransition', () => {
     expect(onStarted).not.toHaveBeenCalled()
     expect(onFinished).toHaveBeenCalled()
   })
+
+  it('clears pending transitions before starting a new one', async() => {
+    const source = ref(0)
+    const onStarted = jest.fn()
+    const onFinished = jest.fn()
+
+    useTransition(source, {
+      delay: 100,
+      duration: 100,
+      onFinished,
+      onStarted,
+    })
+
+    source.value = 1
+    await promiseTimeout(50)
+    source.value = 2
+    await promiseTimeout(250)
+    expect(onStarted).toHaveBeenCalledTimes(1)
+    expect(onFinished).toHaveBeenCalledTimes(1)
+  })
 })
