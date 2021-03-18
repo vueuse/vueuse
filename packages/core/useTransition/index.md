@@ -86,10 +86,11 @@ useTransition(source, {
 })
 ```
 
-To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+To control when a transition starts, a `delay` value may be specified. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
 useTransition(source, {
+  delay: 1000,
   onStarted() {
     // called after the transition starts
   },
@@ -98,7 +99,6 @@ useTransition(source, {
   },
 })
 ```
-
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -86,6 +86,23 @@ describe('useTransition', () => {
     expect(transition.value).toBe(1)
   })
 
+  it('supports delayed transitions', async() => {
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      delay: 100,
+      duration: 100,
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(transition.value).toBe(0)
+
+    await promiseTimeout(100)
+    expectBetween(transition.value, 0, 1)
+  })
+
   it('supports dynamic transitions', async() => {
     const source = ref(0)
     const first = jest.fn(n => n)
