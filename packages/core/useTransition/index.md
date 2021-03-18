@@ -12,12 +12,13 @@ For simple transitions, provide a numeric source value. When this changes, a new
 
 ```js
 import { ref } from 'vue'
-import { useTransition } from '@vueuse/core'
+import { useTransition, TransitionPresets } from '@vueuse/core'
 
 const source = ref(0)
 
 const output = useTransition(source, {
   duration: 1000,
+  transition: TransitionPresets.easeInOutCubic,
 })
 ```
 
@@ -42,7 +43,7 @@ useTransition(source, {
 })
 ```
 
-The following common transitions are available via the `TransitionPresets` constant.
+The following transitions are available via the `TransitionPresets` constant.
 
 - [`linear`](https://cubic-bezier.com/#0,0,1,1)
 - [`easeInSine`](https://cubic-bezier.com/#.12,0,.39,0)
@@ -86,7 +87,7 @@ useTransition(source, {
 })
 ```
 
-To control when a transition starts, a `delay` value may be specified. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+To control when a transition starts, set a `delay` value. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
 useTransition(source, {
