@@ -1,6 +1,6 @@
+import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
+import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
-import { computed, Ref, ref, unref, UnwrapRef, watch } from 'vue-demi'
-import { clamp, isFunction, MaybeRef, noop } from '@vueuse/shared'
 
 /**
  * Cubic bezier points
@@ -15,11 +15,59 @@ type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-interface TransitionOptions {
+export type TransitionOptions = {
+  /**
+   * Transition duration in milliseconds
+   */
   duration?: MaybeRef<number>
-  onFinished?: () => unknown
-  onStarted?: () => unknown
+
+  /**
+   * Callback to execute after transition finishes
+   */
+  onFinished?: () => void
+
+  /**
+   * Callback to execute after transition starts
+   */
+  onStarted?: () => void
+
+  /**
+   * Easing function or cubic bezier points for calculating transition values
+   */
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
+}
+
+/**
+ * Common transitions
+ *
+ * @see https://easings.net
+ */
+export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunction> = {
+  linear,
+  easeInSine: [0.12, 0, 0.39, 0],
+  easeOutSine: [0.61, 1, 0.88, 1],
+  easeInOutSine: [0.37, 0, 0.63, 1],
+  easeInQuad: [0.11, 0, 0.5, 0],
+  easeOutQuad: [0.5, 1, 0.89, 1],
+  easeInOutQuad: [0.45, 0, 0.55, 1],
+  easeInCubic: [0.32, 0, 0.67, 0],
+  easeOutCubic: [0.33, 1, 0.68, 1],
+  easeInOutCubic: [0.65, 0, 0.35, 1],
+  easeInQuart: [0.5, 0, 0.75, 0],
+  easeOutQuart: [0.25, 1, 0.5, 1],
+  easeInOutQuart: [0.76, 0, 0.24, 1],
+  easeInQuint: [0.64, 0, 0.78, 0],
+  easeOutQuint: [0.22, 1, 0.36, 1],
+  easeInOutQuint: [0.83, 0, 0.17, 1],
+  easeInExpo: [0.7, 0, 0.84, 0],
+  easeOutExpo: [0.16, 1, 0.3, 1],
+  easeInOutExpo: [0.87, 0, 0.13, 1],
+  easeInCirc: [0.55, 0, 1, 0.45],
+  easeOutCirc: [0, 0.55, 0.45, 1],
+  easeInOutCirc: [0.85, 0, 0.15, 1],
+  easeInBack: [0.36, 0, 0.66, -0.56],
+  easeOutBack: [0.34, 1.56, 0.64, 1],
+  easeInOutBack: [0.68, -0.6, 0.32, 1.6],
 }
 
 /**
@@ -51,36 +99,14 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
   return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-/**
- * Common transitions
- *
- * @see https://easings.net
- */
-export const TransitionPresets: Record<string, CubicBezierPoints> = {
-  linear: [0, 0, 1, 1],
-  easeInSine: [0.12, 0, 0.39, 0],
-  easeOutSine: [0.61, 1, 0.88, 1],
-  easeInQuad: [0.11, 0, 0.5, 0],
-  easeOutQuad: [0.5, 1, 0.89, 1],
-  easeInCubic: [0.32, 0, 0.67, 0],
-  easeOutCubic: [0.33, 1, 0.68, 1],
-  easeInOutCubic: [0.65, 0, 0.35, 1],
-  easeInQuart: [0.5, 0, 0.75, 0],
-  easeOutQuart: [0.25, 1, 0.5, 1],
-  easeInOutQuart: [0.76, 0, 0.24, 1],
-  easeInQuint: [0.64, 0, 0.78, 0],
-  easeOutQuint: [0.22, 1, 0.36, 1],
-  easeInOutQuint: [0.83, 0, 0.17, 1],
-  easeInExpo: [0.7, 0, 0.84, 0],
-  easeOutExpo: [0.16, 1, 0.3, 1],
-  easeInOutExpo: [0.87, 0, 0.13, 1],
-  easeInCirc: [0.55, 0, 1, 0.45],
-  easeOutCirc: [0, 0.55, 0.45, 1],
-  easeInOutCirc: [0.85, 0, 0.15, 1],
-  easeInBack: [0.36, 0, 0.66, -0.56],
-  easeOutBack: [0.34, 1.56, 0.64, 1],
-  easeInOutBack: [0.68, -0.6, 0.32, 1.6],
-}
+// option 1: reactive number
+export function useTransition(source: Ref<number>, options?: TransitionOptions): ComputedRef<number>
+
+// option 2: static array of possibly reactive numbers
+export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: TransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+
+// option 3: reactive array of numbers
+export function useTransition<T extends Ref<number[]>>(source: T, options?: TransitionOptions): ComputedRef<number[]>
 
 /**
  * Transition between values.
@@ -89,34 +115,48 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
  * @param source
  * @param options
  */
-export function useTransition<T extends Ref<number | number[]>>(source: T, options: TransitionOptions = {}) {
+export function useTransition(
+  source: Ref<number | number[]> | MaybeRef<number>[],
+  options: TransitionOptions = {},
+): ComputedRef<number | { [K in keyof typeof source]: number } | number[]> {
   const {
-    duration = 500,
+    duration = 1000,
     onFinished = noop,
     onStarted = noop,
-    transition = (n: number) => n,
+    transition = linear,
   } = options
 
-  const sourceVector = computed(() => Array.isArray(source.value) ? source.value : [source.value])
-
-  const outputVector = ref(sourceVector.value.slice(0))
-
+  // current easing function
   const currentTransition = computed(() => {
     const t = unref(transition)
     return isFunction(t) ? t : createEasingFunction(t)
   })
 
-  let currentDuration = 0
-  let diff: number[] = []
-  let endAt = 0
-  let startAt = 0
-  let startValue: number[] = []
+  // raw source value
+  const sourceValue = computed(() => {
+    const s = unref(source)
+    return isNumber(s) ? s : s.map(unref) as number[]
+  })
 
+  // normalized source vector
+  const sourceVector = computed(() => isNumber(sourceValue.value) ? [sourceValue.value] : sourceValue.value)
+
+  // transitioned output vector
+  const outputVector = ref(sourceVector.value.slice(0))
+
+  // current transition values
+  let currentDuration: number
+  let diffVector: number[]
+  let endAt: number
+  let startAt: number
+  let startVector: number[]
+
+  // transition loop
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
     const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
 
-    outputVector.value = startValue.map((val, i) => val + (diff[i] * currentTransition.value(progress)))
+    outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
 
     if (progress >= 1) {
       pause()
@@ -124,12 +164,13 @@ export function useTransition<T extends Ref<number | number[]>>(source: T, optio
     }
   }, { immediate: false })
 
+  // start the animation loop when source vector changes
   watch(sourceVector, () => {
     pause()
 
     currentDuration = unref(duration)
-    diff = outputVector.value.map((n, i) => sourceVector.value[i] - outputVector.value[i])
-    startValue = outputVector.value.slice(0)
+    diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
+    startVector = outputVector.value.slice(0)
     startAt = Date.now()
     endAt = startAt + currentDuration
 
@@ -137,7 +178,5 @@ export function useTransition<T extends Ref<number | number[]>>(source: T, optio
     onStarted()
   }, { deep: true })
 
-  return Array.isArray(source.value)
-    ? computed(() => outputVector.value as UnwrapRef<T>)
-    : computed(() => outputVector.value[0] as UnwrapRef<T>)
+  return computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
 }
