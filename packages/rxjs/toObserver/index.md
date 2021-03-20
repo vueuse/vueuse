@@ -10,7 +10,7 @@ Sugar function to convert a ref in an observer
 
 ```ts
 import { ref } from 'vue'
-import { toObserver, fromEvent, from } from '@vueuse/rxjs'
+import { useSubscription, toObserver, fromEvent, from } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, takeUntil, withLatestFrom, map } from 'rxjs/operators'
 
@@ -26,7 +26,7 @@ useSubscription(
       map(([total, curr]) => curr + total),
     )
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
-) 
+)
 ```
 
 
