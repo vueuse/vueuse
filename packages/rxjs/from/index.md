@@ -10,7 +10,7 @@ category: '@RxJS'
 
 ```ts
 import { ref } from 'vue'
-import { toObserver, fromEvent, from } from '@vueuse/rxjs'
+import { useSubscription, toObserver, fromEvent, from } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, takeUntil, withLatestFrom, map } from 'rxjs/operators'
 
