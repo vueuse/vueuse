@@ -43,7 +43,7 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
 
   const response = ref<any>(null) as Ref<AxiosResponse<T> | undefined>
   const data = ref<any>(undefined) as Ref<T | undefined>
-  const finished = ref(false)
+  const loading = ref(true)
   const canceled = ref(false)
   const error = ref<AxiosError<T> | undefined>()
 
@@ -57,18 +57,19 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     .then((r: AxiosResponse<T>) => {
       response.value = r
       data.value = r.data
-      finished.value = true
     })
     .catch((e) => {
       error.value = e
-      finished.value = true
+    })
+    .finally(() => {
+      loading.value = false
     })
 
   return {
     response,
     data,
     error,
-    finished,
+    loading,
     cancel,
     canceled,
   }
