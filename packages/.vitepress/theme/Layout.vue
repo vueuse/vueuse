@@ -43,7 +43,9 @@
     </Page>
   </div>
 
-  <ReloadPrompt />
+  <ClientOnly>
+    <ReloadPrompt />
+  </ClientOnly>
   <!-- <Debug /> -->
 </template>
 
