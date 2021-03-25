@@ -8405,10 +8405,10 @@ vite-plugin-icons@^0.3.2:
     "@iconify/json-tools" "^1.0.10"
     vue-template-es2015-compiler "^1.9.1"
 
-vite-plugin-pwa@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.6.0.tgz#a38f07c18d161c3677e42063fd78be33aa14866a"
-  integrity sha512-3mT7X/f33mV1CLHNugrNnQwluP+glWs8hZ7OkajuxJORi230hCZcrLN4P/OYLO5AmjkhmNQ6kSANhwbaZaXEtA==
+vite-plugin-pwa@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.6.2.tgz#da014b7c8860390dc481c2ef235457c7ffe286e1"
+  integrity sha512-HkKSSjzgm/8YPp8qH7UxWKlxR3ZKLL7X3lwOSvT+M4GpkmcZmq6xtVIOmlO526e9wh4/31xPwyr1o0MfCzL6Xw==
   dependencies:
     debug "^4.3.2"
     fast-glob "^3.2.5"
