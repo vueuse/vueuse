@@ -1,185 +1,140 @@
-import { ref } from 'vue-demi'
-import { useSetup } from '../../.test'
+import { nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { useTransition, TransitionPresets } from '.'
 
 describe('useTransition', () => {
   it('transitions between values', async() => {
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
+    const baseValue = ref(0)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration: 80,
-        transition: [0, 0, 1, 1], // a simple linear transition
-      })
-
-      return {
-        baseValue,
-        transitionedValue,
-      }
+    const transitionedValue = useTransition(baseValue, {
+      duration: 80,
+      transition: [0, 0, 1, 1], // a simple linear transition
     })
 
     // both values should start at zero
-    expect(vm.baseValue).toBe(0)
-    expect(vm.transitionedValue).toBe(0)
+    expect(baseValue.value).toBe(0)
+    expect(transitionedValue.value).toBe(0)
 
     // changing the base value should start the transition
-    vm.baseValue = 1
+    baseValue.value = 1
 
     // half way through the transition the base value should be 1,
     // and the transitioned value should be approximately 0.5
     await promiseTimeout(50)
-    expect(vm.baseValue).toBe(1)
-    expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
+    expect(baseValue.value).toBe(1)
+    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
 
     // once the transition is complete, both values should be 1
     await promiseTimeout(100)
-    expect(vm.baseValue).toBe(1)
-    expect(vm.transitionedValue).toBe(1)
+    expect(baseValue.value).toBe(1)
+    expect(transitionedValue.value).toBe(1)
   })
 
   it('exposes named presets', async() => {
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
+    const baseValue = ref(0)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration: 80,
-        transition: TransitionPresets.linear,
-      })
-
-      return {
-        baseValue,
-        transitionedValue,
-      }
+    const transitionedValue = useTransition(baseValue, {
+      duration: 80,
+      transition: TransitionPresets.linear,
     })
 
-    vm.baseValue = 1
+    baseValue.value = 1
 
     await promiseTimeout(50)
-    expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
+    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
 
     await promiseTimeout(100)
-    expect(vm.transitionedValue).toBe(1)
+    expect(transitionedValue.value).toBe(1)
   })
 
   it('supports custom function transitions', async() => {
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
+    const baseValue = ref(0)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration: 80,
-        transition: n => n,
-      })
-
-      return {
-        baseValue,
-        transitionedValue,
-      }
+    const transitionedValue = useTransition(baseValue, {
+      duration: 80,
+      transition: n => n,
     })
 
-    vm.baseValue = 1
+    baseValue.value = 1
 
     await promiseTimeout(50)
-    expect(vm.transitionedValue > 0 && vm.transitionedValue < 1).toBe(true)
+    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
 
     await promiseTimeout(100)
-    expect(vm.transitionedValue).toBe(1)
+    expect(transitionedValue.value).toBe(1)
   })
 
   it('supports dynamic transitions', async() => {
     const linear = jest.fn(n => n)
     const easeInQuad = jest.fn(n => n * n)
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
-      const transition = ref(linear)
+    const baseValue = ref(0)
+    const transition = ref(linear)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration: 100,
-        transition,
-      })
-
-      return {
-        baseValue,
-        transition,
-        transitionedValue,
-      }
+    useTransition(baseValue, {
+      duration: 100,
+      transition,
     })
 
     expect(linear).not.toHaveBeenCalled()
     expect(easeInQuad).not.toHaveBeenCalled()
 
-    vm.baseValue++
-    await vm.$nextTick()
+    baseValue.value++
+    await nextTick()
 
     expect(linear).toHaveBeenCalled()
     expect(easeInQuad).not.toHaveBeenCalled()
 
-    vm.transition = easeInQuad
-    vm.baseValue++
-    await vm.$nextTick()
+    transition.value = easeInQuad
+    baseValue.value++
+    await nextTick()
 
     expect(easeInQuad).toHaveBeenCalled()
   })
 
   it('support dynamic transition durations', async() => {
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
-      const duration = ref(100)
+    const baseValue = ref(0)
+    const duration = ref(100)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration,
-        transition: n => n,
-      })
-
-      return {
-        baseValue,
-        duration,
-        transitionedValue,
-      }
+    const transitionedValue = useTransition(baseValue, {
+      duration,
+      transition: n => n,
     })
 
     // first transition should take 100ms
-    vm.baseValue = 1
+    baseValue.value = 1
 
     await promiseTimeout(150)
-    expect(vm.transitionedValue).toBe(1)
+    expect(transitionedValue.value).toBe(1)
 
     // second transition should take 200ms
-    vm.duration = 200
-    vm.baseValue = 2
+    duration.value = 200
+    baseValue.value = 2
 
     await promiseTimeout(150)
-    expect(vm.transitionedValue < 2).toBe(true)
+    expect(transitionedValue.value < 2).toBe(true)
 
     await promiseTimeout(100)
-    expect(vm.transitionedValue).toBe(2)
+    expect(transitionedValue.value).toBe(2)
   })
 
   it('calls onStarted and onFinished callbacks', async() => {
     const onStarted = jest.fn()
     const onFinished = jest.fn()
 
-    const vm = useSetup(() => {
-      const baseValue = ref(0)
+    const baseValue = ref(0)
 
-      const transitionedValue = useTransition(baseValue, {
-        duration: 100,
-        onFinished,
-        onStarted,
-        transition: n => n,
-      })
-
-      return {
-        baseValue,
-        transitionedValue,
-      }
+    useTransition(baseValue, {
+      duration: 100,
+      onFinished,
+      onStarted,
+      transition: n => n,
     })
 
     expect(onStarted).not.toHaveBeenCalled()
     expect(onFinished).not.toHaveBeenCalled()
 
-    vm.baseValue = 1
-    await vm.$nextTick()
+    baseValue.value = 1
+    await nextTick()
 
     expect(onStarted).toHaveBeenCalled()
     expect(onFinished).not.toHaveBeenCalled()
