@@ -1378,7 +1378,7 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.321":
+"@iconify/json@^1.1.322":
   version "1.1.322"
   resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.322.tgz#5559ba4efc658a423ce39e7af7ab5f5e8ee7bf7a"
   integrity sha512-D4o3P8Mrrvd/Gz2qBFVNZYeEn+A/OQkdfT9eh6hz3mz49ob/nk8Q3IRUC0xvVdE4PLawqcKAiKjUyYC8tk8+lA==
@@ -8341,10 +8341,10 @@ vite-plugin-components@^0.8.3:
     fast-glob "^3.2.5"
     minimatch "^3.0.4"
 
-vite-plugin-icons@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-icons/-/vite-plugin-icons-0.3.2.tgz#d44542f6d6569d21970e0859bd63893c08c2e97f"
-  integrity sha512-6HDBO6aqJLaJ8lkT9FChAUtniRRzhDWbhNzJLfT7QdDcQ2kaapReksngNEA1+tNlFd5Auey4VGS2VjI3V1KkvA==
+vite-plugin-icons@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-icons/-/vite-plugin-icons-0.4.0.tgz#bfc6bfd84f73b4d2bac137861d8d6153ce6f230b"
+  integrity sha512-IBXx2+cYEXqOMwZd+DsNYisJgWOc4uHDTs4oWz/XeiN0mIelDYDW+TmtxKt0Vl2tz6rFh6iyjOuW+KZocCRsGw==
   dependencies:
     "@iconify/json-tools" "^1.0.10"
     vue-template-es2015-compiler "^1.9.1"
