@@ -1,11 +1,4 @@
-import { defineComponent, createApp, h, isVue2, Vue } from 'vue-demi'
-
-if (isVue2) {
-  // @ts-ignore
-  Vue.config.productionTip = false
-  // @ts-ignore
-  Vue.config.devtools = false
-}
+import { defineComponent, createApp, h } from 'vue-demi'
 
 type InstanceType<V> = V extends { new (...arg: any[]): infer X } ? X : never
 type VM<V> = InstanceType<V> & { unmount(): void }
