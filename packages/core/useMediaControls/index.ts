@@ -236,25 +236,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const supportsPictureInPicture = 'pictureInPictureEnabled' in document
 
   /**
-   * Enables the specified track and disables the
-   * other tracks unless otherwise specified
-   *
-   * @param track The track of the id of the track to enable
-   * @param disableTracks Disable all other tracks
-   */
-  const enableTrack = (track: number | UseMediaTextTrack, disableTracks = true) => {
-    usingElRef<HTMLMediaElement>(target, (el) => {
-      const id = isNumber(track) ? track : track.id
-
-      if (disableTracks)
-        disableTrack()
-
-      el.textTracks[id].mode = 'showing'
-      selectedTrack.value = id
-    })
-  }
-
-  /**
    * Disables the specified track. If no track is specified then
    * all tracks will be disabled
    *
@@ -275,6 +256,24 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     })
   }
 
+  /**
+   * Enables the specified track and disables the
+   * other tracks unless otherwise specified
+   *
+   * @param track The track of the id of the track to enable
+   * @param disableTracks Disable all other tracks
+   */
+  const enableTrack = (track: number | UseMediaTextTrack, disableTracks = true) => {
+    usingElRef<HTMLMediaElement>(target, (el) => {
+      const id = isNumber(track) ? track : track.id
+
+      if (disableTracks)
+        disableTrack()
+
+      el.textTracks[id].mode = 'showing'
+      selectedTrack.value = id
+    })
+  }
   /**
    * Toggle picture in picture mode for the player.
    */

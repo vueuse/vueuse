@@ -128,7 +128,7 @@ interface UseFetchReturnBase<T> {
    */
   response: Ref<Response | null>
   /**
-   * Any fetch errors that may have occured
+   * Any fetch errors that may have occurred
    */
   error: Ref<any>
   /**
@@ -179,11 +179,11 @@ export interface BeforeFetchContext {
    */
   url: string
   /**
-   * The requset options of the current request
+   * The request options of the current request
    */
   options: RequestInit
   /**
-   * Cancels the current requset
+   * Cancels the current request
    */
   cancel: Fn
 }
