@@ -4,6 +4,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource
 interface UseAxiosReturn<T> {
   response: Ref<AxiosResponse<T> | undefined>
   data: Ref<T | undefined>
+  finished: Ref<boolean>
   loading: Ref<boolean>
   canceled: Ref<boolean>
   error: Ref<AxiosError<T> | undefined>
@@ -43,6 +44,7 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
 
   const response = ref<any>(null) as Ref<AxiosResponse<T> | undefined>
   const data = ref<any>(undefined) as Ref<T | undefined>
+  const finished = ref(false)
   const loading = ref(true)
   const canceled = ref(false)
   const error = ref<AxiosError<T> | undefined>()
@@ -51,6 +53,8 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   const cancel = (message?: string) => {
     cancelToken.cancel(message)
     canceled.value = true
+    loading.value = false
+    finished.value = false
   }
 
   instance(url, { ...config, cancelToken: cancelToken.token })
@@ -63,12 +67,14 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     })
     .finally(() => {
       loading.value = false
+      finished.value = true
     })
 
   return {
     response,
     data,
     error,
+    finished,
     loading,
     cancel,
     canceled,
