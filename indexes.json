@@ -355,6 +355,13 @@
       "description": "reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)"
     },
     {
+      "name": "useBreakpoints",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useBreakpoints/",
+      "category": "Browser",
+      "description": "reactive viewport breakpoints"
+    },
+    {
       "name": "useBrowserLocation",
       "package": "core",
       "docs": "https://vueuse.org/core/useBrowserLocation/",
