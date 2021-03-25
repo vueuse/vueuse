@@ -23,194 +23,170 @@ describe('asyncComputed', () => {
   it('is not lazy by default', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
-    const instance = useSetup(() => {
-      const data = asyncComputed(func)
-      return { data }
-    })
+    const data = asyncComputed(func)
 
     expect(func).toBeCalledTimes(1)
 
-    expect(instance.data).toBeUndefined()
+    expect(data.value).toBeUndefined()
 
     await nextTick()
     await nextTick()
 
-    expect(instance.data).toBe('data')
+    expect(data.value).toBe('data')
   })
 
   it('is lazy if configured', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
-    const instance = useSetup(() => {
-      const data = asyncComputed(func, undefined, { lazy: true })
-
-      return {
-        data,
-      }
-    })
+    const data = asyncComputed(func, undefined, { lazy: true })
 
     expect(func).not.toBeCalled()
 
     // Act
-    expect(instance.data).toBeUndefined()
+    expect(data.value).toBeUndefined()
     await nextTick()
     await nextTick()
 
     // Assert
     expect(func).toBeCalledTimes(1)
-    expect(instance.data).toBe('data')
+    expect(data.value).toBe('data')
   })
 
   it('re-computes when dependency changes', async() => {
-    const instance = useSetup(() => {
-      const counter = ref(1)
-      const double = asyncComputed(() => {
-        const result = counter.value * 2
-        return Promise.resolve(result)
-      })
-      return { counter, double }
+    const counter = ref(1)
+    const double = asyncComputed(() => {
+      const result = counter.value * 2
+      return Promise.resolve(result)
     })
 
-    expect(instance.double).toBeUndefined()
+    expect(double.value).toBeUndefined()
 
     await nextTick()
 
-    expect(instance.double).toBe(2)
+    expect(double.value).toBe(2)
 
-    instance.counter = 2
-    expect(instance.double).toBe(2)
+    counter.value = 2
+    expect(double.value).toBe(2)
 
     await nextTick()
     await nextTick()
 
-    expect(instance.double).toBe(4)
+    expect(double.value).toBe(4)
   })
 
   test('evaluating works', async() => {
-    const instance = useSetup(() => {
-      const evaluating = ref(false)
+    const evaluating = ref(false)
 
-      const data = asyncComputed(() =>
-        new Promise(resolve => setTimeout(() => resolve('data'), 0)),
-      undefined,
-      evaluating)
-      return { data, evaluating }
-    })
+    const data = asyncComputed(() =>
+      new Promise(resolve => setTimeout(() => resolve('data'), 0)),
+    undefined,
+    evaluating)
 
     await nextTick()
-    expect(instance.data).toBeUndefined()
-    expect(instance.evaluating).toBe(true)
+    expect(data.value).toBeUndefined()
+    expect(evaluating.value).toBe(true)
 
     await new Promise(resolve => setTimeout(resolve, 0))
 
-    expect(instance.evaluating).toBe(false)
-    expect(instance.data).toBe('data')
+    expect(evaluating.value).toBe(false)
+    expect(data.value).toBe('data')
   })
 
   test('triggers', async() => {
-    const instance = useSetup(() => {
-      const counter = ref(1)
-      const double = asyncComputed(() => {
-        const result = counter.value * 2
-        return Promise.resolve(result)
-      })
-      const other = computed(() => {
-        return double.value + 1
-      })
-      return { counter, double, other }
+    const counter = ref(1)
+    const double = asyncComputed(() => {
+      const result = counter.value * 2
+      return Promise.resolve(result)
+    })
+    const other = computed(() => {
+      return double.value + 1
     })
 
-    expect(instance.double).toBeUndefined()
+    expect(double.value).toBeUndefined()
 
     await nextTick()
     await nextTick()
 
-    expect(instance.double).toBe(2)
+    expect(double.value).toBe(2)
 
-    instance.counter = 2
-    expect(instance.double).toBe(2)
-    expect(instance.other).toBe(3)
+    counter.value = 2
+    expect(double.value).toBe(2)
+    expect(other.value).toBe(3)
 
     await nextTick()
     await nextTick()
 
-    expect(instance.double).toBe(4)
-    expect(instance.other).toBe(5)
+    expect(double.value).toBe(4)
+    expect(other.value).toBe(5)
   })
 
   test('cancel is called', async() => {
     const onCancel = jest.fn()
 
-    const instance = useSetup(() => {
-      const data = ref('initial')
-      const uppercase = asyncComputed((cancel) => {
-        cancel(() => onCancel())
+    const data = ref('initial')
+    const uppercase = asyncComputed((cancel) => {
+      cancel(() => onCancel())
 
-        const uppercased = data.value.toUpperCase()
+      const uppercased = data.value.toUpperCase()
 
-        return new Promise((resolve) => {
-          setTimeout(resolve.bind(null, uppercased), 0)
-        })
+      return new Promise((resolve) => {
+        setTimeout(resolve.bind(null, uppercased), 0)
       })
-      return { data, uppercase }
     })
 
-    expect(instance.uppercase).toBeUndefined()
+    expect(uppercase.value).toBeUndefined()
 
     await promiseTimeout(10)
 
-    expect(instance.uppercase).toBe('INITIAL')
+    expect(uppercase.value).toBe('INITIAL')
 
-    instance.data = 'to be cancelled'
+    data.value = 'to be cancelled'
     await nextTick()
     await nextTick()
     expect(onCancel).toBeCalledTimes(0)
 
-    instance.data = 'final'
+    data.value = 'final'
     await nextTick()
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
     await promiseTimeout(10)
 
-    expect(instance.uppercase).toBe('FINAL')
+    expect(uppercase.value).toBe('FINAL')
   })
 
   test('cancel is called for lazy', async() => {
     const onCancel = jest.fn()
 
-    const instance = useSetup(() => {
-      const data = ref('initial')
-      const uppercase = asyncComputed((cancel) => {
-        cancel(() => onCancel())
+    const data = ref('initial')
+    const uppercase = asyncComputed((cancel) => {
+      cancel(() => onCancel())
 
-        const uppercased = data.value.toUpperCase()
+      const uppercased = data.value.toUpperCase()
 
-        return new Promise((resolve) => {
-          setTimeout(resolve.bind(null, uppercased), 0)
-        })
-      }, '', { lazy: true })
-      return { data, uppercase }
-    })
+      return new Promise((resolve) => {
+        setTimeout(resolve.bind(null, uppercased), 0)
+      })
+    }, '', { lazy: true })
 
-    expect(instance.uppercase).toBe('')
+    expect(uppercase.value).toBe('')
 
     await promiseTimeout(10)
 
-    expect(instance.uppercase).toBe('INITIAL')
+    expect(uppercase.value).toBe('INITIAL')
 
-    instance.data = 'to be cancelled'
+    data.value = 'to be cancelled'
     await nextTick()
     await nextTick()
     expect(onCancel).toBeCalledTimes(0)
 
-    instance.data = 'final'
+    data.value = 'final'
     await nextTick()
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
     await promiseTimeout(10)
 
-    expect(instance.uppercase).toBe('FINAL')
+    expect(uppercase.value).toBe('FINAL')
   })
 })
