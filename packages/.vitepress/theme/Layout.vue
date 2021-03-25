@@ -43,6 +43,7 @@
     </Page>
   </div>
 
+  <ReloadPrompt />
   <!-- <Debug /> -->
 </template>
 
