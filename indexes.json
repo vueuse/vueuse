@@ -509,6 +509,13 @@
       "description": "manually track the change history of a ref when the using calls `commit()`"
     },
     {
+      "name": "useMediaControls",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useMediaControls/",
+      "category": "Browser",
+      "description": "reactive media controls for both `audio` and `video` elements"
+    },
+    {
       "name": "useMediaQuery",
       "package": "core",
       "docs": "https://vueuse.org/core/useMediaQuery/",
