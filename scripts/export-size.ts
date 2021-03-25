@@ -1,4 +1,4 @@
-import table from 'markdown-table'
+import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
 import filesize from 'filesize'
 import fs from 'fs-extra'
@@ -30,7 +30,7 @@ async function run() {
 
     md += `<kbd>${packageJSON.name}</kbd>\n\n`
 
-    md += table([
+    md += markdownTable([
       ['Function', 'min+gzipped'],
       ...exports.map((i) => {
         return [`\`${i.name}\``, filesize(i.minzipped)]

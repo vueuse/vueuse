@@ -14,32 +14,33 @@ const reset = () => {
   opacity.value = 1
 }
 
-const onSwipe = (e: TouchEvent) => {
-  if (containerWidth.value) {
-    if (lengthX.value < 0) {
-      const length = Math.abs(lengthX.value)
-      left.value = `${length}px`
-      opacity.value = 1.1 - length / containerWidth.value
-    }
-    else {
-      left.value = '0'
-      opacity.value = 1
-    }
-  }
-}
-
-const onSwipeEnd = (e: TouchEvent, direction: SwipeDirection) => {
-  if (lengthX.value < 0 && containerWidth.value && (Math.abs(lengthX.value) / containerWidth.value) >= 0.5) {
-    left.value = '100%'
-    opacity.value = 0
-  }
-  else {
-    left.value = '0'
-    opacity.value = 1
-  }
-}
-
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, { passive: false, onSwipe, onSwipeEnd })
+const { direction, isSwiping, lengthX, lengthY } = useSwipe(
+  target, {
+    passive: false,
+    onSwipe(e: TouchEvent) {
+      if (containerWidth.value) {
+        if (lengthX.value < 0) {
+          const length = Math.abs(lengthX.value)
+          left.value = `${length}px`
+          opacity.value = 1.1 - length / containerWidth.value
+        }
+        else {
+          left.value = '0'
+          opacity.value = 1
+        }
+      }
+    },
+    onSwipeEnd(e: TouchEvent, direction: SwipeDirection) {
+      if (lengthX.value < 0 && containerWidth.value && (Math.abs(lengthX.value) / containerWidth.value) >= 0.5) {
+        left.value = '100%'
+        opacity.value = 0
+      }
+      else {
+        left.value = '0'
+        opacity.value = 1
+      }
+    },
+  })
 </script>
 
 <template>

@@ -1,6 +1,6 @@
-import { SwipeDirection } from './index'
+import { SwipeDirection, useSwipe } from './index'
 import { useSetup } from '../../.test'
-import { useSwipe } from '.'
+
 import each from 'jest-each'
 
 describe('useSwipe', () => {

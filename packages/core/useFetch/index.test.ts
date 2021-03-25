@@ -91,7 +91,7 @@ describe('useFetch', () => {
 
     await when(isFinished).toBe(true)
 
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'test', 'Accept-Language': 'en-US' })
+    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'test', 'Accept-Language': 'en-US' })
     expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
   })
 
@@ -111,7 +111,7 @@ describe('useFetch', () => {
 
     await when(isFinished).toBe(true)
 
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ Authorization: 'my-auth-token', 'Accept-Language': 'en-US' })
+    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
   })
 
   test('should run the beforeFetch function and cancel the request', async() => {

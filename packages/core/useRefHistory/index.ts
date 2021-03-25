@@ -151,7 +151,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
     flush = 'pre',
   } = options
 
-  const setSource = (source: Ref<Raw>, value: Raw) => {
+  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
+  const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
+    source,
+    commit,
+    { deep, flush, eventFilter },
+  )
+
+  function setSource(source: Ref<Raw>, value: Raw) {
     // Support changes that are done after the last history operation
     // examples:
     //   undo, modify
@@ -171,7 +178,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
   const { clear, commit: manualCommit } = manualHistory
 
-  const commit = () => {
+  function commit() {
     // This guard only applies for flush 'pre' and 'post'
     // If the user triggers a commit manually, then reset the watcher
     // so we do not trigger an extra commit in the async watcher
@@ -180,21 +187,13 @@ export function useRefHistory<Raw, Serialized = Raw>(
     manualCommit()
   }
 
-  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
-
-  const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
-    source,
-    commit,
-    { deep, flush, eventFilter },
-  )
-
-  const resume = (commitNow?: boolean) => {
+  function resume(commitNow?: boolean) {
     resumeTracking()
     if (commitNow)
       commit()
   }
 
-  const batch = (fn: (cancel: Fn) => void) => {
+  function batch(fn: (cancel: Fn) => void) {
     let canceled = false
 
     const cancel = () => canceled = true
@@ -207,7 +206,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
       commit()
   }
 
-  const dispose = () => {
+  function dispose() {
     stop()
     clear()
   }

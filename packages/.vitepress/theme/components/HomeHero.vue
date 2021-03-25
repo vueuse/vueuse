@@ -45,13 +45,6 @@ import NavLink from './NavLink.vue'
 const site = useSiteDataByRoute()
 const data = useFrontmatter()
 
-const showHero = computed(() => {
-  return data.value.heroImage
-    || hasHeroText.value
-    || hasTagline.value
-    || hasAction.value
-})
-
 const hasHeroText = computed(() => data.value.heroText !== null)
 const heroText = computed(() => data.value.heroText || site.value.title)
 
@@ -60,6 +53,13 @@ const tagline = computed(() => data.value.tagline || site.value.description)
 
 const hasAction = computed(() => data.value.actionLink && data.value.actionText)
 const hasAltAction = computed(() => data.value.altActionLink && data.value.altActionText)
+
+const showHero = computed(() => {
+  return data.value.heroImage
+    || hasHeroText.value
+    || hasTagline.value
+    || hasAction.value
+})
 </script>
 
 <style scoped>
