@@ -36,10 +36,10 @@ export const packages: PackageManifest[] = [
       'jwt-decode',
     ],
     globals: {
-      axios: 'axios',
+      'axios': 'axios',
       'universal-cookie': 'UniversalCookie',
-      qrcode: 'QRCode',
-      nprogress: 'nprogress',
+      'qrcode': 'QRCode',
+      'nprogress': 'nprogress',
       'jwt-decode': 'jwt_decode',
     },
   },
@@ -53,7 +53,7 @@ export const packages: PackageManifest[] = [
       'rxjs/operators',
     ],
     globals: {
-      rxjs: 'rxjs',
+      'rxjs': 'rxjs',
       'rxjs/operators': 'rxjs.operator',
     },
   },
@@ -67,7 +67,7 @@ export const packages: PackageManifest[] = [
       'firebase/app',
     ],
     globals: {
-      firebase: 'firebase',
+      'firebase': 'firebase',
       'firebase/app': 'firebase',
     },
   },
