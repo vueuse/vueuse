@@ -13,7 +13,15 @@ export type WebWorkerStatus =
   | 'TIMEOUT_EXPIRED'
 
 export interface WebWorkerOptions extends ConfigurableWindow {
+  /**
+   * Number of milliseconds before killing the worker
+   *
+   * @default undefined
+   */
   timeout?: number
+  /**
+   * An array that contains the external dependencies needed to run the worker
+   */
   dependencies?: string[]
 }
 
@@ -26,8 +34,14 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  { dependencies = [], timeout, window = defaultWindow }: Partial<WebWorkerOptions> = {},
+  options: WebWorkerOptions = {},
 ) => {
+  const {
+    dependencies = [],
+    timeout,
+    window = defaultWindow,
+  } = options
+
   const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
   const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void })>({})
@@ -46,9 +60,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   workerTerminate()
 
-  tryOnUnmounted(() => {
-    workerTerminate()
-  })
+  tryOnUnmounted(workerTerminate)
 
   const generateWorker = () => {
     const blobUrl = createWorkerBlobUrl(fn, dependencies)

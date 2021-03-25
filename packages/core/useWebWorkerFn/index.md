@@ -38,31 +38,6 @@ const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
 
 Before you start using this function, we suggest you read the [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) documentation.
 
-## API
-
-### Parameters
-
-| Name            | Type             | Description                                                |
-| --------------- | ---------------- | ---------------------------------------------------------- |
-| fn              | Function         | The `pure function` to run with web workers                |
-| options         | Object           | The object containing the options of the worker            |
-
-### Options
-
-| Name         | Type            | Default   | Description                                                               |
-| ------------ | --------------- | --------- | ------------------------------------------------------------------------- |
-| timeout      | Number          | undefined | the number of milliseconds before killing the worker                      |
-| dependencies | Array of String | []        | an array that contains the external dependencies needed to run the worker |
-
-
-### Return Value
-
-| Name            | Type             | Description                                                |
-| --------------- | ---------------- | ---------------------------------------------------------- |
-| workerFn        | Promise          | The `function` that allows you to run `fn` within web worker |
-| workerStatus    | `WebWorkerStatus`   | The status of `workerFn`                                   |
-| workerTerminate | Function         | The function that kills the worker                          |
-
 ## Credit
 
 This function is a Vue port of https://github.com/alewin/useWorker by Alessio Koci, with the help of [@Donskelle](https://github.com/Donskelle) to migration.
