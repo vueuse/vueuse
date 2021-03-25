@@ -75,7 +75,7 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  options?: WebWorkerOptions
+  { dependencies = [], timeout, window = defaultWindow }: Partial<WebWorkerOptions> = {},
 ) => {
   workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
   workerStatus: Ref<WebWorkerStatus>
