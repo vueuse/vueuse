@@ -9,9 +9,9 @@ const options = ref({
   url: isClient ? location.href : '',
 })
 
-const startShare = () => share().catch(err => err)
-
 const { share, isSupported } = useShare(options)
+
+const startShare = () => share().catch(err => err)
 </script>
 
 <template>

@@ -138,6 +138,14 @@ export function useWebSocket<Data = any>(
     wsRef.value.close(code, reason)
   }
 
+  const _sendBuffer = () => {
+    if (bufferedData.length && wsRef.value && status.value === 'OPEN') {
+      for (const buffer of bufferedData)
+        wsRef.value.send(buffer)
+      bufferedData = []
+    }
+  }
+
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
     if (!wsRef.value || status.value !== 'OPEN') {
       if (useBuffer)
@@ -147,14 +155,6 @@ export function useWebSocket<Data = any>(
     _sendBuffer()
     wsRef.value.send(data)
     return true
-  }
-
-  const _sendBuffer = () => {
-    if (bufferedData.length && wsRef.value && status.value === 'OPEN') {
-      for (const buffer of bufferedData)
-        wsRef.value.send(buffer)
-      bufferedData = []
-    }
   }
 
   const _init = () => {

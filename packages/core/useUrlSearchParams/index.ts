@@ -38,34 +38,21 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     }
   }
 
-  const write = (params: URLSearchParams, shouldUpdateParamsMap?: boolean) => {
-    pause()
-    if (shouldUpdateParamsMap)
-      updateParamsMap()
-
-    const empty = !params.keys().next()
-    const query = empty
-      ? hashWithoutParams.value
-      : (mode === 'hash')
-        ? `${hashWithoutParams.value}?${params}`
-        : `?${params}${hashWithoutParams.value}`
-
-    window.history.replaceState({}, '', window.location.pathname + query)
-    resume()
-  }
-
   let params: URLSearchParams = read()
   const paramsMap: T = reactive(Object.assign({}))
 
-  const writeToParamsMap = (key: keyof T, value: any) => paramsMap[key] = value
+  function writeToParamsMap(key: keyof T, value: any) {
+    return paramsMap[key] = value
+  }
 
-  const updateParamsMap = () => {
+  function updateParamsMap() {
     Object.keys(paramsMap).forEach(key => delete paramsMap[key])
     for (const key of params.keys()) {
       const paramsForKey = params.getAll(key)
       writeToParamsMap(key, paramsForKey.length > 1 ? paramsForKey : (params.get(key) || ''))
     }
   }
+
   // Update the paramsMap with initial values
   updateParamsMap()
 
@@ -84,6 +71,23 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     },
     { deep: true },
   )
+
+  function write(params: URLSearchParams, shouldUpdateParamsMap?: boolean) {
+    pause()
+    if (shouldUpdateParamsMap)
+      updateParamsMap()
+
+    const empty = !params.keys().next()
+    const query = empty
+      ? hashWithoutParams.value
+      : (mode === 'hash')
+        ? `${hashWithoutParams.value}?${params}`
+        : `?${params}${hashWithoutParams.value}`
+
+    if (window)
+      window.history.replaceState({}, '', window.location.pathname + query)
+    resume()
+  }
 
   useEventListener(window, 'popstate', () => {
     params = read()

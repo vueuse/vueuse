@@ -332,24 +332,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     execute,
   }
 
-  const setMethod = (method: string) => (payload?: unknown, payloadType?: PayloadType) => {
-    if (!initialized) {
-      config.method = method
-      config.payload = payload
-      config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
-      return shell as any
-    }
-    return undefined
-  }
-
-  const setType = (type: DataType) => () => {
-    if (!initialized) {
-      config.type = type
-      return base as any
-    }
-    return undefined
-  }
-
   const shell: UseFetchReturn<T> = {
     ...base,
 
@@ -363,6 +345,28 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     blob: setType('blob'),
     arrayBuffer: setType('arrayBuffer'),
     formData: setType('formData'),
+  }
+
+  function setMethod(method: string) {
+    return (payload?: unknown, payloadType?: PayloadType) => {
+      if (!initialized) {
+        config.method = method
+        config.payload = payload
+        config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
+        return shell as any
+      }
+      return undefined
+    }
+  }
+
+  function setType(type: DataType) {
+    return () => {
+      if (!initialized) {
+        config.type = type
+        return base as any
+      }
+      return undefined
+    }
   }
 
   if (options.immediate)

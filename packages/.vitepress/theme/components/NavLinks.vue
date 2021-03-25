@@ -23,8 +23,8 @@ import NavDropdownLink from './NavDropdownLink.vue'
 const site = useSiteDataByRoute()
 const localeLinks = useLocaleLinks()
 
-const show = computed(() => links.value)
 const links = computed(() => site.value.themeConfig.nav)
+const show = computed(() => links.value)
 </script>
 
 <style scoped>
