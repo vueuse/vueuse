@@ -1,5 +1,5 @@
-import { watch, ref, unref } from 'vue-demi'
-import { isObject, MaybeRef, isString, ignorableWatch, isNumber } from '@vueuse/shared'
+import { watch, ref, unref, watchEffect } from 'vue-demi'
+import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 /**
@@ -297,163 +297,170 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     })
   }
 
-  const stop = watch([target], () => {
-    usingElRef<HTMLMediaElement>(target, (el) => {
-      stop()
+  // Apply Options
+  watchEffect(() => {
+    const el = unref(target)
+    if (!el)
+      return
 
-      // Apply Options
-      watch(
-        () => [
-          unref(options.loop),
-          unref(options.controls),
-          unref(options.muted),
-          unref(options.preload),
-          unref(options.autoplay),
-          unref(options.playsinline),
-        ],
-        () => {
-          (el as HTMLVideoElement).playsInline = unref(options.playsinline)!
-          el.loop = unref(options.loop)!
-          el.controls = unref(options.controls)!
-          el.muted = unref(options.muted)!
-          el.preload = unref(options.preload)!
-          el.autoplay = unref(options.autoplay)!
-        },
-        { deep: true, immediate: true },
-      )
+    el.loop = unref(options.loop)!
+    el.controls = unref(options.controls)!
+    el.muted = unref(options.muted)!
+    el.preload = unref(options.preload)!
+    el.autoplay = unref(options.autoplay)!
+    el.volume = unref(volume)!
+    ;(el as HTMLVideoElement).playsInline = unref(options.playsinline)!
+    ;(el as HTMLVideoElement).poster = unref(options.poster) || ''
+  })
 
-      /**
-       * Watch volume and change player volume when volume prop changes
-       */
-      watch(volume, vol => el.volume = vol)
+  /**
+   * This will automatically inject sources to the media element. The sources will be
+   * appended as children to the media element as `<source>` elements.
+   */
+  watchEffect(() => {
+    const el = unref(target)
+    if (!el)
+      return
 
-      /**
-       * Watch for poster changes so we can update the media player poster.
-       */
-      watch(
-        () => [unref(options.poster)],
-        () => (el as HTMLVideoElement).poster = unref(options.poster) || '',
-        { deep: true, immediate: true },
-      )
+    const src = unref(options.src)
+    let sources: UseMediaSource[] = []
 
-      /**
-       * This will automatically inject sources to the media element. The sources will be
-       * appended as children to the media element as `<source>` elements.
-       */
-      watch(
-        () => [unref(options.src)],
-        () => {
-          const src = unref(options.src)
-          let sources: UseMediaSource[] = []
+    if (!src)
+      return
 
-          if (!src)
-            return
+    // Merge sources into an array
+    if (isString(src))
+      sources = [{ src }]
+    else if (Array.isArray(src))
+      sources = src
+    else if (isObject(src))
+      sources = [src]
 
-          // Merge sources into an array
-          if (isString(src))
-            sources = [{ src }]
-          else if (Array.isArray(src))
-            sources = src
-          else if (isObject(src))
-            sources = [src]
+    // Clear the sources
+    el.querySelectorAll('source').forEach(e => e.remove())
 
-          // Clear the sources
-          el.querySelectorAll('source').forEach(e => e.remove())
+    // Add new sources
+    sources.forEach(({ src, type }) => {
+      const source = document.createElement('source')
 
-          // Add new sources
-          sources.forEach(({ src, type }) => {
-            const source = document.createElement('source')
+      source.setAttribute('src', src)
+      source.setAttribute('type', type || '')
 
-            source.setAttribute('src', src)
-            source.setAttribute('type', type || '')
-
-            el.appendChild(source)
-          })
-
-          // Finally, load the new sources.
-          el.load()
-        },
-        { deep: true, immediate: true },
-      )
-
-      /**
-       * Load Tracks
-       */
-      watch(
-        () => [unref(options.tracks)],
-        () => {
-          const textTracks = unref(options.tracks)
-
-          if (!textTracks)
-            return
-
-          /**
-           * The MediaAPI provides an API for adding text tracks, but they don't currently
-           * have an API for removing text tracks, so instead we will just create and remove
-           * the tracks manually using the HTML api.
-           */
-          el.querySelectorAll('track').forEach(e => e.remove())
-
-          textTracks.forEach(({ default: isDefault, kind, label, src, srcLang }, i) => {
-            const track = document.createElement('track')
-
-            track.default = isDefault || false
-            track.kind = kind
-            track.label = label
-            track.src = src
-            track.srclang = srcLang
-
-            if (track.default)
-              selectedTrack.value = i
-
-            el.appendChild(track)
-          })
-        },
-        { deep: true, immediate: true },
-      )
-
-      /**
-         * This will allow us to update the current time from the timeupdate event
-         * without setting the medias current position, but if the user changes the
-         * current time via the ref, then the media will seek.
-         *
-         * If we did not use an ignorable watch, then the current time update from
-         * the timeupdate event would cause the media to stutter.
-         */
-      const { ignoreUpdates: ignoreCurrentTimeUpdates } = ignorableWatch(currentTime, (time) => {
-        el.currentTime = time
-      })
-
-      /**
-       * Using an ignorable watch so we can control the play state using a ref and not
-       * a function
-       */
-      const { ignoreUpdates: ignorePlayingUpdates } = ignorableWatch(playing, (isPlaying) => {
-        isPlaying ? el.play() : el.pause()
-      })
-
-      /**
-       * Attach event listeners
-       */
-      useEventListener(el, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = el.currentTime))
-      useEventListener(el, 'durationchange', () => duration.value = el.duration)
-      useEventListener(el, 'progress', () => buffered.value = timeRangeToArray(el.buffered))
-      useEventListener(el, 'seeking', () => seeking.value = true)
-      useEventListener(el, 'seeked', () => seeking.value = false)
-      useEventListener(el, 'waiting', () => waiting.value = true)
-      useEventListener(el, 'playing', () => waiting.value = false)
-      useEventListener(el, 'ratechange', () => rate.value = el.playbackRate)
-      useEventListener(el, 'stalled', () => stalled.value = true)
-      useEventListener(el, 'ended', () => ended.value = true)
-      useEventListener(el, 'pause', () => ignorePlayingUpdates(() => playing.value = false))
-      useEventListener(el, 'play', () => ignorePlayingUpdates(() => playing.value = true))
-      useEventListener(el.textTracks, 'addtrack', () => tracks.value = tracksToArray(el.textTracks))
-      useEventListener(el.textTracks, 'removetrack', () => tracks.value = tracksToArray(el.textTracks))
-      useEventListener(el.textTracks, 'change', () => tracks.value = tracksToArray(el.textTracks))
-      useEventListener(el, 'enterpictureinpicture', () => isPictureInPicture.value = true)
-      useEventListener(el, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+      el.appendChild(source)
     })
-  }, { immediate: true })
+
+    // Finally, load the new sources.
+    el.load()
+  })
+
+  /**
+   * Watch volume and change player volume when volume prop changes
+   */
+  watch(volume, (vol) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.volume = vol
+  })
+
+  /**
+   * Load Tracks
+   */
+  watchEffect(() => {
+    const textTracks = unref(options.tracks)
+    const el = unref(target)
+
+    if (!textTracks || !el)
+      return
+
+    /**
+     * The MediaAPI provides an API for adding text tracks, but they don't currently
+     * have an API for removing text tracks, so instead we will just create and remove
+     * the tracks manually using the HTML api.
+     */
+    el.querySelectorAll('track').forEach(e => e.remove())
+
+    textTracks.forEach(({ default: isDefault, kind, label, src, srcLang }, i) => {
+      const track = document.createElement('track')
+
+      track.default = isDefault || false
+      track.kind = kind
+      track.label = label
+      track.src = src
+      track.srclang = srcLang
+
+      if (track.default)
+        selectedTrack.value = i
+
+      el.appendChild(track)
+    })
+  })
+
+  /**
+   * This will allow us to update the current time from the timeupdate event
+   * without setting the medias current position, but if the user changes the
+   * current time via the ref, then the media will seek.
+   *
+   * If we did not use an ignorable watch, then the current time update from
+   * the timeupdate event would cause the media to stutter.
+   */
+  const { ignoreUpdates: ignoreCurrentTimeUpdates } = ignorableWatch(currentTime, (time) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.currentTime = time
+  })
+
+  /**
+   * Using an ignorable watch so we can control the play state using a ref and not
+   * a function
+   */
+  const { ignoreUpdates: ignorePlayingUpdates } = ignorableWatch(playing, (isPlaying) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    isPlaying ? el.play() : el.pause()
+  })
+
+  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (unref(target))!.currentTime))
+  useEventListener(target, 'durationchange', () => duration.value = (unref(target))!.duration)
+  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((unref(target))!.buffered))
+  useEventListener(target, 'seeking', () => seeking.value = true)
+  useEventListener(target, 'seeked', () => seeking.value = false)
+  useEventListener(target, 'waiting', () => waiting.value = true)
+  useEventListener(target, 'playing', () => waiting.value = false)
+  useEventListener(target, 'ratechange', () => rate.value = (unref(target))!.playbackRate)
+  useEventListener(target, 'stalled', () => stalled.value = true)
+  useEventListener(target, 'ended', () => ended.value = true)
+  useEventListener(target, 'pause', () => ignorePlayingUpdates(() => playing.value = false))
+  useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
+  useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
+  useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+
+  /**
+   * The following listeners need to listen to a nested
+   * object on the target, so we will have to use a nested
+   * watch and manually remove the listeners
+   */
+  const listeners: Fn[] = []
+
+  const stop = watch([target], () => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    stop()
+
+    listeners[0] = useEventListener(el.textTracks, 'addtrack', () => tracks.value = tracksToArray(el.textTracks))
+    listeners[1] = useEventListener(el.textTracks, 'removetrack', () => tracks.value = tracksToArray(el.textTracks))
+    listeners[2] = useEventListener(el.textTracks, 'change', () => tracks.value = tracksToArray(el.textTracks))
+  })
+
+  // Remove text track listeners
+  tryOnUnmounted(() => listeners.forEach(listener => listener()))
 
   return {
     currentTime,
