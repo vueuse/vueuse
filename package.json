@@ -17,7 +17,7 @@
     "dev": "nr docs",
     "docs": "vitepress dev packages",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
-    "lint": "eslint './{packages,scripts}/**/*.{js,ts,tsx,vue,md}'",
+    "lint": "eslint './{packages,scripts,meta}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
     "release": "esno scripts/release.ts && git push --follow-tags",
