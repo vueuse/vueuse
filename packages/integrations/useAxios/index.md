@@ -54,6 +54,7 @@ interface UseAxiosReturn<T> {
   response: Ref<AxiosResponse<T> | undefined>
   data: Ref<T | undefined>
   finished: Ref<boolean>
+  loading: Ref<boolean>
   canceled: Ref<boolean>
   error: Ref<AxiosError<T> | undefined>
 }
