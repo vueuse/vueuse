@@ -55,7 +55,15 @@ export declare type WebWorkerStatus =
   | "ERROR"
   | "TIMEOUT_EXPIRED"
 export interface WebWorkerOptions extends ConfigurableWindow {
+  /**
+   * Number of milliseconds before killing the worker
+   *
+   * @default undefined
+   */
   timeout?: number
+  /**
+   * An array that contains the external dependencies needed to run the worker
+   */
   dependencies?: string[]
 }
 /**
@@ -67,7 +75,7 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  { dependencies = [], timeout, window = defaultWindow }: Partial<WebWorkerOptions> = {},
+  options?: WebWorkerOptions
 ) => {
   workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
   workerStatus: Ref<WebWorkerStatus>
