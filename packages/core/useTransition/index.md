@@ -22,7 +22,7 @@ const output = useTransition(source, {
 })
 ```
 
-To synchronize transitions, use an array of numbers. As a example, here is how we could transition between colors.
+To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
 
 ```js
 const source = ref([0, 0, 0])
