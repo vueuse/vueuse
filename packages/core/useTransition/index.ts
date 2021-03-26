@@ -181,7 +181,7 @@ export function useTransition(
     onStarted()
   }
 
-  const timeout = useTimeoutFn(start, delay)
+  const timeout = useTimeoutFn(start, delay, false)
 
   watch(sourceVector, () => {
     if (unref(delay) <= 0) start()

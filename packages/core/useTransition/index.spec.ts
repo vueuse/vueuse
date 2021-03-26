@@ -197,6 +197,8 @@ describe('useTransition', () => {
       onStarted,
     })
 
+    await promiseTimeout(150)
+    expect(onStarted).not.toHaveBeenCalled()
     source.value = 1
     await promiseTimeout(50)
     source.value = 2
