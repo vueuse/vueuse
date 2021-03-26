@@ -106,25 +106,25 @@ interface UseMediaTextTrackSource {
    */
   srcLang: string
 }
-interface UseMediaControlsOptions {
+interface UseMediaControlsOptions extends ConfigurableDocument {
   /**
    * The source for the media, may either be a string, a `UseMediaSource` object, or a list
    * of `UseMediaSource` objects.
    */
-  src: MaybeRef<string | UseMediaSource | UseMediaSource[]>
+  src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
   /**
    * A URL for an image to be shown while the media is downloading. If this attribute
    * isn't specified, nothing is displayed until the first frame is available,
    * then the first frame is shown as the poster frame.
    */
-  poster: MaybeRef<string>
+  poster?: MaybeRef<string>
   /**
    * Indicates that the media automatically begins to play back as soon as it
    * can do so without stopping to finish loading the data.
    *
    * @default false
    */
-  autoplay: MaybeRef<boolean>
+  autoplay?: MaybeRef<boolean>
   /**
    * Indicates that the media is to be played "inline", that is within the
    * element's playback area. Note that the absence of this attribute does
@@ -132,28 +132,28 @@ interface UseMediaControlsOptions {
    *
    * @default auto
    */
-  preload: MaybeRef<"auto" | "metadata" | "none">
+  preload?: MaybeRef<"auto" | "metadata" | "none">
   /**
    * If specified, the browser will automatically seek back to the start
    * upon reaching the end of the media.
    *
    * @default false
    */
-  loop: MaybeRef<boolean>
+  loop?: MaybeRef<boolean>
   /**
    * If true, the browser will offer controls to allow the user to control
    * media playback, including volume, seeking, and pause/resume playback.
    *
    * @default false
    */
-  controls: MaybeRef<boolean>
+  controls?: MaybeRef<boolean>
   /**
    * If true, the audio will be initially silenced. Its default value is false,
    * meaning that the audio will be played when the media is played.
    *
    * @default false
    */
-  muted: MaybeRef<boolean>
+  muted?: MaybeRef<boolean>
   /**
    * Indicates that the video is to be played "inline", that is within the element's
    * playback area. Note that the absence of this attribute does not imply
@@ -161,7 +161,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  playsinline: MaybeRef<boolean>
+  playsinline?: MaybeRef<boolean>
   /**
    * A Boolean attribute which if true indicates that the element should automatically
    * toggle picture-in-picture mode when the user switches back and forth between
@@ -169,11 +169,11 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  autoPictureInPicture: MaybeRef<boolean>
+  autoPictureInPicture?: MaybeRef<boolean>
   /**
    * A list of text tracks for the media
    */
-  tracks: MaybeRef<UseMediaTextTrackSource[]>
+  tracks?: MaybeRef<UseMediaTextTrackSource[]>
 }
 export interface UseMediaTextTrack {
   /**
@@ -213,7 +213,7 @@ export interface UseMediaTextTrack {
 }
 export declare function useMediaControls(
   target: MaybeRef<HTMLMediaElement | null | undefined>,
-  options: Partial<UseMediaControlsOptions>
+  options?: UseMediaControlsOptions
 ): {
   currentTime: Ref<number>
   duration: Ref<number>
@@ -541,7 +541,7 @@ export declare function useMediaControls(
     disableTracks?: boolean
   ) => void
   disableTrack: (track?: number | UseMediaTextTrack | undefined) => void
-  supportsPictureInPicture: boolean
+  supportsPictureInPicture: boolean | undefined
   togglePictureInPicture: () => Promise<unknown>
   isPictureInPicture: Ref<boolean>
 }

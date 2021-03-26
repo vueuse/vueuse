@@ -71,7 +71,7 @@ export declare function debouncedWatch<
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/debouncedWatch/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/debouncedWatch/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/debouncedWatch/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/debouncedWatch/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/debouncedWatch/index.md)
 
 
 <!--FOOTER_ENDS-->
