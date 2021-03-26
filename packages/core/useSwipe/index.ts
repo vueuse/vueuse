@@ -8,7 +8,8 @@ export enum SwipeDirection {
   UP = 'UP',
   RIGHT = 'RIGHT',
   DOWN = 'DOWN',
-  LEFT = 'LEFT'
+  LEFT = 'LEFT',
+  NONE = 'NONE',
 }
 
 export interface SwipeOptions extends ConfigurableWindow {
@@ -90,7 +91,7 @@ export function useSwipe(
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)
-      return null
+      return SwipeDirection.NONE
 
     if (abs(diffX.value) > abs(diffY.value)) {
       return diffX.value > 0
@@ -138,16 +139,17 @@ export function useSwipe(
     useEventListener(target, 'touchmove', (e: TouchEvent) => {
       const [x, y] = getTouchEventCoords(e)
       updateCoordsEnd(x, y)
-      if (direction.value) {
+      if (!isSwiping.value && isThresholdExceeded.value)
         isSwiping.value = true
+      if (isSwiping.value)
         onSwipe?.(e)
-      }
     }, listenerOptions),
 
     useEventListener(target, 'touchend', (e: TouchEvent) => {
-      isSwiping.value = false
-      if (direction.value)
+      if (isSwiping.value)
         onSwipeEnd?.(e, direction.value)
+
+      isSwiping.value = false
     }, listenerOptions),
   ]
 
