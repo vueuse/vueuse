@@ -38,6 +38,7 @@ const { isActive } = watcher
     <input
       ref="input"
       v-model="source"
+      type="text"
     >
 
     <button :disabled="!isActive" class="orange" @click="pause">
