@@ -67,7 +67,7 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`easeInCirc`](https://cubic-bezier.com/#.55,0,1,.45)
 - [`easeOutCirc`](https://cubic-bezier.com/#0,.55,.45,1)
 - [`easeInOutCirc`](https://cubic-bezier.com/#.85,0,.15,1)
-- [`easeInBack`](https://cubic-bezier.com/#0.12,0,0.39,0)
+- [`easeInBack`](https://cubic-bezier.com/#.36,0,.66,-.56)
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
 
