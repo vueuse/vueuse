@@ -8,7 +8,7 @@ Transition between values
 
 ## Usage
 
-For simple transitions, provide a numeric source value. When this changes, a new transition will begin. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+For simple transitions, provide a numeric source to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
 ```js
 import { ref } from 'vue'
@@ -22,7 +22,7 @@ const output = useTransition(source, {
 })
 ```
 
-To synchronize transitions, use an array of values. To demonstrate this, here we'll transition between color values.
+To synchronize transitions, use an array of numbers. As a example, here is how we could transition between colors.
 
 ```js
 const source = ref([0, 0, 0])
