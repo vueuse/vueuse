@@ -1,6 +1,7 @@
 import { watch, ref, unref, watchEffect } from 'vue-demi'
 import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
@@ -50,19 +51,19 @@ interface UseMediaTextTrackSource {
   srcLang: string
 }
 
-interface UseMediaControlsOptions {
+interface UseMediaControlsOptions extends ConfigurableDocument {
   /**
    * The source for the media, may either be a string, a `UseMediaSource` object, or a list
    * of `UseMediaSource` objects.
    */
-  src: MaybeRef<string | UseMediaSource | UseMediaSource[]>
+  src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
 
   /**
    * A URL for an image to be shown while the media is downloading. If this attribute
    * isn't specified, nothing is displayed until the first frame is available,
    * then the first frame is shown as the poster frame.
    */
-  poster: MaybeRef<string>
+  poster?: MaybeRef<string>
 
   /**
    * Indicates that the media automatically begins to play back as soon as it
@@ -70,7 +71,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  autoplay: MaybeRef<boolean>
+  autoplay?: MaybeRef<boolean>
 
   /**
    * Indicates that the media is to be played "inline", that is within the
@@ -79,7 +80,7 @@ interface UseMediaControlsOptions {
    *
    * @default auto
    */
-  preload: MaybeRef<'auto' | 'metadata' | 'none' >
+  preload?: MaybeRef<'auto' | 'metadata' | 'none' >
 
   /**
    * If specified, the browser will automatically seek back to the start
@@ -87,7 +88,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  loop: MaybeRef<boolean>
+  loop?: MaybeRef<boolean>
 
   /**
    * If true, the browser will offer controls to allow the user to control
@@ -95,7 +96,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  controls: MaybeRef<boolean>
+  controls?: MaybeRef<boolean>
 
   /**
    * If true, the audio will be initially silenced. Its default value is false,
@@ -103,7 +104,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  muted: MaybeRef<boolean>
+  muted?: MaybeRef<boolean>
 
   /**
    * Indicates that the video is to be played "inline", that is within the element's
@@ -112,7 +113,7 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  playsinline: MaybeRef<boolean>
+  playsinline?: MaybeRef<boolean>
 
   /**
    * A Boolean attribute which if true indicates that the element should automatically
@@ -121,12 +122,12 @@ interface UseMediaControlsOptions {
    *
    * @default false
    */
-  autoPictureInPicture: MaybeRef<boolean>
+  autoPictureInPicture?: MaybeRef<boolean>
 
   /**
    * A list of text tracks for the media
    */
-  tracks: MaybeRef<UseMediaTextTrackSource[]>
+  tracks?: MaybeRef<UseMediaTextTrackSource[]>
 }
 
 export interface UseMediaTextTrack {
@@ -215,8 +216,15 @@ const defaultOptions: UseMediaControlsOptions = {
   tracks: [],
 }
 
-export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | undefined>, options: Partial<UseMediaControlsOptions>) {
-  options = { ...defaultOptions, ...options }
+export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | undefined>, options: UseMediaControlsOptions = {}) {
+  options = {
+    ...defaultOptions,
+    ...options,
+  }
+
+  const {
+    document = defaultDocument,
+  } = options
 
   const currentTime = ref(0)
   const duration = ref(0)
@@ -233,7 +241,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const selectedTrack = ref<number>(-1)
   const isPictureInPicture = ref(false)
 
-  const supportsPictureInPicture = 'pictureInPictureEnabled' in document
+  const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
   /**
    * Disables the specified track. If no track is specified then
@@ -317,6 +325,9 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * appended as children to the media element as `<source>` elements.
    */
   watchEffect(() => {
+    if (!document)
+      return
+
     const el = unref(target)
     if (!el)
       return
@@ -367,6 +378,9 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * Load Tracks
    */
   watchEffect(() => {
+    if (!document)
+      return
+
     const textTracks = unref(options.tracks)
     const el = unref(target)
 
