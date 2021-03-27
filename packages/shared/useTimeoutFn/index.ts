@@ -1,5 +1,5 @@
-import { Fn } from '@vueuse/shared'
-import { Ref, ref } from 'vue-demi'
+import { Fn, MaybeRef } from '@vueuse/shared'
+import { Ref, ref, unref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
 import { isClient } from '../utils'
 
@@ -22,7 +22,7 @@ export interface TimeoutFnResult {
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval?: number,
+  interval?: MaybeRef<number>,
   immediate = true,
 ): TimeoutFnResult {
   const isPending = ref(false)
@@ -49,7 +49,7 @@ export function useTimeoutFn(
       timer = null
       // eslint-disable-next-line node/no-callback-literal
       cb(...args)
-    }, interval) as unknown as number
+    }, unref(interval)) as unknown as number
   }
 
   if (immediate) {
