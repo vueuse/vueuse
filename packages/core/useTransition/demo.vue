@@ -74,7 +74,7 @@ const pauseOrResume = () => {
       Transition
     </button>
 
-    <button class="orange" :disabled="!isTransitioning" @click="pauseOrResume">
+    <button class="orange" @click="pauseOrResume">
       {{ isPaused ? 'Resume' : 'Pause' }}
     </button>
 

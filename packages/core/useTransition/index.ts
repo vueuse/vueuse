@@ -83,7 +83,6 @@ type TransitionData = {
   endAt: number
   startAt: number
   startVector: number[]
-  timeRemaining: number
 }
 
 /**
@@ -126,9 +125,10 @@ type OutputControls<S extends Source> = {
 }
 
 /**
- * Objects needed to create controlled output
+ * Params needed to create output controls
  */
-type OutputControlObjects<S extends Source> = {
+type OutputControlParams<S extends Source> = {
+  data: TransitionData
   isTransitioning: Ref<boolean>
   output: Output<S>
   pause: () => void
@@ -225,10 +225,10 @@ export function useTransition(source: Source, options: Options = {}): any {
   })
 
   // tracks if a transition is running
-  const isTransitioning = ref(false)
+  const isTransitioning = controls ? ref(false) : null
 
   // time the transition was paused
-  const pausedAt = ref(0)
+  const pausedAt = controls ? ref(0) : null
 
   // raw source value
   const sourceValue = computed(() => {
@@ -249,7 +249,6 @@ export function useTransition(source: Source, options: Options = {}): any {
     endAt: 0,
     startAt: 0,
     startVector: [],
-    timeRemaining: 0,
   }
 
   // requestAnimationFrame loop
@@ -262,8 +261,7 @@ export function useTransition(source: Source, options: Options = {}): any {
     if (progress >= 1) {
       pause()
 
-      data.timeRemaining = 0
-      isTransitioning.value = false
+      if (controls) isTransitioning!.value = false
 
       onFinished()
     }
@@ -281,8 +279,10 @@ export function useTransition(source: Source, options: Options = {}): any {
 
     resume()
 
-    isTransitioning.value = true
-    pausedAt.value = 0
+    if (controls) {
+      isTransitioning!.value = true
+      pausedAt!.value = 0
+    }
 
     onStarted()
   }
@@ -300,19 +300,25 @@ export function useTransition(source: Source, options: Options = {}): any {
   const output = computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value) as Output<typeof source>
 
   // and finally, return the output controls or raw output
-  return controls ? outputControls(data, { isTransitioning, output, pause, pausedAt, resume }) : output
+  return controls
+    ? outputControls({
+      data,
+      isTransitioning: isTransitioning as Ref<boolean>,
+      output,
+      pause,
+      pausedAt: pausedAt as Ref<number>,
+      resume,
+    })
+    : output
 }
 
 /**
  * Create output controls object
  */
-function outputControls<S extends Source>(
-  data: TransitionData,
-  transition: OutputControlObjects<S>,
-): OutputControls<S> {
-  const { isTransitioning, output, pause, pausedAt, resume } = transition
-
+function outputControls<S extends Source>(params: OutputControlParams<S>): OutputControls<S> {
+  const { data, isTransitioning, output, pause, pausedAt, resume } = params
   const isPaused = computed(() => isTransitioning.value && pausedAt.value > 0)
+  let timeRemaining = 0
 
   return {
     isPaused,
@@ -321,14 +327,14 @@ function outputControls<S extends Source>(
     pause: () => {
       if (!isPaused.value && isTransitioning.value) {
         pausedAt.value = Date.now()
-        data.timeRemaining = data.endAt - pausedAt.value
+        timeRemaining = data.endAt - pausedAt.value
         pause()
       }
     },
     resume: () => {
       if (isPaused.value && isTransitioning.value) {
         pausedAt.value = 0
-        data.endAt = Date.now() + data.timeRemaining
+        data.endAt = Date.now() + timeRemaining
         resume()
       }
     },
