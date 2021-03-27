@@ -34,6 +34,7 @@ export declare enum SwipeDirection {
   RIGHT = "RIGHT",
   DOWN = "DOWN",
   LEFT = "LEFT",
+  NONE = "NONE",
 }
 export interface SwipeOptions extends ConfigurableWindow {
   /**
@@ -88,7 +89,7 @@ export declare function useSwipe(
 ): {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection | null>
+  direction: ComputedRef<SwipeDirection>
   coordsStart: {
     x: number
     y: number
