@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { useTransition } from './controls'
 
 const expectBetween = (val: number, floor: number, ceiling: number) => {
   expect(val).toBeGreaterThan(floor)

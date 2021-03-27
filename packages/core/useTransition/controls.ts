@@ -1,10 +1,23 @@
 /* eslint-disable no-unused-expressions */
 import {
+  clamp,
   identity as linear,
+  isFunction,
+  isNumber,
   MaybeRef,
+  noop,
 } from '@vueuse/shared'
 
-import { ref, Ref } from 'vue-demi'
+import {
+  computed,
+  ComputedRef,
+  ref,
+  Ref,
+  unref,
+  watch,
+} from 'vue-demi'
+
+import { useRafFn, useTimeoutFn } from '@vueuse/core'
 
 /**
  * Cubic bezier points
@@ -65,10 +78,10 @@ type ControlledOptions = Options & { controls: true }
  * Output
  */
 type Output<S extends Source> = S extends Ref<number>
-  ? number
+  ? ComputedRef<number>
   : S extends Ref<number[]>
-    ? number[]
-    : { [K in keyof S]: number }
+    ? ComputedRef<number[]>
+    : ComputedRef<{ [K in keyof S]: number }>
 
 /**
  * Controlled output
@@ -150,32 +163,110 @@ export function useTransition<S extends MaybeRef<number>[]>(source: [...S], opti
 export function useTransition<S extends MaybeRef<number>[]>(source: [...S], options?: Options): Output<S>
 
 export function useTransition(source: Source, options: Options = {}): any {
-  // ...
+  const {
+    controls = false,
+    delay = 0,
+    duration = 1000,
+    onFinished = noop,
+    onStarted = noop,
+    transition = linear,
+  } = options
+
+  // current easing function
+  const currentTransition = computed(() => {
+    const t = unref(transition)
+    return isFunction(t) ? t : createEasingFunction(t)
+  })
+
+  // raw source value
+  const sourceValue = computed(() => {
+    const s = unref(source)
+    return isNumber(s) ? s : s.map(unref) as number[]
+  })
+
+  // normalized source vector
+  const sourceVector = computed(() => isNumber(sourceValue.value) ? [sourceValue.value] : sourceValue.value)
+
+  // transitioned output vector
+  const outputVector = ref(sourceVector.value.slice(0))
+
+  // current transition values
+  let currentDuration: number
+  let diffVector: number[]
+  let endAt: number
+  let startAt: number
+  let startVector: number[]
+
+  // requestAnimationFrame loop
+  const { resume, pause } = useRafFn(() => {
+    const now = Date.now()
+    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
+
+    outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
+
+    if (progress >= 1) {
+      pause()
+      onFinished()
+    }
+  }, { immediate: false })
+
+  // start the animation loop when source vector changes
+  const start = () => {
+    pause()
+
+    currentDuration = unref(duration)
+    diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
+    startVector = outputVector.value.slice(0)
+    startAt = Date.now()
+    endAt = startAt + currentDuration
+
+    resume()
+    onStarted()
+  }
+
+  // timeout start for delayed transitions
+  const timeout = useTimeoutFn(start, delay, false)
+
+  // watch source value for changes
+  watch(sourceVector, () => {
+    if (unref(delay) <= 0) start()
+    else timeout.start()
+  }, { deep: true })
+
+  const output = computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
+
+  if (controls) {
+    return {
+      output,
+    }
+  }
+
+  return output
 }
 
 //
 // basic numbers
 //
 const num = useTransition(ref(1))
-num // number
+num // ComputedRef<number>
 
 const controlledNum = useTransition(ref(1), { controls: true })
-controlledNum.output // { output: number }
+controlledNum.output // { output: ComputedRef<number> }
 
 //
 // array vectors
 //
 const arr = useTransition(ref([1, 2]))
-arr // number[]
+arr // ComputedRef<number[]>
 
 const controlledArr = useTransition(ref([1, 2]), { controls: true })
-controlledArr.output // { output: number[] }
+controlledArr.output // { output: ComputedRef<number[]> }
 
 //
 // tuple vectors
 //
 const tuple = useTransition([ref(1), 2])
-tuple // [number, number]
+tuple // ComputedRef<[number, number]>
 
 const controlledTuple = useTransition([ref(1), 2], { controls: true })
-controlledTuple.output // { output: [number, number] }
+controlledTuple.output // { output: ComputedRef<[number, number]> }
