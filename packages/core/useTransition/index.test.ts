@@ -206,4 +206,28 @@ describe('useTransition', () => {
     expect(onStarted).toHaveBeenCalledTimes(1)
     expect(onFinished).toHaveBeenCalledTimes(1)
   })
+
+  it('exposes pause / resume controls', async() => {
+    const source = ref(0)
+
+    const { output, pause, resume } = useTransition(source, {
+      controls: true,
+      duration: 100,
+    })
+
+    source.value = 1
+    await promiseTimeout(50)
+    expectBetween(output.value, 0, 1)
+
+    pause()
+    await promiseTimeout(100)
+    const cachedOutput = output.value
+    expectBetween(cachedOutput, 0, 1)
+
+    resume()
+    await promiseTimeout(25)
+    expectBetween(output.value, cachedOutput, 1)
+    await promiseTimeout(75)
+    expect(output.value).toBe(1)
+  })
 })

@@ -87,7 +87,20 @@ type Output<S extends Source> = S extends Ref<number>
  * Controlled output
  */
 type ControlledOutput<S extends Source> = {
+  /**
+   * Transitioned output value
+   */
   output: Output<S>
+
+  /**
+   * Pause the transition
+   */
+  pause: () => void
+
+  /**
+   * Resume a paused transition
+   */
+  resume: () => void
 }
 
 /**
@@ -194,8 +207,10 @@ export function useTransition(source: Source, options: Options = {}): any {
   let currentDuration: number
   let diffVector: number[]
   let endAt: number
+  let pausedAt: number
   let startAt: number
   let startVector: number[]
+  let timeRemaining: number
 
   // requestAnimationFrame loop
   const { resume, pause } = useRafFn(() => {
@@ -235,12 +250,23 @@ export function useTransition(source: Source, options: Options = {}): any {
 
   const output = computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
 
+  // return transition controls if requested
   if (controls) {
     return {
       output,
+      pause: () => {
+        pausedAt = Date.now()
+        timeRemaining = endAt - pausedAt
+        pause()
+      },
+      resume: () => {
+        endAt = Date.now() + timeRemaining
+        resume()
+      },
     }
   }
 
+  // otherwise return transitioned output
   return output
 }
 
