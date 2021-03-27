@@ -210,24 +210,31 @@ describe('useTransition', () => {
   it('exposes pause / resume controls', async() => {
     const source = ref(0)
 
-    const { output, pause, resume } = useTransition(source, {
+    const { isPaused, isTransitioning, output, pause, resume } = useTransition(source, {
       controls: true,
       duration: 100,
     })
 
     source.value = 1
     await promiseTimeout(50)
+    expect(isPaused.value).toBe(false)
+    expect(isTransitioning.value).toBe(true)
     expectBetween(output.value, 0, 1)
 
     pause()
+    expect(isPaused.value).toBe(true)
+    expect(isTransitioning.value).toBe(true)
     await promiseTimeout(100)
     const cachedOutput = output.value
     expectBetween(cachedOutput, 0, 1)
 
     resume()
+    expect(isPaused.value).toBe(false)
+    expect(isTransitioning.value).toBe(true)
     await promiseTimeout(25)
     expectBetween(output.value, cachedOutput, 1)
     await promiseTimeout(75)
     expect(output.value).toBe(1)
+    expect(isTransitioning.value).toBe(false)
   })
 })

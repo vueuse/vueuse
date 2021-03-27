@@ -10,6 +10,7 @@ import {
 import {
   computed,
   ComputedRef,
+  readonly,
   ref,
   Ref,
   unref,
@@ -74,6 +75,18 @@ type Options = {
 type ControlledOptions = Options & { controls: true }
 
 /**
+ * Transition data
+ */
+type TransitionData = {
+  currentDuration: number
+  diffVector: number[]
+  endAt: number
+  startAt: number
+  startVector: number[]
+  timeRemaining: number
+}
+
+/**
  * Output
  */
 type Output<S extends Source> = S extends Ref<number>
@@ -85,7 +98,17 @@ type Output<S extends Source> = S extends Ref<number>
 /**
  * Controlled output
  */
-type ControlledOutput<S extends Source> = {
+type OutputControls<S extends Source> = {
+  /**
+   * Track if the transition is paused
+   */
+  isPaused: ComputedRef<boolean>
+
+  /**
+   * Track if a transition is running
+   */
+  isTransitioning: Ref<boolean>
+
   /**
    * Transitioned output value
    */
@@ -99,6 +122,17 @@ type ControlledOutput<S extends Source> = {
   /**
    * Resume a paused transition
    */
+  resume: () => void
+}
+
+/**
+ * Objects needed to create controlled output
+ */
+type OutputControlObjects<S extends Source> = {
+  isTransitioning: Ref<boolean>
+  output: Output<S>
+  pause: () => void
+  pausedAt: Ref<number>
   resume: () => void
 }
 
@@ -168,10 +202,10 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
  * Transition between values
  */
 export function useTransition<S extends Ref<number | number[]>>(source: S): Output<S>
-export function useTransition<S extends Ref<number | number[]>>(source: S, options: ControlledOptions): ControlledOutput<S>
+export function useTransition<S extends Ref<number | number[]>>(source: S, options: ControlledOptions): OutputControls<S>
 export function useTransition<S extends Ref<number | number[]>>(source: S, options?: Options): Output<S>
 export function useTransition<S extends MaybeRef<number>[]>(source: [...S]): Output<S>
-export function useTransition<S extends MaybeRef<number>[]>(source: [...S], options: ControlledOptions): ControlledOutput<S>
+export function useTransition<S extends MaybeRef<number>[]>(source: [...S], options: ControlledOptions): OutputControls<S>
 export function useTransition<S extends MaybeRef<number>[]>(source: [...S], options?: Options): Output<S>
 
 export function useTransition(source: Source, options: Options = {}): any {
@@ -190,6 +224,12 @@ export function useTransition(source: Source, options: Options = {}): any {
     return isFunction(t) ? t : createEasingFunction(t)
   })
 
+  // tracks if a transition is running
+  const isTransitioning = ref(false)
+
+  // time the transition was paused
+  const pausedAt = ref(0)
+
   // raw source value
   const sourceValue = computed(() => {
     const s = unref(source)
@@ -202,24 +242,29 @@ export function useTransition(source: Source, options: Options = {}): any {
   // transitioned output vector
   const outputVector = ref(sourceVector.value.slice(0))
 
-  // current transition values
-  let currentDuration: number
-  let diffVector: number[]
-  let endAt: number
-  let pausedAt: number
-  let startAt: number
-  let startVector: number[]
-  let timeRemaining: number
+  // transition data
+  const data: TransitionData = {
+    currentDuration: 0,
+    diffVector: [],
+    endAt: 0,
+    startAt: 0,
+    startVector: [],
+    timeRemaining: 0,
+  }
 
   // requestAnimationFrame loop
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
-    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
+    const progress = clamp(1 - ((data.endAt - now) / data.currentDuration), 0, 1)
 
-    outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
+    outputVector.value = data.startVector.map((val, i) => val + ((data.diffVector[i] ?? 0) * currentTransition.value(progress)))
 
     if (progress >= 1) {
       pause()
+
+      data.timeRemaining = 0
+      isTransitioning.value = false
+
       onFinished()
     }
   }, { immediate: false })
@@ -228,13 +273,17 @@ export function useTransition(source: Source, options: Options = {}): any {
   const start = () => {
     pause()
 
-    currentDuration = unref(duration)
-    diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
-    startVector = outputVector.value.slice(0)
-    startAt = Date.now()
-    endAt = startAt + currentDuration
+    data.currentDuration = unref(duration)
+    data.diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
+    data.startVector = outputVector.value.slice(0)
+    data.startAt = Date.now()
+    data.endAt = data.startAt + data.currentDuration
 
     resume()
+
+    isTransitioning.value = true
+    pausedAt.value = 0
+
     onStarted()
   }
 
@@ -247,24 +296,41 @@ export function useTransition(source: Source, options: Options = {}): any {
     else timeout.start()
   }, { deep: true })
 
-  const output = computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
+  // transitioned output value
+  const output = computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value) as Output<typeof source>
 
-  // return transition controls if requested
-  if (controls) {
-    return {
-      output,
-      pause: () => {
-        pausedAt = Date.now()
-        timeRemaining = endAt - pausedAt
+  // and finally, return the output controls or raw output
+  return controls ? outputControls(data, { isTransitioning, output, pause, pausedAt, resume }) : output
+}
+
+/**
+ * Create output controls object
+ */
+function outputControls<S extends Source>(
+  data: TransitionData,
+  transition: OutputControlObjects<S>,
+): OutputControls<S> {
+  const { isTransitioning, output, pause, pausedAt, resume } = transition
+
+  const isPaused = computed(() => isTransitioning.value && pausedAt.value > 0)
+
+  return {
+    isPaused,
+    isTransitioning: readonly(isTransitioning),
+    output,
+    pause: () => {
+      if (!isPaused.value && isTransitioning.value) {
+        pausedAt.value = Date.now()
+        data.timeRemaining = data.endAt - pausedAt.value
         pause()
-      },
-      resume: () => {
-        endAt = Date.now() + timeRemaining
+      }
+    },
+    resume: () => {
+      if (isPaused.value && isTransitioning.value) {
+        pausedAt.value = 0
+        data.endAt = Date.now() + data.timeRemaining
         resume()
-      },
-    }
+      }
+    },
   }
-
-  // otherwise return transitioned output
-  return output
 }

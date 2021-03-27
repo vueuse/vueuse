@@ -17,17 +17,34 @@ const easeOutElastic = (n: number) => {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-const cubicBezierNumber = useTransition(baseNumber, {
+const {
+  isPaused,
+  isTransitioning,
+  output: cubicBezierNumber,
+  pause: pauseA,
+  resume: resumeA,
+} = useTransition(baseNumber, {
+  controls: true,
   duration,
   transition: [0.75, 0, 0.25, 1],
 })
 
-const customFnNumber = useTransition(baseNumber, {
+const {
+  output: customFnNumber,
+  pause: pauseB,
+  resume: resumeB,
+} = useTransition(baseNumber, {
+  controls: true,
   duration,
   transition: easeOutElastic,
 })
 
-const vector = useTransition(baseVector, {
+const {
+  output: vector,
+  pause: pauseC,
+  resume: resumeC,
+} = useTransition(baseVector, {
+  controls: true,
   duration,
   transition: TransitionPresets.easeOutExpo,
 })
@@ -36,12 +53,29 @@ const toggle = () => {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
   baseVector.value = [rand(0, 100), rand(0, 100)]
 }
+
+const pauseOrResume = () => {
+  if (isPaused.value) {
+    resumeA()
+    resumeB()
+    resumeC()
+  }
+  else {
+    pauseA()
+    pauseB()
+    pauseC()
+  }
+}
 </script>
 
 <template>
   <div>
     <button @click="toggle">
       Transition
+    </button>
+
+    <button class="orange" :disabled="!isTransitioning" @click="pauseOrResume">
+      {{ isPaused ? 'Resume' : 'Pause' }}
     </button>
 
     <p class="mt-2">
