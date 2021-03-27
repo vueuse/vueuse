@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import {
   clamp,
   identity as linear,
@@ -269,30 +268,3 @@ export function useTransition(source: Source, options: Options = {}): any {
   // otherwise return transitioned output
   return output
 }
-
-//
-// basic numbers
-//
-const num = useTransition(ref(1))
-num // ComputedRef<number>
-
-const controlledNum = useTransition(ref(1), { controls: true })
-controlledNum.output // { output: ComputedRef<number> }
-
-//
-// array vectors
-//
-const arr = useTransition(ref([1, 2]))
-arr // ComputedRef<number[]>
-
-const controlledArr = useTransition(ref([1, 2]), { controls: true })
-controlledArr.output // { output: ComputedRef<number[]> }
-
-//
-// tuple vectors
-//
-const tuple = useTransition([ref(1), 2])
-tuple // ComputedRef<[number, number]>
-
-const controlledTuple = useTransition([ref(1), 2], { controls: true })
-controlledTuple.output // { output: ComputedRef<[number, number]> }
