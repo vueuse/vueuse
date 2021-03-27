@@ -94,7 +94,7 @@ const num = useTransition(ref(1))
 num // number
 
 const controlledNum = useTransition(ref(1), { controls: true })
-controlledNum.output // number
+controlledNum.output // { controls: number }
 
 //
 // array vectors
