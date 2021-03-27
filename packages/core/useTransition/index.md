@@ -8,20 +8,21 @@ Transition between values
 
 ## Usage
 
-For simple transitions, provide a numeric source value. When this changes, a new transition will begin. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+For simple transitions, provide a numeric source to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
 ```js
 import { ref } from 'vue'
-import { useTransition } from '@vueuse/core'
+import { useTransition, TransitionPresets } from '@vueuse/core'
 
 const source = ref(0)
 
 const output = useTransition(source, {
   duration: 1000,
+  transition: TransitionPresets.easeInOutCubic,
 })
 ```
 
-To synchronize transitions, use an array of values. To demonstrate this, here we'll transition between color values.
+To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
 
 ```js
 const source = ref([0, 0, 0])
@@ -42,7 +43,7 @@ useTransition(source, {
 })
 ```
 
-The following common transitions are available via the `TransitionPresets` constant.
+The following transitions are available via the `TransitionPresets` constant.
 
 - [`linear`](https://cubic-bezier.com/#0,0,1,1)
 - [`easeInSine`](https://cubic-bezier.com/#.12,0,.39,0)
@@ -66,7 +67,7 @@ The following common transitions are available via the `TransitionPresets` const
 - [`easeInCirc`](https://cubic-bezier.com/#.55,0,1,.45)
 - [`easeOutCirc`](https://cubic-bezier.com/#0,.55,.45,1)
 - [`easeInOutCirc`](https://cubic-bezier.com/#.85,0,.15,1)
-- [`easeInBack`](https://cubic-bezier.com/#0.12,0,0.39,0)
+- [`easeInBack`](https://cubic-bezier.com/#.36,0,.66,-.56)
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
 
@@ -86,10 +87,11 @@ useTransition(source, {
 })
 ```
 
-To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+To control when a transition starts, set a `delay` value. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
 useTransition(source, {
+  delay: 1000,
   onStarted() {
     // called after the transition starts
   },
@@ -98,7 +100,6 @@ useTransition(source, {
   },
 })
 ```
-
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

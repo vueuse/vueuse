@@ -1,6 +1,7 @@
 import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
 import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
+import { useTimeoutFn } from '@vueuse/core'
 
 /**
  * Cubic bezier points
@@ -16,6 +17,11 @@ type EasingFunction = (n: number) => number
  * Transition options
  */
 export type TransitionOptions = {
+  /**
+   * Milliseconds to wait before starting transition
+   */
+  delay?: MaybeRef<number>
+
   /**
    * Transition duration in milliseconds
    */
@@ -118,8 +124,9 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: Tran
 export function useTransition(
   source: Ref<number | number[]> | MaybeRef<number>[],
   options: TransitionOptions = {},
-): ComputedRef<number | { [K in keyof typeof source]: number } | number[]> {
+): ComputedRef<number | number[] | { [K in keyof typeof source]: number }> {
   const {
+    delay = 0,
     duration = 1000,
     onFinished = noop,
     onStarted = noop,
@@ -165,7 +172,7 @@ export function useTransition(
   }, { immediate: false })
 
   // start the animation loop when source vector changes
-  watch(sourceVector, () => {
+  const start = () => {
     pause()
 
     currentDuration = unref(duration)
@@ -176,6 +183,13 @@ export function useTransition(
 
     resume()
     onStarted()
+  }
+
+  const timeout = useTimeoutFn(start, delay, false)
+
+  watch(sourceVector, () => {
+    if (unref(delay) <= 0) start()
+    else timeout.start()
   }, { deep: true })
 
   return computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
