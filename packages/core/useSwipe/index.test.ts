@@ -34,8 +34,10 @@ describe('useSwipe', () => {
 
   const mockTouchEvents = (target: EventTarget, coords: Array<number[]>) => {
     coords.forEach(([x, y], i) => {
-      if (i === 0) target.dispatchEvent(mockTouchStart(x, y))
-      else if (i === coords.length - 1) target.dispatchEvent(mockTouchEnd(x, y))
+      if (i === 0)
+        target.dispatchEvent(mockTouchStart(x, y))
+      else if (i === coords.length - 1)
+        target.dispatchEvent(mockTouchEnd(x, y))
       else
         target.dispatchEvent(mockTouchMove(x, y))
     })
@@ -72,13 +74,25 @@ describe('useSwipe', () => {
     })
   })
 
+  it('threshold exceeded in between', () => {
+    useSetup(() => {
+      useSwipe(target, { threshold, onSwipe, onSwipeEnd })
+
+      mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
+
+      expect(onSwipe.mock.calls.length).toBe(2)
+      expect(onSwipeEnd.mock.calls.length).toBe(1)
+      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
+    })
+  })
+
   it('reactivity', () => {
     useSetup(() => {
       const { isSwiping, direction, lengthX, lengthY } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
       target.dispatchEvent(mockTouchStart(0, 0))
       expect(isSwiping.value).toBeFalsy()
-      expect(direction.value).toBeNull()
+      expect(direction.value).toBe(SwipeDirection.NONE)
       expect(lengthX.value).toBe(0)
       expect(lengthY.value).toBe(0)
 
@@ -101,10 +115,10 @@ describe('useSwipe', () => {
     useSetup(() => {
       const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, [[0, 2 * threshold], [0, threshold], [0, threshold]])
+      mockTouchEvents(target, coords)
 
-      expect(direction.value).toBe(SwipeDirection.UP)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.UP)
+      expect(direction.value).toBe(expected)
+      expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
     })
   })
 })
