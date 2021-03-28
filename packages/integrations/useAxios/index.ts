@@ -1,7 +1,7 @@
 import { Ref, ref } from 'vue-demi'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
 
-interface UseAxiosReturn<T> {
+export interface UseAxiosReturn<T> {
   response: Ref<AxiosResponse<T> | undefined>
   data: Ref<T | undefined>
   finished: Ref<boolean>
