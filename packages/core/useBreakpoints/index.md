@@ -13,7 +13,7 @@ import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const smAndLarger = breakpointer.larger('sm')
+const smAndLarger = breakpoints.larger('sm')
 ```
 
 ```js
@@ -25,7 +25,7 @@ const breakpoints = useBreakpoints({
   desktop: 1280,
 })
 
-const laptop = breakpointer.between('laptop', 'desktop')
+const laptop = breakpoints.between('laptop', 'desktop')
 ```
 
 
