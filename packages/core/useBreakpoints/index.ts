@@ -1,3 +1,4 @@
+import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
 import { ConfigurableWindow } from '../_configurable'
 
@@ -16,10 +17,15 @@ export const breakpointsTailwind = {
  * @param options
  */
 export function useBreakpoints<K extends string>(breakpoints: Record<K, number | string>, options: ConfigurableWindow = {}) {
-  function getValue(k: K) {
+  function getValue(k: K, delta?: number) {
     let v = breakpoints[k]
+
+    if (delta != null)
+      v = increaseWithUnit(v, delta)
+
     if (typeof v === 'number')
       v = `${v}px`
+
     return v
   }
   // const { window = defaultWindow } = options
@@ -35,10 +41,10 @@ export function useBreakpoints<K extends string>(breakpoints: Record<K, number |
       return useMediaQuery(`(min-width: ${getValue(k)})`, options)
     },
     smaller(k: K) {
-      return useMediaQuery(`(max-width: ${getValue(k)})`, options)
+      return useMediaQuery(`(max-width: ${getValue(k, -0.1)})`, options)
     },
     between(a: K, b: K) {
-      return useMediaQuery(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b)})`, options)
+      return useMediaQuery(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
   }
 }
