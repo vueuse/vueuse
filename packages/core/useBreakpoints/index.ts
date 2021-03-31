@@ -1,14 +1,9 @@
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+export * from './breakpoints'
 
-export const breakpointsTailwind = {
-  'sm': 640,
-  'md': 768,
-  'lg': 1024,
-  'xl': 1280,
-  '2xl': 1536,
-}
+export type Breakpoints<K extends string = string> = Record<K, number | string>
 
 /**
  * Reactively viewport breakpoints
@@ -16,7 +11,7 @@ export const breakpointsTailwind = {
  * @see   {@link https://vueuse.org/useBreakpoints}
  * @param options
  */
-export function useBreakpoints<K extends string>(breakpoints: Record<K, number | string>, options: ConfigurableWindow = {}) {
+export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {
   function getValue(k: K, delta?: number) {
     let v = breakpoints[k]
 
