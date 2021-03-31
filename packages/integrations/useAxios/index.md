@@ -50,7 +50,7 @@ const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
 ## Type Declarations
 
 ```typescript
-interface UseAxiosReturn<T> {
+export interface UseAxiosReturn<T> {
   response: Ref<AxiosResponse<T> | undefined>
   data: Ref<T | undefined>
   finished: Ref<boolean>
@@ -71,7 +71,6 @@ export declare function useAxios<T = any>(
   config: AxiosRequestConfig,
   instance: AxiosInstance
 ): UseAxiosReturn<T>
-export {}
 ```
 
 ## Source

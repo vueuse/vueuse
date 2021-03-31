@@ -33,13 +33,11 @@ const laptop = breakpoints.between('laptop', 'desktop')
 ## Type Declarations
 
 ```typescript
-export declare const breakpointsTailwind: {
-  sm: number
-  md: number
-  lg: number
-  xl: number
-  "2xl": number
-}
+export * from "./breakpoints"
+export declare type Breakpoints<K extends string = string> = Record<
+  K,
+  number | string
+>
 /**
  * Reactively viewport breakpoints
  *
@@ -47,12 +45,15 @@ export declare const breakpointsTailwind: {
  * @param options
  */
 export declare function useBreakpoints<K extends string>(
-  breakpoints: Record<K, number | string>,
+  breakpoints: Breakpoints<K>,
   options?: ConfigurableWindow
 ): {
   greater(k: K): Ref<boolean>
   smaller(k: K): Ref<boolean>
   between(a: K, b: K): Ref<boolean>
+  isGreater(k: K): boolean
+  isSmaller(k: K): boolean
+  isInBetween(a: K, b: K): boolean
 }
 ```
 
