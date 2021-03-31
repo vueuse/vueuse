@@ -1,6 +1,6 @@
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
-import { ConfigurableWindow } from '../_configurable'
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export const breakpointsTailwind = {
   'sm': 640,
@@ -28,13 +28,14 @@ export function useBreakpoints<K extends string>(breakpoints: Record<K, number |
 
     return v
   }
-  // const { window = defaultWindow } = options
 
-  // function match(query: string) {
-  //   if (!window)
-  //     return false
-  //   return window.matchMedia(query)
-  // }
+  const { window = defaultWindow } = options
+
+  function match(query: string): boolean {
+    if (!window)
+      return false
+    return window.matchMedia(query).matches
+  }
 
   return {
     greater(k: K) {
@@ -45,6 +46,15 @@ export function useBreakpoints<K extends string>(breakpoints: Record<K, number |
     },
     between(a: K, b: K) {
       return useMediaQuery(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
+    },
+    isGreater(k: K) {
+      return match(`(min-width: ${getValue(k)})`)
+    },
+    isSmaller(k: K) {
+      return match(`(max-width: ${getValue(k, -0.1)})`)
+    },
+    isInBetween(a: K, b: K) {
+      return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
   }
 }
