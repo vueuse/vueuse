@@ -41,7 +41,7 @@ export const bypassFilter: EventFilter = (invoke) => {
 export function debounceFilter(ms: MaybeRef<number>) {
   let timer: ReturnType<typeof setTimeout> | undefined
 
-  const filter: EventFilter = (invoke, args) => {
+  const filter: EventFilter = (invoke) => {
     if (timer)
       clearTimeout(timer)
 
