@@ -1,5 +1,5 @@
-import { ref } from 'vue-demi'
-import { Fn, Pausable } from './types'
+import { ref, unref } from 'vue-demi'
+import { Fn, Pausable, MaybeRef } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -38,8 +38,8 @@ export const bypassFilter: EventFilter = (invoke) => {
  *
  * @param ms
  */
-export function debounceFilter(ms: number) {
-  if (ms <= 0)
+export function debounceFilter(ms: MaybeRef<number>) {
+  if (unref(ms) <= 0)
     return bypassFilter
 
   let timer: ReturnType<typeof setTimeout> | undefined
@@ -48,7 +48,7 @@ export function debounceFilter(ms: number) {
     if (timer)
       clearTimeout(timer)
 
-    timer = setTimeout(invoke, ms)
+    timer = setTimeout(invoke, unref(ms))
   }
 
   return filter
@@ -60,8 +60,8 @@ export function debounceFilter(ms: number) {
  * @param ms
  * @param [trailing=true]
  */
-export function throttleFilter(ms: number, trailing = true) {
-  if (ms <= 0)
+export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
+  if (unref(ms) <= 0)
     return bypassFilter
 
   let lastExec = 0
@@ -87,7 +87,7 @@ export function throttleFilter(ms: number, trailing = true) {
       timer = setTimeout(() => {
         clear()
         invoke()
-      }, ms)
+      }, unref(ms))
     }
   }
 

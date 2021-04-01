@@ -1,9 +1,9 @@
 import { WatchSource, WatchOptions, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { debounceFilter, MapOldSources, MapSources } from '../utils'
+import { debounceFilter, MapOldSources, MapSources, MaybeRef } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface DebouncedWatchOptions<Immediate> extends WatchOptions<Immediate> {
-  debounce?: number
+  debounce?: MaybeRef<number>
 }
 
 // overlads

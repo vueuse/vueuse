@@ -1,9 +1,9 @@
 import { WatchSource, WatchOptions, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { MapOldSources, MapSources, throttleFilter } from '../utils'
+import { MapOldSources, MapSources, throttleFilter, MaybeRef } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface ThrottledWatchOptions<Immediate> extends WatchOptions<Immediate> {
-  throttle?: number
+  throttle?: MaybeRef<number>
 }
 
 // overlads

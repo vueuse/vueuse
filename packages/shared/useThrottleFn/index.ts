@@ -1,4 +1,4 @@
-import { createFilterWrapper, FunctionArgs, throttleFilter } from '../utils'
+import { createFilterWrapper, FunctionArgs, throttleFilter, MaybeRef } from '../utils'
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting
@@ -10,7 +10,7 @@ import { createFilterWrapper, FunctionArgs, throttleFilter } from '../utils'
  *
  * @return  A new, throttled, function.
  */
-export function useThrottleFn<T extends FunctionArgs>(fn: T, ms = 200, trailing = true): T {
+export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, trailing = true): T {
   return createFilterWrapper(
     throttleFilter(ms, trailing),
     fn,
