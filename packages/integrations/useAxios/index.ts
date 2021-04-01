@@ -51,6 +51,8 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
   const cancel = (message?: string) => {
+    if (finished.value || !loading.value) return
+
     cancelToken.cancel(message)
     canceled.value = true
     loading.value = false
