@@ -57,7 +57,7 @@ const { isListening, isSupported, stop, result } = speech
 <template>
   <div>
     <div v-if="!isSupported">
-      Your browser doses not support SpeechRecognition API,
+      Your browser does not support SpeechRecognition API,
       <a
         href="https://caniuse.com/mdn-api_speechrecognition"
         target="_blank"
