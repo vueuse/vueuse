@@ -42,13 +42,15 @@ export function debounceFilter(ms: MaybeRef<number>) {
   let timer: ReturnType<typeof setTimeout> | undefined
 
   const filter: EventFilter = (invoke) => {
+    const duration = unref(ms)
+
     if (timer)
       clearTimeout(timer)
 
-    if (unref(ms) <= 0)
+    if (duration <= 0)
       return invoke()
 
-    timer = setTimeout(invoke, unref(ms))
+    timer = setTimeout(invoke, duration)
   }
 
   return filter
@@ -72,14 +74,17 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
   }
 
   const filter: EventFilter = (invoke) => {
+    const duration = unref(ms)
     const elapsed = Date.now() - lastExec
 
     clear()
 
-    if (unref(ms) <= 0)
+    if (duration <= 0) {
+      lastExec = Date.now()
       return invoke()
+    }
 
-    if (elapsed > ms) {
+    if (elapsed > duration) {
       lastExec = Date.now()
       invoke()
     }
@@ -87,7 +92,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
       timer = setTimeout(() => {
         clear()
         invoke()
-      }, unref(ms))
+      }, duration)
     }
   }
 
