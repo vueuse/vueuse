@@ -118,6 +118,7 @@
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
   - [`when`](https://vueuse.org/shared/when/) — promised one-time watch for ref changes
+  - [`whenever`](https://vueuse.org/shared/whenever/) — shorthand for watching value to be truthy
 
 
 <!--FUNCTIONS_LIST_ENDS-->

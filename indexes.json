@@ -299,6 +299,13 @@
       "description": "promised one-time watch for ref changes"
     },
     {
+      "name": "whenever",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/whenever/",
+      "category": "Watch",
+      "description": "shorthand for watching value to be truthy"
+    },
+    {
       "name": "asyncComputed",
       "package": "core",
       "docs": "https://vueuse.org/core/asyncComputed/",
