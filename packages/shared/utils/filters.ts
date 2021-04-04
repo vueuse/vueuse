@@ -1,5 +1,5 @@
-import { ref } from 'vue-demi'
-import { Fn, Pausable } from './types'
+import { ref, unref } from 'vue-demi'
+import { Fn, Pausable, MaybeRef } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -38,17 +38,19 @@ export const bypassFilter: EventFilter = (invoke) => {
  *
  * @param ms
  */
-export function debounceFilter(ms: number) {
-  if (ms <= 0)
-    return bypassFilter
-
+export function debounceFilter(ms: MaybeRef<number>) {
   let timer: ReturnType<typeof setTimeout> | undefined
 
   const filter: EventFilter = (invoke) => {
+    const duration = unref(ms)
+
     if (timer)
       clearTimeout(timer)
 
-    timer = setTimeout(invoke, ms)
+    if (duration <= 0)
+      return invoke()
+
+    timer = setTimeout(invoke, duration)
   }
 
   return filter
@@ -60,10 +62,7 @@ export function debounceFilter(ms: number) {
  * @param ms
  * @param [trailing=true]
  */
-export function throttleFilter(ms: number, trailing = true) {
-  if (ms <= 0)
-    return bypassFilter
-
+export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
 
@@ -75,11 +74,17 @@ export function throttleFilter(ms: number, trailing = true) {
   }
 
   const filter: EventFilter = (invoke) => {
+    const duration = unref(ms)
     const elapsed = Date.now() - lastExec
 
     clear()
 
-    if (elapsed > ms) {
+    if (duration <= 0) {
+      lastExec = Date.now()
+      return invoke()
+    }
+
+    if (elapsed > duration) {
       lastExec = Date.now()
       invoke()
     }
@@ -87,7 +92,7 @@ export function throttleFilter(ms: number, trailing = true) {
       timer = setTimeout(() => {
         clear()
         invoke()
-      }, ms)
+      }, duration)
     }
   }
 
