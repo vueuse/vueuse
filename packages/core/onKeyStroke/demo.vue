@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { useKey } from '.'
+import { onKeyStroke } from '.'
 
 const translateX = ref(0)
 const translateY = ref(0)
 
-useKey('ArrowUp', (e: KeyboardEvent) => {
+onKeyStroke('ArrowUp', (e: KeyboardEvent) => {
   translateY.value -= 10
   e.preventDefault()
 })
 
-useKey('ArrowDown', (e: KeyboardEvent) => {
+onKeyStroke('ArrowDown', (e: KeyboardEvent) => {
   translateY.value += 10
   e.preventDefault()
 })
 
-useKey('ArrowLeft', (e: KeyboardEvent) => {
+onKeyStroke('ArrowLeft', (e: KeyboardEvent) => {
   translateX.value -= 10
   e.preventDefault()
 })
 
-useKey('ArrowRight', (e: KeyboardEvent) => {
+onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
   translateX.value += 10
   e.preventDefault()
 })
@@ -46,13 +46,13 @@ useKey('ArrowRight', (e: KeyboardEvent) => {
   height: 100px;
   margin: auto;
   overflow: hidden;
-  border: 1px solid #333;
+  border: 1px solid #a1a1a1;
 }
 
 .ball {
   width: 16px;
   height: 16px;
-  background: #333;
+  background: #a1a1a1;
   border-radius: 50%;
 }
 
