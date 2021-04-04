@@ -1,14 +1,14 @@
 import { ref } from 'vue-demi'
-import { when } from '.'
+import { until } from '.'
 import { invoke } from '@vueuse/shared'
 
-describe('when', () => {
+describe('until', () => {
   it('should work', (done) => {
     const r = ref(0)
 
     invoke(async() => {
       expect(r.value).toBe(0)
-      await when(r).toBe(1)
+      await until(r).toBe(1)
       expect(r.value).toBe(1)
       done()
     })
@@ -23,7 +23,7 @@ describe('when', () => {
 
     invoke(async() => {
       expect(r.value).toBe(0)
-      await when(r).changedTimes(3)
+      await until(r).changedTimes(3)
       expect(r.value).toBe(3)
       done()
     })
@@ -40,7 +40,7 @@ describe('when', () => {
 
     invoke(async() => {
       expect(r.value).toBe(0)
-      await when(r).not.toBe(0)
+      await until(r).not.toBe(0)
       expect(r.value).toBe(1)
       done()
     })
@@ -55,7 +55,7 @@ describe('when', () => {
 
     invoke(async() => {
       expect(r.value).toBe(null)
-      await when(r).not.toBeNull()
+      await until(r).not.toBeNull()
       expect(r.value).toBe(1)
       done()
     })
@@ -70,7 +70,7 @@ describe('when', () => {
 
     invoke(async() => {
       expect(r.value).toEqual([1, 2, 3])
-      await when(r).toContains(4, { deep: true })
+      await until(r).toContains(4, { deep: true })
       expect(r.value).toEqual([1, 2, 3, 4])
       done()
     })
@@ -85,7 +85,7 @@ describe('when', () => {
 
     invoke(async() => {
       expect(r.value).toEqual([1, 2, 3])
-      await when(r).not.toContains(2, { deep: true })
+      await until(r).not.toContains(2, { deep: true })
       expect(r.value).toEqual([1])
       done()
     })

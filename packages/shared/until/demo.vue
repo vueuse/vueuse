@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { when } from '.'
+import { until } from '.'
 import { invoke } from '../utils'
 import { useCounter } from '../useCounter'
 
 const { count, inc, dec } = useCounter()
 
 invoke(async() => {
-  await when(count).toBe(7)
+  await until(count).toBe(7)
 
   alert('You got 7!')
 })

@@ -1,7 +1,7 @@
 import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
 import { ElementOf, promiseTimeout, ShallowUnwrapRef, MaybeRef } from '../utils'
 
-export interface WhenToMatchOptions {
+export interface UntilToMatchOptions {
   /**
    * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
@@ -32,41 +32,54 @@ export interface WhenToMatchOptions {
   deep?: WatchOptions['deep']
 }
 
-export interface BaseWhenInstance<T> {
+export interface UntilBaseInstance<T> {
   toMatch(
     condition: (v: T) => boolean,
-    options?: WhenToMatchOptions
+    options?: UntilToMatchOptions
   ): Promise<void>
-  changed(options?: WhenToMatchOptions): Promise<void>
-  changedTimes(n?: number, options?: WhenToMatchOptions): Promise<void>
+  changed(options?: UntilToMatchOptions): Promise<void>
+  changedTimes(n?: number, options?: UntilToMatchOptions): Promise<void>
 }
 
-export interface ValueWhenInstance<T> extends BaseWhenInstance<T> {
-  readonly not: ValueWhenInstance<T>
+export interface UntilValueInstance<T> extends UntilBaseInstance<T> {
+  readonly not: UntilValueInstance<T>
 
-  toBe<P = T>(value: MaybeRef<T | P>, options?: WhenToMatchOptions): Promise<void>
-  toBeTruthy(options?: WhenToMatchOptions): Promise<void>
-  toBeNull(options?: WhenToMatchOptions): Promise<void>
-  toBeUndefined(options?: WhenToMatchOptions): Promise<void>
-  toBeNaN(options?: WhenToMatchOptions): Promise<void>
+  toBe<P = T>(value: MaybeRef<T | P>, options?: UntilToMatchOptions): Promise<void>
+  toBeTruthy(options?: UntilToMatchOptions): Promise<void>
+  toBeNull(options?: UntilToMatchOptions): Promise<void>
+  toBeUndefined(options?: UntilToMatchOptions): Promise<void>
+  toBeNaN(options?: UntilToMatchOptions): Promise<void>
 }
 
-export interface ArrayWhenInstance<T> extends BaseWhenInstance<T> {
-  readonly not: ArrayWhenInstance<T>
+export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
+  readonly not: UntilArrayInstance<T>
 
-  toContains(value: MaybeRef<ElementOf<ShallowUnwrapRef<T>>>, options?: WhenToMatchOptions): Promise<void>
+  toContains(value: MaybeRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<void>
 }
 
-export function when<T extends unknown[]>(r: T): ArrayWhenInstance<T>
-export function when<T extends Ref<unknown[]>>(r: T): ArrayWhenInstance<T>
-export function when<T>(r: WatchSource<T>): ValueWhenInstance<T>
-export function when<T>(r: T): ValueWhenInstance<T>
-export function when<T>(r: any): any {
+/**
+ * Promised one-time watch for changes
+ *
+ * @link https://vueuse.org/until
+ * @example
+ * ```
+ * const { count } = useCounter()
+ *
+ * await until(count).toMatch(v => v > 7)
+ *
+ * alert('Counter is now larger than 7!')
+ * ```
+ */
+export function until<T extends unknown[]>(r: T): UntilArrayInstance<T>
+export function until<T extends Ref<unknown[]>>(r: T): UntilArrayInstance<T>
+export function until<T>(r: WatchSource<T>): UntilValueInstance<T>
+export function until<T>(r: T): UntilValueInstance<T>
+export function until<T>(r: any): any {
   let isNot = false
 
   function toMatch(
     condition: (v: any) => boolean,
-    { flush = 'sync', deep = false, timeout, throwOnTimeout }: WhenToMatchOptions = {},
+    { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
   ): Promise<void> {
     let stop: Function | null = null
     const watcher = new Promise<void>((resolve) => {
@@ -98,29 +111,29 @@ export function when<T>(r: any): any {
     return Promise.race(promises)
   }
 
-  function toBe<P>(value: P | T, options?: WhenToMatchOptions) {
+  function toBe<P>(value: P | T, options?: UntilToMatchOptions) {
     return toMatch(v => v === unref(value), options)
   }
 
-  function toBeTruthy(options?: WhenToMatchOptions) {
+  function toBeTruthy(options?: UntilToMatchOptions) {
     return toMatch(v => Boolean(v), options)
   }
 
-  function toBeNull(options?: WhenToMatchOptions) {
+  function toBeNull(options?: UntilToMatchOptions) {
     return toBe<null>(null, options)
   }
 
-  function toBeUndefined(options?: WhenToMatchOptions) {
+  function toBeUndefined(options?: UntilToMatchOptions) {
     return toBe<undefined>(undefined, options)
   }
 
-  function toBeNaN(options?: WhenToMatchOptions) {
+  function toBeNaN(options?: UntilToMatchOptions) {
     return toMatch(Number.isNaN, options)
   }
 
   function toContains(
     value: any,
-    options?: WhenToMatchOptions,
+    options?: UntilToMatchOptions,
   ) {
     return toMatch((v) => {
       const array = Array.from(v as any)
@@ -128,11 +141,11 @@ export function when<T>(r: any): any {
     }, options)
   }
 
-  function changed(options?: WhenToMatchOptions) {
+  function changed(options?: UntilToMatchOptions) {
     return changedTimes(1, options)
   }
 
-  function changedTimes(n = 1, options?: WhenToMatchOptions) {
+  function changedTimes(n = 1, options?: UntilToMatchOptions) {
     let count = -1 // skip the immediate check
     return toMatch(() => {
       count += 1
@@ -141,7 +154,7 @@ export function when<T>(r: any): any {
   }
 
   if (Array.isArray(unref(r))) {
-    const instance: ArrayWhenInstance<T> = {
+    const instance: UntilArrayInstance<T> = {
       toMatch,
       toContains,
       changed,
@@ -154,7 +167,7 @@ export function when<T>(r: any): any {
     return instance
   }
   else {
-    const instance: ValueWhenInstance<T> = {
+    const instance: UntilValueInstance<T> = {
       toMatch,
       toBe,
       toBeTruthy,
@@ -172,3 +185,8 @@ export function when<T>(r: any): any {
     return instance
   }
 }
+
+/**
+ * @deprecated `when` is renamed to `util`, use `until` instead. This will be removed in next major version.
+ */
+export const when = until
