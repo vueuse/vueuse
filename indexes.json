@@ -502,6 +502,13 @@
       "description": "detects that a target element's visibility"
     },
     {
+      "name": "useKey",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useKey/",
+      "category": "Sensors",
+      "description": "listen for keyboard keys being used."
+    },
+    {
       "name": "useLocalStorage",
       "package": "core",
       "docs": "https://vueuse.org/core/useLocalStorage/",
