@@ -41,7 +41,7 @@ watchWithFilter(
 ```typescript
 export interface ThrottledWatchOptions<Immediate>
   extends WatchOptions<Immediate> {
-  throttle?: number
+  throttle?: MaybeRef<number>
 }
 export declare function throttledWatch<
   T extends Readonly<WatchSource<unknown>[]>,

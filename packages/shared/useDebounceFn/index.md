@@ -46,7 +46,7 @@ document.addEventLisenter('resize', debouncedFn)
  */
 export declare function useDebounceFn<T extends FunctionArgs>(
   fn: T,
-  ms?: number
+  ms?: MaybeRef<number>
 ): T
 ```
 

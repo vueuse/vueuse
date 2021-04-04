@@ -41,7 +41,7 @@ watchWithFilter(
 ```typescript
 export interface DebouncedWatchOptions<Immediate>
   extends WatchOptions<Immediate> {
-  debounce?: number
+  debounce?: MaybeRef<number>
 }
 export declare function debouncedWatch<
   T extends Readonly<WatchSource<unknown>[]>,

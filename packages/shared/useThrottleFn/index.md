@@ -48,7 +48,7 @@ document.addEventLisenter('resize', throttledFn)
  */
 export declare function useThrottleFn<T extends FunctionArgs>(
   fn: T,
-  ms?: number,
+  ms?: MaybeRef<number>,
   trailing?: boolean
 ): T
 ```
