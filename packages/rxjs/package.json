@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/rxjs",
   "description": "Enables RxJS reactive functions in Vue",
-  "version": "4.6.4",
+  "version": "4.7.0",
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.esm.js",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
   "dependencies": {
-    "@vueuse/shared": "4.6.4",
+    "@vueuse/shared": "4.7.0",
     "vue-demi": "latest"
   },
   "peerDependencies": {
