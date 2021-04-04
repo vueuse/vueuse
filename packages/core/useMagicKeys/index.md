@@ -34,9 +34,9 @@ You can magically use combinations (shortcuts/hotkeys) by connecting keys with `
 import { useMagicKeys } from '@vueuse/core'
 
 const keys = useMagicKeys()
-const shiftA = keys['Shift+Ctrl+A']
+const shiftCtrlA = keys['Shift+Ctrl+A']
 
-watch(shiftA, (v) => {
+watch(shiftCtrlA, (v) => {
   if (v)
     console.log('Shift + Ctrl + A have been pressed')
 })
