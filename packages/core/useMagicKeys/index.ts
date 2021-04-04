@@ -20,7 +20,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
 }
 
 /**
- * Reactive keys pressed state.
+ * Reactive keys pressed state, with magical keys combination support.
  *
  * @link https://vueuse.org/useMagicKeys
  */

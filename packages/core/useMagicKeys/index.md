@@ -4,7 +4,7 @@ category: Sensors
 
 # useMagicKeys
 
-Reactive keys pressed state. With keys combination support.
+Reactive keys pressed state, with magical keys combination support.
 
 > This function uses [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) which is not supported by IE 11 or below.
 
@@ -28,26 +28,26 @@ watchEffect(() => {
 
 ### Combinations
 
-You can magically use combinations (shortcut/hotkeys) by connecting keys with `+` or `_`
+You can magically use combinations (shortcuts/hotkeys) by connecting keys with `+` or `_`
 
 ```ts
 import { useMagicKeys } from '@vueuse/core'
 
 const keys = useMagicKeys()
-const shiftA = keys['Shift+A']
+const shiftA = keys['Shift+Ctrl+A']
 
 watch(shiftA, (v) => {
   if (v)
-    console.log('Shift + A have been pressed')
+    console.log('Shift + Ctrl + A have been pressed')
 })
 ```
 
 ```ts
 import { useMagicKeys } from '@vueuse/core'
 
-const { ctrl_a_b } = useMagicKeys()
+const { Ctrl_A_B, space, ctrl_s, /* ... */ } = useMagicKeys()
 
-watch(ctrl_a_b, (v) => {
+watch(Ctrl_A_B, (v) => {
   if (v)
     console.log('Control+A+B have been pressed')
 })
@@ -100,7 +100,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
   target?: MaybeRef<EventTarget>
 }
 /**
- * Reactive keys pressed state.
+ * Reactive keys pressed state, with magical keys combination support.
  *
  * @link https://vueuse.org/useMagicKeys
  */
