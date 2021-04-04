@@ -131,7 +131,15 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
 /**
  * Promised one-time watch for changes
  *
- * @see   {@link https://vueuse.org/until}
+ * @link https://vueuse.org/until
+ * @example
+ * ```
+ * const { count } = useCounter()
+ *
+ * await until(count).toMatch(v => v > 7)
+ *
+ * alert('Counter is now larger than 7!')
+ * ```
  */
 export declare function until<T extends unknown[]>(r: T): UntilArrayInstance<T>
 export declare function until<T extends Ref<unknown[]>>(

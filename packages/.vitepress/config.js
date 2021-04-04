@@ -97,6 +97,10 @@ const config = {
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
     ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
+
+    ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
+    ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
+    ['link', { href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap', rel: 'stylesheet' }],
   ],
 }
 

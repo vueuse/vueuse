@@ -523,6 +523,13 @@
       "description": "reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)"
     },
     {
+      "name": "useMagicKeys",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useMagicKeys/",
+      "category": "Sensors",
+      "description": "reactive keys pressed state"
+    },
+    {
       "name": "useManualRefHistory",
       "package": "core",
       "docs": "https://vueuse.org/core/useManualRefHistory/",
