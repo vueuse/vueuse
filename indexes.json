@@ -327,27 +327,6 @@
       "description": "listen for keyboard keys being stroked."
     },
     {
-      "name": "onKeyDown",
-      "package": "core",
-      "docs": "https://vueuse.org/core/onKeyDown/",
-      "category": "Sensors",
-      "description": "listen to the keydown event of the given key."
-    },
-    {
-      "name": "onKeyPressed",
-      "package": "core",
-      "docs": "https://vueuse.org/core/onKeyPressed/",
-      "category": "Sensors",
-      "description": "listen to the keypress event of the given key."
-    },
-    {
-      "name": "onKeyUp",
-      "package": "core",
-      "docs": "https://vueuse.org/core/onKeyUp/",
-      "category": "Sensors",
-      "description": "listen to the keyup event of the given key."
-    },
-    {
       "name": "onStartTyping",
       "package": "core",
       "docs": "https://vueuse.org/core/onStartTyping/",

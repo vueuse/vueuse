@@ -56,6 +56,10 @@
 
 ### Sensors
   - [`onClickOutside`](https://vueuse.org/core/onClickOutside/) — listen for clicks outside of an element
+  - [`onKeyStroke`](https://vueuse.org/core/onKeyStroke/) — listen for keyboard keys being stroked
+  - [`onKeyDown`](https://vueuse.org/core/onKeyStroke/#alias) — listen to the keydown event of the given key
+  - [`onKeyPressed`](https://vueuse.org/core/onKeyStroke/#alias) —listen to the keypress event of the given key
+  - [`onKeyUp`](https://vueuse.org/core/onKeyStroke/#alias) — listen to the keyup event of the given key
   - [`onStartTyping`](https://vueuse.org/core/onStartTyping/) — fires when users start typing on non-editable elements
   - [`useBattery`](https://vueuse.org/core/useBattery/) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
   - [`useDeviceLight`](https://vueuse.org/core/useDeviceLight/) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
@@ -69,10 +73,6 @@
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
-  - [`onKeyStroke`](https://vueuse.org/core/onKeyStroke/) — listen for keyboard keys being stroked.
-  - [`onKeyDown`](https://vueuse.org/core/onKeyDown/) — listen to the keydown event of the given key.
-  - [`onKeyPressed`](https://vueuse.org/core/onKeyPressed/) —listen to the keypress event of the given key.
-  - [`onKeyUp`](https://vueuse.org/core/onKeyUp/) — listen to the keyup event of the given key.
   - [`useMouse`](https://vueuse.org/core/useMouse/) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
   - [`useMousePressed`](https://vueuse.org/core/useMousePressed/) — reactive mouse pressing state

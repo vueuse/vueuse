@@ -30,6 +30,10 @@ onKeyStroke('ArrowDown', (e) => {
 }, { eventName: 'keyUp' })
 ```
 
+## Alias
+- `onKeyDown`: alias for `onKeyStroke(key, handler, {eventName: 'keydown'})`
+- `onKeyPressed`: alias for `onKeyStroke(key, handler, {eventName: 'keypress'})`
+- `onKeyUp`: alias for `onKeyStroke(key, handler, {eventName: 'keyup'})`
 ## Type Declarations
 
 ```typescript
@@ -46,6 +50,24 @@ export function onKeyStroke(
   key: KeyFilter,
   handler: (event: KeyboardEvent) => void,
   options?: KeyStrokeOptions
+): Fn
+
+export function onKeyDown(
+  key: KeyFilter,
+  handler: (event: KeyboardEvent) => void,
+  options?: Omit<KeyStrokeOptions, 'eventName'>
+): Fn
+
+export function onKeyPressed(
+  key: KeyFilter,
+  handler: (event: KeyboardEvent) => void,
+  options?: Omit<KeyStrokeOptions, 'eventName'>
+): Fn
+
+export function onKeyUp(
+  key: KeyFilter,
+  handler: (event: KeyboardEvent) => void,
+  options?: Omit<KeyStrokeOptions, 'eventName'>
 ): Fn
 ```
 

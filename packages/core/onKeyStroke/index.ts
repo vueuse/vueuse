@@ -40,3 +40,39 @@ export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => v
 
   return useEventListener(target, eventName, listener, passive)
 }
+
+/**
+ * Listen to the keydown event of the given key.
+ *
+ * @see {@link https://vueuse.org/onKeyStroke}
+ * @param key
+ * @param handler
+ * @param options
+ */
+export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+  return onKeyStroke(key, handler, { ...options, eventName: 'keydown' })
+}
+
+/**
+ * Listen to the keypress event of the given key.
+ *
+ * @see {@link https://vueuse.org/onKeyStroke}
+ * @param key
+ * @param handler
+ * @param options
+ */
+export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+  return onKeyStroke(key, handler, { ...options, eventName: 'keypress' })
+}
+
+/**
+ * Listen to the keyup event of the given key.
+ *
+ * @see {@link https://vueuse.org/onKeyStroke}
+ * @param key
+ * @param handler
+ * @param options
+ */
+export function onKeyUp(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+  return onKeyStroke(key, handler, { ...options, eventName: 'keyup' })
+}
