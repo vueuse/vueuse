@@ -1,6 +1,7 @@
 export * from './asyncComputed'
 export * from './createGlobalState'
 export * from './onClickOutside'
+export * from './onKeyStroke'
 export * from './onStartTyping'
 export * from './templateRef'
 export * from './unrefElement'

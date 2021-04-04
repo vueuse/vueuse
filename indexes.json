@@ -327,6 +327,13 @@
       "description": "listen for clicks outside of an element"
     },
     {
+      "name": "onKeyStroke",
+      "package": "core",
+      "docs": "https://vueuse.org/core/onKeyStroke/",
+      "category": "Sensors",
+      "description": "listen for keyboard key being stroked"
+    },
+    {
       "name": "onStartTyping",
       "package": "core",
       "docs": "https://vueuse.org/core/onStartTyping/",

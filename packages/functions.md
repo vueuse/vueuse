@@ -56,6 +56,7 @@
 
 ### Sensors
   - [`onClickOutside`](https://vueuse.org/core/onClickOutside/) — listen for clicks outside of an element
+  - [`onKeyStroke`](https://vueuse.org/core/onKeyStroke/) — listen for keyboard key being stroked
   - [`onStartTyping`](https://vueuse.org/core/onStartTyping/) — fires when users start typing on non-editable elements
   - [`useBattery`](https://vueuse.org/core/useBattery/) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
   - [`useDeviceLight`](https://vueuse.org/core/useDeviceLight/) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
