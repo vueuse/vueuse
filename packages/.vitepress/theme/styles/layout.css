@@ -211,6 +211,7 @@ blockquote {
   padding: 0.25rem 0 0.25rem 1rem;
   font-size: 1rem;
   color: var(--c-text);
+  @apply bg-gray-400 bg-opacity-10;
 }
 
 blockquote > p {

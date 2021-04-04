@@ -6,10 +6,6 @@ category: Formatters
 
 Reactive time ago.
 
-::: warning
-This is an expiremental function, breaking changes might be introduced in the future **without** following semver.
-:::
-
 ## Usage
 
 ```js
