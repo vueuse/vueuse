@@ -210,6 +210,13 @@
       "description": "safe `onUnmounted`"
     },
     {
+      "name": "until",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/until/",
+      "category": "Watch",
+      "description": "promised one-time watch for changes"
+    },
+    {
       "name": "useCounter",
       "package": "shared",
       "docs": "https://vueuse.org/shared/useCounter/",
@@ -290,13 +297,6 @@
       "docs": "https://vueuse.org/shared/watchWithFilter/",
       "category": "Watch",
       "description": "`watch` with additional EventFilter control"
-    },
-    {
-      "name": "when",
-      "package": "shared",
-      "docs": "https://vueuse.org/shared/when/",
-      "category": "Watch",
-      "description": "promised one-time watch for ref changes"
     },
     {
       "name": "asyncComputed",

@@ -116,8 +116,8 @@
   - [`ignorableWatch`](https://vueuse.org/shared/ignorableWatch/) — ignorable watch
   - [`pausableWatch`](https://vueuse.org/shared/pausableWatch/) — pausable watch
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
+  - [`until`](https://vueuse.org/shared/until/) — promised one-time watch for changes
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
-  - [`when`](https://vueuse.org/shared/when/) — promised one-time watch for ref changes
 
 
 <!--FUNCTIONS_LIST_ENDS-->
