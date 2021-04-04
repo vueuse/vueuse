@@ -31,7 +31,7 @@ export declare type GeneralPermissionDescriptor =
 /**
  * Reactive Permissions API.
  *
- * @see   {@link https://vueuse.org/usePermission}
+ * @link https://vueuse.org/usePermission
  * @param permissionDesc
  * @param options
  */

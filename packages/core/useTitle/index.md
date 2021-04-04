@@ -44,7 +44,7 @@ useTitle(title) // document title will match with the ref "title"
 /**
  * Reactive document title.
  *
- * @see   {@link https://vueuse.org/useTitle}
+ * @link https://vueuse.org/useTitle
  * @param newTitle
  * @param options
  */

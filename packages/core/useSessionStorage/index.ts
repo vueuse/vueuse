@@ -11,7 +11,7 @@ export function useSessionStorage<T = unknown> (key: string, defaultValue: null,
 /**
  * Reactive SessionStorage.
  *
- * @see   {@link https://vueuse.org/useSessionStorage}
+ * @link https://vueuse.org/useSessionStorage
  * @param key
  * @param defaultValue
  * @param options

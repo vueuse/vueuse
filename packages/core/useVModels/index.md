@@ -37,7 +37,7 @@ export default {
 /**
  * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
  *
- * @see   {@link https://vueuse.org/useVModels}
+ * @link https://vueuse.org/useVModels
  * @param props
  * @param emit
  */

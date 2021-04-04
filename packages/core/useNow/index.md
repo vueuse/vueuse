@@ -30,7 +30,7 @@ export interface UseNowOptions {
 /**
  * Reactive current timestamp.
  *
- * @see   {@link https://vueuse.org/useNow}
+ * @link https://vueuse.org/useNow
  * @param options
  */
 export declare function useNow(

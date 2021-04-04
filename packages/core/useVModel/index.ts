@@ -13,7 +13,7 @@ export interface VModelOptions {
 /**
  * Shorthand for v-model binding, props + emit -> ref
  *
- * @see   {@link https://vueuse.org/useVModel}
+ * @link https://vueuse.org/useVModel
  * @param props
  * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit

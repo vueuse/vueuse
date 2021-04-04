@@ -7,7 +7,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive DeviceOrientationEvent.
  *
- * @see   {@link https://vueuse.org/useDeviceOrientation}
+ * @link https://vueuse.org/useDeviceOrientation
  * @param options
  */
 export function useDeviceOrientation(options: ConfigurableWindow = {}) {

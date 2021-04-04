@@ -3,7 +3,7 @@ import { isRef, Ref, ref } from 'vue-demi'
 /**
  * A boolean ref with a toggler
  *
- * @see   {@link https://vueuse.org/useToggle}
+ * @link https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
 export function useToggle(value: Ref<boolean>): () => boolean

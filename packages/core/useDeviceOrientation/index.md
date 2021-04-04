@@ -36,7 +36,7 @@ You can find [more information about the state on the MDN](https://developer.moz
 /**
  * Reactive DeviceOrientationEvent.
  *
- * @see   {@link https://vueuse.org/useDeviceOrientation}
+ * @link https://vueuse.org/useDeviceOrientation
  * @param options
  */
 export declare function useDeviceOrientation(

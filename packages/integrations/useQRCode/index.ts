@@ -5,7 +5,7 @@ import QRCode from 'qrcode'
 /**
  * Wrapper for qrcode.
  *
- * @see   {@link https://vueuse.org/useQRCode}
+ * @link https://vueuse.org/useQRCode
  * @param text
  * @param options
  */

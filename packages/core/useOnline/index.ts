@@ -4,7 +4,7 @@ import { ConfigurableWindow } from '../_configurable'
 /**
  * Reactive online state.
  *
- * @see   {@link https://vueuse.org/useOnline}
+ * @link https://vueuse.org/useOnline
  * @param options
  */
 export function useOnline(options: ConfigurableWindow = {}) {

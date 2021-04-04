@@ -37,7 +37,7 @@ export default defineComponent({
 /**
  * Keep states in the global scope to be reusable across Vue instances.
  *
- * @see   {@link https://vueuse.org/createGlobalState}
+ * @link https://vueuse.org/createGlobalState
  * @param stateFactory A factory function to create the state
  */
 export declare function createGlobalState<T extends object>(

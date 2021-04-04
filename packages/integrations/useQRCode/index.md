@@ -44,7 +44,7 @@ const qrcode = useQRCode(text)
 /**
  * Wrapper for qrcode.
  *
- * @see   {@link https://vueuse.org/useQRCode}
+ * @link https://vueuse.org/useQRCode
  * @param text
  * @param options
  */

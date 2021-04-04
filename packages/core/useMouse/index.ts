@@ -28,7 +28,7 @@ export type MouseSourceType = 'mouse' | 'touch' | null
 /**
  * Reactive mouse position.
  *
- * @see   {@link https://vueuse.org/useMouse}
+ * @link https://vueuse.org/useMouse
  * @param options
  */
 export function useMouse(options: MouseOptions = {}) {

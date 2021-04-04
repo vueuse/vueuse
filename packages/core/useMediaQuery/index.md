@@ -23,7 +23,7 @@ const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
 /**
  * Reactive Media Query.
  *
- * @see   {@link https://vueuse.org/useMediaQuery}
+ * @link https://vueuse.org/useMediaQuery
  * @param query
  * @param options
  */

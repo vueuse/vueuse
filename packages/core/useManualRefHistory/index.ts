@@ -115,7 +115,7 @@ function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
- * @see   {@link https://vueuse.org/useManualRefHistory}
+ * @link https://vueuse.org/useManualRefHistory
  * @param source
  * @param options
  */

@@ -7,7 +7,7 @@ export type ColorSchemeType = 'dark' | 'light' | 'no-preference'
 /**
  * Reactive prefers-color-scheme media query.
  *
- * @see   {@link https://vueuse.org/usePreferredColorScheme}
+ * @link https://vueuse.org/usePreferredColorScheme
  * @param [options]
  */
 export function usePreferredColorScheme(options?: ConfigurableWindow) {

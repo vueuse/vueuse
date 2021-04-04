@@ -39,7 +39,7 @@ declare class ResizeObserver {
 /**
  * Reports changes to the dimensions of an Element's content or the border-box
  *
- * @see   {@link https://vueuse.org/useResizeObserver}
+ * @link https://vueuse.org/useResizeObserver
  * @param target
  * @param callback
  * @param options

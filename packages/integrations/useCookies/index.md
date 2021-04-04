@@ -99,7 +99,7 @@ Create a `universal-cookie` instance using request (default is window.document.c
 /**
  * Creates a new {@link useCookies} function
  * @param {Object} req - incoming http request (for SSR)
- * @see {@link https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie|universal-cookie}
+ * @link https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie|universal-cookie
  * @description Creates universal-cookie instance using request (default is window.document.cookie) and returns {@link useCookies} function with provided universal-cookie instance
  */
 export declare function createCookies(

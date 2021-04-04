@@ -9,7 +9,7 @@ export interface GeolocationOptions extends Partial<PositionOptions>, Configurab
 /**
  * Reactive Geolocation API.
  *
- * @see   {@link https://vueuse.org/useGeolocation}
+ * @link https://vueuse.org/useGeolocation
  * @param options
  */
 export function useGeolocation(options: GeolocationOptions = {}) {

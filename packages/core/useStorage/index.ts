@@ -53,7 +53,7 @@ export function useStorage<T = unknown> (key: string, defaultValue: null, storag
 /**
  * Reactive LocalStorage/SessionStorage.
  *
- * @see   {@link https://vueuse.org/useStorage}
+ * @link https://vueuse.org/useStorage
  * @param key
  * @param defaultValue
  * @param storage

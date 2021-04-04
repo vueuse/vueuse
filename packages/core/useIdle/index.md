@@ -46,7 +46,7 @@ export interface IdleOptions
 /**
  * Tracks whether the user is being inactive.
  *
- * @see   {@link https://vueuse.org/useIdle}
+ * @link https://vueuse.org/useIdle
  * @param timeout default to 1 minute
  * @param options IdleOptions
  */

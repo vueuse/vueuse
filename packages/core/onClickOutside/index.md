@@ -44,7 +44,7 @@ declare type EventType = WindowEventMap[typeof events[number]]
 /**
  * Listen for clicks outside of an element.
  *
- * @see   {@link https://vueuse.org/onClickOutside}
+ * @link https://vueuse.org/onClickOutside
  * @param target
  * @param handler
  * @param options

@@ -41,7 +41,7 @@ export declare type Breakpoints<K extends string = string> = Record<
 /**
  * Reactively viewport breakpoints
  *
- * @see   {@link https://vueuse.org/useBreakpoints}
+ * @link https://vueuse.org/useBreakpoints
  * @param options
  */
 export declare function useBreakpoints<K extends string>(

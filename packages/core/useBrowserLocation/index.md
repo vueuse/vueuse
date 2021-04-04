@@ -36,7 +36,7 @@ export interface BrowserLocationState {
 /**
  * Reactive browser location.
  *
- * @see   {@link https://vueuse.org/useBrowserLocation}
+ * @link https://vueuse.org/useBrowserLocation
  * @param options
  */
 export declare function useBrowserLocation({

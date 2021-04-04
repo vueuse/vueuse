@@ -23,7 +23,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
 /**
  * Detects that a target element's visibility.
  *
- * @see   {@link https://vueuse.org/useIntersectionObserver}
+ * @link https://vueuse.org/useIntersectionObserver
  * @param target
  * @param callback
  * @param options

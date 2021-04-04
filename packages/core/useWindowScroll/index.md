@@ -22,7 +22,7 @@ const { x, y } = useWindowScroll()
 /**
  * Reactive window scroll.
  *
- * @see   {@link https://vueuse.org/useWindowScroll}
+ * @link https://vueuse.org/useWindowScroll
  * @param options
  */
 export declare function useWindowScroll({
