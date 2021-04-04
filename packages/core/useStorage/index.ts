@@ -99,9 +99,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
         rawValue = Serializers[type].write(defaultValue)
         storage.setItem(key, rawValue)
       }
-      else {
-        data.value = Serializers[type].read(rawValue, defaultValue)
-      }
+      data.value = Serializers[type].read(rawValue, defaultValue)
     }
     catch (e) {
       console.warn(e)
