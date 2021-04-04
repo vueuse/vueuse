@@ -1,8 +1,6 @@
-import {
-  useEventListener,
-} from '../useEventListener'
-import { defaultWindow } from '../_configurable'
 import { MaybeRef } from '@vueuse/shared'
+import { useEventListener } from '../useEventListener'
+import { defaultWindow } from '../_configurable'
 
 export type KeyPredicate = (event: KeyboardEvent) => boolean
 export type KeyFilter = null | undefined | string | KeyPredicate
@@ -25,7 +23,7 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
 /**
  * Listen for keyboard keys being stroked.
  *
- * @see {@link https://vueuse.org/onKeyStroke}
+ * @link https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -44,7 +42,7 @@ export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => v
 /**
  * Listen to the keydown event of the given key.
  *
- * @see {@link https://vueuse.org/onKeyStroke}
+ * @link https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -56,7 +54,7 @@ export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => voi
 /**
  * Listen to the keypress event of the given key.
  *
- * @see {@link https://vueuse.org/onKeyStroke}
+ * @link https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -68,7 +66,7 @@ export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => 
 /**
  * Listen to the keyup event of the given key.
  *
- * @see {@link https://vueuse.org/onKeyStroke}
+ * @link https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options

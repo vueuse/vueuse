@@ -324,7 +324,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/onKeyStroke/",
       "category": "Sensors",
-      "description": "listen for keyboard keys being stroked."
+      "description": "listen for keyboard key being stroked"
     },
     {
       "name": "onStartTyping",
