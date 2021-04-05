@@ -2,12 +2,12 @@ import { Ref, ref, shallowRef } from 'vue-demi'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
 
 export interface UseAxiosReturn<T> {
-  response: Ref<AxiosResponse<T> | undefined>
-  data: Ref<T | undefined>
+  response: Ref<AxiosResponse<T> | null>
+  data: Ref<T | null>
   finished: Ref<boolean>
   loading: Ref<boolean>
   canceled: Ref<boolean>
-  error: Ref<AxiosError<T> | undefined>
+  error: Ref<AxiosError<T> | null>
 }
 
 export function useAxios<T = any>(url: string, config?: AxiosRequestConfig): UseAxiosReturn<T>
@@ -42,12 +42,12 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
       instance = args[1]
   }
 
-  const response = shallowRef<AxiosResponse<T> | null>(null)
-  const data = shallowRef<any>(undefined) as Ref<T | undefined>
+  const response = shallowRef<any>(null) as Ref<AxiosResponse<T> | null>
+  const data = shallowRef<any>(null) as Ref<T | null>
   const finished = ref(false)
   const loading = ref(true)
   const canceled = ref(false)
-  const error = shallowRef<AxiosError<T> | undefined>()
+  const error = shallowRef<any>(null) as Ref<AxiosError<T> | null>
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
   const cancel = (message?: string) => {
