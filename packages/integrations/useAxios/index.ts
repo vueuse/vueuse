@@ -42,7 +42,7 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
       instance = args[1]
   }
 
-  const response = shallowRef<any>(null) as Ref<AxiosResponse<T> | undefined>
+  const response = shallowRef<AxiosResponse<T> | null>(null)
   const data = shallowRef<any>(undefined) as Ref<T | undefined>
   const finished = ref(false)
   const loading = ref(true)
