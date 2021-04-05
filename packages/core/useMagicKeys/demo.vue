@@ -6,10 +6,10 @@ const { shift, v, u, e, s, v_u_e, u_s_e } = useMagicKeys()
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-col md:flex-row">
     <img
       src="/vue.svg"
-      class="h-20 m-auto transform transistion duration-500"
+      class="h-38 py-8 m-auto transform transistion duration-500"
       :class="{'opacity-0': !v_u_e, 'rotate-180': shift }"
     />
 
@@ -54,7 +54,7 @@ const { shift, v, u, e, s, v_u_e, u_s_e } = useMagicKeys()
 
     <img
       src="/favicon.svg"
-      class="h-20 m-auto transform transistion duration-500"
+      class="h-38 py-8 m-auto transform transistion duration-500"
       :class="{'opacity-0': !u_s_e, 'rotate-180': shift }"
     />
   </div>
