@@ -8,5 +8,5 @@ const prefersDark = usePreferredDark()
   <note class="mb-2">
     Prefers Dark:
   </note>
-  <code>{{ prefersDark }}</code>
+  <BooleanDisplay :value="prefersDark" />
 </template>

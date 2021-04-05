@@ -18,7 +18,7 @@ const idledFor = computed(() =>
     demo (default 1min).
   </note>
   <div class="mb-2">
-    Idle: <code>{{ idle }}</code>
+    Idle: <BooleanDisplay :value="idle" />
   </div>
   <div>Inactive: <b class="text-primary">{{ idledFor }}s</b></div>
 </template>

@@ -110,10 +110,6 @@ const config: UserConfig = {
       },
     }),
     WindiCSS({
-      scan: {
-        dirs: ['.'],
-        exclude: ['dist'],
-      },
       preflight: false,
     }),
   ],
