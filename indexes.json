@@ -175,6 +175,13 @@
       "description": "apply `reactify` to an object"
     },
     {
+      "name": "reactivePick",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/reactivePick/",
+      "category": "Utilities",
+      "description": "reactively pick fields from a reactive object"
+    },
+    {
       "name": "set",
       "package": "shared",
       "docs": "https://vueuse.org/shared/set/",
