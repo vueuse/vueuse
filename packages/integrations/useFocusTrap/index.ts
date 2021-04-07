@@ -110,7 +110,7 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
       // Focus if immediate is set to true
       if (immediate)
         activate()
-    })
+    }, { flush: 'post' })
 
   // Cleanup on unmount
   tryOnUnmounted(deactivate)
