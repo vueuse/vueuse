@@ -2,20 +2,9 @@
 import Key from './Key.vue'
 import { useMagicKeys } from '.'
 import { computed } from 'vue-demi'
-import { whenever } from '..'
 
 const { shift, v, u, e, s, v_u_e, u_s_e, current } = useMagicKeys()
 const keys = computed(() => Array.from(current))
-
-const { option_s } = useMagicKeys({
-  passive: false,
-  onEventFired(e) {
-    if (e.key === 's' && e.metaKey && e.type === 'keydown')
-      e.preventDefault()
-  },
-})
-
-whenever(option_s, () => console.log('Ctrl+S have been pressed'))
 </script>
 
 <template>
