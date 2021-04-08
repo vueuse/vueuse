@@ -9,7 +9,7 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 <template>
   <div class="flex flex-col items-center">
     <button @click="activate()">
-      Trap Focus Within Form
+      {{ hasFocus ? 'Focus is trapped within form' : 'Trap focus within form' }}
     </button>
     <input
       type="text"
