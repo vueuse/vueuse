@@ -53,7 +53,7 @@ export default {
 
     return { x, y, isDark, store }
   }
-})
+}
 ```
 
 Refer to [functions list](https://vueuse.org/functions) or [documentations](https://vueuse.org/) for more details.
