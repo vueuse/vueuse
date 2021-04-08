@@ -174,7 +174,6 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    */
   onEventFired?: (e: KeyboardEvent) => void | boolean
 }
-export declare const DefaultMagicKeysAliasMap: Readonly<Record<string, string>>
 export interface MagicKeysInternal {
   /**
    * A Set of currently pressed keys,
@@ -204,6 +203,7 @@ export declare function useMagicKeys(
 export declare function useMagicKeys(
   options: UseMagicKeysOptions<true>
 ): MagicKeys<true>
+export { DefaultMagicKeysAliasMap } from "./aliasMap"
 ```
 
 ## Source

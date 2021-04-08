@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/router",
   "description": "Utilities for vue-router",
-  "version": "4.8.0",
+  "version": "4.8.1",
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.esm.js",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/router#readme",
   "dependencies": {
-    "@vueuse/shared": "4.8.0",
+    "@vueuse/shared": "4.8.1",
     "vue-demi": "latest"
   },
   "peerDependencies": {
