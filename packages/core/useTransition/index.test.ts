@@ -206,4 +206,25 @@ describe('useTransition', () => {
     expect(onStarted).toHaveBeenCalledTimes(1)
     expect(onFinished).toHaveBeenCalledTimes(1)
   })
+
+  it('can be disabled for sychronous changes', async() => {
+    const onStarted = jest.fn()
+    const disabled = ref(false)
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      disabled,
+      duration: 100,
+      onStarted,
+    })
+
+    disabled.value = true
+    source.value = 1
+
+    expect(transition.value).toBe(1)
+    await promiseTimeout(150)
+    expect(onStarted).not.toHaveBeenCalled()
+    disabled.value = false
+    expect(transition.value).toBe(1)
+  })
 })
