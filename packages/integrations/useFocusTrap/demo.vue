@@ -9,7 +9,7 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 <template>
   <div class="flex flex-col items-center">
     <button @click="activate()">
-      Trap Focus
+      Trap Focus Within Form
     </button>
     <input
       type="text"

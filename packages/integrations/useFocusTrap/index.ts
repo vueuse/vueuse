@@ -86,9 +86,6 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
   const stop = watch(
     () => unrefElement(target),
     (el: HTMLElement) => {
-      if (el)
-        stop()
-
       trap = createFocusTrap(el, {
         ...focusTrapOptions,
         onActivate() {
@@ -113,7 +110,10 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
     }, { flush: 'post' })
 
   // Cleanup on unmount
-  tryOnUnmounted(deactivate)
+  tryOnUnmounted(() => {
+    stop()
+    deactivate()
+  })
 
   return {
     hasFocus,
