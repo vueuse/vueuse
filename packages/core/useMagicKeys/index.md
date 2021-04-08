@@ -26,9 +26,11 @@ watchEffect(() => {
 })
 ```
 
+Check out [all the possible keycodes](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode).
+
 ### Combinations
 
-You can magically use combinations (shortcuts/hotkeys) by connecting keys with `+` or `_`
+You can magically use combinations (shortcuts/hotkeys) by connecting keys with `+` or `_`.
 
 ```ts
 import { useMagicKeys } from '@vueuse/core'
@@ -45,7 +47,7 @@ watch(shiftCtrlA, (v) => {
 ```ts
 import { useMagicKeys } from '@vueuse/core'
 
-const { Ctrl_A_B, space, ctrl_s, /* ... */ } = useMagicKeys()
+const { Ctrl_A_B, space, alt_s, /* ... */ } = useMagicKeys()
 
 watch(Ctrl_A_B, (v) => {
   if (v)
@@ -65,9 +67,63 @@ whenever(keys.shift_space, () => {
 })
 ```
 
+### Current Pressed keys
+
+A special property `current` is provided to representing all the keys been pressed currently.
+
+```ts
+import { useMagicKeys } from '@vueuse/core'
+
+const { current } = useMagicKeys()
+
+console.log(current) // Set { 'control', 'a' }
+
+whenever(
+  () => current.has('a') && !current.has('b'),
+  () => console.log('A is pressed but not B')
+)
+```
+
+### Key Alias
+
+```ts
+import { useMagicKeys, whenever } from '@vueuse/core'
+
+const { shift_cool } = useMagicKeys({
+  alias: {
+    cool: 'space'
+  }
+})
+
+whenever(cool, () => console.log('Shift + Space have been pressed'))
+```
+
+By default, we have some preconfigured alias for common practices. 
+
+For example: `ctrl` -> `control` and `option` -> `meta`.
+
+### Custom Event Handler
+
+```ts
+import { useMagicKeys, whenever } from '@vueuse/core'
+
+const { ctrl_s } = useMagicKeys({
+  passive: false,
+  onEventFired(e) {
+    if (e.ctrlKey && e.key === 's' && e.type === 'keydown') {
+      e.preventDefault()
+    }
+  }
+})
+
+whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
+```
+
+> ⚠️ This usage is NOT recommended, please use with caution.
+
 ### Reactive Mode
 
-By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to use the object in template, you can set it to reactive mode.
+By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to use the object in the template, you can set it to reactive mode.
 
 ```ts
 const keys = useMagicKeys({ reactive: true })
@@ -98,7 +154,47 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    * @default window
    */
   target?: MaybeRef<EventTarget>
+  /**
+   * Alias map for keys, all the keys should be lowercase
+   * { target: keycode }
+   *
+   * @example { ctrl: "control" }
+   * @default <predefined-map>
+   */
+  aliasMap?: Record<string, string>
+  /**
+   * Register passive listener
+   *
+   * @default true
+   */
+  passive?: boolean
+  /**
+   * Custom event handler for keydown/keyup event.
+   * Useful when you want to apply custom logic.
+   *
+   * When using `e.preventDefault()`, you will need to pass `passive: false` to useMagicKeys().
+   */
+  onEventFired?: (e: KeyboardEvent) => void | boolean
 }
+export declare const DefaultMagicKeysAliasMap: Readonly<Record<string, string>>
+export interface MagicKeysInternal {
+  /**
+   * A Set of currently pressed keys,
+   * Stores raw keyCodes.
+   *
+   * @link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+   */
+  current: Set<string>
+}
+export declare type MagicKeys<Reactive extends Boolean> = Readonly<
+  Omit<
+    Reactive extends true
+      ? Record<string, boolean>
+      : Record<string, ComputedRef<boolean>>,
+    keyof MagicKeysInternal
+  > &
+    MagicKeysInternal
+>
 /**
  * Reactive keys pressed state, with magical keys combination support.
  *
@@ -106,10 +202,10 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
  */
 export declare function useMagicKeys(
   options?: UseMagicKeysOptions<false>
-): Readonly<Record<string, ComputedRef<boolean>>>
+): MagicKeys<false>
 export declare function useMagicKeys(
   options: UseMagicKeysOptions<true>
-): Readonly<Record<string, boolean>>
+): MagicKeys<true>
 ```
 
 ## Source

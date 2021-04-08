@@ -38,7 +38,10 @@ console.log(debounced.value) // 'bar'
 ## Type Declarations
 
 ```typescript
-export declare function useDebounce<T>(value: Ref<T>, ms?: number): Ref<T>
+export declare function useDebounce<T>(
+  value: Ref<T>,
+  ms?: number
+): Readonly<Ref<T>>
 ```
 
 ## Source

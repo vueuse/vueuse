@@ -1,5 +1,5 @@
 import { computed, ComputedRef, reactive, ref, unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import { MaybeRef, noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -17,25 +17,86 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    * @default window
    */
   target?: MaybeRef<EventTarget>
+
+  /**
+   * Alias map for keys, all the keys should be lowercase
+   * { target: keycode }
+   *
+   * @example { ctrl: "control" }
+   * @default <predefined-map>
+   */
+  aliasMap?: Record<string, string>
+
+  /**
+   * Register passive listener
+   *
+   * @default true
+   */
+  passive?: boolean
+
+  /**
+   * Custom event handler for keydown/keyup event.
+   * Useful when you want to apply custom logic.
+   *
+   * When using `e.preventDefault()`, you will need to pass `passive: false` to useMagicKeys().
+   */
+  onEventFired?: (e: KeyboardEvent) => void | boolean
 }
+
+export const DefaultMagicKeysAliasMap: Readonly<Record<string, string>> = {
+  ctrl: 'control',
+  option: 'meta',
+}
+
+export interface MagicKeysInternal {
+  /**
+   * A Set of currently pressed keys,
+   * Stores raw keyCodes.
+   *
+   * @link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+   */
+  current: Set<string>
+}
+
+export type MagicKeys<Reactive extends Boolean> =
+  Readonly<
+  Omit<Reactive extends true
+    ? Record<string, boolean>
+    : Record<string, ComputedRef<boolean>>,
+  keyof MagicKeysInternal>
+  & MagicKeysInternal
+  >
 
 /**
  * Reactive keys pressed state, with magical keys combination support.
  *
  * @link https://vueuse.org/useMagicKeys
  */
-export function useMagicKeys(options?: UseMagicKeysOptions<false>): Readonly<Record<string, ComputedRef<boolean>>>
-export function useMagicKeys(options: UseMagicKeysOptions<true>): Readonly<Record<string, boolean>>
+export function useMagicKeys(options?: UseMagicKeysOptions<false>): MagicKeys<false>
+export function useMagicKeys(options: UseMagicKeysOptions<true>): MagicKeys<true>
 export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const {
     reactive: useReactive = false,
     target = defaultWindow,
+    aliasMap = DefaultMagicKeysAliasMap,
+    passive = true,
+    onEventFired = noop,
   } = options
-  const obj = { toJSON() { return {} } }
+  const current = reactive(new Set<string>())
+  const obj = { toJSON() { return {} }, current }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
-    const values = [e.code.toLowerCase(), e.key.toLowerCase()]
+    const key = e.key.toLowerCase()
+    const code = e.code.toLowerCase()
+    const values = [code, key]
+
+    // current set
+    if (value)
+      current.add(e.code)
+    else
+      current.delete(e.code)
+
     for (const key of values) {
       if (key in refs) {
         if (useReactive)
@@ -47,8 +108,14 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   if (target) {
-    useEventListener(target, 'keydown', (e: KeyboardEvent) => updateRefs(e, true), { passive: true })
-    useEventListener(target, 'keyup', (e: KeyboardEvent) => updateRefs(e, false), { passive: true })
+    useEventListener(target, 'keydown', (e: KeyboardEvent) => {
+      updateRefs(e, true)
+      return onEventFired(e)
+    }, { passive })
+    useEventListener(target, 'keyup', (e: KeyboardEvent) => {
+      updateRefs(e, false)
+      return onEventFired(e)
+    }, { passive })
   }
 
   const proxy = new Proxy(
@@ -59,6 +126,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
           return Reflect.get(target, prop, rec)
 
         prop = prop.toLowerCase()
+        // alias
+        if (prop in aliasMap)
+          prop = aliasMap[prop]
+        // create new tracking
         if (!(prop in refs)) {
           if (/[+_-]/.test(prop)) {
             const keys = prop.split(/[+_-]/g).map(i => i.trim())
