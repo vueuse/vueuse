@@ -45,7 +45,7 @@ Utilities for vue-router
 Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
-  - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`useFocusTrap`](https://github.com/focus-trap/focus-trap)
+  - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)
   - [`useJwt`](https://vueuse.org/integrations/useJwt/) — wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)

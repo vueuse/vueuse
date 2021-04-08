@@ -100,7 +100,7 @@ export interface UseFocusTrapReturn {
 /**
  * Reactive focus-trap
  *
- * @link https://vueuse.org/integrations/useFocusTrap/
+ * @link https://vueuse.org/useFocusTrap
  * @param target The target element to trap focus within
  * @param options Focus trap options
  * @param autoFocus Focus trap automatically when mounted

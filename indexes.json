@@ -828,7 +828,7 @@
       "package": "integrations",
       "docs": "https://vueuse.org/integrations/useFocusTrap/",
       "category": "@Integrations",
-      "description": "reactive wrapper for [`useFocusTrap`](https://github.com/focus-trap/focus-trap)"
+      "description": "reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)"
     },
     {
       "name": "useJwt",
