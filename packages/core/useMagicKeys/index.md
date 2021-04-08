@@ -84,23 +84,21 @@ whenever(
 )
 ```
 
-### Key Alias
+### Key Aliasing
 
 ```ts
 import { useMagicKeys, whenever } from '@vueuse/core'
 
 const { shift_cool } = useMagicKeys({
-  alias: {
+  aliasMap: {
     cool: 'space'
   }
 })
 
-whenever(cool, () => console.log('Shift + Space have been pressed'))
+whenever(shift_cool, () => console.log('Shift + Space have been pressed'))
 ```
 
-By default, we have some preconfigured alias for common practices. 
-
-For example: `ctrl` -> `control` and `option` -> `meta`.
+By default, we have some [preconfigured alias for common practices](https://github.com/vueuse/vueuse/blob/main/packages/core/useMagicKeys/aliasMap.ts).
 
 ### Custom Event Handler
 

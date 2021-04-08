@@ -2,6 +2,7 @@ import { computed, ComputedRef, reactive, ref, unref } from 'vue-demi'
 import { MaybeRef, noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
+import { DefaultMagicKeysAliasMap } from './aliasMap'
 
 export interface UseMagicKeysOptions<Reactive extends Boolean> {
   /**
@@ -41,15 +42,6 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    * When using `e.preventDefault()`, you will need to pass `passive: false` to useMagicKeys().
    */
   onEventFired?: (e: KeyboardEvent) => void | boolean
-}
-
-export const DefaultMagicKeysAliasMap: Readonly<Record<string, string>> = {
-  ctrl: 'control',
-  option: 'meta',
-  up: 'arrowup',
-  down: 'arrowdown',
-  left: 'arrowleft',
-  right: 'arrowright',
 }
 
 export interface MagicKeysInternal {
@@ -151,3 +143,5 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
 
   return proxy as any
 }
+
+export { DefaultMagicKeysAliasMap } from './aliasMap'
