@@ -23,6 +23,11 @@ export type TransitionOptions = {
   delay?: MaybeRef<number>
 
   /**
+   * Disables the transition
+   */
+  disabled?: MaybeRef<boolean>
+
+  /**
    * Transition duration in milliseconds
    */
   duration?: MaybeRef<number>
@@ -127,6 +132,7 @@ export function useTransition(
 ): ComputedRef<number | number[] | { [K in keyof typeof source]: number }> {
   const {
     delay = 0,
+    disabled = false,
     duration = 1000,
     onFinished = noop,
     onStarted = noop,
@@ -188,9 +194,17 @@ export function useTransition(
   const timeout = useTimeoutFn(start, delay, false)
 
   watch(sourceVector, () => {
-    if (unref(delay) <= 0) start()
-    else timeout.start()
+    if (unref(disabled)) {
+      outputVector.value = sourceVector.value.slice(0)
+    }
+    else {
+      if (unref(delay) <= 0) start()
+      else timeout.start()
+    }
   }, { deep: true })
 
-  return computed(() => isNumber(sourceValue.value) ? outputVector.value[0] : outputVector.value)
+  return computed(() => {
+    const targetVector = unref(disabled) ? sourceVector : outputVector
+    return isNumber(sourceValue.value) ? targetVector.value[0] : targetVector.value
+  })
 }
