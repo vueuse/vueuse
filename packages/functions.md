@@ -101,6 +101,7 @@
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
   - [`reactify`](https://vueuse.org/shared/reactify/) — converts plain functions into reactive functions
   - [`reactifyObject`](https://vueuse.org/shared/reactifyObject/) — apply `reactify` to an object
+  - [`reactivePick`](https://vueuse.org/shared/reactivePick/) — reactively pick fields from a reactive object
   - [`set`](https://vueuse.org/shared/set/) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
