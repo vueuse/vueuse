@@ -46,6 +46,10 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
 export const DefaultMagicKeysAliasMap: Readonly<Record<string, string>> = {
   ctrl: 'control',
   option: 'meta',
+  up: 'arrowup',
+  down: 'arrowdown',
+  left: 'arrowleft',
+  right: 'arrowright',
 }
 
 export interface MagicKeysInternal {
