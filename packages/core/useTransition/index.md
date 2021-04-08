@@ -8,7 +8,7 @@ Transition between values
 
 ## Usage
 
-For simple transitions, provide a numeric source to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+For simple transitions, provide a numeric source value to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
 ```js
 import { ref } from 'vue'
@@ -100,6 +100,8 @@ useTransition(source, {
   },
 })
 ```
+
+To temporarily stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
