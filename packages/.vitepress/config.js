@@ -21,6 +21,7 @@ const categoriesOrder = [
 const config = {
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
+  lang: 'en-US',
   themeConfig: {
     logo: '/favicon.svg',
     repo: 'vueuse/vueuse',
@@ -88,6 +89,7 @@ const config = {
     },
   },
   head: [
+    ['meta', { name: 'theme-color', content: '#ffffff' }],
     ['link', { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png' }],
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
