@@ -16,6 +16,7 @@
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr docs",
     "docs": "vitepress dev packages",
+    "docs:serve": "vitepress serve packages",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
     "lint": "eslint './{packages,scripts,meta}/**/*.{js,ts,tsx,vue,md}'",
     "lint:fix": "nr lint --fix",
