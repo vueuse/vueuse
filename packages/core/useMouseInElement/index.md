@@ -21,9 +21,9 @@ import { useMouseInElement } from '@vueuse/core'
 
 export default {
   setup() {
-    const el = ref(null)
+    const target = ref(null)
 
-    const { x, y, isOutside } = useMouseInElement(el)
+    const { x, y, isOutside } = useMouseInElement(target)
 
     return { x, y, isOutside }
   }
