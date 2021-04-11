@@ -13,7 +13,7 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
     </button>
     <input
       type="text"
-      :placeholder="hasFocus ? 'You can\'t foucs me' : 'You can focus me'"
+      :placeholder="hasFocus ? 'You can\'t focus me' : 'You can focus me'"
     />
 
     <div
