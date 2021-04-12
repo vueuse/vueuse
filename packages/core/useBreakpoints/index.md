@@ -13,7 +13,7 @@ import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const smAndLarger = breakpoints.larger('sm')
+const smAndLarger = breakpoints.greater('sm')
 ```
 
 ```js
