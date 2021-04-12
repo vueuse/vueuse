@@ -69,7 +69,7 @@ packages
 
 A function folder typicality contains these 4 files:
 
-> You can found the template under `packages/core/_template/`
+> You can find the template under `packages/core/_template/`
 
 ```bash
 index.ts            # function source code itself

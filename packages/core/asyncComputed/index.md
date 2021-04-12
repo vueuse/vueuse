@@ -41,7 +41,7 @@ const userInfo = asyncComputed(
 
 ### onCancel
 
-When the computed source changed before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporated with the fetch API.
+When the computed source changed before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporate with the fetch API.
 
 ```js
 const packageName = ref('@vueuse/core')
@@ -79,7 +79,7 @@ const userInfo = asyncComputed(
 
 ## Caveats
 
-- Just like Vue's built-in `computed` function, `useAsyncComputed` does dependency tracking and is automatically re-evaluated when dependencies change. Note however that only dependency referenced in the first call stack are considered for this. In other words: **Dependencies that are accessed asynchronously will not triggering re-evaluation of the async computed value.**
+- Just like Vue's built-in `computed` function, `useAsyncComputed` does dependency tracking and is automatically re-evaluated when dependencies change. Note however that only dependency referenced in the first call stack are considered for this. In other words: **Dependencies that are accessed asynchronously will not trigger re-evaluation of the async computed value.**
 
 - As opposed to Vue's built-in `computed` function, re-evaluation of the async computed value is triggered whenever dependencies are changing, regardless of whether its result is currently being tracked or not.
 

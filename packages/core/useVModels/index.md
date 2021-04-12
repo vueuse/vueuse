@@ -4,7 +4,7 @@ category: Component
 
 # useVModels
 
-Shorthand for props v-model binding. Think it like `toRefs(props)` but changes will also triggers emit.
+Shorthand for props v-model binding. Think it like `toRefs(props)` but changes will also trigger emit.
 
 ## Usage
 

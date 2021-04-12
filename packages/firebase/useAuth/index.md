@@ -5,7 +5,7 @@ category: '@Firebase'
 # useAuth
 
 Reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding. It provides a reactive `user` and `isAuthenticated` so you
-can easily react to changes in the users authentication status. 
+can easily react to changes in the users' authentication status. 
 
 ## Usage
 
