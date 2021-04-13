@@ -33,7 +33,7 @@ const setMessage = () => {
  */
 export declare function autoResetRef<T>(
   defaultValue: T,
-  afterMs?: number
+  afterMs?: MaybeRef<number>
 ): Ref<T>
 ```
 

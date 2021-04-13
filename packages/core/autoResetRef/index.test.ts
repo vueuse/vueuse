@@ -1,5 +1,6 @@
 import { useSetup } from '../../.test'
 import { autoResetRef } from '.'
+import { ref } from 'vue-demi'
 
 describe('autoResetRef', () => {
   it('should be defined', () => {
@@ -29,6 +30,26 @@ describe('autoResetRef', () => {
 
       await new Promise(resolve => setTimeout(resolve, 100 + 1))
 
+      expect(val.value).toBe('default')
+    })
+  })
+
+  it('should change afterMs', () => {
+    useSetup(async() => {
+      const afterMs = ref(150)
+      const val = autoResetRef('default', afterMs)
+      val.value = 'update'
+      afterMs.value = 100
+
+      await new Promise(resolve => setTimeout(resolve, 100 + 1))
+      expect(val.value).toBe('update')
+
+      await new Promise(resolve => setTimeout(resolve, 50))
+      expect(val.value).toBe('default')
+
+      val.value = 'update'
+
+      await new Promise(resolve => setTimeout(resolve, 100 + 1))
       expect(val.value).toBe('default')
     })
   })
