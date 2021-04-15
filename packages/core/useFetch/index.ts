@@ -57,21 +57,19 @@ interface UseFetchReturnBase<T> {
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type PayloadType = 'text' | 'json' | 'formData'
 
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
+export interface UseFetchReturn<T> extends UseFetchReturnBase<T> {
   // type
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
-}
+  json<JSON = any>(): UseFetchReturn<JSON>
+  text(): UseFetchReturn<string>
+  blob(): UseFetchReturn<Blob>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer>
+  formData(): UseFetchReturn<FormData>
 
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
   // methods
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+  get(): UseFetchReturn<T>
+  post(payload?: unknown, type?: PayloadType): UseFetchReturn<T>
+  put(payload?: unknown, type?: PayloadType): UseFetchReturn<T>
+  delete(payload?: unknown, type?: PayloadType): UseFetchReturn<T>
 }
 
 export interface BeforeFetchContext {
@@ -195,7 +193,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     payload: undefined as unknown,
     payloadType: 'json' as PayloadType,
   }
-  let initialized = false
 
   if (args.length > 0) {
     if (isFetchOptions(args[0]))
@@ -231,7 +228,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   const execute = async() => {
-    initialized = true
     isFetching.value = true
     isFinished.value = false
     error.value = null
@@ -349,7 +345,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   function setMethod(method: string) {
     return (payload?: unknown, payloadType?: PayloadType) => {
-      if (!initialized) {
+      if (!isFetching.value) {
         config.method = method
         config.payload = payload
         config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
@@ -361,9 +357,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   function setType(type: DataType) {
     return () => {
-      if (!initialized) {
+      if (!isFetching.value) {
         config.type = type
-        return base as any
+        return shell as any
       }
       return undefined
     }
