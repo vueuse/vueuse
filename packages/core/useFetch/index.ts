@@ -227,9 +227,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       controller.abort()
   }
 
+  const loading = (isLoading: boolean) => {
+    isFetching.value = isLoading
+    isFinished.value = !isLoading
+  }
+
   const execute = async() => {
-    isFetching.value = true
-    isFinished.value = false
+    loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
@@ -269,8 +273,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
-    if (isCanceled || !fetch)
+    if (isCanceled || !fetch) {
+      loading(false)
       return Promise.resolve()
+    }
 
     return new Promise((resolve) => {
       fetch(
@@ -300,8 +306,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           error.value = fetchError.message || fetchError.name
         })
         .finally(() => {
-          isFinished.value = true
-          isFetching.value = false
+          loading(false)
         })
     })
   }
