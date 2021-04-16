@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/integrations",
   "description": "Integration wrappers for utility libraries",
-  "version": "4.8.1",
+  "version": "4.8.2",
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.esm.js",
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "4.8.1",
+    "@vueuse/shared": "4.8.2",
     "vue-demi": "latest"
   },
   "optionalDependencies": {
