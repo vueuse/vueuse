@@ -4,7 +4,7 @@ import { isDef, tryOnUnmounted } from '@vueuse/shared'
 
 export interface FirestoreOptions {
   errorHandler?: (err: Error) => void
-  autoDispose? : boolean
+  autoDispose?: boolean
 }
 
 export type FirebaseDocRef<T> =
