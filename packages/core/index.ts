@@ -1,4 +1,5 @@
 export * from './asyncComputed'
+export * from './autoResetRef'
 export * from './createGlobalState'
 export * from './onClickOutside'
 export * from './onKeyStroke'
