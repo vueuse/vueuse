@@ -33,7 +33,7 @@
     "rxjs": ">=6.0.0"
   },
   "devDependencies": {
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.7"
   },
   "funding": "https://github.com/sponsors/antfu",
   "exports": {
