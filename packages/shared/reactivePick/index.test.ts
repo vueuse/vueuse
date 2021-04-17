@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { del, ref } from 'vue-demi'
 import { reactivePick } from '.'
 import { useSetup } from '../../.test'
 
@@ -60,7 +60,7 @@ describe('reactivePick', () => {
       object.b = 'bar'
       expect(pickedObject.b).toEqual('bar')
 
-      picks.value.splice(1, 1)
+      del(picks.value, 1)
       expect(pickedObject.b).toBeUndefined()
     })
   })
