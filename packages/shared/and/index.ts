@@ -1,0 +1,11 @@
+import { MaybeRef } from '../utils'
+import { computed, ComputedRef, unref } from 'vue-demi'
+
+/**
+ * `AND` conditions for refs.
+ *
+ * @link https://vueuse.org/and
+ */
+export function and(...args: MaybeRef<any>[]): ComputedRef<boolean> {
+  return computed(() => args.every(i => unref(i)))
+}
