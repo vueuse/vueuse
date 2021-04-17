@@ -19,6 +19,10 @@ const obj = reactive({
 })
 
 const picked = reactivePick(obj, 'x', 'elementX') // { x: number, elementX: number }
+// or
+const pickedArr = reactivePick(obj, ['x', 'elementX']) // { x: number, elementX: number }
+// or
+const pickedArrRef = reactivePick(obj, ref(['x', 'elementX'])) // { x: number, elementX: number }
 ```
 
 ### Scenarios
@@ -43,6 +47,8 @@ const props = defineProps({
 })
 
 const childProps = reactivePick(props, 'color', 'font')
+// or
+const childPropsArr = reactivePick(props, Object.keys(ChildComp.props))
 </script>
 
 <template>
@@ -80,11 +86,30 @@ const size = reactivePick(useElementBounding(), 'height', 'width')
 /**
  * Reactively pick fields from a reactive object
  *
+ * Overload 1: pass keys individually
+ *
  * @link https://vueuse.js.org/reactivePick
+ * @param obj
+ * @param keys
  */
 export declare function reactivePick<T extends object, K extends keyof T>(
   obj: T,
   ...keys: K[]
+): {
+  [S in K]: UnwrapRef<T[S]>
+}
+/**
+ * Reactively pick fields from a reactive object
+ *
+ * Overload 2: pass keys as (ref) array
+ *
+ * @link https://vueuse.js.org/reactivePick
+ * @param obj
+ * @param keys
+ */
+export declare function reactivePick<T extends object, K extends keyof T>(
+  obj: T,
+  keys: MaybeRef<K[]>
 ): {
   [S in K]: UnwrapRef<T[S]>
 }
