@@ -20,7 +20,40 @@ const {
 ```
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export interface UseDevicesListOptions extends ConfigurableNavigator {
+  onUpdated?: (devices: MediaDeviceInfo[]) => void
+  /**
+   * Request for permissions immediately if it's not granted,
+   * otherwise label and deviceIds could be empty
+   *
+   * @default false
+   */
+  requestPermissions?: boolean
+}
+export interface UseDevicesListReturn {
+  /**
+   * All devices
+   */
+  devices: Ref<MediaDeviceInfo[]>
+  videoInputs: ComputedRef<MediaDeviceInfo[]>
+  audioInputs: ComputedRef<MediaDeviceInfo[]>
+  audioOutputs: ComputedRef<MediaDeviceInfo[]>
+  isSupported: boolean
+  ensurePermissions: () => Promise<boolean>
+}
+/**
+ * Reactive `enumerateDevices` listing avaliable input/output devices
+ *
+ * @link https://vueuse.org/useDevicesList
+ * @param options
+ */
+export declare function useDevicesList(
+  options?: UseDevicesListOptions
+): UseDevicesListReturn
+```
 
 ## Source
 

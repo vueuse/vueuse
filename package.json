@@ -45,8 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.6.2",
-    "@antfu/ni": "^0.5.7",
+    "@antfu/eslint-config": "^0.6.3",
+    "@antfu/ni": "^0.5.8",
     "@iconify/json": "^1.1.330",
     "@rollup/plugin-replace": "^2.4.2",
     "@rollup/plugin-typescript": "^8.2.1",
@@ -56,14 +56,14 @@
     "@types/markdown-table": "^2.0.0",
     "@types/node": "~14.14.41",
     "@types/semver": "^7.3.4",
-    "@vue/composition-api": "^1.0.0-rc.6",
+    "@vue/composition-api": "^1.0.0-rc.7",
     "@vue/runtime-dom": "^3.0.11",
     "@vue/test-utils": "^1.1.4",
     "axios": "^0.21.1",
     "consola": "^2.15.3",
     "cross-env": "^7.0.3",
     "dayjs": "^1.10.4",
-    "esbuild-register": "^2.4.0",
+    "esbuild-register": "^2.5.0",
     "eslint": "^7.24.0",
     "eslint-plugin-jest": "^24.3.5",
     "eslint-plugin-markdown": "^1.0.2",
@@ -100,7 +100,7 @@
     "vitepress": "^0.13.0",
     "vue": "^3.0.11",
     "vue-chemistry": "^0.2.2",
-    "vue-demi": "^0.7.4",
+    "vue-demi": "^0.7.5",
     "vue2": "npm:vue@2"
   }
 }

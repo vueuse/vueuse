@@ -28,17 +28,17 @@ whenever(not(a), () => {
 ## Type Declarations
 
 ```typescript
-export declare function set<T>(ref: Ref<T>, value: T): void
-export declare function set<O extends object, K extends keyof O>(
-  target: O,
-  key: K,
-  value: O[K]
-): void
+/**
+ * `NOT` conditions for refs.
+ *
+ * @link https://vueuse.org/not
+ */
+export declare function not(v: MaybeRef<any>): ComputedRef<boolean>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/set/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/set/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/not/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/not/index.md)
 
 
 <!--FOOTER_ENDS-->

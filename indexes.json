@@ -98,6 +98,13 @@
   ],
   "functions": [
     {
+      "name": "and",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/and/",
+      "category": "Utilities",
+      "description": "`AND` condition for refs"
+    },
+    {
       "name": "biSyncRef",
       "package": "shared",
       "docs": "https://vueuse.org/shared/biSyncRef/",
@@ -152,6 +159,20 @@
       "docs": "https://vueuse.org/shared/makeDestructurable/",
       "category": "Utilities",
       "description": "make isomorphic destructurable for object and array at the same time"
+    },
+    {
+      "name": "not",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/not/",
+      "category": "Utilities",
+      "description": "`NOT` condition for ref"
+    },
+    {
+      "name": "or",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/or/",
+      "category": "Utilities",
+      "description": "`OR` conditions for refs"
     },
     {
       "name": "pausableWatch",
@@ -444,6 +465,13 @@
       "docs": "https://vueuse.org/core/useDevicePixelRatio/",
       "category": "Sensors",
       "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)"
+    },
+    {
+      "name": "useDevicesList",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useDevicesList/",
+      "category": "Sensors",
+      "description": "reactive [enumerateDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices) listing avaliable input/output devices"
     },
     {
       "name": "useDocumentVisibility",
