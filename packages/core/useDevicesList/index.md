@@ -41,8 +41,9 @@ export interface UseDevicesListReturn {
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
-  isSupported: boolean
+  permissionGranted: Ref<boolean>
   ensurePermissions: () => Promise<boolean>
+  isSupported: boolean
 }
 /**
  * Reactive `enumerateDevices` listing avaliable input/output devices

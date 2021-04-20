@@ -782,6 +782,13 @@
       "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)"
     },
     {
+      "name": "useUserMedia",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useUserMedia/",
+      "category": "Sensors",
+      "description": "reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming"
+    },
+    {
       "name": "useVModel",
       "package": "core",
       "docs": "https://vueuse.org/core/useVModel/",

@@ -51,7 +51,60 @@ const { stream } = useUserMedia({
 - `usePermission`
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export interface UseUserMediaOptions extends ConfigurableNavigator {
+  /**
+   * If the stream is enabled
+   * @default false
+   */
+  enabled?: MaybeRef<boolean>
+  /**
+   * Recreate stream when the input devices id changed
+   *
+   * @default true
+   */
+  autoSwitch?: MaybeRef<boolean>
+  /**
+   * The device id of video input
+   *
+   * When passing with `undefined` the default device will be used.
+   * Pass `false` or "none" to disabled video input
+   *
+   * @default undefined
+   */
+  videoDeviceId?: MaybeRef<string | undefined | false | "none">
+  /**
+   * The device id of audi input
+   *
+   * When passing with `undefined` the default device will be used.
+   * Pass `false` or "none" to disabled audi input
+   *
+   * @default undefined
+   */
+  audioDeviceId?: MaybeRef<string | undefined | false | "none">
+}
+/**
+ * Reactive `mediaDevices.getUserMedia` streaming
+ *
+ * @link https://vueuse.org/useUserMedia
+ * @param options
+ */
+export declare function useUserMedia(
+  options?: UseUserMediaOptions
+): {
+  isSupported: boolean
+  stream: Ref<MediaStream | undefined>
+  start: () => Promise<MediaStream | undefined>
+  stop: () => void
+  restart: () => Promise<MediaStream | undefined>
+  videoDeviceId: Ref<string | false | undefined>
+  audioDeviceId: Ref<string | false | undefined>
+  enabled: Ref<boolean>
+  autoSwitch: Ref<boolean>
+}
+```
 
 ## Source
 

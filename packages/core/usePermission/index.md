@@ -28,19 +28,40 @@ export declare type GeneralPermissionDescriptor =
   | {
       name: DescriptorNamePolyfill
     }
+export interface UsePermissionOptions<Controls extends boolean>
+  extends ConfigurableNavigator {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
+export declare type UsePermissionReturn = Readonly<
+  Ref<PermissionState | undefined>
+>
+export interface UsePermissionReturnWithControls {
+  state: UsePermissionReturn
+  isSupported: boolean
+  query: () => Promise<PermissionStatus | undefined>
+}
 /**
  * Reactive Permissions API.
  *
  * @link https://vueuse.org/usePermission
- * @param permissionDesc
- * @param options
  */
 export declare function usePermission(
   permissionDesc:
     | GeneralPermissionDescriptor
     | GeneralPermissionDescriptor["name"],
-  options?: ConfigurableNavigator
-): Ref<"" | PermissionState>
+  options?: UsePermissionOptions<false>
+): UsePermissionReturn
+export declare function usePermission(
+  permissionDesc:
+    | GeneralPermissionDescriptor
+    | GeneralPermissionDescriptor["name"],
+  options: UsePermissionOptions<true>
+): UsePermissionReturnWithControls
 export {}
 ```
 
