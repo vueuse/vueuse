@@ -48,7 +48,7 @@
     "@antfu/eslint-config": "^0.6.4",
     "@antfu/ni": "^0.5.8",
     "@antfu/utils": "^0.1.0",
-    "@iconify/json": "^1.1.330",
+    "@iconify/json": "^1.1.331",
     "@rollup/plugin-replace": "^2.4.2",
     "@rollup/plugin-typescript": "^8.2.1",
     "@types/fs-extra": "^9.0.11",
