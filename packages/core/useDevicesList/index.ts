@@ -2,6 +2,7 @@
 
 import { computed, ComputedRef, Ref, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { usePermission } from '../usePermission'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
 export interface UseDevicesListOptions extends ConfigurableNavigator {
@@ -23,9 +24,9 @@ export interface UseDevicesListReturn {
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
-  isSupported: boolean
-
+  permissionGranted: Ref<boolean>
   ensurePermissions: () => Promise<boolean>
+  isSupported: boolean
 }
 
 /**
@@ -46,7 +47,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
   let isSupported = false
-  let granted = false
+  const permissionGranted = ref(false)
 
   async function update() {
     if (!isSupported)
@@ -60,21 +61,22 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (!isSupported)
       return false
 
-    if (granted)
+    if (permissionGranted.value)
       return true
 
-    const status = await navigator!.permissions.query({ name: 'device-info' })
-    if (status.state !== 'granted') {
+    const { state, query } = usePermission('camera', { controls: true })
+    await query()
+    if (state.value !== 'granted') {
       const stream = await navigator!.mediaDevices.getUserMedia({ audio: true, video: true })
       stream.getTracks().forEach(t => t.stop())
       update()
-      granted = (await navigator!.permissions.query({ name: 'device-info' })).state === 'granted'
+      permissionGranted.value = (await query())?.state === 'granted'
     }
     else {
-      granted = true
+      permissionGranted.value = true
     }
 
-    return granted
+    return permissionGranted.value
   }
 
   if (navigator) {
@@ -92,6 +94,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   return {
     devices,
     ensurePermissions,
+    permissionGranted,
     videoInputs,
     audioInputs,
     audioOutputs,
