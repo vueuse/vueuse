@@ -1,5 +1,5 @@
-import { noop } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
+import { createSingletonPromise } from '@antfu/utils'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
@@ -12,41 +12,78 @@ export type GeneralPermissionDescriptor =
   | PushPermissionDescriptor
   | { name: DescriptorNamePolyfill }
 
+export interface UsePermissionOptions<Controls extends boolean> extends ConfigurableNavigator {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
+
+export type UsePermissionReturn = Readonly<Ref<PermissionState | undefined>>
+export interface UsePermissionReturnWithControls {
+  state: UsePermissionReturn
+  isSupported: boolean
+  query: () => Promise<PermissionStatus | undefined>
+}
+
 /**
  * Reactive Permissions API.
  *
  * @link https://vueuse.org/usePermission
- * @param permissionDesc
- * @param options
  */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
-  options: ConfigurableNavigator = {},
-) {
-  const { navigator = defaultNavigator } = options
-  let permissionStatus: PermissionStatus | null = null
+  options?: UsePermissionOptions<false>
+): UsePermissionReturn
+export function usePermission(
+  permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
+  options: UsePermissionOptions<true>,
+): UsePermissionReturnWithControls
+export function usePermission(
+  permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
+  options: UsePermissionOptions<boolean> = {},
+): UsePermissionReturn | UsePermissionReturnWithControls {
+  const {
+    controls = false,
+    navigator = defaultNavigator,
+  } = options
+
+  const isSupported = Boolean(navigator && 'permissions' in navigator)
+  let permissionStatus: PermissionStatus | undefined
 
   const desc = typeof permissionDesc === 'string'
     ? { name: permissionDesc } as PermissionDescriptor
     : permissionDesc as PermissionDescriptor
-
-  const state = ref<PermissionState | ''>('')
+  const state = ref<PermissionState | undefined>()
 
   const onChange = () => {
     if (permissionStatus)
       state.value = permissionStatus.state
   }
 
-  if (navigator && 'permissions' in navigator) {
-    navigator.permissions
-      .query(desc)
-      .then((status) => {
-        permissionStatus = status
-        useEventListener(permissionStatus, 'change', onChange)
-        onChange()
-      })
-      .catch(noop)
-  }
+  const query = createSingletonPromise(async() => {
+    if (!isSupported)
+      return
+    if (!permissionStatus) {
+      permissionStatus = await navigator!.permissions.query(desc)
+      useEventListener(permissionStatus, 'change', onChange)
+      onChange()
+    }
+    return permissionStatus
+  })
 
-  return state
+  query()
+
+  if (controls) {
+    return {
+      state: state as UsePermissionReturn,
+      isSupported,
+      query,
+    }
+  }
+  else {
+    return state as UsePermissionReturn
+  }
 }

@@ -161,6 +161,11 @@
   resolved "https://registry.yarnpkg.com/@antfu/ni/-/ni-0.5.8.tgz#9828c1ba717a7d21d65a94bebbc70449d31ea922"
   integrity sha512-x4y93JuiJZTdbV+xfVbZ10XUx58t1pjbeqLo/0+25BttXgWqx1QA+5T4NStJhffSzcGWf8uGTjRWOUSIlNrhtA==
 
+"@antfu/utils@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.1.0.tgz#c707a6dc8ed31c89981c4b00de69be76a53acf87"
+  integrity sha512-e8gdf0zNYuhFGXnogB0LWCANqV774kHFa4zcCpF2uPFcN7E4TsIPBg+yRxA+9wfbZJE4dqQhFaGo1ZoxJe0bNw==
+
 "@arr/every@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@arr/every/-/every-1.0.1.tgz#22fe1f8e6355beca6c7c7bde965eb15cf994387b"
