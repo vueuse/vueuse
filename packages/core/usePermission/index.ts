@@ -1,5 +1,5 @@
 import { Ref, ref } from 'vue-demi'
-import { createSingletonPromise } from '@antfu/utils'
+import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 

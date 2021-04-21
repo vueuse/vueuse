@@ -47,7 +47,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.6.2",
     "@antfu/ni": "^0.5.7",
-    "@antfu/utils": "^0.1.0",
     "@iconify/json": "^1.1.330",
     "@rollup/plugin-replace": "^2.4.2",
     "@rollup/plugin-typescript": "^8.2.1",
