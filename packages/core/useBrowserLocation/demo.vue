@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
 import { useBrowserLocation } from '.'
 import { stringify } from '@vueuse/docs-utils'
 
