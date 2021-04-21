@@ -4,7 +4,7 @@ category: Utilities
 
 # toRefs
 
-Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) which can receive a ref object instead of a reactive object.
+Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object.
 
 ## Usage
 
@@ -14,18 +14,22 @@ import { reactive, ref } from 'vue-demi'
 
 const objRef = ref({ a: 'a', b: 0 })
 const arrRef = ref(['a', 0])
+
+const { a, b } = toRefs(objRef)
+const [ a, b ] = toRefs(arrRef)
+
 const obj = reactive({ a: 'a', b: 0 })
 const arr = reactive(['a', 0])
 
-const {a, b} = toRefs(objRef)
-const [a, b] = toRefs(arrRef)
-// const { a, b } = toRefs(obj)
-// const [a, b] = toRefs(arr)
+const { a, b } = toRefs(obj)
+const [ a, b ] = toRefs(arr)
 ```
 
 ## Use-cases
+
 ### Destructing a props object
-```vue
+
+```html
 <template>
   <div>
     <input v-model="a" type="text" />
