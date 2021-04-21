@@ -19,7 +19,19 @@ watch(activeElement, (el) => {
 ```
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+/**
+ * Reactive `document.activeElement`
+ *
+ * @link https://vueuse.org/useActiveElement
+ * @param options
+ */
+export declare function useActiveElement<T extends HTMLElement>(
+  options?: ConfigurableWindow
+): ComputedRef<T | null | undefined>
+```
 
 ## Source
 

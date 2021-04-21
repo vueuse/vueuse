@@ -57,19 +57,15 @@ export default {
 ## Type Declarations
 
 ```typescript
-export declare type ToRefs<T extends Ref<object>> = {
-  [K in keyof UnwrapRef<T>]: Ref<UnwrapRef<T>[K]>
-}
 /**
- * Extended `toRefs` which can receive a ref object instead of a reactive object.
+ * Extended `toRefs` that also accepts refs of an object.
  *
  * @link https://vueuse.org/toRefs
  * @param objectRef A ref or normal object or array.
  */
 export declare function toRefs<T extends object>(
-  objectRef: Ref<T>
-): ToRefs<Ref<T>>
-export declare function toRefs<T extends object>(objectRef: T): ToRefsVue<T>
+  objectRef: MaybeRef<T>
+): ToRefs<T>
 ```
 
 ## Source

@@ -21,7 +21,33 @@ console.log(lastChanged.value)
 ```
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export interface UseLastChangedOptions<
+  Immediate extends boolean,
+  InitialValue extends number | null | undefined = undefined
+> extends WatchOptions<Immediate> {
+  initialValue?: InitialValue
+}
+/**
+ * Records the timestamp of the last change
+ *
+ * @link https://vueuse.org/useLastChanged
+ */
+export declare function useLastChanged(
+  source: WatchSource,
+  options?: UseLastChangedOptions<false>
+): Ref<number | null>
+export declare function useLastChanged(
+  source: WatchSource,
+  options: UseLastChangedOptions<true>
+): Ref<number>
+export declare function useLastChanged(
+  source: WatchSource,
+  options: UseLastChangedOptions<boolean, number>
+): Ref<number>
+```
 
 ## Source
 

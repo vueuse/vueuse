@@ -280,6 +280,13 @@
       "description": "wrapper for `setInterval` with controls"
     },
     {
+      "name": "useLastChanged",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/useLastChanged/",
+      "category": "Utilities",
+      "description": "records the timestamp of the last change"
+    },
+    {
       "name": "useThrottle",
       "package": "shared",
       "docs": "https://vueuse.org/shared/useThrottle/",
@@ -387,7 +394,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/toRefs/",
       "category": "Utilities",
-      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) which can receive a ref object instead of a reactive object"
+      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
     },
     {
       "name": "unrefElement",
@@ -395,6 +402,13 @@
       "docs": "https://vueuse.org/core/unrefElement/",
       "category": "Component",
       "description": "unref for dom element"
+    },
+    {
+      "name": "useActiveElement",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useActiveElement/",
+      "category": "Browser",
+      "description": "reactive `document.activeElement`"
     },
     {
       "name": "useAsyncState",
