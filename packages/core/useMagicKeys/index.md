@@ -100,6 +100,26 @@ whenever(shift_cool, () => console.log('Shift + Space have been pressed'))
 
 By default, we have some [preconfigured alias for common practices](https://github.com/vueuse/vueuse/blob/main/packages/core/useMagicKeys/aliasMap.ts).
 
+### Conditionally Disable
+
+You might have some `<input />` elements in your apps, and you don't want to trigger the magic keys handling when users focused on those inputs. There is an example of using `useActiveElement` and `and` to do that.
+
+```ts
+import { useMagicKeys, useActiveElement, whenever, and } from '@vueuse/core'
+
+const activeElement = useActiveElement()
+const notUsingInput = computed(() => 
+  activeElement.value?.tagName !== 'INPUT'
+  && activeElement.value?.tagName !== 'TEXTAREA'
+)
+
+const { tab } = useMagicKeys()
+
+whenever(and(tab, notUsingInput), () => {
+  console.log('Tab has been pressed outside of inputs!')
+})
+```
+
 ### Custom Event Handler
 
 ```ts
