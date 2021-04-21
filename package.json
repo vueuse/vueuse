@@ -18,7 +18,7 @@
     "docs": "vitepress dev packages",
     "docs:serve": "vitepress serve packages",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
-    "lint": "eslint './{packages,scripts,meta}/**/*.{js,ts,tsx,vue,md}'",
+    "lint": "eslint './{packages,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
     "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
     "release": "esno scripts/release.ts && git push --follow-tags",
@@ -45,8 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.6.2",
-    "@antfu/ni": "^0.5.7",
+    "@antfu/eslint-config": "^0.6.4",
+    "@antfu/ni": "^0.5.8",
     "@iconify/json": "^1.1.330",
     "@rollup/plugin-replace": "^2.4.2",
     "@rollup/plugin-typescript": "^8.2.1",
