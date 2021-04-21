@@ -383,6 +383,13 @@
       "description": "shorthand for binding ref to template element"
     },
     {
+      "name": "toRefs",
+      "package": "core",
+      "docs": "https://vueuse.org/core/toRefs/",
+      "category": "Utilities",
+      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) which can receive a ref object instead of a reactive object"
+    },
+    {
       "name": "unrefElement",
       "package": "core",
       "docs": "https://vueuse.org/core/unrefElement/",

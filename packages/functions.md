@@ -110,6 +110,7 @@
   - [`reactivePick`](https://vueuse.org/shared/reactivePick/) — reactively pick fields from a reactive object
   - [`set`](https://vueuse.org/shared/set/) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
+  - [`toRefs`](https://vueuse.org/core/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) which can receive a ref object instead of a reactive object
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
