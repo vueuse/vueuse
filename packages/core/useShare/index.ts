@@ -17,7 +17,7 @@ interface NavigatorWithShare {
 /**
  * Reactive Web Share API.
  *
- * @use   {@see https://vueuse.org/useShare}
+ * @use   {@link https://vueuse.org/useShare}
  * @param shareOptions
  * @param options
  */
