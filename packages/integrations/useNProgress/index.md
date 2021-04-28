@@ -57,7 +57,7 @@ useNProgress(null, {
 /**
  * Reactive progress bar.
  *
- * @link https://vueuse.org/useNProgress
+ * @see https://vueuse.org/useNProgress
  * @param currentProgress
  * @param options
  */

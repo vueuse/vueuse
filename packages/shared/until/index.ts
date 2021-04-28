@@ -60,7 +60,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
 /**
  * Promised one-time watch for changes
  *
- * @link https://vueuse.org/until
+ * @see https://vueuse.org/until
  * @example
  * ```
  * const { count } = useCounter()

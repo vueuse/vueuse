@@ -39,7 +39,7 @@ interface DeviceMotionOptions
 /**
  * Reactive DeviceMotionEvent.
  *
- * @link https://vueuse.org/useDeviceMotion
+ * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
 export declare function useDeviceMotion(

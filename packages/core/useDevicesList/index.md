@@ -48,7 +48,7 @@ export interface UseDevicesListReturn {
 /**
  * Reactive `enumerateDevices` listing avaliable input/output devices
  *
- * @link https://vueuse.org/useDevicesList
+ * @see https://vueuse.org/useDevicesList
  * @param options
  */
 export declare function useDevicesList(

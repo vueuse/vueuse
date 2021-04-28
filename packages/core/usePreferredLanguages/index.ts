@@ -5,7 +5,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive Navigator Languages.
  *
- * @link https://vueuse.org/usePreferredLanguages
+ * @see https://vueuse.org/usePreferredLanguages
  * @param options
  */
 export function usePreferredLanguages(options: ConfigurableWindow = {}): Ref<readonly string[]> {

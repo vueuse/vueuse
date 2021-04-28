@@ -31,7 +31,7 @@ whenever(not(a), () => {
 /**
  * `NOT` conditions for refs.
  *
- * @link https://vueuse.org/not
+ * @see https://vueuse.org/not
  */
 export declare function not(v: MaybeRef<any>): ComputedRef<boolean>
 ```

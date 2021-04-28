@@ -62,7 +62,7 @@ export declare type KeyStrokeOptions = {
 /**
  * Listen for keyboard keys being stroked.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -75,7 +75,7 @@ export declare function onKeyStroke(
 /**
  * Listen to the keydown event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -88,7 +88,7 @@ export declare function onKeyDown(
 /**
  * Listen to the keypress event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -101,7 +101,7 @@ export declare function onKeyPressed(
 /**
  * Listen to the keyup event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options

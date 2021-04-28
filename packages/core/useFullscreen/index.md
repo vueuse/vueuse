@@ -34,7 +34,7 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 /**
  * Reactive Fullscreen API.
  *
- * @link https://vueuse.org/useFullscreen
+ * @see https://vueuse.org/useFullscreen
  * @param target
  * @param options
  */

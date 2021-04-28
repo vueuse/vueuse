@@ -50,7 +50,7 @@ export interface AsyncStateOptions {
  * Reactive async state. Will not block your setup function and will triggers changes once
  * the promise is ready.
  *
- * @link https://vueuse.org/useAsyncState
+ * @see https://vueuse.org/useAsyncState
  * @param promise         The promise / async function to be resolved
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options

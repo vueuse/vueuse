@@ -25,7 +25,7 @@ watch(activeElement, (el) => {
 /**
  * Reactive `document.activeElement`
  *
- * @link https://vueuse.org/useActiveElement
+ * @see https://vueuse.org/useActiveElement
  * @param options
  */
 export declare function useActiveElement<T extends HTMLElement>(

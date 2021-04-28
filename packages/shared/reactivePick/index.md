@@ -80,7 +80,7 @@ const size = reactivePick(useElementBounding(), 'height', 'width')
 /**
  * Reactively pick fields from a reactive object
  *
- * @link https://vueuse.js.org/reactivePick
+ * @see https://vueuse.js.org/reactivePick
  */
 export declare function reactivePick<T extends object, K extends keyof T>(
   obj: T,

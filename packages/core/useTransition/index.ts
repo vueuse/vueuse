@@ -54,7 +54,7 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
 /**
  * Common transitions
  *
- * @link https://easings.net
+ * @see https://easings.net
  */
 export const TransitionPresets: Record<string, CubicBezierPoints> = {
   linear: [0, 0, 1, 1],
@@ -85,7 +85,7 @@ export const TransitionPresets: Record<string, CubicBezierPoints> = {
 /**
  * Transition between values.
  *
- * @link https://vueuse.org/useTransition
+ * @see https://vueuse.org/useTransition
  * @param source
  * @param options
  */

@@ -4,7 +4,7 @@ import { MaybeRef } from '@vueuse/shared'
 /**
  * Extended `toRefs` that also accepts refs of an object.
  *
- * @link https://vueuse.org/toRefs
+ * @see https://vueuse.org/toRefs
  * @param objectRef A ref or normal object or array.
  */
 export function toRefs<T extends object>(

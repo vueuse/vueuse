@@ -39,7 +39,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
 /**
  * Reactive `mediaDevices.getUserMedia` streaming
  *
- * @link https://vueuse.org/useUserMedia
+ * @see https://vueuse.org/useUserMedia
  * @param options
  */
 export function useUserMedia(options: UseUserMediaOptions = {}) {

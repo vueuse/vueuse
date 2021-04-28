@@ -63,7 +63,7 @@ whenever(
 /**
  * Shorthand for watching value to be truthy
  *
- * @link https://vueuse.js.org/whenever
+ * @see https://vueuse.js.org/whenever
  */
 export declare function whenever<T = boolean>(
   source: WatchSource<T>,

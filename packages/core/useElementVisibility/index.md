@@ -44,7 +44,7 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
 /**
  * Tracks the visibility of an element within the viewport.
  *
- * @link https://vueuse.org/useElementVisibility
+ * @see https://vueuse.org/useElementVisibility
  * @param element
  * @param options
  */

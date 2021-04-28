@@ -8,7 +8,7 @@ export type Breakpoints<K extends string = string> = Record<K, number | string>
 /**
  * Reactively viewport breakpoints
  *
- * @link https://vueuse.org/useBreakpoints
+ * @see https://vueuse.org/useBreakpoints
  * @param options
  */
 export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {

@@ -30,7 +30,7 @@ const toggleDark = useToggle(isDark)
 /**
  * A boolean ref with a toggler
  *
- * @link https://vueuse.org/useToggle
+ * @see https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
 export declare function useToggle(value: Ref<boolean>): () => boolean

@@ -5,7 +5,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive `document.activeElement`
  *
- * @link https://vueuse.org/useActiveElement
+ * @see https://vueuse.org/useActiveElement
  * @param options
  */
 export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {

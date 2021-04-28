@@ -39,7 +39,7 @@ export declare type GeneralEventListener<E = Event> = {
  *
  * Overload 1: Omitted Window target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param event
  * @param listener
  * @param options
@@ -54,7 +54,7 @@ export declare function useEventListener<E extends keyof WindowEventMap>(
  *
  * Overload 2: Explicitly Window target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -71,7 +71,7 @@ export declare function useEventListener<E extends keyof WindowEventMap>(
  *
  * Overload 3: Explicitly Document target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -88,7 +88,7 @@ export declare function useEventListener<E extends keyof DocumentEventMap>(
  *
  * Overload 4: Custom event target with event type infer
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -108,7 +108,7 @@ export declare function useEventListener<
  *
  * Overload 5: Custom event target fallback
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener

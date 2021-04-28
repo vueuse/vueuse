@@ -5,7 +5,7 @@ import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 /**
  * Reactive wrapper for EventSource.
  *
- * @link https://vueuse.org/useEventSource
+ * @see https://vueuse.org/useEventSource
  * @link https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource|EventSource
  * @param url
  * @param events

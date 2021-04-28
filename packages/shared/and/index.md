@@ -32,7 +32,7 @@ whenever(and(a, b), () => {
 /**
  * `AND` conditions for refs.
  *
- * @link https://vueuse.org/and
+ * @see https://vueuse.org/and
  */
 export declare function and(...args: MaybeRef<any>[]): ComputedRef<boolean>
 ```
