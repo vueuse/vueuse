@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "@vueuse/shared": "4.9.0",
-    "vue-demi": "latest"
+    "vue-demi": "*"
   }
 }

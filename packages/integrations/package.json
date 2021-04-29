@@ -36,7 +36,7 @@
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
     "@vueuse/shared": "4.9.0",
-    "vue-demi": "latest"
+    "vue-demi": "*"
   },
   "optionalDependencies": {
     "axios": "^0.21.1",

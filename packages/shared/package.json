@@ -34,6 +34,6 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/shared#readme",
   "dependencies": {
-    "vue-demi": "latest"
+    "vue-demi": "*"
   }
 }
