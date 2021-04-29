@@ -54,7 +54,7 @@ export function useAsyncState<T>(
     error.value = undefined
     isReady.value = false
 
-    if (!delay)
+    if (delay > 0)
       await promiseTimeout(delay)
 
     const _promise = typeof promise === 'function'
