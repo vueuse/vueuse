@@ -199,7 +199,7 @@ export interface MagicKeysInternal {
    * A Set of currently pressed keys,
    * Stores raw keyCodes.
    *
-   * @link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
    */
   current: Set<string>
 }
@@ -215,7 +215,7 @@ export declare type MagicKeys<Reactive extends Boolean> = Readonly<
 /**
  * Reactive keys pressed state, with magical keys combination support.
  *
- * @link https://vueuse.org/useMagicKeys
+ * @see https://vueuse.org/useMagicKeys
  */
 export declare function useMagicKeys(
   options?: UseMagicKeysOptions<false>

@@ -10,7 +10,7 @@ interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilte
 /**
  * Reactive DeviceMotionEvent.
  *
- * @link https://vueuse.org/useDeviceMotion
+ * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {

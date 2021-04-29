@@ -109,13 +109,13 @@ interface TransitionOptions {
 /**
  * Common transitions
  *
- * @link https://easings.net
+ * @see https://easings.net
  */
 export declare const TransitionPresets: Record<string, CubicBezierPoints>
 /**
  * Transition between values.
  *
- * @link https://vueuse.org/useTransition
+ * @see https://vueuse.org/useTransition
  * @param source
  * @param options
  */

@@ -4,7 +4,7 @@ import { ConfigurableWindow } from '../_configurable'
 /**
  * Reactive dark theme preference.
  *
- * @link https://vueuse.org/usePreferredDark
+ * @see https://vueuse.org/usePreferredDark
  * @param [options]
  */
 export function usePreferredDark(options?: ConfigurableWindow) {

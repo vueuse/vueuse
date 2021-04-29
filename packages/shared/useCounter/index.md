@@ -22,7 +22,7 @@ const { count, inc, dec, set, reset } = useCounter()
 /**
  * Basic counter with utility functions.
  *
- * @link https://vueuse.org/useCounter
+ * @see https://vueuse.org/useCounter
  * @param [initialValue=0]
  */
 export declare function useCounter(

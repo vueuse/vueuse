@@ -23,7 +23,7 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
 /**
  * Listen for keyboard keys being stroked.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -42,7 +42,7 @@ export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => v
 /**
  * Listen to the keydown event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -54,7 +54,7 @@ export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => voi
 /**
  * Listen to the keypress event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -66,7 +66,7 @@ export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => 
 /**
  * Listen to the keyup event of the given key.
  *
- * @link https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/onKeyStroke
  * @param key
  * @param handler
  * @param options

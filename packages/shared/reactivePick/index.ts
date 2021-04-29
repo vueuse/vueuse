@@ -3,7 +3,7 @@ import { reactive, toRef, UnwrapRef } from 'vue-demi'
 /**
  * Reactively pick fields from a reactive object
  *
- * @link https://vueuse.js.org/reactivePick
+ * @see https://vueuse.js.org/reactivePick
  */
 export function reactivePick<T extends object, K extends keyof T>(
   obj: T,

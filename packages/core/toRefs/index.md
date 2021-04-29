@@ -60,7 +60,7 @@ export default {
 /**
  * Extended `toRefs` that also accepts refs of an object.
  *
- * @link https://vueuse.org/toRefs
+ * @see https://vueuse.org/toRefs
  * @param objectRef A ref or normal object or array.
  */
 export declare function toRefs<T extends object>(

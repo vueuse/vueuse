@@ -56,7 +56,7 @@ export interface ClipboardReturn<Optional> {
 /**
  * Reactive Clipboard API.
  *
- * @link https://vueuse.org/useClipboard
+ * @see https://vueuse.org/useClipboard
  * @param options
  */
 export declare function useClipboard(

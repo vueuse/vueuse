@@ -187,7 +187,7 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
- * @link https://vueuse.org/useManualRefHistory
+ * @see https://vueuse.org/useManualRefHistory
  * @param source
  * @param options
  */

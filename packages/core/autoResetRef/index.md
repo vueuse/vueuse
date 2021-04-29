@@ -27,7 +27,7 @@ const setMessage = () => {
 /**
  * Create a ref which will be reset to the default value after some time.
  *
- * @link https://vueuse.org/autoResetRef
+ * @see https://vueuse.org/autoResetRef
  * @param defaultValue The value which will be set.
  * @param afterMs      A zero-or-greater delay in milliseconds.
  */

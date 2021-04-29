@@ -1,7 +1,7 @@
 /**
  * Breakpoints from Tailwind V2
  *
- * @link https://tailwindcss.com/docs/breakpoints
+ * @see https://tailwindcss.com/docs/breakpoints
  */
 export const breakpointsTailwind = {
   'sm': 640,
@@ -14,7 +14,7 @@ export const breakpointsTailwind = {
 /**
  * Breakpoints from Bootstrap V5
  *
- * @link https://getbootstrap.com/docs/5.0/layout/breakpoints
+ * @see https://getbootstrap.com/docs/5.0/layout/breakpoints
  */
 export const breakpointsBootstrapV5 = {
   sm: 576,
@@ -27,7 +27,7 @@ export const breakpointsBootstrapV5 = {
 /**
  * Breakpoints from Vuetify V2
  *
- * @link https://vuetifyjs.com/en/features/breakpoints
+ * @see https://vuetifyjs.com/en/features/breakpoints
  */
 export const breakpointsVuetify = {
   xs: 600,
@@ -39,7 +39,7 @@ export const breakpointsVuetify = {
 /**
  * Breakpoints from Ant Design
  *
- * @link https://ant.design/components/layout/#breakpoint-width
+ * @see https://ant.design/components/layout/#breakpoint-width
  */
 export const breakpointsAntDesign = {
   xs: 480,

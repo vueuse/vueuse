@@ -11,7 +11,7 @@ export interface UseLastChangedOptions<
 /**
  * Records the timestamp of the last change
  *
- * @link https://vueuse.org/useLastChanged
+ * @see https://vueuse.org/useLastChanged
  */
 export function useLastChanged(source: WatchSource, options?: UseLastChangedOptions<false>): Ref<number | null>
 export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<true>): Ref<number>

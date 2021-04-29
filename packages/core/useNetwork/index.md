@@ -81,7 +81,7 @@ export interface NetworkState {
 /**
  * Reactive Network status.
  *
- * @link https://vueuse.org/useNetwork
+ * @see https://vueuse.org/useNetwork
  * @param options
  */
 export declare function useNetwork(options?: ConfigurableWindow): NetworkState

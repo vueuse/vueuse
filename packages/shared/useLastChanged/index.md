@@ -33,7 +33,7 @@ export interface UseLastChangedOptions<
 /**
  * Records the timestamp of the last change
  *
- * @link https://vueuse.org/useLastChanged
+ * @see https://vueuse.org/useLastChanged
  */
 export declare function useLastChanged(
   source: WatchSource,

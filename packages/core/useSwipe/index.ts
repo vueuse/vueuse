@@ -61,7 +61,7 @@ export interface SwipeReturn {
 /**
  * Reactive swipe detection.
  *
- * @link https://vueuse.org/useSwipe
+ * @see https://vueuse.org/useSwipe
  * @param target
  * @param options
  */
@@ -169,7 +169,7 @@ export function useSwipe(
 
 /**
  * This is a polyfill for passive event support detection
- * @link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+ * @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
  */
 function checkPassiveEventSupport(document?: Document) {
   if (!document)

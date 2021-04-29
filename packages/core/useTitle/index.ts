@@ -5,7 +5,7 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
 /**
  * Reactive document title.
  *
- * @link https://vueuse.org/useTitle
+ * @see https://vueuse.org/useTitle
  * @param newTitle
  * @param options
  */

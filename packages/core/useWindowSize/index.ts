@@ -10,7 +10,7 @@ export interface WindowSizeOptions extends ConfigurableWindow {
 /**
  * Reactive window size.
  *
- * @link https://vueuse.org/useWindowSize
+ * @see https://vueuse.org/useWindowSize
  * @param options
  */
 export function useWindowSize({ window = defaultWindow, initialWidth = Infinity, initialHeight = Infinity }: WindowSizeOptions = {}) {

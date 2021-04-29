@@ -5,7 +5,7 @@ import { ref, isRef, watchEffect, computed } from 'vue-demi'
 /**
  * Reactive progress bar.
  *
- * @link https://vueuse.org/useNProgress
+ * @see https://vueuse.org/useNProgress
  * @param currentProgress
  * @param options
  */
