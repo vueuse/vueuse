@@ -23,12 +23,14 @@ export function useTitle(
     },
     { immediate: true },
   )
-  
-  
+
   useMutationObserver(
-    document?.head?.querySelector('title'), 
-    () => title.value = document.title, 
-    {childList: true},
+    document?.head?.querySelector('title'),
+    () => {
+      if (document && document.title !== title.value)
+        title.value = document.title
+    },
+    { childList: true },
   )
 
   return title
