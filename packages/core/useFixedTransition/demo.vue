@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { useFixedTransition } from '.'
 
-const { transition, value } = useFixedTransition(0)
+const { transition, value } = useFixedTransition(0, {
+  duration: 1000,
+  transition: [0.75, 0, 0.25, 1],
+})
 
-const fire = () => {
-  transition({
-    duration: 1000,
-    from: 0,
-    to: 100,
-    transition: [0.75, 0, 0.25, 1],
-  })
-}
+const fire = () => transition({
+  from: 0,
+  to: 100,
+}).then(() => {
+  console.log('Transition Complete')
+}, () => {
+  console.log('Transition Interrupted')
+})
 </script>
 
 <template>

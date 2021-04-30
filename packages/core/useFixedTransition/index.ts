@@ -1,5 +1,5 @@
 import { nextTick, ref } from 'vue-demi'
-import { identity as linear } from '@vueuse/shared'
+import { identity as linear, noop } from '@vueuse/shared'
 import { useTransition } from '../useTransition'
 
 type TransitionTiming = [number, number, number, number] | ((n: number) => number)
@@ -22,7 +22,7 @@ type FixedTransitionOptions = {
 /**
  * Transition options
  */
-type TransitionOptions<T> = {
+type TransitionOptions<T, U = T extends number ? number : number[]> = {
   /**
    * Transition duration in milliseconds
    */
@@ -31,12 +31,12 @@ type TransitionOptions<T> = {
   /**
    * Transition start value
    */
-  from: T extends number ? number : number[]
+  from: U
 
   /**
    * Transition end value
    */
-  to: T extends number ? number : number[]
+  to: U
 
   /**
    * Transition timing function
@@ -51,6 +51,9 @@ export function useFixedTransition<T extends number | number[]>(
   initialValue: T,
   defaultOptions: FixedTransitionOptions = {},
 ) {
+  let currentReject = noop
+  let currentResolve = noop
+
   const disabled = ref(false)
   const duration = ref(0)
   const source = ref<number | number[]>(initialValue)
@@ -60,6 +63,9 @@ export function useFixedTransition<T extends number | number[]>(
    * Transition from one value to another.
    */
   const transition = (options: TransitionOptions<T>) => {
+    // reject interrupted transition
+    currentReject()
+
     // set options for this transition
     duration.value = options.duration ?? defaultOptions.duration ?? 1000
     transitionTiming.value = options.transition ?? defaultOptions.transition ?? linear
@@ -73,11 +79,17 @@ export function useFixedTransition<T extends number | number[]>(
       disabled.value = false
       source.value = options.to
     })
+
+    return new Promise<void>((resolve, reject) => {
+      currentReject = reject
+      currentResolve = resolve
+    })
   }
 
   const value = useTransition(source, {
     disabled,
     duration,
+    onFinished: () => currentResolve(),
     transition: transitionTiming,
   })
 
