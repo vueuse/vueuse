@@ -110,14 +110,11 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
   return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-// option 1: reactive number
-export function useTransition(source: Ref<number>, options?: TransitionOptions): ComputedRef<number>
+// option 1: number or array of numbers
+export function useTransition<T extends number | number[]>(source: Ref<T>, options?: TransitionOptions): ComputedRef<T>
 
 // option 2: static array of possibly reactive numbers
 export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: TransitionOptions): ComputedRef<{ [K in keyof T]: number }>
-
-// option 3: reactive array of numbers
-export function useTransition<T extends Ref<number[]>>(source: T, options?: TransitionOptions): ComputedRef<number[]>
 
 /**
  * Transition between values.
