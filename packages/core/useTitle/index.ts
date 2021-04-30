@@ -1,7 +1,7 @@
 import { isString, MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
-
+import { useMutationObserver } from '../useMutationObserver'
 /**
  * Reactive document title.
  *
@@ -22,6 +22,13 @@ export function useTitle(
         document.title = t
     },
     { immediate: true },
+  )
+  
+  
+  useMutationObserver(
+    document?.head?.querySelector('title'), 
+    () => title.value = document.title, 
+    {childList: true},
   )
 
   return title
