@@ -2,6 +2,16 @@ import { isString, MaybeRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
+
+export interface TitleOptions extends ConfigurableDocument {
+  /**
+   * Allow disable MutationObserver for react on `document.title` changes
+   *
+   * @default false
+   */
+  disableObserver?: boolean
+}
+
 /**
  * Reactive document title.
  *
@@ -11,7 +21,10 @@ import { useMutationObserver } from '../useMutationObserver'
  */
 export function useTitle(
   newTitle: MaybeRef<string | null | undefined> = null,
-  { document = defaultDocument }: ConfigurableDocument = {},
+  {
+    document = defaultDocument,
+    disableObserver = false,
+  }: TitleOptions = {},
 ) {
   const title = ref(newTitle ?? document?.title ?? null)
 
@@ -24,14 +37,16 @@ export function useTitle(
     { immediate: true },
   )
 
-  useMutationObserver(
-    document?.head?.querySelector('title'),
-    () => {
-      if (document && document.title !== title.value)
-        title.value = document.title
-    },
-    { childList: true },
-  )
+  if (!disableObserver) {
+    useMutationObserver(
+      document?.head?.querySelector('title'),
+      () => {
+        if (document && document.title !== title.value)
+          title.value = document.title
+      },
+      { childList: true },
+    )
+  }
 
   return title
 }
