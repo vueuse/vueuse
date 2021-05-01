@@ -7,9 +7,9 @@ export interface TitleOptions extends ConfigurableDocument {
   /**
    * Allow disable MutationObserver for react on `document.title` changes
    *
-   * @default false
+   * @default true
    */
-  disableObserver?: boolean
+  enableObserver?: boolean
 }
 
 /**
@@ -23,7 +23,7 @@ export function useTitle(
   newTitle: MaybeRef<string | null | undefined> = null,
   {
     document = defaultDocument,
-    disableObserver = false,
+    enableObserver = true,
   }: TitleOptions = {},
 ) {
   const title = ref(newTitle ?? document?.title ?? null)
@@ -37,7 +37,7 @@ export function useTitle(
     { immediate: true },
   )
 
-  if (!disableObserver) {
+  if (enableObserver) {
     useMutationObserver(
       document?.head?.querySelector('title'),
       () => {
