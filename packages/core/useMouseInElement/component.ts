@@ -1,8 +1,8 @@
 import { h, ref, defineComponent } from 'vue-demi'
 import { useMouseInElement, MouseInElementOptions } from '.'
 
-export const UseMouse = defineComponent<{ options: MouseInElementOptions }>({
-  name: 'UseMouse',
+export const UseMouseInElement = defineComponent<{ options: MouseInElementOptions }>({
+  name: 'UseMouseElement',
   setup(props, { slots, emit }) {
     const target = ref()
     const {
