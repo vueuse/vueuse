@@ -30,16 +30,6 @@ describe('useVModel', () => {
     })
   })
 
-  it('test', async() => {
-    useSetup(() => {
-      const data = useVModel({ data: false }, undefined, emitMock)
-      data.value = true
-    })
-
-    // await vm.$nextTick()
-    expect(typeof emitMock.mock.calls[0][1]).toBe('boolean')
-  })
-
   it('should emit on value change', async() => {
     useSetup(() => {
       const data = useVModel(defaultProps(), undefined, emitMock)
