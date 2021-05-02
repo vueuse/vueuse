@@ -36,7 +36,6 @@ describe('useVModel', () => {
       data.value = 'changed'
     })
 
-    // await vm.$nextTick()
     expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:modelValue')
     expect(emitMock.mock.calls[0][1]).toBe('changed')
   })
@@ -47,7 +46,6 @@ describe('useVModel', () => {
       data.value = 'changed'
     })
 
-    // await vm.$nextTick()
     expect(emitMock.mock.calls[0][0]).toBe('onChange')
   })
 })
