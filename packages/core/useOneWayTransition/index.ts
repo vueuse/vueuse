@@ -1,5 +1,5 @@
-import { nextTick, ref } from 'vue-demi'
-import { identity as linear, noop } from '@vueuse/shared'
+import { computed, nextTick, ref, unref } from 'vue-demi'
+import { identity as linear, isNumber, MaybeRef, noop } from '@vueuse/shared'
 import { useTransition } from '../useTransition'
 
 type TransitionTiming = [number, number, number, number] | ((n: number) => number)
@@ -14,15 +14,20 @@ type OneWayTransitionOptions = {
   duration?: number
 
   /**
+   * Initial value
+   */
+  initial?: number | number[]
+
+  /**
    * Default transition timing function
    */
-  transition?: TransitionTiming
+  transition?: MaybeRef<TransitionTiming>
 }
 
 /**
  * Transition options
  */
-type TransitionOptions<T, U = T extends number ? number : number[]> = {
+type TransitionOptions<T extends OneWayTransitionOptions> = {
   /**
    * Transition duration in milliseconds
    */
@@ -31,33 +36,34 @@ type TransitionOptions<T, U = T extends number ? number : number[]> = {
   /**
    * Transition start value
    */
-  from: U
+  from: T['initial'] extends number[] ? number [] : number
 
   /**
    * Transition end value
    */
-  to: U
-
-  /**
-   * Transition timing function
-   */
-  transition?: TransitionTiming
+  to: T['initial'] extends number[] ? number [] : number
 }
 
 /**
  * One-way transition between values.
  */
-export function useOneWayTransition<T extends number | number[]>(
-  initialValue: T,
-  defaultOptions: OneWayTransitionOptions = {},
-) {
+export function useOneWayTransition<T extends OneWayTransitionOptions>(defaultOptions: T) {
   let currentReject = noop
   let currentResolve = noop
 
   const disabled = ref(false)
+
   const duration = ref(0)
-  const source = ref<number | number[]>(initialValue)
-  const transitionTiming = ref<TransitionTiming>(linear)
+
+  const source = ref(
+    Array.isArray(defaultOptions?.initial)
+      ? defaultOptions.initial.slice(0)
+      : isNumber(defaultOptions?.initial)
+        ? defaultOptions.initial
+        : 0,
+  )
+
+  const transitionTiming = computed(() => defaultOptions.transition ?? unref(defaultOptions.transition) ?? linear)
 
   /**
    * Transition from one value to another.
@@ -68,7 +74,6 @@ export function useOneWayTransition<T extends number | number[]>(
 
     // set options for this transition
     duration.value = options.duration ?? defaultOptions.duration ?? 1000
-    transitionTiming.value = options.transition ?? defaultOptions.transition ?? linear
 
     // set source to start value
     disabled.value = true
