@@ -1,5 +1,5 @@
 import { computed, nextTick, ref, unref } from 'vue-demi'
-import { identity as linear, isNumber, MaybeRef, noop } from '@vueuse/shared'
+import { identity as linear, isNumber, noop } from '@vueuse/shared'
 import { useTransition } from '../useTransition'
 
 type TransitionTiming = [number, number, number, number] | ((n: number) => number)
@@ -21,7 +21,7 @@ type OneWayTransitionOptions = {
   /**
    * Default transition timing function
    */
-  transition?: MaybeRef<TransitionTiming>
+  transition?: TransitionTiming
 }
 
 /**
