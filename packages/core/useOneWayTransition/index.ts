@@ -1,8 +1,6 @@
-import { computed, nextTick, ref, unref } from 'vue-demi'
-import { identity as linear, isNumber, noop } from '@vueuse/shared'
+import { nextTick, ref } from 'vue-demi'
+import { isNumber, noop } from '@vueuse/shared'
 import { useTransition } from '../useTransition'
-
-type TransitionTiming = [number, number, number, number] | ((n: number) => number)
 
 /**
  * One-way transition options
@@ -21,7 +19,7 @@ type OneWayTransitionOptions = {
   /**
    * Default transition timing function
    */
-  transition?: TransitionTiming
+  transition?: [number, number, number, number] | ((n: number) => number)
 }
 
 /**
@@ -63,8 +61,6 @@ export function useOneWayTransition<T extends OneWayTransitionOptions>(defaultOp
         : 0,
   )
 
-  const transitionTiming = computed(() => defaultOptions.transition ?? unref(defaultOptions.transition) ?? linear)
-
   /**
    * Transition from one value to another.
    */
@@ -95,7 +91,7 @@ export function useOneWayTransition<T extends OneWayTransitionOptions>(defaultOp
     disabled,
     duration,
     onFinished: () => currentResolve(),
-    transition: transitionTiming,
+    transition: defaultOptions.transition,
   })
 
   return {
