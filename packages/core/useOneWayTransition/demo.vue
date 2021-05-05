@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useFixedTransition } from '.'
+import { useOneWayTransition } from '.'
 
-const { transition, value } = useFixedTransition(0, {
+const { transition, value } = useOneWayTransition(0, {
   duration: 1000,
   transition: [0.75, 0, 0.25, 1],
 })

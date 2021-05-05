@@ -5,9 +5,9 @@ import { useTransition } from '../useTransition'
 type TransitionTiming = [number, number, number, number] | ((n: number) => number)
 
 /**
- * Fixed transition options
+ * One-way transition options
  */
-type FixedTransitionOptions = {
+type OneWayTransitionOptions = {
   /**
    * Default transition duration in milliseconds
    */
@@ -45,11 +45,11 @@ type TransitionOptions<T, U = T extends number ? number : number[]> = {
 }
 
 /**
- * Fixed transition from one value to another.
+ * One-way transition between values.
  */
-export function useFixedTransition<T extends number | number[]>(
+export function useOneWayTransition<T extends number | number[]>(
   initialValue: T,
-  defaultOptions: FixedTransitionOptions = {},
+  defaultOptions: OneWayTransitionOptions = {},
 ) {
   let currentReject = noop
   let currentResolve = noop

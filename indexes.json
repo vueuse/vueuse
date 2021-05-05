@@ -572,6 +572,13 @@
       "description": "reactive current Date instance"
     },
     {
+      "name": "useOneWayTransition",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useOneWayTransition/",
+      "category": "Animation",
+      "description": "one-way transition between values"
+    },
+    {
       "name": "useOnline",
       "package": "core",
       "docs": "https://vueuse.org/core/useOnline/",

@@ -10,6 +10,7 @@
   - [`useInterval`](https://vueuse.org/shared/useInterval/) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.org/shared/useIntervalFn/) — wrapper for `setInterval` with controls
   - [`useNow`](https://vueuse.org/core/useNow/) — reactive current Date instance
+  - [`useOneWayTransition`](https://vueuse.org/core/useOneWayTransition/) — one-way transition between values
   - [`useRafFn`](https://vueuse.org/core/useRafFn/) — call function on every `requestAnimationFrame`
   - [`useTimeout`](https://vueuse.org/shared/useTimeout/) — update value after a given time with controls
   - [`useTimeoutFn`](https://vueuse.org/shared/useTimeoutFn/) — wrapper for `setTimeout` with controls
