@@ -8,6 +8,12 @@ export interface VModelOptions {
    * @default false
    */
   passive?: boolean
+  /**
+   * When eventName is set, it's value will be used to overwrite the emit event name.
+   *
+   * @default undefined
+   */
+  eventName?: string
 }
 
 /**
@@ -26,25 +32,26 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 ) {
   const {
     passive = false,
+    eventName,
   } = options
 
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
   const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
-  let event: string | undefined
+  let event: string | undefined = eventName
 
   if (!key) {
     if (isVue2) {
       const modelOptions = vm?.proxy?.$options?.model
       key = modelOptions?.value || 'value' as K
-      event = modelOptions?.event || 'input'
+      if (!eventName) event = modelOptions?.event || 'input'
     }
     else {
       key = 'modelValue' as K
     }
   }
 
-  event = event || `update:${key}`
+  event = eventName || event || `update:${key}`
 
   if (passive) {
     const proxy = ref<P[K]>(props[key!])

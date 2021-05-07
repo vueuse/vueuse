@@ -34,6 +34,12 @@ export interface VModelOptions {
    * @default false
    */
   passive?: boolean
+  /**
+   * When eventName is set, it's value will be used to overwrite the emit event name.
+   *
+   * @default undefined
+   */
+  eventName?: string
 }
 /**
  * Shorthand for v-model binding, props + emit -> ref
