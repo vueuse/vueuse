@@ -3,13 +3,13 @@ import { ref, watch } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
-export interface TitleOptions extends ConfigurableDocument {
+export interface UseTitleOptions extends ConfigurableDocument {
   /**
-   * Allow disable MutationObserver for react on `document.title` changes
+   * Observe `document.title` changes using MutationObserve
    *
-   * @default true
+   * @default false
    */
-  enableObserver?: boolean
+  observe?: boolean
 }
 
 /**
@@ -21,11 +21,12 @@ export interface TitleOptions extends ConfigurableDocument {
  */
 export function useTitle(
   newTitle: MaybeRef<string | null | undefined> = null,
-  {
-    document = defaultDocument,
-    enableObserver = true,
-  }: TitleOptions = {},
+  options: UseTitleOptions = {},
 ) {
+  const {
+    document = defaultDocument,
+    observe = false,
+  } = options
   const title = ref(newTitle ?? document?.title ?? null)
 
   watch(
@@ -37,9 +38,9 @@ export function useTitle(
     { immediate: true },
   )
 
-  if (enableObserver) {
+  if (observe && document) {
     useMutationObserver(
-      document?.head?.querySelector('title'),
+      document.head?.querySelector('title'),
       () => {
         if (document && document.title !== title.value)
           title.value = document.title
