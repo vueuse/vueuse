@@ -45,6 +45,16 @@ export interface AsyncStateOptions {
    * Callback when error is caught.
    */
   onError?: (e: Error) => void
+  /**
+   * Sets the state to initialState before executing the promise.
+   *
+   * This can be useful when calling the execute function more than once (for
+   * example, to refresh data). When set to false, the current state remains
+   * unchanged until the promise resolves.
+   *
+   * @default true
+   */
+  resetOnExecute?: boolean
 }
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once

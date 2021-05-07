@@ -41,6 +41,14 @@ useTitle(title) // document title will match with the ref "title"
 ## Type Declarations
 
 ```typescript
+export interface UseTitleOptions extends ConfigurableDocument {
+  /**
+   * Observe `document.title` changes using MutationObserve
+   *
+   * @default false
+   */
+  observe?: boolean
+}
 /**
  * Reactive document title.
  *
@@ -50,7 +58,7 @@ useTitle(title) // document title will match with the ref "title"
  */
 export declare function useTitle(
   newTitle?: MaybeRef<string | null | undefined>,
-  { document }?: ConfigurableDocument
+  options?: UseTitleOptions
 ): Ref<string | null | undefined>
 ```
 
