@@ -1370,10 +1370,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/json-tools/-/json-tools-1.0.10.tgz#d9a7050dbbe8bb29d684d4b3f9446ed2d0bea3cc"
   integrity sha512-LFelJDOLZ6JHlmlAkgrvmcu4hpNPB91KYcr4f60D/exzU1eNOb4/KCVHIydGHIQFaOacIOD+Xy+B7P1z812cZg==
 
-"@iconify/json@^1.1.338":
-  version "1.1.338"
-  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.338.tgz#9d7b3bb50be6627efade4a921ee7e9c70febe8e3"
-  integrity sha512-A6b1ELbuHmg4on9TobRa3T4YzYWUIGNhnrGdqRguskyUqQk/2W+4O3XeexBtkAUI9oT2ggw94tm/VgNBISIB8A==
+"@iconify/json@^1.1.339":
+  version "1.1.339"
+  resolved "https://registry.yarnpkg.com/@iconify/json/-/json-1.1.339.tgz#46fbbb9be0057a7c7d28f25eee32192afc7ca394"
+  integrity sha512-nMpcK5945sksa5za3PnpC4afIfzKCBTTULcux/qUJ8I3lCA5kO4U//8eSZ0NpXvybLZluomxs8aM2Yxy4cBHgA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -8479,10 +8479,10 @@ vue-demi@*:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.7.5.tgz#88dee7492fc99a0f911ff03fc02c658fa2a79af8"
   integrity sha512-eFSQSvbQdY7C9ujOzvM6tn7XxwLjn0VQDXQsiYBLBwf28Na+2nTQR4BBBcomhmdP6mmHlBKAwarq6a0BPG87hQ==
 
-vue-demi@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.8.1.tgz#8bbb003ff8b59a22af18fa1c74ea5ed3cf30010c"
-  integrity sha512-j76ZtyHalbBYK6XwR2xcARGi1uY58TKnmDCK2kES7qDdEiHh9OngjqPYBco9RnUON+1WHEFE4efuwH/vd1+T/Q==
+vue-demi@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.9.0.tgz#b30da61450079d60a132d7aaf9e86d1949e8445e"
+  integrity sha512-f8vVUpC726YXv99fF/3zHaw5CUYbP5H/DVWBN+pncXM8P2Uz88kkffwj9yD7MukuVzPICDHNrgS3VC2ursaP7g==
 
 vue-demi@latest:
   version "0.7.4"
