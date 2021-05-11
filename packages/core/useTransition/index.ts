@@ -129,7 +129,7 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: Tran
 export function useTransition(
   source: Ref<number | number[]> | MaybeRef<number>[],
   options: TransitionOptions = {},
-): ComputedRef<number | number[] | { [K in keyof typeof source]: number }> {
+): ComputedRef<any> {
   const {
     delay = 0,
     disabled = false,
@@ -191,7 +191,7 @@ export function useTransition(
     onStarted()
   }
 
-  const timeout = useTimeoutFn(start, delay, false)
+  const timeout = useTimeoutFn(start, delay, { immediate: false })
 
   watch(sourceVector, () => {
     if (unref(disabled)) {
