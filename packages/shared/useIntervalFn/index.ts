@@ -2,16 +2,13 @@ import { ref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
 import { Pausable, Fn, isClient } from '../utils'
 
-export interface IntervalFnReturn extends Pausable {
+export interface IntervalFnOptions {
   /**
-   * @deprecated use pause() instead
+   * Execute the callback immediate after calling this function
+   *
+   * @default true
    */
-  stop: Fn
-
-  /**
-   * @deprecated use resume() instead
-   */
-  start: Fn
+  immediate?: boolean
 }
 
 /**
@@ -19,9 +16,13 @@ export interface IntervalFnReturn extends Pausable {
  *
  * @param cb
  * @param interval
- * @param immediate
+ * @param options
  */
-export function useIntervalFn(cb: Fn, interval = 1000, immediate = true): IntervalFnReturn {
+export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOptions = {}): Pausable {
+  const {
+    immediate = true,
+  } = options
+
   let timer: any = null
   const isActive = ref(false)
 
@@ -54,7 +55,5 @@ export function useIntervalFn(cb: Fn, interval = 1000, immediate = true): Interv
     isActive,
     pause,
     resume,
-    start: resume,
-    stop: pause,
   }
 }
