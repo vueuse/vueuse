@@ -384,7 +384,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     const textTracks = unref(options.tracks)
     const el = unref(target)
 
-    if (!textTracks || !el)
+    if (!textTracks || !textTracks.length || !el)
       return
 
     /**
