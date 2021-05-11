@@ -10,7 +10,7 @@ type RawCookies = {
 /**
  * Creates a new {@link useCookies} function
  * @param {Object} req - incoming http request (for SSR)
- * @link https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie|universal-cookie
+ * @see https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie universal-cookie
  * @description Creates universal-cookie instance using request (default is window.document.cookie) and returns {@link useCookies} function with provided universal-cookie instance
  */
 export function createCookies(req?: IncomingMessage) {

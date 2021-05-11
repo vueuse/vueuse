@@ -6,7 +6,7 @@ category: '@Integrations'
 
 wrapper for [`axios`](https://github.com/axios/axios)
 
-## Install 
+## Install
 
 ```bash
 npm i axios
@@ -27,7 +27,7 @@ import axios from 'axios'
 import { useAxios } from '@vueuse/integrations'
 
 const instance = axios.create({
-  baseUrl: '/api'
+  baseURL: '/api'
 })
 
 const { data, finished } = useAxios('/posts', instance)
@@ -40,7 +40,7 @@ import axios from 'axios'
 import { useAxios } from '@vueuse/integrations'
 
 const instance = axios.create({
-  baseUrl: '/api'
+  baseURL: '/api'
 })
 
 const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)

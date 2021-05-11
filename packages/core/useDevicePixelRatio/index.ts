@@ -21,7 +21,7 @@ const DEVICE_PIXEL_RATIO_SCALES = [
 /**
  * Reactively track `window.devicePixelRatio`.
  *
- * @link https://vueuse.org/useDevicePixelRatio
+ * @see https://vueuse.org/useDevicePixelRatio
  * @param options
  */
 export function useDevicePixelRatio({

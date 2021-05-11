@@ -20,7 +20,7 @@ features:
   - title: 🎛 Feature Rich
     details: 90+ functions for you to choose from
   - title: 🔋 SSR Friendly
-    details: Works perfectly with Serve-side rendering / generation
+    details: Works perfectly with Server-side rendering / generation
   - title: 🎪 Interactive demos
     details: Documentation of functions also come with interactive demos!
   - title: 🔌 Add-ons

@@ -40,7 +40,7 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
 /**
  * Async script tag loading.
  *
- * @link https://vueuse.org/useScriptTag
+ * @see https://vueuse.org/useScriptTag
  * @param src
  */
 export function useScriptTag(

@@ -23,7 +23,7 @@ export interface UseFocusTrapReturn {
   /**
    * Activate the focus trap
    *
-   * @link https://github.com/focus-trap/focus-trap#trapactivateactivateoptions
+   * @see https://github.com/focus-trap/focus-trap#trapactivateactivateoptions
    * @param opts Activate focus trap options
    */
   activate: (opts?: ActivateOptions) => void
@@ -31,7 +31,7 @@ export interface UseFocusTrapReturn {
   /**
    * Deactivate the focus trap
    *
-   * @link https://github.com/focus-trap/focus-trap#trapdeactivatedeactivateoptions
+   * @see https://github.com/focus-trap/focus-trap#trapdeactivatedeactivateoptions
    * @param opts Deactivate focus trap options
    */
   deactivate: (opts?: DeactivateOptions) => void
@@ -39,14 +39,14 @@ export interface UseFocusTrapReturn {
   /**
    * Pause the focus trap
    *
-   * @link https://github.com/focus-trap/focus-trap#trappause
+   * @see https://github.com/focus-trap/focus-trap#trappause
    */
   pause: Fn
 
   /**
    * Unpauses the focus trap
    *
-   * @link https://github.com/focus-trap/focus-trap#trapunpause
+   * @see https://github.com/focus-trap/focus-trap#trapunpause
    */
   unpause: Fn
 }
@@ -54,7 +54,7 @@ export interface UseFocusTrapReturn {
 /**
  * Reactive focus-trap
  *
- * @link https://vueuse.org/useFocusTrap
+ * @see https://vueuse.org/useFocusTrap
  * @param target The target element to trap focus within
  * @param options Focus trap options
  * @param autoFocus Focus trap automatically when mounted

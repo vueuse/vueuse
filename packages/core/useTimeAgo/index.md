@@ -68,7 +68,7 @@ export interface TimeAgoOptions {
 /**
  * Reactive time ago formatter.
  *
- * @link https://vueuse.org/useTimeAgo
+ * @see https://vueuse.org/useTimeAgo
  * @param options
  */
 export declare function useTimeAgo(

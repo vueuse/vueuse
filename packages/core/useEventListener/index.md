@@ -11,15 +11,24 @@ Use EventListener with ease. Register using [addEventListener](https://developer
 ```js
 import { useEventListener } from '@vueuse/core'
 
-useEventListener('mousemove', (evt) => { console.log(evt) })
-```
-
-Custom Event Target
-
-```ts
 useEventListener(document, 'visibilitychange', (evt) => { console.log(evt) })
 ```
 
+You can also pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when you change the target.
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+const element = ref<HTMLDivElement>()
+useEventListener(element, 'keydown', (e) => { console.log(e.key) })
+```
+
+```html
+<template>
+  <div v-if="cond" ref="element">Div1</div>
+  <div v-else ref="element">Div2</div>
+</template>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -39,7 +48,7 @@ export declare type GeneralEventListener<E = Event> = {
  *
  * Overload 1: Omitted Window target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param event
  * @param listener
  * @param options
@@ -54,7 +63,7 @@ export declare function useEventListener<E extends keyof WindowEventMap>(
  *
  * Overload 2: Explicitly Window target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -71,7 +80,7 @@ export declare function useEventListener<E extends keyof WindowEventMap>(
  *
  * Overload 3: Explicitly Document target
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -88,7 +97,7 @@ export declare function useEventListener<E extends keyof DocumentEventMap>(
  *
  * Overload 4: Custom event target with event type infer
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener
@@ -108,7 +117,7 @@ export declare function useEventListener<
  *
  * Overload 5: Custom event target fallback
  *
- * @link https://vueuse.org/useEventListener
+ * @see https://vueuse.org/useEventListener
  * @param target
  * @param event
  * @param listener

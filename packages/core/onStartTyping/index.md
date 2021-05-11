@@ -39,7 +39,7 @@ export default {
 /**
  * Fires when users start typing on non-editable elements.
  *
- * @link https://vueuse.org/onStartTyping
+ * @see https://vueuse.org/onStartTyping
  * @param callback
  * @param options
  */

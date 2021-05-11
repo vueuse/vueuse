@@ -45,12 +45,22 @@ export interface AsyncStateOptions {
    * Callback when error is caught.
    */
   onError?: (e: Error) => void
+  /**
+   * Sets the state to initialState before executing the promise.
+   *
+   * This can be useful when calling the execute function more than once (for
+   * example, to refresh data). When set to false, the current state remains
+   * unchanged until the promise resolves.
+   *
+   * @default true
+   */
+  resetOnExecute?: boolean
 }
 /**
  * Reactive async state. Will not block your setup function and will triggers changes once
  * the promise is ready.
  *
- * @link https://vueuse.org/useAsyncState
+ * @see https://vueuse.org/useAsyncState
  * @param promise         The promise / async function to be resolved
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options

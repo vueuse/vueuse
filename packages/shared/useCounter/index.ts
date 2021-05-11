@@ -3,7 +3,7 @@ import { ref } from 'vue-demi'
 /**
  * Basic counter with utility functions.
  *
- * @link https://vueuse.org/useCounter
+ * @see https://vueuse.org/useCounter
  * @param [initialValue=0]
  */
 export function useCounter(initialValue = 0) {

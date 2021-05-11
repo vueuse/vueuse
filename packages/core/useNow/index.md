@@ -11,7 +11,11 @@ Reactive current Date instance.
 ```js
 import { useNow } from '@vueuse/core'
 
-const { now, pause, resume } = useNow()
+const now = useNow()
+```
+
+```js
+const { now, pause, resume } = useNow({ controls: true })
 ```
 
 
@@ -30,7 +34,7 @@ export interface UseNowOptions {
 /**
  * Reactive current timestamp.
  *
- * @link https://vueuse.org/useNow
+ * @see https://vueuse.org/useNow
  * @param options
  */
 export declare function useNow(

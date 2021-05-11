@@ -64,7 +64,7 @@ const target = ref<HTMLElement | null>(null)
 /**
  * Shorthand for binding ref to template element.
  *
- * @link https://vueuse.org/templateRef
+ * @see https://vueuse.org/templateRef
  * @param key
  * @param initialValue
  */

@@ -3,7 +3,7 @@ import { Ref, ref } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 
 export interface RTDBOptions {
-  autoDispose? : boolean
+  autoDispose?: boolean
 }
 
 /**

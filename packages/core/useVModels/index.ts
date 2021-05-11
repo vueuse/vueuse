@@ -4,7 +4,7 @@ import { useVModel, VModelOptions } from '../useVModel'
 /**
  * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
  *
- * @link https://vueuse.org/useVModels
+ * @see https://vueuse.org/useVModels
  * @param props
  * @param emit
  */

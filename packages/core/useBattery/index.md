@@ -44,7 +44,7 @@ export interface BatteryManager extends EventTarget {
 /**
  * Reactive Battery Status API.
  *
- * @link https://vueuse.org/useBattery
+ * @see https://vueuse.org/useBattery
  * @param options
  */
 export declare function useBattery({

@@ -63,7 +63,7 @@ export type ColorSchemes = 'light' | 'dark' | 'auto'
 /**
  * Reactive dark mode with auto data persistence.
  *
- * @link https://vueuse.org/useDark
+ * @see https://vueuse.org/useDark
  * @param options
  */
 export function useDark(options: UseDarkOptions = {}) {

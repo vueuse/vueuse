@@ -33,24 +33,14 @@ export interface RafFnOptions extends ConfigurableWindow {
    */
   immediate?: boolean
 }
-export interface RafFnReturn extends Pausable {
-  /**
-   * @deprecated use pause() instead
-   */
-  stop: Fn
-  /**
-   * @deprecated use resume() instead
-   */
-  start: Fn
-}
 /**
  * Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
  *
- * @link https://vueuse.org/useRafFn
+ * @see https://vueuse.org/useRafFn
  * @param fn
  * @param options
  */
-export declare function useRafFn(fn: Fn, options?: RafFnOptions): RafFnReturn
+export declare function useRafFn(fn: Fn, options?: RafFnOptions): Pausable
 ```
 
 ## Source

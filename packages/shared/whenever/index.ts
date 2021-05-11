@@ -4,7 +4,7 @@ import { Fn } from '../utils'
 /**
  * Shorthand for watching value to be truthy
  *
- * @link https://vueuse.js.org/whenever
+ * @see https://vueuse.js.org/whenever
  */
 export function whenever<T = boolean>(source: WatchSource<T>, cb: Fn, options?: WatchOptions) {
   return watch(

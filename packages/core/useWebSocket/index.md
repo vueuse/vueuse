@@ -155,7 +155,7 @@ export interface WebSocketResult<T> {
 /**
  * Reactive WebSocket client.
  *
- * @link https://vueuse.org/useWebSocket
+ * @see https://vueuse.org/useWebSocket
  * @param url
  */
 export declare function useWebSocket<Data = any>(

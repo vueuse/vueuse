@@ -98,6 +98,13 @@
   ],
   "functions": [
     {
+      "name": "and",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/and/",
+      "category": "Utilities",
+      "description": "`AND` condition for refs"
+    },
+    {
       "name": "biSyncRef",
       "package": "shared",
       "docs": "https://vueuse.org/shared/biSyncRef/",
@@ -152,6 +159,20 @@
       "docs": "https://vueuse.org/shared/makeDestructurable/",
       "category": "Utilities",
       "description": "make isomorphic destructurable for object and array at the same time"
+    },
+    {
+      "name": "not",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/not/",
+      "category": "Utilities",
+      "description": "`NOT` condition for ref"
+    },
+    {
+      "name": "or",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/or/",
+      "category": "Utilities",
+      "description": "`OR` conditions for refs"
     },
     {
       "name": "pausableWatch",
@@ -259,6 +280,13 @@
       "description": "wrapper for `setInterval` with controls"
     },
     {
+      "name": "useLastChanged",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/useLastChanged/",
+      "category": "Utilities",
+      "description": "records the timestamp of the last change"
+    },
+    {
       "name": "useThrottle",
       "package": "shared",
       "docs": "https://vueuse.org/shared/useThrottle/",
@@ -320,6 +348,13 @@
       "description": "computed for async functions"
     },
     {
+      "name": "autoResetRef",
+      "package": "core",
+      "docs": "https://vueuse.org/core/autoResetRef/",
+      "category": "Utilities",
+      "description": "a ref which will be reset to the default value after some time"
+    },
+    {
       "name": "createGlobalState",
       "package": "core",
       "docs": "https://vueuse.org/core/createGlobalState/",
@@ -355,11 +390,25 @@
       "description": "shorthand for binding ref to template element"
     },
     {
+      "name": "toRefs",
+      "package": "core",
+      "docs": "https://vueuse.org/core/toRefs/",
+      "category": "Utilities",
+      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
+    },
+    {
       "name": "unrefElement",
       "package": "core",
       "docs": "https://vueuse.org/core/unrefElement/",
       "category": "Component",
       "description": "unref for dom element"
+    },
+    {
+      "name": "useActiveElement",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useActiveElement/",
+      "category": "Browser",
+      "description": "reactive `document.activeElement`"
     },
     {
       "name": "useAsyncState",
@@ -437,6 +486,13 @@
       "docs": "https://vueuse.org/core/useDevicePixelRatio/",
       "category": "Sensors",
       "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)"
+    },
+    {
+      "name": "useDevicesList",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useDevicesList/",
+      "category": "Sensors",
+      "description": "reactive [enumerateDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices) listing avaliable input/output devices"
     },
     {
       "name": "useDocumentVisibility",
@@ -745,6 +801,13 @@
       "docs": "https://vueuse.org/core/useUrlSearchParams/",
       "category": "Browser",
       "description": "reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)"
+    },
+    {
+      "name": "useUserMedia",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useUserMedia/",
+      "category": "Sensors",
+      "description": "reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming"
     },
     {
       "name": "useVModel",

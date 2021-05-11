@@ -49,7 +49,7 @@ export interface ElementSize {
 /**
  * Reactive size of an HTML element.
  *
- * @link https://vueuse.org/useElementSize
+ * @see https://vueuse.org/useElementSize
  * @param target
  * @param callback
  * @param options

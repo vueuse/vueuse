@@ -63,7 +63,7 @@ const functionsMap: FunctionMap[] = [
 /**
  * Reactive Fullscreen API.
  *
- * @link https://vueuse.org/useFullscreen
+ * @see https://vueuse.org/useFullscreen
  * @param target
  * @param options
  */

@@ -22,7 +22,7 @@ const isLeft = usePageLeave()
 /**
  * Reactive state to show whether mouse leaves the page.
  *
- * @link https://vueuse.org/usePageLeave
+ * @see https://vueuse.org/usePageLeave
  * @param options
  */
 export declare function usePageLeave(options?: ConfigurableWindow): Ref<boolean>

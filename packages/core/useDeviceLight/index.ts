@@ -7,7 +7,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive DeviceLightEvent.
  *
- * @link https://vueuse.org/useDeviceLight
+ * @see https://vueuse.org/useDeviceLight
  * @param options
  */
 export function useDeviceLight({ window = defaultWindow }: ConfigurableWindow = {}) {

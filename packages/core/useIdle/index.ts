@@ -30,7 +30,7 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
 /**
  * Tracks whether the user is being inactive.
  *
- * @link https://vueuse.org/useIdle
+ * @see https://vueuse.org/useIdle
  * @param timeout default to 1 minute
  * @param options IdleOptions
  */

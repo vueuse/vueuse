@@ -7,7 +7,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Reactive Media Query.
  *
- * @link https://vueuse.org/useMediaQuery
+ * @see https://vueuse.org/useMediaQuery
  * @param query
  * @param options
  */

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimestamp } from '.'
 
-const { timestamp } = useTimestamp()
+const timestamp = useTimestamp()
 </script>
 
 <template>

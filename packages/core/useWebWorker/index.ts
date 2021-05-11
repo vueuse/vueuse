@@ -7,7 +7,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 /**
  * Simple Web Workers registration and communication.
  *
- * @link https://vueuse.org/useWebWorker
+ * @see https://vueuse.org/useWebWorker
  * @param url
  * @param workerOptions
  * @param options

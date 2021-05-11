@@ -11,9 +11,12 @@ Reactive current timestamp
 ```js
 import { useTimestamp } from '@vueuse/core'
 
-const { timestamp, pause, resume } = useTimestamp({ offset: 0 })
+const timestamp = useTimestamp({ offset: 0 })
 ```
 
+```js
+const { timestamp, pause, resume } = useTimestamp({ controls: true })
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -36,7 +39,7 @@ export interface TimestampOptions {
 /**
  * Reactive current timestamp.
  *
- * @link https://vueuse.org/useTimestamp
+ * @see https://vueuse.org/useTimestamp
  * @param options
  */
 export declare function useTimestamp(

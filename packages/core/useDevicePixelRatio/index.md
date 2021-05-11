@@ -30,7 +30,7 @@ export default {
 /**
  * Reactively track `window.devicePixelRatio`.
  *
- * @link https://vueuse.org/useDevicePixelRatio
+ * @see https://vueuse.org/useDevicePixelRatio
  * @param options
  */
 export declare function useDevicePixelRatio({

@@ -17,7 +17,7 @@ export function useAxios<T = any>(url: string, config: AxiosRequestConfig, insta
 /**
  * Wrapper for axios.
  *
- * @link https://vueuse.org/useAxios
+ * @see https://vueuse.org/useAxios
  * @param url
  * @param config
  */

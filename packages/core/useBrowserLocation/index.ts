@@ -22,7 +22,7 @@ export interface BrowserLocationState {
 /**
  * Reactive browser location.
  *
- * @link https://vueuse.org/useBrowserLocation
+ * @see https://vueuse.org/useBrowserLocation
  * @param options
  */
 export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
