@@ -8,7 +8,7 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
  */
 
-interface UseMediaSource {
+export interface UseMediaSource {
   /**
    * The source url for the media
    */
@@ -20,7 +20,7 @@ interface UseMediaSource {
   type?: string
 }
 
-interface UseMediaTextTrackSource {
+export interface UseMediaTextTrackSource {
   /**
    * Indicates that the track should be enabled unless the user's preferences indicate
    * that another track is more appropriate
