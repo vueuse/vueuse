@@ -12,9 +12,12 @@ Reactive counter increases on every interval
 import { useInterval } from '@vueuse/core'
 
 // count will increase every 200ms
-const { counter } = useInterval(200)
+const counter = useInterval(200)
 ```
 
+```ts
+const { counter, pause, resume } = useInterval(200, { controls: true })
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

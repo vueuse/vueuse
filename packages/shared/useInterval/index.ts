@@ -27,8 +27,7 @@ export function useInterval(interval = 1000, options: IntervalOptions<boolean> =
   } = options
 
   const counter = ref(0)
-
-  const controls: Pausable = useIntervalFn(() => counter.value += 1, interval, immediate)
+  const controls = useIntervalFn(() => counter.value += 1, interval, { immediate })
 
   if (exposeControls) {
     return {

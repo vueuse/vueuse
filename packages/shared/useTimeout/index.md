@@ -11,7 +11,11 @@ Update value after a given time with controls.
 ```js
 import { useTimeout, promiseTimeout } from '@vueuse/core'
 
-const { ready, start, stop } = useTimeout(1000, true)
+const ready = useTimeout(1000)
+```
+
+```js
+const { ready, start, stop } = useTimeout(1000, { controls: true })
 ```
 
 ```js

@@ -46,7 +46,7 @@ export function useTimestamp(options: TimestampOptions<boolean> = {}) {
 
   const controls: Pausable = interval === 'requestAnimationFrame'
     ? useRafFn(update, { immediate: true })
-    : useIntervalFn(update, interval, true)
+    : useIntervalFn(update, interval, { immediate: true })
 
   if (exposeControls) {
     return {
