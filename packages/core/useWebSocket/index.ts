@@ -206,7 +206,11 @@ export function useWebSocket<Data = any>(
       interval = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(() => send(message, false), interval, false)
+    const { pause, resume } = useIntervalFn(
+      () => send(message, false),
+      interval,
+      { immediate: false },
+    )
 
     heartbeatPause = pause
     heartbeatResume = resume

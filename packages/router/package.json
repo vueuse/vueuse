@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "4.9.1",
+  "version": "4.9.2",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
@@ -39,7 +39,7 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "dependencies": {
-    "@vueuse/shared": "4.9.1",
+    "@vueuse/shared": "4.9.2",
     "vue-demi": "*"
   },
   "devDependencies": {

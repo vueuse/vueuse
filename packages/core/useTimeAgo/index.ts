@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
-import { computed, unref } from 'vue-demi'
+import { MaybeRef, Pausable } from '@vueuse/shared'
+import { computed, ComputedRef, unref } from 'vue-demi'
 import { useNow } from '../useNow'
 
 export type MessageFormatter<T = number> = (value: T, isPast: boolean) => string
@@ -17,7 +17,14 @@ export interface TimeAgoMessages {
   second: string | MessageFormatter<number>
 }
 
-export interface TimeAgoOptions {
+export interface TimeAgoOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+
   /**
    * Intervals to update, set 0 to disable auto update
    *
@@ -96,11 +103,11 @@ const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
  * @see https://vueuse.org/useTimeAgo
  * @param options
  */
-export function useTimeAgo(
-  time: MaybeRef<Date | number | string>,
-  options: TimeAgoOptions = {},
-) {
+export function useTimeAgo(time: MaybeRef<Date | number | string>, options?: TimeAgoOptions<false>): ComputedRef<string>
+export function useTimeAgo(time: MaybeRef<Date | number | string>, options: TimeAgoOptions<true>): { timeAgo: ComputedRef<string> } & Pausable
+export function useTimeAgo(time: MaybeRef<Date | number | string>, options: TimeAgoOptions<boolean> = {}) {
   const {
+    controls: exposeControls = false,
     max,
     updateInterval = 30_000,
     messages = DEFAULT_MESSAGES,
@@ -108,7 +115,7 @@ export function useTimeAgo(
   } = options
 
   const { abs, round } = Math
-  const { now } = useNow({ interval: updateInterval })
+  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
 
   function getTimeago(from: Date, now: Date) {
     const diff = +now - +from
@@ -148,5 +155,15 @@ export function useTimeAgo(
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  return computed(() => getTimeago(new Date(unref(time)), unref(now.value)))
+  const timeAgo = computed(() => getTimeago(new Date(unref(time)), unref(now.value)))
+
+  if (exposeControls) {
+    return {
+      timeAgo,
+      ...controls,
+    }
+  }
+  else {
+    return timeAgo
+  }
 }

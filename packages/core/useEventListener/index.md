@@ -11,15 +11,24 @@ Use EventListener with ease. Register using [addEventListener](https://developer
 ```js
 import { useEventListener } from '@vueuse/core'
 
-useEventListener('mousemove', (evt) => { console.log(evt) })
-```
-
-Custom Event Target
-
-```ts
 useEventListener(document, 'visibilitychange', (evt) => { console.log(evt) })
 ```
 
+You can also pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when you change the target.
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+const element = ref<HTMLDivElement>()
+useEventListener(element, 'keydown', (e) => { console.log(e.key) })
+```
+
+```html
+<template>
+  <div v-if="cond" ref="element">Div1</div>
+  <div v-else ref="element">Div2</div>
+</template>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

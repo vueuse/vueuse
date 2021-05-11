@@ -1,11 +1,41 @@
-import { ref } from 'vue-demi'
+import { Pausable } from '@vueuse/core'
+import { Ref, ref } from 'vue-demi'
 import { useIntervalFn } from '../useIntervalFn'
 
-export function useInterval(interval = 1000, immediate = true) {
-  const counter = ref(0)
+export interface IntervalOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
 
-  return {
-    counter,
-    ...useIntervalFn(() => counter.value += 1, interval, immediate),
+  /**
+   * Exccute the update immediately on calling
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
+
+export function useInterval(interval?: number, options?: IntervalOptions<false>): Ref<number>
+export function useInterval(interval: number, options: IntervalOptions<true>): { counter: Ref<number> } & Pausable
+export function useInterval(interval = 1000, options: IntervalOptions<boolean> = {}) {
+  const {
+    controls: exposeControls = true,
+    immediate = true,
+  } = options
+
+  const counter = ref(0)
+  const controls = useIntervalFn(() => counter.value += 1, interval, { immediate })
+
+  if (exposeControls) {
+    return {
+      counter,
+      ...controls,
+    }
+  }
+  else {
+    return counter
   }
 }
