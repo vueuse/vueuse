@@ -1,6 +1,6 @@
-import { ref } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
-import { isClient, Stopable } from '../utils'
+import { isClient, MaybeRef, Stopable } from '../utils'
 
 export interface TimeoutFnOptions {
   /**
@@ -20,7 +20,7 @@ export interface TimeoutFnOptions {
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval: number,
+  interval: MaybeRef<number>,
   options: TimeoutFnOptions = {},
 ): Stopable {
   const {
