@@ -101,6 +101,7 @@
   - [`biSyncRef`](https://vueuse.org/shared/biSyncRef/) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
+  - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time

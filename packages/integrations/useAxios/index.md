@@ -51,12 +51,50 @@ const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
 
 ```typescript
 export interface UseAxiosReturn<T> {
+  /**
+   * Axios Response
+   */
   response: Ref<AxiosResponse<T> | undefined>
+  /**
+   * Axios response data
+   */
   data: Ref<T | undefined>
+  /**
+   * @deprecated use isFinished instead
+   */
   finished: Ref<boolean>
+  /**
+   * @deprecated use isLoading instead
+   */
   loading: Ref<boolean>
+  /**
+   * Indicates if the request has finished
+   */
+  isFinished: Ref<boolean>
+  /**
+   * Indicates if the request is currently loading
+   */
+  isLoading: Ref<boolean>
+  /**
+   * @deprecated use aborted instead
+   */
   canceled: Ref<boolean>
+  /**
+   * Indicates if the request was canceled
+   */
+  aborted: Ref<boolean>
+  /**
+   * Any erros that may have occurred
+   */
   error: Ref<AxiosError<T> | undefined>
+  /**
+   * @deprecated use abort instead
+   */
+  cancel: (message?: string | undefined) => void
+  /**
+   * Aborts the current request
+   */
+  abort: (message?: string | undefined) => void
 }
 export declare function useAxios<T = any>(
   url: string,
