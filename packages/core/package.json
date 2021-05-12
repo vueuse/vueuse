@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "4.9.3",
+  "version": "4.9.4",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse#readme",
   "dependencies": {
-    "@vueuse/shared": "4.9.3",
+    "@vueuse/shared": "4.9.4",
     "vue-demi": "*"
   }
 }
