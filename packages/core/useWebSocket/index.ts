@@ -55,6 +55,13 @@ export interface WebSocketOptions {
      */
     onFailed?: Fn
   }
+
+  /**
+   * Automatically open a connection
+   *
+   * @default false
+   */
+  immediate?: boolean
 }
 
 export interface WebSocketResult<T> {
@@ -211,6 +218,8 @@ export function useWebSocket<Data = any>(
     heartbeatPause = pause
     heartbeatResume = resume
   }
+
+  if (options.immediate) _init()
 
   const open = () => {
     close()
