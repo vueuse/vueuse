@@ -2,12 +2,61 @@ import { Ref, ref, shallowRef } from 'vue-demi'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
 
 export interface UseAxiosReturn<T> {
+
+  /**
+   * Axios Response
+   */
   response: Ref<AxiosResponse<T> | undefined>
+
+  /**
+   * Axios response data
+   */
   data: Ref<T | undefined>
+
+  /**
+   * @deprecated use isFinished instead
+   */
   finished: Ref<boolean>
+
+  /**
+   * @deprecated use isLoading instead
+   */
   loading: Ref<boolean>
+
+  /**
+   * Indicates if the request has finished
+   */
+  isFinished: Ref<boolean>
+
+  /**
+   * Indicates if the request is currently loading
+   */
+  isLoading: Ref<boolean>
+
+  /**
+   * @deprecated use aborted instead
+   */
   canceled: Ref<boolean>
+
+  /**
+   * Indicates if the request was canceled
+   */
+  aborted: Ref<boolean>
+
+  /**
+   * Any erros that may have occurred
+   */
   error: Ref<AxiosError<T> | undefined>
+
+  /**
+   * @deprecated use abort instead
+   */
+  cancel: (message?: string | undefined) => void
+
+  /**
+   * Aborts the current request
+   */
+  abort: (message?: string | undefined) => void
 }
 
 export function useAxios<T = any>(url: string, config?: AxiosRequestConfig): UseAxiosReturn<T>
@@ -44,19 +93,19 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
 
   const response = shallowRef<AxiosResponse<T>>()
   const data = shallowRef<T>()
-  const finished = ref(false)
-  const loading = ref(true)
-  const canceled = ref(false)
+  const isFinished = ref(false)
+  const isLoading = ref(true)
+  const aborted = ref(false)
   const error = shallowRef<AxiosError<T>>()
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
-  const cancel = (message?: string) => {
-    if (finished.value || !loading.value) return
+  const abort = (message?: string) => {
+    if (isFinished.value || !isLoading.value) return
 
     cancelToken.cancel(message)
-    canceled.value = true
-    loading.value = false
-    finished.value = false
+    aborted.value = true
+    isLoading.value = false
+    isFinished.value = false
   }
 
   instance(url, { ...config, cancelToken: cancelToken.token })
@@ -68,17 +117,21 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
       error.value = e
     })
     .finally(() => {
-      loading.value = false
-      finished.value = true
+      isLoading.value = false
+      isFinished.value = true
     })
 
   return {
     response,
     data,
     error,
-    finished,
-    loading,
-    cancel,
-    canceled,
+    finished: isFinished,
+    loading: isLoading,
+    isFinished,
+    isLoading,
+    cancel: abort,
+    canceled: aborted,
+    aborted,
+    abort,
   }
 }
