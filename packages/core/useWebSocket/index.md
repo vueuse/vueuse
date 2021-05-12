@@ -74,7 +74,7 @@ export interface WebSocketOptions {
   onError?: (ws: WebSocket, event: Event) => void
   onMessage?: (ws: WebSocket, event: MessageEvent) => void
   /**
-   * Send heartbeat for every x mileseconds passed
+   * Send heartbeat for every x milliseconds passed
    *
    * @default false
    */
@@ -88,7 +88,7 @@ export interface WebSocketOptions {
          */
         message?: string
         /**
-         * Interval, in mileseconds
+         * Interval, in milliseconds
          *
          * @default 1000
          */
@@ -109,7 +109,7 @@ export interface WebSocketOptions {
          */
         retries?: number
         /**
-         * Delay for reconnect, in mileseconds
+         * Delay for reconnect, in milliseconds
          *
          * @default 1000
          */
