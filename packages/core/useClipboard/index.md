@@ -39,7 +39,7 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
    */
   source?: Source
   /**
-   * Mileseconds to reset state of `copied` ref
+   * Milliseconds to reset state of `copied` ref
    *
    * @default 1500
    */
