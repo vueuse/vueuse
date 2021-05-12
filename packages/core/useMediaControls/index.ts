@@ -205,14 +205,6 @@ function tracksToArray(tracks: TextTrackList): UseMediaTextTrack[] {
 
 const defaultOptions: UseMediaControlsOptions = {
   src: '',
-  poster: '',
-  autoplay: false,
-  preload: 'auto',
-  loop: false,
-  controls: false,
-  muted: false,
-  playsinline: false,
-  autoPictureInPicture: false,
   tracks: [],
 }
 
@@ -310,14 +302,32 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!el)
       return
 
-    el.loop = unref(options.loop)!
-    el.controls = unref(options.controls)!
-    el.muted = unref(options.muted)!
-    el.preload = unref(options.preload)!
-    el.autoplay = unref(options.autoplay)!
+    const loop = unref(options.loop)
+    if (loop) el.loop = loop
+
+    const controls = unref(options.controls)
+    if (controls) el.controls = controls
+
+    const muted = unref(options.muted)
+    if (muted) el.muted = muted
+
+    const preload = unref(options.preload)
+    if (preload) el.preload = preload
+
+    const autoplay = unref(options.autoplay)
+    if (autoplay) el.autoplay = autoplay
+
+    const poster = unref(options.poster)
+    if (poster) (el as HTMLVideoElement).poster = poster
+
+    const playsInline = unref(options.playsinline)
+    if (playsInline) (el as HTMLVideoElement).playsInline = playsInline
+
+    const autoPictureInPicture = unref(options.autoPictureInPicture)
+    // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
+    if (autoPictureInPicture) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
+
     el.volume = unref(volume)!
-    ;(el as HTMLVideoElement).playsInline = unref(options.playsinline)!
-    ;(el as HTMLVideoElement).poster = unref(options.poster) || ''
   })
 
   /**
