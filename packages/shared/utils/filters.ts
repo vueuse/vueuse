@@ -57,6 +57,17 @@ export function debounceFilter(ms: MaybeRef<number>) {
 }
 
 /**
+ * Create an EventFilter that only invoke when value is defined
+ */
+export function definedFilter() {
+  const filter: EventFilter = (invoke, options) => {
+    if (options.args[0] != null) invoke()
+  }
+
+  return filter
+}
+
+/**
  * Create an EventFilter that throttle the events
  *
  * @param ms

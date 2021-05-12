@@ -140,6 +140,13 @@
       "description": "debounced watch"
     },
     {
+      "name": "definedWatch",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/definedWatch/",
+      "category": "Watch",
+      "description": "defined watch"
+    },
+    {
       "name": "extendRef",
       "package": "shared",
       "docs": "https://vueuse.org/shared/extendRef/",

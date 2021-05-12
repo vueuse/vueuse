@@ -126,6 +126,7 @@
 
 ### Watch
   - [`debouncedWatch`](https://vueuse.org/shared/debouncedWatch/) — debounced watch
+  - [`definedWatch`](https://vueuse.org/shared/definedWatch/) — defined watch
   - [`ignorableWatch`](https://vueuse.org/shared/ignorableWatch/) — ignorable watch
   - [`pausableWatch`](https://vueuse.org/shared/pausableWatch/) — pausable watch
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
