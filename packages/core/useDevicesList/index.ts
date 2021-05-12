@@ -70,7 +70,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
       const stream = await navigator!.mediaDevices.getUserMedia({ audio: true, video: true })
       stream.getTracks().forEach(t => t.stop())
       update()
-      permissionGranted.value = (await query())?.state === 'granted'
+      permissionGranted.value = true
     }
     else {
       permissionGranted.value = true
