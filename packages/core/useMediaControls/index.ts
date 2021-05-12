@@ -303,29 +303,29 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     const loop = unref(options.loop)
-    if (loop) el.loop = loop
+    if (loop !== undefined) el.loop = loop
 
     const controls = unref(options.controls)
-    if (controls) el.controls = controls
+    if (controls !== undefined) el.controls = controls
 
     const muted = unref(options.muted)
-    if (muted) el.muted = muted
+    if (muted !== undefined) el.muted = muted
 
     const preload = unref(options.preload)
-    if (preload) el.preload = preload
+    if (preload !== undefined) el.preload = preload
 
     const autoplay = unref(options.autoplay)
-    if (autoplay) el.autoplay = autoplay
+    if (autoplay !== undefined) el.autoplay = autoplay
 
     const poster = unref(options.poster)
-    if (poster) (el as HTMLVideoElement).poster = poster
+    if (poster !== undefined) (el as HTMLVideoElement).poster = poster
 
     const playsInline = unref(options.playsinline)
-    if (playsInline) (el as HTMLVideoElement).playsInline = playsInline
+    if (playsInline !== undefined) (el as HTMLVideoElement).playsInline = playsInline
 
     const autoPictureInPicture = unref(options.autoPictureInPicture)
     // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
-    if (autoPictureInPicture) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
+    if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
 
     el.volume = unref(volume)!
   })
