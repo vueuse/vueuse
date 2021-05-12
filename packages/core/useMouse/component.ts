@@ -1,10 +1,10 @@
 import { defineComponent } from 'vue-demi'
 import { useMouse, MouseOptions } from '.'
 
-export const UseMouse = defineComponent<{ options: MouseOptions }>({
+export const UseMouse = defineComponent<MouseOptions>({
   name: 'UseMouse',
   setup(props, { slots, emit }) {
-    const { x, y, sourceType } = useMouse(props.options)
+    const { x, y, sourceType } = useMouse(props)
 
     return () => {
       if (slots.default) {

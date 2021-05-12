@@ -1,13 +1,13 @@
 import { h, ref, defineComponent } from 'vue-demi'
 import { useMousePressed, MousePressedOptions } from '.'
 
-export const UseMousePressed = defineComponent<{ local: boolean; options: MousePressedOptions }>({
+export const UseMousePressed = defineComponent<MousePressedOptions>({
   name: 'UseMousePressed',
   setup(props, { slots }) {
     const target = ref()
     const { pressed, sourceType } = useMousePressed({
-      ...props.options,
-      target: props.local ? target : null,
+      ...props,
+      target: props.target ? props.target : target,
     })
 
     return () => {

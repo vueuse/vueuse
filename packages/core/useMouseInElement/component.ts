@@ -1,7 +1,7 @@
 import { h, ref, defineComponent } from 'vue-demi'
 import { useMouseInElement, MouseInElementOptions } from '.'
 
-export const UseMouseInElement = defineComponent<{ options: MouseInElementOptions }>({
+export const UseMouseInElement = defineComponent<MouseInElementOptions>({
   name: 'UseMouseElement',
   setup(props, { slots, emit }) {
     const target = ref()
@@ -16,7 +16,7 @@ export const UseMouseInElement = defineComponent<{ options: MouseInElementOption
       elementHeight,
       isOutside,
       sourceType,
-    } = useMouseInElement(target, props.options)
+    } = useMouseInElement(target, props)
 
     return () => {
       if (slots.default) {

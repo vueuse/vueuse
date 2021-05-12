@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue-demi'
 import { useNow, UseNowOptions } from '.'
 
-export const UseNow = defineComponent<{ options: UseNowOptions }>({
+export const UseNow = defineComponent<Omit<UseNowOptions<true>, 'controls'>>({
   name: 'UseNow',
   setup(props, { slots }) {
     const {
@@ -9,7 +9,10 @@ export const UseNow = defineComponent<{ options: UseNowOptions }>({
       now,
       pause,
       resume,
-    } = useNow()
+    } = useNow({
+      ...props,
+      controls: true,
+    })
 
     return () => {
       if (slots.default) {
