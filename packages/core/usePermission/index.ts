@@ -67,9 +67,14 @@ export function usePermission(
     if (!isSupported)
       return
     if (!permissionStatus) {
-      permissionStatus = await navigator!.permissions.query(desc)
-      useEventListener(permissionStatus, 'change', onChange)
-      onChange()
+      try {
+        permissionStatus = await navigator!.permissions.query(desc)
+        useEventListener(permissionStatus, 'change', onChange)
+        onChange()
+      }
+      catch {
+        state.value = 'prompt'
+      }
     }
     return permissionStatus
   })
