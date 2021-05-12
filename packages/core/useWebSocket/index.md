@@ -125,7 +125,6 @@ export interface WebSocketOptions {
          */
         onFailed?: Fn
       }
-
   /**
    * Automatically open a connection
    *

@@ -44,3 +44,35 @@ onError((error) => {
 })
 </script>
 ```
+
+
+<!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+/**
+ * The source code for this function was inspiried by vue-apollo's `useEventHook` util
+ * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
+ */
+/**
+ * Utility for creating event hooks
+ *
+ * @see https://vueuse.org/createEventHook
+ */
+export declare function createEventHook<T = any>(): {
+  on: (
+    fn: (param: T) => void
+  ) => {
+    off: () => void
+  }
+  off: (fn: (param: T) => void) => void
+  trigger: (param: T) => void
+}
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/createEventHook/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/createEventHook/index.md)
+
+
+<!--FOOTER_ENDS-->
