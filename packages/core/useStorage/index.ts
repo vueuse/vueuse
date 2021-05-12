@@ -89,12 +89,15 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
               ? 'number'
               : 'any'
 
-  function read() {
+  function read(event?: StorageEvent) {
     if (!storage)
       return
 
+    if (event && event.key !== key)
+      return
+
     try {
-      let rawValue = storage.getItem(key)
+      let rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null && defaultValue) {
         rawValue = Serializers[type].write(defaultValue)
         storage.setItem(key, rawValue)
