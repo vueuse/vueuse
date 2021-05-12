@@ -11,10 +11,16 @@ Reactive [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/
 ```js
 import { useWebSocket } from '@vueuse/core'
 
-const { status, data, send, close } = useWebSocket('ws://websocketurl')
+const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
 ```
 
 See the [Type Declarations](#type-declarations) for more options.
+
+### Immediate
+
+Auto connect (disabled by default, will be enabled by default in the future).
+
+This will call `open()` automatically for you and you don't need to call it by yourself.
 
 ### Auto-reconnection
 
@@ -119,6 +125,13 @@ export interface WebSocketOptions {
          */
         onFailed?: Fn
       }
+
+  /**
+   * Automatically open a connection
+   *
+   * @default false
+   */
+  immediate?: boolean
 }
 export interface WebSocketResult<T> {
   /**
