@@ -22,17 +22,16 @@ export function useWebWorker(
   } = options
 
   const data: Ref<any> = ref(null)
-  let _worker: Worker
   const worker = shallowRef<Worker>()
 
-  const post: typeof _worker.postMessage = function post(val: any) {
+  const post: typeof Worker.prototype['postMessage'] = function post(val: any) {
     if (!worker.value)
       return
 
     worker.value.postMessage(val)
   }
 
-  const terminate: typeof _worker.terminate = function terminate() {
+  const terminate: typeof Worker.prototype['terminate'] = function terminate() {
     if (!worker.value)
       return
 
