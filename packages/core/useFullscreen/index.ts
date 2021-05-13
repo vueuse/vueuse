@@ -91,7 +91,7 @@ export function useFullscreen(
     }
   }
 
-  const [REQUEST, EXIT, ELEMENT,, EVENT] = map
+  const [REQUEST, EXIT, ELEMENT, EVENT] = map
 
   async function exit() {
     if (!isSupported)
