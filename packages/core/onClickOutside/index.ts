@@ -7,7 +7,7 @@ const events = ['mousedown', 'touchstart', 'pointerdown'] as const
 type EventType = WindowEventMap[(typeof events)[number]]
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
-  events: ('mousedown' | 'touchstart' | 'pointerdown')[]
+  events: string[]
 }
 
 /**
