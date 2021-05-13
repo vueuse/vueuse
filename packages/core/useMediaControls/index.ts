@@ -1,5 +1,5 @@
 import { watch, ref, unref, watchEffect } from 'vue-demi'
-import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn } from '@vueuse/shared'
+import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn, createEventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
@@ -243,6 +243,9 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
+  // Events
+  const mediaErrorEvent = createEventHook<Event>()
+
   /**
    * Disables the specified track. If no track is specified then
    * all tracks will be disabled
@@ -452,6 +455,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+  useEventListener(target, 'error', mediaErrorEvent.trigger)
 
   /**
    * The following listeners need to listen to a nested
@@ -497,5 +501,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     supportsPictureInPicture,
     togglePictureInPicture,
     isPictureInPicture,
+
+    // Events
+    onMediaError: mediaErrorEvent.on,
   }
 }
