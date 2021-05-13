@@ -5,7 +5,7 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type AllowedEvents = Pick<WindowEventMap, 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
 export interface OnClickOutsideOptions<E extends keyof AllowedEvents> extends ConfigurableWindow {
-  event: E
+  event?: E
 }
 
 /**
@@ -19,11 +19,9 @@ export interface OnClickOutsideOptions<E extends keyof AllowedEvents> extends Co
 export function onClickOutside<E extends keyof AllowedEvents = 'pointerdown'>(
   target: MaybeElementRef,
   handler: (evt: AllowedEvents[E]) => void,
-  options: OnClickOutsideOptions<E> = {
-    event: 'pointerdown' as E,
-  },
+  options: OnClickOutsideOptions<E> = {},
 ) {
-  const { window = defaultWindow } = options
+  const { window = defaultWindow, event = 'pointerdown' } = options
 
   if (!window)
     return
@@ -39,7 +37,7 @@ export function onClickOutside<E extends keyof AllowedEvents = 'pointerdown'>(
     handler(event)
   }
 
-  const stop = useEventListener(window, options.event, listener, { passive: true })
+  const stop = useEventListener(window, event, listener, { passive: true })
 
   tryOnUnmounted(stop)
 
