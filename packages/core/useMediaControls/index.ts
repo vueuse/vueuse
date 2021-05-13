@@ -236,7 +236,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
   // Events
-  const mediaErrorEvent = createEventHook<Event>()
+  const sourceErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -369,6 +369,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
 
+      useEventListener(source, 'error', sourceErrorEvent.trigger)
+
       el.appendChild(source)
     })
 
@@ -465,7 +467,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
-  useEventListener(target, 'error', mediaErrorEvent.trigger)
 
   /**
    * The following listeners need to listen to a nested
@@ -513,6 +514,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     isPictureInPicture,
 
     // Events
-    onMediaError: mediaErrorEvent.on,
+    onSourceError: sourceErrorEvent.on,
   }
 }
