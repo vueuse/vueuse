@@ -72,6 +72,18 @@ const { data } = useFetch(url, {
 })
 ```
 
+The `afterFetch` option can intercept the response data before it is updated.
+```ts
+const { data } = useFetch(url, {
+  afterFetch(ctx) {
+    if (ctx.data.title === 'HxH')
+      ctx.data.title = 'Hunter x Hunter' // Modifies the resposne data
+
+    return ctx
+  },
+})
+```
+
 ### Setting the request method and return type
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
@@ -110,6 +122,21 @@ const useMyFetch = createFetch({
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
+### Events
+
+The `onFetchResposne` and `onFetchError` will fire on fetch request responses and errors respectively.
+
+```ts
+const { onFetchResponse, onFetchError } = useFetch(url)
+
+onFetchResponse((response) => {
+  console.log(response.status)
+})
+
+onFetchError((error) => {
+  console.error(error.message)
+})
+```
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

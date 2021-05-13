@@ -1,5 +1,5 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp } from '@vueuse/shared'
+import { Fn, MaybeRef, containsProp, createEventHook } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
 interface UseFetchReturnBase<T> {
@@ -52,6 +52,16 @@ interface UseFetchReturnBase<T> {
    * Manually call the fetch
    */
   execute: () => Promise<any>
+
+  /**
+   * Fires after the fetch request has finished
+   */
+  onFetchResponse: (fn: (response: Response) => void) => { off: () => void }
+
+  /**
+   * Fires after a fetch request error
+   */
+  onFetchError: (fn: (error: any) => void) => { off: () => void }
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -91,6 +101,14 @@ export interface BeforeFetchContext {
   cancel: Fn
 }
 
+export interface AfterFetchContext<T = any> {
+
+  response: Response
+
+  data: T | null
+
+}
+
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -115,6 +133,12 @@ export interface UseFetchOptions {
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
+
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 2xx response
+   */
+  afterFetch?: (ctx: AfterFetchContext) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
 }
 
 export interface CreateFetchOptions {
@@ -141,7 +165,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
@@ -211,6 +235,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const {
     fetch = defaultWindow?.fetch,
   } = options
+
+  // Event Hooks
+  const responseEvent = createEventHook<Response>()
+  const errorEvent = createEventHook<any>()
 
   const isFinished = ref(false)
   const isFetching = ref(false)
@@ -296,16 +324,22 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
-          await fetchResponse[config.type]().then(text => data.value = text as any)
+          let responseData = await fetchResponse[config.type]()
 
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
 
+          if (options.afterFetch)
+            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+
+          data.value = responseData as any
+          responseEvent.trigger(fetchResponse)
           resolve(fetchResponse)
         })
         .catch((fetchError) => {
           error.value = fetchError.message || fetchError.name
+          errorEvent.trigger(fetchError)
         })
         .finally(() => {
           loading(false)
@@ -333,6 +367,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     aborted,
     abort,
     execute,
+
+    onFetchResponse: responseEvent.on,
+    onFetchError: errorEvent.on,
   }
 
   const typeConfigured: UseFetchReturnTypeConfigured<T> = {
