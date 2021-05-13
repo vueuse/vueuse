@@ -55,5 +55,6 @@ export function useWebWorker(
     data,
     post,
     terminate,
+    worker: worker!,
   }
 }
