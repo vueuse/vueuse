@@ -360,7 +360,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       sources = [src]
 
     // Clear the sources
-    el.querySelectorAll('source').forEach(e => e.remove())
+    el.querySelectorAll('source').forEach((e) => {
+      e.removeEventListener('error', sourceErrorEvent.trigger)
+      e.remove()
+    })
 
     // Add new sources
     sources.forEach(({ src, type }) => {
@@ -369,7 +372,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
 
-      useEventListener(source, 'error', sourceErrorEvent.trigger)
+      source.addEventListener('error', sourceErrorEvent.trigger)
 
       el.appendChild(source)
     })
