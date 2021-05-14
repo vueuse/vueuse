@@ -5,11 +5,13 @@ import { definedWatch } from '.'
 const input = ref<string | number | null | undefined>(null)
 const updated = ref(0)
 const latest = ref<string | number>('')
+const previous = ref<string | number | null | undefined>(null)
 
-definedWatch(input, (value) => {
+definedWatch(input, (value, oldValue) => {
   updated.value += 1
   latest.value = value
-  console.log('changed!')
+  previous.value = oldValue
+  console.log(`Changed from ${oldValue} to ${value}!`)
 })
 </script>
 
@@ -34,6 +36,7 @@ definedWatch(input, (value) => {
 
     <p>Input: {{ JSON.stringify(input) }}</p>
     <p>Latest: {{ JSON.stringify(latest) }}</p>
+    <p>Previous: {{ JSON.stringify(previous) }}</p>
     <p>Times Updated: {{ updated }}</p>
   </div>
 </template>

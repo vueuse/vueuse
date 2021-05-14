@@ -60,8 +60,16 @@ export function debounceFilter(ms: MaybeRef<number>) {
  * Create an EventFilter that only invoke when value is defined
  */
 export function definedFilter() {
+  let lastDefinedValue: unknown
   const filter: EventFilter = (invoke, options) => {
-    if (options.args[0] != null) invoke()
+    const value = options.args[0]
+    if (value != null) {
+      options.args[1] = lastDefinedValue
+      if (lastDefinedValue !== value) {
+        lastDefinedValue = value
+        invoke()
+      }
+    }
   }
 
   return filter
