@@ -182,6 +182,22 @@ interface UseFetchReturnBase<T> {
    * Manually call the fetch
    */
   execute: () => Promise<any>
+  /**
+   * Fires after the fetch request has finished
+   */
+  onFetchResponse: (
+    fn: (response: Response) => void
+  ) => {
+    off: () => void
+  }
+  /**
+   * Fires after a fetch request error
+   */
+  onFetchError: (
+    fn: (error: any) => void
+  ) => {
+    off: () => void
+  }
 }
 declare type PayloadType = "text" | "json" | "formData"
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
@@ -214,6 +230,10 @@ export interface BeforeFetchContext {
    */
   cancel: Fn
 }
+export interface AfterFetchContext<T = any> {
+  response: Response
+  data: T | null
+}
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -240,6 +260,13 @@ export interface UseFetchOptions {
     | Promise<Partial<BeforeFetchContext> | void>
     | Partial<BeforeFetchContext>
     | void
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 2xx response
+   */
+  afterFetch?: (
+    ctx: AfterFetchContext
+  ) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
 }
 export interface CreateFetchOptions {
   /**

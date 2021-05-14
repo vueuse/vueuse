@@ -39,8 +39,19 @@ export default {
 ## Type Declarations
 
 ```typescript
-declare const events: readonly ["mousedown", "touchstart", "pointerdown"]
-declare type EventType = WindowEventMap[typeof events[number]]
+export declare type OnClickOutsideEvents = Pick<
+  WindowEventMap,
+  | "mousedown"
+  | "mouseup"
+  | "touchstart"
+  | "touchend"
+  | "pointerdown"
+  | "pointerup"
+>
+export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents>
+  extends ConfigurableWindow {
+  event?: E
+}
 /**
  * Listen for clicks outside of an element.
  *
@@ -49,12 +60,13 @@ declare type EventType = WindowEventMap[typeof events[number]]
  * @param handler
  * @param options
  */
-export declare function onClickOutside(
+export declare function onClickOutside<
+  E extends keyof OnClickOutsideEvents = "pointerdown"
+>(
   target: MaybeElementRef,
-  handler: (evt: EventType) => void,
-  options?: ConfigurableWindow
-): (() => void) | undefined
-export {}
+  handler: (evt: OnClickOutsideEvents[E]) => void,
+  options?: OnClickOutsideOptions<E>
+): Fn | undefined
 ```
 
 ## Source
