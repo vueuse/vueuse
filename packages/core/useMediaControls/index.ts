@@ -236,7 +236,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
   // Events
-  const mediaErrorEvent = createEventHook<Event>()
+  const sourceErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -360,7 +360,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       sources = [src]
 
     // Clear the sources
-    el.querySelectorAll('source').forEach(e => e.remove())
+    el.querySelectorAll('source').forEach((e) => {
+      e.removeEventListener('error', sourceErrorEvent.trigger)
+      e.remove()
+    })
 
     // Add new sources
     sources.forEach(({ src, type }) => {
@@ -369,11 +372,22 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
 
+      source.addEventListener('error', sourceErrorEvent.trigger)
+
       el.appendChild(source)
     })
 
     // Finally, load the new sources.
     el.load()
+  })
+
+  // Remove source error listeners
+  tryOnUnmounted(() => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.querySelectorAll('source').forEach(e => e.removeEventListener('error', sourceErrorEvent.trigger))
   })
 
   /**
@@ -465,7 +479,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
-  useEventListener(target, 'error', mediaErrorEvent.trigger)
 
   /**
    * The following listeners need to listen to a nested
@@ -513,6 +526,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     isPictureInPicture,
 
     // Events
-    onMediaError: mediaErrorEvent.on,
+    onSourceError: sourceErrorEvent.on,
   }
 }
