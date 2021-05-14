@@ -544,6 +544,11 @@ export declare function useMediaControls(
   supportsPictureInPicture: boolean | undefined
   togglePictureInPicture: () => Promise<unknown>
   isPictureInPicture: Ref<boolean>
+  onSourceError: (
+    fn: (param: Event) => void
+  ) => {
+    off: () => void
+  }
 }
 export {}
 ```

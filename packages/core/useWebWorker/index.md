@@ -53,6 +53,7 @@ export declare function useWebWorker(
     (message: any, options?: PostMessageOptions | undefined): void
   }
   terminate: () => void
+  worker: Ref<Worker | undefined>
 }
 ```
 
