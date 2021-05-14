@@ -1,10 +1,12 @@
-import { Fn, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnUnmounted } from '@vueuse/shared'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-const events = ['mousedown', 'touchstart', 'pointerdown'] as const
-type EventType = WindowEventMap[(typeof events)[number]]
+export type OnClickOutsideEvents = Pick<WindowEventMap, 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
+export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents> extends ConfigurableWindow {
+  event?: E
+}
 
 /**
  * Listen for clicks outside of an element.
@@ -14,17 +16,17 @@ type EventType = WindowEventMap[(typeof events)[number]]
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdown'>(
   target: MaybeElementRef,
-  handler: (evt: EventType) => void,
-  options: ConfigurableWindow = {},
+  handler: (evt: OnClickOutsideEvents[E]) => void,
+  options: OnClickOutsideOptions<E> = {},
 ) {
-  const { window = defaultWindow } = options
+  const { window = defaultWindow, event = 'pointerdown' } = options
 
   if (!window)
     return
 
-  const listener = (event: EventType) => {
+  const listener = (event: OnClickOutsideEvents[E]) => {
     const el = unrefElement(target)
     if (!el)
       return
@@ -35,13 +37,7 @@ export function onClickOutside(
     handler(event)
   }
 
-  let disposables: Fn[] = events
-    .map(event => useEventListener(window, event, listener, { passive: true }))
-
-  const stop = () => {
-    disposables.forEach(stop => stop())
-    disposables = []
-  }
+  const stop = useEventListener(window, event, listener, { passive: true })
 
   tryOnUnmounted(stop)
 
