@@ -381,6 +381,15 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     el.load()
   })
 
+  // Remove source error listeners
+  tryOnUnmounted(() => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.querySelectorAll('source').forEach(e => e.removeEventListener('error', sourceErrorEvent.trigger))
+  })
+
   /**
    * Watch volume and change player volume when volume prop changes
    */
