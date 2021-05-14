@@ -3,8 +3,8 @@ import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-export type AllowedEvents = Pick<WindowEventMap, 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
-export interface OnClickOutsideOptions<E extends keyof AllowedEvents> extends ConfigurableWindow {
+export type OnClickOutsideEvents = Pick<WindowEventMap, 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
+export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents> extends ConfigurableWindow {
   event?: E
 }
 
@@ -16,9 +16,9 @@ export interface OnClickOutsideOptions<E extends keyof AllowedEvents> extends Co
  * @param handler
  * @param options
  */
-export function onClickOutside<E extends keyof AllowedEvents = 'pointerdown'>(
+export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdown'>(
   target: MaybeElementRef,
-  handler: (evt: AllowedEvents[E]) => void,
+  handler: (evt: OnClickOutsideEvents[E]) => void,
   options: OnClickOutsideOptions<E> = {},
 ) {
   const { window = defaultWindow, event = 'pointerdown' } = options
@@ -26,7 +26,7 @@ export function onClickOutside<E extends keyof AllowedEvents = 'pointerdown'>(
   if (!window)
     return
 
-  const listener = (event: AllowedEvents[E]) => {
+  const listener = (event: OnClickOutsideEvents[E]) => {
     const el = unrefElement(target)
     if (!el)
       return
