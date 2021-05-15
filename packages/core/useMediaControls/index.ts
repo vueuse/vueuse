@@ -479,6 +479,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+  useEventListener(target, 'volumechange', () => {
+    options.muted.value = (unref(target))!.muted
+    volume.value = (unref(target))!.volume
+  })
 
   /**
    * The following listeners need to listen to a nested
