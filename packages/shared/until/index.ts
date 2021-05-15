@@ -1,9 +1,9 @@
-import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
+import { WatchOptions, watch, WatchSource, unref, Ref, UnwrapRef } from 'vue-demi'
 import { ElementOf, promiseTimeout, ShallowUnwrapRef, MaybeRef } from '../utils'
 
 export interface UntilToMatchOptions {
   /**
-   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
    *
    * @default 0
@@ -34,7 +34,7 @@ export interface UntilToMatchOptions {
 
 export interface UntilBaseInstance<T> {
   toMatch(
-    condition: (v: T) => boolean,
+    condition: (v: UnwrapRef<T>) => boolean,
     options?: UntilToMatchOptions
   ): Promise<void>
   changed(options?: UntilToMatchOptions): Promise<void>
