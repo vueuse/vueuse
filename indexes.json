@@ -831,6 +831,13 @@
       "description": "shorthand for props v-model binding"
     },
     {
+      "name": "useVibrate",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useVibrate/",
+      "category": "Sensors",
+      "description": "reactive hook to provide physical feedback with device vibration hardware using the [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API)"
+    },
+    {
       "name": "useWebSocket",
       "package": "core",
       "docs": "https://vueuse.org/core/useWebSocket/",
