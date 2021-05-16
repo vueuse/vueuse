@@ -19,7 +19,7 @@ function toggleVibrating() {
   <div v-if="isSupported">
     <div>{{ `Vibrating : ${vibrating}` }}</div>
     <button @click="toggleVibrating">
-      {{ vibrating ? "stop" : "vibrate" }}
+      {{ vibrating ? "Stop" : "Vibrate" }}
     </button>
   </div>
   <div v-else>
