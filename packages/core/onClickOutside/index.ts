@@ -37,5 +37,4 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdo
   }
 
   return useEventListener(window, event, listener, { passive: true })
-
 }
