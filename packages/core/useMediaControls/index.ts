@@ -103,6 +103,8 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * meaning that the audio will be played when the media is played.
    *
    * @default false
+   * @deprecated This option is deprecated.
+   * Use `const { muted } = useMediaControls();` instead
    */
   muted?: MaybeRef<boolean>
 
@@ -232,6 +234,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const tracks = ref<UseMediaTextTrack[]>([])
   const selectedTrack = ref<number>(-1)
   const isPictureInPicture = ref(false)
+  const muted = ref(unref(options.muted) || false)
 
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
@@ -312,7 +315,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (controls !== undefined) el.controls = controls
 
     const muted = unref(options.muted)
-    if (muted !== undefined) el.muted = muted
+    if (muted !== undefined) {
+      console.warn('Muted option is deprecated. Use `const { muted } = useMediaControls();` instead')
+      el.muted = muted
+    }
 
     const preload = unref(options.preload)
     if (preload !== undefined) el.preload = preload
@@ -330,7 +336,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
     if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
 
-    el.volume = unref(volume)!
+    // el.volume = unref(volume)!
   })
 
   /**
@@ -399,6 +405,14 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     el.volume = vol
+  })
+
+  watch(muted, (mute) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.muted = mute
   })
 
   /**
@@ -480,8 +494,11 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
-    options.muted.value = (unref(target))!.muted
-    volume.value = (unref(target))!.volume
+    const el = unref(target)
+    if (!el) return
+
+    volume.value = el.volume
+    muted.value = el.muted
   })
 
   /**
@@ -516,7 +533,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     stalled,
     buffered,
     playing,
+
+    // Volume
     volume,
+    muted,
 
     // Tracks
     tracks,
