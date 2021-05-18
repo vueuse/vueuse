@@ -4,7 +4,7 @@ category: Sensors
 
 # useSwipe
 
-Reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent).
+Reactive swipe detection based on [`PointerEvents`](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events).
 
 ## Usage
 
@@ -50,15 +50,15 @@ export interface SwipeOptions extends ConfigurableWindow {
   /**
    * Callback on swipe start
    */
-  onSwipeStart?: (e: TouchEvent) => void
+  onSwipeStart?: (e: PointerEvent) => void
   /**
    * Callback on swipe moves
    */
-  onSwipe?: (e: TouchEvent) => void
+  onSwipe?: (e: PointerEvent) => void
   /**
    * Callback on swipe ends
    */
-  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
 }
 export interface SwipeReturn {
   isPassiveEventSupported: boolean
@@ -84,7 +84,7 @@ export interface SwipeReturn {
  * @param options
  */
 export declare function useSwipe(
-  target: MaybeRef<EventTarget | null | undefined>,
+  target: MaybeRef<Element | null | undefined>,
   options?: SwipeOptions
 ): {
   isPassiveEventSupported: boolean

@@ -772,7 +772,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useSwipe/",
       "category": "Sensors",
-      "description": "reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)"
+      "description": "reactive swipe detection based on [`PointerEvents`](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)"
     },
     {
       "name": "useTimeAgo",

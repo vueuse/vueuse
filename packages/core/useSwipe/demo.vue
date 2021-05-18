@@ -17,7 +17,7 @@ const reset = () => {
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   target, {
     passive: false,
-    onSwipe(e: TouchEvent) {
+    onSwipe(e: PointerEvent) {
       if (containerWidth.value) {
         if (lengthX.value < 0) {
           const length = Math.abs(lengthX.value)
@@ -30,7 +30,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         }
       }
     },
-    onSwipeEnd(e: TouchEvent, direction: SwipeDirection) {
+    onSwipeEnd(e: PointerEvent, direction: SwipeDirection) {
       if (lengthX.value < 0 && containerWidth.value && (Math.abs(lengthX.value) / containerWidth.value) >= 0.5) {
         left.value = '100%'
         opacity.value = 0

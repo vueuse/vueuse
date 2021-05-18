@@ -3,43 +3,43 @@ import { useSetup } from '../../.test'
 
 import each from 'jest-each'
 
+// polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
+if (!global.PointerEvent) {
+  class PointerEvent extends MouseEvent {
+    public pointerId?: number
+
+    constructor(type: string, params: PointerEventInit = {}) {
+      super(type, params)
+      this.pointerId = params.pointerId
+    }
+  }
+  global.PointerEvent = PointerEvent as any
+}
+
 describe('useSwipe', () => {
   const target = document.createElement('div')
+  // set to noop, else test will fail
+  target.setPointerCapture = (pointerId: number) => {}
   target.id = 'target'
   document.body.appendChild(target)
 
-  const mockTouchEventInit = (x: number, y: number): TouchEventInit => ({
-    touches: [{
-      clientX: x,
-      clientY: y,
-      altitudeAngle: 0,
-      azimuthAngle: 0,
-      force: 0,
-      identifier: 0,
-      pageX: 0,
-      pageY: 0,
-      radiusX: 0,
-      radiusY: 0,
-      rotationAngle: 0,
-      screenX: 0,
-      screenY: 0,
-      target,
-      touchType: 'direct',
-    }],
+  const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
+    clientX: x,
+    clientY: y,
   })
 
-  const mockTouchStart = (x: number, y: number) => new TouchEvent('touchstart', mockTouchEventInit(x, y))
-  const mockTouchMove = (x: number, y: number) => new TouchEvent('touchmove', mockTouchEventInit(x, y))
-  const mockTouchEnd = (x: number, y: number) => new TouchEvent('touchend', mockTouchEventInit(x, y))
+  const mockPointerDown = (x: number, y: number) => new PointerEvent('pointerdown', mockPointerEventInit(x, y))
+  const mockPointerMove = (x: number, y: number) => new PointerEvent('pointermove', mockPointerEventInit(x, y))
+  const mockPointerUp = (x: number, y: number) => new PointerEvent('pointerup', mockPointerEventInit(x, y))
 
-  const mockTouchEvents = (target: EventTarget, coords: Array<number[]>) => {
+  const mockPointerEvents = (target: Element, coords: Array<number[]>) => {
     coords.forEach(([x, y], i) => {
       if (i === 0)
-        target.dispatchEvent(mockTouchStart(x, y))
+        target.dispatchEvent(mockPointerDown(x, y))
       else if (i === coords.length - 1)
-        target.dispatchEvent(mockTouchEnd(x, y))
+        target.dispatchEvent(mockPointerUp(x, y))
       else
-        target.dispatchEvent(mockTouchMove(x, y))
+        target.dispatchEvent(mockPointerMove(x, y))
     })
   }
 
@@ -48,15 +48,15 @@ describe('useSwipe', () => {
   const threshold = 30
 
   beforeEach(() => {
-    onSwipe = jest.fn((e: TouchEvent) => {})
-    onSwipeEnd = jest.fn((e: TouchEvent, direction: SwipeDirection) => {})
+    onSwipe = jest.fn((e: PointerEvent) => {})
+    onSwipeEnd = jest.fn((e: PointerEvent, direction: SwipeDirection) => {})
   })
 
   it('threshold not exceeded', () => {
     useSetup(() => {
       useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
+      mockPointerEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
       expect(onSwipe.mock.calls.length).toBe(0)
       expect(onSwipeEnd.mock.calls.length).toBe(0)
@@ -67,7 +67,7 @@ describe('useSwipe', () => {
     useSetup(() => {
       useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
+      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
       expect(onSwipe.mock.calls.length).toBe(1)
       expect(onSwipeEnd.mock.calls.length).toBe(1)
@@ -78,7 +78,7 @@ describe('useSwipe', () => {
     useSetup(() => {
       useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
+      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
       expect(onSwipe.mock.calls.length).toBe(2)
       expect(onSwipeEnd.mock.calls.length).toBe(1)
@@ -90,19 +90,19 @@ describe('useSwipe', () => {
     useSetup(() => {
       const { isSwiping, direction, lengthX, lengthY } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      target.dispatchEvent(mockTouchStart(0, 0))
+      target.dispatchEvent(mockPointerDown(0, 0))
       expect(isSwiping.value).toBeFalsy()
       expect(direction.value).toBe(SwipeDirection.NONE)
       expect(lengthX.value).toBe(0)
       expect(lengthY.value).toBe(0)
 
-      target.dispatchEvent(mockTouchMove(threshold, 5))
+      target.dispatchEvent(mockPointerMove(threshold, 5))
       expect(isSwiping.value).toBeTruthy()
       expect(direction.value).toBe(SwipeDirection.RIGHT)
       expect(lengthX.value).toBe(-threshold)
       expect(lengthY.value).toBe(-5)
 
-      target.dispatchEvent(mockTouchEnd(threshold, 5))
+      target.dispatchEvent(mockPointerUp(threshold, 5))
     })
   })
 
@@ -115,7 +115,7 @@ describe('useSwipe', () => {
     useSetup(() => {
       const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, coords)
+      mockPointerEvents(target, coords)
 
       expect(direction.value).toBe(expected)
       expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)

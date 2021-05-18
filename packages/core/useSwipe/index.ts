@@ -28,17 +28,17 @@ export interface SwipeOptions extends ConfigurableWindow {
   /**
    * Callback on swipe start
    */
-  onSwipeStart?: (e: TouchEvent) => void
+  onSwipeStart?: (e: PointerEvent) => void
 
   /**
    * Callback on swipe moves
    */
-  onSwipe?: (e: TouchEvent) => void
+  onSwipe?: (e: PointerEvent) => void
 
   /**
    * Callback on swipe ends
    */
-  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
 }
 
 export interface SwipeReturn {
@@ -66,9 +66,10 @@ export interface SwipeReturn {
  * @param options
  */
 export function useSwipe(
-  target: MaybeRef<EventTarget | null | undefined>,
+  target: MaybeRef<Element | null | undefined>,
   options: SwipeOptions = {},
 ) {
+  const targetRef = ref(target)
   const {
     threshold = 50,
     onSwipe,
@@ -88,6 +89,7 @@ export function useSwipe(
   const isThresholdExceeded = computed(() => max(abs(diffX.value), abs(diffY.value)) >= threshold)
 
   const isSwiping = ref(false)
+  const isPointerDown = ref(false)
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)
@@ -105,7 +107,7 @@ export function useSwipe(
     }
   })
 
-  const getTouchEventCoords = (e: TouchEvent) => [e.touches[0].clientX, e.touches[0].clientY]
+  const getPointerEventCoords = (e: PointerEvent) => [e.clientX, e.clientY]
 
   const updateCoordsStart = (x: number, y: number) => {
     coordsStart.x = x
@@ -118,7 +120,6 @@ export function useSwipe(
   }
 
   let listenerOptions: { passive?: boolean; capture?: boolean }
-
   const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
 
   if (!passive)
@@ -127,17 +128,26 @@ export function useSwipe(
     listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
   const stops = [
-    useEventListener(target, 'touchstart', (e: TouchEvent) => {
+    useEventListener(target, 'pointerdown', (e: PointerEvent) => {
       if (listenerOptions.capture && !listenerOptions.passive)
         e.preventDefault()
-      const [x, y] = getTouchEventCoords(e)
+
+      isPointerDown.value = true
+      targetRef.value?.setAttribute('style', 'touch-action: none')
+      // Future pointer events will be retargeted to target until pointerup/cancel
+      targetRef.value?.setPointerCapture(e.pointerId)
+
+      const [x, y] = getPointerEventCoords(e)
       updateCoordsStart(x, y)
       updateCoordsEnd(x, y)
       onSwipeStart?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchmove', (e: TouchEvent) => {
-      const [x, y] = getTouchEventCoords(e)
+    useEventListener(target, 'pointermove', (e: PointerEvent) => {
+      if (!isPointerDown.value)
+        return
+
+      const [x, y] = getPointerEventCoords(e)
       updateCoordsEnd(x, y)
       if (!isSwiping.value && isThresholdExceeded.value)
         isSwiping.value = true
@@ -145,11 +155,13 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', (e: TouchEvent) => {
+    useEventListener(target, 'pointerup', (e: PointerEvent) => {
       if (isSwiping.value)
         onSwipeEnd?.(e, direction.value)
 
+      isPointerDown.value = false
       isSwiping.value = false
+      targetRef.value?.setAttribute('style', 'touch-action: initial')
     }, listenerOptions),
   ]
 
