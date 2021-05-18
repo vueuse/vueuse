@@ -1,4 +1,3 @@
-import { tryOnUnmounted } from '@vueuse/shared'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -37,9 +36,5 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdo
     handler(event)
   }
 
-  const stop = useEventListener(window, event, listener, { passive: true })
-
-  tryOnUnmounted(stop)
-
-  return stop
+  return useEventListener(window, event, listener, { passive: true })
 }
