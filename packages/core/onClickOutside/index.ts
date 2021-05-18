@@ -36,7 +36,6 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdo
     handler(event)
   }
 
-  const stop = useEventListener(window, event, listener, { passive: true })
+  return useEventListener(window, event, listener, { passive: true })
 
-  return stop
 }
