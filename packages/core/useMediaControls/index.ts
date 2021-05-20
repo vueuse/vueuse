@@ -62,6 +62,8 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * A URL for an image to be shown while the media is downloading. If this attribute
    * isn't specified, nothing is displayed until the first frame is available,
    * then the first frame is shown as the poster frame.
+   *
+   * @deprecated Use `<video poster>` attribute instead
    */
   poster?: MaybeRef<string>
 
@@ -70,6 +72,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * can do so without stopping to finish loading the data.
    *
    * @default false
+   * @deprecated Use `<video autoplay>` attribute instead
    */
   autoplay?: MaybeRef<boolean>
 
@@ -79,6 +82,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * not imply that the media will always be played in fullscreen.
    *
    * @default auto
+   * @deprecated Use `<video preload>` attribute instead
    */
   preload?: MaybeRef<'auto' | 'metadata' | 'none' >
 
@@ -87,6 +91,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * upon reaching the end of the media.
    *
    * @default false
+   * @deprecated Use `<video loop>` attribute instead
    */
   loop?: MaybeRef<boolean>
 
@@ -95,6 +100,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * media playback, including volume, seeking, and pause/resume playback.
    *
    * @default false
+   * @deprecated Use `<video controls>` attribute instead
    */
   controls?: MaybeRef<boolean>
 
@@ -103,8 +109,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * meaning that the audio will be played when the media is played.
    *
    * @default false
-   * @deprecated This option is deprecated.
-   * Use `const { muted } = useMediaControls();` instead
+   * @deprecated Use `const { muted } = useMediaControls();` instead
    */
   muted?: MaybeRef<boolean>
 
@@ -114,6 +119,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * that the video will always be played in fullscreen.
    *
    * @default false
+   * @deprecated Use `<video playsinline>` attribute instead
    */
   playsinline?: MaybeRef<boolean>
 
@@ -123,6 +129,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * this document and another document or application.
    *
    * @default false
+   * @deprecated Use `<video autopictureinpicture>` attribute instead
    */
   autoPictureInPicture?: MaybeRef<boolean>
 
@@ -309,10 +316,16 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     const loop = unref(options.loop)
-    if (loop !== undefined) el.loop = loop
+    if (loop !== undefined) {
+      console.warn('loop option is deprecated. Use `<video loop>` attribute instead')
+      el.loop = loop
+    }
 
     const controls = unref(options.controls)
-    if (controls !== undefined) el.controls = controls
+    if (controls !== undefined) {
+      console.warn('controls option is deprecated. Use `<video controls>` attribute instead')
+      el.controls = controls
+    }
 
     const muted = unref(options.muted)
     if (muted !== undefined) {
@@ -321,22 +334,35 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     }
 
     const preload = unref(options.preload)
-    if (preload !== undefined) el.preload = preload
+    if (preload !== undefined) {
+      console.warn('preload option is deprecated. Use `<video preload>` attribute instead')
+      el.preload = preload
+    }
 
     const autoplay = unref(options.autoplay)
-    if (autoplay !== undefined) el.autoplay = autoplay
+    if (autoplay !== undefined) {
+      console.warn('autoplay option is deprecated. Use `<video autoplay>` attribute instead')
+      el.autoplay = autoplay
+    }
 
     const poster = unref(options.poster)
-    if (poster !== undefined) (el as HTMLVideoElement).poster = poster
+    if (poster !== undefined) {
+      console.warn('poster option is deprecated. Use `<video poster>` attribute instead')
+      ;(el as HTMLVideoElement).poster = poster
+    }
 
     const playsInline = unref(options.playsinline)
-    if (playsInline !== undefined) (el as HTMLVideoElement).playsInline = playsInline
+    if (playsInline !== undefined) {
+      console.warn('playsInline option is deprecated. Use `<video playsinline>` attribute instead')
+      ;(el as HTMLVideoElement).playsInline = playsInline
+    }
 
     const autoPictureInPicture = unref(options.autoPictureInPicture)
-    // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
-    if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
-
-    // el.volume = unref(volume)!
+    if (autoPictureInPicture !== undefined) {
+      console.warn('autoPictureInPicture option is deprecated. Use `<video autopictureinpicture>` attribute instead')
+      // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
+      ;(el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
+    }
   })
 
   /**
