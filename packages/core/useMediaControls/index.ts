@@ -316,53 +316,29 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     const loop = unref(options.loop)
-    if (loop !== undefined) {
-      console.warn('[Deprecation] loop option is deprecated. Please use `<video loop>` attribute instead')
-      el.loop = loop
-    }
+    if (loop !== undefined) el.loop = loop
 
     const controls = unref(options.controls)
-    if (controls !== undefined) {
-      console.warn('[Deprecation] controls option is deprecated. Please use `<video controls>` attribute instead')
-      el.controls = controls
-    }
+    if (controls !== undefined) el.controls = controls
 
     const muted = unref(options.muted)
-    if (muted !== undefined) {
-      console.warn('[Deprecation] Muted option is deprecated. Please use `const { muted } = useMediaControls();` instead')
-      el.muted = muted
-    }
+    if (muted !== undefined) el.muted = muted
 
     const preload = unref(options.preload)
-    if (preload !== undefined) {
-      console.warn('[Deprecation] preload option is deprecated. Please use `<video preload>` attribute instead')
-      el.preload = preload
-    }
+    if (preload !== undefined) el.preload = preload
 
     const autoplay = unref(options.autoplay)
-    if (autoplay !== undefined) {
-      console.warn('[Deprecation] autoplay option is deprecated. Please use `<video autoplay>` attribute instead')
-      el.autoplay = autoplay
-    }
+    if (autoplay !== undefined) el.autoplay = autoplay
 
     const poster = unref(options.poster)
-    if (poster !== undefined) {
-      console.warn('[Deprecation] poster option is deprecated. Please use `<video poster>` attribute instead')
-      ;(el as HTMLVideoElement).poster = poster
-    }
+    if (poster !== undefined) (el as HTMLVideoElement).poster = poster
 
     const playsInline = unref(options.playsinline)
-    if (playsInline !== undefined) {
-      console.warn('[Deprecation] playsInline option is deprecated. Please use `<video playsinline>` attribute instead')
-      ;(el as HTMLVideoElement).playsInline = playsInline
-    }
+    if (playsInline !== undefined) (el as HTMLVideoElement).playsInline = playsInline
 
     const autoPictureInPicture = unref(options.autoPictureInPicture)
-    if (autoPictureInPicture !== undefined) {
-      console.warn('[Deprecation] autoPictureInPicture option is deprecated. Please use `<video autopictureinpicture>` attribute instead')
-      // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
-      ;(el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
-    }
+    // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
+    if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
   })
 
   /**
