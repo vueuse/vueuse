@@ -1,11 +1,11 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useOnline } from '.'
+import { useActiveElement } from '.'
 
-export const UseOnline = defineComponent({
-  name: 'UseOnline',
+export const UseActiveElement = defineComponent({
+  name: 'UseActiveElement',
   setup(props, { slots }) {
     const data = reactive({
-      isOnline: useOnline(),
+      element: useActiveElement(),
     })
 
     return () => {

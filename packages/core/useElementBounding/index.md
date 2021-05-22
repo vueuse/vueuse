@@ -31,6 +31,13 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<UseElementBounding v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseElementBounding>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -14,6 +14,12 @@ import { usePreferredColorScheme } from '@vueuse/core'
 const preferredColor = usePreferredColorScheme()
 ```
 
+## Component
+```html
+<UsePreferredColorScheme v-slot="{ colorScheme }">
+  Preferred Color Scheme: {{ colorScheme }}
+<UsePreferredColorScheme>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

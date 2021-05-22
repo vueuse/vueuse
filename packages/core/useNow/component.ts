@@ -1,28 +1,15 @@
-import { defineComponent } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import { useNow, UseNowOptions } from '.'
 
 export const UseNow = defineComponent<Omit<UseNowOptions<true>, 'controls'>>({
   name: 'UseNow',
+  props: ['interval'] as unknown as undefined,
   setup(props, { slots }) {
-    const {
-      isActive,
-      now,
-      pause,
-      resume,
-    } = useNow({
-      ...props,
-      controls: true,
-    })
+    const data = reactive(useNow({ ...props, controls: true }))
 
     return () => {
-      if (slots.default) {
-        return slots.default({
-          isActive: isActive.value,
-          now: now.value,
-          pause,
-          resume,
-        })
-      }
+      if (slots.default)
+        return slots.default(data)
     }
   },
 })

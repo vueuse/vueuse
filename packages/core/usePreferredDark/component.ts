@@ -1,11 +1,11 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useOnline } from '.'
+import { usePreferredDark } from '.'
 
-export const UseOnline = defineComponent({
-  name: 'UseOnline',
+export const UsePreferredDark = defineComponent({
+  name: 'UsePreferredDark',
   setup(props, { slots }) {
     const data = reactive({
-      isOnline: useOnline(),
+      prefersDark: usePreferredDark(),
     })
 
     return () => {

@@ -1,10 +1,12 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useNetwork } from '.'
+import { usePageLeave } from '.'
 
-export const UseNetwork = defineComponent({
-  name: 'UseNetwork',
+export const UsePageLeave = defineComponent({
+  name: 'UsePageLeave',
   setup(props, { slots }) {
-    const data = reactive(useNetwork())
+    const data = reactive({
+      isLeft: usePageLeave(),
+    })
 
     return () => {
       if (slots.default)

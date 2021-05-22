@@ -1,11 +1,11 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useOnline } from '.'
+import { useDevicePixelRatio } from '.'
 
-export const UseOnline = defineComponent({
-  name: 'UseOnline',
+export const UseDevicePixelRatio = defineComponent({
+  name: 'UseDevicePixelRatio',
   setup(props, { slots }) {
     const data = reactive({
-      isOnline: useOnline(),
+      pixelRatio: useDevicePixelRatio(),
     })
 
     return () => {

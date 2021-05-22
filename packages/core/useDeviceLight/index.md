@@ -18,6 +18,13 @@ const light = useDeviceLight()
 | ----- | -------- | --------------------------------------------------------------------------- |
 | light | `Number` | The level of the ambient light in [lux](https://en.wikipedia.org/wiki/Lux). |
 
+## Component
+
+```html
+<UseDeviceLight v-slot="{ light }">
+  Light Level: {{ light }}
+</UseDeviceLight>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

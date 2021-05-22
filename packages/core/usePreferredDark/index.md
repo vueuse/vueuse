@@ -14,6 +14,12 @@ import { usePreferredDark } from '@vueuse/core'
 const isDark = usePreferredDark()
 ```
 
+## Components
+```html
+<UsePreferredDark v-slot="{ prefersDark }">
+  Prefers Dark: {{ prefersDark }}
+</UsePreferredDark>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

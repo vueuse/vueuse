@@ -1,10 +1,10 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useNetwork } from '.'
+import { useBattery } from '.'
 
-export const UseNetwork = defineComponent({
-  name: 'UseNetwork',
+export const UseBattery = defineComponent({
+  name: 'UseBattery',
   setup(props, { slots }) {
-    const data = reactive(useNetwork())
+    const data = reactive(useBattery(props))
 
     return () => {
       if (slots.default)

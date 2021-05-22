@@ -3,6 +3,7 @@ import { onClickOutside } from '.'
 
 export const OnClickOutside = defineComponent({
   name: 'OnClickOutside',
+  emits: ['trigger'],
   setup(props, { slots, emit }) {
     const target = ref()
     onClickOutside(target, (e) => {

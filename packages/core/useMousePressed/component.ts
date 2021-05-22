@@ -1,22 +1,16 @@
-import { h, ref, defineComponent } from 'vue-demi'
+import { h, ref, defineComponent, reactive } from 'vue-demi'
 import { useMousePressed, MousePressedOptions } from '.'
 
-export const UseMousePressed = defineComponent<MousePressedOptions>({
+export const UseMousePressed = defineComponent<Omit<MousePressedOptions, 'target'>>({
   name: 'UseMousePressed',
+  props: ['touch', 'initialValue'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
-    const { pressed, sourceType } = useMousePressed({
-      ...props,
-      target: props.target ? props.target : target,
-    })
+    const data = reactive(useMousePressed({ ...props, target }))
 
     return () => {
-      if (slots.default) {
-        return h('div', { ref: target }, slots.default({
-          pressed: pressed.value,
-          sourceType: sourceType.value,
-        }))
-      }
+      if (slots.default)
+        return h('div', { ref: target }, slots.default(data))
     }
   },
 })

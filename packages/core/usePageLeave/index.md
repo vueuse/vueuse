@@ -14,6 +14,12 @@ import { usePageLeave } from '@vueuse/core'
 const isLeft = usePageLeave()
 ```
 
+## Component
+```html
+<UsePageLeave v-slot="{ isLeft }">
+  Has Left Page: {{ isLeft }}
+<UsePageLeave>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

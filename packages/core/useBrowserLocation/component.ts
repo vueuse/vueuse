@@ -1,10 +1,10 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useNetwork } from '.'
+import { useBrowserLocation } from '.'
 
-export const UseNetwork = defineComponent({
-  name: 'UseNetwork',
+export const UseBrowserLocation = defineComponent({
+  name: 'UseBrowserLocation',
   setup(props, { slots }) {
-    const data = reactive(useNetwork())
+    const data = reactive(useBrowserLocation())
 
     return () => {
       if (slots.default)

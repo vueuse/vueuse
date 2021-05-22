@@ -1,19 +1,17 @@
-import { h, ref, defineComponent } from 'vue-demi'
-import { useElementSize } from '.'
+import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { useElementSize, ElementSize } from '.'
+import { ResizeObserverOptions } from '../useResizeObserver'
 
-export const UseElementSize = defineComponent({
+export const UseElementSize = defineComponent<ElementSize & ResizeObserverOptions>({
   name: 'UseElementSize',
-  setup(props, { slots, emit }) {
+  props: ['width', 'height', 'box'] as unknown as undefined,
+  setup(props, { slots }) {
     const target = ref()
-    const { width, height } = useElementSize(target)
+    const data = reactive(useElementSize(target, { width: props.width, height: props.height }, { box: props.box }))
 
     return () => {
-      if (slots.default) {
-        return h('div', { ref: target }, slots.default({
-          width: width.value,
-          height: height.value,
-        }))
-      }
+      if (slots.default)
+        return h('div', { ref: target }, slots.default(data))
     }
   },
 })

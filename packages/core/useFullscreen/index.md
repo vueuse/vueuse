@@ -26,6 +26,15 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 <video ref='el'>
 ```
 
+## Component
+```html
+<UseFullscreen v-slot="{ toggle }">
+  <video />
+  <button @click="toggle">
+    Go Fullscreen
+  </button>
+</UseFullscreen>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

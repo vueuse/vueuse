@@ -34,6 +34,14 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<OnClickOutside @trigger="count++">
+  <div>
+    Click Outside of Me
+  </div>
+</OnClickOutside>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

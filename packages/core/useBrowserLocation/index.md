@@ -14,6 +14,12 @@ import { useBrowserLocation } from '@vueuse/core'
 const location = useBrowserLocation()
 ```
 
+## Component
+```html
+<UseBrowserLocation v-slot="{ location }">
+  Browser Location: {{ location }}
+</UseBrowserLocation>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

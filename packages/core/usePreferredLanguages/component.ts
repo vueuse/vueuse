@@ -1,11 +1,11 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useOnline } from '.'
+import { usePreferredLanguages } from '.'
 
-export const UseOnline = defineComponent({
-  name: 'UseOnline',
+export const UsePreferredLanguages = defineComponent({
+  name: 'UsePreferredLanguages',
   setup(props, { slots }) {
     const data = reactive({
-      isOnline: useOnline(),
+      languages: usePreferredLanguages(),
     })
 
     return () => {
