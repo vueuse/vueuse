@@ -211,22 +211,21 @@ describe('useStorage', () => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, {
-        name: 'a',
-        data: 123,
-      }, localStorage, { serializer: { read: JSON.parse, write: JSON.stringify } })
+      const ref = useStorage(KEY, null, localStorage, { serializer: { read: JSON.parse, write: JSON.stringify } })
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+      expect(localStorage.setItem).toBeCalledWith(KEY, 'null')
 
-      expect(ref.value).toEqual({
-        name: 'a',
-        data: 123,
-      })
+      expect(ref.value).toBe(null)
 
       return {
         ref,
       }
     })
+
+    instance.ref = { name: 'a', data: 123 }
+    await nextTick()
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
     instance.ref.name = 'b'
     await nextTick()
