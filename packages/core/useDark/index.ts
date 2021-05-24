@@ -4,7 +4,9 @@ import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 import { tryOnMounted } from '@vueuse/shared'
 
-export interface UseDarkOptions extends StorageOptions {
+export type ColorSchemes = 'light' | 'dark' | 'auto'
+
+export interface UseDarkOptions extends StorageOptions<ColorSchemes> {
   /**
    * CSS Selector for the target element applying to
    *
@@ -57,8 +59,6 @@ export interface UseDarkOptions extends StorageOptions {
    */
   storage?: StorageLike
 }
-
-export type ColorSchemes = 'light' | 'dark' | 'auto'
 
 /**
  * Reactive dark mode with auto data persistence.

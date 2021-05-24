@@ -3,32 +3,38 @@ import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-const Serializers = {
+export type Serializer<T> = {
+  read(raw: string): T
+
+  write(value: T): string
+}
+
+const Serializers: Record<string, Serializer<any>> = {
   boolean: {
-    read: (v: any, d: any) => v != null ? v === 'true' : d,
+    read: (v: any) => v != null ? v === 'true' : null,
     write: (v: any) => String(v),
   },
   object: {
-    read: (v: any, d: any) => v ? JSON.parse(v) : d,
+    read: (v: any) => v ? JSON.parse(v) : null,
     write: (v: any) => JSON.stringify(v),
   },
   number: {
-    read: (v: any, d: any) => v != null ? Number.parseFloat(v) : d,
+    read: (v: any) => v != null ? Number.parseFloat(v) : null,
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any, d: any) => v != null ? v : d,
+    read: (v: any) => v != null ? v : null,
     write: (v: any) => String(v),
   },
   string: {
-    read: (v: any, d: any) => v != null ? v : d,
+    read: (v: any) => v != null ? v : null,
     write: (v: any) => String(v),
   },
 }
 
 export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
-export interface StorageOptions extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
    * Watch for deep changes
    *
@@ -42,13 +48,18 @@ export interface StorageOptions extends ConfigurableEventFilter, ConfigurableWin
    * @default true
    */
   listenToStorageChanges?: boolean
+
+  /**
+   * Custom data serialization
+   */
+  serializer?: Serializer<T>
 }
 
-export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions): Ref<string>
-export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions): Ref<boolean>
-export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions): Ref<T>
+export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
+export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions<boolean>): Ref<boolean>
+export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions<number>): Ref<number>
+export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
+export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -63,7 +74,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   defaultValue: T,
   storage: StorageLike | undefined = defaultWindow?.localStorage,
-  options: StorageOptions = {},
+  options: StorageOptions<T> = {},
 ) {
   const {
     flush = 'pre',
@@ -88,6 +99,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
             : !Number.isNaN(defaultValue)
               ? 'number'
               : 'any'
+  const serializer = options.serializer ?? Serializers[type]
 
   function read(event?: StorageEvent) {
     if (!storage)
@@ -97,12 +109,14 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       return
 
     try {
-      let rawValue = event ? event.newValue : storage.getItem(key)
-      if (rawValue == null && defaultValue) {
-        rawValue = Serializers[type].write(defaultValue)
-        storage.setItem(key, rawValue)
+      const rawValue = event ? event.newValue : storage.getItem(key)
+      if (rawValue == null) {
+        (data as Ref<T>).value = defaultValue
+        storage.setItem(key, serializer.write(defaultValue))
       }
-      data.value = Serializers[type].read(rawValue, defaultValue)
+      else {
+        data.value = serializer.read(rawValue)
+      }
     }
     catch (e) {
       console.warn(e)
@@ -124,7 +138,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
         if (data.value == null)
           storage.removeItem(key)
         else
-          storage.setItem(key, Serializers[type].write(data.value))
+          storage.setItem(key, serializer.write(data.value))
       }
       catch (e) {
         console.warn(e)
