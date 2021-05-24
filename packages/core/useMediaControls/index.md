@@ -15,10 +15,8 @@ import { ref } from 'vue'
 import { useMediaControls } from '@vueuse/core'
 
 const video = ref()
-const loop = ref(false)
 const { playing, currentTime, duration } = useMediaControls(video, { 
   src: 'video.mp4',
-  loop,
 })
 </script>
 
@@ -26,7 +24,6 @@ const { playing, currentTime, duration } = useMediaControls(video, {
   <video ref="video" />
   <button @click="playing = !playing">Play / Pause</button>
   <span>{{ currentTime }} / {{ duration }}</span>
-  <button @click="loop = !loop">Toggle Loop</button>
 </template>
 ```
 
