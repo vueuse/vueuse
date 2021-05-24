@@ -1,5 +1,5 @@
 import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp, createEventHook } from '@vueuse/shared'
+import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
 interface UseFetchReturnBase<T> {
@@ -56,12 +56,12 @@ interface UseFetchReturnBase<T> {
   /**
    * Fires after the fetch request has finished
    */
-  onFetchResponse: (fn: (response: Response) => void) => { off: () => void }
+  onFetchResponse: EventHookOn<Response>
 
   /**
    * Fires after a fetch request error
    */
-  onFetchError: (fn: (error: any) => void) => { off: () => void }
+  onFetchError: EventHookOn
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
