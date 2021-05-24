@@ -185,19 +185,11 @@ interface UseFetchReturnBase<T> {
   /**
    * Fires after the fetch request has finished
    */
-  onFetchResponse: (
-    fn: (response: Response) => void
-  ) => {
-    off: () => void
-  }
+  onFetchResponse: EventHookOn<Response>
   /**
    * Fires after a fetch request error
    */
-  onFetchError: (
-    fn: (error: any) => void
-  ) => {
-    off: () => void
-  }
+  onFetchError: EventHookOn
 }
 declare type PayloadType = "text" | "json" | "formData"
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {

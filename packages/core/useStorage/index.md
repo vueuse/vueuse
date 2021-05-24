@@ -32,11 +32,15 @@ state.value = null
 ## Type Declarations
 
 ```typescript
+export declare type Serializer<T> = {
+  read(raw: string): T
+  write(value: T): string
+}
 export declare type StorageLike = Pick<
   Storage,
   "getItem" | "setItem" | "removeItem"
 >
-export interface StorageOptions
+export interface StorageOptions<T>
   extends ConfigurableEventFilter,
     ConfigurableWindow,
     ConfigurableFlush {
@@ -52,36 +56,40 @@ export interface StorageOptions
    * @default true
    */
   listenToStorageChanges?: boolean
+  /**
+   * Custom data serialization
+   */
+  serializer?: Serializer<T>
 }
 export declare function useStorage(
   key: string,
   defaultValue: string,
   storage?: StorageLike,
-  options?: StorageOptions
+  options?: StorageOptions<string>
 ): Ref<string>
 export declare function useStorage(
   key: string,
   defaultValue: boolean,
   storage?: StorageLike,
-  options?: StorageOptions
+  options?: StorageOptions<boolean>
 ): Ref<boolean>
 export declare function useStorage(
   key: string,
   defaultValue: number,
   storage?: StorageLike,
-  options?: StorageOptions
+  options?: StorageOptions<number>
 ): Ref<number>
 export declare function useStorage<T>(
   key: string,
   defaultValue: T,
   storage?: StorageLike,
-  options?: StorageOptions
+  options?: StorageOptions<T>
 ): Ref<T>
 export declare function useStorage<T = unknown>(
   key: string,
   defaultValue: null,
   storage?: StorageLike,
-  options?: StorageOptions
+  options?: StorageOptions<T>
 ): Ref<T>
 ```
 
