@@ -17,27 +17,27 @@ Please refer to `useStorage`
 export declare function useSessionStorage(
   key: string,
   defaultValue: string,
-  options?: StorageOptions
+  options?: StorageOptions<string>
 ): Ref<string>
 export declare function useSessionStorage(
   key: string,
   defaultValue: boolean,
-  options?: StorageOptions
+  options?: StorageOptions<boolean>
 ): Ref<boolean>
 export declare function useSessionStorage(
   key: string,
   defaultValue: number,
-  options?: StorageOptions
+  options?: StorageOptions<number>
 ): Ref<number>
 export declare function useSessionStorage<T>(
   key: string,
   defaultValue: T,
-  options?: StorageOptions
+  options?: StorageOptions<T>
 ): Ref<T>
 export declare function useSessionStorage<T = unknown>(
   key: string,
   defaultValue: null,
-  options?: StorageOptions
+  options?: StorageOptions<T>
 ): Ref<T>
 ```
 

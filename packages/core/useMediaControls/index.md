@@ -113,6 +113,8 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * A URL for an image to be shown while the media is downloading. If this attribute
    * isn't specified, nothing is displayed until the first frame is available,
    * then the first frame is shown as the poster frame.
+   *
+   * @deprecated Use `<video poster>` attribute instead
    */
   poster?: MaybeRef<string>
   /**
@@ -120,6 +122,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * can do so without stopping to finish loading the data.
    *
    * @default false
+   * @deprecated Use `<video autoplay>` attribute instead
    */
   autoplay?: MaybeRef<boolean>
   /**
@@ -128,6 +131,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * not imply that the media will always be played in fullscreen.
    *
    * @default auto
+   * @deprecated Use `<video preload>` attribute instead
    */
   preload?: MaybeRef<"auto" | "metadata" | "none">
   /**
@@ -135,6 +139,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * upon reaching the end of the media.
    *
    * @default false
+   * @deprecated Use `<video loop>` attribute instead
    */
   loop?: MaybeRef<boolean>
   /**
@@ -142,6 +147,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * media playback, including volume, seeking, and pause/resume playback.
    *
    * @default false
+   * @deprecated Use `<video controls>` attribute instead
    */
   controls?: MaybeRef<boolean>
   /**
@@ -149,6 +155,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * meaning that the audio will be played when the media is played.
    *
    * @default false
+   * @deprecated Use `const { muted } = useMediaControls();` instead
    */
   muted?: MaybeRef<boolean>
   /**
@@ -157,6 +164,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * that the video will always be played in fullscreen.
    *
    * @default false
+   * @deprecated Use `<video playsinline>` attribute instead
    */
   playsinline?: MaybeRef<boolean>
   /**
@@ -165,6 +173,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * this document and another document or application.
    *
    * @default false
+   * @deprecated Use `<video autopictureinpicture>` attribute instead
    */
   autoPictureInPicture?: MaybeRef<boolean>
   /**
@@ -222,6 +231,7 @@ export declare function useMediaControls(
   buffered: Ref<[number, number][]>
   playing: Ref<boolean>
   volume: Ref<number>
+  muted: Ref<boolean>
   tracks: Ref<
     {
       id: number
@@ -541,11 +551,7 @@ export declare function useMediaControls(
   supportsPictureInPicture: boolean | undefined
   togglePictureInPicture: () => Promise<unknown>
   isPictureInPicture: Ref<boolean>
-  onSourceError: (
-    fn: (param: Event) => void
-  ) => {
-    off: () => void
-  }
+  onSourceError: EventHookOn<Event>
 }
 export {}
 ```

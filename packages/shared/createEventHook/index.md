@@ -51,23 +51,27 @@ onError((error) => {
 
 ```typescript
 /**
- * The source code for this function was inspiried by vue-apollo's `useEventHook` util
+ * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
+export declare type EventHookOn<T = any> = (
+  fn: (param: T) => void
+) => {
+  off: () => void
+}
+export declare type EventHookOff<T = any> = (fn: (param: T) => void) => void
+export declare type EventHookTrigger<T = any> = (param: T) => void
+export interface EventHook<T = any> {
+  on: EventHookOn<T>
+  off: EventHookOff<T>
+  trigger: EventHookTrigger<T>
+}
 /**
  * Utility for creating event hooks
  *
  * @see https://vueuse.org/createEventHook
  */
-export declare function createEventHook<T = any>(): {
-  on: (
-    fn: (param: T) => void
-  ) => {
-    off: () => void
-  }
-  off: (fn: (param: T) => void) => void
-  trigger: (param: T) => void
-}
+export declare function createEventHook<T = any>(): EventHook<T>
 ```
 
 ## Source
