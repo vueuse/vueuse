@@ -3,10 +3,14 @@
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
 
+export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
+export type EventHookOff<T = any> = (fn: (param: T) => void) => void
+export type EventHookTrigger<T = any> = (param: T) => void
+
 export interface EventHook<T = any> {
-  on: (fn: (param: T) => void) => void
-  off: (fn: (param: T) => void) => void
-  trigger: (param: T) => void
+  on: EventHookOn<T>
+  off: EventHookOff<T>
+  trigger: EventHookTrigger<T>
 }
 
 /**
