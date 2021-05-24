@@ -62,6 +62,8 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * A URL for an image to be shown while the media is downloading. If this attribute
    * isn't specified, nothing is displayed until the first frame is available,
    * then the first frame is shown as the poster frame.
+   *
+   * @deprecated Use `<video poster>` attribute instead
    */
   poster?: MaybeRef<string>
 
@@ -70,6 +72,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * can do so without stopping to finish loading the data.
    *
    * @default false
+   * @deprecated Use `<video autoplay>` attribute instead
    */
   autoplay?: MaybeRef<boolean>
 
@@ -79,6 +82,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * not imply that the media will always be played in fullscreen.
    *
    * @default auto
+   * @deprecated Use `<video preload>` attribute instead
    */
   preload?: MaybeRef<'auto' | 'metadata' | 'none' >
 
@@ -87,6 +91,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * upon reaching the end of the media.
    *
    * @default false
+   * @deprecated Use `<video loop>` attribute instead
    */
   loop?: MaybeRef<boolean>
 
@@ -95,6 +100,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * media playback, including volume, seeking, and pause/resume playback.
    *
    * @default false
+   * @deprecated Use `<video controls>` attribute instead
    */
   controls?: MaybeRef<boolean>
 
@@ -103,6 +109,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * meaning that the audio will be played when the media is played.
    *
    * @default false
+   * @deprecated Use `const { muted } = useMediaControls();` instead
    */
   muted?: MaybeRef<boolean>
 
@@ -112,6 +119,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * that the video will always be played in fullscreen.
    *
    * @default false
+   * @deprecated Use `<video playsinline>` attribute instead
    */
   playsinline?: MaybeRef<boolean>
 
@@ -121,6 +129,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * this document and another document or application.
    *
    * @default false
+   * @deprecated Use `<video autopictureinpicture>` attribute instead
    */
   autoPictureInPicture?: MaybeRef<boolean>
 
@@ -232,6 +241,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const tracks = ref<UseMediaTextTrack[]>([])
   const selectedTrack = ref<number>(-1)
   const isPictureInPicture = ref(false)
+  const muted = ref(unref(options.muted) || false)
 
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 
@@ -329,8 +339,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     const autoPictureInPicture = unref(options.autoPictureInPicture)
     // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
     if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
-
-    el.volume = unref(volume)!
   })
 
   /**
@@ -399,6 +407,14 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     el.volume = vol
+  })
+
+  watch(muted, (mute) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.muted = mute
   })
 
   /**
@@ -479,6 +495,13 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+  useEventListener(target, 'volumechange', () => {
+    const el = unref(target)
+    if (!el) return
+
+    volume.value = el.volume
+    muted.value = el.muted
+  })
 
   /**
    * The following listeners need to listen to a nested
@@ -512,7 +535,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     stalled,
     buffered,
     playing,
+
+    // Volume
     volume,
+    muted,
 
     // Tracks
     tracks,
