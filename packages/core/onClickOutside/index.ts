@@ -2,8 +2,10 @@ import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
-const events = ['mousedown', 'touchstart', 'pointerdown'] as const
-export type EventType = WindowEventMap[(typeof events)[number]]
+export type OnClickOutsideEvents = Pick<WindowEventMap, 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
+export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents> extends ConfigurableWindow {
+  event?: E
+}
 
 /**
  * Listen for clicks outside of an element.
