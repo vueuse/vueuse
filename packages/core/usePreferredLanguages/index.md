@@ -14,7 +14,7 @@ import { usePreferredLanguages } from '@vueuse/core'
 const languages = usePreferredLanguages()
 ```
 
-## Components
+## Component
 ```html
 <UsePreferredLanguages v-slot="{ languages }">
   Preferred Languages: {{ languages }}
