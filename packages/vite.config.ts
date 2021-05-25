@@ -30,8 +30,6 @@ const config: UserConfig = {
       'rxjs',
       'tslib',
       'universal-cookie',
-      'vue-chemistry',
-      'vue-chemistry/boolean',
     ],
   },
   server: {

@@ -1,7 +1,3 @@
----
-sidebar: false
----
-
 # Ecosystem
 
 When developmenting VueUse, we extract the tools we are using into separate projects that can be used standalone from time to time.

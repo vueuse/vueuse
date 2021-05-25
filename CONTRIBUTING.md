@@ -1,7 +1,3 @@
----
-sidebar: auto
----
-
 # Contributing
 
 Thanks for being interested in contributing to this project!
@@ -39,7 +35,7 @@ There are some notes for adding new functions
 - You can find the function template under `packages/core/_template/`, details explained in the [Function Folder](#function-folder) section.
 - When writing documentation for your function, the `<!--FOOTER_STARTS-->` and `<!--FOOTER_ENDS-->` will be automatically updated at build time, so don't feel the need to update them.
 
-> Please note you don't need to update the `indexes.json` or packages' `index.ts`. They are auto generated.
+> Please note you don't need to update the `indexes.json` or packages' `index.ts`. They are auto-generated.
 
 ### New add-ons
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ternary } from 'vue-chemistry/boolean'
+import { computed } from '@vue/runtime-core'
 import { useOnline } from '.'
 
 const online = useOnline()
 
-const clazz = ternary(online, 'text-primary', 'text-gray')
-const text = ternary(online, 'Online', 'Offline')
+const clazz = computed(() => online.value ? 'text-primary' : 'text-gray')
+const text = computed(() => online.value ? 'Online' : 'Offline')
 </script>
 
 <template>
