@@ -22,7 +22,13 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ## Type Declarations
 
 ```typescript
-export interface TimestampOptions {
+export interface TimestampOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
   /**
    * Offset value adding to the value
    *
@@ -43,13 +49,13 @@ export interface TimestampOptions {
  * @param options
  */
 export declare function useTimestamp(
-  options?: TimestampOptions
+  options?: TimestampOptions<false>
+): Ref<number>
+export declare function useTimestamp(
+  options: TimestampOptions<true>
 ): {
-  isActive: Ref<boolean>
-  pause: Fn
-  resume: Fn
   timestamp: Ref<number>
-}
+} & Pausable
 ```
 
 ## Source

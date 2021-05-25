@@ -110,64 +110,6 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    */
   src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
   /**
-   * A URL for an image to be shown while the media is downloading. If this attribute
-   * isn't specified, nothing is displayed until the first frame is available,
-   * then the first frame is shown as the poster frame.
-   *
-   * @deprecated Use `<video poster>` attribute instead
-   */
-  poster?: MaybeRef<string>
-  /**
-   * Indicates that the media automatically begins to play back as soon as it
-   * can do so without stopping to finish loading the data.
-   *
-   * @default false
-   * @deprecated Use `<video autoplay>` attribute instead
-   */
-  autoplay?: MaybeRef<boolean>
-  /**
-   * Indicates that the media is to be played "inline", that is within the
-   * element's playback area. Note that the absence of this attribute does
-   * not imply that the media will always be played in fullscreen.
-   *
-   * @default auto
-   * @deprecated Use `<video preload>` attribute instead
-   */
-  preload?: MaybeRef<"auto" | "metadata" | "none">
-  /**
-   * If specified, the browser will automatically seek back to the start
-   * upon reaching the end of the media.
-   *
-   * @default false
-   * @deprecated Use `<video loop>` attribute instead
-   */
-  loop?: MaybeRef<boolean>
-  /**
-   * If true, the browser will offer controls to allow the user to control
-   * media playback, including volume, seeking, and pause/resume playback.
-   *
-   * @default false
-   * @deprecated Use `<video controls>` attribute instead
-   */
-  controls?: MaybeRef<boolean>
-  /**
-   * If true, the audio will be initially silenced. Its default value is false,
-   * meaning that the audio will be played when the media is played.
-   *
-   * @default false
-   * @deprecated Use `const { muted } = useMediaControls();` instead
-   */
-  muted?: MaybeRef<boolean>
-  /**
-   * Indicates that the video is to be played "inline", that is within the element's
-   * playback area. Note that the absence of this attribute does not imply
-   * that the video will always be played in fullscreen.
-   *
-   * @default false
-   * @deprecated Use `<video playsinline>` attribute instead
-   */
-  playsinline?: MaybeRef<boolean>
-  /**
    * A Boolean attribute which if true indicates that the element should automatically
    * toggle picture-in-picture mode when the user switches back and forth between
    * this document and another document or application.

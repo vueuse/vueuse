@@ -35,7 +35,13 @@ export interface TimeAgoMessages {
   minute: string | MessageFormatter<number>
   second: string | MessageFormatter<number>
 }
-export interface TimeAgoOptions {
+export interface TimeAgoOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
   /**
    * Intervals to update, set 0 to disable auto update
    *
@@ -73,8 +79,14 @@ export interface TimeAgoOptions {
  */
 export declare function useTimeAgo(
   time: MaybeRef<Date | number | string>,
-  options?: TimeAgoOptions
-): ComputedRef<string | undefined>
+  options?: TimeAgoOptions<false>
+): ComputedRef<string>
+export declare function useTimeAgo(
+  time: MaybeRef<Date | number | string>,
+  options: TimeAgoOptions<true>
+): {
+  timeAgo: ComputedRef<string>
+} & Pausable
 ```
 
 ## Source

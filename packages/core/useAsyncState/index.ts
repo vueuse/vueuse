@@ -93,8 +93,6 @@ export function useAsyncState<T>(
   return {
     state,
     isReady,
-    /** @deprecated, use isReady instead */
-    ready: isReady,
     error,
     execute,
   }

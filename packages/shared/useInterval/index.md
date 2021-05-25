@@ -23,17 +23,30 @@ const { counter, pause, resume } = useInterval(200, { controls: true })
 ## Type Declarations
 
 ```typescript
+export interface IntervalOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+  /**
+   * Exccute the update immediately on calling
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
 export declare function useInterval(
   interval?: number,
-  immediate?: boolean
+  options?: IntervalOptions<false>
+): Ref<number>
+export declare function useInterval(
+  interval: number,
+  options: IntervalOptions<true>
 ): {
-  stop: Fn
-  start: Fn
-  isActive: Ref<boolean>
-  pause: Fn
-  resume: Fn
   counter: Ref<number>
-}
+} & Pausable
 ```
 
 ## Source

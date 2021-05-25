@@ -31,21 +31,32 @@ console.log(ready.value) // true
 ## Type Declarations
 
 ```typescript
+export interface TimeoutOptions<Controls extends boolean>
+  extends TimeoutFnOptions {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
 /**
  * Update value after a given time with controls.
  *
+ * @see   {@link https://vueuse.org/useTimeout}
  * @param interval
  * @param immediate
  */
 export declare function useTimeout(
   interval?: number,
-  immediate?: boolean
+  options?: TimeoutOptions<false>
+): ComputedRef<boolean>
+export declare function useTimeout(
+  interval: number,
+  options: TimeoutOptions<true>
 ): {
-  ready: Ref<boolean>
-  isActive: Ref<boolean>
-  start: () => void
-  stop: () => void
-}
+  ready: ComputedRef<boolean>
+} & Stopable
 ```
 
 ## Source
