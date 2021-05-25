@@ -15,11 +15,14 @@ const preferredColor = usePreferredColorScheme()
 ```
 
 ## Component
+
 ```html
 <UsePreferredColorScheme v-slot="{ colorScheme }">
   Preferred Color Scheme: {{ colorScheme }}
 <UsePreferredColorScheme>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

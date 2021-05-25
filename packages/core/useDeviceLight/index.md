@@ -26,6 +26,8 @@ const light = useDeviceLight()
 </UseDeviceLight>
 ```
 
+<LearnMoreComponents />
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

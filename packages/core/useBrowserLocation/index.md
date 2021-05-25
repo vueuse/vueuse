@@ -15,11 +15,15 @@ const location = useBrowserLocation()
 ```
 
 ## Component
+
 ```html
 <UseBrowserLocation v-slot="{ location }">
   Browser Location: {{ location }}
 </UseBrowserLocation>
 ```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

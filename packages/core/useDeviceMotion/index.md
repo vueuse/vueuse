@@ -30,11 +30,15 @@ You can find [more information about the state on the MDN](https://developer.moz
 
 
 ## Component
+
 ```html
 <UseDeviceMotion v-slot="{ acceleration }">
   Acceleration: {{ acceleration }}
 </UseDeviceMotion>
 ```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

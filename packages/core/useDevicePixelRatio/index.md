@@ -30,6 +30,8 @@ export default {
 </UseDevicePixelRatio>
 ```
 
+<LearnMoreComponents />
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

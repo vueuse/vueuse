@@ -15,12 +15,15 @@ const { width, height } = useWindowSize()
 ```
 
 ## Component
+
 ```html
 <UseWindowSize v-slot="{ width, height }">
   Width: {{ width }}
   Height: {{ height }}
 </UseWindowSize>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

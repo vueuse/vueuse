@@ -19,6 +19,7 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ```
 
 ## Component
+
 ```html
 <UseTimestamp v-slot="{ timestamp, pause, resume }">
   Current Time: {{ timestamp }}
@@ -26,6 +27,8 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
   <button @click="resume()">Resume</button>
 </UseTimestamp>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

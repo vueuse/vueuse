@@ -19,6 +19,7 @@ const { now, pause, resume } = useNow({ controls: true })
 ```
 
 ## Component
+
 ```html
 <UseNow v-slot="{ now, pause, resume }">
   Now: {{ now }}
@@ -26,6 +27,8 @@ const { now, pause, resume } = useNow({ controls: true })
   <button @click="resume()">Resume</button>
 </UseNow>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

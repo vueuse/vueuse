@@ -35,6 +35,7 @@ export default {
 ```
 
 ## Component
+
 ```html
 <OnClickOutside @trigger="count++">
   <div>
@@ -42,6 +43,8 @@ export default {
   </div>
 </OnClickOutside>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

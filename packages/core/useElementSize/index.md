@@ -4,7 +4,7 @@ category: Sensors
 
 # useElementSize
 
-Reactive size of an HTML element.
+Reactive size of an HTML element. [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
 
 ## Usage
 
@@ -36,6 +36,7 @@ export default {
 ```
 
 ## Component
+
 ```html
 <UseElementSize v-slot="{ width, height }">
   Width: {{ width }}
@@ -43,7 +44,7 @@ export default {
 </UseElementSize>
 ```
 
-[ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+<LearnMoreComponents />
 
 
 <!--FOOTER_STARTS-->

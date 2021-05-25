@@ -26,12 +26,15 @@ const { coords, locatedAt, error } = useGeolocation()
 
 
 ## Component
+
 ```html
 <UseGeolocation v-slot="{ coords: { latitude, longitude } }">
   Latitude: {{ latitude }}
   Longitude: {{ longitude }}
 </UseGeolocation>
 ```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

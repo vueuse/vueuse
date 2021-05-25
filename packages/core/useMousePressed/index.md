@@ -50,11 +50,15 @@ export default {
 ```
 
 ## Component
+
 ```html
 <UseMousePressed v-slot="{ pressed }">
   Is Pressed: {{ pressed }}
 </UseMousePressed>
 ```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
