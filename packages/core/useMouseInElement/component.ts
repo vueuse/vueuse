@@ -1,5 +1,5 @@
 import { h, ref, defineComponent, reactive } from 'vue-demi'
-import { useMouseInElement, MouseInElementOptions } from '.'
+import { useMouseInElement, MouseInElementOptions } from '@vueuse/core'
 
 export const UseMouseInElement = defineComponent<MouseInElementOptions>({
   name: 'UseMouseElement',

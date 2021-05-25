@@ -2138,6 +2138,13 @@
     lodash "^4.17.15"
     pretty "^2.0.0"
 
+"@vueuse/shared@^4.0.4":
+  version "4.11.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-4.11.1.tgz#c8f5735839659bf0a03655bdf70ab337b8f0d452"
+  integrity sha512-9ye1Y6AwjAsbbPSVoWvOVFbObPcEe5ZFV2eU560+Ii+LGhvP8NhH+lyReuuhTzjVL8kEYR6mWRCRqK3rQc7dag==
+  dependencies:
+    vue-demi "*"
+
 "@windicss/plugin-utils@0.15.10":
   version "0.15.10"
   resolved "https://registry.yarnpkg.com/@windicss/plugin-utils/-/plugin-utils-0.15.10.tgz#93dde1823da8f89c660fba9467b61723bb2a836c"

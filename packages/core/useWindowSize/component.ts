@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useWindowSize, WindowSizeOptions } from '.'
+import { useWindowSize, WindowSizeOptions } from '@vueuse/core'
 
 export const UseWindowSize = defineComponent<WindowSizeOptions>({
   name: 'UseWindowSize',

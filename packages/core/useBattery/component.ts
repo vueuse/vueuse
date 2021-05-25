@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useBattery } from '.'
+import { useBattery } from '@vueuse/core'
 
 export const UseBattery = defineComponent({
   name: 'UseBattery',

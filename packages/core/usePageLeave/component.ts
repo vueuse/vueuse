@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { usePageLeave } from '.'
+import { usePageLeave } from '@vueuse/core'
 
 export const UsePageLeave = defineComponent({
   name: 'UsePageLeave',

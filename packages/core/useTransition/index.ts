@@ -1,7 +1,6 @@
 import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
-import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop } from '@vueuse/shared'
+import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop, useTimeoutFn } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
-import { useTimeoutFn } from '@vueuse/core'
 
 /**
  * Cubic bezier points

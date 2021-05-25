@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useDeviceMotion } from '.'
+import { useDeviceMotion } from '@vueuse/core'
 
 export const UseDeviceMotion = defineComponent({
   name: 'UseDeviceMotion',

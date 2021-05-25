@@ -40,7 +40,7 @@ You can find [more information about the state on the MDN](https://developer.moz
 ## Type Declarations
 
 ```typescript
-interface DeviceMotionOptions
+export interface DeviceMotionOptions
   extends ConfigurableWindow,
     ConfigurableEventFilter {}
 /**
@@ -57,7 +57,6 @@ export declare function useDeviceMotion(
   rotationRate: Ref<DeviceMotionEventRotationRate | null>
   interval: Ref<number>
 }
-export {}
 ```
 
 ## Source

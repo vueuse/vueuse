@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useTimestamp, TimestampOptions } from '.'
+import { useTimestamp, TimestampOptions } from '@vueuse/core'
 
 export const UseTimestamp = defineComponent<Omit<TimestampOptions<true>, 'controls'>>({
   name: 'UseTimestamp',

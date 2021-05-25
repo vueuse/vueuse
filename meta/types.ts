@@ -18,6 +18,7 @@ export interface VueUseFunction {
   docs?: string
   depreacted?: boolean
   internal?: boolean
+  component?: boolean
 }
 
 export interface VueUsePackage extends PackageManifest {

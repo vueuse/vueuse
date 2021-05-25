@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { usePreferredLanguages } from '.'
+import { usePreferredLanguages } from '@vueuse/core'
 
 export const UsePreferredLanguages = defineComponent({
   name: 'UsePreferredLanguages',

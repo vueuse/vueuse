@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useDeviceLight } from '.'
+import { useDeviceLight } from '@vueuse/core'
 
 export const UseDeviceLight = defineComponent({
   name: 'UseDeviceLight',

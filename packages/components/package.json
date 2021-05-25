@@ -1,21 +1,21 @@
 {
-  "name": "@vueuse/rxjs",
+  "name": "@vueuse/components",
   "version": "5.0.0-beta.1",
-  "description": "Enables RxJS reactive functions in Vue",
+  "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
     "vue-use",
-    "utils",
-    "rxjs",
-    "reactive"
+    "utils"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
-  "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Wheat<https://github.com/wheatjs>",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
@@ -32,15 +32,10 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
-  "peerDependencies": {
-    "rxjs": ">=6.0.0"
-  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "dependencies": {
+    "@vueuse/core": "5.0.0-beta.1",
     "@vueuse/shared": "5.0.0-beta.1",
     "vue-demi": "*"
-  },
-  "devDependencies": {
-    "rxjs": "^6.6.7"
   }
 }

@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useDevicesList, UseDevicesListOptions } from '.'
+import { useDevicesList, UseDevicesListOptions } from '@vueuse/core'
 
 export const UseDevicesList = defineComponent<UseDevicesListOptions>({
   name: 'UseDevicesList',

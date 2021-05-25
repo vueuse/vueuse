@@ -1,5 +1,5 @@
 import { h, ref, defineComponent, reactive } from 'vue-demi'
-import { useMousePressed, MousePressedOptions } from '.'
+import { useMousePressed, MousePressedOptions } from '@vueuse/core'
 
 export const UseMousePressed = defineComponent<Omit<MousePressedOptions, 'target'>>({
   name: 'UseMousePressed',

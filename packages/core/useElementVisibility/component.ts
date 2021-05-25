@@ -1,5 +1,5 @@
 import { h, ref, defineComponent, reactive } from 'vue-demi'
-import { useElementVisibility } from '.'
+import { useElementVisibility } from '@vueuse/core'
 
 export const UseElementVisibility = defineComponent({
   name: 'UseElementVisibility',

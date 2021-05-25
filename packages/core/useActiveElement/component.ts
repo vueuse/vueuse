@@ -1,5 +1,5 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useActiveElement } from '.'
+import { useActiveElement } from '@vueuse/core'
 
 export const UseActiveElement = defineComponent({
   name: 'UseActiveElement',

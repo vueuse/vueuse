@@ -1,9 +1,9 @@
 import { FunctionDirective } from 'vue-demi'
-import { onClickOutside, EventType } from '.'
+import { onClickOutside, OnClickOutsideEvents } from '.'
 
 /**
  * TODO: Test that this actually works
  */
-export const VOnClickOutside: FunctionDirective<any, (evt: EventType) => void> = (el, binding) => {
+export const VOnClickOutside: FunctionDirective<any, (evt: OnClickOutsideEvents['pointerdown']) => void> = (el, binding) => {
   onClickOutside(el, binding.value)
 }

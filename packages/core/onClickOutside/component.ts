@@ -1,5 +1,5 @@
 import { h, ref, defineComponent } from 'vue-demi'
-import { onClickOutside } from '.'
+import { onClickOutside } from '@vueuse/core'
 
 export const OnClickOutside = defineComponent({
   name: 'OnClickOutside',
