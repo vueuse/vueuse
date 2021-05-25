@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -22,7 +22,7 @@
       "import": "./dist/index.esm.js",
       "require": "./dist/index.cjs.js"
     },
-    "./": "./"
+    "./*": "./*"
   },
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "5.0.0-beta.1",
+    "@vueuse/shared": "5.0.0-beta.2",
     "vue-demi": "*"
   },
   "optionalDependencies": {

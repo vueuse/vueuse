@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/shared",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "keywords": [
     "vue",
     "vue-use",
@@ -21,7 +21,7 @@
       "import": "./dist/index.esm.js",
       "require": "./dist/index.cjs.js"
     },
-    "./": "./"
+    "./*": "./*"
   },
   "main": "./dist/index.cjs.js",
   "types": "./dist/index.d.ts",
