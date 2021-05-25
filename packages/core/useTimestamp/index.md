@@ -63,9 +63,7 @@ export interface TimestampOptions<Controls extends boolean> {
 export declare function useTimestamp(
   options?: TimestampOptions<false>
 ): Ref<number>
-export declare function useTimestamp(
-  options: TimestampOptions<true>
-): {
+export declare function useTimestamp(options: TimestampOptions<true>): {
   timestamp: Ref<number>
 } & Pausable
 ```

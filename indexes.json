@@ -16,6 +16,10 @@
       "display": "Components",
       "description": "Renderless components for VueUse",
       "author": "Wheat<https://github.com/wheatjs>",
+      "external": [
+        "@vueuse/core",
+        "@vueuse/shared"
+      ],
       "dir": "packages/components"
     },
     "router": {
@@ -43,14 +47,16 @@
         "qrcode",
         "http",
         "nprogress",
-        "jwt-decode"
+        "jwt-decode",
+        "focus-trap"
       ],
       "globals": {
         "axios": "axios",
         "universal-cookie": "UniversalCookie",
         "qrcode": "QRCode",
         "nprogress": "nprogress",
-        "jwt-decode": "jwt_decode"
+        "jwt-decode": "jwt_decode",
+        "focus-trap": "focusTrap"
       },
       "dir": "packages/integrations",
       "docs": "https://vueuse.org/integrations/README.html"
@@ -379,6 +385,7 @@
       "name": "onClickOutside",
       "package": "core",
       "component": true,
+      "directive": true,
       "docs": "https://vueuse.org/core/onClickOutside/",
       "category": "Sensors",
       "description": "listen for clicks outside of an element"

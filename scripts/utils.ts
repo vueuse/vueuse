@@ -117,15 +117,16 @@ export async function readIndexes() {
 
     for (const fnName of functions) {
       const mdPath = join(dir, fnName, 'index.md')
-      const component = join(dir, fnName, 'component.ts')
 
       const fn: VueUseFunction = {
         name: fnName,
         package: pkg.name,
       }
 
-      if (fs.existsSync(component))
+      if (fs.existsSync(join(dir, fnName, 'component.ts')))
         fn.component = true
+      if (fs.existsSync(join(dir, fnName, 'directive.ts')))
+        fn.directive = true
 
       if (!fs.existsSync(mdPath)) {
         fn.internal = true
@@ -180,9 +181,15 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     let content: string
     if (name === 'components') {
       content = functions
-        .filter(i => i.component)
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map(fn => `export * from '../${fn.package}/${fn.name}/component'`)
+        .flatMap((fn) => {
+          const arr = []
+          if (fn.component)
+            arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
+          if (fn.directive)
+            arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
+          return arr
+        })
         .join('\n')
     }
     else {
@@ -354,7 +361,7 @@ export async function updatePackageJSON() {
         import: './dist/index.esm.js',
         require: './dist/index.cjs.js',
       },
-      './': './',
+      './*': './*',
     }
 
     for (const key of Object.keys(packageJSON.dependencies)) {

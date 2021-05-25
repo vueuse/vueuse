@@ -1,4 +1,5 @@
 export * from '../core/onClickOutside/component'
+export * from '../core/onClickOutside/directive'
 export * from '../core/useActiveElement/component'
 export * from '../core/useBattery/component'
 export * from '../core/useBrowserLocation/component'

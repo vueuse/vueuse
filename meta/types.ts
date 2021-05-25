@@ -19,6 +19,7 @@ export interface VueUseFunction {
   depreacted?: boolean
   internal?: boolean
   component?: boolean
+  directive?: boolean
 }
 
 export interface VueUsePackage extends PackageManifest {
