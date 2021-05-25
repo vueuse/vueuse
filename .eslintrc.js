@@ -30,8 +30,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.md'],
+      files: ['*.md', 'demo.vue', 'scripts/*.ts'],
       rules: {
+        'no-console': 'off',
         'no-undef': 'off',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
