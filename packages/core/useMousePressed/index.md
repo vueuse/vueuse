@@ -49,6 +49,12 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<UseMousePressed v-slot="{ pressed }">
+  Is Pressed: {{ pressed }}
+</UseMousePressed>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -28,7 +28,14 @@ const {
 
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#Properties).
 
-
+## Component
+```html
+<UseDeviceOrientation v-slot="{ alpha, beta, gamma }">
+  Alpha: {{ alpha }}
+  Beta: {{ beta }}
+  Gamma: {{ gamma }}
+</UseDeviceOrientation>
+```
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

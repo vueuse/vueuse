@@ -31,6 +31,14 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<UseMouseInElement v-slot="{ elementX, elementY, isOutside }">
+  x: {{ elementX }}
+  y: {{ elementY }}
+  Is Outside: {{ isOutside }}
+</UseMouseInElement>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

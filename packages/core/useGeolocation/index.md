@@ -25,6 +25,14 @@ const { coords, locatedAt, error } = useGeolocation()
 `useGeolocation` function takes [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) object as an optional parameter.
 
 
+## Component
+```html
+<UseGeolocation v-slot="{ coords: { latitude, longitude } }">
+  Latitude: {{ latitude }}
+  Longitude: {{ longitude }}
+</UseGeolocation>
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

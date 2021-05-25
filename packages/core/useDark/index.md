@@ -70,6 +70,14 @@ const isDark = useDark({
 })
 ```
 
+## Component
+```html
+<UseDark v-slot="{ isDark, toggleDark }">
+  <button @click="toggleDark()">
+    Is Dark: {{ isDark }}
+  </button>
+</UseDark>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

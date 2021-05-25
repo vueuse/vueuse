@@ -29,11 +29,18 @@ const {
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#Properties).
 
 
+## Component
+```html
+<UseDeviceMotion v-slot="{ acceleration }">
+  Acceleration: {{ acceleration }}
+</UseDeviceMotion>
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
 ```typescript
-interface DeviceMotionOptions
+export interface DeviceMotionOptions
   extends ConfigurableWindow,
     ConfigurableEventFilter {}
 /**
@@ -50,7 +57,6 @@ export declare function useDeviceMotion(
   rotationRate: Ref<DeviceMotionEventRotationRate | null>
   interval: Ref<number>
 }
-export {}
 ```
 
 ## Source

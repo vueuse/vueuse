@@ -18,6 +18,13 @@ watch(activeElement, (el) => {
 })
 ```
 
+## Component
+```html
+<UseActiveElement v-slot="{ element }">
+  Active element is {{ element.dataset.id }}
+</UseActiveElement>
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

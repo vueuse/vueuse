@@ -18,6 +18,14 @@ const now = useNow()
 const { now, pause, resume } = useNow({ controls: true })
 ```
 
+## Component
+```html
+<UseNow v-slot="{ now, pause, resume }">
+  Now: {{ now }}
+  <button @click="pause()">Pause</button>
+  <button @click="resume()">Resume</button>
+</UseNow>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -11,6 +11,16 @@ export const packages: PackageManifest[] = [
     description: 'Collection of essential Vue Composition Utilities',
   },
   {
+    name: 'components',
+    display: 'Components',
+    description: 'Renderless components for VueUse',
+    author: 'Wheat<https://github.com/wheatjs>',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'router',
     display: 'Router',
     description: 'Utilities for vue-router',
@@ -34,6 +44,7 @@ export const packages: PackageManifest[] = [
       'http',
       'nprogress',
       'jwt-decode',
+      'focus-trap',
     ],
     globals: {
       'axios': 'axios',
@@ -41,6 +52,7 @@ export const packages: PackageManifest[] = [
       'qrcode': 'QRCode',
       'nprogress': 'nprogress',
       'jwt-decode': 'jwt_decode',
+      'focus-trap': 'focusTrap',
     },
   },
   {

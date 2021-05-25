@@ -20,6 +20,13 @@ Touching is enabled by default. To make it only detects mouse changes, set `touc
 const { x, y } = useMouse({ touch: false })
 ```
 
+## Component
+```html
+<UseMouse v-slot="{ x, y }">
+  x: {{ x }}
+  y: {{ y }}
+</UseMouse>
+```
 
 
 <!--FOOTER_STARTS-->

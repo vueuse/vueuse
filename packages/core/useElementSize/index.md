@@ -35,6 +35,14 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<UseElementSize v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseElementSize>
+```
+
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
 
 

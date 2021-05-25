@@ -22,6 +22,13 @@ export default {
 }
 ```
 
+## Component
+
+```html
+<UseDevicePixelRatio v-slot="{ pixelRatio }">
+  Pixel Ratio: {{ pixelRatio }}
+</UseDevicePixelRatio>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

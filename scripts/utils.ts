@@ -117,11 +117,15 @@ export async function readIndexes() {
 
     for (const fnName of functions) {
       const mdPath = join(dir, fnName, 'index.md')
+      const component = join(dir, fnName, 'component.ts')
 
       const fn: VueUseFunction = {
         name: fnName,
         package: pkg.name,
       }
+
+      if (fs.existsSync(component))
+        fn.component = true
 
       if (!fs.existsSync(mdPath)) {
         fn.internal = true
@@ -173,12 +177,22 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     if (manualImport)
       continue
 
-    let content = functions
-      .filter(i => i.package === name)
-      .map(f => f.name)
-      .sort()
-      .map(name => `export * from './${name}'`)
-      .join('\n')
+    let content: string
+    if (name === 'components') {
+      content = functions
+        .filter(i => i.component)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(fn => `export * from '../${fn.package}/${fn.name}/component'`)
+        .join('\n')
+    }
+    else {
+      content = functions
+        .filter(i => i.package === name)
+        .map(f => f.name)
+        .sort()
+        .map(name => `export * from './${name}'`)
+        .join('\n')
+    }
 
     if (name === 'core')
       content += '\nexport * from \'@vueuse/shared\''
@@ -322,7 +336,6 @@ export async function updatePackageJSON() {
     const packageJSON = await fs.readJSON(packageJSONPath)
 
     packageJSON.version = version
-    packageJSON.funding = 'https://github.com/sponsors/antfu'
     packageJSON.description = description || packageJSON.description
     packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
     packageJSON.bugs = {
