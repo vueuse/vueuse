@@ -1,5 +1,5 @@
 import { watch, ref, unref, watchEffect } from 'vue-demi'
-import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn } from '@vueuse/shared'
+import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnUnmounted, Fn, createEventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
@@ -8,7 +8,7 @@ import { ConfigurableDocument, defaultDocument } from '../_configurable'
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
  */
 
-interface UseMediaSource {
+export interface UseMediaSource {
   /**
    * The source url for the media
    */
@@ -20,7 +20,7 @@ interface UseMediaSource {
   type?: string
 }
 
-interface UseMediaTextTrackSource {
+export interface UseMediaTextTrackSource {
   /**
    * Indicates that the track should be enabled unless the user's preferences indicate
    * that another track is more appropriate
@@ -59,68 +59,12 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
   src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
 
   /**
-   * A URL for an image to be shown while the media is downloading. If this attribute
-   * isn't specified, nothing is displayed until the first frame is available,
-   * then the first frame is shown as the poster frame.
-   */
-  poster?: MaybeRef<string>
-
-  /**
-   * Indicates that the media automatically begins to play back as soon as it
-   * can do so without stopping to finish loading the data.
-   *
-   * @default false
-   */
-  autoplay?: MaybeRef<boolean>
-
-  /**
-   * Indicates that the media is to be played "inline", that is within the
-   * element's playback area. Note that the absence of this attribute does
-   * not imply that the media will always be played in fullscreen.
-   *
-   * @default auto
-   */
-  preload?: MaybeRef<'auto' | 'metadata' | 'none' >
-
-  /**
-   * If specified, the browser will automatically seek back to the start
-   * upon reaching the end of the media.
-   *
-   * @default false
-   */
-  loop?: MaybeRef<boolean>
-
-  /**
-   * If true, the browser will offer controls to allow the user to control
-   * media playback, including volume, seeking, and pause/resume playback.
-   *
-   * @default false
-   */
-  controls?: MaybeRef<boolean>
-
-  /**
-   * If true, the audio will be initially silenced. Its default value is false,
-   * meaning that the audio will be played when the media is played.
-   *
-   * @default false
-   */
-  muted?: MaybeRef<boolean>
-
-  /**
-   * Indicates that the video is to be played "inline", that is within the element's
-   * playback area. Note that the absence of this attribute does not imply
-   * that the video will always be played in fullscreen.
-   *
-   * @default false
-   */
-  playsinline?: MaybeRef<boolean>
-
-  /**
    * A Boolean attribute which if true indicates that the element should automatically
    * toggle picture-in-picture mode when the user switches back and forth between
    * this document and another document or application.
    *
    * @default false
+   * @deprecated Use `<video autopictureinpicture>` attribute instead
    */
   autoPictureInPicture?: MaybeRef<boolean>
 
@@ -205,14 +149,6 @@ function tracksToArray(tracks: TextTrackList): UseMediaTextTrack[] {
 
 const defaultOptions: UseMediaControlsOptions = {
   src: '',
-  poster: '',
-  autoplay: false,
-  preload: 'auto',
-  loop: false,
-  controls: false,
-  muted: false,
-  playsinline: false,
-  autoPictureInPicture: false,
   tracks: [],
 }
 
@@ -240,8 +176,12 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const tracks = ref<UseMediaTextTrack[]>([])
   const selectedTrack = ref<number>(-1)
   const isPictureInPicture = ref(false)
+  const muted = ref(false)
 
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
+
+  // Events
+  const sourceErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -310,14 +250,9 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!el)
       return
 
-    el.loop = unref(options.loop)!
-    el.controls = unref(options.controls)!
-    el.muted = unref(options.muted)!
-    el.preload = unref(options.preload)!
-    el.autoplay = unref(options.autoplay)!
-    el.volume = unref(volume)!
-    ;(el as HTMLVideoElement).playsInline = unref(options.playsinline)!
-    ;(el as HTMLVideoElement).poster = unref(options.poster) || ''
+    const autoPictureInPicture = unref(options.autoPictureInPicture)
+    // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
+    if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
   })
 
   /**
@@ -347,7 +282,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       sources = [src]
 
     // Clear the sources
-    el.querySelectorAll('source').forEach(e => e.remove())
+    el.querySelectorAll('source').forEach((e) => {
+      e.removeEventListener('error', sourceErrorEvent.trigger)
+      e.remove()
+    })
 
     // Add new sources
     sources.forEach(({ src, type }) => {
@@ -356,11 +294,22 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
 
+      source.addEventListener('error', sourceErrorEvent.trigger)
+
       el.appendChild(source)
     })
 
     // Finally, load the new sources.
     el.load()
+  })
+
+  // Remove source error listeners
+  tryOnUnmounted(() => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.querySelectorAll('source').forEach(e => e.removeEventListener('error', sourceErrorEvent.trigger))
   })
 
   /**
@@ -374,6 +323,14 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     el.volume = vol
   })
 
+  watch(muted, (mute) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.muted = mute
+  })
+
   /**
    * Load Tracks
    */
@@ -384,7 +341,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     const textTracks = unref(options.tracks)
     const el = unref(target)
 
-    if (!textTracks || !el)
+    if (!textTracks || !textTracks.length || !el)
       return
 
     /**
@@ -452,6 +409,13 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true))
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
+  useEventListener(target, 'volumechange', () => {
+    const el = unref(target)
+    if (!el) return
+
+    volume.value = el.volume
+    muted.value = el.muted
+  })
 
   /**
    * The following listeners need to listen to a nested
@@ -485,7 +449,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     stalled,
     buffered,
     playing,
+
+    // Volume
     volume,
+    muted,
 
     // Tracks
     tracks,
@@ -497,5 +464,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     supportsPictureInPicture,
     togglePictureInPicture,
     isPictureInPicture,
+
+    // Events
+    onSourceError: sourceErrorEvent.on,
   }
 }

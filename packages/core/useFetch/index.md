@@ -72,6 +72,18 @@ const { data } = useFetch(url, {
 })
 ```
 
+The `afterFetch` option can intercept the response data before it is updated.
+```ts
+const { data } = useFetch(url, {
+  afterFetch(ctx) {
+    if (ctx.data.title === 'HxH')
+      ctx.data.title = 'Hunter x Hunter' // Modifies the resposne data
+
+    return ctx
+  },
+})
+```
+
 ### Setting the request method and return type
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
@@ -110,6 +122,21 @@ const useMyFetch = createFetch({
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
+### Events
+
+The `onFetchResposne` and `onFetchError` will fire on fetch request responses and errors respectively.
+
+```ts
+const { onFetchResponse, onFetchError } = useFetch(url)
+
+onFetchResponse((response) => {
+  console.log(response.status)
+})
+
+onFetchError((error) => {
+  console.error(error.message)
+})
+```
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
@@ -155,23 +182,28 @@ interface UseFetchReturnBase<T> {
    * Manually call the fetch
    */
   execute: () => Promise<any>
+  /**
+   * Fires after the fetch request has finished
+   */
+  onFetchResponse: EventHookOn<Response>
+  /**
+   * Fires after a fetch request error
+   */
+  onFetchError: EventHookOn
 }
 declare type PayloadType = "text" | "json" | "formData"
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
+interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
+  get(): UseFetchReturnBase<T>
+  post(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  put(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  delete(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
 }
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(
-    payload?: unknown,
-    type?: PayloadType
-  ): UseFetchReturnMethodConfigured<T>
+export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
+  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
+  text(): UseFetchReturnTypeConfigured<string>
+  blob(): UseFetchReturnTypeConfigured<Blob>
+  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
+  formData(): UseFetchReturnTypeConfigured<FormData>
 }
 export interface BeforeFetchContext {
   /**
@@ -186,6 +218,10 @@ export interface BeforeFetchContext {
    * Cancels the current request
    */
   cancel: Fn
+}
+export interface AfterFetchContext<T = any> {
+  response: Response
+  data: T | null
 }
 export interface UseFetchOptions {
   /**
@@ -213,6 +249,13 @@ export interface UseFetchOptions {
     | Promise<Partial<BeforeFetchContext> | void>
     | Partial<BeforeFetchContext>
     | void
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 2xx response
+   */
+  afterFetch?: (
+    ctx: AfterFetchContext
+  ) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
 }
 export interface CreateFetchOptions {
   /**

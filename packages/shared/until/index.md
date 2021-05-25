@@ -147,10 +147,6 @@ export declare function until<T extends Ref<unknown[]>>(
 ): UntilArrayInstance<T>
 export declare function until<T>(r: WatchSource<T>): UntilValueInstance<T>
 export declare function until<T>(r: T): UntilValueInstance<T>
-/**
- * @deprecated `when` is renamed to `util`, use `until` instead. This will be removed in next major version.
- */
-export declare const when: typeof until
 ```
 
 ## Source

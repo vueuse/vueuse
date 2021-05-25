@@ -83,7 +83,8 @@ const isDark = useDark({
 ## Type Declarations
 
 ```typescript
-export interface UseDarkOptions extends StorageOptions {
+export declare type ColorSchemes = "light" | "dark" | "auto"
+export interface UseDarkOptions extends StorageOptions<ColorSchemes> {
   /**
    * CSS Selector for the target element applying to
    *
@@ -130,7 +131,6 @@ export interface UseDarkOptions extends StorageOptions {
    */
   storage?: StorageLike
 }
-export declare type ColorSchemes = "light" | "dark" | "auto"
 /**
  * Reactive dark mode with auto data persistence.
  *

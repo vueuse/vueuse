@@ -10,7 +10,7 @@ export interface WebSocketOptions {
   onMessage?: (ws: WebSocket, event: MessageEvent) => void
 
   /**
-   * Send heartbeat for every x mileseconds passed
+   * Send heartbeat for every x milliseconds passed
    *
    * @default false
    */
@@ -23,7 +23,7 @@ export interface WebSocketOptions {
     message?: string
 
     /**
-     * Interval, in mileseconds
+     * Interval, in milliseconds
      *
      * @default 1000
      */
@@ -44,7 +44,7 @@ export interface WebSocketOptions {
     retries?: number
 
     /**
-     * Delay for reconnect, in mileseconds
+     * Delay for reconnect, in milliseconds
      *
      * @default 1000
      */
@@ -55,6 +55,13 @@ export interface WebSocketOptions {
      */
     onFailed?: Fn
   }
+
+  /**
+   * Automatically open a connection
+   *
+   * @default false
+   */
+  immediate?: boolean
 }
 
 export interface WebSocketResult<T> {
@@ -215,6 +222,8 @@ export function useWebSocket<Data = any>(
     heartbeatPause = pause
     heartbeatResume = resume
   }
+
+  if (options.immediate) _init()
 
   const open = () => {
     close()

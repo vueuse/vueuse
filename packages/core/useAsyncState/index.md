@@ -72,8 +72,6 @@ export declare function useAsyncState<T>(
 ): {
   state: Ref<T>
   isReady: Ref<boolean>
-  /** @deprecated, use isReady instead */
-  ready: Ref<boolean>
   error: Ref<
     | {
         name: string

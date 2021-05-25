@@ -126,6 +126,13 @@
       "description": "fine-grained controls over ref and its reactivity"
     },
     {
+      "name": "createEventHook",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/createEventHook/",
+      "category": "Utilities",
+      "description": "utility for creating event hooks"
+    },
+    {
       "name": "debouncedWatch",
       "package": "shared",
       "docs": "https://vueuse.org/shared/debouncedWatch/",

@@ -15,10 +15,8 @@ import { ref } from 'vue'
 import { useMediaControls } from '@vueuse/core'
 
 const video = ref()
-const loop = ref(false)
 const { playing, currentTime, duration } = useMediaControls(video, { 
   src: 'video.mp4',
-  loop,
 })
 </script>
 
@@ -26,7 +24,6 @@ const { playing, currentTime, duration } = useMediaControls(video, {
   <video ref="video" />
   <button @click="playing = !playing">Play / Pause</button>
   <span>{{ currentTime }} / {{ duration }}</span>
-  <button @click="loop = !loop">Toggle Loop</button>
 </template>
 ```
 
@@ -70,7 +67,7 @@ const { tracks, enableTrack } = useMediaControls(video, {
  * Many of the jsdoc definitions here are modified version of the
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
  */
-interface UseMediaSource {
+export interface UseMediaSource {
   /**
    * The source url for the media
    */
@@ -80,7 +77,7 @@ interface UseMediaSource {
    */
   type?: string
 }
-interface UseMediaTextTrackSource {
+export interface UseMediaTextTrackSource {
   /**
    * Indicates that the track should be enabled unless the user's preferences indicate
    * that another track is more appropriate
@@ -113,61 +110,12 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    */
   src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
   /**
-   * A URL for an image to be shown while the media is downloading. If this attribute
-   * isn't specified, nothing is displayed until the first frame is available,
-   * then the first frame is shown as the poster frame.
-   */
-  poster?: MaybeRef<string>
-  /**
-   * Indicates that the media automatically begins to play back as soon as it
-   * can do so without stopping to finish loading the data.
-   *
-   * @default false
-   */
-  autoplay?: MaybeRef<boolean>
-  /**
-   * Indicates that the media is to be played "inline", that is within the
-   * element's playback area. Note that the absence of this attribute does
-   * not imply that the media will always be played in fullscreen.
-   *
-   * @default auto
-   */
-  preload?: MaybeRef<"auto" | "metadata" | "none">
-  /**
-   * If specified, the browser will automatically seek back to the start
-   * upon reaching the end of the media.
-   *
-   * @default false
-   */
-  loop?: MaybeRef<boolean>
-  /**
-   * If true, the browser will offer controls to allow the user to control
-   * media playback, including volume, seeking, and pause/resume playback.
-   *
-   * @default false
-   */
-  controls?: MaybeRef<boolean>
-  /**
-   * If true, the audio will be initially silenced. Its default value is false,
-   * meaning that the audio will be played when the media is played.
-   *
-   * @default false
-   */
-  muted?: MaybeRef<boolean>
-  /**
-   * Indicates that the video is to be played "inline", that is within the element's
-   * playback area. Note that the absence of this attribute does not imply
-   * that the video will always be played in fullscreen.
-   *
-   * @default false
-   */
-  playsinline?: MaybeRef<boolean>
-  /**
    * A Boolean attribute which if true indicates that the element should automatically
    * toggle picture-in-picture mode when the user switches back and forth between
    * this document and another document or application.
    *
    * @default false
+   * @deprecated Use `<video autopictureinpicture>` attribute instead
    */
   autoPictureInPicture?: MaybeRef<boolean>
   /**
@@ -225,6 +173,7 @@ export declare function useMediaControls(
   buffered: Ref<[number, number][]>
   playing: Ref<boolean>
   volume: Ref<number>
+  muted: Ref<boolean>
   tracks: Ref<
     {
       id: number
@@ -544,6 +493,7 @@ export declare function useMediaControls(
   supportsPictureInPicture: boolean | undefined
   togglePictureInPicture: () => Promise<unknown>
   isPictureInPicture: Ref<boolean>
+  onSourceError: EventHookOn<Event>
 }
 export {}
 ```

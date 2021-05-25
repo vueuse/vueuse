@@ -7,6 +7,7 @@ const state = useStorage('vue-use-locale-storage', {
   color: 'Yellow',
   size: 'Medium',
 })
+
 const text = stringify(state.value)
 </script>
 

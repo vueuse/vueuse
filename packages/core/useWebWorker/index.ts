@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref } from 'vue-demi'
+import { ref, Ref, shallowRef } from 'vue-demi'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -22,32 +22,33 @@ export function useWebWorker(
   } = options
 
   const data: Ref<any> = ref(null)
-  let worker: Worker
+  const worker = shallowRef<Worker>()
 
-  const post: typeof worker.postMessage = function post(val: any) {
-    if (!worker)
+  const post: typeof Worker.prototype['postMessage'] = function post(val: any) {
+    if (!worker.value)
       return
 
-    worker.postMessage(val)
+    worker.value.postMessage(val)
   }
 
-  const terminate: typeof worker.terminate = function terminate() {
-    if (!worker)
+  const terminate: typeof Worker.prototype['terminate'] = function terminate() {
+    if (!worker.value)
       return
 
-    worker.terminate()
+    worker.value.terminate()
   }
 
   if (window) {
     // @ts-expect-error untyped
-    worker = new window.Worker(url, workerOptions)
+    worker.value = new window.Worker(url, workerOptions)
 
-    worker.onmessage = (e: MessageEvent) => {
+    worker.value!.onmessage = (e: MessageEvent) => {
       data.value = e.data
     }
 
     tryOnUnmounted(() => {
-      worker.terminate()
+      if (worker.value)
+        worker.value.terminate()
     })
   }
 
@@ -55,5 +56,6 @@ export function useWebWorker(
     data,
     post,
     terminate,
+    worker,
   }
 }

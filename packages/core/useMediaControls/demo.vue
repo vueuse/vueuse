@@ -9,12 +9,10 @@ import { stringify } from '@vueuse/docs-utils'
 import { useMediaControls } from '.'
 
 const video = ref<HTMLVideoElement>()
-const muted = ref(false)
 const loop = ref(false)
+const poster = 'https://bitmovin.com/wp-content/uploads/2016/06/sintel-poster.jpg'
 
 const controls = useMediaControls(video, {
-  muted,
-  loop,
   src: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f1/Sintel_movie_4K.webm/Sintel_movie_4K.webm.1080p.vp9.webm',
     type: 'video/webm',
@@ -34,7 +32,6 @@ const controls = useMediaControls(video, {
       srcLang: 'fr',
     },
   ],
-  poster: 'https://bitmovin.com/wp-content/uploads/2016/06/sintel-poster.jpg',
 })
 
 const {
@@ -46,6 +43,7 @@ const {
   waiting,
   selectedTrack,
   volume,
+  muted,
   isPictureInPicture,
   supportsPictureInPicture,
   togglePictureInPicture,
@@ -67,7 +65,14 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
     @keydown.left="currentTime -= 10"
   >
     <div class="relative bg-black">
-      <video ref="video" crossorigin="anonymous" class="w-full block" @click="playing = !playing" />
+      <video
+        ref="video"
+        crossorigin="anonymous"
+        class="w-full block"
+        :poster="poster"
+        :loop="loop"
+        @click="playing = !playing"
+      />
       <div v-if="waiting" class="absolute inset-0 grid place-items-center pointer-events-none bg-black bg-opacity-20">
         <Spinner />
       </div>
