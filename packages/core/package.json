@@ -15,7 +15,8 @@
   "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu<https://github.com/antfu>",
   "files": [
-    "dist"
+    "dist",
+    "indexes.json"
   ],
   "exports": {
     ".": {

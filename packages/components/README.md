@@ -14,4 +14,4 @@ Learn more about [component usage](https://next.vueuse.org/guide/components).
 
 ## License
 
-[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2021-PRESENT [Jacob Clevenger](https://github.com/wheatjs)

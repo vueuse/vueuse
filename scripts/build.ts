@@ -25,6 +25,8 @@ async function buildMetaFiles() {
     if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
   }
+
+  await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(rootDir, '/packages/core/indexes.json'))
 }
 
 async function build() {

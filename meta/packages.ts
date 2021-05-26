@@ -14,7 +14,7 @@ export const packages: PackageManifest[] = [
     name: 'components',
     display: 'Components',
     description: 'Renderless components for VueUse',
-    author: 'Wheat<https://github.com/wheatjs>',
+    author: 'Jacob Clevenger<https://github.com/wheatjs>',
     external: [
       '@vueuse/core',
       '@vueuse/shared',
