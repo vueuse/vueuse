@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "5.0.0-beta.2",
+  "version": "5.0.0-beta.3",
   "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
-  "author": "Wheat<https://github.com/wheatjs>",
+  "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "files": [
     "dist"
   ],
@@ -34,8 +34,8 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "dependencies": {
-    "@vueuse/core": "5.0.0-beta.2",
-    "@vueuse/shared": "5.0.0-beta.2",
+    "@vueuse/core": "5.0.0-beta.3",
+    "@vueuse/shared": "5.0.0-beta.3",
     "vue-demi": "*"
   }
 }
