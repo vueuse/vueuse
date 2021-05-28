@@ -159,8 +159,6 @@ function initialize(userOptions: any) {
   --docsearch-muted-color: var(--c-text-lighter);
   --docsearch-key-gradient: rgba(125,125,125,0.1);
   --docsearch-key-shadow: rgba(125,125,125,0.3);
-  margin-left: 0.6rem;
-  margin-right: -0.2rem;
 }
 
 html.dark .DocSearch {
@@ -169,5 +167,11 @@ html.dark .DocSearch {
 
 .DocSearch-Button-Key {
   padding-bottom: 0;
+}
+
+@media (max-width: 750px) {
+  .DocSearch-Dropdown {
+    --docsearch-modal-height: 100vh;
+  }
 }
 </style>
