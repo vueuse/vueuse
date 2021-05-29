@@ -66,6 +66,7 @@ export declare function useMouse(options?: MouseOptions): {
   y: Ref<number>
   sourceType: Ref<MouseSourceType>
 }
+export declare type UseMouseReturn = ReturnType<typeof useMouse>
 ```
 
 ## Source

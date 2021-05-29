@@ -92,6 +92,7 @@ export declare function useMousePressed(options?: MousePressedOptions): {
   pressed: Ref<boolean>
   sourceType: Ref<MouseSourceType>
 }
+export declare type UseMousePressedReturn = ReturnType<typeof useMousePressed>
 ```
 
 ## Source

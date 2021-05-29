@@ -61,6 +61,7 @@ export declare function useFullscreen(
   exit: () => Promise<void>
   toggle: () => Promise<void>
 }
+export declare type UseFullscreenReturn = ReturnType<typeof useFullscreen>
 ```
 
 ## Source

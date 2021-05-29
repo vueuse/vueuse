@@ -67,6 +67,9 @@ export declare function useElementBounding(
   width: Ref<number>
   height: Ref<number>
 }
+export declare type UseElementBoundingReturn = ReturnType<
+  typeof useElementBounding
+>
 ```
 
 ## Source

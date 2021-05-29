@@ -70,6 +70,9 @@ export declare function useMouseInElement(
   isOutside: Ref<boolean>
   stop: () => void
 }
+export declare type UseMouseInElementReturn = ReturnType<
+  typeof useMouseInElement
+>
 ```
 
 ## Source

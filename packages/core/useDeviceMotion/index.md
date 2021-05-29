@@ -59,6 +59,8 @@ export declare function useDeviceMotion(options?: DeviceMotionOptions): {
   rotationRate: Ref<DeviceMotionEventRotationRate | null>
   interval: Ref<number>
 }
+export declare type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>
+export {}
 ```
 
 ## Source

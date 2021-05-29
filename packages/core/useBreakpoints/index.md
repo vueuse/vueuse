@@ -55,6 +55,7 @@ export declare function useBreakpoints<K extends string>(
   isSmaller(k: K): boolean
   isInBetween(a: K, b: K): boolean
 }
+export declare type UseBreakpointsReturn = ReturnType<typeof useBreakpoints>
 ```
 
 ## Source

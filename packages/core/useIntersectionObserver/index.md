@@ -75,6 +75,9 @@ export declare function useIntersectionObserver(
   isSupported: boolean | undefined
   stop: () => void
 }
+export declare type UseIntersectionObserverReturn = ReturnType<
+  typeof useIntersectionObserver
+>
 ```
 
 ## Source

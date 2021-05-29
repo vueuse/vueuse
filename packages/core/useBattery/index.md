@@ -61,6 +61,7 @@ export declare function useBattery({ navigator }?: ConfigurableNavigator): {
   dischargingTime: Ref<number>
   level: Ref<number>
 }
+export declare type UseBatteryReturn = ReturnType<typeof useBattery>
 ```
 
 ## Source
