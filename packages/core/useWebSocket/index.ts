@@ -59,7 +59,7 @@ export interface WebSocketOptions {
   /**
    * Automatically open a connection
    *
-   * @default false
+   * @default true
    */
   immediate?: boolean
 }
@@ -223,7 +223,7 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (options.immediate) _init()
+  if (options.immediate === false) _init()
 
   const open = () => {
     close()
