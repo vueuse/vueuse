@@ -33,3 +33,5 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
 
   return { x, y }
 }
+
+export type UseWindowScrollReturn = ReturnType<typeof useWindowScroll>

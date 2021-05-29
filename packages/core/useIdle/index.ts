@@ -77,3 +77,5 @@ export function useIdle(
 
   return { idle, lastActive }
 }
+
+export type UseIdleReturn = ReturnType<typeof useIdle>

@@ -469,3 +469,5 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     onSourceError: sourceErrorEvent.on,
   }
 }
+
+export type UseMediaControlsReturn = ReturnType<typeof useMediaControls>

@@ -49,3 +49,5 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     interval,
   }
 }
+
+export type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>

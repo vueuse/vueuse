@@ -135,3 +135,5 @@ export function useFullscreen(
     toggle,
   }
 }
+
+export type UseFullscreenReturn = ReturnType<typeof useFullscreen>

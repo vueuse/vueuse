@@ -76,3 +76,5 @@ export function useMouse(options: MouseOptions = {}) {
     sourceType,
   }
 }
+
+export type UseMouseReturn = ReturnType<typeof useMouse>

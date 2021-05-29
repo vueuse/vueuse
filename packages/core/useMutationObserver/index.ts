@@ -56,3 +56,5 @@ export function useMutationObserver(
     stop,
   }
 }
+
+export type UseMutationObserverReturn = ReturnType<typeof useMutationObserver>
