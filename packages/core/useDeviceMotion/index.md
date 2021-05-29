@@ -60,7 +60,6 @@ export declare function useDeviceMotion(options?: DeviceMotionOptions): {
   interval: Ref<number>
 }
 export declare type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>
-export {}
 ```
 
 ## Source
