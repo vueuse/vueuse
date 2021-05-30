@@ -327,7 +327,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
       else {
         if (config.payloadType === 'formData' || payload instanceof FormData) {
-          delete headers['Content-Type']
+          // we just add it here to remove later once merged with context.options.headers
+          headers['Content-Type'] = 'multipart/form-data'
         }
         else if (config.payloadType === 'text') {
           headers['Content-Type'] = 'text/plain'
@@ -349,10 +350,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       contextHeaders.forEach((hv, h) => {
         useHeaders.set(h, hv)
       })
-      // since we are using Headers object, it will find content-type header (key lookup is case-insensitive)
-      if (config.payloadType === 'formData' || useHeaders.get('Content-Type') === 'multipart/form-data')
-        useHeaders.delete('Content-Type')
     }
+    // since we are using Headers object, it will find content-type header (key lookup is case-insensitive)
+    if (useHeaders.get('Content-Type') === 'multipart/form-data')
+      useHeaders.delete('Content-Type')
 
     return new Promise((resolve) => {
       // defaultFetchOptions headers was used in the above logic
