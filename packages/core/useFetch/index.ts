@@ -303,36 +303,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
     }
 
-    const defaultFetchOptions: RequestInit = {
-      method: config.method,
-      headers: {},
-    }
-
-    if (config.payload) {
-      const headers = defaultFetchOptions.headers as Record<string, string>
-      if (config.payloadType === 'json') {
-        defaultFetchOptions.body = JSON.stringify(config.payload)
-        headers['Content-Type'] = 'application/json'
-      }
-      else {
-        defaultFetchOptions.body = config.payload as any
-        if (config.payloadType === 'formData' || config.payload instanceof FormData) {
-          delete headers['Content-Type']
-        }
-        else if (config.payloadType === 'text') {
-          headers['Content-Type'] = 'text/plain'
-        }
-        else {
-          headers['Content-Type'] = 'application/x-www-form-urlencoded'
-          const payload = config.payload
-          // if the payload is not URLSearchParams nor a string, we need to encode it
-          // if it is a string it should be already encoded: avoiding double encoding
-          if (!(payload instanceof URLSearchParams) && typeof payload !== 'string')
-            config.payload = await encodeFormUrlObject(payload)
-        }
-      }
-    }
-
     let isCanceled = false
     const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
 
@@ -342,27 +312,58 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (isCanceled || !fetch)
       return Promise.resolve()
 
-    return new Promise((resolve) => {
-      const useHeaders = new Headers(defaultFetchOptions.headers)
-      const contextHeaders = context.options?.headers ? new Headers(context.options.headers) : null
-      if (contextHeaders) {
-        // just override existing or add context ones
-        contextHeaders.forEach((hv, h) => {
-          useHeaders.set(h, hv)
-        })
-        // since we are using Headers object, it will handle case insensitive
-        if (config.payloadType === 'formData')
-          useHeaders.delete('Content-Type')
+    const defaultFetchOptions: RequestInit = {
+      method: config.method,
+      headers: {},
+    }
+
+    let payload = context.options?.body || config.payload
+
+    if (payload) {
+      const headers = defaultFetchOptions.headers as Record<string, string>
+      if (config.payloadType === 'json') {
+        payload = JSON.stringify(payload)
+        headers['Content-Type'] = 'application/json'
       }
+      else {
+        if (config.payloadType === 'formData' || payload instanceof FormData) {
+          delete headers['Content-Type']
+        }
+        else if (config.payloadType === 'text') {
+          headers['Content-Type'] = 'text/plain'
+        }
+        else {
+          headers['Content-Type'] = 'application/x-www-form-urlencoded'
+          // if the payload is not URLSearchParams nor a string, we need to encode it
+          // if it is a string it should be already encoded: avoiding double encoding
+          if (!(payload instanceof URLSearchParams) && typeof payload !== 'string')
+            payload = await encodeFormUrlObject(payload)
+        }
+      }
+    }
+
+    const useHeaders = new Headers(defaultFetchOptions.headers)
+    const contextHeaders = context.options?.headers ? new Headers(context.options.headers) : null
+    if (contextHeaders) {
+      // just override existing or add context ones
+      contextHeaders.forEach((hv, h) => {
+        useHeaders.set(h, hv)
+      })
+      // since we are using Headers object, it will find content-type header (key lookup is case-insensitive)
+      if (config.payloadType === 'formData' || useHeaders.get('Content-Type') === 'multipart/form-data')
+        useHeaders.delete('Content-Type')
+    }
+
+    return new Promise((resolve) => {
       // defaultFetchOptions headers was used in the above logic
-      const { method, body } = defaultFetchOptions
-      // headers was merged on above logic, and so will be ignored
-      const { headers, ...contextOptions } = context?.options || {}
+      const { method } = defaultFetchOptions
+      // headers and body was merged on above logic, and so will be ignored here
+      const { headers, body, ...contextOptions } = context?.options || {}
       fetch(
         context.url,
         {
           method,
-          body,
+          body: payload as any,
           headers: useHeaders,
           ...contextOptions,
         },
