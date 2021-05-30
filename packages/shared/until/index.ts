@@ -1,9 +1,9 @@
-import { WatchOptions, watch, WatchSource, unref, Ref } from 'vue-demi'
+import { WatchOptions, watch, WatchSource, unref } from 'vue-demi'
 import { ElementOf, promiseTimeout, ShallowUnwrapRef, MaybeRef } from '../utils'
 
 export interface UntilToMatchOptions {
   /**
-   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
    *
    * @default 0
@@ -70,10 +70,8 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
  * alert('Counter is now larger than 7!')
  * ```
  */
-export function until<T extends unknown[]>(r: T): UntilArrayInstance<T>
-export function until<T extends Ref<unknown[]>>(r: T): UntilArrayInstance<T>
-export function until<T>(r: WatchSource<T>): UntilValueInstance<T>
-export function until<T>(r: T): UntilValueInstance<T>
+export function until<T extends unknown[]>(r: WatchSource<T> | MaybeRef<T>): UntilArrayInstance<T>
+export function until<T>(r: WatchSource<T> | MaybeRef<T>): UntilValueInstance<T>
 export function until<T>(r: any): any {
   let isNot = false
 
@@ -111,7 +109,7 @@ export function until<T>(r: any): any {
     return Promise.race(promises)
   }
 
-  function toBe<P>(value: P | T, options?: UntilToMatchOptions) {
+  function toBe<P>(value: MaybeRef<P | T>, options?: UntilToMatchOptions) {
     return toMatch(v => v === unref(value), options)
   }
 
