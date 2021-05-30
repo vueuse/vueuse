@@ -10,7 +10,7 @@ async function run() {
   await updateIndexREADME(indexes)
   await updateFunctionsMD(indexes)
   await updateFunctionREADME(indexes)
-  await updatePackageJSON()
+  await updatePackageJSON(indexes)
 
   await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')
   await fs.copy('./indexes.json', './packages/core/indexes.json')

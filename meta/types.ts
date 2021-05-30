@@ -8,6 +8,7 @@ export interface PackageManifest {
   globals?: Record<string, string>
   manualImport?: boolean
   deprecated?: boolean
+  submodules?: boolean
 }
 
 export interface VueUseFunction {

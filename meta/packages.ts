@@ -37,6 +37,7 @@ export const packages: PackageManifest[] = [
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
     addon: true,
+    submodules: true,
     external: [
       'axios',
       'universal-cookie',
@@ -74,6 +75,7 @@ export const packages: PackageManifest[] = [
     display: 'Firebase',
     description: 'Enables realtime bindings for Firebase',
     addon: true,
+    submodules: true,
     external: [
       'firebase',
       'firebase/app',

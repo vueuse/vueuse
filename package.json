@@ -99,7 +99,7 @@
     "vite-plugin-windicss": "^0.16.0",
     "vitepress": "^0.13.2",
     "vue": "^3.0.11",
-    "vue-demi": "^0.9.0",
+    "vue-demi": "^0.9.1",
     "vue2": "npm:vue@2"
   }
 }
