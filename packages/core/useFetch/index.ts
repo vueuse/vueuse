@@ -65,7 +65,7 @@ interface UseFetchReturnBase<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type PayloadType = 'text' | 'json' | 'formData'
+type PayloadType = 'text' | 'json' | 'formEncoded' | 'formData'
 
 interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
   // type
@@ -289,9 +289,14 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
       else {
         defaultFetchOptions.body = config.payload as any
-        headers['Content-Type'] = config.payloadType === 'formData'
-          ? 'multipart/form-data'
-          : 'text/plain'
+        if (config.payloadType === 'formData' || config.payload instanceof FormData)
+          delete headers['Content-Type']
+
+        else if (config.payloadType === 'formEncoded' || config.payload instanceof URLSearchParams)
+          headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
+        else
+          headers['Content-Type'] = 'text/plain'
       }
     }
 
@@ -389,7 +394,19 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       if (!initialized) {
         config.method = method
         config.payload = payload
-        config.payloadType = payloadType || (typeof payload === 'string' ? 'text' : 'json')
+        if (payloadType) {
+          config.payloadType = payloadType
+        }
+        else {
+          if (payload instanceof FormData)
+            config.payloadType = 'formData'
+
+          else if (payload instanceof URLSearchParams)
+            config.payload = 'formEncoded'
+
+          else
+            config.payloadType = typeof payload === 'string' ? 'text' : 'json'
+        }
         return shell as any
       }
       return undefined
