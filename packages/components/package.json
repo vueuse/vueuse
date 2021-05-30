@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "5.0.0-beta.3",
+  "version": "5.0.0-beta.4",
   "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "dependencies": {
-    "@vueuse/core": "5.0.0-beta.3",
-    "@vueuse/shared": "5.0.0-beta.3",
+    "@vueuse/core": "5.0.0-beta.4",
+    "@vueuse/shared": "5.0.0-beta.4",
     "vue-demi": "*"
   }
 }
