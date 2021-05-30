@@ -123,6 +123,7 @@ export function useWebSocket<Data = any>(
     onDisconnected,
     onError,
     onMessage,
+    immediate = true,
   } = options
 
   const data: Ref<Data | null> = ref(null)
@@ -223,7 +224,7 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (options.immediate !== false) _init()
+  if (immediate) _init()
 
   const open = () => {
     close()
