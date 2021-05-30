@@ -54,7 +54,9 @@ export interface BatteryManager extends EventTarget {
  * @see https://vueuse.org/useBattery
  * @param options
  */
-export declare function useBattery({ navigator }?: ConfigurableNavigator): {
+export declare function useBattery({
+  navigator,
+}?: ConfigurableNavigator): {
   isSupported: boolean | undefined
   charging: Ref<boolean>
   chargingTime: Ref<number>

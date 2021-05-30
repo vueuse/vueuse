@@ -25,7 +25,9 @@ const { count, inc, dec, set, reset } = useCounter()
  * @see https://vueuse.org/useCounter
  * @param [initialValue=0]
  */
-export declare function useCounter(initialValue?: number): {
+export declare function useCounter(
+  initialValue?: number
+): {
   count: Ref<number>
   inc: (delta?: number) => number
   dec: (delta?: number) => number

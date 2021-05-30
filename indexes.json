@@ -729,6 +729,13 @@
       "description": "reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)"
     },
     {
+      "name": "usePointerSwipe",
+      "package": "core",
+      "docs": "https://vueuse.org/core/usePointerSwipe/",
+      "category": "Sensors",
+      "description": "reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)"
+    },
+    {
       "name": "usePreferredColorScheme",
       "package": "core",
       "component": true,

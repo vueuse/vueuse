@@ -49,7 +49,9 @@ export interface GeolocationOptions
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export declare function useGeolocation(options?: GeolocationOptions): {
+export declare function useGeolocation(
+  options?: GeolocationOptions
+): {
   isSupported: boolean | undefined
   coords: Ref<GeolocationCoordinates>
   locatedAt: Ref<number | null>

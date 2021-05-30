@@ -88,7 +88,9 @@ export interface MousePressedOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useMousePressed
  * @param options
  */
-export declare function useMousePressed(options?: MousePressedOptions): {
+export declare function useMousePressed(
+  options?: MousePressedOptions
+): {
   pressed: Ref<boolean>
   sourceType: Ref<MouseSourceType>
 }

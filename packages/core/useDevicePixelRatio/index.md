@@ -42,7 +42,9 @@ export default {
  * @see https://vueuse.org/useDevicePixelRatio
  * @param options
  */
-export declare function useDevicePixelRatio({ window }?: ConfigurableWindow): {
+export declare function useDevicePixelRatio({
+  window,
+}?: ConfigurableWindow): {
   pixelRatio: Ref<number>
 }
 export declare type UseDevicePixelRatioReturn = ReturnType<

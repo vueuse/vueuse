@@ -77,7 +77,7 @@ await until(ref).not.toBeTruthy()
 ```typescript
 export interface UntilToMatchOptions {
   /**
-   * Milseconds timeout for promise to resolve/reject if the when condition does not meet.
+   * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
    *
    * @default 0
@@ -141,12 +141,12 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
  * alert('Counter is now larger than 7!')
  * ```
  */
-export declare function until<T extends unknown[]>(r: T): UntilArrayInstance<T>
-export declare function until<T extends Ref<unknown[]>>(
-  r: T
+export declare function until<T extends unknown[]>(
+  r: WatchSource<T> | MaybeRef<T>
 ): UntilArrayInstance<T>
-export declare function until<T>(r: WatchSource<T>): UntilValueInstance<T>
-export declare function until<T>(r: T): UntilValueInstance<T>
+export declare function until<T>(
+  r: WatchSource<T> | MaybeRef<T>
+): UntilValueInstance<T>
 ```
 
 ## Source

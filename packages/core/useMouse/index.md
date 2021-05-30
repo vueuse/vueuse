@@ -61,7 +61,9 @@ export declare type MouseSourceType = "mouse" | "touch" | null
  * @see https://vueuse.org/useMouse
  * @param options
  */
-export declare function useMouse(options?: MouseOptions): {
+export declare function useMouse(
+  options?: MouseOptions
+): {
   x: Ref<number>
   y: Ref<number>
   sourceType: Ref<MouseSourceType>

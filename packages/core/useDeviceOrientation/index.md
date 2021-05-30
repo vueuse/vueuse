@@ -51,7 +51,9 @@ You can find [more information about the state on the MDN](https://developer.moz
  * @see https://vueuse.org/useDeviceOrientation
  * @param options
  */
-export declare function useDeviceOrientation(options?: ConfigurableWindow): {
+export declare function useDeviceOrientation(
+  options?: ConfigurableWindow
+): {
   isSupported: boolean
   isAbsolute: Ref<boolean>
   alpha: Ref<number | null>

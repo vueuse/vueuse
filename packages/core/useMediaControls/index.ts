@@ -59,16 +59,6 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
   src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
 
   /**
-   * A Boolean attribute which if true indicates that the element should automatically
-   * toggle picture-in-picture mode when the user switches back and forth between
-   * this document and another document or application.
-   *
-   * @default false
-   * @deprecated Use `<video autopictureinpicture>` attribute instead
-   */
-  autoPictureInPicture?: MaybeRef<boolean>
-
-  /**
    * A list of text tracks for the media
    */
   tracks?: MaybeRef<UseMediaTextTrackSource[]>
@@ -243,17 +233,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       })
     })
   }
-
-  // Apply Options
-  watchEffect(() => {
-    const el = unref(target)
-    if (!el)
-      return
-
-    const autoPictureInPicture = unref(options.autoPictureInPicture)
-    // @ts-expect-error HTMLVideoElement.autoPictureInPicture not implemented in TS
-    if (autoPictureInPicture !== undefined) (el as HTMLVideoElement).autoPictureInPicture = autoPictureInPicture
-  })
 
   /**
    * This will automatically inject sources to the media element. The sources will be
