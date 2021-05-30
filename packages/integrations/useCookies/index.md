@@ -29,7 +29,7 @@ npm i universal-cookie
 
 <script>
   import { defineComponent } from 'vue'
-  import { useCookies } from '@vueuse/integrations'
+  import { useCookies } from '@vueuse/integrations/useCookies'
 
   export default defineComponent({
     setup() {
@@ -46,7 +46,7 @@ npm i universal-cookie
 
 ```ts
 // universal-cookies.js
-import { createCookies } from '@vueuse/integrations'
+import { createCookies } from '@vueuse/integrations/useCookies'
 
 let useUniversalCookies
 

@@ -15,7 +15,7 @@ npm i axios
 ## Usage
 
 ```ts
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { data, finished } = useAxios('/api/posts')
 ```
@@ -24,7 +24,7 @@ or use an instance of axios
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
   baseURL: '/api'
@@ -37,7 +37,7 @@ use an instance of axios with config options
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
   baseURL: '/api'
