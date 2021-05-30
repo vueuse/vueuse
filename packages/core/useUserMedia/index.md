@@ -102,6 +102,7 @@ export declare function useUserMedia(options?: UseUserMediaOptions): {
   enabled: Ref<boolean>
   autoSwitch: Ref<boolean>
 }
+export declare type UseUserMediaReturn = ReturnType<typeof useUserMedia>
 ```
 
 ## Source

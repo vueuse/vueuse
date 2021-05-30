@@ -45,6 +45,9 @@ export default {
 export declare function useDevicePixelRatio({ window }?: ConfigurableWindow): {
   pixelRatio: Ref<number>
 }
+export declare type UseDevicePixelRatioReturn = ReturnType<
+  typeof useDevicePixelRatio
+>
 ```
 
 ## Source

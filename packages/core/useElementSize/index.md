@@ -71,6 +71,7 @@ export declare function useElementSize(
   width: Ref<number>
   height: Ref<number>
 }
+export declare type UseElementSizeReturn = ReturnType<typeof useElementSize>
 ```
 
 ## Source

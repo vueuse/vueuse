@@ -66,6 +66,7 @@ export declare function useTimestamp(
 export declare function useTimestamp(options: TimestampOptions<true>): {
   timestamp: Ref<number>
 } & Pausable
+export declare type UseTimestampReturn = ReturnType<typeof useTimestamp>
 ```
 
 ## Source

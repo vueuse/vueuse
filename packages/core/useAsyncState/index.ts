@@ -97,3 +97,5 @@ export function useAsyncState<T>(
     execute,
   }
 }
+
+export type UseAsyncStateReturn = ReturnType<typeof useAsyncState>

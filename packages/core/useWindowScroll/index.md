@@ -29,6 +29,7 @@ export declare function useWindowScroll({ window }?: ConfigurableWindow): {
   x: Ref<number>
   y: Ref<number>
 }
+export declare type UseWindowScrollReturn = ReturnType<typeof useWindowScroll>
 ```
 
 ## Source

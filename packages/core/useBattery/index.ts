@@ -59,3 +59,5 @@ export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigat
     level,
   }
 }
+
+export type UseBatteryReturn = ReturnType<typeof useBattery>

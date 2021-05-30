@@ -30,3 +30,5 @@ export function useWindowSize({ window = defaultWindow, initialWidth = Infinity,
 
   return { width, height }
 }
+
+export type UseWindowSizeReturn = ReturnType<typeof useWindowSize>

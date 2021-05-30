@@ -49,6 +49,10 @@ export interface IdleOptions
    */
   initialState?: boolean
 }
+export interface UseIdleReturn {
+  idle: Ref<boolean>
+  lastActive: Ref<number>
+}
 /**
  * Tracks whether the user is being inactive.
  *
@@ -59,10 +63,7 @@ export interface IdleOptions
 export declare function useIdle(
   timeout?: number,
   options?: IdleOptions
-): {
-  idle: Ref<boolean>
-  lastActive: Ref<number>
-}
+): UseIdleReturn
 ```
 
 ## Source

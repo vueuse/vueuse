@@ -40,3 +40,5 @@ export function createGlobalState<T extends object>(
     return state
   }
 }
+
+export type CreateGlobalStateReturn = ReturnType<typeof createGlobalState>

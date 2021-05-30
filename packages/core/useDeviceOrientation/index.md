@@ -58,6 +58,9 @@ export declare function useDeviceOrientation(options?: ConfigurableWindow): {
   beta: Ref<number | null>
   gamma: Ref<number | null>
 }
+export declare type UseDeviceOrientationReturn = ReturnType<
+  typeof useDeviceOrientation
+>
 ```
 
 ## Source

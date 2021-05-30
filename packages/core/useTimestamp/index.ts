@@ -58,3 +58,5 @@ export function useTimestamp(options: TimestampOptions<boolean> = {}) {
     return ts
   }
 }
+
+export type UseTimestampReturn = ReturnType<typeof useTimestamp>

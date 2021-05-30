@@ -61,6 +61,7 @@ export declare function useGeolocation(options?: GeolocationOptions): {
     readonly TIMEOUT: number
   } | null>
 }
+export declare type UseGeolocationReturn = ReturnType<typeof useGeolocation>
 ```
 
 ## Source

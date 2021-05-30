@@ -65,6 +65,9 @@ export declare function useBrowserLocation({
   protocol?: string | undefined
   search?: string | undefined
 }>
+export declare type UseBrowserLocationReturn = ReturnType<
+  typeof useBrowserLocation
+>
 ```
 
 ## Source

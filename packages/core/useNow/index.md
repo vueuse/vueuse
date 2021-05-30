@@ -58,6 +58,7 @@ export declare function useNow(options?: UseNowOptions<false>): Ref<Date>
 export declare function useNow(options: UseNowOptions<true>): {
   now: Ref<Date>
 } & Pausable
+export declare type UseNowReturn = ReturnType<typeof useNow>
 ```
 
 ## Source

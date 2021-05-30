@@ -495,6 +495,7 @@ export declare function useMediaControls(
   isPictureInPicture: Ref<boolean>
   onSourceError: EventHookOn<Event>
 }
+export declare type UseMediaControlsReturn = ReturnType<typeof useMediaControls>
 export {}
 ```
 

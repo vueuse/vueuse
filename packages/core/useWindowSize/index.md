@@ -47,6 +47,7 @@ export declare function useWindowSize({
   width: Ref<number>
   height: Ref<number>
 }
+export declare type UseWindowSizeReturn = ReturnType<typeof useWindowSize>
 ```
 
 ## Source

@@ -49,3 +49,5 @@ export function useElementBounding(
     height,
   }
 }
+
+export type UseElementBoundingReturn = ReturnType<typeof useElementBounding>

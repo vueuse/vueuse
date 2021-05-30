@@ -86,3 +86,5 @@ export function useResizeObserver(
     stop,
   }
 }
+
+export type UseResizeObserverReturn = ReturnType<typeof useResizeObserver>

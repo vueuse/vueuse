@@ -82,6 +82,7 @@ export declare function useAsyncState<T>(
   >
   execute: (delay?: number) => Promise<void>
 }
+export declare type UseAsyncStateReturn = ReturnType<typeof useAsyncState>
 ```
 
 ## Source

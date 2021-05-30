@@ -62,7 +62,7 @@ export interface SwipeOptions extends ConfigurableWindow {
 }
 export interface SwipeReturn {
   isPassiveEventSupported: boolean
-  isSwiping: ComputedRef<boolean>
+  isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
   coordsStart: {
     readonly x: number
@@ -86,22 +86,7 @@ export interface SwipeReturn {
 export declare function useSwipe(
   target: MaybeRef<EventTarget | null | undefined>,
   options?: SwipeOptions
-): {
-  isPassiveEventSupported: boolean
-  isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection>
-  coordsStart: {
-    x: number
-    y: number
-  }
-  coordsEnd: {
-    x: number
-    y: number
-  }
-  lengthX: ComputedRef<number>
-  lengthY: ComputedRef<number>
-  stop: () => void
-}
+): SwipeReturn
 ```
 
 ## Source

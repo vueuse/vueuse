@@ -50,3 +50,5 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
     return now
   }
 }
+
+export type UseNowReturn = ReturnType<typeof useNow>

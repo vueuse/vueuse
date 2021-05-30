@@ -130,3 +130,5 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     workerTerminate,
   }
 }
+
+export type UseWebWorkerFnReturn = ReturnType<typeof useWebWorkerFn>
