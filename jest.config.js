@@ -9,8 +9,19 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+  ],
+  modulePathIgnorePatterns: [
+    '/dist/',
+  ],
   setupFiles: [
     '<rootDir>/packages/.test/test.setup.js',
   ],
+  moduleNameMapper: {
+    '^@vueuse/(.*)$': '<rootDir>/packages/$1/index.ts',
+  },
   testURL: 'https://vueuse.org',
+  testEnvironment: 'jsdom',
 }
