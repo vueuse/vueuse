@@ -21,6 +21,8 @@ npm i <b>@vueuse/integrations</b>
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
+<!--FUNCTIONS_LIST_ENDS-->
+
 ## Tree-shaking
 
 For better tree-shaking result, import functions from submodules, for example:
@@ -31,8 +33,6 @@ import { useAxios } from '@vueuse/integrations/useAxios'
 // Don't
 import { useAxios } from '@vueuse/integrations'
 ```
-
-<!--FUNCTIONS_LIST_ENDS-->
 
 ## License
 
