@@ -168,6 +168,34 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
 }
 
+function encodeFormUrlPiece(str?: string) {
+  // Spec says to normalize newlines to \r\n and replace %20 spaces with +.
+  // jQuery does this as well, so this is likely to be widely compatible.
+  if (str) {
+    return encodeURIComponent(str.replace(/\r?\n/g, '\r\n')).replace(
+      /%20/g,
+      '+',
+    )
+  }
+
+  return ''
+}
+
+function encodeFormUrlObject(body: any): string {
+  if (body) {
+    const pieces: string[] = []
+    Object.keys(body).forEach((key) => {
+      pieces.push(
+        `${encodeFormUrlPiece(key)}=${encodeFormUrlPiece(
+          Object.prototype.hasOwnProperty.call(body, key) ? body[key] : null,
+        )}`,
+      )
+    })
+    return pieces.join('&')
+  }
+  return ''
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   let options = config.options || {}
   let fetchOptions = config.fetchOptions || {}
@@ -289,14 +317,20 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
       else {
         defaultFetchOptions.body = config.payload as any
-        if (config.payloadType === 'formData' || config.payload instanceof FormData)
+        if (config.payloadType === 'formData' || config.payload instanceof FormData) {
           delete headers['Content-Type']
-
-        else if (config.payloadType === 'formEncoded' || config.payload instanceof URLSearchParams)
-          headers['Content-Type'] = 'application/x-www-form-urlencoded'
-
-        else
+        }
+        else if (config.payloadType === 'text') {
           headers['Content-Type'] = 'text/plain'
+        }
+        else {
+          headers['Content-Type'] = 'application/x-www-form-urlencoded'
+          const payload = config.payload
+          // if the payload is not URLSearchParams nor a string, we need to encode it
+          // if it is a string it should be already encoded: avoiding double encoding
+          if (!(payload instanceof URLSearchParams) && typeof payload !== 'string')
+            config.payload = encodeFormUrlObject(payload)
+        }
       }
     }
 
@@ -407,19 +441,18 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       if (!initialized) {
         config.method = method
         config.payload = payload
-        if (payloadType) {
+        if (payloadType)
           config.payloadType = payloadType
-        }
-        else {
-          if (payload instanceof FormData)
-            config.payloadType = 'formData'
 
-          else if (payload instanceof URLSearchParams)
-            config.payload = 'formEncoded'
+        else if (payload instanceof FormData)
+          config.payloadType = 'formData'
 
-          else
-            config.payloadType = typeof payload === 'string' ? 'text' : 'json'
-        }
+        else if (payload instanceof URLSearchParams)
+          config.payload = 'formEncoded'
+
+        else
+          config.payloadType = typeof payload === 'string' ? 'text' : 'json'
+
         return shell as any
       }
       return undefined
