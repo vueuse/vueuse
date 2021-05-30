@@ -488,14 +488,6 @@
       "description": "reactive dark mode with auto data persistence"
     },
     {
-      "name": "useDeviceLight",
-      "package": "core",
-      "component": true,
-      "docs": "https://vueuse.org/core/useDeviceLight/",
-      "category": "Sensors",
-      "description": "reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)"
-    },
-    {
       "name": "useDeviceMotion",
       "package": "core",
       "component": true,
