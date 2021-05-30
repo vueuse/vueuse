@@ -223,7 +223,7 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (options.immediate === false) _init()
+  if (options.immediate !== false) _init()
 
   const open = () => {
     close()
