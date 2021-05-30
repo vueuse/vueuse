@@ -310,10 +310,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       return Promise.resolve()
 
     return new Promise((resolve) => {
-      let useHeaders: Headers
+      const useHeaders = new Headers(defaultFetchOptions.headers)
       const contextHeaders = context.options?.headers ? new Headers(context.options.headers) : null
       if (contextHeaders) {
-        useHeaders = new Headers(defaultFetchOptions.headers)
         // just override existing or add context ones
         contextHeaders.forEach((hv, h) => {
           useHeaders.set(h, hv)
@@ -322,18 +321,17 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         if (config.payloadType === 'formData')
           useHeaders.delete('Content-Type')
       }
-      else {
-        useHeaders = new Headers(defaultFetchOptions.headers)
-      }
+      // defaultFetchOptions headers was used in the above logic
       const { method, body } = defaultFetchOptions
-      const { headers, ...rest } = context?.options || {}
+      // headers was merged on above logic, and so will be ignored
+      const { headers, ...contextOptions } = context?.options || {}
       fetch(
         context.url,
         {
           method,
           body,
           headers: useHeaders,
-          ...rest,
+          ...contextOptions,
         },
       )
         .then(async(fetchResponse) => {
