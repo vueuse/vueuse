@@ -104,7 +104,7 @@ export interface UntilToMatchOptions {
 }
 export interface UntilBaseInstance<T> {
   toMatch(
-    condition: (v: UnwrapRef<T>) => boolean,
+    condition: (v: T) => boolean,
     options?: UntilToMatchOptions
   ): Promise<void>
   changed(options?: UntilToMatchOptions): Promise<void>
@@ -141,12 +141,12 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
  * alert('Counter is now larger than 7!')
  * ```
  */
-export declare function until<T extends unknown[]>(r: T): UntilArrayInstance<T>
-export declare function until<T extends Ref<unknown[]>>(
-  r: T
+export declare function until<T extends unknown[]>(
+  r: WatchSource<T> | MaybeRef<T>
 ): UntilArrayInstance<T>
-export declare function until<T>(r: WatchSource<T>): UntilValueInstance<T>
-export declare function until<T>(r: T): UntilValueInstance<T>
+export declare function until<T>(
+  r: WatchSource<T> | MaybeRef<T>
+): UntilValueInstance<T>
 /**
  * @deprecated `when` is renamed to `util`, use `until` instead. This will be removed in next major version.
  */
