@@ -30,7 +30,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.md'],
+      files: ['*.md', 'demo.vue', 'scripts/*.ts'],
       rules: {
         'no-undef': 'off',
         'no-unused-vars': 'off',
