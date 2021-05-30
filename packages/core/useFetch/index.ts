@@ -389,7 +389,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       if (!initialized) {
         config.method = method
         config.payload = payload
-        config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
+        config.payloadType = payloadType || (typeof payload === 'string' ? 'text' : 'json')
         return shell as any
       }
       return undefined
