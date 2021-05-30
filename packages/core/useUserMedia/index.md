@@ -91,9 +91,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
  * @see https://vueuse.org/useUserMedia
  * @param options
  */
-export declare function useUserMedia(
-  options?: UseUserMediaOptions
-): {
+export declare function useUserMedia(options?: UseUserMediaOptions): {
   isSupported: boolean
   stream: Ref<MediaStream | undefined>
   start: () => Promise<MediaStream | undefined>

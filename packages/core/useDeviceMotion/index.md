@@ -53,9 +53,7 @@ export interface DeviceMotionOptions
  * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
-export declare function useDeviceMotion(
-  options?: DeviceMotionOptions
-): {
+export declare function useDeviceMotion(options?: DeviceMotionOptions): {
   acceleration: Ref<DeviceMotionEventAcceleration | null>
   accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
   rotationRate: Ref<DeviceMotionEventRotationRate | null>
