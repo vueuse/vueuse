@@ -310,15 +310,26 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       return Promise.resolve()
 
     return new Promise((resolve) => {
+      let headers: Headers
+      const contextHeaders = context.options?.headers ? new Headers(context.options.headers) : null
+      if (contextHeaders) {
+        headers = new Headers({
+          ...defaultFetchOptions.headers,
+          ...contextHeaders,
+        })
+        // since we are using Headers object, it will handle case insensiive
+        if (config.payloadType === 'formData')
+          headers.delete('Content-Type')
+      }
+      else {
+        headers = new Headers(defaultFetchOptions.headers)
+      }
       fetch(
         context.url,
         {
           ...defaultFetchOptions,
           ...context.options,
-          headers: {
-            ...defaultFetchOptions.headers,
-            ...context.options?.headers,
-          },
+          headers,
         },
       )
         .then(async(fetchResponse) => {
