@@ -168,12 +168,14 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
 }
 
-function encodeFormUrlPiece(str?: string) {
+const wwwFormEncodedRegEx = [/\r?\n/g, /%20/g]
+
+async function encodeFormUrlPiece(str?: string): Promise<string> {
   // Spec says to normalize newlines to \r\n and replace %20 spaces with +.
   // jQuery does this as well, so this is likely to be widely compatible.
   if (str) {
-    return encodeURIComponent(str.replace(/\r?\n/g, '\r\n')).replace(
-      /%20/g,
+    return encodeURIComponent(str.replace(wwwFormEncodedRegEx[0], '\r\n')).replace(
+      wwwFormEncodedRegEx[1],
       '+',
     )
   }
@@ -181,16 +183,13 @@ function encodeFormUrlPiece(str?: string) {
   return ''
 }
 
-function encodeFormUrlObject(body: any): string {
+async function encodeFormUrlObject(body: any): Promise<string> {
   if (body) {
-    const pieces: string[] = []
-    Object.keys(body).forEach((key) => {
-      pieces.push(
-        `${encodeFormUrlPiece(key)}=${encodeFormUrlPiece(
-          Object.prototype.hasOwnProperty.call(body, key) ? body[key] : null,
-        )}`,
-      )
-    })
+    const pieces = await Promise.all(Object.keys(body).map(async(key) => {
+      return `${await encodeFormUrlPiece(key)}=${await encodeFormUrlPiece(
+        Object.prototype.hasOwnProperty.call(body, key) ? body[key] : null,
+      )}`
+    }))
     return pieces.join('&')
   }
   return ''
@@ -329,7 +328,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           // if the payload is not URLSearchParams nor a string, we need to encode it
           // if it is a string it should be already encoded: avoiding double encoding
           if (!(payload instanceof URLSearchParams) && typeof payload !== 'string')
-            config.payload = encodeFormUrlObject(payload)
+            config.payload = await encodeFormUrlObject(payload)
         }
       }
     }
