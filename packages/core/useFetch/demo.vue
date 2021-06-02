@@ -134,10 +134,13 @@ const textMultipart = stringify(reactive({
   dataMultipart,
 }))
 
+const sendMultipathUpload = () => {
+  setTimeout(executeMultipart, 0)
+}
 const updateFile = async() => {
   if (fileField.value.files.length > 0) {
     file.value = fileField.value.files[0]
-    if (file.value.length > 10240)
+    if (file.value.size > 10240)
       fileField.value.setCustomValidity('Máximun size 10KB')
     else
       fileField.value.setCustomValidity('')
@@ -155,14 +158,17 @@ const updateFile = async() => {
     <template v-if="state === 2">
       <note>Fill the following file input and click on execute button (the execution will add 2 blobs to the file)</note>
       <br>
-      <input ref="fileField" placeholder="Field A" type="file" @change="updateFile" />
-      <br>
-      <button @click="executeMultipart">
-        Execute multipart
-      </button>
-      <button @click="go">
-        Back
-      </button>
+      <form @submit.prevent="sendMultipathUpload">
+        <label for="form-file">Select a file smaller than 10kB : </label>
+        <input id="form-file" ref="fileField" placeholder="Field A" type="file" @change="updateFile" />
+        <br>
+        <button type="submit">
+          Execute multipart
+        </button>
+        <button type="button" @click="go">
+          Back
+        </button>
+      </form>
       <pre lang="yaml">{{ textMultipart }}</pre>
     </template>
     <template v-else-if="state === 1">
