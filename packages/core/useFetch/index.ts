@@ -438,10 +438,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   function setMethod(method: string) {
-    if (!initialized)
-      config.method = method
-
     return (payload?: unknown, payloadType?: PayloadType) => {
+      if (!initialized)
+        config.method = method
       config.payload = payload
       if (payloadType)
         config.payloadType = payloadType

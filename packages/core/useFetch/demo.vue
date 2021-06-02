@@ -135,10 +135,17 @@ const textMultipart = stringify(reactive({
 }))
 
 const updateFile = async() => {
-  if (fileField.value.files.length > 0)
+  if (fileField.value.files.length > 0) {
     file.value = fileField.value.files[0]
-  else
+    if (file.value.length > 10240)
+      fileField.value.setCustomValidity('Máximun size 10KB')
+    else
+      fileField.value.setCustomValidity('')
+  }
+  else {
     file.value = null
+    fileField.value.setCustomValidity('')
+  }
 }
 
 </script>
