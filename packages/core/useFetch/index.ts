@@ -438,25 +438,24 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   }
 
   function setMethod(method: string) {
+    if (!initialized)
+      config.method = method
+
     return (payload?: unknown, payloadType?: PayloadType) => {
-      if (!initialized || !config.payloadType || (config.payloadType === payloadType)) {
-        config.method = method
-        config.payload = payload
-        if (payloadType)
-          config.payloadType = payloadType
+      config.payload = payload
+      if (payloadType)
+        config.payloadType = payloadType
 
-        else if (payload instanceof FormData)
-          config.payloadType = 'formData'
+      else if (payload instanceof FormData)
+        config.payloadType = 'formData'
 
-        else if (payload instanceof URLSearchParams)
-          config.payload = 'formEncoded'
+      else if (payload instanceof URLSearchParams)
+        config.payload = 'formEncoded'
 
-        else
-          config.payloadType = typeof payload === 'string' ? 'text' : 'json'
+      else
+        config.payloadType = typeof payload === 'string' ? 'text' : 'json'
 
-        return shell as any
-      }
-      return undefined
+      return shell as any
     }
   }
 
