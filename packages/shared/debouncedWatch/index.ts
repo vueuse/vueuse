@@ -6,7 +6,7 @@ export interface DebouncedWatchOptions<Immediate> extends WatchOptions<Immediate
   debounce?: MaybeRef<number>
 }
 
-// overlads
+// overloads
 export function debouncedWatch<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: DebouncedWatchOptions<Immediate>): WatchStopHandle
 export function debouncedWatch<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: DebouncedWatchOptions<Immediate>): WatchStopHandle
 export function debouncedWatch<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: DebouncedWatchOptions<Immediate>): WatchStopHandle
