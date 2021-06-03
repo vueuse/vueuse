@@ -88,14 +88,13 @@ export const packages: PackageManifest[] = [
   {
     name: 'electron',
     display: 'Electron',
-    description: 'Electron renderer process modules in vueuse',
+    description: 'Electron renderer process modules for VueUse',
+    author: 'Archer Gu<https://github.com/ArcherGu>',
     addon: true,
     external: [
       'electron',
     ],
-    globals: {
-      'electron': 'electron',
-    },
+    iife: false,
   },
 ]
 
