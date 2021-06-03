@@ -73,6 +73,10 @@ const { data } = useFetch(url, {
 ```
 
 The `afterFetch` option can intercept the response data before it is updated.
+
+**Warning**: if you have configured `responseHandler` option, this callback will not be called, you will need to include
+the logic inside `responseHandler`.
+
 ```ts
 const { data } = useFetch(url, {
   afterFetch(ctx) {
@@ -124,7 +128,7 @@ const { isFetching, error, data } = useMyFetch('users')
 
 ### Events
 
-The `onFetchResposne` and `onFetchError` will fire on fetch request responses and errors respectively.
+The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
 ```ts
 const { onFetchResponse, onFetchError } = useFetch(url)
@@ -136,6 +140,142 @@ onFetchResponse((response) => {
 onFetchError((error) => {
   console.error(error.message)
 })
+```
+
+### Handling `application/x-www-form-urlencoded`
+
+You can `post` or `put` your data with `application/x-www-form-urlencoded` encoding, providing a `URLSearchParams`
+object, or a raw object on the `payload` configuration option or `body` on `beforeFetch` callback.
+
+**Warning**: you must configure explicitly the `payloadType` to `formEncoded`, if you omit it, then you may have 
+unexpected behavior.
+
+If you provide a raw object, `useFetch` will take care of encoding correctly.
+
+For example, you can use `URLSearchParams`:
+```ts
+const { data } = useFetch('/api').post(new URLSearchParams({
+  param1: 'some data &%+ ', 
+  param2: 'some other data ',
+}), 'formEncoded')
+```
+
+or a raw object like this (which is equivalent to previous code):
+```ts
+const { data } = useFetch('/api').post({
+  param1: 'some data &%+ ',
+  param2: 'some other data ',
+}, 'formEncoded')
+```
+
+### Handling `multipart/form-data`
+
+You can `post` or `put` your data with `multipart/form-data` encoding, providing a `FormData`
+object, or a raw object on the `payload` configuration option or `body` on `beforeFetch` callback.
+
+**Warning**: you must configure explicitly the `payloadType` to `formData`, if you omit it, then you may have
+unexpected behavior.
+
+If you provide a raw object, `useFetch` will take care of encoding correctly.
+
+For example, you can use `FormData` (see [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/demo.vue) to know how to upload a `File` from a form):
+```ts
+const file = ref<File | null>(null)
+...
+const { data } = useFetch('/api', {
+  immediate: false,
+  beforeFetch: async() => {
+    const body = new FormData()
+    body.append('file', file.value, file.value.name)
+    return { options: { body } }
+  },
+}).post(null, 'formData')
+```
+
+or a raw object like this (which is equivalent to previous code):
+```ts
+const file = ref<File | null>(null)
+...
+const { data } = useFetch('/api', {
+  immediate: false,
+  beforeFetch: async() => {
+    return { 
+        options: { 
+            body: { 
+                file: file.value,
+            }, 
+        }, 
+    }
+  },
+}).post(null, 'formData')
+```
+
+### Advanced usage
+
+By default, `useFetch` will handle the server's request and response for you, but there are situations where you need 
+to have control of the server response. For example, if you need to access the payload when the server response is 
+not `20x` or have a custom logic handling response status codes.
+
+To solve this situation, you can configure the `responseHandler` option in the configuration options, so that the 
+response management will be under your control. Keep in mind that you will have to take care of extracting the
+payload in case the response is whatever logic you apply.
+
+When an error occurs, you will have to extract the payload when appropriate and indicate in the response that an 
+error has occurred, this way `useFetch` will propagate the error.
+
+Advanced example for `multipart/form-data` handling status codes and `payload` on error:
+```ts
+const file = ref<File | null>(null)
+...
+const { data } = useFetch('/api', {
+  immediate: false,
+  beforeFetch: async() => {
+    return { 
+        options: { 
+            body: { 
+                file: file.value,
+            }, 
+        }, 
+    }
+  },
+  responseHandler: async(response) => {
+    const context: CustomResponseContext = {
+      data: null,
+      error: false,
+      errorMessage: undefined
+    }
+    switch(response.status) {
+      case 200:
+      case 201:
+        // the server response is a file download
+        // for example a pkcs#7 signature of the file uploaded
+        context.data = await response.blob()
+        break
+      case 401:
+        context.error = true
+        context.errorMessage = 'Your session has expired, please login into the app'
+      case 403:
+        context.error = true
+        context.errorMessage = 'Your have no permission to upload files!!!'
+      case 404:
+        context.error = true
+        context.errorMessage = 'The request is missing from server!!!'
+        break
+      case 413:
+        // the server response is a json payload  
+        context.data = await response.json()
+        context.error = true
+        context.errorMessage = 'Upps, something was wrong!!!'
+        break
+      case 500:
+      default:
+        context.error = true
+        context.errorMessage = 'Upps, there was an internal server error!!!'
+        break
+    }
+    return context
+  },
+}).post(null, 'formData')
 ```
 <!--FOOTER_STARTS-->
 ## Type Declarations
