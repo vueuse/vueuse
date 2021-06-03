@@ -16,7 +16,7 @@ const b = ref('b')
 
 const stop = biSyncRef(a, b)
 
-console.log(a.value) // hello
+console.log(a.value) // a
 
 b.value = 'foo'
 
