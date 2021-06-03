@@ -260,9 +260,11 @@ const { execute } = useFetch('/api', {
       case 401:
         context.error = true
         context.errorMessage = 'Your session has expired, please login into the app'
+        break
       case 403:
         context.error = true
         context.errorMessage = 'You have no permission to upload files!!!'
+        break
       case 404:
         context.error = true
         context.errorMessage = 'The request is missing from server!!!'
