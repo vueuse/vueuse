@@ -308,7 +308,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (payload) {
       const headers = defaultFetchOptions.headers as Record<string, string>
       if (config.payloadType === 'json') {
-        payload = JSON.stringify(payload)
+        // avoiding double encoding
+        if (typeof payload !== 'string')
+          payload = JSON.stringify(payload)
         headers['Content-Type'] = 'application/json'
       }
       else {
