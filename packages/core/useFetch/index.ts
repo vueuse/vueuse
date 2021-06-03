@@ -181,6 +181,20 @@ async function toURLSearchParams(body: any): Promise<URLSearchParams> {
   return new URLSearchParams()
 }
 
+function toFormData(body: any): FormData {
+  const formData = new FormData()
+  if (body) {
+    Object.keys(body).filter(key => Object.prototype.hasOwnProperty.call(body, key)).forEach((key) => {
+      const value = body[key]
+      if (value instanceof File)
+        formData.append(key, value, value.name)
+      else
+        formData.append(key, value)
+    })
+  }
+  return formData
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   let options = config.options || {}
   let fetchOptions = config.fetchOptions || {}
@@ -315,6 +329,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       }
       else {
         if (config.payloadType === 'formData' || payload instanceof FormData) {
+          // build the form data for the user
+          if (!(payload instanceof FormData))
+            payload = toFormData(payload)
           // we just add it here to remove later once merged with context.options.headers
           headers['Content-Type'] = 'multipart/form-data'
         }
