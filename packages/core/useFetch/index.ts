@@ -398,8 +398,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           if (options.responseHandler) {
             const {
               data: useData,
-              error = false,
-              errorMessage = undefined,
+              error,
+              errorMessage,
             } = await options.responseHandler(fetchResponse)
             data.value = useData
             if (error)
