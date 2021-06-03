@@ -150,22 +150,7 @@ object, or a raw object on the `payload` configuration option or `body` on `befo
 **Warning**: you must configure explicitly the `payloadType` to `formEncoded`, if you omit it, then you may have 
 unexpected behavior.
 
-If you provide a raw object, `useFetch` will take care of encoding correctly. If you have nested objects inside the
-payload, will be serialized as `json` under its corresponding key, for example:
-```ts
-const payload = {
-  subject: 'What vue libraries are you using?',
-  library1: {
-    name: '@vueuse/core',
-    description: 'Collection of essential Vue Composition Utilities',
-  },
-  library2: {
-    name: '@vueuse/router',
-    description: 'Utilities for vue-router',
-  }
-}
-```
-will send `library1` and `library2` values as a string using `JSON.stringify`.
+If you provide a raw object, `useFetch` will take care of encoding correctly.
 
 For example, you can use `URLSearchParams`:
 ```ts
@@ -183,6 +168,23 @@ const { data } = useFetch('/api').post({
 }, 'formEncoded')
 ```
 
+**Note about using raw objects:** if you have nested objects inside the payload, they will be serialized as `json` under 
+its corresponding key, for example:
+```ts
+const payload = {
+  subject: 'What vue libraries are you using?',
+  library1: {
+    name: '@vueuse/core',
+    description: 'Collection of essential Vue Composition Utilities',
+  },
+  library2: {
+    name: '@vueuse/router',
+    description: 'Utilities for vue-router',
+  }
+}
+```
+will send `library1` and `library2` values as a string using `JSON.stringify`.
+
 ### Handling `multipart/form-data`
 
 You can `post` or `put` your data with `multipart/form-data` encoding, providing a `FormData`
@@ -191,22 +193,7 @@ object, or a raw object on the `payload` configuration option or `body` on `befo
 **Warning**: you must configure explicitly the `payloadType` to `formData`, if you omit it, then you may have
 unexpected behavior.
 
-If you provide a raw object, `useFetch` will take care of encoding correctly. If you have nested objects inside the
-payload, do not add any `Blob` inside: nested objects inside top keys in the payload will be included as `json` under
-its corresponding key, for example:
-```ts
-const file = ref<File | null>(null)
-...
-const payload = {
-  file: file.value,
-  owner: {
-    name: '@vueuse',
-    description: 'Collection of essential Vue Composition Utilities'
-  }
-}
-```
-will add the `owner` entry as a `Blob` to the `FormData` with `content-type` set to `application/json` and serialized 
-using `JSON.stringify`.
+If you provide a raw object, `useFetch` will take care of encoding correctly.
 
 For example, you can use `FormData` (see [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/demo.vue) to know how to upload a `File` from a form):
 ```ts
@@ -250,18 +237,34 @@ const { execute } = useFetch('/api', {
 execute()
 ```
 
+**Note about using raw objects:** if you have nested objects inside the payload, do not add any `Blob` inside. Nested 
+objects inside top keys in the payload will be included as `json` under its corresponding key, for example:
+```ts
+const file = ref<File | null>(null)
+...
+const payload = {
+  file: file.value,
+  owner: {
+    name: '@vueuse',
+    description: 'Collection of essential Vue Composition Utilities'
+  }
+}
+```
+will add the `owner` entry as a `Blob` to the `FormData` with `content-type` set to `application/json` and serialized
+using `JSON.stringify`.
+
 ### Advanced usage
 
 By default, `useFetch` will handle the server's request and response for you, but there are situations where you need 
 to have control of the server response. For example, if you need to access the payload when the server response is 
-not `20x` or you have a custom logic handling response status codes.
+not `2xx` or you have a custom logic handling response status codes.
 
-To solve this situation, you can configure the `responseHandler` option in the configuration options, so that the 
-response management will be under your control. Keep in mind that you will have to take care of extracting the
-payload in case the response is whatever logic you apply.
+To work around this situation, you can configure the `responseHandler` option in the configuration options, so that the 
+response handling is under your control. Note that you will have to take care of extracting the payload from the server 
+response.
 
-When an error occurs, you will have to extract the payload when appropriate and indicate in the response that an 
-error has occurred, this way `useFetch` will propagate the error.
+When an error occurs, you will have to extract the payload when appropriate, configuring in the context of the response 
+that an error has occurred using its error field. This way `useFetch` will propagate the error.
 
 Advanced example for `multipart/form-data` handling status codes and disparate `payload` on error:
 ```ts
