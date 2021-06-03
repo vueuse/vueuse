@@ -206,21 +206,19 @@ function toFormData(body: any): FormData {
       if (value instanceof File) {
         formData.append(key, value, value.name)
       }
+      else if (value instanceof Blob || typeof value === 'string') {
+        formData.append(key, value)
+      }
+      else if (value) {
+        formData.append(
+          key,
+          new Blob([JSON.stringify(value)], {
+            type: 'application/json',
+          }),
+        )
+      }
       else {
-        if (value instanceof Blob || typeof value === 'string') {
-          formData.append(key, value)
-        }
-        else if (value) {
-          formData.append(
-            key,
-            new Blob([JSON.stringify(value)], {
-              type: 'application/json',
-            }),
-          )
-        }
-        else {
-          formData.append(key, '')
-        }
+        formData.append(key, '')
       }
     })
   }
