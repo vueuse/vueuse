@@ -141,7 +141,7 @@ const updateFile = async() => {
   if (fileField.value.files.length > 0) {
     file.value = fileField.value.files[0]
     if (file.value.size > 10240)
-      fileField.value.setCustomValidity('Máximun size 10KB')
+      fileField.value.setCustomValidity('Maximum file size 10KB')
     else
       fileField.value.setCustomValidity('')
   }
