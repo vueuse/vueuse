@@ -386,6 +386,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         useHeaders.set(h, hv)
       })
     }
+    // we need to remove this header to make `fetch` work correctly with `multipart/form-data`
+    // the problem is that the header must be correlated with the parts, and since we cannot
+    // configure the boundary on the parts, then the server will no be able to parse the multipart
     // since we are using Headers object, it will find content-type header (key lookup is case-insensitive)
     if (useHeaders.get('Content-Type') === 'multipart/form-data')
       useHeaders.delete('Content-Type')
