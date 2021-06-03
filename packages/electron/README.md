@@ -25,4 +25,4 @@ npm i <b>@vueuse/electron</b> electron
 
 ## License
 
-[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2021-PRESENT [Archer Gu](https://github.com/ArcherGu)
