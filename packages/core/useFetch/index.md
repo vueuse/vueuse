@@ -375,6 +375,11 @@ export interface AfterFetchContext<T = any> {
   response: Response
   data: T | null
 }
+export interface CustomResponseContext<T = any> {
+  data: T | null
+  error: boolean
+  errorMessage?: string | undefined
+}
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -408,6 +413,12 @@ export interface UseFetchOptions {
   afterFetch?: (
     ctx: AfterFetchContext
   ) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
+  /**
+   * Will run immediately after the fetch request is fetched.
+   * If provided, then it must extract the payload from the response and deal with the errors.
+   * @param response The response from `fetch`.
+   */
+  responseHandler?: (response: Response) => Promise<CustomResponseContext>
 }
 export interface CreateFetchOptions {
   /**
