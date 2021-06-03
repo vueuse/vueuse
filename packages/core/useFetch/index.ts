@@ -152,7 +152,7 @@ export interface UseFetchOptions {
 
   /**
    * Will run immediately after the fetch request is fetched.
-   * If provided, then it must extract the response and deal with the errors.
+   * If provided, then it must extract the payload from the response and deal with the errors.
    * @param response The response from `fetch`.
    */
   responseHandler?: (response: Response) => Promise<CustomResponseContext>
