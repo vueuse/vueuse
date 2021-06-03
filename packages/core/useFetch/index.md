@@ -54,6 +54,9 @@ setTimeout(() => {
 ```
 
 ### Intercepting a request
+**Warning**: if you have configured `responseHandler` option, `afterFetch` callback will not be called, you will need to include
+the logic inside `responseHandler`.
+
 The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
 ```ts
 const { data } = useFetch(url, {
@@ -73,9 +76,6 @@ const { data } = useFetch(url, {
 ```
 
 The `afterFetch` option can intercept the response data before it is updated.
-
-**Warning**: if you have configured `responseHandler` option, this callback will not be called, you will need to include
-the logic inside `responseHandler`.
 
 ```ts
 const { data } = useFetch(url, {
@@ -182,7 +182,7 @@ For example, you can use `FormData` (see [Demo](https://github.com/vueuse/vueuse
 ```ts
 const file = ref<File | null>(null)
 ...
-const { data } = useFetch('/api', {
+const { execute } = useFetch('/api', {
   immediate: false,
   beforeFetch: async() => {
     const body = new FormData()
@@ -190,13 +190,16 @@ const { data } = useFetch('/api', {
     return { options: { body } }
   },
 }).post(null, 'formData')
+...
+// on some button action, just call execute method
+execute()
 ```
 
 or a raw object like this (which is equivalent to previous code):
 ```ts
 const file = ref<File | null>(null)
 ...
-const { data } = useFetch('/api', {
+const { execute } = useFetch('/api', {
   immediate: false,
   beforeFetch: async() => {
     return { 
@@ -208,13 +211,16 @@ const { data } = useFetch('/api', {
     }
   },
 }).post(null, 'formData')
+...
+// on some button action, just call execute method
+execute()
 ```
 
 ### Advanced usage
 
 By default, `useFetch` will handle the server's request and response for you, but there are situations where you need 
 to have control of the server response. For example, if you need to access the payload when the server response is 
-not `20x` or have a custom logic handling response status codes.
+not `20x` or you have a custom logic handling response status codes.
 
 To solve this situation, you can configure the `responseHandler` option in the configuration options, so that the 
 response management will be under your control. Keep in mind that you will have to take care of extracting the
@@ -223,11 +229,11 @@ payload in case the response is whatever logic you apply.
 When an error occurs, you will have to extract the payload when appropriate and indicate in the response that an 
 error has occurred, this way `useFetch` will propagate the error.
 
-Advanced example for `multipart/form-data` handling status codes and `payload` on error:
+Advanced example for `multipart/form-data` handling status codes and disparate `payload` on error:
 ```ts
 const file = ref<File | null>(null)
 ...
-const { data } = useFetch('/api', {
+const { execute } = useFetch('/api', {
   immediate: false,
   beforeFetch: async() => {
     return { 
@@ -256,7 +262,7 @@ const { data } = useFetch('/api', {
         context.errorMessage = 'Your session has expired, please login into the app'
       case 403:
         context.error = true
-        context.errorMessage = 'Your have no permission to upload files!!!'
+        context.errorMessage = 'You have no permission to upload files!!!'
       case 404:
         context.error = true
         context.errorMessage = 'The request is missing from server!!!'
@@ -276,6 +282,9 @@ const { data } = useFetch('/api', {
     return context
   },
 }).post(null, 'formData')
+...
+// on some button action, just call execute method
+execute()
 ```
 <!--FOOTER_STARTS-->
 ## Type Declarations
