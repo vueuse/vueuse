@@ -201,12 +201,27 @@ async function toURLSearchParams(body: any): Promise<URLSearchParams> {
 function toFormData(body: any): FormData {
   const formData = new FormData()
   if (body) {
-    Object.keys(body).filter(key => Object.prototype.hasOwnProperty.call(body, key)).forEach((key) => {
+    Object.keys(body).forEach((key) => {
       const value = body[key]
-      if (value instanceof File)
+      if (value instanceof File) {
         formData.append(key, value, value.name)
-      else
-        formData.append(key, value)
+      }
+      else {
+        if (value instanceof Blob || typeof value === 'string') {
+          formData.append(key, value)
+        }
+        else if (value) {
+          formData.append(
+            key,
+            new Blob([JSON.stringify(value)], {
+              type: 'application/json',
+            }),
+          )
+        }
+        else {
+          formData.append(key, '')
+        }
+      }
     })
   }
   return formData
