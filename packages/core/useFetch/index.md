@@ -150,21 +150,36 @@ object, or a raw object on the `payload` configuration option or `body` on `befo
 **Warning**: you must configure explicitly the `payloadType` to `formEncoded`, if you omit it, then you may have 
 unexpected behavior.
 
-If you provide a raw object, `useFetch` will take care of encoding correctly.
+If you provide a raw object, `useFetch` will take care of encoding correctly. If you have nested objects inside the
+payload, will be serialized as `json` under its corresponding key, for example:
+```ts
+const payload = {
+  subject: 'What vue libraries are you using?',
+  library1: {
+    name: '@vueuse/core',
+    description: 'Collection of essential Vue Composition Utilities',
+  },
+  library2: {
+    name: '@vueuse/router',
+    description: 'Utilities for vue-router',
+  }
+}
+```
+will send `library1` and `library2` values as a string using `JSON.stringify`.
 
 For example, you can use `URLSearchParams`:
 ```ts
 const { data } = useFetch('/api').post(new URLSearchParams({
-  param1: 'some data &%+ ', 
-  param2: 'some other data ',
+  param1: 'some data &%+', 
+  param2: 'some other data'
 }), 'formEncoded')
 ```
 
 or a raw object like this (which is equivalent to previous code):
 ```ts
 const { data } = useFetch('/api').post({
-  param1: 'some data &%+ ',
-  param2: 'some other data ',
+  param1: 'some data &%+',
+  param2: 'some other data'
 }, 'formEncoded')
 ```
 
@@ -176,7 +191,22 @@ object, or a raw object on the `payload` configuration option or `body` on `befo
 **Warning**: you must configure explicitly the `payloadType` to `formData`, if you omit it, then you may have
 unexpected behavior.
 
-If you provide a raw object, `useFetch` will take care of encoding correctly.
+If you provide a raw object, `useFetch` will take care of encoding correctly. If you have nested objects inside the
+payload, do not add any `Blob` inside: nested objects inside top keys in the payload will be included as `json` under
+its corresponding key, for example:
+```ts
+const file = ref<File | null>(null)
+...
+const payload = {
+  file: file.value,
+  owner: {
+    name: '@vueuse',
+    description: 'Collection of essential Vue Composition Utilities'
+  }
+}
+```
+will add the `owner` entry as a `Blob` to the `FormData` with `content-type` set to `application/json` and serialized 
+using `JSON.stringify`.
 
 For example, you can use `FormData` (see [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/demo.vue) to know how to upload a `File` from a form):
 ```ts
@@ -187,7 +217,11 @@ const { execute } = useFetch('/api', {
   beforeFetch: async() => {
     const body = new FormData()
     body.append('file', file.value, file.value.name)
-    return { options: { body } }
+    return {
+      options: {
+        body 
+      } 
+    }
   },
 }).post(null, 'formData')
 ...
@@ -203,13 +237,13 @@ const { execute } = useFetch('/api', {
   immediate: false,
   beforeFetch: async() => {
     return { 
-        options: { 
-            body: { 
-                file: file.value,
-            }, 
-        }, 
+      options: { 
+        body: { 
+          file: file.value
+        } 
+      }
     }
-  },
+  }
 }).post(null, 'formData')
 ...
 // on some button action, just call execute method
@@ -237,11 +271,11 @@ const { execute } = useFetch('/api', {
   immediate: false,
   beforeFetch: async() => {
     return { 
-        options: { 
-            body: { 
-                file: file.value,
-            }, 
-        }, 
+      options: { 
+        body: { 
+          file: file.value
+        }
+      }
     }
   },
   responseHandler: async(response) => {
