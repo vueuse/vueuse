@@ -109,6 +109,16 @@ export interface AfterFetchContext<T = any> {
 
 }
 
+export interface CustomResponseContext<T = any> {
+
+  data: T | null
+
+  error: boolean
+
+  errorMessage?: string | undefined
+
+}
+
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -139,6 +149,13 @@ export interface UseFetchOptions {
    * Runs after any 2xx response
    */
   afterFetch?: (ctx: AfterFetchContext) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
+
+  /**
+   * Will run immediately after the fetch request is fetched.
+   * If provided, then it must extract the response and deal with the errors.
+   * @param response The response from `fetch`.
+   */
+  responseHandler?: (response: Response) => Promise<CustomResponseContext>
 }
 
 export interface CreateFetchOptions {
@@ -378,16 +395,26 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
-          let responseData = await fetchResponse[config.type]()
+          if (options.responseHandler) {
+            const {
+              data: useData,
+              error = false,
+              errorMessage = undefined,
+            } = await options.responseHandler(fetchResponse)
+            data.value = useData
+            if (error)
+              throw new Error(errorMessage)
+          }
+          else {
+            let responseData = await fetchResponse[config.type]()
+            if (!fetchResponse.ok)
+              throw new Error(fetchResponse.statusText)
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok)
-            throw new Error(fetchResponse.statusText)
+            if (options.afterFetch)
+              ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
 
-          if (options.afterFetch)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-
-          data.value = responseData as any
+            data.value = responseData as any
+          }
           responseEvent.trigger(fetchResponse)
           resolve(fetchResponse)
         })
