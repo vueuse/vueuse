@@ -17,7 +17,7 @@ npm i axios
 ```ts
 import { useAxios } from '@vueuse/integrations/useAxios'
 
-const { data, finished } = useAxios('/api/posts')
+const { data, isFinished } = useAxios('/api/posts')
 ```
 
 or use an instance of axios
@@ -30,7 +30,7 @@ const instance = axios.create({
   baseURL: '/api'
 })
 
-const { data, finished } = useAxios('/posts', instance)
+const { data, isFinished } = useAxios('/posts', instance)
 ```
 
 use an instance of axios with config options
@@ -43,7 +43,7 @@ const instance = axios.create({
   baseURL: '/api'
 })
 
-const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
+const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance)
 ```
 
 <!--FOOTER_STARTS-->
