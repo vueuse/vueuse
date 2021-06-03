@@ -170,7 +170,7 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
 
 async function toURLSearchParams(body: any): Promise<URLSearchParams> {
   if (body) {
-    const records: string[][] = await Promise.all(Object.keys(body).map(async(key) => {
+    const records = await Promise.all(Object.keys(body).map(async(key) => {
       if (Object.prototype.hasOwnProperty.call(body, key))
         return [key, JSON.stringify(body[key])]
       else

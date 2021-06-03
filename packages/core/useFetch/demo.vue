@@ -134,7 +134,7 @@ const textMultipart = stringify(reactive({
   dataMultipart,
 }))
 
-const sendMultipathUpload = () => {
+const sendMultipartUpload = () => {
   setTimeout(executeMultipart, 0)
 }
 const updateFile = async() => {
@@ -158,7 +158,7 @@ const updateFile = async() => {
     <template v-if="state === 2">
       <note>Fill the following file input and click on execute button (the execution will add 2 blobs to the file)</note>
       <br>
-      <form @submit.prevent="sendMultipathUpload">
+      <form @submit.prevent="sendMultipartUpload">
         <label for="form-file">Select a file smaller than 10kB : </label>
         <input id="form-file" ref="fileField" placeholder="Field A" type="file" @change="updateFile" />
         <br>
