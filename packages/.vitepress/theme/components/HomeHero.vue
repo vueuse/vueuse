@@ -1,5 +1,5 @@
 <template>
-  <header v-if="showHero" class="home-hero">
+  <header v-if="showHero" class="home-hero pt-25 pb-10 px-5">
     <!-- <figure v-if="$frontmatter.heroImage" class="figure">
       <img class="image" :src="$withBase($frontmatter.heroImage)" :alt="$frontmatter.heroAlt">
     </figure>
@@ -65,7 +65,6 @@ const showHero = computed(() => {
 <style scoped>
 .home-hero {
   margin: 0rem 0 2.75rem;
-  padding: 0 1.5rem;
   text-align: center;
 }
 

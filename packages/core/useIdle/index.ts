@@ -1,5 +1,5 @@
-import { ref } from 'vue-demi'
 import { ConfigurableEventFilter, createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
+import { Ref, ref } from 'vue-demi'
 import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -27,6 +27,11 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
   initialState?: boolean
 }
 
+export interface UseIdleReturn {
+  idle: Ref<boolean>
+  lastActive: Ref<number>
+}
+
 /**
  * Tracks whether the user is being inactive.
  *
@@ -37,7 +42,7 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
 export function useIdle(
   timeout: number = oneMinute,
   options: IdleOptions = {},
-) {
+): UseIdleReturn {
   const {
     initialState = false,
     listenForVisibilityChange = true,

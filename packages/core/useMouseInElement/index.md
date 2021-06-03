@@ -31,6 +31,14 @@ export default {
 </script>
 ```
 
+## Component
+```html
+<UseMouseInElement v-slot="{ elementX, elementY, isOutside }">
+  x: {{ elementX }}
+  y: {{ elementY }}
+  Is Outside: {{ isOutside }}
+</UseMouseInElement>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -62,6 +70,9 @@ export declare function useMouseInElement(
   isOutside: Ref<boolean>
   stop: () => void
 }
+export declare type UseMouseInElementReturn = ReturnType<
+  typeof useMouseInElement
+>
 ```
 
 ## Source

@@ -126,3 +126,5 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     autoSwitch,
   }
 }
+
+export type UseUserMediaReturn = ReturnType<typeof useUserMedia>

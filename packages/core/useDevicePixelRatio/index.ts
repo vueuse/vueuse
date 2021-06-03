@@ -51,3 +51,5 @@ export function useDevicePixelRatio({
 
   return { pixelRatio }
 }
+
+export type UseDevicePixelRatioReturn = ReturnType<typeof useDevicePixelRatio>

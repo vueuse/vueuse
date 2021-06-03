@@ -15,7 +15,7 @@ For more info on what options can be passed see [`createOptions`](https://github
 ```html
 <script setup>
 import { ref } from 'vue'
-import { useFocusTrap } from '@vueuse/integrations'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 const target = ref()
 const { hasFocus, activate, deactivate } = useFocusTrap(target)
@@ -38,7 +38,7 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 ```html
 <script setup>
 import { ref } from 'vue'
-import { useFocusTrap } from '@vueuse/integrations'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 const target = ref()
 const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: true })

@@ -22,6 +22,15 @@ export default {
 }
 ```
 
+## Component
+
+```html
+<UseDevicePixelRatio v-slot="{ pixelRatio }">
+  Pixel Ratio: {{ pixelRatio }}
+</UseDevicePixelRatio>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -33,11 +42,12 @@ export default {
  * @see https://vueuse.org/useDevicePixelRatio
  * @param options
  */
-export declare function useDevicePixelRatio({
-  window,
-}?: ConfigurableWindow): {
+export declare function useDevicePixelRatio({ window }?: ConfigurableWindow): {
   pixelRatio: Ref<number>
 }
+export declare type UseDevicePixelRatioReturn = ReturnType<
+  typeof useDevicePixelRatio
+>
 ```
 
 ## Source

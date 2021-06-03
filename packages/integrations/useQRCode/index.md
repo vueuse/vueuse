@@ -15,7 +15,7 @@ npm i qrcode
 ## Usage
 
 ```ts
-import { useQRCode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 
 // `qrcode` will be a ref of data URL
 const qrcode = useQRCode('text-to-encode')
@@ -25,7 +25,7 @@ or passing a `ref` to it, the returned data URL ref will change along with the s
 
 ```ts
 import { ref } from 'vue'
-import { useQRCode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 
 const text = ref('text-to-encode')
 const qrcode = useQRCode(text)

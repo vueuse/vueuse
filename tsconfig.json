@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,

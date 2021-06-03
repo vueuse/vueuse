@@ -36,3 +36,5 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
     gamma,
   }
 }
+
+export type UseDeviceOrientationReturn = ReturnType<typeof useDeviceOrientation>

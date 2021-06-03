@@ -48,6 +48,7 @@ export declare function useEventSource(
   error: Ref<Event | null>
   close: () => void
 }
+export declare type UseEventListenerReturn = ReturnType<typeof useEventListener>
 ```
 
 ## Source

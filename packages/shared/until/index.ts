@@ -183,8 +183,3 @@ export function until<T>(r: any): any {
     return instance
   }
 }
-
-/**
- * @deprecated `when` is renamed to `util`, use `until` instead. This will be removed in next major version.
- */
-export const when = until

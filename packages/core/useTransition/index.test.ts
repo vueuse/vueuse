@@ -1,146 +1,230 @@
-import { nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { useTransition, TransitionPresets } from '.'
+import { ref } from 'vue-demi'
+import { useTransition } from '.'
+
+const expectBetween = (val: number, floor: number, ceiling: number) => {
+  expect(val).toBeGreaterThan(floor)
+  expect(val).toBeLessThan(ceiling)
+}
 
 describe('useTransition', () => {
-  it('transitions between values', async() => {
-    const baseValue = ref(0)
+  it('transitions between numbers', async() => {
+    const source = ref(0)
+    const transition = useTransition(source, { duration: 100 })
 
-    const transitionedValue = useTransition(baseValue, {
-      duration: 80,
-      transition: [0, 0, 1, 1], // a simple linear transition
-    })
+    expect(transition.value).toBe(0)
 
-    // both values should start at zero
-    expect(baseValue.value).toBe(0)
-    expect(transitionedValue.value).toBe(0)
-
-    // changing the base value should start the transition
-    baseValue.value = 1
-
-    // half way through the transition the base value should be 1,
-    // and the transitioned value should be approximately 0.5
-    await promiseTimeout(50)
-    expect(baseValue.value).toBe(1)
-    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
-
-    // once the transition is complete, both values should be 1
-    await promiseTimeout(100)
-    expect(baseValue.value).toBe(1)
-    expect(transitionedValue.value).toBe(1)
-  })
-
-  it('exposes named presets', async() => {
-    const baseValue = ref(0)
-
-    const transitionedValue = useTransition(baseValue, {
-      duration: 80,
-      transition: TransitionPresets.linear,
-    })
-
-    baseValue.value = 1
+    source.value = 1
 
     await promiseTimeout(50)
-    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
+    expectBetween(transition.value, 0, 1)
 
     await promiseTimeout(100)
-    expect(transitionedValue.value).toBe(1)
+    expect(transition.value).toBe(1)
   })
 
-  it('supports custom function transitions', async() => {
-    const baseValue = ref(0)
+  it('transitions between vectors', async() => {
+    const source = ref([0, 0])
+    const transition = useTransition(source, { duration: 100 })
 
-    const transitionedValue = useTransition(baseValue, {
-      duration: 80,
-      transition: n => n,
-    })
+    expect(transition.value).toEqual([0, 0])
 
-    baseValue.value = 1
+    source.value = [1, 1]
 
     await promiseTimeout(50)
-    expect(transitionedValue.value > 0 && transitionedValue.value < 1).toBe(true)
+    expectBetween(transition.value[0], 0, 1)
+    expectBetween(transition.value[1], 0, 1)
 
     await promiseTimeout(100)
-    expect(transitionedValue.value).toBe(1)
+    expect(transition.value[0]).toBe(1)
+    expect(transition.value[1]).toBe(1)
   })
 
-  it('supports dynamic transitions', async() => {
-    const linear = jest.fn(n => n)
-    const easeInQuad = jest.fn(n => n * n)
-    const baseValue = ref(0)
-    const transition = ref(linear)
+  it('supports cubic bezier curves', async() => {
+    const source = ref(0)
 
-    useTransition(baseValue, {
+    // https://cubic-bezier.com/#0,2,0,1
+    const easeOutBack = useTransition(source, {
       duration: 100,
-      transition,
+      transition: [0, 2, 0, 1],
+    })
+
+    // https://cubic-bezier.com/#1,0,1,-1
+    const easeInBack = useTransition(source, {
+      duration: 100,
+      transition: [1, 0, 1, -1],
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expectBetween(easeOutBack.value, 1, 2)
+    expectBetween(easeInBack.value, -1, 0)
+
+    await promiseTimeout(100)
+    expect(easeOutBack.value).toBe(1)
+    expect(easeInBack.value).toBe(1)
+  })
+
+  it('supports custom easing functions', async() => {
+    const source = ref(0)
+    const linear = jest.fn(n => n)
+    const transition = useTransition(source, {
+      duration: 100,
+      transition: linear,
     })
 
     expect(linear).not.toHaveBeenCalled()
-    expect(easeInQuad).not.toHaveBeenCalled()
 
-    baseValue.value++
-    await nextTick()
+    source.value = 1
 
+    await promiseTimeout(50)
     expect(linear).toHaveBeenCalled()
-    expect(easeInQuad).not.toHaveBeenCalled()
-
-    transition.value = easeInQuad
-    baseValue.value++
-    await nextTick()
-
-    expect(easeInQuad).toHaveBeenCalled()
-  })
-
-  it('support dynamic transition durations', async() => {
-    const baseValue = ref(0)
-    const duration = ref(100)
-
-    const transitionedValue = useTransition(baseValue, {
-      duration,
-      transition: n => n,
-    })
-
-    // first transition should take 100ms
-    baseValue.value = 1
-
-    await promiseTimeout(150)
-    expect(transitionedValue.value).toBe(1)
-
-    // second transition should take 200ms
-    duration.value = 200
-    baseValue.value = 2
-
-    await promiseTimeout(150)
-    expect(transitionedValue.value < 2).toBe(true)
+    expectBetween(transition.value, 0, 1)
 
     await promiseTimeout(100)
-    expect(transitionedValue.value).toBe(2)
+    expect(transition.value).toBe(1)
   })
 
-  it('calls onStarted and onFinished callbacks', async() => {
+  it('supports delayed transitions', async() => {
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      delay: 100,
+      duration: 100,
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(transition.value).toBe(0)
+
+    await promiseTimeout(100)
+    expectBetween(transition.value, 0, 1)
+  })
+
+  it('supports dynamic transitions', async() => {
+    const source = ref(0)
+    const first = jest.fn(n => n)
+    const second = jest.fn(n => n)
+    const easingFn = ref(first)
+
+    useTransition(source, {
+      duration: 100,
+      transition: easingFn,
+    })
+
+    expect(first).not.toHaveBeenCalled()
+    expect(second).not.toHaveBeenCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(first).toHaveBeenCalled()
+    expect(second).not.toHaveBeenCalled()
+
+    first.mockReset()
+    second.mockReset()
+
+    easingFn.value = second
+    source.value = 2
+
+    await promiseTimeout(100)
+    expect(first).not.toHaveBeenCalled()
+    expect(second).toHaveBeenCalled()
+  })
+
+  it('supports dynamic durations', async() => {
+    const source = ref(0)
+    const duration = ref(100)
+    const transition = useTransition(source, { duration })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expectBetween(transition.value, 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(1)
+
+    duration.value = 200
+    source.value = 2
+
+    await promiseTimeout(150)
+    expectBetween(transition.value, 1, 2)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(2)
+  })
+
+  it('fires onStarted and onFinished callbacks', async() => {
+    const source = ref(0)
     const onStarted = jest.fn()
     const onFinished = jest.fn()
 
-    const baseValue = ref(0)
-
-    useTransition(baseValue, {
+    useTransition(source, {
       duration: 100,
-      onFinished,
       onStarted,
-      transition: n => n,
+      onFinished,
     })
 
     expect(onStarted).not.toHaveBeenCalled()
     expect(onFinished).not.toHaveBeenCalled()
 
-    baseValue.value = 1
-    await nextTick()
+    source.value = 1
 
+    await promiseTimeout(50)
     expect(onStarted).toHaveBeenCalled()
     expect(onFinished).not.toHaveBeenCalled()
 
+    onStarted.mockReset()
+    onFinished.mockReset()
+
+    await promiseTimeout(100)
+    expect(onStarted).not.toHaveBeenCalled()
+    expect(onFinished).toHaveBeenCalled()
+  })
+
+  it('clears pending transitions before starting a new one', async() => {
+    const source = ref(0)
+    const onStarted = jest.fn()
+    const onFinished = jest.fn()
+
+    useTransition(source, {
+      delay: 100,
+      duration: 100,
+      onFinished,
+      onStarted,
+    })
+
     await promiseTimeout(150)
-    expect(onStarted.mock.calls.length).toBe(1)
-    expect(onFinished.mock.calls.length).toBe(1)
+    expect(onStarted).not.toHaveBeenCalled()
+    source.value = 1
+    await promiseTimeout(50)
+    source.value = 2
+    await promiseTimeout(250)
+    expect(onStarted).toHaveBeenCalledTimes(1)
+    expect(onFinished).toHaveBeenCalledTimes(1)
+  })
+
+  it('can be disabled for sychronous changes', async() => {
+    const onStarted = jest.fn()
+    const disabled = ref(false)
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      disabled,
+      duration: 100,
+      onStarted,
+    })
+
+    disabled.value = true
+    source.value = 1
+
+    expect(transition.value).toBe(1)
+    await promiseTimeout(150)
+    expect(onStarted).not.toHaveBeenCalled()
+    disabled.value = false
+    expect(transition.value).toBe(1)
   })
 })

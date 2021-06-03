@@ -1,16 +1,14 @@
-import { Fn } from '@vueuse/shared'
-import { Ref, ref } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
 import { tryOnUnmounted } from '../tryOnUnmounted'
-import { isClient } from '../utils'
+import { isClient, MaybeRef, Stopable } from '../utils'
 
-export interface TimeoutFnResult {
-  start: Fn
-  stop: Fn
-  isPending: Ref<boolean>
+export interface TimeoutFnOptions {
   /**
-   * @deprecated use `isPending` instead
+   * Execute the callback immediate after calling this function
+   *
+   * @default true
    */
-  isActive: Ref<boolean>
+  immediate?: boolean
 }
 
 /**
@@ -22,9 +20,13 @@ export interface TimeoutFnResult {
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval?: number,
-  immediate = true,
-): TimeoutFnResult {
+  interval: MaybeRef<number>,
+  options: TimeoutFnOptions = {},
+): Stopable {
+  const {
+    immediate = true,
+  } = options
+
   const isPending = ref(false)
 
   let timer: number | null = null
@@ -49,7 +51,7 @@ export function useTimeoutFn(
       timer = null
       // eslint-disable-next-line node/no-callback-literal
       cb(...args)
-    }, interval) as unknown as number
+    }, unref(interval)) as unknown as number
   }
 
   if (immediate) {
@@ -64,6 +66,5 @@ export function useTimeoutFn(
     isPending,
     start,
     stop,
-    isActive: isPending,
   }
 }

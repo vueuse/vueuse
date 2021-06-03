@@ -26,7 +26,16 @@ const network = reactive(useNetwork())
 console.log(network.isOnline)
 ```
 
+## Component
 
+```html
+<UseNetwork v-slot="{ isOnline, type }">
+  Is Online: {{ isOnline }}
+  Type: {{ type }}
+<UseNetwork>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

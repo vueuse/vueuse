@@ -20,6 +20,19 @@ Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](
 
 > Created and maintained by [@Tahul](https://github.com/Tahul)
 
+## Gesture - [`@vueuse/gesture`](https://github.com/vueuse/gesture) <carbon-link class="external-link"/>
+
+**Vue Composables** making your app **interactive**
+
+- 🚀 **Plug** & **play**
+- 🕹 **Mouse** & **Touch** support
+- 🎮 **Directives** support (**v-drag**, **v-pinch**, **v-move**...)
+- ✨ Written in **TypeScript**
+- ✅ Supports **Vue 2 & 3** using [**vue-demi**](https://github.com/antfu/vue-demi)
+- 🤹 Plays well with [**vueuse/motion**](https://github.com/vueuse/motion) or **any other** animation solution
+
+> Created and maintained by [@Tahul](https://github.com/Tahul)
+
 ## Sound - [`@vueuse/sound`](https://github.com/vueuse/sound) <carbon-link class="external-link"/>
 Vue composables for playing sound effects.
 

@@ -1,5 +1,5 @@
 import { noop, MaybeRef } from '@vueuse/shared'
-import { computed, reactive, ref, ComputedRef } from 'vue-demi'
+import { computed, reactive, ref, ComputedRef, Ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -43,7 +43,7 @@ export interface SwipeOptions extends ConfigurableWindow {
 
 export interface SwipeReturn {
   isPassiveEventSupported: boolean
-  isSwiping: ComputedRef<boolean>
+  isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
   coordsStart: {
     readonly x: number
@@ -68,7 +68,7 @@ export interface SwipeReturn {
 export function useSwipe(
   target: MaybeRef<EventTarget | null | undefined>,
   options: SwipeOptions = {},
-) {
+): SwipeReturn {
   const {
     threshold = 50,
     onSwipe,

@@ -9,21 +9,33 @@ import indexes from '../meta/function-indexes'
 
 const rootDir = path.resolve(__dirname, '..')
 
-const metaFiles = [
+const FILES_COPY_ROOT = [
   'LICENSE',
+]
+
+const FILES_COPY_LOCAL = [
+  'package.json',
+  'README.md',
 ]
 
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
   for (const { name } of activePackages) {
-    const packageDist = path.resolve(__dirname, '..', 'packages', name)
+    const packageRoot = path.resolve(__dirname, '..', 'packages', name)
+    const packageDist = path.resolve(packageRoot, 'dist')
 
-    for (const metaFile of metaFiles)
-      await fs.copyFile(path.join(rootDir, metaFile), path.join(packageDist, metaFile))
-
-    if (name === 'core')
+    if (name === 'core') {
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
+      await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(packageDist, 'indexes.json'))
+    }
+
+    for (const file of FILES_COPY_ROOT)
+      await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
+    for (const file of FILES_COPY_LOCAL) {
+      if (fs.existsSync(path.join(packageRoot, file)))
+        await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
+    }
   }
 }
 

@@ -11,7 +11,7 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 ```js {7,9}
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { useFirestore } from '@vueuse/firebase'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 const db = firebase.initializeApp({ projectId: 'MY PROJECT ID' }).firestore()
 
@@ -34,7 +34,7 @@ or use `createGlobalState` from the core package
 ```js
 // store.js
 import { createGlobalState } from '@vueuse/core'
-import { useFirestore } from '@vueuse/firebase'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 export const useTodos = createGlobalState(
   () => useFirestore(db.collection('todos')),

@@ -48,3 +48,5 @@ export function useShare(shareOptions: MaybeRef<ShareOptions> = {}, options: Con
     share,
   }
 }
+
+export type UseShareReturn = ReturnType<typeof useShare>

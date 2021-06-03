@@ -80,6 +80,9 @@ export declare function useSpeechRecognition(
   start: () => void
   stop: () => void
 }
+export declare type UseSpeechRecognitionReturn = ReturnType<
+  typeof useSpeechRecognition
+>
 ```
 
 ## Source
