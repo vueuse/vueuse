@@ -394,7 +394,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       // defaultFetchOptions headers was used in the above logic
       const { method } = defaultFetchOptions
       // headers and body was merged on above logic, and so will be ignored here
-      const { headers, body, ...contextOptions } = context?.options || {}
+      // we also must ignore method, since we don't allow to change it once configured
+      const { headers, body, method: ignore, ...contextOptions } = context?.options || {}
       fetch(
         context.url,
         {
