@@ -4,7 +4,7 @@ import { ref, Ref } from 'vue-demi'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
+export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator { }
 
 /**
  * Reactive Geolocation API.
