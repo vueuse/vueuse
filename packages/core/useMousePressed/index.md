@@ -49,6 +49,16 @@ export default {
 </script>
 ```
 
+## Component
+
+```html
+<UseMousePressed v-slot="{ pressed }">
+  Is Pressed: {{ pressed }}
+</UseMousePressed>
+```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -78,12 +88,11 @@ export interface MousePressedOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useMousePressed
  * @param options
  */
-export declare function useMousePressed(
-  options?: MousePressedOptions
-): {
+export declare function useMousePressed(options?: MousePressedOptions): {
   pressed: Ref<boolean>
   sourceType: Ref<MouseSourceType>
 }
+export declare type UseMousePressedReturn = ReturnType<typeof useMousePressed>
 ```
 
 ## Source

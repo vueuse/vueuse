@@ -55,6 +55,7 @@ export declare function useWebWorker(
   terminate: () => void
   worker: Ref<Worker | undefined>
 }
+export declare type UseWebWorkerReturn = ReturnType<typeof useWebWorker>
 ```
 
 ## Source

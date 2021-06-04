@@ -55,3 +55,5 @@ export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindo
 
   return state
 }
+
+export type UseBrowserLocationReturn = ReturnType<typeof useBrowserLocation>

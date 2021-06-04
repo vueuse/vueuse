@@ -16,7 +16,7 @@ npm install jwt-decode
 
 ```typescript
 import { defineComponent } from 'vue'
-import { useJwt } from '@vueuse/integrations'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 export default defineComponent({
   setup() {

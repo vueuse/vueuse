@@ -11,9 +11,15 @@
     </div>
 
     <div class="nav-icons">
+      <div v-if="repo" class="mr-2 ml-2">
+        <a class="icon-button" href="https://twitter.com/vueuse" target="_blank" aria-label="View GitHub Repo">
+          <ri-twitter-line />
+        </a>
+      </div>
+
       <div v-if="repo" class="item">
         <a class="icon-button" :href="repo.link" target="_blank" aria-label="View GitHub Repo">
-          <carbon-logo-github />
+          <ri-github-line />
         </a>
       </div>
 

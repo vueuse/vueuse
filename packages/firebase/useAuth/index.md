@@ -12,7 +12,7 @@ can easily react to changes in the users' authentication status.
 ```html
 <script setup lang="ts">
 import firebase from 'firebase'
-import { useAuth } from '.'
+import { useAuth } from '@vueuse/firebase/useAuth'
 
 const { auth } = firebase
 const { GoogleAuthProvider } = auth
@@ -35,6 +35,8 @@ const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
 Using a different firebase auth instance
 ```ts
 import firebase from 'firebase'
+import { useAuth } from '@vueuse/firebase/useAuth'
+
 const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase.auth())
 ```
 

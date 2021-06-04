@@ -53,3 +53,5 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     },
   }
 }
+
+export type UseBreakpointsReturn = ReturnType<typeof useBreakpoints>

@@ -123,6 +123,11 @@ export async function readIndexes() {
         package: pkg.name,
       }
 
+      if (fs.existsSync(join(dir, fnName, 'component.ts')))
+        fn.component = true
+      if (fs.existsSync(join(dir, fnName, 'directive.ts')))
+        fn.directive = true
+
       if (!fs.existsSync(mdPath)) {
         fn.internal = true
         indexes.functions.push(fn)
@@ -173,12 +178,28 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     if (manualImport)
       continue
 
-    let content = functions
-      .filter(i => i.package === name)
-      .map(f => f.name)
-      .sort()
-      .map(name => `export * from './${name}'`)
-      .join('\n')
+    let content: string
+    if (name === 'components') {
+      content = functions
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .flatMap((fn) => {
+          const arr = []
+          if (fn.component)
+            arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
+          if (fn.directive)
+            arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
+          return arr
+        })
+        .join('\n')
+    }
+    else {
+      content = functions
+        .filter(i => i.package === name)
+        .map(f => f.name)
+        .sort()
+        .map(name => `export * from './${name}'`)
+        .join('\n')
+    }
 
     if (name === 'core')
       content += '\nexport * from \'@vueuse/shared\''
@@ -313,16 +334,15 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
   }
 }
 
-export async function updatePackageJSON() {
+export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author } of activePackages) {
+  for (const { name, description, author, submodules, iife } of activePackages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)
 
     packageJSON.version = version
-    packageJSON.funding = 'https://github.com/sponsors/antfu'
     packageJSON.description = description || packageJSON.description
     packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
     packageJSON.bugs = {
@@ -331,17 +351,30 @@ export async function updatePackageJSON() {
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
-    packageJSON.main = './dist/index.cjs.js'
-    packageJSON.types = './dist/index.d.ts'
-    packageJSON.module = './dist/index.esm.js'
-    packageJSON.unpkg = './dist/index.iife.min.js'
-    packageJSON.jsdelivr = './dist/index.iife.min.js'
+    packageJSON.main = './index.cjs.js'
+    packageJSON.types = './index.d.ts'
+    packageJSON.module = './index.esm.js'
+    if (iife !== false) {
+      packageJSON.unpkg = './index.iife.min.js'
+      packageJSON.jsdelivr = './index.iife.min.js'
+    }
     packageJSON.exports = {
       '.': {
-        import: './dist/index.esm.js',
-        require: './dist/index.cjs.js',
+        import: './index.esm.js',
+        require: './index.cjs.js',
       },
-      './': './',
+      './*': './*',
+    }
+
+    if (submodules) {
+      indexes.functions
+        .filter(i => i.package === name)
+        .forEach((i) => {
+          packageJSON.exports[`./${i.name}`] = {
+            import: `./${i.name}.esm.js`,
+            require: `./${i.name}.cjs.js`,
+          }
+        })
     }
 
     for (const key of Object.keys(packageJSON.dependencies)) {

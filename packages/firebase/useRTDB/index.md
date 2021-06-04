@@ -11,7 +11,7 @@ Reactive [Firebase Realtime Database](https://firebase.google.com/docs/database)
 ```js
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { useRTDB } from '@vueuse/firebase'
+import { useRTDB } from '@vueuse/firebase/useRTDB'
 
 const db = firebase
   .initializeApp({ databaseURL: 'https://MY-DATABASE.firebaseio.com' })
@@ -32,7 +32,7 @@ or use `createGlobalState` from the core package
 ```js
 // store.js
 import { createGlobalState } from '@vueuse/core'
-import { useRTDB } from '@vueuse/firebase'
+import { useRTDB } from '@vueuse/firebase/useRTDB'
 
 export const useTodos = createGlobalState(
   () => useRTDB(db.ref('todos')),

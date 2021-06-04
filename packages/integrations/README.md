@@ -24,6 +24,17 @@ npm i <b>@vueuse/integrations</b>
 
 <!--FUNCTIONS_LIST_ENDS-->
 
+## Tree-shaking
+
+For better tree-shaking result, import functions from submodules, for example:
+
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+// Don't
+import { useAxios } from '@vueuse/integrations'
+```
+
 ## License
 
 [MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

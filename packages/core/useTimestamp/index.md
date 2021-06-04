@@ -11,15 +11,36 @@ Reactive current timestamp
 ```js
 import { useTimestamp } from '@vueuse/core'
 
-const { timestamp, pause, resume } = useTimestamp({ offset: 0 })
+const timestamp = useTimestamp({ offset: 0 })
 ```
 
+```js
+const { timestamp, pause, resume } = useTimestamp({ controls: true })
+```
+
+## Component
+
+```html
+<UseTimestamp v-slot="{ timestamp, pause, resume }">
+  Current Time: {{ timestamp }}
+  <button @click="pause()">Pause</button>
+  <button @click="resume()">Resume</button>
+</UseTimestamp>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
 ```typescript
-export interface TimestampOptions {
+export interface TimestampOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
   /**
    * Offset value adding to the value
    *
@@ -40,13 +61,12 @@ export interface TimestampOptions {
  * @param options
  */
 export declare function useTimestamp(
-  options?: TimestampOptions
-): {
-  isActive: Ref<boolean>
-  pause: Fn
-  resume: Fn
+  options?: TimestampOptions<false>
+): Ref<number>
+export declare function useTimestamp(options: TimestampOptions<true>): {
   timestamp: Ref<number>
-}
+} & Pausable
+export declare type UseTimestampReturn = ReturnType<typeof useTimestamp>
 ```
 
 ## Source

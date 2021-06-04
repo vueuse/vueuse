@@ -37,3 +37,5 @@ export function useElementSize(
     height,
   }
 }
+
+export type UseElementSizeReturn = ReturnType<typeof useElementSize>

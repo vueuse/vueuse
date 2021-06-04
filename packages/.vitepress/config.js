@@ -15,6 +15,37 @@ const categoriesOrder = [
   'Misc',
 ]
 
+const Guide = [
+  { text: 'Get Started', link: '/guide/index' },
+  { text: 'Best Practice', link: '/guide/best-practice' },
+  { text: 'Configurations', link: '/guide/config' },
+  { text: 'Components', link: '/guide/components' },
+  { text: 'Contributing', link: '/contributing' },
+]
+
+const Functions = [
+  { text: 'Animation', link: '/functions#animation' },
+  { text: 'Browser', link: '/functions#browser' },
+  { text: 'Component', link: '/functions#component' },
+  { text: 'Formatters', link: '/functions#formatters' },
+  { text: 'Misc', link: '/functions#misc' },
+  { text: 'Sensors', link: '/functions#sensors' },
+  { text: 'State', link: '/functions#state' },
+  { text: 'Utilities', link: '/functions#utilities' },
+  { text: 'Watch', link: '/functions#watch' },
+]
+
+const DefaultSideBar = [
+  { text: 'Guide', children: Guide },
+  { text: 'Core Functions', children: Functions },
+  { text: 'Add-ons', link: '/add-ons' },
+  { text: 'Ecosystem', link: '/ecosystem' },
+  { text: 'Export Size', link: '/export-size' },
+  { text: 'Recent Updated', link: '/recent-updated' },
+]
+
+const FunctionsSideBar = getFunctionsSideBar()
+
 /**
  * @type {import('vitepress').UserConfig}
  */
@@ -33,10 +64,7 @@ const config = {
       // { text: 'Home', link: '/' },s
       {
         text: 'Guide',
-        items: [
-          { text: 'Get Started', link: '/guide' },
-          { text: 'Contribute', link: '/contributing' },
-        ],
+        items: Guide,
       },
       {
         text: 'Functions',
@@ -59,7 +87,7 @@ const config = {
         text: 'More',
         items: [
           { text: 'Ecosystem', link: '/ecosystem' },
-          { text: 'Bundle Size', link: '/export-size' },
+          { text: 'Export Size', link: '/export-size' },
         ],
       },
       {
@@ -82,7 +110,18 @@ const config = {
         ],
       },
     ],
-    sidebar: getSideBar(),
+    sidebar: {
+      '/guide/': DefaultSideBar,
+      '/contributing': DefaultSideBar,
+      '/add-ons': DefaultSideBar,
+      '/functions': FunctionsSideBar,
+      '/core/': FunctionsSideBar,
+      '/shared/': FunctionsSideBar,
+      '/router/': FunctionsSideBar,
+      '/ecosystem': DefaultSideBar,
+      '/export-size': DefaultSideBar,
+      '/recent-updated': DefaultSideBar,
+    },
     algolia: {
       apiKey: 'a99ef8de1b2b27949975ce96642149c6',
       indexName: 'vueuse',
@@ -106,7 +145,7 @@ const config = {
   ],
 }
 
-function getSideBar() {
+function getFunctionsSideBar() {
   const links = []
   const { categories } = indexes
 

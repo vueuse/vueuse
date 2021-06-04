@@ -66,3 +66,5 @@ export function useEventSource(url: string, events: Array<string> = []) {
     close,
   }
 }
+
+export type UseEventListenerReturn = ReturnType<typeof useEventListener>

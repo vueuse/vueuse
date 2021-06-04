@@ -59,3 +59,5 @@ export function useWebWorker(
     worker,
   }
 }
+
+export type UseWebWorkerReturn = ReturnType<typeof useWebWorker>

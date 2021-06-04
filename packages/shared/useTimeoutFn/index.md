@@ -19,14 +19,13 @@ const { isPending, start, stop } = useTimeoutFn(() => {
 ## Type Declarations
 
 ```typescript
-export interface TimeoutFnResult {
-  start: Fn
-  stop: Fn
-  isPending: Ref<boolean>
+export interface TimeoutFnOptions {
   /**
-   * @deprecated use `isPending` instead
+   * Execute the callback immediate after calling this function
+   *
+   * @default true
    */
-  isActive: Ref<boolean>
+  immediate?: boolean
 }
 /**
  * Wrapper for `setTimeout` with controls.
@@ -37,9 +36,9 @@ export interface TimeoutFnResult {
  */
 export declare function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval?: number,
-  immediate?: boolean
-): TimeoutFnResult
+  interval: MaybeRef<number>,
+  options?: TimeoutFnOptions
+): Stopable
 ```
 
 ## Source

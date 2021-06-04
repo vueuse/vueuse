@@ -15,7 +15,7 @@ describe('utils', () => {
 })
 
 describe('filters', () => {
-  beforeEach(() => jest.useFakeTimers())
+  beforeEach(() => jest.useFakeTimers('legacy'))
   afterEach(() => jest.clearAllTimers())
 
   it('should debounce', () => {

@@ -31,6 +31,13 @@ Our applications normally are not empathetic to battery level, we can make a few
 - Limit network calls and reduce CPU/Memory consumption.
 
 
+## Component
+```html
+<UseBattery v-slot="{ charging }">
+  Is Charging: {{ charging }}
+</UseBattery>
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
@@ -47,15 +54,14 @@ export interface BatteryManager extends EventTarget {
  * @see https://vueuse.org/useBattery
  * @param options
  */
-export declare function useBattery({
-  navigator,
-}?: ConfigurableNavigator): {
+export declare function useBattery({ navigator }?: ConfigurableNavigator): {
   isSupported: boolean | undefined
   charging: Ref<boolean>
   chargingTime: Ref<number>
   dischargingTime: Ref<number>
   level: Ref<number>
 }
+export declare type UseBatteryReturn = ReturnType<typeof useBattery>
 ```
 
 ## Source

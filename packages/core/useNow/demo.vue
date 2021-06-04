@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useNow } from '.'
 
-const { now } = useNow()
+const now = useNow()
 </script>
 
 <template>

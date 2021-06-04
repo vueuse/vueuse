@@ -19,6 +19,15 @@ const {
 } = useDevicesList()
 ```
 
+# Component
+```html
+<UseDevicesList v-slot="{ videoInputs, audioInputs, audioOutputs }">
+  Cameras: {{ videoInputs }}
+  Microphones: {{ audioInputs }}
+  Speakers: {{ audioOutputs }}
+</UseDevicesList>
+```
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 

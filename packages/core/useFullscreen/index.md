@@ -26,6 +26,19 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 <video ref='el'>
 ```
 
+## Component
+
+```html
+<UseFullscreen v-slot="{ toggle }">
+  <video />
+  <button @click="toggle">
+    Go Fullscreen
+  </button>
+</UseFullscreen>
+```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -48,6 +61,7 @@ export declare function useFullscreen(
   exit: () => Promise<void>
   toggle: () => Promise<void>
 }
+export declare type UseFullscreenReturn = ReturnType<typeof useFullscreen>
 ```
 
 ## Source

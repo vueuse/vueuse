@@ -20,6 +20,19 @@ Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](
 
 > Created and maintained by [@Tahul](https://github.com/Tahul)
 
+## Gesture - [`@vueuse/gesture`](https://github.com/vueuse/gesture) <carbon-link class="external-link"/>
+
+**Vue Composables** making your app **interactive**
+
+- 🚀 **Plug** & **play**
+- 🕹 **Mouse** & **Touch** support
+- 🎮 **Directives** support (**v-drag**, **v-pinch**, **v-move**...)
+- ✨ Written in **TypeScript**
+- ✅ Supports **Vue 2 & 3** using [**vue-demi**](https://github.com/antfu/vue-demi)
+- 🤹 Plays well with [**vueuse/motion**](https://github.com/vueuse/motion) or **any other** animation solution
+
+> Created and maintained by [@Tahul](https://github.com/Tahul)
+
 ## Sound - [`@vueuse/sound`](https://github.com/vueuse/sound) <carbon-link class="external-link"/>
 Vue composables for playing sound effects.
 
@@ -64,6 +77,13 @@ Enables realtime bindings for Firebase
   - [`useAuth`](https://vueuse.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
   - [`useFirestore`](https://vueuse.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+
+
+## Electron - [`@vueuse/electron`](https://vueuse.org/electron/README.html)
+Electron renderer process modules for VueUse
+  - [`useIpcRenderer`](https://vueuse.org/electron/useIpcRenderer/) — provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it's all APIs
+  - [`useIpcRendererInvoke`](https://vueuse.org/electron/useIpcRendererInvoke/) — reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result
+  - [`useIpcRendererOn`](https://vueuse.org/electron/useIpcRendererOn/) — use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted
 
 
 <!--ADDONS_LIST_ENDS-->

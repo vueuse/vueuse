@@ -8,12 +8,38 @@ Transition between values
 
 ## Usage
 
+For simple transitions, provide a numeric source value to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+
 ```js
+import { ref } from 'vue'
 import { useTransition, TransitionPresets } from '@vueuse/core'
 
-useTransition(baseNumber, {
+const source = ref(0)
+
+const output = useTransition(source, {
   duration: 1000,
   transition: TransitionPresets.easeInOutCubic,
+})
+```
+
+To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
+
+```js
+const source = ref([0, 0, 0])
+
+const output = useTransition(source)
+
+const color = computed(() => {
+  const [r, g, b] = output.value
+  return `rgb(${r}, ${g}, ${b})`
+})
+```
+
+Transition easing can be customized using cubic bezier curves. Transitions defined this way work the same as [CSS easing functions](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function#easing_functions).
+
+```js
+useTransition(source, {
+  transition: [0.75, 0, 0.25, 1],
 })
 ```
 
@@ -22,8 +48,10 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`linear`](https://cubic-bezier.com/#0,0,1,1)
 - [`easeInSine`](https://cubic-bezier.com/#.12,0,.39,0)
 - [`easeOutSine`](https://cubic-bezier.com/#.61,1,.88,1)
+- [`easeInOutSine`](https://cubic-bezier.com/#.37,0,.63,1)
 - [`easeInQuad`](https://cubic-bezier.com/#.11,0,.5,0)
 - [`easeOutQuad`](https://cubic-bezier.com/#.5,1,.89,1)
+- [`easeInOutQuad`](https://cubic-bezier.com/#.45,0,.55,1)
 - [`easeInCubic`](https://cubic-bezier.com/#.32,0,.67,0)
 - [`easeOutCubic`](https://cubic-bezier.com/#.33,1,.68,1)
 - [`easeInOutCubic`](https://cubic-bezier.com/#.65,0,.35,1)
@@ -39,18 +67,9 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`easeInCirc`](https://cubic-bezier.com/#.55,0,1,.45)
 - [`easeOutCirc`](https://cubic-bezier.com/#0,.55,.45,1)
 - [`easeInOutCirc`](https://cubic-bezier.com/#.85,0,.15,1)
-- [`easeInBack`](https://cubic-bezier.com/#0.12,0,0.39,0)
+- [`easeInBack`](https://cubic-bezier.com/#.36,0,.66,-.56)
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
-
-Custom transitions can be defined using cubic bezier curves. Transitions defined this way work the same as [CSS easing functions](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function).
-
-```js
-useTransition(baseNumber, {
-  duration: 1000,
-  transition: [0.75, 0, 0.25, 1],
-})
-```
 
 For more complex transitions, a custom function can be provided.
 
@@ -63,18 +82,16 @@ const easeOutElastic = (n) => {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-useTransition(baseNumber, {
-  duration: 1000,
+useTransition(source, {
   transition: easeOutElastic,
 })
 ```
 
-To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
+To control when a transition starts, set a `delay` value. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
 ```js
-useTransition(baseNumber, {
-  duration: 1000,
-  transition: easeOutElastic,
+useTransition(source, {
+  delay: 1000,
   onStarted() {
     // called after the transition starts
   },
@@ -84,6 +101,7 @@ useTransition(baseNumber, {
 })
 ```
 
+To temporarily stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -100,10 +118,30 @@ declare type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-interface TransitionOptions {
+export declare type TransitionOptions = {
+  /**
+   * Milliseconds to wait before starting transition
+   */
+  delay?: MaybeRef<number>
+  /**
+   * Disables the transition
+   */
+  disabled?: MaybeRef<boolean>
+  /**
+   * Transition duration in milliseconds
+   */
   duration?: MaybeRef<number>
-  onFinished?: () => unknown
-  onStarted?: () => unknown
+  /**
+   * Callback to execute after transition finishes
+   */
+  onFinished?: () => void
+  /**
+   * Callback to execute after transition starts
+   */
+  onStarted?: () => void
+  /**
+   * Easing function or cubic bezier points for calculating transition values
+   */
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 /**
@@ -111,18 +149,26 @@ interface TransitionOptions {
  *
  * @see https://easings.net
  */
-export declare const TransitionPresets: Record<string, CubicBezierPoints>
-/**
- * Transition between values.
- *
- * @see https://vueuse.org/useTransition
- * @param source
- * @param options
- */
+export declare const TransitionPresets: Record<
+  string,
+  CubicBezierPoints | EasingFunction
+>
 export declare function useTransition(
   source: Ref<number>,
   options?: TransitionOptions
-): Ref<number>
+): ComputedRef<number>
+export declare function useTransition<T extends MaybeRef<number>[]>(
+  source: [...T],
+  options?: TransitionOptions
+): ComputedRef<
+  {
+    [K in keyof T]: number
+  }
+>
+export declare function useTransition<T extends Ref<number[]>>(
+  source: T,
+  options?: TransitionOptions
+): ComputedRef<number[]>
 export {}
 ```
 

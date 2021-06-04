@@ -31,6 +31,16 @@ export default {
 </script>
 ```
 
+## Component
+
+```html
+<UseElementBounding v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseElementBounding>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -57,6 +67,9 @@ export declare function useElementBounding(
   width: Ref<number>
   height: Ref<number>
 }
+export declare type UseElementBoundingReturn = ReturnType<
+  typeof useElementBounding
+>
 ```
 
 ## Source

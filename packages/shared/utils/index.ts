@@ -15,6 +15,10 @@ export function promiseTimeout(
   })
 }
 
+export function identity<T>(arg: T): T {
+  return arg
+}
+
 export interface SingletonPromiseReturn<T> {
   (): Promise<T>
   /**

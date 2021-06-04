@@ -67,21 +67,21 @@ interface UseFetchReturnBase<T> {
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type PayloadType = 'text' | 'json' | 'formData'
 
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
-  // type
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
+interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
+  // methods
+  get(): UseFetchReturnBase<T>
+  post(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  put(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  delete(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
 }
 
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
-  // methods
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
+  // type
+  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
+  text(): UseFetchReturnTypeConfigured<string>
+  blob(): UseFetchReturnTypeConfigured<Blob>
+  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
+  formData(): UseFetchReturnTypeConfigured<FormData>
 }
 
 export interface BeforeFetchContext {
@@ -219,7 +219,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     payload: undefined as unknown,
     payloadType: 'json' as PayloadType,
   }
-  let initialized = false
 
   if (args.length > 0) {
     if (isFetchOptions(args[0]))
@@ -258,10 +257,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       controller.abort()
   }
 
+  const loading = (isLoading: boolean) => {
+    isFetching.value = isLoading
+    isFinished.value = !isLoading
+  }
+
   const execute = async() => {
-    initialized = true
-    isFetching.value = true
-    isFinished.value = false
+    loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
@@ -301,8 +303,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
-    if (isCanceled || !fetch)
+    if (isCanceled || !fetch) {
+      loading(false)
       return Promise.resolve()
+    }
 
     return new Promise((resolve) => {
       fetch(
@@ -338,8 +342,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           errorEvent.trigger(fetchError)
         })
         .finally(() => {
-          isFinished.value = true
-          isFetching.value = false
+          loading(false)
         })
     })
   }
@@ -369,13 +372,17 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     onFetchError: errorEvent.on,
   }
 
-  const shell: UseFetchReturn<T> = {
+  const typeConfigured: UseFetchReturnTypeConfigured<T> = {
     ...base,
 
     get: setMethod('get'),
     put: setMethod('put'),
     post: setMethod('post'),
     delete: setMethod('delete'),
+  }
+
+  const shell: UseFetchReturn<T> = {
+    ...typeConfigured,
 
     json: setType('json'),
     text: setType('text'),
@@ -386,11 +393,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   function setMethod(method: string) {
     return (payload?: unknown, payloadType?: PayloadType) => {
-      if (!initialized) {
+      if (!isFetching.value) {
         config.method = method
         config.payload = payload
         config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
-        return shell as any
+        return base as any
       }
       return undefined
     }
@@ -398,9 +405,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   function setType(type: DataType) {
     return () => {
-      if (!initialized) {
+      if (!isFetching.value) {
         config.type = type
-        return base as any
+        return typeConfigured as any
       }
       return undefined
     }

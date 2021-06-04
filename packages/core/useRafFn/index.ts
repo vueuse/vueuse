@@ -11,18 +11,6 @@ export interface RafFnOptions extends ConfigurableWindow {
   immediate?: boolean
 }
 
-export interface RafFnReturn extends Pausable {
-  /**
-   * @deprecated use pause() instead
-   */
-  stop: Fn
-
-  /**
-   * @deprecated use resume() instead
-   */
-  start: Fn
-}
-
 /**
  * Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
  *
@@ -30,7 +18,7 @@ export interface RafFnReturn extends Pausable {
  * @param fn
  * @param options
  */
-export function useRafFn(fn: Fn, options: RafFnOptions = {}): RafFnReturn {
+export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   const {
     immediate = true,
     window = defaultWindow,
@@ -66,7 +54,5 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): RafFnReturn {
     isActive,
     pause,
     resume,
-    stop: pause,
-    start: resume,
   }
 }

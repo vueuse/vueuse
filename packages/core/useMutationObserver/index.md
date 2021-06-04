@@ -59,6 +59,9 @@ export declare function useMutationObserver(
   isSupported: boolean | undefined
   stop: () => void
 }
+export declare type UseMutationObserverReturn = ReturnType<
+  typeof useMutationObserver
+>
 ```
 
 ## Source

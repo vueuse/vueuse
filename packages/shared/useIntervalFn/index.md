@@ -21,28 +21,26 @@ const { start, stop } = useIntervalFn(() => {
 ## Type Declarations
 
 ```typescript
-export interface IntervalFnReturn extends Pausable {
+export interface IntervalFnOptions {
   /**
-   * @deprecated use pause() instead
+   * Execute the callback immediate after calling this function
+   *
+   * @default true
    */
-  stop: Fn
-  /**
-   * @deprecated use resume() instead
-   */
-  start: Fn
+  immediate?: boolean
 }
 /**
  * Wrapper for `setInterval` with controls
  *
  * @param cb
  * @param interval
- * @param immediate
+ * @param options
  */
 export declare function useIntervalFn(
   cb: Fn,
   interval?: number,
-  immediate?: boolean
-): IntervalFnReturn
+  options?: IntervalFnOptions
+): Pausable
 ```
 
 ## Source
