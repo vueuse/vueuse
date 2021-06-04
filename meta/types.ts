@@ -9,6 +9,7 @@ export interface PackageManifest {
   manualImport?: boolean
   deprecated?: boolean
   submodules?: boolean
+  iife?: boolean
 }
 
 export interface VueUseFunction {

@@ -94,9 +94,23 @@
       },
       "dir": "packages/firebase",
       "docs": "https://vueuse.org/firebase/README.html"
+    },
+    "electron": {
+      "name": "electron",
+      "display": "Electron",
+      "description": "Electron renderer process modules for VueUse",
+      "author": "Archer Gu<https://github.com/ArcherGu>",
+      "addon": true,
+      "external": [
+        "electron"
+      ],
+      "iife": false,
+      "dir": "packages/electron",
+      "docs": "https://vueuse.org/electron/README.html"
     }
   },
   "categories": [
+    "@Electron",
     "@Firebase",
     "@Integrations",
     "@Router",
@@ -1014,6 +1028,27 @@
       "docs": "https://vueuse.org/firebase/useRTDB/",
       "category": "@Firebase",
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
+    },
+    {
+      "name": "useIpcRenderer",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRenderer/",
+      "category": "@Electron",
+      "description": "provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it's all APIs"
+    },
+    {
+      "name": "useIpcRendererInvoke",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRendererInvoke/",
+      "category": "@Electron",
+      "description": "reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result"
+    },
+    {
+      "name": "useIpcRendererOn",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRendererOn/",
+      "category": "@Electron",
+      "description": "use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted"
     }
   ]
 }

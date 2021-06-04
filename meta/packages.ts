@@ -85,6 +85,17 @@ export const packages: PackageManifest[] = [
       'firebase/app': 'firebase',
     },
   },
+  {
+    name: 'electron',
+    display: 'Electron',
+    description: 'Electron renderer process modules for VueUse',
+    author: 'Archer Gu<https://github.com/ArcherGu>',
+    addon: true,
+    external: [
+      'electron',
+    ],
+    iife: false,
+  },
 ]
 
 export const activePackages = packages.filter(i => !i.deprecated)

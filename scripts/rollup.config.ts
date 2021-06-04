@@ -2,14 +2,14 @@
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
-import { Plugin } from 'rollup'
+import { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import { activePackages } from '../meta/packages'
 import fs from 'fs'
 import fg from 'fast-glob'
 import { resolve } from 'path'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
-const configs = []
+const configs: RollupOptions[] = []
 
 const injectVueDemi: Plugin = {
   name: 'inject-vue-demi',
@@ -18,7 +18,7 @@ const injectVueDemi: Plugin = {
   },
 }
 
-for (const { globals, name, external, submodules } of activePackages) {
+for (const { globals, name, external, submodules, iife } of activePackages) {
   const iifeGlobals = {
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUse',
@@ -35,17 +35,19 @@ for (const { globals, name, external, submodules } of activePackages) {
   for (const fn of functionNames) {
     const input = fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
 
-    configs.push({
-      input,
-      output: [
-        {
-          file: `packages/${name}/dist/${fn}.cjs.js`,
-          format: 'cjs',
-        },
-        {
-          file: `packages/${name}/dist/${fn}.esm.js`,
-          format: 'es',
-        },
+    const output: OutputOptions[] = [
+      {
+        file: `packages/${name}/dist/${fn}.cjs.js`,
+        format: 'cjs',
+      },
+      {
+        file: `packages/${name}/dist/${fn}.esm.js`,
+        format: 'es',
+      },
+    ]
+
+    if (iife !== false) {
+      output.push(
         {
           file: `packages/${name}/dist/${fn}.iife.js`,
           format: 'iife',
@@ -71,7 +73,12 @@ for (const { globals, name, external, submodules } of activePackages) {
             }),
           ],
         },
-      ],
+      )
+    }
+
+    configs.push({
+      input,
+      output,
       plugins: [
         typescript({
           tsconfigOverride: {

@@ -337,7 +337,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author, submodules } of activePackages) {
+  for (const { name, description, author, submodules, iife } of activePackages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)
@@ -354,8 +354,10 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.main = './index.cjs.js'
     packageJSON.types = './index.d.ts'
     packageJSON.module = './index.esm.js'
-    packageJSON.unpkg = './index.iife.min.js'
-    packageJSON.jsdelivr = './index.iife.min.js'
+    if (iife !== false) {
+      packageJSON.unpkg = './index.iife.min.js'
+      packageJSON.jsdelivr = './index.iife.min.js'
+    }
     packageJSON.exports = {
       '.': {
         import: './index.esm.js',
