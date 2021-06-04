@@ -2,8 +2,37 @@ import { isString } from '@vueuse/shared'
 import { IpcRenderer } from 'electron'
 import { Ref, shallowRef } from 'vue-demi'
 
+/**
+ * Returns Promise<any> - Resolves with the response from the main process.
+ *
+ * Send a message to the main process via channel and expect a result ~~asynchronously~~. As composition-api, it makes asynchronous operations look like synchronous.
+ *
+ * You need to provide `ipcRenderer` to this function.
+ *
+ * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
+ * @export
+ * @template T
+ * @param {IpcRenderer} ipcRenderer
+ * @param {string} channel
+ * @param {...any[]} args
+ * @returns {(Ref<T | null>)}
+ */
 export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: string, ...args: any[]): Ref<T | null>
 
+/**
+ * Returns Promise<any> - Resolves with the response from the main process.
+ *
+ * Send a message to the main process via channel and expect a result ~~asynchronously~~. As composition-api, it makes asynchronous operations look like synchronous.
+ *
+ * `ipcRenderer` will be automatically gotten.
+ *
+ * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
+ * @export
+ * @template T
+ * @param {string} channel
+ * @param {...any[]} args
+ * @returns {(Ref<T | null>)}
+ */
 export function useIpcRendererInvoke<T>(channel: string, ...args: any[]): Ref<T | null>
 
 export function useIpcRendererInvoke<T>(...args: any[]): Ref<T | null> {
