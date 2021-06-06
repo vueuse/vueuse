@@ -14,12 +14,11 @@ can easily react to changes in the users' authentication status.
 import firebase from 'firebase'
 import { useAuth } from '@vueuse/firebase/useAuth'
 
-const { auth } = firebase
 const { GoogleAuthProvider } = auth
 
-const { isAuthenticated, user } = useAuth()
+const { isAuthenticated, user } = useAuth(firebase.auth)
 
-const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
+const signIn = () => firebase.auth().signInWithPopup(new GoogleAuthProvider())
 </script>
 
 <template>
@@ -30,14 +29,6 @@ const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
     </button>
   </div>
 </template>
-```
-
-Using a different firebase auth instance
-```ts
-import firebase from 'firebase'
-import { useAuth } from '@vueuse/firebase/useAuth'
-
-const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase.auth())
 ```
 
 <!--FOOTER_STARTS-->
