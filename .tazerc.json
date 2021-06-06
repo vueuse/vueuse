@@ -2,6 +2,7 @@
   "exclude": [
     "husky",
     "eslint-plugin-markdown",
-    "rxjs"
+    "rxjs",
+    "electron"
   ]
 }
