@@ -40,7 +40,7 @@ export interface FirebaseAuthOptions {
   user: Ref<firebase.User | null>
 }
 export declare function useAuth(
-  authInstance?: typeof firebase.auth | firebase.auth.Auth
+  authInstance: typeof firebase.auth | firebase.auth.Auth
 ): {
   isAuthenticated: ComputedRef<boolean>
   user: Ref<{

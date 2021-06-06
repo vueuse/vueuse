@@ -21,6 +21,7 @@ const Guide = [
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },
   { text: 'Contributing', link: '/contributing' },
+  { text: 'Guidelines', link: '/guidelines' },
 ]
 
 const Functions = [
@@ -119,6 +120,7 @@ const config = {
       '/shared/': FunctionsSideBar,
       '/router/': FunctionsSideBar,
       '/ecosystem': DefaultSideBar,
+      '/guidelines': DefaultSideBar,
       '/export-size': DefaultSideBar,
       '/recent-updated': DefaultSideBar,
     },
