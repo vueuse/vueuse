@@ -94,6 +94,7 @@ const config = {
       {
         text: `v${currentVersion}`,
         items: [
+          { test: 'Releases', link: 'https://github.com/vueuse/vueuse/releases' },
           { text: 'What\'s news', link: '/recent-updated' },
           ...versions.map((i) => {
             if (i.version === currentVersion) {
