@@ -29,6 +29,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install
       run: yarn install --frozen-lockfile
+      env:
+        ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
     - name: Lint
       run: yarn lint
     - name: Test Vue 3
