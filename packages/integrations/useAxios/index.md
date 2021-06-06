@@ -15,7 +15,7 @@ npm i axios
 ## Usage
 
 ```ts
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { data, isFinished } = useAxios('/api/posts')
 ```
@@ -24,7 +24,7 @@ or use an instance of axios
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
   baseURL: '/api'
@@ -37,7 +37,7 @@ use an instance of axios with config options
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
   baseURL: '/api'
@@ -60,14 +60,6 @@ export interface UseAxiosReturn<T> {
    */
   data: Ref<T | undefined>
   /**
-   * @deprecated use isFinished instead
-   */
-  finished: Ref<boolean>
-  /**
-   * @deprecated use isLoading instead
-   */
-  loading: Ref<boolean>
-  /**
    * Indicates if the request has finished
    */
   isFinished: Ref<boolean>
@@ -76,10 +68,6 @@ export interface UseAxiosReturn<T> {
    */
   isLoading: Ref<boolean>
   /**
-   * @deprecated use aborted instead
-   */
-  canceled: Ref<boolean>
-  /**
    * Indicates if the request was canceled
    */
   aborted: Ref<boolean>
@@ -87,10 +75,6 @@ export interface UseAxiosReturn<T> {
    * Any erros that may have occurred
    */
   error: Ref<AxiosError<T> | undefined>
-  /**
-   * @deprecated use abort instead
-   */
-  cancel: (message?: string | undefined) => void
   /**
    * Aborts the current request
    */

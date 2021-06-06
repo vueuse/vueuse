@@ -60,7 +60,6 @@
   - [`onKeyStroke`](https://vueuse.org/core/onKeyStroke/) — listen for keyboard key being stroked
   - [`onStartTyping`](https://vueuse.org/core/onStartTyping/) — fires when users start typing on non-editable elements
   - [`useBattery`](https://vueuse.org/core/useBattery/) — reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)
-  - [`useDeviceLight`](https://vueuse.org/core/useDeviceLight/) — reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)
   - [`useDeviceMotion`](https://vueuse.org/core/useDeviceMotion/) — reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)
   - [`useDeviceOrientation`](https://vueuse.org/core/useDeviceOrientation/) — reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
   - [`useDevicePixelRatio`](https://vueuse.org/core/useDevicePixelRatio/) — reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)

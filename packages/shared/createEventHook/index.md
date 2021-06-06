@@ -54,9 +54,7 @@ onError((error) => {
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
-export declare type EventHookOn<T = any> = (
-  fn: (param: T) => void
-) => {
+export declare type EventHookOn<T = any> = (fn: (param: T) => void) => {
   off: () => void
 }
 export declare type EventHookOff<T = any> = (fn: (param: T) => void) => void

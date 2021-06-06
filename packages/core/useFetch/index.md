@@ -192,21 +192,18 @@ interface UseFetchReturnBase<T> {
   onFetchError: EventHookOn
 }
 declare type PayloadType = "text" | "json" | "formData"
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
+interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
+  get(): UseFetchReturnBase<T>
+  post(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  put(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  delete(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
 }
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(
-    payload?: unknown,
-    type?: PayloadType
-  ): UseFetchReturnMethodConfigured<T>
+export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
+  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
+  text(): UseFetchReturnTypeConfigured<string>
+  blob(): UseFetchReturnTypeConfigured<Blob>
+  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
+  formData(): UseFetchReturnTypeConfigured<FormData>
 }
 export interface BeforeFetchContext {
   /**

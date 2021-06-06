@@ -20,6 +20,13 @@ Touching is enabled by default. To make it only detects mouse changes, set `touc
 const { x, y } = useMouse({ touch: false })
 ```
 
+## Component
+```html
+<UseMouse v-slot="{ x, y }">
+  x: {{ x }}
+  y: {{ y }}
+</UseMouse>
+```
 
 
 <!--FOOTER_STARTS-->
@@ -54,13 +61,12 @@ export declare type MouseSourceType = "mouse" | "touch" | null
  * @see https://vueuse.org/useMouse
  * @param options
  */
-export declare function useMouse(
-  options?: MouseOptions
-): {
+export declare function useMouse(options?: MouseOptions): {
   x: Ref<number>
   y: Ref<number>
   sourceType: Ref<MouseSourceType>
 }
+export declare type UseMouseReturn = ReturnType<typeof useMouse>
 ```
 
 ## Source

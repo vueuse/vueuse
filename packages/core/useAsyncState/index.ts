@@ -93,9 +93,9 @@ export function useAsyncState<T>(
   return {
     state,
     isReady,
-    /** @deprecated, use isReady instead */
-    ready: isReady,
     error,
     execute,
   }
 }
+
+export type UseAsyncStateReturn = ReturnType<typeof useAsyncState>

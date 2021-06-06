@@ -25,6 +25,17 @@ const { coords, locatedAt, error } = useGeolocation()
 `useGeolocation` function takes [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) object as an optional parameter.
 
 
+## Component
+
+```html
+<UseGeolocation v-slot="{ coords: { latitude, longitude } }">
+  Latitude: {{ latitude }}
+  Longitude: {{ longitude }}
+</UseGeolocation>
+```
+
+<LearnMoreComponents />
+
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
@@ -38,9 +49,7 @@ export interface GeolocationOptions
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export declare function useGeolocation(
-  options?: GeolocationOptions
-): {
+export declare function useGeolocation(options?: GeolocationOptions): {
   isSupported: boolean | undefined
   coords: Ref<GeolocationCoordinates>
   locatedAt: Ref<number | null>
@@ -52,6 +61,7 @@ export declare function useGeolocation(
     readonly TIMEOUT: number
   } | null>
 }
+export declare type UseGeolocationReturn = ReturnType<typeof useGeolocation>
 ```
 
 ## Source

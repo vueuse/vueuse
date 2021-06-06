@@ -92,6 +92,9 @@ export declare function useResizeObserver(
   isSupported: boolean | undefined
   stop: () => void
 }
+export declare type UseResizeObserverReturn = ReturnType<
+  typeof useResizeObserver
+>
 export {}
 ```
 

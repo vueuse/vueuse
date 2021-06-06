@@ -20,7 +20,7 @@ export interface PointerSwipeOptions {
   onSwipe?: (e: PointerEvent) => void
 
   /**
-   * Callback on wipe end
+   * Callback on swipe end
    */
   onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
 }

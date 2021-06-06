@@ -8,6 +8,8 @@ export interface PackageManifest {
   globals?: Record<string, string>
   manualImport?: boolean
   deprecated?: boolean
+  submodules?: boolean
+  iife?: boolean
 }
 
 export interface VueUseFunction {
@@ -18,6 +20,8 @@ export interface VueUseFunction {
   docs?: string
   depreacted?: boolean
   internal?: boolean
+  component?: boolean
+  directive?: boolean
 }
 
 export interface VueUsePackage extends PackageManifest {

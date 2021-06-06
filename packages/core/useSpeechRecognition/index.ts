@@ -120,3 +120,5 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
     stop,
   }
 }
+
+export type UseSpeechRecognitionReturn = ReturnType<typeof useSpeechRecognition>

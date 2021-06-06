@@ -11,6 +11,17 @@
       "description": "Collection of essential Vue Composition Utilities",
       "dir": "packages/core"
     },
+    "components": {
+      "name": "components",
+      "display": "Components",
+      "description": "Renderless components for VueUse",
+      "author": "Jacob Clevenger<https://github.com/wheatjs>",
+      "external": [
+        "@vueuse/core",
+        "@vueuse/shared"
+      ],
+      "dir": "packages/components"
+    },
     "router": {
       "name": "router",
       "display": "Router",
@@ -30,20 +41,23 @@
       "display": "Integrations",
       "description": "Integration wrappers for utility libraries",
       "addon": true,
+      "submodules": true,
       "external": [
         "axios",
         "universal-cookie",
         "qrcode",
         "http",
         "nprogress",
-        "jwt-decode"
+        "jwt-decode",
+        "focus-trap"
       ],
       "globals": {
         "axios": "axios",
         "universal-cookie": "UniversalCookie",
         "qrcode": "QRCode",
         "nprogress": "nprogress",
-        "jwt-decode": "jwt_decode"
+        "jwt-decode": "jwt_decode",
+        "focus-trap": "focusTrap"
       },
       "dir": "packages/integrations",
       "docs": "https://vueuse.org/integrations/README.html"
@@ -69,6 +83,7 @@
       "display": "Firebase",
       "description": "Enables realtime bindings for Firebase",
       "addon": true,
+      "submodules": true,
       "external": [
         "firebase",
         "firebase/app"
@@ -79,9 +94,23 @@
       },
       "dir": "packages/firebase",
       "docs": "https://vueuse.org/firebase/README.html"
+    },
+    "electron": {
+      "name": "electron",
+      "display": "Electron",
+      "description": "Electron renderer process modules for VueUse",
+      "author": "Archer Gu<https://github.com/ArcherGu>",
+      "addon": true,
+      "external": [
+        "electron"
+      ],
+      "iife": false,
+      "dir": "packages/electron",
+      "docs": "https://vueuse.org/electron/README.html"
     }
   },
   "categories": [
+    "@Electron",
     "@Firebase",
     "@Integrations",
     "@Router",
@@ -371,6 +400,8 @@
     {
       "name": "onClickOutside",
       "package": "core",
+      "component": true,
+      "directive": true,
       "docs": "https://vueuse.org/core/onClickOutside/",
       "category": "Sensors",
       "description": "listen for clicks outside of an element"
@@ -413,6 +444,7 @@
     {
       "name": "useActiveElement",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useActiveElement/",
       "category": "Browser",
       "description": "reactive `document.activeElement`"
@@ -427,6 +459,7 @@
     {
       "name": "useBattery",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useBattery/",
       "category": "Sensors",
       "description": "reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API)"
@@ -441,6 +474,7 @@
     {
       "name": "useBrowserLocation",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useBrowserLocation/",
       "category": "Browser",
       "description": "reactive browser location"
@@ -462,20 +496,15 @@
     {
       "name": "useDark",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDark/",
       "category": "Browser",
       "description": "reactive dark mode with auto data persistence"
     },
     {
-      "name": "useDeviceLight",
-      "package": "core",
-      "docs": "https://vueuse.org/core/useDeviceLight/",
-      "category": "Sensors",
-      "description": "reactive [DeviceLightEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceLightEvent)"
-    },
-    {
       "name": "useDeviceMotion",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDeviceMotion/",
       "category": "Sensors",
       "description": "reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)"
@@ -483,6 +512,7 @@
     {
       "name": "useDeviceOrientation",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDeviceOrientation/",
       "category": "Sensors",
       "description": "reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)"
@@ -490,6 +520,7 @@
     {
       "name": "useDevicePixelRatio",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDevicePixelRatio/",
       "category": "Sensors",
       "description": "reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)"
@@ -497,6 +528,7 @@
     {
       "name": "useDevicesList",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDevicesList/",
       "category": "Sensors",
       "description": "reactive [enumerateDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices) listing avaliable input/output devices"
@@ -504,6 +536,7 @@
     {
       "name": "useDocumentVisibility",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useDocumentVisibility/",
       "category": "Sensors",
       "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)"
@@ -511,6 +544,7 @@
     {
       "name": "useElementBounding",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useElementBounding/",
       "category": "Sensors",
       "description": "reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element"
@@ -518,6 +552,7 @@
     {
       "name": "useElementSize",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useElementSize/",
       "category": "Sensors",
       "description": "reactive size of an HTML element"
@@ -525,6 +560,7 @@
     {
       "name": "useElementVisibility",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useElementVisibility/",
       "category": "Sensors",
       "description": "tracks the visibility of an element within the viewport"
@@ -560,6 +596,7 @@
     {
       "name": "useFullscreen",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useFullscreen/",
       "category": "Browser",
       "description": "reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)"
@@ -567,6 +604,7 @@
     {
       "name": "useGeolocation",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useGeolocation/",
       "category": "Sensors",
       "description": "reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)"
@@ -574,6 +612,7 @@
     {
       "name": "useIdle",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useIdle/",
       "category": "Sensors",
       "description": "tracks whether the user is being inactive"
@@ -623,6 +662,7 @@
     {
       "name": "useMouse",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useMouse/",
       "category": "Sensors",
       "description": "reactive mouse position"
@@ -630,6 +670,7 @@
     {
       "name": "useMouseInElement",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useMouseInElement/",
       "category": "Sensors",
       "description": "reactive mouse position related to an element"
@@ -637,6 +678,7 @@
     {
       "name": "useMousePressed",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useMousePressed/",
       "category": "Sensors",
       "description": "reactive mouse pressing state"
@@ -651,6 +693,7 @@
     {
       "name": "useNetwork",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useNetwork/",
       "category": "Sensors",
       "description": "reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)"
@@ -658,6 +701,7 @@
     {
       "name": "useNow",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useNow/",
       "category": "Animation",
       "description": "reactive current Date instance"
@@ -665,6 +709,7 @@
     {
       "name": "useOnline",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useOnline/",
       "category": "Sensors",
       "description": "reactive online state"
@@ -672,6 +717,7 @@
     {
       "name": "usePageLeave",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/usePageLeave/",
       "category": "Sensors",
       "description": "reactive state to show whether the mouse leaves the page"
@@ -700,6 +746,7 @@
     {
       "name": "usePreferredColorScheme",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/usePreferredColorScheme/",
       "category": "Browser",
       "description": "reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query"
@@ -707,6 +754,7 @@
     {
       "name": "usePreferredDark",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/usePreferredDark/",
       "category": "Browser",
       "description": "reactive dark theme preference"
@@ -714,6 +762,7 @@
     {
       "name": "usePreferredLanguages",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/usePreferredLanguages/",
       "category": "Browser",
       "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)"
@@ -784,6 +833,7 @@
     {
       "name": "useTimeAgo",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useTimeAgo/",
       "category": "Formatters",
       "description": "reactive time ago"
@@ -791,6 +841,7 @@
     {
       "name": "useTimestamp",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useTimestamp/",
       "category": "Animation",
       "description": "reactive current timestamp"
@@ -868,6 +919,7 @@
     {
       "name": "useWindowSize",
       "package": "core",
+      "component": true,
       "docs": "https://vueuse.org/core/useWindowSize/",
       "category": "Sensors",
       "description": "reactive window size"
@@ -976,6 +1028,27 @@
       "docs": "https://vueuse.org/firebase/useRTDB/",
       "category": "@Firebase",
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
+    },
+    {
+      "name": "useIpcRenderer",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRenderer/",
+      "category": "@Electron",
+      "description": "provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it's all APIs"
+    },
+    {
+      "name": "useIpcRendererInvoke",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRendererInvoke/",
+      "category": "@Electron",
+      "description": "reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result"
+    },
+    {
+      "name": "useIpcRendererOn",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useIpcRendererOn/",
+      "category": "@Electron",
+      "description": "use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted"
     }
   ]
 }

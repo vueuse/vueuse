@@ -66,6 +66,7 @@ export declare function useShare(
   isSupported: boolean
   share: (overrideOptions?: MaybeRef<ShareOptions>) => Promise<void>
 }
+export declare type UseShareReturn = ReturnType<typeof useShare>
 ```
 
 ## Source

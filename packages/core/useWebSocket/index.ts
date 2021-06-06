@@ -59,7 +59,7 @@ export interface WebSocketOptions {
   /**
    * Automatically open a connection
    *
-   * @default false
+   * @default true
    */
   immediate?: boolean
 }
@@ -123,6 +123,7 @@ export function useWebSocket<Data = any>(
     onDisconnected,
     onError,
     onMessage,
+    immediate = true,
   } = options
 
   const data: Ref<Data | null> = ref(null)
@@ -213,13 +214,17 @@ export function useWebSocket<Data = any>(
       interval = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(() => send(message, false), interval, false)
+    const { pause, resume } = useIntervalFn(
+      () => send(message, false),
+      interval,
+      { immediate: false },
+    )
 
     heartbeatPause = pause
     heartbeatResume = resume
   }
 
-  if (options.immediate) _init()
+  if (immediate) _init()
 
   const open = () => {
     close()

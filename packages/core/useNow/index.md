@@ -11,15 +11,36 @@ Reactive current Date instance.
 ```js
 import { useNow } from '@vueuse/core'
 
-const { now, pause, resume } = useNow()
+const now = useNow()
 ```
 
+```js
+const { now, pause, resume } = useNow({ controls: true })
+```
+
+## Component
+
+```html
+<UseNow v-slot="{ now, pause, resume }">
+  Now: {{ now }}
+  <button @click="pause()">Pause</button>
+  <button @click="resume()">Resume</button>
+</UseNow>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
 ```typescript
-export interface UseNowOptions {
+export interface UseNowOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
   /**
    * Update interval, or use requestAnimationFrame
    *
@@ -28,116 +49,16 @@ export interface UseNowOptions {
   interval?: "requestAnimationFrame" | number
 }
 /**
- * Reactive current timestamp.
+ * Reactive current Date instance.
  *
  * @see https://vueuse.org/useNow
  * @param options
  */
-export declare function useNow(
-  options?: UseNowOptions
-): {
-  isActive: Ref<boolean>
-  pause: Fn
-  resume: Fn
-  now: Ref<
-    {
-      toString: () => string
-      toDateString: () => string
-      toTimeString: () => string
-      toLocaleString: {
-        (): string
-        (
-          locales?: string | string[] | undefined,
-          options?: Intl.DateTimeFormatOptions | undefined
-        ): string
-      }
-      toLocaleDateString: {
-        (): string
-        (
-          locales?: string | string[] | undefined,
-          options?: Intl.DateTimeFormatOptions | undefined
-        ): string
-      }
-      toLocaleTimeString: {
-        (): string
-        (
-          locales?: string | string[] | undefined,
-          options?: Intl.DateTimeFormatOptions | undefined
-        ): string
-      }
-      valueOf: () => number
-      getTime: () => number
-      getFullYear: () => number
-      getUTCFullYear: () => number
-      getMonth: () => number
-      getUTCMonth: () => number
-      getDate: () => number
-      getUTCDate: () => number
-      getDay: () => number
-      getUTCDay: () => number
-      getHours: () => number
-      getUTCHours: () => number
-      getMinutes: () => number
-      getUTCMinutes: () => number
-      getSeconds: () => number
-      getUTCSeconds: () => number
-      getMilliseconds: () => number
-      getUTCMilliseconds: () => number
-      getTimezoneOffset: () => number
-      setTime: (time: number) => number
-      setMilliseconds: (ms: number) => number
-      setUTCMilliseconds: (ms: number) => number
-      setSeconds: (sec: number, ms?: number | undefined) => number
-      setUTCSeconds: (sec: number, ms?: number | undefined) => number
-      setMinutes: (
-        min: number,
-        sec?: number | undefined,
-        ms?: number | undefined
-      ) => number
-      setUTCMinutes: (
-        min: number,
-        sec?: number | undefined,
-        ms?: number | undefined
-      ) => number
-      setHours: (
-        hours: number,
-        min?: number | undefined,
-        sec?: number | undefined,
-        ms?: number | undefined
-      ) => number
-      setUTCHours: (
-        hours: number,
-        min?: number | undefined,
-        sec?: number | undefined,
-        ms?: number | undefined
-      ) => number
-      setDate: (date: number) => number
-      setUTCDate: (date: number) => number
-      setMonth: (month: number, date?: number | undefined) => number
-      setUTCMonth: (month: number, date?: number | undefined) => number
-      setFullYear: (
-        year: number,
-        month?: number | undefined,
-        date?: number | undefined
-      ) => number
-      setUTCFullYear: (
-        year: number,
-        month?: number | undefined,
-        date?: number | undefined
-      ) => number
-      toUTCString: () => string
-      toISOString: () => string
-      toJSON: (key?: any) => string
-    } & {
-      [Symbol.toPrimitive]: {
-        (hint: "default"): string
-        (hint: "string"): string
-        (hint: "number"): number
-        (hint: string): string | number
-      }
-    }
-  >
-}
+export declare function useNow(options?: UseNowOptions<false>): Ref<Date>
+export declare function useNow(options: UseNowOptions<true>): {
+  now: Ref<Date>
+} & Pausable
+export declare type UseNowReturn = ReturnType<typeof useNow>
 ```
 
 ## Source

@@ -82,3 +82,5 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     sourceType,
   }
 }
+
+export type UseMousePressedReturn = ReturnType<typeof useMousePressed>

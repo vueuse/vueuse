@@ -88,3 +88,5 @@ export function useIntersectionObserver(
     stop,
   }
 }
+
+export type UseIntersectionObserverReturn = ReturnType<typeof useIntersectionObserver>

@@ -11,7 +11,11 @@ Update value after a given time with controls.
 ```js
 import { useTimeout, promiseTimeout } from '@vueuse/core'
 
-const { ready, start, stop } = useTimeout(1000, true)
+const ready = useTimeout(1000)
+```
+
+```js
+const { ready, start, stop } = useTimeout(1000, { controls: true })
 ```
 
 ```js
@@ -27,21 +31,32 @@ console.log(ready.value) // true
 ## Type Declarations
 
 ```typescript
+export interface TimeoutOptions<Controls extends boolean>
+  extends TimeoutFnOptions {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
 /**
  * Update value after a given time with controls.
  *
+ * @see   {@link https://vueuse.org/useTimeout}
  * @param interval
  * @param immediate
  */
 export declare function useTimeout(
   interval?: number,
-  immediate?: boolean
+  options?: TimeoutOptions<false>
+): ComputedRef<boolean>
+export declare function useTimeout(
+  interval: number,
+  options: TimeoutOptions<true>
 ): {
-  ready: Ref<boolean>
-  isActive: Ref<boolean>
-  start: () => void
-  stop: () => void
-}
+  ready: ComputedRef<boolean>
+} & Stopable
 ```
 
 ## Source

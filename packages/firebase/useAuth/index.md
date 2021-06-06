@@ -12,14 +12,13 @@ can easily react to changes in the users' authentication status.
 ```html
 <script setup lang="ts">
 import firebase from 'firebase'
-import { useAuth } from '.'
+import { useAuth } from '@vueuse/firebase/useAuth'
 
-const { auth } = firebase
 const { GoogleAuthProvider } = auth
 
-const { isAuthenticated, user } = useAuth()
+const { isAuthenticated, user } = useAuth(firebase.auth)
 
-const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
+const signIn = () => firebase.auth().signInWithPopup(new GoogleAuthProvider())
 </script>
 
 <template>
@@ -32,12 +31,6 @@ const signIn = () => auth().signInWithPopup(new GoogleAuthProvider())
 </template>
 ```
 
-Using a different firebase auth instance
-```ts
-import firebase from 'firebase'
-const { isAuthenticated, user } = useAuth(firebase.auth) // or userAuth(firebase.auth())
-```
-
 <!--FOOTER_STARTS-->
 ## Type Declarations
 
@@ -47,7 +40,7 @@ export interface FirebaseAuthOptions {
   user: Ref<firebase.User | null>
 }
 export declare function useAuth(
-  authInstance?: typeof firebase.auth | firebase.auth.Auth
+  authInstance: typeof firebase.auth | firebase.auth.Auth
 ): {
   isAuthenticated: ComputedRef<boolean>
   user: Ref<{

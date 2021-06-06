@@ -53,6 +53,23 @@ export interface Pausable {
   resume: Fn
 }
 
+export interface Stopable {
+  /**
+   * A ref indicate whether a stopable instance is executing
+   */
+  isPending: Ref<boolean>
+
+  /**
+   * Stop the effect from executing
+   */
+  stop: Fn
+
+  /**
+   * Start the effects
+   */
+  start: Fn
+}
+
 export interface ConfigurableFlush {
   /**
    * Timing for monitoring changes, refer to WatchOptions for more details

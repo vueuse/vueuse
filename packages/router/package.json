@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "4.11.2",
+  "version": "5.0.0-beta.8",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
@@ -15,21 +15,18 @@
   },
   "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu<https://github.com/antfu>",
-  "files": [
-    "dist"
-  ],
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./index.esm.js",
+      "require": "./index.cjs.js"
     },
-    "./": "./"
+    "./*": "./*"
   },
-  "main": "./dist/index.cjs.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.esm.js",
-  "unpkg": "./dist/index.iife.min.js",
-  "jsdelivr": "./dist/index.iife.min.js",
+  "main": "./index.cjs.js",
+  "types": "./index.d.ts",
+  "module": "./index.esm.js",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
@@ -39,10 +36,10 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "dependencies": {
-    "@vueuse/shared": "4.11.2",
+    "@vueuse/shared": "5.0.0-beta.8",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.6"
+    "vue-router": "^4.0.8"
   }
 }

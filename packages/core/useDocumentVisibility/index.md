@@ -14,6 +14,12 @@ import { useDocumentVisibility } from '@vueuse/core'
 const visibility = useDocumentVisibility()
 ```
 
+## Component
+```html
+<UseDocumentVisibility v-slot="{ visibility }">
+  Document Visibility: {{ visibility }}
+</UseDocumentVisibility>
+```
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRefHistory } from '.'
-import { useCounter } from '..'
+import { useCounter } from '@vueuse/shared'
 import dayjs from 'dayjs'
 
 const format = (ts: number) => dayjs(ts).format()

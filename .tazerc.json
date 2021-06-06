@@ -1,6 +1,8 @@
 {
   "exclude": [
     "husky",
-    "eslint-plugin-markdown"
+    "eslint-plugin-markdown",
+    "rxjs",
+    "electron"
   ]
 }

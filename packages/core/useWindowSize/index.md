@@ -14,6 +14,16 @@ import { useWindowSize } from '@vueuse/core'
 const { width, height } = useWindowSize()
 ```
 
+## Component
+
+```html
+<UseWindowSize v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseWindowSize>
+```
+
+<LearnMoreComponents />
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -37,6 +47,7 @@ export declare function useWindowSize({
   width: Ref<number>
   height: Ref<number>
 }
+export declare type UseWindowSizeReturn = ReturnType<typeof useWindowSize>
 ```
 
 ## Source

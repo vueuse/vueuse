@@ -168,3 +168,5 @@ export function useScriptTag(
 
   return { scriptTag, load, unload }
 }
+
+export type UseScriptTagReturn = ReturnType<typeof useScriptTag>

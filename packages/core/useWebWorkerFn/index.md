@@ -81,6 +81,7 @@ export declare const useWebWorkerFn: <T extends (...fnArgs: any[]) => any>(
   workerStatus: Ref<WebWorkerStatus>
   workerTerminate: (status?: WebWorkerStatus) => void
 }
+export declare type UseWebWorkerFnReturn = ReturnType<typeof useWebWorkerFn>
 ```
 
 ## Source

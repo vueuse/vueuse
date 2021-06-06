@@ -9,7 +9,7 @@ Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
 ## Usage
 
 ```js {6}
-import { useNProgress } from '@vueuse/integrations'
+import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 const { isLoading } = useNProgress()
 
@@ -23,7 +23,7 @@ function toggle() {
 You can pass a percentage to indicate where the bar should start from.
 
 ```js {3}
-import { useNProgress } from '@vueuse/integrations'
+import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 const { progress } = useNProgress(0.5)
 
@@ -41,7 +41,7 @@ Just edit [nprogress.css](http://ricostacruz.com/nprogress/nprogress.css) to you
 You can [configure](https://github.com/rstacruz/nprogress#configuration) it by passing an object as a second parameter.
 
 ```js {4}
-import { useNProgress } from '@vueuse/integrations'
+import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 useNProgress(null, {
   minimum: 0.1,

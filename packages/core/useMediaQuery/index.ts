@@ -23,22 +23,16 @@ export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
     matches.value = event.matches
   }
 
-  if ('addEventListener' in mediaQuery) {
+  if ('addEventListener' in mediaQuery)
     mediaQuery.addEventListener('change', handler)
-  }
-  else {
-    // @ts-expect-error - fallback for Safari < 14 and older browsers
+  else
     mediaQuery.addListener(handler)
-  }
 
   tryOnUnmounted(() => {
-    if ('removeEventListener' in mediaQuery) {
+    if ('removeEventListener' in mediaQuery)
       mediaQuery.removeEventListener('change', handler)
-    }
-    else {
-      // @ts-expect-error - fallback for Safari < 14 and older browsers
+    else
       mediaQuery.removeListener(handler)
-    }
   })
 
   return matches

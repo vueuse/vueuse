@@ -5,11 +5,13 @@ on:
     branches:
       - main
       - dev
+      - next
 
   pull_request:
     branches:
       - main
       - dev
+      - next
 
 jobs:
   test:

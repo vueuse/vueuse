@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
 import dayjs from 'dayjs'
-import { defineComponent, computed, ref, nextTick } from 'vue-demi'
+import { computed, ref, nextTick } from 'vue-demi'
 import { useWebWorkerFn } from '.'
 import { useTimestamp } from '../useTimestamp'
 
@@ -13,7 +12,7 @@ const heavyTask = () => {
 }
 
 const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask)
-const { timestamp: time } = useTimestamp()
+const time = useTimestamp()
 const computedTime = computed(() => dayjs(time.value).format('YYYY-MM-DD HH:mm:ss SSS'))
 const running = computed(() => workerStatus.value === 'RUNNING')
 

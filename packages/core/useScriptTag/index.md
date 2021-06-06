@@ -99,6 +99,7 @@ export declare function useScriptTag(
   load: (waitForScriptLoad?: boolean) => Promise<HTMLScriptElement | boolean>
   unload: () => void
 }
+export declare type UseScriptTagReturn = ReturnType<typeof useScriptTag>
 ```
 
 ## Source

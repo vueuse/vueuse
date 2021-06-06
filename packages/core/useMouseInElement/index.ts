@@ -82,3 +82,5 @@ export function useMouseInElement(
     stop,
   }
 }
+
+export type UseMouseInElementReturn = ReturnType<typeof useMouseInElement>

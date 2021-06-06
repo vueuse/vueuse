@@ -5,7 +5,7 @@ import { useTimestamp } from '../useTimestamp'
 
 const { idle, lastActive } = useIdle(5000)
 
-const { timestamp: now } = useTimestamp()
+const now = useTimestamp()
 
 const idledFor = computed(() =>
   Math.floor((now.value - lastActive.value) / 1000),

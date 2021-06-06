@@ -1,56 +1,160 @@
----
-sidebar: auto
----
-
 # Guidelines
 
-Writing good composables can be difficult, so we've created a small set of guidelines you can follow to improve your composables!
+Here are the guidelines for VueUse functions. You could also take them as a reference for authoring your own composable functions or apps.
+
+You can also find some reasons for those design decisions and also some tips for writing composable functions with [Anthony Fu](https://github.com/antfu)'s talk about VueUse:
+
+- [Composable Vue](https://antfu.me/posts/composable-vue-vueday-2021) - at VueDay 2021
+- [可组合的 Vue](https://antfu.me/posts/composable-vue-vueconf-china-2021) - at VueConf China 2021 (in Chinese)
 
 ## General
-- Avoid using console logs in VueUse
-- Use configurableWindow (etc.) when using global variables like window to be flexible when working with multi-windows, testing mocks, and SSR.
+
+- Import all Vue APIs from `"vue-demi"`
+- Use `ref` instead `reactive` whenever possible
 - Use options object as arguments whenever possible to be more flexible for future extensions.
-- Use `ref` over `reactive` whenever possible
 - Use `shallowRef` instead of `ref` when wrapping large amounts of data.
+- Use `configurableWindow` (etc.) when using global variables like `window` to be flexible when working with multi-windows, testing mocks, and SSR.
 - When involved with Web APIs that are not yet implemented by the browser widely, also outputs `isSupported` flag
 - When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible
 - Use `tryOnUnmounted`  to clear the side-effects gracefully
+- Avoid using console logs
 
+Read also: [Best Practice](/guide/best-practice.html)
+
+## ShallowRef
+
+Use `shallowRef` instead of `ref` when wrapping large amounts of data.
+
+```ts
+export function useFetch<T>(url: MaybeRef<string>) {
+  // use `shallowRef` to prevent deep reactivity
+  const data = shallowRef<T | undefined>()
+  const error = shallowRef<Error | undefined>()
+
+  fetch(unref(url))
+    .then(r => r.json())
+    .then(r => data.value = r)
+    .catch(e => error.value = e)
+
+  /* ... */
+}
+```
+
+## Configurable Globals
+
+When using global variables like `window` or `document`, support `configurableWindow` or `configurableDocument` in the options interface to make the function flexible when for scenarios like multi-windows, testing mocks, and SSR.
+
+Learn more about the implementation: [`_configurable.ts`](https://github.com/vueuse/vueuse/blob/main/packages/core/_configurable.ts)
+
+```ts
+import { ConfigurableWindow, defaultWindow } from '../_configurable'
+
+export function useActiveElement<T extends HTMLElement>(
+  options: ConfigurableWindow = {}
+) {
+  const {
+    // defaultWindow = isClient ? window : undefined
+    window = defaultWindow
+  } = options
+
+  let el: T
+  
+  // skip when in Node.js environment (SSR)
+  if (window) {
+    window.addEventListener('blur', () => {
+      el = window?.document.activeElement
+    }, true)
+  }
+
+  /* ... */
+}
+```
+
+Usage example:
+
+```ts
+// in iframe and bind to the parent window
+useActiveElement({ window: window.parent })
+```
+
+## Watch Options
+
+When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `debouncedWatch`:
+
+```ts
+import { WatchOptions } from 'vue-demi'
+
+// extend the watch options
+export interface DebouncedWatchOptions extends WatchOptions {
+  debounce?: number
+}
+
+export function debouncedWatch(
+  source: any,
+  cb: any,
+  options: DebouncedWatchOptions = {},
+): WatchStopHandle {
+  return watch(
+    source,
+    () => /* ... */,
+    options, // pass watch options
+  )
+}
+```
 
 ## Controls
 
-In VueUse 5.0, we introduced a `controls` option, allowing you to write functions that can return both a single value as well as
-an object with controls.
+We use the `controls` option allowing users to use functions with a single return for simple usages, while being able to have more controls and flexibility when needed. Read more: [#362](https://github.com/vueuse/vueuse/pull/362).
 
-*When to provide a `controls` option*
+#### When to provide a `controls` option
 
-- If the return value of the function is often used without controls
+- The function is more commonly used with single `ref` or 
 - Examples: `useTimestamp`, `useInterval`,
 
-**Instead of this**
 ```ts
-const { timestamp, pause, resume } = useTimestamp()
-```
-
-**Do this**
-```ts
+// common usage
 const timestamp = useTimestamp()
+
+// more controls for flexibility
 const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ```
 
-*When **not** to provide a `controls` option*
-- If the function is often used without a return value
-- If controls are the primary use of the function
-- Examples: `useRafFn`,
+Refer to `useTimestamp`'s source code for the implementation of proper TypeScript support.
 
-**Instead of this**
-```ts
-const { pause, resume } = useRafFn(() => {}, { controls: true })
-```
+#### When **NOT** to provide a `controls` option
 
-**Do this**
+- The function is more commonly used with multiple returns
+- Examples: `useRafFn`, `useRefHistory`,
+
 ```ts
 const { pause, resume } = useRafFn(() => {})
+```
+
+## `isSupported` Flag
+
+When involved with Web APIs that are not yet implemented by the browser widely, also outputs `isSupported` flag.
+
+For example `useShare`:
+
+```ts
+export function useShare(
+  shareOptions: MaybeRef<ShareOptions> = {},
+  options: ConfigurableNavigator = {}
+) {
+  const { navigator = defaultNavigator } = options
+  const isSupported = navigator && 'canShare' in navigator
+
+  const share = async(overrideOptions) => {
+    if (isSupported) {
+      /* ...implementation */ 
+    }
+  }
+
+  return {
+    isSupported,
+    share,
+  }
+}
 ```
 
 ## Renderless Components
@@ -58,21 +162,8 @@ const { pause, resume } = useRafFn(() => {})
 - Use render functions instead of Vue SFC
 - Wrap the props in `reactive` to easily pass them as props to the slot
 - Prefer to use the functions options as prop types instead of recreating them yourself
-- Only wrap the slot in an html element if the function needs a target to bind to
+- Only wrap the slot in an HTML element if the function needs a target to bind to
 
-**Instead of this**
-```html
-<script setup>
-import { useMouse } from '@vueuse/core'
-const mouse = useMouse()
-</script>
-
-<template>
-  <slot v-bind="mouse">
-</template>
-```
-
-**Do this**
 ```ts
 import { defineComponent, reactive } from 'vue-demi'
 import { useMouse, MouseOptions } from '@vueuse/core'
@@ -91,7 +182,7 @@ export const UseMouse = defineComponent<MouseOptions>({
 })
 ```
 
-Sometimes a function may have multiple parameters, in that case you maybe need to create a new interface to merge all the interfaces
+Sometimes a function may have multiple parameters, in that case, you maybe need to create a new interface to merge all the interfaces
 into a single interface for the component props.
 
 ```ts

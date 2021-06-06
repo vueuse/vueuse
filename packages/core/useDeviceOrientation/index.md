@@ -28,6 +28,18 @@ const {
 
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#Properties).
 
+## Component
+
+```html
+<UseDeviceOrientation v-slot="{ alpha, beta, gamma }">
+  Alpha: {{ alpha }}
+  Beta: {{ beta }}
+  Gamma: {{ gamma }}
+</UseDeviceOrientation>
+```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
@@ -39,15 +51,16 @@ You can find [more information about the state on the MDN](https://developer.moz
  * @see https://vueuse.org/useDeviceOrientation
  * @param options
  */
-export declare function useDeviceOrientation(
-  options?: ConfigurableWindow
-): {
+export declare function useDeviceOrientation(options?: ConfigurableWindow): {
   isSupported: boolean
   isAbsolute: Ref<boolean>
   alpha: Ref<number | null>
   beta: Ref<number | null>
   gamma: Ref<number | null>
 }
+export declare type UseDeviceOrientationReturn = ReturnType<
+  typeof useDeviceOrientation
+>
 ```
 
 ## Source

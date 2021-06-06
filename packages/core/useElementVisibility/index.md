@@ -33,6 +33,16 @@ export default {
 </script>
 ```
 
+## Component
+
+```html
+<UseElementVisibility v-slot="{ isVisible }">
+  Is Visible: {{ isVisible }}
+<UseElementVisibility>
+```
+
+<LearnMoreComponents />
+
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

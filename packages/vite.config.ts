@@ -9,10 +9,16 @@ import WindiCSS from 'vite-plugin-windicss'
 
 const config: UserConfig = {
   resolve: {
-    alias: [
-      { find: '@vueuse/shared', replacement: resolve(__dirname, 'shared/index.ts') },
-      { find: '@vueuse/core', replacement: resolve(__dirname, 'core/index.ts') },
-      { find: '@vueuse/docs-utils', replacement: resolve(__dirname, '.vitepress/utils.ts') },
+    alias: {
+      '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
+      '@vueuse/core': resolve(__dirname, 'core/index.ts'),
+      '@vueuse/components': resolve(__dirname, 'components/index.ts'),
+      '@vueuse/docs-utils': resolve(__dirname, '.vitepress/utils.ts'),
+    },
+    dedupe: [
+      'vue',
+      'vue-demi',
+      '@vue/runtime-core',
     ],
   },
   optimizeDeps: {
@@ -30,8 +36,6 @@ const config: UserConfig = {
       'rxjs',
       'tslib',
       'universal-cookie',
-      'vue-chemistry',
-      'vue-chemistry/boolean',
     ],
   },
   server: {

@@ -119,6 +119,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       }
     }
     catch (e) {
+      // eslint-disable-next-line no-console
       console.warn(e)
     }
   }
@@ -141,6 +142,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
           storage.setItem(key, serializer.write(data.value))
       }
       catch (e) {
+        // eslint-disable-next-line no-console
         console.warn(e)
       }
     },

@@ -43,6 +43,9 @@ export default defineComponent({
 export declare function createGlobalState<T extends object>(
   stateFactory: () => T
 ): () => T
+export declare type CreateGlobalStateReturn = ReturnType<
+  typeof createGlobalState
+>
 ```
 
 ## Source
