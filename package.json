@@ -11,7 +11,7 @@
   "scripts": {
     "build": "esno scripts/build.ts",
     "build:redirects": "esno scripts/redirects.ts",
-    "build:rollup": "rollup -c",
+    "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr docs",

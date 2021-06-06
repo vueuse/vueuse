@@ -10,7 +10,7 @@
 npm i <b>@vueuse/components</b> @vueuse/core
 </pre>
 
-Learn more about [component usage](https://next.vueuse.org/guide/components).
+Learn more about [component usage](https://vueuse.org/guide/components).
 
 ## License
 
