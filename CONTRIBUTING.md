@@ -92,6 +92,8 @@ for `index.md` the first sentence will be displayed as the short intro in the fu
 This will be the intro. The detail descriptions...
 ```
 
+Read more about the [guidelines](https://vueuse.org/guidelines).
+
 ## Code Style
 
 Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.
