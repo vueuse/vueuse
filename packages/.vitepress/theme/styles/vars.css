@@ -67,7 +67,7 @@
 }
 
 html.dark {
-  --c-bg: #111;
+  --c-bg: #222;
   --c-bg-semi: rgba(17,17,17,0.8);
   --c-bg-secondary: #222;
   --c-text: #f5f7fa;
@@ -82,6 +82,8 @@ html.dark {
 
   --c-disabled-bg: #333;
   --c-disabled-fg: #aaa;
+  
+  --c-brand-dark: #44bb83
 }
 
 /** Fallback Styles */
