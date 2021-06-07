@@ -35,7 +35,10 @@ export function useTitle(
       if (isString(t) && t !== o && document)
         document.title = t
     },
-    { immediate: true },
+    { 
+      immediate: true ,
+      flush: 'post'
+    },
   )
 
   if (observe && document) {
