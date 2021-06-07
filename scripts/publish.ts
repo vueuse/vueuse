@@ -6,6 +6,6 @@ import consola from 'consola'
 execSync('npm run build', { stdio: 'inherit' })
 
 for (const { name } of activePackages) {
-  execSync('npm publish --access public --tag next', { stdio: 'inherit', cwd: path.join('packages', name, 'dist') })
+  execSync('npm publish --access public', { stdio: 'inherit', cwd: path.join('packages', name, 'dist') })
   consola.success(`Published @vueuse/${name}`)
 }
