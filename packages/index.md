@@ -4,7 +4,7 @@ actionText: All Functions
 actionLink: /functions
 
 altActionText: Get Started
-altActionLink: /guide
+altActionLink: /guide/index
 
 features:
   - title: 🕶 Seamless migration
