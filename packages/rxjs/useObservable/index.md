@@ -4,7 +4,8 @@ category: '@RxJS'
 
 # useObservable
 
-Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
+Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted. It also returns an `onError` hook registration point that can be used to register 
+handlers for errors that are emitted by the observable.
 
 ## Usage
 
@@ -15,13 +16,18 @@ import { interval } from 'rxjs'
 import { mapTo, startWith, scan } from 'rxjs/operators'
 
 // setup()
-const count = useObservable(
+const { out: count, onError } = useObservable(
   interval(1000).pipe(
     mapTo(1),
     startWith(0),
     scan((total, next) => next + total),
   )
 )
+
+// Optional
+onError(err => {
+  console.log('An error occurred in the observable')
+})
 ```
 
 
@@ -31,7 +37,10 @@ const count = useObservable(
 ```typescript
 export declare function useObservable<H>(
   observable: Observable<H>
-): Readonly<Ref<H>>
+): {
+  out: Readonly<Ref<H>>;
+  onError: (cb: (error: any) => void) => void;
+}
 ```
 
 ## Source
