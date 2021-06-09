@@ -39,12 +39,12 @@ const count = useObservable(
       if (n === 10) {
         throw new Error('oops')
       }
-      return n + n;
+      return n + n
     })
   ),
   {
     onError: err => {
-      console.log(err.message); // "oops"
+      console.log(err.message) // "oops"
     }
   }
 )
@@ -55,9 +55,8 @@ const count = useObservable(
 
 ```typescript
 export interface UseObservableOptions {
-  onError?: (error: any) => void;
+  onError?: (err: any) => void
 }
-
 export declare function useObservable<H>(
   observable: Observable<H>,
   options?: UseObservableOptions
