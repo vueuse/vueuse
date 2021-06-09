@@ -1049,6 +1049,13 @@
       "docs": "https://vueuse.org/electron/useIpcRendererOn/",
       "category": "@Electron",
       "description": "use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted"
+    },
+    {
+      "name": "useZoomFactor",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useZoomFactor/",
+      "category": "@Electron",
+      "description": "reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor"
     }
   ]
 }
