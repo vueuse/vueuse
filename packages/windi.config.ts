@@ -4,7 +4,7 @@ export default defineConfig({
   extract: {
     include: [
       '**/*.vue',
-      '.vitepress/**/*.vue',
+      '.vitepress/theme/**/*.vue',
     ],
   },
   theme: {

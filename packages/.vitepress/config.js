@@ -87,6 +87,7 @@ const config = {
       {
         text: 'More',
         items: [
+          { text: 'Playground', link: 'https://play.vueuse.org' },
           { text: 'Ecosystem', link: '/ecosystem' },
           { text: 'Export Size', link: '/export-size' },
         ],
