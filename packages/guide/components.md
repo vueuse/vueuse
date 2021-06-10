@@ -64,4 +64,4 @@ Similarly, you can also access return values with `v-slot`:
 $ npm i @vueuse/core @vueuse/components
 ```
 
-Refer to each functions docuemantions for the detailed usage of component style.
+Refer to each function's documentation for the detailed usage of component style.
