@@ -40,15 +40,15 @@ export function computedInject<T, K = any>(
   defaultSource?: T | (() => T),
   treatDefaultAsFactory?: boolean,
 ) {
-  let source: T | (() => T) | undefined = inject(key)
-  if (defaultSource) source = inject(key, defaultSource)
-  if (treatDefaultAsFactory) source = inject(key, defaultSource, treatDefaultAsFactory ?? false)
+  let source = inject(key) as T | undefined
+  if (defaultSource) source = inject(key, defaultSource) as T
+  if (treatDefaultAsFactory) source = inject(key, defaultSource, treatDefaultAsFactory) as T
   if (typeof options === 'function') {
-    return computed(ctx => options(source as (T | undefined), ctx))
+    return computed(ctx => options(source, ctx))
   }
   else {
     return computed({
-      get: ctx => options.get(source as (T | undefined), ctx),
+      get: ctx => options.get(source, ctx),
       set: options.set,
     })
   }
