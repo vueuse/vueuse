@@ -99,6 +99,7 @@
   - [`asyncComputed`](https://vueuse.org/core/asyncComputed/) — computed for async functions
   - [`autoResetRef`](https://vueuse.org/core/autoResetRef/) — a ref which will be reset to the default value after some time
   - [`biSyncRef`](https://vueuse.org/shared/biSyncRef/) — two-way refs synchronization
+  - [`computedInject`](https://vueuse.org/core/computedInject/) — explicitly define the deps of computed
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks

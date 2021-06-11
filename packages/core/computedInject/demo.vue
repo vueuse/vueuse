@@ -1,36 +1,29 @@
 <script lang="ts">
-import { defineComponent, InjectionKey, Ref, provide, ref } from 'vue-demi'
-import { computedInject } from '.'
+import { defineComponent, provide, ref } from 'vue-demi'
+import Receiver, { ArrayKey } from './demoReceiver.vue'
 
-type OptionsRef = Ref<{ key: number; value: string }[]>
-
-export default defineComponent({
+const Provider = defineComponent({
+  components: {
+    Receiver,
+  },
   setup() {
-    const ArrayKey: InjectionKey<OptionsRef> = Symbol('array')
-
     const array = ref([{ key: 1, value: '1' }, { key: 2, value: '2' }, { key: 3, value: '3' }])
 
     provide(ArrayKey, array)
 
-    const computedArr = computedInject(ArrayKey, (source) => {
-      if (!source) return ref([]) as OptionsRef
-      const arr = [...source.value]
-      arr.unshift({ key: 0, value: 'all' })
-      return arr
-    })
-
     return {
       array,
-      computedArr,
     }
   },
 })
+
+export default Provider
 
 </script>
 
 <template>
   <div>
     <p>Array: {{ array }}</p>
-    <p>ComputedArray: {{ computedArr }}</p>
+    <Receiver />
   </div>
 </template>
