@@ -41,4 +41,21 @@ level.value = 2 // zoom level will change
 
 
 <!--FOOTER_STARTS-->
+## Type Declarations
+
+```typescript
+export declare function useZoomLevel(level: MaybeRef<number>): Ref<number>
+export declare function useZoomLevel(
+  webFrame: WebFrame,
+  level: MaybeRef<number>
+): Ref<number>
+export declare function useZoomLevel(webFrame: WebFrame): Ref<number>
+export declare function useZoomLevel(): Ref<number>
+```
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/electron/useZoomLevel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/electron/useZoomLevel/index.md)
+
+
 <!--FOOTER_ENDS-->

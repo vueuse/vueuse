@@ -1056,6 +1056,13 @@
       "docs": "https://vueuse.org/electron/useZoomFactor/",
       "category": "@Electron",
       "description": "reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor"
+    },
+    {
+      "name": "useZoomLevel",
+      "package": "electron",
+      "docs": "https://vueuse.org/electron/useZoomLevel/",
+      "category": "@Electron",
+      "description": "reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level"
     }
   ]
 }
