@@ -22,7 +22,7 @@ export function useInterval(interval?: number, options?: IntervalOptions<false>)
 export function useInterval(interval: number, options: IntervalOptions<true>): { counter: Ref<number> } & Pausable
 export function useInterval(interval = 1000, options: IntervalOptions<boolean> = {}) {
   const {
-    controls: exposeControls = true,
+    controls: exposeControls = false,
     immediate = true,
   } = options
 
