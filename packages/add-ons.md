@@ -85,6 +85,7 @@ Electron renderer process modules for VueUse
   - [`useIpcRendererInvoke`](https://vueuse.org/electron/useIpcRendererInvoke/) — reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result
   - [`useIpcRendererOn`](https://vueuse.org/electron/useIpcRendererOn/) — use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted
   - [`useZoomFactor`](https://vueuse.org/electron/useZoomFactor/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor
+  - [`useZoomLevel`](https://vueuse.org/electron/useZoomLevel/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level
 
 
 <!--ADDONS_LIST_ENDS-->
