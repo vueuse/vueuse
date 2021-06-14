@@ -2,7 +2,7 @@
 category: Utilities
 ---
 
-# and
+# or
 
 `OR` conditions for refs.
 
