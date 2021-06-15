@@ -38,7 +38,7 @@ export default {
 ```html
 <UseElementVisibility v-slot="{ isVisible }">
   Is Visible: {{ isVisible }}
-<UseElementVisibility>
+</UseElementVisibility>
 ```
 
 <LearnMoreComponents />
