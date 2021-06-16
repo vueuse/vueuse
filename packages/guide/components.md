@@ -22,7 +22,7 @@ onClickOutside(el, close)
   <div ref="el">
     Click Outside of Me
   </div>
-<template>
+</template>
 ```
 
 You can now use it in the component way:
