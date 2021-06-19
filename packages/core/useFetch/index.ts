@@ -67,6 +67,12 @@ interface UseFetchReturnBase<T> {
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'get' | 'post' | 'put' | 'delete'
 
+const payloadMapping: Record<string, string> = {
+  json: 'application/json',
+  text: 'text/plain',
+  formData: 'multipart/form-data',
+}
+
 interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
   // methods
   get(): UseFetchReturnBase<T>
@@ -286,7 +292,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (config.payload) {
       const headers = defaultFetchOptions.headers as Record<string, string>
       if (config.payloadType)
-        headers['Content-Type'] = config.payloadType === 'json' ? 'application/json' : config.payloadType
+        headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
       defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(config.payload) : config.payload as BodyInit
     }
