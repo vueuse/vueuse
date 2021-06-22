@@ -50,7 +50,7 @@ Explicitly calling `close()` won't trigger the auto reconnection.
 
 ### Heartbeat
 
-It's common practice to send a small message (heartbeat) for every given time passed to keep the connection active. In this function we provide a connivent helper to do it:
+It's common practice to send a small message (heartbeat) for every given time passed to keep the connection active. In this function we provide a convenient helper to do it:
 
 ```js
 const { status, data, close } = useWebSocket('ws://websocketurl', {
