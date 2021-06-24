@@ -50,7 +50,7 @@ export default {
 
     return { x, y, isDark, store }
   }
-})
+}
 ```
 
 Refer to [functions list](/functions) for more details.
