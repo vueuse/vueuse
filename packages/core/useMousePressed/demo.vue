@@ -7,8 +7,7 @@ import { useMousePressed } from '.'
 const el = ref<Element | null>(null)
 const [withTarget, toggle] = useToggle()
 const target = computed<Element | null>(() => {
-  if (withTarget.value)
-    return el.value
+  if (withTarget.value) return el.value
   return window as any as Element
 })
 
@@ -24,6 +23,12 @@ const text = stringify(mouse)
       <button class="ml-2 button small" @click="toggle">
         {{ withTarget ? 'Demo section' : 'Entire page' }}
       </button>
+    </div>
+    <div
+      class="h-40 w-40 bg-green-200 p-3 flex flex-row items-center text-center"
+      @drop.prevent="() => {}"
+    >
+      Drop something here to try drag and drop.
     </div>
   </div>
 </template>

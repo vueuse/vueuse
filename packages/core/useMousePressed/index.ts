@@ -48,6 +48,10 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     }
   }
 
+  const onPressed = (srcType: MouseSourceType) => () => {
+    pressed.value = true
+    sourceType.value = srcType
+  }
   const onReleased = () => {
     pressed.value = false
     sourceType.value = null
@@ -55,26 +59,20 @@ export function useMousePressed(options: MousePressedOptions = {}) {
 
   const target = computed(() => unrefElement(options.target) || window)
 
+  useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true })
+  useEventListener(target, 'dragover', onPressed('mouse'), { passive: true })
+  useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true })
+
   useEventListener(window, 'mouseleave', onReleased, { passive: true })
   useEventListener(window, 'mouseup', onReleased, { passive: true })
-  useEventListener(target, 'mousedown',
-    () => {
-      pressed.value = true
-      sourceType.value = 'mouse'
-    },
-    { passive: true },
-  )
+  useEventListener(target, 'drop', onReleased, { passive: true })
+  useEventListener(target, 'dragleave', onReleased, { passive: true })
+  useEventListener(target, 'dragend', onReleased, { passive: true })
 
   if (touch) {
     useEventListener(window, 'touchend', onReleased, { passive: true })
     useEventListener(window, 'touchcancel', onReleased, { passive: true })
-    useEventListener(target, 'touchstart',
-      () => {
-        pressed.value = true
-        sourceType.value = 'touch'
-      },
-      { passive: true },
-    )
+    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true })
   }
 
   return {
