@@ -62,6 +62,7 @@ export function useMouse(options: MouseOptions = {}) {
 
   if (window) {
     useEventListener(window, 'mousemove', mouseHandler, { passive: true })
+    useEventListener(window, 'dragover', mouseHandler, { passive: true })
     if (touch) {
       useEventListener(window, 'touchstart', touchHandler, { passive: true })
       useEventListener(window, 'touchmove', touchHandler, { passive: true })
