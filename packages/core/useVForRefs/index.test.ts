@@ -16,7 +16,7 @@ const keyedTemplateVFor = `
 </template>
 `
 
-describe('useCounter', () => {
+describe('useVForRefs', () => {
   it('should be defined', () => {
     expect(useVForRefs).toBeDefined()
   })
