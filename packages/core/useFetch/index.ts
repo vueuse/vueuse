@@ -326,14 +326,15 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           let responseData = await fetchResponse[config.type]()
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok)
-            throw new Error(fetchResponse.statusText)
-
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
 
           data.value = responseData as any
+
+          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+          if (!fetchResponse.ok)
+            throw new Error(fetchResponse.statusText)
+
           responseEvent.trigger(fetchResponse)
           resolve(fetchResponse)
         })
