@@ -30,6 +30,10 @@ You can now use it in the component way:
 ```html
 <script setup>
 import { OnClickOutside } from '@vueuse/components'
+
+function close () {
+  /* ... */
+}
 </script>
 
 <template>
