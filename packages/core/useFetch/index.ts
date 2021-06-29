@@ -65,14 +65,20 @@ interface UseFetchReturnBase<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type PayloadType = 'text' | 'json' | 'formData'
+type HttpMethod = 'get' | 'post' | 'put' | 'delete'
+
+const payloadMapping: Record<string, string> = {
+  json: 'application/json',
+  text: 'text/plain',
+  formData: 'multipart/form-data',
+}
 
 interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
   // methods
   get(): UseFetchReturnBase<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
-  delete(payload?: unknown, type?: PayloadType): UseFetchReturnBase<T>
+  post(payload?: unknown, type?: string): UseFetchReturnBase<T>
+  put(payload?: unknown, type?: string): UseFetchReturnBase<T>
+  delete(payload?: unknown, type?: string): UseFetchReturnBase<T>
 }
 
 export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
@@ -213,11 +219,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false }
-  const config = {
+  type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
+  const config: InternalConfig = {
     method: 'get',
     type: 'text' as DataType,
     payload: undefined as unknown,
-    payloadType: 'json' as PayloadType,
   }
 
   if (args.length > 0) {
@@ -285,16 +291,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     if (config.payload) {
       const headers = defaultFetchOptions.headers as Record<string, string>
-      if (config.payloadType === 'json') {
-        defaultFetchOptions.body = JSON.stringify(config.payload)
-        headers['Content-Type'] = 'application/json'
-      }
-      else {
-        defaultFetchOptions.body = config.payload as any
-        headers['Content-Type'] = config.payloadType === 'formData'
-          ? 'multipart/form-data'
-          : 'text/plain'
-      }
+      if (config.payloadType)
+        headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
+
+      defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(config.payload) : config.payload as BodyInit
     }
 
     let isCanceled = false
@@ -392,12 +392,17 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     formData: setType('formData'),
   }
 
-  function setMethod(method: string) {
-    return (payload?: unknown, payloadType?: PayloadType) => {
+  function setMethod(method: HttpMethod) {
+    return (payload?: unknown, payloadType?: string) => {
       if (!isFetching.value) {
         config.method = method
         config.payload = payload
-        config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
+        config.payloadType = payloadType
+        // Set the payload to json type only if it's not provided and a literal object is provided
+        // The only case we can deduce the content type and `fetch` can't
+        if (!payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype)
+          config.payloadType = 'json'
+
         return base as any
       }
       return undefined
