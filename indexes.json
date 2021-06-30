@@ -875,6 +875,13 @@
       "description": "reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming"
     },
     {
+      "name": "useVForRefs",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useVForRefs/",
+      "category": "Component",
+      "description": "shorthand for v-for Array Refs"
+    },
+    {
       "name": "useVModel",
       "package": "core",
       "docs": "https://vueuse.org/core/useVModel/",

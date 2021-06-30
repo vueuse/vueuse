@@ -43,6 +43,7 @@
   - [`tryOnMounted`](https://vueuse.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
+  - [`useVForRefs`](https://vueuse.org/core/useVForRefs/) — shorthand for v-for Array Refs
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
