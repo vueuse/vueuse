@@ -25,5 +25,11 @@ const text = stringify(mouse)
         {{ withTarget ? 'Demo section' : 'Entire page' }}
       </button>
     </div>
+    <div
+      class="h-40 w-40 bg-green-200 p-3 flex flex-row items-center text-center"
+      @drop.prevent="() => {}"
+    >
+      Drop something here to try drag and drop.
+    </div>
   </div>
 </template>
