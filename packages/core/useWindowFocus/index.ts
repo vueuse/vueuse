@@ -9,7 +9,8 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  * @param options
  */
 export function useWindowFocus({ window = defaultWindow }: ConfigurableWindow = {}): Ref<boolean> {
-  if (!window) return ref(false)
+  if (!window)
+    return ref(false)
 
   const focused = ref(window.document.hasFocus())
 

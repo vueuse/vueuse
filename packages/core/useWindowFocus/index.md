@@ -33,7 +33,7 @@ const focused = useWindowFocus()
  */
 export declare function useWindowFocus({
   window,
-}?: ConfigurableWindow: Ref<boolean>
+}?: ConfigurableWindow): Ref<boolean>
 ```
 
 ## Source
