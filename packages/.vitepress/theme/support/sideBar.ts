@@ -1,10 +1,5 @@
-import type { DefaultTheme } from '../config'
-import {
-  isArray,
-  ensureSlash,
-  ensureStartingSlash,
-  removeExtention,
-} from '../utils'
+import { DefaultTheme } from '../config'
+import { isArray, ensureStartingSlash, removeExtention } from '../utils'
 
 export function isSideBarConfig(
   sidebar: DefaultTheme.SideBarConfig | DefaultTheme.MultiSideBarConfig,
@@ -16,6 +11,10 @@ export function isSideBarGroup(
   item: DefaultTheme.SideBarItem,
 ): item is DefaultTheme.SideBarGroup {
   return (item as DefaultTheme.SideBarGroup).children !== undefined
+}
+
+export function isSideBarEmpty(sidebar?: DefaultTheme.SideBarConfig): boolean {
+  return isArray(sidebar) ? sidebar.length === 0 : !sidebar
 }
 
 /**
@@ -31,15 +30,12 @@ export function getSideBarConfig(
   if (isSideBarConfig(sidebar))
     return sidebar
 
-  // get the very first segment of the path to compare with nulti sidebar keys
-  // and make sure it's surrounded by slash
-  path = removeExtention(path)
-  path = ensureStartingSlash(path).split('/')[1] || '/'
-  path = ensureSlash(path)
+  path = ensureStartingSlash(path)
 
-  for (const dir of Object.keys(sidebar)) {
-    // make sure the multi sidebar key is surrounded by slash too
-    if (path === ensureSlash(dir))
+  // eslint-disable-next-line no-restricted-syntax
+  for (const dir in sidebar) {
+    // make sure the multi sidebar key starts with slash too
+    if (path.startsWith(ensureStartingSlash(dir)))
       return sidebar[dir]
   }
 

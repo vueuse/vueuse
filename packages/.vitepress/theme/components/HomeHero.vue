@@ -23,43 +23,41 @@
     </div>
 
     <NavLink
-      v-if="hasAction"
-      :item="{ link: data.actionLink, text: data.actionText }"
-      class="action mx-2"
+      v-if="frontmatter.actionLink && frontmatter.actionText"
+      :item="{ link: frontmatter.actionLink, text: frontmatter.actionText }"
+      class="action"
     />
 
     <NavLink
-      v-if="hasAltAction"
-      :item="{ link: data.altActionLink, text: data.altActionText }"
-      class="action alt mx-2"
+      v-if="frontmatter.altActionLink && frontmatter.altActionText"
+      :item="{
+        link: frontmatter.altActionLink,
+        text: frontmatter.altActionText
+      }"
+      class="action alt"
     />
   </header>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSiteDataByRoute, useFrontmatter } from 'vitepress'
-import { isDark } from '../composables/dark'
+import { useData, withBase } from 'vitepress'
 import NavLink from './NavLink.vue'
 
-const site = useSiteDataByRoute()
-const data = useFrontmatter()
-
-const hasHeroText = computed(() => data.value.heroText !== null)
-const heroText = computed(() => data.value.heroText || site.value.title)
-
-const hasTagline = computed(() => data.value.tagline !== null)
-const tagline = computed(() => data.value.tagline || site.value.description)
-
-const hasAction = computed(() => data.value.actionLink && data.value.actionText)
-const hasAltAction = computed(() => data.value.altActionLink && data.value.altActionText)
+const { site, frontmatter } = useData()
 
 const showHero = computed(() => {
-  return data.value.heroImage
-    || hasHeroText.value
-    || hasTagline.value
-    || hasAction.value
+  const {
+    heroImage,
+    heroText,
+    tagline,
+    actionLink,
+    actionText,
+  } = frontmatter.value
+  return heroImage || heroText || tagline || (actionLink && actionText)
 })
+
+const heroText = computed(() => frontmatter.value.heroText || site.value.title)
 </script>
 
 <style scoped>

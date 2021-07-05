@@ -1,12 +1,10 @@
-import { computed, Ref, ref } from 'vue-demi'
-import { useRoute } from 'vitepress'
-import type { DefaultTheme } from '../config'
+import { computed, Ref } from 'vue'
+import { useRoute, withBase } from 'vitepress'
 import { isExternal as isExternalCheck } from '../utils'
-import { useUrl } from '../composables/url'
+import type { DefaultTheme } from '../config'
 
 export function useNavLink(item: Ref<DefaultTheme.NavItemWithLink>) {
   const route = useRoute()
-  const { withBase } = useUrl()
 
   const isExternal = isExternalCheck(item.value.link)
 
@@ -49,10 +47,4 @@ function normalizePath(path: string): string {
     .replace(/\?.*$/, '')
     .replace(/\.(html|md)$/, '')
     .replace(/\/index$/, '/')
-}
-
-function normalizePathWithHash(path: string): string {
-  const hash = path.match(/#.*$/)?.[0] || ''
-  path = normalizePath(path) + hash
-  return path
 }

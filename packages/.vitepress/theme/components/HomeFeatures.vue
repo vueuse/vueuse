@@ -1,9 +1,33 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+
+const hasFeatures = computed(() => {
+  return frontmatter.value.features && frontmatter.value.features.length > 0
+})
+
+interface Feature {
+  title?: string
+  details?: string
+}
+
+const features = computed<Feature[]>(() => {
+  return frontmatter.value.features ? frontmatter.value.features : []
+})
+</script>
+
 <template>
   <div v-if="hasFeatures" class="home-features">
     <div class="wrapper">
       <div class="container">
         <div class="features">
-          <section v-for="(feature, index) in features" :key="index" class="feature">
+          <section
+            v-for="(feature, index) in features"
+            :key="index"
+            class="feature"
+          >
             <h2 v-if="feature.title" class="title">
               {{ feature.title }}
             </h2>
@@ -16,21 +40,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useSiteDataByRoute, useFrontmatter } from 'vitepress'
-
-const data = useFrontmatter()
-
-const hasFeatures = computed(() => {
-  return data.value.features && data.value.features.length > 0
-})
-
-const features = computed(() => {
-  return data.value.features ? data.value.features : []
-})
-</script>
 
 <style scoped>
 .home-features {
@@ -65,7 +74,7 @@ const features = computed(() => {
 }
 
 .home-hero + .home-features .wrapper {
-  /* border-top: 1px solid var(--c-divider); */
+  border-top: 1px solid var(--c-divider);
   padding-top: 2.5rem;
 }
 

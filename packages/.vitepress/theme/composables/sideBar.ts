@@ -1,13 +1,12 @@
-import { computed } from 'vue-demi'
-import { useRoute, useSiteDataByRoute } from 'vitepress'
-// import { Header } from '/@types/shared'
+import { computed } from 'vue'
+import { useRoute, useData, Header } from 'vitepress'
 import { useActiveSidebarLinks } from '../composables/activeSidebarLink'
 import { getSideBarConfig } from '../support/sideBar'
 import { DefaultTheme } from '../config'
 
 export function useSideBar() {
   const route = useRoute()
-  const site = useSiteDataByRoute()
+  const { site } = useData()
 
   useActiveSidebarLinks()
 
@@ -28,7 +27,7 @@ export function useSideBar() {
     // now, there's no sidebar setting at frontmatter; let's see the configs
     const themeSidebar = getSideBarConfig(
       site.value.themeConfig.sidebar,
-      route.path,
+      route.data.relativePath,
     )
 
     if (themeSidebar === false)
@@ -42,7 +41,7 @@ export function useSideBar() {
 }
 
 function resolveAutoSidebar(
-  headers: any[],
+  headers: Header[],
   depth: number,
 ): DefaultTheme.SideBarItem[] {
   const ret: DefaultTheme.SideBarItem[] = []

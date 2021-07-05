@@ -1,16 +1,21 @@
+<script setup lang="ts">
+import { withBase, useData } from 'vitepress'
+const { site, theme, localePath } = useData()
+</script>
+
 <template>
   <a
     class="nav-bar-title"
-    :href="$site.base"
-    :aria-label="`${$site.title}, back to home`"
+    :href="localePath"
+    :aria-label="`${site.title}, back to home`"
   >
     <img
-      v-if="$themeConfig.logo"
+      v-if="theme.logo"
       class="logo"
-      :src="$withBase($themeConfig.logo)"
+      :src="withBase(theme.logo)"
       alt="Logo"
-    >
-    <span class="title">{{ $site.title }}</span>
+    />
+    {{ site.title }}
   </a>
 </template>
 
@@ -19,9 +24,6 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--c-text);
-  vertical-align: center;
-  white-space: nowrap;
-  margin-right: 2rem;
 }
 
 .nav-bar-title:hover {
@@ -29,13 +31,8 @@
 }
 
 .logo {
-  margin-right: .5rem;
-  height: 2.2rem;
-  vertical-align: middle;
-}
-
-.title {
-  line-height: 2rem;
-  vertical-align: middle;
+  margin-right: 0.75rem;
+  height: 1.3rem;
+  vertical-align: bottom;
 }
 </style>

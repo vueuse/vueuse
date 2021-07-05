@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmit, toRef } from 'vue'
+import { toRef } from 'vue'
 import { useRepo } from '../composables/repo'
 import NavBarTitle from './NavBarTitle.vue'
 import NavLinks from './NavLinks.vue'
@@ -42,7 +42,7 @@ import DarkModeSwitch from './DarkModeSwitch.vue'
 
 const repo = useRepo()
 
-defineEmit(['toggle'])
+defineEmits(['toggle'])
 </script>
 
 <style scoped>
