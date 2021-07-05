@@ -1,16 +1,5 @@
 <template>
   <header v-if="showHero" class="home-hero pt-25 pb-10 px-5">
-    <!-- <figure v-if="$frontmatter.heroImage" class="figure">
-      <img class="image" :src="$withBase($frontmatter.heroImage)" :alt="$frontmatter.heroAlt">
-    </figure>
-
-    <h1 v-if="hasHeroText" class="title">
-      {{ heroText }}
-    </h1>
-    <p v-if="hasTagline" class="description">
-      {{ tagline }}
-    </p> -->
-
     <p align="center">
       <a href="https://github.com/vueuse/vueuse">
         <img v-show="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
