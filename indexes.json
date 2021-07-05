@@ -910,6 +910,14 @@
       "description": "run expensive function without blocking the UI"
     },
     {
+      "name": "useWindowFocus",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useWindowFocus/",
+      "category": "Sensors",
+      "description": "reactively track window focus with `window.onfocus` and `window.onblur` events"
+    },
+    {
       "name": "useWindowScroll",
       "package": "core",
       "docs": "https://vueuse.org/core/useWindowScroll/",
