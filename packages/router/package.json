@@ -40,6 +40,6 @@
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.8"
+    "vue-router": "^4.0.10"
   }
 }
