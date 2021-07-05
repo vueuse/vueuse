@@ -7,7 +7,8 @@ import { useMousePressed } from '.'
 const el = ref<Element | null>(null)
 const [withTarget, toggle] = useToggle()
 const target = computed<Element | null>(() => {
-  if (withTarget.value) return el.value
+  if (withTarget.value)
+    return el.value
   return window as any as Element
 })
 

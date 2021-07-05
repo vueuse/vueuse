@@ -13,6 +13,13 @@ export interface MousePressedOptions extends ConfigurableWindow {
   touch?: boolean
 
   /**
+   * Listen to `dragstart` `drop` and `dragend` events
+   *
+   * @default true
+   */
+  drag?: boolean
+
+  /**
    * Initial values
    *
    * @default false
@@ -34,6 +41,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
 export function useMousePressed(options: MousePressedOptions = {}) {
   const {
     touch = true,
+    drag = true,
     initialValue = false,
     window = defaultWindow,
   } = options
@@ -60,19 +68,22 @@ export function useMousePressed(options: MousePressedOptions = {}) {
   const target = computed(() => unrefElement(options.target) || window)
 
   useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true })
-  useEventListener(target, 'dragover', onPressed('mouse'), { passive: true })
-  useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true })
 
   useEventListener(window, 'mouseleave', onReleased, { passive: true })
   useEventListener(window, 'mouseup', onReleased, { passive: true })
-  useEventListener(target, 'drop', onReleased, { passive: true })
-  useEventListener(target, 'dragleave', onReleased, { passive: true })
-  useEventListener(target, 'dragend', onReleased, { passive: true })
+
+  if (drag) {
+    useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true })
+
+    useEventListener(window, 'drop', onReleased, { passive: true })
+    useEventListener(window, 'dragend', onReleased, { passive: true })
+  }
 
   if (touch) {
+    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true })
+
     useEventListener(window, 'touchend', onReleased, { passive: true })
     useEventListener(window, 'touchcancel', onReleased, { passive: true })
-    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true })
   }
 
   return {
