@@ -33,10 +33,12 @@ const toggleDark = useToggle(isDark)
  * @see https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
-export declare function useToggle(value: Ref<boolean>): () => boolean
+export declare function useToggle(
+  value: Ref<boolean>
+): (value?: boolean) => boolean
 export declare function useToggle(
   initialValue?: boolean
-): [Ref<boolean>, () => boolean]
+): [Ref<boolean>, (value?: boolean) => boolean]
 ```
 
 ## Source
