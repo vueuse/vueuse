@@ -14,7 +14,8 @@ import { useMouse } from '@vueuse/core'
 const { x, y, source } = useMouse()
 ```
 
-Touching is enabled by default. To make it only detects mouse changes, set `touch` to `false`
+Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
+The `dragover` event is used to track mouse position while dragging.
 
 ```js
 const { x, y } = useMouse({ touch: false })
