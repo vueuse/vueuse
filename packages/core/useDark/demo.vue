@@ -7,7 +7,7 @@ const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-  <button @click="toggleDark">
+  <button @click="toggleDark()">
     <carbon-moon v-if="isDark" />
     <carbon-sun v-else />
 
