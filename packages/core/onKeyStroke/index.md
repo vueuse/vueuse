@@ -31,7 +31,7 @@ onKeyStroke('A', (e) => {
 ```js
 onKeyStroke('Shift', (e) => {
   console.log('Shift key up')
-}, { eventName: 'keyUp' })
+}, { eventName: 'keyup' })
 ```
 
 Or
