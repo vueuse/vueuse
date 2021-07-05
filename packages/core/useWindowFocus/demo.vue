@@ -6,11 +6,11 @@ const startMessage = '💡 Click somewhere outside of the document to unfocus.'
 const message = ref(startMessage)
 const focused = useWindowFocus()
 
-watch(focused, (current) => {
-  if (current)
-    message.value = 'ℹ Tab is unfocused'
-  else
+watch(focused, (isFocused) => {
+  if (isFocused)
     message.value = startMessage
+  else
+    message.value = 'ℹ Tab is unfocused'
 })
 </script>
 
