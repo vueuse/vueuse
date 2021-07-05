@@ -146,7 +146,7 @@ export function useTransition(
 
   // raw source value
   const sourceValue = computed(() => {
-    const s = unref(source)
+    const s = unref<number | MaybeRef<number>[]>(source)
     return isNumber(s) ? s : s.map(unref) as number[]
   })
 
