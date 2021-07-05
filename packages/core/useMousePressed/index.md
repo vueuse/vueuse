@@ -72,6 +72,12 @@ export interface MousePressedOptions extends ConfigurableWindow {
    */
   touch?: boolean
   /**
+   * Listen to `dragstart` `drop` and `dragend` events
+   *
+   * @default true
+   */
+  drag?: boolean
+  /**
    * Initial values
    *
    * @default false

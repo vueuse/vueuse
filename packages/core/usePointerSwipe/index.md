@@ -69,7 +69,7 @@ export interface PointerSwipeReturn {
  * @param options
  */
 export declare function usePointerSwipe(
-  target: MaybeRef<Element | null | undefined>,
+  target: MaybeRef<HTMLElement | null | undefined>,
   options?: PointerSwipeOptions
 ): PointerSwipeReturn
 ```

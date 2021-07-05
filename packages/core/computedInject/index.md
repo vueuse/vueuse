@@ -1,5 +1,5 @@
 ---
-category: Unknown
+category: Component
 ---
 
 # computedInject

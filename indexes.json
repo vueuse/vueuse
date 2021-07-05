@@ -391,6 +391,13 @@
       "description": "a ref which will be reset to the default value after some time"
     },
     {
+      "name": "computedInject",
+      "package": "core",
+      "docs": "https://vueuse.org/core/computedInject/",
+      "category": "Component",
+      "description": "combine computed and inject"
+    },
+    {
       "name": "createGlobalState",
       "package": "core",
       "docs": "https://vueuse.org/core/createGlobalState/",
