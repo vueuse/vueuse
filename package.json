@@ -14,7 +14,7 @@
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
     "clean": "rimraf dist types packages/*/dist",
-    "dev": "nr docs",
+    "dev": "nr update && nr docs",
     "docs": "vitepress dev packages",
     "docs:serve": "vitepress serve packages",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
