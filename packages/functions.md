@@ -39,6 +39,7 @@
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ### Component
+  - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
   - [`templateRef`](https://vueuse.org/core/templateRef/) — shorthand for binding ref to template element
   - [`tryOnMounted`](https://vueuse.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
