@@ -22,7 +22,7 @@ export function isActive(route: any, path?: string): boolean {
   const routePath = normalize(route.path)
   const pagePath = normalize(path)
 
-  return routePath === pagePath
+  return routePath.toLowerCase() === pagePath.toLowerCase()
 }
 
 export function normalize(path: string): string {
