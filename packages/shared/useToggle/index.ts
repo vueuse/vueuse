@@ -12,7 +12,7 @@ export function useToggle(initialValue?: boolean): [Ref<boolean>, (value?: boole
 export function useToggle(initialValue: boolean | Ref<boolean> = false) {
   if (isRef(initialValue)) {
     return (value?: boolean) => {
-      initialValue.value = value != null
+      initialValue.value = typeof value === 'boolean'
         ? value
         : !initialValue.value
     }
