@@ -23,7 +23,7 @@ const Serializers: Record<string, Serializer<any>> = {
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any) => v != null ? v : null,
+    read: (v: any) => (v != null && v !== 'null') ? v : null,
     write: (v: any) => String(v),
   },
   string: {

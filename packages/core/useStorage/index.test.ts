@@ -98,6 +98,26 @@ describe('useStorage', () => {
     })
   })
 
+  it('null value', () => {
+    localStorage.setItem(KEY, 'null')
+
+    useSetup(() => {
+      const ref = useStorage(KEY, null)
+
+      expect(ref.value).toBe(null)
+    })
+  })
+
+  it('null string', () => {
+    localStorage.setItem(KEY, 'null')
+
+    useSetup(() => {
+      const ref = useStorage(KEY, 'null')
+
+      expect(ref.value).toBe('null')
+    })
+  })
+
   it('string', async() => {
     localStorage.setItem(KEY, '0')
 
