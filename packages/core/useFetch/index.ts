@@ -341,6 +341,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         .catch((fetchError) => {
           error.value = fetchError.message || fetchError.name
           errorEvent.trigger(fetchError)
+          resolve(fetchError)
         })
         .finally(() => {
           loading(false)
