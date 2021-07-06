@@ -20,7 +20,7 @@ export function useToggle(initialValue: boolean | Ref<boolean> = false) {
   else {
     const boolean = ref(initialValue)
     const toggle = (value?: boolean) => {
-      boolean.value = value != null
+      boolean.value = typeof value === 'boolean'
         ? value
         : !boolean.value
     }
