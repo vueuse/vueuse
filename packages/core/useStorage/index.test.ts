@@ -118,6 +118,17 @@ describe('useStorage', () => {
     })
   })
 
+  it('object after null', () => {
+    useSetup(() => {
+      const ref = useStorage(KEY, null)
+      const testData = { test: 'test' }
+
+      ref.value = testData
+
+      expect(localStorage.getItem(KEY)).toBe(JSON.stringify(testData))
+    })
+  })
+
   it('string', async() => {
     localStorage.setItem(KEY, '0')
 
