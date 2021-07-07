@@ -23,8 +23,19 @@ const Serializers: Record<string, Serializer<any>> = {
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any) => (v != null && v !== 'null') ? v : null,
-    write: (v: any) => String(v),
+    read: (v: any) => {
+      if (v == null || v === 'null')
+        return null
+
+      try {
+        const parsed = JSON.parse(v)
+        return typeof parsed === 'object' ? parsed : v
+      }
+      catch (e) {
+        return v
+      }
+    },
+    write: (v: any) => typeof v === 'object' ? JSON.stringify(v) : String(v),
   },
   string: {
     read: (v: any) => v != null ? v : null,
