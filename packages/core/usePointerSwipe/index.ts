@@ -101,8 +101,8 @@ export function usePointerSwipe(
       // Disable scroll on for TouchEvents
       targetRef.value?.style?.setProperty('touch-action', 'none')
       // Future pointer events will be retargeted to target until pointerup/cancel
-      targetRef.value?.setPointerCapture(e.pointerId)
-
+      const eventTarget = e.target as HTMLElement | undefined
+      eventTarget?.setPointerCapture(e.pointerId)
       const { clientX: x, clientY: y } = e
       updatePosStart(x, y)
       updatePosEnd(x, y)
