@@ -9,7 +9,7 @@ export type Serializer<T> = {
   write(value: T): string
 }
 
-const Serializers: Record<string, Serializer<any>> = {
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string', Serializer<any>> = {
   boolean: {
     read: (v: any) => v != null ? v === 'true' : null,
     write: (v: any) => String(v),
@@ -99,7 +99,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
             : !Number.isNaN(defaultValue)
               ? 'number'
               : 'any'
-  const serializer = options.serializer ?? Serializers[type]
+  const serializer = options.serializer ?? StorageSerializers[type]
 
   function read(event?: StorageEvent) {
     if (!storage)
