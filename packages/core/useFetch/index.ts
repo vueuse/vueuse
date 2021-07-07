@@ -308,7 +308,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       fetch(
         context.url,
         {
@@ -341,6 +341,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         .catch((fetchError) => {
           error.value = fetchError.message || fetchError.name
           errorEvent.trigger(fetchError)
+          reject(fetchError)
         })
         .finally(() => {
           loading(false)
