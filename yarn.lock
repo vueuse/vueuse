@@ -7806,6 +7806,18 @@ vite@^2.3.7:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vite@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.4.1.tgz#2e48b8dbfc69e4edbf7f4d1c0798d621585cb8da"
+  integrity sha512-4BpKRis9uxIqPfIEcJ18LTBsamqnDFxTx45CXwagHjNltHa6PFEvf8Pe6OpgIHb0OyWT30OXOSSQvdOaX4OBiQ==
+  dependencies:
+    esbuild "^0.12.8"
+    postcss "^8.3.5"
+    resolve "^1.20.0"
+    rollup "^2.38.5"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 vitepress@^0.15.6:
   version "0.15.6"
   resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.15.6.tgz#b3d2487384f60deb5e0be7da1f1896c1db75025e"
