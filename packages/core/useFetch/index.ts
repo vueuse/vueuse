@@ -50,8 +50,9 @@ interface UseFetchReturnBase<T> {
 
   /**
    * Manually call the fetch
+   * (default not throwing error)
    */
-  execute: () => Promise<any>
+  execute: (throwOnFailed?: boolean) => Promise<any>
 
   /**
    * Fires after the fetch request has finished
@@ -108,11 +109,9 @@ export interface BeforeFetchContext {
 }
 
 export interface AfterFetchContext<T = any> {
-
   response: Response
 
   data: T | null
-
 }
 
 export interface UseFetchOptions {
@@ -268,7 +267,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     isFinished.value = !isLoading
   }
 
-  const execute = async() => {
+  const execute = async(throwOnFailed = false) => {
     loading(true)
     error.value = null
     statusCode.value = null
@@ -341,7 +340,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         .catch((fetchError) => {
           error.value = fetchError.message || fetchError.name
           errorEvent.trigger(fetchError)
-          reject(fetchError)
+          if (throwOnFailed)
+            reject(fetchError)
+          else
+            resolve(undefined)
         })
         .finally(() => {
           loading(false)
