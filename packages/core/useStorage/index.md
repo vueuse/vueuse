@@ -66,6 +66,10 @@ export declare type Serializer<T> = {
   read(raw: string): T
   write(value: T): string
 }
+export declare const StorageSerializers: Record<
+  "boolean" | "object" | "number" | "any" | "string",
+  Serializer<any>
+>
 export declare type StorageLike = Pick<
   Storage,
   "getItem" | "setItem" | "removeItem"

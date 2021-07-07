@@ -180,8 +180,9 @@ interface UseFetchReturnBase<T> {
   abort: Fn
   /**
    * Manually call the fetch
+   * (default not throwing error)
    */
-  execute: () => Promise<any>
+  execute: (throwOnFailed?: boolean) => Promise<any>
   /**
    * Fires after the fetch request has finished
    */

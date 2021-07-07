@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "5.1.2",
+  "version": "5.1.3",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -56,7 +56,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "5.1.2",
+    "@vueuse/shared": "5.1.3",
     "vue-demi": "*"
   },
   "optionalDependencies": {
