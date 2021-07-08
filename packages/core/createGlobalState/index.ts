@@ -1,26 +1,6 @@
-import { createApp, reactive } from 'vue-demi'
-import { defaultDocument } from '../_configurable'
+import { effectScope } from 'vue-demi'
 
-function withScope<T extends object>(factory: () => T): T {
-  let state: T = null as any
-
-  const document = defaultDocument
-
-  if (document) {
-    const container = document.createElement('div')
-    createApp({
-      setup() {
-        state = reactive(factory()) as T
-      },
-      render: () => null,
-    }).mount(container)
-  }
-  else {
-    state = reactive(factory()) as T
-  }
-
-  return state
-}
+export type CreateGlobalStateReturn<T> = () => T
 
 /**
  * Keep states in the global scope to be reusable across Vue instances.
@@ -28,17 +8,18 @@ function withScope<T extends object>(factory: () => T): T {
  * @see https://vueuse.org/createGlobalState
  * @param stateFactory A factory function to create the state
  */
-export function createGlobalState<T extends object>(
+export function createGlobalState<T>(
   stateFactory: () => T,
-) {
+): CreateGlobalStateReturn<T> {
+  let initialized = false
   let state: T
+  const scope = effectScope(true)
 
   return () => {
-    if (state == null)
-      state = withScope(stateFactory)
-
+    if (!initialized) {
+      state = scope.run(stateFactory)!
+      initialized = true
+    }
     return state
   }
 }
-
-export type CreateGlobalStateReturn = ReturnType<typeof createGlobalState>
