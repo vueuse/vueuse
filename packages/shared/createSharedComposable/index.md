@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: State
 ---
 
 # createSharedComposable
@@ -19,6 +19,10 @@ const { x, y } = useSharedMouse()
 // CompB.vue - will reuse the previous state and no new event listeners will be registered
 const { x, y } = useSharedMouse()
 ```
+
+## Related
+
+- `createGlobalState`
 
 <!--FOOTER_STARTS-->
 ## Type Declarations

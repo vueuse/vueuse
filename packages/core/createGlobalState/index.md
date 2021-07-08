@@ -29,6 +29,9 @@ export default defineComponent({
 })
 ```
 
+## Related
+
+- `createSharableComposable`
 
 <!--FOOTER_STARTS-->
 ## Type Declarations
