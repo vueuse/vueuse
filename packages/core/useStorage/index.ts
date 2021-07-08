@@ -94,8 +94,6 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     },
   } = options
 
-  const data = ref<T>(defaultValue)
-
   const type = defaultValue == null
     ? 'any'
     : typeof defaultValue === 'boolean'
@@ -109,17 +107,16 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
             : !Number.isNaN(defaultValue)
               ? 'number'
               : 'any'
+
+  const data = ref<T>(defaultValue)
   const serializer = options.serializer ?? StorageSerializers[type]
 
   function read(event?: StorageEvent) {
-    if (!storage)
-      return
-
-    if (event && event.key !== key)
+    if (!storage || event?.key !== key)
       return
 
     try {
-      const rawValue = event ? event.newValue : storage.getItem(key)
+      const rawValue = event?.newValue ?? storage.getItem(key)
       if (rawValue == null) {
         (data as Ref<T>).value = defaultValue
         storage.setItem(key, serializer.write(defaultValue))
