@@ -102,5 +102,9 @@
     "vue": "^3.1.5",
     "vue-demi": "^0.11.2",
     "vue2": "npm:vue@2"
+  },
+  "resolutions": {
+    "vue": "^3.2.0-beta.1",
+    "@vue/compiler-sfc": "^3.2.0-beta.1"
   }
 }

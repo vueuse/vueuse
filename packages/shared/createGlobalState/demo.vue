@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { useStorage } from '../useStorage'
+import { useStorage } from '../../core/useStorage'
 import { createGlobalState } from '.'
 
 const useState = createGlobalState(() =>
