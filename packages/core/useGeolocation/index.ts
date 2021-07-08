@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, Ref } from 'vue-demi'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
 export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
@@ -42,21 +42,19 @@ export function useGeolocation(options: GeolocationOptions = {}) {
 
   let watcher: number
 
-  tryOnMounted(() => {
-    if (isSupported) {
-      watcher = navigator!.geolocation.watchPosition(
-        updatePosition,
-        err => error.value = err,
-        {
-          enableHighAccuracy,
-          maximumAge,
-          timeout,
-        },
-      )
-    }
-  })
+  if (isSupported) {
+    watcher = navigator!.geolocation.watchPosition(
+      updatePosition,
+      err => error.value = err,
+      {
+        enableHighAccuracy,
+        maximumAge,
+        timeout,
+      },
+    )
+  }
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     if (watcher && navigator)
       navigator.geolocation.clearWatch(watcher)
   })
