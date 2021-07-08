@@ -22,17 +22,16 @@ tryOnScopeDispose(() => {
 
 ```typescript
 /**
- * Call onMounted() if it's inside a component lifecycle, if not, run just call the function
+ * Call onScopeDispose() if it's inside a component lifecycle, if not, run just call the function
  *
  * @param fn
- * @param sync if set to false, it will run in the nextTick() of Vue
  */
-export declare function tryOnMounted(fn: Fn, sync?: boolean): void
+export declare function tryOnScopeDispose(fn: Fn): boolean
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnMounted/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnMounted/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnScopeDispose/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnScopeDispose/index.md)
 
 
 <!--FOOTER_ENDS-->

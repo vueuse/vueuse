@@ -162,6 +162,13 @@
       "description": "utility for creating event hooks"
     },
     {
+      "name": "createSharedComposable",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/createSharedComposable/",
+      "category": "Utilities",
+      "description": "make a composable function usable with multiple Vue instances"
+    },
+    {
       "name": "debouncedWatch",
       "package": "shared",
       "docs": "https://vueuse.org/shared/debouncedWatch/",
