@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 
 /**
  * Reactive wrapper for EventSource.
@@ -53,7 +53,7 @@ export function useEventSource(url: string, events: Array<string> = []) {
     }
   })
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     close()
   })
 

@@ -1,4 +1,4 @@
-import { isString, tryOnUnmounted } from '@vueuse/shared'
+import { isString, tryOnScopeDispose } from '@vueuse/shared'
 import { IpcRenderer } from 'electron'
 import { IpcRendererListener } from '../_types'
 
@@ -47,7 +47,7 @@ export function useIpcRendererOn(...args: any[]): IpcRenderer {
   if (!ipcRenderer)
     throw new Error('please provide IpcRenderer module or enable nodeIntegration')
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     ipcRenderer!.removeListener(channel, listener)
   })
 

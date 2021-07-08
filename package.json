@@ -102,5 +102,10 @@
     "vue": "^3.1.4",
     "vue-demi": "^0.9.1",
     "vue2": "npm:vue@2"
+  },
+  "resolutions": {
+    "vue": "npm:@knightly/vue@3.1.4-knightly-3-2.202107080810",
+    "@vue/runtime-dom": "npm:@knightly/vue__runtime-dom@3.1.4-knightly-3-2.202107080810",
+    "@vue/compiler-sfc": "npm:@knightly/vue__compiler-sfc@3.1.4-knightly-3-2.202107080810"
   }
 }

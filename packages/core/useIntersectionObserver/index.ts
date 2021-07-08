@@ -1,5 +1,5 @@
 import { watch } from 'vue-demi'
-import { noop, tryOnUnmounted } from '@vueuse/shared'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 
@@ -81,7 +81,7 @@ export function useIntersectionObserver(
     stopWatch()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isSupported,

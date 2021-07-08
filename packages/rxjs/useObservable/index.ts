@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { Ref, ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
 export interface UseObservableOptions {
   onError?: (err: any) => void
@@ -12,7 +12,7 @@ export function useObservable<H>(observable: Observable<H>, options?: UseObserva
     next: val => (value.value = val),
     error: options?.onError,
   })
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     subscription.unsubscribe()
   })
   return value as Readonly<Ref<H>>
