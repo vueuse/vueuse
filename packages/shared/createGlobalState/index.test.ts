@@ -1,6 +1,6 @@
 import { nextTick } from 'vue-demi'
 import { useSetup } from '../../.test'
-import { useStorage } from '../useStorage'
+import { useStorage } from '../../core/useStorage'
 import { createGlobalState } from '.'
 
 const KEY = 'custom-key'
