@@ -53,6 +53,13 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
    * Custom data serialization
    */
   serializer?: Serializer<T>
+
+  /**
+   * On error callback
+   *
+   * Default log error to `console.error`
+   */
+  onError?: (error: Error) => void
 }
 
 export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
@@ -82,6 +89,9 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     listenToStorageChanges = true,
     window = defaultWindow,
     eventFilter,
+    onError = (e) => {
+      console.error(e)
+    },
   } = options
 
   const data = ref<T>(defaultValue)
@@ -119,8 +129,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       }
     }
     catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
+      onError(e)
     }
   }
 
@@ -142,8 +151,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
           storage.setItem(key, serializer.write(data.value))
       }
       catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn(e)
+        onError(e)
       }
     },
     {
