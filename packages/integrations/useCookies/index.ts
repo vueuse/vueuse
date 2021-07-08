@@ -1,4 +1,4 @@
-import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import Cookie from 'universal-cookie'
 import type { IncomingMessage } from 'http'
@@ -59,9 +59,7 @@ export function useCookies(
     previousCookies = newCookies
   }
 
-  tryOnMounted(() => {
-    cookies.addChangeListener(onChange)
-  })
+  cookies.addChangeListener(onChange)
 
   tryOnScopeDispose(() => {
     cookies.removeChangeListener(onChange)
