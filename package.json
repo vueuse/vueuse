@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
     "update": "esno scripts/update.ts",
-    "update:full": "nr build:types && esno scripts/update.ts && nr update:recent",
+    "update:full": "esno scripts/update.ts && nr build:types && nr update:recent",
     "update:recent": "esno scripts/recent-updated.ts"
   },
   "husky": {

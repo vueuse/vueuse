@@ -92,7 +92,8 @@
   - [`useWindowSize`](https://vueuse.org/core/useWindowSize/) — reactive window size
 
 ### State
-  - [`createGlobalState`](https://vueuse.org/core/createGlobalState/) — keep states in the global scope to be reusable across Vue instances
+  - [`createGlobalState`](https://vueuse.org/shared/createGlobalState/) — keep states in the global scope to be reusable across Vue instances
+  - [`createSharedComposable`](https://vueuse.org/shared/createSharedComposable/) — make a composable function usable with multiple Vue instances
   - [`useLocalStorage`](https://vueuse.org/core/useLocalStorage/) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.org/core/useSessionStorage/) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.org/core/useStorage/) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
@@ -105,7 +106,6 @@
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks
-  - [`createSharedComposable`](https://vueuse.org/shared/createSharedComposable/) — make a composable function usable with multiple Vue instances
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
