@@ -79,6 +79,10 @@ export interface NetworkState {
    */
   effectiveType: Ref<NetworkEffectiveType | undefined>
   /**
+   * The estimated effective round-trip time of the current connection.
+   */
+  rtt: Ref<number | undefined>
+  /**
    * If the user activated data saver mode.
    */
   saveData: Ref<boolean | undefined>
@@ -93,7 +97,7 @@ export interface NetworkState {
  * @see https://vueuse.org/useNetwork
  * @param options
  */
-export declare function useNetwork(options?: ConfigurableWindow): NetworkState
+export declare function useNetwork(options?: ConfigurableWindow): Readonly<NetworkState>
 ```
 
 ## Source

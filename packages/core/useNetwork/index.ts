@@ -27,9 +27,13 @@ export interface NetworkState {
    */
   downlinkMax: Ref<number | undefined>
   /**
-  * The detected effective speed type.
-  */
+   * The detected effective speed type.
+   */
   effectiveType: Ref<NetworkEffectiveType | undefined>
+  /**
+   * The estimated effective round-trip time of the current connection.
+   */
+  rtt: Ref<number | undefined>
   /**
    * If the user activated data saver mode.
    */
@@ -46,7 +50,7 @@ export interface NetworkState {
  * @see https://vueuse.org/useNetwork
  * @param options
  */
-export function useNetwork(options: ConfigurableWindow = {}): NetworkState {
+export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {
   const { window = defaultWindow } = options
   const navigator = window?.navigator
   const isSupported = Boolean(navigator && 'connection' in navigator)
@@ -56,6 +60,7 @@ export function useNetwork(options: ConfigurableWindow = {}): NetworkState {
   const offlineAt: Ref<number | undefined> = ref(undefined)
   const downlink: Ref<number | undefined> = ref(undefined)
   const downlinkMax: Ref<number | undefined> = ref(undefined)
+  const rtt: Ref<number | undefined> = ref(undefined)
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
   const type: Ref<NetworkType> = ref<NetworkType>('unknown')
 
@@ -72,6 +77,7 @@ export function useNetwork(options: ConfigurableWindow = {}): NetworkState {
       downlink.value = connection.downlink
       downlinkMax.value = connection.downlinkMax
       effectiveType.value = connection.effectiveType
+      rtt.value = connection.rtt
       saveData.value = connection.saveData
       type.value = connection.type
     }
@@ -101,6 +107,7 @@ export function useNetwork(options: ConfigurableWindow = {}): NetworkState {
     downlink,
     downlinkMax,
     effectiveType,
+    rtt,
     type,
   }
 }
