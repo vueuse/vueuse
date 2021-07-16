@@ -112,11 +112,11 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   const serializer = options.serializer ?? StorageSerializers[type]
 
   function read(event?: StorageEvent) {
-    if (!storage || event?.key !== key)
+    if (!storage || (event && event.key !== key))
       return
 
     try {
-      const rawValue = event?.newValue ?? storage.getItem(key)
+      const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
         (data as Ref<T>).value = defaultValue
         storage.setItem(key, serializer.write(defaultValue))
