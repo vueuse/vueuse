@@ -63,6 +63,11 @@ interface UseFetchReturnBase<T> {
    * Fires after a fetch request error
    */
   onFetchError: EventHookOn
+
+  /**
+   * Fires after a fetch has completed
+   */
+  onFetchFinally: EventHookOn
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -173,6 +178,13 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
 }
 
+function headersToObject(headers: HeadersInit | undefined) {
+  if (headers instanceof Headers)
+    return Object.fromEntries([...headers.entries()])
+
+  return headers
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   let options = config.options || {}
   let fetchOptions = config.fetchOptions || {}
@@ -193,8 +205,8 @@ export function createFetch(config: CreateFetchOptions = {}) {
           ...fetchOptions,
           ...args[0],
           headers: {
-            ...(fetchOptions.headers || {}),
-            ...(args[0].headers || {}),
+            ...(headersToObject(fetchOptions.headers) || {}),
+            ...(headersToObject(args[0].headers) || {}),
           },
         }
       }
@@ -244,6 +256,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   // Event Hooks
   const responseEvent = createEventHook<Response>()
   const errorEvent = createEventHook<any>()
+  const finallyEvent = createEventHook<any>()
 
   const isFinished = ref(false)
   const isFetching = ref(false)
@@ -289,7 +302,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     if (config.payload) {
-      const headers = defaultFetchOptions.headers as Record<string, string>
+      const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
@@ -314,8 +327,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           ...defaultFetchOptions,
           ...context.options,
           headers: {
-            ...defaultFetchOptions.headers,
-            ...context.options?.headers,
+            ...headersToObject(defaultFetchOptions.headers),
+            ...headersToObject(context.options?.headers),
           },
         },
       )
@@ -347,6 +360,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         })
         .finally(() => {
           loading(false)
+          finallyEvent.trigger(null)
         })
     })
   }
@@ -374,6 +388,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     onFetchResponse: responseEvent.on,
     onFetchError: errorEvent.on,
+    onFetchFinally: finallyEvent.on,
   }
 
   const typeConfigured: UseFetchReturnTypeConfigured<T> = {
