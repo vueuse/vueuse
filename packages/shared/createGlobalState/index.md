@@ -37,23 +37,21 @@ export default defineComponent({
 ## Type Declarations
 
 ```typescript
+export declare type CreateGlobalStateReturn<T> = () => T
 /**
  * Keep states in the global scope to be reusable across Vue instances.
  *
  * @see https://vueuse.org/createGlobalState
  * @param stateFactory A factory function to create the state
  */
-export declare function createGlobalState<T extends object>(
+export declare function createGlobalState<T>(
   stateFactory: () => T
-): () => T
-export declare type CreateGlobalStateReturn = ReturnType<
-  typeof createGlobalState
->
+): CreateGlobalStateReturn<T>
 ```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/createGlobalState/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/createGlobalState/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/createGlobalState/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/createGlobalState/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/createGlobalState/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/createGlobalState/index.md)
 
 
 <!--FOOTER_ENDS-->
