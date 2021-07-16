@@ -35,5 +35,5 @@ jobs:
       run: yarn lint
     - name: Test Vue 3
       run: yarn run test:3
-    # - name: Test Vue 2
-    #   run: yarn run test:2
+    - name: Test Vue 2
+      run: yarn run test:2

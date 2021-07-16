@@ -56,8 +56,8 @@
     "@types/markdown-table": "^3.0.0",
     "@types/node": "^16.0.0",
     "@types/semver": "^7.3.6",
-    "@vue/compiler-sfc": "npm:@knightly/vue__compiler-sfc@3.1.4-knightly-3-2.202107080810",
-    "@vue/composition-api": "^1.0.0-rc.13",
+    "@vue/compiler-sfc": "^3.2.0-beta.1",
+    "@vue/composition-api": "^1.1.0-beta.1",
     "@vue/test-utils": "^1.2.1",
     "axios": "^0.21.1",
     "consola": "^2.15.3",
@@ -100,7 +100,7 @@
     "vite": "^2.4.1",
     "vitepress": "^0.15.6",
     "vue-demi": "^0.9.1",
-    "vue": "npm:@knightly/vue@3.1.4-knightly-3-2.202107080810",
+    "vue": "^3.2.0-beta.1",
     "vue2": "npm:vue@2"
   }
 }
