@@ -21,6 +21,20 @@ describe('useFetch', () => {
     expect(data.value).toBe('Hello World')
   })
 
+  test('should be able to use the Headers object', async() => {
+    fetchMock.mockResponse('Hello World', { status: 200 })
+
+    const myHeaders = new Headers()
+    myHeaders.append('Authorization', 'test')
+
+    const { statusCode, isFinished } = useFetch('https://example.com', { headers: myHeaders })
+
+    await until(isFinished).toBe(true)
+
+    expect(statusCode.value).toBe(200)
+    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ authorization: 'test' })
+  })
+
   test('should parse response as json', async() => {
     fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
 
@@ -162,14 +176,17 @@ describe('useFetch', () => {
 
     let didResponseEventFire = false
     let didErrorEventFire = false
-    const { isFinished, onFetchResponse, onFetchError } = useFetch('https://example.com')
+    let didFinallyEventFire = false
+    const { isFinished, onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(() => didResponseEventFire = true)
     onFetchError(() => didErrorEventFire = true)
+    onFetchFinally(() => didFinallyEventFire = true)
 
     await until(isFinished).toBe(true)
     expect(didResponseEventFire).toBe(true)
     expect(didErrorEventFire).toBe(false)
+    expect(didFinallyEventFire).toBe(true)
   })
 
   test('should emit onFetchError event', async() => {
@@ -177,13 +194,16 @@ describe('useFetch', () => {
 
     let didResponseEventFire = false
     let didErrorEventFire = false
-    const { isFinished, onFetchResponse, onFetchError } = useFetch('https://example.com')
+    let didFinallyEventFire = false
+    const { isFinished, onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(() => didResponseEventFire = true)
     onFetchError(() => didErrorEventFire = true)
+    onFetchFinally(() => didFinallyEventFire = true)
 
     await until(isFinished).toBe(true)
     expect(didResponseEventFire).toBe(false)
     expect(didErrorEventFire).toBe(true)
+    expect(didFinallyEventFire).toBe(true)
   })
 })
