@@ -191,6 +191,10 @@ interface UseFetchReturnBase<T> {
    * Fires after a fetch request error
    */
   onFetchError: EventHookOn
+  /**
+   * Fires after a fetch has completed
+   */
+  onFetchFinally: EventHookOn
 }
 interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
   get(): UseFetchReturnBase<T>
