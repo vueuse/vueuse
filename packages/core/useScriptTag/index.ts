@@ -1,4 +1,4 @@
-import { MaybeRef, noop, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { MaybeRef, noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref, unref } from 'vue-demi'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
@@ -164,7 +164,7 @@ export function useScriptTag(
     tryOnMounted(load)
 
   if (!manual)
-    tryOnScopeDispose(unload)
+    tryOnUnmounted(unload)
 
   return { scriptTag, load, unload }
 }

@@ -57,7 +57,7 @@
     "@types/node": "^16.0.0",
     "@types/semver": "^7.3.6",
     "@vue/compiler-sfc": "^3.2.0-beta.1",
-    "@vue/composition-api": "^1.1.0-beta.1",
+    "@vue/composition-api": "^1.1.0-beta.2",
     "@vue/test-utils": "^1.2.1",
     "axios": "^0.21.1",
     "consola": "^2.15.3",
