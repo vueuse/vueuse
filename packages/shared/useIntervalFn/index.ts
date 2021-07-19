@@ -4,7 +4,7 @@ import { Pausable, Fn, isClient } from '../utils'
 
 export interface IntervalFnOptions {
   /**
-   * Execute the callback immediate after calling this function
+   * Start the timer immediately
    *
    * @default true
    */
