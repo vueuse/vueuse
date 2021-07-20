@@ -28,7 +28,7 @@ export interface IntervalFnOptions {
 export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
-    immediateCallback = false
+    immediateCallback = false,
   } = options
 
   let timer: any = null
