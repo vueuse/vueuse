@@ -3,13 +3,13 @@
     "shared": {
       "name": "shared",
       "display": "Shared utilities",
-      "dir": "packages/shared"
+      "dir": "packages\\shared"
     },
     "core": {
       "name": "core",
       "display": "VueUse",
       "description": "Collection of essential Vue Composition Utilities",
-      "dir": "packages/core"
+      "dir": "packages\\core"
     },
     "components": {
       "name": "components",
@@ -20,7 +20,7 @@
         "@vueuse/core",
         "@vueuse/shared"
       ],
-      "dir": "packages/components"
+      "dir": "packages\\components"
     },
     "router": {
       "name": "router",
@@ -33,7 +33,7 @@
       "globals": {
         "vue-router": "VueRouter"
       },
-      "dir": "packages/router",
+      "dir": "packages\\router",
       "docs": "https://vueuse.org/router/README.html"
     },
     "integrations": {
@@ -59,7 +59,7 @@
         "jwt-decode": "jwt_decode",
         "focus-trap": "focusTrap"
       },
-      "dir": "packages/integrations",
+      "dir": "packages\\integrations",
       "docs": "https://vueuse.org/integrations/README.html"
     },
     "rxjs": {
@@ -75,7 +75,7 @@
         "rxjs": "rxjs",
         "rxjs/operators": "rxjs.operator"
       },
-      "dir": "packages/rxjs",
+      "dir": "packages\\rxjs",
       "docs": "https://vueuse.org/rxjs/README.html"
     },
     "firebase": {
@@ -92,7 +92,7 @@
         "firebase": "firebase",
         "firebase/app": "firebase"
       },
-      "dir": "packages/firebase",
+      "dir": "packages\\firebase",
       "docs": "https://vueuse.org/firebase/README.html"
     },
     "electron": {
@@ -105,7 +105,7 @@
         "electron"
       ],
       "iife": false,
-      "dir": "packages/electron",
+      "dir": "packages\\electron",
       "docs": "https://vueuse.org/electron/README.html"
     }
   },
@@ -773,6 +773,13 @@
       "docs": "https://vueuse.org/core/usePreferredLanguages/",
       "category": "Browser",
       "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)"
+    },
+    {
+      "name": "usePubsub",
+      "package": "core",
+      "docs": "https://vueuse.org/core/usePubsub/",
+      "category": "Utilities",
+      "description": "has basic publish and subscribe functions"
     },
     {
       "name": "useRafFn",

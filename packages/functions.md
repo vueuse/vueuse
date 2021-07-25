@@ -121,6 +121,7 @@
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
+  - [`usePubsub`](https://vueuse.org/core/usePubsub/) — has basic publish and subscribe functions
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value
   - [`useThrottleFn`](https://vueuse.org/shared/useThrottleFn/) — throttle execution of a function
