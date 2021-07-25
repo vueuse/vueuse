@@ -97,7 +97,9 @@ export interface NetworkState {
  * @see https://vueuse.org/useNetwork
  * @param options
  */
-export declare function useNetwork(options?: ConfigurableWindow): Readonly<NetworkState>
+export declare function useNetwork(
+  options?: ConfigurableWindow
+): Readonly<NetworkState>
 ```
 
 ## Source

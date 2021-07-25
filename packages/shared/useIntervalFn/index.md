@@ -28,6 +28,12 @@ export interface IntervalFnOptions {
    * @default true
    */
   immediate?: boolean
+  /**
+   * Execute the callback immediate after calling this function
+   *
+   * @default false
+   */
+  immediateCallback?: boolean
 }
 /**
  * Wrapper for `setInterval` with controls
