@@ -41,8 +41,11 @@ usePubsub.watcher = {
       delete usePubsub.observes[token]
       return
     }
-    for (const observeItems of Object.values(usePubsub.observes))
-      observeItems.has(token) && observeItems.delete(token)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in usePubsub.observes) {
+      usePubsub.observes[key].has(token) && usePubsub.observes[key].delete(token)
+      !usePubsub.observes[key].size && delete usePubsub.observes[key]
+    }
   },
 }
 
