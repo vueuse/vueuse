@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue-demi'
 import { usePubsub } from '.'
 
 const { subscribe, publish, unsubscribe } = usePubsub('vue-use-pubsub')

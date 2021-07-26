@@ -21,15 +21,13 @@ const subToken = subscribe((message) => {
 publish('The Tokyo Olympics has begun')
 // console >> message: The Tokyo Olympics has begun
 
-// All methods to unsubscribe the event name 'vue-use-pubsub'
+// Unsubscribe from all subscriptions currently subscribed using usePubsub
+// If in setup, it will be called automatically when onUnmounted
 unsubscribe()
 
-// All methods to unsubscribe the event name 'vue-use-pubsub-2'
-unsubscribe('vue-use-pubsub-2')
+// All methods to unsubscribe the event name 'vue-use-pubsub'
+unsubscribe('vue-use-pubsub')
 
 // Use subToken to cancel a subscribe
 unsubscribe(subToken)
-
-// Or wait for the page to be called up in Unmounted, 
-// the subscribers appearing on the current page will be uninstalled automatically
 ```

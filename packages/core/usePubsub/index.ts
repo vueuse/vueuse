@@ -1,5 +1,4 @@
 import { tryOnUnmounted } from '@vueuse/shared'
-import { getCurrentInstance } from 'vue'
 
 export type UsePubsubObserveItem<T = any> = Map<symbol | string, (value: T) => void>
 
@@ -13,11 +12,11 @@ export interface UsePubsubReturn<Message> {
   /**
    * publish message
    */
-  publish: (message: Message) => void
+  publish: (message?: Message) => void
   /**
    * unsubscribe event | subscribeToken
    */
-  unsubscribe: (token: symbol | string) => void
+  unsubscribe: (token?: symbol | string) => void
 }
 
 usePubsub.observes = {} as UsePubsubObserves
@@ -30,7 +29,7 @@ usePubsub.watcher = {
       usePubsub.observes[event].set(id, execute)
     return id
   },
-  publish: <T>(event: string, message: T) => {
+  publish: <T>(event: string, message?: T) => {
     if (!usePubsub.observes[event])
       return
     [...usePubsub.observes[event]?.values()]
@@ -41,11 +40,10 @@ usePubsub.watcher = {
       delete usePubsub.observes[token]
       return
     }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key in usePubsub.observes) {
+    Object.keys(usePubsub.observes).forEach((key) => {
       usePubsub.observes[key].has(token) && usePubsub.observes[key].delete(token)
       !usePubsub.observes[key].size && delete usePubsub.observes[key]
-    }
+    })
   },
 }
 
@@ -57,26 +55,28 @@ usePubsub.watcher = {
  */
 export function usePubsub<Message = any>(event: string | symbol): UsePubsubReturn<Message> {
   const unsubTokens = new Set<symbol>()
-  const isSetup = !!getCurrentInstance()
 
   function subscribe<Message>(execute: (message: Message) => void) {
     const token = usePubsub.watcher.subscribe(<string>event, execute)
-    isSetup && unsubTokens.add(token)
+    unsubTokens.add(token)
     return token
   }
-  function publish(message: Message) {
+
+  function publish(message?: Message) {
     return usePubsub.watcher.publish(<string>event, message)
   }
-  function unsubscribe(token?: string | symbol) {
-    if (isSetup && typeof token === 'symbol')
-      unsubTokens.has(token) && unsubTokens.delete(token)
 
-    return usePubsub.watcher.unsubscribe(<string>(token || event))
+  function unsubscribe(token?: string | symbol) {
+    if (typeof token === 'undefined') {
+      [...unsubTokens].forEach(token => unsubscribe(token))
+      return
+    }
+    if (typeof token === 'symbol')
+      unsubTokens.has(token) && unsubTokens.delete(token)
+    usePubsub.watcher.unsubscribe(<string>(token || event))
   }
 
-  tryOnUnmounted(() => {
-    [...unsubTokens].forEach(token => unsubscribe(token))
-  })
+  tryOnUnmounted(unsubscribe)
 
   return {
     subscribe,
