@@ -16,38 +16,37 @@ export interface UseEventBusReturn<Message> {
   /**
    * off event | token, Close the corresponding listener.
    */
-  off: (token?: symbol | string) => void
+  off: (token?: string | symbol) => void
 }
+export type EventBusToken = string | symbol
+export type UseEventBusItem<T = any> = Map<EventBusToken, (value: T) => void>
 
-export type UseEventBusItem<T = any> = Map<symbol | string, (value: T) => void>
-export type UseEventBusObservers = Record<string, UseEventBusItem>
-
-useEventBus.observers = {} as UseEventBusObservers
+useEventBus.observers = new Map<string | symbol, UseEventBusItem>()
 useEventBus.subject = {
   attach: (event: string, listener: (message: any) => void) => {
     const id = Symbol('observer__id')
-    if (useEventBus.observers[event])
-      useEventBus.observers[event].set(id, listener)
+    if (useEventBus.observers.has(event))
+      useEventBus.observers.get(event)!.set(id, listener)
     else
-      useEventBus.observers[event] = new Map([[id, listener]])
+      useEventBus.observers.set(event, new Map([[id, listener]]))
     return id
   },
   detach: (token: string) => {
-    if (useEventBus.observers[token]) {
-      delete useEventBus.observers[token]
+    if (useEventBus.observers.has(token)) {
+      useEventBus.observers.delete(token)
       return
     }
-    for (const [key, value] of Object.entries(useEventBus.observers)) {
-      if (value.has(token))
-        value.delete(token)
-      if (!value.size)
-        delete useEventBus.observers[key]
-    }
+    useEventBus.observers.forEach((observer, event) => {
+      if (observer.has(token))
+        observer.delete(token)
+      if (!observer.size)
+        useEventBus.observers.delete(event)
+    })
   },
   notify: (event: string, message?: any) => {
-    if (!useEventBus.observers[event])
+    if (!useEventBus.observers.has(event))
       return
-    useEventBus.observers[event].forEach(listener => listener(message))
+    useEventBus.observers.get(event)!.forEach(listener => listener(message))
   },
 }
 

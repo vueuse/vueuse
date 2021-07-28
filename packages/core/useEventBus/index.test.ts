@@ -3,6 +3,8 @@ import { useEventBus } from '.'
 import { useSetup } from '../../.test'
 
 describe('useEventBus', () => {
+  const emptyMap = new Map()
+
   it('should be defined', () => {
     expect(useEventBus).toBeDefined()
   })
@@ -16,7 +18,7 @@ describe('useEventBus', () => {
     emit()
     off()
     expect(count).toBe(1)
-    expect(useEventBus.observers).toEqual({})
+    expect(useEventBus.observers).toEqual(emptyMap)
   })
   it('on event', (done) => {
     const { emit, on, off } = useEventBus<boolean>('on-event')
@@ -37,7 +39,7 @@ describe('useEventBus', () => {
     emit()
     off()
     expect(count).toBe(1)
-    expect(useEventBus.observers).toEqual({})
+    expect(useEventBus.observers).toEqual(emptyMap)
   })
 
   it('useEventBus off event', (done) => {
@@ -57,7 +59,7 @@ describe('useEventBus', () => {
     off()
 
     expect(count).toBe(5)
-    expect(useEventBus.observers).toEqual({})
+    expect(useEventBus.observers).toEqual(emptyMap)
     done()
   })
 
@@ -82,7 +84,7 @@ describe('useEventBus', () => {
     event1.off('event-off-2')
 
     expect(count).toBe(5)
-    expect(useEventBus.observers).toEqual({})
+    expect(useEventBus.observers).toEqual(emptyMap)
     done()
   })
 
@@ -95,7 +97,7 @@ describe('useEventBus', () => {
       on(() => {})
       on(() => {})
       onUnmounted(() => {
-        expect(useEventBus.observers).toEqual({})
+        expect(useEventBus.observers).toEqual(emptyMap)
       })
     })
     vm.unmount()
