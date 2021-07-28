@@ -13,10 +13,11 @@ import { useEventBus } from '@vueuse/core'
 
 const event = useEventBus('news')
 
-// listen 'news' event, incoming listener to get message, return unToken.
+// use event.on | event.once, listen 'news' event.
 const unToken = event.on((message) => {
   console.log(`message: ${message}`)
 })
+
 // emit 'news' event message
 event.emit('The Tokyo Olympics has begun')
 // console >> message: The Tokyo Olympics has begun
