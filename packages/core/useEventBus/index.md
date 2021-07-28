@@ -13,7 +13,8 @@ import { useEventBus } from '@vueuse/core'
 
 const event = useEventBus('news')
 
-// use event.on | event.once, listen 'news' event.
+// use event.on | event.once, listen 'news' event,
+// incoming listener to get message, return unToken.
 const unToken = event.on((message) => {
   console.log(`message: ${message}`)
 })
