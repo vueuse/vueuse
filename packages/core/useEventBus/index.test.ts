@@ -94,6 +94,7 @@ describe('useEventBus', () => {
       on(() => {})
       on(() => {})
       on(() => {})
+
       on(() => {})
       on(() => {})
       onUnmounted(() => {

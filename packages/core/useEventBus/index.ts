@@ -67,14 +67,17 @@ export function useEventBus<Message = any>(event: string | symbol): UseEventBusR
     unTokens.add(unToken)
     return unToken
   }
+
   function on(listener: (message: any) => void) {
     const unToken = useEventBus.subject.attach(<string>event, listener)
     unTokens.add(unToken)
     return unToken
   }
+
   function emit(message?: any) {
     return useEventBus.subject.notify(<string>event, message)
   }
+
   function off(token?: string | symbol) {
     if (typeof token === 'undefined') {
       unTokens.forEach(token => off(token))
