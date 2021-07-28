@@ -573,6 +573,13 @@
       "description": "tracks the visibility of an element within the viewport"
     },
     {
+      "name": "useEventBus",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useEventBus/",
+      "category": "Utilities",
+      "description": "this is a basic event bus"
+    },
+    {
       "name": "useEventListener",
       "package": "core",
       "docs": "https://vueuse.org/core/useEventListener/",
@@ -773,13 +780,6 @@
       "docs": "https://vueuse.org/core/usePreferredLanguages/",
       "category": "Browser",
       "description": "reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)"
-    },
-    {
-      "name": "usePubsub",
-      "package": "core",
-      "docs": "https://vueuse.org/core/usePubsub/",
-      "category": "Utilities",
-      "description": "has basic publish and subscribe functions"
     },
     {
       "name": "useRafFn",
