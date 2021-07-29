@@ -1,25 +1,35 @@
 import { onUnmounted } from 'vue'
 import { useEventBus } from '.'
+import { useCounter } from '..'
 import { useSetup } from '../../.test'
 
 describe('useEventBus', () => {
   const emptyMap = new Map()
-
   it('should be defined', () => {
     expect(useEventBus).toBeDefined()
   })
 
+  // it('useEventBus subject', () => {
+  //   const counter = useCounter()
+  //   useEventBus.subject.attach('subject', counter.inc)
+  //   useEventBus.subject.notify('subject')
+  //   useEventBus.subject.detach(counter.inc)
+  //   expect(counter.count.value).toBe(1)
+  //   expect(useEventBus.observers).toEqual(emptyMap)
+  // })
+
   it('once event', () => {
     const { emit, once, off } = useEventBus('once-event')
-    let count = 0
-    once(() => count++)
+    const { count, inc } = useCounter(0)
+    once(inc)
     emit()
     emit()
     emit()
     off()
-    expect(count).toBe(1)
+    expect(count.value).toBe(1)
     expect(useEventBus.observers).toEqual(emptyMap)
   })
+
   it('on event', (done) => {
     const { emit, on, off } = useEventBus<boolean>('on-event')
     on((message) => {
@@ -30,35 +40,44 @@ describe('useEventBus', () => {
     off()
   })
 
-  it('token off event', () => {
-    const { emit, on, off } = useEventBus('token-off')
-    let count = 0
-    const unToken = on(() => count++)
-    on(() => count++)
-    off(unToken)
-    emit()
+  it('once callback off event', () => {
+    const bus = useEventBus('once-callback-off')
+    const { count, inc } = useCounter(0)
+    const off = bus.on(inc)
     off()
-    expect(count).toBe(1)
+    expect(count.value).toBe(0)
+    expect(useEventBus.observers).toEqual(emptyMap)
+  })
+
+  it('on callback off event', () => {
+    const bus = useEventBus('on-callback-off')
+    const { count, inc } = useCounter(0)
+    const off = bus.on(inc)
+    bus.on(inc)
+    off()
+    bus.emit()
+    bus.off()
+    expect(count.value).toBe(1)
     expect(useEventBus.observers).toEqual(emptyMap)
   })
 
   it('useEventBus off event', (done) => {
     const { emit, on, off } = useEventBus('useEventBus-off')
-    let count = 0
-    on(() => count++)
-    on(() => count++)
-    on(() => count++)
+    const { count, inc } = useCounter(0)
+    on(inc)
+    on(inc)
+    on(inc)
 
     emit()
     off()
 
-    on(() => count++)
-    on(() => count++)
+    on(inc)
+    on(inc)
 
     emit()
     off()
 
-    expect(count).toBe(5)
+    expect(count.value).toBe(5)
     expect(useEventBus.observers).toEqual(emptyMap)
     done()
   })
@@ -66,16 +85,16 @@ describe('useEventBus', () => {
   it('event off event', (done) => {
     const event1 = useEventBus('event-off-1')
     const event2 = useEventBus('event-off-2')
-    let count = 0
-    event1.on(() => count++)
-    event2.on(() => count++)
+    const { count, inc } = useCounter(0)
+    event1.on(inc)
+    event2.on(inc)
     event1.emit() // 1
     event2.emit() // 2
 
     event1.off('event-off-1')
 
-    event1.on(() => count++)
-    event2.on(() => count++)
+    event1.on(inc)
+    event2.on(inc)
     event1.emit() // 3
     event2.emit() // 5
 
@@ -83,7 +102,7 @@ describe('useEventBus', () => {
     // event1 cancels all ons of event2
     event1.off('event-off-2')
 
-    expect(count).toBe(5)
+    expect(count.value).toBe(5)
     expect(useEventBus.observers).toEqual(emptyMap)
     done()
   })
@@ -94,7 +113,6 @@ describe('useEventBus', () => {
       on(() => {})
       on(() => {})
       on(() => {})
-
       on(() => {})
       on(() => {})
       onUnmounted(() => {
