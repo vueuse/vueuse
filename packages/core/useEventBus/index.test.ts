@@ -9,14 +9,15 @@ describe('useEventBus', () => {
     expect(useEventBus).toBeDefined()
   })
 
-  // it('useEventBus subject', () => {
-  //   const counter = useCounter()
-  //   useEventBus.subject.attach('subject', counter.inc)
-  //   useEventBus.subject.notify('subject')
-  //   useEventBus.subject.detach(counter.inc)
-  //   expect(counter.count.value).toBe(1)
-  //   expect(useEventBus.observers).toEqual(emptyMap)
-  // })
+  it('useEventBus subject', () => {
+    const counter = useCounter()
+    const { attach, notify, detach } = useEventBus.subject
+    attach('subject', counter.inc)
+    notify('subject')
+    detach('subject')
+    expect(counter.count.value).toBe(1)
+    expect(useEventBus.observers).toEqual(emptyMap)
+  })
 
   it('once event', () => {
     const { emit, once, off } = useEventBus('once-event')
@@ -110,11 +111,11 @@ describe('useEventBus', () => {
   it('setup unmount off', () => {
     const vm = useSetup(() => {
       const { on } = useEventBus('setup-unmount')
-      on(() => {})
-      on(() => {})
-      on(() => {})
-      on(() => {})
-      on(() => {})
+      on(() => { })
+      on(() => { })
+      on(() => { })
+      on(() => { })
+      on(() => { })
       onUnmounted(() => {
         expect(useEventBus.observers).toEqual(emptyMap)
       })

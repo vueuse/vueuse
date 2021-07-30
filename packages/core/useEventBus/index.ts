@@ -1,60 +1,54 @@
 import { tryOnUnmounted } from '@vueuse/shared'
-
-export interface EventBusKey<T> extends Symbol {}
-
-export type EventBusObserverItem<T = any> = Map<PropertyKey, (value: T) => void>
 export type OffCallback = () => void
-export interface UseEventBusReturn<Message> {
+export type EventBusListener<T = any> = (event: T) => void
+export interface EventBusKey<T> extends Symbol {}
+export interface UseEventBusReturn<T> {
   /**
    * once event, Same as on, but it will only be called once.
    * @param listener watch listener callback.
    * @returns close the current `once` callback.
    */
-  once: (listener: (message: Message) => void) => OffCallback
+  once: (listener: EventBusListener<T>) => OffCallback
   /**
    * on event, When calling emit, the listener will execute.
    * @param listener watch listener callback.
    * @returns close the current `on` callback.
    */
-  on: (listener: (message: Message) => void) => OffCallback
+  on: (listener: EventBusListener<T>) => OffCallback
   /**
    * emit event, The corresponding event listener will execute.
-   * @param message message sent.
+   * @param event data sent.
    */
-  emit: (message?: Message) => void
+  emit: (event?: T) => void
   /**
    * close the corresponding listener.
-   * @param token event | token.
+   * @param type.
    */
-  off: (token?: PropertyKey) => void
+  off: (type?: PropertyKey) => void
 }
 
-useEventBus.observers = new Map<PropertyKey, EventBusObserverItem>()
+useEventBus.observers = new Map<PropertyKey, Map<PropertyKey, EventBusListener>>()
 useEventBus.subject = {
-  attach: (event: string, listener: (message: any) => void) => {
+  attach: (type: PropertyKey, listener: (message: any) => void) => {
+    const { observers } = useEventBus
     const key = Symbol('observer__key')
-    if (useEventBus.observers.has(event))
-      useEventBus.observers.get(event)!.set(key, listener)
-    else
-      useEventBus.observers.set(event, new Map([[key, listener]]))
+    observers.has(type)
+      ? observers.get(type)!.set(key, listener)
+      : observers.set(type, new Map([[key, listener]]))
     return key
   },
   detach: (token: PropertyKey) => {
-    if (useEventBus.observers.has(token)) {
-      useEventBus.observers.delete(token)
+    const { observers } = useEventBus
+    if (observers.delete(token))
       return
-    }
-    useEventBus.observers.forEach((observer, event) => {
-      if (observer.has(token))
-        observer.delete(token)
-      if (!observer.size)
-        useEventBus.observers.delete(event)
+    observers.forEach((observer, event) => {
+      if (observer.delete(token) && !observer.size)
+        observers.delete(event)
     })
   },
-  notify: (event: PropertyKey, message?: any) => {
-    if (!useEventBus.observers.has(event))
-      return
-    useEventBus.observers.get(event)!.forEach(listener => listener(message))
+  notify: (type: PropertyKey, message?: any) => {
+    const { observers } = useEventBus
+    observers.get(type)?.forEach(listener => listener(message))
   },
 }
 
@@ -64,11 +58,11 @@ useEventBus.subject = {
  * @see https://vueuse.org/useEventBus
  * @param event
  */
-export function useEventBus<Message = any>(eventKey: EventBusKey<Message> | string | number): UseEventBusReturn<Message> {
+export function useEventBus<T = any>(type: EventBusKey<T> | string | number): UseEventBusReturn<T> {
+  const { attach, notify, detach } = useEventBus.subject
   const unTokens = new Set<symbol>()
-
-  function once(listener: (message: any) => void) {
-    const unToken = useEventBus.subject.attach(<string>eventKey, (_message) => {
+  function once(listener: EventBusListener<T>) {
+    const unToken = attach(<PropertyKey>type, (_message) => {
       listener(_message)
       off(unToken)
     })
@@ -76,14 +70,14 @@ export function useEventBus<Message = any>(eventKey: EventBusKey<Message> | stri
     return () => off(unToken)
   }
 
-  function on(listener: (message: any) => void) {
-    const unToken = useEventBus.subject.attach(<string>eventKey, listener)
+  function on(listener: EventBusListener<T>) {
+    const unToken = attach(<PropertyKey>type, listener)
     unTokens.add(unToken)
     return () => off(unToken)
   }
 
-  function emit(message?: any) {
-    return useEventBus.subject.notify(<string>eventKey, message)
+  function emit(message?: T) {
+    return notify(<PropertyKey>type, message)
   }
 
   function off(token?: PropertyKey) {
@@ -91,9 +85,8 @@ export function useEventBus<Message = any>(eventKey: EventBusKey<Message> | stri
       unTokens.forEach(token => off(token))
       return
     }
-    if (typeof token === 'symbol' && unTokens.has(token))
-      unTokens.delete(token)
-    useEventBus.subject.detach(<string>(token || event))
+    unTokens.delete(<symbol>token)
+    detach(<string>(token || type))
   }
 
   tryOnUnmounted(off)
