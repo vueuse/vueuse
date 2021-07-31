@@ -80,20 +80,20 @@ const payloadMapping: Record<string, string> = {
 }
 
 interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
-  // methods
-  get(): UseFetchReturnBase<T>
-  post(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  put(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  delete(payload?: unknown, type?: string): UseFetchReturnBase<T>
+  // type
+  json<JSON = any>(): UseFetchReturnBase<JSON>
+  text(): UseFetchReturnBase<string>
+  blob(): UseFetchReturnBase<Blob>
+  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
+  formData(): UseFetchReturnBase<FormData>
 }
 
 export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
-  // type
-  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
-  text(): UseFetchReturnTypeConfigured<string>
-  blob(): UseFetchReturnTypeConfigured<Blob>
-  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
-  formData(): UseFetchReturnTypeConfigured<FormData>
+  // methods
+  get(): UseFetchReturnTypeConfigured<T>
+  post(payload?: unknown, type?: string): UseFetchReturnTypeConfigured<T>
+  put(payload?: unknown, type?: string): UseFetchReturnTypeConfigured<T>
+  delete(payload?: unknown, type?: string): UseFetchReturnTypeConfigured<T>
 }
 
 export interface BeforeFetchContext {
@@ -396,21 +396,19 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   const typeConfigured: UseFetchReturnTypeConfigured<T> = {
     ...base,
-
-    get: setMethod('get'),
-    put: setMethod('put'),
-    post: setMethod('post'),
-    delete: setMethod('delete'),
-  }
-
-  const shell: UseFetchReturn<T> = {
-    ...typeConfigured,
-
     json: setType('json'),
     text: setType('text'),
     blob: setType('blob'),
     arrayBuffer: setType('arrayBuffer'),
     formData: setType('formData'),
+  }
+
+  const shell: UseFetchReturn<T> = {
+    ...typeConfigured,
+    get: setMethod('get'),
+    put: setMethod('put'),
+    post: setMethod('post'),
+    delete: setMethod('delete'),
   }
 
   function setMethod(method: HttpMethod) {
@@ -424,7 +422,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         if (!payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype)
           config.payloadType = 'json'
 
-        return base as any
+        return typeConfigured as any
       }
       return undefined
     }
@@ -434,7 +432,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     return () => {
       if (!isFetching.value) {
         config.type = type
-        return typeConfigured as any
+        return base as any
       }
       return undefined
     }
