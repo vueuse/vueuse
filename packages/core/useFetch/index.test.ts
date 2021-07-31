@@ -232,9 +232,22 @@ describe('useFetch', () => {
 
     const shell = useFetch('https://example.com', {
       immediate: false,
-    }).get()
-    shell.text()
+    }).get().text()
+    shell.json()
+    shell.execute()
     const { isFinished, data } = shell
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual({ message: 'Hello World' })
+  })
+
+  test('not allowed setting response type while doing request', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const shell = useFetch('https://example.com').get().text()
+    const { isFetching, isFinished, data } = shell
+    await until(isFetching).toBe(true)
+    shell.json()
     await until(isFinished).toBe(true)
 
     expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
