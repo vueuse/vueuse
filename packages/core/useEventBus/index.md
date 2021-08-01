@@ -13,15 +13,16 @@ import { useEventBus } from '@vueuse/core'
 
 const bus = useEventBus('news')
 
-// use bus.on | bus.once, listen 'news' event,
-// incoming listener to get message, return unToken.
+// listen to an event
 const off = bus.on((event) => {
   console.log(`news: ${event}`)
 })
 
-// emit 'news' event message
+// fire an event
 bus.emit('The Tokyo Olympics has begun')
-// console >> news: 'The Tokyo Olympics has begun'
+
+// use return callback to cancel a listener
+off()
 
 // off from all subscriptions currently on using useEventBus
 // if in setup, it will be called automatically when onUnmounted
@@ -30,6 +31,27 @@ bus.off()
 // all methods to off the event name 'news'
 bus.off('news')
 
-// use return callback to cancel a listener
-off()
+// clearing all events
+bus.all.clear()
+
+// working with handler references:
+function onFoo() {}
+bus.on(onFoo)   // listen
+bus.off(onFoo)  // unlisten
+```
+
+## TypeScript
+
+Using EventBusKey is the key to save the event type, similar to vue's InjectionKey util.
+
+```ts
+import { useEventBus, EventBusKey } from '@vueuse/core'
+
+const fooKey: EventBusKey<{ name: foo }> = Symbol()
+
+const bus = useEventBus(fooEventKey)
+
+bus.on((e) => {
+	// `e` will be `{ name: foo }`
+})
 ```

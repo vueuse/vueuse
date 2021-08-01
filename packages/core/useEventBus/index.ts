@@ -1,14 +1,15 @@
 import { tryOnUnmounted } from '@vueuse/shared'
+import { readonly, DeepReadonly } from 'vue'
+
 export type OffCallback = () => void
 export type EventBusListener<T = any> = (event: T) => void
-export interface EventBusKey<T> extends Symbol {}
+export type EventBusEvents = DeepReadonly<{ BUS_KEY: symbol; listener: EventBusListener }>[]
+
+export interface EventBusKey<T> extends Symbol { }
+export type EventBusType<T = any> = EventBusKey<T> | string | number
+
 export interface UseEventBusReturn<T> {
   /**
-   * once event, Same as on, but it will only be called once.
-   * @param listener watch listener callback.
-   * @returns close the current `once` callback.
-   */
-  once: (listener: EventBusListener<T>) => OffCallback
   /**
    * on event, When calling emit, the listener will execute.
    * @param listener watch listener callback.
@@ -24,72 +25,38 @@ export interface UseEventBusReturn<T> {
    * close the corresponding listener.
    * @param type.
    */
-  off: (type?: PropertyKey) => void
+  off: (sign?: EventBusListener | EventBusType) => void
+  /**
+   * Stores all event and listener Map data
+   */
+  all: Map<EventBusType, EventBusEvents>
 }
 
-useEventBus.observers = new Map<PropertyKey, Map<PropertyKey, EventBusListener>>()
-useEventBus.subject = {
-  attach: (type: PropertyKey, listener: (message: any) => void) => {
-    const { observers } = useEventBus
-    const key = Symbol('observer__key')
-    observers.has(type)
-      ? observers.get(type)!.set(key, listener)
-      : observers.set(type, new Map([[key, listener]]))
-    return key
-  },
-  detach: (token: PropertyKey) => {
-    const { observers } = useEventBus
-    if (observers.delete(token))
-      return
-    observers.forEach((observer, event) => {
-      if (observer.delete(token) && !observer.size)
-        observers.delete(event)
-    })
-  },
-  notify: (type: PropertyKey, message?: any) => {
-    const { observers } = useEventBus
-    observers.get(type)?.forEach(listener => listener(message))
-  },
-}
+const all = new Map<EventBusType, EventBusEvents>()
 
-/**
- * This is a basic event bus, which is generally used to transfer data across components.
- *
- * @see https://vueuse.org/useEventBus
- * @param event
- */
-export function useEventBus<T = any>(type: EventBusKey<T> | string | number): UseEventBusReturn<T> {
-  const { attach, notify, detach } = useEventBus.subject
-  const unTokens = new Set<symbol>()
-  function once(listener: EventBusListener<T>) {
-    const unToken = attach(<PropertyKey>type, (_message) => {
-      listener(_message)
-      off(unToken)
-    })
-    unTokens.add(unToken)
-    return () => off(unToken)
-  }
+export function useEventBus<T = any>(key: string | number | EventBusKey<T>): UseEventBusReturn<T> {
+  const BUS_KEY = Symbol('bus-key')
 
   function on(listener: EventBusListener<T>) {
-    const unToken = attach(<PropertyKey>type, listener)
-    unTokens.add(unToken)
-    return () => off(unToken)
+    const listeners = all.get(key) || []
+    listeners.push(readonly({ BUS_KEY, listener }))
+    all.set(key, listeners)
+    return () => off(listener)
   }
 
-  function emit(message?: T) {
-    return notify(<PropertyKey>type, message)
+  function off(sign?: EventBusListener<T> | EventBusType<T>): void {
+    const listeners = all.get(key) || []
+    if (typeof sign === 'undefined') return [...listeners].forEach(v => (v.BUS_KEY === BUS_KEY && off(v.listener)))
+    if (typeof sign !== 'function') all.delete(sign)
+    if (typeof sign === 'function') listeners.splice(listeners.findIndex(v => v.listener === sign), 1)
+    if (!listeners.length) all.delete(key)
   }
 
-  function off(token?: PropertyKey) {
-    if (typeof token === 'undefined') {
-      unTokens.forEach(token => off(token))
-      return
-    }
-    unTokens.delete(<symbol>token)
-    detach(<string>(token || type))
+  function emit(event?: T) {
+    all.get(key)?.forEach(v => v.listener(event))
   }
 
   tryOnUnmounted(off)
 
-  return { on, emit, off, once }
+  return { on, off, emit, all }
 }
