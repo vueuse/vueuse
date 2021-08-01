@@ -1,9 +1,7 @@
 import { tryOnUnmounted } from '@vueuse/shared'
-import { readonly, DeepReadonly } from 'vue'
-
 export type OffCallback = () => void
-export type EventBusListener<T = any> = (event: T) => void
-export type EventBusEvents = DeepReadonly<{ BUS_KEY: symbol; listener: EventBusListener }>[]
+export type EventBusListener<T = any> = { (event: T): void; __bus_key?: symbol }
+export type EventBusEvents = EventBusListener[]
 
 export interface EventBusKey<T> extends Symbol { }
 export type EventBusType<T = any> = EventBusKey<T> | string | number
@@ -39,21 +37,22 @@ export function useEventBus<T = any>(key: string | number | EventBusKey<T>): Use
 
   function on(listener: EventBusListener<T>) {
     const listeners = all.get(key) || []
-    listeners.push(readonly({ BUS_KEY, listener }))
+    listener.__bus_key = BUS_KEY
+    listeners.push(listener)
     all.set(key, listeners)
     return () => off(listener)
   }
 
   function off(sign?: EventBusListener<T> | EventBusType<T>): void {
     const listeners = all.get(key) || []
-    if (typeof sign === 'undefined') return [...listeners].forEach(v => (v.BUS_KEY === BUS_KEY && off(v.listener)))
+    if (typeof sign === 'undefined') return [...listeners].forEach(v => (v.__bus_key === BUS_KEY && off(v)))
     if (typeof sign !== 'function') all.delete(sign)
-    if (typeof sign === 'function') listeners.splice(listeners.findIndex(v => v.listener === sign), 1)
+    if (typeof sign === 'function') listeners.splice(listeners.findIndex(v => v === sign), 1)
     if (!listeners.length) all.delete(key)
   }
 
   function emit(event?: T) {
-    all.get(key)?.forEach(v => v.listener(event))
+    all.get(key)?.forEach(v => v(event))
   }
 
   tryOnUnmounted(off)
