@@ -47,7 +47,7 @@ export function useEventBus<T = any>(key: string | number | EventBusKey<T>): Use
     const listeners = all.get(key) || []
     if (typeof sign === 'undefined') return listeners.filter(v => v[BUS_KEY]).forEach(off)
     if (typeof sign !== 'function') all.delete(sign)
-    if (typeof sign === 'function') listeners.splice(listeners.findIndex(v => v === sign), 1)
+    if (typeof sign === 'function') listeners.splice(listeners.indexOf(sign), 1)
     if (!listeners.length) all.delete(key)
   }
 
