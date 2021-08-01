@@ -1,6 +1,6 @@
 import { tryOnUnmounted } from '@vueuse/shared'
 export type OffCallback = () => void
-export type EventBusListener<T = any> = { (event: T): void; __bus_key?: symbol }
+export type EventBusListener<T = any> = { (event: T): void; [key: string]: any }
 export type EventBusEvents = EventBusListener[]
 
 export interface EventBusKey<T> extends Symbol { }
@@ -33,10 +33,10 @@ export interface UseEventBusReturn<T> {
 const all = new Map<EventBusType, EventBusEvents>()
 
 export function useEventBus<T = any>(key: string | number | EventBusKey<T>): UseEventBusReturn<T> {
-  const BUS_KEY = Symbol('bus-key')
+  const BUS_KEY = Symbol('bus-key') as any as string
 
   function on(listener: EventBusListener<T>) {
-    !listener.__bus_key && Object.defineProperty(listener, '__bus_key', { get: () => BUS_KEY })
+    if (!listener[BUS_KEY]) Object.defineProperty(listener, BUS_KEY, { get: () => true })
     const listeners = all.get(key) || []
     listeners.push(listener)
     all.set(key, listeners)
@@ -45,7 +45,7 @@ export function useEventBus<T = any>(key: string | number | EventBusKey<T>): Use
 
   function off(sign?: EventBusListener<T> | EventBusType<T>): void {
     const listeners = all.get(key) || []
-    if (typeof sign === 'undefined') return [...listeners].forEach(v => (v.__bus_key === BUS_KEY && off(v)))
+    if (typeof sign === 'undefined') return listeners.filter(v => v[BUS_KEY]).forEach(off)
     if (typeof sign !== 'function') all.delete(sign)
     if (typeof sign === 'function') listeners.splice(listeners.findIndex(v => v === sign), 1)
     if (!listeners.length) all.delete(key)
