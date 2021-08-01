@@ -4,7 +4,7 @@ import { useCounter } from '..'
 import { useSetup } from '../../.test'
 import { useEventBus } from '.'
 
-describe('useEventBus.small', () => {
+describe('useEventBus', () => {
   const emptyMap = new Map()
   it('on event and off listener', () => {
     const { on, off, all } = useEventBus('foo')
