@@ -36,8 +36,8 @@ export function useEventBus<T = any>(key: string | number | EventBusKey<T>): Use
   const BUS_KEY = Symbol('bus-key')
 
   function on(listener: EventBusListener<T>) {
+    !listener.__bus_key && Object.defineProperty(listener, '__bus_key', { get: () => BUS_KEY })
     const listeners = all.get(key) || []
-    listener.__bus_key = BUS_KEY
     listeners.push(listener)
     all.set(key, listeners)
     return () => off(listener)

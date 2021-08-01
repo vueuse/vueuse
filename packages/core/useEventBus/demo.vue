@@ -13,6 +13,14 @@ const news = [
   'Tokyo Olympic service provokes athletes sleeping in cardboard suitcases and eating canned food, reviewing the Beijing Olympics god-level arrangements',
 ]
 on(_message => message.value = news[Math.floor(Math.random() * news.length)])
+
+const func = () => {}
+func.www = '12312'
+// eslint-disable-next-line accessor-pairs
+Object.defineProperty(func, 'www', {
+  writable: false,
+})
+console.log(func.www)
 </script>
 
 <template>
