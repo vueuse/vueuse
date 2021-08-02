@@ -62,6 +62,8 @@ export declare type OnClickOutsideEvents = Pick<
 export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents>
   extends ConfigurableWindow {
   event?: E
+  // Whether or not to listen (ignore) to browser scrollbar clicks.
+  excludeScrollbar?: boolean
 }
 /**
  * Listen for clicks outside of an element.

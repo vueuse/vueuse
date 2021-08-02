@@ -11,6 +11,9 @@ onClickOutside(
     console.log(event)
     modal.value = false
   },
+  {
+    excludeScrollbar: true,
+  },
 )
 
 const dropdown = ref(false)
@@ -53,6 +56,8 @@ onClickOutside(
 
 <style scoped>
 .modal {
+  overflow:auto;
+  height: 300px;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -62,6 +67,7 @@ onClickOutside(
   z-index: 10;
 }
 .inner {
+  height: 500px;
   background-color: var(--c-bg);
   padding: 0.4em 2em;
   border-radius: 5px;
