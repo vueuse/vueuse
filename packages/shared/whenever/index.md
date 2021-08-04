@@ -31,6 +31,18 @@ watch(ready, (isReady) => {
 })
 ```
 
+### Callback Function
+
+Same as `watch`, the callback will be called with `cb(value, oldValue, onInvalidate)`.
+
+```ts
+whenever(height, (current, lastHeight) => {
+  if (current > lastHeight) {
+    console.log(`Increasing height by ${current - lastHeight}`)
+  }
+})
+```
+
 ### Computed
 
 Same as `watch`, you can pass a getter function to calculate on each change.
