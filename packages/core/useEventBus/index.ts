@@ -1,5 +1,5 @@
 import { Fn } from '@vueuse/shared'
-import { getCurrentInstance, onUnmounted } from 'vue'
+import { getCurrentScope } from 'vue'
 import { events } from './internal'
 
 export type EventBusListener<T = unknown> = (event: T) => void
@@ -32,7 +32,7 @@ export interface UseEventBusReturn<T> {
 }
 
 export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBusReturn<T> {
-  const vm = getCurrentInstance()
+  const scope = getCurrentScope()
 
   function on(listener: EventBusListener<T>) {
     const listeners = events.get(key) || []
@@ -40,8 +40,8 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     events.set(key, listeners)
 
     const _off = () => off(listener)
-    // auto unsubscribe when vm get unmounted
-    if (vm) onUnmounted(_off, vm)
+    // auto unsubscribe when scope get disposed
+    scope?.cleanups.push(_off)
     return _off
   }
 
