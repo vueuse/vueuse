@@ -30,7 +30,10 @@ else {
 
   const Child = defineComponent({
     props: {
-      id: Number,
+      id: {
+        type: Number,
+        required: true,
+      },
     },
     setup(props) {
       const { id } = toRefs(props)
