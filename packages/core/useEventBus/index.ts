@@ -1,5 +1,6 @@
 import { Fn } from '@vueuse/shared'
 import { getCurrentInstance, onUnmounted } from 'vue'
+import { events } from './internal'
 
 export type EventBusListener<T = unknown> = (event: T) => void
 export type EventBusEvents<T> = EventBusListener<T>[]
@@ -23,14 +24,12 @@ export interface UseEventBusReturn<T> {
    * Remove the corresponding listener.
    * @param listener watch listener.
    */
-  off: (listener: EventBusListener) => void
+  off: (listener: EventBusListener<T>) => void
   /**
    * Clear all events
    */
   reset: () => void
 }
-
-const events = new Map<EventBusIdentifer<any>, EventBusEvents<any>>()
 
 export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBusReturn<T> {
   const vm = getCurrentInstance()
