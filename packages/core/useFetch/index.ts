@@ -186,14 +186,17 @@ function headersToObject(headers: HeadersInit | undefined) {
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
-  let options = config.options || {}
-  let fetchOptions = config.fetchOptions || {}
+  const _options = config.options || {}
+  const _fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
     const computedUrl = computed(() => config.baseUrl
       ? joinPaths(unref(config.baseUrl), unref(url))
       : unref(url),
     )
+
+    let options = _options
+    let fetchOptions = _fetchOptions
 
     // Merge properties into a single object
     if (args.length > 0) {

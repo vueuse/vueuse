@@ -126,6 +126,13 @@ export function useSwipe(
   else
     listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
+  const onTouchEnd = (e: TouchEvent) => {
+    if (isSwiping.value)
+      onSwipeEnd?.(e, direction.value)
+
+    isSwiping.value = false
+  }
+
   const stops = [
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
       if (listenerOptions.capture && !listenerOptions.passive)
@@ -145,12 +152,8 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', (e: TouchEvent) => {
-      if (isSwiping.value)
-        onSwipeEnd?.(e, direction.value)
-
-      isSwiping.value = false
-    }, listenerOptions),
+    useEventListener(target, 'touchend', onTouchEnd, listenerOptions),
+    useEventListener(target, 'touchcancel', onTouchEnd, listenerOptions),
   ]
 
   const stop = () => stops.forEach(s => s())
