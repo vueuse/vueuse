@@ -31,6 +31,18 @@
     "url": "https://github.com/vueuse/vueuse/issues"
   },
   "homepage": "https://github.com/vueuse/vueuse#readme",
+  "peerDependencies": {
+    "@vue/composition-api": "^1.1.0",
+    "vue": "^2.6.0 || ^3.2.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "@vue/composition-api": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@vueuse/shared": "6.0.0-beta.2",
     "vue-demi": "*"
