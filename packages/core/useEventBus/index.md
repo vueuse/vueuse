@@ -4,54 +4,66 @@ category: Utilities
 
 # useEventBus
 
-This is a basic event bus, which is generally used to transfer data across components.
+A basic event bus.
 
 ## Usage
 
 ```ts
 import { useEventBus } from '@vueuse/core'
 
-const bus = useEventBus('news')
+const bus = useEventBus<string>('news')
+
+const listener = (event: string) => {
+  console.log(`news: ${event}`)
+}
 
 // listen to an event
-const off = bus.on((event) => {
-  console.log(`news: ${event}`)
-})
+const unsubscribe = bus.on(listener)
 
 // fire an event
 bus.emit('The Tokyo Olympics has begun')
 
-// use return callback to cancel a listener
-off()
+// unregister the listener
+unsubscribe()
+// or
+bus.off(listener)
 
-// off from all subscriptions currently on using useEventBus
-// if in setup, it will be called automatically when onUnmounted
-bus.off()
-
-// all methods to off the event name 'news'
-bus.off('news')
-
-// clearing all events
-bus.all.clear()
-
-// working with handler references:
-function onFoo() {}
-bus.on(onFoo)   // listen
-bus.off(onFoo)  // unlisten
+// clearing all listeners
+bus.reset()
 ```
+
+Listeners registered inside of components `setup` will be unregistered automatically when the component gets unmounted.
 
 ## TypeScript
 
-Using EventBusKey is the key to save the event type, similar to vue's InjectionKey util.
+Using `EventBusKey` is the key to bind the event type to the key, similar to Vue's [`InjectionKey`](https://antfu.me/notes#typed-provide-and-inject-in-vue) util.
 
 ```ts
-import { useEventBus, EventBusKey } from '@vueuse/core'
+// fooKey.ts
+import type { EventBusKey } from '@vueuse/core'
 
-const fooKey: EventBusKey<{ name: foo }> = Symbol()
+export const fooKey: EventBusKey<{ name: foo }> = Symbol()
+```
+
+```ts
+import { useEventBus } from '@vueuse/core'
+
+import { fooKey } from './fooKey'
 
 const bus = useEventBus(fooEventKey)
 
 bus.on((e) => {
-	// `e` will be `{ name: foo }`
+  // `e` will be `{ name: foo }`
 })
 ```
+
+
+<!--FOOTER_STARTS-->
+
+
+## Source
+
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useEventBus/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useEventBus/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useEventBus/index.md)
+
+
+<!--FOOTER_ENDS-->
