@@ -580,6 +580,13 @@
       "description": "tracks the visibility of an element within the viewport"
     },
     {
+      "name": "useEventBus",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useEventBus/",
+      "category": "Utilities",
+      "description": "a basic event bus"
+    },
+    {
       "name": "useEventListener",
       "package": "core",
       "docs": "https://vueuse.org/core/useEventListener/",
