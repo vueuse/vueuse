@@ -11,23 +11,23 @@ export type Serializer<T> = {
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string', Serializer<any>> = {
   boolean: {
-    read: (v: any) => v != null ? v === 'true' : null,
+    read: (v: any) => v === 'true',
     write: (v: any) => String(v),
   },
   object: {
-    read: (v: any) => v ? JSON.parse(v) : null,
+    read: (v: any) => JSON.parse(v),
     write: (v: any) => JSON.stringify(v),
   },
   number: {
-    read: (v: any) => v != null ? Number.parseFloat(v) : null,
+    read: (v: any) => Number.parseFloat(v),
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any) => (v != null && v !== 'null') ? v : null,
+    read: (v: any) => v,
     write: (v: any) => String(v),
   },
   string: {
-    read: (v: any) => v != null ? v : null,
+    read: (v: any) => v,
     write: (v: any) => String(v),
   },
 }
@@ -119,7 +119,8 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
         (data as Ref<T>).value = defaultValue
-        storage.setItem(key, serializer.write(defaultValue))
+        if (defaultValue !== null)
+          storage.setItem(key, serializer.write(defaultValue))
       }
       else {
         data.value = serializer.read(rawValue)
