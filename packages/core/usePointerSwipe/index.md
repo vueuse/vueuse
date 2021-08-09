@@ -53,12 +53,12 @@ export interface PointerPosition {
   y: number
 }
 export interface PointerSwipeReturn {
-  isSwiping: DeepReadonly<Ref<boolean>>
-  direction: DeepReadonly<ComputedRef<SwipeDirection | null>>
-  posStart: PointerPosition
-  posEnd: PointerPosition
-  distanceX: ComputedRef<number>
-  distanceY: ComputedRef<number>
+  readonly isSwiping: Ref<boolean>
+  direction: Readonly<Ref<SwipeDirection | null>>
+  readonly posStart: PointerPosition
+  readonly posEnd: PointerPosition
+  distanceX: Readonly<Ref<number>>
+  distanceY: Readonly<Ref<number>>
   stop: () => void
 }
 /**
