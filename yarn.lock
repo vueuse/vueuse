@@ -2211,10 +2211,10 @@
     "@vue/compiler-dom" "3.2.0-beta.8"
     "@vue/shared" "3.2.0-beta.8"
 
-"@vue/composition-api@^1.1.0-beta.6":
-  version "1.1.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.1.0-beta.6.tgz#14b7c43616e9b91e83c3bf03895d42f084f94e4d"
-  integrity sha512-LBfWMTp7ztg5pGb8wnglyovaPBNPbtuYY1uWC8olox+q0FRqeXA4QEeGkKiUX+U1Cr62E2Cq5nk8xsNjAHtWow==
+"@vue/composition-api@^1.1.0-beta.7":
+  version "1.1.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.1.0-beta.7.tgz#62a43bfc680bab0b1c4c07a606c76da6b72b3a98"
+  integrity sha512-33zRA7sOACV3M4zlV+aBPIPn+gGliU5uKy0PXpnxJ8TbEtLqi7lz/vpa+oKtUIsKJpLWQtWKIn7Qbxutp69XAQ==
   dependencies:
     tslib "^2.3.0"
 
