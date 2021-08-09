@@ -23,7 +23,7 @@ const { pause, resume, isActive } = useIntervalFn(() => {
 ```typescript
 export interface IntervalFnOptions {
   /**
-   * Start the timer immediately
+   * Execute the callback immediate after calling this function
    *
    * @default true
    */
