@@ -1,4 +1,4 @@
-import { Fn, isString, MaybeRef, noop, tryOnUnmounted } from '@vueuse/shared'
+import { Fn, isString, MaybeRef, noop, tryOnScopeDispose } from '@vueuse/shared'
 import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -119,7 +119,7 @@ export function useEventListener(...args: any[]) {
     cleanup()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return stop
 }

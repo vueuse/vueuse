@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
@@ -28,7 +28,7 @@ export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
   else
     mediaQuery.addListener(handler)
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     if ('removeEventListener' in mediaQuery)
       mediaQuery.removeEventListener('change', handler)
     else

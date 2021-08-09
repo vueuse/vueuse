@@ -1,5 +1,5 @@
 import nprogress, { NProgressOptions } from 'nprogress'
-import { MaybeRef, tryOnUnmounted, isNumber } from '@vueuse/shared'
+import { MaybeRef, tryOnScopeDispose, isNumber } from '@vueuse/shared'
 import { ref, isRef, watchEffect, computed } from 'vue-demi'
 
 /**
@@ -35,7 +35,7 @@ export function useNProgress(
       setProgress.call(nprogress, progress.value)
   })
 
-  tryOnUnmounted(nprogress.remove)
+  tryOnScopeDispose(nprogress.remove)
 
   return {
     isLoading,

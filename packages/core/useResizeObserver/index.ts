@@ -1,4 +1,4 @@
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -79,7 +79,7 @@ export function useResizeObserver(
     stopWatch()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isSupported,

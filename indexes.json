@@ -162,6 +162,20 @@
       "description": "utility for creating event hooks"
     },
     {
+      "name": "createGlobalState",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/createGlobalState/",
+      "category": "State",
+      "description": "keep states in the global scope to be reusable across Vue instances"
+    },
+    {
+      "name": "createSharedComposable",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/createSharedComposable/",
+      "category": "State",
+      "description": "make a composable function usable with multiple Vue instances"
+    },
+    {
       "name": "debouncedWatch",
       "package": "shared",
       "docs": "https://vueuse.org/shared/debouncedWatch/",
@@ -265,6 +279,13 @@
       "docs": "https://vueuse.org/shared/tryOnMounted/",
       "category": "Component",
       "description": "safe `onMounted`"
+    },
+    {
+      "name": "tryOnScopeDispose",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/tryOnScopeDispose/",
+      "category": "Component",
+      "description": "safe `onScopeDispose`"
     },
     {
       "name": "tryOnUnmounted",
@@ -396,13 +417,6 @@
       "docs": "https://vueuse.org/core/computedInject/",
       "category": "Component",
       "description": "combine computed and inject"
-    },
-    {
-      "name": "createGlobalState",
-      "package": "core",
-      "docs": "https://vueuse.org/core/createGlobalState/",
-      "category": "State",
-      "description": "keep states in the global scope to be reusable across Vue instances"
     },
     {
       "name": "onClickOutside",

@@ -1,6 +1,6 @@
 import type firebase from 'firebase'
 import { ref, Ref } from 'vue-demi'
-import { isDef, tryOnUnmounted } from '@vueuse/shared'
+import { isDef, tryOnScopeDispose } from '@vueuse/shared'
 
 export interface FirestoreOptions {
   errorHandler?: (err: Error) => void
@@ -80,7 +80,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
       data.value = getData(snapshot) || null
     }, errorHandler)
 
-    tryOnUnmounted(() => {
+    tryOnScopeDispose(() => {
       close()
     })
 
@@ -94,7 +94,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
     }, errorHandler)
 
     if (autoDispose) {
-      tryOnUnmounted(() => {
+      tryOnScopeDispose(() => {
         close()
       })
     }
