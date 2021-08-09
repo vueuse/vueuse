@@ -281,6 +281,13 @@
       "description": "safe `onMounted`"
     },
     {
+      "name": "tryOnScopeDispose",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/tryOnScopeDispose/",
+      "category": "Component",
+      "description": "safe `onScopeDispose`"
+    },
+    {
       "name": "tryOnUnmounted",
       "package": "shared",
       "docs": "https://vueuse.org/shared/tryOnUnmounted/",
