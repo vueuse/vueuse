@@ -72,7 +72,6 @@ describe('useEventBus', () => {
     event2.emit() // 5
 
     event1.reset()
-    // event1 cancels all ons of event2
     event2.reset()
 
     expect(count.value).toBe(5)
