@@ -33,7 +33,7 @@ const qrcode = useQRCode(text)
 
 ```html
 <input v-model="text" type="text">
-<img :src="qrcode" />
+<img :src="qrcode" alt="QR Code" />
 ```
 
 
