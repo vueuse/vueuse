@@ -59,7 +59,42 @@ bus.on((e) => {
 
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export declare type EventBusListener<T = unknown> = (event: T) => void
+export declare type EventBusEvents<T> = EventBusListener<T>[]
+export interface EventBusKey<T> extends Symbol {}
+export declare type EventBusIdentifer<T = unknown> =
+  | EventBusKey<T>
+  | string
+  | number
+export interface UseEventBusReturn<T> {
+  /**
+   * Subscribe to an event. When calling emit, the listeners will execute.
+   * @param listener watch listener.
+   * @returns a stop function to remove the current callback.
+   */
+  on: (listener: EventBusListener<T>) => Fn
+  /**
+   * Emit an event, the corresponding event listeners will execute.
+   * @param event data sent.
+   */
+  emit: (event?: T) => void
+  /**
+   * Remove the corresponding listener.
+   * @param listener watch listener.
+   */
+  off: (listener: EventBusListener<T>) => void
+  /**
+   * Clear all events
+   */
+  reset: () => void
+}
+export declare function useEventBus<T = unknown>(
+  key: EventBusIdentifer<T>
+): UseEventBusReturn<T>
+```
 
 ## Source
 

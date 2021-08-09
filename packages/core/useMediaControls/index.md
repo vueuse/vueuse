@@ -179,206 +179,170 @@ export declare function useMediaControls(
       mode: TextTrackMode
       kind: TextTrackKind
       inBandMetadataTrackDispatchType: string
-      cues:
-        | ({
-            [x: number]: {
-              endTime: number
-              id: string
-              onenter: ((this: TextTrackCue, ev: Event) => any) | null
-              onexit: ((this: TextTrackCue, ev: Event) => any) | null
-              pauseOnExit: boolean
-              startTime: number
-              readonly track: {
-                readonly activeCues:
-                  | (any & {
-                      [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-                    })
-                  | null
-                readonly cues:
-                  | (any & {
-                      [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-                    })
-                  | null
-                readonly id: string
-                readonly inBandMetadataTrackDispatchType: string
-                readonly kind: TextTrackKind
-                readonly label: string
-                readonly language: string
-                mode: TextTrackMode
-                oncuechange: ((this: TextTrack, ev: Event) => any) | null
-                addCue: (cue: TextTrackCue) => void
-                removeCue: (cue: TextTrackCue) => void
-                addEventListener: {
-                  <K extends "cuechange">(
-                    type: K,
-                    listener: (
-                      this: TextTrack,
-                      ev: TextTrackEventMap[K]
-                    ) => any,
-                    options?: boolean | AddEventListenerOptions | undefined
-                  ): void
-                  (
-                    type: string,
-                    listener: EventListenerOrEventListenerObject,
-                    options?: boolean | AddEventListenerOptions | undefined
-                  ): void
-                }
-                removeEventListener: {
-                  <K_1 extends "cuechange">(
-                    type: K_1,
-                    listener: (
-                      this: TextTrack,
-                      ev: TextTrackEventMap[K_1]
-                    ) => any,
-                    options?: boolean | EventListenerOptions | undefined
-                  ): void
-                  (
-                    type: string,
-                    listener: EventListenerOrEventListenerObject,
-                    options?: boolean | EventListenerOptions | undefined
-                  ): void
-                }
-                dispatchEvent: (event: Event) => boolean
-              } | null
-              addEventListener: {
-                <K_2 extends keyof TextTrackCueEventMap>(
-                  type: K_2,
-                  listener: (
-                    this: TextTrackCue,
-                    ev: TextTrackCueEventMap[K_2]
-                  ) => any,
-                  options?: boolean | AddEventListenerOptions | undefined
-                ): void
-                (
-                  type: string,
-                  listener: EventListenerOrEventListenerObject,
-                  options?: boolean | AddEventListenerOptions | undefined
-                ): void
-              }
-              removeEventListener: {
-                <K_3 extends keyof TextTrackCueEventMap>(
-                  type: K_3,
-                  listener: (
-                    this: TextTrackCue,
-                    ev: TextTrackCueEventMap[K_3]
-                  ) => any,
-                  options?: boolean | EventListenerOptions | undefined
-                ): void
-                (
-                  type: string,
-                  listener: EventListenerOrEventListenerObject,
-                  options?: boolean | EventListenerOptions | undefined
-                ): void
-              }
-              dispatchEvent: (event: Event) => boolean
+      cues: {
+        [x: number]: {
+          endTime: number
+          id: string
+          onenter: ((this: TextTrackCue, ev: Event) => any) | null
+          onexit: ((this: TextTrackCue, ev: Event) => any) | null
+          pauseOnExit: boolean
+          startTime: number
+          readonly track: {
+            readonly activeCues: any | null
+            readonly cues: any | null
+            readonly id: string
+            readonly inBandMetadataTrackDispatchType: string
+            readonly kind: TextTrackKind
+            readonly label: string
+            readonly language: string
+            mode: TextTrackMode
+            oncuechange: ((this: TextTrack, ev: Event) => any) | null
+            addCue: (cue: TextTrackCue) => void
+            removeCue: (cue: TextTrackCue) => void
+            addEventListener: {
+              <K extends "cuechange">(
+                type: K,
+                listener: (this: TextTrack, ev: TextTrackEventMap[K]) => any,
+                options?: boolean | AddEventListenerOptions | undefined
+              ): void
+              (
+                type: string,
+                listener: EventListenerOrEventListenerObject,
+                options?: boolean | AddEventListenerOptions | undefined
+              ): void
             }
-            readonly length: number
-            getCueById: (id: string) => TextTrackCue | null
-            [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-          } & {
-            [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-          })
-        | null
-      activeCues:
-        | ({
-            [x: number]: {
-              endTime: number
-              id: string
-              onenter: ((this: TextTrackCue, ev: Event) => any) | null
-              onexit: ((this: TextTrackCue, ev: Event) => any) | null
-              pauseOnExit: boolean
-              startTime: number
-              readonly track: {
-                readonly activeCues:
-                  | (any & {
-                      [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-                    })
-                  | null
-                readonly cues:
-                  | (any & {
-                      [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-                    })
-                  | null
-                readonly id: string
-                readonly inBandMetadataTrackDispatchType: string
-                readonly kind: TextTrackKind
-                readonly label: string
-                readonly language: string
-                mode: TextTrackMode
-                oncuechange: ((this: TextTrack, ev: Event) => any) | null
-                addCue: (cue: TextTrackCue) => void
-                removeCue: (cue: TextTrackCue) => void
-                addEventListener: {
-                  <K extends "cuechange">(
-                    type: K,
-                    listener: (
-                      this: TextTrack,
-                      ev: TextTrackEventMap[K]
-                    ) => any,
-                    options?: boolean | AddEventListenerOptions | undefined
-                  ): void
-                  (
-                    type: string,
-                    listener: EventListenerOrEventListenerObject,
-                    options?: boolean | AddEventListenerOptions | undefined
-                  ): void
-                }
-                removeEventListener: {
-                  <K_1 extends "cuechange">(
-                    type: K_1,
-                    listener: (
-                      this: TextTrack,
-                      ev: TextTrackEventMap[K_1]
-                    ) => any,
-                    options?: boolean | EventListenerOptions | undefined
-                  ): void
-                  (
-                    type: string,
-                    listener: EventListenerOrEventListenerObject,
-                    options?: boolean | EventListenerOptions | undefined
-                  ): void
-                }
-                dispatchEvent: (event: Event) => boolean
-              } | null
-              addEventListener: {
-                <K_2 extends keyof TextTrackCueEventMap>(
-                  type: K_2,
-                  listener: (
-                    this: TextTrackCue,
-                    ev: TextTrackCueEventMap[K_2]
-                  ) => any,
-                  options?: boolean | AddEventListenerOptions | undefined
-                ): void
-                (
-                  type: string,
-                  listener: EventListenerOrEventListenerObject,
-                  options?: boolean | AddEventListenerOptions | undefined
-                ): void
-              }
-              removeEventListener: {
-                <K_3 extends keyof TextTrackCueEventMap>(
-                  type: K_3,
-                  listener: (
-                    this: TextTrackCue,
-                    ev: TextTrackCueEventMap[K_3]
-                  ) => any,
-                  options?: boolean | EventListenerOptions | undefined
-                ): void
-                (
-                  type: string,
-                  listener: EventListenerOrEventListenerObject,
-                  options?: boolean | EventListenerOptions | undefined
-                ): void
-              }
-              dispatchEvent: (event: Event) => boolean
+            removeEventListener: {
+              <K_1 extends "cuechange">(
+                type: K_1,
+                listener: (this: TextTrack, ev: TextTrackEventMap[K_1]) => any,
+                options?: boolean | EventListenerOptions | undefined
+              ): void
+              (
+                type: string,
+                listener: EventListenerOrEventListenerObject,
+                options?: boolean | EventListenerOptions | undefined
+              ): void
             }
-            readonly length: number
-            getCueById: (id: string) => TextTrackCue | null
-            [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-          } & {
-            [Symbol.iterator]: () => IterableIterator<TextTrackCue>
-          })
-        | null
+            dispatchEvent: (event: Event) => boolean
+          } | null
+          addEventListener: {
+            <K_2 extends keyof TextTrackCueEventMap>(
+              type: K_2,
+              listener: (
+                this: TextTrackCue,
+                ev: TextTrackCueEventMap[K_2]
+              ) => any,
+              options?: boolean | AddEventListenerOptions | undefined
+            ): void
+            (
+              type: string,
+              listener: EventListenerOrEventListenerObject,
+              options?: boolean | AddEventListenerOptions | undefined
+            ): void
+          }
+          removeEventListener: {
+            <K_3 extends keyof TextTrackCueEventMap>(
+              type: K_3,
+              listener: (
+                this: TextTrackCue,
+                ev: TextTrackCueEventMap[K_3]
+              ) => any,
+              options?: boolean | EventListenerOptions | undefined
+            ): void
+            (
+              type: string,
+              listener: EventListenerOrEventListenerObject,
+              options?: boolean | EventListenerOptions | undefined
+            ): void
+          }
+          dispatchEvent: (event: Event) => boolean
+        }
+        readonly length: number
+        getCueById: (id: string) => TextTrackCue | null
+        [Symbol.iterator]: () => IterableIterator<TextTrackCue>
+      } | null
+      activeCues: {
+        [x: number]: {
+          endTime: number
+          id: string
+          onenter: ((this: TextTrackCue, ev: Event) => any) | null
+          onexit: ((this: TextTrackCue, ev: Event) => any) | null
+          pauseOnExit: boolean
+          startTime: number
+          readonly track: {
+            readonly activeCues: any | null
+            readonly cues: any | null
+            readonly id: string
+            readonly inBandMetadataTrackDispatchType: string
+            readonly kind: TextTrackKind
+            readonly label: string
+            readonly language: string
+            mode: TextTrackMode
+            oncuechange: ((this: TextTrack, ev: Event) => any) | null
+            addCue: (cue: TextTrackCue) => void
+            removeCue: (cue: TextTrackCue) => void
+            addEventListener: {
+              <K extends "cuechange">(
+                type: K,
+                listener: (this: TextTrack, ev: TextTrackEventMap[K]) => any,
+                options?: boolean | AddEventListenerOptions | undefined
+              ): void
+              (
+                type: string,
+                listener: EventListenerOrEventListenerObject,
+                options?: boolean | AddEventListenerOptions | undefined
+              ): void
+            }
+            removeEventListener: {
+              <K_1 extends "cuechange">(
+                type: K_1,
+                listener: (this: TextTrack, ev: TextTrackEventMap[K_1]) => any,
+                options?: boolean | EventListenerOptions | undefined
+              ): void
+              (
+                type: string,
+                listener: EventListenerOrEventListenerObject,
+                options?: boolean | EventListenerOptions | undefined
+              ): void
+            }
+            dispatchEvent: (event: Event) => boolean
+          } | null
+          addEventListener: {
+            <K_2 extends keyof TextTrackCueEventMap>(
+              type: K_2,
+              listener: (
+                this: TextTrackCue,
+                ev: TextTrackCueEventMap[K_2]
+              ) => any,
+              options?: boolean | AddEventListenerOptions | undefined
+            ): void
+            (
+              type: string,
+              listener: EventListenerOrEventListenerObject,
+              options?: boolean | AddEventListenerOptions | undefined
+            ): void
+          }
+          removeEventListener: {
+            <K_3 extends keyof TextTrackCueEventMap>(
+              type: K_3,
+              listener: (
+                this: TextTrackCue,
+                ev: TextTrackCueEventMap[K_3]
+              ) => any,
+              options?: boolean | EventListenerOptions | undefined
+            ): void
+            (
+              type: string,
+              listener: EventListenerOrEventListenerObject,
+              options?: boolean | EventListenerOptions | undefined
+            ): void
+          }
+          dispatchEvent: (event: Event) => boolean
+        }
+        readonly length: number
+        getCueById: (id: string) => TextTrackCue | null
+        [Symbol.iterator]: () => IterableIterator<TextTrackCue>
+      } | null
     }[]
   >
   selectedTrack: Ref<number>
