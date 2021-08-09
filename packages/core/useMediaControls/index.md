@@ -58,7 +58,7 @@ const { tracks, enableTrack } = useMediaControls(video, {
 
 <template>
   <video ref="video" />
-  <button v-for="track in tacks" :key="track.id" @click="enableTrack(track)">
+  <button v-for="track in tracks" :key="track.id" @click="enableTrack(track)">
     {{ track.label }}
   </button>
 </template>
