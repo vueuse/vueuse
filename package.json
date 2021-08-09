@@ -53,11 +53,10 @@
     "@types/fs-extra": "^9.0.12",
     "@types/jest": "^26.0.24",
     "@types/js-yaml": "^4.0.2",
-    "@types/markdown-table": "^3.0.0",
     "@types/node": "^16.4.13",
     "@types/semver": "^7.3.8",
-    "@vue/composition-api": "^1.0.6",
-    "@vue/runtime-dom": "^3.1.5",
+    "@vue/compiler-sfc": "^3.2.0-beta.8",
+    "@vue/composition-api": "^1.1.0-beta.7",
     "@vue/test-utils": "^1.2.2",
     "axios": "^0.21.1",
     "consola": "^2.15.3",
@@ -99,12 +98,12 @@
     "vite-plugin-pwa": "^0.10.0",
     "vite-plugin-windicss": "^1.2.7",
     "vitepress": "^0.15.6",
-    "vue": "^3.1.5",
+    "vue": "^3.2.0-beta.8",
     "vue-demi": "^0.11.2",
     "vue2": "npm:vue@2"
   },
   "resolutions": {
-    "vue": "^3.2.0-beta.1",
-    "@vue/compiler-sfc": "^3.2.0-beta.1"
+    "vue": "^3.2.0-beta.8",
+    "@vue/compiler-sfc": "^3.2.0-beta.8"
   }
 }
