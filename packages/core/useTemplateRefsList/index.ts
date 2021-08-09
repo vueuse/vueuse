@@ -1,15 +1,17 @@
 import { onBeforeUpdate, Ref, ref } from 'vue-demi'
 
-export function useTemplateRefsList<T = Element>(): [
-  Readonly<Ref<Readonly<T[]>>>,
-  (el: Object | null) => void
-] {
-  const list = ref<T[]>([]) as Ref<T[]>
-  const setItem = (el: Object | null) => {
-    if (el) list.value.push(el as T)
+export type TemplateRefsList<T> = T[] & {
+  set(el: Object | null): void
+}
+
+export function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>> {
+  const refs = ref<unknown>([]) as Ref<TemplateRefsList<T>>
+  refs.value.set = (el: Object | null) => {
+    if (el)
+      refs.value.push(el as T)
   }
   onBeforeUpdate(() => {
-    list.value = []
+    refs.value.length = 0
   })
-  return [list, setItem]
+  return refs
 }

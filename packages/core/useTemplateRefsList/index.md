@@ -6,58 +6,33 @@ category: Component
 
 Shorthand for binding refs to template elements and components inside `v-for`.
 
+> This function only works for Vue 3.x.
+
 ## Usage
 
 ```html
 <template>
-  <div v-for="i of 5" :key="i" :ref="setDiv"></div>
-  <MyInput v-for="i of 5" :key="i" :ref="setIpt" />
+  <div v-for="i of 5" :key="i" :ref="refs.set"></div>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
+import { onUpdated } from 'vue'
 import { useTemplateRefsList } from '@vueuse/core'
-import type { MyInputApi } from '@/components/MyInput.vue'
-import MyInput from '@/components/MyInput.vue'
 
-const [divs, setDiv] = useTemplateRefsList()
-// divs: Readonly<Ref<readonly Element[]>>
+const refs = useTemplateRefsList<HTMLDivElement>()
 
-const [ipts, setIpt] = useTemplateRefsList<MyInputApi>()
-// ipts: Readonly<Ref<readonly MyInputApi[]>>
-
-const validateAll = () => {
-  ipts.value.forEach(ipt => ipt.validate())
-}
-</script>
-```
-
-In child:
-
-```html
-<script lang="ts" setup>
-const validate = () => {}
-
-export interface MyInputApi {
-  validate: typeof validate
-}
-defineExpose({
-  validate,
+onUpdated(() => {
+  console.log(refs)
 })
 </script>
 ```
 
 <!--FOOTER_STARTS-->
-## Type Declarations
 
-```typescript
-export declare function useTemplateRefsList<T = Element>(): [
-  Readonly<Ref<readonly T[]>>,
-  (el: Object | null) => void
-]
-```
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.md)
 
 
 <!--FOOTER_ENDS-->

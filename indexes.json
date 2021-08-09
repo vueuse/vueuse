@@ -838,6 +838,13 @@
       "description": "reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)"
     },
     {
+      "name": "useTemplateRefsList",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useTemplateRefsList/",
+      "category": "Component",
+      "description": "shorthand for binding refs to template elements and components inside `v-for`"
+    },
+    {
       "name": "useTimeAgo",
       "package": "core",
       "component": true,
