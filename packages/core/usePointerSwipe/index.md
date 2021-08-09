@@ -54,11 +54,11 @@ export interface PointerPosition {
 }
 export interface PointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection | null>
+  direction: Readonly<Ref<SwipeDirection | null>>
   readonly posStart: PointerPosition
   readonly posEnd: PointerPosition
-  distanceX: ComputedRef<number>
-  distanceY: ComputedRef<number>
+  distanceX: Readonly<Ref<number>>
+  distanceY: Readonly<Ref<number>>
   stop: () => void
 }
 /**

@@ -77,9 +77,9 @@ whenever(
  *
  * @see https://vueuse.js.org/whenever
  */
-export declare function whenever<T = boolean>(
+export declare function whenever<T>(
   source: WatchSource<T>,
-  cb: Fn,
+  cb: WatchCallback,
   options?: WatchOptions
 ): WatchStopHandle
 ```

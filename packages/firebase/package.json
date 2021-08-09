@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Enables realtime bindings for Firebase",
   "keywords": [
     "vue",
@@ -49,7 +49,7 @@
     "firebase": ">=4.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "5.2.0",
+    "@vueuse/shared": "5.3.0",
     "vue-demi": "*"
   }
 }

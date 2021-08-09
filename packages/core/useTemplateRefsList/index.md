@@ -28,7 +28,16 @@ onUpdated(() => {
 ```
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+export declare type TemplateRefsList<T> = T[] & {
+  set(el: Object | null): void
+}
+export declare function useTemplateRefsList<T = Element>(): Readonly<
+  Ref<Readonly<TemplateRefsList<T>>>
+>
+```
 
 ## Source
 
