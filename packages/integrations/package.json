@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
-    "@types/qrcode": "^1.4.0",
+    "@types/qrcode": "^1.4.1",
     "@types/universal-cookie": "^3.0.0",
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.4",

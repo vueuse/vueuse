@@ -38,7 +38,7 @@ motionControl.resume()
 
 VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) where possible.
 
-For `watch`-like composables (e.g. `pausableWatch`, `when`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
+For `watch`-like composables (e.g. `pausableWatch`, `whenever`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
 
 In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option:
 

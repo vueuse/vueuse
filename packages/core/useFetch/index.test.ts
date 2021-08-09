@@ -206,4 +206,50 @@ describe('useFetch', () => {
     expect(didErrorEventFire).toBe(true)
     expect(didFinallyEventFire).toBe(true)
   })
+
+  test('setting the request method w/ get and return type w/ json', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const { data, isFinished } = useFetch('https://example.com').get().json()
+
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual({ message: 'Hello World' })
+  })
+
+  test('setting the request method w/ post and return type w/ text', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const { data, isFinished } = useFetch('https://example.com').post().text()
+
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+  })
+
+  test('allow setting response type before doing request', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const shell = useFetch('https://example.com', {
+      immediate: false,
+    }).get().text()
+    shell.json()
+    shell.execute()
+    const { isFinished, data } = shell
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual({ message: 'Hello World' })
+  })
+
+  test('not allowed setting response type while doing request', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const shell = useFetch('https://example.com').get().text()
+    const { isFetching, isFinished, data } = shell
+    await until(isFetching).toBe(true)
+    shell.json()
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+  })
 })

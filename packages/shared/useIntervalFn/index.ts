@@ -4,11 +4,18 @@ import { Pausable, Fn, isClient } from '../utils'
 
 export interface IntervalFnOptions {
   /**
-   * Execute the callback immediate after calling this function
+   * Start the timer immediately
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Execute the callback immediate after calling this function
+   *
+   * @default false
+   */
+  immediateCallback?: boolean
 }
 
 /**
@@ -21,6 +28,7 @@ export interface IntervalFnOptions {
 export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
+    immediateCallback = false,
   } = options
 
   let timer: any = null
@@ -42,6 +50,8 @@ export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOption
     if (interval <= 0)
       return
     isActive.value = true
+    if (immediateCallback)
+      cb()
     clean()
     timer = setInterval(cb, interval)
   }

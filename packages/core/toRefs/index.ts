@@ -1,4 +1,4 @@
-import { isRef, ToRefs, toRefs as _toRefs, computed } from 'vue-demi'
+import { isRef, ToRefs, toRefs as _toRefs, customRef } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
 
 /**
@@ -13,20 +13,20 @@ export function toRefs<T extends object>(
   if (!isRef(objectRef))
     return _toRefs(objectRef)
 
-  const ret: any = Array.isArray(objectRef.value)
+  const result: any = Array.isArray(objectRef.value)
     ? new Array(objectRef.value.length)
     : {}
 
   // eslint-disable-next-line no-restricted-syntax
   for (const key in objectRef.value) {
-    ret[key] = computed<T[typeof key]>({
+    result[key] = customRef<T[typeof key]>(() => ({
       get() {
         return objectRef.value[key]
       },
       set(v) {
         objectRef.value[key] = v
       },
-    })
+    }))
   }
-  return ret
+  return result
 }
