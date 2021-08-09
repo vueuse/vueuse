@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, Ref, shallowRef } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
@@ -46,7 +46,7 @@ export function useWebWorker(
       data.value = e.data
     }
 
-    tryOnUnmounted(() => {
+    tryOnScopeDispose(() => {
       if (worker.value)
         worker.value.terminate()
     })

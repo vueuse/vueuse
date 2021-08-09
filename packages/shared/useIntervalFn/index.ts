@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { tryOnUnmounted } from '../tryOnUnmounted'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { Pausable, Fn, isClient } from '../utils'
 
 export interface IntervalFnOptions {
@@ -59,7 +59,7 @@ export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOption
   if (immediate && isClient)
     resume()
 
-  tryOnUnmounted(pause)
+  tryOnScopeDispose(pause)
 
   return {
     isActive,

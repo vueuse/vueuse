@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmit, ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useMouseInElement, useVModel, useEventListener } from '@vueuse/core'
 
 const scrubber = ref()
@@ -8,7 +8,7 @@ const pendingValue = ref(0)
 
 useEventListener('mouseup', () => scrubbing.value = false)
 
-const emit = defineEmit(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   min: { type: Number, default: 0 },
   max: { type: Number, default: 100 },

@@ -42,6 +42,7 @@
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
   - [`templateRef`](https://vueuse.org/core/templateRef/) — shorthand for binding ref to template element
   - [`tryOnMounted`](https://vueuse.org/shared/tryOnMounted/) — safe `onMounted`
+  - [`tryOnScopeDispose`](https://vueuse.org/shared/tryOnScopeDispose/) — safe `onScopeDispose`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`

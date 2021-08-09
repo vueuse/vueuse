@@ -1,6 +1,6 @@
 import type firebase from 'firebase'
 import { Ref, ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
 export interface RTDBOptions {
   autoDispose?: boolean
@@ -28,7 +28,7 @@ export function useRTDB<T = any>(
   docRef.on('value', update)
 
   if (autoDispose) {
-    tryOnUnmounted(() => {
+    tryOnScopeDispose(() => {
       docRef.off('value', update)
     })
   }

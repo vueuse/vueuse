@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { Pausable, tryOnUnmounted, Fn } from '@vueuse/shared'
+import { Pausable, tryOnScopeDispose, Fn } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export interface RafFnOptions extends ConfigurableWindow {
@@ -48,7 +48,7 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   if (immediate)
     resume()
 
-  tryOnUnmounted(pause)
+  tryOnScopeDispose(pause)
 
   return {
     isActive,
