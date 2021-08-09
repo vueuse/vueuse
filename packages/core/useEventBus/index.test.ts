@@ -1,8 +1,9 @@
 
-import { useCounter } from '..'
+import { useCounter } from '../../shared/useCounter'
 import { useSetup } from '../../.test'
 import { useEventBus } from '.'
 import { events } from './internal'
+import { nextTick } from 'vue-demi'
 
 describe('useEventBus', () => {
   const emptyMap = new Map()
@@ -77,7 +78,8 @@ describe('useEventBus', () => {
     expect(count.value).toBe(5)
     expect(events).toEqual(emptyMap)
   })
-  it('setup unmount off', () => {
+
+  it('setup unmount off', async() => {
     const vm = useSetup(() => {
       const { on } = useEventBus('setup-unmount')
       on(() => { })
@@ -88,6 +90,7 @@ describe('useEventBus', () => {
       expect(events).not.toEqual(emptyMap)
     })
     vm.unmount()
+    await nextTick()
     expect(events).toEqual(emptyMap)
   })
 })
