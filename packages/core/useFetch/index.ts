@@ -2,7 +2,7 @@ import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-d
 import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
-interface UseFetchReturnBase<T> {
+interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
@@ -68,6 +68,19 @@ interface UseFetchReturnBase<T> {
    * Fires after a fetch has completed
    */
   onFetchFinally: EventHookOn
+
+  // methods
+  get(): UseFetchReturn<T>
+  post(payload?: unknown, type?: string): UseFetchReturn<T>
+  put(payload?: unknown, type?: string): UseFetchReturn<T>
+  delete(payload?: unknown, type?: string): UseFetchReturn<T>
+
+  // type
+  json<JSON = any>(): UseFetchReturn<JSON>
+  text(): UseFetchReturn<string>
+  blob(): UseFetchReturn<Blob>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer>
+  formData(): UseFetchReturn<FormData>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -77,23 +90,6 @@ const payloadMapping: Record<string, string> = {
   json: 'application/json',
   text: 'text/plain',
   formData: 'multipart/form-data',
-}
-
-interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
-  // methods
-  get(): UseFetchReturnBase<T>
-  post(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  put(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  delete(payload?: unknown, type?: string): UseFetchReturnBase<T>
-}
-
-export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
-  // type
-  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
-  text(): UseFetchReturnTypeConfigured<string>
-  blob(): UseFetchReturnTypeConfigured<Blob>
-  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
-  formData(): UseFetchReturnTypeConfigured<FormData>
 }
 
 export interface BeforeFetchContext {
@@ -377,7 +373,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     { deep: true },
   )
 
-  const base: UseFetchReturnBase<T> = {
+  const shell: UseFetchReturn<T> = {
     isFinished,
     statusCode,
     response,
@@ -392,20 +388,12 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     onFetchResponse: responseEvent.on,
     onFetchError: errorEvent.on,
     onFetchFinally: finallyEvent.on,
-  }
-
-  const typeConfigured: UseFetchReturnTypeConfigured<T> = {
-    ...base,
-
+    // method
     get: setMethod('get'),
     put: setMethod('put'),
     post: setMethod('post'),
     delete: setMethod('delete'),
-  }
-
-  const shell: UseFetchReturn<T> = {
-    ...typeConfigured,
-
+    // type
     json: setType('json'),
     text: setType('text'),
     blob: setType('blob'),
@@ -424,7 +412,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         if (!payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype)
           config.payloadType = 'json'
 
-        return base as any
+        return shell as any
       }
       return undefined
     }
@@ -434,7 +422,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     return () => {
       if (!isFetching.value) {
         config.type = type
-        return typeConfigured as any
+        return shell as any
       }
       return undefined
     }
