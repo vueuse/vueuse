@@ -1,6 +1,6 @@
 import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
-import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
 import { Ref } from 'vue-demi'
+import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**

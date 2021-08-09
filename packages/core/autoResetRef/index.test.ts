@@ -1,5 +1,5 @@
-import { autoResetRef } from '.'
 import { ref } from 'vue-demi'
+import { autoResetRef } from '.'
 
 describe('autoResetRef', () => {
   it('should be defined', () => {

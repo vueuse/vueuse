@@ -1,9 +1,9 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
 import { ref } from 'vue-demi'
-import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
 export type WebWorkerStatus =
   | 'PENDING'

@@ -1,8 +1,8 @@
-import Git from 'simple-git'
-import { stringifyFunctions } from './utils'
-import { functionNames, functions } from '../meta/function-indexes'
-import fs from 'fs-extra'
 import { resolve } from 'path'
+import Git from 'simple-git'
+import fs from 'fs-extra'
+import { functionNames, functions } from '../meta/function-indexes'
+import { stringifyFunctions } from './utils'
 
 const git = Git()
 

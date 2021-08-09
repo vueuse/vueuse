@@ -22,7 +22,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/no-string-refs': 'off',
     'no-new': 'off',
-    'import/order': 'off',
+    'import/named': 'off',
     'react/no-unknown-property': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',

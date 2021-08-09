@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { defineComponent, onMounted, Ref, ref } from 'vue-demi'
-import { useSubscription } from '../useSubscription'
-import { toObserver } from '../toObserver'
-import { from, fromEvent } from '.'
 import { interval } from 'rxjs'
 import {
   mapTo,
@@ -11,6 +8,9 @@ import {
   startWith,
   map,
 } from 'rxjs/operators'
+import { useSubscription } from '../useSubscription'
+import { toObserver } from '../toObserver'
+import { from, fromEvent } from '.'
 
 const count = ref(0)
 const button = ref<HTMLButtonElement | null>(null)

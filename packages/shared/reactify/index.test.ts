@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
-import { reactify } from '.'
 import { useSetup } from '../../.test'
+import { reactify } from '.'
 
 describe('reactify', () => {
   it('one arg', () => {

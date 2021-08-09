@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
-import { controlledComputed } from '.'
 import { useSetup } from '../../.test'
+import { controlledComputed } from '.'
 
 describe('controlledComputed', () => {
   it('should work', (done) => {

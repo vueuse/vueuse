@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { createGlobalState } from '.'
-import { useStorage } from '../useStorage'
 import { stringify } from '@vueuse/docs-utils'
 import { reactive } from 'vue-demi'
+import { useStorage } from '../useStorage'
+import { createGlobalState } from '.'
 
 const useState = createGlobalState(() => {
   return useStorage('vue-use-locale-storage', {
