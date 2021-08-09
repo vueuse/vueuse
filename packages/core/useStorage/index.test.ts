@@ -92,7 +92,8 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, 'null')
 
     useSetup(() => {
-      const ref = useStorage(KEY, null, localStorage)
+      const ref = useStorage(KEY, null)
+      const storedValue = localStorage.getItem(KEY)
 
       expect(ref.value).toBe('null')
       expect(storedValue).toBe('null')
