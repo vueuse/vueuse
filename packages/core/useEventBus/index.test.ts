@@ -1,4 +1,4 @@
-import { getCurrentScope, nextTick } from 'vue-demi'
+import { nextTick } from 'vue-demi'
 import { useCounter } from '../../shared/useCounter'
 import { useSetup } from '../../.test'
 import { events } from './internal'
@@ -79,7 +79,6 @@ describe('useEventBus', () => {
 
   it('setup unmount off', async() => {
     const vm = useSetup(() => {
-      const scope = getCurrentScope()
       const { on } = useEventBus('setup-unmount')
       on(() => {})
       on(() => {})
