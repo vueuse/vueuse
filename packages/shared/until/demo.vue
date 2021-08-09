@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { until } from '.'
 import { invoke } from '../utils'
 import { useCounter } from '../useCounter'
+import { until } from '.'
 
 const { count, inc, dec } = useCounter()
 

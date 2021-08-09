@@ -1,5 +1,5 @@
-import { timestamp } from '../utils'
 import { watch, ref, WatchSource, WatchOptions, Ref } from 'vue-demi'
+import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<
   Immediate extends boolean,

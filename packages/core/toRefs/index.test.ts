@@ -1,5 +1,5 @@
-import { toRefs } from '.'
 import { isVue3, reactive, ref } from 'vue-demi'
+import { toRefs } from '.'
 
 describe('toRefs', () => {
   it('should be defined', () => {

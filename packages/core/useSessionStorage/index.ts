@@ -1,5 +1,5 @@
-import { StorageOptions, useStorage } from '../useStorage'
 import { Ref } from 'vue-demi'
+import { StorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 
 export function useSessionStorage (key: string, defaultValue: string, options?: StorageOptions<string>): Ref<string>

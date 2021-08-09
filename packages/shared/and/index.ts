@@ -1,5 +1,5 @@
-import { MaybeRef } from '../utils'
 import { computed, ComputedRef, unref } from 'vue-demi'
+import { MaybeRef } from '../utils'
 
 /**
  * `AND` conditions for refs.

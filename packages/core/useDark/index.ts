@@ -1,8 +1,8 @@
 import { computed, ref, watch } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 import { StorageLike, StorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
-import { tryOnMounted } from '@vueuse/shared'
 
 export type ColorSchemes = 'light' | 'dark' | 'auto'
 

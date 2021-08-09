@@ -1,7 +1,7 @@
-import { useFetch, createFetch } from '.'
 import fetchMock from 'jest-fetch-mock'
 import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
+import { useFetch, createFetch } from '.'
 
 describe('useFetch', () => {
   beforeEach(() => {

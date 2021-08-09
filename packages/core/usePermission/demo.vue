@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePermission } from '.'
 import { computed, reactive } from 'vue-demi'
 import YAML from 'js-yaml'
+import { usePermission } from '.'
 
 const geolocation = usePermission('geolocation')
 const microphone = usePermission('microphone')

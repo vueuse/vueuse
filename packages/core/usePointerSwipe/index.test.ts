@@ -1,9 +1,7 @@
-import { PointerSwipeOptions, usePointerSwipe } from './index'
-
+import each from 'jest-each'
 import { useSetup } from '../../.test'
 import { SwipeDirection } from '../useSwipe'
-
-import each from 'jest-each'
+import { PointerSwipeOptions, usePointerSwipe } from './index'
 
 // polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
 if (!global.PointerEvent) {

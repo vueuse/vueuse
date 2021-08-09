@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CompA from './compA.vue'
 import { stringify } from '@vueuse/docs-utils'
 import { reactive, ref } from 'vue-demi'
+import CompA from './compA.vue'
 import { useMouseInElement } from '.'
 
 const target = ref(null)

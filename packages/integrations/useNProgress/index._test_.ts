@@ -1,7 +1,7 @@
-import { useSetup } from '../../.test'
-import { useNProgress } from './index'
 import { nextTick } from 'vue-demi'
 import nprogress from 'nprogress'
+import { useSetup } from '../../.test'
+import { useNProgress } from './index'
 
 describe('useNProgress', () => {
   it('should be defined', () => {
