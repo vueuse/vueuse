@@ -1,5 +1,5 @@
 import { Fn } from '@vueuse/shared'
-import { getCurrentScope } from 'vue'
+import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
 export type EventBusListener<T = unknown> = (event: T) => void
@@ -49,11 +49,10 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     const listeners = events.get(key)
     if (!listeners)
       return
-    if (typeof listener === 'function') {
-      const index = listeners.indexOf(listener)
-      if (index > -1)
-        listeners.splice(index, 1)
-    }
+
+    const index = listeners.indexOf(listener)
+    if (index > -1)
+      listeners.splice(index, 1)
     if (!listeners.length)
       events.delete(key)
   }
