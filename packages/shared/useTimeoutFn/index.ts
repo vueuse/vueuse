@@ -1,5 +1,5 @@
 import { ref, unref } from 'vue-demi'
-import { tryOnUnmounted } from '../tryOnUnmounted'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient, MaybeRef, Stopable } from '../utils'
 
 export interface TimeoutFnOptions {
@@ -60,7 +60,7 @@ export function useTimeoutFn(
       start()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isPending,

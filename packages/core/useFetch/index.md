@@ -195,19 +195,15 @@ interface UseFetchReturn<T> {
    * Fires after a fetch has completed
    */
   onFetchFinally: EventHookOn
-}
-interface UseFetchReturnTypeConfigured<T> extends UseFetchReturnBase<T> {
-  get(): UseFetchReturnBase<T>
-  post(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  put(payload?: unknown, type?: string): UseFetchReturnBase<T>
-  delete(payload?: unknown, type?: string): UseFetchReturnBase<T>
-}
-export interface UseFetchReturn<T> extends UseFetchReturnTypeConfigured<T> {
-  json<JSON = any>(): UseFetchReturnTypeConfigured<JSON>
-  text(): UseFetchReturnTypeConfigured<string>
-  blob(): UseFetchReturnTypeConfigured<Blob>
-  arrayBuffer(): UseFetchReturnTypeConfigured<ArrayBuffer>
-  formData(): UseFetchReturnTypeConfigured<FormData>
+  get(): UseFetchReturn<T>
+  post(payload?: unknown, type?: string): UseFetchReturn<T>
+  put(payload?: unknown, type?: string): UseFetchReturn<T>
+  delete(payload?: unknown, type?: string): UseFetchReturn<T>
+  json<JSON = any>(): UseFetchReturn<JSON>
+  text(): UseFetchReturn<string>
+  blob(): UseFetchReturn<Blob>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer>
+  formData(): UseFetchReturn<FormData>
 }
 export interface BeforeFetchContext {
   /**

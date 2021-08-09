@@ -1,4 +1,4 @@
-import { MaybeElementRef, unrefElement, tryOnUnmounted, Fn } from '@vueuse/core'
+import { MaybeElementRef, unrefElement, tryOnScopeDispose, Fn } from '@vueuse/core'
 import { watch, ref, Ref } from 'vue-demi'
 import { ActivateOptions, createFocusTrap, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
 
@@ -110,7 +110,7 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
     }, { flush: 'post' })
 
   // Cleanup on unmount
-  tryOnUnmounted(() => deactivate())
+  tryOnScopeDispose(() => deactivate())
 
   return {
     hasFocus,
