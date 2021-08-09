@@ -88,33 +88,40 @@ describe('useStorage', () => {
     expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
   })
 
-  it('null', () => {
-    localStorage.setItem(KEY, '0')
-
-    useSetup(() => {
-      const ref = useStorage(KEY, null, localStorage)
-
-      expect(ref.value).toBe('0')
-    })
-  })
-
-  it('null value', () => {
-    localStorage.setItem(KEY, 'null')
-
-    useSetup(() => {
-      const ref = useStorage(KEY, null, localStorage)
-
-      expect(ref.value).toBe(null)
-    })
-  })
-
   it('null string', () => {
     localStorage.setItem(KEY, 'null')
 
     useSetup(() => {
-      const ref = useStorage(KEY, 'null', localStorage)
+      const ref = useStorage(KEY, null)
+      const storedValue = localStorage.getItem(KEY)
 
       expect(ref.value).toBe('null')
+      expect(storedValue).toBe('null')
+    })
+  })
+
+  it('null value', () => {
+    localStorage.removeItem(KEY)
+
+    useSetup(() => {
+      const ref = useStorage(KEY, null)
+      const storedValue = localStorage.getItem(KEY)
+
+      expect(ref.value).toBe(null)
+      expect(storedValue).toBeFalsy()
+    })
+  })
+
+  it('remove value', () => {
+    localStorage.setItem(KEY, 'null')
+
+    useSetup(() => {
+      const ref = useStorage(KEY, null)
+      ref.value = null
+      const storedValue = localStorage.getItem(KEY)
+
+      expect(ref.value).toBe(null)
+      expect(storedValue).toBeFalsy()
     })
   })
 
@@ -231,11 +238,11 @@ describe('useStorage', () => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, null, localStorage, { serializer: { read: JSON.parse, write: JSON.stringify } })
+      const ref = useStorage(KEY, 0, localStorage, { serializer: { read: JSON.parse, write: JSON.stringify } })
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, 'null')
+      expect(localStorage.setItem).toBeCalledWith(KEY, '0')
 
-      expect(ref.value).toBe(null)
+      expect(ref.value).toBe(0)
 
       return {
         ref,
