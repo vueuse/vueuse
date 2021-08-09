@@ -27,7 +27,6 @@ const picked = reactivePick(obj, 'x', 'elementX') // { x: number, elementX: numb
 
 ```html
 <script setup>
-import { defineProps } from 'vue'
 import { reactivePick } from '@vueuse/core'
 
 const props = defineProps({
