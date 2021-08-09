@@ -1,15 +1,14 @@
-import { WatchOptions, watch, WatchSource } from 'vue-demi'
-import { Fn } from '../utils'
+import { WatchOptions, watch, WatchSource, WatchCallback } from 'vue-demi'
 
 /**
  * Shorthand for watching value to be truthy
  *
  * @see https://vueuse.js.org/whenever
  */
-export function whenever<T = boolean>(source: WatchSource<T>, cb: Fn, options?: WatchOptions) {
+export function whenever<T>(source: WatchSource<T>, cb: WatchCallback, options?: WatchOptions) {
   return watch(
     source,
-    (v) => { if (v) cb() },
+    (v, ov, onInvalidate) => { if (v) cb(v, ov, onInvalidate) },
     options,
   )
 }
