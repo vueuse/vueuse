@@ -1,61 +1,71 @@
-import { tryOnUnmounted } from '@vueuse/shared'
-export type OffCallback = () => void
-export type EventBusListener<T = any> = { (event: T): void; [key: string]: any }
-export type EventBusEvents = EventBusListener[]
+import { Fn } from '@vueuse/shared'
+import { getCurrentInstance, onUnmounted } from 'vue'
+
+export type EventBusListener<T = unknown> = (event: T) => void
+export type EventBusEvents<T> = EventBusListener<T>[]
 
 export interface EventBusKey<T> extends Symbol { }
-export type EventBusType<T = any> = EventBusKey<T> | string | number
+export type EventBusIdentifer<T = unknown> = EventBusKey<T> | string | number
 
 export interface UseEventBusReturn<T> {
   /**
-  /**
-   * on event, When calling emit, the listener will execute.
-   * @param listener watch listener callback.
-   * @returns close the current `on` callback.
+   * Subscribe to an event. When calling emit, the listeners will execute.
+   * @param listener watch listener.
+   * @returns a stop function to remove the current callback.
    */
-  on: (listener: EventBusListener<T>) => OffCallback
+  on: (listener: EventBusListener<T>) => Fn
   /**
-   * emit event, The corresponding event listener will execute.
+   * Emit an event, the corresponding event listeners will execute.
    * @param event data sent.
    */
   emit: (event?: T) => void
   /**
-   * close the corresponding listener.
-   * @param type.
+   * Remove the corresponding listener.
+   * @param listener watch listener.
    */
-  off: (sign?: EventBusListener | EventBusType) => void
+  off: (listener: EventBusListener) => void
   /**
-   * Stores all event and listener Map data
+   * Clear all events
    */
-  all: Map<EventBusType, EventBusEvents>
+  reset: () => void
 }
 
-const all = new Map<EventBusType, EventBusEvents>()
+const events = new Map<EventBusIdentifer<any>, EventBusEvents<any>>()
 
-export function useEventBus<T = any>(key: string | number | EventBusKey<T>): UseEventBusReturn<T> {
-  const BUS_KEY = Symbol('bus-key') as any as string
+export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBusReturn<T> {
+  const vm = getCurrentInstance()
 
   function on(listener: EventBusListener<T>) {
-    if (!listener[BUS_KEY]) Object.defineProperty(listener, BUS_KEY, { get: () => true })
-    const listeners = all.get(key) || []
+    const listeners = events.get(key) || []
     listeners.push(listener)
-    all.set(key, listeners)
-    return () => off(listener)
+    events.set(key, listeners)
+
+    const _off = () => off(listener)
+    // auto unsubscribe when vm get unmounted
+    if (vm) onUnmounted(_off, vm)
+    return _off
   }
 
-  function off(sign?: EventBusListener<T> | EventBusType<T>): void {
-    const listeners = all.get(key) || []
-    if (typeof sign === 'undefined') return listeners.filter(v => v[BUS_KEY]).forEach(off)
-    if (typeof sign !== 'function') all.delete(sign)
-    if (typeof sign === 'function') listeners.splice(listeners.indexOf(sign), 1)
-    if (!listeners.length) all.delete(key)
+  function off(listener: EventBusListener<T>): void {
+    const listeners = events.get(key)
+    if (!listeners)
+      return
+    if (typeof listener === 'function') {
+      const index = listeners.indexOf(listener)
+      if (index > -1)
+        listeners.splice(index, 1)
+    }
+    if (!listeners.length)
+      events.delete(key)
+  }
+
+  function reset() {
+    events.delete(key)
   }
 
   function emit(event?: T) {
-    all.get(key)?.forEach(v => v(event))
+    events.get(key)?.forEach(v => v(event))
   }
 
-  tryOnUnmounted(off)
-
-  return { on, off, emit, all }
+  return { on, off, emit, reset }
 }
