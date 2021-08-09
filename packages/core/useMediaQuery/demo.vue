@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue-demi'
-import { useMediaQuery } from '.'
 import YAML from 'js-yaml'
+import { useMediaQuery } from '.'
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')

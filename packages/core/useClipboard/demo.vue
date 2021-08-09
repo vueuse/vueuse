@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { useClipboard } from '.'
 import { usePermission } from '../usePermission'
+import { useClipboard } from '.'
 
 const input = ref('')
 

@@ -1,11 +1,11 @@
 import path from 'path'
 import assert from 'assert'
+import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
 import consola from 'consola'
-import { execSync as exec } from 'child_process'
-import { updateImport } from './utils'
 import { activePackages } from '../meta/packages'
 import indexes from '../meta/function-indexes'
+import { updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
 

@@ -3,9 +3,9 @@ import { UserConfig } from 'vite'
 import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
 import Components from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
+import WindiCSS from 'vite-plugin-windicss'
 import { functionNames, getFunction } from '../meta/function-indexes'
 import { getFunctionHead, hasDemo } from '../scripts/utils'
-import WindiCSS from 'vite-plugin-windicss'
 
 const config: UserConfig = {
   resolve: {

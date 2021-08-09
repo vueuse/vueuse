@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
-import { syncRef } from '.'
 import { useSetup } from '../../.test'
+import { syncRef } from '.'
 
 describe('syncRef', () => {
   it('should work', (done) => {

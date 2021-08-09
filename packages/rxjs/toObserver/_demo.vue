@@ -9,8 +9,8 @@ import {
   map,
 } from 'rxjs/operators'
 import { useSubscription } from '../useSubscription'
-import { toObserver } from '.'
 import { fromEvent, from } from '../from'
+import { toObserver } from '.'
 
 const count = ref(0)
 const button = ref<HTMLButtonElement | null>(null)

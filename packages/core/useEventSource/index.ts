@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import { tryOnScopeDispose } from '@vueuse/shared'
+import { useEventListener } from '../useEventListener'
 
 /**
  * Reactive wrapper for EventSource.

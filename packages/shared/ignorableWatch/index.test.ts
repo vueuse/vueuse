@@ -1,6 +1,6 @@
 import { ref, nextTick } from 'vue-demi'
-import { ignorableWatch } from '.'
 import { useSetup } from '../../.test'
+import { ignorableWatch } from '.'
 
 describe('ignorableWatch', () => {
   test('ignore async updates', async() => {
