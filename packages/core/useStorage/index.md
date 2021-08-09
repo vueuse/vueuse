@@ -94,6 +94,12 @@ export interface StorageOptions<T>
    * Custom data serialization
    */
   serializer?: Serializer<T>
+  /**
+   * On error callback
+   *
+   * Default log error to `console.error`
+   */
+  onError?: (error: Error) => void
 }
 export declare function useStorage(
   key: string,

@@ -2,7 +2,7 @@
 
 import { ref } from 'vue-demi'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type WebWorkerStatus =
@@ -60,7 +60,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   workerTerminate()
 
-  tryOnUnmounted(workerTerminate)
+  tryOnScopeDispose(workerTerminate)
 
   const generateWorker = () => {
     const blobUrl = createWorkerBlobUrl(fn, dependencies)

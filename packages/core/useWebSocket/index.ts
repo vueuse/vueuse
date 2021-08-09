@@ -1,5 +1,5 @@
 import { ref, Ref } from 'vue-demi'
-import { Fn, tryOnUnmounted, useIntervalFn } from '@vueuse/shared'
+import { Fn, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 
@@ -232,7 +232,7 @@ export function useWebSocket<Data = any>(
     _init()
   }
 
-  tryOnUnmounted(close)
+  tryOnScopeDispose(close)
 
   return {
     data,

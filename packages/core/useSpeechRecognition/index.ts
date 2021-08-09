@@ -1,7 +1,7 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { Ref, ref, watch, shallowRef } from 'vue-demi'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -103,7 +103,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
     })
   }
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     isListening.value = false
   })
 

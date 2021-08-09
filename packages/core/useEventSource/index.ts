@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
 /**
  * Reactive wrapper for EventSource.
@@ -25,35 +25,33 @@ export function useEventSource(url: string, events: Array<string> = []) {
     }
   }
 
-  tryOnMounted(() => {
-    const es = new EventSource(url)
+  const es = new EventSource(url)
 
-    eventSource.value = es
+  eventSource.value = es
 
-    es.onopen = () => {
-      status.value = 'OPEN'
-      error.value = null
-    }
+  es.onopen = () => {
+    status.value = 'OPEN'
+    error.value = null
+  }
 
-    es.onerror = (e) => {
-      status.value = 'CLOSED'
-      error.value = e
-    }
+  es.onerror = (e) => {
+    status.value = 'CLOSED'
+    error.value = e
+  }
 
-    es.onmessage = (e: MessageEvent) => {
-      event.value = null
-      data.value = e.data
-    }
+  es.onmessage = (e: MessageEvent) => {
+    event.value = null
+    data.value = e.data
+  }
 
-    for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: string }) => {
-        event.value = event_name
-        data.value = e.data || null
-      })
-    }
-  })
+  for (const event_name of events) {
+    useEventListener(es, event_name, (e: Event & { data?: string }) => {
+      event.value = event_name
+      data.value = e.data || null
+    })
+  }
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     close()
   })
 

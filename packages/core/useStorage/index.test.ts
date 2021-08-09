@@ -39,7 +39,7 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, '0')
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, 1)
+      const ref = useStorage(KEY, 1, localStorage)
 
       return {
         ref,
@@ -68,7 +68,7 @@ describe('useStorage', () => {
     localStorage.removeItem(KEY)
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, true)
+      const ref = useStorage(KEY, true, localStorage)
 
       return {
         ref,
@@ -92,7 +92,7 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, '0')
 
     useSetup(() => {
-      const ref = useStorage(KEY, null)
+      const ref = useStorage(KEY, null, localStorage)
 
       expect(ref.value).toBe('0')
     })
@@ -102,7 +102,7 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, 'null')
 
     useSetup(() => {
-      const ref = useStorage(KEY, null)
+      const ref = useStorage(KEY, null, localStorage)
 
       expect(ref.value).toBe(null)
     })
@@ -112,7 +112,7 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, 'null')
 
     useSetup(() => {
-      const ref = useStorage(KEY, 'null')
+      const ref = useStorage(KEY, 'null', localStorage)
 
       expect(ref.value).toBe('null')
     })
@@ -122,7 +122,7 @@ describe('useStorage', () => {
     localStorage.setItem(KEY, '0')
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, '1')
+      const ref = useStorage(KEY, '1', localStorage)
 
       expect(ref.value).toBe('0')
 

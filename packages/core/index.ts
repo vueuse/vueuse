@@ -1,7 +1,6 @@
 export * from './asyncComputed'
 export * from './autoResetRef'
 export * from './computedInject'
-export * from './createGlobalState'
 export * from './onClickOutside'
 export * from './onKeyStroke'
 export * from './onStartTyping'
