@@ -1,5 +1,5 @@
-import { useInjectedSetup, Key } from '../../.test'
 import { ref } from 'vue-demi'
+import { useInjectedSetup, Key } from '../../.test'
 import { computedInject } from '.'
 
 describe('useCounter', () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useBrowserLocation } from '.'
 import { stringify } from '@vueuse/docs-utils'
+import { useBrowserLocation } from '.'
 
 const location = useBrowserLocation()
 const text = stringify(location)

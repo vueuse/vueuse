@@ -1,6 +1,6 @@
 import { ref, isReactive } from 'vue-demi'
-import { useManualRefHistory } from '.'
 import { useSetup } from '../../.test'
+import { useManualRefHistory } from '.'
 
 describe('useManualRefHistory', () => {
   test('should record', () => {

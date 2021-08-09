@@ -1,6 +1,6 @@
 import { isVue2 } from 'vue-demi'
-import { useVModel } from '.'
 import { useSetup } from '../../.test'
+import { useVModel } from '.'
 
 describe('useVModel', () => {
   const defaultKey = isVue2 ? 'value' : 'modelValue'

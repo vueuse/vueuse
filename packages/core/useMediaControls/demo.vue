@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { ref, reactive, computed } from 'vue-demi'
+import { stringify } from '@vueuse/docs-utils'
 import Scrubber from './components/Scrubber.vue'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'
 import Spinner from './components/Spinner.vue'
 
-import { ref, reactive, computed } from 'vue-demi'
-import { stringify } from '@vueuse/docs-utils'
 import { useMediaControls } from '.'
 
 const video = ref<HTMLVideoElement>()

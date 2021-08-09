@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue-demi'
-import { useUserMedia } from '.'
 import { useDevicesList } from '../useDevicesList'
+import { useUserMedia } from '.'
 
 const currentCamera = ref<string>()
 const { videoInputs: cameras } = useDevicesList({

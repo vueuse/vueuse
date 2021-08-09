@@ -1,6 +1,6 @@
 import { nextTick, Ref, ref, unref } from 'vue-demi'
-import { whenever } from '.'
 import { useSetup } from '../../.test'
+import { whenever } from '.'
 
 describe('whenever', () => {
   it('ignore falsy state change', async() => {

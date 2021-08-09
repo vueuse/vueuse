@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { isRef, isVue2, watch, watchEffect } from 'vue-demi'
-import { controlledRef } from '.'
 import { useSetup } from '../../.test'
+import { controlledRef } from '.'
 
 describe('controlledRef', () => {
   if (isVue2) {

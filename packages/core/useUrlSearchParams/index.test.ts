@@ -1,6 +1,6 @@
-import { useUrlSearchParams } from '.'
-import { useSetup } from '../../.test'
 import each from 'jest-each'
+import { useSetup } from '../../.test'
+import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'

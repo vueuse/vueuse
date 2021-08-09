@@ -53,7 +53,6 @@
     "@types/fs-extra": "^9.0.12",
     "@types/jest": "^26.0.24",
     "@types/js-yaml": "^4.0.2",
-    "@types/markdown-table": "^3.0.0",
     "@types/node": "^16.4.13",
     "@types/semver": "^7.3.8",
     "@vue/compiler-sfc": "^3.2.0-beta.8",

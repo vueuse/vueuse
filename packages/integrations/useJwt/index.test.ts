@@ -1,7 +1,7 @@
 import { JwtHeader, JwtPayload } from 'jwt-decode'
+import { ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useJwt } from '.'
-import { ref } from 'vue-demi'
 
 interface CustomJwtHeader extends JwtHeader {
   foo: string

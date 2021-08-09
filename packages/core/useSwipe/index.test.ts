@@ -1,7 +1,6 @@
-import { SwipeDirection, useSwipe } from './index'
-import { useSetup } from '../../.test'
-
 import each from 'jest-each'
+import { useSetup } from '../../.test'
+import { SwipeDirection, useSwipe } from './index'
 
 describe('useSwipe', () => {
   const target = document.createElement('div')

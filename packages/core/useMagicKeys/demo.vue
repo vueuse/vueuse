@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue-demi'
 import Key from './Key.vue'
 import { useMagicKeys } from '.'
-import { computed } from 'vue-demi'
 
 const { shift, v, u, e, s, v_u_e, u_s_e, current } = useMagicKeys()
 const keys = computed(() => Array.from(current))

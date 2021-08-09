@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
-import { until } from '.'
 import { invoke } from '@vueuse/shared'
+import { until } from '.'
 
 describe('until', () => {
   it('should work', (done) => {

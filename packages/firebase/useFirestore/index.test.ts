@@ -1,5 +1,5 @@
-import { useFirestore } from './index'
 import type firebase from 'firebase'
+import { useFirestore } from './index'
 
 describe('useFirestore', () => {
   const expectArrayRef = (path: string, initialValue: any, result: boolean) => {
