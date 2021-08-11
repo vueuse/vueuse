@@ -270,4 +270,35 @@ describe('useStorage', () => {
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
   })
+
+  it('watcher', async() => {
+    expect(localStorage.getItem(KEY)).toEqual(undefined)
+    const instance = useSetup(() => {
+      const ref_1 = useStorage(KEY, 0, undefined, { watcher: true })
+      const ref_2 = useStorage(KEY, 0, undefined, { watcher: true })
+      return {
+        ref_1,
+        ref_2,
+      }
+    })
+    instance.ref_1++
+    instance.ref_2++
+    await nextTick()
+    expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    expect(instance.ref_1).toBe(2)
+
+    instance.ref_1 = 0
+    await nextTick()
+    expect(localStorage.setItem).toBeCalledWith(KEY, '0')
+    expect(instance.ref_2).toBe(0)
+
+    for (let index = 0; index < 20; index++) {
+      instance.ref_1++
+      instance.ref_2++
+    }
+    await nextTick()
+    expect(localStorage.setItem).toBeCalledWith(KEY, '40')
+    expect(instance.ref_2).toBe(40)
+    expect(instance.ref_1).toBe(40)
+  })
 })

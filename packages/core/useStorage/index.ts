@@ -1,5 +1,6 @@
 import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter } from '@vueuse/shared'
 import { ref, Ref } from 'vue-demi'
+import { useEventBus } from '../useEventBus'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -60,6 +61,12 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
    * Default log error to `console.error`
    */
   onError?: (error: Error) => void
+  /**
+   * Monitor changes in other stores
+   *
+   * @default false
+   */
+  watcher?: boolean
 }
 
 export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
@@ -88,6 +95,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     deep = true,
     listenToStorageChanges = true,
     window = defaultWindow,
+    watcher = false,
     eventFilter,
     onError = (e) => {
       console.error(e)
@@ -158,6 +166,28 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       eventFilter,
     },
   )
+
+  const storeKey = `__watchStorage:${key}__`
+  const { on, emit } = useEventBus<[symbol, T]>(storeKey)
+  let compare = Symbol('ce')
+
+  watchWithFilter(
+    data,
+    (value) => {
+      compare = Symbol('ce')
+      emit([compare, <any>value])
+    },
+    { flush: 'sync' },
+  )
+
+  if (watcher) {
+    on(([_compare, value]) => {
+      if (compare === _compare)
+        return undefined
+      compare = _compare
+      data.value = <any>value
+    })
+  }
 
   return data
 }
