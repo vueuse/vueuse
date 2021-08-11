@@ -14,7 +14,7 @@ can easily react to changes in the users' authentication status.
 import firebase from 'firebase'
 import { useAuth } from '@vueuse/firebase/useAuth'
 
-const { GoogleAuthProvider } = auth
+const { GoogleAuthProvider } = firebase.auth
 
 const { isAuthenticated, user } = useAuth(firebase.auth)
 
