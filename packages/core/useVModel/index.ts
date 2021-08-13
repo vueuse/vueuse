@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, ref, watch, UnwrapRef } from 'vue-demi'
 
 export interface VModelOptions {
   /**
@@ -54,12 +54,18 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key}`
 
   if (passive) {
-    const proxy = ref<P[K]>(props[key!])
+    const isObject = typeof props[key!] === 'object'
 
-    watch(() => props[key!], v => proxy.value = v as any)
+    const defaultProxy = isObject ? JSON.parse(JSON.stringify(props[key!])) : props[key!]
+    const proxy = ref<P[K]>(defaultProxy)
+
+    watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
+
     watch(proxy, (v) => {
       if (v !== props[key!])
         _emit(event, v)
+    }, {
+      deep: !!isObject,
     })
 
     return proxy
