@@ -57,7 +57,7 @@ describe('useVModel', () => {
       const data = useVModel(props, 'age', emitMock, { passive: true })
       data.value = 20
     })
-    expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:age')
+    expect(emitMock.mock.calls[0][0]).toBe('update:age')
     expect(emitMock.mock.calls[0][1]).toBe(20)
   })
 
@@ -72,7 +72,7 @@ describe('useVModel', () => {
       const data = useVModel(props, 'data', emitMock, { passive: true })
       data.value.age = 20
     })
-    expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:data')
+    expect(emitMock.mock.calls[0][0]).toBe('update:data')
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
   })
 
@@ -87,7 +87,7 @@ describe('useVModel', () => {
       const data = useVModel(props, 'data', emitMock, { passive: true })
       data.value.hobbys.push('basketball')
     })
-    expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:data')
+    expect(emitMock.mock.calls[0][0]).toBe('update:data')
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbys: ['coding', 'basketball'] }))
   })
 })
