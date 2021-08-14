@@ -274,6 +274,13 @@
       "description": "throttled watch"
     },
     {
+      "name": "toRefs",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/toRefs/",
+      "category": "Utilities",
+      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
+    },
+    {
       "name": "tryOnMounted",
       "package": "shared",
       "docs": "https://vueuse.org/shared/tryOnMounted/",
@@ -447,13 +454,6 @@
       "docs": "https://vueuse.org/core/templateRef/",
       "category": "Component",
       "description": "shorthand for binding ref to template element"
-    },
-    {
-      "name": "toRefs",
-      "package": "core",
-      "docs": "https://vueuse.org/core/toRefs/",
-      "category": "Utilities",
-      "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
     },
     {
       "name": "unrefElement",
