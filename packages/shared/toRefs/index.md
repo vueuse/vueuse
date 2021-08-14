@@ -70,7 +70,7 @@ export declare function toRefs<T extends object>(
 
 ## Source
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/toRefs/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/toRefs/index.md)
+[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/toRefs/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/toRefs/index.md)
 
 
 <!--FOOTER_ENDS-->

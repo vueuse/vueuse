@@ -1,5 +1,5 @@
 import { isRef, ToRefs, toRefs as _toRefs, customRef } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import { MaybeRef } from '../utils'
 
 /**
  * Extended `toRefs` that also accepts refs of an object.
