@@ -8,6 +8,8 @@ npm i @vueuse/core
 
 Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
 
+> From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
+
 ### CDN
 
 ```html
