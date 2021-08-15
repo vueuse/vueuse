@@ -274,6 +274,13 @@
       "description": "throttled watch"
     },
     {
+      "name": "toReactive",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/toReactive/",
+      "category": "Utilities",
+      "description": "converts ref to reactive"
+    },
+    {
       "name": "toRefs",
       "package": "shared",
       "docs": "https://vueuse.org/shared/toRefs/",
