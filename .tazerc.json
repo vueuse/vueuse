@@ -3,6 +3,7 @@
     "husky",
     "eslint-plugin-markdown",
     "rxjs",
-    "electron"
+    "electron",
+    "vue-demi"
   ]
 }
