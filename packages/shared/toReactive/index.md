@@ -26,7 +26,17 @@ console.log(state.bar) // => 'foo'
 ```
 
 <!--FOOTER_STARTS-->
+## Type Declarations
 
+```typescript
+/**
+ * Converts ref to reactive.
+ *
+ * @see https://vueuse.org/toReactive
+ * @param objectRef A ref of object
+ */
+export declare function toReactive<T extends object>(objectRef: MaybeRef<T>): T
+```
 
 ## Source
 

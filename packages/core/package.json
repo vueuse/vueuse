@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "6.0.0-beta.3",
+  "version": "6.0.0",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
@@ -44,7 +44,7 @@
     }
   },
   "dependencies": {
-    "@vueuse/shared": "6.0.0-beta.3",
+    "@vueuse/shared": "6.0.0",
     "vue-demi": "*"
   }
 }
