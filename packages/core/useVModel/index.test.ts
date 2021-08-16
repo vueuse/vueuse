@@ -1,4 +1,4 @@
-import { isVue2 } from 'vue-demi'
+import { isVue2, nextTick } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useVModel } from '.'
 
@@ -58,8 +58,7 @@ describe('useVModel', () => {
       data.value = 20
     })
 
-    // This is used because the Watch Callback is Asynchronous
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:age')
     expect(emitMock.mock.calls[0][1]).toBe(20)
@@ -73,12 +72,11 @@ describe('useVModel', () => {
       },
     }
     useSetup(() => {
-      const data = useVModel(props, 'data', emitMock, { passive: true })
+      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
       data.value.age = 20
     })
 
-    // This is used because the Watch Callback is Asynchronous
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
@@ -92,12 +90,11 @@ describe('useVModel', () => {
       },
     }
     useSetup(() => {
-      const data = useVModel(props, 'data', emitMock, { passive: true })
+      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
       data.value.hobbys.push('basketball')
     })
 
-    // This is used because the Watch Callback is Asynchronous
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbys: ['coding', 'basketball'] }))

@@ -14,6 +14,12 @@ export interface VModelOptions {
    * @default undefined
    */
   eventName?: string
+  /**
+   * Attempting to check for changes of properties in a deeply nested object or array.
+   *
+   * @default false
+   */
+  deep?: boolean
 }
 
 /**
@@ -33,6 +39,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   const {
     passive = false,
     eventName,
+    deep = false,
   } = options
 
   const vm = getCurrentInstance()
@@ -54,9 +61,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key}`
 
   if (passive) {
-    const isObject = typeof props[key!] === 'object'
-
-    const defaultProxy = isObject ? JSON.parse(JSON.stringify(props[key!])) : props[key!]
+    const defaultProxy = deep ? JSON.parse(JSON.stringify(props[key!])) : props[key!]
     const proxy = ref<P[K]>(defaultProxy)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
@@ -65,7 +70,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
       if (v !== props[key!])
         _emit(event, v)
     }, {
-      deep: !!isObject,
+      deep: !!deep,
     })
 
     return proxy
