@@ -70,7 +70,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
       if (v !== props[key!])
         _emit(event, v)
     }, {
-      deep: !!deep,
+      deep,
     })
 
     return proxy
