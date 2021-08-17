@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ReactiveRouteOptions } from '../_types'
 
 export function useRouteQuery(name: string): Ref<null | string | string[]>
-export function useRouteQuery<T extends null | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: ReactiveRouteOptions): Ref<T>
+export function useRouteQuery<T extends null | undefined | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: ReactiveRouteOptions): Ref<T>
 export function useRouteQuery<T extends string | string[]>(
   name: string,
   defaultValue?: T,
