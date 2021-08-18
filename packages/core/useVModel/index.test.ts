@@ -79,6 +79,7 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
+    expect(emitMock).toHaveBeenCalledTimes(1)
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
   })
 
@@ -97,6 +98,7 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
+    expect(emitMock).toHaveBeenCalledTimes(1)
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbys: ['coding', 'basketball'] }))
   })
 })

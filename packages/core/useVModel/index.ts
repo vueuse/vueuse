@@ -61,13 +61,12 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key}`
 
   if (passive) {
-    const defaultProxy = deep ? JSON.parse(JSON.stringify(props[key!])) : props[key!]
-    const proxy = ref<P[K]>(defaultProxy)
+    const proxy = ref<P[K]>(props[key!])
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
     watch(proxy, (v) => {
-      if (v !== props[key!])
+      if (v !== props[key!] || deep)
         _emit(event, v)
     }, {
       deep,
