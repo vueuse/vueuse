@@ -2,7 +2,10 @@ import { Fn } from '@vueuse/shared'
 import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
-export type EventBusListener<T = unknown> = (event: T) => void
+export type EventBusListener<T = unknown> = {
+  (event: T): void
+  _?: EventBusListener<T>
+}
 export type EventBusEvents<T> = EventBusListener<T>[]
 
 export interface EventBusKey<T> extends Symbol { }
@@ -15,6 +18,12 @@ export interface UseEventBusReturn<T> {
    * @returns a stop function to remove the current callback.
    */
   on: (listener: EventBusListener<T>) => Fn
+  /**
+   * Similar to on, but he finds it once
+   * @param listener watch listener.
+   * @returns a stop function to remove the current callback.
+   */
+  once: (listener: EventBusListener<T>) => Fn
   /**
    * Emit an event, the corresponding event listeners will execute.
    * @param event data sent.
@@ -45,12 +54,22 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     return _off
   }
 
+  function once(listener: EventBusListener<T>) {
+    function _listener(...args: any[]) {
+      off(listener)
+      // @ts-ignore
+      listener(...args)
+    }
+    _listener._ = listener
+    return on(_listener)
+  }
+
   function off(listener: EventBusListener<T>): void {
     const listeners = events.get(key)
     if (!listeners)
       return
 
-    const index = listeners.indexOf(listener)
+    const index = listeners.map(v => v._ || v).indexOf(listener)
     if (index > -1)
       listeners.splice(index, 1)
     if (!listeners.length)
@@ -65,5 +84,5 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     events.get(key)?.forEach(v => v(event))
   }
 
-  return { on, off, emit, reset }
+  return { on, once, off, emit, reset }
 }
