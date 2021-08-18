@@ -13,6 +13,17 @@ describe('useEventBus', () => {
     off(inc)
     expect(events).toEqual(emptyMap)
   })
+  it('once event', () => {
+    const { once, emit, reset } = useEventBus<number>('foo')
+    const { inc, count } = useCounter(0)
+    once(inc)
+    emit()
+    emit()
+    emit()
+    expect(count.value).toBe(1)
+    reset()
+    expect(events).toEqual(emptyMap)
+  })
   it('on event', () => {
     let event = false
     const { emit, on, reset } = useEventBus<boolean>('on-event')
