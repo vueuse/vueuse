@@ -155,7 +155,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const currentTime = ref(0)
   const duration = ref(0)
   const seeking = ref(false)
-  const buffering = ref(false)
   const volume = ref(1)
   const waiting = ref(false)
   const ended = ref(false)
@@ -421,7 +420,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   return {
     currentTime,
     duration,
-    buffering,
     waiting,
     seeking,
     ended,
