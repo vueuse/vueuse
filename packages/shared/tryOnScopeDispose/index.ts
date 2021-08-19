@@ -2,7 +2,7 @@ import { getCurrentScope, onScopeDispose } from 'vue-demi'
 import { Fn } from '../utils'
 
 /**
- * Call onScopeDispose() if it's inside a component lifecycle, if not, run just call the function
+ * Call onScopeDispose() if it's inside a effect scope lifecycle, if not, do nothing
  *
  * @param fn
  */
