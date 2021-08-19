@@ -4,7 +4,7 @@ import { isClient, MaybeRef, Stopable } from '../utils'
 
 export interface TimeoutFnOptions {
   /**
-   * Execute the callback immediate after calling this function
+   * Start the timer immediate after calling this function
    *
    * @default true
    */
