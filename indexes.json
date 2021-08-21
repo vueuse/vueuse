@@ -934,7 +934,7 @@
       "name": "useWakeLock",
       "package": "core",
       "docs": "https://vueuse.org/core/useWakeLock/",
-      "category": "Component",
+      "category": "Browser",
       "description": "reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API)"
     },
     {

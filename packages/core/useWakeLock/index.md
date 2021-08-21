@@ -32,7 +32,7 @@ export interface WakeLockSentinel extends EventTarget {
  * @param options
  */
 export declare function useWakeLock({ navigator }?: ConfigurableNavigator): {
-  isSupported: boolean | undefined
+  isSupported: boolean
   isActive: Ref<boolean>
   request: (type: 'screen') => Promise<void>
   release: () => Promise<void>
