@@ -37,8 +37,6 @@
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
-  - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API)
-
 ### Component
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
   - [`templateRef`](https://vueuse.org/core/templateRef/) — shorthand for binding ref to template element
