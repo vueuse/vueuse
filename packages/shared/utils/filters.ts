@@ -90,6 +90,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
     }
     else if (trailing) {
       timer = setTimeout(() => {
+        lastExec = Date.now()
         clear()
         invoke()
       }, duration)
