@@ -22,7 +22,7 @@ export interface AsyncStateOptions {
   /**
    * Callback when error is caught.
    */
-  onError?: (e: Error) => void
+  onError?: (e: unknown) => void
 
   /**
    * Sets the state to initialState before executing the promise.
@@ -59,7 +59,7 @@ export function useAsyncState<T>(
 
   const state = shallowRef(initialState)
   const isReady = ref(false)
-  const error = ref<Error | undefined>(undefined)
+  const error = ref<unknown | undefined>(undefined)
 
   async function execute(delay = 0) {
     if (resetOnExecute)
