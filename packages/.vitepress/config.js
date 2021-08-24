@@ -42,7 +42,7 @@ const DefaultSideBar = [
   { text: 'Add-ons', link: '/add-ons' },
   { text: 'Ecosystem', link: '/ecosystem' },
   { text: 'Export Size', link: '/export-size' },
-  { text: 'Recent Updated', link: '/recent-updated' },
+  { text: 'Recently Updated', link: '/recently-updated' },
 ]
 
 const FunctionsSideBar = getFunctionsSideBar()
@@ -96,7 +96,7 @@ const config = {
         text: `v${currentVersion}`,
         items: [
           { text: 'Release Notes', link: 'https://github.com/vueuse/vueuse/releases' },
-          { text: 'What\'s news', link: '/recent-updated' },
+          { text: 'What\'s new', link: '/recently-updated' },
           ...versions.map((i) => {
             if (i.version === currentVersion) {
               return {
@@ -120,7 +120,7 @@ const config = {
       '/ecosystem': DefaultSideBar,
       '/guidelines': DefaultSideBar,
       '/export-size': DefaultSideBar,
-      '/recent-updated': DefaultSideBar,
+      '/recently-updated': DefaultSideBar,
 
       '/functions': FunctionsSideBar,
       '/core/': FunctionsSideBar,

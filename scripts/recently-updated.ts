@@ -44,14 +44,14 @@ export async function generateRecentUpdated() {
     false,
   ).replace(/\n+/g, '\n')
 
-  md = `# Recent updated
+  md = `# Recently updated
 
 ${md}
 
 Go back to the [full-list](/functions)
 `
 
-  await fs.writeFile(resolve(__dirname, '../packages/recent-updated.md'), md, 'utf-8')
+  await fs.writeFile(resolve(__dirname, '../packages/recently-updated.md'), md, 'utf-8')
 }
 
 generateRecentUpdated()
