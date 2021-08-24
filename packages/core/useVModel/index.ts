@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, ref, watch, UnwrapRef } from 'vue-demi'
 
 export interface VModelOptions {
   /**
@@ -14,6 +14,12 @@ export interface VModelOptions {
    * @default undefined
    */
   eventName?: string
+  /**
+   * Attempting to check for changes of properties in a deeply nested object or array.
+   *
+   * @default false
+   */
+  deep?: boolean
 }
 
 /**
@@ -33,6 +39,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   const {
     passive = false,
     eventName,
+    deep = false,
   } = options
 
   const vm = getCurrentInstance()
@@ -56,10 +63,13 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   if (passive) {
     const proxy = ref<P[K]>(props[key!])
 
-    watch(() => props[key!], v => proxy.value = v as any)
+    watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
+
     watch(proxy, (v) => {
-      if (v !== props[key!])
+      if (v !== props[key!] || deep)
         _emit(event, v)
+    }, {
+      deep,
     })
 
     return proxy

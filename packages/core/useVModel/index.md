@@ -40,6 +40,12 @@ export interface VModelOptions {
    * @default undefined
    */
   eventName?: string
+  /**
+   * Attempting to check for changes of properties in a deeply nested object or array.
+   *
+   * @default false
+   */
+  deep?: boolean
 }
 /**
  * Shorthand for v-model binding, props + emit -> ref

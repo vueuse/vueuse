@@ -1,4 +1,4 @@
-import { isVue2 } from 'vue-demi'
+import { isVue2, nextTick } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useVModel } from '.'
 
@@ -35,7 +35,6 @@ describe('useVModel', () => {
       const data = useVModel(defaultProps(), undefined, emitMock)
       data.value = 'changed'
     })
-
     expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:modelValue')
     expect(emitMock.mock.calls[0][1]).toBe('changed')
   })
@@ -47,5 +46,59 @@ describe('useVModel', () => {
     })
 
     expect(emitMock.mock.calls[0][0]).toBe('onChange')
+  })
+
+  it('should emit w/ passive', async() => {
+    const props = {
+      ...defaultProps(),
+      age: 18,
+    }
+    useSetup(() => {
+      const data = useVModel(props, 'age', emitMock, { passive: true })
+      data.value = 20
+    })
+
+    await nextTick()
+
+    expect(emitMock.mock.calls[0][0]).toBe('update:age')
+    expect(emitMock.mock.calls[0][1]).toBe(20)
+  })
+
+  it('should emit w/ object props type', async() => {
+    const props = {
+      ...defaultProps(),
+      data: {
+        age: 18,
+      },
+    }
+    useSetup(() => {
+      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
+      data.value.age = 20
+    })
+
+    await nextTick()
+
+    expect(emitMock.mock.calls[0][0]).toBe('update:data')
+    expect(emitMock).toHaveBeenCalledTimes(1)
+    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
+  })
+
+  it('should emit w/ array props type', async() => {
+    const props = {
+      ...defaultProps(),
+      data: {
+        hobbys: ['coding'],
+      },
+    }
+    useSetup(() => {
+      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
+      data.value.hobbys.push('basketball')
+    })
+
+    await nextTick()
+
+    expect(emitMock.mock.calls[0][0]).toBe('update:data')
+    expect(emitMock).toHaveBeenCalledTimes(1)
+    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbys: ['coding', 'basketball'] }))
   })
 })
