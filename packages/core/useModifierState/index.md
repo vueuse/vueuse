@@ -14,6 +14,6 @@ import { useModifierState } from '@vueuse/core'
 const capsLockState = useModifierState('CapsLock')
 
 console.log(capsLockState)
-// undefined if no keydown or keyup events yet.
+// null if no keydown or keyup events yet.
 // true / false afterwards
 ```
