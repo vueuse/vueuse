@@ -27,13 +27,29 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdo
 
   const listener = (event: OnClickOutsideEvents[E]) => {
     const el = unrefElement(target)
-    if (!el)
-      return
 
-    if (el === event.target || event.composedPath().includes(el))
+    if (!el || el === event.target || eventPath(event).includes(el))
       return
 
     handler(event)
+  }
+
+  function eventPath(event: OnClickOutsideEvents[E]) {
+    // @ts-ignore
+    const path = ((event.composedPath && event.composedPath()) || event.path) as HTMLElement[] | undefined
+
+    if (path != null)
+      return path
+
+    function getParents(node: HTMLElement, memo: HTMLElement[] = []): HTMLElement[] {
+      const parentNode = node.parentNode as HTMLElement | null
+
+      return parentNode
+        ? getParents(parentNode, memo.concat([parentNode]))
+        : memo
+    }
+
+    return [event.target].concat(getParents(event.target as HTMLElement))
   }
 
   return useEventListener(window, event, listener, { passive: true })
