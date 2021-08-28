@@ -14,6 +14,14 @@ import { useWebSocket } from '@vueuse/core'
 const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
 ```
 
+Optionally with a list of one or more subprotocols to use.
+
+```js
+import { useWebSocket } from '@vueuse/core'
+
+const { status, data, send, open, close } = useWebSocket('ws://websocketurl', ['soap', 'wamp'])
+```
+
 See the [Type Declarations](#type-declarations) for more options.
 
 ### Immediate
@@ -169,10 +177,12 @@ export interface WebSocketResult<T> {
  *
  * @see https://vueuse.org/useWebSocket
  * @param url
+ * @param protocols
  */
 export declare function useWebSocket<Data = any>(
   url: string,
-  options?: WebSocketOptions
+  options?: WebSocketOptions,
+  protocols?: string[]
 ): WebSocketResult<Data>
 ```
 

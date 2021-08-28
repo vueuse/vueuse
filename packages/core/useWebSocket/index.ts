@@ -113,10 +113,12 @@ function resolveNestedOptions<T>(options: T | true): T {
  *
  * @see https://vueuse.org/useWebSocket
  * @param url
+ * @param protocols
  */
 export function useWebSocket<Data = any>(
   url: string,
   options: WebSocketOptions = {},
+  protocols: string[] = [],
 ): WebSocketResult<Data> {
   const {
     onConnected,
@@ -166,7 +168,7 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
-    const ws = new WebSocket(url)
+    const ws = new WebSocket(url, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
     explicitlyClosed = false
