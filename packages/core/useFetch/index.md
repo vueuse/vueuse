@@ -63,7 +63,10 @@ const { data } = useFetch(url, {
     if (!myToken)
       cancel()
 
-    options.headers.Authorization = `Bearer ${myToken}`
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
 
     return {
       options
