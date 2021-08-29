@@ -14,14 +14,6 @@ import { useWebSocket } from '@vueuse/core'
 const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
 ```
 
-Optionally with a list of one or more subprotocols to use.
-
-```js
-import { useWebSocket } from '@vueuse/core'
-
-const { status, data, send, open, close } = useWebSocket('ws://websocketurl', ['soap', 'wamp'])
-```
-
 See the [Type Declarations](#type-declarations) for more options.
 
 ### Immediate
@@ -74,6 +66,18 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
     message: 'ping',
     interval: 1000,
   },
+})
+```
+
+### Sub-protocols
+
+List of one or more subprotocols to use, in this case soap and wamp.
+
+```js
+import { useWebSocket } from '@vueuse/core'
+
+const { status, data, send, open, close } = useWebSocket('ws://websocketurl', {
+  protocols: ['soap'], // ['soap', 'wamp']
 })
 ```
 
@@ -139,6 +143,12 @@ export interface WebSocketOptions {
    * @default true
    */
   immediate?: boolean
+  /**
+   * List of one or more sub-protocol strings
+   *
+   * @default []
+   */
+   protocols?: string[],
 }
 export interface WebSocketResult<T> {
   /**
@@ -177,18 +187,15 @@ export interface WebSocketResult<T> {
  *
  * @see https://vueuse.org/useWebSocket
  * @param url
- * @param protocols
  */
 export declare function useWebSocket<Data = any>(
   url: string,
   options?: WebSocketOptions,
-  protocols?: string[]
 ): WebSocketResult<Data>
 ```
 
 ## Source
 
 [Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebSocket/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebSocket/index.md)
-
 
 <!--FOOTER_ENDS-->

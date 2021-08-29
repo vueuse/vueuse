@@ -62,6 +62,13 @@ export interface WebSocketOptions {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * List of one or more sub-protocol strings
+   *
+   * @default []
+   */
+  protocols?: string[]
 }
 
 export interface WebSocketResult<T> {
@@ -113,12 +120,10 @@ function resolveNestedOptions<T>(options: T | true): T {
  *
  * @see https://vueuse.org/useWebSocket
  * @param url
- * @param protocols
  */
 export function useWebSocket<Data = any>(
   url: string,
   options: WebSocketOptions = {},
-  protocols: string[] = [],
 ): WebSocketResult<Data> {
   const {
     onConnected,
@@ -126,6 +131,7 @@ export function useWebSocket<Data = any>(
     onError,
     onMessage,
     immediate = true,
+    protocols = [],
   } = options
 
   const data: Ref<Data | null> = ref(null)
