@@ -31,9 +31,11 @@ export function useKeyModifierState(modifier: Modifier, options: ModifierOptions
   } = options
   const state = ref<null | boolean>(initial)
   events.forEach((listenerEvent) => {
-    useEventListener(document, listenerEvent, (evt: KeyboardEvent) => {
-      state.value = evt.getModifierState(modifier)
-    })
+    if (document) {
+      useEventListener(document, listenerEvent, (evt: KeyboardEvent) => {
+        state.value = evt.getModifierState(modifier)
+      })
+    }
   })
   return state
 }
