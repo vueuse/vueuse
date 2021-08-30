@@ -13,14 +13,23 @@ export interface ModifierOptions extends ConfigurableDocument {
    * @default ['mousedown', 'mouseup', 'keydown', 'keyup']
    */
   events?: WindowEventName[]
+
+  /**
+   * Initial value of the returned ref
+   *
+   * @default null
+   */
+  initial?: null | boolean
+
 }
 
 export function useKeyModifierState(modifier: Modifier, options: ModifierOptions = {}) {
   const {
     events = defaultEvents,
     document = defaultDocument,
+    initial = null,
   } = options
-  const state = ref<null | boolean>(null)
+  const state = ref(initial)
   events.forEach((listenerEvent) => {
     useEventListener(document, listenerEvent, (evt: KeyboardEvent) => {
       state.value = evt.getModifierState(modifier)
