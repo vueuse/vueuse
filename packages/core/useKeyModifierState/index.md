@@ -20,19 +20,18 @@ console.log(capsLockState)
 
 ## Events
 
-You can customise which events will prompt the state to update. By default, these are mouseup, mousedown, keyup, keydown. In order to customise these events:
+You can customise which events will prompt the state to update. By default, these are `mouseup`, `mousedown`, `keyup`, `keydown`. In order to customise these events:
 
 ```ts
 import { useKeyModifierState } from '@vueuse/core'
 
-const capsLockStateDefault = useKeyModifierState('CapsLock')
-const capsLockStateCustom = useKeyModifierState('CapsLock', { events: ['mouseup', 'mousedown'] })
+const capsLockState = useKeyModifierState('CapsLock', { events: ['mouseup', 'mousedown'] })
 
-console.log(capsLockStateDefault) // null
-console.log(capsLockStateCustom) // null
+console.log(capsLockState) // null
 
-// User turns on capsLock
+// Caps Lock turned on with key press
+console.log(capsLockState) // null
 
-console.log(capsLockStateDefault) // true
-console.log(capsLockStateCustom) // null
+// Mouse button clicked
+console.log(capsLockState) // true
 ```
