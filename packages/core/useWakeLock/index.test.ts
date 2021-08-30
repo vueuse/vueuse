@@ -1,4 +1,5 @@
 import { nextTick } from 'vue-demi'
+import { defaultDocument } from '../_configurable'
 import { useWakeLock, WakeLockSentinel } from '.'
 
 describe('useWakeLock', () => {
@@ -69,7 +70,7 @@ describe('useWakeLock', () => {
       value: { request: (_: 'screen') => createWakeLock() },
       writable: true,
     })
-    const { isActive, request } = useWakeLock()
+    const { isActive, request } = useWakeLock({ document: defaultDocument })
 
     expect(isActive.value).toBeFalsy()
 
