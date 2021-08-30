@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
-export function useModifierState(modifier: string) {
+export function useKeyModifierState(modifier: string) {
   const state = ref<null | boolean>(null)
   const listenerEvents = ['keydown', 'keyup']
   listenerEvents.forEach((listenerEvent) => {
