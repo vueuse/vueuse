@@ -11,8 +11,6 @@ describe('useSwipe', () => {
     touches: [{
       clientX: x,
       clientY: y,
-      altitudeAngle: 0,
-      azimuthAngle: 0,
       force: 0,
       identifier: 0,
       pageX: 0,
@@ -23,7 +21,6 @@ describe('useSwipe', () => {
       screenX: 0,
       screenY: 0,
       target,
-      touchType: 'direct',
     }],
   })
 
