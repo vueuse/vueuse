@@ -6,7 +6,7 @@ export type EventBusListener<T = unknown> = (event: T) => void
 export type EventBusEvents<T> = EventBusListener<T>[]
 
 export interface EventBusKey<T> extends Symbol { }
-export type EventBusIdentifer<T = unknown> = EventBusKey<T> | string | number
+export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
 
 export interface UseEventBusReturn<T> {
   /**
@@ -37,7 +37,7 @@ export interface UseEventBusReturn<T> {
   reset: () => void
 }
 
-export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBusReturn<T> {
+export function useEventBus<T = unknown>(key: EventBusIdentifier<T>): UseEventBusReturn<T> {
   const scope = getCurrentScope()
 
   function on(listener: EventBusListener<T>) {
