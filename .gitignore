@@ -94,6 +94,6 @@ packages/*/LICENSE
 packages/contributing.md
 packages/core/README.md
 packages/core/indexes.json
-packages/recent-updated.md
+packages/recently-updated.md
 .as-fs
 .editor-as-fs

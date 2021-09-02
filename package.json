@@ -32,7 +32,7 @@
     "types:fix": "esno scripts/fix-types.ts",
     "update": "esno scripts/update.ts",
     "update:full": "esno scripts/update.ts && nr build:types && nr update:recent",
-    "update:recent": "esno scripts/recent-updated.ts"
+    "update:recent": "esno scripts/recently-updated.ts"
   },
   "husky": {
     "hooks": {
