@@ -2,10 +2,7 @@ import { Fn } from '@vueuse/shared'
 import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
-export type EventBusListener<T = unknown> = {
-  (event: T): void
-  _?: EventBusListener<T>
-}
+export type EventBusListener<T = unknown> = (event: T) => void
 export type EventBusEvents<T> = EventBusListener<T>[]
 
 export interface EventBusKey<T> extends Symbol { }
@@ -56,11 +53,10 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
 
   function once(listener: EventBusListener<T>) {
     function _listener(...args: any[]) {
-      off(listener)
-      // @ts-ignore
+      off(_listener)
+      // @ts-expect-error
       listener(...args)
     }
-    _listener._ = listener
     return on(_listener)
   }
 
@@ -69,7 +65,7 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     if (!listeners)
       return
 
-    const index = listeners.map(v => v._ || v).indexOf(listener)
+    const index = listeners.indexOf(listener)
     if (index > -1)
       listeners.splice(index, 1)
     if (!listeners.length)
