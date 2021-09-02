@@ -3,13 +3,10 @@ import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
 
-type DescriptorNamePolyfill = 'clipboard-read' | 'clipboard-write'
+type DescriptorNamePolyfill = 'clipboard-read' | 'clipboard-write' | 'camera' | 'microphone' | 'speaker'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
-  | DevicePermissionDescriptor
-  | MidiPermissionDescriptor
-  | PushPermissionDescriptor
   | { name: DescriptorNamePolyfill }
 
 export interface UsePermissionOptions<Controls extends boolean> extends ConfigurableNavigator {
