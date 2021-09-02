@@ -1,4 +1,4 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from 'vue-demi'
+import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
 import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
