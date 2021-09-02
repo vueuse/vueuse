@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Key from '../useMagicKeys/Key.vue'
-import { useKeyModifierState } from '.'
+import { useKeyModifier } from '.'
 
-const capsLock = useKeyModifierState('CapsLock')
-const numLock = useKeyModifierState('NumLock')
-const scrollLock = useKeyModifierState('ScrollLock')
-const shift = useKeyModifierState('Shift')
-const control = useKeyModifierState('Control')
-const alt = useKeyModifierState('Alt')
+const capsLock = useKeyModifier('CapsLock')
+const numLock = useKeyModifier('NumLock')
+const scrollLock = useKeyModifier('ScrollLock')
+const shift = useKeyModifier('Shift')
+const control = useKeyModifier('Control')
+const alt = useKeyModifier('Alt')
 </script>
 
 <template>

@@ -1,12 +1,12 @@
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 import { useEventListener, WindowEventName } from '../useEventListener'
 import { ConfigurableDocument, defaultDocument } from '../_configurable'
 
-export type Modifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | 'FnLock' | 'Meta' | 'NumLock' | 'ScrollLock' | 'Shift' | 'Symbol' | 'SymbolLock'
+export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | 'FnLock' | 'Meta' | 'NumLock' | 'ScrollLock' | 'Shift' | 'Symbol' | 'SymbolLock'
 
 const defaultEvents: WindowEventName[] = ['mousedown', 'mouseup', 'keydown', 'keyup']
 
-export interface ModifierOptions extends ConfigurableDocument {
+export interface ModifierOptions<Initial> extends ConfigurableDocument {
   /**
    * Event names that will prompt update to modifier states
    *
@@ -19,17 +19,18 @@ export interface ModifierOptions extends ConfigurableDocument {
    *
    * @default null
    */
-  initial?: null | boolean
-
+  initial?: Initial
 }
 
-export function useKeyModifierState(modifier: Modifier, options: ModifierOptions = {}) {
+export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModifier, options: ModifierOptions<Initial> = {}) {
   const {
     events = defaultEvents,
     document = defaultDocument,
     initial = null,
   } = options
-  const state = ref<null | boolean>(initial)
+
+  const state = ref(initial) as Ref<boolean>
+
   if (document) {
     events.forEach((listenerEvent) => {
       useEventListener(document, listenerEvent, (evt: KeyboardEvent) => {
@@ -37,5 +38,6 @@ export function useKeyModifierState(modifier: Modifier, options: ModifierOptions
       })
     })
   }
-  return state
+
+  return state as Ref<Initial extends boolean ? boolean : boolean | null>
 }
