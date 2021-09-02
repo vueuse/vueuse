@@ -35,17 +35,11 @@ export interface VModelOptions {
    */
   passive?: boolean
   /**
-   * When eventName is set, its value will be used to overwrite the emit event name.
+   * When eventName is set, it's value will be used to overwrite the emit event name.
    *
    * @default undefined
    */
   eventName?: string
-  /**
-   * Attempting to check for changes of properties in a deeply nested object or array.
-   *
-   * @default false
-   */
-  deep?: boolean
 }
 /**
  * Shorthand for v-model binding, props + emit -> ref

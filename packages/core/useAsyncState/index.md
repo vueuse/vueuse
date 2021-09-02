@@ -44,7 +44,7 @@ export interface AsyncStateOptions {
   /**
    * Callback when error is caught.
    */
-  onError?: (e: unknown) => void
+  onError?: (e: Error) => void
   /**
    * Sets the state to initialState before executing the promise.
    *

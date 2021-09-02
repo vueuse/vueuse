@@ -21,7 +21,7 @@ const { isPending, start, stop } = useTimeoutFn(() => {
 ```typescript
 export interface TimeoutFnOptions {
   /**
-   * Start the timer immediate after calling this function
+   * Execute the callback immediate after calling this function
    *
    * @default true
    */

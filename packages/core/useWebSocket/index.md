@@ -143,12 +143,6 @@ export interface WebSocketOptions {
    * @default true
    */
   immediate?: boolean
-  /**
-   * List of one or more sub-protocol strings
-   *
-   * @default []
-   */
-   protocols?: string[],
 }
 export interface WebSocketResult<T> {
   /**
@@ -190,12 +184,13 @@ export interface WebSocketResult<T> {
  */
 export declare function useWebSocket<Data = any>(
   url: string,
-  options?: WebSocketOptions,
+  options?: WebSocketOptions
 ): WebSocketResult<Data>
 ```
 
 ## Source
 
 [Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebSocket/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebSocket/index.md)
+
 
 <!--FOOTER_ENDS-->

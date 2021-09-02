@@ -162,6 +162,7 @@ export declare function useMediaControls(
 ): {
   currentTime: Ref<number>
   duration: Ref<number>
+  buffering: Ref<boolean>
   waiting: Ref<boolean>
   seeking: Ref<boolean>
   ended: Ref<boolean>

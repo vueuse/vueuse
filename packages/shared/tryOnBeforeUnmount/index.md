@@ -18,16 +18,7 @@ tryOnBeforeUnmount(() => {
 
 
 <!--FOOTER_STARTS-->
-## Type Declarations
 
-```typescript
-/**
- * Call onUnmounted() if it's inside a component lifecycle, if not, do nothing
- *
- * @param fn
- */
-export declare function tryOnBeforeUnmount(fn: Fn): void
-```
 
 ## Source
 

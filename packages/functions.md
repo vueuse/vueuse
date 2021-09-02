@@ -37,10 +37,12 @@
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+  - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running
 
 ### Component
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
   - [`templateRef`](https://vueuse.org/core/templateRef/) — shorthand for binding ref to template element
+  - [`tryOnBeforeUnmount`](https://vueuse.org/shared/tryOnBeforeUnmount/) — safe `onBeforeUnmount`
   - [`tryOnMounted`](https://vueuse.org/shared/tryOnMounted/) — safe `onMounted`
   - [`tryOnScopeDispose`](https://vueuse.org/shared/tryOnScopeDispose/) — safe `onScopeDispose`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
@@ -74,6 +76,7 @@
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
+  - [`useKeyModifier`](https://vueuse.org/core/useKeyModifier/) — reactive [Modifier State](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState)
   - [`useMagicKeys`](https://vueuse.org/core/useMagicKeys/) — reactive keys pressed state
   - [`useMouse`](https://vueuse.org/core/useMouse/) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element

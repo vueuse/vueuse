@@ -1,7 +1,8 @@
 import { resolve } from 'path'
 import { UserConfig } from 'vite'
-import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
-import Components from 'vite-plugin-components'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import Components from 'unplugin-vue-components/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import WindiCSS from 'vite-plugin-windicss'
 import { functionNames, getFunction } from '../meta/function-indexes'
@@ -48,9 +49,9 @@ const config: UserConfig = {
       dirs: [
         '.vitepress/theme/components',
       ],
-      customLoaderMatcher: id => id.endsWith('.md'),
-      customComponentResolvers: [
-        ViteIconsResolver({
+      include: [/\.vue$/, /\.vue??vue/, /\.md$/],
+      resolvers: [
+        IconsResolver({
           componentPrefix: '',
         }),
       ],

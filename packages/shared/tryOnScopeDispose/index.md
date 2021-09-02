@@ -22,7 +22,7 @@ tryOnScopeDispose(() => {
 
 ```typescript
 /**
- * Call onScopeDispose() if it's inside a effect scope lifecycle, if not, do nothing
+ * Call onScopeDispose() if it's inside a component lifecycle, if not, run just call the function
  *
  * @param fn
  */
