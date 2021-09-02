@@ -19,7 +19,7 @@ export interface UseEventBusReturn<T> {
    */
   on: (listener: EventBusListener<T>) => Fn
   /**
-   * Similar to on, but he finds it once
+   * Similar to `on`, but only fires once
    * @param listener watch listener.
    * @returns a stop function to remove the current callback.
    */
