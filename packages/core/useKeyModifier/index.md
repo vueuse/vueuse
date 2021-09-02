@@ -42,15 +42,3 @@ By default, the returned ref will be `Ref<null>` until the first event is receiv
 const capsLockState1 = useKeyModifier('CapsLock') // Ref<boolean | null>
 const capsLockState2 = useKeyModifier('CapsLock', { initial: false }) // Ref<boolean>
 ```
-
-
-
-<!--FOOTER_STARTS-->
-
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useKeyModifier/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useKeyModifier/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useKeyModifier/index.md)
-
-
-<!--FOOTER_ENDS-->

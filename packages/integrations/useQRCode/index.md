@@ -35,28 +35,3 @@ const qrcode = useQRCode(text)
 <input v-model="text" type="text">
 <img :src="qrcode" alt="QR Code" />
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Wrapper for qrcode.
- *
- * @see https://vueuse.org/useQRCode
- * @param text
- * @param options
- */
-export declare function useQRCode(
-  text: MaybeRef<string>,
-  options?: QRCode.QRCodeToDataURLOptions
-): Ref<string>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -48,34 +48,3 @@ useNProgress(null, {
   // ...
 })
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive progress bar.
- *
- * @see https://vueuse.org/useNProgress
- * @param currentProgress
- * @param options
- */
-export declare function useNProgress(
-  currentProgress?: MaybeRef<number | null | undefined>,
-  options?: NProgressOptions | undefined
-): {
-  isLoading: WritableComputedRef<boolean>
-  progress: Ref<number | null | undefined>
-  start: () => nprogress.NProgress
-  done: (force?: boolean | undefined) => nprogress.NProgress
-  remove: () => void
-}
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useNProgress/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useNProgress/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useNProgress/index.md)
-
-
-<!--FOOTER_ENDS-->

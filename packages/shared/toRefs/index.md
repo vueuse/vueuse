@@ -52,25 +52,3 @@ export default {
 }
 </script>
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Extended `toRefs` that also accepts refs of an object.
- *
- * @see https://vueuse.org/toRefs
- * @param objectRef A ref or normal object or array.
- */
-export declare function toRefs<T extends object>(
-  objectRef: MaybeRef<T>
-): ToRefs<T>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/toRefs/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/toRefs/index.md)
-
-
-<!--FOOTER_ENDS-->

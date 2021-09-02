@@ -28,18 +28,3 @@ useSubscription(
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 )
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function toObserver<T>(value: Ref<T>): NextObserver<T>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/toObserver/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/toObserver/index.md)
-
-
-<!--FOOTER_ENDS-->

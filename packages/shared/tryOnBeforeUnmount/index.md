@@ -15,14 +15,3 @@ tryOnBeforeUnmount(() => {
 
 })
 ```
-
-
-<!--FOOTER_STARTS-->
-
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnBeforeUnmount/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnBeforeUnmount/index.md)
-
-
-<!--FOOTER_ENDS-->

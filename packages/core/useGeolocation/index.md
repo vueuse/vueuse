@@ -35,38 +35,3 @@ const { coords, locatedAt, error } = useGeolocation()
 ```
 
 <LearnMoreComponents />
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface GeolocationOptions
-  extends Partial<PositionOptions>,
-    ConfigurableNavigator {}
-/**
- * Reactive Geolocation API.
- *
- * @see https://vueuse.org/useGeolocation
- * @param options
- */
-export declare function useGeolocation(options?: GeolocationOptions): {
-  isSupported: boolean | undefined
-  coords: Ref<GeolocationCoordinates>
-  locatedAt: Ref<number | null>
-  error: Ref<{
-    readonly code: number
-    readonly message: string
-    readonly PERMISSION_DENIED: number
-    readonly POSITION_UNAVAILABLE: number
-    readonly TIMEOUT: number
-  } | null>
-}
-export declare type UseGeolocationReturn = ReturnType<typeof useGeolocation>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/index.md)
-
-
-<!--FOOTER_ENDS-->
