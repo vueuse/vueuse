@@ -1,4 +1,4 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
+import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from 'vue-demi'
 import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
@@ -366,11 +366,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     })
   }
 
-  const watchPayload = () => {
-    watch(() => unref(config.payload), () => {
-      unref(options.refetch) && execute()
-    }, { deep: true })
-  }
   watch(
     () => [
       unref(url),
@@ -414,7 +409,19 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         config.method = method
         config.payload = payload
         config.payloadType = payloadType
-        watchPayload()
+
+        // watch for payload changes
+        if (isRef(config.payload)) {
+          watch(
+            () => [
+              unref(config.payload),
+              unref(options.refetch),
+            ],
+            () => unref(options.refetch) && execute(),
+            { deep: true },
+          )
+        }
+
         // Set the payload to json type only if it's not provided and a literal object is provided
         // The only case we can deduce the content type and `fetch` can't
         if (!payloadType && unref(payload) && Object.getPrototypeOf(unref(payload)) === Object.prototype)
