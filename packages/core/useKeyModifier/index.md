@@ -13,9 +13,7 @@ import { useKeyModifier } from '@vueuse/core'
 
 const capsLockState = useKeyModifier('CapsLock')
 
-console.log(capsLockState)
-// null if no events yet
-// true / false afterwards
+console.log(capsLockState.value)
 ```
 
 ## Events
@@ -35,3 +33,13 @@ console.log(capsLockState) // null
 // Mouse button clicked
 console.log(capsLockState) // true
 ```
+
+## Initial State
+
+By default, the returned ref will be `Ref<null>` until the first event is received. You can explicitly pass the initial state to it via:
+
+```ts
+const capsLockState1 = useKeyModifier('CapsLock') // Ref<boolean | null>
+const capsLockState2 = useKeyModifier('CapsLock', { initial: false }) // Ref<boolean>
+```
+
