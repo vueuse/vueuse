@@ -238,7 +238,9 @@ export interface UseFetchOptions {
    */
   immediate?: boolean
   /**
-   * Will automatically refetch when the URL is changed if the url is a ref
+   * Will automatically refetch when:
+   * - the URL is changed if the URL is a ref
+   * - the payload is changed if the payload is a ref
    *
    * @default false
    */
