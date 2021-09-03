@@ -2,7 +2,7 @@
 category: Component
 ---
 
-# tryOnUnmounted
+# tryOnBeforeUnmount
 
 Safe `onBeforeUnmount`. Call `onBeforeUnmount()` if it's inside a component lifecycle, if not, do nothing
 
