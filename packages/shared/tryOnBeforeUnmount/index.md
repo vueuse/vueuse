@@ -15,22 +15,3 @@ tryOnBeforeUnmount(() => {
 
 })
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Call onBeforeUnmount() if it's inside a component lifecycle, if not, do nothing
- *
- * @param fn
- */
-export declare function tryOnBeforeUnmount(fn: Fn): void
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnBeforeUnmount/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/tryOnBeforeUnmount/index.md)
-
-
-<!--FOOTER_ENDS-->
