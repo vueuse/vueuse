@@ -138,6 +138,12 @@ export interface UseFetchOptions {
   refetch?: MaybeRef<boolean>
 
   /**
+   * Will set to the data before the request done
+   * @default null
+   */
+  defaultData?: any
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -173,7 +179,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'defaultData', 'beforeFetch', 'afterFetch')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -252,6 +258,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   const {
     fetch = defaultWindow?.fetch,
+    defaultData,
   } = options
 
   // Event Hooks
@@ -265,7 +272,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = ref<any>(null)
-  const data = shallowRef<T | null>(null)
+  const data = shallowRef<T | null>(defaultData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
@@ -341,9 +348,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-
           data.value = responseData as any
-
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
