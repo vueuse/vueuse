@@ -4,6 +4,7 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { Ref, ref, watch, shallowRef } from 'vue-demi'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { SpeechRecognitionErrorEvent, SpeechRecognition } from './types'
 
 export interface SpeechRecognitionOptions extends ConfigurableWindow {
   /**

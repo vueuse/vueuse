@@ -321,9 +321,6 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     let readme = await fs.readFile(mdPath, 'utf-8')
 
-    if (hasTypes)
-      readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')
-
     const { content, data = {} } = matter(readme)
 
     data.category = fn.category || 'Unknown'

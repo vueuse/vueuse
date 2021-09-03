@@ -71,27 +71,3 @@ import { reactivePick, useElementBounding } from '@vueuse/core'
 
 const size = reactivePick(useElementBounding(), 'height', 'width')
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactively pick fields from a reactive object
- *
- * @see https://vueuse.js.org/reactivePick
- */
-export declare function reactivePick<T extends object, K extends keyof T>(
-  obj: T,
-  ...keys: K[]
-): {
-  [S in K]: UnwrapRef<T[S]>
-}
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactivePick/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactivePick/index.md)
-
-
-<!--FOOTER_ENDS-->

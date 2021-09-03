@@ -23,24 +23,3 @@ const { x, y } = useSharedMouse()
 ## Related
 
 - `createGlobalState`
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Make a composable function usable with multiple Vue instances.
- *
- * @see https://vueuse.org/createSharedComposable
- */
-export declare function createSharedComposable<
-  Fn extends (...args: any[]) => any
->(composable: Fn): Fn
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/createSharedComposable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/createSharedComposable/index.md)
-
-
-<!--FOOTER_ENDS-->

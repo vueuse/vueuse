@@ -39,33 +39,3 @@ You can find [more information about the state on the MDN](https://developer.moz
 ```
 
 <LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive DeviceOrientationEvent.
- *
- * @see https://vueuse.org/useDeviceOrientation
- * @param options
- */
-export declare function useDeviceOrientation(options?: ConfigurableWindow): {
-  isSupported: boolean
-  isAbsolute: Ref<boolean>
-  alpha: Ref<number | null>
-  beta: Ref<number | null>
-  gamma: Ref<number | null>
-}
-export declare type UseDeviceOrientationReturn = ReturnType<
-  typeof useDeviceOrientation
->
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -23,37 +23,3 @@ const { status, data, error, close } = useEventSource('https://event-source-url'
 | Method | Signature                                  | Description                            |
 | ------ | ------------------------------------------ | ---------------------------------------|
 | close  | `() => void` | Closes the EventSource connection gracefully.  |
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive wrapper for EventSource.
- *
- * @see https://vueuse.org/useEventSource
- * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource EventSource
- * @param url
- * @param events
- */
-export declare function useEventSource(
-  url: string,
-  events?: Array<string>
-): {
-  eventSource: Ref<EventSource | null>
-  event: Ref<string | null>
-  data: Ref<string | null>
-  status: Ref<"OPEN" | "CONNECTING" | "CLOSED">
-  error: Ref<Event | null>
-  close: () => void
-}
-export declare type UseEventListenerReturn = ReturnType<typeof useEventListener>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useEventSource/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useEventSource/index.md)
-
-
-<!--FOOTER_ENDS-->

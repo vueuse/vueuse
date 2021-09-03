@@ -20,25 +20,3 @@ const visibility = useDocumentVisibility()
   Document Visibility: {{ visibility }}
 </UseDocumentVisibility>
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactively track `document.visibilityState`.
- *
- * @see https://vueuse.org/useDocumentVisibility
- * @param options
- */
-export declare function useDocumentVisibility({
-  document,
-}?: ConfigurableDocument): Ref<VisibilityState>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDocumentVisibility/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDocumentVisibility/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDocumentVisibility/index.md)
-
-
-<!--FOOTER_ENDS-->

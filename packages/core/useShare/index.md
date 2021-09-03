@@ -39,39 +39,3 @@ shareOptions.value.text = 'bar'
 
 share()
 ```
-
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface ShareOptions {
-  title?: string
-  files?: File[]
-  text?: string
-  url?: string
-}
-/**
- * Reactive Web Share API.
- *
- * @see https://vueuse.org/useShare
- * @param shareOptions
- * @param options
- */
-export declare function useShare(
-  shareOptions?: MaybeRef<ShareOptions>,
-  options?: ConfigurableNavigator
-): {
-  isSupported: boolean
-  share: (overrideOptions?: MaybeRef<ShareOptions>) => Promise<void>
-}
-export declare type UseShareReturn = ReturnType<typeof useShare>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useShare/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useShare/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useShare/index.md)
-
-
-<!--FOOTER_ENDS-->

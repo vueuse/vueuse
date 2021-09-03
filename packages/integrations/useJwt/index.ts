@@ -1,6 +1,6 @@
 import { computed, ComputedRef, ref } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
-import jwt_decode, { InvalidTokenError, JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
+import jwt_decode, { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
 
 export interface JwtOptions<Fallback> {
   /**
@@ -13,7 +13,7 @@ export interface JwtOptions<Fallback> {
   /**
    * Error callback for decoding
    */
-  onError?: (error: InvalidTokenError) => void
+  onError?: (error: unknown) => void
 }
 
 export interface JwtResult<Payload, Header, Fallback> {

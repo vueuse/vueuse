@@ -59,7 +59,7 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
    *
    * Default log error to `console.error`
    */
-  onError?: (error: Error) => void
+  onError?: (error: unknown) => void
 }
 
 export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>

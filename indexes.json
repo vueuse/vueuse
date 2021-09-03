@@ -288,6 +288,13 @@
       "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
     },
     {
+      "name": "tryOnBeforeUnmount",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/tryOnBeforeUnmount/",
+      "category": "Component",
+      "description": "safe `onBeforeUnmount`"
+    },
+    {
       "name": "tryOnMounted",
       "package": "shared",
       "docs": "https://vueuse.org/shared/tryOnMounted/",
@@ -660,6 +667,13 @@
       "description": "detects that a target element's visibility"
     },
     {
+      "name": "useKeyModifier",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useKeyModifier/",
+      "category": "Sensors",
+      "description": "reactive [Modifier State](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState)"
+    },
+    {
       "name": "useLocalStorage",
       "package": "core",
       "docs": "https://vueuse.org/core/useLocalStorage/",
@@ -929,6 +943,13 @@
       "docs": "https://vueuse.org/core/useVModels/",
       "category": "Component",
       "description": "shorthand for props v-model binding"
+    },
+    {
+      "name": "useWakeLock",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useWakeLock/",
+      "category": "Browser",
+      "description": "reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running"
     },
     {
       "name": "useWebSocket",

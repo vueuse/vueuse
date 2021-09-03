@@ -38,35 +38,3 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 ```
 
 <LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive Fullscreen API.
- *
- * @see https://vueuse.org/useFullscreen
- * @param target
- * @param options
- */
-export declare function useFullscreen(
-  target?: MaybeElementRef,
-  options?: ConfigurableDocument
-): {
-  isSupported: boolean
-  isFullscreen: Ref<boolean>
-  enter: () => Promise<void>
-  exit: () => Promise<void>
-  toggle: () => Promise<void>
-}
-export declare type UseFullscreenReturn = ReturnType<typeof useFullscreen>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useFullscreen/index.md)
-
-
-<!--FOOTER_ENDS-->
