@@ -36,11 +36,11 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
 
     const output: OutputOptions[] = [
       {
-        file: `packages/${name}/dist/${fn}.cjs.js`,
+        file: `packages/${name}/dist/${fn}.cjs`,
         format: 'cjs',
       },
       {
-        file: `packages/${name}/dist/${fn}.esm.js`,
+        file: `packages/${name}/dist/${fn}.mjs`,
         format: 'es',
       },
     ]
