@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/rxjs",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "Enables RxJS reactive functions in Vue",
   "keywords": [
     "vue",
@@ -37,7 +37,7 @@
     "rxjs": ">=6.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.2.0",
+    "@vueuse/shared": "6.2.1",
     "vue-demi": "*"
   },
   "devDependencies": {
