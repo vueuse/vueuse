@@ -183,6 +183,13 @@
       "description": "debounced watch"
     },
     {
+      "name": "eagerComputed",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/eagerComputed/",
+      "category": "Utilities",
+      "description": "eager computed without lazy evaluation"
+    },
+    {
       "name": "extendRef",
       "package": "shared",
       "docs": "https://vueuse.org/shared/extendRef/",
