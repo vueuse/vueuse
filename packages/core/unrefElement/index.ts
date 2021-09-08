@@ -9,7 +9,7 @@ export type MaybeElementRef = MaybeRef<Element | VueInstance | undefined | null>
  *
  * @param elRef
  */
-export function unrefElement(elRef: MaybeElementRef) {
+export function unrefElement(elRef: MaybeElementRef): HTMLElement | SVGElement | undefined {
   const plain = unref(elRef)
   return (plain as VueInstance)?.$el ?? plain
 }

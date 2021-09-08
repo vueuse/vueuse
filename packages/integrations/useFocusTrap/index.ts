@@ -85,7 +85,10 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
 
   watch(
     () => unrefElement(target),
-    (el: HTMLElement) => {
+    (el) => {
+      if (!el)
+        return
+
       trap = createFocusTrap(el, {
         ...focusTrapOptions,
         onActivate() {

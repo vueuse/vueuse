@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { Position } from '../_types'
 
 export interface MouseOptions extends ConfigurableWindow {
   /**
@@ -20,7 +21,7 @@ export interface MouseOptions extends ConfigurableWindow {
   /**
    * Initial values
    */
-  initialValue?: {x: number; y: number}
+  initialValue?: Position
 }
 
 export type MouseSourceType = 'mouse' | 'touch' | null
