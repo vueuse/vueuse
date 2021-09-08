@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/monorepo",
-  "version": "6.2.1",
+  "version": "6.3.0",
   "private": true,
   "description": "Collection of essential Vue Composition Utilities",
   "license": "MIT",
@@ -59,6 +59,7 @@
     "@vue/composition-api": "^1.1.4",
     "@vue/test-utils": "^1.2.2",
     "axios": "^0.21.4",
+    "bumpp": "^7.1.1",
     "consola": "^2.15.3",
     "cross-env": "^7.0.3",
     "dayjs": "^1.10.6",
