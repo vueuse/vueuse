@@ -41,6 +41,14 @@ export interface UseDraggableOptions {
    */
   initialValue?: MaybeRef<Position>
 
+  /**
+   * Callback when the dragging starts. Return `false` to prevent dragging.
+   */
+  onStart?: (position: Position, event: PointerEvent) => void | false
+
+  /**
+   * Callback during dragging.
+   */
   onMove?: (position: Position, event: PointerEvent) => void
 }
 
@@ -70,10 +78,13 @@ export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions =
     if (unref(options.exact) && e.target !== el.value)
       return
     const react = el.value!.getBoundingClientRect()
-    pressedDelta.value = {
+    const pos = {
       x: e.pageX - react.left,
       y: e.pageY - react.top,
     }
+    if (options.onStart?.(pos, e) === false)
+      return
+    pressedDelta.value = pos
     preventDefault(e)
   }
   const move = (e: PointerEvent) => {
