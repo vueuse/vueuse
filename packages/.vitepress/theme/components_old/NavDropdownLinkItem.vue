@@ -30,7 +30,7 @@ const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
   line-height: 32px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--c-text);
+  color: var(--vt-c-text);
   white-space: nowrap;
 }
 
@@ -40,7 +40,7 @@ const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
     line-height: 32px;
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--c-text);
+    color: var(--vt-c-text);
     white-space: nowrap;
   }
 
@@ -52,12 +52,12 @@ const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
 .item:hover,
 .item.active {
   text-decoration: none;
-  color: var(--c-brand);
+  color: var(--vt-c-brand);
 }
 
 .item.external:hover {
   border-bottom-color: transparent;
-  color: var(--c-text);
+  color: var(--vt-c-text);
 }
 
 @media (min-width: 720px) {

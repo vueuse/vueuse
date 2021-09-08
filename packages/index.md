@@ -1,10 +1,19 @@
 ---
 home: true
-actionText: All Functions
-actionLink: /functions
 
-altActionText: Get Started
-altActionLink: /guide/
+heroText: VueUse
+tagline: Collection of Essential<br>Vue Composition Utilities
+description: Vue is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects.
+actionButtons:
+  - text: All Functions
+    link: /functions
+    extraStyle: 'color: var(--vt-c-brand); font-weight: bold;'
+  - text: Get Started
+    link: /guide
+  - text: GitHub
+    link: https://github.com/vueuse/vueuse
+    extraClass: github grey
+    target: _blank
 
 features:
   - title: 🕶 Seamless migration

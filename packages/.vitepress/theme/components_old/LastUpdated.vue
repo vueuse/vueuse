@@ -36,7 +36,7 @@ onMounted(() => {
   margin: 0;
   line-height: 1.4;
   font-size: 0.9rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 
 @media (min-width: 960px) {

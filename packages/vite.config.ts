@@ -26,8 +26,10 @@ const config: UserConfig = {
   optimizeDeps: {
     exclude: [
       'vue-demi',
+      '@vue/theme',
       '@vueuse/shared',
       '@vueuse/core',
+      'body-scroll-lock',
     ],
     include: [
       'axios',
@@ -47,9 +49,7 @@ const config: UserConfig = {
   },
   plugins: [
     Components({
-      dirs: [
-        '.vitepress/theme/components',
-      ],
+      dirs: resolve(__dirname, '.vitepress/theme/components'),
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
@@ -60,6 +60,7 @@ const config: UserConfig = {
     }),
     Icons({
       compiler: 'vue3',
+      defaultStyle: 'display: inline-block',
     }),
     MarkdownTransform(),
     VitePWA({
@@ -120,12 +121,14 @@ function MarkdownTransform(): Plugin {
       const [pkg, name, i] = id.split('/').slice(-3)
 
       if (functionNames.includes(name) && i === 'index.md') {
+        const frontmatterEnds = code.indexOf('---\n\n') + 4
         const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
+        const firstSubheader = code.search(/\n## \w/)
+        const sliceIndex = firstSubheader < 0 ? frontmatterEnds : firstSubheader
 
         if (hasTypes)
           code = replacer(code, await getFunctionFooter(pkg, name), 'FOOTER', 'tail')
 
-        const frontmatterEnds = code.indexOf('---\n\n') + 4
         let header = ''
         if (hasDemo)
           header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>\n'

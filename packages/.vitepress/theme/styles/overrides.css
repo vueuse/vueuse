@@ -1,0 +1,25 @@
+:root {
+  --vp-sidebar-width-mobile: 280px;
+  --vp-sidebar-width-small: 220px;
+  --vp-sidebar-width-medium: 220px;
+  --vp-sidebar-width-large: 220px;
+
+  --vt-c-brand-active: #44bd87;
+}
+
+.vt-doc h2 {
+  margin: 32px 0 26px;
+  border-top: none;
+  padding-top: 0;
+  opacity: 0.8;
+  font-size: 22px;
+}
+
+.aside {
+  width: 220px !important;
+}
+
+.vt-doc .container,
+.vt-doc .content {
+  max-width: 900px !important;
+}

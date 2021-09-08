@@ -32,7 +32,7 @@
 .home-hero + .footer .container,
 .home-features + .footer .container,
 .home-content + .footer .container {
-  border-top: 1px solid var(--c-divider);
+  border-top: 1px solid var(--vt-c-divider);
 }
 
 @media (min-width: 420px) {
@@ -46,6 +46,6 @@
   text-align: center;
   line-height: 1.4;
   font-size: .9rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 </style>

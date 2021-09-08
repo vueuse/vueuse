@@ -55,15 +55,15 @@ defineEmits(['toggle'])
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--c-divider);
+  border-bottom: 1px solid var(--vt-c-divider);
   padding: 0.7rem 1.5rem 0.7rem 4rem;
   height: var(--header-height);
-  background-color: var(--c-bg);
+  background-color: var(--vt-c-bg);
 }
 
 .nav-bar.root {
   border-color: transparent;
-  background-color: var(--c-bg-semi);
+  background-color: var(--vt-c-bg-semi);
 }
 
 @media (min-width: 720px) {

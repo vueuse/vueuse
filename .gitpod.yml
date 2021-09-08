@@ -1,6 +1,6 @@
 tasks:
-  - init: yarn install && yarn build
+  - init: yarn install && yarn build && npm i -g @antfu/ni
     command: yarn dev
 ports:
-  - port: 6006
+  - port: 3000
     onOpen: open-preview

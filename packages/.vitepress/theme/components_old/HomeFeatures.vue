@@ -74,7 +74,7 @@ const features = computed<Feature[]>(() => {
 }
 
 .home-hero + .home-features .wrapper {
-  border-top: 1px solid var(--c-divider);
+  border-top: 1px solid var(--vt-c-divider);
   padding-top: 2.5rem;
 }
 
@@ -138,7 +138,7 @@ const features = computed<Feature[]>(() => {
   margin: 0;
   line-height: 1.6;
   font-size: 1rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 
 .title + .details {

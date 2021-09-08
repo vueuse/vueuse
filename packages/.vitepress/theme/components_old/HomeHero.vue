@@ -100,7 +100,7 @@ const heroText = computed(() => frontmatter.value.heroText || site.value.title)
   margin: 0;
   line-height: 1.3;
   font-size: 1.2rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 
 .action {
@@ -128,14 +128,14 @@ const heroText = computed(() => frontmatter.value.heroText || site.value.title)
   font-weight: 500;
   border: 0;
   color: #ffffff;
-  background-color: var(--c-brand);
+  background-color: var(--vt-c-brand);
   transition: background-color 0.1s ease;
 }
 
 .action :deep(.item:hover) {
   text-decoration: none;
   color: #ffffff;
-  background-color: var(--c-brand-light);
+  background-color: var(--vt-c-brand-light);
 }
 
 .action.alt :deep(.item) {
