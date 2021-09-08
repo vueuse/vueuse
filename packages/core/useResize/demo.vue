@@ -1,16 +1,44 @@
 <script setup lang="ts">
+import { useToggle } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useResize } from '.'
-const element = ref(null)
-const { width, height, isResizing, direction } = useResize(element)
+const element = ref<HTMLElement>(null)
+const [resize, toggle] = useToggle(true)
+const { width, height, isReady, direction, isResizing, onResizeStart, onResizeMove, onResizeEnd } = useResize(element, {
+  minWidth: 300,
+  maxWidth: 'initial',
+  minHeight: 'initial',
+  maxHeight: 500,
+  resize,
+  // edges: ['bottom-right'],
+})
+
+onResizeStart(({ pointer }) => {
+  console.log('onResizeStart', pointer)
+})
+onResizeMove(({ pointer, newWidth, newHeight }) => {
+  if (!resize.value && element.value) {
+    element.value.style.width = `${newWidth}px`
+    element.value.style.height = `${newHeight}px`
+  }
+  console.log('onResizeMove', pointer)
+})
+onResizeEnd(({ pointer }) => {
+  console.log('onResizeEnd', pointer)
+})
 </script>
 
 <template>
   <div ref="element" class="bg-gray-700 box" :class="[direction]">
     <p>{{ width }} x {{ height }}</p>
+    <p>isReady: {{ isReady }}</p>
     <p>isResizing: {{ isResizing }}</p>
-    <p>Direction: {{ direction }}</p>
+    <p>direction: {{ direction }}</p>
+    <p>resize: {{ resize }}</p>
   </div>
+  <button @click="toggle()">
+    {{ resize ? 'Auto Resizing' : 'Custom Resizing' }}
+  </button>
 </template>
 
 <style scoped>
@@ -43,5 +71,4 @@ const { width, height, isResizing, direction } = useResize(element)
 .right {
   box-shadow: rgb(0 114 255) 2px 0px 0px 0px;
 }
-
 </style>
