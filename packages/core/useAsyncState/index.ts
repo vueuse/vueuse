@@ -46,7 +46,7 @@ export interface AsyncStateOptions {
  * @param options
  */
 export function useAsyncState<T>(
-  promise: Promise<T> | (() => Promise<T>),
+  promise: Promise<T> | ((...args: any[]) => Promise<T>),
   initialState: T,
   options: AsyncStateOptions = {},
 ) {
@@ -61,10 +61,9 @@ export function useAsyncState<T>(
   const isReady = ref(false)
   const error = ref<unknown | undefined>(undefined)
 
-  async function execute(delay = 0) {
+  async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
       state.value = initialState
-
     error.value = undefined
     isReady.value = false
 
@@ -72,7 +71,7 @@ export function useAsyncState<T>(
       await promiseTimeout(delay)
 
     const _promise = typeof promise === 'function'
-      ? promise()
+      ? promise(...args)
       : promise
 
     try {
