@@ -589,7 +589,7 @@
       "component": true,
       "docs": "https://vueuse.org/core/useDraggable/",
       "category": "Sensors",
-      "description": "make an element draggable"
+      "description": "make elements draggable"
     },
     {
       "name": "useElementBounding",
@@ -806,7 +806,7 @@
       "component": true,
       "docs": "https://vueuse.org/core/usePointer/",
       "category": "Sensors",
-      "description": "reactive pointer state"
+      "description": "reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)"
     },
     {
       "name": "usePointerSwipe",

@@ -70,7 +70,7 @@
   - [`useDevicePixelRatio`](https://vueuse.org/core/useDevicePixelRatio/) — reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)
   - [`useDevicesList`](https://vueuse.org/core/useDevicesList/) — reactive [enumerateDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices) listing avaliable input/output devices
   - [`useDocumentVisibility`](https://vueuse.org/core/useDocumentVisibility/) — reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
-  - [`useDraggable`](https://vueuse.org/core/useDraggable/) — make an element draggable
+  - [`useDraggable`](https://vueuse.org/core/useDraggable/) — make elements draggable
   - [`useElementBounding`](https://vueuse.org/core/useElementBounding/) — reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
@@ -87,7 +87,7 @@
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
   - [`useParallax`](https://vueuse.org/core/useParallax/) — create parallax effect easily
-  - [`usePointer`](https://vueuse.org/core/usePointer/) — reactive pointer state
+  - [`usePointer`](https://vueuse.org/core/usePointer/) — reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
