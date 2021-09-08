@@ -1,5 +1,5 @@
 import { Ref, ref, unref, computed } from 'vue-demi'
-import { MaybeRef, toRefs } from '@vueuse/shared'
+import { MaybeRef, toRefs, isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { MaybeElementRef } from '../unrefElement'
 import { PointerType, Position } from '../_types'
@@ -107,9 +107,11 @@ export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions =
     preventDefault(e)
   }
 
-  useEventListener(el, 'pointerdown', start, true)
-  useEventListener(draggingElement, 'pointermove', move, true)
-  useEventListener(draggingElement, 'pointerup', end, true)
+  if (isClient) {
+    useEventListener(el, 'pointerdown', start, true)
+    useEventListener(draggingElement, 'pointermove', move, true)
+    useEventListener(draggingElement, 'pointerup', end, true)
+  }
 
   return {
     ...toRefs(position),
