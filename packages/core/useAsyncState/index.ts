@@ -64,7 +64,6 @@ export function useAsyncState<T>(
   async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
       state.value = initialState
-    
     error.value = undefined
     isReady.value = false
 
