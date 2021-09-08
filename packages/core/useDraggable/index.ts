@@ -28,7 +28,7 @@ export interface UseDraggableOptions {
   draggingElement?: MaybeElementRef
 
   /**
-   * Input listen to the type of input.
+   * Pointer types that listen to.
    *
    * @default ['mouse', 'touch', 'pen']
    */
@@ -53,9 +53,10 @@ export interface UseDraggableOptions {
 }
 
 /**
- * Make an element draggable.
+ * Make elements draggable.
  *
  * @see https://vueuse.org/useDraggable
+ * @param el
  * @param options
  */
 export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions = {}) {

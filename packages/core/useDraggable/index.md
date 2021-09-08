@@ -4,7 +4,7 @@ category: Sensors
 
 # useDraggable
 
-Make an element draggable.
+Make elements draggable.
 
 ## Usage
 
@@ -15,6 +15,7 @@ import { useDraggable } from '.'
 
 const el = ref<HTMLElement | null>(null)
 
+// `style` will be a helper computed for `left: ?px; top: ?px;`
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 40, y: 40 },
 })

@@ -30,9 +30,10 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
       ? useStorage(
         props.storageKey,
         unref(props.initialValue) || { x: 0, y: 0 },
-        props.storageType === 'local' ? localStorage : sessionStorage,
+        props.storageType === 'session' ? sessionStorage : localStorage,
       )
       : props.initialValue || { x: 0, y: 0 }
+
     const data = reactive(useDraggable(target, {
       ...props,
       initialValue,
