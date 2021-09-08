@@ -26,6 +26,8 @@ module.exports = {
     'react/no-unknown-property': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',
+    'vue/no-template-shadow': 'off',
+    'vue/require-prop-types': 'off',
     'spaced-comment': ['error', 'always', { exceptions: ['@__PURE__'] }],
   },
   overrides: [

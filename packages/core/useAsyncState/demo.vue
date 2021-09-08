@@ -5,8 +5,8 @@ import { useAsyncState } from '.'
 
 const { state, isReady, execute } = useAsyncState(
   (args) => {
-    let id = args?.id || 1
-    return axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(t => t.data )
+    const id = args?.id || 1
+    return axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(t => t.data)
   },
   {},
   {
