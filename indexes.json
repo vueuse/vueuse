@@ -584,6 +584,14 @@
       "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)"
     },
     {
+      "name": "useDraggable",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useDraggable/",
+      "category": "Sensors",
+      "description": "make an element draggable"
+    },
+    {
       "name": "useElementBounding",
       "package": "core",
       "component": true,
