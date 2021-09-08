@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
+import { isClient } from '@vueuse/shared'
 import { UseDraggable as Draggable } from './component'
 import { useDraggable } from '.'
 
 const el = ref<HTMLElement | null>(null)
 
-const { x, y, style } = useDraggable(el, {
-  initialValue: { x: window.innerWidth / 4.2, y: 80 },
-})
+const innerWidth = isClient ? window.innerWidth : 200
 
-const innerWidth = window.innerWidth
+const { x, y, style } = useDraggable(el, {
+  initialValue: { x: innerWidth / 4.2, y: 80 },
+})
 </script>
 
 <template>
