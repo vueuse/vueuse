@@ -28,19 +28,19 @@ const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
   line-height: 36px;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--c-text);
+  color: var(--vt-c-text);
   white-space: nowrap;
 }
 
 .item:hover,
 .item.active {
   text-decoration: none;
-  color: var(--c-brand);
+  color: var(--vt-c-brand);
 }
 
 .item.external:hover {
   border-bottom-color: transparent;
-  color: var(--c-text);
+  color: var(--vt-c-text);
 }
 
 @media (min-width: 720px) {
@@ -54,8 +54,8 @@ const { props: linkProps, isExternal } = useNavLink(propsRefs.item)
 
   .item:hover,
   .item.active {
-    border-bottom-color: var(--c-brand);
-    color: var(--c-text);
+    border-bottom-color: var(--vt-c-brand);
+    color: var(--vt-c-text);
   }
 }
 </style>

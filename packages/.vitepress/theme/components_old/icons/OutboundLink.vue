@@ -26,6 +26,6 @@
   top: -1px;
   display: inline-block;
   vertical-align: middle;
-  color: var(--c-text-lighter);
+  color: var(--vt-c-text-lighter);
 }
 </style>
