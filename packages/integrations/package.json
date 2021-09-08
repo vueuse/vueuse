@@ -60,7 +60,7 @@
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "focus-trap": "^6.6.1",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
