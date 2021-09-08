@@ -1,4 +1,5 @@
-import { from as fromRxjs, fromEvent as fromEventRx, ObservableInput, Observable } from 'rxjs'
+import { from as fromRxjs, fromEvent as fromEventRx, Observable } from 'rxjs'
+import type { ObservableInput } from 'rxjs'
 import { filter, mergeMap } from 'rxjs/operators'
 import { Ref, isRef, watch } from 'vue-demi'
 

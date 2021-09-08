@@ -14,6 +14,7 @@ export function set(...args: any[]) {
   if (args.length === 3) {
     if (isVue2) {
       // use @vue/composition-api's set API
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('vue-demi').set(...args)
     }
     else {

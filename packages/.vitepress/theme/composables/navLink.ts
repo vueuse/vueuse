@@ -1,4 +1,5 @@
-import { computed, Ref } from 'vue'
+import { computed } from 'vue'
+import type { Ref } from 'vue'
 import { useRoute, withBase } from 'vitepress'
 import { isExternal as isExternalCheck } from '../utils'
 import type { DefaultTheme } from '../config'

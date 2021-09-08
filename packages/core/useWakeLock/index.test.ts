@@ -36,7 +36,7 @@ describe('useWakeLock', () => {
     }
 
     Object.defineProperty(navigator, 'wakeLock', {
-      value: { request: (_: 'screen') => createWakeLock() },
+      value: { request: () => createWakeLock() },
       writable: true,
     })
     const { isActive, request, release } = useWakeLock()
@@ -67,7 +67,7 @@ describe('useWakeLock', () => {
     }
 
     Object.defineProperty(navigator, 'wakeLock', {
-      value: { request: (_: 'screen') => createWakeLock() },
+      value: { request: () => createWakeLock() },
       writable: true,
     })
     const { isActive, request } = useWakeLock({ document: defaultDocument })

@@ -9,7 +9,7 @@ describe('useVModel', () => {
     [defaultKey]: defaultValue,
   })
 
-  const emitMock = jest.fn((event: string, values: any[]) => {})
+  const emitMock = jest.fn(() => {})
   beforeEach(() => emitMock.mockClear())
 
   it('should work with default value', () => {

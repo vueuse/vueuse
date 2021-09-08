@@ -43,10 +43,5 @@ export const useTodos = createGlobalState(
 // app.js
 import { useTodos } from './store'
 
-new Vue({
-  setup() {
-    const todos = useTodos()
-    return { todos }
-  },
-})
+const todos = useTodos()
 ```

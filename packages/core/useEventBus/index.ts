@@ -5,7 +5,9 @@ import { events } from './internal'
 export type EventBusListener<T = unknown> = (event: T) => void
 export type EventBusEvents<T> = EventBusListener<T>[]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
+
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
 
 export interface UseEventBusReturn<T> {

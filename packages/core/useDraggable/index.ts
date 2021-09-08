@@ -1,4 +1,4 @@
-import { Ref, ref, unref, computed } from 'vue'
+import { Ref, ref, unref, computed } from 'vue-demi'
 import { MaybeRef, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { MaybeElementRef } from '../unrefElement'

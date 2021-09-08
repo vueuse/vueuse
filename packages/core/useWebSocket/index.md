@@ -18,7 +18,7 @@ See the [Type Declarations](#type-declarations) for more options.
 
 ### Immediate
 
-Auto connect (enabled by default).
+Auto-connect (enabled by default).
 
 This will call `open()` automatically for you and you don't need to call it by yourself.
 

@@ -3,7 +3,7 @@ import { resolve } from 'path'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
-import { OutputOptions, Plugin, RollupOptions } from 'rollup'
+import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { activePackages } from '../meta/packages'
 
