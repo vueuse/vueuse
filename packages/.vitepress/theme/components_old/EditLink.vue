@@ -17,12 +17,12 @@ const { url, text } = useEditLink()
 .link {
   display: inline-block;
   font-size: 1rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 
 .link:hover {
   text-decoration: none;
-  color: var(--c-brand);
+  color: var(--vt-c-brand);
 }
 
 .edit-link {

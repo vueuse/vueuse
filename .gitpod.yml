@@ -2,5 +2,5 @@ tasks:
   - init: npm i -g pnpm && pnpm install && pnpm run build
     command: pnpm run dev
 ports:
-  - port: 6006
+  - port: 3000
     onOpen: open-preview

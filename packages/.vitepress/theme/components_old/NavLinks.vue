@@ -24,13 +24,17 @@ const show = computed(() => theme.value.nav || repo.value || localeLinks.value)
     <div v-if="localeLinks" class="item">
       <NavDropdownLink :item="localeLinks" />
     </div>
+
+    <div v-if="repo" class="item">
+      <NavLink :item="repo" />
+    </div>
   </nav>
 </template>
 
 <style scoped>
 .nav-links {
   padding: 0.75rem 0;
-  border-bottom: 1px solid var(--c-divider);
+  border-bottom: 1px solid var(--vt-c-divider);
 }
 
 @media (min-width: 720px) {

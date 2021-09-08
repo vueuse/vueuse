@@ -34,7 +34,7 @@ const { hasLinks, prev, next } = useNextAndPrevLinks()
 .container {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid var(--c-divider);
+  border-top: 1px solid var(--vt-c-divider);
   padding-top: 1rem;
 }
 
@@ -75,7 +75,7 @@ const { hasLinks, prev, next } = useNextAndPrevLinks()
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  fill: var(--c-text);
+  fill: var(--vt-c-text);
   transform: translateY(1px);
 }
 

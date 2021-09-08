@@ -67,7 +67,7 @@ function toggle() {
   font-family: var(--font-family-base);
   font-size: 1rem;
   font-weight: 600;
-  color: var(--c-text);
+  color: var(--vt-c-text);
   white-space: nowrap;
   background-color: transparent;
   cursor: pointer;
@@ -124,7 +124,7 @@ function toggle() {
     border-radius: 6px;
     padding: 12px 0;
     min-width: 128px;
-    background-color: var(--c-bg);
+    background-color: var(--vt-c-bg);
     box-shadow: var(--shadow-3);
   }
 }
