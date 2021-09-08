@@ -1,4 +1,4 @@
-import { effectScope, EffectScope, onScopeDispose } from 'vue-demi'
+import { effectScope, EffectScope } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 /**
