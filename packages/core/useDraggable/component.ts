@@ -41,7 +41,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target, style: data.style }, slots.default(data))
+        return h('div', { ref: target, style: `touch-action:none;${data.style}` }, slots.default(data))
     }
   },
 })

@@ -10,6 +10,7 @@ const innerWidth = isClient ? window.innerWidth : 200
 
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: innerWidth / 4.2, y: 80 },
+  preventDefault: true,
 })
 </script>
 
@@ -21,6 +22,7 @@ const { x, y, style } = useDraggable(el, {
       border="~ gray-400 rounded"
       shadow="~ hover:lg"
       class="fixed bg-$c-bg select-none cursor-move z-10"
+      style="touch-action:none;"
       :style="style"
     >
       👋 Drag me!
@@ -36,6 +38,7 @@ const { x, y, style } = useDraggable(el, {
       shadow="~ hover:lg"
       class="fixed bg-$c-bg select-none cursor-move z-10"
       :initial-value="{ x: innerWidth / 3.9, y: 150 }"
+      :prevent-default="true"
       storage-key="vueuse-draggable-pos"
       storage-type="session"
     >
