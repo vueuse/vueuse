@@ -19,9 +19,11 @@
   font-size: 22px;
 }
 
-.vt-doc h2 + div[class*='language-'],
-.vt-doc h3 + div[class*='language-'],
-{
+.vt-doc h2 + div[class*='language-'] {
+  margin-top: 10px;
+}
+
+.vt-doc h3 + div[class*='language-'] {
   margin-top: 10px;
 }
 
