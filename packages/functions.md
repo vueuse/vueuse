@@ -1,8 +1,8 @@
+# Core Functions
+
 ::: tip
 📰 [Recently updated functions](/recently-updated)
 :::
-
-# Core Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->

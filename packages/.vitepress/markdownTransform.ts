@@ -43,7 +43,7 @@ export function MarkdownTransform(): Plugin {
 
         let header = ''
         if (hasDemo(pkg, name))
-          header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>\n'
+          header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n## Demo\n<DemoContainer><Demo/></DemoContainer>\n'
 
         header += getFunctionHead(pkg, name)
 

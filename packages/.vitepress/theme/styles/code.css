@@ -52,15 +52,29 @@ a > code {
 }
 
 .shiki-light {
-  background: var(--vt-c-bg-soft) !important;
+  background: #f9f9f9 !important;
+}
+.shiki-dark {
+  background: #242424 !important;
 }
 
 html.dark .shiki-light {
-  display: none;
+  opacity: 0;
+}
+html:not(.dark) .shiki-dark {
+  opacity: 0;
 }
 
-html:not(.dark) .shiki-dark {
-  display: none;
+.shiki {
+  transition: opacity 0.5s !important;
+}
+
+.shiki-light {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .vt-doc div[class*='language-'] {

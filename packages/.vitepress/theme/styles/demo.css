@@ -1,19 +1,11 @@
 .demo {
-  --width: 100vw;
-  --margin-left: -1.5rem;
-
-  font-size: 16px;
+  font-size: var(--vt-doc-code-font-size);
   background: var(--vt-c-bg-soft);
   padding: 1em 2em;
   position: relative;
   margin-bottom: 40px;
   border-radius: 4px;
   transition: background-color 0.5s;
-}
-
-.demo.wide {
-  width: var(--width);
-  margin-left: var(--margin-left);
 }
 
 .demo::after {
@@ -119,11 +111,18 @@
   pre,
   .code-block {
     opacity: 0.8;
-    background: rgba(125,125,125,0.02);
-    padding: 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9em;
     overflow: auto;
+  }
+
+  .code-block {
+    background-color: var(--vt-c-bg-mute) !important;
+    padding: 4px 8px;
+    margin: 12px 0;
+    border-radius: 4px;
+  }
+
+  code {
+    background-color: var(--vt-c-bg-mute) !important;
   }
 
   .resizer {
