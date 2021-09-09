@@ -1,3 +1,4 @@
+// @ts-expect-error
 import base from '@vue/theme/config'
 import indexes from '../../indexes.json'
 import { currentVersion, versions } from '../../meta/versions'

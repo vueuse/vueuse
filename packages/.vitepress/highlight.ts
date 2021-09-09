@@ -1,3 +1,5 @@
+import { getHighlighter } from 'shiki'
+
 const htmlEscapes = {
   '&': '&amp;',
   '<': '&lt;',
@@ -11,7 +13,7 @@ function escapeHtml(html) {
 }
 
 export default async() => {
-  const highlighter = await require('shiki').getHighlighter({
+  const highlighter = await getHighlighter({
     themes: [
       'vitesse-dark',
       'vitesse-light',
