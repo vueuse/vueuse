@@ -51,6 +51,22 @@ a > code {
   padding: 24px;
 }
 
+.shiki-light {
+  background: var(--vt-c-bg-soft) !important;
+}
+
+html.dark .shiki-light {
+  display: none;
+}
+
+html:not(.dark) .shiki-dark {
+  display: none;
+}
+
+.vt-doc div[class*='language-'] {
+  background: none !important;
+}
+
 /* Line highlighting */
 /* 
 .highlight-lines {
