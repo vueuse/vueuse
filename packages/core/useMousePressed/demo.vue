@@ -26,7 +26,7 @@ const text = stringify(mouse)
       </button>
     </div>
     <div
-      class="h-40 w-40 bg-green-200 p-3 flex flex-row items-center text-center"
+      class="h-40 w-40 bg-green-200 text-green-900 p-3 flex flex-row items-center text-center"
       @drop.prevent="() => {}"
     >
       Drop something here to try drag and drop.
