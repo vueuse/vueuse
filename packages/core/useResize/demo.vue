@@ -2,14 +2,16 @@
 import { useToggle } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useResize } from '.'
-const element = ref<HTMLElement>(null)
+const element = ref<HTMLElement | null>(null)
 const [resize, toggle] = useToggle(true)
+const [blockingElement, toggleBlockingElement] = useToggle(false)
 const { width, height, isReady, direction, isResizing, onResizeStart, onResizeMove, onResizeEnd } = useResize(element, {
   minWidth: 300,
   maxWidth: 'initial',
   minHeight: 'initial',
   maxHeight: 500,
   resize,
+  borderRadius: 8,
   // edges: ['bottom-right'],
 })
 
@@ -29,15 +31,19 @@ onResizeEnd(({ pointer }) => {
 </script>
 
 <template>
-  <div ref="element" class="bg-gray-700 box" :class="[direction]">
+  <div ref="element" class="bg-gray-700 box relative" :class="[direction]">
     <p>{{ width }} x {{ height }}</p>
     <p>isReady: {{ isReady }}</p>
     <p>isResizing: {{ isResizing }}</p>
     <p>direction: {{ direction }}</p>
     <p>resize: {{ resize }}</p>
+    <div v-if="blockingElement" class="absolute w-full h-1/2 bg-black/50 inset-0 -m-5 rounded-xl"></div>
   </div>
   <button @click="toggle()">
     {{ resize ? 'Auto Resizing' : 'Custom Resizing' }}
+  </button>
+  <button @click="toggleBlockingElement()">
+    {{ blockingElement ? 'Hide Blocking Element' : 'Show Blocking Element' }}
   </button>
 </template>
 
@@ -45,7 +51,7 @@ onResizeEnd(({ pointer }) => {
 .box {
   transition: box-shadow 150ms ease-in-out;
   background: var(--code-inline-bg-color);
-  @apply relative p-5 rounded;
+  @apply relative p-5 rounded-lg;
 }
 .top-left {
   box-shadow: rgb(0 114 255) 0px -2px 0px 0px,rgb(0 114 255) -2px 0px 0px 0px;
