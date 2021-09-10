@@ -144,56 +144,54 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
 
       if (
         ((currentY - top + (borderRadius / 2)) < 5 || (currentX - left + (borderRadius / 2)) < 5)
-        && Math.abs(currentY - top) < 5 && Math.abs(currentX - left) < 5
+        && Math.abs(currentY - top) < 8 && Math.abs(currentX - left) < 8
         && edges.includes('top-left')
         && window.document.elementFromPoint(left + (borderRadius / 2), top + (borderRadius / 2)) === target.value) {
         direction.value = 'top-left'
         cursor.value = 'nwse-resize'
       }
       else if (
-        ((currentY - top + (borderRadius / 2)) < 5 || (currentX - right - (borderRadius / 2)) < 5)
-        && Math.abs(currentY - top) < 5
-        && Math.abs(currentX - right) < 5
+        ((currentY - top + (borderRadius / 2)) < 8 || (currentX - right - (borderRadius / 2)) < 8)
+        && Math.abs(currentY - top) < 8
+        && Math.abs(currentX - right) < 8
         && edges.includes('top-right')
         && window.document.elementFromPoint(right - (borderRadius / 2), top + (borderRadius / 2)) === target.value) {
         direction.value = 'top-right'
         cursor.value = 'nesw-resize'
       }
       else if (
-        ((currentY - bottom - (borderRadius / 2)) < 5 || (currentX - left + (borderRadius / 2)) < 5)
-        && Math.abs(currentY - bottom) < 5
-        && Math.abs(currentX - left) < 5
+        ((currentY - bottom - (borderRadius / 2)) < 8 || (currentX - left + (borderRadius / 2)) < 8)
+        && Math.abs(currentY - bottom) < 8
+        && Math.abs(currentX - left) < 8
         && edges.includes('bottom-left')
         && window.document.elementFromPoint(left + (borderRadius / 2), bottom - (borderRadius / 2)) === target.value) {
         direction.value = 'bottom-left'
         cursor.value = 'nesw-resize'
       }
       else if (
-        ((currentY - bottom - (borderRadius / 2)) < 5 || (currentX - right - (borderRadius / 2)) < 5)
-        && Math.abs(currentY - bottom) < 5
-        && Math.abs(currentX - right) < 5
+        ((currentY - bottom - (borderRadius / 2)) < 8 || (currentX - right - (borderRadius / 2)) < 8)
+        && Math.abs(currentY - bottom) < 8
+        && Math.abs(currentX - right) < 8
         && edges.includes('bottom-right')
         && window.document.elementFromPoint(right - (borderRadius / 2), bottom - (borderRadius / 2)) === target.value) {
         direction.value = 'bottom-right'
         cursor.value = 'nwse-resize'
       }
       else if (
-        (currentY - bottom) > -8
+        (currentY - bottom) < 8
         && (currentY - bottom) >= 0
         && currentX > left
         && currentX < right
-        && Math.abs(currentY - bottom) < 5
         && edges.includes('bottom')
         && window.document.elementFromPoint(currentX, bottom) === target.value) {
         direction.value = 'bottom'
         cursor.value = 'ns-resize'
       }
       else if (
-        (currentY - top) < 8
+        (currentY - top) > -8
         && (currentY - top) <= 0
         && currentX > left
         && currentX < right
-        && Math.abs(currentY - top) < 5
         && edges.includes('top')
         && window.document.elementFromPoint(currentX, top) === target.value) {
         direction.value = 'top'
@@ -231,7 +229,7 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
   let warned = false
   useResizeObserver(target, (entries) => {
     elWidth.value = target.value.getClientRects()[0].width
-    elHeight.value = target.value.getClientRects()[0].elHeight
+    elHeight.value = target.value.getClientRects()[0].height
 
     if (!warned && (entries[0].contentRect.width === elWidth.value || entries[0].contentRect.height === elHeight.value)) {
       warned = true
