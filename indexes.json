@@ -868,6 +868,13 @@
       "description": "script tag injecting"
     },
     {
+      "name": "useScroll",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useScroll/",
+      "category": "Sensors",
+      "description": "reactive scroll"
+    },
+    {
       "name": "useSessionStorage",
       "package": "core",
       "docs": "https://vueuse.org/core/useSessionStorage/",
