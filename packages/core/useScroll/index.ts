@@ -2,6 +2,7 @@ import { ref, reactive } from 'vue-demi'
 import { isClient, useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { MaybeElementRef } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { defaultWindow } from '../_configurable'
 
 export interface UseScrollOptions {
   /**
@@ -20,7 +21,7 @@ export interface UseScrollOptions {
   checkStopTime?: number
 
   /**
-   * Trigger this event when scrolling ends.
+   * Trigger it when scrolling ends.
    *
    */
   onStop?: () => void
@@ -76,36 +77,38 @@ export function useScroll(
     bottom: false,
   })
 
-  const onScrollEnd = useDebounceFn(() => {
-    scrolling.value = false
-    finished.value = true
-    onStop?.()
-  }, throttle ? throttle + checkStopTime : checkStopTime)
-
-  const onScroll = (e: Event) => {
-    const eventTarget = e.target as HTMLElement
-
-    if (enabledDirection.includes('x')) {
-      const scrollLeft = eventTarget.scrollLeft
-      arrivedStatus.left = scrollLeft === 0
-      arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
-      x.value = scrollLeft
-    }
-
-    if (enabledDirection.includes('y')) {
-      const scrollTop = eventTarget.scrollTop
-      arrivedStatus.top = scrollTop === 0
-      arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
-      y.value = scrollTop
-    }
-
-    scrolling.value = true
-    finished.value = false
-    onScrollEnd()
-    handler?.()
-  }
+  if (element === defaultWindow) return { x, y, scrolling, finished, arrivedStatus }
 
   if (isClient) {
+    const onScrollEnd = useDebounceFn(() => {
+      scrolling.value = false
+      finished.value = true
+      onStop()
+    }, throttle + checkStopTime)
+
+    const onScroll = (e: Event) => {
+      const eventTarget = e.target as HTMLElement
+
+      if (enabledDirection.includes('x')) {
+        const scrollLeft = eventTarget.scrollLeft
+        arrivedStatus.left = scrollLeft === 0
+        arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
+        x.value = scrollLeft
+      }
+
+      if (enabledDirection.includes('y')) {
+        const scrollTop = eventTarget.scrollTop
+        arrivedStatus.top = scrollTop === 0
+        arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
+        y.value = scrollTop
+      }
+
+      scrolling.value = true
+      finished.value = false
+      onScrollEnd()
+      handler()
+    }
+
     useEventListener(
       element,
       'scroll',
