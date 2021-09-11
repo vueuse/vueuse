@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue-demi'
-import { isClient, useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
+import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { MaybeElementRef } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
@@ -77,46 +77,44 @@ export function useScroll(
     bottom: false,
   })
 
-  if (element === defaultWindow) return { x, y, scrolling, finished, arrivedStatus }
+  if (!element || element === defaultWindow) return { x, y, scrolling, finished, arrivedStatus }
 
-  if (isClient) {
-    const onScrollEnd = useDebounceFn(() => {
-      scrolling.value = false
-      finished.value = true
-      onStop()
-    }, throttle + checkStopTime)
+  const onScrollEnd = useDebounceFn(() => {
+    scrolling.value = false
+    finished.value = true
+    onStop()
+  }, throttle + checkStopTime)
 
-    const onScroll = (e: Event) => {
-      const eventTarget = e.target as HTMLElement
+  const onScroll = (e: Event) => {
+    const eventTarget = e.target as HTMLElement
 
-      if (enabledDirection.includes('x')) {
-        const scrollLeft = eventTarget.scrollLeft
-        arrivedStatus.left = scrollLeft === 0
-        arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
-        x.value = scrollLeft
-      }
-
-      if (enabledDirection.includes('y')) {
-        const scrollTop = eventTarget.scrollTop
-        arrivedStatus.top = scrollTop === 0
-        arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
-        y.value = scrollTop
-      }
-
-      scrolling.value = true
-      finished.value = false
-      onScrollEnd()
-      handler()
+    if (enabledDirection.includes('x')) {
+      const scrollLeft = eventTarget.scrollLeft
+      arrivedStatus.left = scrollLeft === 0
+      arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
+      x.value = scrollLeft
     }
 
-    useEventListener(
-      element,
-      'scroll',
-      throttle ? useThrottleFn(onScroll, throttle) : onScroll
-      ,
-      eventListenerOptions,
-    )
+    if (enabledDirection.includes('y')) {
+      const scrollTop = eventTarget.scrollTop
+      arrivedStatus.top = scrollTop === 0
+      arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
+      y.value = scrollTop
+    }
+
+    scrolling.value = true
+    finished.value = false
+    onScrollEnd()
+    handler()
   }
+
+  useEventListener(
+    element,
+    'scroll',
+    throttle ? useThrottleFn(onScroll, throttle) : onScroll
+    ,
+    eventListenerOptions,
+  )
 
   return { x, y, scrolling, finished, arrivedStatus }
 }

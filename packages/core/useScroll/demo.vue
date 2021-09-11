@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
 const scrollRef = ref<HTMLElement | null>(null)
 const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
+const { left, right, top, bottom } = toRefs(arrivedStatus)
 </script>
 
 <template>
@@ -22,10 +23,10 @@ const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
     </div>
     <div clss="mb-10">
       <span class="inline-block w-125px">ArrivedStatus:</span>
-      <span class="pr-2">Left : <b class="text-blue-500">{{ arrivedStatus.left }}</b></span>
-      <span class="pr-2">Right : <b class="text-blue-500">{{ arrivedStatus.right }}</b></span>
-      <span class="pr-2">Top : <b class="text-blue-500">{{ arrivedStatus.top }}</b></span>
-      <span class="pr-2">Bottom : <b class="text-blue-500">{{ arrivedStatus.bottom }}</b></span>
+      <span class="pr-2">Left : <b class="text-blue-500">{{ left }}</b></span>
+      <span class="pr-2">Right : <b class="text-blue-500">{{ right }}</b></span>
+      <span class="pr-2">Top : <b class="text-blue-500">{{ top }}</b></span>
+      <span class="pr-2">Bottom : <b class="text-blue-500">{{ bottom }}</b></span>
     </div>
   </header>
   <ul ref="scrollRef" class="scroller">
