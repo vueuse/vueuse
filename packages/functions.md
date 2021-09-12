@@ -128,7 +128,7 @@
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
-  - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounse effect
+  - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounce effect
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
   - [`useEventBus`](https://vueuse.org/core/useEventBus/) — a basic event bus
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
