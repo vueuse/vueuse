@@ -544,6 +544,13 @@
       "description": "reactive dark mode with auto data persistence"
     },
     {
+      "name": "useDebouncedRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useDebouncedRefHistory/",
+      "category": "Utilities",
+      "description": "same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounse effect"
+    },
+    {
       "name": "useDeviceMotion",
       "package": "core",
       "component": true,
@@ -908,6 +915,13 @@
       "docs": "https://vueuse.org/core/useTemplateRefsList/",
       "category": "Component",
       "description": "shorthand for binding refs to template elements and components inside `v-for`"
+    },
+    {
+      "name": "useThrottledRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useThrottledRefHistory/",
+      "category": "Utilities",
+      "description": "same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with throttle effect"
     },
     {
       "name": "useTimeAgo",
