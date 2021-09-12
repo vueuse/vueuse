@@ -8,7 +8,7 @@ describe('useThrottledRefHistory - sync', () => {
       const ms = 1000
       const v = ref(0)
 
-      const { history } = useThrottledRefHistory(v, { flush: 'sync' }, ms)
+      const { history } = useThrottledRefHistory(v, { throttle: ms })
       v.value = 100
 
       expect(history.value.length).toBe(2)

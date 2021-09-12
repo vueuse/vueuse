@@ -42,6 +42,10 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
+  /**
+   * Can get throttleFilter and debounceFilter
+   */
+  filter?: EventFilter
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> {
@@ -141,23 +145,22 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
  * @see https://vueuse.org/useRefHistory
  * @param source
  * @param options
- * @param eventFilter optional
  */
 export function useRefHistory<Raw, Serialized = Raw>(
   source: Ref<Raw>,
   options: UseRefHistoryOptions<Raw, Serialized> = {},
-  eventFilter: EventFilter = bypassFilter,
 ): UseRefHistoryReturn<Raw, Serialized> {
   const {
     deep = false,
     flush = 'pre',
+    filter = bypassFilter,
   } = options
 
-  const { eventFilter: filter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(eventFilter)
+  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(filter)
   const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
     source,
     commit,
-    { deep, flush, eventFilter: filter },
+    { deep, flush, eventFilter },
   )
 
   function setSource(source: Ref<Raw>, value: Raw) {

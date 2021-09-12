@@ -8,15 +8,13 @@ import { UseRefHistoryOptions, UseRefHistoryReturn, useRefHistory } from '../use
  * @see https://vueuse.org/useThrottledRefHistory
  * @param source
  * @param options
- * @param ms
  */
 export function useThrottledRefHistory<Raw, Serialized = Raw>(
   source: Ref<Raw>,
-  options: UseRefHistoryOptions<Raw, Serialized> = {},
-  ms: MaybeRef<number>,
+  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'filter'> & { throttle?: MaybeRef<number> } = {},
 ): UseRefHistoryReturn<Raw, Serialized> {
-  const filter = throttleFilter(ms)
-  const history = useRefHistory(source, options, filter)
+  const filter = options.throttle ? throttleFilter(options.throttle) : undefined
+  const history = useRefHistory(source, { ...options, filter })
 
   return {
     ...history,

@@ -9,7 +9,7 @@ const format = (ts: number) => dayjs(ts).format()
 const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()
-const { history, undo, redo, canUndo, canRedo } = useThrottledRefHistory(count, { capacity: 10 }, delay)
+const { history, undo, redo, canUndo, canRedo } = useThrottledRefHistory(count, { deep: true, throttle: delay })
 </script>
 
 <template>

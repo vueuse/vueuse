@@ -14,7 +14,7 @@ import { ref } from 'vue'
 import { useThrottledRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
-const { history, undo, redo } = useThrottledRefHistory(counter, { deep: true, }, 1000)
+const { history, undo, redo } = useThrottledRefHistory(counter, { deep: true, throttle: 1000 })
 ```
 ## Related Functions
 
