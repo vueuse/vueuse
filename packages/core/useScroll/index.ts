@@ -2,7 +2,6 @@ import { ref, reactive } from 'vue-demi'
 import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { MaybeElementRef } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { defaultWindow } from '../_configurable'
 
 export interface UseScrollOptions {
   /**
@@ -77,7 +76,7 @@ export function useScroll(
     bottom: false,
   })
 
-  if (!element || element === defaultWindow) return { x, y, scrolling, finished, arrivedStatus }
+  if (!element) return { x, y, scrolling, finished, arrivedStatus }
 
   const onScrollEnd = useDebounceFn(() => {
     scrolling.value = false
@@ -86,7 +85,7 @@ export function useScroll(
   }, throttle + checkStopTime)
 
   const onScroll = (e: Event) => {
-    const eventTarget = e.target as HTMLElement
+    const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
 
     if (enabledDirection.includes('x')) {
       const scrollLeft = eventTarget.scrollLeft
