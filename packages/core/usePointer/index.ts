@@ -3,6 +3,7 @@ import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 import { PointerType, Position } from '../_types'
+import { MaybeElementRef } from '../unrefElement'
 
 export interface UsePointerState extends Position {
   pressure: number
@@ -27,6 +28,11 @@ export interface UsePointerOptions extends ConfigurableWindow {
    * Initial values
    */
   initialValue?: MaybeRef<Partial<UsePointerState>>
+
+  /**
+   * @default window
+   */
+  target?: MaybeElementRef
 }
 
 const defaultState: UsePointerState = /* #__PURE__ */ {
@@ -51,25 +57,29 @@ const keys = /* #__PURE__ */ Object.keys(defaultState) as (keyof UsePointerState
  */
 export function usePointer(options: UsePointerOptions = {}) {
   const {
-    window = defaultWindow,
+    target = defaultWindow,
   } = options
 
+  const isInside = ref(false)
   const state = ref(options.initialValue || {}) as unknown as Ref<UsePointerState>
   Object.assign(state.value, defaultState, state.value)
 
   const handler = (event: PointerEvent) => {
+    isInside.value = true
     if (options.pointerTypes && !options.pointerTypes.includes(event.pointerType as PointerType))
       return
 
     state.value = objectPick(event, keys, false) as UsePointerState
   }
 
-  if (window) {
-    useEventListener(window, 'pointerdown', handler, { passive: true })
-    useEventListener(window, 'pointermove', handler, { passive: true })
+  if (target) {
+    useEventListener(target, 'pointerdown', handler, { passive: true })
+    useEventListener(target, 'pointermove', handler, { passive: true })
+    useEventListener(target, 'pointerleave', () => isInside.value = false, { passive: true })
   }
 
   return {
     ...toRefs(state),
+    isInside,
   }
 }
