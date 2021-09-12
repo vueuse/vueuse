@@ -3,7 +3,7 @@ import { Ref } from 'vue-demi'
 import { UseRefHistoryOptions, UseRefHistoryReturn, useRefHistory } from '../useRefHistory'
 
 /**
- * Same as [useRefHistory](https://vueuse.org/useRefHistory) but with throttle effect.
+ * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.
  *
  * @see https://vueuse.org/useThrottledRefHistory
  * @param source

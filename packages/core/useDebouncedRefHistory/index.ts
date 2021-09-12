@@ -3,7 +3,7 @@ import { Ref } from 'vue-demi'
 import { UseRefHistoryOptions, UseRefHistoryReturn, useRefHistory } from '../useRefHistory'
 
 /**
- * Same as [useRefHistory](https://vueuse.org/useRefHistory) but with debounce effect.
+ * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with debounce filter.
  *
  * @see https://vueuse.org/useDebouncedRefHistory
  * @param source

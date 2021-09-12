@@ -1,8 +1,9 @@
-import { Fn, pausableFilter, ignorableWatch, bypassFilter, EventFilter } from '@vueuse/shared'
+import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
 import { Ref } from 'vue-demi'
+import { ConfigurableEventFilter } from '../_configurable'
 import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
 
-export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
+export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter {
   /**
    * Watch for deep changes, default to false
    *
@@ -42,10 +43,6 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
    * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
-  /**
-   * Can get throttleFilter and debounceFilter
-   */
-  eventFilter?: EventFilter
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> {
@@ -153,11 +150,21 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const {
     deep = false,
     flush = 'pre',
-    eventFilter = bypassFilter,
+    eventFilter,
   } = options
 
-  const { eventFilter: composedFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(eventFilter)
-  const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
+  const {
+    eventFilter: composedFilter,
+    pause,
+    resume: resumeTracking,
+    isActive: isTracking,
+  } = pausableFilter(eventFilter)
+
+  const {
+    ignoreUpdates,
+    ignorePrevAsyncUpdates,
+    stop,
+  } = ignorableWatch(
     source,
     commit,
     { deep, flush, eventFilter: composedFilter },

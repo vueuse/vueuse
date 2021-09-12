@@ -4,7 +4,7 @@ category: Utilities
 
 # useDebouncedRefHistory
 
-Same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounse effect.
+Shorthand for `useRefHistory` with debounced filter.
 
 ## Usage
 
@@ -17,6 +17,8 @@ import { useDebouncedRefHistory } from '@vueuse/core'
 const counter = ref(0)
 const { history, undo, redo } = useDebouncedRefHistory(counter, { deep: true, debounce: 1000 })
 ```
+
 ## Related Functions
 
 - `useRefHistory`
+- `useThrottledRefHistory`
