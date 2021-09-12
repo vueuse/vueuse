@@ -2,6 +2,8 @@
 import { ref, watch } from 'vue-demi'
 import { useSpeechRecognition } from '.'
 
+const lang = ref('en-US')
+
 function sample<T>(arr: T[], size: number) {
   const shuffled = arr.slice(0)
   let i = arr.length
@@ -20,6 +22,7 @@ const colors = ['aqua', 'azure', 'beige', 'bisque', 'black', 'blue', 'brown', 'c
 const grammar = `#JSGF V1.0; grammar colors; public <color> = ${colors.join(' | ')} ;`
 
 const speech = useSpeechRecognition({
+  lang,
   continuous: true,
 })
 
@@ -64,6 +67,14 @@ const { isListening, isSupported, stop, result } = speech
       >more details</a>
     </div>
     <div v-else>
+      <div v-if="!isListening">
+        <input id="en-US" v-model="lang" type="radio" value="en-US" />
+        <label for="en-US">English (US)</label>
+        <input id="fr" v-model="lang" type="radio" value="fr" />
+        <label for="fr">French</label>
+        <input id="es" v-model="lang" type="radio" value="es" />
+        <label for="es">Spanish</label>
+      </div>
       <button v-if="!isListening" @click="start">
         Press and talk
       </button>
