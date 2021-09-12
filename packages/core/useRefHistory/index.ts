@@ -45,7 +45,7 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Can get throttleFilter and debounceFilter
    */
-  filter?: EventFilter
+  eventFilter?: EventFilter
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> {
@@ -153,14 +153,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
   const {
     deep = false,
     flush = 'pre',
-    filter = bypassFilter,
+    eventFilter = bypassFilter,
   } = options
 
-  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(filter)
+  const { eventFilter: composedFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(eventFilter)
   const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
     source,
     commit,
-    { deep, flush, eventFilter },
+    { deep, flush, eventFilter: composedFilter },
   )
 
   function setSource(source: Ref<Raw>, value: Raw) {
