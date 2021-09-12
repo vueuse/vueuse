@@ -1,11 +1,10 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef } from '@vueuse/shared'
+import { ref, Ref, unref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type Serializer<T> = {
   read(raw: string): T
-
   write(value: T): string
 }
 
@@ -62,24 +61,24 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   onError?: (error: unknown) => void
 }
 
-export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
-export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions<boolean>): Ref<boolean>
-export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions<number>): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
+export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
+export function useStorage(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): Ref<boolean>
+export function useStorage(key: string, initialValue: MaybeRef<number>, storage?: StorageLike, options?: StorageOptions<number>): Ref<number>
+export function useStorage<T> (key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
+export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
  *
  * @see https://vueuse.org/useStorage
  * @param key
- * @param defaultValue
+ * @param initialValue
  * @param storage
  * @param options
  */
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
-  defaultValue: T,
+  initialValue: MaybeRef<T>,
   storage: StorageLike | undefined = defaultWindow?.localStorage,
   options: StorageOptions<T> = {},
 ) {
@@ -94,21 +93,23 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     },
   } = options
 
-  const type = defaultValue == null
+  const rawInit: T = unref(initialValue)
+
+  const type = rawInit == null
     ? 'any'
-    : typeof defaultValue === 'boolean'
+    : typeof rawInit === 'boolean'
       ? 'boolean'
-      : typeof defaultValue === 'string'
+      : typeof rawInit === 'string'
         ? 'string'
-        : typeof defaultValue === 'object'
+        : typeof rawInit === 'object'
           ? 'object'
-          : Array.isArray(defaultValue)
+          : Array.isArray(rawInit)
             ? 'object'
-            : !Number.isNaN(defaultValue)
+            : !Number.isNaN(rawInit)
               ? 'number'
               : 'any'
 
-  const data = ref<T>(defaultValue)
+  const data = ref(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
   function read(event?: StorageEvent) {
@@ -118,9 +119,9 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     try {
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
-        (data as Ref<T>).value = defaultValue
-        if (defaultValue !== null)
-          storage.setItem(key, serializer.write(defaultValue))
+        data.value = rawInit
+        if (rawInit !== null)
+          storage.setItem(key, serializer.write(rawInit))
       }
       else {
         data.value = serializer.read(rawValue)
@@ -136,28 +137,27 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', read)
 
-  watchWithFilter(
-    data,
-    () => {
-      if (!storage) // SSR
-        return
+  if (storage) {
+    watchWithFilter(
+      data,
+      () => {
+        try {
+          if (data.value == null)
+            storage.removeItem(key)
+          else
+            storage.setItem(key, serializer.write(data.value))
+        }
+        catch (e) {
+          onError(e)
+        }
+      },
+      {
+        flush,
+        deep,
+        eventFilter,
+      },
+    )
+  }
 
-      try {
-        if (data.value == null)
-          storage.removeItem(key)
-        else
-          storage.setItem(key, serializer.write(data.value))
-      }
-      catch (e) {
-        onError(e)
-      }
-    },
-    {
-      flush,
-      deep,
-      eventFilter,
-    },
-  )
-
-  return data
+  return data as Ref<T>
 }

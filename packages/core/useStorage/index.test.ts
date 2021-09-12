@@ -1,5 +1,5 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { nextTick } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useStorage } from '.'
 
@@ -180,6 +180,25 @@ describe('useStorage', () => {
     await nextTick()
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
+  })
+
+  it('pass ref as initialValue', async() => {
+    expect(localStorage.getItem(KEY)).toEqual(undefined)
+
+    const init = ref({
+      name: 'a',
+      data: 123,
+    })
+    const storage = useStorage(KEY, init)
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+    expect(storage).toBe(init)
+
+    init.value.name = 'b'
+    await nextTick()
+
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
   })
 
   it('eventFilter', async() => {
