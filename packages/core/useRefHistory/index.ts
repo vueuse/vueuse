@@ -1,4 +1,4 @@
-import { Fn, pausableFilter, ignorableWatch } from '@vueuse/shared'
+import { Fn, pausableFilter, ignorableWatch, bypassFilter, EventFilter } from '@vueuse/shared'
 import { Ref } from 'vue-demi'
 import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
 
@@ -141,21 +141,23 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
  * @see https://vueuse.org/useRefHistory
  * @param source
  * @param options
+ * @param eventFilter optional
  */
 export function useRefHistory<Raw, Serialized = Raw>(
   source: Ref<Raw>,
   options: UseRefHistoryOptions<Raw, Serialized> = {},
+  eventFilter: EventFilter = bypassFilter,
 ): UseRefHistoryReturn<Raw, Serialized> {
   const {
     deep = false,
     flush = 'pre',
   } = options
 
-  const { eventFilter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter()
+  const { eventFilter: filter, pause, resume: resumeTracking, isActive: isTracking } = pausableFilter(eventFilter)
   const { ignoreUpdates, ignorePrevAsyncUpdates, stop } = ignorableWatch(
     source,
     commit,
-    { deep, flush, eventFilter },
+    { deep, flush, eventFilter: filter },
   )
 
   function setSource(source: Ref<Raw>, value: Raw) {
