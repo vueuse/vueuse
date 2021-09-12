@@ -1,13 +1,12 @@
-import { Ref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import { MaybeRef, RemoveableRef } from '@vueuse/shared'
 import { StorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 
-export function useLocalStorage (key: string, initialValue: MaybeRef<string>, options?: StorageOptions<string>): Ref<string>
-export function useLocalStorage (key: string, initialValue: MaybeRef<boolean>, options?: StorageOptions<boolean>): Ref<boolean>
-export function useLocalStorage(key: string, initialValue: MaybeRef<number>, options?: StorageOptions<number>): Ref<number>
-export function useLocalStorage<T> (key: string, initialValue: MaybeRef<T>, options?: StorageOptions<T>): Ref<T>
-export function useLocalStorage<T = unknown> (key: string, initialValue: MaybeRef<null>, options?: StorageOptions<T>): Ref<T>
+export function useLocalStorage (key: string, initialValue: MaybeRef<string>, options?: StorageOptions<string>): RemoveableRef<string>
+export function useLocalStorage (key: string, initialValue: MaybeRef<boolean>, options?: StorageOptions<boolean>): RemoveableRef<boolean>
+export function useLocalStorage(key: string, initialValue: MaybeRef<number>, options?: StorageOptions<number>): RemoveableRef<number>
+export function useLocalStorage<T> (key: string, initialValue: MaybeRef<T>, options?: StorageOptions<T>): RemoveableRef<T>
+export function useLocalStorage<T = unknown> (key: string, initialValue: MaybeRef<null>, options?: StorageOptions<T>): RemoveableRef<T>
 
 /**
  * Reactive LocalStorage.
@@ -21,7 +20,7 @@ export function useLocalStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
   options: StorageOptions<T> = {},
-): Ref<any> {
+): RemoveableRef<any> {
   const { window = defaultWindow } = options
   return useStorage(key, initialValue, window?.localStorage, options)
 }

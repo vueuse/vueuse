@@ -8,11 +8,11 @@ const KEY = 'custom-key'
 describe('useStorage', () => {
   afterEach(() => {
     localStorage.clear()
-    // @ts-ignore
+    // @ts-expect-error
     localStorage.setItem.mockClear()
-    // @ts-ignore
+    // @ts-expect-error
     localStorage.getItem.mockClear()
-    // @ts-ignore
+    // @ts-expect-error
     localStorage.removeItem.mockClear()
   })
 
@@ -147,36 +147,29 @@ describe('useStorage', () => {
   it('object', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
-    const instance = useSetup(() => {
-      const ref = useStorage(KEY, {
-        name: 'a',
-        data: 123,
-      })
-
-      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
-
-      expect(ref.value).toEqual({
-        name: 'a',
-        data: 123,
-      })
-
-      return {
-        ref,
-      }
+    const ref = useStorage(KEY, {
+      name: 'a',
+      data: 123,
     })
 
-    instance.ref.name = 'b'
+    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+    expect(ref.value).toEqual({
+      name: 'a',
+      data: 123,
+    })
+
+    ref.value.name = 'b'
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    instance.ref.data = 321
+    ref.value.data = 321
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-    // @ts-ignore
-    instance.ref = null
+    ref.value = null
     await nextTick()
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
@@ -232,7 +225,7 @@ describe('useStorage', () => {
 
     await nextTick()
     await promiseTimeout(300)
-    // @ts-ignore
+    // @ts-expect-error
     localStorage.setItem.mockClear()
 
     instance.ref.name = 'b'
@@ -242,7 +235,7 @@ describe('useStorage', () => {
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    // @ts-ignore
+    // @ts-expect-error
     localStorage.setItem.mockClear()
 
     instance.ref.data = 321
@@ -283,7 +276,6 @@ describe('useStorage', () => {
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-    // @ts-ignore
     instance.ref = null
     await nextTick()
 
