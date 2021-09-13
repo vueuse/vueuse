@@ -75,7 +75,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
       isFinal.value = false
     }
 
-    if (isRef(lang)) watch(lang, (lang) => { if (recognition) recognition.lang = lang })
+    if (isRef(lang)) watch(lang, (lang) => { if (recognition && !isListening.value) recognition.lang = lang })
 
     recognition.onresult = (event) => {
       const transcript = Array.from(event.results)
@@ -96,6 +96,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
 
     recognition.onend = () => {
       isListening.value = false
+      if (isRef(lang) && recognition) recognition.lang = lang.value
     }
 
     watch(isListening, () => {
