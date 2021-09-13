@@ -1,25 +1,26 @@
-import { watch, ref, reactive, Ref, unref, nextTick } from 'vue-demi'
-import { useEventListener, useResizeObserver, createEventHook, Fn, tryOnScopeDispose } from '@vueuse/core'
-import { MaybeElementRef } from '../unrefElement'
+import { watch, ref, reactive, unref, nextTick, computed } from 'vue-demi'
+import { useEventListener, useResizeObserver } from '@vueuse/core'
+import { createEventHook, Fn, tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
+import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 type Edges = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right' | 'top' | 'bottom'
 
 export interface UseResizeOptions extends ConfigurableWindow {
   disabled?: boolean
-  disableResize?: boolean | Ref<boolean>
-  disableCursor?: boolean | Ref<boolean>
-  xMultiplier?: number | Ref<number>
-  yMultiplier?: number | Ref<number>
-  borderRadius?: number | Ref<number>
-  minWidth?: number | Ref<number> | 'initial'
-  maxWidth?: number | Ref<number> | 'initial'
-  minHeight?: number | Ref<number> | 'initial'
-  maxHeight?: number | Ref<number> | 'initial'
-  edges?: Edges[] | Ref<Edges[]>
+  disableResize?: MaybeRef<boolean>
+  disableCursor?: MaybeRef<boolean>
+  xMultiplier?: MaybeRef<number>
+  yMultiplier?: MaybeRef<number>
+  borderRadius?: MaybeRef<number>
+  minWidth?: MaybeRef<number> | 'initial'
+  maxWidth?: MaybeRef<number> | 'initial'
+  minHeight?: MaybeRef<number> | 'initial'
+  maxHeight?: MaybeRef<number> | 'initial'
+  edges?: MaybeRef<Edges[]>
 }
 
-export function useResize(target: MaybeElementRef, options: UseResizeOptions = {}) {
+export function useResize(element: MaybeElementRef, options: UseResizeOptions = {}) {
   const {
     window = defaultWindow,
     disabled = false,
@@ -38,6 +39,7 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
   } = options
 
   const isActive = ref(disabled)
+  const target = computed(() => unrefElement(element))
 
   let width = 0
   let height = 0
@@ -55,8 +57,6 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
     setSize: typeof setSize
   }>()
 
-  let cleanup: Fn[] = []
-
   const isOverEdge = ref(false)
   const isResizing = ref(false)
   const direction = ref('')
@@ -65,6 +65,8 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
 
   const widthRef = ref(0)
   const heightRef = ref(0)
+
+  let cleanup: Fn[] = []
 
   const start = () => {
     cleanup.push(
@@ -128,6 +130,7 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
 
     let newWidth = width
     let newHeight = height
+
     const xDiff = Math.abs(evt.x - pointer.startX) * unref(xMultiplier)
     const yDiff = Math.abs(evt.y - pointer.startY) * unref(yMultiplier)
 
@@ -179,6 +182,7 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
   const isOnForeground = (x: number, y: number) => {
     return window!.document.elementFromPoint(x, y) === target.value
   }
+
   const isEdgeActive = (edge: Edges) => {
     return unref(edges).includes(edge)
   }
