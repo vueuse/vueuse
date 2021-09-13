@@ -13,11 +13,17 @@ export interface UseScrollOptions {
 
   /**
    * The check time when scrolling ends.
-   * This configuration will be setting to (throttle + checkStopTime) when the `throttle` is configured.
+   * This configuration will be setting to (throttle + idle) when the `throttle` is configured.
    *
    * @default 200
    */
-  checkStopTime?: number
+  idle?: number
+
+  /**
+   * Trigger it when scrolling.
+   *
+   */
+  onScroll?: () => void
 
   /**
    * Trigger it when scrolling ends.
@@ -45,18 +51,18 @@ export interface UseScrollOptions {
  *
  * @see https://vueuse.org/useScroll
  * @param {MaybeElementRef} element
- * @param {() => void} [handler=noop]
  * @param {UseScrollOptions} [options={}]
  */
+
 export function useScroll(
   element: MaybeElementRef,
-  handler: () => void = noop,
   options: UseScrollOptions = {},
 ) {
   const {
     throttle = 0,
-    checkStopTime = 200,
+    idle = 200,
     onStop = noop,
+    onScroll = noop,
     enabledDirection = ['x', 'y'],
     eventListenerOptions = {
       capture: false,
@@ -82,9 +88,9 @@ export function useScroll(
     scrolling.value = false
     finished.value = true
     onStop()
-  }, throttle + checkStopTime)
+  }, throttle + idle)
 
-  const onScroll = (e: Event) => {
+  const onScrollHandler = (e: Event) => {
     const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
 
     if (enabledDirection.includes('x')) {
@@ -104,13 +110,13 @@ export function useScroll(
     scrolling.value = true
     finished.value = false
     onScrollEnd()
-    handler()
+    onScroll()
   }
 
   useEventListener(
     element,
     'scroll',
-    throttle ? useThrottleFn(onScroll, throttle) : onScroll
+    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler
     ,
     eventListenerOptions,
   )

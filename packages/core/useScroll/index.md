@@ -4,7 +4,7 @@ category: Sensors
 
 # useScroll
 
-Reactive scroll
+Reactive scroll position and state
 
 ## Usage
 
@@ -14,14 +14,11 @@ Reactive scroll
   </ul>
 </template>
 
-<script>
-  setup() {
-    import { useScroll } from '@vueuse/core'
-    const scrollRef = ref<HTMLElement | null>(null)
-    const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
-    return { x, y, scrolling, finished, arrivedStatus  }
-  } 
+<script setup>
+	import { useScroll } from '@vueuse/core'
+	
+	const scrollRef = ref<HTMLElement | null>(null)
+	
+	const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
 </script>
-
 ```
-

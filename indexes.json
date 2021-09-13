@@ -872,7 +872,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useScroll/",
       "category": "Sensors",
-      "description": "reactive scroll"
+      "description": "reactive scroll position and state"
     },
     {
       "name": "useSessionStorage",
