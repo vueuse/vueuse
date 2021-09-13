@@ -30,7 +30,7 @@ onResizeEnd(({ pointer }) => {
 </script>
 
 <template>
-  <div v-if="isActive" ref="element" class="bg-gray-700 box relative" :class="[direction]">
+  <div ref="element" class="bg-gray-700 box relative" :class="[direction]">
     <p>{{ width }} x {{ height }}</p>
     <p>isOverEdge: {{ isOverEdge }}</p>
     <p>isResizing: {{ isResizing }}</p>

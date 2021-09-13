@@ -63,6 +63,9 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
 
   const pointer = reactive({ startX: 0, startY: 0, currentX: 0, currentY: 0 })
 
+  const widthRef = ref(0)
+  const heightRef = ref(0)
+
   const start = () => {
     cleanup.push(
       useEventListener(window, 'pointerdown', onPointerDown),
@@ -71,6 +74,7 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
       useEventListener(window, 'lostpointercapture', onPointerUp),
       useEventListener(window, 'pointermove', onPointerMove),
       watch(pointer, handlePointer),
+      useElementSize(),
     )
     isActive.value = true
   }
@@ -277,25 +281,24 @@ export function useResize(target: MaybeElementRef, options: UseResizeOptions = {
   }
 
   function useElementSize() {
-    const width = ref(0)
-    const height = ref(0)
     let warned = false
-    useResizeObserver(target, ([entry]) => {
-      width.value = target.value.getBoundingClientRect().width
-      height.value = target.value.getBoundingClientRect().height
+    const { stop } = useResizeObserver(target, ([entry]) => {
+      widthRef.value = target.value.getBoundingClientRect().width
+      heightRef.value = target.value.getBoundingClientRect().height
 
-      if (!warned && (entry.contentRect.width === width.value || entry.contentRect.height === height.value)) {
+      if (!warned && (entry.contentRect.width === widthRef.value || entry.contentRect.height === heightRef.value)) {
         warned = true
         console.warn('To make useResize function properly, target element must have at least 1px width padding or border.')
       }
     })
-    return { width, height }
+    return stop
   }
 
   tryOnScopeDispose(stop)
 
   return {
-    ...useElementSize(),
+    width: widthRef,
+    height: heightRef,
     stop,
     start,
     direction,
