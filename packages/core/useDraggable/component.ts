@@ -1,6 +1,6 @@
 import { defineComponent, h, reactive, ref, unref } from 'vue-demi'
 import { useDraggable, UseDraggableOptions, useStorage } from '@vueuse/core'
-import { RenderableComponent } from '@vueuse/core/_types'
+import { RenderableComponent } from '../types'
 
 export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
   /**

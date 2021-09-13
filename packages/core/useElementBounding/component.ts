@@ -1,7 +1,7 @@
 import { h, ref, defineComponent, reactive } from 'vue-demi'
 import { useElementBounding } from '@vueuse/core'
 import { ResizeObserverOptions } from '../useResizeObserver'
-import { RenderableComponent } from '../_types'
+import { RenderableComponent } from '../types'
 
 export const UseElementBounding = defineComponent<ResizeObserverOptions & RenderableComponent>({
   name: 'UseElementBounding',
