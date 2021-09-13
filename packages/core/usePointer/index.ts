@@ -2,7 +2,7 @@ import { MaybeRef, objectPick, toRefs } from '@vueuse/shared'
 import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { PointerType, Position } from '../_types'
+import { PointerType, Position } from '../types'
 import { MaybeElementRef } from '../unrefElement'
 
 export interface UsePointerState extends Position {
