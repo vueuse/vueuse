@@ -55,6 +55,10 @@ const start = () => {
 }
 
 const { isListening, isSupported, stop, result } = speech
+
+const selectedLanguage = ref(lang.value)
+watch(lang, lang => isListening.value ? null : selectedLanguage.value = lang)
+watch(isListening, isListening => isListening ? null : selectedLanguage.value = lang.value)
 </script>
 
 <template>
@@ -67,7 +71,7 @@ const { isListening, isSupported, stop, result } = speech
       >more details</a>
     </div>
     <div v-else>
-      <div v-if="!isListening">
+      <div>
         <input id="en-US" v-model="lang" type="radio" value="en-US" />
         <label for="en-US">English (US)</label>
         <input id="fr" v-model="lang" type="radio" value="fr" />
@@ -82,13 +86,27 @@ const { isListening, isSupported, stop, result } = speech
         Stop
       </button>
       <div v-if="isListening" class="mt-4">
-        <note class="mb-2">
-          <b>Please say a color</b>
-        </note>
-        <note class="mb-2">
-          try: {{ sampled.join(', ') }}
-        </note>
-        <p class="tag" :style="{ background: color }">
+        <template v-if="selectedLanguage === 'en-US'">
+          <note class="mb-2">
+            <b>Please say a color</b>
+          </note>
+          <note class="mb-2">
+            try: {{ sampled.join(', ') }}
+          </note>
+        </template>
+
+        <p v-else-if="selectedLanguage === 'es'">
+          Speak some Spanish!
+        </p>
+
+        <p v-else-if="selectedLanguage === 'fr'">
+          Speak some French!
+        </p>
+
+        <p
+          class="tag"
+          :style="selectedLanguage === 'en-US' ? { background: color } : {}"
+        >
           {{ result }}
         </p>
       </div>
