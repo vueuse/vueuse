@@ -32,13 +32,6 @@ export interface UseScrollOptions {
   onStop?: () => void
 
   /**
-   * Enabled direction for scroll.
-   *
-   * @default ['x','y']
-   */
-  enabledDirection?: Array<'x'|'y'>
-
-  /**
    * Listener options for scroll event.
    *
    * @default {capture: false, passive: true}
@@ -63,7 +56,6 @@ export function useScroll(
     idle = 200,
     onStop = noop,
     onScroll = noop,
-    enabledDirection = ['x', 'y'],
     eventListenerOptions = {
       capture: false,
       passive: true,
@@ -93,19 +85,15 @@ export function useScroll(
   const onScrollHandler = (e: Event) => {
     const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
 
-    if (enabledDirection.includes('x')) {
-      const scrollLeft = eventTarget.scrollLeft
-      arrivedStatus.left = scrollLeft === 0
-      arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
-      x.value = scrollLeft
-    }
+    const scrollLeft = eventTarget.scrollLeft
+    arrivedStatus.left = scrollLeft === 0
+    arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
+    x.value = scrollLeft
 
-    if (enabledDirection.includes('y')) {
-      const scrollTop = eventTarget.scrollTop
-      arrivedStatus.top = scrollTop === 0
-      arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
-      y.value = scrollTop
-    }
+    const scrollTop = eventTarget.scrollTop
+    arrivedStatus.top = scrollTop === 0
+    arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
+    y.value = scrollTop
 
     scrolling.value = true
     finished.value = false
