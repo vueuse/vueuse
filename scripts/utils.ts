@@ -178,9 +178,9 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     if (manualImport)
       continue
 
-    let content: string
+    let imports: string[]
     if (name === 'components') {
-      content = functions
+      imports = functions
         .sort((a, b) => a.name.localeCompare(b.name))
         .flatMap((fn) => {
           const arr = []
@@ -190,23 +190,23 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
             arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
           return arr
         })
-        .join('\n')
     }
     else {
-      content = functions
+      imports = functions
         .filter(i => i.package === name)
         .map(f => f.name)
         .sort()
         .map(name => `export * from './${name}'`)
-        .join('\n')
     }
 
-    if (name === 'core')
-      content += '\nexport * from \'@vueuse/shared\''
+    if (name === 'core') {
+      imports.push(
+        'export * from \'./types\'',
+        'export * from \'@vueuse/shared\'',
+      )
+    }
 
-    content += '\n'
-
-    await fs.writeFile(join(dir, 'index.ts'), content)
+    await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
   }
 }
 
