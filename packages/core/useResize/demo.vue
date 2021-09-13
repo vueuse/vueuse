@@ -3,14 +3,13 @@ import { useToggle } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useResize } from '.'
 const element = ref<HTMLElement | null>(null)
-const [resize, toggle] = useToggle(true)
+const [isActive, toggle] = useToggle(true)
 const [blockingElement, toggleBlockingElement] = useToggle(false)
-const { width, height, isReady, direction, isResizing, onResizeStart, onResizeMove, onResizeEnd } = useResize(element, {
+const { width, height, isOverEdge, direction, isResizing, onResizeStart, onResizeMove, onResizeEnd } = useResize(element, {
   minWidth: 300,
   maxWidth: 'initial',
   minHeight: 'initial',
   maxHeight: 500,
-  resize,
   borderRadius: 8,
   // edges: ['bottom-right'],
 })
@@ -19,7 +18,7 @@ onResizeStart(({ pointer }) => {
   console.log('onResizeStart', pointer)
 })
 onResizeMove(({ pointer, newWidth, newHeight }) => {
-  if (!resize.value && element.value) {
+  if (!isActive.value && element.value) {
     element.value.style.width = `${newWidth}px`
     element.value.style.height = `${newHeight}px`
   }
@@ -31,16 +30,16 @@ onResizeEnd(({ pointer }) => {
 </script>
 
 <template>
-  <div ref="element" class="bg-gray-700 box relative" :class="[direction]">
+  <div v-if="isActive" ref="element" class="bg-gray-700 box relative" :class="[direction]">
     <p>{{ width }} x {{ height }}</p>
-    <p>isReady: {{ isReady }}</p>
+    <p>isOverEdge: {{ isOverEdge }}</p>
     <p>isResizing: {{ isResizing }}</p>
     <p>direction: {{ direction }}</p>
-    <p>resize: {{ resize }}</p>
+    <p>isActive: {{ isActive }}</p>
     <div v-if="blockingElement" class="absolute w-full h-1/2 bg-black/50 inset-0 -m-5 rounded-xl"></div>
   </div>
   <button @click="toggle()">
-    {{ resize ? 'Auto Resizing' : 'Custom Resizing' }}
+    {{ isActive ? 'Auto Resizing' : 'Custom Resizing' }}
   </button>
   <button @click="toggleBlockingElement()">
     {{ blockingElement ? 'Hide Blocking Element' : 'Show Blocking Element' }}
