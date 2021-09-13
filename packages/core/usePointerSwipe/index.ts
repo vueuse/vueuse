@@ -2,7 +2,7 @@ import { MaybeRef } from '@vueuse/shared'
 import { computed, reactive, readonly, Ref, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { SwipeDirection } from '../useSwipe/index'
-import { Position } from '../_types'
+import { Position } from '../types'
 
 export interface PointerSwipeOptions {
   /**

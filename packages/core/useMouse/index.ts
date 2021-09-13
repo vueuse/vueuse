@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { Position } from '../_types'
+import { Position } from '../types'
 
 export interface MouseOptions extends ConfigurableWindow {
   /**

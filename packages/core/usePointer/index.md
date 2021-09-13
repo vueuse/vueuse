@@ -15,8 +15,20 @@ const { x, y, pressure, pointerType } = usePointer()
 ```
 
 ## Component
+
+By default, the component will track the pointer on `window`
+
 ```html
 <UsePointer v-slot="{ x, y }">
+  x: {{ x }}
+  y: {{ y }}
+</UsePointer>
+```
+
+To track local position in the element, set `target="self"`:
+
+```html
+<UsePointer target="self" v-slot="{ x, y }">
   x: {{ x }}
   y: {{ y }}
 </UsePointer>
