@@ -30,12 +30,14 @@ onResizeEnd(({ pointer }) => {
 </script>
 
 <template>
-  <div ref="element" class="bg-gray-700 box relative" :class="[direction]">
-    <p>{{ width }} x {{ height }}</p>
-    <p>isOverEdge: {{ isOverEdge }}</p>
-    <p>isResizing: {{ isResizing }}</p>
-    <p>direction: {{ direction }}</p>
-    <p>isActive: {{ isActive }}</p>
+  <div class="relative">
+    <div ref="element" class="bg-gray-700 box" :class="[direction]">
+      <p>{{ width }} x {{ height }}</p>
+      <p>isOverEdge: {{ isOverEdge }}</p>
+      <p>isResizing: {{ isResizing }}</p>
+      <p>direction: {{ direction }}</p>
+      <p>isActive: {{ isActive }}</p>
+    </div>
     <div v-if="blockingElement" class="absolute w-full h-1/2 bg-black/50 inset-0 -m-5 rounded-xl"></div>
   </div>
   <button @click="toggle()">
