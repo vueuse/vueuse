@@ -548,7 +548,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useDebouncedRefHistory/",
       "category": "Utilities",
-      "description": "same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounse effect"
+      "description": "shorthand for `useRefHistory` with debounced filter"
     },
     {
       "name": "useDeviceMotion",
@@ -921,7 +921,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useThrottledRefHistory/",
       "category": "Utilities",
-      "description": "same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with throttle effect"
+      "description": "shorthand for `useRefHistory` with throttled filter"
     },
     {
       "name": "useTimeAgo",

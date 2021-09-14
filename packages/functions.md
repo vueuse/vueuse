@@ -128,14 +128,14 @@
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
-  - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with debounce effect
+  - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
   - [`useEventBus`](https://vueuse.org/core/useEventBus/) — a basic event bus
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value
-  - [`useThrottledRefHistory`](https://vueuse.org/core/useThrottledRefHistory/) — same as [useRefHistory](https://vueuse.org/core/useRefHistory/) but with throttle effect
+  - [`useThrottledRefHistory`](https://vueuse.org/core/useThrottledRefHistory/) — shorthand for `useRefHistory` with throttled filter
   - [`useThrottleFn`](https://vueuse.org/shared/useThrottleFn/) — throttle execution of a function
   - [`useToggle`](https://vueuse.org/shared/useToggle/) — a boolean switcher with utility functions
 
