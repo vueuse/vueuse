@@ -28,6 +28,10 @@
       "import": "./useCookies.mjs",
       "require": "./useCookies.cjs"
     },
+    "./useDrauu": {
+      "import": "./useDrauu.mjs",
+      "require": "./useDrauu.cjs"
+    },
     "./useFocusTrap": {
       "import": "./useFocusTrap.mjs",
       "require": "./useFocusTrap.cjs"
@@ -61,6 +65,7 @@
   },
   "optionalDependencies": {
     "axios": "^0.21.4",
+    "drauu": "^0.1.0",
     "focus-trap": "^6.6.1",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
