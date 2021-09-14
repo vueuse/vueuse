@@ -127,7 +127,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   function onPointerMove(evt: PointerEvent) {
-    isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value)
+    isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value!)
 
     pointer.currentX = evt.x
     pointer.currentY = evt.y
