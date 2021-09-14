@@ -57,8 +57,10 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     setSize: typeof setSize
   }>()
 
+  const isOutside = ref(false)
   const isOverEdge = ref(false)
   const isResizing = ref(false)
+  const isPathIncludesTarget = ref(false)
   const direction = ref('')
 
   const pointer = reactive({ startX: 0, startY: 0, currentX: 0, currentY: 0 })
@@ -109,11 +111,14 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     window!.document.body.style.setProperty('user-select', setTouchAction)
   }
 
-  function onPointerUp(evt: PointerEvent) {
+  async function onPointerUp(evt: PointerEvent) {
+    isOutside.value = false
+
     if (!isOverEdge.value)
       return
 
     isResizing.value = false
+
     if (evt.pointerType === 'touch')
       setCursorAndDirection('', '', '')
 
@@ -121,9 +126,14 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     evt.preventDefault()
   }
 
-  async function onPointerMove(evt: PointerEvent) {
+  function onPointerMove(evt: PointerEvent) {
+    isPathIncludesTarget.value = evt.composedPath().includes(target.value)
+
     pointer.currentX = evt.x
     pointer.currentY = evt.y
+
+    if (evt.pressure === 0)
+      handlePointer(pointer)
 
     if (!isOverEdge.value || !isResizing.value)
       return
@@ -170,17 +180,20 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       await nextTick()
     }
     if (isOverEdge.value || (isOverEdge.value && evt.pointerType === 'touch')) {
-      ({ width, height } = target.value.getBoundingClientRect())
+      ({ width, height } = target.value!.getBoundingClientRect())
       isResizing.value = true
       pointer.startY = evt.y
       pointer.startX = evt.x
       onResizeStart.trigger({ pointer: evt })
       evt.preventDefault()
     }
+    else {
+      isOutside.value = true
+    }
   }
 
   const isOnForeground = (x: number, y: number) => {
-    return window!.document.elementFromPoint(x, y) === target.value
+    return isPathIncludesTarget.value || window!.document.elementFromPoint(x, y) === target.value
   }
 
   const isEdgeActive = (edge: Edges) => {
@@ -188,10 +201,10 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   function handlePointer({ currentX, currentY }: typeof pointer) {
-    if (isResizing.value)
+    if (isResizing.value || isOutside.value)
       return
 
-    let { left, right, top, bottom } = target.value.getBoundingClientRect()
+    let { left, right, top, bottom } = target.value!.getBoundingClientRect()
 
     left += 1
     right -= 1
@@ -280,22 +293,15 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   function setSize(width: number, height: number) {
-    target.value.style.width = `${clamp(width, unref(minWidth) as number, unref(maxWidth) as number)}px`
-    target.value.style.height = `${clamp(height, unref(minHeight) as number, unref(maxHeight) as number)}px`
+    target.value!.style.width = `${clamp(width, unref(minWidth) as number, unref(maxWidth) as number)}px`
+    target.value!.style.height = `${clamp(height, unref(minHeight) as number, unref(maxHeight) as number)}px`
   }
 
   function useElementSize() {
-    let warned = false
-    const { stop } = useResizeObserver(target, ([entry]) => {
-      widthRef.value = target.value.getBoundingClientRect().width
-      heightRef.value = target.value.getBoundingClientRect().height
-
-      if (!warned && (entry.contentRect.width === widthRef.value || entry.contentRect.height === heightRef.value)) {
-        warned = true
-        console.warn('To make useResize function properly, target element must have at least 1px width padding or border.')
-      }
-    })
-    return stop
+    return useResizeObserver(target, () => {
+      widthRef.value = target.value!.getBoundingClientRect().width
+      heightRef.value = target.value!.getBoundingClientRect().height
+    }).stop
   }
 
   tryOnScopeDispose(stop)
