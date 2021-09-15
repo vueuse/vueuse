@@ -11,9 +11,10 @@ import { UseRefHistoryOptions, UseRefHistoryReturn, useRefHistory } from '../use
  */
 export function useThrottledRefHistory<Raw, Serialized = Raw>(
   source: Ref<Raw>,
-  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeRef<number> } = {},
+  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeRef<number>; trailing?: boolean } = {},
 ): UseRefHistoryReturn<Raw, Serialized> {
-  const filter = options.throttle ? throttleFilter(options.throttle) : undefined
+  const { throttle = 200, trailing = true } = options
+  const filter = throttleFilter(throttle, trailing)
   const history = useRefHistory(source, { ...options, eventFilter: filter })
 
   return {
