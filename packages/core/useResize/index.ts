@@ -177,6 +177,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     if (evt.pointerType === 'touch') {
       pointer.currentX = evt.x
       pointer.currentY = evt.y
+      isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value!)
       await nextTick()
     }
     if (isOverEdge.value || (isOverEdge.value && evt.pointerType === 'touch')) {
@@ -214,15 +215,16 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     const radius = unref(borderRadius) / 2
 
     if (
-      ((currentY - top + radius) < 8 || (currentX - left + radius) < 8)
-      && Math.abs(currentY - top) < 8 && Math.abs(currentX - left) < 8
+      ((currentY - top) < 2 || (currentX - left) < 2)
+      && Math.abs(currentY - top) < 8
+      && Math.abs(currentX - left) < 8
       && isEdgeActive('top-left')
       && isOnForeground(left + radius, top + radius)
     )
       setCursorAndDirection('nwse-resize', 'top-left')
 
     else if (
-      ((currentY - top + radius) < 8 || (currentX - right - radius) < 8)
+      ((currentY - top) < 2 || (currentX - right) > -2)
       && Math.abs(currentY - top) < 8
       && Math.abs(currentX - right) < 8
       && isEdgeActive('top-right')
@@ -231,7 +233,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('nesw-resize', 'top-right')
 
     else if (
-      ((currentY - bottom - radius) < 8 || (currentX - left + radius) < 8)
+      ((currentY - bottom) > -2 || (currentX - left) < 2)
       && Math.abs(currentY - bottom) < 8
       && Math.abs(currentX - left) < 8
       && isEdgeActive('bottom-left')
@@ -240,7 +242,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('nesw-resize', 'bottom-left')
 
     else if (
-      ((currentY - bottom - radius) < 8 || (currentX - right - radius) < 8)
+      ((currentY - bottom) > -2 || (currentX - right) > -2)
       && Math.abs(currentY - bottom) < 8
       && Math.abs(currentX - right) < 8
       && isEdgeActive('bottom-right')

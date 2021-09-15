@@ -10,7 +10,7 @@ const { width, height, isOverEdge, direction, isResizing, onResizeStart, onResiz
   maxWidth: 'initial',
   minHeight: 'initial',
   maxHeight: 500,
-  borderRadius: 8,
+  borderRadius: 4,
   // edges: ['bottom-right'],
 })
 
