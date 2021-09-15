@@ -15,6 +15,18 @@ const input = ref('')
 const throttled = useThrottle(input, 1000)
 ```
 
+### Trailing
+
+If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
+
+```js
+import { useThrottle } from '@vueuse/core'
+
+const input = ref('')
+const throttled = useThrottle(input, 1000, false)
+```
+
+
 ## Related Functions
 
 - `useThrottle`
