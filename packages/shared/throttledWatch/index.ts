@@ -6,7 +6,7 @@ export interface ThrottledWatchOptions<Immediate> extends WatchOptions<Immediate
   throttle?: MaybeRef<number>
 }
 
-// overlads
+// overloads
 export function throttledWatch<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: ThrottledWatchOptions<Immediate>): WatchStopHandle
 export function throttledWatch<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: ThrottledWatchOptions<Immediate>): WatchStopHandle
 export function throttledWatch<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: ThrottledWatchOptions<Immediate>): WatchStopHandle
@@ -15,10 +15,11 @@ export function throttledWatch<T extends object, Immediate extends Readonly<bool
 export function throttledWatch<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
-  options: ThrottledWatchOptions<Immediate> = {},
+  options: ThrottledWatchOptions<Immediate> & { trailing?: boolean } = {},
 ): WatchStopHandle {
   const {
     throttle = 0,
+    trailing = true,
     ...watchOptions
   } = options
 
@@ -27,7 +28,7 @@ export function throttledWatch<Immediate extends Readonly<boolean> = false>(
     cb,
     {
       ...watchOptions,
-      eventFilter: throttleFilter(throttle),
+      eventFilter: throttleFilter(throttle, trailing),
     },
   )
 }
