@@ -145,6 +145,7 @@
   - [`pausableWatch`](https://vueuse.org/shared/pausableWatch/) — pausable watch
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
   - [`until`](https://vueuse.org/shared/until/) — promised one-time watch for changes
+  - [`watchWithCount`](https://vueuse.org/shared/watchWithCount/) — `watch` with the number of times triggered
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
   - [`whenever`](https://vueuse.org/shared/whenever/) — shorthand for watching value to be truthy
 

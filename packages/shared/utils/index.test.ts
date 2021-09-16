@@ -1,5 +1,5 @@
 import { ref, nextTick } from 'vue-demi'
-import { increaseWithUnit, debounceFilter, throttleFilter, createFilterWrapper } from '.'
+import { increaseWithUnit, debounceFilter, throttleFilter, countFilter, createFilterWrapper } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -101,5 +101,16 @@ describe('filters', () => {
     jest.runAllTimers()
 
     expect(called).toBe(2)
+  })
+
+  it('should limit the number of times triggered', () => {
+    const spy = jest.fn()
+    const { count, filter } = countFilter(2)
+    const event = createFilterWrapper(filter, spy)
+    event()
+    event()
+    event()
+    expect(spy).toBeCalledTimes(2)
+    expect(count.value).toBe(2)
   })
 })

@@ -24,6 +24,7 @@ module.exports = {
         paths: ['vue', '@vue/composition-api'],
       },
     ],
+    'node/no-callback-literal': 'off',
   },
   overrides: [
     {
