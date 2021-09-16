@@ -85,11 +85,11 @@ export function useEventListener(...args: any[]) {
   let options: any
 
   if (isString(args[0])) {
-    [event, listener, options] = args
+    [event, listener, options = false] = args
     target = defaultWindow
   }
   else {
-    [target, event, listener, options] = args
+    [target, event, listener, options = false] = args
   }
 
   if (!target)
