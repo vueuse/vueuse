@@ -10,7 +10,7 @@ const { width, height, isOverEdge, direction, isResizing, onResizeStart, onResiz
   maxWidth: 'initial',
   minHeight: 'initial',
   maxHeight: 500,
-  borderRadius: 4,
+  borderRadius: 8,
   // edges: ['bottom-right'],
 })
 
@@ -52,7 +52,8 @@ onResizeEnd(({ pointer }) => {
 .box {
   transition: box-shadow 150ms ease-in-out;
   background: var(--code-inline-bg-color);
-  @apply relative p-5 rounded-lg;
+  border-radius: 0.5rem;
+  @apply relative p-5;
 }
 .top-left {
   box-shadow: rgb(0 114 255) 0px -2px 0px 0px,rgb(0 114 255) -2px 0px 0px 0px;

@@ -193,8 +193,18 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     }
   }
 
-  const isOnForeground = (x: number, y: number) => {
-    return isPathIncludesTarget.value || window!.document.elementFromPoint(x, y) === target.value
+  const isOnForeground = (x: number, y: number, corner = false, xReduce?: number, yReduce?: number) => {
+    const getCorner = (xA: number, yA: number) => {
+      let found = false
+      while (!found && Math.abs(xA - x) < unref(borderRadius) / 2) {
+        xA += xReduce!
+        yA += yReduce!
+        found = target.value!.contains(window!.document.elementFromPoint(xA, yA)) || window!.document.elementFromPoint(xA, yA) === target.value!
+      }
+      return found
+    }
+    const element = window!.document.elementFromPoint(x, y)
+    return isPathIncludesTarget.value || (element && target.value!.contains(element)) || (corner && getCorner(x, y))
   }
 
   const isEdgeActive = (edge: Edges) => {
@@ -212,14 +222,12 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     top += 1
     bottom -= 1
 
-    const radius = unref(borderRadius) / 2
-
     if (
       ((currentY - top) < 2 || (currentX - left) < 2)
       && Math.abs(currentY - top) < 8
       && Math.abs(currentX - left) < 8
       && isEdgeActive('top-left')
-      && isOnForeground(left + radius, top + radius)
+      && isOnForeground(left, top, true, 1, 1)
     )
       setCursorAndDirection('nwse-resize', 'top-left')
 
@@ -228,7 +236,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       && Math.abs(currentY - top) < 8
       && Math.abs(currentX - right) < 8
       && isEdgeActive('top-right')
-      && isOnForeground(right - radius, top + radius)
+      && isOnForeground(right, top, true, -1, 1)
     )
       setCursorAndDirection('nesw-resize', 'top-right')
 
@@ -237,7 +245,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       && Math.abs(currentY - bottom) < 8
       && Math.abs(currentX - left) < 8
       && isEdgeActive('bottom-left')
-      && isOnForeground(left + radius, bottom - radius)
+      && isOnForeground(left, bottom, true, 1, -1)
     )
       setCursorAndDirection('nesw-resize', 'bottom-left')
 
@@ -246,7 +254,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       && Math.abs(currentY - bottom) < 8
       && Math.abs(currentX - right) < 8
       && isEdgeActive('bottom-right')
-      && isOnForeground(right - radius, bottom - radius)
+      && isOnForeground(right, bottom, true, -1, -1)
     )
       setCursorAndDirection('nwse-resize', 'bottom-right')
 
