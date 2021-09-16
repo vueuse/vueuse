@@ -132,7 +132,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     pointer.currentX = evt.x
     pointer.currentY = evt.y
 
-    if (evt.pressure === 0)
+    if (evt.pressure === 0 && !evt.movementX && !evt.movementY)
       handlePointer(pointer)
 
     if (!isOverEdge.value || !isResizing.value)
