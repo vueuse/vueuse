@@ -99,7 +99,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
 
     recognition.onend = () => {
       isListening.value = false
-      recognition.lang = unref(lang)
+      recognition!.lang = unref(lang)
     }
 
     watch(isListening, () => {
