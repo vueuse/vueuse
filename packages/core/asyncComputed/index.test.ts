@@ -35,6 +35,28 @@ describe('asyncComputed', () => {
     expect(data.value).toBe('data')
   })
 
+  it('call onError when error is thrown', async() => {
+    let errorMessage
+    const func = jest.fn(() => Promise.reject(new Error('An Error Message')))
+
+    const data = asyncComputed(func, undefined, {
+      onError(e) {
+        if (e instanceof Error)
+          errorMessage = e.message
+      },
+    })
+
+    expect(func).toBeCalledTimes(1)
+
+    expect(data.value).toBeUndefined()
+
+    await nextTick()
+    await nextTick()
+
+    expect(data.value).toBeUndefined()
+    expect(errorMessage).toBe('An Error Message')
+  })
+
   it('is lazy if configured', async() => {
     const func = jest.fn(() => Promise.resolve('data'))
 
