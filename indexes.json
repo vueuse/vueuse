@@ -412,6 +412,13 @@
       "internal": true
     },
     {
+      "name": "watchAtMost",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/watchAtMost/",
+      "category": "Watch",
+      "description": "`watch` with the number of times triggered"
+    },
+    {
       "name": "watchWithFilter",
       "package": "shared",
       "docs": "https://vueuse.org/shared/watchWithFilter/",
