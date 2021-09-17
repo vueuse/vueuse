@@ -26,8 +26,8 @@ const data = ref({foo: 'bar'})
 const post = (url, data) => axios.post(url, data)
 const postUnrefied = unrefy(post)
 
-post(url, data)           /* ❌ Will throw an error because the argument is not a string */
-postUnrefied(url, data)   /* ✔️ Work because the arguments will be "unrefied" */
+post(url, data)           /* ❌ Will throw an error because the arguments are refs */
+postUnrefied(url, data)   /* ✔️ Will Work because the arguments will be "unrefied" */
 ```
 
 ## Related Functions
