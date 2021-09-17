@@ -2,8 +2,9 @@
 import { ref, watch } from 'vue-demi'
 import { useThrottle } from '.'
 
+const trailing = ref(true)
 const input = ref('')
-const throttled = useThrottle(input, 1000)
+const throttled = useThrottle(input, 1000, trailing.value)
 const updated = ref(0)
 
 watch(throttled, () => {
@@ -18,5 +19,6 @@ watch(throttled, () => {
 
     <p>Throttled: {{ throttled }}</p>
     <p>Times Updated: {{ updated }}</p>
+    <p>Trailing: {{ trailing }}</p>
   </div>
 </template>
