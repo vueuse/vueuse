@@ -2,7 +2,7 @@
 category: Watch
 ---
 
-# watchWithCount
+# watchAtMost
 
 `watch` with the number of times triggered.
 
@@ -11,9 +11,9 @@ category: Watch
 Similar to `watch`, but offering an extra option `max` which setup the number of times the callback function is triggered.
 
 ```ts
-import { watchWithCount } from '@vueuse/core'
+import { watchAtMost } from '@vueuse/core'
 
-watchWithCount(
+watchAtMost(
   source,
   () => { console.log('trigger!') }, // triggered it 3 times
   {

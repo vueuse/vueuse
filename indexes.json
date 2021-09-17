@@ -412,9 +412,9 @@
       "internal": true
     },
     {
-      "name": "watchWithCount",
+      "name": "watchAtMost",
       "package": "shared",
-      "docs": "https://vueuse.org/shared/watchWithCount/",
+      "docs": "https://vueuse.org/shared/watchAtMost/",
       "category": "Watch",
       "description": "`watch` with the number of times triggered"
     },

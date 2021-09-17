@@ -1,12 +1,12 @@
 import { ref, isReadonly, nextTick } from 'vue-demi'
-import { watchWithCount } from '.'
+import { watchAtMost } from '.'
 
-describe('watchWithCount', () => {
+describe('watchAtMost', () => {
   it('should work', async() => {
     const num = ref(0)
     const spy = jest.fn()
 
-    const { count } = watchWithCount(num, spy, {
+    const { count } = watchAtMost(num, spy, {
       max: 1,
     })
     num.value = 1
@@ -20,7 +20,7 @@ describe('watchWithCount', () => {
     const num = ref(0)
     const spy = jest.fn()
 
-    const { count } = watchWithCount(num, spy, {
+    const { count } = watchAtMost(num, spy, {
       max: 1,
     })
     num.value = 1
