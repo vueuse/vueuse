@@ -1,4 +1,4 @@
-import { ref, watch, reactive } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { createDrauu, Drauu, Options, Brush } from 'drauu'
 import { MaybeElementRef, unrefElement, createEventHook } from '@vueuse/core'
 import { tryOnScopeDispose, Fn } from '@vueuse/shared'
@@ -12,14 +12,17 @@ export type UseDrauuOptions = Omit<Options, 'el'>
  * @param target The target svg element
  * @param options Drauu Options
  */
-export function useDrauu(target: MaybeElementRef, options?: UseDrauuOptions) {
+export function useDrauu(
+  target: MaybeElementRef,
+  options?: UseDrauuOptions,
+) {
   const drauuInstance = ref<Drauu>()
 
   let disposables: Fn[] = []
 
   const onChangedHook = createEventHook<void>()
   const onCanceledHook = createEventHook<void>()
-  const onComittedHook = createEventHook<void>()
+  const onCommittedHook = createEventHook<void>()
   const onStartHook = createEventHook<void>()
   const onEndHook = createEventHook<void>()
   const canUndo = ref(false)
@@ -80,7 +83,7 @@ export function useDrauu(target: MaybeElementRef, options?: UseDrauuOptions) {
 
       disposables = [
         drauuInstance.value.on('canceled', () => onCanceledHook.trigger()),
-        drauuInstance.value.on('committed', () => onComittedHook.trigger()),
+        drauuInstance.value.on('committed', () => onCommittedHook.trigger()),
         drauuInstance.value.on('start', () => onStartHook.trigger()),
         drauuInstance.value.on('end', () => onEndHook.trigger()),
         drauuInstance.value.on('changed', () => {
@@ -106,7 +109,7 @@ export function useDrauu(target: MaybeElementRef, options?: UseDrauuOptions) {
     brush,
 
     onChanged: onChangedHook.on,
-    onComitted: onComittedHook.on,
+    onCommitted: onCommittedHook.on,
     onStart: onStartHook.on,
     onEnd: onEndHook.on,
     onCanceled: onCanceledHook.on,
@@ -114,22 +117,3 @@ export function useDrauu(target: MaybeElementRef, options?: UseDrauuOptions) {
 }
 
 export type UseDrauuReturn = ReturnType<typeof useDrauu>
-
-/**
- * Returns a reactive brush.
- *
- * @param options
- * @returns
- */
-export function createBrush(options: Brush) {
-  return reactive<Brush>({
-    arrowEnd: false,
-    cornerRadius: 0,
-    dasharray: undefined,
-    fill: 'transparent',
-    mode: 'draw',
-    ...options,
-  })
-}
-
-export type DrauuBrush = ReturnType<typeof createBrush>

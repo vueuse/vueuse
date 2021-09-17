@@ -1065,7 +1065,7 @@
       "package": "integrations",
       "docs": "https://vueuse.org/integrations/useDrauu/",
       "category": "@Integrations",
-      "description": "reactive instance of drauu"
+      "description": "reactive instance for [drauu](https://github.com/antfu/drauu)"
     },
     {
       "name": "useFocusTrap",
