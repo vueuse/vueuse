@@ -1,6 +1,6 @@
-import { WatchSource, WatchCallback, WatchOptions, watch } from 'vue-demi'
+import { WatchSource, WatchCallback, WatchOptions } from 'vue-demi'
 import { MapOldSources, MapSources } from '../utils'
-
+import { watchAtMost } from '../watchAtMost'
 export interface WatchOnceOptions<Immediate> extends WatchOptions<Immediate> {
 }
 
@@ -17,12 +17,8 @@ export function watchOnce<Immediate extends Readonly<boolean> = false>(
   cb: any,
   options?: WatchOnceOptions<Immediate>,
 ): void {
-  const stop = watch(
-    source,
-    (...args) => {
-      stop()
-      cb(...args)
-    },
-    options,
-  )
+  watchAtMost(source, cb, {
+    ...options,
+    count: 1,
+  })
 }
