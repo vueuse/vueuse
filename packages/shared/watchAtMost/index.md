@@ -8,16 +8,16 @@ category: Watch
 
 ## Usage
 
-Similar to `watch`, but offering an extra option `max` which setup the number of times the callback function is triggered.
+Similar to `watch` with an extra option `count` which set up the number of times the callback function is triggered. After the count is reached, the watch will be stopped automatically.
 
 ```ts
 import { watchAtMost } from '@vueuse/core'
 
 watchAtMost(
   source,
-  () => { console.log('trigger!') }, // triggered it 3 times
+  () => { console.log('trigger!') }, // triggered it at most 3 times
   {
-    max: 3, // the number of times triggered
+    count: 3, // the number of times triggered
   }
 )
 ```

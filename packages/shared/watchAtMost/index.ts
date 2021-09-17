@@ -1,39 +1,46 @@
-import { Ref, readonly, watch, WatchSource, WatchOptions, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { MapOldSources, MapSources, createFilterWrapper, countFilter } from '../utils'
+import { Ref, WatchSource, ref, unref, WatchStopHandle, WatchCallback } from 'vue-demi'
+import { MapOldSources, MapSources, MaybeRef } from '../utils'
+import { WatchWithFilterOptions, watchWithFilter } from '../watchWithFilter'
 
-export interface WatchAtMostOptions<Immediate> extends WatchOptions<Immediate> {
-  max: number
+export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Immediate> {
+  count: MaybeRef<number>
 }
 
 export interface WatchAtMostReturn {
   stop: WatchStopHandle
   count: Ref<number>
 }
+
 // overlads
-export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
 
-export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
 
-export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(sources: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(sources: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
 
 // implementation
 export function watchAtMost<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
-  options: WatchAtMostOptions<Immediate> = { max: 1 },
+  options: WatchAtMostOptions<Immediate>,
 ): WatchAtMostReturn {
   const {
-    max,
+    count,
     ...watchOptions
   } = options
-  const { count, filter } = countFilter(max)
-  const stop = watch(
+
+  const current = ref(0)
+
+  const stop = watchWithFilter(
     source,
-    createFilterWrapper(filter, (...args) => {
+    (...args) => {
+      current.value += 1
+      if (current.value >= unref(count))
+        stop()
       cb(...args)
-      count.value >= max && stop()
-    }),
+    },
     watchOptions,
   )
-  return { count: readonly(count), stop }
+
+  return { count: current, stop }
 }

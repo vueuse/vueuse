@@ -128,20 +128,3 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausab
 
   return { isActive, pause, resume, eventFilter }
 }
-
-/**
- * Create an EventFilter that limit the number of triggered
- *
- * @param max the number of times triggered
- */
-export function countFilter(max: MaybeRef<number>) {
-  const count = ref<number>(0)
-
-  const filter: EventFilter = (invoke) => {
-    if (count.value >= unref(max)) return
-    count.value++
-    invoke()
-  }
-
-  return { count, filter }
-}
