@@ -90,6 +90,7 @@
   - [`usePointer`](https://vueuse.org/core/usePointer/) — reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
+  - [`useScroll`](https://vueuse.org/core/useScroll/) — reactive scroll position and state
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
