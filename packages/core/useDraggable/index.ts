@@ -1,7 +1,6 @@
 import { Ref, ref, unref, computed } from 'vue-demi'
 import { MaybeRef, toRefs, isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { MaybeElementRef } from '../unrefElement'
 import { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
 
@@ -25,7 +24,7 @@ export interface UseDraggableOptions {
    *
    * @default window
    */
-  draggingElement?: MaybeElementRef
+  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null>
 
   /**
    * Pointer types that listen to.
@@ -56,10 +55,10 @@ export interface UseDraggableOptions {
  * Make elements draggable.
  *
  * @see https://vueuse.org/useDraggable
- * @param el
+ * @param target
  * @param options
  */
-export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions = {}) {
+export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, options: UseDraggableOptions = {}) {
   const draggingElement = options.draggingElement ?? defaultWindow
   const position: Ref<Position> = ref(options.initialValue ?? { x: 0, y: 0 })
   const pressedDelta = ref<Position>()
@@ -76,9 +75,9 @@ export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions =
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
-    if (unref(options.exact) && e.target !== el.value)
+    if (unref(options.exact) && e.target !== unref(target))
       return
-    const react = el.value!.getBoundingClientRect()
+    const react = unref(target)!.getBoundingClientRect()
     const pos = {
       x: e.pageX - react.left,
       y: e.pageY - react.top,
@@ -108,7 +107,7 @@ export function useDraggable(el: MaybeElementRef, options: UseDraggableOptions =
   }
 
   if (isClient) {
-    useEventListener(el, 'pointerdown', start, true)
+    useEventListener(target, 'pointerdown', start, true)
     useEventListener(draggingElement, 'pointermove', move, true)
     useEventListener(draggingElement, 'pointerup', end, true)
   }
