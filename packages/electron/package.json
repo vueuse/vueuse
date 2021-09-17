@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "6.3.2",
+  "version": "6.3.3",
   "description": "Electron renderer process modules for VueUse",
   "keywords": [
     "vue",
@@ -35,7 +35,7 @@
     "electron": ">=9.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.3.2",
+    "@vueuse/shared": "6.3.3",
     "vue-demi": "*"
   },
   "devDependencies": {

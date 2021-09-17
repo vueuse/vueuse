@@ -51,6 +51,18 @@ export const breakpointsAntDesign = {
 }
 
 /**
+ * Breakpoints from Quasar V2
+ *
+ * @see https://quasar.dev/style/breakpoints
+ */
+export const breakpointsQuasar = {
+  xs: 600,
+  sm: 1024,
+  md: 1440,
+  lg: 1920,
+}
+
+/**
  * Sematic Breakpoints
  */
 export const breakpointsSematic = {

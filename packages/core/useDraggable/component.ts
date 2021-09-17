@@ -1,7 +1,8 @@
 import { defineComponent, h, reactive, ref, unref } from 'vue-demi'
 import { useDraggable, UseDraggableOptions, useStorage } from '@vueuse/core'
+import { RenderableComponent } from '../types'
 
-export interface UseDraggableProps extends UseDraggableOptions {
+export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
   /**
    * When provided, use `useStorage` to preserve element's position
    */
@@ -23,6 +24,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
     'exact',
     'preventDefault',
     'pointerTypes',
+    'as',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
@@ -41,7 +43,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target, style: `touch-action:none;${data.style}` }, slots.default(data))
+        return h(props.as || 'div', { ref: target, style: `touch-action:none;${data.style}` }, slots.default(data))
     }
   },
 })

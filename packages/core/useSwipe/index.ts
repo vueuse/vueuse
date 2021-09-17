@@ -1,9 +1,8 @@
 import { noop, MaybeRef } from '@vueuse/shared'
 import { computed, reactive, ref, ComputedRef, Ref } from 'vue-demi'
-
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { Position } from '../_types'
+import { Position } from '../types'
 
 export enum SwipeDirection {
   UP = 'UP',

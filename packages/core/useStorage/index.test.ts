@@ -67,22 +67,16 @@ describe('useStorage', () => {
   it('boolean', async() => {
     localStorage.removeItem(KEY)
 
-    const instance = useSetup(() => {
-      const ref = useStorage(KEY, true, localStorage)
+    const store = useStorage(KEY, true, localStorage)
 
-      return {
-        ref,
-      }
-    })
+    expect(store.value).toBe(true)
 
-    expect(instance.ref).toBe(true)
-
-    instance.ref = false
+    store.value = false
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
 
-    instance.ref = true
+    store.value = true
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
@@ -91,54 +85,42 @@ describe('useStorage', () => {
   it('null string', () => {
     localStorage.setItem(KEY, 'null')
 
-    useSetup(() => {
-      const ref = useStorage(KEY, null)
-      const storedValue = localStorage.getItem(KEY)
+    const store = useStorage(KEY, null)
+    const storedValue = localStorage.getItem(KEY)
 
-      expect(ref.value).toBe('null')
-      expect(storedValue).toBe('null')
-    })
+    expect(store.value).toBe('null')
+    expect(storedValue).toBe('null')
   })
 
   it('null value', () => {
     localStorage.removeItem(KEY)
 
-    useSetup(() => {
-      const ref = useStorage(KEY, null)
-      const storedValue = localStorage.getItem(KEY)
+    const store = useStorage(KEY, null)
+    const storedValue = localStorage.getItem(KEY)
 
-      expect(ref.value).toBe(null)
-      expect(storedValue).toBeFalsy()
-    })
+    expect(store.value).toBe(null)
+    expect(storedValue).toBeFalsy()
   })
 
-  it('remove value', () => {
+  it('remove value', async() => {
     localStorage.setItem(KEY, 'null')
 
-    useSetup(() => {
-      const ref = useStorage(KEY, null)
-      ref.value = null
-      const storedValue = localStorage.getItem(KEY)
+    const store = useStorage(KEY, null)
+    store.value = null
 
-      expect(ref.value).toBe(null)
-      expect(storedValue).toBeFalsy()
-    })
+    await nextTick()
+
+    expect(store.value).toBe(null)
+    expect(localStorage.getItem(KEY)).toBeFalsy()
   })
 
   it('string', async() => {
     localStorage.setItem(KEY, '0')
 
-    const instance = useSetup(() => {
-      const ref = useStorage(KEY, '1', localStorage)
+    const store = useStorage(KEY, '1', localStorage)
+    expect(store.value).toBe('0')
 
-      expect(ref.value).toBe('0')
-
-      return {
-        ref,
-      }
-    })
-
-    instance.ref = '2'
+    store.value = '2'
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2')
@@ -147,29 +129,29 @@ describe('useStorage', () => {
   it('object', async() => {
     expect(localStorage.getItem(KEY)).toEqual(undefined)
 
-    const ref = useStorage(KEY, {
+    const store = useStorage(KEY, {
       name: 'a',
       data: 123,
     })
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    expect(ref.value).toEqual({
+    expect(store.value).toEqual({
       name: 'a',
       data: 123,
     })
 
-    ref.value.name = 'b'
+    store.value.name = 'b'
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    ref.value.data = 321
+    store.value.data = 321
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-    ref.value = null
+    store.value = null
     await nextTick()
 
     expect(localStorage.removeItem).toBeCalledWith(KEY)
