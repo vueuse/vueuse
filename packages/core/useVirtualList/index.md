@@ -4,7 +4,7 @@ category: Sensors
 
 # useVirtualList
 
-Virtual list migrating from ahooks to Composition API.
+Composable virtual list. It allows you to display a large list of items while only rendering visible ones on the screen.
 
 ## Usage
 
@@ -21,16 +21,10 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ```html
 <template>
-  <div
-    v-bind="containerProps"
-    style="height: 300px;"
-  >
+  <div v-bind="containerProps" style="height: 300px">
     <div v-bind="wrapperProps">
-      <div
-        v-for="ele in list"
-        :key="ele.index"
-      >
-        Row: {{ ele.data }}
+      <div v-for="item in list" :key="item.index">
+        Row: {{ item.data }}
       </div>
     </div>
   </div>
@@ -40,47 +34,10 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 ## Component
 
 ```html
-<virtual-list :list="list" :options="options" height="300px">
-  <template #default="props">
-    <!-- you can get current item of list at here -->
-    Row: {{ props.data }}
+<UseVirtualList :list="list" :options="options" height="300px">
+  <template #="props">
+    <!-- you can get current item of list here -->
+    Row {{ props.data }}
   </template>
-</virtual-list>
-```
-
-## Type Declarations
-
-```typescript
-export interface UseVirtualListOptions {
-  /**
-   * item height, accept a pixel value or a function that returns the height
-   *
-   * @default 0
-   */
-  itemHeight: number | ((index: number) => number)
-  /**
-   * the extra buffer items outside of the view area
-   *
-   * @default 5
-   */
-  overscan?: number
-}
-
-
-export declare function useVirtualList<T = any>(list: T[], options: UseVirtualListOptions): {
-  list: Ref<any>
-  scrollTo: (index: number) => void
-  containerProps: {
-    ref: Ref<any>
-    onScroll: () => void
-    style: Partial<CSSStyleDeclaration>
-  }
-  wrapperProps: ComputedRef<{
-    style: {
-      width: string
-      height: string
-      marginTop: string
-    }
-  }>
-}
+</UseVirtualList>
 ```

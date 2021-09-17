@@ -13,44 +13,31 @@ const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
 const handleScrollTo = () => {
   scrollTo(index.value)
 }
-
 </script>
+
 <template>
   <div>
-    <div
-      style="margin-bottom: 16px"
-    >
-      <input
-        v-model="index"
-        placeholder="line number"
-        type="number"
-        style="height: 34px;"
-      />
-      <button
-        type="button"
-        @click="handleScrollTo"
-      >
-        scroll to
+    <div class="mb-4 flex gap-2">
+      <input v-model="index" placeholder="Index" type="number" />
+      <button type="button" @click="handleScrollTo">
+        Go
       </button>
     </div>
-    <div
-      v-bind="containerProps"
-      style="height: 300px; overflow: auto; box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);"
-    >
+    <div v-bind="containerProps" class="h-300px overflow-auto p-2 bg-gray-500/5 rounded">
       <div v-bind="wrapperProps">
         <div
           v-for="ele in list"
           :key="ele.index"
+          class="border border-$c-divider mb-2"
           :style="{
             height: ele.index % 2 === 0 ? '42px' : '84px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            border: '1px solid #e8e8e8',
-            marginBottom: '8px',
           }"
         >
-          Row: {{ ele.data }} size: {{ ele.index % 2 === 0 ? 'small' : 'large' }}
+          Row {{ ele.data }}
+          <span opacity="70" m="l-1">({{ ele.index % 2 === 0 ? 'small' : 'large' }})</span>
         </div>
       </div>
     </div>
