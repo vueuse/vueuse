@@ -1,6 +1,5 @@
 import { ref, reactive } from 'vue-demi'
-import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
-import { MaybeElementRef } from '../unrefElement'
+import { useThrottleFn, useDebounceFn, noop, MaybeRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -43,12 +42,12 @@ export interface UseScrollOptions {
  * Reactive scroll.
  *
  * @see https://vueuse.org/useScroll
- * @param {MaybeElementRef} element
- * @param {UseScrollOptions} [options={}]
+ * @param element
+ * @param options
  */
 
 export function useScroll(
-  element: MaybeElementRef,
+  element: MaybeRef<HTMLElement | SVGElement | Window | Document>,
   options: UseScrollOptions = {},
 ) {
   const {
