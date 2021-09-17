@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Component
 ---
 
 # useVirtualList
