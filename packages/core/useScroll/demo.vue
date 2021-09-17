@@ -1,55 +1,56 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
-const scrollRef = ref<HTMLElement | null>(null)
-const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
-const { left, right, top, bottom } = toRefs(arrivedStatus)
+
+const el = ref<HTMLElement | null>(null)
+const { x, y, isScrolling, arrivedState } = useScroll(el)
+const { left, right, top, bottom } = toRefs(arrivedState)
 </script>
 
 <template>
-  <header class="w-520px p-5px mb-20 border border-red-400">
-    <div clss="mb-10">
-      <span class="inline-block w-125px">Position:</span>
-      <span class="pr-2">X : <b class="text-blue-500">{{ x }}</b></span>
-      <span class="pr-2">Y : <b class="text-blue-500">{{ y }}</b></span>
+  <div class="flex">
+    <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
+      <div class="w-500px h-400px relative">
+        <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
+          TopLeft
+        </div>
+        <div position="absolute left-0 bottom-0" bg="gray-500/5" p="x-2 y-1">
+          BottomLeft
+        </div>
+        <div position="absolute right-0 top-0" bg="gray-500/5" p="x-2 y-1">
+          TopRight
+        </div>
+        <div position="absolute right-0 bottom-0" bg="gray-500/5" p="x-2 y-1">
+          BottomRight
+        </div>
+        <div position="absolute left-1/3 top-1/3" bg="gray-500/5" p="x-2 y-1">
+          Scroll Me
+        </div>
+      </div>
     </div>
-    <div clss="mb-10">
-      <span class="inline-block w-125px">ScrollingStatus:</span>
-      <span class="pr-2 text-blue-500"><b class="text-blue-500">{{ scrolling }}</b></span>
+    <div class="m-auto w-280px px-6 py-4 mb-20 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
+      <span text="right" opacity="75">Position</span>
+      <div class="text-primary">
+        {{ x }}, {{ y }}
+      </div>
+      <span text="right" opacity="75">isScrolling</span>
+      <BooleanDisplay :value="isScrolling" />
+      <div text="right" opacity="75">
+        Top Arrived
+      </div>
+      <BooleanDisplay :value="top" />
+      <div text="right" opacity="75">
+        Right Arrived
+      </div>
+      <BooleanDisplay :value="right" />
+      <div text="right" opacity="75">
+        Bottom Arrived
+      </div>
+      <BooleanDisplay :value="bottom" />
+      <div text="right" opacity="75">
+        Left Arrived
+      </div>
+      <BooleanDisplay :value="left" />
     </div>
-    <div clss="mb-10">
-      <span class="inline-block w-125px">FinishedStatus:</span>
-      <span class="pr-2 text-blue-500"><b class="text-blue-500">{{ finished }}</b></span>
-    </div>
-    <div clss="mb-10">
-      <span class="inline-block w-125px">ArrivedStatus:</span>
-      <span class="pr-2">Left : <b class="text-blue-500">{{ left }}</b></span>
-      <span class="pr-2">Right : <b class="text-blue-500">{{ right }}</b></span>
-      <span class="pr-2">Top : <b class="text-blue-500">{{ top }}</b></span>
-      <span class="pr-2">Bottom : <b class="text-blue-500">{{ bottom }}</b></span>
-    </div>
-  </header>
-  <ul ref="scrollRef" class="scroller">
-    <li>VueUse</li>
-    <li>Vue</li>
-    <li>Vite</li>
-    <li>VueCompositionAPI</li>
-    <li>Awesome</li>
-  </ul>
+  </div>
 </template>
-
-<style scoped>
-.scroller {
-  width: 500px;
-  height: 300px;
-  overflow:scroll;
-}
-li{
-  list-style: none;
-  width: 600px;
-  height: 100px;
-  text-indent: 200px;
-  font-size: 16px;
-  color:#ff8000;
-}
-</style>

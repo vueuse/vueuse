@@ -8,17 +8,15 @@ Reactive scroll position and state
 
 ## Usage
 
-```html {16-20}
-<template>
-  <ul ref="scrollRef"">
-  </ul>
-</template>
+```html
+<script setup lang="ts">
+import { useScroll } from '@vueuse/core'
 
-<script setup>
-  import { useScroll } from '@vueuse/core'
-	
-  const scrollRef = ref<HTMLElement | null>(null)
-	
-  const { x, y, scrolling, finished, arrivedStatus } = useScroll(scrollRef)
+const el = ref<HTMLElement | null>(null)
+const { x, y, isScrolling, arrivedState } = useScroll(el)
 </script>
+
+<template>
+  <div ref="el"></div>
+</template>
 ```

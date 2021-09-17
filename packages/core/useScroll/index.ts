@@ -65,51 +65,54 @@ export function useScroll(
 
   const x = ref(0)
   const y = ref(0)
-  const scrolling = ref(false)
-  const finished = ref(false)
-  const arrivedStatus = reactive({
+  const isScrolling = ref(false)
+  const arrivedState = reactive({
     left: true,
     right: false,
     top: true,
     bottom: false,
   })
 
-  if (!element) return { x, y, scrolling, finished, arrivedStatus }
+  if (element) {
+    const onScrollEnd = useDebounceFn(() => {
+      isScrolling.value = false
+      onStop()
+    }, throttle + idle)
 
-  const onScrollEnd = useDebounceFn(() => {
-    scrolling.value = false
-    finished.value = true
-    onStop()
-  }, throttle + idle)
+    const onScrollHandler = (e: Event) => {
+      const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
 
-  const onScrollHandler = (e: Event) => {
-    const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
+      const scrollLeft = eventTarget.scrollLeft
+      arrivedState.left = scrollLeft <= 0
+      arrivedState.right = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth
+      x.value = scrollLeft
 
-    const scrollLeft = eventTarget.scrollLeft
-    arrivedStatus.left = scrollLeft === 0
-    arrivedStatus.right = scrollLeft + eventTarget.clientWidth === eventTarget.scrollWidth
-    x.value = scrollLeft
+      const scrollTop = eventTarget.scrollTop
+      arrivedState.top = scrollTop <= 0
+      arrivedState.bottom = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight
+      y.value = scrollTop
 
-    const scrollTop = eventTarget.scrollTop
-    arrivedStatus.top = scrollTop === 0
-    arrivedStatus.bottom = scrollTop + eventTarget.clientHeight === eventTarget.scrollHeight
-    y.value = scrollTop
+      isScrolling.value = true
+      onScrollEnd()
+      onScroll()
+    }
 
-    scrolling.value = true
-    finished.value = false
-    onScrollEnd()
-    onScroll()
+    useEventListener(
+      element,
+      'scroll',
+      throttle
+        ? useThrottleFn(onScrollHandler, throttle)
+        : onScrollHandler,
+      eventListenerOptions,
+    )
   }
 
-  useEventListener(
-    element,
-    'scroll',
-    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler
-    ,
-    eventListenerOptions,
-  )
-
-  return { x, y, scrolling, finished, arrivedStatus }
+  return {
+    x,
+    y,
+    isScrolling,
+    arrivedState,
+  }
 }
 
 export type UseScrollReturn = ReturnType<typeof useScroll>
