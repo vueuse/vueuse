@@ -105,6 +105,18 @@
     background: var(--c-bg);
     color: var(--c-text);
   }
+  input[type='number'] {
+    display: block;
+    min-width: 15rem;
+    font-size: 1.05rem;
+    padding: 0.5em 1em 0.4em 1em;
+    border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    outline: none;
+    background: var(--c-bg);
+    color: var(--c-text);
+  }
 
   input:focus {
     border: 1px solid var(--c-divider-dark);

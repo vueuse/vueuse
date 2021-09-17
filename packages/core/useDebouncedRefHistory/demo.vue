@@ -9,7 +9,9 @@ const format = (ts: number) => dayjs(ts).format()
 const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()
-const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(count, { capacity: 10, debounce: delay })
+const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(
+  count, { capacity: 10, debounce: delay },
+)
 </script>
 
 <template>
@@ -27,6 +29,7 @@ const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(count, 
   <button :disabled="!canRedo" @click="redo()">
     Redo
   </button>
+  <br />
   <span>Delay (in ms):</span>
   <input v-model="delay" type="number" />
   <br>
