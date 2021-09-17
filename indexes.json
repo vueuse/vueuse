@@ -996,6 +996,14 @@
       "description": "shorthand for props v-model binding"
     },
     {
+      "name": "useVirtualList",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useVirtualList/",
+      "category": "Sensors",
+      "description": "virtual list migrating from ahooks to Composition API"
+    },
+    {
       "name": "useWakeLock",
       "package": "core",
       "docs": "https://vueuse.org/core/useWakeLock/",

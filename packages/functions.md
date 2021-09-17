@@ -94,6 +94,7 @@
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
+  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — virtual list migrating from ahooks to Composition API
   - [`useWindowFocus`](https://vueuse.org/core/useWindowFocus/) — reactively track window focus with `window.onfocus` and `window.onblur` events
   - [`useWindowScroll`](https://vueuse.org/core/useWindowScroll/) — reactive window scroll
   - [`useWindowSize`](https://vueuse.org/core/useWindowSize/) — reactive window size
