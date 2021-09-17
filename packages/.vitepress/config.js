@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // @ts-check
 require('esbuild-register')
 const indexes = require('../../indexes.json')

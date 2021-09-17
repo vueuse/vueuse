@@ -28,21 +28,3 @@ Usage:
 let { foo, bar } = obj
 let [ foo, bar ] = obj
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function makeDestructurable<
-  T extends Record<string, unknown>,
-  A extends readonly any[]
->(obj: T, arr: A): T & A
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/makeDestructurable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/makeDestructurable/index.md)
-
-
-<!--FOOTER_ENDS-->

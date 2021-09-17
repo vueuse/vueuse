@@ -33,27 +33,3 @@ source.value = 'bar'
 
 console.log(computedRef.value) // 1
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Explicitly define the deps of computed.
- *
- * @param source
- * @param fn
- */
-export declare function controlledComputed<T, S>(
-  source: WatchSource<S>,
-  fn: () => T
-): ComputedRef<T>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/controlledComputed/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/controlledComputed/index.md)
-
-
-<!--FOOTER_ENDS-->

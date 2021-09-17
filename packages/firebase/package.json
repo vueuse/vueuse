@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "6.0.0",
+  "version": "6.4.0",
   "description": "Enables realtime bindings for Firebase",
   "keywords": [
     "vue",
@@ -18,26 +18,26 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "exports": {
     ".": {
-      "import": "./index.esm.js",
-      "require": "./index.cjs.js"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*",
     "./useAuth": {
-      "import": "./useAuth.esm.js",
-      "require": "./useAuth.cjs.js"
+      "import": "./useAuth.mjs",
+      "require": "./useAuth.cjs"
     },
     "./useFirestore": {
-      "import": "./useFirestore.esm.js",
-      "require": "./useFirestore.cjs.js"
+      "import": "./useFirestore.mjs",
+      "require": "./useFirestore.cjs"
     },
     "./useRTDB": {
-      "import": "./useRTDB.esm.js",
-      "require": "./useRTDB.cjs.js"
+      "import": "./useRTDB.mjs",
+      "require": "./useRTDB.cjs"
     }
   },
-  "main": "./index.cjs.js",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
-  "module": "./index.esm.js",
+  "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
@@ -49,7 +49,7 @@
     "firebase": ">=4.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.0.0",
+    "@vueuse/shared": "6.4.0",
     "vue-demi": "*"
   }
 }

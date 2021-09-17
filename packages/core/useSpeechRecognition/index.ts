@@ -1,9 +1,10 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import { tryOnScopeDispose } from '@vueuse/shared'
-import { Ref, ref, watch, shallowRef } from 'vue-demi'
+import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
+import { Ref, ref, watch, shallowRef, unref } from 'vue-demi'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { SpeechRecognitionErrorEvent, SpeechRecognition } from './types'
 
 export interface SpeechRecognitionOptions extends ConfigurableWindow {
   /**
@@ -23,7 +24,7 @@ export interface SpeechRecognitionOptions extends ConfigurableWindow {
    *
    * @default 'en-US'
    */
-  lang?: string
+  lang?: MaybeRef<string>
 }
 
 /**
@@ -35,12 +36,12 @@ export interface SpeechRecognitionOptions extends ConfigurableWindow {
  */
 export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   const {
-    lang = 'en-US',
     interimResults = true,
     continuous = true,
     window = defaultWindow,
   } = options
 
+  const lang = ref(options.lang || 'en-US')
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')
@@ -68,11 +69,16 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
 
     recognition.continuous = continuous
     recognition.interimResults = interimResults
-    recognition.lang = lang
+    recognition.lang = unref(lang)
 
     recognition.onstart = () => {
       isFinal.value = false
     }
+
+    watch(lang, (lang) => {
+      if (recognition && !isListening.value)
+        recognition.lang = lang
+    })
 
     recognition.onresult = (event) => {
       const transcript = Array.from(event.results)
@@ -93,6 +99,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
 
     recognition.onend = () => {
       isListening.value = false
+      recognition!.lang = unref(lang)
     }
 
     watch(isListening, () => {

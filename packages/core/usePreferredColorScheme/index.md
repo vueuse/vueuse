@@ -23,26 +23,3 @@ const preferredColor = usePreferredColorScheme()
 ```
 
 <LearnMoreComponents />
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare type ColorSchemeType = "dark" | "light" | "no-preference"
-/**
- * Reactive prefers-color-scheme media query.
- *
- * @see https://vueuse.org/usePreferredColorScheme
- * @param [options]
- */
-export declare function usePreferredColorScheme(
-  options?: ConfigurableWindow
-): ComputedRef<ColorSchemeType>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredColorScheme/index.md)
-
-
-<!--FOOTER_ENDS-->

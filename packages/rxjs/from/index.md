@@ -28,24 +28,3 @@ useSubscription(
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 )
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function from<T>(
-  value: ObservableInput<T> | Ref<T>
-): Observable<T>
-export declare function fromEvent<T extends HTMLElement>(
-  value: Ref<T>,
-  event: string
-): Observable<Event>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/from/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/from/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -4,6 +4,7 @@
     "eslint-plugin-markdown",
     "rxjs",
     "electron",
+    "firebase",
     "vue-demi"
   ]
 }

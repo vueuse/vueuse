@@ -1,4 +1,4 @@
-import { JwtHeader, JwtPayload } from 'jwt-decode'
+import type { JwtHeader, JwtPayload } from 'jwt-decode'
 import { ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useJwt } from '.'

@@ -67,26 +67,3 @@ whenever(
   { flush: 'sync' }
 )
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Shorthand for watching value to be truthy
- *
- * @see https://vueuse.js.org/whenever
- */
-export declare function whenever<T>(
-  source: WatchSource<T>,
-  cb: WatchCallback,
-  options?: WatchOptions
-): WatchStopHandle
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/whenever/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/whenever/index.md)
-
-
-<!--FOOTER_ENDS-->

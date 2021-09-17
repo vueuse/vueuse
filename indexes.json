@@ -183,6 +183,13 @@
       "description": "debounced watch"
     },
     {
+      "name": "eagerComputed",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/eagerComputed/",
+      "category": "Utilities",
+      "description": "eager computed without lazy evaluation"
+    },
+    {
       "name": "extendRef",
       "package": "shared",
       "docs": "https://vueuse.org/shared/extendRef/",
@@ -286,6 +293,13 @@
       "docs": "https://vueuse.org/shared/toRefs/",
       "category": "Utilities",
       "description": "extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object"
+    },
+    {
+      "name": "tryOnBeforeUnmount",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/tryOnBeforeUnmount/",
+      "category": "Component",
+      "description": "safe `onBeforeUnmount`"
     },
     {
       "name": "tryOnMounted",
@@ -396,6 +410,13 @@
       "name": "utils",
       "package": "shared",
       "internal": true
+    },
+    {
+      "name": "watchAtMost",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/watchAtMost/",
+      "category": "Watch",
+      "description": "`watch` with the number of times triggered"
     },
     {
       "name": "watchWithFilter",
@@ -530,6 +551,13 @@
       "description": "reactive dark mode with auto data persistence"
     },
     {
+      "name": "useDebouncedRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useDebouncedRefHistory/",
+      "category": "Utilities",
+      "description": "shorthand for `useRefHistory` with debounced filter"
+    },
+    {
       "name": "useDeviceMotion",
       "package": "core",
       "component": true,
@@ -568,6 +596,14 @@
       "docs": "https://vueuse.org/core/useDocumentVisibility/",
       "category": "Sensors",
       "description": "reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)"
+    },
+    {
+      "name": "useDraggable",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useDraggable/",
+      "category": "Sensors",
+      "description": "make elements draggable"
     },
     {
       "name": "useElementBounding",
@@ -658,6 +694,13 @@
       "docs": "https://vueuse.org/core/useIntersectionObserver/",
       "category": "Sensors",
       "description": "detects that a target element's visibility"
+    },
+    {
+      "name": "useKeyModifier",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useKeyModifier/",
+      "category": "Sensors",
+      "description": "reactive [Modifier State](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState)"
     },
     {
       "name": "useLocalStorage",
@@ -772,6 +815,14 @@
       "description": "reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)"
     },
     {
+      "name": "usePointer",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/usePointer/",
+      "category": "Sensors",
+      "description": "reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)"
+    },
+    {
       "name": "usePointerSwipe",
       "package": "core",
       "docs": "https://vueuse.org/core/usePointerSwipe/",
@@ -831,6 +882,13 @@
       "description": "script tag injecting"
     },
     {
+      "name": "useScroll",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useScroll/",
+      "category": "Sensors",
+      "description": "reactive scroll position and state"
+    },
+    {
       "name": "useSessionStorage",
       "package": "core",
       "docs": "https://vueuse.org/core/useSessionStorage/",
@@ -871,6 +929,13 @@
       "docs": "https://vueuse.org/core/useTemplateRefsList/",
       "category": "Component",
       "description": "shorthand for binding refs to template elements and components inside `v-for`"
+    },
+    {
+      "name": "useThrottledRefHistory",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useThrottledRefHistory/",
+      "category": "Utilities",
+      "description": "shorthand for `useRefHistory` with throttled filter"
     },
     {
       "name": "useTimeAgo",
@@ -929,6 +994,21 @@
       "docs": "https://vueuse.org/core/useVModels/",
       "category": "Component",
       "description": "shorthand for props v-model binding"
+    },
+    {
+      "name": "useVirtualList",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useVirtualList/",
+      "category": "Component",
+      "description": "composable virtual list"
+    },
+    {
+      "name": "useWakeLock",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useWakeLock/",
+      "category": "Browser",
+      "description": "reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running"
     },
     {
       "name": "useWebSocket",
@@ -1001,6 +1081,13 @@
       "docs": "https://vueuse.org/integrations/useCookies/",
       "category": "@Integrations",
       "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
+    },
+    {
+      "name": "useDrauu",
+      "package": "integrations",
+      "docs": "https://vueuse.org/integrations/useDrauu/",
+      "category": "@Integrations",
+      "description": "reactive instance for [drauu](https://github.com/antfu/drauu)"
     },
     {
       "name": "useFocusTrap",

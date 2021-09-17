@@ -2,6 +2,7 @@ import { MaybeRef } from '@vueuse/shared'
 import { computed, reactive, readonly, Ref, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { SwipeDirection } from '../useSwipe/index'
+import { Position } from '../types'
 
 export interface PointerSwipeOptions {
   /**
@@ -25,16 +26,11 @@ export interface PointerSwipeOptions {
   onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
 }
 
-export interface PointerPosition {
-  x: number
-  y: number
-}
-
 export interface PointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
   direction: Readonly<Ref<SwipeDirection | null>>
-  readonly posStart: PointerPosition
-  readonly posEnd: PointerPosition
+  readonly posStart: Position
+  readonly posEnd: Position
   distanceX: Readonly<Ref<number>>
   distanceY: Readonly<Ref<number>>
   stop: () => void
@@ -59,13 +55,13 @@ export function usePointerSwipe(
     onSwipeStart,
   } = options
 
-  const posStart = reactive<PointerPosition>({ x: 0, y: 0 })
+  const posStart = reactive<Position>({ x: 0, y: 0 })
   const updatePosStart = (x: number, y: number) => {
     posStart.x = x
     posStart.y = y
   }
 
-  const posEnd = reactive({ x: 0, y: 0 })
+  const posEnd = reactive<Position>({ x: 0, y: 0 })
   const updatePosEnd = (x: number, y: number) => {
     posEnd.x = x
     posEnd.y = y

@@ -28,39 +28,3 @@ const { data, post, terminate } = useWebWorker('/path/to/worker.js')
 | --------- | --------------------- | -------------------------------- |
 | post      | `(data: any) => void` | Sends data to the worker thread. |
 | terminate | `() => void`          | Stops and terminates the worker. |
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Simple Web Workers registration and communication.
- *
- * @see https://vueuse.org/useWebWorker
- * @param url
- * @param workerOptions
- * @param options
- */
-export declare function useWebWorker(
-  url: string,
-  workerOptions?: WorkerOptions,
-  options?: ConfigurableWindow
-): {
-  data: Ref<any>
-  post: {
-    (message: any, transfer: Transferable[]): void
-    (message: any, options?: PostMessageOptions | undefined): void
-  }
-  terminate: () => void
-  worker: Ref<Worker | undefined>
-}
-export declare type UseWebWorkerReturn = ReturnType<typeof useWebWorker>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebWorker/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useWebWorker/index.md)
-
-
-<!--FOOTER_ENDS-->

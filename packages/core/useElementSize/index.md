@@ -45,38 +45,3 @@ export default {
 ```
 
 <LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface ElementSize {
-  width: number
-  height: number
-}
-/**
- * Reactive size of an HTML element.
- *
- * @see https://vueuse.org/useElementSize
- * @param target
- * @param callback
- * @param options
- */
-export declare function useElementSize(
-  target: MaybeElementRef,
-  initialSize?: ElementSize,
-  options?: ResizeObserverOptions
-): {
-  width: Ref<number>
-  height: Ref<number>
-}
-export declare type UseElementSizeReturn = ReturnType<typeof useElementSize>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/index.md)
-
-
-<!--FOOTER_ENDS-->

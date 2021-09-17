@@ -1,4 +1,4 @@
-import { EventBusEvents, EventBusIdentifer } from '.'
+import { EventBusEvents, EventBusIdentifier } from '.'
 
 /* #__PURE__ */
-export const events = new Map<EventBusIdentifer<any>, EventBusEvents<any>>()
+export const events = new Map<EventBusIdentifier<any>, EventBusEvents<any>>()

@@ -87,18 +87,18 @@ describe('useVModel', () => {
     const props = {
       ...defaultProps(),
       data: {
-        hobbys: ['coding'],
+        hobbies: ['coding'],
       },
     }
     useSetup(() => {
       const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
-      data.value.hobbys.push('basketball')
+      data.value.hobbies.push('basketball')
     })
 
     await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
     expect(emitMock).toHaveBeenCalledTimes(1)
-    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbys: ['coding', 'basketball'] }))
+    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbies: ['coding', 'basketball'] }))
   })
 })

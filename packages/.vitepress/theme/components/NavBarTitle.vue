@@ -5,7 +5,7 @@ const { site, theme, localePath } = useData()
 
 <template>
   <a
-    class="nav-bar-title"
+    class="nav-bar-title whitespace-nowrap"
     :href="localePath"
     :aria-label="`${site.title}, back to home`"
   >
@@ -31,8 +31,8 @@ const { site, theme, localePath } = useData()
 }
 
 .logo {
-  margin-right: 0.75rem;
-  height: 1.3rem;
-  vertical-align: bottom;
+  margin-right: 0.4rem;
+  height: 1.5rem;
+  vertical-align: middle;
 }
 </style>

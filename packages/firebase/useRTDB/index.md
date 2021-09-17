@@ -43,37 +43,5 @@ export const useTodos = createGlobalState(
 // app.js
 import { useTodos } from './store'
 
-new Vue({
-  setup() {
-    const todos = useTodos()
-    return { todos }
-  },
-})
+const todos = useTodos()
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface RTDBOptions {
-  autoDispose?: boolean
-}
-/**
- * Reactive Firebase Realtime Database binding.
- *
- * @param docRef
- * @param options
- */
-export declare function useRTDB<T = any>(
-  docRef: firebase.database.Reference,
-  options?: RTDBOptions
-): Ref<T | undefined>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "6.0.0",
+  "version": "6.4.0",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -16,38 +16,42 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "exports": {
     ".": {
-      "import": "./index.esm.js",
-      "require": "./index.cjs.js"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*",
     "./useAxios": {
-      "import": "./useAxios.esm.js",
-      "require": "./useAxios.cjs.js"
+      "import": "./useAxios.mjs",
+      "require": "./useAxios.cjs"
     },
     "./useCookies": {
-      "import": "./useCookies.esm.js",
-      "require": "./useCookies.cjs.js"
+      "import": "./useCookies.mjs",
+      "require": "./useCookies.cjs"
+    },
+    "./useDrauu": {
+      "import": "./useDrauu.mjs",
+      "require": "./useDrauu.cjs"
     },
     "./useFocusTrap": {
-      "import": "./useFocusTrap.esm.js",
-      "require": "./useFocusTrap.cjs.js"
+      "import": "./useFocusTrap.mjs",
+      "require": "./useFocusTrap.cjs"
     },
     "./useJwt": {
-      "import": "./useJwt.esm.js",
-      "require": "./useJwt.cjs.js"
+      "import": "./useJwt.mjs",
+      "require": "./useJwt.cjs"
     },
     "./useNProgress": {
-      "import": "./useNProgress.esm.js",
-      "require": "./useNProgress.cjs.js"
+      "import": "./useNProgress.mjs",
+      "require": "./useNProgress.cjs"
     },
     "./useQRCode": {
-      "import": "./useQRCode.esm.js",
-      "require": "./useQRCode.cjs.js"
+      "import": "./useQRCode.mjs",
+      "require": "./useQRCode.cjs"
     }
   },
-  "main": "./index.cjs.js",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
-  "module": "./index.esm.js",
+  "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
@@ -56,12 +60,13 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "6.0.0",
+    "@vueuse/shared": "6.4.0",
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.21.1",
-    "focus-trap": "^6.6.0",
+    "axios": "^0.21.4",
+    "drauu": "^0.1.0",
+    "focus-trap": "^6.6.1",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.4",

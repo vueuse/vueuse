@@ -5,8 +5,10 @@ import { events } from './internal'
 export type EventBusListener<T = unknown> = (event: T) => void
 export type EventBusEvents<T> = EventBusListener<T>[]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
-export type EventBusIdentifer<T = unknown> = EventBusKey<T> | string | number
+
+export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
 
 export interface UseEventBusReturn<T> {
   /**
@@ -15,6 +17,12 @@ export interface UseEventBusReturn<T> {
    * @returns a stop function to remove the current callback.
    */
   on: (listener: EventBusListener<T>) => Fn
+  /**
+   * Similar to `on`, but only fires once
+   * @param listener watch listener.
+   * @returns a stop function to remove the current callback.
+   */
+  once: (listener: EventBusListener<T>) => Fn
   /**
    * Emit an event, the corresponding event listeners will execute.
    * @param event data sent.
@@ -31,7 +39,7 @@ export interface UseEventBusReturn<T> {
   reset: () => void
 }
 
-export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBusReturn<T> {
+export function useEventBus<T = unknown>(key: EventBusIdentifier<T>): UseEventBusReturn<T> {
   const scope = getCurrentScope()
 
   function on(listener: EventBusListener<T>) {
@@ -43,6 +51,15 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     // auto unsubscribe when scope get disposed
     scope?.cleanups.push(_off)
     return _off
+  }
+
+  function once(listener: EventBusListener<T>) {
+    function _listener(...args: any[]) {
+      off(_listener)
+      // @ts-expect-error
+      listener(...args)
+    }
+    return on(_listener)
   }
 
   function off(listener: EventBusListener<T>): void {
@@ -65,5 +82,5 @@ export function useEventBus<T = unknown>(key: EventBusIdentifer<T>): UseEventBus
     events.get(key)?.forEach(v => v(event))
   }
 
-  return { on, off, emit, reset }
+  return { on, once, off, emit, reset }
 }

@@ -178,9 +178,9 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     if (manualImport)
       continue
 
-    let content: string
+    let imports: string[]
     if (name === 'components') {
-      content = functions
+      imports = functions
         .sort((a, b) => a.name.localeCompare(b.name))
         .flatMap((fn) => {
           const arr = []
@@ -190,23 +190,23 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
             arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
           return arr
         })
-        .join('\n')
     }
     else {
-      content = functions
+      imports = functions
         .filter(i => i.package === name)
         .map(f => f.name)
         .sort()
         .map(name => `export * from './${name}'`)
-        .join('\n')
     }
 
-    if (name === 'core')
-      content += '\nexport * from \'@vueuse/shared\''
+    if (name === 'core') {
+      imports.push(
+        'export * from \'./types\'',
+        'export * from \'@vueuse/shared\'',
+      )
+    }
 
-    content += '\n'
-
-    await fs.writeFile(join(dir, 'index.ts'), content)
+    await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
   }
 }
 
@@ -321,9 +321,6 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     let readme = await fs.readFile(mdPath, 'utf-8')
 
-    if (hasTypes)
-      readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')
-
     const { content, data = {} } = matter(readme)
 
     data.category = fn.category || 'Unknown'
@@ -351,17 +348,17 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
-    packageJSON.main = './index.cjs.js'
+    packageJSON.main = './index.cjs'
     packageJSON.types = './index.d.ts'
-    packageJSON.module = './index.esm.js'
+    packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
     packageJSON.exports = {
       '.': {
-        import: './index.esm.js',
-        require: './index.cjs.js',
+        import: './index.mjs',
+        require: './index.cjs',
       },
       './*': './*',
     }
@@ -371,8 +368,8 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.esm.js`,
-            require: `./${i.name}.cjs.js`,
+            import: `./${i.name}.mjs`,
+            require: `./${i.name}.cjs`,
           }
         })
     }

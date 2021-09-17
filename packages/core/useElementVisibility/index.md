@@ -42,31 +42,3 @@ export default {
 ```
 
 <LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: Ref<Element | null | undefined>
-}
-/**
- * Tracks the visibility of an element within the viewport.
- *
- * @see https://vueuse.org/useElementVisibility
- * @param element
- * @param options
- */
-export declare function useElementVisibility(
-  element: Ref<Element | null | undefined>,
-  { window, scrollTarget }?: VisibilityScrollTargetOptions
-): Ref<boolean>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/index.md)
-
-
-<!--FOOTER_ENDS-->

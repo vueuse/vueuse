@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "6.0.0",
+  "version": "6.4.0",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
@@ -17,14 +17,14 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "exports": {
     ".": {
-      "import": "./index.esm.js",
-      "require": "./index.cjs.js"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*"
   },
-  "main": "./index.cjs.js",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
-  "module": "./index.esm.js",
+  "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
@@ -36,7 +36,7 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "dependencies": {
-    "@vueuse/shared": "6.0.0",
+    "@vueuse/shared": "6.4.0",
     "vue-demi": "*"
   },
   "devDependencies": {

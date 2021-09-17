@@ -38,33 +38,3 @@ You can find [more information about the state on the MDN](https://developer.moz
 ```
 
 <LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface DeviceMotionOptions
-  extends ConfigurableWindow,
-    ConfigurableEventFilter {}
-/**
- * Reactive DeviceMotionEvent.
- *
- * @see https://vueuse.org/useDeviceMotion
- * @param options
- */
-export declare function useDeviceMotion(options?: DeviceMotionOptions): {
-  acceleration: Ref<DeviceMotionEventAcceleration | null>
-  accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
-  rotationRate: Ref<DeviceMotionEventRotationRate | null>
-  interval: Ref<number>
-}
-export declare type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.md)
-
-
-<!--FOOTER_ENDS-->

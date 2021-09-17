@@ -1,4 +1,4 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
+import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from 'vue-demi'
 import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
@@ -71,9 +71,9 @@ interface UseFetchReturn<T> {
 
   // methods
   get(): UseFetchReturn<T>
-  post(payload?: unknown, type?: string): UseFetchReturn<T>
-  put(payload?: unknown, type?: string): UseFetchReturn<T>
-  delete(payload?: unknown, type?: string): UseFetchReturn<T>
+  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
 
   // type
   json<JSON = any>(): UseFetchReturn<JSON>
@@ -129,11 +129,20 @@ export interface UseFetchOptions {
   immediate?: boolean
 
   /**
-   * Will automatically refetch when the URL is changed if the url is a ref
+   * Will automatically refetch when:
+   * - the URL is changed if the URL is a ref
+   * - the payload is changed if the payload is a ref
    *
    * @default false
    */
   refetch?: MaybeRef<boolean>
+
+  /**
+   * Initial data before the request finished
+   *
+   * @default null
+   */
+  initialData?: any
 
   /**
    * Will run immediately before the fetch request is dispatched
@@ -171,7 +180,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch', 'afterFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'beforeFetch', 'afterFetch')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -250,6 +259,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   const {
     fetch = defaultWindow?.fetch,
+    initialData,
   } = options
 
   // Event Hooks
@@ -263,7 +273,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = ref<any>(null)
-  const data = shallowRef<T | null>(null)
+  const data = shallowRef<T | null>(initialData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
@@ -305,7 +315,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(config.payload) : config.payload as BodyInit
+      defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(unref(config.payload)) : unref(config.payload) as BodyInit
     }
 
     let isCanceled = false
@@ -339,9 +349,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-
           data.value = responseData as any
-
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
@@ -407,9 +415,22 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         config.method = method
         config.payload = payload
         config.payloadType = payloadType
+
+        // watch for payload changes
+        if (isRef(config.payload)) {
+          watch(
+            () => [
+              unref(config.payload),
+              unref(options.refetch),
+            ],
+            () => unref(options.refetch) && execute(),
+            { deep: true },
+          )
+        }
+
         // Set the payload to json type only if it's not provided and a literal object is provided
         // The only case we can deduce the content type and `fetch` can't
-        if (!payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype)
+        if (!payloadType && unref(payload) && Object.getPrototypeOf(unref(payload)) === Object.prototype)
           config.payloadType = 'json'
 
         return shell as any

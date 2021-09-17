@@ -5,9 +5,11 @@ import { useThrottleFn } from '../useThrottleFn'
  * Throttle execution of a function. Especially useful for rate limiting
  * execution of handlers on events like resize and scroll.
  *
+ * @param value Ref value to be watched with throttle effect
  * @param  delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+ * @param [trailing=true] if true, update the value again after the delay time is up
  */
-export function useThrottle<T>(value: Ref<T>, delay = 200) {
+export function useThrottle<T>(value: Ref<T>, delay = 200, trailing = true) {
   if (delay <= 0)
     return value
 
@@ -15,7 +17,7 @@ export function useThrottle<T>(value: Ref<T>, delay = 200) {
 
   const updater = useThrottleFn(() => {
     throttled.value = value.value
-  }, delay)
+  }, delay, trailing)
 
   watch(value, () => updater())
 

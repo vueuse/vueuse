@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "6.0.0",
+  "version": "6.4.0",
   "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
@@ -15,14 +15,14 @@
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "exports": {
     ".": {
-      "import": "./index.esm.js",
-      "require": "./index.cjs.js"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*"
   },
-  "main": "./index.cjs.js",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
-  "module": "./index.esm.js",
+  "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "dependencies": {
-    "@vueuse/core": "6.0.0",
-    "@vueuse/shared": "6.0.0",
+    "@vueuse/core": "6.4.0",
+    "@vueuse/shared": "6.4.0",
     "vue-demi": "*"
   }
 }

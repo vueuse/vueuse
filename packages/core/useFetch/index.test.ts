@@ -97,6 +97,19 @@ describe('useFetch', () => {
     expect(fetchMock).toBeCalledTimes(2)
   })
 
+  test('should auto refetch when the refetch is set to true and the payload is a ref', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+    const param = ref({ num: 1 })
+    const { isFinished } = useFetch('https://example.com', { refetch: true }).post(param)
+
+    await until(isFinished).toBe(true)
+    param.value.num = 2
+    await nextTick()
+    await until(isFinished).toBe(true)
+
+    expect(fetchMock).toBeCalledTimes(2)
+  })
+
   test('should create an instance of useFetch with a base url', async() => {
     fetchMock.mockResponse('')
 

@@ -7,6 +7,7 @@ export default defineConfig({
       '.vitepress/theme/**/*.vue',
     ],
   },
+  attributify: true,
   theme: {
     extend: {
       colors: {

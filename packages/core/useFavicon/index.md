@@ -38,33 +38,3 @@ const icon = useFavicon(source)
 
 console.log(icon === source) // true
 ```
-
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface FaviconOptions extends ConfigurableDocument {
-  baseUrl?: string
-  rel?: string
-}
-/**
- * Reactive favicon.
- *
- * @see https://vueuse.org/useFavicon
- * @param newIcon
- * @param options
- */
-export declare function useFavicon(
-  newIcon?: MaybeRef<string | null | undefined>,
-  options?: FaviconOptions
-): Ref<string | null | undefined>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useFavicon/index.md)
-
-
-<!--FOOTER_ENDS-->
