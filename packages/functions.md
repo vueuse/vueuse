@@ -125,6 +125,7 @@
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
+  - [`unrefy`](https://vueuse.org/core/unrefy/) — convert a plain function into a function that unref it's aguments before every call
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value

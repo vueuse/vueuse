@@ -484,6 +484,13 @@
       "description": "unref for dom element"
     },
     {
+      "name": "unrefy",
+      "package": "core",
+      "docs": "https://vueuse.org/core/unrefy/",
+      "category": "Utilities",
+      "description": "convert a plain function into a function that unref it's aguments before every call"
+    },
+    {
       "name": "useActiveElement",
       "package": "core",
       "component": true,
