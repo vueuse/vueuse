@@ -1000,8 +1000,8 @@
       "package": "core",
       "component": true,
       "docs": "https://vueuse.org/core/useVirtualList/",
-      "category": "Sensors",
-      "description": "virtual list migrating from ahooks to Composition API"
+      "category": "Component",
+      "description": "composable virtual list"
     },
     {
       "name": "useWakeLock",

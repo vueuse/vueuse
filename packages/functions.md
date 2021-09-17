@@ -48,6 +48,7 @@
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`
+  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — composable virtual list
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
@@ -94,7 +95,6 @@
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
-  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — virtual list migrating from ahooks to Composition API
   - [`useWindowFocus`](https://vueuse.org/core/useWindowFocus/) — reactively track window focus with `window.onfocus` and `window.onblur` events
   - [`useWindowScroll`](https://vueuse.org/core/useWindowScroll/) — reactive window scroll
   - [`useWindowSize`](https://vueuse.org/core/useWindowSize/) — reactive window size
