@@ -2,7 +2,7 @@
 // by https://github.com/wobsoriano
 
 import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
-import { Ref, ref, watch, shallowRef, isRef, unref } from 'vue-demi'
+import { Ref, ref, watch, shallowRef, unref } from 'vue-demi'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 import type { SpeechRecognitionErrorEvent, SpeechRecognition } from './types'
 
@@ -36,12 +36,12 @@ export interface SpeechRecognitionOptions extends ConfigurableWindow {
  */
 export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   const {
-    lang = 'en-US',
     interimResults = true,
     continuous = true,
     window = defaultWindow,
   } = options
 
+  const lang = ref(options.lang || 'en-US')
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')
@@ -75,7 +75,10 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
       isFinal.value = false
     }
 
-    if (isRef(lang)) watch(lang, (lang) => { if (recognition && !isListening.value) recognition.lang = lang })
+    watch(lang, (lang) => {
+      if (recognition && !isListening.value)
+        recognition.lang = lang
+    })
 
     recognition.onresult = (event) => {
       const transcript = Array.from(event.results)
@@ -96,7 +99,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
 
     recognition.onend = () => {
       isListening.value = false
-      if (isRef(lang) && recognition) recognition.lang = lang.value
+      recognition.lang = unref(lang)
     }
 
     watch(isListening, () => {
