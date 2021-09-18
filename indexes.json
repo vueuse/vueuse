@@ -861,6 +861,13 @@
       "description": "call function on every `requestAnimationFrame`"
     },
     {
+      "name": "useRandomString",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useRandomString/",
+      "category": "Utilities",
+      "description": "primitive random string generation"
+    },
+    {
       "name": "useRefHistory",
       "package": "core",
       "docs": "https://vueuse.org/core/useRefHistory/",
