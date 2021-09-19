@@ -6,9 +6,9 @@ const text = ref()
 const input = ref()
 const button = ref()
 
-const textFocus = useFocus({ target: text })
-const inputFocus = useFocus({ target: input, initialValue: true })
-const buttonFocus = useFocus({ target: button })
+const { focused: textFocus } = useFocus({ target: text })
+const { focused: inputFocus } = useFocus({ target: input, initialValue: true })
+const { focused: buttonFocus } = useFocus({ target: button })
 
 const setTextFocus = () => { textFocus.value = true }
 const setInputFocus = () => { inputFocus.value = true }

@@ -17,13 +17,21 @@ export interface FocusOptions extends ConfigurableWindow {
   target?: MaybeElementRef
 }
 
+export interface FocusReturn {
+  /**
+   * If read as true, then the element has focus. If read as false, then the element does not have focus
+   * If set to true, then the element will be focused. If set to false, the element will be blurred.
+   */
+  focused: Ref<boolean>
+}
+
 /**
- * Reactive element focus boolean.
+ * Track or set the focus state of a DOM element.
  *
  * @see https://vueuse.org/useFocus
  * @param options
  */
-export function useFocus(options: FocusOptions = {}): Ref<boolean> {
+export function useFocus(options: FocusOptions = {}): FocusReturn {
   const {
     initialValue = false,
     window = defaultWindow,
@@ -32,7 +40,7 @@ export function useFocus(options: FocusOptions = {}): Ref<boolean> {
   const focused = ref(initialValue)
 
   if (!window)
-    return focused
+    return { focused }
 
   const onFocus = () => { focused.value = true }
   const onBlur = () => { focused.value = false }
@@ -56,5 +64,5 @@ export function useFocus(options: FocusOptions = {}): Ref<boolean> {
     setFocus(focused.value, false)
   }, { immediate: true, flush: 'post' })
 
-  return focused
+  return { focused }
 }

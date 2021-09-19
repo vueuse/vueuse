@@ -5,8 +5,8 @@ import { useFocusInputElement } from '.'
 const input = ref()
 const textarea = ref()
 
-const inputFocus = useFocusInputElement({ target: input, initialValue: true })
-const textFocus = useFocusInputElement({ target: textarea })
+const { focused: inputFocus } = useFocusInputElement({ target: input, initialValue: true })
+const { focused: textFocus } = useFocusInputElement({ target: textarea })
 
 const setInputFocus = () => { inputFocus.value = true }
 const setTextFocus = () => { textFocus.value = true }
