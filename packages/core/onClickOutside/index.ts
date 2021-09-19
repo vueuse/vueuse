@@ -27,9 +27,10 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerup
     return
 
   const shouldListen = ref(true)
+  const isUpEvent = /(click|up|end)/.test(event)
 
   const listener = (event: OnClickOutsideEvents[E]) => {
-    if (!shouldListen.value)
+    if (isUpEvent && !shouldListen.value)
       return
 
     const el = unrefElement(target)
@@ -44,10 +45,12 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerup
     useEventListener(window, event, listener, { passive: true }),
   ]
 
-  if (/(click|up|end)/.test(event)) {
+  if (isUpEvent) {
     cleanup.push(
       useEventListener(window, 'pointerdown', () => (shouldListen.value = true), { passive: true }),
-      useEventListener(window, 'scroll', () => (shouldListen.value = false), { passive: true }),
+      // `pointermove` event will be fired after `pointerup` event if pointer coordinates are changed during `pointerdown`
+      // We using this for 2 things: to prevent calling handler on scrolls and and selections (including inputs)
+      useEventListener(window, 'pointermove', e => (shouldListen.value = !e.movementX && !e.movementY), { passive: true }),
     )
   }
 
