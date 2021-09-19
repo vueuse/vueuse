@@ -42,7 +42,7 @@ export function useFocus(options: FocusOptions = {}): Ref<boolean> {
   useEventListener(target, 'focus', onFocus, { passive: true })
   useEventListener(target, 'blur', onBlur, { passive: true })
 
-  const setFocus = (focused: boolean, oldFocused: boolean) => {
+  const setFocus = (focused: object | boolean, oldFocused: object | boolean | undefined) => {
     if (focused) {
       if (oldFocused !== true) target.value?.focus()
     }

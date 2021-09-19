@@ -24,19 +24,10 @@ const unsetButtonFocus = () => { buttonFocus.value = false }
       Some text that can be focused
     </p>
     <input ref="input" class="item" />
-    <button ref="button" class="item">
+    <button ref="button" class="item" style="margin: 5px">
       button
     </button>
     <hr />
-    <p v-if="textFocus">
-      The text has focus
-    </p>
-    <p v-if="inputFocus">
-      The input control has focus
-    </p>
-    <p v-if="buttonFocus">
-      The button has focus
-    </p>
     <div>
       <button @click="setTextFocus">
         focus text
@@ -59,6 +50,15 @@ const unsetButtonFocus = () => { buttonFocus.value = false }
         unfocus button
       </button>
     </div>
+    <p v-if="textFocus">
+      The text has focus
+    </p>
+    <p v-if="inputFocus">
+      The input control has focus
+    </p>
+    <p v-if="buttonFocus">
+      The button has focus
+    </p>
   </div>
 </template>
 
