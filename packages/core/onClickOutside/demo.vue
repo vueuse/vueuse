@@ -11,6 +11,7 @@ onClickOutside(
     console.log(event)
     modal.value = false
   },
+  { event: 'click' },
 )
 
 const dropdown = ref(false)
@@ -27,7 +28,7 @@ onClickOutside(
 </script>
 
 <template>
-  <button @click="modal = true">
+  <button @click.stop="modal = true">
     Open Modal
   </button>
   <div class="relative inline-block ml-2">
