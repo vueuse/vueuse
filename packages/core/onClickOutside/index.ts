@@ -48,9 +48,8 @@ export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerup
   if (isUpEvent) {
     cleanup.push(
       useEventListener(window, 'pointerdown', () => (shouldListen.value = true), { passive: true }),
-      // `pointermove` event will be fired after `pointerup` event if pointer coordinates are changed during `pointerdown`
-      // We using this for 2 things: to prevent calling handler on scrolls and and selections (including inputs)
-      useEventListener(window, 'pointermove', e => (shouldListen.value = !e.movementX && !e.movementY), { passive: true }),
+      useEventListener(window, 'pointermove', () => (shouldListen.value = false), { passive: true }),
+      useEventListener(window, 'scroll', () => (shouldListen.value = false), { passive: true }),
     )
   }
 
