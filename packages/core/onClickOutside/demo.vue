@@ -27,7 +27,7 @@ onClickOutside(
 </script>
 
 <template>
-  <button @click.stop="modal = true">
+  <button @click="modal = true">
     Open Modal
   </button>
   <div class="relative inline-block ml-2">
