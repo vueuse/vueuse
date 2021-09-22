@@ -1,5 +1,5 @@
 ---
-category: Browser
+category: Elements
 ---
 
 # useActiveElement

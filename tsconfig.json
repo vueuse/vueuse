@@ -25,7 +25,10 @@
     }
   },
   "include": [
-    "packages"
+    "packages",
+    "packages/.vitepress/**/*.vue",
+    "packages/.vitepress/**/*.ts",
+    "meta"
   ],
   "exclude": [
     "node_modules",
