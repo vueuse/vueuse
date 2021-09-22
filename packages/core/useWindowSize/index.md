@@ -22,5 +22,3 @@ const { width, height } = useWindowSize()
   Height: {{ height }}
 </UseWindowSize>
 ```
-
-<LearnMoreComponents />

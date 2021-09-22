@@ -7,6 +7,7 @@ import { VitePWA as PWA } from 'vite-plugin-pwa'
 import WindiCSS from 'vite-plugin-windicss'
 import Inspect from 'vite-plugin-inspect'
 import { MarkdownTransform } from './.vitepress/markdownTransform'
+import { ChangeLog } from './.vitepress/changelog'
 
 export default defineConfig({
   server: {
@@ -20,6 +21,11 @@ export default defineConfig({
     },
   },
   plugins: [
+    // custom
+    MarkdownTransform(),
+    ChangeLog(),
+
+    // plugins
     Components({
       dirs: resolve(__dirname, '.vitepress/theme/components'),
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
@@ -35,7 +41,6 @@ export default defineConfig({
       compiler: 'vue3',
       defaultStyle: 'display: inline-block',
     }),
-    MarkdownTransform(),
     PWA({
       outDir: '.vitepress/dist',
       manifest: {

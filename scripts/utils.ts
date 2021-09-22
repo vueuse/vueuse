@@ -77,7 +77,9 @@ export async function getFunctionFooter(pkg: string, name: string) {
 
   const sourceSection = `## Source\n\n${links}\n`
 
-  return `${typingSection || ''}\n\n${sourceSection}\n`
+  const changelogSection = `## Changelog\n\n<Changelog fn="${name}" />\n`
+
+  return `${typingSection || ''}\n\n${sourceSection}\n${changelogSection}\n`
 }
 
 export async function listFunctions(dir: string, ignore: string[] = []) {

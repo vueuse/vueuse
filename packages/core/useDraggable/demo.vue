@@ -42,7 +42,7 @@ const { x, y, style } = useDraggable(el, {
       storage-key="vueuse-draggable-pos"
       storage-type="session"
     >
-      Headless component
+      Renderless component
       <div class="text-xs opacity-50">
         Position persisted in sessionStorage
       </div>

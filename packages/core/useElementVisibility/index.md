@@ -40,5 +40,3 @@ export default {
   Is Visible: {{ isVisible }}
 </UseElementVisibility>
 ```
-
-<LearnMoreComponents />

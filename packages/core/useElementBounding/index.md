@@ -39,5 +39,3 @@ export default {
   Height: {{ height }}
 </UseElementBounding>
 ```
-
-<LearnMoreComponents />
