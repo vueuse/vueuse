@@ -6,7 +6,7 @@ export function handleRedirects(router: Router) {
 
   // redirects for the legacy storybook
   if (query.get('path')?.startsWith('/story/')) {
-    const name = query.get('path').split('-').slice(-1)[0]?.toLowerCase()
+    const name = query.get('path')?.split('-').slice(-1)[0]?.toLowerCase()
     const fn = functions.functions.find(i => i.name.toLowerCase() === name)
     if (fn)
       router.go(`/${fn.package}/${fn.name}/`)

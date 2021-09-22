@@ -52,7 +52,7 @@
     "@vue/compiler-sfc": "^3.2.18",
     "@vue/composition-api": "^1.2.2",
     "@vue/test-utils": "^1.2.2",
-    "@vue/theme": "^0.1.5",
+    "@vue/theme": "^0.1.10",
     "axios": "^0.21.4",
     "bumpp": "^7.1.1",
     "consola": "^2.15.3",

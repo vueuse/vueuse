@@ -25,5 +25,3 @@ watch(activeElement, (el) => {
   Active element is {{ element.dataset.id }}
 </UseActiveElement>
 ```
-
-<LearnMoreComponents />

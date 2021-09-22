@@ -41,6 +41,8 @@ export function MarkdownTransform(): Plugin {
         if (hasTypes)
           code = replacer(code, await getFunctionFooter(pkg, name), 'FOOTER', 'tail')
 
+        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
+
         let header = ''
         if (hasDemo(pkg, name))
           header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n## Demo\n<DemoContainer><Demo/></DemoContainer>\n'

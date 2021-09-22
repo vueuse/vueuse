@@ -1,6 +1,6 @@
 import { getHighlighter } from 'shiki'
 
-const htmlEscapes = {
+const htmlEscapes: Record<string, string> = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
@@ -8,7 +8,7 @@ const htmlEscapes = {
   '\'': '&#39;',
 }
 
-function escapeHtml(html) {
+function escapeHtml(html: string) {
   return html.replace(/[&<>"']/g, chr => htmlEscapes[chr])
 }
 

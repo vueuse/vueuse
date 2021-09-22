@@ -11,6 +11,3 @@ export const getFunction = (name: string) => indexes.functions.find(f => f.name 
 
 export const categories = indexes.categories
 export const packages = indexes.packages
-
-export const coreCategories = categories.filter(i => !i.startsWith('@'))
-export const coreFunctions = functions.filter(i => i.category && !i.category?.startsWith('@'))

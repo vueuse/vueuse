@@ -34,5 +34,3 @@ console.log(network.isOnline)
   Type: {{ type }}
 <UseNetwork>
 ```
-
-<LearnMoreComponents />

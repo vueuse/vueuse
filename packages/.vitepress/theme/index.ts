@@ -9,9 +9,9 @@ import './styles/utils.css'
 import 'virtual:windi-utilities.css'
 import './styles/overrides.css'
 
-const theme = {
+const theme: any = {
   ...VPTheme,
-  enhanceApp(ctx) {
+  enhanceApp(ctx: any) {
     VPTheme.enhanceApp?.(ctx)
 
     if (typeof window !== 'undefined')
