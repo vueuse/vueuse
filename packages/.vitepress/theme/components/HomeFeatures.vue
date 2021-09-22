@@ -4,10 +4,6 @@ import { useData } from 'vitepress'
 
 const { frontmatter } = useData()
 
-const hasFeatures = computed(() => {
-  return frontmatter.value.features && frontmatter.value.features.length > 0
-})
-
 interface Feature {
   title?: string
   details?: string

@@ -121,6 +121,8 @@ export async function readIndexes() {
       const fn: VueUseFunction = {
         name: fnName,
         package: pkg.name,
+        // TODO: READ FROM MTIME
+        lastUpdated: 0,
       }
 
       if (fs.existsSync(join(dir, fnName, 'component.ts')))
@@ -170,7 +172,13 @@ export function getCategories(functions: VueUseFunction[]): string[] {
       .filter(i => !i.internal)
       .map(i => i.category)
       .filter(Boolean),
-  ).sort()
+  ).sort(
+    (a, b) => (a.startsWith('@') && !b.startsWith('@'))
+      ? 1
+      : (b.startsWith('@') && !a.startsWith('@'))
+        ? -1
+        : a.localeCompare(b),
+  )
 }
 
 export async function updateImport({ packages, functions }: PackageIndexes) {
@@ -226,7 +234,9 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
     if (title)
       list += `### ${category}\n`
 
-    const categoryFunctions = functions.filter(i => i.category === category).sort((a, b) => a.name.localeCompare(b.name))
+    const categoryFunctions = functions
+      .filter(i => i.category === category)
+      .sort((a, b) => a.name.localeCompare(b.name))
 
     for (const { name, docs, description, depreacted } of categoryFunctions) {
       if (depreacted)

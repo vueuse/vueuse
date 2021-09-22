@@ -28,6 +28,7 @@ export default defineConfig({
           componentPrefix: '',
         }),
       ],
+      dts: './.vitepress/components.d.ts',
       transformer: 'vue3',
     }),
     Icons({
