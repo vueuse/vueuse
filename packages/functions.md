@@ -117,6 +117,7 @@
   - [`eagerComputed`](https://vueuse.org/shared/eagerComputed/) — eager computed without lazy evaluation
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
+  - [`loadify`](https://vueuse.org/core/loadify/) — convert a `Promise` or an async `Function` by binding it's to a ref
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
   - [`not`](https://vueuse.org/shared/not/) — `NOT` condition for ref
   - [`or`](https://vueuse.org/shared/or/) — `OR` conditions for refs

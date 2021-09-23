@@ -454,6 +454,13 @@
       "description": "combine computed and inject"
     },
     {
+      "name": "loadify",
+      "package": "core",
+      "docs": "https://vueuse.org/core/loadify/",
+      "category": "Utilities",
+      "description": "convert a `Promise` or an async `Function` by binding it's to a ref"
+    },
+    {
       "name": "onClickOutside",
       "package": "core",
       "component": true,
