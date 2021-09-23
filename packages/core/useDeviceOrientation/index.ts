@@ -12,12 +12,15 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  */
 export function useDeviceOrientation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
+
   const isSupported = Boolean(window && 'DeviceOrientationEvent' in window)
 
   const isAbsolute = ref(false)
   const alpha: Ref<number | null> = ref(null)
   const beta: Ref<number | null> = ref(null)
   const gamma: Ref<number | null> = ref(null)
+  const webkitCompassHeading: Ref<number | null> = ref(null)
+  const webkitCompassAccuracy: Ref<number | null> = ref(null)
 
   if (window && isSupported) {
     useEventListener(window, 'deviceorientation', (event) => {
@@ -25,6 +28,14 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
       alpha.value = event.alpha
       beta.value = event.beta
       gamma.value = event.gamma
+
+      if (event.webkitCompassHeading) {
+        webkitCompassHeading.value = event.webkitCompassHeading
+      }
+
+      if (event.webkitCompassAccuracy) {
+        webkitCompassAccuracy.value = event.webkitCompassAccuracy
+      }
     })
   }
 
@@ -34,6 +45,8 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
     alpha,
     beta,
     gamma,
+    webkitCompassHeading,
+    webkitCompassAccuracy
   }
 }
 
