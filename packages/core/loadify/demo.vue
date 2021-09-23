@@ -2,7 +2,7 @@
 import { ref } from 'vue-demi'
 import axios from 'axios'
 import YAML from 'js-yaml'
-import { loadify } from './loadify.'
+import { loadify } from '.'
 
 const isLoading = ref(false)
 const state = ref({})
