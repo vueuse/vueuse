@@ -28,7 +28,7 @@ const put =     loadify(isLoading, id => api.put(`/anything/${id}`, state.value)
 const remove =  loadify(isLoading, id => api.delete(`/anything/${id}`))
 
 const state = ref({})
-state.value = fetch(42)
+state.value = await fetch(42)
 ```
 
 ## Related Functions
