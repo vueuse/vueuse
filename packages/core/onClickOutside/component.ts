@@ -1,8 +1,10 @@
 import { h, ref, defineComponent } from 'vue-demi'
 import { onClickOutside } from '@vueuse/core'
+import { RenderableComponent } from '../types'
 
-export const OnClickOutside = defineComponent({
+export const OnClickOutside = defineComponent<RenderableComponent>({
   name: 'OnClickOutside',
+  props: ['as'] as unknown as undefined,
   emits: ['trigger'],
   setup(props, { slots, emit }) {
     const target = ref()
@@ -12,7 +14,7 @@ export const OnClickOutside = defineComponent({
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target }, slots.default())
+        return h(props.as || 'div', { ref: target }, slots.default())
     }
   },
 })

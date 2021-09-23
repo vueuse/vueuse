@@ -10,7 +10,7 @@ const text = computed(() => online.value ? 'Online' : 'Offline')
 
 <template>
   <note class="mb-2">
-    Disconnet your network to see changes
+    Disconnect your network to see changes
   </note>
   <div>Status: <b :class="clazz">{{ text }}</b></div>
 </template>

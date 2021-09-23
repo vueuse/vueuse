@@ -412,6 +412,13 @@
       "internal": true
     },
     {
+      "name": "watchAtMost",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/watchAtMost/",
+      "category": "Watch",
+      "description": "`watch` with the number of times triggered"
+    },
+    {
       "name": "watchWithFilter",
       "package": "shared",
       "docs": "https://vueuse.org/shared/watchWithFilter/",
@@ -882,6 +889,13 @@
       "description": "script tag injecting"
     },
     {
+      "name": "useScroll",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useScroll/",
+      "category": "Sensors",
+      "description": "reactive scroll position and state"
+    },
+    {
       "name": "useSessionStorage",
       "package": "core",
       "docs": "https://vueuse.org/core/useSessionStorage/",
@@ -989,6 +1003,14 @@
       "description": "shorthand for props v-model binding"
     },
     {
+      "name": "useVirtualList",
+      "package": "core",
+      "component": true,
+      "docs": "https://vueuse.org/core/useVirtualList/",
+      "category": "Component",
+      "description": "composable virtual list"
+    },
+    {
       "name": "useWakeLock",
       "package": "core",
       "docs": "https://vueuse.org/core/useWakeLock/",
@@ -1066,6 +1088,13 @@
       "docs": "https://vueuse.org/integrations/useCookies/",
       "category": "@Integrations",
       "description": "wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)"
+    },
+    {
+      "name": "useDrauu",
+      "package": "integrations",
+      "docs": "https://vueuse.org/integrations/useDrauu/",
+      "category": "@Integrations",
+      "description": "reactive instance for [drauu](https://github.com/antfu/drauu)"
     },
     {
       "name": "useFocusTrap",

@@ -109,7 +109,7 @@ export async function readIndexes() {
 
     const pkg: VueUsePackage = {
       ...info,
-      dir: relative(DIR_ROOT, dir),
+      dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
     }
 

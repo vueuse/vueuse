@@ -1,8 +1,10 @@
 import { h, ref, defineComponent, reactive } from 'vue-demi'
 import { useElementVisibility } from '@vueuse/core'
+import { RenderableComponent } from '../types'
 
-export const UseElementVisibility = defineComponent({
+export const UseElementVisibility = defineComponent<RenderableComponent>({
   name: 'UseElementVisibility',
+  as: ['as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const data = reactive({
@@ -11,7 +13,7 @@ export const UseElementVisibility = defineComponent({
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target }, slots.default(data))
+        return h(props.as || 'div', { ref: target }, slots.default(data))
     }
   },
 })

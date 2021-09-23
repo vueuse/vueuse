@@ -48,6 +48,7 @@
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`
+  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — composable virtual list
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
@@ -90,6 +91,7 @@
   - [`usePointer`](https://vueuse.org/core/usePointer/) — reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
+  - [`useScroll`](https://vueuse.org/core/useScroll/) — reactive scroll position and state
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
@@ -146,6 +148,7 @@
   - [`pausableWatch`](https://vueuse.org/shared/pausableWatch/) — pausable watch
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
   - [`until`](https://vueuse.org/shared/until/) — promised one-time watch for changes
+  - [`watchAtMost`](https://vueuse.org/shared/watchAtMost/) — `watch` with the number of times triggered
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
   - [`whenever`](https://vueuse.org/shared/whenever/) — shorthand for watching value to be truthy
 

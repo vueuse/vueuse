@@ -3,7 +3,6 @@ import { ref, Ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 import { PointerType, Position } from '../types'
-import { MaybeElementRef } from '../unrefElement'
 
 export interface UsePointerState extends Position {
   pressure: number
@@ -32,7 +31,7 @@ export interface UsePointerOptions extends ConfigurableWindow {
   /**
    * @default window
    */
-  target?: MaybeElementRef
+  target?: MaybeRef<EventTarget | null | undefined> | Document | Window
 }
 
 const defaultState: UsePointerState = /* #__PURE__ */ {
