@@ -5,7 +5,8 @@ import fs from 'fs-extra'
 import consola from 'consola'
 import { activePackages } from '../meta/packages'
 import indexes from '../meta/function-indexes'
-import { updateImport } from './utils'
+import type { PackageManifest } from '../meta/types'
+import { prepareFilePath, updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
 
@@ -21,9 +22,11 @@ const FILES_COPY_LOCAL = [
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
-  for (const { name } of activePackages) {
-    const packageRoot = path.resolve(__dirname, '..', 'packages', name)
-    const packageDist = path.resolve(packageRoot, 'dist')
+  async function buildPackageMetaFiles({ name, packages }: PackageManifest, parent?: string) {
+    const { moduleName, submoduleName } = prepareFilePath(name, parent)
+    const packageRoot = path.resolve(__dirname, '..', 'packages', moduleName)
+    const packageSrc = path.resolve(packageRoot, submoduleName)
+    const packageDist = path.resolve(packageRoot, 'dist', submoduleName)
 
     if (name === 'core') {
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
@@ -33,10 +36,18 @@ async function buildMetaFiles() {
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
     for (const file of FILES_COPY_LOCAL) {
-      if (fs.existsSync(path.join(packageRoot, file)))
-        await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
+      if (fs.existsSync(path.join(packageSrc, file)))
+        await fs.copyFile(path.join(packageSrc, file), path.join(packageDist, file))
+    }
+
+    if (Array.isArray(packages)) {
+      await Promise.all(
+        packages.filter(Boolean).map(i => buildPackageMetaFiles(i, name)),
+      )
     }
   }
+
+  for (const pkg of activePackages) await buildPackageMetaFiles(pkg)
 }
 
 async function build() {

@@ -20,6 +20,7 @@
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
     "lint": "eslint './{packages,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
     "lint:fix": "nr lint --fix",
+    "postinstall": "esno scripts/install-modules.ts",
     "publish:ci": "esno scripts/publish.ts",
     "release": "esno scripts/release.ts && git push --follow-tags",
     "size": " esno scripts/export-size.ts",

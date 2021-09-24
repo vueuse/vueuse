@@ -99,3 +99,4 @@ export const packages: PackageManifest[] = [
 ]
 
 export const activePackages = packages.filter(i => !i.deprecated)
+export const allPackages = packages.map(pkg => [pkg, ...(Array.isArray(pkg.packages) ? pkg.packages : [])]).flat()

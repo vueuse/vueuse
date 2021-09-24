@@ -117,7 +117,9 @@ function MarkdownTransform(): Plugin {
       // convert links to relative
       code = code.replace(/https?:\/\/vueuse\.org\//g, '/')
 
-      const [pkg, name, i] = id.split('/').slice(-3)
+      const [, mdPath] = id.split('packages')
+      const [i, name, ...pkgItems] = mdPath.split('/').reverse()
+      const pkg = pkgItems.filter(Boolean).reverse().join('/')
 
       if (functionNames.includes(name) && i === 'index.md') {
         const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))

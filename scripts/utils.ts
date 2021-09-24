@@ -1,12 +1,12 @@
-import { resolve, join, relative } from 'path'
+import { join, relative, resolve } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
-import { activePackages, packages } from '../meta/packages'
-import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
+import { activePackages, allPackages, packages } from '../meta/packages'
+import { PackageIndexes, PackageManifest, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.org'
 const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
@@ -14,6 +14,14 @@ const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 const DIR_ROOT = resolve(__dirname, '..')
 const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
+
+export function isFilledArray(value: unknown): value is unknown[] {
+  return Array.isArray(value) && !!value.length
+}
+
+export function isFilledString(value: unknown): value is string {
+  return typeof value === 'string' && !!value.length
+}
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
   const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
@@ -48,7 +56,7 @@ export function hasDemo(pkg: string, name: string) {
 }
 
 export function getFunctionHead(pkg: string, name: string) {
-  let head = packages.find(p => p.name === pkg)!.addon
+  let head = allPackages.find(p => p.name === pkg)!.addon
     ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
     : ''
 
@@ -80,6 +88,27 @@ export async function getFunctionFooter(pkg: string, name: string) {
   return `${typingSection || ''}\n\n${sourceSection}\n`
 }
 
+export function getSubmoduleNames(packages: PackageManifest['packages']) {
+  return (packages || [])
+    .map(i => i.name.split('/').pop())
+    .filter(isFilledString)
+}
+
+interface GetFilenameFn {
+  (name: string): string
+  moduleName: string
+  submoduleName: string
+}
+export function prepareFilePath(name: string, parent: string) {
+  const moduleName = parent || name
+  const submoduleName = parent ? relative(parent, name) : ''
+
+  const fn = (fileName: string) => join('packages', moduleName, 'dist', submoduleName, fileName)
+  Object.assign(fn, { moduleName, submoduleName })
+
+  return fn as GetFilenameFn
+}
+
 export async function listFunctions(dir: string, ignore: string[] = []) {
   const files = await fg('*', {
     onlyDirectories: true,
@@ -95,6 +124,70 @@ export async function listFunctions(dir: string, ignore: string[] = []) {
   return files
 }
 
+async function readPackage(info: PackageManifest, dir: string) {
+  const packages = await Promise.all(
+    (info.packages || []).map(i => readPackage(i, join(DIR_SRC, i.name))),
+  )
+
+  const pkg: VueUsePackage = {
+    ...info,
+    packages,
+    dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
+    docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
+  }
+
+  return pkg
+}
+
+async function readFunction(pkg: VueUsePackage, src: string, fnName: string) {
+  const fn: VueUseFunction = {
+    name: fnName,
+    package: pkg.name,
+  }
+
+  if (fs.existsSync(join(src, fnName, 'component.ts')))
+    fn.component = true
+  if (fs.existsSync(join(src, fnName, 'directive.ts')))
+    fn.directive = true
+
+  const mdPath = join(src, fnName, 'index.md')
+  if (!fs.existsSync(mdPath)) {
+    fn.internal = true
+    return fn
+  }
+
+  fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
+
+  const mdRaw = await fs.readFile(mdPath, 'utf-8')
+
+  const { content: md, data: frontmatter } = matter(mdRaw)
+  const category = frontmatter.category
+
+  let description = (md
+    .replace(/\r\n/g, '\n')
+    .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || []
+  )[1] || ''
+
+  description = description.trim()
+  description = description.charAt(0).toLowerCase() + description.slice(1)
+
+  fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
+  fn.description = description
+
+  if (description.includes('DEPRECATED'))
+    fn.depreacted = true
+
+  return fn
+}
+
+async function readFunctions(pkg: VueUsePackage, src: string) {
+  const ignore = getSubmoduleNames(pkg.packages)
+
+  const functions = await listFunctions(src, ignore)
+
+  return Promise.all(functions.map(fnName => readFunction(pkg, src, fnName)))
+}
+
 export async function readIndexes() {
   const indexes: PackageIndexes = {
     packages: {},
@@ -102,61 +195,30 @@ export async function readIndexes() {
     functions: [],
   }
 
-  for (const info of packages) {
-    const dir = join(DIR_SRC, info.name)
+  async function getPackage(info: PackageManifest) {
+    const src = join(DIR_SRC, info.name)
+    const pkg = await readPackage(info, src)
 
-    const functions = await listFunctions(dir)
-
-    const pkg: VueUsePackage = {
-      ...info,
-      dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
-      docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
+    if (isFilledArray(pkg.packages)) {
+      pkg.packages.forEach(async(i) => {
+        const { pkg, src } = await getPackage(i)
+        const fns = await readFunctions(pkg, src)
+        indexes.functions.push(...fns)
+      })
     }
+
+    return {
+      src,
+      pkg,
+    }
+  }
+
+  for (const info of packages) {
+    const { pkg, src } = await getPackage(info)
+    const fns = await readFunctions(pkg, src)
 
     indexes.packages[info.name] = pkg
-
-    for (const fnName of functions) {
-      const mdPath = join(dir, fnName, 'index.md')
-
-      const fn: VueUseFunction = {
-        name: fnName,
-        package: pkg.name,
-      }
-
-      if (fs.existsSync(join(dir, fnName, 'component.ts')))
-        fn.component = true
-      if (fs.existsSync(join(dir, fnName, 'directive.ts')))
-        fn.directive = true
-
-      if (!fs.existsSync(mdPath)) {
-        fn.internal = true
-        indexes.functions.push(fn)
-        continue
-      }
-
-      fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
-
-      const mdRaw = await fs.readFile(join(dir, fnName, 'index.md'), 'utf-8')
-
-      const { content: md, data: frontmatter } = matter(mdRaw)
-      const category = frontmatter.category
-
-      let description = (md
-        .replace(/\r\n/g, '\n')
-        .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || []
-      )[1] || ''
-
-      description = description.trim()
-      description = description.charAt(0).toLowerCase() + description.slice(1)
-
-      fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
-      fn.description = description
-
-      if (description.includes('DEPRECATED'))
-        fn.depreacted = true
-
-      indexes.functions.push(fn)
-    }
+    indexes.functions.push(...fns)
   }
 
   indexes.categories = getCategories(indexes.functions)
@@ -260,18 +322,23 @@ export function replacer(code: string, value: string, key: string, insert: 'head
 }
 
 export async function updatePackageREADME({ packages, functions }: PackageIndexes) {
-  for (const { name, dir } of Object.values(packages)) {
+  async function update({ name, dir, packages }: VueUsePackage) {
     const readmePath = join(dir, 'README.md')
 
     if (!fs.existsSync(readmePath))
-      continue
+      return
 
     const functionMD = stringifyFunctions(functions.filter(i => i.package === name), false)
     let readme = await fs.readFile(readmePath, 'utf-8')
     readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
 
     await fs.writeFile(readmePath, `${readme.trim()}\n`, 'utf-8')
+
+    if (isFilledArray(packages))
+      await Promise.all(packages.map(update))
   }
+
+  await Promise.all(Object.values(packages).map(update))
 }
 
 export async function updateIndexREADME({ packages, functions }: PackageIndexes) {
@@ -295,13 +362,18 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
 
   let mdAddons = await fs.readFile('packages/add-ons.md', 'utf-8')
 
-  const addons = Object.values(packages)
-    .filter(i => i.addon && !i.deprecated)
-    .map(({ docs, name, display, description }) => {
-      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
-        stringifyFunctions(functions.filter(i => i.package === name), false)}`
-    })
-    .join('\n')
+  function generateAddons(packages: VueUsePackage[], level = '##'): string {
+    return packages
+      .filter(i => i.addon && !i.deprecated)
+      .map(({ docs, name, display, description, packages }) => {
+        return `${level} ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
+          stringifyFunctions(functions.filter(i => i.package === name), false)}${
+          isFilledArray(packages) ? generateAddons(packages, `${level}#`) : ''}`
+      })
+      .join('\n')
+  }
+
+  const addons = generateAddons(Object.values(packages))
 
   mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
 
@@ -334,7 +406,8 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author, submodules, iife } of activePackages) {
+  async function update(pkg: PackageManifest) {
+    const { name, description, author, submodules, iife, packages } = pkg
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)
@@ -380,5 +453,10 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     }
 
     await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })
+
+    if (isFilledArray(packages))
+      await Promise.all(packages.map(update))
   }
+
+  await Promise.all(activePackages.map(update))
 }

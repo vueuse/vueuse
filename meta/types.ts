@@ -10,6 +10,8 @@ export interface PackageManifest {
   deprecated?: boolean
   submodules?: boolean
   iife?: boolean
+  installDependencies?: boolean
+  packages?: PackageManifest[]
 }
 
 export interface VueUseFunction {
@@ -25,6 +27,7 @@ export interface VueUseFunction {
 }
 
 export interface VueUsePackage extends PackageManifest {
+  packages: VueUsePackage[]
   dir: string
   docs?: string
 }
