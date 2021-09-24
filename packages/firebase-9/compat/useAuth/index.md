@@ -1,17 +1,17 @@
 ---
-category: '@Firebase 8'
+category: '@Firebase 9 compat'
 ---
 
 # useAuth
 
 Reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding. It provides a reactive `user` and `isAuthenticated` so you
-can easily react to changes in the users' authentication status. 
+can easily react to changes in the users' authentication status.
 
 ## Usage
 
 ```html
 <script setup lang="ts">
-import firebase from 'firebase'
+import firebase from 'firebase/compat'
 import { useAuth } from '@vueuse/firebase/useAuth'
 
 const { GoogleAuthProvider } = firebase.auth

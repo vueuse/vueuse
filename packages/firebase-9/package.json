@@ -1,7 +1,7 @@
 {
-  "name": "@vueuse/firebase",
+  "name": "@vueuse/firebase-9",
   "version": "6.4.1",
-  "description": "Enables realtime bindings for libraries dependent on Firebase SDK v8",
+  "description": "Enables realtime bindings for Firebase SDK v9 modular libraries",
   "keywords": [
     "vue",
     "vue-use",
@@ -38,21 +38,19 @@
   "main": "./index.cjs",
   "types": "./index.d.ts",
   "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/firebase#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/firebase-9#readme",
   "peerDependencies": {
-    "firebase": ">=4.0.0 <9.0.0"
+    "firebase": ">=9.0.2"
   },
   "dependencies": {
     "@vueuse/shared": "6.4.1",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "firebase": "^8.10.0"
+    "firebase": "9.0.2"
   }
 }

@@ -73,11 +73,24 @@ Enables RxJS reactive functions in Vue
   - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
-## Firebase - [`@vueuse/firebase`](https://vueuse.org/firebase/README.html)
-Enables realtime bindings for Firebase
+## Firebase 8 - [`@vueuse/firebase`](https://vueuse.org/firebase/README.html)
+Enables realtime bindings for libraries dependent on Firebase SDK v8
   - [`useAuth`](https://vueuse.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
   - [`useFirestore`](https://vueuse.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
   - [`useRTDB`](https://vueuse.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+
+
+## Firebase 9 - [`@vueuse/firebase-9`](https://vueuse.org/firebase-9/README.html)
+Enables realtime bindings for Firebase SDK v9 modular libraries
+  - [`useAuth`](https://vueuse.org/firebase-9/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
+  - [`useFirestore`](https://vueuse.org/firebase-9/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.org/firebase-9/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
+
+### Firebase 9 compat - [`@vueuse/firebase-9/compat`](https://vueuse.org/firebase-9/compat/README.html)
+Enables realtime bindings for Firebase SDK v9 compat libraries
+  - [`useAuth`](https://vueuse.org/firebase-9/compat/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
+  - [`useFirestore`](https://vueuse.org/firebase-9/compat/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+  - [`useRTDB`](https://vueuse.org/firebase-9/compat/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 
 ## Electron - [`@vueuse/electron`](https://vueuse.org/electron/README.html)

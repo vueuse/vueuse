@@ -1,5 +1,5 @@
 ---
-category: '@Firebase 8'
+category: '@Firebase 9 compat'
 ---
 
 # useFirestore
@@ -9,8 +9,8 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 ## Usage
 
 ```js {7,9}
-import firebase from 'firebase/app'
-import 'firebase/firestore'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/firestore'
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 const db = firebase.initializeApp({ projectId: 'MY PROJECT ID' }).firestore()

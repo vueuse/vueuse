@@ -1,5 +1,5 @@
 ---
-category: '@Firebase 8'
+category: '@Firebase 9 compat'
 ---
 
 # useRTDB
@@ -9,8 +9,8 @@ Reactive [Firebase Realtime Database](https://firebase.google.com/docs/database)
 ## Usage
 
 ```js
-import firebase from 'firebase/app'
-import 'firebase/database'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/database'
 import { useRTDB } from '@vueuse/firebase/useRTDB'
 
 const db = firebase

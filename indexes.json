@@ -3,12 +3,14 @@
     "shared": {
       "name": "shared",
       "display": "Shared utilities",
+      "packages": [],
       "dir": "packages/shared"
     },
     "core": {
       "name": "core",
       "display": "VueUse",
       "description": "Collection of essential Vue Composition Utilities",
+      "packages": [],
       "dir": "packages/core"
     },
     "components": {
@@ -20,6 +22,7 @@
         "@vueuse/core",
         "@vueuse/shared"
       ],
+      "packages": [],
       "dir": "packages/components"
     },
     "router": {
@@ -33,6 +36,7 @@
       "globals": {
         "vue-router": "VueRouter"
       },
+      "packages": [],
       "dir": "packages/router",
       "docs": "https://vueuse.org/router/README.html"
     },
@@ -59,6 +63,7 @@
         "jwt-decode": "jwt_decode",
         "focus-trap": "focusTrap"
       },
+      "packages": [],
       "dir": "packages/integrations",
       "docs": "https://vueuse.org/integrations/README.html"
     },
@@ -75,13 +80,14 @@
         "rxjs": "rxjs",
         "rxjs/operators": "rxjs.operator"
       },
+      "packages": [],
       "dir": "packages/rxjs",
       "docs": "https://vueuse.org/rxjs/README.html"
     },
     "firebase": {
       "name": "firebase",
-      "display": "Firebase",
-      "description": "Enables realtime bindings for Firebase",
+      "display": "Firebase 8",
+      "description": "Enables realtime bindings for libraries dependent on Firebase SDK v8",
       "addon": true,
       "submodules": true,
       "external": [
@@ -92,8 +98,46 @@
         "firebase": "firebase",
         "firebase/app": "firebase"
       },
+      "installDependencies": true,
+      "packages": [],
       "dir": "packages/firebase",
       "docs": "https://vueuse.org/firebase/README.html"
+    },
+    "firebase-9": {
+      "name": "firebase-9",
+      "display": "Firebase 9",
+      "description": "Enables realtime bindings for Firebase SDK v9 modular libraries",
+      "addon": true,
+      "submodules": true,
+      "external": [
+        "firebase/auth",
+        "firebase/database",
+        "firebase/firestore"
+      ],
+      "iife": false,
+      "packages": [
+        {
+          "name": "firebase-9/compat",
+          "display": "Firebase 9 compat",
+          "description": "Enables realtime bindings for Firebase SDK v9 compat libraries",
+          "submodules": true,
+          "addon": true,
+          "iife": true,
+          "external": [
+            "firebase/compat",
+            "firebase/compat/app"
+          ],
+          "globals": {
+            "firebase/compat": "firebase",
+            "firebase/compat/app": "firebase"
+          },
+          "packages": [],
+          "dir": "packages/firebase-9/compat",
+          "docs": "https://vueuse.org/firebase-9/compat/README.html"
+        }
+      ],
+      "dir": "packages/firebase-9",
+      "docs": "https://vueuse.org/firebase-9/README.html"
     },
     "electron": {
       "name": "electron",
@@ -105,13 +149,16 @@
         "electron"
       ],
       "iife": false,
+      "packages": [],
       "dir": "packages/electron",
       "docs": "https://vueuse.org/electron/README.html"
     }
   },
   "categories": [
     "@Electron",
-    "@Firebase",
+    "@Firebase 8",
+    "@Firebase 9",
+    "@Firebase 9 compat",
     "@Integrations",
     "@Router",
     "@RxJS",
@@ -1149,21 +1196,63 @@
       "name": "useAuth",
       "package": "firebase",
       "docs": "https://vueuse.org/firebase/useAuth/",
-      "category": "@Firebase",
+      "category": "@Firebase 8",
       "description": "reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding"
     },
     {
       "name": "useFirestore",
       "package": "firebase",
       "docs": "https://vueuse.org/firebase/useFirestore/",
-      "category": "@Firebase",
+      "category": "@Firebase 8",
       "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
     },
     {
       "name": "useRTDB",
       "package": "firebase",
       "docs": "https://vueuse.org/firebase/useRTDB/",
-      "category": "@Firebase",
+      "category": "@Firebase 8",
+      "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
+    },
+    {
+      "name": "useAuth",
+      "package": "firebase-9/compat",
+      "docs": "https://vueuse.org/firebase-9/compat/useAuth/",
+      "category": "@Firebase 9 compat",
+      "description": "reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding"
+    },
+    {
+      "name": "useFirestore",
+      "package": "firebase-9/compat",
+      "docs": "https://vueuse.org/firebase-9/compat/useFirestore/",
+      "category": "@Firebase 9 compat",
+      "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
+    },
+    {
+      "name": "useRTDB",
+      "package": "firebase-9/compat",
+      "docs": "https://vueuse.org/firebase-9/compat/useRTDB/",
+      "category": "@Firebase 9 compat",
+      "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
+    },
+    {
+      "name": "useAuth",
+      "package": "firebase-9",
+      "docs": "https://vueuse.org/firebase-9/useAuth/",
+      "category": "@Firebase 9",
+      "description": "reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding"
+    },
+    {
+      "name": "useFirestore",
+      "package": "firebase-9",
+      "docs": "https://vueuse.org/firebase-9/useFirestore/",
+      "category": "@Firebase 9",
+      "description": "reactive [Firestore](https://firebase.google.com/docs/firestore) binding"
+    },
+    {
+      "name": "useRTDB",
+      "package": "firebase-9",
+      "docs": "https://vueuse.org/firebase-9/useRTDB/",
+      "category": "@Firebase 9",
       "description": "reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding"
     },
     {

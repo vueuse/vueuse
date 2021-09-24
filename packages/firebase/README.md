@@ -2,12 +2,12 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/firebase?color=a1b858)](https://www.npmjs.com/package/@vueuse/firebase)
 
-> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bindings for Firebase.
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bindings for **Firebase SDK version 8**.
 
 ## Install
 
 <pre class='language-bash'>
-npm i <b>@vueuse/firebase</b> firebase
+npm i <b>@vueuse/firebase</b> firebase@8
 </pre>
 
 ## Functions

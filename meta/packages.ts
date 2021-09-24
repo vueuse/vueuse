@@ -72,8 +72,8 @@ export const packages: PackageManifest[] = [
   },
   {
     name: 'firebase',
-    display: 'Firebase',
-    description: 'Enables realtime bindings for Firebase',
+    display: 'Firebase 8',
+    description: 'Enables realtime bindings for libraries dependent on Firebase SDK v8',
     addon: true,
     submodules: true,
     external: [
@@ -84,6 +84,38 @@ export const packages: PackageManifest[] = [
       'firebase': 'firebase',
       'firebase/app': 'firebase',
     },
+    installDependencies: true,
+  },
+  {
+    name: 'firebase-9',
+    display: 'Firebase 9',
+    description: 'Enables realtime bindings for Firebase SDK v9 modular libraries',
+    addon: true,
+    submodules: true,
+    external: [
+      'firebase/auth',
+      'firebase/database',
+      'firebase/firestore',
+    ],
+    iife: false,
+    packages: [
+      {
+        name: 'firebase-9/compat',
+        display: 'Firebase 9 compat',
+        description: 'Enables realtime bindings for Firebase SDK v9 compat libraries',
+        submodules: true,
+        addon: true,
+        iife: true,
+        external: [
+          'firebase/compat',
+          'firebase/compat/app',
+        ],
+        globals: {
+          'firebase/compat': 'firebase',
+          'firebase/compat/app': 'firebase',
+        },
+      },
+    ],
   },
   {
     name: 'electron',
