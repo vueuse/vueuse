@@ -1,7 +1,7 @@
 // @ts-expect-error
 import base from '@vue/theme/config'
-import indexes from '../../indexes.json'
 import { currentVersion, versions } from '../../meta/versions'
+import { categories, indexes } from '../../meta/function-indexes'
 import highlight from './highlight'
 
 const themeConfig = async() => {
@@ -9,18 +9,6 @@ const themeConfig = async() => {
   config.markdown.highlight = await highlight()
   return config
 }
-
-const categoriesOrder = [
-  'Browser',
-  'Sensors',
-  'Animation',
-  'State',
-  'Component',
-  'Watch',
-  'Formatters',
-  'Utilities',
-  'Misc',
-]
 
 const Guide = [
   { text: 'Get Started', link: '/guide/index' },
@@ -31,16 +19,26 @@ const Guide = [
   { text: 'Guidelines', link: '/guidelines' },
 ]
 
-const Functions = [
-  { text: 'Animation', link: '/functions#animation' },
-  { text: 'Browser', link: '/functions#browser' },
-  { text: 'Component', link: '/functions#component' },
-  { text: 'Formatters', link: '/functions#formatters' },
-  { text: 'Misc', link: '/functions#misc' },
-  { text: 'Sensors', link: '/functions#sensors' },
-  { text: 'State', link: '/functions#state' },
-  { text: 'Utilities', link: '/functions#utilities' },
-  { text: 'Watch', link: '/functions#watch' },
+const CoreCategories = categories
+  .filter(f => !f.startsWith('@'))
+  .map(c => ({
+    text: c,
+    activeMatch: '___', // never active
+    link: `/functions#category=${c}`,
+  }))
+
+const AddonCategories = [
+  ...categories
+    .filter(f => f.startsWith('@'))
+    .map(c => ({
+      text: c.slice(1),
+      activeMatch: '___', // never active
+      link: `/functions#category=${encodeURIComponent(c)}`,
+    })),
+  { text: 'Head', link: '/add-ons.html#head-vueuse-head' },
+  { text: 'Motion', link: '/add-ons.html#motion-vueuse-motion' },
+  { text: 'Gesture', link: '/add-ons.html#gesture-vueuse-gesture' },
+  { text: 'Sound', link: '/add-ons.html#sound-vueuse-sound' },
 ]
 
 const Links = [
@@ -52,7 +50,8 @@ const Links = [
 
 const DefaultSideBar = [
   { text: 'Guide', items: Guide },
-  { text: 'Core Functions', items: Functions },
+  { text: 'Core Functions', items: CoreCategories },
+  { text: 'Add-ons', items: AddonCategories },
   { text: 'Links', items: Links },
 ]
 
@@ -97,13 +96,10 @@ const config = {
       },
       {
         text: 'Functions',
-        items: indexes.categories
-          .filter(f => !f.startsWith('@'))
-          .map(c => ({
-            text: c,
-            activeMatch: '___', // never active
-            link: `/functions#${c.toLowerCase()}`,
-          })),
+        items: [
+          { text: 'Core', items: CoreCategories },
+          { text: 'Add-ons', items: AddonCategories },
+        ],
       },
       {
         text: 'Add-ons',
@@ -180,11 +176,6 @@ const config = {
 
 function getFunctionsSideBar() {
   const links = []
-  const { categories } = indexes
-
-  categories
-    .sort((a, b) => categoriesOrder.indexOf(a) - categoriesOrder.indexOf(b))
-    .sort((a, b) => a.startsWith('@') ? 1 : b.startsWith('@') ? -1 : 0)
 
   for (const name of categories) {
     if (name.startsWith('_'))

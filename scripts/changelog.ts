@@ -3,8 +3,12 @@ import { CommitInfo } from '../meta/types'
 import { uniq } from './utils'
 
 const git = Git()
+let cache: CommitInfo[] | undefined
 
 export async function getChangeLog(count = 200) {
+  if (cache)
+    return cache
+
   const logs = (await git.log({ maxCount: count })).all.filter(i =>
     i.message.includes('chore: release')
     || i.message.startsWith('feat')
@@ -26,5 +30,7 @@ export async function getChangeLog(count = 200) {
     )
   }
 
-  return logs.filter(i => i.functions?.length || i.version)
+  const result = logs.filter(i => i.functions?.length || i.version)
+  cache = result
+  return result
 }
