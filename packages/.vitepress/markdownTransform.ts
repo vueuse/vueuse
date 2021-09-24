@@ -1,8 +1,9 @@
-import { resolve } from 'path'
+import { join, resolve } from 'path'
 import { Plugin } from 'vite'
 import fs from 'fs-extra'
+import { packages } from '../../meta/packages'
 import { functionNames, getFunction } from '../../meta/function-indexes'
-import { getFunctionFooter, getFunctionHead, hasDemo, replacer } from '../../scripts/utils'
+import { getTypeDefinition, replacer } from '../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../types/packages')
@@ -38,22 +39,67 @@ export function MarkdownTransform(): Plugin {
         const firstSubheader = code.search(/\n## \w/)
         const sliceIndex = firstSubheader < 0 ? frontmatterEnds : firstSubheader
 
+        const { footer, header } = await getFunctionMarkdown(pkg, name)
+
         if (hasTypes)
-          code = replacer(code, await getFunctionFooter(pkg, name), 'FOOTER', 'tail')
-
-        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
-
-        let header = ''
-        if (hasDemo(pkg, name))
-          header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n## Demo\n<DemoContainer><Demo/></DemoContainer>\n'
-
-        header += getFunctionHead(pkg, name)
-
+          code = replacer(code, footer, 'FOOTER', 'tail')
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
+
+        code = code.replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
       }
 
       return code
     },
+  }
+}
+
+const DIR_SRC = resolve(__dirname, '..')
+const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
+
+export async function getFunctionMarkdown(pkg: string, name: string) {
+  const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
+
+  const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
+  const types = await getTypeDefinition(pkg, name)
+
+  const typingSection = types && `## Type Declarations\n\n\`\`\`typescript\n${types.trim()}\n\`\`\``
+
+  const links = ([
+    ['Source', `${URL}/index.ts`],
+    hasDemo ? ['Demo', `${URL}/demo.vue`] : undefined,
+    ['Docs', `${URL}/index.md`],
+  ])
+    .filter(i => i)
+    .map(i => `[${i![0]}](${i![1]})`).join(' • ')
+
+  const sourceSection = `## Source\n\n${links}\n`
+  const changelogSection = `
+## Changelog
+
+<Changelog fn="${name}" />
+`
+  const demoSection = hasDemo
+    ? `
+<script setup>
+import Demo from \'./demo.vue\'
+</script>
+## Demo
+<a href="${URL}/demo.vue" target="_blank" class="demo-source-link">source</a>
+<DemoContainer><Demo/></DemoContainer>
+`
+    : ''
+  const packageNote = packages.find(p => p.name === pkg)!.addon
+    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
+    : ''
+
+  const footer = `${typingSection || ''}\n\n${sourceSection}\n${changelogSection}\n`
+
+  const header = demoSection + packageNote
+
+  return {
+    footer,
+    header,
   }
 }

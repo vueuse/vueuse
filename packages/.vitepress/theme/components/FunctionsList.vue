@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import Fuse from 'fuse.js'
+import { useUrlSearchParams } from '@vueuse/core'
 import { functions, categories } from '../../../../meta/function-indexes'
 
 // TODO: Sort by recent updated
-// TODO: Reactive to hash
 
 const coreCategories = categories.filter(i => !i.startsWith('@'))
 const addonCategories = categories.filter(i => i.startsWith('@'))
-const hasComponent = ref(false)
 
-const search = ref('')
-const category = ref<string | null>(null)
+const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
+const search = toRef(query, 'search')
+const category = toRef(query, 'category')
+const hasComponent = toRef(query, 'component')
 
 const items = computed(() => {
   let fn = functions.filter(i => !i.internal)
@@ -37,7 +38,7 @@ function toggleCategory(cate: string) {
 
 <template>
   <div class="grid grid-cols-[80px,auto] gap-y-2">
-    <div opacity="80">
+    <div opacity="80" text="sm">
       Core
     </div>
     <div flex="~ wrap" gap="2" m="b-2">
@@ -53,8 +54,8 @@ function toggleCategory(cate: string) {
         {{ cate }}
       </button>
     </div>
-    <div opacity="80">
-      Addons
+    <div opacity="80" text="sm">
+      Add-ons
     </div>
     <div flex="~ wrap" gap="2" m="b-2">
       <button
@@ -69,10 +70,12 @@ function toggleCategory(cate: string) {
         {{ cate.slice(1) }}
       </button>
     </div>
-    <div>Filters</div>
+    <div opacity="80" text="sm">
+      Filters
+    </div>
     <div flex="~">
       <label class="checkbox">
-        <input v-model="hasComponent" type="checkbox">
+        <input v-model="hasComponent" type="checkbox" />
         <span>Has Component</span>
       </label>
     </div>

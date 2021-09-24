@@ -3,23 +3,16 @@
   background: var(--vt-c-bg-soft);
   padding: 1em 2em;
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   border-radius: 4px;
   transition: background-color 0.5s;
 }
 
-.demo::after {
-  content: "demo";
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  z-index: 2;
-  line-height: 24px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--vt-c-text-3);
-  padding: 0 8px;
-  transition: color 0.5s;
+.demo-source-link {
+  color: var(--vt-c-text-2) !important;
+  @apply text-sm float-right !font-400 transform -translate-y-30px px-1;
+  @apply opacity-60 hover:opacity-100;
+  @apply !transition-opacity;
 }
 
 @media (min-width: 720px) {
