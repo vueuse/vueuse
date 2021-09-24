@@ -29,11 +29,14 @@ describe('useUrlSearchParams', () => {
   each([
     'history',
     'hash',
-  ]).describe('each mode', (mode: 'history' | 'hash') => {
+    'hash-params',
+  ]).describe('each mode', (mode: 'history' | 'hash' | 'hash-params') => {
     test('return initial params', () => {
       useSetup(() => {
         if (mode === 'hash')
           window.location.hash = '#/test/?foo=bar'
+        else if (mode === 'hash-params')
+          window.location.hash = '#foo=bar'
         else
           window.location.search = '?foo=bar'
       })
@@ -48,6 +51,8 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBeUndefined()
         if (mode === 'hash')
           mockPopstate('', '#/test/?foo=bar')
+        else if (mode === 'hash-params')
+          mockPopstate('', '#foo=bar')
         else
           mockPopstate('?foo=bar', '')
 
