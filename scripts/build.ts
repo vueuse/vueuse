@@ -4,7 +4,7 @@ import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
 import consola from 'consola'
 import { packages } from '../meta/packages'
-import indexes from '../meta/function-indexes'
+import { indexes } from '../meta/function-indexes'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 

@@ -1,25 +1,8 @@
 // @ts-expect-error
 import base from '@vue/theme/config'
-import indexes from '../../indexes.json'
 import { currentVersion, versions } from '../../meta/versions'
+import { categories, indexes } from '../../meta/function-indexes'
 import highlight from './highlight'
-
-const categoriesOrder = [
-  'Browser',
-  'Sensors',
-  'Animation',
-  'State',
-  'Elements',
-  'Component',
-  'Watch',
-  'Network',
-  'Utilities',
-  'Misc',
-]
-
-const categories = Array.from(indexes.categories)
-  .sort((a, b) => categoriesOrder.indexOf(a) - categoriesOrder.indexOf(b))
-  .sort((a, b) => a.startsWith('@') ? 1 : b.startsWith('@') ? -1 : 0)
 
 const themeConfig = async() => {
   const config = await base()

@@ -1,5 +1,5 @@
 import fs from 'fs-extra'
-import indexes from '../meta/function-indexes'
+import { indexes } from '../meta/function-indexes'
 
 async function buildRedirects() {
   const redirects = indexes.functions

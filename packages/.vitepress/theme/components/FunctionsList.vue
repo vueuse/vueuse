@@ -13,6 +13,9 @@ const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
 const search = toRef(query, 'search')
 const category = toRef(query, 'category')
 const hasComponent = toRef(query, 'component')
+const sortMethod = toRef(query, 'sort')
+
+const showCategory = computed(() => !search.value)
 
 const items = computed(() => {
   let fn = functions.filter(i => !i.internal)
@@ -26,9 +29,14 @@ const fuse = computed(() => new Fuse(items.value, {
   keys: ['name', 'description'],
 }))
 const result = computed(() => {
-  if (!search.value)
-    return items.value
-  return fuse.value.search(search.value).map(i => i.item)
+  if (search.value) {
+    return fuse.value.search(search.value).map(i => i.item)
+  }
+  else {
+    const fns = [...items.value]
+    fns.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
+    return fns
+  }
 })
 
 function toggleCategory(cate: string) {
@@ -87,7 +95,19 @@ function toggleCategory(cate: string) {
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="b-4" />
   <div flex="~ col" gap="2">
-    <FunctionBadge v-for="fn of result" :key="fn.name" :fn="fn" />
+    <template v-for="(fn, idx) of result" :key="fn.name">
+      <h3
+        v-if="showCategory && fn.category !== result[idx - 1]?.category"
+        opacity="60"
+        text="!16px"
+        tracking="!wide"
+        m="!0"
+        p="y-2"
+      >
+        {{ fn.category }}
+      </h3>
+      <FunctionBadge :fn="fn" />
+    </template>
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="t-4" />
 </template>
@@ -103,12 +123,27 @@ input {
   @apply inline-flex items-center my-auto cursor-pointer select-none;
 
   input {
-    @apply bg-gray-400/50;
-    @apply rounded-md h-4 w-4;
+    appearance: none;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    user-select: none;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+    @apply bg-gray-400/30;
+    @apply rounded-md h-4 w-4 select-none;
+  }
+
+  input:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
   }
 
   span {
-    @apply ml-2 text-13px opacity-70;
+    @apply ml-1.5 text-13px opacity-70;
   }
 }
 </style>

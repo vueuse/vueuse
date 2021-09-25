@@ -752,7 +752,7 @@
     {
       "name": "useInterval",
       "package": "shared",
-      "lastUpdated": 1623573600000,
+      "lastUpdated": 1632565969000,
       "docs": "https://vueuse.org/shared/useInterval/",
       "category": "Animation",
       "description": "reactive counter increases on every interval"
