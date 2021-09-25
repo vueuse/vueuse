@@ -15,7 +15,7 @@
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -37,7 +37,7 @@
     "rxjs": ">=6.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.5.1",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "devDependencies": {

@@ -121,8 +121,8 @@ importers:
 
   packages/components:
     specifiers:
-      '@vueuse/core': 6.4.1
-      '@vueuse/shared': 6.4.1
+      '@vueuse/core': workspace:*
+      '@vueuse/shared': workspace:*
       vue-demi: '*'
     dependencies:
       '@vueuse/core': link:../core
@@ -131,7 +131,7 @@ importers:
 
   packages/core:
     specifiers:
-      '@vueuse/shared': 6.4.1
+      '@vueuse/shared': workspace:*
       vue-demi: '*'
     dependencies:
       '@vueuse/shared': link:../shared
@@ -139,7 +139,7 @@ importers:
 
   packages/electron:
     specifiers:
-      '@vueuse/shared': 6.4.1
+      '@vueuse/shared': workspace:*
       electron: ^13.1.0
       vue-demi: '*'
     dependencies:
@@ -150,7 +150,7 @@ importers:
 
   packages/firebase:
     specifiers:
-      '@vueuse/shared': 6.4.1
+      '@vueuse/shared': workspace:*
       vue-demi: '*'
     dependencies:
       '@vueuse/shared': link:../shared
@@ -161,7 +161,7 @@ importers:
       '@types/nprogress': ^0.2.0
       '@types/qrcode': ^1.4.1
       '@types/universal-cookie': ^3.0.0
-      '@vueuse/core': 6.4.1
+      '@vueuse/core': workspace:*
       axios: ^0.21.4
       drauu: ^0.2.0
       focus-trap: ^6.7.0
@@ -188,7 +188,7 @@ importers:
 
   packages/router:
     specifiers:
-      '@vueuse/shared': 6.4.1
+      '@vueuse/shared': workspace:*
       vue-demi: '*'
       vue-router: ^4.0.11
     dependencies:
@@ -199,7 +199,7 @@ importers:
 
   packages/rxjs:
     specifiers:
-      '@vueuse/shared': 6.4.1
+      '@vueuse/shared': workspace:*
       rxjs: ^6.6.7
       vue-demi: '*'
     dependencies:

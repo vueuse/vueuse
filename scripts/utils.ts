@@ -341,7 +341,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
 
     packageJSON.version = version
     packageJSON.description = description || packageJSON.description
-    packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
+    packageJSON.author = author || 'Anthony Fu <https://github.com/antfu>'
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
@@ -372,11 +372,6 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
             require: `./${i.name}.cjs`,
           }
         })
-    }
-
-    for (const key of Object.keys(packageJSON.dependencies)) {
-      if (key.startsWith('@vueuse/'))
-        packageJSON.dependencies[key] = version
     }
 
     await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })

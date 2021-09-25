@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "dependencies": {
-    "@vueuse/core": "6.5.1",
-    "@vueuse/shared": "6.5.1",
+    "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }
