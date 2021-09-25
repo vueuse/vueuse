@@ -23,6 +23,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
 
+      - run: pnpm install
+
       - run: npx conventional-github-releaser -p angular
         continue-on-error: true
         env:
