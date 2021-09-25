@@ -49,7 +49,10 @@
         "http",
         "nprogress",
         "jwt-decode",
-        "focus-trap"
+        "focus-trap",
+        "drauu",
+        "@vueuse/core",
+        "@vueuse/shared"
       ],
       "globals": {
         "axios": "axios",
@@ -57,7 +60,8 @@
         "qrcode": "QRCode",
         "nprogress": "nprogress",
         "jwt-decode": "jwt_decode",
-        "focus-trap": "focusTrap"
+        "focus-trap": "focusTrap",
+        "drauu": "Drauu"
       },
       "dir": "packages/integrations",
       "docs": "https://vueuse.org/integrations/README.html"
