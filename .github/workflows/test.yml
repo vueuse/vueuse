@@ -27,13 +27,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install
-      run: yarn install --frozen-lockfile
-      env:
-        ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    - run: npm i -g pnpm @antfu/ni
+    - run: nci
     - name: Lint
-      run: yarn lint
+      run: nr lint
     - name: Test Vue 3
-      run: yarn run test:3
+      run: nr test:3
     - name: Test Vue 2
-      run: yarn run test:2
+      run: nr test:2

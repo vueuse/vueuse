@@ -5,9 +5,6 @@
   "description": "Collection of essential Vue Composition Utilities",
   "license": "MIT",
   "author": "Anthony Fu<https://github.com/antfu>",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "build": "esno scripts/build.ts",
     "build:redirects": "esno scripts/redirects.ts",
@@ -102,5 +99,8 @@
     "vue": "^3.2.18",
     "vue-demi": "^0.11.4",
     "vue2": "npm:vue@2"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": ["electron"]
   }
 }

@@ -9,13 +9,13 @@ Thanks for being interested in contributing to this project!
 Clone this repo to your local machine and install the dependencies.
 
 ```bash
-yarn install
+pnpm install
 ```
 
 We use Vitepress for rapid development and documenting. You can start it locally by
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ## Contributing
