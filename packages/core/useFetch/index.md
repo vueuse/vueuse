@@ -127,7 +127,7 @@ const { isFetching, error, data } = useMyFetch('users')
 
 ### Events
 
-The `onFetchResposne` and `onFetchError` will fire on fetch request responses and errors respectively.
+The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
 ```ts
 const { onFetchResponse, onFetchError } = useFetch(url)
