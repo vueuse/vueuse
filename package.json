@@ -73,6 +73,7 @@
     "js-yaml": "^4.1.0",
     "lint-staged": "^11.1.2",
     "markdown-table": "^3.0.1",
+    "pnpm": "^6.15.1",
     "postcss": "^8.3.8",
     "postcss-nested": "^5.0.6",
     "prettier": "^2.4.1",
