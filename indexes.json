@@ -427,7 +427,7 @@
       "package": "shared",
       "docs": "https://vueuse.org/shared/watchOnce/",
       "category": "Watch",
-      "description": "`watch` with trigger once times"
+      "description": "`watch` that only triggers once"
     },
     {
       "name": "watchWithFilter",

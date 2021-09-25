@@ -148,7 +148,7 @@
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
   - [`until`](https://vueuse.org/shared/until/) — promised one-time watch for changes
   - [`watchAtMost`](https://vueuse.org/shared/watchAtMost/) — `watch` with the number of times triggered
-  - [`watchOnce`](https://vueuse.org/shared/watchOnce/) — `watch` with trigger once times
+  - [`watchOnce`](https://vueuse.org/shared/watchOnce/) — `watch` that only triggers once
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
   - [`whenever`](https://vueuse.org/shared/whenever/) — shorthand for watching value to be truthy
 
