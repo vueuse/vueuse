@@ -4,17 +4,17 @@ category: Watch
 
 # watchOnce
 
-`watch` with trigger once times.
+`watch` that only triggers once.
 
 ## Usage
 
-Similar to `watch`. After the callback function triggered once times, the watch will be stopped automatically.
+After the callback function has been triggered once, the watch will be stopped automatically.
 
 ```ts
 import { watchOnce } from '@vueuse/core'
 
-watchOnce(
-  source,
-  () => { console.log('trigger!') }, // only trigger it once times
-)
+watchOnce(source, () => {
+  // triggers only once
+  console.log('source changed!') 
+})
 ```
