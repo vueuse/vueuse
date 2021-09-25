@@ -423,6 +423,13 @@
       "description": "`watch` with the number of times triggered"
     },
     {
+      "name": "watchOnce",
+      "package": "shared",
+      "docs": "https://vueuse.org/shared/watchOnce/",
+      "category": "Watch",
+      "description": "`watch` with trigger once times"
+    },
+    {
       "name": "watchWithFilter",
       "package": "shared",
       "docs": "https://vueuse.org/shared/watchWithFilter/",
