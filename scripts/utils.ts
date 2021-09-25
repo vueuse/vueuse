@@ -5,7 +5,7 @@ import fg from 'fast-glob'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
-import { activePackages, packages } from '../meta/packages'
+import { packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.org'
@@ -334,7 +334,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author, submodules, iife } of activePackages) {
+  for (const { name, description, author, submodules, iife } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)

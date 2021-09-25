@@ -4,7 +4,7 @@ import esbuild, { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
-import { activePackages } from '../meta/packages'
+import { packages } from '../meta/packages'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
@@ -25,7 +25,7 @@ const esbuildMinifer = (options: ESBuildOptions) => {
   }
 }
 
-for (const { globals, name, external, submodules, iife } of activePackages) {
+for (const { globals, name, external, submodules, iife } of packages) {
   const iifeGlobals = {
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUse',

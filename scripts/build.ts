@@ -3,8 +3,9 @@ import assert from 'assert'
 import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
 import consola from 'consola'
-import { activePackages } from '../meta/packages'
+import { packages } from '../meta/packages'
 import indexes from '../meta/function-indexes'
+import { version } from '../package.json'
 import { updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
@@ -14,14 +15,13 @@ const FILES_COPY_ROOT = [
 ]
 
 const FILES_COPY_LOCAL = [
-  'package.json',
   'README.md',
 ]
 
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
-  for (const { name } of activePackages) {
+  for (const { name } of packages) {
     const packageRoot = path.resolve(__dirname, '..', 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
@@ -32,10 +32,18 @@ async function buildMetaFiles() {
 
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
+
     for (const file of FILES_COPY_LOCAL) {
       if (fs.existsSync(path.join(packageRoot, file)))
         await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
     }
+
+    const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
+    for (const key of Object.keys(packageJSON.dependencies)) {
+      if (key.startsWith('@vueuse/'))
+        packageJSON.dependencies[key] = version
+    }
+    await fs.writeJSON(path.join(packageDist, 'package.json'), packageJSON, { spaces: 2 })
   }
 }
 
