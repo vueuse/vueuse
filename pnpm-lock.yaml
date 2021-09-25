@@ -49,6 +49,7 @@ importers:
       rimraf: ^3.0.2
       rollup: ^2.57.0
       rollup-plugin-dts: ^4.0.0
+      rollup-plugin-esbuild: ^4.5.0
       rollup-plugin-terser: ^7.0.2
       rollup-plugin-typescript2: ^0.30.0
       rollup-plugin-uglify: ^6.0.4
@@ -107,6 +108,7 @@ importers:
       rimraf: 3.0.2
       rollup: 2.57.0
       rollup-plugin-dts: 4.0.0_rollup@2.57.0+typescript@4.4.3
+      rollup-plugin-esbuild: 4.5.0_rollup@2.57.0
       rollup-plugin-terser: 7.0.2_rollup@2.57.0
       rollup-plugin-typescript2: 0.30.0_rollup@2.57.0+typescript@4.4.3
       rollup-plugin-uglify: 6.0.4_rollup@2.57.0
@@ -7445,6 +7447,19 @@ packages:
       typescript: 4.4.3
     optionalDependencies:
       '@babel/code-frame': 7.14.5
+    dev: true
+
+  /rollup-plugin-esbuild/4.5.0_rollup@2.57.0:
+    resolution: {integrity: sha512-ieUd3AoYWsN6Tfp0LBNnC+QpdhKjDEaH4NK3ghuEXOH56/7TAtD+hMbD9vSWZgsGSbaqCkrn4j6PaUj1vOSt1g==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      esbuild: '>=0.10.1'
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
+      '@rollup/pluginutils': 4.1.1
+      joycon: 3.0.1
+      jsonc-parser: 3.0.0
+      rollup: 2.57.0
     dev: true
 
   /rollup-plugin-terser/7.0.2_rollup@2.57.0:

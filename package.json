@@ -46,7 +46,6 @@
     "@antfu/ni": "^0.9.3",
     "@iconify/json": "^1.1.406",
     "@rollup/plugin-replace": "^3.0.0",
-    "@rollup/plugin-typescript": "^8.2.5",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/js-yaml": "^4.0.3",
@@ -84,9 +83,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.57.0",
     "rollup-plugin-dts": "^4.0.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0",
-    "rollup-plugin-uglify": "^6.0.4",
+    "rollup-plugin-esbuild": "^4.5.0",
     "simple-git": "^2.45.1",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.3",
@@ -101,6 +98,8 @@
     "vue2": "npm:vue@2"
   },
   "pnpm": {
-    "neverBuiltDependencies": ["electron"]
+    "neverBuiltDependencies": [
+      "electron"
+    ]
   }
 }

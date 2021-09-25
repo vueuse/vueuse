@@ -60,7 +60,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "6.4.1",
+    "@vueuse/core": "6.4.1",
     "vue-demi": "*"
   },
   "optionalDependencies": {

@@ -46,6 +46,9 @@ export const packages: PackageManifest[] = [
       'nprogress',
       'jwt-decode',
       'focus-trap',
+      'drauu',
+      '@vueuse/core',
+      '@vueuse/shared',
     ],
     globals: {
       'axios': 'axios',
@@ -54,6 +57,7 @@ export const packages: PackageManifest[] = [
       'nprogress': 'nprogress',
       'jwt-decode': 'jwt_decode',
       'focus-trap': 'focusTrap',
+      'drauu': 'Drauu',
     },
   },
   {

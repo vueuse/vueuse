@@ -1,7 +1,6 @@
 import fs from 'fs'
 import { resolve } from 'path'
-import typescript from 'rollup-plugin-typescript2'
-import { terser } from 'rollup-plugin-terser'
+import esbuild, { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
@@ -15,6 +14,15 @@ const injectVueDemi: Plugin = {
   renderChunk(code) {
     return `${VUE_DEMI_IIFE};\n;${code}`
   },
+}
+
+const esbuildMinifer = (options: ESBuildOptions) => {
+  const { renderChunk } = esbuild(options)
+
+  return {
+    name: 'esbuild-minifer',
+    renderChunk,
+  }
 }
 
 for (const { globals, name, external, submodules, iife } of activePackages) {
@@ -65,10 +73,8 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
           globals: iifeGlobals,
           plugins: [
             injectVueDemi,
-            terser({
-              format: {
-                comments: false,
-              },
+            esbuildMinifer({
+              minify: true,
             }),
           ],
         },
@@ -79,13 +85,7 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
       input,
       output,
       plugins: [
-        typescript({
-          tsconfigOverride: {
-            compilerOptions: {
-              declaration: false,
-            },
-          },
-        }),
+        esbuild(),
       ],
       external: [
         'vue-demi',
