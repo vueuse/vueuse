@@ -41,6 +41,9 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
+      - name: TypeCheck
+        run: npm run typecheck
+
       - name: Test Vue 3
         run: pnpm run test:3
 
