@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "6.5.1",
+  "version": "6.5.2",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
