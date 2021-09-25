@@ -5,7 +5,7 @@
 
 [build]
   publish = "packages/.vitepress/dist"
-  command = "npm run docs:build"
+  command = "npx pnpm i --store=node_modules/.pnpm-store && npm run docs:build"
 
 [[redirects]]
   from = "https://vueuse.js.org/*"
