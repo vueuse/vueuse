@@ -9,19 +9,26 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
         with:
-          node-version: 14
-          registry-url: https://registry.npmjs.org/
-      - run: npm i -g pnpm @antfu/ni
-      - run: nci
-      - run: nr test --if-present
+          version: 6.15.1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+
       - run: npx conventional-github-releaser -p angular
         continue-on-error: true
         env:
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - run: nr publish:ci
+
+      - run: pnpm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NODE_OPTIONS: '--max-old-space-size=6144'
