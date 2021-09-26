@@ -42,7 +42,7 @@ jobs:
         run: pnpm run lint
 
       - name: TypeCheck
-        run: npm run typecheck
+        run: pnpm run update:full
 
       - name: Test Vue 3
         run: pnpm run test:3
