@@ -536,6 +536,13 @@
       "description": "reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)"
     },
     {
+      "name": "useConfirmDialog",
+      "package": "core",
+      "docs": "https://vueuse.org/core/useConfirmDialog/",
+      "category": "Utilities",
+      "description": "basic counter with utility functions"
+    },
+    {
       "name": "useCssVar",
       "package": "core",
       "docs": "https://vueuse.org/core/useCssVar/",
