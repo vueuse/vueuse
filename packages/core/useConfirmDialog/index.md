@@ -4,7 +4,7 @@ category: Utilities
 
 # useConfirmDialog
 
-Supports modals and confirmation dialog chains.
+Create event hooks to support modals and confirmation dialog chains.
 
 ## Usage
 
