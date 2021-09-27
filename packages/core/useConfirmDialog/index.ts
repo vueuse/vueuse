@@ -1,41 +1,67 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Ref,
-} from 'vue-demi'
-import { createEventHook } from '@vueuse/core'
+import { Ref } from 'vue-demi'
+import { createEventHook, EventHook, EventHookOn, Fn } from '@vueuse/core'
 
-export function useConfirmDialog(show: Ref<boolean>, fn: Function) {
-  const confirmHook = createEventHook<any>()
-  const cancelHook = createEventHook<any>()
+export interface useConfirmDialogReturn {
+  /*
+  * Opens the dialog
+  */
+  showDialog: Fn
 
-  let onResolve: Function
-  let onReject: Function
-  let promise: Promise<any>
+  /**
+   * Confirms and closes the dialog. Triggers a callback inside `onConfirm` hook.
+   * Can accept any data and to pass it to `onConfirm`.
+   */
+  confirm: (data?: any) => void
+
+  /**
+   * Cancels and closes the dialog. Triggers a callback inside `onCancel` hook.
+   * Can accept any data and to pass it to `onCancel`.
+   */
+  cancel: (data?: any) => void
+
+  /**
+   * Event Hook to be called on `confirm`.
+   * Gets data object from `confirm` function.
+   */
+  onConfirm: EventHookOn
+
+  /**
+   * Event Hook to be called on `cancel`.
+   * Gets data object from `cancel` function.
+   */
+  onCancel: EventHookOn
+}
+
+/**
+ * Hooks for creating confirm dialogs. Useful for modal windows, popups and logins.
+ *
+ * @see https://vueuse.org/core/useConfirmDialog/
+ * @param show ref boolean that handle a modal window
+ * @param onShowDialog{default = null} a function to be called when the modal is creating with `showDialog()`
+ */
+
+export function useConfirmDialog(show: Ref<boolean>, onShowDialog: Fn | null = null): useConfirmDialogReturn {
+  const confirmHook: EventHook = createEventHook()
+  const cancelHook: EventHook = createEventHook()
 
   const showDialog = () => {
-    promise = new Promise((resolve, reject) => {
-      onResolve = resolve
-      onReject = reject
-    })
+    if (onShowDialog) onShowDialog()
     show.value = true
-    fn()
-    return promise
   }
-  const confirm = (data = {}) => {
+  const confirm = (data = null) => {
     show.value = false
-    onResolve(true)
     confirmHook.trigger(data)
   }
-  const cancel = (error = {}) => {
+  const cancel = (data = null) => {
     show.value = false
-    onReject(error)
-    cancelHook.trigger(error)
+    cancelHook.trigger(data)
   }
-  // const onConfirm = (callback: Function) => {
-  //   return confirmHook.on(callback)
-  // }
-  // const onReject = (callback: Function) => {
-  //   callback()
-  // }
-  return { showDialog, confirm, cancel, onConfirm: confirmHook.on, onCancel: cancelHook.on }
+
+  return {
+    showDialog,
+    confirm,
+    cancel,
+    onConfirm: confirmHook.on,
+    onCancel: cancelHook.on,
+  }
 }
