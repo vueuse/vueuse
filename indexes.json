@@ -540,7 +540,7 @@
       "package": "core",
       "docs": "https://vueuse.org/core/useConfirmDialog/",
       "category": "Utilities",
-      "description": "basic counter with utility functions"
+      "description": "creates event hooks to support modals and confirmation dialog chains"
     },
     {
       "name": "useCssVar",
