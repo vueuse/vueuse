@@ -4,9 +4,11 @@ category: Utilities
 
 # useConfirmDialog
 
-Basic counter with utility functions.
+Supports modals and confirmation dialog chains.
 
 ## Usage
+
+**Basic Usage**
 
 ```ts
 import { defineComponent, ref } from 'vue'
@@ -21,7 +23,7 @@ export default defineComponent({
       confirm,
       cancel,
       onConfirm,
-      onReject,
+      onCancel,
     } = useConfirmDialog(show)
 
     onConfirm(() => {
