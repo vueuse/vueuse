@@ -1,9 +1,26 @@
-import { computed, reactive } from 'vue-demi'
+import { reactive } from 'vue-demi'
 import { pausableWatch } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type UrlParams = Record<string, string[] | string>
+
+export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow{
+  /**
+   * @default true
+   */
+  removeNullishValues?: boolean
+
+  /**
+   * @default false
+   */
+  removeFalsyValues?: boolean
+
+  /**
+   * @default {}
+   */
+  initialValue?: T
+}
 
 /**
  * Reactive URLSearchParams
@@ -13,57 +30,77 @@ export type UrlParams = Record<string, string[] | string>
  * @param options
  */
 export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
-  mode: 'history'|'hash' = 'history',
-  options: ConfigurableWindow = {},
+  mode: 'history' | 'hash' | 'hash-params' = 'history',
+  options: UseUrlSearchParamsOptions<T> = {},
 ): T {
-  const { window = defaultWindow } = options
+  const {
+    initialValue = {},
+    removeNullishValues = true,
+    removeFalsyValues = false,
+    window = defaultWindow!,
+  } = options
 
   if (!window)
-    return reactive(Object.assign({}))
+    return reactive(initialValue) as T
 
-  const hashWithoutParams = computed((): string => {
-    const hash = window.location.hash || ''
-    const index = hash.indexOf('?')
-    return index > 0 ? hash.substring(0, index) : hash
-  })
+  const state: Record<string, any> = reactive(initialValue)
 
-  const read = (): URLSearchParams => {
-    if (mode === 'hash') {
+  function getRawParams() {
+    if (mode === 'history') {
+      return window.location.search || ''
+    }
+    else if (mode === 'hash') {
       const hash = window.location.hash || ''
       const index = hash.indexOf('?')
-      return new URLSearchParams(index >= 0 ? hash.substring(index + 1) : '')
+      return index > 0 ? hash.slice(index) : ''
     }
     else {
-      return new URLSearchParams(window.location.search || '')
+      return (window.location.hash || '').replace(/^#/, '')
     }
   }
 
-  let params: URLSearchParams = read()
-  const paramsMap: T = reactive(Object.assign({}))
+  function constructQuery(params: URLSearchParams) {
+    const stringified = params.toString()
 
-  function writeToParamsMap(key: keyof T, value: any) {
-    return paramsMap[key] = value
+    if (mode === 'history')
+      return `${stringified ? `?${stringified}` : ''}${location.hash || ''}`
+    if (mode === 'hash-params')
+      return `${location.search || ''}${stringified ? `#${stringified}` : ''}`
+    const hash = window.location.hash || '#'
+    const index = hash.indexOf('?')
+    if (index > 0)
+      return `${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
+    return `${hash}${stringified ? `?${stringified}` : ''}`
   }
 
-  function updateParamsMap() {
-    Object.keys(paramsMap).forEach(key => delete paramsMap[key])
+  function read() {
+    return new URLSearchParams(getRawParams())
+  }
+
+  function updateState(params: URLSearchParams) {
+    const unusedKeys = new Set(Object.keys(state))
     for (const key of params.keys()) {
       const paramsForKey = params.getAll(key)
-      writeToParamsMap(key, paramsForKey.length > 1 ? paramsForKey : (params.get(key) || ''))
+      state[key] = paramsForKey.length > 1
+        ? paramsForKey
+        : (params.get(key) || '')
+      unusedKeys.delete(key)
     }
+    Array.from(unusedKeys).forEach(key => delete state[key])
   }
 
-  // Update the paramsMap with initial values
-  updateParamsMap()
-
   const { pause, resume } = pausableWatch(
-    paramsMap,
+    state,
     () => {
-      params = new URLSearchParams('')
-      Object.keys(paramsMap).forEach((key) => {
-        const mapEntry = paramsMap[key]
+      const params = new URLSearchParams('')
+      Object.keys(state).forEach((key) => {
+        const mapEntry = state[key]
         if (Array.isArray(mapEntry))
           mapEntry.forEach(value => params.append(key, value))
+        else if (removeNullishValues && mapEntry == null)
+          params.delete(key)
+        else if (removeFalsyValues && !mapEntry)
+          params.delete(key)
         else
           params.set(key, mapEntry)
       })
@@ -72,27 +109,26 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     { deep: true },
   )
 
-  function write(params: URLSearchParams, shouldUpdateParamsMap?: boolean) {
+  function write(params: URLSearchParams, shouldUpdate?: boolean) {
     pause()
-    if (shouldUpdateParamsMap)
-      updateParamsMap()
 
-    const empty = !params.keys().next()
-    const query = empty
-      ? hashWithoutParams.value
-      : (mode === 'hash')
-        ? `${hashWithoutParams.value}?${params}`
-        : `?${params}${hashWithoutParams.value}`
+    if (shouldUpdate)
+      updateState(params)
 
-    if (window)
-      window.history.replaceState({}, '', window.location.pathname + query)
+    window.history.replaceState({}, '', window.location.pathname + constructQuery(params))
+
     resume()
   }
 
-  useEventListener(window, 'popstate', () => {
-    params = read()
-    write(params, true)
-  })
+  function onChanged() {
+    write(read(), true)
+  }
 
-  return paramsMap
+  useEventListener(window, 'popstate', onChanged, false)
+  if (mode !== 'history')
+    useEventListener(window, 'hashchange', onChanged, false)
+
+  updateState(read())
+
+  return state as T
 }

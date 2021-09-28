@@ -1,9 +1,28 @@
-import { ref, watch } from 'vue-demi'
+import { Ref, ref, watch } from 'vue-demi'
 import { createDrauu, Drauu, Options, Brush } from 'drauu'
-import { MaybeElementRef, unrefElement, createEventHook } from '@vueuse/core'
+import { MaybeElementRef, unrefElement, createEventHook, EventHookOn } from '@vueuse/core'
 import { tryOnScopeDispose, Fn } from '@vueuse/shared'
 
 export type UseDrauuOptions = Omit<Options, 'el'>
+
+export interface UseDrauuReturn {
+  drauuInstance: Ref<Drauu | undefined>
+  load: (svg: string) => void
+  dump: () => string | undefined
+  clear: () => void
+  cancel: () => void
+  undo: () => boolean | undefined
+  redo: () => boolean | undefined
+  canUndo: Ref<boolean>
+  canRedo: Ref<boolean>
+  brush: Ref<Brush>
+
+  onChanged: EventHookOn
+  onCommitted: EventHookOn
+  onStart: EventHookOn
+  onEnd: EventHookOn
+  onCanceled: EventHookOn
+}
 
 /**
  * Reactive drauu
@@ -15,7 +34,7 @@ export type UseDrauuOptions = Omit<Options, 'el'>
 export function useDrauu(
   target: MaybeElementRef,
   options?: UseDrauuOptions,
-) {
+): UseDrauuReturn {
   const drauuInstance = ref<Drauu>()
 
   let disposables: Fn[] = []
@@ -115,5 +134,3 @@ export function useDrauu(
     onCanceled: onCanceledHook.on,
   }
 }
-
-export type UseDrauuReturn = ReturnType<typeof useDrauu>

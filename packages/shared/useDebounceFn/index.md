@@ -17,7 +17,7 @@ const debouncedFn = useDebounceFn(() => {
   // do something
 }, 1000)
 
-document.addEventLisenter('resize', debouncedFn)
+document.addEventListener('resize', debouncedFn)
 ```
 
 ## Related Functions

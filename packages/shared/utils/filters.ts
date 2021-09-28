@@ -66,10 +66,12 @@ export function debounceFilter(ms: MaybeRef<number>) {
  *
  * @param ms
  * @param [trailing=true]
+ * @param [leading=true]
  */
-export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
+export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = true) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
+  let preventLeading = !leading
 
   const clear = () => {
     if (timer) {
@@ -91,15 +93,19 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true) {
 
     if (elapsed > duration) {
       lastExec = Date.now()
-      invoke()
+      if (preventLeading) preventLeading = false
+      else invoke()
     }
     else if (trailing) {
       timer = setTimeout(() => {
         lastExec = Date.now()
+        if (!leading) preventLeading = true
         clear()
         invoke()
       }, duration)
     }
+
+    if (!leading && !timer) timer = setTimeout(() => preventLeading = true, duration)
   }
 
   return filter

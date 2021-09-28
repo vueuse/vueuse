@@ -8,25 +8,42 @@ Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLS
 
 ## Usage
 
-```html {14}
-<template>
-  <ul>
-    <li v-for="key in Object.keys(params)" :key="key">
-      {{ key }}={{ params[key] }}
-    </li>
-  </ul>
-</template>
-
-<script>
+```js
 import { useUrlSearchParams } from '@vueuse/core'
 
-export default {
-  setup() {
-    const params = useUrlSearchParams('history')
-    params.foo = 'bar'
-    params.vueuse = 'awesome'
-    return { params }
-  } 
-}
-</script>
+const params = useUrlSearchParams('history')
+
+console.log(params.foo) // 'bar'
+
+params.foo = 'bar'
+params.vueuse = 'awesome'
+// url updated to `?foo=bar&vueuse=awesome`
+```
+
+### Hash Mode
+
+When using with hash mode route, specify the `mode` to `hash`
+
+```js
+import { useUrlSearchParams } from '@vueuse/core'
+
+const params = useUrlSearchParams('hash')
+
+params.foo = 'bar'
+params.vueuse = 'awesome'
+// url updated to `#/your/route?foo=bar&vueuse=awesome`
+```
+
+### Hash Params
+
+When using with history mode route, but want to use hash as params, specify the `mode` to `hash-params`
+
+```js
+import { useUrlSearchParams } from '@vueuse/core'
+
+const params = useUrlSearchParams('hash-params')
+
+params.foo = 'bar'
+params.vueuse = 'awesome'
+// url updated to `/your/route#foo=bar&vueuse=awesome`
 ```
