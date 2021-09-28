@@ -37,7 +37,7 @@ export interface useConfirmDialogReturn {
  *
  * @see https://vueuse.org/core/useConfirmDialog/
  * @param show ref boolean that handle a modal window
- * @param onShowDialog{default = null} a function to be called when the modal is creating with `showDialog()`
+ * @param onShowDialog a function to be called when the modal is creating with `showDialog()`
  */
 
 export function useConfirmDialog(show: Ref<boolean>, onShowDialog: Fn | null = null): useConfirmDialogReturn {
@@ -48,11 +48,11 @@ export function useConfirmDialog(show: Ref<boolean>, onShowDialog: Fn | null = n
     if (onShowDialog) onShowDialog()
     show.value = true
   }
-  const confirm = (data = null) => {
+  const confirm = (data: any = null) => {
     show.value = false
     confirmHook.trigger(data)
   }
-  const cancel = (data = null) => {
+  const cancel = (data: any = null) => {
     show.value = false
     cancelHook.trigger(data)
   }

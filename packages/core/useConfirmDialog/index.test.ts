@@ -39,6 +39,24 @@ describe('useConfirmDialog', () => {
       expect(show.value).toBe(false)
     })
   })
+  it('should execute `onShowDialog` fn on open dialog', () => {
+    useSetup(() => {
+      const show = ref(false)
+      const message = ref('initial')
+
+      const {
+        showDialog,
+        cancel,
+      } = useConfirmDialog(show, () => message.value = 'final')
+      expect(message.value).toBe('initial')
+
+      showDialog()
+      expect(message.value).toBe('final')
+
+      cancel()
+      expect(show.value).toBe(false)
+    })
+  })
   it('should execute a callback inside `onConfirm` hook only after confirming', () => {
     useSetup(() => {
       const show = ref(false)
