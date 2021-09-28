@@ -3,7 +3,7 @@ import { createEventHook, EventHook, Fn } from '@vueuse/core'
 
 export interface useConfirmDialogReturn<T, D, E> {
   /*
-  * Opens the dialog
+  * Opens the dialog.
   */
   showDialog: Fn
 
@@ -20,7 +20,7 @@ export interface useConfirmDialogReturn<T, D, E> {
   cancel: (data?: E) => void
 
   /**
-   * Event Hook to be triggered right before dialog creating
+   * Event Hook to be triggered right before dialog creating.
    */
   onShowDialog: (fn: (param: T) => void) => { off: () => void }
 
@@ -41,8 +41,7 @@ export interface useConfirmDialogReturn<T, D, E> {
  * Hooks for creating confirm dialogs. Useful for modal windows, popups and logins.
  *
  * @see https://vueuse.org/core/useConfirmDialog/
- * @param show ref boolean that handle a modal window
- * @param onShowDialog a function to be called when the modal is creating with `showDialog()`
+ * @param show `boolean` `ref` that handles a modal window
  */
 
 export function useConfirmDialog<T = any, D = any, E = any>(show: Ref<boolean>): useConfirmDialogReturn<T, D, E> {
