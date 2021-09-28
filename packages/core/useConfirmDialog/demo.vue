@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { ref } from 'vue-demi'
+<script lang="ts">
+import { defineComponent, ref } from '@vue-demi'
 import { useConfirmDialog } from '.'
 
 const message = ref('')
@@ -41,7 +41,6 @@ onCancel2(() => {
   showDialog()
   message.value = 'Canceled!'
 })
-
 </script>
 
 <template>
@@ -52,9 +51,9 @@ onCancel2(() => {
     Click to Show Modal Dialog
   </button>
   <!-- First Dialog -->
-  <div v-if="show" class="message-box dialog-mask">
-    <div class="dialog-content">
-      <div class="dialog-body">
+  <div v-if="show">
+    <div>
+      <div>
         <p>Show Second Dialog?</p>
       </div>
       <footer>
@@ -68,9 +67,9 @@ onCancel2(() => {
     </div>
   </div>
   <!-- Second Dialog -->
-  <div v-if="show2" class="message-box dialog-mask">
-    <div class="dialog-content">
-      <div class="dialog-body">
+  <div v-if="show2">
+    <div>
+      <div>
         <p>Confirm or Reject</p>
       </div>
       <footer>
