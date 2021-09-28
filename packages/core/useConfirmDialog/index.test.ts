@@ -84,4 +84,48 @@ describe('useConfirmDialog', () => {
       expect(message.value).toBe('final')
     })
   })
+  it('should pass data from confirm fn to `onConfirm` hook', () => {
+    useSetup(() => {
+      const message = ref('initial')
+      const show = ref(false)
+      const data = { value: 'confirm' }
+
+      const {
+        showDialog,
+        confirm,
+        onConfirm,
+      } = useConfirmDialog(show)
+
+      onConfirm((data) => {
+        message.value = data.value
+      })
+
+      showDialog()
+      confirm(data)
+
+      expect(message.value).toBe('confirm')
+    })
+  })
+  it('should pass data from cancel fn to `onCancel` hook', () => {
+    useSetup(() => {
+      const message = ref('initial')
+      const show = ref(false)
+      const data = { value: 'confirm' }
+
+      const {
+        showDialog,
+        cancel,
+        onCancel,
+      } = useConfirmDialog(show)
+
+      onCancel((data) => {
+        message.value = data.value
+      })
+
+      showDialog()
+      cancel(data)
+
+      expect(message.value).toBe('confirm')
+    })
+  })
 })
