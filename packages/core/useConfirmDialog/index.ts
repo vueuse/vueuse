@@ -1,7 +1,7 @@
 import { Ref } from 'vue-demi'
 import { createEventHook, EventHook, Fn } from '@vueuse/core'
 
-export interface useConfirmDialogReturn<D, E> {
+export interface useConfirmDialogReturn<T, D, E> {
   /*
   * Opens the dialog
   */
@@ -18,6 +18,11 @@ export interface useConfirmDialogReturn<D, E> {
    * Can accept any data and to pass it to `onCancel`.
    */
   cancel: (data?: E) => void
+
+  /**
+   * Event Hook to be triggered right before dialog creating
+   */
+  onShowDialog: (fn: (param: T) => void) => { off: () => void }
 
   /**
    * Event Hook to be called on `confirm`.
@@ -40,12 +45,13 @@ export interface useConfirmDialogReturn<D, E> {
  * @param onShowDialog a function to be called when the modal is creating with `showDialog()`
  */
 
-export function useConfirmDialog<D = any, E = any>(show: Ref<boolean>, onShowDialog?: Fn | undefined): useConfirmDialogReturn<D, E> {
+export function useConfirmDialog<T = any, D = any, E = any>(show: Ref<boolean>): useConfirmDialogReturn<T, D, E> {
   const confirmHook: EventHook = createEventHook()
   const cancelHook: EventHook = createEventHook()
+  const showHook: EventHook = createEventHook()
 
-  const showDialog = () => {
-    if (onShowDialog) onShowDialog()
+  const showDialog = (data?: T) => {
+    showHook.trigger(data)
     show.value = true
   }
   const confirm = (data?: D) => {
@@ -61,6 +67,7 @@ export function useConfirmDialog<D = any, E = any>(show: Ref<boolean>, onShowDia
     showDialog,
     confirm,
     cancel,
+    onShowDialog: showHook.on,
     onConfirm: confirmHook.on,
     onCancel: cancelHook.on,
   }

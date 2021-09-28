@@ -47,9 +47,12 @@ describe('useConfirmDialog', () => {
       const {
         showDialog,
         cancel,
-      } = useConfirmDialog(show, () => message.value = 'final')
+        onShowDialog,
+      } = useConfirmDialog(show)
       expect(message.value).toBe('initial')
-
+      onShowDialog(() => {
+        message.value = 'final'
+      })
       showDialog()
       expect(message.value).toBe('final')
 
