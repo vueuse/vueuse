@@ -1,5 +1,5 @@
-<script lang="ts">
-import { defineComponent, ref } from '@vue-demi'
+<script setup lang="ts">
+import { ref } from 'vue-demi'
 import { useConfirmDialog } from '.'
 
 const message = ref('')
@@ -8,16 +8,21 @@ const show2 = ref(false)
 
 // First Dialog
 const {
-  showDialog,
+  reveal,
   confirm,
   cancel,
   onConfirm,
   onCancel,
-} = useConfirmDialog(show, () => message.value = 'Modal is shown')
+  onReveal,
+} = useConfirmDialog(show)
+
+onReveal(() => {
+  message.value = 'Modal is shown!'
+})
 
 onConfirm(() => {
   // eslint-disable-next-line no-use-before-define
-  showDialog2()
+  reveal2()
 })
 
 onCancel(() => {
@@ -26,28 +31,34 @@ onCancel(() => {
 
 // Second Dialog
 const {
-  showDialog: showDialog2,
+  reveal: reveal2,
   confirm: confirm2,
   cancel: cancel2,
   onConfirm: onConfirm2,
   onCancel: onCancel2,
-} = useConfirmDialog(show2, () => message.value = 'Second modal is shown!')
+  onReveal: onReveal2,
+} = useConfirmDialog(show2)
+
+onReveal2(() => {
+  message.value = 'Second modal is shown!'
+})
 
 onConfirm2((result) => {
   if (result) message.value = 'Confirmed!'
   else message.value = 'Rejected!'
 })
 onCancel2(() => {
-  showDialog()
+  reveal()
   message.value = 'Canceled!'
 })
+
 </script>
 
 <template>
   <h2>
     Info: <span :style="{ color: 'red' }">{{ message }}</span>
   </h2>
-  <button :disabled="show || show2" @click="showDialog">
+  <button :disabled="show || show2" @click="reveal">
     Click to Show Modal Dialog
   </button>
   <!-- First Dialog -->
