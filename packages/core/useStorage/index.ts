@@ -62,10 +62,10 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
 
   /**
    * Use shallow ref as reference
-   * 
+   *
    * @default false
    */
-  shallow?: boolean;
+  shallow?: boolean
 }
 
 export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemoveableRef<string>
