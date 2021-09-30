@@ -88,12 +88,12 @@ export default defineComponent({
       cancel,
     } = useConfirmDialog(show)
 
-    openDialog( async() => {
+    const openDialog = async() => {
       const { data, isCanceled } = await reveal()
-      if(!isCanceled.value){
+      if (!isCanceled.value) {
         console.log(data)
       }
-    })
+    }
     // on click outside logic
     const target = ref(null)
     onClickOutside(target, () => cancel())
