@@ -7,6 +7,10 @@
   --vt-c-brand-active: #44bd87;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 .vt-doc h1 {
   margin: 0 0 1rem;
 }
