@@ -4,7 +4,7 @@ category: Utilities
 
 # useConfirmDialog
 
-Creates event hooks to support modals and confirmation dialog chains. It returns 3 functions and 3 hooks.
+Creates event hooks to support modals and confirmation dialog chains.
 
 Functions can be used on the template, and hooks are a handy skeleton for the business logic of modals dialog or other actions that require user confirmation.
 
