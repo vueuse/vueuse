@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useConfirmDialog } from '.'
 
@@ -12,11 +12,11 @@ describe('useConfirmDialog', () => {
       const show = ref(false)
 
       const {
-        showDialog,
+        reveal,
         confirm,
       } = useConfirmDialog(show)
 
-      showDialog()
+      reveal()
       expect(show.value).toBe(true)
 
       confirm()
@@ -28,32 +28,32 @@ describe('useConfirmDialog', () => {
       const show = ref(false)
 
       const {
-        showDialog,
+        reveal,
         cancel,
       } = useConfirmDialog(show)
 
-      showDialog()
+      reveal()
       expect(show.value).toBe(true)
 
       cancel()
       expect(show.value).toBe(false)
     })
   })
-  it('should execute `onShowDialog` fn on open dialog', () => {
+  it('should execute `onReveal` fn on open dialog', () => {
     useSetup(() => {
       const show = ref(false)
       const message = ref('initial')
 
       const {
-        showDialog,
+        reveal,
         cancel,
-        onShowDialog,
+        onReveal,
       } = useConfirmDialog(show)
       expect(message.value).toBe('initial')
-      onShowDialog(() => {
+      onReveal(() => {
         message.value = 'final'
       })
-      showDialog()
+      reveal()
       expect(message.value).toBe('final')
 
       cancel()
@@ -66,7 +66,7 @@ describe('useConfirmDialog', () => {
       const message = ref('initial')
 
       const {
-        showDialog,
+        reveal,
         confirm,
         onConfirm,
       } = useConfirmDialog(show)
@@ -76,7 +76,7 @@ describe('useConfirmDialog', () => {
       })
       expect(message.value).toBe('initial')
 
-      showDialog()
+      reveal()
       expect(message.value).toBe('initial')
       confirm()
       expect(message.value).toBe('final')
@@ -89,7 +89,7 @@ describe('useConfirmDialog', () => {
       const message = ref('initial')
 
       const {
-        showDialog,
+        reveal,
         cancel,
         onCancel,
       } = useConfirmDialog(show)
@@ -99,7 +99,7 @@ describe('useConfirmDialog', () => {
       })
       expect(message.value).toBe('initial')
 
-      showDialog()
+      reveal()
       expect(message.value).toBe('initial')
       cancel()
       expect(message.value).toBe('final')
@@ -112,7 +112,7 @@ describe('useConfirmDialog', () => {
       const data = { value: 'confirm' }
 
       const {
-        showDialog,
+        reveal,
         confirm,
         onConfirm,
       } = useConfirmDialog(show)
@@ -121,7 +121,7 @@ describe('useConfirmDialog', () => {
         message.value = data.value
       })
 
-      showDialog()
+      reveal()
       confirm(data)
 
       expect(message.value).toBe('confirm')
@@ -134,7 +134,7 @@ describe('useConfirmDialog', () => {
       const data = { value: 'confirm' }
 
       const {
-        showDialog,
+        reveal,
         cancel,
         onCancel,
       } = useConfirmDialog(show)
@@ -143,10 +143,48 @@ describe('useConfirmDialog', () => {
         message.value = data.value
       })
 
-      showDialog()
+      reveal()
       cancel(data)
 
       expect(message.value).toBe('confirm')
+    })
+  })
+  it('should return promise that will be resolved on `confirm()`', () => {
+    // eslint-disable-next-line space-before-function-paren
+    useSetup(async () => {
+      const show = ref(false)
+
+      const {
+        reveal,
+        confirm,
+      } = useConfirmDialog(show)
+
+      const { data, isCanceled } = await reveal()
+
+      nextTick()
+      confirm(true)
+      nextTick()
+      expect(data).toBe(true)
+      expect(isCanceled.value).toBe(false)
+    })
+  })
+  it('should return promise that will be resolved on `cancel()`', () => {
+    // eslint-disable-next-line space-before-function-paren
+    useSetup(async () => {
+      const show = ref(false)
+
+      const {
+        reveal,
+        cancel,
+      } = useConfirmDialog(show)
+
+      const { data, isCanceled } = await reveal()
+
+      nextTick()
+      cancel(true)
+      nextTick()
+      expect(data).toBe(true)
+      expect(isCanceled.value).toBe(true)
     })
   })
 })
