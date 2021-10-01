@@ -1,11 +1,16 @@
 import { Ref } from 'vue-demi'
 import { createEventHook, EventHook } from '@vueuse/core'
 
+export interface resolveConfirmDialogArgument<T> {
+  data?: T
+  isCanceled: boolean
+}
+
 export interface useConfirmDialogReturn<T, D, E> {
   /*
   * Opens the dialog. Create promise and return it. Triggers `onReveal` hook.
   */
-  reveal: (data?: T) => Promise<{ data: D | E | undefined; isCanceled: boolean }>
+  reveal: (data?: T) => Promise<resolveConfirmDialogArgument<D | E>>
 
   /**
    * Confirms and closes the dialog. Triggers a callback inside `onConfirm` hook.
@@ -50,10 +55,10 @@ export function useConfirmDialog<T = any, D = any, E = any>(show: Ref<boolean>):
   const confirmHook: EventHook = createEventHook()
   const cancelHook: EventHook = createEventHook()
   const showHook: EventHook = createEventHook()
-  let resolveDialog: { (arg0: { data: D | E | undefined; isCanceled: boolean }): void }
+  let resolveDialog: { (arg0: resolveConfirmDialogArgument<D | E>): void }
 
   const reveal = (data?: T) => {
-    const promise = new Promise((resolve: { (arg0: { data: D | E | undefined; isCanceled: boolean }): void }) => {
+    const promise = new Promise((resolve: { (arg0: resolveConfirmDialogArgument<D | E>): void }) => {
       resolveDialog = resolve
     })
     showHook.trigger(data)
