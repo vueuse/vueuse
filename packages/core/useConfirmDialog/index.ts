@@ -1,11 +1,11 @@
-import { ref, Ref } from 'vue-demi'
+import { Ref } from 'vue-demi'
 import { createEventHook, EventHook } from '@vueuse/core'
 
 export interface useConfirmDialogReturn<T, D, E> {
   /*
   * Opens the dialog. Create promise and return it. Triggers `onReveal` hook.
   */
-  reveal: (data?: T) => Promise<any>
+  reveal: (data?: T) => Promise<{ data: D | E | undefined; isCanceled: boolean }>
 
   /**
    * Confirms and closes the dialog. Triggers a callback inside `onConfirm` hook.
@@ -50,11 +50,10 @@ export function useConfirmDialog<T = any, D = any, E = any>(show: Ref<boolean>):
   const confirmHook: EventHook = createEventHook()
   const cancelHook: EventHook = createEventHook()
   const showHook: EventHook = createEventHook()
-  let resolveDialog: { (arg0: { data: D | E | undefined; isCanceled: Ref<boolean> }): void; (value: unknown): void }
-  const isCanceled = ref(false)
+  let resolveDialog: { (arg0: { data: D | E | undefined; isCanceled: boolean }): void }
 
   const reveal = (data?: T) => {
-    const promise = new Promise((resolve) => {
+    const promise = new Promise((resolve: { (arg0: { data: D | E | undefined; isCanceled: boolean }): void }) => {
       resolveDialog = resolve
     })
     showHook.trigger(data)
@@ -66,14 +65,13 @@ export function useConfirmDialog<T = any, D = any, E = any>(show: Ref<boolean>):
     show.value = false
     confirmHook.trigger(data)
 
-    resolveDialog({ data, isCanceled })
+    resolveDialog({ data, isCanceled: false })
   }
   const cancel = (data?: E) => {
     show.value = false
     cancelHook.trigger(data)
 
-    isCanceled.value = true
-    resolveDialog({ data, isCanceled })
+    resolveDialog({ data, isCanceled: true })
   }
 
   return {
