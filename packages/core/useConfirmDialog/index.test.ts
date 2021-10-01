@@ -165,7 +165,7 @@ describe('useConfirmDialog', () => {
       confirm(true)
       nextTick()
       expect(data).toBe(true)
-      expect(isCanceled.value).toBe(false)
+      expect(isCanceled).toBe(false)
     })
   })
   it('should return promise that will be resolved on `cancel()`', () => {
@@ -184,7 +184,7 @@ describe('useConfirmDialog', () => {
       cancel(true)
       nextTick()
       expect(data).toBe(true)
-      expect(isCanceled.value).toBe(true)
+      expect(isCanceled).toBe(true)
     })
   })
 })
