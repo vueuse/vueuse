@@ -3,8 +3,8 @@
 import { Ref } from 'vue-demi'
 
 /**
- * Convert a `Promise` or an async `Function` by binding it's to a ref.
- * Useful when you want to bind the loading state of multiple promises to a ref.
+ * Convert a `Promise` or an async `Function` by binding it's ready state to a ref.
+ * Useful when you want to bind the ready state of multiple promises to a ref.
  * @param isLoading Reactive `Ref` used to store the state.
  * @param asyncFuncOrPromise Function or Promise to wrap.
  */

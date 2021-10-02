@@ -4,7 +4,7 @@ category: Utilities
 
 # loadify
 
-Convert a `Promise` or an async `Function` by binding it's to a ref.
+Convert a `Promise` or an async `Function` by binding it's ready state to a ref.
 Useful when you want to bind the loading state of multiple promises to a ref.
 
 ::: tip
