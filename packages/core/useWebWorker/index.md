@@ -14,7 +14,7 @@ Try out the high-level `useWebWorkerFn`
 ## Usage
 
 ```js
-import { useWebWorker } from 'vue-use-web'
+import { useWebWorker } from '@vueuse/core'
 
 const { data, post, terminate } = useWebWorker('/path/to/worker.js')
 ```
