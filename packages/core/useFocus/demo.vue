@@ -6,64 +6,50 @@ const text = ref()
 const input = ref()
 const button = ref()
 
-const { focused: textFocus } = useFocus({ target: text })
+const { focused: paragraphFocus } = useFocus({ target: text })
 const { focused: inputFocus } = useFocus({ target: input, initialValue: true })
 const { focused: buttonFocus } = useFocus({ target: button })
-
-const setTextFocus = () => { textFocus.value = true }
-const setInputFocus = () => { inputFocus.value = true }
-const setButtonFocus = () => { buttonFocus.value = true }
-const unsetTextFocus = () => { textFocus.value = false }
-const unsetInputFocus = () => { inputFocus.value = false }
-const unsetButtonFocus = () => { buttonFocus.value = false }
 </script>
 
 <template>
   <div>
-    <p ref="text" :class="{'bg-green-200': textFocus}">
-      Some text that can be focused
+    <p ref="text" class="demo-el px-4" tabindex="0">
+      Paragraph that can be focused
     </p>
-    <input ref="input" class="item" />
-    <button ref="button" class="item" style="margin: 5px">
-      button
+    <input ref="input" class="demo-el" type="text" placeholder="Input that can be focused" />
+    <button ref="button" class="demo-el button">
+      Button that can be focused
     </button>
     <hr />
-    <div>
-      <button @click="setTextFocus">
-        focus text
-      </button>
-      <button @click="setInputFocus">
-        focus input
-      </button>
-      <button @click="setButtonFocus">
-        focus button
-      </button>
-    </div>
-    <div>
-      <button @click="unsetTextFocus">
-        unfocus text
-      </button>
-      <button @click="unsetInputFocus">
-        unfocus input
-      </button>
-      <button @click="unsetButtonFocus">
-        unfocus button
-      </button>
-    </div>
-    <p v-if="textFocus">
-      The text has focus
-    </p>
-    <p v-if="inputFocus">
-      The input control has focus
-    </p>
-    <p v-if="buttonFocus">
-      The button has focus
-    </p>
+    <note class="mb-2">
+      <template v-if="paragraphFocus">
+        The paragraph has focus
+      </template>
+      <template v-else-if="inputFocus">
+        The input control has focus
+      </template>
+      <template v-else-if="buttonFocus">
+        The button has focus
+      </template>
+      <template v-else>
+        &nbsp;<!-- prevents paragraph from collapsing when empty otherwise -->
+      </template>
+    </note>
+    <button class="button small !ml-0" @click="paragraphFocus = !paragraphFocus">
+      {{ paragraphFocus ? 'unfocus' : 'focus' }} text
+    </button>
+    <button class="button small" @click="inputFocus = !inputFocus">
+      {{ inputFocus ? 'unfocus' : 'focus' }} input
+    </button>
+    <button class="button small" @click="buttonFocus = !buttonFocus">
+      {{ buttonFocus ? 'unfocus' : 'focus' }} button
+    </button>
   </div>
 </template>
 
 <style scoped>
-.item:focus, bg {
-  background-color: cadetblue;
+.demo-el:focus {
+  opacity: .7;
+  box-shadow: 0 0 2px 1px var(--c-brand);
 }
 </style>

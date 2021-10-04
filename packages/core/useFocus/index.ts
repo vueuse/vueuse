@@ -39,8 +39,7 @@ export function useFocus(options: FocusOptions = {}): FocusReturn {
 
   const focused = ref(initialValue)
 
-  if (!window)
-    return { focused }
+  if (!window) return { focused }
 
   const onFocus = () => { focused.value = true }
   const onBlur = () => { focused.value = false }
@@ -50,12 +49,12 @@ export function useFocus(options: FocusOptions = {}): FocusReturn {
   useEventListener(target, 'focus', onFocus, { passive: true })
   useEventListener(target, 'blur', onBlur, { passive: true })
 
-  const setFocus = (focused: object | boolean, oldFocused: object | boolean | undefined) => {
+  const setFocus = (focused: boolean, oldFocused: boolean | undefined) => {
     if (focused) {
-      if (oldFocused !== true) target.value?.focus()
+      if (!oldFocused) target.value?.focus()
     }
     else {
-      if (oldFocused === true) target.value?.blur()
+      if (oldFocused) target.value?.blur()
     }
   }
 
