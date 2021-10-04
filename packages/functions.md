@@ -26,7 +26,6 @@
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
   - [`useFavicon`](https://vueuse.org/core/useFavicon/) — reactive favicon
   - [`useFetch`](https://vueuse.org/core/useFetch/) — reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests
-  - [`useFocus`](https://vueuse.org/core/useFocus/) — utility to track or set the focus state of a DOM element
   - [`useFullscreen`](https://vueuse.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaControls`](https://vueuse.org/core/useMediaControls/) — reactive media controls for both `audio` and `video` elements
   - [`useMediaQuery`](https://vueuse.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
@@ -76,6 +75,7 @@
   - [`useElementBounding`](https://vueuse.org/core/useElementBounding/) — reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
+  - [`useFocus`](https://vueuse.org/core/useFocus/) — reactive utility to track or set the focus state of a DOM element
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
