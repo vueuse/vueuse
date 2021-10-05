@@ -50,3 +50,23 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
   </div>
 </template>
 ```
+
+## Using Component
+
+This function can't properly activate focus on elements with conditional rendering. In this case, you can use the `UseFocusTrap` component. Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
+
+```html
+<script setup>
+import { ref } from 'vue'
+import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
+
+const show = ref(false)
+</script>
+
+<template>
+  <UseFocusTrap v-if="show">
+    <div class="modal">...</div>
+  </UseFocusTrap>
+</template>
+
+```
