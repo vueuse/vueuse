@@ -58,7 +58,7 @@ This function can't properly activate focus on elements with conditional renderi
 ```html
 <script setup>
 import { ref } from 'vue'
-import { UseFocusTrap } from '@vueuse/components'
+import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
 
 const show = ref(false)
 </script>
