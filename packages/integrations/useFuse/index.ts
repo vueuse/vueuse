@@ -3,14 +3,13 @@ import { MaybeRef } from '@vueuse/shared'
 
 import Fuse from 'fuse.js'
 
-type FuseOptions<T> = Fuse.IFuseOptions<T>
-
-type UseFuseOptions = {
+export type FuseOptions<T> = Fuse.IFuseOptions<T>
+export type UseFuseOptions = {
   resultLimit?: number
   matchAllWhenSearchEmpty?: boolean
 }
 
-function useFuse<DataItem>(
+export function useFuse<DataItem>(
   search: MaybeRef<string>,
   data: MaybeRef<DataItem[]>,
   fuseOptions?: MaybeRef<FuseOptions<DataItem>>,
@@ -61,5 +60,3 @@ function useFuse<DataItem>(
 
   return { results, stop }
 }
-
-export { useFuse, UseFuseOptions, FuseOptions }
