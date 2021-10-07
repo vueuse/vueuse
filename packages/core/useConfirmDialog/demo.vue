@@ -3,106 +3,84 @@ import { ref } from 'vue-demi'
 import { useConfirmDialog } from '.'
 
 const message = ref('')
-const show = ref(false)
-const show2 = ref(false)
+const revaled1 = ref(false)
+const revaled2 = ref(false)
 
-// First Dialog
-const {
-  reveal,
-  confirm,
-  cancel,
-  onConfirm,
-  onCancel,
-  onReveal,
-} = useConfirmDialog(show)
+const dialog1 = useConfirmDialog(revaled1)
+const dialog2 = useConfirmDialog(revaled2)
 
-// Second Dialog
-const {
-  reveal: reveal2,
-  confirm: confirm2,
-  cancel: cancel2,
-  onConfirm: onConfirm2,
-  onCancel: onCancel2,
-  onReveal: onReveal2,
-} = useConfirmDialog(show2)
-
-onReveal(() => {
+dialog1.onReveal(() => {
   message.value = 'Modal is shown!'
 })
 
-onConfirm(() => {
-  reveal2()
+dialog1.onConfirm(() => {
+  dialog2.reveal()
 })
 
-onCancel(() => {
+dialog1.onCancel(() => {
   message.value = 'Canceled!'
 })
 
-onReveal2(() => {
+dialog2.onReveal(() => {
   message.value = 'Second modal is shown!'
 })
 
-onConfirm2((result) => {
+dialog2.onConfirm((result) => {
   if (result) message.value = 'Confirmed!'
   else message.value = 'Rejected!'
 })
-onCancel2(() => {
-  reveal()
+
+dialog2.onCancel(() => {
+  dialog1.reveal()
   message.value = 'Canceled!'
 })
-
 </script>
 
 <template>
   <h2>
-    Info: <span :style="{ color: 'red' }">{{ message }}</span>
+    <span class="text-orange-400">{{ message }}</span>
   </h2>
-  <button :disabled="show || show2" @click="reveal">
+  <button
+    :disabled="revaled1 || revaled2"
+    @click="dialog1.reveal"
+  >
     Click to Show Modal Dialog
   </button>
+
   <!-- First Dialog -->
-  <div v-if="show" class="modal-layout" @click.self="cancel">
-    <div class="modal">
-      <div class="inner">
-        <p class="heading">
-          Show Second Dialog?
-        </p>
-        <footer>
-          <button class="button" @click="confirm">
-            OK
-          </button>
-          <button class="button" @click="cancel">
-            Cancel
-          </button>
-        </footer>
+  <div v-if="revaled1">
+    <div>
+      <div>
+        <p>Show Second Dialog?</p>
       </div>
-      <button class="button small" title="Close" @click="cancel">
-        𝖷
-      </button>
+      <footer>
+        <button @click="dialog1.confirm">
+          OK
+        </button>
+        <button @click="dialog1.cancel">
+          Cancel
+        </button>
+      </footer>
     </div>
   </div>
+
   <!-- Second Dialog -->
-  <div v-show="show2" class="modal-layout" @click.self="confirm2(false)">
-    <div class="modal">
-      <div class="inner">
-        <p class="heading">
-          Confirm or Reject
-        </p>
-        <footer>
-          <button class="button" @click="confirm2(true)">
-            Confirm
-          </button>
-          <button class="button" @click="confirm2(false)">
-            Reject
-          </button>
-          <button class="button" @click="cancel2">
-            Cancel
-          </button>
-        </footer>
+  <div v-if="revaled2">
+    <div>
+      <div>
+        <p>Confirm or Reject</p>
       </div>
-      <button class="button small" title="Close" @click="cancel2">
-        𝖷
-      </button>
+      <footer>
+        <button @click="dialog2.confirm(true)">
+          Confirm
+        </button>
+        <button @click="dialog2.confirm(false)">
+          Reject
+        </button>
+        <button @click="dialog2.cancel">
+          Cancel
+        </button>
+      </footer>
     </div>
   </div>
 </template>
