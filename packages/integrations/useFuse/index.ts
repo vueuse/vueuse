@@ -1,4 +1,4 @@
-import { ref, computed, watch, unref } from 'vue-demi'
+import { ref, computed, watch, unref, ComputedRef } from 'vue-demi'
 import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
 
 import Fuse from 'fuse.js'
@@ -40,17 +40,15 @@ export function useFuse<DataItem>(
     { deep: true },
   )
 
-  const results = computed(() => {
+  const results: ComputedRef<Fuse.FuseResult<DataItem>[]> = computed(() => {
     // This will also be recomputed when `data` changes, as it causes a change
     // to the Fuse instance, which is tracked here.
 
     if (unref(options)?.matchAllWhenSearchEmpty && !unref(search))
-      return unref(data).map((item, index) => ({ item, index }))
+      return unref(data).map((item, index) => ({ item, refIndex: index }))
 
     const limit = unref(options)?.resultLimit
-    return fuse.value
-      .search(unref(search), (limit ? { limit } : undefined))
-      .map(entry => ({ item: entry.item, index: entry.refIndex }))
+    return fuse.value.search(unref(search), (limit ? { limit } : undefined))
   })
 
   const stop = () => {
