@@ -1,5 +1,5 @@
 import { ref, computed, watch, unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
 
 import Fuse from 'fuse.js'
 
@@ -58,5 +58,10 @@ export function useFuse<DataItem>(
     stopFuseOptionsWatch()
   }
 
-  return { results, stop }
+  tryOnScopeDispose(stop)
+
+  return {
+    results,
+    stop,
+  }
 }
