@@ -136,12 +136,16 @@ const { results } = useFuse(search, data, fuseOptions, options)
 </script>
 
 <template>
-  <div id="grid">
-    <section>
-      <h2>Search</h2>
-      <input v-model="search" type="text" />
-      <div class="group">
-        <p>Search by:</p>
+  <div class="grid grid-rows-[550px] grid-cols-[1fr,1fr,1fr] gap-x-8">
+    <section class="flex flex-col max-h-full space-y-4">
+      <h2 class="m-top-0">
+        Search
+      </h2>
+      <input v-model="search" type="text" placeholder="Search for someone" class="mb-0" />
+      <fieldset class="max-w-max border-2 rounded-lg">
+        <legend class="px-1">
+          Search by
+        </legend>
         <div>
           <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter">
           <label for="radio-both">Both Names</label>
@@ -154,45 +158,54 @@ const { results } = useFuse(search, data, fuseOptions, options)
           <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter">
           <label for="radio-last">Last Name</label>
         </div>
-      </div>
-      <div class="group">
-        <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox">
-        <label for="checkbox-exact-match">Exact match</label>
-      </div>
-      <div class="group">
-        <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox">
-        <label for="checkbox-case-sensitive">Case sensistive</label>
-      </div>
-      <div class="group">
-        <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox">
-        <label for="checkbox-match-all">Match all when search is blank</label>
-      </div>
-      <div class="group">
-        <label for="input-result-limit">Result count limit</label>
+      </fieldset>
+      <fieldset class="max-w-max border-2 rounded-lg space-y-1">
+        <legend class="px-1">
+          Other Options
+        </legend>
+        <div>
+          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox">
+          <label for="checkbox-exact-match">Exact match</label>
+        </div>
+        <div>
+          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox">
+          <label for="checkbox-case-sensitive">Case sensistive</label>
+        </div>
+        <div>
+          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox">
+          <label for="checkbox-match-all">Match all when search is blank</label>
+        </div>
+      </fieldset>
+      <fieldset class="max-w-max border-2 rounded-lg">
+        <legend>Result count limit</legend>
         <note>Limit the number of results shown.</note>
         <input id="input-result-limit" v-model="resultLimitString" type="number">
-      </div>
+      </fieldset>
     </section>
-    <section>
-      <h2>Results</h2>
-      <ol v-if="results.length > 0" class="list" start="0">
-        <li v-for="(result, index) in results" :key="index" class="search-result">
+    <section class="flex flex-col max-h-full">
+      <h2 class="m-top-0">
+        Results
+      </h2>
+      <ol v-if="results.length > 0" class="overflow-y-scroll" start="0">
+        <li v-for="(result, index) in results" :key="index" class="m-2 p-2 rounded-lg bg-light-700">
           <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
           <br />
           <span>Source Index: {{ result.index }}</span>
         </li>
       </ol>
-      <div v-else class="no-results-message">
+      <div v-else class="p-2 text-2xl">
         No results
       </div>
     </section>
-    <section>
-      <h2>Source Data</h2>
-      <button @click="shuffleData">
+    <section class="flex flex-col max-h-full">
+      <h2 class="m-top-0">
+        Source Data
+      </h2>
+      <button class="self-center" @click="shuffleData">
         Shuffle Data
       </button>
-      <ol class="list" start="0">
-        <li v-for="(item, index) in data" :key="index" class="data-item">
+      <ol class="overflow-y-scroll" start="0">
+        <li v-for="(item, index) in data" :key="index" class="m-2 p-2 rounded-lg bg-light-700">
           First name: {{ item.firstName }}
           <br>
           Last name: {{ item.lastName }}
@@ -201,41 +214,3 @@ const { results } = useFuse(search, data, fuseOptions, options)
     </section>
   </div>
 </template>
-
-<style>
-#grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
-}
-
-section {
-  max-height: 500px;
-  display: flex;
-  flex-direction: column;
-}
-
-section button {
-  align-self: center;
-}
-
-.group + .group {
-  margin-top: 1rem;
-}
-
-.list {
-  overflow-y: scroll;
-}
-
-.search-result, .data-item {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background: #f2f2f2;
-}
-
-.no-results-message {
-  padding: 0.5rem;
-  font-size: 1.5em;
-}
-</style>
