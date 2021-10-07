@@ -65,3 +65,5 @@ export function useFuse<DataItem>(
     stop,
   }
 }
+
+export type UseFuseReturn = ReturnType<typeof useFuse>
