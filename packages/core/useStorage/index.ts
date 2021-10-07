@@ -1,5 +1,5 @@
 import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemoveableRef } from '@vueuse/shared'
-import { ref, Ref, unref } from 'vue-demi'
+import { ref, Ref, unref, shallowRef } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -59,6 +59,13 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
    * Default log error to `console.error`
    */
   onError?: (error: unknown) => void
+
+  /**
+   * Use shallow ref as reference
+   *
+   * @default false
+   */
+  shallow?: boolean
 }
 
 export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemoveableRef<string>
@@ -88,6 +95,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     listenToStorageChanges = true,
     window = defaultWindow,
     eventFilter,
+    shallow,
     onError = (e) => {
       console.error(e)
     },
@@ -109,7 +117,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
               ? 'number'
               : 'any'
 
-  const data = ref(initialValue) as Ref<T>
+  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
   function read(event?: StorageEvent) {
