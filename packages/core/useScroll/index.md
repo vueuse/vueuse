@@ -20,3 +20,10 @@ const { x, y, isScrolling, arrivedState } = useScroll(el)
   <div ref="el"></div>
 </template>
 ```
+
+```js
+// With offsets
+const { x, y, isScrolling, arrivedState } = useScroll(el, {
+  offset: { top: 30, bottom: 30, right: 30, left: 30 },
+})
+```
