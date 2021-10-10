@@ -3,7 +3,7 @@ import { ref } from 'vue-demi'
 import { useSpeechSynthesis } from '.'
 
 const lang = ref('en-US')
-const text = ref('Hello, everyone!')
+const text = ref('Hello, everyone! Good morning!')
 
 const speech = useSpeechSynthesis(text, {
   lang,
