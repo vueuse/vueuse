@@ -172,6 +172,39 @@ describe('useFetch', () => {
     expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
   })
 
+  test('should run the onFetchError function', async() => {
+    fetchMock.mockResponse(JSON.stringify({ title: 'HxH' }), { status: 400 })
+
+    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+      onFetchError(ctx) {
+        if (ctx.data.title === 'HxH')
+          ctx.data.title = 'Hunter x Hunter'
+
+        return ctx
+      },
+    }).json()
+
+    await until(isFinished).toBe(true)
+    expect(statusCode.value).toStrictEqual(400)
+    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+  })
+
+  test('should run the onFetchError function when network error', async() => {
+    fetchMock.mockResponse('Internal Server Error', { status: 500 })
+
+    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+      onFetchError(ctx) {
+        ctx.data = { title: 'Hunter x Hunter' }
+
+        return ctx
+      },
+    }).json()
+
+    await until(isFinished).toBe(true)
+    expect(statusCode.value).toStrictEqual(500)
+    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+  })
+
   test('should emit onFetchResponse event', async() => {
     let didEventFire = false
     const { isFinished, onFetchResponse } = useFetch('https://example.com')
