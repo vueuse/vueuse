@@ -4,7 +4,8 @@ import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
 import Fuse from 'fuse.js'
 
 export type FuseOptions<T> = Fuse.IFuseOptions<T>
-export type UseFuseOptions = {
+export type UseFuseOptions<T> = {
+  fuseOptions?: FuseOptions<T>
   resultLimit?: number
   matchAllWhenSearchEmpty?: boolean
 }
@@ -12,11 +13,10 @@ export type UseFuseOptions = {
 export function useFuse<DataItem>(
   search: MaybeRef<string>,
   data: MaybeRef<DataItem[]>,
-  fuseOptions?: MaybeRef<FuseOptions<DataItem>>,
-  options?: MaybeRef<UseFuseOptions>,
+  options?: MaybeRef<UseFuseOptions<DataItem>>,
 ) {
-  const createFuse = (data: MaybeRef<DataItem[]>, options?: MaybeRef<FuseOptions<DataItem>>) => {
-    const _options = unref(options)
+  const createFuse = (data: MaybeRef<DataItem[]>, options?: FuseOptions<DataItem>) => {
+    const _options = options
 
     // Defaults can be set here.
 
@@ -26,10 +26,10 @@ export function useFuse<DataItem>(
     )
   }
 
-  const fuse = ref(createFuse(data, fuseOptions))
+  const fuse = ref(createFuse(data, unref(options)?.fuseOptions))
 
   const stopFuseOptionsWatch = watch(
-    () => unref(fuseOptions),
+    () => unref(options)?.fuseOptions,
     (newOptions) => { fuse.value = createFuse(data, newOptions) },
     { deep: true },
   )

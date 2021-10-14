@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { ref, computed, watch } from 'vue'
-import { useFuse, UseFuseOptions, FuseOptions } from '.'
+import { useFuse, UseFuseOptions } from '.'
 
 type DataItem = {
   firstName: string
@@ -121,18 +121,17 @@ const exactMatch = ref(false)
 const isCaseSensitive = ref(false)
 const matchAllWhenSearchEmpty = ref(false)
 
-const fuseOptions = computed<FuseOptions<DataItem>>(() => ({
-  keys: keys.value,
-  isCaseSensitive: isCaseSensitive.value,
-  threshold: exactMatch.value ? 0 : undefined,
-}))
-
-const options = computed<UseFuseOptions>(() => ({
+const options = computed<UseFuseOptions<DataItem>>(() => ({
+  fuseOptions: {
+    keys: keys.value,
+    isCaseSensitive: isCaseSensitive.value,
+    threshold: exactMatch.value ? 0 : undefined,
+  },
   resultLimit: resultLimit.value,
   matchAllWhenSearchEmpty: matchAllWhenSearchEmpty.value,
 }))
 
-const { results } = useFuse(search, data, fuseOptions, options)
+const { results } = useFuse(search, data, options)
 </script>
 
 <template>
@@ -147,15 +146,15 @@ const { results } = useFuse(search, data, fuseOptions, options)
           Search by
         </legend>
         <div>
-          <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter">
+          <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter" />
           <label for="radio-both">Both Names</label>
         </div>
         <div>
-          <input id="radio-first" v-model="filterBy" type="radio" value="first" name="filter">
+          <input id="radio-first" v-model="filterBy" type="radio" value="first" name="filter" />
           <label for="radio-first">First Name</label>
         </div>
         <div>
-          <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter">
+          <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter" />
           <label for="radio-last">Last Name</label>
         </div>
       </fieldset>
@@ -164,22 +163,22 @@ const { results } = useFuse(search, data, fuseOptions, options)
           Other Options
         </legend>
         <div>
-          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox">
+          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox" />
           <label for="checkbox-exact-match">Exact match</label>
         </div>
         <div>
-          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox">
+          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox" />
           <label for="checkbox-case-sensitive">Case sensistive</label>
         </div>
         <div>
-          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox">
+          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox" />
           <label for="checkbox-match-all">Match all when search is blank</label>
         </div>
       </fieldset>
       <fieldset class="max-w-max border-2 rounded-lg">
         <legend>Result count limit</legend>
         <note>Limit the number of results shown.</note>
-        <input id="input-result-limit" v-model="resultLimitString" type="number">
+        <input id="input-result-limit" v-model="resultLimitString" type="number" />
       </fieldset>
     </section>
     <section class="flex flex-col max-h-full">
@@ -207,7 +206,7 @@ const { results } = useFuse(search, data, fuseOptions, options)
       <ol class="overflow-y-scroll" start="0">
         <li v-for="(item, index) in data" :key="index" class="m-2 p-2 rounded-lg bg-light-700">
           First name: {{ item.firstName }}
-          <br>
+          <br />
           Last name: {{ item.lastName }}
         </li>
       </ol>
