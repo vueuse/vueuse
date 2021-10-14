@@ -190,7 +190,7 @@ const { results } = useFuse(search, data, fuseOptions, options)
         <li v-for="(result, index) in results" :key="index" class="m-2 p-2 rounded-lg bg-light-700">
           <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
           <br />
-          <span>Source Index: {{ result.index }}</span>
+          <span>Source Index: {{ result.refIndex }}</span>
         </li>
       </ol>
       <div v-else class="p-2 text-2xl">
