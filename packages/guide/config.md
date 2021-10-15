@@ -16,12 +16,12 @@ const storage = useLocalStorage('my-key', { foo: 'bar' }, { eventFilter: throttl
 const { x, y } = useMouse({ eventFilter: debounceFilter(100) })
 ```
 
-Moreover, you can utilize `pauseableFilter` to temporarily pause some events.
+Moreover, you can utilize `pausableFilter` to temporarily pause some events.
 
 ```ts
-import { pauseableFilter, useDeviceMotion } from '@vueuse/core'
+import { pausableFilter, useDeviceMotion } from '@vueuse/core'
 
-const motionControl = pauseableFilter()
+const motionControl = pausableFilter()
 
 const motion = useDeviceMotion({ eventFilter: motionControl.eventFilter })
 
