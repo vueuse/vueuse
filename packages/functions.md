@@ -129,6 +129,7 @@
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
+  - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
