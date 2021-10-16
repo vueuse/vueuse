@@ -19,6 +19,17 @@ export interface UseScrollOptions {
   idle?: number
 
   /**
+   * Offset arrived states by x pixels
+   *
+   */
+  offset?: {
+    left?: number
+    right?: number
+    top?: number
+    bottom?: number
+  }
+
+  /**
    * Trigger it when scrolling.
    *
    */
@@ -55,12 +66,17 @@ export function useScroll(
     idle = 200,
     onStop = noop,
     onScroll = noop,
+    offset = {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    },
     eventListenerOptions = {
       capture: false,
       passive: true,
     },
-  }
-  = options
+  } = options
 
   const x = ref(0)
   const y = ref(0)
@@ -79,16 +95,20 @@ export function useScroll(
     }, throttle + idle)
 
     const onScrollHandler = (e: Event) => {
-      const eventTarget = (e.target === document ? (e.target as Document).documentElement : e.target) as HTMLElement
+      const eventTarget = (
+        e.target === document ? (e.target as Document).documentElement : e.target
+      ) as HTMLElement
 
       const scrollLeft = eventTarget.scrollLeft
-      arrivedState.left = scrollLeft <= 0
-      arrivedState.right = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth
+      arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
+      arrivedState.right
+          = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
       x.value = scrollLeft
 
       const scrollTop = eventTarget.scrollTop
-      arrivedState.top = scrollTop <= 0
-      arrivedState.bottom = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight
+      arrivedState.top = scrollTop <= 0 + (offset.top || 0)
+      arrivedState.bottom
+          = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
       y.value = scrollTop
 
       isScrolling.value = true
@@ -99,9 +119,7 @@ export function useScroll(
     useEventListener(
       element,
       'scroll',
-      throttle
-        ? useThrottleFn(onScrollHandler, throttle)
-        : onScrollHandler,
+      throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
       eventListenerOptions,
     )
   }
