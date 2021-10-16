@@ -4,7 +4,7 @@ category: Utilities
 
 # isDefined
 
-Check that a ref's `value` is defined (not `undefined` or `null`).
+Non-nullish checking type guard for Ref.
 
 ## Usage
 
