@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
+
 const el = ref<HTMLElement | null>(null)
 const { x, y, isScrolling, arrivedState } = useScroll(el)
 const { left, right, top, bottom } = toRefs(arrivedState)
