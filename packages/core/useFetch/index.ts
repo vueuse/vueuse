@@ -115,6 +115,12 @@ export interface AfterFetchContext<T = any> {
   data: T | null
 }
 
+export interface OnFetchErrorContext<T = any, E = any> {
+  error: E
+
+  data: T | null
+}
+
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -154,6 +160,12 @@ export interface UseFetchOptions {
    * Runs after any 2xx response
    */
   afterFetch?: (ctx: AfterFetchContext) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
+
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 4xx and 5xx response
+   */
+  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -180,7 +192,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'beforeFetch', 'afterFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'beforeFetch', 'afterFetch', 'onFetchError')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -329,6 +341,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       return Promise.resolve()
     }
 
+    let responseData: any = null
+
     return new Promise((resolve, reject) => {
       fetch(
         context.url,
@@ -345,11 +359,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
-          let responseData = await fetchResponse[config.type]()
+          responseData = await fetchResponse[config.type]()
 
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-          data.value = responseData as any
+          data.value = responseData
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
@@ -357,8 +371,14 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           responseEvent.trigger(fetchResponse)
           resolve(fetchResponse)
         })
-        .catch((fetchError) => {
-          error.value = fetchError.message || fetchError.name
+        .catch(async(fetchError) => {
+          let errorData = fetchError.message || fetchError.name
+
+          if (options.onFetchError)
+            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError }))
+          data.value = responseData
+          error.value = errorData
+
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
             reject(fetchError)

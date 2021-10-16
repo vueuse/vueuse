@@ -71,6 +71,12 @@
     --c-brand-active: #d67e36;
   }
 
+  button.red {
+    --c-brand: #f56c6c;
+    --c-brand-dark: #e41c1c;
+    --c-brand-active: #e94c4c;
+  }
+
   button:hover {
     background-color: var(--c-brand-active);
   }
