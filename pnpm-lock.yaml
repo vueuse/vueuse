@@ -165,6 +165,7 @@ importers:
       axios: ^0.21.4
       drauu: ^0.2.0
       focus-trap: ^6.7.0
+      fuse.js: ^6.4.6
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.4.4
@@ -177,6 +178,7 @@ importers:
       axios: 0.21.4
       drauu: 0.2.0
       focus-trap: 6.7.0
+      fuse.js: 6.4.6
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.4.4
@@ -4857,6 +4859,12 @@ packages:
   /functional-red-black-tree/1.0.1:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
     dev: true
+
+  /fuse.js/6.4.6:
+    resolution: {integrity: sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==}
+    engines: {node: '>=10'}
+    dev: false
+    optional: true
 
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}

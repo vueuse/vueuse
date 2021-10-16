@@ -47,7 +47,7 @@ export interface UseScrollOptions {
  */
 
 export function useScroll(
-  element: MaybeRef<HTMLElement | SVGElement | Window | Document>,
+  element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {

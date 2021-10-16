@@ -114,7 +114,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = 
 /**
  * EventFilter that gives extra controls to pause and resume the filter
  *
- * @param extendFilter  Extra filter to apply when the PauseableFilter is active, default to none
+ * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
  *
  */
 export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {
