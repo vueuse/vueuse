@@ -1,6 +1,10 @@
 import { ComputedRef, customRef, ref, watch, WatchSource } from 'vue-demi'
 import { Fn } from '../utils'
 
+export type ControlledComputed<T> = ComputedRef<T> & {
+  invalidate: () => void
+}
+
 /**
  * Explicitly define the deps of computed.
  *
@@ -13,16 +17,18 @@ export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
   let trigger: Fn
   const dirty = ref(true)
 
+  const invalidate = () => {
+    dirty.value = true
+    trigger()
+  }
+
   watch(
     source,
-    () => {
-      dirty.value = true
-      trigger()
-    },
+    invalidate,
     { flush: 'sync' },
   )
 
-  return customRef<T>((_track, _trigger) => {
+  const r = customRef<T>((_track, _trigger) => {
     track = _track
     trigger = _trigger
 
@@ -37,5 +43,9 @@ export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
       },
       set() {},
     }
-  }) as ComputedRef<T>
+  }) as ControlledComputed<T>
+
+  r.invalidate = invalidate
+
+  return r
 }
