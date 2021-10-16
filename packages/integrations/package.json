@@ -36,6 +36,10 @@
       "import": "./useFocusTrap.mjs",
       "require": "./useFocusTrap.cjs"
     },
+    "./useFocusTrap/component": {
+      "import": "./useFocusTrap/component.mjs",
+      "require": "./useFocusTrap/component.cjs"
+    },
     "./useFuse": {
       "import": "./useFuse.mjs",
       "require": "./useFuse.cjs"

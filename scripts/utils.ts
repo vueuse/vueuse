@@ -183,7 +183,12 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       imports = functions
         .sort((a, b) => a.name.localeCompare(b.name))
         .flatMap((fn) => {
-          const arr = []
+          const arr: string[] = []
+
+          // don't include integration components
+          if (fn.package === 'integrations')
+            return arr
+
           if (fn.component)
             arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
           if (fn.directive)
@@ -370,6 +375,12 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
           packageJSON.exports[`./${i.name}`] = {
             import: `./${i.name}.mjs`,
             require: `./${i.name}.cjs`,
+          }
+          if (i.component) {
+            packageJSON.exports[`./${i.name}/component`] = {
+              import: `./${i.name}/component.mjs`,
+              require: `./${i.name}/component.cjs`,
+            }
           }
         })
     }

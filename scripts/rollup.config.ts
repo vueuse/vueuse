@@ -5,6 +5,7 @@ import dts from 'rollup-plugin-dts'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { packages } from '../meta/packages'
+import { functions } from '../meta/function-indexes'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
@@ -15,6 +16,19 @@ const injectVueDemi: Plugin = {
     return `${VUE_DEMI_IIFE};\n;${code}`
   },
 }
+
+const buildPlugins = [
+  esbuild(),
+]
+
+const dtsPlugin = [
+  dts(),
+]
+
+const externals = [
+  'vue-demi',
+  '@vueuse/shared',
+]
 
 const esbuildMinifer = (options: ESBuildOptions) => {
   const { renderChunk } = esbuild(options)
@@ -40,7 +54,11 @@ for (const { globals, name, external, submodules, iife } of packages) {
     functionNames.push(...fg.sync('*/index.ts', { cwd: resolve(`packages/${name}`) }).map(i => i.split('/')[0]))
 
   for (const fn of functionNames) {
-    const input = fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
+    const input = fn === 'index'
+      ? `packages/${name}/index.ts`
+      : `packages/${name}/${fn}/index.ts`
+
+    const info = functions.find(i => i.name === fn)
 
     const output: OutputOptions[] = [
       {
@@ -84,12 +102,9 @@ for (const { globals, name, external, submodules, iife } of packages) {
     configs.push({
       input,
       output,
-      plugins: [
-        esbuild(),
-      ],
+      plugins: buildPlugins,
       external: [
-        'vue-demi',
-        '@vueuse/shared',
+        ...externals,
         ...(external || []),
       ],
     })
@@ -100,15 +115,46 @@ for (const { globals, name, external, submodules, iife } of packages) {
         file: `packages/${name}/dist/${fn}.d.ts`,
         format: 'es',
       },
-      plugins: [
-        dts(),
-      ],
+      plugins: dtsPlugin,
       external: [
-        'vue-demi',
-        '@vueuse/shared',
+        ...externals,
         ...(external || []),
       ],
     })
+
+    if (info?.component) {
+      configs.push({
+        input: `packages/${name}/${fn}/component.ts`,
+        output: [
+          {
+            file: `packages/${name}/dist/${fn}/component.cjs`,
+            format: 'cjs',
+          },
+          {
+            file: `packages/${name}/dist/${fn}/component.mjs`,
+            format: 'es',
+          },
+        ],
+        plugins: buildPlugins,
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+
+      configs.push({
+        input: `packages/${name}/${fn}/component.ts`,
+        output: {
+          file: `packages/${name}/dist/${fn}/component.d.ts`,
+          format: 'es',
+        },
+        plugins: dtsPlugin,
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+    }
   }
 }
 
