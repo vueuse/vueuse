@@ -72,9 +72,9 @@
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.21.4",
-    "drauu": "^0.2.0",
-    "focus-trap": "^6.7.0",
+    "axios": "^0.23.0",
+    "drauu": "^0.2.1",
+    "focus-trap": "^6.7.1",
     "fuse.js": "^6.4.6",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
