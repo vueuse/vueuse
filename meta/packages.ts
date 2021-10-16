@@ -49,6 +49,7 @@ export const packages: PackageManifest[] = [
       'drauu',
       '@vueuse/core',
       '@vueuse/shared',
+      'fuse.js',
     ],
     globals: {
       'axios': 'axios',
@@ -58,6 +59,7 @@ export const packages: PackageManifest[] = [
       'jwt-decode': 'jwt_decode',
       'focus-trap': 'focusTrap',
       'drauu': 'Drauu',
+      'fuse.js': 'Fuse',
     },
   },
   {

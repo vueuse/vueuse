@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "Anthony Fu<https://github.com/antfu>",
   "scripts": {
-    "build": "esno scripts/build.ts",
+    "build": "nr update && esno scripts/build.ts",
     "build:redirects": "esno scripts/redirects.ts",
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
