@@ -87,6 +87,21 @@ const { data } = useFetch(url, {
 })
 ```
 
+The `onFetchError` option can intercept the response data and error before it is updated.
+```ts
+const { data } = useFetch(url, {
+  onFetchError(ctx) {
+    // ctx.data can be null when 5xx response
+    if (ctx.data === null) 
+      ctx.data = { title: 'Hunter x Hunter' } // Modifies the resposne data
+
+    ctx.error = new Error('Custom Error') // Modifies the error
+
+    return ctx
+  }
+})
+```
+
 ### Setting the request method and return type
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
