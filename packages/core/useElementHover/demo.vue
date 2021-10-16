@@ -8,7 +8,6 @@ const isHovered = useElementHover(el)
 
 <template>
   <button ref="el">
-    <span>Hover me!</span>
+    <span>{{ isHovered ? 'Thank you!' : 'Hover me' }}</span>
   </button>
-  {{ isHovered }}
 </template>

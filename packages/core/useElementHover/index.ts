@@ -1,8 +1,8 @@
-import { ref } from 'vue-demi'
+import { Ref, ref } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
-export function useElementHover(el: MaybeRef<EventTarget>) {
+export function useElementHover(el: MaybeRef<EventTarget>): Ref<boolean> {
   const isHovered = ref(false)
 
   useEventListener(el, 'mouseenter', () => isHovered.value = true)
@@ -10,5 +10,3 @@ export function useElementHover(el: MaybeRef<EventTarget>) {
 
   return isHovered
 }
-
-export type UseElementHoverReturn = ReturnType<typeof useElementHover>
