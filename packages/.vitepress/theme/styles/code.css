@@ -8,6 +8,10 @@
   --prism-marker-opacity: 0;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 html:not(.dark) {
   --prism-foreground: #393a34;
   --prism-background: #fafafa;

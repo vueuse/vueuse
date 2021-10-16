@@ -173,12 +173,12 @@ importers:
       vue-demi: '*'
     dependencies:
       '@vueuse/core': link:../core
-      fuse.js: 6.4.6
       vue-demi: 0.11.4_47edcc1e3602e0fa84bae6ed1ff608d9
     optionalDependencies:
       axios: 0.21.4
       drauu: 0.2.0
       focus-trap: 6.7.0
+      fuse.js: 6.4.6
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.4.4
@@ -4864,6 +4864,7 @@ packages:
     resolution: {integrity: sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==}
     engines: {node: '>=10'}
     dev: false
+    optional: true
 
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
