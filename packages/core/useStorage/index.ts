@@ -57,6 +57,13 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   listenToStorageChanges?: boolean
 
   /**
+   * Write the default value to the storage when it does not existed
+   *
+   * @default true
+   */
+  writeDefaults?: boolean
+
+  /**
    * Custom data serialization
    */
   serializer?: Serializer<T>
@@ -101,6 +108,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     flush = 'pre',
     deep = true,
     listenToStorageChanges = true,
+    writeDefaults = true,
     shallow,
     window = defaultWindow,
     eventFilter,
@@ -140,7 +148,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
         data.value = rawInit
-        if (rawInit !== null)
+        if (writeDefaults && rawInit !== null)
           storage.setItem(key, serializer.write(rawInit))
       }
       else {
