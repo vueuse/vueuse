@@ -32,10 +32,17 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return window.matchMedia(query).matches
   }
 
+  const greater = (k: K) => {
+    return useMediaQuery(`(min-width: ${getValue(k)})`, options)
+  }
+
+  const shortcutMethods = Object.keys(breakpoints).reduce<{ [key in K]: () => boolean }>((shortcuts, k) => {
+    shortcuts[k as K] = () => greater(k as K)
+    return shortcuts
+  }, {} as any)
+
   return {
-    greater(k: K) {
-      return useMediaQuery(`(min-width: ${getValue(k)})`, options)
-    },
+    greater,
     smaller(k: K) {
       return useMediaQuery(`(max-width: ${getValue(k, -0.1)})`, options)
     },
@@ -51,6 +58,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     isInBetween(a: K, b: K) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
+    ...shortcutMethods
   }
 }
 
