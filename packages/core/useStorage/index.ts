@@ -163,7 +163,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   read()
 
   if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', read)
+    useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
 
   if (storage) {
     watchWithFilter(
