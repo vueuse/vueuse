@@ -8,7 +8,7 @@ export type Serializer<T> = {
   write(value: T): string
 }
 
-export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string', Serializer<any>> = {
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
   boolean: {
     read: (v: any) => v === 'true',
     write: (v: any) => String(v),
@@ -28,6 +28,14 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   string: {
     read: (v: any) => v,
     write: (v: any) => String(v),
+  },
+  map: {
+    read: (v: any) => new Map(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from((v as Map<any, any>).entries())),
+  },
+  set: {
+    read: (v: any) => new Set(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
   },
 }
 
@@ -93,9 +101,9 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     flush = 'pre',
     deep = true,
     listenToStorageChanges = true,
+    shallow,
     window = defaultWindow,
     eventFilter,
-    shallow,
     onError = (e) => {
       console.error(e)
     },
@@ -105,17 +113,21 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
 
   const type = rawInit == null
     ? 'any'
-    : typeof rawInit === 'boolean'
-      ? 'boolean'
-      : typeof rawInit === 'string'
-        ? 'string'
-        : typeof rawInit === 'object'
-          ? 'object'
-          : Array.isArray(rawInit)
-            ? 'object'
-            : !Number.isNaN(rawInit)
-              ? 'number'
-              : 'any'
+    : rawInit instanceof Set
+      ? 'set'
+      : rawInit instanceof Map
+        ? 'map'
+        : typeof rawInit === 'boolean'
+          ? 'boolean'
+          : typeof rawInit === 'string'
+            ? 'string'
+            : typeof rawInit === 'object'
+              ? 'object'
+              : Array.isArray(rawInit)
+                ? 'object'
+                : !Number.isNaN(rawInit)
+                  ? 'number'
+                  : 'any'
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
