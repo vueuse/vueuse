@@ -185,14 +185,15 @@ const { results } = useFuse(search, data, options)
       <h2 class="mt-0">
         Results
       </h2>
-      <ol v-if="results.length > 0" class="overflow-y-scroll space-y-2" start="0">
-        <li v-for="(result, index) in results" :key="index" class="mx-2 px-2 py-1 rounded-lg bg-gray-400/20">
+      <note>Result Count: {{ results.length }}</note>
+      <ol v-if="results.length > 0" class="mt-6 overflow-y-scroll space-y-2" start="0">
+        <li v-for="(result, index) in results" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
           <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
           <br />
           <span>Source Index: {{ result.refIndex }}</span>
         </li>
       </ol>
-      <div v-else class="p-2 text-2xl">
+      <div v-else class="mt-4 text-2xl">
         No results
       </div>
     </section>
@@ -204,7 +205,7 @@ const { results } = useFuse(search, data, options)
         Shuffle Data
       </button>
       <ol class="overflow-y-scroll space-y-2" start="0">
-        <li v-for="(item, index) in data" :key="index" class="mx-2 px-2 py-1 rounded-lg bg-gray-400/20">
+        <li v-for="(item, index) in data" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
           First name: {{ item.firstName }}
           <br />
           Last name: {{ item.lastName }}
