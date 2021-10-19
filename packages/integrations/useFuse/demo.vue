@@ -135,12 +135,12 @@ const { results } = useFuse(search, data, options)
 </script>
 
 <template>
-  <div class="grid grid-rows-[550px] grid-cols-[1fr,1fr,1fr] gap-x-8">
-    <section class="flex flex-col max-h-full space-y-4">
-      <h2 class="m-top-0">
+  <div class="flex flex-wrap gap-8">
+    <section class="flex-1 flex flex-col items-start min-w-xs max-h-xl space-y-4">
+      <h2 class="mt-0 self-stretch">
         Search
       </h2>
-      <input v-model="search" type="text" placeholder="Search for someone" class="mb-0" />
+      <input v-model="search" type="text" placeholder="Search for someone" />
       <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30">
         <legend class="px-1">
           Search by
@@ -181,12 +181,12 @@ const { results } = useFuse(search, data, options)
         <input id="input-result-limit" v-model="resultLimitString" type="number" />
       </fieldset>
     </section>
-    <section class="flex flex-col max-h-full">
-      <h2 class="m-top-0">
+    <section class="flex-1 flex flex-col min-w-xs max-h-xl">
+      <h2 class="mt-0">
         Results
       </h2>
-      <ol v-if="results.length > 0" class="overflow-y-scroll" start="0">
-        <li v-for="(result, index) in results" :key="index" class="m-2 px-2 py-1 rounded-lg bg-gray-400/20">
+      <ol v-if="results.length > 0" class="overflow-y-scroll space-y-2" start="0">
+        <li v-for="(result, index) in results" :key="index" class="mx-2 px-2 py-1 rounded-lg bg-gray-400/20">
           <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
           <br />
           <span>Source Index: {{ result.refIndex }}</span>
@@ -196,15 +196,15 @@ const { results } = useFuse(search, data, options)
         No results
       </div>
     </section>
-    <section class="flex flex-col max-h-full">
+    <section class="flex-1 flex flex-col min-w-xs max-h-xl">
       <h2 class="mt-0 mb-3">
         Source Data
       </h2>
       <button class="self-center" @click="shuffleData">
         Shuffle Data
       </button>
-      <ol class="overflow-y-scroll" start="0">
-        <li v-for="(item, index) in data" :key="index" class="m-2 px-2 py-1 rounded-lg bg-gray-400/20">
+      <ol class="overflow-y-scroll space-y-2" start="0">
+        <li v-for="(item, index) in data" :key="index" class="mx-2 px-2 py-1 rounded-lg bg-gray-400/20">
           First name: {{ item.firstName }}
           <br />
           Last name: {{ item.lastName }}
