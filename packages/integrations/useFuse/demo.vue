@@ -90,7 +90,7 @@ const data = ref<DataItem[]>([
   },
 ])
 const shuffleData = () => {
-  data.value.sort((a, b) => Math.random() - 0.5)
+  data.value.sort(() => Math.random() - 0.5)
 }
 
 const search = ref('')
