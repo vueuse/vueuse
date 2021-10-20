@@ -1,6 +1,6 @@
 # Installation
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
+> 🎩 VueUse works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
 
 ```bash
 npm i @vueuse/core
@@ -18,10 +18,29 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 ```
 
 It will be exposed to global as `window.VueUse`
-### CDN
 
-```html
-<script src="https://unpkg.com/@vueuse/core"></script>
+### Nuxt
+
+From v6.7.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
+
+```ts
+// nuxt.config.js
+export default {
+  buildModules: [
+    '@vueuse/core/nuxt'
+  ]
+}
 ```
 
-It will be exposed to global as `window.VueUse`
+And then use VueUse function anywhere in your Nuxt app. For example:
+
+```html
+<script setup lang="ts">
+const { x, y } = useMouse()
+</script>
+
+<template>
+  <div>pos: {{x}}, {{y}}</div>
+</template>
+```
+
