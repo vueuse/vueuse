@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "6.7.2",
+  "version": "6.7.3",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
