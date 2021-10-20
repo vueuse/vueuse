@@ -93,12 +93,14 @@
     "vite-plugin-windicss": "^1.4.12",
     "vitepress": "^0.20.0",
     "vue": "^3.2.20",
-    "vue-demi": "^0.11.4",
     "vue2": "npm:vue@2"
   },
   "pnpm": {
     "neverBuiltDependencies": [
       "electron"
-    ]
+    ],
+    "overrides": {
+      "vue-demi": "0.11.4"
+    }
   }
 }
