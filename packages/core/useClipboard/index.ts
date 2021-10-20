@@ -69,12 +69,13 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
   }
 
   async function copy(value = unref(source)) {
+    copied.value = false
     if (isSupported && value != null) {
       // @ts-expect-error untyped API
       await navigator.clipboard.writeText(value)
       text.value = value
       copied.value = true
-      timeout.start()
+      // timeout.start()
     }
   }
 
