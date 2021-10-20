@@ -27,7 +27,7 @@ module.exports = function() {
         .functions
         .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
         .map(i => i.name)
-        .filter(i => i.length < 4 && !disabled.includes(i)),
+        .filter(i => i.length >= 4 && !disabled.includes(i)),
     })
   })
 }
