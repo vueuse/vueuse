@@ -2,6 +2,7 @@
 
 const disabled = [
   'useFetch',
+  'toRefs',
 ]
 
 /**
