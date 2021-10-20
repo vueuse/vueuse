@@ -100,7 +100,8 @@
       "electron"
     ],
     "overrides": {
-      "vue-demi": "0.11.4"
+      "vue-demi": "0.11.4",
+      "vite": "^2.6.7"
     }
   }
 }
