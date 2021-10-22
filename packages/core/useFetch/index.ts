@@ -2,7 +2,7 @@ import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from
 import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 
-interface UseFetchReturn<T> {
+export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
@@ -250,7 +250,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false }
-  type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
+  type InternalConfig = { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'get',
     type: 'text' as DataType,
