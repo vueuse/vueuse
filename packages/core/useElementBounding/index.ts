@@ -7,7 +7,6 @@ import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
  *
  * @see https://vueuse.org/useElementBounding
  * @param target
- * @param callback
  * @param options
  */
 export function useElementBounding(
