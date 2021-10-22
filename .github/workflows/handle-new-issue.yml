@@ -1,0 +1,17 @@
+name: 'Handle new issue'
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  comment_on_new_issue:
+    runs-on: ubuntu-latest
+    name: Job for commenting on new issue
+    steps:
+      - name: Comment
+        uses: jd-0001/gh-action-comment-on-new-issue@v2.0.3
+        with:
+          message: |
+            ### Hi there <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="30px">
+            Please provide [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) link for resolving the issue quickly if this is technical issue.
+            Maintainers' time is limited, and most of the time, unpaid. With minimal reproduction it will take our less time to resolve the issue and if you are lucky, helpful people will help you in resolving the issue as well.
