@@ -3,9 +3,9 @@ import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
 
 /**
- * Reactive size of an HTML element.
+ * Reactive bounding box of an HTML element.
  *
- * @see https://vueuse.org/useElementSize
+ * @see https://vueuse.org/useElementBounding
  * @param target
  * @param callback
  * @param options
