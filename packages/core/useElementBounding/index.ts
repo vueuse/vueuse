@@ -1,4 +1,4 @@
-import { reactive, toRefs } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
 
@@ -13,16 +13,14 @@ export function useElementBounding(
   target: MaybeElementRef,
   options: ResizeObserverOptions = {},
 ) {
-  const domRect = reactive({
-    height: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-    x: 0,
-    y: 0,
-  })
+  const height = ref(0)
+  const bottom = ref(0)
+  const left = ref(0)
+  const right = ref(0)
+  const top = ref(0)
+  const width = ref(0)
+  const x = ref(0)
+  const y = ref(0)
 
   useResizeObserver(
     target,
@@ -30,19 +28,28 @@ export function useElementBounding(
       const el = unrefElement(target)
       const rect = el!.getBoundingClientRect()
 
-      domRect.height = rect.height
-      domRect.bottom = rect.bottom
-      domRect.left = rect.left
-      domRect.right = rect.right
-      domRect.top = rect.top
-      domRect.width = rect.width
-      domRect.x = rect.x
-      domRect.y = rect.y
+      height.value = rect.height
+      bottom.value = rect.bottom
+      left.value = rect.left
+      right.value = rect.right
+      top.value = rect.top
+      width.value = rect.width
+      x.value = rect.x
+      y.value = rect.y
     },
     options,
   )
 
-  return toRefs(domRect)
+  return {
+    height,
+    bottom,
+    left,
+    right,
+    top,
+    width,
+    x,
+    y,
+  }
 }
 
 export type UseElementBoundingReturn = ReturnType<typeof useElementBounding>
