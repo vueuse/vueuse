@@ -1,5 +1,5 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
+import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stopable, useTimeoutFn } from '@vueuse/shared'
+import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 interface UseFetchReturn<T> {
@@ -151,6 +151,14 @@ export interface UseFetchOptions {
   initialData?: any
 
   /**
+   * Timeout for abort request after number of millisecond
+   * `0` means use browser default
+   *
+   * @default 0
+   */
+  timeout?: number
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -192,7 +200,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'beforeFetch', 'afterFetch', 'onFetchError')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -249,7 +257,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false }
+  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
   type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
   const config: InternalConfig = {
     method: 'get',
@@ -272,6 +280,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const {
     fetch = defaultWindow?.fetch,
     initialData,
+    timeout,
   } = options
 
   // Event Hooks
@@ -290,6 +299,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
   let controller: AbortController | undefined
+  let timer: Stopable | undefined
 
   const abort = () => {
     if (supportsAbort && controller)
@@ -300,6 +310,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     isFetching.value = isLoading
     isFinished.value = !isLoading
   }
+
+  if (timeout)
+    timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   const execute = async(throwOnFailed = false) => {
     loading(true)
@@ -342,6 +355,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     let responseData: any = null
+
+    if (timer)
+      timer.start()
 
     return new Promise((resolve, reject) => {
       fetch(
@@ -387,6 +403,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         })
         .finally(() => {
           loading(false)
+          if (timer)
+            timer.stop()
           finallyEvent.trigger(null)
         })
     })
