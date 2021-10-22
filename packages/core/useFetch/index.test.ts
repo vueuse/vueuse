@@ -1,7 +1,7 @@
-import fetchMock from 'jest-fetch-mock'
 import { until } from '@vueuse/shared'
+import fetchMock from 'jest-fetch-mock'
 import { nextTick, ref } from 'vue-demi'
-import { useFetch, createFetch } from '.'
+import { createFetch, useFetch } from '.'
 
 describe('useFetch', () => {
   beforeEach(() => {
@@ -291,6 +291,32 @@ describe('useFetch', () => {
     fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
 
     const shell = useFetch('https://example.com').get().text()
+    const { isFetching, isFinished, data } = shell
+    await until(isFetching).toBe(true)
+    shell.json()
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+  })
+
+  test('should abort request when timeout reached', async() => {
+    fetchMock.mockResponse(() => new Promise(resolve => setTimeout(() => resolve({ body: 'ok' }), 1000)))
+
+    const { aborted, isFinished, execute } = useFetch('https://example.com', { timeout: 10 })
+
+    await until(isFinished).toBe(true)
+    expect(aborted.value).toBe(true)
+
+    execute()
+
+    await until(isFinished).toBe(true)
+    expect(aborted.value).toBe(true)
+  })
+
+  test('should not abort request when timeout is not reached', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const shell = useFetch('https://example.com', { timeout: 100 }).get().text()
     const { isFetching, isFinished, data } = shell
     await until(isFetching).toBe(true)
     shell.json()

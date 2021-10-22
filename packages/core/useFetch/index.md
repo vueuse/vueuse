@@ -53,6 +53,12 @@ setTimeout(() => {
 }, 100)
 ```
 
+A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given
+timeout is reached.
+```ts
+const { data } = useFetch(url, { timeout: 100 })
+```
+
 ### Intercepting a request
 The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
 ```ts
