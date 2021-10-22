@@ -356,7 +356,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     let responseData: any = null
 
-    if (timer) timer.start()
+    if (timer)
+      timer.start()
 
     return new Promise((resolve, reject) => {
       fetch(
@@ -402,7 +403,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         })
         .finally(() => {
           loading(false)
-          if (timer) timer.stop()
+          if (timer)
+            timer.stop()
           finallyEvent.trigger(null)
         })
     })
