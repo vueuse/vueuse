@@ -55,8 +55,13 @@ export function debounceFilter(ms: MaybeRef<number>, maxMs: MaybeRef<number | nu
     if (timer)
       clearTimeout(timer)
 
-    if (duration <= 0)
+    if (duration <= 0 || (maxDuration !== null && maxDuration <= 0)) {
+      if (maxTimer) {
+        clearTimeout(maxTimer)
+        maxTimer = null
+      }
       return invoke()
+    }
 
     // Create the maxTimer. Clears the regular timer on invokation
     if (maxDuration && !maxTimer) {
