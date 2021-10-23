@@ -46,7 +46,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  */
 export function debounceFilter(ms: MaybeRef<number>, maxMs: MaybeRef<number | null> = null) {
   let timer: ReturnType<typeof setTimeout> | undefined
-  let maxTimer: ReturnType<typeof setTimeout> | undefined
+  let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
     const duration = unref(ms)
@@ -58,22 +58,21 @@ export function debounceFilter(ms: MaybeRef<number>, maxMs: MaybeRef<number | nu
     if (duration <= 0)
       return invoke()
 
-    // if there's a max duration and we don't yet have a timeout for it
-    // then create one. once this timeout is done, invoke the function and clear the regular timer
+    // Create the maxTimer. Clears the regular timer on invokation
     if (maxDuration && !maxTimer) {
       maxTimer = setTimeout(() => {
         if (timer)
           clearTimeout(timer)
-        maxTimer = undefined
+        maxTimer = null
         invoke()
       }, maxDuration)
     }
 
-    // regualr timer. On completion this will clear the max timer
+    // Create the regular timer. Clears the max timer on invokation
     timer = setTimeout(() => {
       if (maxTimer)
         clearTimeout(maxTimer)
-      maxTimer = undefined
+      maxTimer = null
       invoke()
     }, duration)
   }
