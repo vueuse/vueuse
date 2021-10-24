@@ -9,9 +9,9 @@ import { createFilterWrapper, debounceFilter, FunctionArgs, MaybeRef, DebounceFi
  *
  * @return A new, debounce, function.
  */
-export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, opts: DebounceFilterOptions = { maxMs: null }): T {
+export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, options: DebounceFilterOptions = { maxMs: null }): T {
   return createFilterWrapper(
-    debounceFilter(ms, opts),
+    debounceFilter(ms, options),
     fn,
   )
 }

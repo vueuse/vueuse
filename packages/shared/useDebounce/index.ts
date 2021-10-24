@@ -2,7 +2,7 @@ import { ref, Ref, watch } from 'vue-demi'
 import { useDebounceFn } from '../useDebounceFn'
 import { DebounceFilterOptions } from '../utils'
 
-export function useDebounce<T>(value: Ref<T>, ms = 200, opts: DebounceFilterOptions = { maxMs: null }): Readonly<Ref<T>> {
+export function useDebounce<T>(value: Ref<T>, ms = 200, options: DebounceFilterOptions = { maxMs: null }): Readonly<Ref<T>> {
   if (ms <= 0)
     return value
 
@@ -10,7 +10,7 @@ export function useDebounce<T>(value: Ref<T>, ms = 200, opts: DebounceFilterOpti
 
   const updater = useDebounceFn(() => {
     debounced.value = value.value
-  }, ms, opts)
+  }, ms, options)
 
   watch(value, () => updater())
 
