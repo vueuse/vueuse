@@ -23,6 +23,13 @@ export interface ConfigurableEventFilter {
   eventFilter?: EventFilter
 }
 
+export interface DebounceFilterOptions {
+  /**
+   * Options for debounceFilter
+   */
+  maxMs: number | null
+}
+
 /**
  * @internal
  */
@@ -44,13 +51,13 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param ms
  * @param [maxMs=null]
  */
-export function debounceFilter(ms: MaybeRef<number>, maxMs: MaybeRef<number | null> = null) {
+export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = { maxMs: null }) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
     const duration = unref(ms)
-    const maxDuration = unref(maxMs)
+    const maxDuration = unref(options.maxMs)
 
     if (timer)
       clearTimeout(timer)

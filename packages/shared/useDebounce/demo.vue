@@ -3,7 +3,7 @@ import { ref, watch } from 'vue-demi'
 import { useDebounce } from '.'
 
 const input = ref('')
-const debounced = useDebounce(input, 1000, 5000)
+const debounced = useDebounce(input, 1000, { maxMs: 5000 })
 const updated = ref(0)
 
 watch(debounced, () => (updated.value += 1))

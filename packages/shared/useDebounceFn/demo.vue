@@ -6,7 +6,7 @@ const updated = ref(0)
 const clicked = ref(0)
 const debouncedFn = useDebounceFn(() => {
   updated.value += 1
-}, 1000, 5000)
+}, 1000, { maxMs: 5000 })
 
 const clickedFn = () => {
   clicked.value += 1
