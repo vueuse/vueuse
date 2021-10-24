@@ -21,6 +21,7 @@ await sleep(1100)
 
 console.log(debounced.value) // 'bar'
 ```
+You can also pass an optional 3rd parameter including maxMs option. See `useDebounceFn` for details.
 
 ## Related Functions
 
