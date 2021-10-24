@@ -25,7 +25,8 @@ export interface ConfigurableEventFilter {
 
 export interface DebounceFilterOptions {
   /**
-   * Options for debounceFilter
+   * The maximum time allowed to be delayed before it's invoked.
+   * In milliseconds.
    */
   maxMs: number | null
 }
