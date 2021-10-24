@@ -29,7 +29,7 @@ import { useDebounceFn } from '@vueuse/core'
 // the function will be called anyway.
 const debouncedFn = useDebounceFn(() => {
   // do something
-}, 1000, { maxMs: 5000 })
+}, 1000, { maxWait: 5000 })
 
 document.addEventListener('resize', debouncedFn)
 ```

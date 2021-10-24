@@ -28,7 +28,7 @@ export interface DebounceFilterOptions {
    * The maximum time allowed to be delayed before it's invoked.
    * In milliseconds.
    */
-  maxMs: number | null
+  maxWait: number | null
 }
 
 /**
@@ -50,15 +50,15 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  *
  * @param ms
- * @param [maxMs=null]
+ * @param [maxWait=null]
  */
-export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = { maxMs: null }) {
+export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = { maxWait: null }) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
     const duration = unref(ms)
-    const maxDuration = unref(options.maxMs)
+    const maxDuration = unref(options.maxWait)
 
     if (timer)
       clearTimeout(timer)
