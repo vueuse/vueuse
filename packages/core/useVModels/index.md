@@ -19,7 +19,7 @@ export default {
   setup(props, { emit }) {
     const { foo, bar } = useVModels(props, emit)
 
-    console.log(foo.value) // props.data
+    console.log(foo.value) // props.foo
     foo.value = 'foo' // emit('update:foo', 'foo')
   },
 }
