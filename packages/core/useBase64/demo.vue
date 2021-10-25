@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
-import { useBase64, imgLoaded } from '.'
+import { useBase64 } from '@vueuse/core'
 
 const text = ref('')
 const file = ref() as Ref<File>
@@ -95,6 +95,20 @@ async function draw() {
 
 function onFileInput(e: Event) {
   file.value = (e.target as HTMLInputElement).files![0]
+}
+
+function imgLoaded(img: HTMLImageElement) {
+  return new Promise<void>((resolve, reject) => {
+    if (!img.complete) {
+      img.onload = () => {
+        resolve()
+      }
+      img.onerror = reject
+    }
+    else {
+      resolve()
+    }
+  })
 }
 </script>
 
