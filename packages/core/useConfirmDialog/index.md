@@ -10,7 +10,7 @@ Functions can be used on the template, and hooks are a handy skeleton for the bu
 
 ## Functions and hooks
 
-- `reveal()` - triggers `onReveal` hook and sets `show.value` to `true`. Returns promise that resolves by `confirm()` or `cancel()`.
+- `reveal()` - triggers `onReveal` hook and sets `revealed.value` to `true`. Returns promise that resolves by `confirm()` or `cancel()`.
 - `confirm()` - sets `show.value` to `false` and triggers `onConfirm` hook.
 - `cancel()` - sets `show.value` to `false` and triggers `onCancel` hook.
 
