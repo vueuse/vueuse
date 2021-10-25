@@ -11,6 +11,15 @@
   </div>
   <div class="list">
     <div class="input">
+      <div>buffer input:</div>new ArrayBuffer(1024)
+    </div>
+    <div class="output">
+      <div>output:</div>
+      <textarea col="40" rows="10" :value="bufferBase64" readonly></textarea>
+    </div>
+  </div>
+  <div class="list">
+    <div class="input">
       <div>file input:</div>
       <input type="file" @input="onFileInput" />
     </div>
@@ -67,15 +76,21 @@ const image = ref() as Ref<HTMLImageElement>
 
 const { base64: textBase64 } = useBase64(text)
 const { base64: fileBase64 } = useBase64(file)
-const { base64: canvasBase64, execute: executeCanvasBase64 } = useBase64(canvas)
+const { base64: canvasBase64, execute, promise: canvasPromise } = useBase64(canvas)
 const { base64: imageBase64 } = useBase64(image)
+const { base64: bufferBase64 } = useBase64(new ArrayBuffer(8))
 
 async function draw() {
   const $canvas = canvas.value
   const ctx = $canvas.getContext('2d')!
   await imgLoaded(canvasImg.value)
   ctx.drawImage(canvasImg.value, 0, 0, canvas.value.width, canvas.value.height)
-  executeCanvasBase64()
+  execute()
+  try {
+    await canvasPromise.value
+    console.log(canvasBase64.value)
+  }
+  catch (err) { console.error(err) }
 }
 
 function onFileInput(e: Event) {

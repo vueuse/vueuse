@@ -1,21 +1,20 @@
 import { Ref, ref, unref, watch } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
 
-interface Base64Options {
-  onError: (e: Error) => void
-}
-interface ToDataURLOptions extends Base64Options {
+interface ToDataURLOptions {
   type?: string | undefined
   quality?: any
 }
 
 interface UseBase64Result {
   base64: Ref<string>
+  promise: Ref<Promise<string>>
   execute: () => void
 }
 
-export function useBase64(target: MaybeRef<string>, options: Base64Options): UseBase64Result
-export function useBase64(target: MaybeRef<Blob>, options: Base64Options): UseBase64Result
+export function useBase64(target: MaybeRef<string>): UseBase64Result
+export function useBase64(target: MaybeRef<Blob>): UseBase64Result
+export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Result
 export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Result
 export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Result
 export function useBase64(
@@ -23,29 +22,39 @@ export function useBase64(
   options?: any,
 ) {
   const base64 = ref('')
+  const promise = ref() as Ref<Promise<string>>
 
-  async function execute() {
-    try {
-      const _target = unref(target)
-      if (_target instanceof HTMLCanvasElement) { base64.value = _target.toDataURL(options?.type, options?.quality) }
-      else if (typeof _target === 'string') { base64.value = await blobToBase64(new Blob([_target], { type: 'text/plain' })) }
-      else if (_target instanceof Blob) { base64.value = await blobToBase64(_target) }
-      else if (_target instanceof HTMLImageElement) {
-        const img = _target.cloneNode(false) as HTMLImageElement
-        img.crossOrigin = 'Anonymous'
-        await imgLoaded(img)
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')!
-        canvas.width = img.width
-        canvas.height = img.height
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        base64.value = canvas.toDataURL(options?.type, options?.quality)
+  function execute() {
+    promise.value = new Promise<string>((resolve, reject) => {
+      try {
+        const _target = unref(target)
+        // undefined or null
+        if (_target === undefined || _target === null) { resolve('') }
+        else if (typeof _target === 'string') { resolve(blobToBase64(new Blob([_target], { type: 'text/plain' }))) }
+        else if (_target instanceof Blob) { resolve(blobToBase64(_target)) }
+        else if (_target instanceof ArrayBuffer) { resolve(window.btoa(String.fromCharCode(...new Uint8Array(_target)))) }
+        else if (_target instanceof HTMLCanvasElement) { resolve(_target.toDataURL(options?.type, options?.quality)) }
+        else if (_target instanceof HTMLImageElement) {
+          const img = _target.cloneNode(false) as HTMLImageElement
+          img.crossOrigin = 'Anonymous'
+          imgLoaded(img).then(() => {
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')!
+            canvas.width = img.width
+            canvas.height = img.height
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+            resolve(canvas.toDataURL(options?.type, options?.quality))
+          }).catch(reject)
+        }
+        else {
+          reject(new Error('target is unsupported types'))
+        }
       }
-    }
-    catch (error) {
-      if (options?.onError)
-        options.onError(error)
-    }
+      catch (error) {
+        reject(error)
+      }
+    })
+    promise.value.then(res => base64.value = res)
   }
 
   watch(target, execute, {
@@ -54,6 +63,7 @@ export function useBase64(
 
   return {
     base64,
+    promise,
     execute,
   }
 }
