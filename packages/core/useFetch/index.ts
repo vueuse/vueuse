@@ -2,7 +2,7 @@ import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stopable, use
 import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
-interface UseFetchReturn<T> {
+export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
