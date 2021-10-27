@@ -22,6 +22,8 @@ module.exports = function() {
   const { nuxt } = this
 
   nuxt.hook('autoImports:sources', (sources) => {
+    if (sources.find(i => i.from === '@vueuse/core/nuxt'))
+      return
     sources.push({
       from: '@vueuse/core',
       names: require('./indexes.json')
