@@ -42,7 +42,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 100%;
   height: 100px;
   margin: auto;
   overflow: hidden;
