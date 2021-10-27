@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/rxjs",
-  "version": "6.7.3",
+  "version": "6.7.4",
   "description": "Enables RxJS reactive functions in Vue",
   "keywords": [
     "vue",
