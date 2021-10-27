@@ -43,6 +43,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 400px;
   height: 100px;
   margin: auto;
   overflow: hidden;
