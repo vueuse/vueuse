@@ -4,7 +4,7 @@ import { RenderableComponent } from '../types'
 
 export const UseElementVisibility = defineComponent<RenderableComponent>({
   name: 'UseElementVisibility',
-  as: ['as'] as unknown as undefined,
+  props: ['as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const data = reactive({
