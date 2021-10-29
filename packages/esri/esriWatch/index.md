@@ -1,8 +1,8 @@
 ---
-category: Esri
+category: @Esri
 ---
 
-# tryOnBeforeUnmount
+# esriWatch
 
 Accessor's esriWatch() in a scope lifecycle
 
