@@ -102,4 +102,15 @@ export const packages: PackageManifest[] = [
     ],
     iife: false,
   },
+  {
+    name: 'esri',
+    display: 'Esri',
+    description: 'ArcGIS API for JavaScript for VueUse',
+    author: 'ngheizit<https://github.com/xizher>',
+    external: [
+      '@arcgis/core',
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
 ]
