@@ -2,7 +2,7 @@ import { ref, Ref, watch } from 'vue-demi'
 import { useDebounceFn } from '../useDebounceFn'
 import { DebounceFilterOptions } from '../utils'
 
-export function useDebounce<T>(value: Ref<T>, ms = 200, options: DebounceFilterOptions = { maxWait: null }): Readonly<Ref<T>> {
+export function useDebounce<T>(value: Ref<T>, ms = 200, options: DebounceFilterOptions = {}): Readonly<Ref<T>> {
   if (ms <= 0)
     return value
 

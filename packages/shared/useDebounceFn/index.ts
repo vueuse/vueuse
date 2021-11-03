@@ -9,7 +9,7 @@ import { createFilterWrapper, debounceFilter, FunctionArgs, MaybeRef, DebounceFi
  *
  * @return A new, debounce, function.
  */
-export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, options: DebounceFilterOptions = { maxWait: null }): T {
+export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, options: DebounceFilterOptions = {}): T {
   return createFilterWrapper(
     debounceFilter(ms, options),
     fn,

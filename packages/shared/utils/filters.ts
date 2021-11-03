@@ -52,7 +52,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param ms
  * @param [maxWait=null]
  */
-export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = { maxWait: null }) {
+export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
@@ -63,7 +63,7 @@ export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOpti
     if (timer)
       clearTimeout(timer)
 
-    if (duration <= 0 || (maxDuration !== null && maxDuration <= 0)) {
+    if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
       if (maxTimer) {
         clearTimeout(maxTimer)
         maxTimer = null
