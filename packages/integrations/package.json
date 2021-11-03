@@ -69,6 +69,7 @@
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
     "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "optionalDependencies": {
