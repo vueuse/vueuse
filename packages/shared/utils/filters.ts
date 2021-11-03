@@ -28,7 +28,7 @@ export interface DebounceFilterOptions {
    * The maximum time allowed to be delayed before it's invoked.
    * In milliseconds.
    */
-  maxWait: number | null
+  maxWait?: number
 }
 
 /**
