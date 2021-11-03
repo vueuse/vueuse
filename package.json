@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/monorepo",
-  "version": "6.7.4",
+  "version": "6.7.5",
   "private": true,
   "description": "Collection of essential Vue Composition Utilities",
   "license": "MIT",
