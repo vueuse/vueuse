@@ -4,7 +4,7 @@ neverBuiltDependencies:
   - electron
 
 overrides:
-  vue-demi: 0.11.4
+  vue-demi: 0.12.1
   vite: ^2.6.7
 
 importers:
@@ -125,38 +125,38 @@ importers:
     specifiers:
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
 
   packages/core:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
 
   packages/electron:
     specifiers:
       '@vueuse/shared': workspace:*
       electron: ^13.1.0
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
     devDependencies:
       electron: 13.4.0
 
   packages/firebase:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
 
   packages/integrations:
     specifiers:
@@ -164,6 +164,7 @@ importers:
       '@types/qrcode': ^1.4.1
       '@types/universal-cookie': ^3.0.0
       '@vueuse/core': workspace:*
+      '@vueuse/shared': workspace:*
       axios: ^0.23.0
       drauu: ^0.2.1
       focus-trap: ^6.7.1
@@ -172,10 +173,11 @@ importers:
       nprogress: ^0.2.0
       qrcode: ^1.4.4
       universal-cookie: ^4.0.4
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/core': link:../core
-      vue-demi: 0.11.4
+      '@vueuse/shared': link:../shared
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
     optionalDependencies:
       axios: 0.23.0
       drauu: 0.2.1
@@ -193,30 +195,30 @@ importers:
   packages/router:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
       vue-router: ^4.0.12
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
     devDependencies:
-      vue-router: 4.0.12
+      vue-router: 4.0.12_vue@3.2.20
 
   packages/rxjs:
     specifiers:
       '@vueuse/shared': workspace:*
       rxjs: ^6.6.7
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
     devDependencies:
       rxjs: 6.6.7
 
   packages/shared:
     specifiers:
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1
     dependencies:
-      vue-demi: 0.11.4
+      vue-demi: 0.12.1_5911073a8d92be47e1d5efd7b81a4b20
 
 packages:
 
@@ -4026,6 +4028,7 @@ packages:
     resolution: {integrity: sha512-AilbChndywpk7CdKkNSZ9klxl+9MboLctXd9LwLo3b0dawmOF/i/t2U5d8LM6SbT1Xw36F8yngSUPrd8yPs2RA==}
     cpu: [arm64]
     os: [android]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4041,6 +4044,7 @@ packages:
     resolution: {integrity: sha512-b6sdiT84zV5LVaoF+UoMVGJzR/iE2vNUfUDfFQGrm4LBwM/PWXweKpuu6RD9mcyCq18cLxkP6w/LD/w9DtX3ng==}
     cpu: [x64]
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4056,6 +4060,7 @@ packages:
     resolution: {integrity: sha512-R8YuPiiJayuJJRUBG4H0VwkEKo6AvhJs2m7Tl0JaIer3u1FHHXwGhMxjJDmK+kXwTFPriSysPvcobXC/UrrZCQ==}
     cpu: [arm64]
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4071,6 +4076,7 @@ packages:
     resolution: {integrity: sha512-zBn6urrn8FnKC+YSgDxdof9jhPCeU8kR/qaamlV4gI8R3KUaUK162WYM7UyFVAlj9N0MyD3AtB+hltzu4cysTw==}
     cpu: [x64]
     os: [freebsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4086,6 +4092,7 @@ packages:
     resolution: {integrity: sha512-pWW2slN7lGlkx0MOEBoUGwRX5UgSCLq3dy2c8RIOpiHtA87xAUpDBvZK10MykbT+aMfXc0NI2lu1X+6kI34xng==}
     cpu: [arm64]
     os: [freebsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4101,6 +4108,7 @@ packages:
     resolution: {integrity: sha512-T0I0ueeKVO/Is0CAeSEOG9s2jeNNb8jrrMwG9QBIm3UU18MRB60ERgkS2uV3fZ1vP2F8i3Z2e3Zju4lg9dhVmw==}
     cpu: [ia32]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4116,6 +4124,7 @@ packages:
     resolution: {integrity: sha512-Bm8SYmFtvfDCIu9sjKppFXzRXn2BVpuCinU1ChTuMtdKI/7aPpXIrkqBNOgPTOQO9AylJJc1Zw6EvtKORhn64w==}
     cpu: [x64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4131,6 +4140,7 @@ packages:
     resolution: {integrity: sha512-4/HfcC40LJ4GPyboHA+db0jpFarTB628D1ifU+/5bunIgY+t6mHkJWyxWxAAE8wl/ZIuRYB9RJFdYpu1AXGPdg==}
     cpu: [arm]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4146,6 +4156,7 @@ packages:
     resolution: {integrity: sha512-X4pWZ+SL+FJ09chWFgRNO3F+YtvAQRcWh0uxKqZSWKiWodAB20flsW/OWFYLXBKiVCTeoGMvENZS/GeVac7+tQ==}
     cpu: [arm64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4161,6 +4172,7 @@ packages:
     resolution: {integrity: sha512-o7e0D+sqHKT31v+mwFircJFjwSKVd2nbkHEn4l9xQ1hLR+Bv8rnt3HqlblY3+sBdlrOTGSwz0ReROlKUMJyldA==}
     cpu: [mips64el]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4176,6 +4188,7 @@ packages:
     resolution: {integrity: sha512-eZSQ0ERsWkukJp2px/UWJHVNuy0lMoz/HZcRWAbB6reoaBw7S9vMzYNUnflfL3XA6WDs+dZn3ekHE4Y2uWLGig==}
     cpu: [ppc64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4183,6 +4196,7 @@ packages:
     resolution: {integrity: sha512-gZX4kP7gVvOrvX0ZwgHmbuHczQUwqYppxqtoyC7VNd80t5nBHOFXVhWo2Ad/Lms0E8b+wwgI/WjZFTCpUHOg9Q==}
     cpu: [x64]
     os: [netbsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4204,6 +4218,7 @@ packages:
     resolution: {integrity: sha512-afzza308X4WmcebexbTzAgfEWt9MUkdTvwIa8xOu4CM2qGbl2LanqEl8/LUs8jh6Gqw6WsicEK52GPrS9wvkcw==}
     cpu: [x64]
     os: [openbsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4236,6 +4251,7 @@ packages:
     resolution: {integrity: sha512-mWPZibmBbuMKD+LDN23LGcOZ2EawMYBONMXXHmbuxeT0XxCNwadbCVwUQ/2p5Dp5Kvf6mhrlIffcnWOiCBpiVw==}
     cpu: [x64]
     os: [sunos]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4251,6 +4267,7 @@ packages:
     resolution: {integrity: sha512-QsZ1HnWIcnIEApETZWw8HlOhDSWqdZX2SylU7IzGxOYyVcX7QI06ety/aDcn437mwyO7Ph4RrbhB+2ntM8kX8A==}
     cpu: [ia32]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4266,6 +4283,7 @@ packages:
     resolution: {integrity: sha512-76Fb57B9eE/JmJi1QmUW0tRLQZfGo0it+JeYoCDTSlbTn7LV44ecOHIMJSSgZADUtRMWT9z0Kz186bnaB3amSg==}
     cpu: [x64]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4281,6 +4299,7 @@ packages:
     resolution: {integrity: sha512-HW6Mtq5eTudllxY2YgT62MrVcn7oq2o8TAoAvDUhyiEmRmDY8tPwAhb1vxw5/cdkbukM3KdMYtksnUhF/ekWeg==}
     cpu: [arm64]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5056,6 +5075,7 @@ packages:
   /fuse.js/6.4.6:
     resolution: {integrity: sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==}
     engines: {node: '>=10'}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -8556,8 +8576,8 @@ packages:
       - stylus
     dev: true
 
-  /vue-demi/0.11.4:
-    resolution: {integrity: sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==}
+  /vue-demi/0.12.1_5911073a8d92be47e1d5efd7b81a4b20:
+    resolution: {integrity: sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
@@ -8567,6 +8587,9 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+    dependencies:
+      '@vue/composition-api': 1.2.4_vue@3.2.20
+      vue: 3.2.20
     dev: false
 
   /vue-eslint-parser/7.11.0_eslint@8.0.1:
@@ -8587,12 +8610,13 @@ packages:
       - supports-color
     dev: true
 
-  /vue-router/4.0.12:
+  /vue-router/4.0.12_vue@3.2.20:
     resolution: {integrity: sha512-CPXvfqe+mZLB1kBWssssTiWg4EQERyqJZes7USiqfW9B5N2x+nHlnsM1D3b5CaJ6qgCvMmYJnz+G0iWjNCvXrg==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
       '@vue/devtools-api': 6.0.0-beta.18
+      vue: 3.2.20
     dev: true
 
   /vue/2.6.14:
