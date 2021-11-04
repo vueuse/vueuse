@@ -31,12 +31,12 @@
   <div class="list">
     <div class="input">
       <div>canvas input:</div>
-      <canvas ref="canvas" width="100" height="100"></canvas>
+      <canvas ref="canvas" width="200" height="300"></canvas>
       <img
         v-show="false"
         ref="canvasImg"
         crossorigin="anonymous"
-        src="https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1630905894205-9af77a5eaa16?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=774&q=80"
+        src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
       />
       <button @click="draw">
         draw
@@ -44,7 +44,7 @@
     </div>
     <div class="output">
       <div>output:</div>
-      <textarea col="40" rows="10" :value="canvasBase64" readonly></textarea>
+      <textarea col="40" rows="25" :value="canvasBase64" readonly></textarea>
     </div>
   </div>
   <div class="list">
@@ -52,9 +52,9 @@
       <div>img element input:</div>
       <img
         ref="image"
-        width="100"
-        height="100"
-        src="https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1634883796923-8d21ba6d4228?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=776&q=80"
+        width="200"
+        height="125"
+        src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
       />
     </div>
     <div class="output">
