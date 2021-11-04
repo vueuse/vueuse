@@ -1,22 +1,28 @@
 import { Ref, ref, unref, watch } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
 
-interface ToDataURLOptions {
+export interface ToDataURLOptions {
+  /**
+   * MIME type
+   */
   type?: string | undefined
+  /**
+   * jpeg,webp quality
+   */
   quality?: any
 }
 
-interface UseBase64Result {
+export interface UseBase64Return {
   base64: Ref<string>
   promise: Ref<Promise<string>>
   execute: () => void
 }
 
-export function useBase64(target: MaybeRef<string>): UseBase64Result
-export function useBase64(target: MaybeRef<Blob>): UseBase64Result
-export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Result
-export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Result
-export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Result
+export function useBase64(target: MaybeRef<string>): UseBase64Return
+export function useBase64(target: MaybeRef<Blob>): UseBase64Return
+export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Return
+export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
 export function useBase64(
   target: any,
   options?: any,
@@ -68,7 +74,7 @@ export function useBase64(
   }
 }
 
-export function imgLoaded(img: HTMLImageElement) {
+function imgLoaded(img: HTMLImageElement) {
   return new Promise<void>((resolve, reject) => {
     if (!img.complete) {
       img.onload = () => {
@@ -82,7 +88,7 @@ export function imgLoaded(img: HTMLImageElement) {
   })
 }
 
-export function blobToBase64(blob: Blob) {
+function blobToBase64(blob: Blob) {
   return new Promise<string>((resolve, reject) => {
     const fr = new FileReader()
     fr.onload = (e) => {
