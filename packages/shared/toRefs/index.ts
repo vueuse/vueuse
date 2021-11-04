@@ -24,7 +24,14 @@ export function toRefs<T extends object>(
         return objectRef.value[key]
       },
       set(v) {
-        objectRef.value[key] = v
+        if (Array.isArray(objectRef.value)) {
+          const copy: any = [...objectRef.value]
+          copy[key] = v
+          objectRef.value = copy
+        }
+        else {
+          objectRef.value = { ...objectRef.value, [key]: v }
+        }
       },
     }))
   }
