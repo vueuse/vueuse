@@ -13,3 +13,13 @@ import { useEyeDropper } from '@vueuse/core'
 
 const { isSupported, eyeDropper, sRGBHex } = useEyeDropper()
 ```
+
+## Component
+
+```html
+<UseEyeDropper v-slot="{ isSupported, sRGBHex, eyeDropper }">
+  <button :disabled="!isSupported" @click="eyeDropper">
+    sRGBHex: {{ sRGBHex }}
+  </button>
+</UseEyeDropper>
+```
