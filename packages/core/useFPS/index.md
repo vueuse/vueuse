@@ -4,7 +4,7 @@ category: Sensors
 
 # useFPS
 
-reactive fps
+Reactive FPS
 
 ## Usage
 

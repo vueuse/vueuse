@@ -11,7 +11,7 @@ export function useFPS(options?: {
   let last = performance.now()
   let ticks = 0
   useRafFn(() => {
-    if (++ticks === every) {
+    if (++ticks >= every) {
       const now = performance.now()
       const diff = now - last
       fps.value = Math.round(1000 / (diff / every))
