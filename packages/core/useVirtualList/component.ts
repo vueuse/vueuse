@@ -34,6 +34,7 @@ export const UseVirtualList = defineComponent<UseVirtualListProps>({
       props.list,
       props.options,
     )
+
     containerProps.style.height = props.height || '300px'
     return () => h('div',
       { ...containerProps },
