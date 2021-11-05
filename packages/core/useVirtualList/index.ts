@@ -1,4 +1,4 @@
-import { watch, Ref, ref, computed, isRef } from 'vue-demi'
+import { watch, Ref, ref, computed } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
 
@@ -27,7 +27,7 @@ export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtua
   const size = useElementSize(containerRef)
 
   const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
-  const _list = ref(isRef(list) ? list.value : list)
+  const _list = ref(list)
 
   const state: Ref = ref({ start: 0, end: 10 })
   const { itemHeight, overscan = 5 } = options
