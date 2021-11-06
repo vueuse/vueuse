@@ -2,14 +2,14 @@
 category: Sensors
 ---
 
-# useFPS
+# useFps
 
-Reactive FPS
+Reactive FPS (frames per second).
 
 ## Usage
 
 ```js
-import { useFPS } from '@vueuse/core'
+import { useFps } from '@vueuse/core'
 
 const fps = useFPS()
 ```

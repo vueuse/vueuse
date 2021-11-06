@@ -1,8 +1,9 @@
-<template>fps:{{ fps }}</template>
+<template>
+  FPS: {{ fps }}
+</template>
 
 <script setup lang="ts">
-import { useFPS } from './index'
-const fps = useFPS({
-  every: 10,
-})
+import { useFps } from './index'
+
+const fps = useFps()
 </script>

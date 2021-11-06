@@ -1,20 +1,27 @@
-import { ref } from 'vue-demi'
-import { useRafFn } from '@vueuse/core'
+import { Ref, ref } from 'vue-demi'
+import { useRafFn } from '../useRafFn'
 
-export function useFPS(options?: {
+export interface UseFpsOptions {
+  /**
+   * Calculate the FPS on every x frames.
+   * @default 10
+   */
   every?: number
-}) {
-  const fps = ref(0)
+}
 
+export function useFps(options?: UseFpsOptions): Ref<number> {
+  const fps = ref(0)
   const every = options?.every ?? 10
 
   let last = performance.now()
   let ticks = 0
+
   useRafFn(() => {
-    if (++ticks >= every) {
+    ticks += 1
+    if (ticks >= every) {
       const now = performance.now()
       const diff = now - last
-      fps.value = Math.round(1000 / (diff / every))
+      fps.value = Math.round(1000 / (diff / ticks))
       last = now
       ticks = 0
     }
