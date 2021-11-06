@@ -13,7 +13,7 @@ const { focused: buttonFocus } = useFocus({ target: button })
 
 <template>
   <div>
-    <p ref="text" class="demo-el px-4" tabindex="0">
+    <p ref="text" class="demo-el px-2 rounded" tabindex="0">
       Paragraph that can be focused
     </p>
     <input ref="input" class="demo-el" type="text" placeholder="Input that can be focused" />
@@ -35,14 +35,14 @@ const { focused: buttonFocus } = useFocus({ target: button })
         &nbsp;<!-- prevents paragraph from collapsing when empty otherwise -->
       </template>
     </note>
-    <button class="button small !ml-0" @click="paragraphFocus = !paragraphFocus">
-      {{ paragraphFocus ? 'unfocus' : 'focus' }} text
+    <button class="button small !ml-0" :class="{orange: paragraphFocus}" @click="paragraphFocus = !paragraphFocus">
+      Focus text
     </button>
-    <button class="button small" @click="inputFocus = !inputFocus">
-      {{ inputFocus ? 'unfocus' : 'focus' }} input
+    <button class="button small" :class="{orange: inputFocus}" @click="inputFocus = !inputFocus">
+      Focus input
     </button>
-    <button class="button small" @click="buttonFocus = !buttonFocus">
-      {{ buttonFocus ? 'unfocus' : 'focus' }} button
+    <button class="button small" :class="{orange: buttonFocus}" @click="buttonFocus = !buttonFocus">
+      Focus button
     </button>
   </div>
 </template>
