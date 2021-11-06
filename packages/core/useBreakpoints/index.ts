@@ -1,3 +1,4 @@
+import { Ref } from 'vue-demi'
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -36,10 +37,15 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return useMediaQuery(`(min-width: ${getValue(k)})`, options)
   }
 
-  const shortcutMethods = Object.keys(breakpoints).reduce<{ [key in K]: () => boolean }>((shortcuts, k) => {
-    shortcuts[k as K] = () => greater(k as K)
-    return shortcuts
-  }, {} as any)
+  const shortcutMethods = Object.keys(breakpoints)
+    .reduce((shortcuts, k) => {
+      Object.defineProperty(shortcuts, k, {
+        get: () => greater(k as K),
+        enumerable: true,
+        configurable: true,
+      })
+      return shortcuts
+    }, {} as Record<K, Ref<boolean>>)
 
   return {
     greater,
@@ -58,7 +64,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     isInBetween(a: K, b: K) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
-    ...shortcutMethods
+    ...shortcutMethods,
   }
 }
 
