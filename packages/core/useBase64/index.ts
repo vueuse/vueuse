@@ -7,7 +7,7 @@ export interface ToDataURLOptions {
    */
   type?: string | undefined
   /**
-   * jpeg,webp quality
+   * Image quality of jpeg or webp
    */
   quality?: any
 }
@@ -15,7 +15,7 @@ export interface ToDataURLOptions {
 export interface UseBase64Return {
   base64: Ref<string>
   promise: Ref<Promise<string>>
-  execute: () => void
+  execute: () => Promise<string>
 }
 
 export function useBase64(target: MaybeRef<string>): UseBase64Return
@@ -61,11 +61,10 @@ export function useBase64(
       }
     })
     promise.value.then(res => base64.value = res)
+    return promise.value
   }
 
-  watch(target, execute, {
-    immediate: true,
-  })
+  watch(target, execute, { immediate: true })
 
   return {
     base64,
