@@ -4,7 +4,7 @@ category: Utilities
 
 # useBase64
 
-Reactive base64 transforming
+Reactive base64 transforming. Supports plain text, buffer, files, canvas and images.
 
 ## Usage
 
