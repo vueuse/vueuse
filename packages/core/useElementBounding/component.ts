@@ -8,7 +8,7 @@ export const UseElementBounding = defineComponent<ResizeObserverOptions & Render
   props: ['box', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
-    const data = reactive(useElementBounding(target, { box: props.box, window: props.window }))
+    const data = reactive(useElementBounding(target))
 
     return () => {
       if (slots.default)
