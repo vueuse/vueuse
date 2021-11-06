@@ -99,6 +99,21 @@
     border-top: 0;
   }
 
+  textarea {
+    display: block;
+    min-width: 20rem;
+    font-size: 1em;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    outline: none;
+    background: var(--c-bg);
+    color: var(--c-text);
+  }
+  textarea[readonly] {
+    background: var(--c-bg-light);
+  }
   input[type='text'] {
     display: block;
     min-width: 20rem;
