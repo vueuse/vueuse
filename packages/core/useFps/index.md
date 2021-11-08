@@ -11,5 +11,5 @@ Reactive FPS (frames per second).
 ```js
 import { useFps } from '@vueuse/core'
 
-const fps = useFPS()
+const fps = useFps()
 ```
