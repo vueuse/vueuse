@@ -83,14 +83,14 @@ export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtua
         end: to > _list.value.length ? _list.value.length : to,
       }
       currentList.value = _list.value.slice(state.value.start, state.value.end).map((ele, index) => ({
-        data: ele,
+        data: ele as T,
         index: index + state.value.start,
       }))
     }
   }
 
   watch(list, (newList) => {
-    _list.value = newList
+    _list.value = newList as typeof _list.value
     calculateRange()
   })
 
