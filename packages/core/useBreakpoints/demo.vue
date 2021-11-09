@@ -8,7 +8,7 @@ const md = breakpoints.between('sm', 'md')
 const lg = breakpoints.between('md', 'lg')
 const xl = breakpoints.between('lg', 'xl')
 const xxl = breakpoints.between('xl', '2xl')
-const xxxl = breakpoints.greater('2xl')
+const xxxl = breakpoints['2xl']
 </script>
 
 <template>
