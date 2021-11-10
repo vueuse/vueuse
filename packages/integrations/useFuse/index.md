@@ -12,7 +12,7 @@ From the Fuse.js website:
 > 
 > Generally speaking, fuzzy searching (more formally known as approximate string matching) is the technique of finding strings that are approximately equal to a given pattern (rather than exactly).
 
-## Install fuse.js as a peer dependency
+## Install Fuse.js as a peer dependency
 
 ### NPM
 
