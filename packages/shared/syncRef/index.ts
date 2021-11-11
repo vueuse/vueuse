@@ -1,4 +1,4 @@
-import { Ref, watch } from 'vue-demi'
+import { Ref, watch, WatchSource } from 'vue-demi'
 import { ConfigurableFlushSync } from '../utils'
 
 export interface SyncRefOptions extends ConfigurableFlushSync {
@@ -22,7 +22,7 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
  * @param source source ref
  * @param targets
  */
-export function syncRef<R extends Ref<any>>(source: R, targets: R | R[], {
+export function syncRef<R extends Ref<any>>(source: WatchSource, targets: R | R[], {
   flush = 'sync',
   deep = false,
   immediate = true,
