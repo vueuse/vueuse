@@ -32,9 +32,6 @@ export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtua
   const state: Ref = ref({ start: 0, end: 10 })
   const { itemHeight, overscan = 5 } = options
 
-  if (!itemHeight)
-    console.warn('please enter a valid itemHeight')
-
   const getViewCapacity = (containerHeight: number) => {
     if (typeof itemHeight === 'number')
       return Math.ceil(containerHeight / itemHeight)
