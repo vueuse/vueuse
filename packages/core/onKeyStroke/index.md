@@ -18,6 +18,16 @@ onKeyStroke('ArrowDown', (e) => {
 
 See [this table](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) for all key codes.
 
+### Listen To Multiple Keys
+
+```js
+import { onKeyStroke } from '@vueuse/core'
+
+onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
+  e.preventDefault()
+})
+```
+
 ### Custom Event Target
 
 ```js

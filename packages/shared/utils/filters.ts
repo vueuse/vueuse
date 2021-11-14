@@ -23,6 +23,14 @@ export interface ConfigurableEventFilter {
   eventFilter?: EventFilter
 }
 
+export interface DebounceFilterOptions {
+  /**
+   * The maximum time allowed to be delayed before it's invoked.
+   * In milliseconds.
+   */
+  maxWait?: number
+}
+
 /**
  * @internal
  */
@@ -42,20 +50,44 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  *
  * @param ms
+ * @param [maxWait=null]
  */
-export function debounceFilter(ms: MaybeRef<number>) {
+export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
+  let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
     const duration = unref(ms)
+    const maxDuration = unref(options.maxWait)
 
     if (timer)
       clearTimeout(timer)
 
-    if (duration <= 0)
+    if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
+      if (maxTimer) {
+        clearTimeout(maxTimer)
+        maxTimer = null
+      }
       return invoke()
+    }
 
-    timer = setTimeout(invoke, duration)
+    // Create the maxTimer. Clears the regular timer on invokation
+    if (maxDuration && !maxTimer) {
+      maxTimer = setTimeout(() => {
+        if (timer)
+          clearTimeout(timer)
+        maxTimer = null
+        invoke()
+      }, maxDuration)
+    }
+
+    // Create the regular timer. Clears the max timer on invokation
+    timer = setTimeout(() => {
+      if (maxTimer)
+        clearTimeout(maxTimer)
+      maxTimer = null
+      invoke()
+    }, duration)
   }
 
   return filter
@@ -114,7 +146,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = 
 /**
  * EventFilter that gives extra controls to pause and resume the filter
  *
- * @param extendFilter  Extra filter to apply when the PauseableFilter is active, default to none
+ * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
  *
  */
 export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {

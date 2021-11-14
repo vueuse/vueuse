@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "6.5.3",
+  "version": "6.8.0",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
@@ -40,6 +40,6 @@
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.11"
+    "vue-router": "^4.0.12"
   }
 }

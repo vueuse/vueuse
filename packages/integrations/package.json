@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "6.5.3",
+  "version": "6.8.0",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -36,6 +36,14 @@
       "import": "./useFocusTrap.mjs",
       "require": "./useFocusTrap.cjs"
     },
+    "./useFocusTrap/component": {
+      "import": "./useFocusTrap/component.mjs",
+      "require": "./useFocusTrap/component.cjs"
+    },
+    "./useFuse": {
+      "import": "./useFuse.mjs",
+      "require": "./useFuse.cjs"
+    },
     "./useJwt": {
       "import": "./useJwt.mjs",
       "require": "./useJwt.cjs"
@@ -61,12 +69,14 @@
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
     "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.21.4",
-    "drauu": "^0.2.0",
-    "focus-trap": "^6.7.0",
+    "axios": "^0.23.0",
+    "drauu": "^0.2.1",
+    "focus-trap": "^6.7.1",
+    "fuse.js": "^6.4.6",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.4",
