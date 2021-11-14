@@ -447,6 +447,13 @@
       "description": "a ref which will be reset to the default value after some time"
     },
     {
+      "name": "autoUnref",
+      "package": "core",
+      "docs": "https://vueuse.org/core/autoUnref/",
+      "category": "Utilities",
+      "description": "make a plain function accepting ref and raw values as arguments"
+    },
+    {
       "name": "computedInject",
       "package": "core",
       "docs": "https://vueuse.org/core/computedInject/",
@@ -489,13 +496,6 @@
       "docs": "https://vueuse.org/core/unrefElement/",
       "category": "Component",
       "description": "unref for dom element"
-    },
-    {
-      "name": "unrefy",
-      "package": "core",
-      "docs": "https://vueuse.org/core/unrefy/",
-      "category": "Utilities",
-      "description": "convert a plain function into a function that unref it's aguments before every call"
     },
     {
       "name": "useActiveElement",

@@ -110,6 +110,7 @@
   - [`and`](https://vueuse.org/shared/and/) — `AND` condition for refs
   - [`asyncComputed`](https://vueuse.org/core/asyncComputed/) — computed for async functions
   - [`autoResetRef`](https://vueuse.org/core/autoResetRef/) — a ref which will be reset to the default value after some time
+  - [`autoUnref`](https://vueuse.org/core/autoUnref/) — make a plain function accepting ref and raw values as arguments
   - [`biSyncRef`](https://vueuse.org/shared/biSyncRef/) — two-way refs synchronization
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
@@ -127,7 +128,6 @@
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
-  - [`unrefy`](https://vueuse.org/core/unrefy/) — convert a plain function into a function that unref it's aguments before every call
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
