@@ -17,7 +17,7 @@ const categoriesOrder = [
 ]
 
 const Guide = [
-  { text: 'Get Started', link: '/guide/index' },
+  { text: 'Getting Started', link: '/guide/index' },
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },

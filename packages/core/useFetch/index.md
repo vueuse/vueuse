@@ -53,6 +53,12 @@ setTimeout(() => {
 }, 100)
 ```
 
+A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given
+timeout is reached.
+```ts
+const { data } = useFetch(url, { timeout: 100 })
+```
+
 ### Intercepting a request
 The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
 ```ts
@@ -84,6 +90,21 @@ const { data } = useFetch(url, {
 
     return ctx
   },
+})
+```
+
+The `onFetchError` option can intercept the response data and error before it is updated.
+```ts
+const { data } = useFetch(url, {
+  onFetchError(ctx) {
+    // ctx.data can be null when 5xx response
+    if (ctx.data === null) 
+      ctx.data = { title: 'Hunter x Hunter' } // Modifies the resposne data
+
+    ctx.error = new Error('Custom Error') // Modifies the error
+
+    return ctx
+  }
 })
 ```
 
@@ -127,7 +148,7 @@ const { isFetching, error, data } = useMyFetch('users')
 
 ### Events
 
-The `onFetchResposne` and `onFetchError` will fire on fetch request responses and errors respectively.
+The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
 ```ts
 const { onFetchResponse, onFetchError } = useFetch(url)

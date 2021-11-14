@@ -1,4 +1,4 @@
-import { isVue3, reactive, ref } from 'vue-demi'
+import { isVue3, reactive, ref, computed } from 'vue-demi'
 import { toRefs } from '.'
 
 describe('toRefs', () => {
@@ -55,5 +55,47 @@ describe('toRefs', () => {
     arr.value[1] = 1
     expect(refs[0].value).toBe('b')
     expect(refs[1].value).toBe(1)
+  })
+
+  it('should work correctly with writable computed objects', () => {
+    const spy = jest.fn()
+    const obj = computed<{ a: string; b: number }>({
+      get() {
+        return { a: 'a', b: 0 }
+      },
+      set(v) {
+        spy(v)
+      },
+    })
+    const refs = toRefs(obj)
+    expect(refs.a.value).toBe('a')
+    expect(refs.b.value).toBe(0)
+
+    refs.a.value = 'b'
+    expect(spy).toBeCalledWith({ a: 'b', b: 0 })
+
+    refs.b.value = 1
+    expect(spy).toBeCalledWith({ a: 'a', b: 1 })
+  })
+
+  it('should work correctly with writable computed arrays', () => {
+    const spy = jest.fn()
+    const arr = computed<any[]>({
+      get() {
+        return ['a', 0]
+      },
+      set(v) {
+        spy(v)
+      },
+    })
+    const refs = toRefs(arr)
+    expect(refs[0].value).toBe('a')
+    expect(refs[1].value).toBe(0)
+
+    refs[0].value = 'b'
+    expect(spy).toBeCalledWith(['b', 0])
+
+    refs[1].value = 1
+    expect(spy).toBeCalledWith(['a', 1])
   })
 })

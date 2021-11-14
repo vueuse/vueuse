@@ -1,7 +1,7 @@
-import fetchMock from 'jest-fetch-mock'
 import { until } from '@vueuse/shared'
+import fetchMock from 'jest-fetch-mock'
 import { nextTick, ref } from 'vue-demi'
-import { useFetch, createFetch } from '.'
+import { createFetch, useFetch } from '.'
 
 describe('useFetch', () => {
   beforeEach(() => {
@@ -172,6 +172,39 @@ describe('useFetch', () => {
     expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
   })
 
+  test('should run the onFetchError function', async() => {
+    fetchMock.mockResponse(JSON.stringify({ title: 'HxH' }), { status: 400 })
+
+    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+      onFetchError(ctx) {
+        if (ctx.data.title === 'HxH')
+          ctx.data.title = 'Hunter x Hunter'
+
+        return ctx
+      },
+    }).json()
+
+    await until(isFinished).toBe(true)
+    expect(statusCode.value).toStrictEqual(400)
+    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+  })
+
+  test('should run the onFetchError function when network error', async() => {
+    fetchMock.mockResponse('Internal Server Error', { status: 500 })
+
+    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+      onFetchError(ctx) {
+        ctx.data = { title: 'Hunter x Hunter' }
+
+        return ctx
+      },
+    }).json()
+
+    await until(isFinished).toBe(true)
+    expect(statusCode.value).toStrictEqual(500)
+    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+  })
+
   test('should emit onFetchResponse event', async() => {
     let didEventFire = false
     const { isFinished, onFetchResponse } = useFetch('https://example.com')
@@ -258,6 +291,32 @@ describe('useFetch', () => {
     fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
 
     const shell = useFetch('https://example.com').get().text()
+    const { isFetching, isFinished, data } = shell
+    await until(isFetching).toBe(true)
+    shell.json()
+    await until(isFinished).toBe(true)
+
+    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+  })
+
+  test('should abort request when timeout reached', async() => {
+    fetchMock.mockResponse(() => new Promise(resolve => setTimeout(() => resolve({ body: 'ok' }), 1000)))
+
+    const { aborted, isFinished, execute } = useFetch('https://example.com', { timeout: 10 })
+
+    await until(isFinished).toBe(true)
+    expect(aborted.value).toBe(true)
+
+    execute()
+
+    await until(isFinished).toBe(true)
+    expect(aborted.value).toBe(true)
+  })
+
+  test('should not abort request when timeout is not reached', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+
+    const shell = useFetch('https://example.com', { timeout: 100 }).get().text()
     const { isFetching, isFinished, data } = shell
     await until(isFetching).toBe(true)
     shell.json()

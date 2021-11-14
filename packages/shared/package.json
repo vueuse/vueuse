@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/shared",
-  "version": "6.4.1",
+  "version": "6.8.0",
   "keywords": [
     "vue",
     "vue-use",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",

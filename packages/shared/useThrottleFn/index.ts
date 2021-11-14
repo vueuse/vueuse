@@ -10,11 +10,13 @@ import { createFilterWrapper, FunctionArgs, throttleFilter, MaybeRef } from '../
  *
  * @param [trailing=true] if true, call fn again after the time is up
  *
+ * @param [leading=true] if true, call fn on the leading edge of the ms timeout
+ *
  * @return  A new, throttled, function.
  */
-export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, trailing = true): T {
+export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, trailing = true, leading = true): T {
   return createFilterWrapper(
-    throttleFilter(ms, trailing),
+    throttleFilter(ms, trailing, leading),
     fn,
   )
 }

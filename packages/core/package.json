@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "6.4.1",
+  "version": "6.8.0",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -44,7 +44,7 @@
     }
   },
   "dependencies": {
-    "@vueuse/shared": "6.4.1",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }

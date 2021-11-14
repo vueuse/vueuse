@@ -1,6 +1,5 @@
 {
   "exclude": [
-    "husky",
     "eslint-plugin-markdown",
     "rxjs",
     "electron",

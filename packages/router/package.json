@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "6.4.1",
+  "version": "6.8.0",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/vueuse/vueuse.git"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -36,10 +36,10 @@
     "vue-router": ">=4.0.0-rc.1"
   },
   "dependencies": {
-    "@vueuse/shared": "6.4.1",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.11"
+    "vue-router": "^4.0.12"
   }
 }

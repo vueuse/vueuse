@@ -29,7 +29,7 @@ export interface UseAxiosReturn<T> {
   aborted: Ref<boolean>
 
   /**
-   * Any erros that may have occurred
+   * Any errors that may have occurred
    */
   error: Ref<AxiosError<T> | undefined>
 
@@ -89,11 +89,11 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   }
 
   instance(url, { ...config, cancelToken: cancelToken.token })
-    .then((r: AxiosResponse<T>) => {
+    .then((r: any) => {
       response.value = r
       data.value = r.data
     })
-    .catch((e) => {
+    .catch((e: any) => {
       error.value = e
     })
     .finally(() => {

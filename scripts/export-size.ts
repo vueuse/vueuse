@@ -5,7 +5,6 @@ import fs from 'fs-extra'
 import { version } from '../package.json'
 import { packages } from '../meta/packages'
 
-// yarn build first
 async function run() {
   let md = '# Export size\n\n'
 

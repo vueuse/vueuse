@@ -1,6 +1,6 @@
 # Ecosystem
 
-When developmenting VueUse, we extract the tools we are using into separate projects that can be used standalone from time to time.
+While developing VueUse, we extract the tools we are using into separate projects that can be used standalone from time to time.
 
 <h2 align="center">
 <a href="https://github.com/vueuse/vue-demi" target="_blank">
@@ -8,7 +8,7 @@ When developmenting VueUse, we extract the tools we are using into separate proj
 </a>
 </h2>
 
-Vue Demi is a tool for library authors to create composable libraries that works for Vue 2 and 3 isomorphically just like VueUse. It has been wildly adapted for many popular libraries like [`vuelidate`](https://github.com/vuelidate/vuelidate) and [`vue-promised`](https://github.com/posva/vue-promised).
+Vue Demi is a tool for library authors to create composable libraries that work for Vue 2 and 3 isomorphically just like VueUse. It has been widely adopted by many popular libraries like [`vuelidate`](https://github.com/vuelidate/vuelidate) and [`vue-promised`](https://github.com/posva/vue-promised).
 
 <h2 align="center">
 <a href="https://github.com/vueuse/vue-chemistry" target="_blank">
@@ -16,7 +16,7 @@ Vue Demi is a tool for library authors to create composable libraries that works
 </a>
 </h2>
 
-Vue Chemisty utilizes the `reactify` function and apply it to the common JavaScript APIs, which enables you the pure reactive programming experience. For example:
+Vue Chemisty utilizes the `reactify` function and applies it to common JavaScript APIs, which enables a pure reactive programming experience. For example:
 
 ```js
 import { set } from 'vue-chemistry'

@@ -1,5 +1,5 @@
 import { defineComponent, h, reactive, ref, unref } from 'vue-demi'
-import { useDraggable, UseDraggableOptions, useStorage } from '@vueuse/core'
+import { isClient, useDraggable, UseDraggableOptions, useStorage } from '@vueuse/core'
 import { RenderableComponent } from '../types'
 
 export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
@@ -32,7 +32,11 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
       ? useStorage(
         props.storageKey,
         unref(props.initialValue) || { x: 0, y: 0 },
-        props.storageType === 'session' ? sessionStorage : localStorage,
+        isClient
+          ? props.storageType === 'session'
+            ? sessionStorage
+            : localStorage
+          : undefined,
       )
       : props.initialValue || { x: 0, y: 0 }
 
