@@ -119,6 +119,7 @@
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks
+  - [`createUnrefFn`](https://vueuse.org/core/createUnrefFn/) — make a plain function accepting ref and raw values as arguments
   - [`eagerComputed`](https://vueuse.org/shared/eagerComputed/) — eager computed without lazy evaluation
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`

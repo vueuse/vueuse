@@ -1,6 +1,7 @@
 export * from './asyncComputed'
 export * from './autoResetRef'
 export * from './computedInject'
+export * from './createUnrefFn'
 export * from './onClickOutside'
 export * from './onKeyStroke'
 export * from './onStartTyping'
