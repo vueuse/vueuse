@@ -78,6 +78,7 @@
   - [`useElementHover`](https://vueuse.org/core/useElementHover/) — reactive element's hover state
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
+  - [`useFocus`](https://vueuse.org/core/useFocus/) — reactive utility to track or set the focus state of a DOM element
   - [`useFps`](https://vueuse.org/core/useFps/) — reactive FPS (frames per second)
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
