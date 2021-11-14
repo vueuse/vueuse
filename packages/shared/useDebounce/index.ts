@@ -2,6 +2,11 @@ import { ref, Ref, watch } from 'vue-demi'
 import { useDebounceFn } from '../useDebounceFn'
 import { DebounceFilterOptions } from '../utils'
 
+/**
+ * Debounce updates of a ref.
+ *
+ * @return A new debounced ref.
+ */
 export function useDebounce<T>(value: Ref<T>, ms = 200, options: DebounceFilterOptions = {}): Readonly<Ref<T>> {
   if (ms <= 0)
     return value
