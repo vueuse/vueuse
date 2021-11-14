@@ -1,14 +1,14 @@
 import { ref, Ref } from 'vue-demi'
 import { noop } from '@vueuse/shared'
 
-interface Result {
-  state: 'pending' | 'fulfilled' | 'rejected'
-  data: any
-}
-
 type Task = (...args: any[]) => Promise<unknown>
 
-export interface useAsyncQueueOptions {
+export interface UseAsyncQueueResult<T> {
+  state: 'pending' | 'fulfilled' | 'rejected'
+  data: T | null
+}
+
+export interface UseAsyncQueueOptions {
   /**
    * Interrupt tasks when current task fails.
    *
@@ -37,20 +37,20 @@ export interface useAsyncQueueOptions {
  * @param options
  */
 
-export function useAsyncQueue(tasks: Task[], options: useAsyncQueueOptions = {}) {
+export function useAsyncQueue<T>(tasks: Task[], options: UseAsyncQueueOptions = {}) {
   const {
     interrupt = true,
     onError = noop,
     onFinished = noop,
   } = options
 
-  const promiseState: Record<Result['state'], Result['state']> = {
+  const promiseState: Record<UseAsyncQueueResult<T>['state'], UseAsyncQueueResult<T>['state']> = {
     pending: 'pending',
     rejected: 'rejected',
     fulfilled: 'fulfilled',
   }
   const initialResult = Array.from(new Array(tasks.length), () => ({ state: promiseState.pending, data: null }))
-  const result: Ref<Result[]> = ref(initialResult)
+  const result: Ref<UseAsyncQueueResult<T>[]> = ref(initialResult)
 
   const activeIndex = ref<number>(-1)
 
@@ -62,9 +62,9 @@ export function useAsyncQueue(tasks: Task[], options: useAsyncQueueOptions = {})
     }
   }
 
-  function updateResult(state: Result['state'], res: unknown) {
+  function updateResult(state: UseAsyncQueueResult<T>['state'], res: unknown) {
     activeIndex.value++
-    result.value[activeIndex.value].data = res
+    result.value[activeIndex.value].data = res as T
     result.value[activeIndex.value].state = state
   }
 
