@@ -8,7 +8,7 @@ Make a plain function accepting ref and raw values as arguments.
 Returns the same value the unconverted function returns, with proper typing.
 
 ::: tip
-Make sure you're using the right tool for the job. Using [`reactify`](/core/reactify/)
+Make sure you're using the right tool for the job. Using `reactify`
 might be more pertinent in some cases where you want to evaluate the function on each changes of it's arguments.
 :::
 
