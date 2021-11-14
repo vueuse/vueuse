@@ -117,7 +117,7 @@
     background: var(--c-bg-light);
   }
 
-  input {
+  input[type='text'], input[type='search'], input[type='number'] {
     display: block;
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
