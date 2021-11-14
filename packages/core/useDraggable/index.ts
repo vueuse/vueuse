@@ -49,6 +49,11 @@ export interface UseDraggableOptions {
    * Callback during dragging.
    */
   onMove?: (position: Position, event: PointerEvent) => void
+
+  /**
+   * Callback when dragging end.
+   */
+  onEnd?: (position: Position, event: PointerEvent) => void
 }
 
 /**
@@ -103,6 +108,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (!filterEvent(e))
       return
     pressedDelta.value = undefined
+    options.onEnd?.(position.value, e)
     preventDefault(e)
   }
 
