@@ -4,10 +4,13 @@ export function useEyeDropper() {
   const isSupported = Boolean(window && 'EyeDropper' in window)
   const sRGBHex = ref('')
 
-  async function eyeDropper() {
+  async function open() {
     // @ts-expect-error
     const eyeDropper = new window.EyeDropper()
-    sRGBHex.value = (await eyeDropper.open()).sRGBHex
+    const result = await eyeDropper.open()
+    sRGBHex.value = result.sRGBHex
+    return result
   }
-  return { isSupported, sRGBHex, eyeDropper }
+
+  return { isSupported, sRGBHex, open }
 }
