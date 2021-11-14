@@ -1,10 +1,9 @@
-import { ref } from 'vue-demi'
 import { useSetup } from '../../.test'
-import { unrefy } from '.'
+import { createUnrefFn } from '.'
 
-describe('unrefy', () => {
+describe('createUnrefFn', () => {
   it('should be defined', () => {
-    expect(unrefy).toBeDefined()
+    expect(createUnrefFn).toBeDefined()
   })
 
   it('should return a function that returns the same value', () => {
@@ -12,7 +11,7 @@ describe('unrefy', () => {
       const value = 42
       const fn = (value: any) => value
       const res = fn(value)
-      const resWrapped = unrefy(fn)(value)
+      const resWrapped = createUnrefFn(fn)(value)
       expect(res).toBe(resWrapped)
     })
   })
