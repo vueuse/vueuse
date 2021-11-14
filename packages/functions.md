@@ -24,6 +24,7 @@
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
+  - [`useEyeDropper`](https://vueuse.org/core/useEyeDropper/) — reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
   - [`useFavicon`](https://vueuse.org/core/useFavicon/) — reactive favicon
   - [`useFetch`](https://vueuse.org/core/useFetch/) — reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests
   - [`useFullscreen`](https://vueuse.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
