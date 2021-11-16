@@ -24,6 +24,7 @@
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
+  - [`useEyeDropper`](https://vueuse.org/core/useEyeDropper/) — reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
   - [`useFavicon`](https://vueuse.org/core/useFavicon/) — reactive favicon
   - [`useFetch`](https://vueuse.org/core/useFetch/) — reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests
   - [`useFullscreen`](https://vueuse.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
@@ -48,7 +49,7 @@
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`
-  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — composable virtual list
+  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — create virtual lists with ease
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
@@ -77,6 +78,7 @@
   - [`useElementHover`](https://vueuse.org/core/useElementHover/) — reactive element's hover state
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
+  - [`useFocus`](https://vueuse.org/core/useFocus/) — reactive utility to track or set the focus state of a DOM element
   - [`useFps`](https://vueuse.org/core/useFps/) — reactive FPS (frames per second)
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
@@ -118,6 +120,9 @@
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks
+  - [`createReactiveFn`](https://vueuse.org/shared/createReactiveFn/) — converts plain functions into reactive functions
+  - [`createUnrefFn`](https://vueuse.org/core/createUnrefFn/) — make a plain function accepting ref and raw values as arguments
+  - [`debouncedRef`](https://vueuse.org/shared/debouncedRef/) — debounce updates of a ref
   - [`eagerComputed`](https://vueuse.org/shared/eagerComputed/) — eager computed without lazy evaluation
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
@@ -131,6 +136,7 @@
   - [`refDefault`](https://vueuse.org/shared/refDefault/) — apply default value to a ref
   - [`set`](https://vueuse.org/shared/set/) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
+  - [`throttledRef`](https://vueuse.org/shared/throttledRef/) — throttle updates of a ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
