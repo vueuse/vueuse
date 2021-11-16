@@ -13,10 +13,13 @@ type PerformanceMemory = Performance & {
 
 export function useMemory() {
   const memory = ref() as Ref<Memory>
+  const isSupported = performance && 'memory' in performance
 
-  useIntervalFn(() => {
-    memory.value = (performance as PerformanceMemory).memory
-  }, 1000, { immediate: true, immediateCallback: true })
+  if (isSupported) {
+    useIntervalFn(() => {
+      memory.value = (performance as PerformanceMemory).memory
+    }, 1000, { immediate: true, immediateCallback: true })
+  }
 
-  return memory
+  return { isSupported, memory }
 }

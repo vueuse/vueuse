@@ -4,12 +4,12 @@ category: Browser
 
 # useMemory
 
-Basic counter with utility functions.
+Reactive Memory Info.
 
 ## Usage
 
 ```ts
 import { useMemory } from '@vueuse/core'
 
-const memory = useMemory()
+const {isSupported, memory} = useMemory()
 ```
