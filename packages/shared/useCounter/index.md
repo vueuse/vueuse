@@ -6,10 +6,18 @@ category: Utilities
 
 Basic counter with utility functions.
 
-## Usage
+## Basic Usage
 
 ```js
 import { useCounter } from '@vueuse/core'
 
 const { count, inc, dec, set, reset } = useCounter()
+```
+
+## Usage with options
+
+```js
+import { useCounter } from '@vueuse/core'
+
+const { count, inc, dec, set, reset } = useCounter(1, { minValue: 0, maxValue: 16 })
 ```
