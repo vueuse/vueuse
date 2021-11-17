@@ -1,8 +1,8 @@
 import { ref } from 'vue-demi'
 
 interface useCounterOptions {
-  minValue?: number
-  maxValue?: number
+  min?: number
+  max?: number
 }
 
 /**
@@ -12,26 +12,24 @@ interface useCounterOptions {
  * @param [initialValue=0]
  * @param {Object} options
  */
-export function useCounter(initialValue = 0, options: useCounterOptions = { minValue: undefined, maxValue: undefined }) {
+export function useCounter(initialValue = 0, options: useCounterOptions = { min: undefined, max: undefined }) {
   const count = ref(initialValue)
 
   const inc = (delta = 1) => {
-    if (!options.maxValue) {
+    if (!options.max) {
       count.value += delta
       return
     }
-    if ((options.maxValue && count.value < options.maxValue)) {
-      count.value = count.value + delta > options.maxValue ? options.maxValue : count.value + delta
-    }
+    if (options.max && count.value < options.max)
+      count.value = count.value + delta > options.max ? options.max : count.value + delta
   }
   const dec = (delta = 1) => {
-    if (!options.maxValue) {
+    if (!options.min) {
       count.value -= delta
       return
     }
-    if ((options.minValue && count.value > options.minValue)) {
-      count.value = count.value - delta < options.minValue ? options.minValue : count.value - delta
-    }
+    if (options.min && count.value > options.min)
+      count.value = count.value - delta < options.min ? options.min : count.value - delta
   }
   const get = () => count.value
   const set = (val: number) => (count.value = val)

@@ -41,7 +41,7 @@ describe('useCounter', () => {
 
   it('should be update limited counter', () => {
     useSetup(() => {
-      const { count, inc, dec, get } = useCounter(1, { minValue: -2, maxValue: 15})
+      const { count, inc, dec, get } = useCounter(1, { min: -2, max: 15 })
 
       expect(count.value).toBe(1)
       expect(get()).toBe(1)
