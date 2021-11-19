@@ -1,5 +1,12 @@
 import { noop, promiseTimeout } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
+import { Ref, ref, shallowRef } from 'vue-demi'
+
+export interface UseAsyncStateReturn<T> {
+  state: Ref<T>
+  isReady: Ref<boolean>
+  error: Ref<unknown>
+  execute: (delay: number, ...args: any[]) => Promise<T>
+}
 
 export interface AsyncStateOptions {
   /**
@@ -49,7 +56,7 @@ export function useAsyncState<T>(
   promise: Promise<T> | ((...args: any[]) => Promise<T>),
   initialState: T,
   options: AsyncStateOptions = {},
-) {
+): UseAsyncStateReturn<T> {
   const {
     immediate = true,
     delay = 0,
@@ -84,6 +91,8 @@ export function useAsyncState<T>(
       error.value = e
       onError(e)
     }
+
+    return state.value
   }
 
   if (immediate)
@@ -96,5 +105,3 @@ export function useAsyncState<T>(
     execute,
   }
 }
-
-export type UseAsyncStateReturn = ReturnType<typeof useAsyncState>
