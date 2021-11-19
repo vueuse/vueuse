@@ -17,10 +17,15 @@ export type MaybeRef<T> = T | Ref<T>
 /**
  * A ref that allow to set null or undefined
  */
-export type RemoveableRef<T> = Omit<Ref<T>, 'value'> & {
+export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
   get value(): T
   set value(value: T | null | undefined)
 }
+
+/**
+ * @deprecated Use `RemovableRef`
+ */
+export type RemoveableRef<T> = RemovableRef<T>
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
