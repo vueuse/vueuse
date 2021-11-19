@@ -61,9 +61,9 @@ export interface Pausable {
   resume: Fn
 }
 
-export interface Stopable {
+export interface Stoppable {
   /**
-   * A ref indicate whether a stopable instance is executing
+   * A ref indicate whether a stoppable instance is executing
    */
   isPending: Ref<boolean>
 
@@ -77,6 +77,11 @@ export interface Stopable {
    */
   start: Fn
 }
+
+/**
+ * @deprecated Use `Stoppable`
+ */
+export type Stopable = Stoppable
 
 export interface ConfigurableFlush {
   /**
