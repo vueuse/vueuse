@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 
-interface useCounterOptions {
+export interface UseCounterOptions {
   min?: number
   max?: number
 }
@@ -12,25 +12,16 @@ interface useCounterOptions {
  * @param [initialValue=0]
  * @param {Object} options
  */
-export function useCounter(initialValue = 0, options: useCounterOptions = { min: undefined, max: undefined }) {
+export function useCounter(initialValue = 0, options: UseCounterOptions = {}) {
   const count = ref(initialValue)
 
-  const inc = (delta = 1) => {
-    if (!options.max) {
-      count.value += delta
-      return
-    }
-    if (options.max && count.value < options.max)
-      count.value = count.value + delta > options.max ? options.max : count.value + delta
-  }
-  const dec = (delta = 1) => {
-    if (!options.min) {
-      count.value -= delta
-      return
-    }
-    if (options.min && count.value > options.min)
-      count.value = count.value - delta < options.min ? options.min : count.value - delta
-  }
+  const {
+    max = Infinity,
+    min = -Infinity,
+  } = options
+
+  const inc = (delta = 1) => count.value = Math.min(max, count.value + delta)
+  const dec = (delta = 1) => count.value = Math.max(min, count.value - delta)
   const get = () => count.value
   const set = (val: number) => (count.value = val)
   const reset = (val = initialValue) => {
