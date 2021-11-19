@@ -1,4 +1,4 @@
-import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stopable, useTimeoutFn } from '@vueuse/shared'
+import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stoppable, useTimeoutFn } from '@vueuse/shared'
 import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -299,7 +299,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
   let controller: AbortController | undefined
-  let timer: Stopable | undefined
+  let timer: Stoppable | undefined
 
   const abort = () => {
     if (supportsAbort && controller)
