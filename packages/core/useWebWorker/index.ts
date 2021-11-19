@@ -4,6 +4,13 @@ import { ref, Ref, shallowRef } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
+export interface UseWebWorkerReturn<Data = any> {
+  data: Ref<Data>
+  post: typeof Worker.prototype['postMessage']
+  terminate: () => void
+  worker: Ref<Worker | undefined>
+}
+
 /**
  * Simple Web Workers registration and communication.
  *
@@ -12,11 +19,11 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  * @param workerOptions
  * @param options
  */
-export function useWebWorker(
+export function useWebWorker<Data = any>(
   url: string,
   workerOptions?: WorkerOptions,
   options: ConfigurableWindow = {},
-) {
+): UseWebWorkerReturn<Data> {
   const {
     window = defaultWindow,
   } = options
@@ -59,5 +66,3 @@ export function useWebWorker(
     worker,
   }
 }
-
-export type UseWebWorkerReturn = ReturnType<typeof useWebWorker>
