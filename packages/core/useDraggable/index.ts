@@ -82,10 +82,10 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     if (unref(options.exact) && e.target !== unref(target))
       return
-    const react = unref(target)!.getBoundingClientRect()
+    const rect = unref(target)!.getBoundingClientRect()
     const pos = {
-      x: e.pageX - react.left,
-      y: e.pageY - react.top,
+      x: e.pageX - rect.left,
+      y: e.pageY - rect.top,
     }
     if (options.onStart?.(pos, e) === false)
       return
