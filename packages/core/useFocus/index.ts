@@ -1,8 +1,9 @@
 import { computed, Ref, watch } from 'vue-demi'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
+import { ConfigurableWindow } from '../_configurable'
 
-export interface FocusOptions {
+export interface FocusOptions extends ConfigurableWindow {
   /**
    * Initial value. If set true, then focus will be set on the target
    *
@@ -35,7 +36,7 @@ export function useFocus(options: FocusOptions = {}): FocusReturn {
     initialValue = false,
   } = options
 
-  const activeElement = useActiveElement()
+  const activeElement = useActiveElement(options)
   const target = computed(() => unrefElement(options.target))
   const focused = computed({
     get() {
