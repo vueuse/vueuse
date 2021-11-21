@@ -18,6 +18,7 @@ importers:
       '@types/fs-extra': ^9.0.13
       '@types/jest': ^27.0.3
       '@types/js-yaml': ^4.0.5
+      '@types/md5': ^2.3.1
       '@types/node': ^16.11.9
       '@types/semver': ^7.3.9
       '@vue/compiler-sfc': ^3.2.22
@@ -47,6 +48,7 @@ importers:
       js-yaml: ^4.1.0
       lint-staged: ^12.0.3
       markdown-table: ^3.0.1
+      md5: ^2.3.0
       pnpm: ^6.22.2
       postcss: ^8.3.11
       postcss-nested: ^5.0.6
@@ -79,6 +81,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.0.3
       '@types/js-yaml': 4.0.5
+      '@types/md5': 2.3.1
       '@types/node': 16.11.9
       '@types/semver': 7.3.9
       '@vue/compiler-sfc': 3.2.22
@@ -108,6 +111,7 @@ importers:
       js-yaml: 4.1.0
       lint-staged: 12.0.3
       markdown-table: 3.0.1
+      md5: 2.3.0
       pnpm: 6.22.2
       postcss: 8.3.11
       postcss-nested: 5.0.6_postcss@8.3.11
@@ -2533,6 +2537,12 @@ packages:
     resolution: {integrity: sha512-5tXH6Bx/kNGd3MgffdmP4dy2Z+G4eaXw0SE81Tq3BNadtnMR5/ySMzX4SLEzHJzSmPNn4HIdpQsBvXMUykr58w==}
     dev: true
 
+  /@types/md5/2.3.1:
+    resolution: {integrity: sha512-OK3oe+ALIoPSo262lnhAYwpqFNXbiwH2a+0+Z5YBnkQEwWD8fk5+PIeRhYA48PzvX9I4SGNpWy+9bLj8qz92RQ==}
+    dependencies:
+      '@types/node': 16.11.9
+    dev: true
+
   /@types/node/14.17.18:
     resolution: {integrity: sha512-haYyibw4pbteEhkSg0xdDLAI3679L75EJ799ymVrPxOA922bPx3ML59SoDsQ//rHlvqpu+e36kcbR3XRQtFblA==}
     dev: true
@@ -3462,6 +3472,10 @@ packages:
     resolution: {integrity: sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==}
     dev: true
 
+  /charenc/0.0.2:
+    resolution: {integrity: sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=}
+    dev: true
+
   /chokidar/3.5.2:
     resolution: {integrity: sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==}
     engines: {node: '>= 8.10.0'}
@@ -3736,6 +3750,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /crypt/0.0.2:
+    resolution: {integrity: sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=}
     dev: true
 
   /crypto-random-string/2.0.0:
@@ -6585,6 +6603,14 @@ packages:
       escape-string-regexp: 4.0.0
     dev: true
     optional: true
+
+  /md5/2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
+    dependencies:
+      charenc: 0.0.2
+      crypt: 0.0.2
+      is-buffer: 1.1.6
+    dev: true
 
   /merge-stream/2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}

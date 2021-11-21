@@ -47,3 +47,9 @@ export interface CommitInfo {
   author_name: string
   author_email: string
 }
+
+export interface ContributorInfo {
+  name: string
+  count: number
+  hash: string
+}

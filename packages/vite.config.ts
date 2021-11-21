@@ -8,6 +8,7 @@ import WindiCSS from 'vite-plugin-windicss'
 import Inspect from 'vite-plugin-inspect'
 import { MarkdownTransform } from './.vitepress/markdownTransform'
 import { ChangeLog } from './.vitepress/changelog'
+import { Contributors } from './.vitepress/contributors'
 
 export default defineConfig({
   server: {
@@ -24,6 +25,7 @@ export default defineConfig({
     // custom
     MarkdownTransform(),
     ChangeLog(),
+    Contributors(),
 
     // plugins
     Components({

@@ -91,6 +91,11 @@ ${code}
     .map(i => `[${i![0]}](${i![1]})`).join(' • ')
 
   const sourceSection = `## Source\n\n${links}\n`
+  const ContributorsSection = `
+## Contributors
+
+<Contributors fn="${name}" />
+  `
   const changelogSection = `
 ## Changelog
 

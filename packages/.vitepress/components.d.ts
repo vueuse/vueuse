@@ -31,6 +31,8 @@ declare module 'vue' {
     CarbonVolumeMute: typeof import('~icons/carbon/volume-mute')['default']
     CarbonVolumeUp: typeof import('~icons/carbon/volume-up')['default']
     Changelog: typeof import('./theme/components/Changelog.vue')['default']
+    'Changelog copy': typeof import('./theme/components/Changelog copy.vue')['default']
+    Contributors: typeof import('./theme/components/Contributors.vue')['default']
     DemoContainer: typeof import('./theme/components/DemoContainer.vue')['default']
     FunctionBadge: typeof import('./theme/components/FunctionBadge.vue')['default']
     FunctionInfo: typeof import('./theme/components/FunctionInfo.vue')['default']
