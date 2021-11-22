@@ -82,25 +82,65 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const obj = { toJSON() { return {} }, current }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
 
+  function safeSetRef(key: string, value: boolean) {
+    if (key in refs) {
+      if (refs[key] === value)
+        return
+
+      if (useReactive)
+        refs[key] = value
+
+      else
+        refs[key].value = value
+    }
+  }
+
+  function forceUpdateMetaDependents() {
+    const metaAliases = Object.entries(aliasMap).map(([key, value]) => {
+      if (value === 'meta')
+        return key
+
+      return ''
+    }).filter(k => k !== '')
+
+    const metaDeps = Object.keys(refs).map((k) => {
+      let key = ''
+      for (let idx = 0; idx < metaAliases.length; idx++) {
+        const alias = metaAliases[idx]
+        if (k.includes(alias))
+          key = k.replace(alias, '').replace(/[+_-]/g, '')
+      }
+      return key
+    }).filter(k => k !== '')
+    // console.log({ current })
+
+    // set all the deps to false
+    metaDeps.forEach((k) => {
+      safeSetRef(k, false)
+    })
+
+    // clear from current set
+    for (const k of current.keys()) {
+      if (metaDeps.includes(k.toLowerCase()))
+        current.delete(k)
+    }
+  }
+
   function updateRefs(e: KeyboardEvent, value: boolean) {
     const key = e.key.toLowerCase()
     const code = e.code.toLowerCase()
     const values = [code, key]
 
     // current set
-    if (value)
-      current.add(e.code)
-    else
+    if (value) { current.add(e.code) }
+    else {
       current.delete(e.code)
-
-    for (const key of values) {
-      if (key in refs) {
-        if (useReactive)
-          refs[key] = value
-        else
-          refs[key].value = value
-      }
+      if (key === 'meta')
+        forceUpdateMetaDependents()
     }
+
+    for (const key of values)
+      safeSetRef(key, value)
   }
 
   if (target) {

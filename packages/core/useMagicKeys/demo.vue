@@ -3,7 +3,7 @@ import { computed } from 'vue-demi'
 import Key from './Key.vue'
 import { useMagicKeys } from '.'
 
-const { shift, v, u, e, s, v_u_e, u_s_e, current } = useMagicKeys()
+const { shift, v, u, e, s, v_u_e, u_s_e, current, command_bracketRight } = useMagicKeys()
 const keys = computed(() => Array.from(current))
 </script>
 
@@ -50,6 +50,10 @@ const keys = computed(() => Array.from(current))
         </Key>
         <Key :value="u_s_e">
           Use
+        </Key>
+
+        <Key :value="command_bracketRight">
+          command_bracketRight
         </Key>
       </div>
 
