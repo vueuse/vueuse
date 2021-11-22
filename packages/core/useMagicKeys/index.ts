@@ -112,7 +112,6 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       }
       return key
     }).filter(k => k !== '')
-    // console.log({ current })
 
     // set all the deps to false
     metaDeps.forEach((k) => {
