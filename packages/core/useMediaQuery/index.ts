@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
@@ -13,26 +13,36 @@ import { ConfigurableWindow, defaultWindow } from '../_configurable'
  */
 export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  if (!window)
-    return ref(false)
 
-  const mediaQuery = window.matchMedia(query)
-  const matches = ref(mediaQuery.matches)
+  let mediaQuery: MediaQueryList | undefined
+  const matches = ref(false)
 
-  const handler = (event: MediaQueryListEvent) => {
-    matches.value = event.matches
+  const update = () => {
+    if (!window)
+      return
+    if (!mediaQuery)
+      mediaQuery = window.matchMedia(query)
+    matches.value = mediaQuery.matches
   }
 
-  if ('addEventListener' in mediaQuery)
-    mediaQuery.addEventListener('change', handler)
-  else
-    mediaQuery.addListener(handler)
+  tryOnMounted(() => {
+    update()
 
-  tryOnScopeDispose(() => {
-    if ('removeEventListener' in mediaQuery)
-      mediaQuery.removeEventListener('change', handler)
+    if (!mediaQuery)
+      return
+
+    if ('addEventListener' in mediaQuery)
+      mediaQuery.addEventListener('change', update)
     else
-      mediaQuery.removeListener(handler)
+      // @ts-expect-error
+      mediaQuery.addListener(update)
+
+    tryOnScopeDispose(() => {
+      if ('removeEventListener' in update)
+        mediaQuery!.removeEventListener('change', update)
+      else
+        mediaQuery!.removeListener(update)
+    })
   })
 
   return matches
