@@ -1,5 +1,5 @@
 import { ref, computed, unref } from 'vue-demi'
-import { MaybeRef } from '..'
+import { MaybeRef, clamp } from '@vueuse/shared'
 
 /**
  * Reactive Clamp a value between two other values.
@@ -20,10 +20,4 @@ export function useClamp(initialValue: number, min: MaybeRef<number>, max: Maybe
     },
   })
   return result
-}
-
-function clamp(value: number, min: number, max: number) {
-  return min < max
-    ? (value < min ? min : value > max ? max : value)
-    : (value < max ? max : value > min ? min : value)
 }
