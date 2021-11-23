@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
