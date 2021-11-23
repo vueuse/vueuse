@@ -1,8 +1,7 @@
 import { h, ref, defineComponent, watch, onUnmounted } from 'vue-demi'
 import { createFocusTrap } from 'focus-trap'
 import type { FocusTrap } from 'focus-trap'
-import { unrefElement } from '@vueuse/core'
-import { RenderableComponent } from '@vueuse/core/types'
+import { unrefElement, RenderableComponent } from '@vueuse/core'
 
 export const UseFocusTrap = defineComponent<RenderableComponent>({
   name: 'UseFocusTrap',

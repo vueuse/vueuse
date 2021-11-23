@@ -26,8 +26,8 @@ export function useGeolocation(options: GeolocationOptions = {}) {
   const error = ref<GeolocationPositionError | null>(null)
   const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
-    latitude: 0,
-    longitude: 0,
+    latitude: Infinity,
+    longitude: Infinity,
     altitude: null,
     altitudeAccuracy: null,
     heading: null,
