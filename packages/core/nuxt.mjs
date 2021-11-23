@@ -1,4 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import fs from 'fs'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const disabled = [
   'useFetch',
@@ -41,9 +45,10 @@ export default function() {
   nuxt.hook('autoImports:sources', (sources) => {
     if (sources.find(i => i.from === '@vueuse/core/nuxt'))
       return
+    const indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
     sources.push({
       from: '@vueuse/core',
-      names: require('./indexes.json')
+      names: indexes
         .functions
         .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
         .map(i => i.name)
