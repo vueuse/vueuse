@@ -28,13 +28,13 @@ export function useLockScroll(
   element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
 ) {
-  const lockState = ref(initialState)
+  const isLocked = ref(initialState)
   let touchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
   const lock = () => {
     const ele = (unref(element) as HTMLElement)
-    if (!ele || lockState.value) return
+    if (!ele || isLocked.value) return
     initialOverflow = ele.style.overflow
     if (isIosDevice) {
       touchMoveListener = useEventListener(
@@ -47,18 +47,18 @@ export function useLockScroll(
     else {
       ele.style.overflow = 'hidden'
     }
-    lockState.value = true
+    isLocked.value = true
   }
 
   const unlock = () => {
     const ele = (unref(element) as HTMLElement)
-    if (!ele || !lockState.value) return
+    if (!ele || !isLocked.value) return
     isIosDevice ? touchMoveListener?.() : ele.style.overflow = initialOverflow
-    lockState.value = false
+    isLocked.value = false
   }
 
   return {
-    lockState,
+    isLocked,
     lock,
     unlock,
   }

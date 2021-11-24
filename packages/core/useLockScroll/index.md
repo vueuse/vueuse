@@ -13,7 +13,7 @@ Lock scrolling of the element.
 import { useLockScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { lockState, lock, unlock } = useLockScroll(el)
+const { isLocked, lock, unlock } = useLockScroll(el)
 </script>
 
 <template>

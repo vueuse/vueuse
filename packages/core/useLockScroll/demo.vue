@@ -4,7 +4,7 @@ import { useScroll } from '../useScroll'
 import { useLockScroll } from '.'
 const el = ref<HTMLElement | null>(null)
 useScroll(el)
-const { lockState, lock, unlock } = useLockScroll(el)
+const { isLocked, lock, unlock } = useLockScroll(el)
 </script>
 
 <template>
@@ -30,9 +30,9 @@ const { lockState, lock, unlock } = useLockScroll(el)
     </div>
     <div class="m-auto w-280px px-6 py-4 mb-20 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
       <div text="right" opacity="75">
-        Lock State
+        isLocked
       </div>
-      <BooleanDisplay :value="lockState" />
+      <BooleanDisplay :value="isLocked" />
       <button text="center" opacity="75" @click="lock">
         Lock
       </button>
