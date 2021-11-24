@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
+import { useToggle } from '@vueuse/shared'
 import { useScroll } from '../useScroll'
-import { useLockScroll } from '.'
+import { useScrollLock } from '.'
+
 const el = ref<HTMLElement | null>(null)
 useScroll(el)
-const { isLocked, lock, unlock } = useLockScroll(el)
+const isLocked = useScrollLock(el)
+const toggleLock = useToggle(isLocked)
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-wrap">
     <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
       <div class="w-500px h-400px relative">
         <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
@@ -28,16 +31,15 @@ const { isLocked, lock, unlock } = useLockScroll(el)
         </div>
       </div>
     </div>
-    <div class="m-auto w-280px px-6 py-4 mb-20 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
-      <div text="right" opacity="75">
-        isLocked
+    <div class="m-auto px-6 py-4 rounded flex flex-col w-60 gap-2 bg-gray-500/5">
+      <div>
+        <span opacity="75">
+          isLocked
+        </span>
+        <BooleanDisplay :value="isLocked" />
       </div>
-      <BooleanDisplay :value="isLocked" />
-      <button text="center" opacity="75" @click="lock">
-        Lock
-      </button>
-      <button text="center" opacity="75" @click="unlock">
-        UnLock
+      <button opacity="75" @click="toggleLock()">
+        {{ isLocked ? 'Unlock' : 'Lock' }}
       </button>
     </div>
   </div>

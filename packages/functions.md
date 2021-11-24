@@ -85,7 +85,6 @@
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
   - [`useKeyModifier`](https://vueuse.org/core/useKeyModifier/) — reactive [Modifier State](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState)
-  - [`useLockScroll`](https://vueuse.org/core/useLockScroll/) — lock scrolling of the element
   - [`useMagicKeys`](https://vueuse.org/core/useMagicKeys/) — reactive keys pressed state
   - [`useMouse`](https://vueuse.org/core/useMouse/) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
@@ -99,6 +98,7 @@
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
   - [`useScroll`](https://vueuse.org/core/useScroll/) — reactive scroll position and state
+  - [`useScrollLock`](https://vueuse.org/core/useScrollLock/) — lock scrolling of the element
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSpeechSynthesis`](https://vueuse.org/core/useSpeechSynthesis/) — reactive [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)

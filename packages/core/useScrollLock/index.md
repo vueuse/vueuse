@@ -2,7 +2,7 @@
 category: Sensors
 ---
 
-# useLockScroll
+# useScrollLock
 
 Lock scrolling of the element. 
 
@@ -10,10 +10,13 @@ Lock scrolling of the element.
 
 ```html
 <script setup lang="ts">
-import { useLockScroll } from '@vueuse/core'
+import { useScrollLock } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { isLocked, lock, unlock } = useLockScroll(el)
+const isLocked = useScrollLock(el)
+
+isLocked.value = true // lock
+isLocked.value = false // unlock
 </script>
 
 <template>

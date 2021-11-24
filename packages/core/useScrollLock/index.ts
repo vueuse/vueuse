@@ -1,4 +1,4 @@
-import { unref, ref } from 'vue-demi'
+import { unref, ref, computed } from 'vue-demi'
 import { MaybeRef, isClient, Fn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
@@ -12,19 +12,16 @@ function preventDefault(rawEvent: TouchEvent): boolean {
   return false
 }
 
-const isIosDevice
-  = isClient
-  && window?.navigator
-  && window?.navigator?.platform
-  && /iP(ad|hone|od)/.test(window?.navigator?.platform)
+// TODO: move to @vueuse/share
+const isIOS = /* #__PURE__ */ isClient && window?.navigator && window?.navigator?.platform && /iP(ad|hone|od)/.test(window?.navigator?.platform)
 
 /**
  * Lock scrolling of the element.
  *
- * @see https://vueuse.org/useLockScroll
+ * @see https://vueuse.org/useScrollLock
  * @param element
  */
-export function useLockScroll(
+export function useScrollLock(
   element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
 ) {
@@ -36,7 +33,7 @@ export function useLockScroll(
     const ele = (unref(element) as HTMLElement)
     if (!ele || isLocked.value) return
     initialOverflow = ele.style.overflow
-    if (isIosDevice) {
+    if (isIOS) {
       touchMoveListener = useEventListener(
         document,
         'touchmove',
@@ -53,15 +50,17 @@ export function useLockScroll(
   const unlock = () => {
     const ele = (unref(element) as HTMLElement)
     if (!ele || !isLocked.value) return
-    isIosDevice ? touchMoveListener?.() : ele.style.overflow = initialOverflow
+    isIOS ? touchMoveListener?.() : ele.style.overflow = initialOverflow
     isLocked.value = false
   }
 
-  return {
-    isLocked,
-    lock,
-    unlock,
-  }
+  return computed<boolean>({
+    get() {
+      return isLocked.value
+    },
+    set(v) {
+      if (v) lock()
+      else unlock()
+    },
+  })
 }
-
-export type UseLockScroll = ReturnType<typeof useLockScroll>
