@@ -41,7 +41,7 @@ describe('useAsyncQueue', () => {
       result,
     } = useAsyncQueue([p1, p2, p3])
     await until(activeIndex).toBe(2)
-    expect(JSON.stringify(result.value)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
+    expect(JSON.stringify(result)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
   })
 
   it ('should passed the current task result to the next task', async() => {
@@ -50,7 +50,7 @@ describe('useAsyncQueue', () => {
       result,
     } = useAsyncQueue([p1, p2])
     await until(activeIndex).toBe(1)
-    expect(result.value[activeIndex.value].data).toBe(2000)
+    expect(result[activeIndex.value].data).toBe(2000)
   })
 
   it ('should trigger onFinished when the tasks ends', async() => {
