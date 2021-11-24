@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "7.0.3",
+  "version": "7.1.0",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
