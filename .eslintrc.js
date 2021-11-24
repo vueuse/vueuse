@@ -43,7 +43,7 @@ module.exports = {
       },
     },
     {
-      files: ['packages/.vitepress/**/*.*'],
+      files: ['packages/.vitepress/**/*.*', 'playgrounds/**/*.*'],
       rules: {
         'no-restricted-imports': 'off',
       },
