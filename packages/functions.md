@@ -85,6 +85,7 @@
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
   - [`useKeyModifier`](https://vueuse.org/core/useKeyModifier/) — reactive [Modifier State](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState)
+  - [`useLockScroll`](https://vueuse.org/core/useLockScroll/) — lock scrolling of the element
   - [`useMagicKeys`](https://vueuse.org/core/useMagicKeys/) — reactive keys pressed state
   - [`useMouse`](https://vueuse.org/core/useMouse/) — reactive mouse position
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
