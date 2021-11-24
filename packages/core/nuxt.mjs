@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const disabled = [
   'useFetch',
   'toRefs',
+  'useCookie'
 ]
 
 /**
