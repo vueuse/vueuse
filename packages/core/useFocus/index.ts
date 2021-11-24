@@ -1,7 +1,7 @@
-import { computed, Ref, ref, watch } from 'vue-demi'
+import { computed, Ref, watch } from 'vue-demi'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
-import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { useActiveElement } from '../useActiveElement'
+import { ConfigurableWindow } from '../_configurable'
 
 export interface FocusOptions extends ConfigurableWindow {
   /**
@@ -34,34 +34,23 @@ export interface FocusReturn {
 export function useFocus(options: FocusOptions = {}): FocusReturn {
   const {
     initialValue = false,
-    window = defaultWindow,
   } = options
 
-  const focused = ref(initialValue)
+  const activeElement = useActiveElement(options)
+  const target = computed(() => unrefElement(options.target))
+  const focused = computed({
+    get() {
+      return activeElement.value === target.value
+    },
+    set(value: boolean) {
+      if (!value && focused.value)
+        target.value?.blur()
+      if (value && !focused.value)
+        target.value?.focus()
+    },
+  })
 
-  if (!window) return { focused }
-
-  const onFocus = () => { focused.value = true }
-  const onBlur = () => { focused.value = false }
-
-  const target = computed(() => unrefElement(options.target) ?? window)
-
-  useEventListener(target, 'focus', onFocus, { passive: true })
-  useEventListener(target, 'blur', onBlur, { passive: true })
-
-  const setFocus = (focused: boolean, oldFocused: boolean | undefined) => {
-    if (focused) {
-      if (!oldFocused) target.value?.focus()
-    }
-    else {
-      if (oldFocused) target.value?.blur()
-    }
-  }
-
-  watch(focused, setFocus, { immediate: true, flush: 'post' })
-  watch(target, () => {
-    setFocus(focused.value, false)
-  }, { immediate: true, flush: 'post' })
+  watch(target, () => { focused.value = initialValue }, { immediate: true, flush: 'post' })
 
   return { focused }
 }

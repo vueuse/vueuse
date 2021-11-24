@@ -50,7 +50,7 @@ import { useEventBus } from '@vueuse/core'
 
 import { fooKey } from './fooKey'
 
-const bus = useEventBus(fooEventKey)
+const bus = useEventBus(fooKey)
 
 bus.on((e) => {
   // `e` will be `{ name: foo }`

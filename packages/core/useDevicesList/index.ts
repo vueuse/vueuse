@@ -14,6 +14,12 @@ export interface UseDevicesListOptions extends ConfigurableNavigator {
    * @default false
    */
   requestPermissions?: boolean
+  /**
+   * Request for types of media permissions
+   *
+   * @default { audio: true, video: true }
+   */
+  constraints?: MediaStreamConstraints
 }
 
 export interface UseDevicesListReturn {
@@ -39,6 +45,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   const {
     navigator = defaultNavigator,
     requestPermissions = false,
+    constraints = { audio: true, video: true },
     onUpdated,
   } = options
 
@@ -67,7 +74,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     const { state, query } = usePermission('camera', { controls: true })
     await query()
     if (state.value !== 'granted') {
-      const stream = await navigator!.mediaDevices.getUserMedia({ audio: true, video: true })
+      const stream = await navigator!.mediaDevices.getUserMedia(constraints)
       stream.getTracks().forEach(t => t.stop())
       update()
       permissionGranted.value = true

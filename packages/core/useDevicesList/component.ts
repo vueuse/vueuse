@@ -3,7 +3,7 @@ import { useDevicesList, UseDevicesListOptions } from '@vueuse/core'
 
 export const UseDevicesList = defineComponent<UseDevicesListOptions>({
   name: 'UseDevicesList',
-  props: ['onUpdated', 'requestPermissions'] as unknown as undefined,
+  props: ['onUpdated', 'requestPermissions', 'constraints'] as unknown as undefined,
   setup(props, { slots }) {
     const data = reactive(useDevicesList(props))
 

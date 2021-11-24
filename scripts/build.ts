@@ -17,6 +17,7 @@ const FILES_COPY_ROOT = [
 const FILES_COPY_LOCAL = [
   'README.md',
   'nuxt.cjs',
+  'nuxt.mjs',
 ]
 
 assert(process.cwd() !== __dirname)

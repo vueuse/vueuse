@@ -30,6 +30,7 @@
   - [`useFullscreen`](https://vueuse.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaControls`](https://vueuse.org/core/useMediaControls/) — reactive media controls for both `audio` and `video` elements
   - [`useMediaQuery`](https://vueuse.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
+  - [`useMemory`](https://vueuse.org/core/useMemory/) — reactive Memory Info
   - [`usePermission`](https://vueuse.org/core/usePermission/) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.org/core/usePreferredDark/) — reactive dark theme preference
@@ -142,6 +143,7 @@
   - [`useAsyncQueue`](https://vueuse.org/core/useAsyncQueue/) — executes each asynchronous task sequentially and passed the current task result to the next task
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useBase64`](https://vueuse.org/core/useBase64/) — reactive base64 transforming
+  - [`useClamp`](https://vueuse.org/core/useClamp/) — reactive Clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
