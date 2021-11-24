@@ -4,12 +4,14 @@ category: Utilities
 
 # useClamp
 
-Reactive Clamp a value between two other values.
+Reactively clamp a value between two other values.
 
 ## Usage
 
 ```ts
 import { useClamp } from '@vueuse/core'
 
-const value = useClamp(0)
+const min = ref(-10)
+const max = ref(-10)
+const value = useClamp(0, min, max)
 ```
