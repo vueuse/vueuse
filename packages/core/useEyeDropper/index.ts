@@ -41,10 +41,10 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const isSupported = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
   const sRGBHex = ref(initialValue)
 
-  const eyeDropper = new (window as WindowEyeDropper).EyeDropper()
   async function open() {
     if (!isSupported)
       return
+    const eyeDropper = new (window as WindowEyeDropper).EyeDropper()
     const result = await eyeDropper.open({
       signal,
     })
