@@ -4,7 +4,7 @@
 
 > This is an add-on of [VueUse](https://github.com/vueuse/vueuse), provides Nuxt specific composables and auto-import capabilities.
 
-> Expiremental. **Will NOT follow semvar**.
+> Experimental. **Will NOT follow semvar**.
 
 ## Install
 

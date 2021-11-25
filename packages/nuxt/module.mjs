@@ -18,7 +18,7 @@ const disabled = [
  * // nuxt.config.js
  * export deafult {
  *   buildModules: [
- *     '@vueuse/core/nuxt'
+ *     '@vueuse/nuxt'
  *   ]
  * }
  * ```
@@ -44,6 +44,12 @@ export default function() {
     )
   })
 
+  // add @vueuse/nuxt to transpile target for alias resolution
+  nuxt.options.build = nuxt.options.build || {}
+  nuxt.options.build.transpile = nuxt.options.build.transpile || []
+  nuxt.options.build.transpile.push('@vueuse/nuxt')
+
+  // auto Import
   nuxt.hook('autoImports:sources', (sources) => {
     if (sources.find(i => i.from === '@vueuse/core' || i.from === '@vueuse/nuxt'))
       return
