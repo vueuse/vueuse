@@ -10,13 +10,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/components"
   },
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
     "./*": "./*"
   },
