@@ -5,7 +5,7 @@ export interface UseAsyncStateReturn<T> {
   state: Ref<T>
   isReady: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay: number, ...args: any[]) => Promise<T>
+  execute: (delay?: number, ...args: any[]) => Promise<T>
 }
 
 export interface AsyncStateOptions {
