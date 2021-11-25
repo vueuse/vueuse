@@ -1,7 +1,7 @@
-import { useCookie } from 'nuxt3'
-import { useMeta } from 'nuxt3/dist/meta/runtime'
 import { ColorSchema, usePreferredDark, ConfigurableWindow, defaultWindow } from '@vueuse/core'
 import { computed } from 'vue-demi'
+// @ts-expect-error
+import { useCookie, useMeta } from '#app'
 
 export interface UseNuxtDarkOptions extends ConfigurableWindow {
   /**

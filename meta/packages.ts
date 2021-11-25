@@ -30,7 +30,7 @@ export const packages: PackageManifest[] = [
       '@vueuse/core',
       '@vueuse/shared',
       'nuxt3',
-      'nuxt3/dist/meta/runtime',
+      '#app',
     ],
   },
   {
