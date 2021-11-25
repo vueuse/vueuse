@@ -24,39 +24,48 @@
     "./*": "./*",
     "./useAxios": {
       "import": "./useAxios.mjs",
-      "require": "./useAxios.cjs"
+      "require": "./useAxios.cjs",
+      "types": "./useAxios.d.ts"
     },
     "./useCookies": {
       "import": "./useCookies.mjs",
-      "require": "./useCookies.cjs"
+      "require": "./useCookies.cjs",
+      "types": "./useCookies.d.ts"
     },
     "./useDrauu": {
       "import": "./useDrauu.mjs",
-      "require": "./useDrauu.cjs"
+      "require": "./useDrauu.cjs",
+      "types": "./useDrauu.d.ts"
     },
     "./useFocusTrap": {
       "import": "./useFocusTrap.mjs",
-      "require": "./useFocusTrap.cjs"
+      "require": "./useFocusTrap.cjs",
+      "types": "./useFocusTrap.d.ts"
     },
     "./useFocusTrap/component": {
       "import": "./useFocusTrap/component.mjs",
-      "require": "./useFocusTrap/component.cjs"
+      "require": "./useFocusTrap/component.cjs",
+      "types": "./useFocusTrap/component.d.ts"
     },
     "./useFuse": {
       "import": "./useFuse.mjs",
-      "require": "./useFuse.cjs"
+      "require": "./useFuse.cjs",
+      "types": "./useFuse.d.ts"
     },
     "./useJwt": {
       "import": "./useJwt.mjs",
-      "require": "./useJwt.cjs"
+      "require": "./useJwt.cjs",
+      "types": "./useJwt.d.ts"
     },
     "./useNProgress": {
       "import": "./useNProgress.mjs",
-      "require": "./useNProgress.cjs"
+      "require": "./useNProgress.cjs",
+      "types": "./useNProgress.d.ts"
     },
     "./useQRCode": {
       "import": "./useQRCode.mjs",
-      "require": "./useQRCode.cjs"
+      "require": "./useQRCode.cjs",
+      "types": "./useQRCode.d.ts"
     }
   },
   "main": "./index.cjs",

@@ -26,15 +26,18 @@
     "./*": "./*",
     "./useAuth": {
       "import": "./useAuth.mjs",
-      "require": "./useAuth.cjs"
+      "require": "./useAuth.cjs",
+      "types": "./useAuth.d.ts"
     },
     "./useFirestore": {
       "import": "./useFirestore.mjs",
-      "require": "./useFirestore.cjs"
+      "require": "./useFirestore.cjs",
+      "types": "./useFirestore.d.ts"
     },
     "./useRTDB": {
       "import": "./useRTDB.mjs",
-      "require": "./useRTDB.cjs"
+      "require": "./useRTDB.cjs",
+      "types": "./useRTDB.d.ts"
     }
   },
   "main": "./index.cjs",

@@ -2,6 +2,7 @@ import path from 'path'
 import assert from 'assert'
 import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
+import fg from 'fast-glob'
 import consola from 'consola'
 import { packages } from '../meta/packages'
 import indexes from '../meta/function-indexes'
@@ -16,8 +17,9 @@ const FILES_COPY_ROOT = [
 
 const FILES_COPY_LOCAL = [
   'README.md',
-  'nuxt.cjs',
-  'nuxt.mjs',
+  '*.cjs',
+  '*.mjs',
+  '*.d.ts',
 ]
 
 assert(process.cwd() !== __dirname)
@@ -35,10 +37,9 @@ async function buildMetaFiles() {
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
 
-    for (const file of FILES_COPY_LOCAL) {
-      if (fs.existsSync(path.join(packageRoot, file)))
-        await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
-    }
+    const files = await fg(FILES_COPY_LOCAL, { cwd: packageRoot })
+    for (const file of files)
+      await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
     const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
     for (const key of Object.keys(packageJSON.dependencies)) {

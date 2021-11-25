@@ -21,7 +21,12 @@
       "require": "./index.cjs",
       "types": "./index.d.ts"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./nuxt": {
+      "import": "./nuxt.mjs",
+      "require": "./nuxt.cjs",
+      "types": "./nuxt.d.ts"
+    }
   },
   "main": "./index.cjs",
   "types": "./index.d.ts",

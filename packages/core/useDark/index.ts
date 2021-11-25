@@ -4,9 +4,9 @@ import { StorageLike, StorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 
-export type ColorSchemes = 'light' | 'dark' | 'auto'
+export type ColorSchema = 'light' | 'dark' | 'auto'
 
-export interface UseDarkOptions extends StorageOptions<ColorSchemes> {
+export interface UseDarkOptions extends StorageOptions<ColorSchema> {
   /**
    * CSS Selector for the target element applying to
    *
@@ -80,8 +80,8 @@ export function useDark(options: UseDarkOptions = {}) {
 
   const preferredDark = usePreferredDark({ window })
   const store = storageKey == null
-    ? ref<ColorSchemes>('auto')
-    : useStorage<ColorSchemes>(storageKey, 'auto', storage, { window, listenToStorageChanges })
+    ? ref<ColorSchema>('auto')
+    : useStorage<ColorSchema>(storageKey, 'auto', storage, { window, listenToStorageChanges })
 
   const isDark = computed<boolean>({
     get() {
