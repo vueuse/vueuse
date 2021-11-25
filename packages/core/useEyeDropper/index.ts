@@ -17,7 +17,7 @@ export interface EyeDropper {
   new(): EyeDropperPrototype
 }
 
-export interface UseEyeDropperOptions extends EyeDropperOpenOptions {
+export interface UseEyeDropperOptions {
   /**
    * Initial sRGBHex.
    *
@@ -37,17 +37,15 @@ type WindowEyeDropper = Window & typeof globalThis & {
  * @param initialValue string
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
-  const { initialValue = '', signal } = options
+  const { initialValue = '' } = options
   const isSupported = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
   const sRGBHex = ref(initialValue)
 
-  async function open() {
+  async function open(openOptions: EyeDropperOpenOptions = {}) {
     if (!isSupported)
       return
     const eyeDropper = new (window as WindowEyeDropper).EyeDropper()
-    const result = await eyeDropper.open({
-      signal,
-    })
+    const result = await eyeDropper.open(openOptions)
     sRGBHex.value = result.sRGBHex
     return result
   }
