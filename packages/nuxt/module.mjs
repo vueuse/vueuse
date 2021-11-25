@@ -33,6 +33,7 @@ export default function() {
     config.optimizeDeps.exclude.push(
       '@vueuse/core',
       '@vueuse/shared',
+      '@vueuse/nuxt',
       '@vueuse/integrations',
       '@vueuse/components',
       '@vueuse/motion',
@@ -44,7 +45,7 @@ export default function() {
   })
 
   nuxt.hook('autoImports:sources', (sources) => {
-    if (sources.find(i => i.from === '@vueuse/core/nuxt'))
+    if (sources.find(i => i.from === '@vueuse/core' || i.from === '@vueuse/nuxt'))
       return
     const indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
     sources.push({
@@ -54,6 +55,13 @@ export default function() {
         .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
         .map(i => i.name)
         .filter(i => i.length >= 4 && !disabled.includes(i)),
+    })
+    sources.push({
+      from: '@vueuse/nuxt',
+      names: indexes
+        .functions
+        .filter(i => i.package === 'nuxt' && !i.internal)
+        .map(i => i.name),
     })
   })
 }
