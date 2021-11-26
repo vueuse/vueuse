@@ -7,14 +7,11 @@ export interface EyeDropperOpenOptions {
   signal?: AbortSignal
 }
 
-export interface EyeDropperPrototype {
+export interface EyeDropper {
+  // eslint-disable-next-line @typescript-eslint/no-misused-new
+  new(): EyeDropper
   open: (options?: EyeDropperOpenOptions) => Promise<{ sRGBHex: string }>
   [Symbol.toStringTag]: 'EyeDropper'
-}
-
-export interface EyeDropper {
-  prototype: EyeDropperPrototype
-  new(): EyeDropperPrototype
 }
 
 export interface UseEyeDropperOptions {
@@ -24,10 +21,6 @@ export interface UseEyeDropperOptions {
    * @default ''
    */
   initialValue?: string
-}
-
-type WindowEyeDropper = Window & typeof globalThis & {
-  EyeDropper: EyeDropper
 }
 
 /**
@@ -41,10 +34,10 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const isSupported = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
   const sRGBHex = ref(initialValue)
 
-  async function open(openOptions: EyeDropperOpenOptions = {}) {
+  async function open(openOptions?: EyeDropperOpenOptions) {
     if (!isSupported)
       return
-    const eyeDropper = new (window as WindowEyeDropper).EyeDropper()
+    const eyeDropper: EyeDropper = new (window as any).EyeDropper()
     const result = await eyeDropper.open(openOptions)
     sRGBHex.value = result.sRGBHex
     return result
