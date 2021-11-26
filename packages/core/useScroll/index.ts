@@ -47,13 +47,6 @@ export interface UseScrollOptions {
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
-
-  /**
-   * Scroll direction tolerance in pixels.
-   *
-   * @default 100
-  */
-  directionTolerance?: number
 }
 
 /**
