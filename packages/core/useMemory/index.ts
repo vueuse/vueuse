@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { IntervalFnOptions, useIntervalFn } from '@vueuse/core'
+import { IntervalFnOptions, useIntervalFn } from '@vueuse/shared'
 
 /**
  * Performance.memory

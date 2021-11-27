@@ -49,6 +49,7 @@
   - [`tryOnScopeDispose`](https://vueuse.org/shared/tryOnScopeDispose/) — safe `onScopeDispose`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
+  - [`useMounted`](https://vueuse.org/core/useMounted/) — mounted state in ref
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`
   - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — create virtual lists with ease
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
@@ -98,6 +99,7 @@
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
   - [`useScroll`](https://vueuse.org/core/useScroll/) — reactive scroll position and state
+  - [`useScrollLock`](https://vueuse.org/core/useScrollLock/) — lock scrolling of the element
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSpeechSynthesis`](https://vueuse.org/core/useSpeechSynthesis/) — reactive [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
@@ -140,8 +142,10 @@
   - [`throttledRef`](https://vueuse.org/shared/throttledRef/) — throttle updates of a ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
+  - [`useAsyncQueue`](https://vueuse.org/core/useAsyncQueue/) — executes each asynchronous task sequentially and passed the current task result to the next task
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
   - [`useBase64`](https://vueuse.org/core/useBase64/) — reactive base64 transforming
+  - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value

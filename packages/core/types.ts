@@ -1,3 +1,5 @@
+export * from './_configurable'
+
 // common types
 
 export interface Position {

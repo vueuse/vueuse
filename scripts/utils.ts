@@ -353,6 +353,11 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
+    packageJSON.repository = {
+      type: 'git',
+      url: 'git+https://github.com/vueuse/vueuse.git',
+      directory: `packages/${name}`,
+    }
     packageJSON.main = './index.cjs'
     packageJSON.types = './index.d.ts'
     packageJSON.module = './index.mjs'
@@ -364,8 +369,10 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       '.': {
         import: './index.mjs',
         require: './index.cjs',
+        types: './index.d.ts',
       },
       './*': './*',
+      ...packageJSON.exports,
     }
 
     if (submodules) {
@@ -375,11 +382,13 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
           packageJSON.exports[`./${i.name}`] = {
             import: `./${i.name}.mjs`,
             require: `./${i.name}.cjs`,
+            types: `./${i.name}.d.ts`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
               import: `./${i.name}/component.mjs`,
               require: `./${i.name}/component.cjs`,
+              types: `./${i.name}/component.d.ts`,
             }
           }
         })
