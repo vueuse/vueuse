@@ -10,13 +10,18 @@ The Notification interface of the Notifications API is used to configure and dis
 
 ## Usage
 
-```ts
-const { notification, showNotification } = useNotification(
-  'Hello, world!',
+```js
+const {
+  isSupported,
+  notification,
+  showNotification,
+  closeNotification,
+} = useNotification(
+  'Hello, VueUse world!',
   {
     dir: 'auto',
     lang: 'en',
-    renotify: true
+    renotify: true,
   },
   {
     onClick: null,

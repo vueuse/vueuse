@@ -1,5 +1,7 @@
 import { onMounted, Ref, ref, onUnmounted } from 'vue-demi'
 
+import { useEventListener } from '../useEventListener'
+
 interface WebNotificationOptions {
   /**
    * The body string of the notification as specified in the constructor's
@@ -87,7 +89,7 @@ interface WebNotificationMethods {
   onShow: ((e: Event) => void) | null
 }
 
-// Default notification methods:
+// Default web notification methods:
 const defaultWebNotificationMethods = {
   onClick: null,
   onShow: null,
@@ -98,10 +100,10 @@ const defaultWebNotificationMethods = {
 /**
  * Reactive useWebNotification
  *
- * @see https://vueuse.org/useNotification
+ * @see https://vueuse.org/useWebNotification
  * @param title
- * @param options of type NotificationOptions
- * @param methods of type NotificationMethods
+ * @param options of type WebNotificationOptions
+ * @param methods of type WebNotificationMethods
  */
 export const useWebNotification = (
   title: string,
@@ -110,26 +112,60 @@ export const useWebNotification = (
 ) => {
   const notification: Ref<Notification | null> = ref(null)
 
+  // Is the web notifications API supported?:
+  const isSupported: boolean = 'Notification' in window
+
+  // Request permission to use web notifications:
   const requestPermission = async() => {
     if ('permission' in Notification && Notification.permission !== 'denied') await Notification.requestPermission()
   }
 
-  onMounted(requestPermission)
+  // Show notification method:
+  const showNotification = (): void => {
+    if (isSupported) {
+      notification.value = new Notification(title, options)
+      notification.value.onclick = methods.onClick
+      notification.value.onshow = methods.onShow
+      notification.value.onerror = methods.onError
+      notification.value.onclose = methods.onClose
+    }
+  }
 
+  // Close notification method:
+  const closeNotification = (): void => {
+    if (notification.value) notification.value.close()
+  }
+
+  // On mount, attempt to request permission:
+  onMounted(async() => {
+    if (isSupported) await requestPermission()
+  })
+
+  // Attempt cleanup of the notification:
   onUnmounted(() => {
+    if (notification.value) closeNotification()
     notification.value = null
   })
 
-  const showNotification = (): void => {
-    notification.value = new Notification(title, options)
-    notification.value.onclick = methods.onClick
-    notification.value.onshow = methods.onShow
-    notification.value.onerror = methods.onError
-    notification.value.onclose = methods.onClose
+  // Use close() to remove a notification that is no longer relevant to to
+  // the user (e.g.the user already read the notification on the webpage).
+  // Most modern browsers dismiss notifications automatically after a few
+  // moments(around four seconds).
+  if (isSupported) {
+    useEventListener(document, 'visibilitychange', (e: Event) => {
+      e.preventDefault()
+
+      if (document.visibilityState === 'visible') {
+        // The tab has become visible so clear the now-stale Notification:
+        closeNotification()
+      }
+    })
   }
 
   return {
+    isSupported,
     notification,
     showNotification,
+    closeNotification,
   }
 }
