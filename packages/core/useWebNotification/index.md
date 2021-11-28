@@ -14,8 +14,8 @@ The Web Notification interface of the Notifications API is used to configure and
 const {
   isSupported,
   notification,
-  showNotification,
-  closeNotification,
+  show,
+  close,
 } = useWebNotification(
   'Hello, VueUse world!',
   {
@@ -31,7 +31,7 @@ const {
   },
 )
 
-showNotification()
+show()
 
-closeNotification()
+close()
 ```

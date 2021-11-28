@@ -121,7 +121,7 @@ export const useWebNotification = (
   }
 
   // Show notification method:
-  const showNotification = (): void => {
+  const show = (): void => {
     if (isSupported) {
       notification.value = new Notification(title, options)
       notification.value.onclick = methods.onClick
@@ -132,7 +132,7 @@ export const useWebNotification = (
   }
 
   // Close notification method:
-  const closeNotification = (): void => {
+  const close = (): void => {
     if (notification.value) notification.value.close()
   }
 
@@ -143,7 +143,7 @@ export const useWebNotification = (
 
   // Attempt cleanup of the notification:
   onUnmounted(() => {
-    if (notification.value) closeNotification()
+    if (notification.value) close()
     notification.value = null
   })
 
@@ -157,7 +157,7 @@ export const useWebNotification = (
 
       if (document.visibilityState === 'visible') {
         // The tab has become visible so clear the now-stale Notification:
-        closeNotification()
+        close()
       }
     })
   }
@@ -165,7 +165,7 @@ export const useWebNotification = (
   return {
     isSupported,
     notification,
-    showNotification,
-    closeNotification,
+    show,
+    close,
   }
 }
