@@ -2,11 +2,11 @@
 category: Browser
 ---
 
-# useNotification
+# useWebNotification
 
 Reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
 
-The Notification interface of the Notifications API is used to configure and display desktop notifications to the user.
+The Web Notification interface of the Notifications API is used to configure and display desktop notifications to the user.
 
 ## Usage
 
@@ -16,7 +16,7 @@ const {
   notification,
   showNotification,
   closeNotification,
-} = useNotification(
+} = useWebNotification(
   'Hello, VueUse world!',
   {
     dir: 'auto',
@@ -32,4 +32,6 @@ const {
 )
 
 showNotification()
+
+closeNotification()
 ```
