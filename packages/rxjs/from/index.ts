@@ -6,7 +6,11 @@ import { Ref, isRef, watch } from 'vue-demi'
 export function from<T>(value: ObservableInput<T> | Ref<T>): Observable<T> {
   if (isRef<T>(value)) {
     return new Observable((subscriber) => {
-      watch(value, val => subscriber.next(val))
+      const watchStopHandle = watch(value, val => subscriber.next(val))
+
+      return () => {
+        watchStopHandle()
+      }
     })
   }
   else {
