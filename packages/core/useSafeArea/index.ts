@@ -30,7 +30,7 @@ export function useSafeArea() {
 
     update()
 
-    useEventListener('orientationchange', update)
+    useEventListener('resize', update)
   }
 
   function update() {
