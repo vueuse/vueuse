@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { isClient, useCssVar, useEventListener } from '@vueuse/core'
+import { isClient, useCssVar, useDebounceFn, useEventListener } from '@vueuse/core'
 
 const topVarName = '--vue-use-safe-area-top'
 const rightVarName = '--vue-use-safe-area-right'
@@ -30,7 +30,7 @@ export function useSafeArea() {
 
     update()
 
-    useEventListener('resize', update)
+    useEventListener('resize', useDebounceFn(update))
   }
 
   function update() {
