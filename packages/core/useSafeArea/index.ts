@@ -1,7 +1,10 @@
 import { ref } from 'vue-demi'
 import { isClient, useCssVar, useEventListener } from '@vueuse/core'
 
-const variablePrefix = '--vue-use-safe-area-'
+const topVarName = '--vue-use-safe-area-top'
+const rightVarName = '--vue-use-safe-area-right'
+const bottomVarName = '--vue-use-safe-area-bottom'
+const leftVarName = '--vue-use-safe-area-left'
 
 /**
  * screen safe area
@@ -15,10 +18,10 @@ export function useSafeArea() {
   const left = ref('')
 
   if (isClient) {
-    const topCssVar = useCssVar(`${variablePrefix}-top`)
-    const rightCssVar = useCssVar(`${variablePrefix}-right`)
-    const bottomCssVar = useCssVar(`${variablePrefix}-bottom`)
-    const leftCssVar = useCssVar(`${variablePrefix}-left`)
+    const topCssVar = useCssVar(topVarName)
+    const rightCssVar = useCssVar(rightVarName)
+    const bottomCssVar = useCssVar(bottomVarName)
+    const leftCssVar = useCssVar(leftVarName)
 
     topCssVar.value = 'env(safe-area-inset-top, 0px)'
     rightCssVar.value = 'env(safe-area-inset-right, 0px)'
@@ -31,10 +34,10 @@ export function useSafeArea() {
   }
 
   function update() {
-    top.value = getValue('top')
-    right.value = getValue('right')
-    bottom.value = getValue('bottom')
-    left.value = getValue('left')
+    top.value = getValue(topVarName)
+    right.value = getValue(rightVarName)
+    bottom.value = getValue(bottomVarName)
+    left.value = getValue(leftVarName)
   }
 
   return {
@@ -46,6 +49,8 @@ export function useSafeArea() {
   }
 }
 
-function getValue(position: 'top' | 'right' | 'bottom' | 'left') {
-  return getComputedStyle(document.documentElement).getPropertyValue(`${variablePrefix}-${position}`)
+type VarName = '--vue-use-safe-area-top' | '--vue-use-safe-area-right' | '--vue-use-safe-area-bottom' | '--vue-use-safe-area-left'
+
+function getValue(position: VarName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(position)
 }
