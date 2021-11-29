@@ -4,7 +4,9 @@ category: Browser
 
 # useSafeArea
 
-screen safe area
+Reactive `env(safe-area-inset-*)`
+
+![image](https://webkit.org/wp-content/uploads/safe-areas-1.png)
 
 ## Usage
 

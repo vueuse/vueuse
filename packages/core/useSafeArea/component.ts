@@ -20,6 +20,10 @@ export const UseSafeArea = defineComponent({
             paddingRight: props.right ? right.value : '',
             paddingBottom: props.bottom ? bottom.value : '',
             paddingLeft: props.left ? left.value : '',
+            boxSizing: 'border-box',
+            maxHeight: '100vh',
+            maxWidth: '100vw',
+            overflow: 'auto',
           },
         }, slots.default())
       }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { UseSafeArea } from './component'
 import { useSafeArea } from '.'
 
 const { top, right, bottom, left } = useSafeArea()
@@ -23,11 +22,5 @@ const { top, right, bottom, left } = useSafeArea()
       left:
     </div>
     <div>{{ left }}</div>
-    <div opacity="50">
-      component:
-    </div>
-    <UseSafeArea top right bottom left>
-      content
-    </UseSafeArea>
   </div>
 </template>
