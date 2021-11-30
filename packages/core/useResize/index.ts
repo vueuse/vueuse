@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 import { watch, ref, reactive, unref, nextTick, computed } from 'vue-demi'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { createEventHook, Fn, tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
@@ -20,6 +21,8 @@ export interface UseResizeOptions extends ConfigurableWindow {
   edges?: MaybeRef<Edges[]>
 }
 
+const container = ref<MaybeElementRef[]>([])
+
 export function useResize(element: MaybeElementRef, options: UseResizeOptions = {}) {
   const {
     window = defaultWindow,
@@ -32,9 +35,9 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     edges = ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'left', 'right', 'top', 'bottom'],
   } = options
   let {
-    minWidth = 0,
+    minWidth = 1,
     maxWidth = Infinity,
-    minHeight = 0,
+    minHeight = 1,
     maxHeight = Infinity,
   } = options
 
@@ -54,7 +57,10 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     startY: number
     newWidth: number
     newHeight: number
-    setSize: typeof setSize
+    minHeight: number
+    minWidth: number
+    maxHeight: number
+    maxWidth: number
   }>()
 
   const isOutside = ref(false)
@@ -62,6 +68,13 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   const isResizing = ref(false)
   const isPathIncludesTarget = ref(false)
   const direction = ref('')
+  const style = ref('')
+  const leftStart = ref(0)
+  const topStart = ref(0)
+  const leftStartMax = ref(0)
+  const topStartMax = ref(0)
+  const leftStartMin = ref(0)
+  const topStartMin = ref(0)
 
   const pointer = reactive({ startX: 0, startY: 0, currentX: 0, currentY: 0 })
 
@@ -78,7 +91,6 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       useEventListener(window, 'lostpointercapture', onPointerUp),
       useEventListener(window, 'pointermove', onPointerMove),
       watch(pointer, handlePointer),
-      useElementSize(),
     )
     isActive.value = true
   }
@@ -86,8 +98,15 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   const stop = () => {
     cleanup.forEach(fn => fn())
     cleanup = []
+    container.value = []
     isActive.value = false
+    isResizing.value = false
+    window!.document.body.style.setProperty('cursor', '')
   }
+  const targetIsVisible = ref(false)
+  useResizeObserver(target, () => {
+    targetIsVisible.value = !!target.value!.getBoundingClientRect().width
+  })
 
   watch(target, (value) => {
     if (value) {
@@ -97,6 +116,18 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       if (minHeight === 'initial') minHeight = height
       if (maxWidth === 'initial') maxWidth = width
       if (maxHeight === 'initial') maxHeight = height
+
+      // dont set widthheight if element is not visible
+      // set width height when element comes visible
+      if (!width)
+        return
+
+      widthRef.value = width
+      heightRef.value = height
+      style.value = `width:${clamp(width, unref(minWidth as number), unref(maxWidth as number))}px;height:${clamp(height, unref(minHeight as number), unref(maxHeight as number))}px;`
+
+      if (!unref(disableResize))
+        target.value!.setAttribute('style', style.value)
     }
     else {
       stop()
@@ -104,11 +135,19 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   })
 
   const setCursorAndDirection = (setCursor = '', setDirection = '', setTouchAction = 'none') => {
-    direction.value = setDirection
-    isOverEdge.value = !!setDirection
-    !disableCursor && window!.document.body.style.setProperty('cursor', setCursor)
-    window!.document.body.style.setProperty('touch-action', setTouchAction)
-    window!.document.body.style.setProperty('user-select', setTouchAction)
+    if (setDirection && !container.value.includes(target.value)) {
+      container.value.push(target.value)
+    }
+    if (container.value[0] === target.value) {
+      direction.value = setDirection
+      isOverEdge.value = !!setDirection
+      !disableCursor && window!.document.body.style.setProperty('cursor', setCursor)
+      window!.document.body.style.setProperty('touch-action', setTouchAction)
+      window!.document.body.style.setProperty('user-select', setTouchAction)
+    }
+    if (!setDirection && container.value.includes(target.value)) {
+      container.value.splice(container.value.indexOf(target.value), 1)
+    }
   }
 
   async function onPointerUp(evt: PointerEvent) {
@@ -126,6 +165,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     evt.preventDefault()
   }
 
+  let scale = 1
   function onPointerMove(evt: PointerEvent) {
     isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value!)
 
@@ -138,23 +178,39 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     if (!isOverEdge.value || !isResizing.value)
       return
 
-    let newWidth = width
-    let newHeight = height
+    let newWidth = width / scale
+    let newHeight = height / scale
 
     const xDiff = Math.abs(evt.x - pointer.startX) * unref(xMultiplier)
     const yDiff = Math.abs(evt.y - pointer.startY) * unref(yMultiplier)
 
     if (direction.value.includes('bottom'))
-      newHeight += (evt.y > pointer.startY ? yDiff : -yDiff)
+      newHeight += (evt.y > pointer.startY ? Math.abs(yDiff) : -Math.abs(yDiff))
 
     if (direction.value.includes('top'))
-      newHeight += (evt.y > pointer.startY ? -yDiff : yDiff)
+      newHeight += (evt.y > pointer.startY ? -Math.abs(yDiff) : Math.abs(yDiff))
 
     if (direction.value.includes('left'))
-      newWidth += (evt.x > pointer.startX ? -xDiff : xDiff)
+      newWidth += (evt.x > pointer.startX ? -Math.abs(xDiff) : Math.abs(xDiff))
 
     if (direction.value.includes('right'))
-      newWidth += (evt.x > pointer.startX ? xDiff : -xDiff)
+      newWidth += (evt.x > pointer.startX ? Math.abs(xDiff) : -Math.abs(xDiff))
+
+    const { left, top } = target.value!.getBoundingClientRect()
+
+    widthRef.value = clamp(newWidth, unref(minWidth as number), unref(maxWidth as number))
+    heightRef.value = clamp(newHeight, unref(minHeight as number), unref(maxHeight as number))
+
+    style.value = `${getComputedStyle(target.value!).position === 'fixed'
+      ? `transform:translate(${direction.value.includes('left')
+        ? clamp(leftStart.value + xDiff, leftStartMin.value, leftStartMax.value)
+        : left}px,${direction.value.includes('top')
+        ? clamp(topStart.value + yDiff, topStartMin.value, topStartMax.value)
+        : top}px);`
+      : ''}width:${clamp(newWidth, unref(minWidth as number), unref(maxWidth as number))}px;height:${clamp(newHeight, unref(minHeight as number), unref(maxHeight as number))}px;`
+
+    if (!unref(disableResize))
+      target.value!.setAttribute('style', style.value)
 
     onResizeMove.trigger({
       pointer: evt,
@@ -164,12 +220,11 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       startY: pointer.startY,
       newWidth: clamp(newWidth, unref(minWidth as number), unref(maxWidth as number)),
       newHeight: clamp(newHeight, unref(minHeight as number), unref(maxHeight as number)),
-      setSize,
+      minHeight: Number(minHeight),
+      minWidth: Number(minWidth),
+      maxHeight: Number(maxHeight),
+      maxWidth: Number(maxWidth),
     })
-
-    if (!unref(disableResize))
-      setSize(newWidth, newHeight)
-
     evt.preventDefault()
   }
 
@@ -181,7 +236,14 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       await nextTick()
     }
     if (isOverEdge.value || (isOverEdge.value && evt.pointerType === 'touch')) {
+      scale = Number((+target.value!.style.getPropertyValue('transform').replace('scale(', '').replace(')', '') || 1).toFixed(2));
       ({ width, height } = target.value!.getBoundingClientRect())
+      leftStart.value = target.value!.getBoundingClientRect().left
+      topStart.value = target.value!.getBoundingClientRect().top
+      leftStartMax.value = (target.value!.getBoundingClientRect().width - Number(unref(minWidth))) + target.value!.getBoundingClientRect().left
+      topStartMax.value = (target.value!.getBoundingClientRect().height - Number(unref(minHeight))) + target.value!.getBoundingClientRect().top
+      leftStartMin.value = target.value!.getBoundingClientRect().left - (Number(unref(maxWidth)) - target.value!.getBoundingClientRect().width)
+      topStartMin.value = target.value!.getBoundingClientRect().top - (Number(unref(maxHeight)) - target.value!.getBoundingClientRect().height)
       isResizing.value = true
       pointer.startY = evt.y
       pointer.startX = evt.x
@@ -302,18 +364,6 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('', '', '')
   }
 
-  function setSize(width: number, height: number) {
-    target.value!.style.width = `${clamp(width, unref(minWidth) as number, unref(maxWidth) as number)}px`
-    target.value!.style.height = `${clamp(height, unref(minHeight) as number, unref(maxHeight) as number)}px`
-  }
-
-  function useElementSize() {
-    return useResizeObserver(target, () => {
-      widthRef.value = target.value!.getBoundingClientRect().width
-      heightRef.value = target.value!.getBoundingClientRect().height
-    }).stop
-  }
-
   tryOnScopeDispose(stop)
 
   return {
@@ -328,6 +378,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     onResizeStart: onResizeStart.on,
     onResizeMove: onResizeMove.on,
     onResizeEnd: onResizeEnd.on,
+    style,
   }
 }
 
