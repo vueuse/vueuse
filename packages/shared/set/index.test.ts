@@ -14,7 +14,7 @@ describe('set', () => {
 
   it('set reactive', () => {
     let changed = 0
-    const source = reactive<{foo: string; bar?: number}>({ foo: 'bar' })
+    const source = reactive<{ foo: string; bar?: number }>({ foo: 'bar' })
 
     watch(source, () => changed += 1, { deep: true, flush: 'sync' })
 
@@ -28,6 +28,25 @@ describe('set', () => {
     set(source, 'bar', 42)
 
     expect(source.bar).toBe(42)
+    expect(changed).toBe(2)
+  })
+
+  it('set ref object', () => {
+    let changed = 0
+    const source = ref<{ foo: string; bar?: number }>({ foo: 'bar' })
+
+    watch(source, () => changed += 1, { deep: true, flush: 'sync' })
+
+    expect(source.value.foo).toBe('bar')
+
+    set(source, 'foo', 'bar2')
+
+    expect(source.value.foo).toBe('bar2')
+    expect(changed).toBe(1)
+
+    set(source, 'bar', 42)
+
+    expect(source.value.bar).toBe(42)
     expect(changed).toBe(2)
   })
 })
