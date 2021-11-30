@@ -1,13 +1,13 @@
 import { ref } from 'vue-demi'
 import { isClient, useCssVar, useDebounceFn, useEventListener } from '@vueuse/core'
 
-const topVarName = '--vue-use-safe-area-top'
-const rightVarName = '--vue-use-safe-area-right'
-const bottomVarName = '--vue-use-safe-area-bottom'
-const leftVarName = '--vue-use-safe-area-left'
+const topVarName = '--vueuse-safe-area-top'
+const rightVarName = '--vueuse-safe-area-right'
+const bottomVarName = '--vueuse-safe-area-bottom'
+const leftVarName = '--vueuse-safe-area-left'
 
 /**
- * screen safe area
+ * Reactive `env(safe-area-inset-*)`
  *
  * @see https://vueuse.org/useSafeArea
  */
@@ -49,7 +49,7 @@ export function useSafeArea() {
   }
 }
 
-type VarName = '--vue-use-safe-area-top' | '--vue-use-safe-area-right' | '--vue-use-safe-area-bottom' | '--vue-use-safe-area-left'
+type VarName = '--vueuse-safe-area-top' | '--vueuse-safe-area-right' | '--vueuse-safe-area-bottom' | '--vueuse-safe-area-left'
 
 function getValue(position: VarName) {
   return getComputedStyle(document.documentElement).getPropertyValue(position)
