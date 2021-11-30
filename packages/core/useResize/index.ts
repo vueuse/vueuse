@@ -124,7 +124,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
       widthRef.value = width
       heightRef.value = height
-      style.value = `width:${clamp(width, unref(minWidth as number), unref(maxWidth as number))}px;height:${clamp(height, unref(minHeight as number), unref(maxHeight as number))}px;`
+      style.value = `width:${clamp(width, unref(Number(minWidth)), unref(Number(maxWidth)))}px;height:${clamp(height, unref(Number(minHeight)), unref(Number(maxHeight)))}px;`
 
       if (!unref(disableResize))
         target.value!.setAttribute('style', style.value)
@@ -198,8 +198,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
     const { left, top } = target.value!.getBoundingClientRect()
 
-    widthRef.value = clamp(newWidth, unref(minWidth as number), unref(maxWidth as number))
-    heightRef.value = clamp(newHeight, unref(minHeight as number), unref(maxHeight as number))
+    widthRef.value = clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth)))
+    heightRef.value = clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight)))
 
     style.value = `${getComputedStyle(target.value!).position === 'fixed'
       ? `transform:translate(${direction.value.includes('left')
@@ -207,7 +207,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
         : left}px,${direction.value.includes('top')
         ? clamp(topStart.value + yDiff, topStartMin.value, topStartMax.value)
         : top}px);`
-      : ''}width:${clamp(newWidth, unref(minWidth as number), unref(maxWidth as number))}px;height:${clamp(newHeight, unref(minHeight as number), unref(maxHeight as number))}px;`
+      : ''}width:${clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth)))}px;height:${clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight)))}px;`
 
     if (!unref(disableResize))
       target.value!.setAttribute('style', style.value)
@@ -218,8 +218,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       yDiff,
       startX: pointer.startX,
       startY: pointer.startY,
-      newWidth: clamp(newWidth, unref(minWidth as number), unref(maxWidth as number)),
-      newHeight: clamp(newHeight, unref(minHeight as number), unref(maxHeight as number)),
+      newWidth: clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth))),
+      newHeight: clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight))),
       minHeight: Number(minHeight),
       minWidth: Number(minWidth),
       maxHeight: Number(maxHeight),
