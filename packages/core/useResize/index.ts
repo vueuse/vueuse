@@ -1,7 +1,7 @@
 /* eslint-disable curly */
 import { watch, ref, reactive, unref, nextTick, computed } from 'vue-demi'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
-import { createEventHook, Fn, tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
+import { createEventHook, Fn, tryOnScopeDispose, MaybeRef, clamp } from '@vueuse/shared'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -380,8 +380,4 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     onResizeEnd: onResizeEnd.on,
     style,
   }
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
 }
