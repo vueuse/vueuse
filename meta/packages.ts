@@ -46,6 +46,10 @@ export const packages: PackageManifest[] = [
       'nprogress',
       'jwt-decode',
       'focus-trap',
+      'drauu',
+      '@vueuse/core',
+      '@vueuse/shared',
+      'fuse.js',
     ],
     globals: {
       'axios': 'axios',
@@ -54,6 +58,8 @@ export const packages: PackageManifest[] = [
       'nprogress': 'nprogress',
       'jwt-decode': 'jwt_decode',
       'focus-trap': 'focusTrap',
+      'drauu': 'Drauu',
+      'fuse.js': 'Fuse',
     },
   },
   {
@@ -97,5 +103,3 @@ export const packages: PackageManifest[] = [
     iife: false,
   },
 ]
-
-export const activePackages = packages.filter(i => !i.deprecated)

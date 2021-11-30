@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
@@ -14,19 +15,19 @@ export interface WindowSizeOptions extends ConfigurableWindow {
  * @param options
  */
 export function useWindowSize({ window = defaultWindow, initialWidth = Infinity, initialHeight = Infinity }: WindowSizeOptions = {}) {
-  if (!window) {
-    return {
-      width: ref(initialWidth),
-      height: ref(initialHeight),
+  const width = ref(initialWidth)
+  const height = ref(initialHeight)
+
+  const update = () => {
+    if (window) {
+      width.value = window.innerWidth
+      height.value = window.innerHeight
     }
   }
-  const width = ref(window.innerWidth)
-  const height = ref(window.innerHeight)
 
-  useEventListener('resize', () => {
-    width.value = window.innerWidth
-    height.value = window.innerHeight
-  }, { passive: true })
+  update()
+  tryOnMounted(update)
+  useEventListener('resize', update, { passive: true })
 
   return { width, height }
 }

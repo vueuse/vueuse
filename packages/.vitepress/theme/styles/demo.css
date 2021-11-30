@@ -71,6 +71,12 @@
     --c-brand-active: #d67e36;
   }
 
+  button.red {
+    --c-brand: #f56c6c;
+    --c-brand-dark: #e41c1c;
+    --c-brand-active: #e94c4c;
+  }
+
   button:hover {
     background-color: var(--c-brand-active);
   }
@@ -93,29 +99,40 @@
     border-top: 0;
   }
 
-  input[type='text'] {
+
+  textarea {
     display: block;
     min-width: 20rem;
-    font-size: 1.05rem;
-    padding: 0.5em 1em 0.4em 1em;
-    border: 1px solid var(--c-divider-light);
-    border-radius: 4px;
-    margin: 1rem 0;
-    outline: none;
-    background: var(--c-bg);
-    color: var(--c-text);
-  }
-  input[type='number'] {
-    display: block;
-    min-width: 15rem;
-    font-size: 1.05rem;
-    padding: 0.5em 1em 0.4em 1em;
+    font-size: 1em;
+    padding: 0.3rem 0.5rem;
     border: 1px solid var(--c-divider-light);
     border-radius: 4px;
     margin: 0.5rem 0;
     outline: none;
     background: var(--c-bg);
     color: var(--c-text);
+  }
+
+  textarea[readonly] {
+    background: var(--c-bg-light);
+  }
+
+  input[type='text'], input[type='search'], input[type='number'] {
+    display: block;
+    font-size: 1.05rem;
+    padding: 0.5em 1em 0.4em 1em;
+    border: 1px solid var(--c-divider-light);
+    border-radius: 4px;
+    outline: none;
+    background: var(--c-bg);
+    color: var(--c-text);
+    min-width: 20rem;
+    margin: 0.5rem 0;
+  }
+
+  input[type='number'] {
+    min-width: 15rem;
+    outline: none;
   }
 
   input:focus {

@@ -1,6 +1,6 @@
 import { computed, ComputedRef } from 'vue-demi'
 import { useTimeoutFn, TimeoutFnOptions } from '../useTimeoutFn'
-import { noop, Stopable } from '../utils'
+import { noop, Stoppable } from '../utils'
 
 export interface TimeoutOptions<Controls extends boolean> extends TimeoutFnOptions {
   /**
@@ -19,7 +19,7 @@ export interface TimeoutOptions<Controls extends boolean> extends TimeoutFnOptio
  * @param immediate
  */
 export function useTimeout(interval?: number, options?: TimeoutOptions<false>): ComputedRef<boolean>
-export function useTimeout(interval: number, options: TimeoutOptions<true>): { ready: ComputedRef<boolean> } & Stopable
+export function useTimeout(interval: number, options: TimeoutOptions<true>): { ready: ComputedRef<boolean> } & Stoppable
 export function useTimeout(interval = 1000, options: TimeoutOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,

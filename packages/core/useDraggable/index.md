@@ -11,7 +11,7 @@ Make elements draggable.
 ```html
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useDraggable } from '.'
+import { useDraggable } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
 

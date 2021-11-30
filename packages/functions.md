@@ -24,11 +24,13 @@
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
+  - [`useEyeDropper`](https://vueuse.org/core/useEyeDropper/) — reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
   - [`useFavicon`](https://vueuse.org/core/useFavicon/) — reactive favicon
   - [`useFetch`](https://vueuse.org/core/useFetch/) — reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests
   - [`useFullscreen`](https://vueuse.org/core/useFullscreen/) — reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API)
   - [`useMediaControls`](https://vueuse.org/core/useMediaControls/) — reactive media controls for both `audio` and `video` elements
   - [`useMediaQuery`](https://vueuse.org/core/useMediaQuery/) — reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
+  - [`useMemory`](https://vueuse.org/core/useMemory/) — reactive Memory Info
   - [`usePermission`](https://vueuse.org/core/usePermission/) — reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
   - [`usePreferredColorScheme`](https://vueuse.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.org/core/usePreferredDark/) — reactive dark theme preference
@@ -47,8 +49,9 @@
   - [`tryOnScopeDispose`](https://vueuse.org/shared/tryOnScopeDispose/) — safe `onScopeDispose`
   - [`tryOnUnmounted`](https://vueuse.org/shared/tryOnUnmounted/) — safe `onUnmounted`
   - [`unrefElement`](https://vueuse.org/core/unrefElement/) — unref for dom element
+  - [`useMounted`](https://vueuse.org/core/useMounted/) — mounted state in ref
   - [`useTemplateRefsList`](https://vueuse.org/core/useTemplateRefsList/) — shorthand for binding refs to template elements and components inside `v-for`
-  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — composable virtual list
+  - [`useVirtualList`](https://vueuse.org/core/useVirtualList/) — create virtual lists with ease
   - [`useVModel`](https://vueuse.org/core/useVModel/) — shorthand for v-model binding
   - [`useVModels`](https://vueuse.org/core/useVModels/) — shorthand for props v-model binding
 
@@ -70,11 +73,15 @@
   - [`useDeviceOrientation`](https://vueuse.org/core/useDeviceOrientation/) — reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
   - [`useDevicePixelRatio`](https://vueuse.org/core/useDevicePixelRatio/) — reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)
   - [`useDevicesList`](https://vueuse.org/core/useDevicesList/) — reactive [enumerateDevices](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices) listing avaliable input/output devices
+  - [`useDisplayMedia`](https://vueuse.org/core/useDisplayMedia/) — reactive [`mediaDevices.getDisplayMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia) streaming
   - [`useDocumentVisibility`](https://vueuse.org/core/useDocumentVisibility/) — reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
   - [`useDraggable`](https://vueuse.org/core/useDraggable/) — make elements draggable
   - [`useElementBounding`](https://vueuse.org/core/useElementBounding/) — reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
+  - [`useElementHover`](https://vueuse.org/core/useElementHover/) — reactive element's hover state
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
+  - [`useFocus`](https://vueuse.org/core/useFocus/) — reactive utility to track or set the focus state of a DOM element
+  - [`useFps`](https://vueuse.org/core/useFps/) — reactive FPS (frames per second)
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
   - [`useIntersectionObserver`](https://vueuse.org/core/useIntersectionObserver/) — detects that a target element's visibility
@@ -92,7 +99,9 @@
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
   - [`useResizeObserver`](https://vueuse.org/core/useResizeObserver/) — reports changes to the dimensions of an Element's content or the border-box
   - [`useScroll`](https://vueuse.org/core/useScroll/) — reactive scroll position and state
+  - [`useScrollLock`](https://vueuse.org/core/useScrollLock/) — lock scrolling of the element
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
+  - [`useSpeechSynthesis`](https://vueuse.org/core/useSpeechSynthesis/) — reactive [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
   - [`useWindowFocus`](https://vueuse.org/core/useWindowFocus/) — reactively track window focus with `window.onfocus` and `window.onblur` events
@@ -114,20 +123,30 @@
   - [`controlledComputed`](https://vueuse.org/shared/controlledComputed/) — explicitly define the deps of computed
   - [`controlledRef`](https://vueuse.org/shared/controlledRef/) — fine-grained controls over ref and its reactivity
   - [`createEventHook`](https://vueuse.org/shared/createEventHook/) — utility for creating event hooks
+  - [`createReactiveFn`](https://vueuse.org/shared/createReactiveFn/) — converts plain functions into reactive functions
+  - [`createUnrefFn`](https://vueuse.org/core/createUnrefFn/) — make a plain function accepting ref and raw values as arguments
+  - [`debouncedRef`](https://vueuse.org/shared/debouncedRef/) — debounce updates of a ref
   - [`eagerComputed`](https://vueuse.org/shared/eagerComputed/) — eager computed without lazy evaluation
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
+  - [`isDefined`](https://vueuse.org/shared/isDefined/) — non-nullish checking type guard for Ref
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
   - [`not`](https://vueuse.org/shared/not/) — `NOT` condition for ref
   - [`or`](https://vueuse.org/shared/or/) — `OR` conditions for refs
   - [`reactify`](https://vueuse.org/shared/reactify/) — converts plain functions into reactive functions
   - [`reactifyObject`](https://vueuse.org/shared/reactifyObject/) — apply `reactify` to an object
   - [`reactivePick`](https://vueuse.org/shared/reactivePick/) — reactively pick fields from a reactive object
+  - [`refDefault`](https://vueuse.org/shared/refDefault/) — apply default value to a ref
   - [`set`](https://vueuse.org/shared/set/) — shorthand for `ref.value = x`
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
+  - [`throttledRef`](https://vueuse.org/shared/throttledRef/) — throttle updates of a ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
   - [`toRefs`](https://vueuse.org/shared/toRefs/) — extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object
+  - [`useAsyncQueue`](https://vueuse.org/core/useAsyncQueue/) — executes each asynchronous task sequentially and passed the current task result to the next task
   - [`useAsyncState`](https://vueuse.org/core/useAsyncState/) — reactive async state
+  - [`useBase64`](https://vueuse.org/core/useBase64/) — reactive base64 transforming
+  - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
+  - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
@@ -148,6 +167,7 @@
   - [`throttledWatch`](https://vueuse.org/shared/throttledWatch/) — throttled watch
   - [`until`](https://vueuse.org/shared/until/) — promised one-time watch for changes
   - [`watchAtMost`](https://vueuse.org/shared/watchAtMost/) — `watch` with the number of times triggered
+  - [`watchOnce`](https://vueuse.org/shared/watchOnce/) — `watch` that only triggers once
   - [`watchWithFilter`](https://vueuse.org/shared/watchWithFilter/) — `watch` with additional EventFilter control
   - [`whenever`](https://vueuse.org/shared/whenever/) — shorthand for watching value to be truthy
 

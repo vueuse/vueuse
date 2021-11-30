@@ -22,18 +22,30 @@ jobs:
         node-version: [14, 16]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install
-      run: yarn install --frozen-lockfile
-      env:
-        ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
-    - name: Lint
-      run: yarn lint
-    - name: Test Vue 3
-      run: yarn run test:3
-    - name: Test Vue 2
-      run: yarn run test:2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: TypeCheck
+        run: pnpm run update:full
+
+      - name: Test Vue 3
+        run: pnpm run test:3
+
+      - name: Test Vue 2
+        run: pnpm run test:2

@@ -18,6 +18,13 @@ export interface TimestampOptions<Controls extends boolean> {
   offset?: number
 
   /**
+   * Update the timestamp immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
    * Update interval, or use requestAnimationFrame
    *
    * @default requestAnimationFrame
@@ -37,6 +44,7 @@ export function useTimestamp(options: TimestampOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     offset = 0,
+    immediate = true,
     interval = 'requestAnimationFrame',
   } = options
 
@@ -45,8 +53,8 @@ export function useTimestamp(options: TimestampOptions<boolean> = {}) {
   const update = () => ts.value = timestamp() + offset
 
   const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(update, { immediate: true })
-    : useIntervalFn(update, interval, { immediate: true })
+    ? useRafFn(update, { immediate })
+    : useIntervalFn(update, interval, { immediate })
 
   if (exposeControls) {
     return {

@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
 <a href="https://vueuse.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-148%20functions-13708a">
+<img alt="Function Count" src="https://img.shields.io/badge/-169%20functions-13708a">
 <br>
 <a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
@@ -79,6 +79,10 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 
 It will be exposed to global as `window.VueUse`
 
+## 🪴 Project Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/a406ba7461a6a087dbdb14d4395046c948d44c51.svg "Repobeats analytics image")
+
 ## 🧱 Contribute
 
 See the [**Contributing Guide**](https://vueuse.org/contributing)
@@ -89,7 +93,6 @@ This project is heavily inspired by the following awesome projects.
 
 - [streamich/react-use](https://github.com/streamich/react-use)
 - [u3u/vue-hooks](https://github.com/u3u/vue-hooks)
-- [shuidi-fed/vue-composition-toolkit](https://github.com/shuidi-fed/vue-composition-toolkit)
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
 - [kripod/react-hooks](https://github.com/kripod/react-hooks)
 

@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue-demi'
+import { defineComponent, h, toRefs } from 'vue-demi'
 import { useVirtualList, UseVirtualListOptions } from '@vueuse/core'
 
 export interface UseVirtualListProps {
@@ -30,10 +30,10 @@ export const UseVirtualList = defineComponent<UseVirtualListProps>({
     'height',
   ] as unknown as undefined,
   setup(props, { slots }) {
-    const { list, containerProps, wrapperProps } = useVirtualList(
-      props.list,
-      props.options,
-    )
+    const { list: listRef } = toRefs(props)
+
+    const { list, containerProps, wrapperProps } = useVirtualList(listRef, props.options)
+
     containerProps.style.height = props.height || '300px'
     return () => h('div',
       { ...containerProps },

@@ -1,43 +1,64 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue-demi'
+import { ref, Ref, computed } from 'vue-demi'
 import { useVirtualList } from '.'
 
-const index: Ref = ref(0)
+const index: Ref = ref()
+const search = ref('')
+
+const allItems = Array.from(Array(99999).keys())
+  .map(i => ({
+    height: i % 2 === 0 ? 42 : 84,
+    size: i % 2 === 0 ? 'small' : 'large',
+  }))
+
+const filteredItems = computed(() => {
+  return allItems.filter(i => i.size.startsWith(search.value.toLowerCase()))
+})
+
 const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
-  Array.from(Array(99999).keys()),
+  filteredItems,
   {
-    itemHeight: i => (i % 2 === 0 ? 42 + 8 : 84 + 8),
+    itemHeight: i => (filteredItems.value[i].height + 8),
     overscan: 10,
   },
 )
 const handleScrollTo = () => {
   scrollTo(index.value)
 }
+
 </script>
 
 <template>
   <div>
-    <div class="mb-4 flex gap-2">
-      <input v-model="index" placeholder="Index" type="number" />
+    <div>
+      <div class="inline-block mr-4">
+        Jump to index
+        <input v-model="index" placeholder="Index" type="number" />
+      </div>
       <button type="button" @click="handleScrollTo">
         Go
       </button>
     </div>
+    <div>
+      <div class="inline-block mr-4">
+        Filter list by size
+        <input v-model="search" placeholder="e.g. small, medium, large" type="search" />
+      </div>
+    </div>
     <div v-bind="containerProps" class="h-300px overflow-auto p-2 bg-gray-500/5 rounded">
       <div v-bind="wrapperProps">
         <div
-          v-for="ele in list"
-          :key="ele.index"
+          v-for="{ index, data } in list"
+          :key="index"
           class="border border-$c-divider mb-2"
           :style="{
-            height: ele.index % 2 === 0 ? '42px' : '84px',
+            height: `${data.height}px`,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }"
         >
-          Row {{ ele.data }}
-          <span opacity="70" m="l-1">({{ ele.index % 2 === 0 ? 'small' : 'large' }})</span>
+          Row {{ index }} <span opacity="70" m="l-1">({{ data.size }})</span>
         </div>
       </div>
     </div>

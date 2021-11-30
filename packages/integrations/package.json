@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "6.4.0",
+  "version": "7.1.2",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -10,43 +10,62 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/integrations"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
     "./*": "./*",
     "./useAxios": {
       "import": "./useAxios.mjs",
-      "require": "./useAxios.cjs"
+      "require": "./useAxios.cjs",
+      "types": "./useAxios.d.ts"
     },
     "./useCookies": {
       "import": "./useCookies.mjs",
-      "require": "./useCookies.cjs"
+      "require": "./useCookies.cjs",
+      "types": "./useCookies.d.ts"
     },
     "./useDrauu": {
       "import": "./useDrauu.mjs",
-      "require": "./useDrauu.cjs"
+      "require": "./useDrauu.cjs",
+      "types": "./useDrauu.d.ts"
     },
     "./useFocusTrap": {
       "import": "./useFocusTrap.mjs",
-      "require": "./useFocusTrap.cjs"
+      "require": "./useFocusTrap.cjs",
+      "types": "./useFocusTrap.d.ts"
+    },
+    "./useFocusTrap/component": {
+      "import": "./useFocusTrap/component.mjs",
+      "require": "./useFocusTrap/component.cjs",
+      "types": "./useFocusTrap/component.d.ts"
+    },
+    "./useFuse": {
+      "import": "./useFuse.mjs",
+      "require": "./useFuse.cjs",
+      "types": "./useFuse.d.ts"
     },
     "./useJwt": {
       "import": "./useJwt.mjs",
-      "require": "./useJwt.cjs"
+      "require": "./useJwt.cjs",
+      "types": "./useJwt.d.ts"
     },
     "./useNProgress": {
       "import": "./useNProgress.mjs",
-      "require": "./useNProgress.cjs"
+      "require": "./useNProgress.cjs",
+      "types": "./useNProgress.d.ts"
     },
     "./useQRCode": {
       "import": "./useQRCode.mjs",
-      "require": "./useQRCode.cjs"
+      "require": "./useQRCode.cjs",
+      "types": "./useQRCode.d.ts"
     }
   },
   "main": "./index.cjs",
@@ -60,13 +79,15 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "dependencies": {
-    "@vueuse/shared": "6.4.0",
+    "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.21.4",
-    "drauu": "^0.1.0",
-    "focus-trap": "^6.6.1",
+    "axios": "^0.23.0",
+    "drauu": "^0.2.1",
+    "focus-trap": "^6.7.1",
+    "fuse.js": "^6.4.6",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.4",

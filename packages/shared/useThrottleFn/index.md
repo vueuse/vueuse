@@ -17,7 +17,7 @@ const throttledFn = useThrottleFn(() => {
   // do something, it will be called at most 1 time per second
 }, 1000)
 
-document.addEventLisenter('resize', throttledFn)
+document.addEventListener('resize', throttledFn)
 ```
 
 ## Related Functions

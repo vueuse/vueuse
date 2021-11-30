@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "6.4.0",
+  "version": "7.1.2",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
@@ -10,16 +10,23 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/core"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./nuxt": {
+      "import": "./nuxt.mjs",
+      "require": "./nuxt.cjs",
+      "types": "./nuxt.d.ts"
+    }
   },
   "main": "./index.cjs",
   "types": "./index.d.ts",
@@ -44,7 +51,7 @@
     }
   },
   "dependencies": {
-    "@vueuse/shared": "6.4.0",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }

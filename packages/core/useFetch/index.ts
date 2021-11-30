@@ -1,8 +1,8 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef, isRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp, createEventHook, EventHookOn } from '@vueuse/shared'
+import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stoppable, useTimeoutFn } from '@vueuse/shared'
+import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
-interface UseFetchReturn<T> {
+export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
@@ -115,6 +115,12 @@ export interface AfterFetchContext<T = any> {
   data: T | null
 }
 
+export interface OnFetchErrorContext<T = any, E = any> {
+  error: E
+
+  data: T | null
+}
+
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -145,6 +151,14 @@ export interface UseFetchOptions {
   initialData?: any
 
   /**
+   * Timeout for abort request after number of millisecond
+   * `0` means use browser default
+   *
+   * @default 0
+   */
+  timeout?: number
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -154,6 +168,12 @@ export interface UseFetchOptions {
    * Runs after any 2xx response
    */
   afterFetch?: (ctx: AfterFetchContext) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
+
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 4xx and 5xx response
+   */
+  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -180,7 +200,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'beforeFetch', 'afterFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -237,7 +257,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false }
+  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
   type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
   const config: InternalConfig = {
     method: 'get',
@@ -260,6 +280,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const {
     fetch = defaultWindow?.fetch,
     initialData,
+    timeout,
   } = options
 
   // Event Hooks
@@ -278,6 +299,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
   let controller: AbortController | undefined
+  let timer: Stoppable | undefined
 
   const abort = () => {
     if (supportsAbort && controller)
@@ -288,6 +310,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     isFetching.value = isLoading
     isFinished.value = !isLoading
   }
+
+  if (timeout)
+    timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   const execute = async(throwOnFailed = false) => {
     loading(true)
@@ -329,6 +354,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
       return Promise.resolve()
     }
 
+    let responseData: any = null
+
+    if (timer)
+      timer.start()
+
     return new Promise((resolve, reject) => {
       fetch(
         context.url,
@@ -345,11 +375,11 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
-          let responseData = await fetchResponse[config.type]()
+          responseData = await fetchResponse[config.type]()
 
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-          data.value = responseData as any
+          data.value = responseData
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
@@ -357,8 +387,14 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           responseEvent.trigger(fetchResponse)
           resolve(fetchResponse)
         })
-        .catch((fetchError) => {
-          error.value = fetchError.message || fetchError.name
+        .catch(async(fetchError) => {
+          let errorData = fetchError.message || fetchError.name
+
+          if (options.onFetchError)
+            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError }))
+          data.value = responseData
+          error.value = errorData
+
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
             reject(fetchError)
@@ -367,6 +403,8 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         })
         .finally(() => {
           loading(false)
+          if (timer)
+            timer.stop()
           finallyEvent.trigger(null)
         })
     })

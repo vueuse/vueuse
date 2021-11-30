@@ -4,6 +4,8 @@ import { watchWithFilter } from '../watchWithFilter'
 
 export interface ThrottledWatchOptions<Immediate> extends WatchOptions<Immediate> {
   throttle?: MaybeRef<number>
+  trailing?: boolean
+  leading?: boolean
 }
 
 // overloads
@@ -15,11 +17,12 @@ export function throttledWatch<T extends object, Immediate extends Readonly<bool
 export function throttledWatch<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
-  options: ThrottledWatchOptions<Immediate> & { trailing?: boolean } = {},
+  options: ThrottledWatchOptions<Immediate> = {},
 ): WatchStopHandle {
   const {
     throttle = 0,
     trailing = true,
+    leading = true,
     ...watchOptions
   } = options
 
@@ -28,7 +31,7 @@ export function throttledWatch<Immediate extends Readonly<boolean> = false>(
     cb,
     {
       ...watchOptions,
-      eventFilter: throttleFilter(throttle, trailing),
+      eventFilter: throttleFilter(throttle, trailing, leading),
     },
   )
 }

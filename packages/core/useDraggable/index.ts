@@ -49,6 +49,11 @@ export interface UseDraggableOptions {
    * Callback during dragging.
    */
   onMove?: (position: Position, event: PointerEvent) => void
+
+  /**
+   * Callback when dragging end.
+   */
+  onEnd?: (position: Position, event: PointerEvent) => void
 }
 
 /**
@@ -77,10 +82,10 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     if (unref(options.exact) && e.target !== unref(target))
       return
-    const react = unref(target)!.getBoundingClientRect()
+    const rect = unref(target)!.getBoundingClientRect()
     const pos = {
-      x: e.pageX - react.left,
-      y: e.pageY - react.top,
+      x: e.pageX - rect.left,
+      y: e.pageY - rect.top,
     }
     if (options.onStart?.(pos, e) === false)
       return
@@ -103,6 +108,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (!filterEvent(e))
       return
     pressedDelta.value = undefined
+    options.onEnd?.(position.value, e)
     preventDefault(e)
   }
 

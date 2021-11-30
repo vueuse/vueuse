@@ -7,7 +7,7 @@ import { getCurrentInstance, onMounted, onUpdated, customRef, Ref } from 'vue-de
  * @param key
  * @param initialValue
  */
-export function templateRef<T extends Element | null>(
+export function templateRef<T extends HTMLElement | SVGElement | null>(
   key: string,
   initialValue: T | null = null,
 ): Readonly<Ref<T>> {

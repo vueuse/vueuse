@@ -1,3 +1,5 @@
+export * from './_configurable'
+
 // common types
 
 export interface Position {
@@ -7,7 +9,7 @@ export interface Position {
 
 export interface RenderableComponent {
   /**
-   * The elment that the component should be rendered as
+   * The element that the component should be rendered as
    *
    * @default 'div'
    */

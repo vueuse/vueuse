@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "6.4.0",
+  "version": "7.1.2",
   "description": "Enables realtime bindings for Firebase",
   "keywords": [
     "vue",
@@ -12,27 +12,32 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/firebase"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu<https://github.com/antfu>",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
     "./*": "./*",
     "./useAuth": {
       "import": "./useAuth.mjs",
-      "require": "./useAuth.cjs"
+      "require": "./useAuth.cjs",
+      "types": "./useAuth.d.ts"
     },
     "./useFirestore": {
       "import": "./useFirestore.mjs",
-      "require": "./useFirestore.cjs"
+      "require": "./useFirestore.cjs",
+      "types": "./useFirestore.d.ts"
     },
     "./useRTDB": {
       "import": "./useRTDB.mjs",
-      "require": "./useRTDB.cjs"
+      "require": "./useRTDB.cjs",
+      "types": "./useRTDB.d.ts"
     }
   },
   "main": "./index.cjs",
@@ -49,7 +54,7 @@
     "firebase": ">=4.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.4.0",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }

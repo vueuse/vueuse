@@ -9,7 +9,7 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
-   * @default true
+   * @default false
    */
   read?: boolean
 
@@ -44,7 +44,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string>>): Clipb
 export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefined> = {}): ClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
-    read = true,
+    read = false,
     source,
     copiedDuring = 1500,
   } = options

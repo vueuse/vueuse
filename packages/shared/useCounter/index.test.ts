@@ -38,4 +38,25 @@ describe('useCounter', () => {
       expect(get()).toBe(25)
     })
   })
+
+  it('should be update limited counter', () => {
+    useSetup(() => {
+      const { count, inc, dec, get } = useCounter(1, { min: -2, max: 15 })
+
+      expect(count.value).toBe(1)
+      expect(get()).toBe(1)
+      inc(20)
+      expect(count.value).toBe(15)
+      expect(get()).toBe(15)
+      dec(2)
+      expect(count.value).toBe(13)
+      expect(get()).toBe(13)
+      dec()
+      expect(count.value).toBe(12)
+      expect(get()).toBe(12)
+      dec(20)
+      expect(count.value).toBe(-2)
+      expect(get()).toBe(-2)
+    })
+  })
 })

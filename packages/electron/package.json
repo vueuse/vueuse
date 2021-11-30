@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "6.4.0",
+  "version": "7.1.2",
   "description": "Electron renderer process modules for VueUse",
   "keywords": [
     "vue",
@@ -12,14 +12,16 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/electron"
   },
   "funding": "https://github.com/sponsors/antfu",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "exports": {
     ".": {
       "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
     },
     "./*": "./*"
   },
@@ -35,7 +37,7 @@
     "electron": ">=9.0.0"
   },
   "dependencies": {
-    "@vueuse/shared": "6.4.0",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
   "devDependencies": {

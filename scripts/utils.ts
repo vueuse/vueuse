@@ -5,7 +5,7 @@ import fg from 'fast-glob'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
-import { activePackages, packages } from '../meta/packages'
+import { packages } from '../meta/packages'
 import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.org'
@@ -109,7 +109,7 @@ export async function readIndexes() {
 
     const pkg: VueUsePackage = {
       ...info,
-      dir: relative(DIR_ROOT, dir),
+      dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
     }
 
@@ -183,7 +183,12 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       imports = functions
         .sort((a, b) => a.name.localeCompare(b.name))
         .flatMap((fn) => {
-          const arr = []
+          const arr: string[] = []
+
+          // don't include integration components
+          if (fn.package === 'integrations')
+            return arr
+
           if (fn.component)
             arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
           if (fn.directive)
@@ -334,20 +339,25 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author, submodules, iife } of activePackages) {
+  for (const { name, description, author, submodules, iife } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)
 
     packageJSON.version = version
     packageJSON.description = description || packageJSON.description
-    packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
+    packageJSON.author = author || 'Anthony Fu <https://github.com/antfu>'
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
+    packageJSON.repository = {
+      type: 'git',
+      url: 'git+https://github.com/vueuse/vueuse.git',
+      directory: `packages/${name}`,
+    }
     packageJSON.main = './index.cjs'
     packageJSON.types = './index.d.ts'
     packageJSON.module = './index.mjs'
@@ -359,8 +369,10 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       '.': {
         import: './index.mjs',
         require: './index.cjs',
+        types: './index.d.ts',
       },
       './*': './*',
+      ...packageJSON.exports,
     }
 
     if (submodules) {
@@ -370,13 +382,16 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
           packageJSON.exports[`./${i.name}`] = {
             import: `./${i.name}.mjs`,
             require: `./${i.name}.cjs`,
+            types: `./${i.name}.d.ts`,
+          }
+          if (i.component) {
+            packageJSON.exports[`./${i.name}/component`] = {
+              import: `./${i.name}/component.mjs`,
+              require: `./${i.name}/component.cjs`,
+              types: `./${i.name}/component.d.ts`,
+            }
           }
         })
-    }
-
-    for (const key of Object.keys(packageJSON.dependencies)) {
-      if (key.startsWith('@vueuse/'))
-        packageJSON.dependencies[key] = version
     }
 
     await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })

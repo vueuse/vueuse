@@ -22,7 +22,6 @@ onClickOutside(
     console.log(event)
     dropdown.value = false
   },
-  { event: 'mousedown' },
 )
 </script>
 
