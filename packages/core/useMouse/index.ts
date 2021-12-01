@@ -5,7 +5,7 @@ import { Position } from '../types'
 
 export interface MouseOptions extends ConfigurableWindow {
   /**
-   * mouse position by page or client
+   * Mouse position based by page or client
    *
    * @default 'page'
    */
