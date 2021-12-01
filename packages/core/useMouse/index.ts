@@ -21,7 +21,10 @@ export interface MouseOptions extends ConfigurableWindow {
   /**
    * Initial values
    */
-  initialValue?: Position
+  initialValue?: Position & {
+    clientX: number
+    clientY: number
+  }
 }
 
 export type MouseSourceType = 'mouse' | 'touch' | null
@@ -36,27 +39,31 @@ export function useMouse(options: MouseOptions = {}) {
   const {
     touch = true,
     resetOnTouchEnds = false,
-    initialValue = { x: 0, y: 0 },
+    initialValue = { x: 0, y: 0, clientX: 0, clientY: 0 },
     window = defaultWindow,
   } = options
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
+  const clientX = ref(initialValue.x)
+  const clientY = ref(initialValue.y)
   const sourceType = ref<MouseSourceType>(null)
 
   const mouseHandler = (event: MouseEvent) => {
     x.value = event.pageX
     y.value = event.pageY
+    clientX.value = event.clientX
+    clientY.value = event.clientY
     sourceType.value = 'mouse'
   }
   const reset = () => {
-    x.value = initialValue.x
-    y.value = initialValue.y
+    clientX.value = x.value = initialValue.x
+    clientY.value = y.value = initialValue.y
   }
   const touchHandler = (event: TouchEvent) => {
     if (event.touches.length > 0) {
-      x.value = event.touches[0].clientX
-      y.value = event.touches[0].clientY
+      clientX.value = x.value = event.touches[0].clientX
+      clientY.value = y.value = event.touches[0].clientY
       sourceType.value = 'touch'
     }
   }
@@ -75,6 +82,8 @@ export function useMouse(options: MouseOptions = {}) {
   return {
     x,
     y,
+    clientX,
+    clientY,
     sourceType,
   }
 }
