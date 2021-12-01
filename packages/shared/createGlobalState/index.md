@@ -13,11 +13,7 @@ Keep states in the global scope to be reusable across Vue instances.
 import { createGlobalState, useStorage } from '@vueuse/core'
 
 export const useGlobalState = createGlobalState(() =>
-  useStorage('vue-use-locale-storage', {
-    name: 'Banana',
-    color: 'Yellow',
-    size: 'Medium',
-  }),
+  useStorage('vue-use-locale-storage', 'initialValue'),
 )
 ```
 
