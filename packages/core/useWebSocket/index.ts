@@ -249,7 +249,7 @@ export function useWebSocket<Data = any>(
   }
 
   const open = () => {
-    close()
+    close(1012) // Status code 1012 -> Service Restart https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
     retried = 0
     _init()
   }
