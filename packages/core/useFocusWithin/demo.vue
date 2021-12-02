@@ -4,7 +4,7 @@ import { useFocusWithin } from '.'
 
 const target = ref()
 
-const { focused } = useFocusWithin({ target })
+const { focused } = useFocusWithin(target)
 </script>
 
 <template>
