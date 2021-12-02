@@ -12,11 +12,11 @@ describe('useFocusWithin', () => {
     document.body.appendChild(parent.value)
 
     child = ref(document.createElement('div'))
-    child.value.tabIndex = 1
+    child.value.tabIndex = 0
     parent.value.appendChild(child.value)
 
     grandchild = ref(document.createElement('input'))
-    grandchild.value.tabIndex = 1
+    grandchild.value.tabIndex = 0
     child.value.appendChild(grandchild.value)
   })
 
