@@ -20,7 +20,7 @@ Functions can be used on the template, and hooks are a handy skeleton for the bu
 
 ```html
 <script setup>
-import { defineCirmDialog } from '@vueuse/core'
+import { useConfirmDialog } from '@vueuse/core'
 
 const {
   isRevealed,
@@ -55,6 +55,8 @@ If you prefer working with promises:
 ```html
 <script setup>
 import { useConfirmDialog, onClickOutside } from '@vueuse/core'
+
+const show = ref(true)
 
 const {
   isRevealed,
