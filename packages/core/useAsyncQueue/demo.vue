@@ -25,8 +25,5 @@ const { activeIndex, result } = useAsyncQueue([p1, p2])
   <div>
     <note>activeIndex: {{ activeIndex }}</note>
     <note>result: {{ result }}</note>
-    <button @click="execute()">
-      Execute
-    </button>
   </div>
 </template>
