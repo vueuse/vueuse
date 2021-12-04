@@ -10,11 +10,6 @@ export interface FocusOptions extends ConfigurableWindow {
    * @default false
    */
   initialValue?: boolean
-
-  /**
-   * The target element for the focus and blur events.
-   */
-  target?: MaybeElementRef
 }
 
 export interface FocusReturn {
@@ -29,28 +24,27 @@ export interface FocusReturn {
  * Track or set the focus state of a DOM element.
  *
  * @see https://vueuse.org/useFocus
+ * @param target The target element for the focus and blur events.
  * @param options
  */
-export function useFocus(options: FocusOptions = {}): FocusReturn {
-  const {
-    initialValue = false,
-  } = options
+export function useFocus(target: MaybeElementRef, options: FocusOptions = {}): FocusReturn {
+  const { initialValue = false } = options
 
   const activeElement = useActiveElement(options)
-  const target = computed(() => unrefElement(options.target))
+  const targetElement = computed(() => unrefElement(target))
   const focused = computed({
     get() {
-      return activeElement.value === target.value
+      return activeElement.value === targetElement.value
     },
     set(value: boolean) {
       if (!value && focused.value)
-        target.value?.blur()
+        targetElement.value?.blur()
       if (value && !focused.value)
-        target.value?.focus()
+        targetElement.value?.focus()
     },
   })
 
-  watch(target, () => { focused.value = initialValue }, { immediate: true, flush: 'post' })
+  watch(targetElement, () => { focused.value = initialValue }, { immediate: true, flush: 'post' })
 
   return { focused }
 }
