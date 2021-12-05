@@ -72,10 +72,10 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(0)
 
     refs.a.value = 'b'
-    expect(spy).toBeCalledWith({ a: 'b', b: 0 })
+    expect(spy.lastCall.args[0]).toEqual({ a: 'b', b: 0 })
 
     refs.b.value = 1
-    expect(spy).toBeCalledWith({ a: 'a', b: 1 })
+    expect(spy.lastCall.args[0]).toEqual({ a: 'a', b: 1 })
   })
 
   it('should work correctly with writable computed arrays', () => {
@@ -93,9 +93,9 @@ describe('toRefs', () => {
     expect(refs[1].value).toBe(0)
 
     refs[0].value = 'b'
-    expect(spy).toBeCalledWith(['b', 0])
+    expect(spy.lastCall.args[0]).toEqual(['b', 0])
 
     refs[1].value = 1
-    expect(spy).toBeCalledWith(['a', 1])
+    expect(spy.lastCall.args[0]).toEqual(['a', 1])
   })
 })

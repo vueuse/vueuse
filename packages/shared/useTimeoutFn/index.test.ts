@@ -1,5 +1,5 @@
-import { promiseTimeout } from '@vueuse/core'
 import { ref } from 'vue-demi'
+import { promiseTimeout } from '../utils'
 import { useTimeoutFn } from '.'
 
 describe('useTimeoutFn', () => {
@@ -12,7 +12,7 @@ describe('useTimeoutFn', () => {
     await promiseTimeout(1)
     expect(callback).toBeCalled()
 
-    callback.mockReset()
+    callback.resetHistory()
     interval.value = 50
 
     start()

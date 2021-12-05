@@ -62,7 +62,7 @@ importers:
       vite-plugin-pwa: ^0.11.6
       vite-plugin-windicss: ^1.5.1
       vitepress: ^0.20.1
-      vitest: ^0.0.19
+      vitest: ^0.0.22
       vue: ^3.2.22
       vue2: npm:vue@2
     devDependencies:
@@ -117,7 +117,7 @@ importers:
       vite-plugin-pwa: 0.11.6_vite@2.6.7
       vite-plugin-windicss: 1.5.1_vite@2.6.7
       vitepress: 0.20.1
-      vitest: 0.0.19
+      vitest: 0.0.22
       vue: 3.2.22
       vue2: /vue/2.6.14
 
@@ -9603,8 +9603,8 @@ packages:
       - stylus
     dev: true
 
-  /vitest/0.0.19:
-    resolution: {integrity: sha512-ADSl5ComkfREs5MaJc8EFv9NULd3aOGKRuC18L+YRboDapv8jGXxkV+JwqNmdUjyygD3mJGOsQJyZL0Czo+4eA==}
+  /vitest/0.0.22:
+    resolution: {integrity: sha512-fFPsRDVduKHDJlGG+kn4SQ2lRLQep68VCqAG+Kk4InTW/0K1BfLAKph1LCnSWWJfuRHZvJhESV3LmsHBndBs1Q==}
     hasBin: true
     dependencies:
       '@jest/test-result': 27.4.2

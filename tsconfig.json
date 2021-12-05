@@ -29,7 +29,8 @@
     ]
   },
   "include": [
-    "packages"
+    "packages",
+    "./vitest.config.ts"
   ],
   "exclude": [
     "node_modules",

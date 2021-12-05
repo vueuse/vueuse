@@ -1,4 +1,4 @@
-import { useSetup } from '../../.test'
+import { nextTick } from 'vue-demi'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
@@ -7,27 +7,25 @@ describe('useWindowSize', () => {
   })
 
   it('should work', () => {
-    const wrapper = useSetup(() => {
-      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-      expect(width.value).toBe(window.innerWidth)
-      expect(height.value).toBe(window.innerHeight)
-
-      return { width, height }
-    })
-
-    expect(wrapper.width).toBe(window.innerWidth)
-    expect(wrapper.height).toBe(window.innerHeight)
+    expect(width.value).toBe(window.innerWidth)
+    expect(height.value).toBe(window.innerHeight)
   })
 
-  it('sets handler for window "resize" event', () => {
-    const windowAddEventListener = jest.spyOn(window, 'addEventListener')
+  it('sets handler for window "resize" event', async() => {
+    const fn = sinon.spy()
+    const old = window.addEventListener
+    window.addEventListener = fn
 
-    useSetup(() => {
-      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
-      return { width, height }
-    })
+    useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-    expect(windowAddEventListener).toBeCalledWith('resize', expect.anything(), { passive: true })
+    await nextTick()
+
+    expect(fn).toBeCalled()
+    expect(fn.lastCall.args[0]).toBe('resize')
+    expect(fn.lastCall.args[2]).toEqual({ passive: true })
+
+    window.addEventListener = old
   })
 })

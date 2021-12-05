@@ -32,7 +32,7 @@ describe('useFetch', () => {
     await until(isFinished).toBe(true)
 
     expect(statusCode.value).toBe(200)
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ authorization: 'test' })
+    expect(fetchMock.firstCall.args[1]!.headers).toEqual({ authorization: 'test' })
   })
 
   test('should parse response as json', async() => {
@@ -118,8 +118,8 @@ describe('useFetch', () => {
 
     await until(isFinished).toBe(true)
 
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'test', 'Accept-Language': 'en-US' })
-    expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
+    expect(fetchMock.firstCall[1]!.headers).toMatchObject({ 'Authorization': 'test', 'Accept-Language': 'en-US' })
+    expect(fetchMock.firstCall[0]).toEqual('https://example.com/test')
   })
 
   test('should run the beforeFetch function and add headers to the request', async() => {
@@ -138,7 +138,7 @@ describe('useFetch', () => {
 
     await until(isFinished).toBe(true)
 
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
+    expect(fetchMock.firstCall[1]!.headers).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
   })
 
   test('should run the beforeFetch function and cancel the request', async() => {

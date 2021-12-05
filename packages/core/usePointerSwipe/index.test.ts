@@ -82,7 +82,7 @@ describe('usePointerSwipe', () => {
       expect(onSwipeStart.mock.calls.length).toBe(1)
       expect(onSwipe.mock.calls.length).toBe(1)
       expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.RIGHT)
+      expect(onSwipeEnd.firstCall[1]).toBe(SwipeDirection.RIGHT)
     })
   })
 
@@ -95,7 +95,7 @@ describe('usePointerSwipe', () => {
       expect(onSwipeStart.mock.calls.length).toBe(1)
       expect(onSwipe.mock.calls.length).toBe(2)
       expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
+      expect(onSwipeEnd.firstCall[1]).toBe(SwipeDirection.NONE)
     })
   })
 
@@ -131,7 +131,7 @@ describe('usePointerSwipe', () => {
       mockPointerEvents(target, coords)
 
       expect(direction.value).toBe(expected)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
+      expect(onSwipeEnd.firstCall[1]).toBe(expected)
     })
   })
 })
