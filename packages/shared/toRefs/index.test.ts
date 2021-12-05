@@ -58,7 +58,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed objects', () => {
-    const spy = jest.fn()
+    const spy = sinon.spy()
     const obj = computed<{ a: string; b: number }>({
       get() {
         return { a: 'a', b: 0 }
@@ -79,7 +79,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed arrays', () => {
-    const spy = jest.fn()
+    const spy = sinon.spy()
     const arr = computed<any[]>({
       get() {
         return ['a', 0]

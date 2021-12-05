@@ -29,7 +29,7 @@ describe('useJwt', () => {
 
   test('decode jwt error', () => {
     useSetup(() => {
-      const mockCallback = jest.fn()
+      const mockCallback = sinon.spy()
       const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
       expect(header.value).toBe(null)
       expect(payload.value).toBe(null)

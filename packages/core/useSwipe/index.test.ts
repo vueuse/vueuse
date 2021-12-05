@@ -39,13 +39,13 @@ describe('useSwipe', () => {
     })
   }
 
-  let onSwipe: jest.Mock
-  let onSwipeEnd: jest.Mock
+  const onSwipe = sinon.spy((e: TouchEvent) => {})
+  const onSwipeEnd = sinon.spy((e: TouchEvent, direction: SwipeDirection) => {})
   const threshold = 30
 
   beforeEach(() => {
-    onSwipe = jest.fn((e: TouchEvent) => {})
-    onSwipeEnd = jest.fn((e: TouchEvent, direction: SwipeDirection) => {})
+    onSwipe.resetHistory()
+    onSwipeEnd.resetHistory()
   })
 
   it('threshold not exceeded', () => {
@@ -54,8 +54,8 @@ describe('useSwipe', () => {
 
       mockTouchEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipe.mock.calls.length).toBe(0)
-      expect(onSwipeEnd.mock.calls.length).toBe(0)
+      expect(onSwipe).not.toBeCalled()
+      expect(onSwipeEnd).not.toBeCalled()
     })
   })
 
@@ -65,8 +65,8 @@ describe('useSwipe', () => {
 
       mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
-      expect(onSwipe.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
+      expect(onSwipe).toBeCalledOnce()
+      expect(onSwipeEnd).toBeCalledOnce()
     })
   })
 
@@ -76,9 +76,9 @@ describe('useSwipe', () => {
 
       mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipe.mock.calls.length).toBe(2)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
+      expect(onSwipe).toBeCalledTimes(2)
+      expect(onSwipeEnd).toBeCalledOnce()
+      expect(onSwipeEnd.lastCall[0]).toBe(SwipeDirection.NONE)
     })
   })
 
@@ -114,7 +114,7 @@ describe('useSwipe', () => {
       mockTouchEvents(target, coords)
 
       expect(direction.value).toBe(expected)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
+      expect(onSwipeEnd.firstCall[0]).toBe(expected)
     })
   })
 })

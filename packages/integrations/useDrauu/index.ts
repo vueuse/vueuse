@@ -90,7 +90,7 @@ export function useDrauu(
   watch(
     () => unrefElement(target),
     (el) => {
-      if (!el || !(el instanceof SVGSVGElement))
+      if (!el || typeof SVGSVGElement === 'undefined' || !(el instanceof SVGSVGElement))
         return
 
       if (drauuInstance.value)

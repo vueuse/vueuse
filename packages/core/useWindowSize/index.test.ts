@@ -28,6 +28,6 @@ describe('useWindowSize', () => {
       return { width, height }
     })
 
-    expect(windowAddEventListener).toHaveBeenCalledWith('resize', expect.anything(), { passive: true })
+    expect(windowAddEventListener).toBeCalledWith('resize', expect.anything(), { passive: true })
   })
 })

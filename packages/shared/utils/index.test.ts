@@ -1,3 +1,4 @@
+import { sinon } from 'vitest'
 import { ref, nextTick } from 'vue-demi'
 import { increaseWithUnit, debounceFilter, throttleFilter, createFilterWrapper } from '.'
 
@@ -15,8 +16,14 @@ describe('utils', () => {
 })
 
 describe('filters', () => {
-  beforeEach(() => jest.useFakeTimers('legacy'))
-  afterEach(() => jest.clearAllTimers())
+  let timer: sinon.SinonFakeTimers
+
+  beforeEach(() => {
+    timer = sinon.useFakeTimers()
+  })
+  afterEach(() => {
+    timer.restore()
+  })
 
   it('should debounce', () => {
     let called = 0
@@ -25,7 +32,7 @@ describe('filters', () => {
     setTimeout(filter, 200)
     setTimeout(filter, 500)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(1)
   })
@@ -37,7 +44,7 @@ describe('filters', () => {
     setTimeout(filter, 500)
     setTimeout(filter, 1000)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(2)
   })
@@ -53,7 +60,7 @@ describe('filters', () => {
     filter()
     setTimeout(filter, 200)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(2)
   })
@@ -67,7 +74,7 @@ describe('filters', () => {
     setTimeout(filter, 500)
     setTimeout(filter, 500)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(2)
   })
@@ -81,7 +88,7 @@ describe('filters', () => {
     setTimeout(filter, 500)
     setTimeout(filter, 500)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(2)
   })
@@ -98,7 +105,7 @@ describe('filters', () => {
     setTimeout(filter, 600)
     setTimeout(filter, 900)
 
-    jest.runAllTimers()
+    timer.runAll()
 
     expect(called).toBe(2)
   })

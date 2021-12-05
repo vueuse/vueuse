@@ -22,7 +22,7 @@
     "size": " esno scripts/export-size.ts",
     "test": "nr test:3",
     "test:2": "vue-demi-switch 2 vue2 && jest",
-    "test:3": "vue-demi-switch 3 && jest",
+    "test:3": "vue-demi-switch 3 && vitest",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit",
@@ -40,12 +40,11 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.10.0",
+    "@antfu/eslint-config": "^0.12.0",
     "@antfu/ni": "^0.10.2",
     "@iconify/json": "^1.1.431",
     "@rollup/plugin-replace": "^3.0.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^27.0.3",
     "@types/js-yaml": "^4.0.4",
     "@types/node": "^16.11.9",
     "@types/semver": "^7.3.9",
@@ -92,6 +91,7 @@
     "vite-plugin-pwa": "^0.11.6",
     "vite-plugin-windicss": "^1.5.1",
     "vitepress": "^0.20.1",
+    "vitest": "^0.0.19",
     "vue": "^3.2.22",
     "vue2": "npm:vue@2"
   },

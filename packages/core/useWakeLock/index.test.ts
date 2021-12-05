@@ -4,7 +4,7 @@ import { useWakeLock, WakeLockSentinel } from '.'
 
 describe('useWakeLock', () => {
   afterEach(() => {
-    jest.clearAllMocks()
+    sinon.reset()
   })
 
   it('isActive not changed if not supported', async() => {

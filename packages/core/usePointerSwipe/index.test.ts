@@ -56,9 +56,9 @@ describe('usePointerSwipe', () => {
   })
 
   beforeEach(() => {
-    onSwipeStart = jest.fn((e: PointerEvent) => {})
-    onSwipe = jest.fn((e: PointerEvent) => {})
-    onSwipeEnd = jest.fn((e: PointerEvent, direction: SwipeDirection) => {})
+    onSwipeStart = sinon.spy((e: PointerEvent) => {})
+    onSwipe = sinon.spy((e: PointerEvent) => {})
+    onSwipeEnd = sinon.spy((e: PointerEvent, direction: SwipeDirection) => {})
   })
 
   it('threshold is not exceeded', () => {

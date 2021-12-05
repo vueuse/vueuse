@@ -9,8 +9,8 @@ describe('useVModel', () => {
     [defaultKey]: defaultValue,
   })
 
-  const emitMock = jest.fn((event: string, values: any[]) => {})
-  beforeEach(() => emitMock.mockClear())
+  const emitMock = sinon.spy((event: string, values: any[]) => {})
+  beforeEach(() => emitMock.resetHistory())
 
   it('should work with default value', () => {
     useSetup(() => {
@@ -79,7 +79,7 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
-    expect(emitMock).toHaveBeenCalledTimes(1)
+    expect(emitMock).toBeCalledTimes(1)
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
   })
 
@@ -98,7 +98,7 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock.mock.calls[0][0]).toBe('update:data')
-    expect(emitMock).toHaveBeenCalledTimes(1)
+    expect(emitMock).toBeCalledTimes(1)
     expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbies: ['coding', 'basketball'] }))
   })
 })

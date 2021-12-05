@@ -1,5 +1,6 @@
 import { nextTick } from 'vue-demi'
 import nprogress from 'nprogress'
+import { sinon } from 'vitest'
 import { useSetup } from '../../.test'
 import { useNProgress } from './index'
 
@@ -26,7 +27,7 @@ describe('useNProgress', () => {
   })
 
   it('should track the manual progress', async() => {
-    const setProgress = jest.spyOn(nprogress, 'set')
+    const setProgress = sinon.spy(nprogress, 'set')
     const instance = useSetup(() => {
       return useNProgress()
     })
@@ -38,7 +39,7 @@ describe('useNProgress', () => {
     expect(setProgress).toBeCalledWith(0.0)
     expect(instance.isLoading).toBeTruthy()
 
-    setProgress.mockClear()
+    setProgress.resetHistory()
 
     instance.progress = 1.0
     await nextTick()
@@ -47,7 +48,7 @@ describe('useNProgress', () => {
   })
 
   it('should update progress state', async() => {
-    const startProgress = jest.spyOn(nprogress, 'start')
+    const startProgress = sinon.spy(nprogress, 'start')
     const instance = useSetup(() => {
       return useNProgress()
     })

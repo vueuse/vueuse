@@ -12,10 +12,10 @@ if (isVue2) {
 let state = {}
 
 const localStorageMock = {
-  getItem: jest.fn(x => state[x]),
-  setItem: jest.fn((x, v) => state[x] = v),
-  removeItem: jest.fn((x, v) => delete state[x]),
-  clear: jest.fn(() => state = {}),
+  getItem: sinon.spy(x => state[x]),
+  setItem: sinon.spy((x, v) => state[x] = v),
+  removeItem: sinon.spy((x, v) => delete state[x]),
+  clear: sinon.spy(() => state = {}),
 }
 
 Object.defineProperty(window, 'localStorage', {

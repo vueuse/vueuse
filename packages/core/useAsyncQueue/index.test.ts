@@ -44,7 +44,7 @@ describe('useAsyncQueue', () => {
     expect(JSON.stringify(result)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
   })
 
-  it ('should passed the current task result to the next task', async() => {
+  it('should passed the current task result to the next task', async() => {
     const {
       activeIndex,
       result,
@@ -53,50 +53,50 @@ describe('useAsyncQueue', () => {
     expect(result[activeIndex.value].data).toBe(2000)
   })
 
-  it ('should trigger onFinished when the tasks ends', async() => {
-    const spy = jest.fn()
+  it('should trigger onFinished when the tasks ends', async() => {
+    const fn = sinon.spy()
     const {
       activeIndex,
     } = useAsyncQueue([p1, p2], {
-      onFinished: spy,
+      onFinished: fn,
     })
     await until(activeIndex).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    expect(fn).toBeCalledTimes(1)
   })
 
   it ('should trigger onError when the tasks fails', async() => {
-    const spy = jest.fn()
+    const fn = sinon.spy()
     const {
       activeIndex,
     } = useAsyncQueue([p3, p4], {
-      onError: spy,
+      onError: fn,
     })
     await until(activeIndex).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    expect(fn).to.callCount(1)
   })
 
   it ('should interrupt the tasks when current task fails', async() => {
-    const spy = jest.fn(() => Promise.resolve('data'))
+    const fn = sinon.spy(() => Promise.resolve('data'))
     const finished = ref(0)
-    useAsyncQueue([p1, p4, spy], {
+    useAsyncQueue([p1, p4, fn], {
       onFinished: () => {
         finished.value = 1
       },
     })
     await until(finished).toBe(1)
-    expect(spy).toBeCalledTimes(0)
+    expect(fn).to.callCount(0)
   })
 
   it ('should not interrupt the tasks when current task fails', async() => {
-    const spy = jest.fn(() => Promise.resolve('data'))
+    const fn = sinon.spy(() => Promise.resolve('data'))
     const finished = ref(0)
-    useAsyncQueue([p1, p4, spy], {
+    useAsyncQueue([p1, p4, fn], {
       interrupt: false,
       onFinished: () => {
         finished.value = 1
       },
     })
     await until(finished).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    expect(fn).callCount(1)
   })
 })

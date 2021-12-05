@@ -4,21 +4,21 @@ import { useTimeoutFn } from '.'
 
 describe('useTimeoutFn', () => {
   it('supports reactive intervals', async() => {
-    const callback = jest.fn()
+    const callback = sinon.spy()
     const interval = ref(0)
     const { start } = useTimeoutFn(callback, interval)
 
     start()
     await promiseTimeout(1)
-    expect(callback).toHaveBeenCalled()
+    expect(callback).toBeCalled()
 
     callback.mockReset()
     interval.value = 50
 
     start()
     await promiseTimeout(1)
-    expect(callback).not.toHaveBeenCalled()
+    expect(callback).not.toBeCalled()
     await promiseTimeout(100)
-    expect(callback).toHaveBeenCalled()
+    expect(callback).toBeCalled()
   })
 })
