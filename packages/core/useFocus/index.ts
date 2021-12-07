@@ -3,7 +3,7 @@ import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
 import { ConfigurableWindow } from '../_configurable'
 
-export interface FocusOptions extends ConfigurableWindow {
+export interface UseFocusOptions extends ConfigurableWindow {
   /**
    * Initial value. If set true, then focus will be set on the target
    *
@@ -12,7 +12,7 @@ export interface FocusOptions extends ConfigurableWindow {
   initialValue?: boolean
 }
 
-export interface FocusReturn {
+export interface UseFocusReturn {
   /**
    * If read as true, then the element has focus. If read as false, then the element does not have focus
    * If set to true, then the element will be focused. If set to false, the element will be blurred.
@@ -27,7 +27,7 @@ export interface FocusReturn {
  * @param target The target element for the focus and blur events.
  * @param options
  */
-export function useFocus(target: MaybeElementRef, options: FocusOptions = {}): FocusReturn {
+export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
   const { initialValue = false } = options
 
   const activeElement = useActiveElement(options)
