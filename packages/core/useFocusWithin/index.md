@@ -30,4 +30,3 @@ watch(focused, focused => {
 })
 </script>
 ```
-
