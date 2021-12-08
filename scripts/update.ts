@@ -13,7 +13,6 @@ async function run() {
   await updatePackageJSON(indexes)
 
   await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')
-  await fs.copy('./indexes.json', './packages/core/indexes.json')
 }
 
 run()

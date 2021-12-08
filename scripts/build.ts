@@ -29,10 +29,11 @@ async function buildMetaFiles() {
     const packageRoot = path.resolve(__dirname, '..', 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
-    if (name === 'core') {
+    if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
+
+    if (name === 'core' || name === 'nuxt')
       await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(packageDist, 'indexes.json'))
-    }
 
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))

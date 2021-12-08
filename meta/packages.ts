@@ -21,6 +21,19 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'nuxt',
+    display: 'Nuxt',
+    description: 'VueUse Nuxt Module',
+    addon: true,
+    iife: false,
+    manualImport: true,
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+      'nuxt3',
+    ],
+  },
+  {
     name: 'router',
     display: 'Router',
     description: 'Utilities for vue-router',
