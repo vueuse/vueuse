@@ -17,7 +17,7 @@ npm i <b>@vueuse/nuxt</b>
 
 export function defineNuxtConfig({
   buildModules: [
-    '@vueuse/nuxt/module'
+    '@vueuse/nuxt'
   ]
 })
 ```
