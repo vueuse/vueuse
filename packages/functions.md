@@ -23,6 +23,7 @@
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
+  - [`useElementByPoint`](https://vueuse.org/core/useElementByPoint/) — reactive element by point
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
   - [`useEyeDropper`](https://vueuse.org/core/useEyeDropper/) — reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
   - [`useFavicon`](https://vueuse.org/core/useFavicon/) — reactive favicon
