@@ -2,8 +2,11 @@ import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { isPackageExists } from 'local-pkg'
+import type { PackageIndexes } from '../../meta/types'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const _dirname = typeof __dirname === 'undefined'
+  ? dirname(fileURLToPath(import.meta.url))
+  : __dirname
 
 const disabledFunctions = [
   'useFetch',
@@ -39,11 +42,11 @@ const fullPackages = packages.map(p => `@vueuse/${p}`)
  * }
  * ```
  */
-export default function() {
+function VueUseModule(this: any) {
   const { nuxt } = this
 
   // opt-out Vite deps optimization for VueUse
-  nuxt.hook('vite:extend', ({ config }) => {
+  nuxt.hook('vite:extend', ({ config }: any) => {
     config.optimizeDeps = config.optimizeDeps || {}
     config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
     config.optimizeDeps.exclude.push(...fullPackages)
@@ -54,17 +57,17 @@ export default function() {
   nuxt.options.build.transpile = nuxt.options.build.transpile || []
   nuxt.options.build.transpile.push('@vueuse/nuxt')
 
-  let indexes
+  let indexes: PackageIndexes | undefined
 
   // auto Import
-  nuxt.hook('autoImports:sources', (sources) => {
+  nuxt.hook('autoImports:sources', (sources: any[]) => {
     if (sources.find(i => fullPackages.includes(i.from)))
       return
 
     if (!indexes) {
       try {
-        indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
-        indexes.functions.forEach((i) => {
+        indexes = JSON.parse(fs.readFileSync(resolve(_dirname, './indexes.json'), 'utf-8'))
+        indexes?.functions.forEach((i) => {
           if (i.package === 'shared')
             i.package = 'core'
         })
@@ -101,3 +104,5 @@ export default function() {
     }
   })
 }
+
+export default VueUseModule

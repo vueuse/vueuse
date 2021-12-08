@@ -2,9 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/nuxt?color=a1b858)](https://www.npmjs.com/package/@vueuse/nuxt)
 
-> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), provides Nuxt specific composables and auto-import capabilities.
-
-> Experimental. **Will NOT follow semvar**.
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), which provides better Nuxt integration auto-import capabilities.
 
 ## Install
 
@@ -21,13 +19,6 @@ export function defineNuxtConfig({
   ]
 })
 ```
-
-## Functions
-
-`@vueuse/nuxt` provides the following functions
-
-<!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
-<!--FUNCTIONS_LIST_STARTS--><!--FUNCTIONS_LIST_ENDS-->
 
 ## License
 

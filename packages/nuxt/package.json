@@ -23,12 +23,7 @@
       "require": "./index.cjs",
       "types": "./index.d.ts"
     },
-    "./*": "./*",
-    "./": {
-      "import": "./module.mjs",
-      "require": "./module.cjs",
-      "types": "./module.d.ts"
-    }
+    "./*": "./*"
   },
   "main": "./index.cjs",
   "types": "./index.d.ts",

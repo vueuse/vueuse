@@ -17,9 +17,7 @@ const injectVueDemi: Plugin = {
   },
 }
 
-const buildPlugins = [
-  esbuild(),
-]
+const esbuildPlugin = esbuild()
 
 const dtsPlugin = [
   dts(),
@@ -39,7 +37,10 @@ const esbuildMinifer = (options: ESBuildOptions) => {
   }
 }
 
-for (const { globals, name, external, submodules, iife } of packages) {
+for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target } of packages) {
+  if (build === false)
+    continue
+
   const iifeGlobals = {
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUse',
@@ -60,16 +61,21 @@ for (const { globals, name, external, submodules, iife } of packages) {
 
     const info = functions.find(i => i.name === fn)
 
-    const output: OutputOptions[] = [
-      {
-        file: `packages/${name}/dist/${fn}.cjs`,
-        format: 'cjs',
-      },
-      {
+    const output: OutputOptions[] = []
+
+    if (mjs !== false) {
+      output.push({
         file: `packages/${name}/dist/${fn}.mjs`,
         format: 'es',
-      },
-    ]
+      })
+    }
+
+    if (cjs !== false) {
+      output.push({
+        file: `packages/${name}/dist/${fn}.cjs`,
+        format: 'cjs',
+      })
+    }
 
     if (iife !== false) {
       output.push(
@@ -102,25 +108,31 @@ for (const { globals, name, external, submodules, iife } of packages) {
     configs.push({
       input,
       output,
-      plugins: buildPlugins,
+      plugins: [
+        target
+          ? esbuild({ target })
+          : esbuildPlugin,
+      ],
       external: [
         ...externals,
         ...(external || []),
       ],
     })
 
-    configs.push({
-      input,
-      output: {
-        file: `packages/${name}/dist/${fn}.d.ts`,
-        format: 'es',
-      },
-      plugins: dtsPlugin,
-      external: [
-        ...externals,
-        ...(external || []),
-      ],
-    })
+    if (dts !== false) {
+      configs.push({
+        input,
+        output: {
+          file: `packages/${name}/dist/${fn}.d.ts`,
+          format: 'es',
+        },
+        plugins: dtsPlugin,
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+    }
 
     if (info?.component) {
       configs.push({
@@ -135,7 +147,9 @@ for (const { globals, name, external, submodules, iife } of packages) {
             format: 'es',
           },
         ],
-        plugins: buildPlugins,
+        plugins: [
+          esbuildPlugin,
+        ],
         external: [
           ...externals,
           ...(external || []),

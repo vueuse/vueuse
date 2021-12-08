@@ -24,13 +24,16 @@ export const packages: PackageManifest[] = [
     name: 'nuxt',
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',
+    manualImport: true,
     addon: true,
     iife: false,
-    manualImport: true,
+    cjs: false,
+    dts: false,
+    target: 'node14',
     external: [
       '@vueuse/core',
       '@vueuse/shared',
-      'nuxt3',
+      'local-pkg',
     ],
   },
   {
