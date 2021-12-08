@@ -86,7 +86,7 @@ The `afterFetch` option can intercept the response data before it is updated.
 const { data } = useFetch(url, {
   afterFetch(ctx) {
     if (ctx.data.title === 'HxH')
-      ctx.data.title = 'Hunter x Hunter' // Modifies the resposne data
+      ctx.data.title = 'Hunter x Hunter' // Modifies the response data
 
     return ctx
   },
@@ -99,7 +99,7 @@ const { data } = useFetch(url, {
   onFetchError(ctx) {
     // ctx.data can be null when 5xx response
     if (ctx.data === null) 
-      ctx.data = { title: 'Hunter x Hunter' } // Modifies the resposne data
+      ctx.data = { title: 'Hunter x Hunter' } // Modifies the response data
 
     ctx.error = new Error('Custom Error') // Modifies the error
 

@@ -309,6 +309,14 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     el.muted = mute
   })
 
+  watch(rate, (rate) => {
+    const el = unref(target)
+    if (!el)
+      return
+
+    el.playbackRate = rate
+  })
+
   /**
    * Load Tracks
    */
@@ -426,6 +434,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     stalled,
     buffered,
     playing,
+    rate,
 
     // Volume
     volume,
