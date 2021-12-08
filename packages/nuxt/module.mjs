@@ -1,11 +1,11 @@
 import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import {} from 'local-pkg'
+import { isPackageExists } from 'local-pkg'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const disabled = [
+const disabledFunctions = [
   'useFetch',
   'toRefs',
   'useCookie',
@@ -54,25 +54,50 @@ export default function() {
   nuxt.options.build.transpile = nuxt.options.build.transpile || []
   nuxt.options.build.transpile.push('@vueuse/nuxt')
 
+  let indexes
+
   // auto Import
   nuxt.hook('autoImports:sources', (sources) => {
     if (sources.find(i => fullPackages.includes(i.from)))
       return
-    const indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
-    sources.push({
-      from: '@vueuse/core',
-      names: indexes
+
+    if (!indexes) {
+      try {
+        indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
+        indexes.functions.forEach((i) => {
+          if (i.package === 'shared')
+            i.package = 'core'
+        })
+      }
+      catch (e) {
+        throw new Error('[@vueuse/nuxt] Failed to load indexes.json')
+      }
+    }
+
+    if (!indexes)
+      return
+
+    for (const pkg of packages) {
+      if (pkg === 'core')
+        continue
+
+      if (!isPackageExists(`@vueuse/${pkg}`))
+        continue
+
+      const functions = indexes
         .functions
         .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
-        .map(i => i.name)
-        .filter(i => i.length >= 4 && !disabled.includes(i)),
-    })
-    sources.push({
-      from: '@vueuse/nuxt',
-      names: indexes
-        .functions
-        .filter(i => i.package === 'nuxt' && !i.internal)
-        .map(i => i.name),
-    })
+
+      if (functions.length) {
+        sources.push({
+          from: `@vueuse/${pkg}`,
+          names: indexes
+            .functions
+            .filter(i => i.package === pkg && !i.internal)
+            .map(i => i.name)
+            .filter(i => i.length >= 4 && !disabledFunctions.includes(i)),
+        })
+      }
+    }
   })
 }

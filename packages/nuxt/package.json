@@ -42,8 +42,5 @@
     "@vueuse/core": "workspace:*",
     "local-pkg": "^0.4.0",
     "vue-demi": "*"
-  },
-  "devDependencies": {
-    "nuxt3": "latest"
   }
 }
