@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "VueUse Nuxt Module",
   "keywords": [
     "vue",
@@ -24,7 +24,7 @@
       "types": "./index.d.ts"
     },
     "./*": "./*",
-    "./module": {
+    "./": {
       "import": "./module.mjs",
       "require": "./module.cjs",
       "types": "./module.d.ts"
@@ -40,6 +40,7 @@
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/nuxt#readme",
   "dependencies": {
     "@vueuse/core": "workspace:*",
+    "local-pkg": "^0.4.0",
     "vue-demi": "*"
   },
   "devDependencies": {

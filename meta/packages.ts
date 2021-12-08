@@ -26,11 +26,11 @@ export const packages: PackageManifest[] = [
     description: 'VueUse Nuxt Module',
     addon: true,
     iife: false,
+    manualImport: true,
     external: [
       '@vueuse/core',
       '@vueuse/shared',
       'nuxt3',
-      '#app',
     ],
   },
   {

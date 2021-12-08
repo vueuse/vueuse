@@ -21,8 +21,7 @@
       "@vueuse/shared/*": ["./packages/shared/*"],
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"],
-      "#app": ["./node_modules/nuxt3/dist/app/index.d.ts"]
+      "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
     }
   },
   "include": [

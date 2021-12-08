@@ -50,8 +50,6 @@ Vue composables for playing sound effects.
 <!--ADDONS_LIST_STARTS-->
 ## Nuxt - [`@vueuse/nuxt`](https://vueuse.org/nuxt/README.html)
 VueUse Nuxt Module
-  - [`useNuxtDark`](https://vueuse.org/nuxt/useNuxtDark/) — reactive dark mode with auto data persistence for Nuxt
-
 
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router

@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import {} from 'local-pkg'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -9,6 +10,21 @@ const disabled = [
   'toRefs',
   'useCookie',
 ]
+
+const packages = [
+  'core',
+  'shared',
+  'nuxt',
+  'integrations',
+  'components',
+  'motion',
+  'firebase',
+  'rxjs',
+  'sound',
+  'head',
+]
+
+const fullPackages = packages.map(p => `@vueuse/${p}`)
 
 /**
  * Auto import for VueUse in Nuxt
@@ -30,18 +46,7 @@ export default function() {
   nuxt.hook('vite:extend', ({ config }) => {
     config.optimizeDeps = config.optimizeDeps || {}
     config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
-    config.optimizeDeps.exclude.push(
-      '@vueuse/core',
-      '@vueuse/shared',
-      '@vueuse/nuxt',
-      '@vueuse/integrations',
-      '@vueuse/components',
-      '@vueuse/motion',
-      '@vueuse/firebase',
-      '@vueuse/rxjs',
-      '@vueuse/sound',
-      '@vueuse/head',
-    )
+    config.optimizeDeps.exclude.push(...fullPackages)
   })
 
   // add @vueuse/nuxt to transpile target for alias resolution
@@ -51,7 +56,7 @@ export default function() {
 
   // auto Import
   nuxt.hook('autoImports:sources', (sources) => {
-    if (sources.find(i => i.from === '@vueuse/core' || i.from === '@vueuse/nuxt'))
+    if (sources.find(i => fullPackages.includes(i.from)))
       return
     const indexes = JSON.parse(fs.readFileSync(resolve(__dirname, './indexes.json'), 'utf-8'))
     sources.push({

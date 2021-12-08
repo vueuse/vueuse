@@ -27,11 +27,7 @@ export function defineNuxtConfig({
 `@vueuse/nuxt` provides the following functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
-<!--FUNCTIONS_LIST_STARTS-->
-  - [`useNuxtDark`](https://vueuse.org/nuxt/useNuxtDark/) — reactive dark mode with auto data persistence for Nuxt
-
-
-<!--FUNCTIONS_LIST_ENDS-->
+<!--FUNCTIONS_LIST_STARTS--><!--FUNCTIONS_LIST_ENDS-->
 
 ## License
 
