@@ -81,7 +81,7 @@ function VueUseModule(this: any) {
       return
 
     for (const pkg of packages) {
-      if (pkg === 'core')
+      if (pkg === 'shared')
         continue
 
       if (!isPackageExists(`@vueuse/${pkg}`))
