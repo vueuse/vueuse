@@ -250,7 +250,7 @@ export function useWebSocket<Data = any>(
   }
 
   const open = () => {
-    close() 
+    close()
     retried = 0
     _init()
   }
