@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { useSafeArea } from '.'
+import { useScreenSafeArea } from '.'
 
-const { top, right, bottom, left } = useSafeArea()
+const {
+  top,
+  right,
+  bottom,
+  left,
+} = useScreenSafeArea()
 </script>
 
 <template>

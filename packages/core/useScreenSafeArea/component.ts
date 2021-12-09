@@ -1,8 +1,8 @@
 import { defineComponent, h } from 'vue-demi'
-import { useSafeArea } from '.'
+import { useScreenSafeArea } from '.'
 
-export const UseSafeArea = defineComponent({
-  name: 'UseSafeArea',
+export const UseScreenSafeArea = defineComponent({
+  name: 'UseScreenSafeArea',
   props: {
     top: Boolean,
     right: Boolean,
@@ -10,7 +10,12 @@ export const UseSafeArea = defineComponent({
     left: Boolean,
   },
   setup(props, { slots }) {
-    const { top, right, bottom, left } = useSafeArea()
+    const {
+      top,
+      right,
+      bottom,
+      left,
+    } = useScreenSafeArea()
 
     return () => {
       if (slots.default) {
