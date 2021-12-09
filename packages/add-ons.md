@@ -48,6 +48,9 @@ Vue composables for playing sound effects.
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
+## Nuxt - [`@vueuse/nuxt`](https://vueuse.org/nuxt/README.html)
+VueUse Nuxt Module
+
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash

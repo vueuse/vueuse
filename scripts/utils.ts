@@ -211,6 +211,12 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       )
     }
 
+    if (name === 'nuxt') {
+      imports.push(
+        'export * from \'@vueuse/core\'',
+      )
+    }
+
     await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
   }
 }
