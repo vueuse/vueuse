@@ -1,19 +1,19 @@
 {
-  "name": "@vueuse/rxjs",
+  "name": "@vueuse/nuxt",
   "version": "7.2.2",
-  "description": "Enables RxJS reactive functions in Vue",
+  "description": "VueUse Nuxt Module",
   "keywords": [
     "vue",
-    "vue-use",
-    "utils",
-    "rxjs",
-    "reactive"
+    "vueuse",
+    "nuxt",
+    "nuxt3",
+    "nuxt-module"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
-    "directory": "packages/rxjs"
+    "directory": "packages/nuxt"
   },
   "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu <https://github.com/antfu>",
@@ -28,21 +28,14 @@
   "main": "./index.cjs",
   "types": "./index.d.ts",
   "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
-  "peerDependencies": {
-    "rxjs": ">=6.0.0"
-  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/nuxt#readme",
   "dependencies": {
-    "@vueuse/shared": "workspace:*",
+    "@vueuse/core": "workspace:*",
+    "local-pkg": "^0.4.0",
     "vue-demi": "*"
-  },
-  "devDependencies": {
-    "rxjs": "^6.6.7"
   }
 }

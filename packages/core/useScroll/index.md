@@ -13,7 +13,7 @@ Reactive scroll position and state
 import { useScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState } = useScroll(el)
+const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </script>
 
 <template>
@@ -23,7 +23,7 @@ const { x, y, isScrolling, arrivedState } = useScroll(el)
 
 ```js
 // With offsets
-const { x, y, isScrolling, arrivedState } = useScroll(el, {
+const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
 })
 ```
