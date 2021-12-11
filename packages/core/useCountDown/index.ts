@@ -1,5 +1,5 @@
 // reference https://github.com/youzan/vant/blob/dev/packages/vant-use/src/useCountDown/index.ts
-import { isClient, Pausable } from '@vueuse/shared'
+import { isClient, Pausable, tryOnScopeDispose } from '@vueuse/shared'
 import {
   ref,
   computed,
@@ -17,8 +17,8 @@ export type CurrentTime = {
 
 export type UseCountDownOptions = {
   time: number
-  format?: string
   millisecond?: boolean
+  format?: string
   onChange?: (current: CurrentTime) => void
   onFinish?: () => void
 }
@@ -50,7 +50,9 @@ function isSameSecond(time1: number, time2: number): boolean {
 }
 
 /**
- * countdown
+ * CountDown controller
+ *
+ * @see https://vueuse.org/useCountDown
  * @param options
  */
 export function useCountDown(options: UseCountDownOptions) {
@@ -79,30 +81,15 @@ export function useCountDown(options: UseCountDownOptions) {
     }
   }
 
-  const microTick = () => {
+  const rafTick = () => {
     pausable = useRafFn(() => {
-      // in case of call reset immediately after finish
-      if (counting) {
-        setRemain(getCurrentRemain())
+      const remainRemain = getCurrentRemain()
 
-        if (remain.value <= 0)
-          pausable?.pause()
-      }
-    })
-  }
+      if (options.millisecond || !isSameSecond(remainRemain, remain.value) || remainRemain === 0)
+        setRemain(remainRemain)
 
-  const macroTick = () => {
-    pausable = useRafFn(() => {
-      // in case of call reset immediately after finish
-      if (counting) {
-        const remainRemain = getCurrentRemain()
-
-        if (!isSameSecond(remainRemain, remain.value) || remainRemain === 0)
-          setRemain(remainRemain)
-
-        if (remain.value <= 0)
-          pausable?.pause()
-      }
+      if (remain.value <= 0)
+        pausable?.pause()
     })
   }
 
@@ -110,11 +97,7 @@ export function useCountDown(options: UseCountDownOptions) {
     if (!isClient)
       return
 
-    if (options.millisecond)
-      microTick()
-
-    else
-      macroTick()
+    rafTick()
   }
 
   const start = () => {
@@ -129,6 +112,10 @@ export function useCountDown(options: UseCountDownOptions) {
     pause()
     remain.value = totalTime
   }
+
+  tryOnScopeDispose(() => {
+    pausable?.pause()
+  })
 
   return {
     start,
