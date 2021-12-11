@@ -7,6 +7,7 @@
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
 ### Animation
+  - [`useCountDown`](https://vueuse.org/core/useCountDown/) — countdown controller
   - [`useInterval`](https://vueuse.org/shared/useInterval/) — reactive counter increases on every interval
   - [`useIntervalFn`](https://vueuse.org/shared/useIntervalFn/) — wrapper for `setInterval` with controls
   - [`useNow`](https://vueuse.org/core/useNow/) — reactive current Date instance

@@ -1,6 +1,7 @@
 export * from './is'
 export * from './filters'
 export * from './types'
+export * from './date'
 
 export function promiseTimeout(
   ms: number,
