@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { defineComponent, onMounted, Ref, ref } from 'vue-demi'
+import { onMounted, Ref, ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import {
   mapTo,
   takeUntil,
   withLatestFrom,
-  startWith,
   map,
 } from 'rxjs/operators'
 import { useSubscription } from '../useSubscription'
@@ -21,7 +20,10 @@ onMounted(() => {
       .pipe(
         mapTo(1),
         takeUntil(fromEvent(button as Ref<HTMLButtonElement>, 'click')),
-        withLatestFrom(from(count).pipe(startWith(0))),
+        withLatestFrom(from(count, {
+          immediate: true,
+          deep: false,
+        })),
         map(([total, curr]) => curr + total),
       )
       .subscribe(toObserver(count)),
