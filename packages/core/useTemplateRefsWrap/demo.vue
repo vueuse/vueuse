@@ -18,12 +18,17 @@
 import { onMounted } from 'vue'
 import { useHtmlElementTemplateRefs, useTemplateRefsWrap } from './index'
 
-const useTemplateRef = useTemplateRefsWrap<HTMLDivElement>()
-const { t1, t2, t3 } = useTemplateRef(['t1', 't2', 't3'])
+const useTemplateRefs = useTemplateRefsWrap<HTMLDivElement>()
+const { t1, t2, t3 } = useTemplateRefs(['t1', 't2', 't3'])
 //  or do it like this
 //  const { t1, t2, t3 } = useTemplateRefsWrap<HTMLDivElement>()(['t1', 't2', 't3'])
 
+//  you can use predefined hooks
 const { t4, t5 } = useHtmlElementTemplateRefs(['t4', 't5'])
+
+//  Since 't7' is not declared inside the string array, an error will occur.
+//  with "Property 't7' does not exist on type"
+const { t6, t7 } = useHtmlElementTemplateRefs(['t6'])
 
 onMounted(() => {
   console.log(t1.value) //  HTMLDivElement
@@ -31,5 +36,6 @@ onMounted(() => {
   console.log(t3.value) //  HTMLDivElement
   console.log(t4.value) //  HTMLDivElement
   console.log(t5.value) //  undefinded
+  console.log(t6.value) //  undefinded
 })
 </script>
