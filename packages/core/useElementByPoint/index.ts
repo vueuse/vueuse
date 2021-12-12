@@ -1,5 +1,5 @@
 import { ref, unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import { isClient, MaybeRef } from '@vueuse/shared'
 import { useRafFn } from '@vueuse/core'
 
 export interface UseElementByPointOptions {
@@ -19,7 +19,8 @@ export function useElementByPoint(options: UseElementByPointOptions) {
   const { x, y } = options
 
   const controls = useRafFn(() => {
-    element.value = document.elementFromPoint(unref(x), unref(y)) as HTMLElement | null
+    if (isClient)
+      element.value = document.elementFromPoint(unref(x), unref(y)) as HTMLElement | null
   })
 
   return {
