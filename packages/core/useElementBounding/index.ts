@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 import { MaybeElementRef, unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
 
@@ -47,6 +48,8 @@ export function useElementBounding(
     x.value = rect.x
     y.value = rect.y
   }
+
+  useEventListener('scroll', update, true)
 
   useResizeObserver(
     target,
