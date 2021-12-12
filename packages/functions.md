@@ -94,6 +94,7 @@
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
   - [`useMousePressed`](https://vueuse.org/core/useMousePressed/) — reactive mouse pressing state
   - [`useMutationObserver`](https://vueuse.org/core/useMutationObserver/) — watch for changes being made to the DOM tree
+  - [`useNavigatorLanguage`](https://vueuse.org/core/useNavigatorLanguage/) — watch for changes to the user defined navigator language
   - [`useNetwork`](https://vueuse.org/core/useNetwork/) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
