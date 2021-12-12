@@ -35,6 +35,7 @@
   - [`usePreferredColorScheme`](https://vueuse.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.org/core/usePreferredDark/) — reactive dark theme preference
   - [`usePreferredLanguages`](https://vueuse.org/core/usePreferredLanguages/) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
+  - [`useScreenSafeArea`](https://vueuse.org/core/useScreenSafeArea/) — reactive `env(safe-area-inset-*)`
   - [`useScriptTag`](https://vueuse.org/core/useScriptTag/) — script tag injecting
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
