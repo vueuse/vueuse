@@ -41,6 +41,13 @@ export interface AsyncStateOptions {
    * @default true
    */
   resetOnExecute?: boolean
+
+  /**
+   * Use shallowRef.
+   *
+   * @default true
+   */
+  shallow?: boolean
 }
 
 /**
@@ -62,9 +69,10 @@ export function useAsyncState<T>(
     delay = 0,
     onError = noop,
     resetOnExecute = true,
+    shallow = true,
   } = options
 
-  const state = shallowRef(initialState)
+  const state = shallow ? shallowRef(initialState) : ref(initialState) as Ref<T>
   const isReady = ref(false)
   const error = ref<unknown | undefined>(undefined)
 
