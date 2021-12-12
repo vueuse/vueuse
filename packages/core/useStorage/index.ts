@@ -1,11 +1,29 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemovableRef } from '@vueuse/shared'
+import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemovableRef, Awaitable } from '@vueuse/shared'
 import { ref, Ref, unref, shallowRef } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { guessSerializerType } from './guess'
 
 export type Serializer<T> = {
   read(raw: string): T
   write(value: T): string
+}
+
+export type SerializerAsync<T> = {
+  read(raw: string): Awaitable<T>
+  write(value: T): Awaitable<string>
+}
+
+export interface StorageLikeAsync {
+  getItem(key: string): Awaitable<string | null>
+  setItem(key: string, value: string): Awaitable<void>
+  removeItem(key: string): Awaitable<void>
+}
+
+export interface StorageLike {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+  removeItem(key: string): void
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
@@ -38,8 +56,6 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
     write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
   },
 }
-
-export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
 export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
@@ -118,24 +134,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   } = options
 
   const rawInit: T = unref(initialValue)
-
-  const type = rawInit == null
-    ? 'any'
-    : rawInit instanceof Set
-      ? 'set'
-      : rawInit instanceof Map
-        ? 'map'
-        : typeof rawInit === 'boolean'
-          ? 'boolean'
-          : typeof rawInit === 'string'
-            ? 'string'
-            : typeof rawInit === 'object'
-              ? 'object'
-              : Array.isArray(rawInit)
-                ? 'object'
-                : !Number.isNaN(rawInit)
-                  ? 'number'
-                  : 'any'
+  const type = guessSerializerType<T>(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]

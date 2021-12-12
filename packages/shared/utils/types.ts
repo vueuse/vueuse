@@ -49,6 +49,8 @@ export type ElementOf<T> = T extends (infer E)[] ? E : never
 
 export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
+export type Awaitable<T> = Promise<T> | T
+
 export interface Pausable {
   /**
    * A ref indicate whether a pusable instance is active
