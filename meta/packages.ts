@@ -37,6 +37,18 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'ssr-context',
+    display: 'SSR Context',
+    description: 'Abstraction layer for SSR context',
+    manualImport: true,
+    addon: true,
+    iife: false,
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'router',
     display: 'Router',
     description: 'Utilities for vue-router',

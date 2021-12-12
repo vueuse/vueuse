@@ -1,0 +1,37 @@
+{
+  "name": "@vueuse/ssr-context",
+  "version": "7.2.2",
+  "description": "Abstraction layer for SSR context",
+  "keywords": [
+    "vue",
+    "vueuse",
+    "ssr"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/ssr-context"
+  },
+  "funding": "https://github.com/sponsors/antfu",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "module": "./index.mjs",
+  "sideEffects": false,
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/ssr-context#readme",
+  "dependencies": {
+    "vue-demi": "*"
+  }
+}

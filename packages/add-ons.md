@@ -51,6 +51,9 @@ Vue composables for playing sound effects.
 ## Nuxt - [`@vueuse/nuxt`](https://vueuse.org/nuxt/README.html)
 VueUse Nuxt Module
 
+## SSR Context - [`@vueuse/ssr-context`](https://vueuse.org/ssr-context/README.html)
+Abstraction layer for SSR context
+
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash

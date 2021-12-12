@@ -230,6 +230,12 @@ importers:
     dependencies:
       vue-demi: 0.12.1_c610c17c6f2bd1bfee5126645742bcd9
 
+  packages/ssr-context:
+    specifiers:
+      vue-demi: 0.12.1
+    dependencies:
+      vue-demi: 0.12.1_c610c17c6f2bd1bfee5126645742bcd9
+
 packages:
 
   /@algolia/cache-browser-local-storage/4.10.5:
