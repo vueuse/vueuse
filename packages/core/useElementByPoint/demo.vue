@@ -36,11 +36,8 @@ const boxStyles = computed<Record<string, string | number> | undefined>(() => {
 
 const pointStyles = computed<Record<string, string | number>>(() => ({
   position: 'absolute',
-  width: '10px',
-  height: '10px',
   left: `${x.value}px`,
   top: `${y.value}px`,
-  backgroundColor: 'red',
   pointerEvents: 'none',
   zIndex: 9999,
   transform: 'translate(-50%, -50%)',
@@ -54,7 +51,7 @@ onMounted(() => {
 <template>
   <teleport to="body">
     <div ref="box" :style="boxStyles"></div>
-    <div ref="point" :style="pointStyles"></div>
+    <div ref="point" :style="pointStyles" class="w-2 h-2 rounded-full bg-green-400 shadow"></div>
   </teleport>
   <div class="flex items-center">
     <span class="mr-4">x:</span>
