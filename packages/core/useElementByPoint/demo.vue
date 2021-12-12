@@ -1,23 +1,18 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref } from 'vue-demi'
-import { useElementBounding, useMouse, useScroll } from '@vueuse/core'
+import { computed, reactive } from 'vue-demi'
+import { useElementBounding, useMouse, useEventListener } from '@vueuse/core'
 import { useElementByPoint } from '.'
 
-const { x, y } = useMouse()
+const { x, y } = useMouse({ type: 'client' })
 const { element } = useElementByPoint({ x, y })
 const bounding = reactive(useElementBounding(element))
 
-const sidebar = ref<HTMLElement>()
+useEventListener('scroll', bounding.update, true)
 
-// update bounding when sidebar scroll
-useScroll(sidebar, {
-  onScroll: bounding.update,
-})
-
-const boxStyles = computed<Record<string, string | number> | undefined>(() => {
+const boxStyles = computed<Record<string, string | number>>(() => {
   if (element.value) {
     return {
-      position: 'absolute',
+      position: 'fixed',
       width: `${bounding.width}px`,
       height: `${bounding.height}px`,
       left: `${bounding.left}px`,
@@ -25,7 +20,7 @@ const boxStyles = computed<Record<string, string | number> | undefined>(() => {
       backgroundColor: '#3eaf7c44',
       pointerEvents: 'none',
       zIndex: 9999,
-      transition: 'all 0.2s ease-in-out',
+      transition: 'all 0.05s linear',
       border: '1px solid var(--c-brand)',
     }
   }
@@ -35,17 +30,13 @@ const boxStyles = computed<Record<string, string | number> | undefined>(() => {
 })
 
 const pointStyles = computed<Record<string, string | number>>(() => ({
-  position: 'absolute',
-  left: `${x.value}px`,
-  top: `${y.value}px`,
+  position: 'fixed',
+  left: '0px',
+  top: '0px',
   pointerEvents: 'none',
   zIndex: 9999,
-  transform: 'translate(-50%, -50%)',
+  transform: `translate(calc(${x.value}px - 50%), calc(${y.value}px - 50%))`,
 }))
-
-onMounted(() => {
-  sidebar.value = document.querySelector('.sidebar') as HTMLElement
-})
 </script>
 
 <template>
