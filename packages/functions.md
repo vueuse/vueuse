@@ -160,6 +160,7 @@
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
+  - [`useSelections`](https://vueuse.org/core/useSelections/) — Multiple selection controller
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value
   - [`useThrottledRefHistory`](https://vueuse.org/core/useThrottledRefHistory/) — shorthand for `useRefHistory` with throttled filter
   - [`useThrottleFn`](https://vueuse.org/shared/useThrottleFn/) — throttle execution of a function
