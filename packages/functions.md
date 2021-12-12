@@ -78,6 +78,7 @@
   - [`useDocumentVisibility`](https://vueuse.org/core/useDocumentVisibility/) — reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
   - [`useDraggable`](https://vueuse.org/core/useDraggable/) — make elements draggable
   - [`useElementBounding`](https://vueuse.org/core/useElementBounding/) — reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
+  - [`useElementByPoint`](https://vueuse.org/core/useElementByPoint/) — reactive element by point
   - [`useElementHover`](https://vueuse.org/core/useElementHover/) — reactive element's hover state
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
