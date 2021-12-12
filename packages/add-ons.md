@@ -74,6 +74,7 @@ Enables RxJS reactive functions in Vue
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
   - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind Subject to ref and propagate value changes both ways
   - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 
