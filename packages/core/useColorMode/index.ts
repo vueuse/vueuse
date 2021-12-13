@@ -6,7 +6,7 @@ import { usePreferredDark } from '../usePreferredDark'
 
 export type BasicColorSchema = 'light' | 'dark' | 'auto'
 
-export interface UseColorModeOptions<T extends string> extends StorageOptions<T | BasicColorSchema> {
+export interface UseColorModeOptions<T extends string = BasicColorSchema> extends StorageOptions<T | BasicColorSchema> {
   /**
    * CSS Selector for the target element applying to
    *
