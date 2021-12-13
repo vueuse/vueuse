@@ -32,7 +32,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default undefined
    */
-  onChanged?: (mode: T | BasicColorSchema) => void
+  onChanged?: (mode: T | BasicColorSchema, defaultHandler:((mode: T | BasicColorSchema) => void)) => void
 
   /**
    * Custom storage ref
@@ -100,7 +100,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     },
   })
 
-  const onChanged = options.onChanged || ((value: T | BasicColorSchema) => {
+  function defaultOnChanged(value: T | BasicColorSchema) {
     const el = window?.document.querySelector(selector)
     if (!el)
       return
@@ -120,7 +120,14 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     else {
       el.setAttribute(attribute, value)
     }
-  })
+  }
+
+  function onChanged(mode: T | BasicColorSchema) {
+    if (options.onChanged)
+      options.onChanged(mode, defaultOnChanged)
+    else
+      defaultOnChanged(mode)
+  }
 
   watch(state, onChanged, { flush: 'post' })
 
