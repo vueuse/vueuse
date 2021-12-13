@@ -96,10 +96,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
         : store.value
     },
     set(v) {
-      if (preferredMode.value === v || v === 'auto')
-        store.value = 'auto'
-      else
-        store.value = v
+      store.value = v
     },
   })
 

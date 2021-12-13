@@ -4,7 +4,7 @@ category: Browser
 
 # useColorMode
 
-Reactive color mode (dark, light, and customs) with auto data persistence.
+Reactive color mode (dark / light / customs) with auto data persistence.
 
 ## Basic Usage
 
@@ -12,6 +12,16 @@ Reactive color mode (dark, light, and customs) with auto data persistence.
 import { useColorMode } from '@vueuse/core'
 
 const mode = useColorMode() // Ref<'dark' | 'light'>
+```
+
+By default, it will match with users' browser preference using `usePreferredDark` (a.k.a `auto` mode). When reading the ref, it will always return the current color mode (`dark`, `light` or your custom modes). When writing to the ref, it will trigger DOM updates and persist the color mode to local storage (or your custom storage). You can pass `auto` to set back to auto mode.
+
+```ts
+mode.vale // 'dark' | 'light'
+
+mode.value = 'dark' // change to dark mode and persist
+
+mode.value = 'auto' // change to auto mode
 ```
 
 ## Config
