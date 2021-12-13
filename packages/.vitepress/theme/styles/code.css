@@ -65,9 +65,11 @@ a > code {
 
 html.dark .shiki-light {
   opacity: 0;
+  z-index: -1;
 }
 html:not(.dark) .shiki-dark {
   opacity: 0;
+  z-index: -1;
 }
 
 .shiki {
