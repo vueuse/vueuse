@@ -21,7 +21,7 @@
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
-  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark
+  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark / light / customs) with auto data persistence
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
@@ -95,7 +95,7 @@
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
   - [`useMousePressed`](https://vueuse.org/core/useMousePressed/) — reactive mouse pressing state
   - [`useMutationObserver`](https://vueuse.org/core/useMutationObserver/) — watch for changes being made to the DOM tree
-  - [`useNavigatorLanguage`](https://vueuse.org/core/useNavigatorLanguage/) — watch for changes to the user defined navigator language
+  - [`useNavigatorLanguage`](https://vueuse.org/core/useNavigatorLanguage/) — watch for changes being made to the navigator language preference by the user
   - [`useNetwork`](https://vueuse.org/core/useNetwork/) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
@@ -155,7 +155,7 @@
   - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
-  - [`useCycleList`](https://vueuse.org/core/useCycleList/) — reactively clamp a value between two other values
+  - [`useCycleList`](https://vueuse.org/core/useCycleList/) — cycle through a list of items
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { shallowRef, Ref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
-import { useColorMode } from './index'
+import { useCycleList } from '../useCycleList'
+import { useColorMode } from '.'
 
 const mode = useColorMode({
   modes: {
@@ -10,32 +9,7 @@ const mode = useColorMode({
   },
 })
 
-function useCycleList<T>(list: T[], init: MaybeRef<T> = list[0]) {
-  const state = shallowRef(init) as Ref<T>
-
-  function shift(delta = 1) {
-    const index = list.indexOf(state.value)
-    const value = list[((index + delta) % list.length + list.length) % list.length]
-    state.value = value
-    return value
-  }
-
-  function next() {
-    return shift(1)
-  }
-
-  function prev() {
-    return shift(-1)
-  }
-
-  return {
-    state,
-    next,
-    prev,
-  }
-}
-
-const { next } = useCycleList(['light', 'dark', 'cafe', 'contrast'], mode)
+const { next } = useCycleList(['dark', 'light', 'cafe', 'contrast'], { initialValue: mode })
 </script>
 
 <template>
@@ -47,6 +21,8 @@ const { next } = useCycleList(['light', 'dark', 'cafe', 'contrast'], mode)
 
     <span class="ml-2 capitalize">{{ mode }}</span>
   </button>
+
+  <span class="p-4 opacity-50">← Click to change the color mode</span>
 </template>
 
 <style>
