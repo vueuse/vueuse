@@ -21,7 +21,7 @@
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
-  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode with auto data persistence
+  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
@@ -155,6 +155,7 @@
   - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
+  - [`useCycleList`](https://vueuse.org/core/useCycleList/) — reactively clamp a value between two other values
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
