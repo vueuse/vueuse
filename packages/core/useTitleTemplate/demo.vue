@@ -6,5 +6,5 @@ const title = useTitleTemplate(null, '%s | My Awesome Website')
 
 <template>
   <note>Title</note>
-  <input v-model="title" type="text" />
+  <input v-model="title" type="text">
 </template>
