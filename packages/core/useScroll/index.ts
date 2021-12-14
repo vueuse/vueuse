@@ -54,7 +54,7 @@ export interface UseScrollOptions {
    *
    * @default 'auto'
    */
-  wheelDirection?: MaybeRef<'horizontal' | 'vertical' | 'auto'>
+  wheelDirection?: MaybeRef<'horizontal' | 'vertical' | 'auto' | undefined>
 }
 
 /**
@@ -147,7 +147,7 @@ export function useScroll(
     )
 
     useEventListener(element, 'wheel', (e: WheelEvent) => {
-      const direction = unref(wheelDirection)
+      const direction = unref(wheelDirection) ?? 'auto'
 
       if (direction !== 'auto') {
         e.preventDefault()
@@ -164,7 +164,7 @@ export function useScroll(
             top: ele.scrollTop,
           })
         }
-        else {
+        else if (direction === 'vertical') {
           ele.scrollTo({
             left: ele.scrollLeft,
             top: ele.scrollTop + wheelDelta,
