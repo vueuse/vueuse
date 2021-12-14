@@ -2,7 +2,7 @@
 category: Animation
 ---
 
-# useCountDown
+# useCountdown
 
 Countdown controller.
 
@@ -14,9 +14,9 @@ Countdown controller.
 </template>
 
 <script setup lang="ts">
-    import { timestamp, useCountDown } from '@vueuse/core'
+    import { timestamp, useCountdown } from '@vueuse/core'
     const t = timestamp() + 30000
-    const { formatted } = useCountDown(t)
+    const { formatted } = useCountdown(t)
 </script>
 ```
 

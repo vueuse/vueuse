@@ -1,4 +1,5 @@
-import { createFilterWrapper, FunctionArgs, throttleFilter, MaybeRef } from '../utils'
+import type { FunctionArgs, MaybeRef } from '../utils'
+import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting

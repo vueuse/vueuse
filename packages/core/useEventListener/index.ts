@@ -1,4 +1,5 @@
-import { Fn, isString, MaybeRef, noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { Fn, MaybeRef } from '@vueuse/shared'
+import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
 import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 

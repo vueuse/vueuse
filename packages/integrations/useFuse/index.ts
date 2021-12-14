@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js'
-import { ref, computed, watch, unref, ComputedRef } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
+import { ref, computed, watch, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
 
 export type FuseOptions<T> = Fuse.IFuseOptions<T>
 export type UseFuseOptions<T> = {

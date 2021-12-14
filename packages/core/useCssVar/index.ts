@@ -1,6 +1,8 @@
 import { computed, ref, watch } from 'vue-demi'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 
 /**
  * Manipulate CSS variables.

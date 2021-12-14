@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import type { VNode, FunctionalComponent } from 'vue'
 import { useRoute, useData } from 'vitepress'
-import { DefaultTheme } from '../config'
+import type { DefaultTheme } from '../config'
 import { joinUrl, isActive } from '../utils'
 
 export interface Header {

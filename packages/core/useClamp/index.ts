@@ -1,5 +1,7 @@
-import { ref, computed, unref, Ref } from 'vue-demi'
-import { MaybeRef, clamp } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, computed, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { clamp } from '@vueuse/shared'
 
 /**
  * Reactively clamp a value between two other values.

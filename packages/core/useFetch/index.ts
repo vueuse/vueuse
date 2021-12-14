@@ -1,5 +1,7 @@
-import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stoppable, useTimeoutFn } from '@vueuse/shared'
-import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import type { EventHookOn, Fn, MaybeRef, Stoppable } from '@vueuse/shared'
+import { containsProp, createEventHook, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {

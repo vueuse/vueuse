@@ -1,8 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref, shallowRef } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface UseWebWorkerReturn<Data = any> {
   data: Ref<Data>

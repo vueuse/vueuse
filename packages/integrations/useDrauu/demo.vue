@@ -45,7 +45,7 @@ const { mode, color, size } = toRefs(brush)
             m="r-1"
             @click="() => color = _color"
           >
-            <div :style="{ background: _color }" w="6" h="6" border="2 dark:(light-900 opacity-50) rounded-full"></div>
+            <div :style="{ background: _color }" w="6" h="6" border="2 dark:(light-900 opacity-50) rounded-full" />
           </button>
         </div>
         <div flex="~ row 1 shrink-1" items="center" w="full" max-w="64">
@@ -91,7 +91,7 @@ const { mode, color, size } = toRefs(brush)
           w="full"
           h="full"
           bg="white"
-        ></svg>
+        />
       </div>
     </div>
   </div>

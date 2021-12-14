@@ -34,11 +34,11 @@ const countDown = (d?: UDate) => {
 /**
  * CountDown controller.
  *
- * @see https://vueuse.org/useCountDown
+ * @see https://vueuse.org/useCountdown
  * @param options
  */
 
-export function useCountDown(date: UDate, options: UseCountDownOptions = {}) {
+export function useCountdown(date: UDate, options: UseCountDownOptions = {}) {
   const {
     interval = 1000,
     onEnd = noop,
@@ -63,4 +63,4 @@ export function useCountDown(date: UDate, options: UseCountDownOptions = {}) {
   }
 }
 
-export type UseCountDownReturn = ReturnType<typeof useCountDown>
+export type UseCountDownReturn = ReturnType<typeof useCountdown>

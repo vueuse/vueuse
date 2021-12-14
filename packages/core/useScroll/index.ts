@@ -1,5 +1,6 @@
 import { ref, reactive } from 'vue-demi'
-import { useThrottleFn, useDebounceFn, noop, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -33,13 +34,13 @@ export interface UseScrollOptions {
    * Trigger it when scrolling.
    *
    */
-  onScroll?: () => void
+  onScroll?: (e: Event) => void
 
   /**
    * Trigger it when scrolling ends.
    *
    */
-  onStop?: () => void
+  onStop?: (e: Event) => void
 
   /**
    * Listener options for scroll event.
@@ -95,13 +96,13 @@ export function useScroll(
   })
 
   if (element) {
-    const onScrollEnd = useDebounceFn(() => {
+    const onScrollEnd = useDebounceFn((e: Event) => {
       isScrolling.value = false
       directions.left = false
       directions.right = false
       directions.top = false
       directions.bottom = false
-      onStop()
+      onStop(e)
     }, throttle + idle)
 
     const onScrollHandler = (e: Event) => {
@@ -126,8 +127,8 @@ export function useScroll(
       y.value = scrollTop
 
       isScrolling.value = true
-      onScrollEnd()
-      onScroll()
+      onScrollEnd(e)
+      onScroll(e)
     }
 
     useEventListener(

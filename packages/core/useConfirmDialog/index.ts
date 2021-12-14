@@ -1,5 +1,7 @@
-import { computed, ComputedRef, ref, Ref } from 'vue-demi'
-import { createEventHook, EventHook, EventHookOn, noop } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
+import type { EventHook, EventHookOn } from '@vueuse/shared'
+import { createEventHook, noop } from '@vueuse/shared'
 
 export type UseConfirmDialogRevealResult<C, D>
   = {

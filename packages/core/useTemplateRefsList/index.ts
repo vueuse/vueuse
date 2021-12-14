@@ -1,4 +1,5 @@
-import { onBeforeUpdate, Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { onBeforeUpdate, ref } from 'vue-demi'
 
 export type TemplateRefsList<T> = T[] & {
   set(el: Object | null): void

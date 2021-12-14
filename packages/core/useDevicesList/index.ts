@@ -1,9 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { computed, ComputedRef, Ref, ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface UseDevicesListOptions extends ConfigurableNavigator {
   onUpdated?: (devices: MediaDeviceInfo[]) => void

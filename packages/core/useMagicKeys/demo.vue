@@ -13,7 +13,7 @@ const keys = computed(() => Array.from(current))
       src="/vue.svg"
       class="h-38 py-8 m-auto transform transistion duration-500"
       :class="{'opacity-0': !v_u_e, 'rotate-180': shift }"
-    />
+    >
 
     <div>
       <note class="text-center mt-0 mb-5">
@@ -29,7 +29,7 @@ const keys = computed(() => Array.from(current))
         <Key :value="e">
           e
         </Key>
-        <div class="mx-1"></div>
+        <div class="mx-1" />
         <Key :value="u">
           U
         </Key>
@@ -71,6 +71,6 @@ const keys = computed(() => Array.from(current))
       src="/favicon.svg"
       class="h-38 py-8 m-auto transform transistion duration-500"
       :class="{'opacity-0': !u_s_e, 'rotate-180': shift }"
-    />
+    >
   </div>
 </template>

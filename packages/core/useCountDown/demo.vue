@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { timestamp, useCountDown } from '@vueuse/core'
+import { timestamp, useCountdown } from '@vueuse/core'
 import { UseCountDown as CountDown } from './component'
 const t1 = timestamp() + 30000
 const isFinished = ref(false)
@@ -12,7 +12,7 @@ const t2 = new Date(
           - 1,
 )
 
-const { formatted } = useCountDown(t2)
+const { formatted } = useCountdown(t2)
 </script>
 
 <template>

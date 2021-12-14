@@ -29,6 +29,6 @@ export default defineComponent({
 })
 ```
 
-## Related
+## Related Functions
 
 - `createSharableComposable`
