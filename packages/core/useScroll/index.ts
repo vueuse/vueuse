@@ -50,11 +50,11 @@ export interface UseScrollOptions {
   eventListenerOptions?: boolean | AddEventListenerOptions
 
   /**
-   * scroll direction control.
+   * wheel direction control.
    *
    * @default 'auto'
    */
-  scrollDirection?: 'horizontal' | 'vertical' | 'auto'
+  wheelDirection?: MaybeRef<'horizontal' | 'vertical' | 'auto'>
 }
 
 /**
@@ -84,7 +84,7 @@ export function useScroll(
       capture: false,
       passive: true,
     },
-    scrollDirection = 'auto',
+    wheelDirection = 'auto',
   } = options
 
   const x = ref(0)
@@ -146,8 +146,10 @@ export function useScroll(
       eventListenerOptions,
     )
 
-    if (scrollDirection !== 'auto') {
-      useEventListener(element, 'wheel', (e: WheelEvent) => {
+    useEventListener(element, 'wheel', (e: WheelEvent) => {
+      const direction = unref(wheelDirection)
+
+      if (direction !== 'auto') {
         e.preventDefault()
 
         const ele = unref(element) as HTMLElement
@@ -156,7 +158,7 @@ export function useScroll(
         let wheelDelta: number = e.wheelDelta
         wheelDelta = (isWindowsOS ? -wheelDelta / 3 : wheelDelta)
 
-        if (scrollDirection === 'horizontal') {
+        if (direction === 'horizontal') {
           ele.scrollTo({
             left: ele.scrollLeft + wheelDelta,
             top: ele.scrollTop,
@@ -168,8 +170,8 @@ export function useScroll(
             top: ele.scrollTop + wheelDelta,
           })
         }
-      })
-    }
+      }
+    })
   }
 
   return {
