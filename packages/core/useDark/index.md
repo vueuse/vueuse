@@ -71,6 +71,7 @@ const isDark = useDark({
 ```
 
 ## Component
+
 ```html
 <UseDark v-slot="{ isDark, toggleDark }">
   <button @click="toggleDark()">
@@ -78,3 +79,10 @@ const isDark = useDark({
   </button>
 </UseDark>
 ```
+
+## Related Functions
+
+- `useColorMode`
+- `usePreferredDark`
+- `useStorage`
+

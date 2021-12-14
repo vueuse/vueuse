@@ -48,3 +48,9 @@ const mode = useColorMode({
   </button>
 </UseColorMode>
 ```
+
+## Related Functions
+
+- `useDark`
+- `usePreferredDark`
+- `useStorage`
