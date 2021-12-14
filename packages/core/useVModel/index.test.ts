@@ -24,7 +24,7 @@ describe('useVModel', () => {
   })
 
   it('should emit on value change', async() => {
-    const emitMock = sinon.spy()
+    const emitMock = vitest.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock)
     data.value = 'changed'
@@ -34,7 +34,7 @@ describe('useVModel', () => {
   })
 
   it('should use eventName if set', async() => {
-    const emitMock = sinon.spy()
+    const emitMock = vitest.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
     data.value = 'changed'
@@ -43,7 +43,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ passive', async() => {
-    const emitMock = sinon.spy()
+    const emitMock = vitest.fn()
 
     const props = {
       ...defaultProps(),
@@ -60,7 +60,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ object props type', async() => {
-    const emitMock = sinon.spy()
+    const emitMock = vitest.fn()
 
     const props = {
       ...defaultProps(),
@@ -80,7 +80,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ array props type', async() => {
-    const emitMock = sinon.spy()
+    const emitMock = vitest.fn()
 
     const props = {
       ...defaultProps(),

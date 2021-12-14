@@ -14,7 +14,7 @@ describe('useWindowSize', () => {
   })
 
   it('sets handler for window "resize" event', async() => {
-    const fn = sinon.spy()
+    const fn = vitest.fn()
     const old = window.addEventListener
     window.addEventListener = fn
 
@@ -23,8 +23,8 @@ describe('useWindowSize', () => {
     await nextTick()
 
     expect(fn).toBeCalled()
-    expect(fn.lastCall.args[0]).toBe('resize')
-    expect(fn.lastCall.args[2]).toEqual({ passive: true })
+    expect(fn.calls.at(-1)![0]).toEqual('resize')
+    expect(fn.calls.at(-1)![2]).toEqual({ passive: true })
 
     window.addEventListener = old
   })

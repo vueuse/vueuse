@@ -4,7 +4,7 @@ import { useTimeoutFn } from '.'
 
 describe('useTimeoutFn', () => {
   it('supports reactive intervals', async() => {
-    const callback = sinon.spy()
+    const callback = vitest.fn()
     const interval = ref(0)
     const { start } = useTimeoutFn(callback, interval)
 
@@ -12,7 +12,7 @@ describe('useTimeoutFn', () => {
     await promiseTimeout(1)
     expect(callback).toBeCalled()
 
-    callback.resetHistory()
+    callback.reset()
     interval.value = 50
 
     start()

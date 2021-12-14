@@ -29,12 +29,12 @@ describe('useJwt', () => {
 
   test('decode jwt error', () => {
     useSetup(() => {
-      const mockCallback = sinon.spy()
+      const mockCallback = vitest.fn()
       const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
       expect(header.value).toBe(null)
       expect(payload.value).toBe(null)
 
-      expect(mockCallback.mock.calls.length).toBeGreaterThan(0)
+      expect(mockCallback).toBeCalledTimes(0)
     })
   })
 

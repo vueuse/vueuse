@@ -66,6 +66,7 @@
     "fs-extra": "^10.0.0",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
+    "jsdom": "^19.0.0",
     "lint-staged": "^12.1.2",
     "markdown-table": "^3.0.2",
     "pnpm": "^6.23.6",

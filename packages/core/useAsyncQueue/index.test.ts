@@ -54,7 +54,7 @@ describe('useAsyncQueue', () => {
   })
 
   it('should trigger onFinished when the tasks ends', async() => {
-    const fn = sinon.spy()
+    const fn = vitest.fn()
     const {
       activeIndex,
     } = useAsyncQueue([p1, p2], {
@@ -65,7 +65,7 @@ describe('useAsyncQueue', () => {
   })
 
   it ('should trigger onError when the tasks fails', async() => {
-    const fn = sinon.spy()
+    const fn = vitest.fn()
     const {
       activeIndex,
     } = useAsyncQueue([p3, p4], {
@@ -76,7 +76,7 @@ describe('useAsyncQueue', () => {
   })
 
   it ('should interrupt the tasks when current task fails', async() => {
-    const fn = sinon.spy(() => Promise.resolve('data'))
+    const fn = vitest.fn(() => Promise.resolve('data'))
     const finished = ref(0)
     useAsyncQueue([p1, p4, fn], {
       onFinished: () => {
@@ -88,7 +88,7 @@ describe('useAsyncQueue', () => {
   })
 
   it ('should not interrupt the tasks when current task fails', async() => {
-    const fn = sinon.spy(() => Promise.resolve('data'))
+    const fn = vitest.fn(() => Promise.resolve('data'))
     const finished = ref(0)
     useAsyncQueue([p1, p4, fn], {
       interrupt: false,

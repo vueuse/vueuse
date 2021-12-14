@@ -5,7 +5,7 @@ import { asyncComputed } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
-    const func = sinon.spy(() => 'data')
+    const func = vitest.fn(() => 'data')
 
     useSetup(() => {
       const data = computed(func)
@@ -21,7 +21,7 @@ describe('computed', () => {
 
 describe('asyncComputed', () => {
   it('is not lazy by default', async() => {
-    const func = sinon.spy(() => Promise.resolve('data'))
+    const func = vitest.fn(() => Promise.resolve('data'))
 
     const data = asyncComputed(func)
 
@@ -37,7 +37,7 @@ describe('asyncComputed', () => {
 
   it('call onError when error is thrown', async() => {
     let errorMessage
-    const func = sinon.spy(() => Promise.reject(new Error('An Error Message')))
+    const func = vitest.fn(() => Promise.reject(new Error('An Error Message')))
 
     const data = asyncComputed(func, undefined, {
       onError(e) {
@@ -58,7 +58,7 @@ describe('asyncComputed', () => {
   })
 
   it('is lazy if configured', async() => {
-    const func = sinon.spy(() => Promise.resolve('data'))
+    const func = vitest.fn(() => Promise.resolve('data'))
 
     const data = asyncComputed(func, undefined, { lazy: true })
 
@@ -143,7 +143,7 @@ describe('asyncComputed', () => {
   })
 
   test('cancel is called', async() => {
-    const onCancel = sinon.spy()
+    const onCancel = vitest.fn()
 
     const data = ref('initial')
     const uppercase = asyncComputed((cancel) => {
@@ -178,7 +178,7 @@ describe('asyncComputed', () => {
   })
 
   test('cancel is called for lazy', async() => {
-    const onCancel = sinon.spy()
+    const onCancel = vitest.fn()
 
     const data = ref('initial')
     const uppercase = asyncComputed((cancel) => {

@@ -19,8 +19,12 @@ export default defineConfig({
       '@vue/runtime-core',
     ],
   },
+  define: {
+    __VUE_OPTIONS_API__: 'true',
+    __VUE_PROD_DEVTOOLS__: 'false',
+  },
   test: {
     global: true,
-    jsdom: true,
+    environment: 'jsdom',
   },
 })

@@ -57,9 +57,9 @@ describe('usePointerSwipe', () => {
   })
 
   beforeEach(() => {
-    onSwipeStart = sinon.spy((e: PointerEvent) => {})
-    onSwipe = sinon.spy((e: PointerEvent) => {})
-    onSwipeEnd = sinon.spy((e: PointerEvent, direction: SwipeDirection) => {})
+    onSwipeStart = vitest.fn((e: PointerEvent) => {})
+    onSwipe = vitest.fn((e: PointerEvent) => {})
+    onSwipeEnd = vitest.fn((e: PointerEvent, direction: SwipeDirection) => {})
   })
 
   it('threshold is not exceeded', () => {

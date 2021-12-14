@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import { useSetup } from '../../.test'
 import { SwipeDirection, useSwipe } from './index'
 
@@ -39,13 +38,13 @@ describe('useSwipe', () => {
     })
   }
 
-  const onSwipe = sinon.spy((e: TouchEvent) => {})
-  const onSwipeEnd = sinon.spy((e: TouchEvent, direction: SwipeDirection) => {})
+  const onSwipe = vitest.fn((e: TouchEvent) => {})
+  const onSwipeEnd = vitest.fn((e: TouchEvent, direction: SwipeDirection) => {})
   const threshold = 30
 
   beforeEach(() => {
-    onSwipe.resetHistory()
-    onSwipeEnd.resetHistory()
+    onSwipe.reset()
+    onSwipeEnd.reset()
   })
 
   it('threshold not exceeded', () => {
@@ -65,8 +64,8 @@ describe('useSwipe', () => {
 
       mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
-      expect(onSwipe).toBeCalledOnce()
-      expect(onSwipeEnd).toBeCalledOnce()
+      expect(onSwipe).toHaveBeenCalledOnce()
+      expect(onSwipeEnd).toHaveBeenCalledOnce()
     })
   })
 
@@ -77,8 +76,8 @@ describe('useSwipe', () => {
       mockTouchEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
       expect(onSwipe).toBeCalledTimes(2)
-      expect(onSwipeEnd).toBeCalledOnce()
-      expect(onSwipeEnd.lastCall[0]).toBe(SwipeDirection.NONE)
+      expect(onSwipeEnd).toHaveBeenCalledOnce()
+      expect(onSwipeEnd.calls.at(-1)![0]).toBe(SwipeDirection.NONE)
     })
   })
 
@@ -102,19 +101,22 @@ describe('useSwipe', () => {
     })
   })
 
-  each([
+  ;([
     [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
     [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
     [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
     [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
-  ]).it('swipe %s', (expected, coords) => {
-    useSetup(() => {
-      const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
+  ] as [SwipeDirection, number[][]][])
+    .forEach(([expected, coords]) => {
+      it(`swipe ${expected}`, () => {
+        useSetup(() => {
+          const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-      mockTouchEvents(target, coords)
+          mockTouchEvents(target, coords)
 
-      expect(direction.value).toBe(expected)
-      expect(onSwipeEnd.firstCall[0]).toBe(expected)
+          expect(direction.value).toBe(expected)
+          expect(onSwipeEnd.calls[0][1]).toBe(expected)
+        })
+      })
     })
-  })
 })

@@ -4,10 +4,6 @@ import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 
 describe('useWakeLock', () => {
-  afterEach(() => {
-    sinon.reset()
-  })
-
   it('isActive not changed if not supported', async() => {
     const { isActive, request, release } = useWakeLock({ navigator: {} as Navigator })
 
@@ -79,7 +75,7 @@ describe('useWakeLock', () => {
 
     expect(isActive.value).toBeTruthy()
 
-    document.dispatchEvent(new Event('visibilitychange'))
+    document.dispatchEvent(new window.Event('visibilitychange'))
 
     await nextTick()
 

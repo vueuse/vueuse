@@ -6,7 +6,7 @@ describe('useFirestore', () => {
     // @ts-ignore
     const docRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = {
       path,
-      onSnapshot: sinon.spy(),
+      onSnapshot: vitest.fn(),
     }
 
     const ref = useFirestore(docRef, initialValue)

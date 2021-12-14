@@ -68,7 +68,7 @@ describe('useTransition', () => {
 
   it('supports custom easing functions', async() => {
     const source = ref(0)
-    const linear = sinon.spy(n => n)
+    const linear = vitest.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
       transition: linear,
@@ -105,8 +105,8 @@ describe('useTransition', () => {
 
   it('supports dynamic transitions', async() => {
     const source = ref(0)
-    const first = sinon.spy(n => n)
-    const second = sinon.spy(n => n)
+    const first = vitest.fn(n => n)
+    const second = vitest.fn(n => n)
     const easingFn = ref(first)
 
     useTransition(source, {
@@ -123,8 +123,8 @@ describe('useTransition', () => {
     expect(first).toBeCalled()
     expect(second).not.toBeCalled()
 
-    first.resetHistory()
-    second.resetHistory()
+    first.reset()
+    second.reset()
 
     easingFn.value = second
     source.value = 2
@@ -159,8 +159,8 @@ describe('useTransition', () => {
 
   it('fires onStarted and onFinished callbacks', async() => {
     const source = ref(0)
-    const onStarted = sinon.spy()
-    const onFinished = sinon.spy()
+    const onStarted = vitest.fn()
+    const onFinished = vitest.fn()
 
     useTransition(source, {
       duration: 100,
@@ -177,8 +177,8 @@ describe('useTransition', () => {
     expect(onStarted).toBeCalled()
     expect(onFinished).not.toBeCalled()
 
-    onStarted.resetHistory()
-    onFinished.resetHistory()
+    onStarted.reset()
+    onFinished.reset()
 
     await promiseTimeout(100)
     expect(onStarted).not.toBeCalled()
@@ -187,8 +187,8 @@ describe('useTransition', () => {
 
   it('clears pending transitions before starting a new one', async() => {
     const source = ref(0)
-    const onStarted = sinon.spy()
-    const onFinished = sinon.spy()
+    const onStarted = vitest.fn()
+    const onFinished = vitest.fn()
 
     useTransition(source, {
       delay: 100,
@@ -208,7 +208,7 @@ describe('useTransition', () => {
   })
 
   it('can be disabled for sychronous changes', async() => {
-    const onStarted = sinon.spy()
+    const onStarted = vitest.fn()
     const disabled = ref(false)
     const source = ref(0)
 
