@@ -3,19 +3,59 @@ import { reactive } from 'vue-demi'
 type CacheKey = any
 
 /**
- * Interface for custom memoize cache handler
+ * Custom memoize cache handler
  */
 export interface MemoizeCache<Key, Value> {
-  // Get value for key
+  /**
+   * Get value for key
+   */
   get (key: Key): Value | undefined
-  // Set value for key
+  /**
+   * Set value for key
+   */
   set (key: Key, value: Value): void
-  // Return flag if key exists
+  /**
+   * Return flag if key exists
+   */
   has (key: Key): boolean
-  // Delete value for key
+  /**
+   * Delete value for key
+   */
   delete (key: Key): void
-  // Clear cache
+  /**
+   * Clear cache
+   */
   clear (): void
+}
+
+/**
+ * Memoized function
+ */
+export interface MemoizedFn <Result, Args extends unknown[]> {
+  /**
+   * Get result from cache or call memoized function
+   */
+  (...args: Args): Result
+  /**
+   * Call memoized function and update cache
+   */
+  load (...args: Args): Result
+  /**
+   * Delete cache of given arguments
+   */
+  delete (...args: Args): void
+  /**
+   * Clear cache
+   */
+  clear (): void
+  /**
+   * Generate cache key for given arguments
+   */
+  generateKey (...args: Args): CacheKey
+  /**
+   * Cache container
+   */
+  cache: MemoizeCache<CacheKey, Result>
 }
 
 /**
@@ -27,7 +67,7 @@ export const useMemoize = <Result, Args extends unknown[]> (
     getKey?: (...args: Args) => CacheKey
     cache?: MemoizeCache<CacheKey, Result>
   },
-) => {
+): MemoizedFn<Result, Args> => {
   const cache = reactive(options?.cache || new Map<CacheKey, Result>())
 
   /**
@@ -48,17 +88,6 @@ export const useMemoize = <Result, Args extends unknown[]> (
   const loadData = (...args: Args): Result => _loadData(generateKey(...args), ...args)
 
   /**
-   * Get data from cache or load if not cached
-   */
-  const getData = (...args: Args): Result => {
-    // Get data from cache
-    const key = generateKey(...args)
-    if (cache.has(key)) return cache.get(key) as Result
-
-    return _loadData(key, ...args)
-  }
-
-  /**
    * Delete key from cache
    */
   const deleteData = (...args: Args): void => {
@@ -72,12 +101,18 @@ export const useMemoize = <Result, Args extends unknown[]> (
     cache.clear()
   }
 
-  return {
-    cache,
-    get: getData,
-    load: loadData,
-    delete: deleteData,
-    clear: clearData,
-    generateKey,
+  const memoized: Partial<MemoizedFn<Result, Args>> = (...args: Args): Result => {
+    // Get data from cache
+    const key = generateKey(...args)
+    if (cache.has(key)) return cache.get(key) as Result
+
+    return _loadData(key, ...args)
   }
+  memoized.load = loadData
+  memoized.delete = deleteData
+  memoized.clear = clearData
+  memoized.generateKey = generateKey
+  memoized.cache = cache
+
+  return memoized as MemoizedFn<Result, Args>
 }

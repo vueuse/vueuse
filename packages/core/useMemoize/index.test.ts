@@ -19,12 +19,12 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(resolver).toHaveBeenCalledTimes(1)
         expect(resolver).toHaveBeenCalledWith(1)
 
         resolver.mockClear()
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
@@ -33,16 +33,16 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        expect(memo.get(1)).toBe('result-1')
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(1)).toBe('result-1')
+        expect(memo(2)).toBe('result-2')
 
         expect(resolver).toHaveBeenCalledTimes(2)
         expect(resolver).toHaveBeenNthCalledWith(1, 1)
         expect(resolver).toHaveBeenNthCalledWith(2, 2)
 
         resolver.mockClear()
-        expect(memo.get(1)).toBe('result-1')
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(1)).toBe('result-1')
+        expect(memo(2)).toBe('result-2')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
@@ -52,8 +52,8 @@ describe('useMemoize', () => {
         const _resolver = jest.fn(() => 'result')
         const memo = useMemoize(_resolver)
 
-        expect(memo.get()).toBe('result')
-        expect(memo.get()).toBe('result')
+        expect(memo()).toBe('result')
+        expect(memo()).toBe('result')
         expect(_resolver).toHaveBeenCalledTimes(1)
       })
     })
@@ -63,15 +63,15 @@ describe('useMemoize', () => {
         const _resolver = jest.fn((arg1: number, arg2: number) => `result-${arg1}-${arg2}`)
         const memo = useMemoize(_resolver)
 
-        expect(memo.get(1, 1)).toBe('result-1-1')
-        expect(memo.get(1, 2)).toBe('result-1-2')
+        expect(memo(1, 1)).toBe('result-1-1')
+        expect(memo(1, 2)).toBe('result-1-2')
         expect(_resolver).toHaveBeenCalledTimes(2)
         expect(_resolver).toHaveBeenNthCalledWith(1, 1, 1)
         expect(_resolver).toHaveBeenNthCalledWith(2, 1, 2)
 
         _resolver.mockClear()
-        expect(memo.get(1, 1)).toBe('result-1-1')
-        expect(memo.get(1, 2)).toBe('result-1-2')
+        expect(memo(1, 1)).toBe('result-1-1')
+        expect(memo(1, 2)).toBe('result-1-2')
         expect(_resolver).not.toHaveBeenCalled()
       })
     })
@@ -82,14 +82,14 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(memo.load(1)).toBe('result-1')
         expect(resolver).toHaveBeenCalledTimes(2)
         expect(resolver).toHaveBeenNthCalledWith(1, 1)
         expect(resolver).toHaveBeenNthCalledWith(2, 1)
 
         resolver.mockClear()
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
@@ -98,14 +98,14 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        const value1 = computed(() => memo.get(1))
+        const value1 = computed(() => memo(1))
         expect(value1.value).toBe('result-1')
         expect(resolver).toHaveBeenCalledTimes(1)
 
         resolver.mockReset()
         resolver.mockImplementation((arg1: number) => `new-result-${arg1}`)
 
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(resolver).not.toHaveBeenCalled()
 
         expect(memo.load(1)).toBe('new-result-1')
@@ -121,19 +121,19 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        expect(memo.get(1)).toBe('result-1')
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(1)).toBe('result-1')
+        expect(memo(2)).toBe('result-2')
         expect(resolver).toHaveBeenCalledTimes(2)
 
         resolver.mockClear()
         memo.delete(1)
 
-        expect(memo.get(1)).toBe('result-1')
+        expect(memo(1)).toBe('result-1')
         expect(resolver).toHaveBeenCalledTimes(1)
         expect(resolver).toHaveBeenNthCalledWith(1, 1)
 
         resolver.mockClear()
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(2)).toBe('result-2')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
@@ -144,15 +144,15 @@ describe('useMemoize', () => {
       useSetup(() => {
         const memo = useMemoize(resolver)
 
-        expect(memo.get(1)).toBe('result-1')
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(1)).toBe('result-1')
+        expect(memo(2)).toBe('result-2')
         expect(resolver).toHaveBeenCalledTimes(2)
 
         resolver.mockClear()
         memo.clear()
 
-        expect(memo.get(1)).toBe('result-1')
-        expect(memo.get(2)).toBe('result-2')
+        expect(memo(1)).toBe('result-1')
+        expect(memo(2)).toBe('result-2')
         expect(resolver).toHaveBeenCalledTimes(2)
         expect(resolver).toHaveBeenNthCalledWith(1, 1)
         expect(resolver).toHaveBeenNthCalledWith(2, 2)
@@ -167,15 +167,15 @@ describe('useMemoize', () => {
           const getKey = jest.fn((arg1: number) => arg1 % 2)
           const memo = useMemoize(resolver, { getKey })
 
-          expect(memo.get(1)).toBe('result-1')
-          expect(memo.get(2)).toBe('result-2')
+          expect(memo(1)).toBe('result-1')
+          expect(memo(2)).toBe('result-2')
           expect(resolver).toHaveBeenCalledTimes(2)
           expect(resolver).toHaveBeenNthCalledWith(1, 1)
           expect(resolver).toHaveBeenNthCalledWith(2, 2)
 
           resolver.mockClear()
-          expect(memo.get(3)).toBe('result-1')
-          expect(memo.get(4)).toBe('result-2')
+          expect(memo(3)).toBe('result-1')
+          expect(memo(4)).toBe('result-2')
           expect(resolver).not.toHaveBeenCalled()
         })
       })
@@ -199,7 +199,7 @@ describe('useMemoize', () => {
         useSetup(() => {
           const memo = useMemoize(resolver, { cache })
 
-          expect(memo.get(1)).toBe(serializedKey)
+          expect(memo(1)).toBe(serializedKey)
           expect(cache.get).toHaveBeenCalledTimes(1)
           expect(cache.get).toHaveBeenCalledWith(serializedKey)
           expect(cache.has).toHaveBeenCalledTimes(1)
@@ -214,7 +214,7 @@ describe('useMemoize', () => {
           const memo = useMemoize(resolver, { cache });
           (cache.has as jest.Mock).mockReturnValue(false)
 
-          expect(memo.get(1)).toBe(serializedKey)
+          expect(memo(1)).toBe(serializedKey)
           expect(cache.has).toHaveBeenCalledTimes(1)
           expect(cache.has).toHaveBeenCalledWith(serializedKey)
           expect(cache.set).toHaveBeenCalledTimes(1)
