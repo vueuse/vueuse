@@ -10,14 +10,22 @@ const { formatted, start, pause, reset } = useCountDown(24 * 60 * 60 * 1000, {
   onFinish: () => {
     console.log('finish')
   },
-  onChange: (time) => {
-    console.log(time)
-  },
 })
-
 effect(() => {
   reset(countdown.value)
 })
+
+const t2 = new Date(
+  new Date(new Date().toLocaleDateString()).getTime()
+  + 24 * 60 * 60 * 1000
+  - 1,
+)
+
+const { formatted: dateFormatted } = useCountDown(t2, {
+  format: 'HH:mm:ss:SSS',
+  millisecond: true,
+})
+
 </script>
 
 <template>
@@ -38,5 +46,7 @@ effect(() => {
         reset
       </button>
     </div>
+
+    <div>dateFormatted: {{ dateFormatted }}</div>
   </div>
 </template>

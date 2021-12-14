@@ -3,6 +3,8 @@ import { isClient, noop, useIntervalFn } from '@vueuse/shared'
 import {
   ref,
   computed,
+  Ref,
+  ComputedRef,
 } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 
@@ -49,6 +51,18 @@ function isSameSecond(time1: number, time2: number): boolean {
   return Math.floor(time1 / 1000) === Math.floor(time2 / 1000)
 }
 
+export interface UseCountDownReturn {
+  start: () => void
+  pause: () => void
+  reset: (totalTime?: number) => void
+  current: ComputedRef<CurrentTime>
+  formatted: ComputedRef<string>
+}
+
+export type UseCountDownDateReturn = Omit<UseCountDownReturn, 'start' | 'pause' | 'reset'>
+
+export function useCountDown(initialValue: Date, options: UseCountDownOptions): UseCountDownDateReturn
+export function useCountDown(initialValue: number, options: UseCountDownOptions): UseCountDownReturn
 /**
  * CountDown controller
  *
@@ -56,9 +70,13 @@ function isSameSecond(time1: number, time2: number): boolean {
  * @param initialValue - countdown
  * @param options
  */
-export function useCountDown(initialValue: number, options: UseCountDownOptions = {}) {
+export function useCountDown(initialValue: number | Date, options: UseCountDownOptions = {}): any {
   let endTime: number
   let counting: boolean
+
+  const isDate = initialValue instanceof Date
+
+  initialValue = initialValue.valueOf() - Date.now()
 
   const {
     millisecond = false,
@@ -68,13 +86,13 @@ export function useCountDown(initialValue: number, options: UseCountDownOptions 
     interval = (millisecond && typeof options.interval !== 'number' ? 'requestAnimationFrame' : 1000),
   } = options
 
-  const remain = ref(initialValue)
+  const remain = ref(initialValue) as Ref<number>
   const current = computed(() => parseTime(remain.value))
   const formatted = computed(() => parseFormat(format, current.value))
 
   const getCurrentRemain = () => Math.max(endTime - Date.now(), 0)
 
-  const pausable = interval === 'requestAnimationFrame' ? useRafFn(update, { immediate: false }) : useIntervalFn(update, interval)
+  const pausable = interval === 'requestAnimationFrame' ? useRafFn(update, { immediate: false }) : useIntervalFn(update, interval, { immediate: false })
 
   function update() {
     const remainRemain = getCurrentRemain()
@@ -116,9 +134,17 @@ export function useCountDown(initialValue: number, options: UseCountDownOptions 
     }
   }
 
-  function reset(totalTime: number = initialValue) {
+  function reset(totalTime: number = initialValue as number) {
     pause()
     remain.value = totalTime
+  }
+
+  if (isDate) {
+    start()
+    return {
+      current,
+      formatted,
+    }
   }
 
   return {
