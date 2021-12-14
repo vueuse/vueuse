@@ -1,4 +1,4 @@
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 
 import { computed } from 'vue-demi'
 
