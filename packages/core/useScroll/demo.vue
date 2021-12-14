@@ -1,14 +1,34 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
+import type { UseScrollOptions } from '.'
+
+const wheelDirection = ref('auto') as UseScrollOptions['wheelDirection']
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { scrollDirection: 'horizontal' })
+const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { wheelDirection })
 const { left, right, top, bottom } = toRefs(arrivedState)
 const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
 </script>
 
 <template>
+  <div>
+    <div>
+      force wheel scroll direction:
+      <label>
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="auto" />
+        auto
+      </label>
+      <label>
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="horizontal" />
+        horizontal
+      </label>
+      <label>
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="vertical" />
+        vertical
+      </label>
+    </div>
+  </div>
   <div class="flex">
     <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
       <div class="w-500px h-400px relative">
