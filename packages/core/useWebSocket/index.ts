@@ -157,8 +157,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  // Status code 1012 -> Service Restart https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
-  const close: WebSocket['close'] = (code = 1012, reason) => {
+  // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+  const close: WebSocket['close'] = (code = 1000, reason) => {
     if (!wsRef.value)
       return
     explicitlyClosed = true
