@@ -27,15 +27,15 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   const isActive = ref(false)
 
   function loop() {
-    if (!isActive.value)
+    if (!isActive.value || !window)
       return
+
     fn()
-    if (window)
-      window.requestAnimationFrame(loop)
+    window.requestAnimationFrame(loop)
   }
 
   function resume() {
-    if (!isActive.value) {
+    if (!isActive.value && window) {
       isActive.value = true
       loop()
     }

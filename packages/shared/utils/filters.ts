@@ -128,7 +128,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = 
       if (preventLeading) preventLeading = false
       else invoke()
     }
-    else if (trailing) {
+    if (trailing) {
       timer = setTimeout(() => {
         lastExec = Date.now()
         if (!leading) preventLeading = true

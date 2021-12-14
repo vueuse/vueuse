@@ -155,7 +155,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  const close: WebSocket['close'] = (code, reason) => {
+  // Status code 1012 -> Service Restart https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+  const close: WebSocket['close'] = (code = 1012, reason) => {
     if (!wsRef.value)
       return
     explicitlyClosed = true
@@ -249,7 +250,7 @@ export function useWebSocket<Data = any>(
   }
 
   const open = () => {
-    close(1012) // Status code 1012 -> Service Restart https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+    close()
     retried = 0
     _init()
   }

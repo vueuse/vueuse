@@ -25,6 +25,6 @@ export default {
 }
 ```
 
-## Related
+## Related Functions
 
 - `useVModel`

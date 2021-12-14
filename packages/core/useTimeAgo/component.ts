@@ -1,8 +1,8 @@
 import { defineComponent, reactive, toRefs } from 'vue-demi'
 import { MaybeRef } from '@vueuse/shared'
-import { useTimeAgo, TimeAgoOptions } from '@vueuse/core'
+import { useTimeAgo, UseTimeAgoOptions } from '@vueuse/core'
 
-interface UseTimeAgoComponentOptions extends Omit<TimeAgoOptions<true>, 'controls'> {
+interface UseTimeAgoComponentOptions extends Omit<UseTimeAgoOptions<true>, 'controls'> {
   time: MaybeRef<Date | number | string>
 }
 

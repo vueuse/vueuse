@@ -41,16 +41,15 @@ export function useScrollLock(
         { passive: false },
       )
     }
-    else {
-      ele.style.overflow = 'hidden'
-    }
+    ele.style.overflow = 'hidden'
     isLocked.value = true
   }
 
   const unlock = () => {
     const ele = (unref(element) as HTMLElement)
     if (!ele || !isLocked.value) return
-    isIOS ? touchMoveListener?.() : ele.style.overflow = initialOverflow
+    isIOS && touchMoveListener?.()
+    ele.style.overflow = initialOverflow
     isLocked.value = false
   }
 
