@@ -1,5 +1,6 @@
 import { noop, promiseTimeout } from '@vueuse/shared'
-import { Ref, ref, shallowRef } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 
 export interface UseAsyncStateReturn<T> {
   state: Ref<T>

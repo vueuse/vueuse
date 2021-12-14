@@ -1,8 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 

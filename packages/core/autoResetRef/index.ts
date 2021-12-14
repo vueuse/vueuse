@@ -1,5 +1,6 @@
-import { customRef, Ref, unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { customRef, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
 
 /**
  * Create a ref which will be reset to the default value after some time.

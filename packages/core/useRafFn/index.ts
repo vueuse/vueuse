@@ -1,6 +1,8 @@
 import { ref } from 'vue-demi'
-import { Pausable, tryOnScopeDispose, Fn } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { Pausable, Fn } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface RafFnOptions extends ConfigurableWindow {
   /**

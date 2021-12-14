@@ -1,6 +1,9 @@
-import { Ref, ref } from 'vue-demi'
-import { useEventListener, WindowEventName } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { WindowEventName } from '../useEventListener'
+import { useEventListener } from '../useEventListener'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | 'FnLock' | 'Meta' | 'NumLock' | 'ScrollLock' | 'Shift' | 'Symbol' | 'SymbolLock'
 

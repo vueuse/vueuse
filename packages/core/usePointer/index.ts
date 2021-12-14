@@ -1,8 +1,11 @@
-import { MaybeRef, objectPick, toRefs } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { objectPick, toRefs } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { PointerType, Position } from '../types'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { PointerType, Position } from '../types'
 
 export interface UsePointerState extends Position {
   pressure: number

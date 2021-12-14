@@ -1,7 +1,9 @@
 import { ref } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Listen for clicks outside of an element.

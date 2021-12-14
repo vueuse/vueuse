@@ -1,5 +1,6 @@
-import { MaybeRef, Pausable } from '@vueuse/shared'
-import { computed, ComputedRef, unref } from 'vue-demi'
+import type { MaybeRef, Pausable } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
+import { computed, unref } from 'vue-demi'
 import { useNow } from '../useNow'
 
 export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string

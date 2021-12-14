@@ -115,8 +115,7 @@ const pageClasses = computed(() => {
 
     <Page v-else>
       <template #top>
-        <slot name="page-top-ads">
-        </slot>
+        <slot name="page-top-ads" />
         <slot name="page-top" />
       </template>
       <template #bottom>

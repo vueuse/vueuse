@@ -6,7 +6,7 @@ import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
 import { packages } from '../meta/packages'
-import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
+import type { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.org'
 const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'

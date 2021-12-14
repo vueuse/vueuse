@@ -1,4 +1,5 @@
-import { createFilterWrapper, debounceFilter, FunctionArgs, MaybeRef, DebounceFilterOptions } from '../utils'
+import type { FunctionArgs, MaybeRef, DebounceFilterOptions } from '../utils'
+import { createFilterWrapper, debounceFilter } from '../utils'
 
 /**
  * Debounce execution of a function.

@@ -1,7 +1,9 @@
 import { watch, ref, unref, watchEffect } from 'vue-demi'
-import { isObject, MaybeRef, isString, ignorableWatch, isNumber, tryOnScopeDispose, Fn, createEventHook } from '@vueuse/shared'
+import type { MaybeRef, Fn } from '@vueuse/shared'
+import { isObject, isString, ignorableWatch, isNumber, tryOnScopeDispose, createEventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 /**
  * Many of the jsdoc definitions here are modified version of the

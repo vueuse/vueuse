@@ -1,5 +1,7 @@
-import { ref, Ref } from 'vue-demi'
-import { Fn, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'

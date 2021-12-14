@@ -1,5 +1,5 @@
 import { join, resolve } from 'path'
-import { UserConfig, Plugin } from 'vite'
+import type { UserConfig, Plugin } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'

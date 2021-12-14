@@ -1,6 +1,8 @@
-import { computed, Ref, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
-import { StorageLike, StorageOptions, useStorage } from '../useStorage'
+import type { StorageLike, StorageOptions } from '../useStorage'
+import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { onMounted, ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import {
   mapTo,

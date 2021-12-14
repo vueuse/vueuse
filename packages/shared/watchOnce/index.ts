@@ -1,5 +1,6 @@
-import { WatchSource, WatchCallback, WatchOptions, watch } from 'vue-demi'
-import { MapOldSources, MapSources } from '../utils'
+import type { WatchSource, WatchCallback, WatchOptions } from 'vue-demi'
+import { watch } from 'vue-demi'
+import type { MapOldSources, MapSources } from '../utils'
 
 // overlads
 export function watchOnce<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchOptions<Immediate>): void

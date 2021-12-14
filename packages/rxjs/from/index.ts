@@ -1,7 +1,8 @@
 import { from as fromRxjs, fromEvent as fromEventRx, Observable } from 'rxjs'
 import type { ObservableInput } from 'rxjs'
 import { filter, mergeMap } from 'rxjs/operators'
-import { Ref, isRef, watch, WatchOptions } from 'vue-demi'
+import type { Ref, WatchOptions } from 'vue-demi'
+import { isRef, watch } from 'vue-demi'
 
 export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: WatchOptions): Observable<T> {
   if (isRef<T>(value)) {

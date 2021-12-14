@@ -1,8 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { MaybeRef } from '@vueuse/shared'
-import { watch, Ref, ref, shallowRef } from 'vue-demi'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { watch, ref, shallowRef } from 'vue-demi'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface UseUserMediaOptions extends ConfigurableNavigator {
   /**
