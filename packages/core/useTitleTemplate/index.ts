@@ -1,8 +1,22 @@
-import type { MaybeRef } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
+import { isString, MaybeRef } from '@vueuse/shared'
+import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
-import { computed } from 'vue-demi'
-
-import { useTitle } from '../useTitle'
+export interface UseTitleOptions extends ConfigurableDocument {
+  /**
+   * Observe `document.title` changes using MutationObserve
+   *
+   * @default false
+   */
+  observe?: boolean
+  /**
+   * The template string to parse the title
+   *
+   * @default '%s'
+   */
+  titleTemplate?: string
+}
 
 /**
  * Reactive document title with templated title, which follows the
@@ -18,19 +32,37 @@ import { useTitle } from '../useTitle'
  */
 export const useTitleTemplate = (
   newTitle: MaybeRef<string | null | undefined> = null,
-  titleTemplate: string,
+  options: UseTitleOptions = {},
 ) => {
-  const title = useTitle(newTitle)
+  const {
+    document = defaultDocument,
+    observe = false,
+    titleTemplate = '%s',
+  } = options
 
-  // Replace the pre-defined string in the title template:
-  const templatedTitle = computed(() => {
-    return title.value ? (titleTemplate.includes('%s') ? titleTemplate.replace('%s', title.value) : title.value) : titleTemplate
-  })
+  const title = ref(newTitle ?? document?.title ?? null)
 
-  return {
+  watch(
     title,
-    templatedTitle,
+    (t, o) => {
+      if (isString(t) && t !== o && document)
+        document.title = titleTemplate.replace('%s', t)
+    },
+    { immediate: true },
+  )
+
+  if (observe && document) {
+    useMutationObserver(
+      document.head?.querySelector('title'),
+      () => {
+        if (document && document.title !== title.value)
+          title.value = titleTemplate.replace('%s', document.title)
+      },
+      { childList: true },
+    )
   }
+
+  return title
 }
 
 export type UseTitleTemplateReturn = ReturnType<typeof useTitleTemplate>
