@@ -134,9 +134,11 @@ importers:
   packages/core:
     specifiers:
       '@vueuse/shared': workspace:*
+      '@vueuse/ssr-context': workspace:*
       vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
+      '@vueuse/ssr-context': link:../ssr-context
       vue-demi: 0.12.1_c610c17c6f2bd1bfee5126645742bcd9
 
   packages/electron:

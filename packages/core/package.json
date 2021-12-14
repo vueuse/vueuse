@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
+    "@vueuse/ssr-context": "workspace:*",
     "vue-demi": "*"
   }
 }

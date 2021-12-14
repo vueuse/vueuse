@@ -4,6 +4,8 @@
 
 > Abstraction layer for SSR context for [VueUse](https://github.com/vueuse/vueuse).
 
+> ⚠️ This package is experimental and does not follow semver.
+
 ## License
 
 [MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2021-PRESENT [Anthony Fu](https://github.com/antfu)
