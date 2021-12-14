@@ -72,6 +72,7 @@ describe('useWakeLock', () => {
     expect(isActive.value).toBeFalsy()
 
     await request('screen')
+    await nextTick()
 
     expect(isActive.value).toBeTruthy()
 

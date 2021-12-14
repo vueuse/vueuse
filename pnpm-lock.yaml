@@ -58,7 +58,7 @@ importers:
       vite-plugin-pwa: ^0.11.11
       vite-plugin-windicss: ^1.5.4
       vitepress: ^0.20.5
-      vitest: ^0.0.81
+      vitest: ^0.0.82
       vue: ^3.2.26
       vue2: npm:vue@2
     devDependencies:
@@ -109,7 +109,7 @@ importers:
       vite-plugin-pwa: 0.11.11_vite@2.6.7
       vite-plugin-windicss: 1.5.4_vite@2.6.7
       vitepress: 0.20.5
-      vitest: 0.0.81_jsdom@19.0.0+vite@2.6.7
+      vitest: 0.0.82_jsdom@19.0.0+vite@2.6.7
       vue: 3.2.26
       vue2: /vue/2.6.14
 
@@ -4543,12 +4543,8 @@ packages:
     resolution: {integrity: sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==}
     engines: {node: ^10.12.0 || >=12.0.0}
     dependencies:
-      flatted: 3.2.2
+      flatted: 3.2.4
       rimraf: 3.0.2
-    dev: true
-
-  /flatted/3.2.2:
-    resolution: {integrity: sha512-JaTY/wtrcSyvXJl4IMFHPKyFur1sE9AUqc0QnhOaJ0CxHtAoIV8pYDzeEfAaNEtGkOfq4gr3LBFmdXW5mOQFnA==}
     dev: true
 
   /flatted/3.2.4:
@@ -6927,8 +6923,8 @@ packages:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=}
     dev: true
 
-  /tinyspy/0.0.6:
-    resolution: {integrity: sha512-1yBxEQ/lmgu6NvtAYrTxlhm6MszdJNlVHFxEWBmHYMGAWhr+Lc8rrm2K2J58NbagMINkU/qJuOfBU92kdUidSQ==}
+  /tinyspy/0.0.13:
+    resolution: {integrity: sha512-31GGJc7+mqL8mIP8BDJYve4WvwhXK/jAmEKhqQAv/mN660TlFIY+3seBANGsAFP9YFon46XlP94A+N2mPM063A==}
     engines: {node: '>=14.0.0'}
     dev: true
 
@@ -7394,8 +7390,8 @@ packages:
       - stylus
     dev: true
 
-  /vitest/0.0.81_jsdom@19.0.0+vite@2.6.7:
-    resolution: {integrity: sha512-tgr/ghauT/UcorzMyUt2cfVMpCgQ0JkL2KCxuYXWQ5Fikal5ZvYHuJebDk6X+A//XfRKTrulF3v19+h3cE0xvg==}
+  /vitest/0.0.82_jsdom@19.0.0+vite@2.6.7:
+    resolution: {integrity: sha512-sysKQcdHv2nTE19Ct0iGFYf+S8D8VT+L81kLdzHslansZihk6g63C65Xgqg/y0YJr4hee6OnKI8Hl7Y7uKX+Zg==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     peerDependencies:
@@ -7422,7 +7418,7 @@ packages:
       micromatch: 4.0.4
       piscina: 3.2.0
       source-map: 0.7.3
-      tinyspy: 0.0.6
+      tinyspy: 0.0.13
       vite: 2.6.7
     dev: true
 

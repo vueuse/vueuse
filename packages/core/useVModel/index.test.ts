@@ -29,8 +29,8 @@ describe('useVModel', () => {
     const data = useVModel(defaultProps(), undefined, emitMock)
     data.value = 'changed'
 
-    expect(emitMock.lastCall.args[0]).toBe(isVue2 ? 'input' : 'update:modelValue')
-    expect(emitMock.lastCall.args[1]).toBe('changed')
+    expect(emitMock.calls.at(-1)![0]).toBe(isVue2 ? 'input' : 'update:modelValue')
+    expect(emitMock.calls.at(-1)![1]).toBe('changed')
   })
 
   it('should use eventName if set', async() => {
@@ -39,7 +39,7 @@ describe('useVModel', () => {
     const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
     data.value = 'changed'
 
-    expect(emitMock.lastCall.args[0]).toBe('onChange')
+    expect(emitMock.calls.at(-1)![0]).toBe('onChange')
   })
 
   it('should emit w/ passive', async() => {
@@ -55,8 +55,8 @@ describe('useVModel', () => {
 
     await nextTick()
 
-    expect(emitMock.lastCall.args[0]).toBe('update:age')
-    expect(emitMock.lastCall.args[1]).toBe(20)
+    expect(emitMock.calls.at(-1)![0]).toBe('update:age')
+    expect(emitMock.calls.at(-1)![1]).toBe(20)
   })
 
   it('should emit w/ object props type', async() => {
@@ -74,9 +74,9 @@ describe('useVModel', () => {
 
     await nextTick()
 
-    expect(emitMock.lastCall.args[0]).toBe('update:data')
+    expect(emitMock.calls.at(-1)![0]).toBe('update:data')
     expect(emitMock).toBeCalledTimes(1)
-    expect(emitMock.lastCall.args[1]).toEqual({ age: 20 })
+    expect(emitMock.calls.at(-1)![1]).toEqual({ age: 20 })
   })
 
   it('should emit w/ array props type', async() => {
@@ -95,7 +95,7 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock).toBeCalledTimes(1)
-    expect(emitMock.lastCall.args[0]).toBe('update:data')
-    expect(emitMock.lastCall.args[1]).toEqual({ hobbies: ['coding', 'basketball'] })
+    expect(emitMock.calls.at(-1)![0]).toBe('update:data')
+    expect(emitMock.calls.at(-1)![1]).toEqual({ hobbies: ['coding', 'basketball'] })
   })
 })
