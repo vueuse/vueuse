@@ -1,5 +1,6 @@
-import { unref, ComponentPublicInstance } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { ComponentPublicInstance } from 'vue-demi'
+import { unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
 
 export type VueInstance = ComponentPublicInstance
 export type MaybeElementRef = MaybeRef<HTMLElement | SVGElement | VueInstance | undefined | null>

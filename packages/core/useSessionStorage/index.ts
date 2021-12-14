@@ -1,5 +1,6 @@
-import { MaybeRef, RemovableRef } from '@vueuse/shared'
-import { StorageOptions, useStorage } from '../useStorage'
+import type { MaybeRef, RemovableRef } from '@vueuse/shared'
+import type { StorageOptions } from '../useStorage'
+import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 
 export function useSessionStorage (key: string, initialValue: MaybeRef<string>, options?: StorageOptions<string>): RemovableRef<string>

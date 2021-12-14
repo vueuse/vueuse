@@ -1,7 +1,9 @@
-import { computed, Ref } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { Ref } from 'vue-demi'
+import { computed } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
-import { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
 export interface FocusWithinReturn {
   /**
    * True if the element or any of its descendants are focused

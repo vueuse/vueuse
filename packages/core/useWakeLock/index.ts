@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { defaultNavigator, ConfigurableNavigator, defaultDocument, ConfigurableDocument } from '../_configurable'
+import type { ConfigurableNavigator, ConfigurableDocument } from '../_configurable'
+import { defaultNavigator, defaultDocument } from '../_configurable'
 
 type WakeLockType = 'screen'
 

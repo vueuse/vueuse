@@ -1,5 +1,6 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useIdle, IdleOptions } from '@vueuse/core'
+import type { IdleOptions } from '@vueuse/core'
+import { useIdle } from '@vueuse/core'
 
 export const UseIdle = defineComponent<IdleOptions & { timeout: number }>({
   name: 'UseIdle',

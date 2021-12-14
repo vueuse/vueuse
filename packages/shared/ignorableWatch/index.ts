@@ -1,6 +1,8 @@
-import { ref, watch, WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { Fn, createFilterWrapper, bypassFilter, MapSources, MapOldSources } from '../utils'
-import { WatchWithFilterOptions } from '../watchWithFilter'
+import type { WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
+import type { Fn, MapSources, MapOldSources } from '../utils'
+import { createFilterWrapper, bypassFilter } from '../utils'
+import type { WatchWithFilterOptions } from '../watchWithFilter'
 
 // ignorableWatch(source,callback,options) composable
 //

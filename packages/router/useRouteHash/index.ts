@@ -1,6 +1,6 @@
 import { computed, nextTick, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
-import { ReactiveRouteOptions } from '../_types'
+import type { ReactiveRouteOptions } from '../_types'
 
 export function useRouteHash(
   defaultValue?: string,

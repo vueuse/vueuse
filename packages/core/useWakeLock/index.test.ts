@@ -1,6 +1,7 @@
 import { nextTick } from 'vue-demi'
 import { defaultDocument } from '../_configurable'
-import { useWakeLock, WakeLockSentinel } from '.'
+import type { WakeLockSentinel } from '.'
+import { useWakeLock } from '.'
 
 describe('useWakeLock', () => {
   afterEach(() => {

@@ -1,4 +1,5 @@
-import { WatchOptions, watch, WatchSource, WatchCallback } from 'vue-demi'
+import type { WatchOptions, WatchSource, WatchCallback } from 'vue-demi'
+import { watch } from 'vue-demi'
 
 /**
  * Shorthand for watching value to be truthy
