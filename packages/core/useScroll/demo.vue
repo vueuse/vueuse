@@ -16,15 +16,15 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
     <div>
       force wheel scroll direction:
       <label>
-        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="auto" />
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="auto">
         auto
       </label>
       <label>
-        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="horizontal" />
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="horizontal">
         horizontal
       </label>
       <label>
-        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="vertical" />
+        <input v-model="wheelDirection" type="radio" name="wheelDirection" value="vertical">
         vertical
       </label>
     </div>
