@@ -1,5 +1,6 @@
-import { Ref, ref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export function useElementHover(el: MaybeRef<EventTarget>): Ref<boolean> {

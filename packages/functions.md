@@ -21,6 +21,7 @@
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
+  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark / light / customs) with auto data persistence
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
@@ -35,6 +36,7 @@
   - [`usePreferredColorScheme`](https://vueuse.org/core/usePreferredColorScheme/) — reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query
   - [`usePreferredDark`](https://vueuse.org/core/usePreferredDark/) — reactive dark theme preference
   - [`usePreferredLanguages`](https://vueuse.org/core/usePreferredLanguages/) — reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
+  - [`useScreenSafeArea`](https://vueuse.org/core/useScreenSafeArea/) — reactive `env(safe-area-inset-*)`
   - [`useScriptTag`](https://vueuse.org/core/useScriptTag/) — script tag injecting
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
@@ -77,10 +79,12 @@
   - [`useDocumentVisibility`](https://vueuse.org/core/useDocumentVisibility/) — reactively track [`document.visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState)
   - [`useDraggable`](https://vueuse.org/core/useDraggable/) — make elements draggable
   - [`useElementBounding`](https://vueuse.org/core/useElementBounding/) — reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element
+  - [`useElementByPoint`](https://vueuse.org/core/useElementByPoint/) — reactive element by point
   - [`useElementHover`](https://vueuse.org/core/useElementHover/) — reactive element's hover state
   - [`useElementSize`](https://vueuse.org/core/useElementSize/) — reactive size of an HTML element
   - [`useElementVisibility`](https://vueuse.org/core/useElementVisibility/) — tracks the visibility of an element within the viewport
   - [`useFocus`](https://vueuse.org/core/useFocus/) — reactive utility to track or set the focus state of a DOM element
+  - [`useFocusWithin`](https://vueuse.org/core/useFocusWithin/) — reactive utility to track if an element or one of its decendants has focus
   - [`useFps`](https://vueuse.org/core/useFps/) — reactive FPS (frames per second)
   - [`useGeolocation`](https://vueuse.org/core/useGeolocation/) — reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
   - [`useIdle`](https://vueuse.org/core/useIdle/) — tracks whether the user is being inactive
@@ -91,6 +95,7 @@
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
   - [`useMousePressed`](https://vueuse.org/core/useMousePressed/) — reactive mouse pressing state
   - [`useMutationObserver`](https://vueuse.org/core/useMutationObserver/) — watch for changes being made to the DOM tree
+  - [`useNavigatorLanguage`](https://vueuse.org/core/useNavigatorLanguage/) — watch for changes being made to the navigator language preference by the user
   - [`useNetwork`](https://vueuse.org/core/useNetwork/) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
@@ -103,6 +108,7 @@
   - [`useSpeechRecognition`](https://vueuse.org/core/useSpeechRecognition/) — reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)
   - [`useSpeechSynthesis`](https://vueuse.org/core/useSpeechSynthesis/) — reactive [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis)
   - [`useSwipe`](https://vueuse.org/core/useSwipe/) — reactive swipe detection based on [`TouchEvents`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)
+  - [`useTextSelection`](https://vueuse.org/core/useTextSelection/) — reactively track user text selection based on [`Window.getSelection`](https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection)
   - [`useUserMedia`](https://vueuse.org/core/useUserMedia/) — reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) streaming
   - [`useWindowFocus`](https://vueuse.org/core/useWindowFocus/) — reactively track window focus with `window.onfocus` and `window.onblur` events
   - [`useWindowScroll`](https://vueuse.org/core/useWindowScroll/) — reactive window scroll
@@ -114,6 +120,7 @@
   - [`useLocalStorage`](https://vueuse.org/core/useLocalStorage/) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
   - [`useSessionStorage`](https://vueuse.org/core/useSessionStorage/) — reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
   - [`useStorage`](https://vueuse.org/core/useStorage/) — reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+  - [`useStorageAsync`](https://vueuse.org/core/useStorageAsync/) — reactive Storage in with async support
 
 ### Utilities
   - [`and`](https://vueuse.org/shared/and/) — `AND` condition for refs
@@ -148,6 +155,7 @@
   - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
+  - [`useCycleList`](https://vueuse.org/core/useCycleList/) — cycle through a list of items
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function

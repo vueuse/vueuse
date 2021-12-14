@@ -4,15 +4,23 @@ VueUse is a collection of utility functions based on [Composition API](https://v
 
 ## Installation
 
-> 🎩 VueUse works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
+> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
 
 ```bash
 npm i @vueuse/core
 ```
 
-Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
+[Add ons](/add-ons.html) | [Nuxt Module](/guide/index.html#nuxt)
 
 > From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
+
+###### Demos
+
+- [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
+- [Nuxt 3 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
+- [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
+- [Nuxt 2 + Vue 2](https://github.com/antfu/vitesse-nuxt-bridge)
+- [Vue CLI + Vue 2](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 
@@ -25,13 +33,17 @@ It will be exposed to global as `window.VueUse`
 
 ### Nuxt
 
-From v6.7.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
+From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
+
+```bash
+npm i -D @vueuse/nuxt
+```
 
 ```ts
 // nuxt.config.js
 export default {
   buildModules: [
-    '@vueuse/core/nuxt'
+    '@vueuse/nuxt'
   ]
 }
 ```

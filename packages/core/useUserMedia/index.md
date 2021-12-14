@@ -45,7 +45,7 @@ const { stream } = useUserMedia({
 })
 ```
 
-## Related
+## Related Functions
 
 - `useDevicesList`
 - `usePermission`

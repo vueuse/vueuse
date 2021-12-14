@@ -13,7 +13,7 @@ Keep states in the global scope to be reusable across Vue instances.
 import { createGlobalState, useStorage } from '@vueuse/core'
 
 export const useGlobalState = createGlobalState(
-  () => useStorage('vue-use-local-storage'),
+  () => useStorage('vueuse-local-storage', 'initialValue'),
 )
 ```
 
@@ -29,6 +29,6 @@ export default defineComponent({
 })
 ```
 
-## Related
+## Related Functions
 
 - `createSharableComposable`

@@ -1,6 +1,8 @@
 import type { WebFrame } from 'electron'
-import { isRef, Ref, ref, watch } from 'vue-demi'
-import { MaybeRef, isNumber } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { isRef, ref, watch } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { isNumber } from '@vueuse/shared'
 
 export function useZoomFactor(factor: MaybeRef<number>): Ref<number>
 export function useZoomFactor(webFrame: WebFrame, factor: MaybeRef<number>): Ref<number>

@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const disabled = [
   'useFetch',
   'toRefs',
-  'useCookie'
+  'useCookie',
 ]
 
 /**
@@ -25,6 +25,8 @@ const disabled = [
  */
 export default function() {
   const { nuxt } = this
+
+  console.log('[@vueuse/core] Installing Nuxt module with `@vueuse/core/nuxt` is deprecated. Please use `@vueuse/nuxt` instead.')
 
   // opt-out Vite deps optimization for VueUse
   nuxt.hook('vite:extend', ({ config }) => {

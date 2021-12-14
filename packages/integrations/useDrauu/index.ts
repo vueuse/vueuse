@@ -1,7 +1,11 @@
-import { Ref, ref, watch } from 'vue-demi'
-import { createDrauu, Drauu, Options, Brush } from 'drauu'
-import { MaybeElementRef, unrefElement, createEventHook, EventHookOn } from '@vueuse/core'
-import { tryOnScopeDispose, Fn } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
+import type { Drauu, Options, Brush } from 'drauu'
+import { createDrauu } from 'drauu'
+import type { MaybeElementRef, EventHookOn } from '@vueuse/core'
+import { unrefElement, createEventHook } from '@vueuse/core'
+import type { Fn } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
 export type UseDrauuOptions = Omit<Options, 'el'>
 

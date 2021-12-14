@@ -1,6 +1,6 @@
 import { h, ref, defineComponent } from 'vue-demi'
 import { onClickOutside } from '@vueuse/core'
-import { RenderableComponent } from '../types'
+import type { RenderableComponent } from '../types'
 
 export const OnClickOutside = defineComponent<RenderableComponent>({
   name: 'OnClickOutside',
