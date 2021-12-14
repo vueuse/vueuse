@@ -15,6 +15,7 @@ const config: UserConfig = {
       '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
       '@vueuse/core': resolve(__dirname, 'core/index.ts'),
       '@vueuse/components': resolve(__dirname, 'components/index.ts'),
+      '@vueuse/ssr-context': resolve(__dirname, 'ssr-context/index.ts'),
       '@vueuse/docs-utils': resolve(__dirname, '.vitepress/utils.ts'),
     },
     dedupe: [

@@ -1,8 +1,21 @@
+import { Awaitable } from '@vueuse/shared'
+
+export interface StorageLikeAsync {
+  getItem(key: string): Awaitable<string | null>
+  setItem(key: string, value: string): Awaitable<void>
+  removeItem(key: string): Awaitable<void>
+}
+
+export interface StorageLike {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+  removeItem(key: string): void
+}
+
 export interface SSRContextMap {
-  getStorage: (key: string) => Promise<void>
-  setStorage: (key: string, value: any) => Promise<void>
-  updateHTMLAttrs: (attrs: any) => void
-  updateBodyAttrs: (attrs: any) => void
+  getDefaultStorage: () => StorageLike | undefined
+  getDefaultStorageAsync: () => StorageLikeAsync | undefined
+  updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
 }
 
 const context: Partial<SSRContextMap> = {}

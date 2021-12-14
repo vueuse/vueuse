@@ -1,5 +1,6 @@
 import { computed, Ref, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
+import { getSSRContext } from '@vueuse/ssr-context'
 import { StorageLike, StorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
@@ -100,26 +101,32 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     },
   })
 
-  function defaultOnChanged(value: T | BasicColorSchema) {
-    const el = window?.document.querySelector(selector)
-    if (!el)
-      return
+  const updateHTMLAttrs = getSSRContext(
+    'updateHTMLAttrs',
+    (selector, attribute, value) => {
+      const el = window?.document.querySelector(selector)
+      if (!el)
+        return
 
-    if (attribute === 'class') {
-      const current = (modes[value] || '').split(/\s/g)
-      Object.values(modes)
-        .flatMap(i => (i || '').split(/\s/g))
-        .filter(Boolean)
-        .forEach((v) => {
-          if (current.includes(v))
-            el.classList.add(v)
-          else
-            el.classList.remove(v)
-        })
-    }
-    else {
-      el.setAttribute(attribute, value)
-    }
+      if (attribute === 'class') {
+        const current = value.split(/\s/g)
+        Object.values(modes)
+          .flatMap(i => (i || '').split(/\s/g))
+          .filter(Boolean)
+          .forEach((v) => {
+            if (current.includes(v))
+              el.classList.add(v)
+            else
+              el.classList.remove(v)
+          })
+      }
+      else {
+        el.setAttribute(attribute, value)
+      }
+    })
+
+  function defaultOnChanged(mode: T | BasicColorSchema) {
+    updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)
   }
 
   function onChanged(mode: T | BasicColorSchema) {

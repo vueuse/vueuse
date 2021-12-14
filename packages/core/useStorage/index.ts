@@ -1,4 +1,5 @@
 import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemovableRef, Awaitable } from '@vueuse/shared'
+import { getSSRContext, StorageLike } from '@vueuse/ssr-context'
 import { ref, Ref, unref, shallowRef } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableWindow, defaultWindow } from '../_configurable'
@@ -12,18 +13,6 @@ export type Serializer<T> = {
 export type SerializerAsync<T> = {
   read(raw: string): Awaitable<T>
   write(value: T): Awaitable<string>
-}
-
-export interface StorageLikeAsync {
-  getItem(key: string): Awaitable<string | null>
-  setItem(key: string, value: string): Awaitable<void>
-  removeItem(key: string): Awaitable<void>
-}
-
-export interface StorageLike {
-  getItem(key: string): string | null
-  setItem(key: string, value: string): void
-  removeItem(key: string): void
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
@@ -117,7 +106,7 @@ export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<nul
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
-  storage: StorageLike | undefined = defaultWindow?.localStorage,
+  storage: StorageLike | undefined = getSSRContext('getDefaultStorage', () => defaultWindow?.localStorage)(),
   options: StorageOptions<T> = {},
 ): RemovableRef<T> {
   const {

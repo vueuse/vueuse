@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/ssr-context",
-  "version": "7.2.2",
+  "version": "7.3.0",
   "description": "Abstraction layer for SSR context",
   "keywords": [
     "vue",
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/ssr-context#readme",
   "dependencies": {
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }
