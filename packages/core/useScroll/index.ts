@@ -1,6 +1,6 @@
 import { ref, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
+import { useThrottleFn, useDebounceFn, noop, isWindowsOS } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -49,7 +49,12 @@ export interface UseScrollOptions {
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
 
-  scrollDirection?: 'horizontal' | 'vertical'
+  /**
+   * scroll direction control.
+   *
+   * @default 'auto'
+   */
+  scrollDirection?: 'horizontal' | 'vertical' | 'auto'
 }
 
 /**
@@ -79,7 +84,7 @@ export function useScroll(
       capture: false,
       passive: true,
     },
-    scrollDirection,
+    scrollDirection = 'auto',
   } = options
 
   const x = ref(0)
@@ -141,17 +146,27 @@ export function useScroll(
       eventListenerOptions,
     )
 
-    if (scrollDirection) {
+    if (scrollDirection !== 'auto') {
       useEventListener(element, 'wheel', (e: WheelEvent) => {
         e.preventDefault()
+
         const ele = unref(element) as HTMLElement
+
+        // @ts-expect-error no type for e.wheelDelta
+        let wheelDelta: number = e.wheelDelta
+        wheelDelta = (isWindowsOS ? -wheelDelta / 3 : wheelDelta)
+
         if (scrollDirection === 'horizontal') {
-          // @ts-expect-error
-          ele.scrollLeft += e.wheelDelta
+          ele.scrollTo({
+            left: ele.scrollLeft + wheelDelta,
+            top: ele.scrollTop,
+          })
         }
         else {
-          // @ts-expect-error
-          ele.scrollTop += e.wheelDelta
+          ele.scrollTo({
+            left: ele.scrollLeft,
+            top: ele.scrollTop + wheelDelta,
+          })
         }
       })
     }
