@@ -1,5 +1,7 @@
-import { Ref, ref, shallowRef } from 'vue-demi'
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
+import type { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
+import axios from 'axios'
 
 export interface UseAxiosReturn<T> {
 

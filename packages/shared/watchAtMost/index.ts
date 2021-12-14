@@ -1,6 +1,8 @@
-import { Ref, WatchSource, ref, unref, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { MapOldSources, MapSources, MaybeRef } from '../utils'
-import { WatchWithFilterOptions, watchWithFilter } from '../watchWithFilter'
+import type { Ref, WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
+import type { MapOldSources, MapSources, MaybeRef } from '../utils'
+import type { WatchWithFilterOptions } from '../watchWithFilter'
+import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Immediate> {
   count: MaybeRef<number>

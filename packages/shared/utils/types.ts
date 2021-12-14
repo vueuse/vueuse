@@ -1,4 +1,4 @@
-import { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
  * Any function

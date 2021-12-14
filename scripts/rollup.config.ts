@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { resolve } from 'path'
-import esbuild, { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
+import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
+import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'

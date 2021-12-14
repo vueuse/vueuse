@@ -1,7 +1,8 @@
 import { computed } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
-import { BasicColorSchema, useColorMode, UseColorModeOptions } from '../useColorMode'
+import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
+import { useColorMode } from '../useColorMode'
 
 export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchema>, 'modes' | 'onChanged'> {
   /**

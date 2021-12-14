@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
 
 /**

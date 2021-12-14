@@ -1,8 +1,12 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemovableRef, Awaitable } from '@vueuse/shared'
-import { getSSRContext, StorageLike } from '@vueuse/ssr-context'
-import { ref, Ref, unref, shallowRef } from 'vue-demi'
+import type { ConfigurableFlush, ConfigurableEventFilter, MaybeRef, RemovableRef, Awaitable } from '@vueuse/shared'
+import { watchWithFilter } from '@vueuse/shared'
+import type { StorageLike } from '@vueuse/ssr-context'
+import { getSSRContext } from '@vueuse/ssr-context'
+import type { Ref } from 'vue-demi'
+import { ref, unref, shallowRef } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export type Serializer<T> = {

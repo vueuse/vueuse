@@ -1,4 +1,5 @@
-import { reactive, toRef, UnwrapRef } from 'vue-demi'
+import type { UnwrapRef } from 'vue-demi'
+import { reactive, toRef } from 'vue-demi'
 
 /**
  * Reactively pick fields from a reactive object

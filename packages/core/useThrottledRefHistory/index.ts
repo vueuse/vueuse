@@ -1,6 +1,8 @@
-import { MaybeRef, throttleFilter } from '@vueuse/shared'
-import { Ref } from 'vue-demi'
-import { UseRefHistoryOptions, UseRefHistoryReturn, useRefHistory } from '../useRefHistory'
+import type { MaybeRef } from '@vueuse/shared'
+import { throttleFilter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import type { UseRefHistoryOptions, UseRefHistoryReturn } from '../useRefHistory'
+import { useRefHistory } from '../useRefHistory'
 
 /**
  * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.

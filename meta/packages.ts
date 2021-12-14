@@ -1,4 +1,4 @@
-import { PackageManifest } from './types'
+import type { PackageManifest } from './types'
 
 export const packages: PackageManifest[] = [
   {

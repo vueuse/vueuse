@@ -1,6 +1,8 @@
-import { MaybeRef, noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref, unref } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   /**

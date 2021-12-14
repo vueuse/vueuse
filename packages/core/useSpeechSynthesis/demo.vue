@@ -53,9 +53,9 @@ const stop = () => {
     </div>
     <div v-else>
       <label class="font-bold mr-2">Spoken Text</label>
-      <input v-model="text" class="!inline-block" type="text" />
+      <input v-model="text" class="!inline-block" type="text">
 
-      <br />
+      <br>
       <label class="font-bold mr-2">Language</label>
       <select v-model="lang" class="ml-5 border h-9 w-50 outline-none">
         <option disabled>

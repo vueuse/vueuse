@@ -2,7 +2,8 @@
 
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface BatteryManager extends EventTarget {
   charging: boolean

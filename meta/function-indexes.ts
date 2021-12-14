@@ -1,5 +1,5 @@
 import _indexes from '../indexes.json'
-import { PackageIndexes } from './types'
+import type { PackageIndexes } from './types'
 
 const indexes = _indexes as PackageIndexes
 
