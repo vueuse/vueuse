@@ -3,7 +3,7 @@ import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
+const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { scrollDirection: 'horizontal' })
 const { left, right, top, bottom } = toRefs(arrivedState)
 const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
 </script>

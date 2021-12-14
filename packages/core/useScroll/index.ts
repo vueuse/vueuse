@@ -1,4 +1,4 @@
-import { ref, reactive } from 'vue-demi'
+import { ref, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
@@ -48,6 +48,8 @@ export interface UseScrollOptions {
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
+
+  scrollDirection?: 'horizontal' | 'vertical'
 }
 
 /**
@@ -77,6 +79,7 @@ export function useScroll(
       capture: false,
       passive: true,
     },
+    scrollDirection,
   } = options
 
   const x = ref(0)
@@ -115,7 +118,7 @@ export function useScroll(
       directions.right = scrollLeft > x.value
       arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
       arrivedState.right
-          = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
+        = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
       x.value = scrollLeft
 
       const scrollTop = eventTarget.scrollTop
@@ -123,7 +126,7 @@ export function useScroll(
       directions.bottom = scrollTop > y.value
       arrivedState.top = scrollTop <= 0 + (offset.top || 0)
       arrivedState.bottom
-          = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
+        = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
       y.value = scrollTop
 
       isScrolling.value = true
@@ -137,6 +140,21 @@ export function useScroll(
       throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
       eventListenerOptions,
     )
+
+    if (scrollDirection) {
+      useEventListener(element, 'wheel', (e: WheelEvent) => {
+        e.preventDefault()
+        const ele = unref(element) as HTMLElement
+        if (scrollDirection === 'horizontal') {
+          // @ts-expect-error
+          ele.scrollLeft += e.wheelDelta
+        }
+        else {
+          // @ts-expect-error
+          ele.scrollTop += e.wheelDelta
+        }
+      })
+    }
   }
 
   return {
