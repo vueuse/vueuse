@@ -1,5 +1,5 @@
 // reference https://github.com/youzan/vant/blob/dev/packages/vant-use/src/useCountDown/index.ts
-import { isClient } from '@vueuse/shared'
+import { isClient, noop, useIntervalFn } from '@vueuse/shared'
 import {
   ref,
   computed,
@@ -16,8 +16,8 @@ export type CurrentTime = {
 }
 
 export type UseCountDownOptions = {
-  time: number
   millisecond?: boolean
+  interval?: number | 'requestAnimationFrame'
   format?: string
   onChange?: (current: CurrentTime) => void
   onFinish?: () => void
@@ -53,27 +53,38 @@ function isSameSecond(time1: number, time2: number): boolean {
  * CountDown controller
  *
  * @see https://vueuse.org/useCountDown
+ * @param initialValue - countdown
  * @param options
  */
-export function useCountDown(options: UseCountDownOptions) {
+export function useCountDown(initialValue: number, options: UseCountDownOptions = {}) {
   let endTime: number
   let counting: boolean
 
-  const remain = ref(options.time)
+  const {
+    millisecond = false,
+    format = 'HH:mm:ss',
+    onChange = noop,
+    onFinish = noop,
+    interval = (millisecond && typeof options.interval !== 'number' ? 'requestAnimationFrame' : 1000),
+  } = options
+
+  const remain = ref(initialValue)
   const current = computed(() => parseTime(remain.value))
-  const formatted = computed(() => parseFormat(options.format || 'HH:mm:ss', current.value))
+  const formatted = computed(() => parseFormat(format, current.value))
 
   const getCurrentRemain = () => Math.max(endTime - Date.now(), 0)
 
-  const pausable = useRafFn(() => {
+  const pausable = interval === 'requestAnimationFrame' ? useRafFn(update, { immediate: false }) : useIntervalFn(update, interval)
+
+  function update() {
     const remainRemain = getCurrentRemain()
 
-    if (options.millisecond || !isSameSecond(remainRemain, remain.value) || remainRemain === 0)
+    if (millisecond || !isSameSecond(remainRemain, remain.value) || remainRemain === 0)
       setRemain(remainRemain)
 
     if (remain.value <= 0)
       pausable!.pause()
-  }, { immediate: false })
+  }
 
   function pause() {
     counting = false
@@ -82,11 +93,11 @@ export function useCountDown(options: UseCountDownOptions) {
 
   function setRemain(value: number) {
     remain.value = value
-    options.onChange?.(current.value)
+    onChange(current.value)
 
     if (value === 0) {
       pausable.pause()
-      options.onFinish?.()
+      onFinish()
     }
   }
 
@@ -105,7 +116,7 @@ export function useCountDown(options: UseCountDownOptions) {
     }
   }
 
-  function reset(totalTime: number = options.time) {
+  function reset(totalTime: number = initialValue) {
     pause()
     remain.value = totalTime
   }

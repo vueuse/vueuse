@@ -4,8 +4,7 @@ import { useCountDown } from '.'
 
 const countdown = ref(24 * 60 * 60 * 1000)
 
-const { formatted, start, pause, reset } = useCountDown({
-  time: 24 * 60 * 60 * 1000,
+const { formatted, start, pause, reset } = useCountDown(24 * 60 * 60 * 1000, {
   millisecond: true,
   format: 'HH:mm:ss:SSS',
   onFinish: () => {
