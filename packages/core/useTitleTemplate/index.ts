@@ -5,7 +5,7 @@ import { defaultDocument } from '../_configurable'
 import type { ConfigurableDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
-export interface UseTitleOptions extends ConfigurableDocument {
+export interface UseTemplateTitleOptions extends ConfigurableDocument {
   /**
    * Observe `document.title` changes using MutationObserve
    *
@@ -34,7 +34,7 @@ export interface UseTitleOptions extends ConfigurableDocument {
  */
 export const useTitleTemplate = (
   newTitle: MaybeRef<string | null | undefined> = null,
-  options: UseTitleOptions = {},
+  options: UseTemplateTitleOptions = {},
 ) => {
   const {
     document = defaultDocument,
