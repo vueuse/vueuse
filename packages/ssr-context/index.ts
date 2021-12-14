@@ -1,4 +1,4 @@
-import { Awaitable } from '@vueuse/shared'
+import type { Awaitable } from '@vueuse/shared'
 
 export interface StorageLikeAsync {
   getItem(key: string): Awaitable<string | null>
