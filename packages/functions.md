@@ -39,6 +39,7 @@
   - [`useScriptTag`](https://vueuse.org/core/useScriptTag/) — script tag injecting
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
+  - [`useTitleTemplate`](https://vueuse.org/core/useTitleTemplate/) — reactive document title with template
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
   - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running
 
