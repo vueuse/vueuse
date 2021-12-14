@@ -1,5 +1,5 @@
 // reference https://github.com/youzan/vant/blob/dev/packages/vant-use/src/useCountDown/index.ts
-import { isClient, Pausable, tryOnScopeDispose } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 import {
   ref,
   computed,
@@ -62,45 +62,42 @@ export function useCountDown(options: UseCountDownOptions) {
   const remain = ref(options.time)
   const current = computed(() => parseTime(remain.value))
   const formatted = computed(() => parseFormat(options.format || 'HH:mm:ss', current.value))
-  let pausable: Pausable | null
-
-  const pause = () => {
-    counting = false
-    pausable?.pause()
-  }
 
   const getCurrentRemain = () => Math.max(endTime - Date.now(), 0)
 
-  const setRemain = (value: number) => {
+  const pausable = useRafFn(() => {
+    const remainRemain = getCurrentRemain()
+
+    if (options.millisecond || !isSameSecond(remainRemain, remain.value) || remainRemain === 0)
+      setRemain(remainRemain)
+
+    if (remain.value <= 0)
+      pausable!.pause()
+  }, { immediate: false })
+
+  function pause() {
+    counting = false
+    pausable.pause()
+  }
+
+  function setRemain(value: number) {
     remain.value = value
     options.onChange?.(current.value)
 
     if (value === 0) {
-      pause()
+      pausable.pause()
       options.onFinish?.()
     }
   }
 
-  const rafTick = () => {
-    pausable = useRafFn(() => {
-      const remainRemain = getCurrentRemain()
-
-      if (options.millisecond || !isSameSecond(remainRemain, remain.value) || remainRemain === 0)
-        setRemain(remainRemain)
-
-      if (remain.value <= 0)
-        pausable?.pause()
-    })
-  }
-
-  const tick = () => {
+  function tick() {
     if (!isClient)
       return
 
-    rafTick()
+    pausable.resume()
   }
 
-  const start = () => {
+  function start() {
     if (!counting) {
       endTime = Date.now() + remain.value
       counting = true
@@ -108,14 +105,10 @@ export function useCountDown(options: UseCountDownOptions) {
     }
   }
 
-  const reset = (totalTime: number = options.time) => {
+  function reset(totalTime: number = options.time) {
     pause()
     remain.value = totalTime
   }
-
-  tryOnScopeDispose(() => {
-    pausable?.pause()
-  })
 
   return {
     start,
