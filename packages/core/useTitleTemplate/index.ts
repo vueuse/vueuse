@@ -1,6 +1,8 @@
 import { ref, watch } from 'vue-demi'
-import { isString, MaybeRef } from '@vueuse/shared'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import { isString } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseTitleOptions extends ConfigurableDocument {
