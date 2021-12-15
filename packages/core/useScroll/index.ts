@@ -154,19 +154,21 @@ export function useScroll(
 
         const ele = unref(element) as HTMLElement
 
-        // @ts-expect-error no type for e.wheelDelta
-        let wheelDelta: number = e.wheelDelta
-        wheelDelta = (isWindowsOS ? -wheelDelta / 3 : wheelDelta)
-
         if (direction === 'horizontal') {
+          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
+          let wheelDelta: number = Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY) ? e.wheelDeltaX : e.wheelDeltaY
+          wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+
           ele.scrollTo({
             left: ele.scrollLeft + wheelDelta,
-            top: ele.scrollTop,
           })
         }
         else if (direction === 'vertical') {
+          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
+          let wheelDelta: number = Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX) ? e.wheelDeltaY : e.wheelDeltaX
+          wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+
           ele.scrollTo({
-            left: ele.scrollLeft,
             top: ele.scrollTop + wheelDelta,
           })
         }
