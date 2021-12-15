@@ -146,32 +146,37 @@ export function useScroll(
       eventListenerOptions,
     )
 
-    useEventListener(element, 'wheel', (e: WheelEvent) => {
+    useEventListener(element, 'wheel', (e: WheelEvent & {
+      wheelDelta: number
+      wheelDeltaX: number
+      wheelDeltaY: number
+    }) => {
       const direction = unref(wheelDirection) ?? 'auto'
 
-      if (direction !== 'auto') {
-        e.preventDefault()
+      if (direction === 'auto')
+        // default wheel event
+        return
 
-        const ele = unref(element) as HTMLElement
+      // Take over wheel events
+      e.preventDefault()
 
-        if (direction === 'horizontal') {
-          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
-          let wheelDelta: number = Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY) ? e.wheelDeltaX : e.wheelDeltaY
-          wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+      const ele = unref(element) as HTMLElement
 
-          ele.scrollTo({
-            left: ele.scrollLeft + wheelDelta,
-          })
-        }
-        else if (direction === 'vertical') {
-          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
-          let wheelDelta: number = Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX) ? e.wheelDeltaY : e.wheelDeltaX
-          wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+      if (direction === 'horizontal') {
+        let wheelDelta: number = Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY) ? e.wheelDeltaX : e.wheelDeltaY
+        wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
 
-          ele.scrollTo({
-            top: ele.scrollTop + wheelDelta,
-          })
-        }
+        ele.scrollTo({
+          left: ele.scrollLeft + wheelDelta,
+        })
+      }
+      else if (direction === 'vertical') {
+        let wheelDelta: number = Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX) ? e.wheelDeltaY : e.wheelDeltaX
+        wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+
+        ele.scrollTo({
+          top: ele.scrollTop + wheelDelta,
+        })
       }
     })
   }
