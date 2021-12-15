@@ -91,7 +91,7 @@
     "vite": "^2.7.2",
     "vite-plugin-pwa": "^0.11.11",
     "vite-plugin-windicss": "^1.5.4",
-    "vitepress": "^0.20.5",
+    "vitepress": "^0.20.8",
     "vue": "^3.2.26",
     "vue2": "npm:vue@2"
   },
