@@ -146,24 +146,17 @@ export function useScroll(
       eventListenerOptions,
     )
 
-    useEventListener(element, 'wheel', (e: WheelEvent & {
-      wheelDelta: number
-      wheelDeltaY: number
-      wheelDeltaX: number
-    }) => {
+    useEventListener(element, 'wheel', (e: WheelEvent) => {
       const direction = unref(wheelDirection) ?? 'auto'
 
       if (direction !== 'auto') {
+        e.preventDefault()
+
         const ele = unref(element) as HTMLElement
+
         if (direction === 'horizontal') {
-          if (Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY))
-            // default horizontal wheel event
-            return
-
-          // control wheel scroll
-          e.preventDefault()
-
-          let wheelDelta: number = e.wheelDeltaY
+          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
+          let wheelDelta: number = Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY) ? e.wheelDeltaX : e.wheelDeltaY
           wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
 
           ele.scrollTo({
@@ -171,13 +164,8 @@ export function useScroll(
           })
         }
         else if (direction === 'vertical') {
-          if (Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX))
-            // default vertical wheel event
-            return
-
-          // control wheel scroll
-          e.preventDefault()
-          let wheelDelta: number = e.wheelDeltaX
+          // @ts-expect-error e.wheelDeltaX,e.wheelDeltaY no type
+          let wheelDelta: number = Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX) ? e.wheelDeltaY : e.wheelDeltaX
           wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
 
           ele.scrollTo({
