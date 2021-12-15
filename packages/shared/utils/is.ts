@@ -37,13 +37,13 @@ const macos = [
   /(macintosh|mac_powerpc\b)(?!.+haiku)/i, // Mac OS
 ]
 
-export const isWindowsOS = (() => {
+export const isWindowsOS = /* #__PURE__ */ (() => {
   if (!isClient)
     return false
   return windows.some(regex => regex.test(window.navigator.userAgent))
 })()
 
-export const isMacOS = (() => {
+export const isMacOS = /* #__PURE__ */ (() => {
   if (!isClient)
     return false
   return macos.some(regex => regex.test(window.navigator.userAgent))
