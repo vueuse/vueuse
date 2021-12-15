@@ -8,5 +8,6 @@ export default defineNuxtConfig({
   alias: {
     '@vueuse/core': resolve(__dirname, '../../packages/core/index.ts'),
     '@vueuse/shared': resolve(__dirname, '../../packages/shared/index.ts'),
+    '@vueuse/ssr-context': resolve(__dirname, '../../packages/ssr-context/index.ts'),
   },
 })

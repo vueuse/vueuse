@@ -7,14 +7,19 @@
     "vueuse",
     "ssr"
   ],
-  "license": "MIT",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/ssr-context#readme",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/ssr-context"
   },
   "funding": "https://github.com/sponsors/antfu",
+  "license": "MIT",
   "author": "Anthony Fu <https://github.com/antfu>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -24,13 +29,10 @@
     "./*": "./*"
   },
   "main": "./index.cjs",
-  "types": "./index.d.ts",
+  "jsdelivr": "./index.iife.min.js",
+  "unpkg": "./index.iife.min.js",
   "module": "./index.mjs",
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/ssr-context#readme",
+  "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
