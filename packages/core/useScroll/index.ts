@@ -1,7 +1,12 @@
 import { ref, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { useThrottleFn, useDebounceFn, noop, isWindowsOS } from '@vueuse/shared'
+import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+
+export interface UseScrolForceWheelOptions {
+  direction?: MaybeRef<'horizontal' | 'vertical' | 'auto' | undefined>
+  deltaRatio?: number
+}
 
 export interface UseScrollOptions {
   /**
@@ -54,7 +59,7 @@ export interface UseScrollOptions {
    *
    * @default 'auto'
    */
-  wheelDirection?: MaybeRef<'horizontal' | 'vertical' | 'auto' | undefined>
+  forceWheelOptions?: UseScrolForceWheelOptions
 }
 
 /**
@@ -84,7 +89,10 @@ export function useScroll(
       capture: false,
       passive: true,
     },
-    wheelDirection = 'auto',
+    forceWheelOptions = {
+      direction: 'auto',
+      deltaRatio: 1,
+    },
   } = options
 
   const x = ref(0)
@@ -151,7 +159,9 @@ export function useScroll(
       wheelDeltaX: number
       wheelDeltaY: number
     }) => {
-      const direction = unref(wheelDirection) ?? 'auto'
+      const { direction: directionOption = 'auto', deltaRatio = 1 } = forceWheelOptions
+
+      const direction = unref(directionOption) ?? 'auto'
 
       if (direction === 'auto')
         // default wheel event
@@ -162,9 +172,11 @@ export function useScroll(
 
       const ele = unref(element) as HTMLElement
 
+      const processWheelDelta = (delta: number) => -delta * deltaRatio
+
       if (direction === 'horizontal') {
         let wheelDelta: number = Math.abs(e.wheelDeltaX) >= Math.abs(e.wheelDeltaY) ? e.wheelDeltaX : e.wheelDeltaY
-        wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+        wheelDelta = processWheelDelta(wheelDelta)
 
         ele.scrollTo({
           left: ele.scrollLeft + wheelDelta,
@@ -172,7 +184,7 @@ export function useScroll(
       }
       else if (direction === 'vertical') {
         let wheelDelta: number = Math.abs(e.wheelDeltaY) >= Math.abs(e.wheelDeltaX) ? e.wheelDeltaY : e.wheelDeltaX
-        wheelDelta = -(isWindowsOS ? wheelDelta / 3 : wheelDelta)
+        wheelDelta = processWheelDelta(wheelDelta)
 
         ele.scrollTo({
           top: ele.scrollTop + wheelDelta,
