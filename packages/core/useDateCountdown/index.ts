@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue-demi'
-import { noop, timestamp, useIntervalFn, parseDate, parseMs, formatDate, UDate, Pausable } from '@vueuse/shared'
+import { noop, timestamp, useIntervalFn, parseDate, parseMs, formatDate } from '@vueuse/shared'
+import type { UDate, Pausable } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
 
 export interface UseDateCountDownOptions {
