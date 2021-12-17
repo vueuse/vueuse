@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { EventHookOn, Fn, MaybeRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, useTimeoutFn } from '@vueuse/shared'
+import { containsProp, createEventHook, useTimeoutFn, until } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -251,11 +251,11 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
+export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
-export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchReturn<T> {
+export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
@@ -353,7 +353,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     if (isCanceled || !fetch) {
       loading(false)
-      return Promise.resolve()
+      return Promise.resolve(null)
     }
 
     let responseData: any = null
@@ -361,7 +361,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (timer)
       timer.start()
 
-    return new Promise((resolve, reject) => {
+    return new Promise<Response | null>((resolve, reject) => {
       fetch(
         context.url,
         {
@@ -381,13 +381,15 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           if (options.afterFetch)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+
           data.value = responseData
+
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
 
           responseEvent.trigger(fetchResponse)
-          resolve(fetchResponse)
+          return resolve(fetchResponse)
         })
         .catch(async(fetchError) => {
           let errorData = fetchError.message || fetchError.name
@@ -399,9 +401,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
-            reject(fetchError)
-          else
-            resolve(undefined)
+            return reject(fetchError)
+
+          return resolve(null)
         })
         .finally(() => {
           loading(false)
@@ -479,11 +481,25 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
   }
 
+  function waitUntilFinished() {
+    return new Promise<UseFetchReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        .then(() => resolve(shell))
+        .catch(error => reject(error))
+    })
+  }
+
   function setType(type: DataType) {
     return () => {
       if (!isFetching.value) {
         config.type = type
-        return shell as any
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }
@@ -492,7 +508,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   if (options.immediate)
     setTimeout(execute, 0)
 
-  return shell
+  return {
+    ...shell,
+    then(onFulfilled, onRejected) {
+      return waitUntilFinished()
+        .then(onFulfilled, onRejected)
+    },
+  }
 }
 
 function joinPaths(start: string, end: string): string {

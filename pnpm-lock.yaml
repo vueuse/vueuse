@@ -62,7 +62,7 @@ importers:
       vite: ^2.6.7
       vite-plugin-pwa: ^0.11.11
       vite-plugin-windicss: ^1.5.4
-      vitepress: ^0.20.5
+      vitepress: ^0.20.8
       vue: ^3.2.26
       vue2: npm:vue@2
     devDependencies:
@@ -117,7 +117,7 @@ importers:
       vite: 2.6.7
       vite-plugin-pwa: 0.11.11_vite@2.6.7
       vite-plugin-windicss: 1.5.4_vite@2.6.7
-      vitepress: 0.20.5
+      vitepress: 0.20.8
       vue: 3.2.26
       vue2: /vue/2.6.14
 
@@ -162,7 +162,6 @@ importers:
     specifiers:
       '@types/nprogress': ^0.2.0
       '@types/qrcode': ^1.4.1
-      '@types/universal-cookie': ^3.0.0
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
       axios: ^0.24.0
@@ -190,7 +189,6 @@ importers:
     devDependencies:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.4.1
-      '@types/universal-cookie': 3.0.0
 
   packages/nuxt:
     specifiers:
@@ -2515,6 +2513,8 @@ packages:
 
   /@types/cookie/0.3.3:
     resolution: {integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==}
+    dev: false
+    optional: true
 
   /@types/estree/0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
@@ -2621,13 +2621,6 @@ packages:
 
   /@types/trusted-types/2.0.2:
     resolution: {integrity: sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==}
-    dev: true
-
-  /@types/universal-cookie/3.0.0:
-    resolution: {integrity: sha512-EnipDS8yUDYvcyN7jVJYOK29zvJwsnVLUZoGtozjOzkM31ZfJSDrtofraIgoi7eagCHLXwrspqsFOHTtpcHFDg==}
-    deprecated: This is a stub types definition. universal-cookie provides its own type definitions, so you do not need this installed.
-    dependencies:
-      universal-cookie: 4.0.4
     dev: true
 
   /@types/yargs-parser/20.2.1:
@@ -3680,6 +3673,8 @@ packages:
   /cookie/0.4.1:
     resolution: {integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==}
     engines: {node: '>= 0.6'}
+    dev: false
+    optional: true
 
   /core-js-compat/3.18.0:
     resolution: {integrity: sha512-tRVjOJu4PxdXjRMEgbP7lqWy1TWJu9a01oBkn8d+dNrhgmBwdTkzhHZpVJnEmhISLdoJI1lX08rcBcHi3TZIWg==}
@@ -8586,6 +8581,8 @@ packages:
     dependencies:
       '@types/cookie': 0.3.3
       cookie: 0.4.1
+    dev: false
+    optional: true
 
   /universalify/0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
@@ -8795,8 +8792,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/0.20.5:
-    resolution: {integrity: sha512-8L+RVo5eipK70/g5Asir9X/O40JCqRWlSsfm0DWF7D1gQBQC2WiO4rqp9FLbW4OVKDktC0KaLcNJZgJrHmIiEw==}
+  /vitepress/0.20.8:
+    resolution: {integrity: sha512-beaBE0JFo71xcJfIVQH98ItZtLC16DJqjev7eMrGDrlpQxqm5Y60UY8tYwi3vjMR7Hu5hvkepyQ0cstZoYVXRQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
