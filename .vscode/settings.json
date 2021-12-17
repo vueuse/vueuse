@@ -21,5 +21,6 @@
   "vite.vitepressBase": "packages",
   "vite.vitepressAutoRouting": true,
   "vite.buildCommand": "npm run docs:build",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.tabSize": 2
 }
