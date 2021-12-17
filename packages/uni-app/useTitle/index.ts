@@ -1,4 +1,5 @@
 import type { MaybeRef } from '@vueuse/shared'
+import { isUniH5 } from '@vueuse/shared'
 import { defaultDocument, useMutationObserver, isString } from '@vueuse/core'
 import { ref, watch } from 'vue-demi'
 
@@ -34,21 +35,16 @@ export function useTitle(
   watch(
     title,
     (t, o) => {
-      /* #ifdef H5 */
-      if (isString(t) && t !== o && document)
-        document.title = t
-      /* #endif */
-      /* #ifdef MP */
-      uni.setNavigationBarTitle({
-        title: t ?? '',
-      })
-      /* #endif */
+      if (isString(t) && t !== o) {
+        uni.setNavigationBarTitle({
+          title: t ?? '',
+        })
+      }
     },
     { immediate: true },
   )
 
-  /* #ifdef H5 */
-  if (observe && document) {
+  if (isUniH5 && observe && document) {
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {
@@ -58,7 +54,6 @@ export function useTitle(
       { childList: true },
     )
   }
-  /* #endif */
 
   return title
 }

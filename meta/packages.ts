@@ -124,7 +124,10 @@ export const packages: PackageManifest[] = [
     description: 'VueUse for uni-app',
     author: 'okxiaoliang4<https://github.com/okxiaoliang4>',
     addon: true,
-    external: [],
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
     iife: false,
   },
 ]
