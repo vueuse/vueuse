@@ -126,6 +126,9 @@ const config: UserConfig = {
       '/rxjs/': FunctionsSideBar,
       '/integrations/': FunctionsSideBar,
       '/firebase/': FunctionsSideBar,
+
+      // TODO: uni-app functionsSideBar
+      '/uni-app/': FunctionsSideBar,
     },
     algolia: {
       appId: 'NBQWY48OOR',

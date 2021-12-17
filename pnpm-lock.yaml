@@ -228,6 +228,17 @@ importers:
     dependencies:
       vue-demi: 0.12.1_a512938845c868a2308fc90d5bd53d7c
 
+  packages/uni-app:
+    specifiers:
+      '@dcloudio/types': ^2.5.14
+      '@vueuse/shared': workspace:*
+      vue-demi: 0.12.1
+    dependencies:
+      '@vueuse/shared': link:../shared
+      vue-demi: 0.12.1_a512938845c868a2308fc90d5bd53d7c
+    devDependencies:
+      '@dcloudio/types': 2.5.14
+
 packages:
 
   /@algolia/autocomplete-core/1.5.0:
@@ -1624,6 +1635,10 @@ packages:
 
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+    dev: true
+
+  /@dcloudio/types/2.5.14:
+    resolution: {integrity: sha512-Om7gwSdAlSc7TQBcR+YC5aH1tev39PrWSKPnmsdGvebBEXxKkKfGO4ALEHxmKdSbqlNHnpx7/F7GC7S2KffzZg==}
     dev: true
 
   /@docsearch/css/3.0.0-alpha.42:
@@ -8578,6 +8593,7 @@ packages:
 
   /universal-cookie/4.0.4:
     resolution: {integrity: sha512-lbRVHoOMtItjWbM7TwDLdl8wug7izB0tq3/YVKhT/ahB4VDvWMyvnADfnJI8y6fSvsjh51Ix7lTGC6Tn4rMPhw==}
+    requiresBuild: true
     dependencies:
       '@types/cookie': 0.3.3
       cookie: 0.4.1

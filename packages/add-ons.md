@@ -94,4 +94,7 @@ Electron renderer process modules for VueUse
   - [`useZoomLevel`](https://vueuse.org/electron/useZoomLevel/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level
 
 
+## uni-app - [`@vueuse/uni-app`](https://vueuse.org/uni-app/README.html)
+VueUse for uni-app
+
 <!--ADDONS_LIST_ENDS-->

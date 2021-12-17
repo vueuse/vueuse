@@ -1,0 +1,56 @@
+{
+  "name": "@vueuse/uni-app",
+  "version": "7.3.0",
+  "description": "VueUse for uni-app",
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils",
+    "uni-app"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/uni-app"
+  },
+  "author": "okxiaoliang4<https://github.com/okxiaoliang4>",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "module": "./index.mjs",
+  "sideEffects": false,
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/uni-app#readme",
+  "peerDependencies": {
+    "@dcloudio/types": "^2.5.14",
+    "@dcloudio/uni-app": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-app-plus": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-components": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-h5": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-alipay": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-baidu": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-kuaishou": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-lark": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-qq": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-toutiao": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-mp-weixin": "^3.0.0-alpha-3030120211216001",
+    "@dcloudio/uni-quickapp-webview": "^3.0.0-alpha-3030120211216001"
+  },
+  "dependencies": {
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^2.5.14"
+  }
+}

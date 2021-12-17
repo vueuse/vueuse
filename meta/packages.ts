@@ -118,4 +118,13 @@ export const packages: PackageManifest[] = [
     ],
     iife: false,
   },
+  {
+    name: 'uni-app',
+    display: 'uni-app',
+    description: 'VueUse for uni-app',
+    author: 'okxiaoliang4<https://github.com/okxiaoliang4>',
+    addon: true,
+    external: [],
+    iife: false,
+  },
 ]
