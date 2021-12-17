@@ -56,7 +56,7 @@ export const formatDate = (parsedMs: ParsedMs, formatStr: string) => {
     mm: padStart(minutes, 2, '0'),
     s: String(seconds),
     ss: padStart(seconds, 2, '0'),
-    sss: padStart(milliseconds, 3, '0'),
+    SSS: padStart(milliseconds, 3, '0'),
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match])
 }

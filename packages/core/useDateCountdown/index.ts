@@ -1,14 +1,22 @@
 import { ref, computed } from 'vue-demi'
-import { noop, timestamp, useIntervalFn, parseDate, parseMs, formatDate, UDate } from '@vueuse/shared'
+import { noop, timestamp, useIntervalFn, parseDate, parseMs, formatDate, UDate, Pausable } from '@vueuse/shared'
+import { useRafFn } from '../useRafFn'
 
-export interface UseCountDownOptions {
+export interface UseDateCountDownOptions {
 
   /**
-   * CountDown interval
+   * Countdown immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
+   * CountDown interval, or use requestAnimationFrame
    *
    * @default 1000
    */
-  interval?: number
+  interval?: 'requestAnimationFrame' | number
 
   /**
    * Trigger it when countdown completes
@@ -34,33 +42,41 @@ const countDown = (d?: UDate) => {
 /**
  * CountDown controller.
  *
- * @see https://vueuse.org/useCountdown
+ * @see https://vueuse.org/useDateCountdown
  * @param options
  */
 
-export function useCountdown(date: UDate, options: UseCountDownOptions = {}) {
+export function useDateCountdown(date: UDate, options: UseDateCountDownOptions = {}) {
   const {
     interval = 1000,
     onEnd = noop,
     format = 'HH:mm:ss',
+    immediate = true,
   } = options
 
   const timestamp = ref(countDown(date))
   const parsedMs = computed(() => parseMs(timestamp.value))
   const formatted = computed(() => formatDate(parsedMs.value, format))
-  const { pause } = useIntervalFn(() => {
+
+  const controls: Pausable = interval === 'requestAnimationFrame'
+    ? useRafFn(update, { immediate })
+    : useIntervalFn(update, interval, { immediate })
+
+  function update() {
     const targetLeft = countDown(date)
     timestamp.value = targetLeft
     if (targetLeft === 0) {
-      pause()
+      controls.pause()
       onEnd()
     }
-  }, interval)
+  }
+
   return {
     timestamp,
     parsedMs,
     formatted,
+    controls,
   }
 }
 
-export type UseCountDownReturn = ReturnType<typeof useCountdown>
+export type UseDateCountDownReturn = ReturnType<typeof useDateCountdown>
