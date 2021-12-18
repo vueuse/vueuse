@@ -31,7 +31,7 @@ jobs:
       - name: Lint Fix
         run: pnpm run lint -- --fix
 
-      - uses: EndBug/add-and-commit@v7
+      - uses: EndBug/add-and-commit@no-checkout
         with:
           push: false
           pull: 'NO-PULL'
