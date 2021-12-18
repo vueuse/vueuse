@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { ref, computed, reactive } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { useMousePressed } from '.'
 
 const el = ref<Element | null>(null)

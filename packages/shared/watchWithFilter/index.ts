@@ -1,4 +1,4 @@
-import type { WatchSource, WatchOptions, WatchStopHandle, WatchCallback } from 'vue-demi'
+import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableEventFilter, MapOldSources, MapSources } from '../utils'
 import { bypassFilter, createFilterWrapper } from '../utils'

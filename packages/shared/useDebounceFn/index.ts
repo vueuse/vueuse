@@ -1,4 +1,4 @@
-import type { FunctionArgs, MaybeRef, DebounceFilterOptions } from '../utils'
+import type { DebounceFilterOptions, FunctionArgs, MaybeRef } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
 
 /**

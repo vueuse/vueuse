@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
 import { isString } from '@vueuse/shared'
-import { ref, watch, isRef } from 'vue-demi'
+import { isRef, ref, watch } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 

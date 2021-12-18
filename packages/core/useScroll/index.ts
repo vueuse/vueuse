@@ -1,6 +1,6 @@
 import { ref, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { useThrottleFn, useDebounceFn, noop } from '@vueuse/shared'
+import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrolForceWheelOptions {

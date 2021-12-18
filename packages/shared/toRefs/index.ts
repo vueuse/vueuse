@@ -1,5 +1,5 @@
 import type { ToRefs } from 'vue-demi'
-import { isRef, toRefs as _toRefs, customRef } from 'vue-demi'
+import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
 import type { MaybeRef } from '../utils'
 
 /**

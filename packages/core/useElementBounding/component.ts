@@ -1,4 +1,4 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 import { useElementBounding } from '@vueuse/core'
 import type { ResizeObserverOptions } from '../useResizeObserver'
 import type { RenderableComponent } from '../types'

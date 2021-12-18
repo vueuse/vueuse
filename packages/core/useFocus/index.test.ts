@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref, nextTick } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useFocus } from '.'
 
 describe('useFocus', () => {
