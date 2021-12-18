@@ -1,0 +1,34 @@
+name: Lint Fix
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Lint Fix
+        run: pnpm run lint -- --fix
+
+      - uses: EndBug/add-and-commit@v7
+        with:
+          message: 'chore: fix lint'

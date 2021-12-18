@@ -1,4 +1,4 @@
-import { Router } from 'vitepress'
+import type { Router } from 'vitepress'
 import functions from '../../../meta/function-indexes'
 
 export function handleRedirects(router: Router) {

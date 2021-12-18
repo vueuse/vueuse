@@ -1,5 +1,6 @@
-import { timestamp, isFunction } from '@vueuse/shared'
-import { ref, computed, Ref, markRaw } from 'vue-demi'
+import { isFunction, timestamp } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, markRaw, ref } from 'vue-demi'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T

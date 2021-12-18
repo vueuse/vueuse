@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import { Pausable, Fn, isClient } from '../utils'
+import type { Fn, Pausable } from '../utils'
+import { isClient } from '../utils'
 
 export interface IntervalFnOptions {
   /**

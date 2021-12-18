@@ -1,5 +1,6 @@
-import { Ref, watch, WatchSource } from 'vue-demi'
-import { ConfigurableFlushSync } from '../utils'
+import type { Ref, WatchSource } from 'vue-demi'
+import { watch } from 'vue-demi'
+import type { ConfigurableFlushSync } from '../utils'
 
 export interface SyncRefOptions extends ConfigurableFlushSync {
   /**

@@ -1,4 +1,5 @@
-import { reactify, Reactify } from '../reactify'
+import type { Reactify } from '../reactify'
+import { reactify } from '../reactify'
 
 export type ReactifyNested<T, Keys extends keyof T = keyof T> = { [K in Keys]: T[K] extends (...args: any[]) => any ? Reactify<T[K]> : T[K]}
 

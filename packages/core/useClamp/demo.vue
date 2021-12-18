@@ -1,9 +1,9 @@
 <template>
   <div>
     min:
-    <input v-model="min" type="number" />
+    <input v-model="min" type="number">
     max:
-    <input v-model="max" type="number" />
+    <input v-model="max" type="number">
     value:{{ value }}
     <div>
       <button @click="value--">

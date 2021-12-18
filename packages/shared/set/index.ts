@@ -1,4 +1,5 @@
-import { isVue2, Ref, set as _set } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { set as _set, isVue2 } from 'vue-demi'
 
 export function set<T>(ref: Ref<T>, value: T): void
 export function set<O extends object, K extends keyof O>(target: O, key: K, value: O[K]): void

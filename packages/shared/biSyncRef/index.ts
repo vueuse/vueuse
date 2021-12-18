@@ -1,4 +1,5 @@
-import { Ref, watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { watch } from 'vue-demi'
 
 /**
  * Two-way refs synchronization.

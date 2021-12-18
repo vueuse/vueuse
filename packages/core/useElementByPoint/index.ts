@@ -1,5 +1,5 @@
 import { ref, unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 import { useRafFn } from '@vueuse/core'
 
 export interface UseElementByPointOptions {

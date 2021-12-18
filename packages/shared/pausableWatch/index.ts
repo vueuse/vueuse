@@ -1,6 +1,8 @@
-import { WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
-import { MapOldSources, MapSources, Pausable, pausableFilter } from '../utils'
-import { watchWithFilter, WatchWithFilterOptions } from '../watchWithFilter'
+import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
+import type { MapOldSources, MapSources, Pausable } from '../utils'
+import { pausableFilter } from '../utils'
+import type { WatchWithFilterOptions } from '../watchWithFilter'
+import { watchWithFilter } from '../watchWithFilter'
 
 export interface PausableWatchReturn extends Pausable {
   stop: WatchStopHandle

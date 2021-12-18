@@ -1,5 +1,5 @@
 import { isRef, reactive } from 'vue-demi'
-import { MaybeRef } from '../utils'
+import type { MaybeRef } from '../utils'
 
 /**
  * Converts ref to reactive.

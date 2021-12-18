@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
-import { MaybeElementRef } from '../unrefElement'
-import { ResizeObserverOptions, useResizeObserver } from '../useResizeObserver'
+import type { MaybeElementRef } from '../unrefElement'
+import type { ResizeObserverOptions } from '../useResizeObserver'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface ElementSize {
   width: number

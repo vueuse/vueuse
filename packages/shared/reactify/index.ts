@@ -1,5 +1,6 @@
-import { computed, ComputedRef, unref } from 'vue-demi'
-import { MaybeRef } from '../utils'
+import type { ComputedRef } from 'vue-demi'
+import { computed, unref } from 'vue-demi'
+import type { MaybeRef } from '../utils'
 
 export type Reactify<T> = T extends (...args: infer A) => infer R
   ? (...args: { [K in keyof A]: MaybeRef<A[K]> }) => ComputedRef<R>

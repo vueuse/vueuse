@@ -1,7 +1,8 @@
 import { ref } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface WindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number

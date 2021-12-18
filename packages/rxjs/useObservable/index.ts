@@ -1,5 +1,6 @@
-import { Observable } from 'rxjs'
-import { Ref, ref } from 'vue-demi'
+import type { Observable } from 'rxjs'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 
 export interface UseObservableOptions {

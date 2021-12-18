@@ -1,4 +1,4 @@
-import { Fn } from '@vueuse/shared'
+import type { Fn } from '@vueuse/shared'
 import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
