@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-  
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
@@ -31,4 +33,5 @@ jobs:
 
       - uses: EndBug/add-and-commit@v7
         with:
+          default_author: github_actions
           message: 'chore: fix lint'
