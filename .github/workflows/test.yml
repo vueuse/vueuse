@@ -38,9 +38,6 @@ jobs:
 
       - run: pnpm install
 
-      - name: Lint
-        run: pnpm run lint
-
       - name: TypeCheck
         run: pnpm run update:full
 
