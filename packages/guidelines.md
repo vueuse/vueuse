@@ -164,7 +164,7 @@ When a composable is asynchronous, like `useFetch`, it is a good idea to return 
 so the user is able to await the function. This is especially useful in the case of Vue's `<Suspense>` api.
 
 - Use a `ref` to determine when the function should resolve e.g. `isFinished`
-- Store the return state in a varaible as it must be returned twice, once in the return and once in the promise.
+- Store the return state in a variable as it must be returned twice, once in the return and once in the promise.
 - The return type should be an intersection between the return type and a PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>`
 
 ```ts
