@@ -2,7 +2,7 @@
 
 import type { MaybeRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { watch, ref, shallowRef } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue-demi'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 

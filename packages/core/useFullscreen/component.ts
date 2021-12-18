@@ -1,4 +1,4 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 import { useFullscreen } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 

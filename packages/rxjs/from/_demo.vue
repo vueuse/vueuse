@@ -3,10 +3,10 @@ import type { Ref } from 'vue-demi'
 import { onMounted, ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import {
+  map,
   mapTo,
   takeUntil,
   withLatestFrom,
-  map,
 } from 'rxjs/operators'
 import { useSubscription } from '../useSubscription'
 import { toObserver } from '../toObserver'

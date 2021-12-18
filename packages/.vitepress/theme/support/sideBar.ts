@@ -1,5 +1,5 @@
 import type { DefaultTheme } from '../config'
-import { isArray, ensureStartingSlash, removeExtention } from '../utils'
+import { ensureStartingSlash, isArray, removeExtention } from '../utils'
 
 export function isSideBarConfig(
   sidebar: DefaultTheme.SideBarConfig | DefaultTheme.MultiSideBarConfig,

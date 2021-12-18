@@ -1,5 +1,5 @@
-import { ref, nextTick } from 'vue-demi'
-import { increaseWithUnit, debounceFilter, throttleFilter, createFilterWrapper } from '.'
+import { nextTick, ref } from 'vue-demi'
+import { createFilterWrapper, debounceFilter, increaseWithUnit, throttleFilter } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {

@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import type { Pausable, Fn } from '@vueuse/shared'
+import type { Fn, Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'

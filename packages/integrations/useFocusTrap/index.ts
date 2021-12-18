@@ -1,7 +1,7 @@
-import type { MaybeElementRef, Fn } from '@vueuse/core'
-import { unrefElement, tryOnScopeDispose } from '@vueuse/core'
+import type { Fn, MaybeElementRef } from '@vueuse/core'
+import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { Ref } from 'vue-demi'
-import { watch, ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { createFocusTrap } from 'focus-trap'
 import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
 

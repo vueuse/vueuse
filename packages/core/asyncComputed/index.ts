@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, isRef, computed, watchEffect } from 'vue-demi'
+import { computed, isRef, ref, watchEffect } from 'vue-demi'
 
 /**
  * Handle overlapping async evaluations.

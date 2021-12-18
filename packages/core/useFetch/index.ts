@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { EventHookOn, Fn, MaybeRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, useTimeoutFn, until } from '@vueuse/shared'
+import { containsProp, createEventHook, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
