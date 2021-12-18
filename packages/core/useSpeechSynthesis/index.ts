@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, watch, shallowRef, unref, computed } from 'vue-demi'
+import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 

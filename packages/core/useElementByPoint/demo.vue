@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue-demi'
-import { useElementBounding, useMouse, useEventListener } from '@vueuse/core'
+import { useElementBounding, useEventListener, useMouse } from '@vueuse/core'
 import { useElementByPoint } from '.'
 
 const { x, y } = useMouse({ type: 'client' })

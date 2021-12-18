@@ -4,10 +4,10 @@
 import type { MaybeRef } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, watch, shallowRef, unref } from 'vue-demi'
+import { ref, shallowRef, unref, watch } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
-import type { SpeechRecognitionErrorEvent, SpeechRecognition } from './types'
+import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 
 export interface SpeechRecognitionOptions extends ConfigurableWindow {
   /**

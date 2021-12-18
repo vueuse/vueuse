@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useRoute, useData, inBrowser } from 'vitepress'
+import { inBrowser, useData, useRoute } from 'vitepress'
 import type { DefaultTheme } from '../config'
 
 export function useLocaleLinks() {

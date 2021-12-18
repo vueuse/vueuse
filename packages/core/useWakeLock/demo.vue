@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue-demi'
+import { computed, reactive } from 'vue-demi'
 import { useWakeLock } from '.'
 
 const wakeLock = reactive(useWakeLock())
