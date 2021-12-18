@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
@@ -33,8 +33,6 @@ jobs:
 
       - uses: EndBug/add-and-commit@no-checkout
         with:
-          push: false
-          pull: false
           default_author: github_actions
           message: 'chore: fix lint'
           
