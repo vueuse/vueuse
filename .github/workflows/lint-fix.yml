@@ -33,7 +33,6 @@ jobs:
 
       - uses: EndBug/add-and-commit@no-checkout
         with:
-          push: false
           default_author: github_actions
           message: 'chore: fix lint'
           
