@@ -9,7 +9,7 @@ Shorthand for watching value to be truthy.
 ## Usage
 
 ```js
-import { whenever, useAsyncState } from '@vueuse/core'
+import { useAsyncState, whenever } from '@vueuse/core'
 
 const { state, ready } = useAsyncState(
   fetch('https://jsonplaceholder.typicode.com/todos/1').then(t => t.json()),

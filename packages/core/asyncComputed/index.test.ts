@@ -1,4 +1,4 @@
-import { ref, computed, nextTick } from 'vue-demi'
+import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { useSetup } from '../../.test'
 import { asyncComputed } from '.'

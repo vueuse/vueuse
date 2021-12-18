@@ -1,8 +1,8 @@
 import type { NProgressOptions } from 'nprogress'
 import nprogress from 'nprogress'
 import type { MaybeRef } from '@vueuse/shared'
-import { tryOnScopeDispose, isNumber } from '@vueuse/shared'
-import { ref, isRef, watchEffect, computed } from 'vue-demi'
+import { isNumber, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, isRef, ref, watchEffect } from 'vue-demi'
 
 /**
  * Reactive progress bar.

@@ -12,7 +12,7 @@ For simple transitions, provide a numeric source value to watch. When changed, t
 
 ```js
 import { ref } from 'vue'
-import { useTransition, TransitionPresets } from '@vueuse/core'
+import { TransitionPresets, useTransition } from '@vueuse/core'
 
 const source = ref(0)
 

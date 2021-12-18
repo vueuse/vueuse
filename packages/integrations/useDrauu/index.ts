@@ -1,9 +1,9 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Drauu, Options, Brush } from 'drauu'
+import type { Brush, Drauu, Options } from 'drauu'
 import { createDrauu } from 'drauu'
-import type { MaybeElementRef, EventHookOn } from '@vueuse/core'
-import { unrefElement, createEventHook } from '@vueuse/core'
+import type { EventHookOn, MaybeElementRef } from '@vueuse/core'
+import { createEventHook, unrefElement } from '@vueuse/core'
 import type { Fn } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 

@@ -324,4 +324,20 @@ describe('useFetch', () => {
 
     expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
   })
+
+  test('should await request', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+    const { data } = await useFetch('https://example.com')
+
+    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+    expect(fetchMock).toBeCalledTimes(1)
+  })
+
+  test('should await json response', async() => {
+    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+    const { data } = await useFetch('https://example.com').json()
+
+    expect(data.value).toStrictEqual({ message: 'Hello World' })
+    expect(fetchMock).toBeCalledTimes(1)
+  })
 })

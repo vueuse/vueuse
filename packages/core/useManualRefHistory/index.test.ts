@@ -1,4 +1,4 @@
-import { ref, isReactive } from 'vue-demi'
+import { isReactive, ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useManualRefHistory } from '.'
 
