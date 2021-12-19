@@ -110,6 +110,7 @@ const defaultWebNotificationMethods = {
  * Reactive useWebNotification
  *
  * @see https://vueuse.org/useWebNotification
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/notification
  * @param title
  * @param options of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
