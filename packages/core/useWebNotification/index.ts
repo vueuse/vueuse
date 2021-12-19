@@ -6,6 +6,13 @@ import { useEventListener } from '../useEventListener'
 
 export interface WebNotificationOptions {
   /**
+   * The title read-only property of the Notification interface indicates
+   * the title of the notification
+   *
+   * @default ''
+   */
+  title: string
+  /**
    * The body string of the notification as specified in the constructor's
    * options parameter.
    *
@@ -108,10 +115,11 @@ const defaultWebNotificationMethods = {
  * @param methods of type WebNotificationMethods
  */
 export const useWebNotification = (
-  title: string,
-  options: WebNotificationOptions = {},
+  options: WebNotificationOptions,
   methods: WebNotificationMethods = defaultWebNotificationMethods,
 ) => {
+  const { title } = options
+
   const notification: Ref<Notification | null> = ref(null)
 
   // Is the web notifications API supported?:
