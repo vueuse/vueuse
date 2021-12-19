@@ -29,7 +29,12 @@ export const usePageVisibility = () => {
     return visibilityState.value === 'visible'
   })
 
+  const isHidden = computed(() => {
+    return visibilityState.value === 'hidden'
+  })
+
   return {
+    isHidden,
     isVisible,
     visibilityState,
   }

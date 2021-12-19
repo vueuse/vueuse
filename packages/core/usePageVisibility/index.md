@@ -11,9 +11,13 @@ Reactive page visibility state.
 ```ts
 import { usePageVisibility } from '@vueuse/core'
 
-const { isVisible, visibilityState } = usePageVisibility()
+const { isVisible, isHidden, visibilityState } = usePageVisibility()
 
 watch(isVisible, () => {
+  // Do something when the page becomes visible, e.g., pause videos etc
+})
+
+watch(isHidden, () => {
   // Do something when the page is no longer visible, e.g., pause videos etc
 })
 ```
