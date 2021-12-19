@@ -2,6 +2,10 @@ import { onMounted, onUnmounted, ref } from 'vue-demi'
 
 import type { Ref } from 'vue-demi'
 
+import { createEventHook } from '@vueuse/shared'
+
+import type { EventHook } from '@vueuse/shared'
+
 import { useEventListener } from '../useEventListener'
 
 export interface WebNotificationOptions {
@@ -79,41 +83,6 @@ export interface WebNotificationOptions {
   vibrate?: []
 }
 
-interface WebNotificationMethods {
-  /**
-   * A handler for the click event. It is triggered each time the user clicks on the notification.
-   *
-   * @default null
-   */
-  onClick: ((e: Event) => void) | null
-  /**
-   * A handler for the close event. It is triggered when the user closes the notification.
-   *
-   * @default null
-   */
-  onClose: ((e: Event) => void) | null
-  /**
-   * A handler for the error event. It is triggered each time the notification encounters an error.
-   *
-   * @default null
-   */
-  onError: ((e: Event) => void) | null
-  /**
-   * A handler for the show event. It is triggered when the notification is displayed.
-   *
-   * @default null
-   */
-  onShow: ((e: Event) => void) | null
-}
-
-// Default web notification methods:
-const defaultWebNotificationMethods = {
-  onClick: null,
-  onShow: null,
-  onError: null,
-  onClose: null,
-}
-
 /**
  * Reactive useWebNotification
  *
@@ -125,7 +94,6 @@ const defaultWebNotificationMethods = {
  */
 export const useWebNotification = (
   options: WebNotificationOptions,
-  methods: WebNotificationMethods = defaultWebNotificationMethods,
 ) => {
   const {
     title,
@@ -150,6 +118,14 @@ export const useWebNotification = (
     if ('permission' in Notification && Notification.permission !== 'denied') await Notification.requestPermission()
   }
 
+  const notificationOnClick: EventHook = createEventHook<Event>()
+
+  const notificationOnShow: EventHook = createEventHook<Event>()
+
+  const notificationOnError: EventHook = createEventHook<Event>()
+
+  const notificationOnClose: EventHook = createEventHook<Event>()
+
   // Show notification method:
   const show = (opts?: WebNotificationOptions): void => {
     if (isSupported) {
@@ -158,10 +134,10 @@ export const useWebNotification = (
         opts || { body, dir, lang, tag, icon, renotify, requireInteraction, silent, vibrate },
       )
 
-      notification.value.onclick = methods.onClick
-      notification.value.onshow = methods.onShow
-      notification.value.onerror = methods.onError
-      notification.value.onclose = methods.onClose
+      notification.value.onclick = (event: Event) => notificationOnClick.trigger(event)
+      notification.value.onshow = (event: Event) => notificationOnShow.trigger(event)
+      notification.value.onerror = (event: Event) => notificationOnError.trigger(event)
+      notification.value.onclose = (event: Event) => notificationOnClose.trigger(event)
     }
   }
 
@@ -201,5 +177,9 @@ export const useWebNotification = (
     notification,
     show,
     close,
+    onClick: notificationOnClick,
+    onShow: notificationOnShow,
+    onError: notificationOnError,
+    onClose: notificationOnClose,
   }
 }

@@ -10,28 +10,46 @@ The Web Notification interface of the Notifications API is used to configure and
 
 ## Usage
 
-```js
+```ts
 const {
   isSupported,
   notification,
   show,
   close,
+  onClick,
+  onShow,
+  onError,
+  onClose,
 } = useWebNotification(
-  'Hello, VueUse world!',
   {
+    title: 'Hello, VueUse world!',
     dir: 'auto',
     lang: 'en',
     renotify: true,
-  },
-  {
-    onClick: null,
-    onShow: null,
-    onError: null,
-    onClose: null,
   },
 )
 
 show()
 
 close()
+```
+
+This composable also utilises the createEventHook utility from '@vueuse/shared`:
+
+```ts
+onClick((evt: Event) => {
+  // Do something with the notification on:click event...
+})
+
+onShow((evt: Event) => {
+  // Do something with the notification on:show event...
+})
+
+onError((evt: Event) => {
+  // Do something with the notification on:error event...
+})
+
+onClose((evt: Event) => {
+  // Do something with the notification on:close event...
+})
 ```
