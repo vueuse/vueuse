@@ -8,7 +8,7 @@ import type { EventHook } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
 
-export interface WebNotificationOptions {
+export interface UseWebNotificationOptions {
   /**
    * The title read-only property of the Notification interface indicates
    * the title of the notification
@@ -93,7 +93,7 @@ export interface WebNotificationOptions {
  * @param methods of type WebNotificationMethods
  */
 export const useWebNotification = (
-  options: WebNotificationOptions,
+  options: UseWebNotificationOptions,
 ) => {
   const {
     title,
@@ -127,7 +127,7 @@ export const useWebNotification = (
   const notificationOnClose: EventHook = createEventHook<Event>()
 
   // Show notification method:
-  const show = (opts?: WebNotificationOptions): void => {
+  const show = (opts?: UseWebNotificationOptions): void => {
     if (isSupported) {
       notification.value = new Notification(
         title,
