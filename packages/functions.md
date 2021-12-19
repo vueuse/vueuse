@@ -99,6 +99,7 @@
   - [`useNetwork`](https://vueuse.org/core/useNetwork/) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
+  - [`usePageVisibility`](https://vueuse.org/core/usePageVisibility/) — reactive state to show the current visibility state of the page
   - [`useParallax`](https://vueuse.org/core/useParallax/) — create parallax effect easily
   - [`usePointer`](https://vueuse.org/core/usePointer/) — reactive [pointer state](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
   - [`usePointerSwipe`](https://vueuse.org/core/usePointerSwipe/) — reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
