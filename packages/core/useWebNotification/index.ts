@@ -3,7 +3,7 @@ import type { Ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
 
-interface WebNotificationOptions {
+export interface WebNotificationOptions {
   /**
    * The body string of the notification as specified in the constructor's
    * options parameter.
