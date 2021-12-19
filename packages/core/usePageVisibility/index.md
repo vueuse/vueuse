@@ -14,7 +14,7 @@ import { usePageVisibility } from '@vueuse/core'
 const { isVisible, isHidden, visibilityState } = usePageVisibility()
 
 watch(isVisible, () => {
-  // Do something when the page becomes visible, e.g., pause videos etc
+  // Do something when the page becomes visible, e.g., resume playing videos etc
 })
 
 watch(isHidden, () => {

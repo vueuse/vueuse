@@ -2,9 +2,9 @@ import { computed, ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
 
-const delimiters = ['visible', 'hidden', 'prerender', 'unloaded'] as const
+const possibleState = ['visible', 'hidden', 'prerender', 'unloaded'] as const
 
-export type VisibilityState = typeof delimiters[number]
+export type VisibilityState = typeof possibleState[number]
 
 /**
  * reactive usePageVisibility
@@ -12,7 +12,7 @@ export type VisibilityState = typeof delimiters[number]
  * @see https://vueuse.org/usePageVisibility
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
  * @see https://w3c.github.io/page-visibility/
- * @returns isVisible and visibilityState
+ *
  */
 export const usePageVisibility = () => {
   // A DOMString indicating the document's current visibility state.
