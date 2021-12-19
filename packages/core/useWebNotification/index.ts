@@ -69,6 +69,14 @@ export interface WebNotificationOptions {
    * @default false
    */
   silent?: boolean
+  /**
+   *
+   * Specifies a vibration pattern for devices with vibration hardware to emit.
+   * A vibration pattern, as specified in the Vibration API spec
+   * @see https://w3c.github.io/vibration/
+   * @default [200, 100, 200]
+   */
+  vibrate?: []
 }
 
 interface WebNotificationMethods {
@@ -119,7 +127,18 @@ export const useWebNotification = (
   options: WebNotificationOptions,
   methods: WebNotificationMethods = defaultWebNotificationMethods,
 ) => {
-  const { title } = options
+  const {
+    title,
+    body = '',
+    dir = 'auto',
+    lang = 'EN',
+    tag = '',
+    icon = '',
+    renotify = false,
+    requireInteraction = false,
+    silent = false,
+    vibrate = [200, 100, 200],
+  } = options
 
   const notification: Ref<Notification | null> = ref(null)
 
@@ -132,9 +151,13 @@ export const useWebNotification = (
   }
 
   // Show notification method:
-  const show = (): void => {
+  const show = (opts?: WebNotificationOptions): void => {
     if (isSupported) {
-      notification.value = new Notification(title, options)
+      notification.value = new Notification(
+        title,
+        opts || { body, dir, lang, tag, icon, renotify, requireInteraction, silent, vibrate },
+      )
+
       notification.value.onclick = methods.onClick
       notification.value.onshow = methods.onShow
       notification.value.onerror = methods.onError
