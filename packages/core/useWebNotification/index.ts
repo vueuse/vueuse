@@ -1,4 +1,5 @@
-import { onMounted, ref, onUnmounted } from 'vue-demi'
+import { onMounted, onUnmounted, ref } from 'vue-demi'
+
 import type { Ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
