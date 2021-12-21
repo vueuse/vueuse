@@ -123,6 +123,7 @@
   - [`useStorageAsync`](https://vueuse.org/core/useStorageAsync/) — reactive Storage in with async support
 
 ### Utilities
+  - [`add`](https://vueuse.org/shared/add/) — `ADD` operation for refs
   - [`and`](https://vueuse.org/shared/and/) — `AND` condition for refs
   - [`asyncComputed`](https://vueuse.org/core/asyncComputed/) — computed for async functions
   - [`autoResetRef`](https://vueuse.org/core/autoResetRef/) — a ref which will be reset to the default value after some time
@@ -133,11 +134,13 @@
   - [`createReactiveFn`](https://vueuse.org/shared/createReactiveFn/) — converts plain functions into reactive functions
   - [`createUnrefFn`](https://vueuse.org/core/createUnrefFn/) — make a plain function accepting ref and raw values as arguments
   - [`debouncedRef`](https://vueuse.org/shared/debouncedRef/) — debounce updates of a ref
+  - [`divide`](https://vueuse.org/shared/divide/) — `ADD` operation for refs
   - [`eagerComputed`](https://vueuse.org/shared/eagerComputed/) — eager computed without lazy evaluation
   - [`extendRef`](https://vueuse.org/shared/extendRef/) — add extra attributes to Ref
   - [`get`](https://vueuse.org/shared/get/) — shorthand for accessing `ref.value`
   - [`isDefined`](https://vueuse.org/shared/isDefined/) — non-nullish checking type guard for Ref
   - [`makeDestructurable`](https://vueuse.org/shared/makeDestructurable/) — make isomorphic destructurable for object and array at the same time
+  - [`multiply`](https://vueuse.org/shared/multiply/) — `ADD` operation for refs
   - [`not`](https://vueuse.org/shared/not/) — `NOT` condition for ref
   - [`or`](https://vueuse.org/shared/or/) — `OR` conditions for refs
   - [`reactify`](https://vueuse.org/shared/reactify/) — converts plain functions into reactive functions
@@ -145,6 +148,7 @@
   - [`reactivePick`](https://vueuse.org/shared/reactivePick/) — reactively pick fields from a reactive object
   - [`refDefault`](https://vueuse.org/shared/refDefault/) — apply default value to a ref
   - [`set`](https://vueuse.org/shared/set/) — shorthand for `ref.value = x`
+  - [`subtract`](https://vueuse.org/shared/subtract/) — `ADD` operation for refs
   - [`syncRef`](https://vueuse.org/shared/syncRef/) — keep target refs in sync with a source ref
   - [`throttledRef`](https://vueuse.org/shared/throttledRef/) — throttle updates of a ref
   - [`toReactive`](https://vueuse.org/shared/toReactive/) — converts ref to reactive
