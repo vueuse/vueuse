@@ -58,7 +58,7 @@ importers:
       vite-plugin-pwa: ^0.11.12
       vite-plugin-windicss: ^1.5.4
       vitepress: ^0.20.9
-      vitest: ^0.0.97
+      vitest: ^0.0.105
       vue: ^3.2.26
       vue2: npm:vue@2
     devDependencies:
@@ -109,7 +109,7 @@ importers:
       vite-plugin-pwa: 0.11.12_vite@2.6.7
       vite-plugin-windicss: 1.5.4_vite@2.6.7
       vitepress: 0.20.9
-      vitest: 0.0.97_jsdom@19.0.0+vite@2.6.7
+      vitest: 0.0.105_jsdom@19.0.0+vite@2.6.7
       vue: 3.2.26
       vue2: /vue/2.6.14
 
@@ -2913,11 +2913,6 @@ packages:
     resolution: {integrity: sha512-Fhjc/k8725ItmrvW5QomzxLeojewxvqiYCKeFcfFEhut28IVLdpHU19dneOmltZQIE5HNbawj1HYD+1f2bM1Dg==}
     dependencies:
       nanocolors: 0.1.12
-    dev: true
-
-  /chai-subset/1.6.0:
-    resolution: {integrity: sha1-pdDKFOMpp5WW7XAFi2ZGvWmIz+k=}
-    engines: {node: '>=4'}
     dev: true
 
   /chai/4.3.4:
@@ -6859,13 +6854,13 @@ packages:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=}
     dev: true
 
-  /tinypool/0.0.3:
-    resolution: {integrity: sha512-nxFpgSXY/+ZHrwHhlSyY8qzyk4N6+IyZvsaI63/zXUjg++UtCqr3gB0t/CDoCvVKC7NIzzGFEhrAXLm0l1dglA==}
+  /tinypool/0.0.5:
+    resolution: {integrity: sha512-5fUjvd0Dcr2a4b3gSAtg58cE0bDX9tc4zsRWEVGxhHUSN1DhITtRK9myC9wFzaZ+a/pP3bJaGIHXBqlrj6XgZg==}
     engines: {node: '>=14.0.0'}
     dev: true
 
-  /tinyspy/0.1.2:
-    resolution: {integrity: sha512-ReLcUvHQeyg6FCXWoaajS2FdikgKWSuwrbrKdq4lr0lBAHK57JqBPEF0RZVqxVC+ap5+ktQemTBJJc9XDO+fgg==}
+  /tinyspy/0.2.4:
+    resolution: {integrity: sha512-A6C0zYMhY2cECXJwJfgesG1jbEjz/d9Enuzx5cC1qiSrGp6eZDMtO8Dxl0Nrn47wR9abEtGr2ckQi52OoJ7eiQ==}
     engines: {node: '>=14.0.0'}
     dev: true
 
@@ -7333,9 +7328,9 @@ packages:
       - stylus
     dev: true
 
-  /vitest/0.0.97_jsdom@19.0.0+vite@2.6.7:
-    resolution: {integrity: sha512-8gFvjcqBhI78gB5tCEQShQTfmi9R8B4zn+HkOVw2h4e1ojv8fMLBjGCBG0J/RiNdaBXCWcwUy+INgFz3eNNbkA==}
-    engines: {node: '>=16.0.0'}
+  /vitest/0.0.105_jsdom@19.0.0+vite@2.6.7:
+    resolution: {integrity: sha512-pTTpP75ZJuCsqTq47X9vuA4z5oDpfYlW/8NNRAjLleo9EDfytJgUZuuS8/DCx8P+1SUdleDKKRVIFrm1ghdgKQ==}
+    engines: {node: '>=14.14.0'}
     hasBin: true
     peerDependencies:
       c8: '*'
@@ -7353,13 +7348,10 @@ packages:
       '@types/chai': 4.3.0
       '@types/chai-subset': 1.3.3
       chai: 4.3.4
-      chai-subset: 1.6.0
-      fast-glob: 3.2.7
       jsdom: 19.0.0
       local-pkg: 0.4.0
-      source-map: 0.7.3
-      tinypool: 0.0.3
-      tinyspy: 0.1.2
+      tinypool: 0.0.5
+      tinyspy: 0.2.4
       vite: 2.6.7
     dev: true
 
