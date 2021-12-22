@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { watch, ref, computed, shallowRef } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
 

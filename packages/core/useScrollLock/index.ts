@@ -1,5 +1,5 @@
-import { unref, ref, computed } from 'vue-demi'
-import type { MaybeRef, Fn } from '@vueuse/shared'
+import { computed, ref, unref } from 'vue-demi'
+import type { Fn, MaybeRef } from '@vueuse/shared'
 import { isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 

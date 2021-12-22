@@ -1,4 +1,4 @@
-import type { WatchOptions, WatchSource, WatchCallback } from 'vue-demi'
+import type { WatchCallback, WatchOptions, WatchSource } from 'vue-demi'
 import { watch } from 'vue-demi'
 
 /**

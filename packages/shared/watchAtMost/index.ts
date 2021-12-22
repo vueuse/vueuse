@@ -1,4 +1,4 @@
-import type { Ref, WatchSource, WatchStopHandle, WatchCallback } from 'vue-demi'
+import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
 import { ref, unref } from 'vue-demi'
 import type { MapOldSources, MapSources, MaybeRef } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'

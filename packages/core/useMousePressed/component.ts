@@ -1,4 +1,4 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 import type { MousePressedOptions } from '@vueuse/core'
 import { useMousePressed } from '@vueuse/core'
 import type { RenderableComponent } from '../types'

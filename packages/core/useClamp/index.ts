@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref, computed, unref } from 'vue-demi'
+import { computed, ref, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { clamp } from '@vueuse/shared'
 

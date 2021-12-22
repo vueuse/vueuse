@@ -70,7 +70,7 @@ function VueUseModule(this: any) {
   // add @vueuse/nuxt to transpile target for alias resolution
   nuxt.options.build = nuxt.options.build || {}
   nuxt.options.build.transpile = nuxt.options.build.transpile || []
-  nuxt.options.build.transpile.push('@vueuse/nuxt')
+  nuxt.options.build.transpile.push('@vueuse/nuxt', '@vueuse/core', '@vueuse/shared')
 
   let indexes: PackageIndexes | undefined
 
