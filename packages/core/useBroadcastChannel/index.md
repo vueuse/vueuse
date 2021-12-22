@@ -4,7 +4,9 @@ category: Browser
 
 # useBroadcastChannel
 
-Reactive broadcast channel. Closes a broadcast channel automatically onUnmounted.
+Reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel). 
+
+Closes a broadcast channel automatically onUnmounted.
 
 ## Usage
 
