@@ -1,4 +1,4 @@
-import { computed, onUnmounted, onMounted, ref } from 'vue-demi'
+import { computed, onMounted, onUnmounted, ref } from 'vue-demi'
 
 export interface BroadcastChannelOptions {
   /**
