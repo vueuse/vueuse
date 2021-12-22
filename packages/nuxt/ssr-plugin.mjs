@@ -3,8 +3,8 @@ import { useMeta } from '#meta'
 import { useCookie } from '#app'
 
 export default () => {
-  const cookieMap = new Map()
   setSSRContext('getDefaultStorage', () => {
+    const cookieMap = new Map()
     return {
       getItem: (key) => {
         if (!cookieMap.get(key))
