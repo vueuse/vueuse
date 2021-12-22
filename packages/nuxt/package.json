@@ -13,13 +13,13 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/nuxt"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "license": "MIT",
   "author": "Anthony Fu <https://github.com/antfu>",
   "sideEffects": false,
   "exports": {
