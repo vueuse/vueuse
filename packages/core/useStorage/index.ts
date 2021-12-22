@@ -143,6 +143,9 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
         if (writeDefaults && rawInit !== null)
           storage.setItem(key, serializer.write(rawInit))
       }
+      else if (typeof rawValue !== 'string') {
+        data.value = rawValue
+      }
       else {
         data.value = serializer.read(rawValue)
       }

@@ -4,9 +4,7 @@ import { fileURLToPath } from 'url'
 import { isPackageExists } from 'local-pkg'
 import type { PackageIndexes } from '../../meta/types'
 
-const _dirname = typeof __dirname === 'undefined'
-  ? dirname(fileURLToPath(import.meta.url))
-  : __dirname
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const disabledFunctions = [
   'useFetch',
@@ -58,7 +56,7 @@ export interface VueUseNuxtOptions {
 function VueUseModule(this: any) {
   const { nuxt } = this
 
-  const options: VueUseNuxtOptions = nuxt.options.vueUse || {}
+  const options: VueUseNuxtOptions = nuxt.options.vueuse || {}
 
   // opt-out Vite deps optimization for VueUse
   nuxt.hook('vite:extend', ({ config }: any) => {
@@ -75,7 +73,7 @@ function VueUseModule(this: any) {
   let indexes: PackageIndexes | undefined
 
   if (options.ssrContext) {
-    const pluginPath = resolve(_dirname, './plugin.mjs')
+    const pluginPath = resolve(_dirname, './ssr-plugin.mjs')
     nuxt.options.plugins = nuxt.options.plugins || []
     nuxt.options.plugins.push(pluginPath)
   }

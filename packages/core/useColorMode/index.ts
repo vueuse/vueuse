@@ -73,7 +73,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     selector = 'html',
     attribute = 'class',
     window = defaultWindow,
-    storage = defaultWindow?.localStorage,
+    storage = getSSRContext('getDefaultStorage', () => defaultWindow?.localStorage)(),
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
@@ -139,7 +139,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       defaultOnChanged(mode)
   }
 
-  watch(state, onChanged, { flush: 'post' })
+  watch(state, onChanged, { flush: 'post', immediate: true })
 
   tryOnMounted(() => onChanged(state.value))
 
