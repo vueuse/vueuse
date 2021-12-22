@@ -21,8 +21,6 @@
       "@vueuse/shared/*": ["./packages/shared/*"],
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/ssr-context": ["./packages/ssr-context/index.ts"],
-      "@vueuse/ssr-context/*": ["./packages/ssr-context/*"],
       "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
     }
   },

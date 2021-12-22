@@ -17,7 +17,6 @@ export const packages: PackageManifest[] = [
     author: 'Jacob Clevenger<https://github.com/wheatjs>',
     external: [
       '@vueuse/core',
-      '@vueuse/ssr-context',
       '@vueuse/shared',
     ],
   },
@@ -33,23 +32,11 @@ export const packages: PackageManifest[] = [
     target: 'node14',
     external: [
       '@vueuse/core',
-      '@vueuse/ssr-context',
       '@vueuse/shared',
       'local-pkg',
       'fs',
       'path',
       'url',
-    ],
-  },
-  {
-    name: 'ssr-context',
-    display: 'SSR Context',
-    description: 'Abstraction layer for SSR context',
-    manualImport: true,
-    addon: true,
-    external: [
-      '@vueuse/core',
-      '@vueuse/shared',
     ],
   },
   {

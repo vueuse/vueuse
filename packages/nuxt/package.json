@@ -35,7 +35,6 @@
   "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/core": "workspace:*",
-    "@vueuse/srr-context": "workspace:*",
     "local-pkg": "^0.4.0",
     "vue-demi": "*"
   }

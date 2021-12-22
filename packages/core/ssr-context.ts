@@ -18,7 +18,11 @@ export interface SSRContextMap {
   updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
 }
 
-const context: Partial<SSRContextMap> = {}
+const globalKey = '__vueuse_ssr_context__'
+// @ts-expect-error
+globalThis[globalKey] = globalThis[globalKey] || {}
+// @ts-expect-error
+const context: Partial<SSRContextMap> = globalThis[globalKey]
 
 export function getSSRContext<T extends keyof SSRContextMap>(key: T, fallback: SSRContextMap[T]): SSRContextMap[T]
 export function getSSRContext<T extends keyof SSRContextMap>(key: T, fallback: SSRContextMap[T] | undefined): SSRContextMap[T] | undefined

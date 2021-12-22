@@ -27,7 +27,6 @@ const dtsPlugin = [
 const externals = [
   'vue-demi',
   '@vueuse/shared',
-  '@vueuse/ssr-context',
   '@vueuse/core',
 ]
 
@@ -48,7 +47,6 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUse',
     '@vueuse/core': 'VueUse',
-    '@vueuse/ssr-context': 'VueUse',
     ...(globals || {}),
   }
 
