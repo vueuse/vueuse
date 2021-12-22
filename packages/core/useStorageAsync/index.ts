@@ -2,8 +2,8 @@ import type { MaybeRef, RemovableRef } from '@vueuse/shared'
 import { watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref } from 'vue-demi'
-import type { StorageLikeAsync } from '../ssr-context'
-import { getSSRContext } from '../ssr-context'
+import type { StorageLikeAsync } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import type { SerializerAsync, StorageOptions } from '../useStorage'
 import { StorageSerializers } from '../useStorage'
 import { useEventListener } from '../useEventListener'
@@ -35,7 +35,7 @@ export function useStorageAsync<T = unknown> (key: string, initialValue: MaybeRe
 export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
-  storage: StorageLikeAsync | undefined = getSSRContext('getDefaultStorageAsync', () => defaultWindow?.localStorage)(),
+  storage: StorageLikeAsync | undefined = getSSRHandler('getDefaultStorageAsync', () => defaultWindow?.localStorage)(),
   options: StorageAsyncOptions<T> = {},
 ): RemovableRef<T> {
   const {

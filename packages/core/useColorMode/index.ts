@@ -1,8 +1,8 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
-import type { StorageLike } from '../ssr-context'
-import { getSSRContext } from '../ssr-context'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import type { StorageOptions } from '../useStorage'
 import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
@@ -73,7 +73,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     selector = 'html',
     attribute = 'class',
     window = defaultWindow,
-    storage = getSSRContext('getDefaultStorage', () => defaultWindow?.localStorage)(),
+    storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)(),
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
@@ -104,7 +104,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     },
   })
 
-  const updateHTMLAttrs = getSSRContext(
+  const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
     (selector, attribute, value) => {
       const el = window?.document.querySelector(selector)

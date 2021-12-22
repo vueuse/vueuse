@@ -2,8 +2,8 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, R
 import { watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref } from 'vue-demi'
-import type { StorageLike } from '../ssr-context'
-import { getSSRContext } from '../ssr-context'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -110,7 +110,7 @@ export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<nul
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
-  storage: StorageLike | undefined = getSSRContext('getDefaultStorage', () => defaultWindow?.localStorage)(),
+  storage: StorageLike | undefined = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)(),
   options: StorageOptions<T> = {},
 ): RemovableRef<T> {
   const {
