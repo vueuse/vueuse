@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import type { MouseOptions } from '../useMouse'
@@ -34,6 +34,32 @@ export function useMouseInElement(
   const elementHeight = ref(0)
   const elementWidth = ref(0)
   const isOutside = ref(false)
+
+  // The scalar distance (in pixels) from the center of the element
+  // and current mouse { x, y } position:
+  const elementDistanceToCenter = computed(() => {
+    return Math.floor(
+      Math.sqrt(
+        Math.pow(x.value - (elementPositionX.value + elementWidth.value / 2), 2)
+        + Math.pow(y.value - (elementPositionY.value + elementHeight.value / 2), 2),
+      ),
+    )
+  })
+
+  // The scalar distance (in pixels) from the boundary of the element
+  // and current mouse { x, y } position:
+  const elementDistanceToBoundary = computed(() => {
+    const X = Math.max(Math.min(x.value, elementPositionX.value + elementWidth.value), elementPositionX.value)
+
+    const Y = Math.max(Math.min(y.value, elementPositionY.value + elementHeight.value), elementPositionY.value)
+
+    return Math.floor(
+      Math.sqrt(
+        Math.pow(x.value - X, 2)
+        + Math.pow(y.value - Y, 2),
+      ),
+    )
+  })
 
   let stop = () => {}
 
@@ -80,6 +106,8 @@ export function useMouseInElement(
     elementPositionY,
     elementHeight,
     elementWidth,
+    elementDistanceToCenter,
+    elementDistanceToBoundary,
     isOutside,
     stop,
   }
