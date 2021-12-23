@@ -26,6 +26,7 @@ const disabled = [
 export default function() {
   const { nuxt } = this
 
+  // eslint-disable-next-line no-console
   console.log('[@vueuse/core] Installing Nuxt module with `@vueuse/core/nuxt` is deprecated. Please use `@vueuse/nuxt` instead.')
 
   // opt-out Vite deps optimization for VueUse

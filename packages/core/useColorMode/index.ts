@@ -1,7 +1,9 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
-import type { StorageLike, StorageOptions } from '../useStorage'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
+import type { StorageOptions } from '../useStorage'
 import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
@@ -71,7 +73,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     selector = 'html',
     attribute = 'class',
     window = defaultWindow,
-    storage = defaultWindow?.localStorage,
+    storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)(),
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
@@ -102,26 +104,32 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     },
   })
 
-  function defaultOnChanged(value: T | BasicColorSchema) {
-    const el = window?.document.querySelector(selector)
-    if (!el)
-      return
+  const updateHTMLAttrs = getSSRHandler(
+    'updateHTMLAttrs',
+    (selector, attribute, value) => {
+      const el = window?.document.querySelector(selector)
+      if (!el)
+        return
 
-    if (attribute === 'class') {
-      const current = (modes[value] || '').split(/\s/g)
-      Object.values(modes)
-        .flatMap(i => (i || '').split(/\s/g))
-        .filter(Boolean)
-        .forEach((v) => {
-          if (current.includes(v))
-            el.classList.add(v)
-          else
-            el.classList.remove(v)
-        })
-    }
-    else {
-      el.setAttribute(attribute, value)
-    }
+      if (attribute === 'class') {
+        const current = value.split(/\s/g)
+        Object.values(modes)
+          .flatMap(i => (i || '').split(/\s/g))
+          .filter(Boolean)
+          .forEach((v) => {
+            if (current.includes(v))
+              el.classList.add(v)
+            else
+              el.classList.remove(v)
+          })
+      }
+      else {
+        el.setAttribute(attribute, value)
+      }
+    })
+
+  function defaultOnChanged(mode: T | BasicColorSchema) {
+    updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)
   }
 
   function onChanged(mode: T | BasicColorSchema) {
@@ -131,7 +139,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       defaultOnChanged(mode)
   }
 
-  watch(state, onChanged, { flush: 'post' })
+  watch(state, onChanged, { flush: 'post', immediate: true })
 
   tryOnMounted(() => onChanged(state.value))
 

@@ -9,6 +9,10 @@
     "nuxt3",
     "nuxt-module"
   ],
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/nuxt#readme",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,6 +21,7 @@
   },
   "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu <https://github.com/antfu>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -26,13 +31,8 @@
     "./*": "./*"
   },
   "main": "./index.cjs",
-  "types": "./index.d.ts",
   "module": "./index.mjs",
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/nuxt#readme",
+  "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "local-pkg": "^0.4.0",

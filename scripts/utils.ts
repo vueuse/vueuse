@@ -208,6 +208,7 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       imports.push(
         'export * from \'./types\'',
         'export * from \'@vueuse/shared\'',
+        'export * from \'./ssr-handlers\'',
       )
     }
 
