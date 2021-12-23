@@ -29,14 +29,14 @@
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
     "update": "esno scripts/update.ts",
-    "update:full": "esno scripts/update.ts && nr build:types && nr update:recent",
+    "update:full": "nr update && nr build:types && nr update:recent",
     "update:recent": "esno scripts/recently-updated.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "{packages,.vitepress,scripts}/**/*.{js,ts,tsx,vue,md}": [
+    "{packages,.vitepress,scripts,meta}/**/*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
     ]
   },
