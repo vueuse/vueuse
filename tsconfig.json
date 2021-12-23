@@ -25,7 +25,7 @@
     },
     "types": [
       "vitest",
-      "vitest/global.d.ts"
+      "vitest/global"
     ]
   },
   "include": [

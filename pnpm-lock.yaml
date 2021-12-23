@@ -18,6 +18,7 @@ importers:
       '@types/fs-extra': ^9.0.13
       '@types/js-yaml': ^4.0.5
       '@types/node': ^17.0.0
+      '@types/prettier': ^2.4.2
       '@types/semver': ^7.3.9
       '@vue/compiler-sfc': ^3.2.26
       '@vue/composition-api': ^1.4.2
@@ -71,6 +72,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/js-yaml': 4.0.5
       '@types/node': 17.0.0
+      '@types/prettier': 2.4.2
       '@types/semver': 7.3.9
       '@vue/compiler-sfc': 3.2.26
       '@vue/composition-api': 1.4.2_vue@3.2.26
@@ -2295,6 +2297,10 @@ packages:
 
   /@types/nprogress/0.2.0:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: true
+
+  /@types/prettier/2.4.2:
+    resolution: {integrity: sha512-ekoj4qOQYp7CvjX8ZDBgN86w3MqQhLE1hczEJbEIjgFEumDy+na/4AJAbLXfgEWFNB2pKadM5rPFtuSGMWK7xA==}
     dev: true
 
   /@types/qrcode/1.4.2:

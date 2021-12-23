@@ -31,9 +31,9 @@ describe('usePointerSwipe', () => {
   document.body.appendChild(target)
 
   const threshold = 30
-  let onSwipeStart: jest.Mock
-  let onSwipe: jest.Mock
-  let onSwipeEnd: jest.Mock
+  let onSwipeStart: any
+  let onSwipe: any
+  let onSwipeEnd: any
 
   const options = (): PointerSwipeOptions => ({
     threshold,

@@ -123,8 +123,8 @@ describe('useTransition', () => {
     expect(first).toBeCalled()
     expect(second).not.toBeCalled()
 
-    first.reset()
-    second.reset()
+    first.mockReset()
+    second.mockReset()
 
     easingFn.value = second
     source.value = 2
@@ -177,8 +177,8 @@ describe('useTransition', () => {
     expect(onStarted).toBeCalled()
     expect(onFinished).not.toBeCalled()
 
-    onStarted.reset()
-    onFinished.reset()
+    onStarted.mockReset()
+    onFinished.mockReset()
 
     await promiseTimeout(100)
     expect(onStarted).not.toBeCalled()

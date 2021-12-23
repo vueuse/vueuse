@@ -39,7 +39,7 @@ describe('useSwipe', () => {
   }
 
   const threshold = 30
-  let onSwipe
+  let onSwipe: any
   let onSwipeEnd: any
 
   beforeEach(() => {

@@ -12,7 +12,7 @@ describe('useTimeoutFn', () => {
     await promiseTimeout(1)
     expect(callback).toBeCalled()
 
-    callback.reset()
+    callback.mockReset()
     interval.value = 50
 
     start()
