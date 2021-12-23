@@ -38,13 +38,14 @@ describe('useSwipe', () => {
     })
   }
 
-  const onSwipe = vitest.fn((e: TouchEvent) => {})
-  const onSwipeEnd = vitest.fn((e: TouchEvent, direction: SwipeDirection) => {})
   const threshold = 30
+  let onSwipe
+  let onSwipeEnd: any
 
   beforeEach(() => {
-    onSwipe.reset()
-    onSwipeEnd.reset()
+    onSwipe = vitest.fn((e: TouchEvent) => {})
+    onSwipeEnd = vitest.fn((e: TouchEvent, direction: SwipeDirection) => {})
+    vitest.resetAllMocks()
   })
 
   it('threshold not exceeded', () => {
@@ -77,7 +78,7 @@ describe('useSwipe', () => {
 
       expect(onSwipe).toBeCalledTimes(2)
       expect(onSwipeEnd).toHaveBeenCalledOnce()
-      expect(onSwipeEnd.calls.at(-1)![0]).toBe(SwipeDirection.NONE)
+      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
     })
   })
 
@@ -115,7 +116,7 @@ describe('useSwipe', () => {
           mockTouchEvents(target, coords)
 
           expect(direction.value).toBe(expected)
-          expect(onSwipeEnd.calls[0][1]).toBe(expected)
+          expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
         })
       })
     })

@@ -8,7 +8,7 @@ describe('useScriptTag', () => {
     document.head.querySelector(`script[src="${src}"]`)
 
   // Reset JSDOM after each test
-  afterEach(() => {
+  beforeEach(() => {
     document.getElementsByTagName('html')[0].innerHTML
       = '<html><head></head><body>Empty DOM</body></html>'
   })
