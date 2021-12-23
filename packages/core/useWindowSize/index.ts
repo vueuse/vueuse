@@ -27,9 +27,7 @@ export function useWindowSize({ window = defaultWindow, initialWidth = Infinity,
   }
 
   update()
-
   tryOnMounted(update)
-
   useEventListener('resize', update, { passive: true })
 
   return { width, height }
