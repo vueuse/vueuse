@@ -2,7 +2,7 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useFocusWithin } from '.'
 
-describe.skip('useFocusWithin', () => {
+describe('useFocusWithin', () => {
   let parent: Ref<HTMLFormElement>
   let child: Ref<HTMLDivElement>
   let grandchild: Ref<HTMLInputElement>

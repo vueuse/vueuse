@@ -17,7 +17,7 @@ let onFetchFinallySpy = vitest.fn()
 // @ts-ignore
 const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
 
-describe.skip('useFetch', () => {
+describe('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vitest.spyOn(window, 'fetch')
     onFetchErrorSpy = vitest.fn()

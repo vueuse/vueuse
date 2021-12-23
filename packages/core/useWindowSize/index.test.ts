@@ -1,7 +1,7 @@
 import { retry } from '../../.test'
 import { useWindowSize } from '.'
 
-describe.skip('useWindowSize', () => {
+describe('useWindowSize', () => {
   let addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
   beforeEach(() => {
     addEventListenerSpy = vitest.spyOn(window, 'addEventListener')

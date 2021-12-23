@@ -11,6 +11,10 @@ export const retry = (assertion: Function, { interval = 1, timeout = 100 } = {})
           Date.now() - startTime > timeout ? reject(err) : tryAgain();
         }
       }, interval);
+      try {
+        // If useFakeTimers hasn't been called, this will throw
+        vitest.advanceTimersByTime(interval)
+      } catch (e) { /* Expected to throw */ }
     };
 
     tryAgain();
