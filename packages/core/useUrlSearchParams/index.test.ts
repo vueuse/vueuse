@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import { useSetup } from '../../.test'
 import { useUrlSearchParams } from '.'
 
@@ -26,71 +25,73 @@ describe('useUrlSearchParams', () => {
     }))
   }
 
-  each([
+  ([
     'history',
     'hash',
     'hash-params',
-  ]).describe('each mode', (mode: 'history' | 'hash' | 'hash-params') => {
-    test('return initial params', () => {
-      useSetup(() => {
-        if (mode === 'hash')
-          window.location.hash = '#/test/?foo=bar'
-        else if (mode === 'hash-params')
-          window.location.hash = '#foo=bar'
-        else
-          window.location.search = '?foo=bar'
-      })
+  ] as const).forEach((mode) => {
+    describe(`${mode} mode`, () => {
+      test('return initial params', () => {
+        useSetup(() => {
+          if (mode === 'hash')
+            window.location.hash = '#/test/?foo=bar'
+          else if (mode === 'hash-params')
+            window.location.hash = '#foo=bar'
+          else
+            window.location.search = '?foo=bar'
+        })
 
-      const params = useUrlSearchParams(mode)
-      expect(params.foo).toBe('bar')
-    })
-
-    test('update params on poststate event', () => {
-      useSetup(() => {
         const params = useUrlSearchParams(mode)
-        expect(params.foo).toBeUndefined()
-        if (mode === 'hash')
-          mockPopstate('', '#/test/?foo=bar')
-        else if (mode === 'hash-params')
-          mockPopstate('', '#foo=bar')
-        else
-          mockPopstate('?foo=bar', '')
-
         expect(params.foo).toBe('bar')
       })
-    })
 
-    test('update browser location on params change', () => {
-      useSetup(() => {
-        const params = useUrlSearchParams(mode)
-        expect(params.foo).toBeUndefined()
-        params.foo = 'bar'
+      test('update params on poststate event', () => {
+        useSetup(() => {
+          const params = useUrlSearchParams(mode)
+          expect(params.foo).toBeUndefined()
+          if (mode === 'hash')
+            mockPopstate('', '#/test/?foo=bar')
+          else if (mode === 'hash-params')
+            mockPopstate('', '#foo=bar')
+          else
+            mockPopstate('?foo=bar', '')
 
-        expect(params.foo).toBe('bar')
+          expect(params.foo).toBe('bar')
+        })
       })
-    })
 
-    test('array url search param', () => {
-      useSetup(() => {
-        const params = useUrlSearchParams(mode)
-        expect(params.foo).toBeUndefined()
-        params.foo = ['bar1', 'bar2']
+      test('update browser location on params change', () => {
+        useSetup(() => {
+          const params = useUrlSearchParams(mode)
+          expect(params.foo).toBeUndefined()
+          params.foo = 'bar'
 
-        expect(params.foo).toEqual(['bar1', 'bar2'])
+          expect(params.foo).toBe('bar')
+        })
       })
-    })
 
-    test('generic url search params', () => {
-      useSetup(() => {
-        interface CustomUrlParams extends Record<string, any> {
-          customFoo: number | undefined
-        }
+      test('array url search param', () => {
+        useSetup(() => {
+          const params = useUrlSearchParams(mode)
+          expect(params.foo).toBeUndefined()
+          params.foo = ['bar1', 'bar2']
 
-        const params = useUrlSearchParams<CustomUrlParams>(mode)
-        expect(params.customFoo).toBeUndefined()
-        params.customFoo = 42
+          expect(params.foo).toEqual(['bar1', 'bar2'])
+        })
+      })
 
-        expect(params.customFoo).toEqual(42)
+      test('generic url search params', () => {
+        useSetup(() => {
+          interface CustomUrlParams extends Record<string, any> {
+            customFoo: number | undefined
+          }
+
+          const params = useUrlSearchParams<CustomUrlParams>(mode)
+          expect(params.customFoo).toBeUndefined()
+          params.customFoo = 42
+
+          expect(params.customFoo).toEqual(42)
+        })
       })
     })
   })
