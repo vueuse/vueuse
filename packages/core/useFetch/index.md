@@ -21,6 +21,16 @@ import { useFetch } from '@vueuse/core'
 const { isFetching, error, data } = useFetch(url)
 ```
 
+### Asynchronous Usage
+`useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
+it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Offical Vue 3 Docs](https://v3.vuejs.org/guide/migration/suspense.html)
+
+```ts
+import { useFetch } from '@vueuse/core'
+
+const { isFetching, error, data } = await useFetch(url)
+```
+
 ### Refetching on URL change
 Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another
 request when the url is changed.
