@@ -2,8 +2,8 @@ import { ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useDebouncedRefHistory } from '.'
 
-describe('useDebouncedRefHistory - ', () => {
-  test('take snapshot of data after given time after data was changed', () => {
+describe('useDebouncedRefHistory', () => {
+  test('Once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', () => {
     useSetup(() => {
       const ms = 1000
       const v = ref(0)
@@ -20,7 +20,7 @@ describe('useDebouncedRefHistory - ', () => {
     })
   })
 
-  test('undefined debounce don`t break function', () => {
+  test('when debounce is undefined', () => {
     useSetup(() => {
       const v = ref(0)
 

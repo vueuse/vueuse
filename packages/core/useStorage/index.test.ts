@@ -5,7 +5,7 @@ import { useStorage } from '.'
 
 const KEY = 'custom-key'
 
-describe.skip('useStorage', () => {
+describe('useStorage', () => {
   afterEach(() => {
     localStorage.clear()
     // @ts-expect-error

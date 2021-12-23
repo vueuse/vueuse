@@ -5,8 +5,6 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
-console.log('resolve', resolve(__dirname, 'packages/.test/test.setup'))
-
 export default defineConfig({
   resolve: {
     alias: {

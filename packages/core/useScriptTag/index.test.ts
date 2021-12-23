@@ -1,7 +1,7 @@
 import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
 
-describe.skip('useScriptTag', () => {
+describe('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
   const scriptTagElement = (): HTMLScriptElement | null =>
