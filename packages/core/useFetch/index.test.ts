@@ -1,59 +1,25 @@
-import { setupServer } from 'msw/node'
-import { rest } from 'msw'
 import { ref } from 'vue-demi'
 import { until } from '@vueuse/shared'
 import { retry } from '../../.test/test.setup'
+import '../../.test/network-mocks'
 import { createFetch, useFetch } from '.'
 
 const jsonMessage = { hello: 'world' }
-const textMessage = 'Hello World'
-const commonTransformers = (req, _, ctx) => {
-  const t = []
-  const qs = req.url.searchParams
-  if (qs.get('delay')) t.push(ctx.delay(Number(qs.get('delay'))))
-  if (qs.get('status')) t.push(ctx.status(Number(qs.get('status'))))
-  if (qs.get('text') != null) {
-    t.push(ctx.text(qs.get('text') ?? textMessage))
-  }
-  else if (qs.get('json') != null) {
-    const jsonVal = qs.get('json')
-    const jsonTransformer = ctx.json(jsonVal?.length ? JSON.parse(jsonVal) : jsonMessage)
-    t.push(jsonTransformer)
-  }
-  return t
-}
-
-const server = setupServer(
-  rest.post('https://example.com', (req, res, ctx) => {
-    const t = commonTransformers(req, res, ctx)
-    if (typeof req.body === 'number' || typeof req.body === 'string') t.push(ctx.text(String(req.body)))
-    else t.push(ctx.json(req.body))
-    return res(...t)
-  }),
-  rest.get('https://example.com', (req, res, ctx) => {
-    return res(...commonTransformers(req, res, ctx))
-  }),
-  rest.get('https://example.com/test', (req, res, ctx) => res(...commonTransformers(req, res, ctx))),
-)
-
-beforeAll(() => {
-  server.listen()
-})
-afterEach(() => {
-  server.resetHandlers()
-})
-
-afterAll(() => {
-  server.close()
-})
+const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
 const fetchSpy = vitest.spyOn(window, 'fetch')
+const onFetchErrorSpy = vitest.fn()
+const onFetchResponseSpy = vitest.fn()
+const onFetchFinallySpy = vitest.fn()
+
+// @ts-ignore
 const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
+
 describe('useFetch', () => {
   beforeEach(() => {
-    fetchSpy.mockClear()
+    vitest.clearAllMocks()
   })
 
   test('should have status code of 200 and message of Hello World', async() => {
@@ -73,12 +39,12 @@ describe('useFetch', () => {
     useFetch('https://example.com/', { headers: myHeaders })
 
     await retry(() => {
-      expect(fetchSpy.mock.calls[0][1].headers).toEqual({ authorization: 'test' })
+      expect(fetchSpyHeaders()).toEqual({ authorization: 'test' })
     })
   })
 
   test('should parse response as json', async() => {
-    const { data } = useFetch('https://example.com?json').json()
+    const { data } = useFetch(jsonUrl).json()
     await retry(() => {
       expect(data.value).toEqual(jsonMessage)
     })
@@ -165,7 +131,7 @@ describe('useFetch', () => {
   })
 
   test('should run the afterFetch function', async() => {
-    const { data } = useFetch('https://example.com?json', {
+    const { data } = useFetch(jsonUrl, {
       afterFetch(ctx) {
         ctx.data.title = 'Hunter x Hunter'
         return ctx
@@ -217,10 +183,6 @@ describe('useFetch', () => {
   })
 
   test('should emit onFetchResponse event', async() => {
-    const onFetchErrorSpy = vitest.fn()
-    const onFetchResponseSpy = vitest.fn()
-    const onFetchFinallySpy = vitest.fn()
-
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(onFetchResponseSpy)
@@ -234,10 +196,6 @@ describe('useFetch', () => {
   })
 
   test('should emit onFetchError event', async() => {
-    const onFetchErrorSpy = vitest.fn()
-    const onFetchResponseSpy = vitest.fn()
-    const onFetchFinallySpy = vitest.fn()
-
     const { onFetchError, onFetchFinally, onFetchResponse } = useFetch('https://example.com?status=400')
 
     onFetchError(onFetchErrorSpy)
@@ -252,17 +210,17 @@ describe('useFetch', () => {
   })
 
   test('setting the request method w/ get and return type w/ json', async() => {
-    const { data } = useFetch('https://example.com?json').get().json()
+    const { data } = useFetch(jsonUrl).get().json()
     await retry(() => expect(data.value).toEqual(jsonMessage))
   })
 
   test('setting the request method w/ post and return type w/ text', async() => {
-    const { data } = useFetch('https://example.com?json').post().text()
+    const { data } = useFetch(jsonUrl).post().text()
     await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
   })
 
   test('allow setting response type before doing request', async() => {
-    const shell = useFetch('https://example.com?json', {
+    const shell = useFetch(jsonUrl, {
       immediate: false,
     }).get().text()
     shell.json()
@@ -271,7 +229,7 @@ describe('useFetch', () => {
   })
 
   test('not allowed setting response type while doing request', async() => {
-    const shell = useFetch('https://example.com?json').get().text()
+    const shell = useFetch(jsonUrl).get().text()
     const { isFetching, data } = shell
     await until(isFetching).toBe(true)
     shell.json()
@@ -287,18 +245,18 @@ describe('useFetch', () => {
   })
 
   test('should not abort request when timeout is not reached', async() => {
-    const { data } = useFetch('https://example.com?json', { timeout: 100 }).json()
+    const { data } = useFetch(jsonUrl, { timeout: 100 }).json()
     await retry(() => expect(data.value).toEqual(jsonMessage))
   })
 
   test('should await request', async() => {
-    const { data } = await useFetch('https://example.com?json').json()
+    const { data } = await useFetch(jsonUrl).json()
     expect(data.value).toEqual(jsonMessage)
     expect(fetchSpy).toBeCalledTimes(1)
   })
 
   test('should await json response', async() => {
-    const { data } = await useFetch('https://example.com?json').json()
+    const { data } = await useFetch(jsonUrl).json()
 
     expect(data.value).toEqual(jsonMessage)
     expect(fetchSpy).toBeCalledTimes(1)
