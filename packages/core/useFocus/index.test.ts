@@ -1,11 +1,13 @@
 import type { Ref } from 'vue-demi'
-import { nextTick, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { retry } from '../../.test/test.setup'
 import { useFocus } from '.'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement | null>
 
   beforeEach(() => {
+    console.log(document.body.innerHTML)
     // to silent 'focus not implemented' message coming from JSDOM
     Object.defineProperty(window, 'focus', { value() {} })
 
@@ -42,14 +44,11 @@ describe('useFocus', () => {
     expect(focused.value).toBeFalsy()
 
     focused.value = true
-    await nextTick()
-    await nextTick()
-    expect(document.activeElement).toBe(target.value)
+
+    await retry(() => expect(document.activeElement).toBe(target.value))
 
     focused.value = false
-    await nextTick()
-    await nextTick()
-    expect(document.activeElement).not.toBe(target.value)
+    await retry(() => expect(document.activeElement).not.toBe(target.value))
   })
 
   describe('when target is null', () => {
@@ -65,10 +64,10 @@ describe('useFocus', () => {
     it('should initialize focus', async() => {
       const { focused } = useFocus({ target, initialValue: true })
 
-      await nextTick()
-
-      expect(document.activeElement).toBe(target.value)
-      expect(focused.value).toBeTruthy()
+      await retry(() => {
+        expect(document.activeElement).toBe(target.value)
+        expect(focused.value).toBeTruthy()
+      })
     })
   })
 })

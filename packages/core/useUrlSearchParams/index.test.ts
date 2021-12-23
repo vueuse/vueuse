@@ -1,7 +1,7 @@
 import { useSetup } from '../../.test'
 import { useUrlSearchParams } from '.'
 
-describe('useUrlSearchParams', () => {
+describe.skip('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'
 
   beforeEach(() => {
