@@ -1,5 +1,4 @@
-// @ts-ignore
-import { retry } from '../../.test/test.setup'
+import { retry } from '../../.test'
 import { useWindowSize } from '.'
 
 describe.skip('useWindowSize', () => {

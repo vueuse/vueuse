@@ -28,6 +28,6 @@ export default defineConfig({
   test: {
     global: true,
     environment: 'jsdom',
-    setupFiles: [resolve(__dirname, 'packages/.test/test.setup.ts')],
+    setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
   },
 })

@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { until } from '@vueuse/shared'
-import { retry } from '../../.test/test.setup'
-import '../../.test/network-mocks'
+import { retry } from '../../.test'
+import '../../.test/mockServer'
 import { createFetch, useFetch } from '.'
 
 const jsonMessage = { hello: 'world' }
@@ -9,13 +9,13 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-// let fetchSpy = vitest.spyOn(window, 'fetch')
+let fetchSpy = vitest.spyOn(window, 'fetch')
 let onFetchErrorSpy = vitest.fn()
 let onFetchResponseSpy = vitest.fn()
 let onFetchFinallySpy = vitest.fn()
 
 // @ts-ignore
-// const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
+const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
 
 describe.skip('useFetch', () => {
   beforeEach(() => {
