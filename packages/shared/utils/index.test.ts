@@ -19,7 +19,7 @@ describe('filters', () => {
     vitest.useFakeTimers()
   })
 
-  it('should debounce', async() => {
+  it('should debounce', () => {
     const debouncedFilterSpy = vitest.fn()
     const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
 
@@ -86,7 +86,7 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
-  it('should throttle with ref', async() => {
+  it('should throttle with ref', () => {
     const debouncedFilterSpy = vitest.fn()
     const throttle = ref(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
