@@ -28,14 +28,15 @@ describe('useJwt', () => {
   })
 
   test('decode jwt error', () => {
+    const onErrorSpy = vitest.fn()
+
     useSetup(() => {
-      const mockCallback = vitest.fn()
-      const { header, payload } = useJwt(ref('bad-token'), { onError: mockCallback })
+      const { header, payload } = useJwt(ref('bad-token'), { onError: onErrorSpy })
       expect(header.value).toBe(null)
       expect(payload.value).toBe(null)
-
-      expect(mockCallback).toBeCalledTimes(0)
     })
+
+    expect(onErrorSpy).toHaveBeenCalled()
   })
 
   const encodedCustomJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImZvbyI6ImJhciJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJmb28iOiJiYXIifQ.S5QwvREUfgEdpB1ljG_xN6NI3HubQ79xx6J1J4dsJmg')

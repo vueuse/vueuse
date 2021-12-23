@@ -1,21 +1,7 @@
-import each from 'jest-each'
 import { useSetup } from '../../.test'
 import { SwipeDirection } from '../useSwipe'
 import type { PointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
-
-// polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
-if (!global.PointerEvent) {
-  class PointerEvent extends MouseEvent {
-    public pointerId?: number
-
-    constructor(type: string, params: PointerEventInit = {}) {
-      super(type, params)
-      this.pointerId = params.pointerId
-    }
-  }
-  global.PointerEvent = PointerEvent as any
-}
 
 const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
   clientX: x,
@@ -80,10 +66,10 @@ describe('usePointerSwipe', () => {
 
       mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.firstCall[1]).toBe(SwipeDirection.RIGHT)
+      expect(onSwipeStart).toHaveBeenCalledOnce()
+      expect(onSwipe).toHaveBeenCalledOnce()
+      expect(onSwipeEnd).toHaveBeenCalledOnce()
+      expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
     })
   })
 
@@ -93,10 +79,10 @@ describe('usePointerSwipe', () => {
 
       mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(2)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.firstCall[1]).toBe(SwipeDirection.NONE)
+      expect(onSwipeStart).toHaveBeenCalledOnce()
+      expect(onSwipe).toHaveBeenCalledTimes(2)
+      expect(onSwipeEnd).toHaveBeenCalledOnce()
+      expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
     })
   })
 
@@ -120,19 +106,26 @@ describe('usePointerSwipe', () => {
     })
   })
 
-  each([
+  const directionTests = [
     [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
     [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
     [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
     [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
-  ]).it('detect swipe to %s', (expected, coords) => {
-    useSetup(() => {
-      const { direction } = usePointerSwipe(target, options())
+  ]
 
-      mockPointerEvents(target, coords)
+  directionTests.forEach((config) => {
+    const _direction = config[0] as unknown as SwipeDirection
+    const coords = config[1] as unknown as number[][]
 
-      expect(direction.value).toBe(expected)
-      expect(onSwipeEnd.firstCall[1]).toBe(expected)
+    it(`detects swipes to the ${_direction}`, () => {
+      useSetup(() => {
+        const { direction } = usePointerSwipe(target, options())
+
+        mockPointerEvents(target, coords)
+
+        expect(direction.value).toBe(_direction)
+        expect(onSwipeEnd).toHaveBeenLastCalledWith(expect.anything(), _direction)
+      })
     })
   })
 })

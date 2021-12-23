@@ -9,17 +9,20 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-const fetchSpy = vitest.spyOn(window, 'fetch')
-const onFetchErrorSpy = vitest.fn()
-const onFetchResponseSpy = vitest.fn()
-const onFetchFinallySpy = vitest.fn()
+let fetchSpy = vitest.spyOn(window, 'fetch')
+let onFetchErrorSpy = vitest.fn()
+let onFetchResponseSpy = vitest.fn()
+let onFetchFinallySpy = vitest.fn()
 
 // @ts-ignore
 const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
 
 describe('useFetch', () => {
   beforeEach(() => {
-    vitest.clearAllMocks()
+    fetchSpy = vitest.spyOn(window, 'fetch')
+    onFetchErrorSpy = vitest.fn()
+    onFetchResponseSpy = vitest.fn()
+    onFetchFinallySpy = vitest.fn()
   })
 
   test('should have status code of 200 and message of Hello World', async() => {

@@ -7,19 +7,49 @@ if (isVue2) {
   install(Vue2)
 }
 
-let state: Record<string, any> = {}
+const createLocalStorage = () => {
+  let state: Record<string, any> = {}
 
-const localStorageMock: Storage = {
-  getItem: vitest.fn(x => state[x]),
-  setItem: vitest.fn((x, v) => state[x] = v),
-  // @ts-ignore
-  removeItem: vitest.fn((x, v) => delete state[x]),
-  clear: vitest.fn(() => state = {}),
+  const localStorageMock: Storage = {
+    getItem: vitest.fn(x => state[x]),
+    setItem: vitest.fn((x, v) => state[x] = v),
+    // @ts-ignore
+    removeItem: vitest.fn((x, v) => delete state[x]),
+    clear: vitest.fn(() => state = {}),
+  }
+
+  Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+  })
 }
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
+const createLocation = () => {
+  const baseURL = 'https://vueuse.org'
+  Object.defineProperty(window, 'location', {
+      value: new URL(baseURL),
+      writable: true,
+    })
+    window.location.search = ''
+    window.location.hash = ''
+}
+
+beforeEach(() => {
+  createLocalStorage()
+  createLocation()
 })
+
+// polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
+if (!global.PointerEvent) {
+  class PointerEvent extends MouseEvent {
+    public pointerId?: number
+
+    constructor(type: string, params: PointerEventInit = {}) {
+      super(type, params)
+      this.pointerId = params.pointerId
+    }
+  }
+  global.PointerEvent = PointerEvent as any
+}
 
 // Like `until` but works off of any assertion, not application code.
 export const retry = (assertion: Function, { interval = 1, timeout = 100 } = {}) => {
