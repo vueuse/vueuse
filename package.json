@@ -62,7 +62,6 @@
     "esno": "^0.13.0",
     "export-size": "^0.5.2",
     "fast-glob": "^3.2.7",
-    "fetch-mock": "^9.11.0",
     "firebase": "^8.9.1",
     "fs-extra": "^10.0.0",
     "gray-matter": "^4.0.3",

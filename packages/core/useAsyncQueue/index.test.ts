@@ -1,4 +1,4 @@
-import { retry } from '../../.test/test.setup'
+import { retry } from '../../.test'
 import { useAsyncQueue } from '.'
 
 describe('useAsyncQueue', () => {

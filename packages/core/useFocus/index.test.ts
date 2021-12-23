@@ -1,13 +1,12 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { retry } from '../../.test/test.setup'
+import { retry } from '../../.test'
 import { useFocus } from '.'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement | null>
 
   beforeEach(() => {
-    console.log(document.body.innerHTML)
     // to silent 'focus not implemented' message coming from JSDOM
     Object.defineProperty(window, 'focus', { value() {} })
 
