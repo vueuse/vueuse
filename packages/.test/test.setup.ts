@@ -36,6 +36,8 @@ const createLocation = () => {
 beforeEach(() => {
   createLocalStorage()
   createLocation()
+  document.body.innerHTML = ''
+  document.head.innerHTML = ''
 })
 
 // polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)

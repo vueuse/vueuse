@@ -2,7 +2,7 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useFocusWithin } from '.'
 
-describe('useFocusWithin', () => {
+describe.skip('useFocusWithin', () => {
   let parent: Ref<HTMLFormElement>
   let child: Ref<HTMLDivElement>
   let grandchild: Ref<HTMLInputElement>
@@ -43,7 +43,7 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeFalsy()
   })
 
-  it('should track the state of the targets decendants', () => {
+  it.only('should track the state of the targets descendants', () => {
     const { focused } = useFocusWithin(parent)
 
     expect(focused.value).toBeFalsy()

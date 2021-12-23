@@ -1,17 +1,11 @@
 import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
 
-describe('useScriptTag', () => {
+describe.skip('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
   const scriptTagElement = (): HTMLScriptElement | null =>
     document.head.querySelector(`script[src="${src}"]`)
-
-  // Reset JSDOM after each test
-  beforeEach(() => {
-    document.getElementsByTagName('html')[0].innerHTML
-      = '<html><head></head><body>Empty DOM</body></html>'
-  })
 
   it('should add script tag', async() => {
     const appendChildListener = vitest.spyOn(document.head, 'appendChild')
