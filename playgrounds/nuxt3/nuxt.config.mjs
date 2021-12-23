@@ -13,6 +13,6 @@ export default defineNuxtConfig({
     '@vueuse/shared': resolve(__dirname, '../../packages/shared/index.ts'),
   },
   vueuse: {
-    ssrContext: true,
+    ssrHandlers: true,
   },
 })
