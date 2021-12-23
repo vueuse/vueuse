@@ -1,7 +1,7 @@
-import { useMouseRelativeToElement } from '.'
+import { useMouseDistanceToElement } from '.'
 
-describe('useMouseRelativeToElement', () => {
+describe('useMouseDistanceToElement', () => {
   it('should be defined', () => {
-    expect(useMouseRelativeToElement).toBeDefined()
+    expect(useMouseDistanceToElement).toBeDefined()
   })
 })
