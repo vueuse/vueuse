@@ -1,4 +1,4 @@
-import { useSetup } from '../../.test'
+import { nextTick } from 'vue-demi'
 import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {
@@ -31,80 +31,71 @@ describe('useUrlSearchParams', () => {
     'hash-params',
   ] as const).forEach((mode) => {
     describe(`${mode} mode`, () => {
-      test('return initial params', () => {
-        useSetup(() => {
-          if (mode === 'hash')
-            window.location.hash = '#/test/?foo=bar'
-          else if (mode === 'hash-params')
-            window.location.hash = '#foo=bar'
-          else
-            window.location.search = '?foo=bar'
-        })
+      test('return initial params', async() => {
+        if (mode === 'hash')
+          window.location.hash = '#/test/?foo=bar'
+        else if (mode === 'hash-params')
+          window.location.hash = '#foo=bar'
+        else
+          window.location.search = '?foo=bar'
 
         const params = useUrlSearchParams(mode)
+
+        await nextTick()
         expect(params.foo).toBe('bar')
       })
 
-      test('update params on poststate event', () => {
-        useSetup(() => {
-          const params = useUrlSearchParams(mode)
-          expect(params.foo).toBeUndefined()
-          if (mode === 'hash')
-            mockPopstate('', '#/test/?foo=bar')
-          else if (mode === 'hash-params')
-            mockPopstate('', '#foo=bar')
-          else
-            mockPopstate('?foo=bar', '')
+      test('update params on poststate event', async() => {
+        const params = useUrlSearchParams(mode)
+        expect(params.foo).toBeUndefined()
+        if (mode === 'hash')
+          mockPopstate('', '#/test/?foo=bar')
+        else if (mode === 'hash-params')
+          mockPopstate('', '#foo=bar')
+        else
+          mockPopstate('?foo=bar', '')
 
-          expect(params.foo).toBe('bar')
-        })
+        await nextTick()
+        expect(params.foo).toBe('bar')
       })
 
       test('update browser location on params change', () => {
-        useSetup(() => {
-          const params = useUrlSearchParams(mode)
-          expect(params.foo).toBeUndefined()
-          params.foo = 'bar'
+        const params = useUrlSearchParams(mode)
+        expect(params.foo).toBeUndefined()
+        params.foo = 'bar'
 
-          expect(params.foo).toBe('bar')
-        })
+        expect(params.foo).toBe('bar')
       })
 
       test('array url search param', () => {
-        useSetup(() => {
-          const params = useUrlSearchParams(mode)
-          expect(params.foo).toBeUndefined()
-          params.foo = ['bar1', 'bar2']
+        const params = useUrlSearchParams(mode)
+        expect(params.foo).toBeUndefined()
+        params.foo = ['bar1', 'bar2']
 
-          expect(params.foo).toEqual(['bar1', 'bar2'])
-        })
+        expect(params.foo).toEqual(['bar1', 'bar2'])
       })
 
       test('generic url search params', () => {
-        useSetup(() => {
-          interface CustomUrlParams extends Record<string, any> {
-            customFoo: number | undefined
-          }
+        interface CustomUrlParams extends Record<string, any> {
+          customFoo: number | undefined
+        }
 
-          const params = useUrlSearchParams<CustomUrlParams>(mode)
-          expect(params.customFoo).toBeUndefined()
-          params.customFoo = 42
+        const params = useUrlSearchParams<CustomUrlParams>(mode)
+        expect(params.customFoo).toBeUndefined()
+        params.customFoo = 42
 
-          expect(params.customFoo).toEqual(42)
-        })
+        expect(params.customFoo).toEqual(42)
       })
     })
   })
 
   test('hash url without params', () => {
-    useSetup(() => {
-      window.location.hash = '#/test/'
-      const params = useUrlSearchParams('hash')
-      expect(params).toEqual({})
+    window.location.hash = '#/test/'
+    const params = useUrlSearchParams('hash')
+    expect(params).toEqual({})
 
-      const newHash = '#/change/?foo=bar'
-      window.location.hash = newHash
-      expect(window.location.hash).toBe(newHash)
-    })
+    const newHash = '#/change/?foo=bar'
+    window.location.hash = newHash
+    expect(window.location.hash).toBe(newHash)
   })
 })

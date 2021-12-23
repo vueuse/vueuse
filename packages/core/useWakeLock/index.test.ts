@@ -1,5 +1,5 @@
 import { nextTick } from 'vue-demi'
-import { defaultDocument } from '../_configurable'
+import { promiseTimeout } from '@vueuse/shared'
 import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 
@@ -67,12 +67,12 @@ describe('useWakeLock', () => {
       value: { request: () => createWakeLock() },
       writable: true,
     })
-    const { isActive, request } = useWakeLock({ document: defaultDocument })
+    const { isActive, request } = useWakeLock()
 
     expect(isActive.value).toBeFalsy()
 
     await request('screen')
-    await nextTick()
+    await promiseTimeout(10)
 
     expect(isActive.value).toBeTruthy()
 

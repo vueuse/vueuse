@@ -1,11 +1,12 @@
-import { retry } from '../../.test'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
-  let addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
+  const addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
+
   beforeEach(() => {
-    addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
+    addEventListenerSpy.mockReset()
   })
+
   it('should be defined', () => {
     expect(useWindowSize).toBeDefined()
   })
@@ -20,8 +21,8 @@ describe('useWindowSize', () => {
   it('sets handler for window "resize" event', async() => {
     useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-    await retry(() => {
-      expect(addEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function), { passive: true })
-    })
+    const call = addEventListenerSpy.mock.calls.at(-1) as any
+    expect(call[0]).toEqual('resize')
+    expect(call[2]).toEqual({ passive: true })
   })
 })

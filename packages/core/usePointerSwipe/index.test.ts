@@ -1,4 +1,3 @@
-import { useSetup } from '../../.test'
 import { SwipeDirection } from '../useSwipe'
 import type { PointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
@@ -49,61 +48,53 @@ describe('usePointerSwipe', () => {
   })
 
   it('threshold is not exceeded', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(0)
-      expect(onSwipeEnd.mock.calls.length).toBe(0)
-    })
+    expect(onSwipeStart.mock.calls.length).toBe(1)
+    expect(onSwipe.mock.calls.length).toBe(0)
+    expect(onSwipeEnd.mock.calls.length).toBe(0)
   })
 
   it('threshold is exceeded', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
-      expect(onSwipeStart).toHaveBeenCalledOnce()
-      expect(onSwipe).toHaveBeenCalledOnce()
-      expect(onSwipeEnd).toHaveBeenCalledOnce()
-      expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
-    })
+    expect(onSwipeStart).toHaveBeenCalledOnce()
+    expect(onSwipe).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
   })
 
   it('threshold is exceeded in between', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipeStart).toHaveBeenCalledOnce()
-      expect(onSwipe).toHaveBeenCalledTimes(2)
-      expect(onSwipeEnd).toHaveBeenCalledOnce()
-      expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
-    })
+    expect(onSwipeStart).toHaveBeenCalledOnce()
+    expect(onSwipe).toHaveBeenCalledTimes(2)
+    expect(onSwipeEnd).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
   })
 
   it('reactivity', () => {
-    useSetup(() => {
-      const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
 
-      target.dispatchEvent(mockPointerDown(0, 0))
-      expect(isSwiping.value).toBeFalsy()
-      expect(direction.value).toBe(SwipeDirection.NONE)
-      expect(distanceX.value).toBe(0)
-      expect(distanceY.value).toBe(0)
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
 
-      target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
-      expect(isSwiping.value).toBeTruthy()
-      expect(direction.value).toBe(SwipeDirection.RIGHT)
-      expect(distanceX.value).toBe(-threshold)
-      expect(distanceY.value).toBe(-threshold / 2)
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeTruthy()
+    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(distanceX.value).toBe(-threshold)
+    expect(distanceY.value).toBe(-threshold / 2)
 
-      target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
-    })
+    target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
   })
 
   const directionTests = [
@@ -118,14 +109,12 @@ describe('usePointerSwipe', () => {
     const coords = config[1] as unknown as number[][]
 
     it(`detects swipes to the ${_direction}`, () => {
-      useSetup(() => {
-        const { direction } = usePointerSwipe(target, options())
+      const { direction } = usePointerSwipe(target, options())
 
-        mockPointerEvents(target, coords)
+      mockPointerEvents(target, coords)
 
-        expect(direction.value).toBe(_direction)
-        expect(onSwipeEnd).toHaveBeenLastCalledWith(expect.anything(), _direction)
-      })
+      expect(direction.value).toBe(_direction)
+      expect(onSwipeEnd).toHaveBeenLastCalledWith(expect.anything(), _direction)
     })
   })
 })
