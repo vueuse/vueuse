@@ -5,6 +5,8 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
+console.log('resolve', resolve(__dirname, 'packages/.test/test.setup'))
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -26,5 +28,6 @@ export default defineConfig({
   test: {
     global: true,
     environment: 'jsdom',
+    setupFiles: [resolve(__dirname, 'packages/.test/test.setup.ts')],
   },
 })
