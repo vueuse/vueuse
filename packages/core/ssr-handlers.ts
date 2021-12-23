@@ -12,6 +12,9 @@ export interface StorageLike {
   removeItem(key: string): void
 }
 
+/**
+ * @expiremental The API is not finalized yet. It might not follow semver.
+ */
 export interface SSRHandlersMap {
   getDefaultStorage: () => StorageLike | undefined
   getDefaultStorageAsync: () => StorageLikeAsync | undefined

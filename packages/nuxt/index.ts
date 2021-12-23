@@ -37,7 +37,7 @@ export interface VueUseNuxtOptions {
    * @expiremental
    * @default false
    */
-  ssrContext?: boolean
+  ssrHandlers?: boolean
 }
 
 /**
@@ -72,7 +72,7 @@ function VueUseModule(this: any) {
 
   let indexes: PackageIndexes | undefined
 
-  if (options.ssrContext) {
+  if (options.ssrHandlers) {
     const pluginPath = resolve(_dirname, './ssr-plugin.mjs')
     nuxt.options.plugins = nuxt.options.plugins || []
     nuxt.options.plugins.push(pluginPath)
