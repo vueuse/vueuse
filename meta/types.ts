@@ -23,7 +23,7 @@ export interface VueUseFunction {
   category?: string
   description?: string
   docs?: string
-  depreacted?: boolean
+  deprecated?: boolean
   internal?: boolean
   component?: boolean
   directive?: boolean
