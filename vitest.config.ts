@@ -27,5 +27,6 @@ export default defineConfig({
     global: true,
     environment: 'jsdom',
     setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
+    reporters: 'dot',
   },
 })
