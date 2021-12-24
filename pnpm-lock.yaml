@@ -61,7 +61,7 @@ importers:
       vite-plugin-pwa: ^0.11.12
       vite-plugin-windicss: ^1.5.4
       vitepress: ^0.20.9
-      vitest: ^0.0.111
+      vitest: ^0.0.112
       vue: ^3.2.26
       vue2: npm:vue@2
     devDependencies:
@@ -115,7 +115,7 @@ importers:
       vite-plugin-pwa: 0.11.12_vite@2.6.7
       vite-plugin-windicss: 1.5.4_vite@2.6.7
       vitepress: 0.20.9
-      vitest: 0.0.111_jsdom@19.0.0+vite@2.6.7
+      vitest: 0.0.112_jsdom@19.0.0+vite@2.6.7
       vue: 3.2.26
       vue2: /vue/2.6.14
 
@@ -7662,8 +7662,8 @@ packages:
       - stylus
     dev: true
 
-  /vitest/0.0.111_jsdom@19.0.0+vite@2.6.7:
-    resolution: {integrity: sha512-DucdC2k7twZK/oymywuLf+D//HIUnSAx1WRGQ2juCSpjkhz8ayHL7oIGLsj3CbY/0aYyqn+ghbzc5rFg1531TA==}
+  /vitest/0.0.112_jsdom@19.0.0+vite@2.6.7:
+    resolution: {integrity: sha512-hq9UL6LKb5ZvdH2/2jPqQ8uB163R5jJCTx6XPqvzMVeFwbzKt7ZvGMocUPeyUKunq5RNnnPoA8r1XnX81/A90g==}
     engines: {node: '>=14.14.0'}
     hasBin: true
     peerDependencies:
