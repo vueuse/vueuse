@@ -4,11 +4,12 @@ import { useUrlSearchParams } from '.'
 describe('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'
 
+  Object.defineProperty(window, 'location', {
+    value: new URL(baseURL),
+    writable: true,
+  })
+
   beforeEach(() => {
-    Object.defineProperty(window, 'location', {
-      value: new URL(baseURL),
-      writable: true,
-    })
     window.location.search = ''
     window.location.hash = ''
   })
@@ -18,7 +19,7 @@ describe('useUrlSearchParams', () => {
     window.location.hash = hash
     window.dispatchEvent(new PopStateEvent('popstate', {
       state: {
-        ...location,
+        ...window.location,
         search,
         hash,
       },
@@ -82,6 +83,7 @@ describe('useUrlSearchParams', () => {
 
         const params = useUrlSearchParams<CustomUrlParams>(mode)
         expect(params.customFoo).toBeUndefined()
+
         params.customFoo = 42
 
         expect(params.customFoo).toEqual(42)

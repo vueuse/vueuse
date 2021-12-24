@@ -14,7 +14,7 @@ describe('useThrottledRefHistory - sync', () => {
 
     v.value = 100
 
-    await promiseTimeout(20)
+    await promiseTimeout(ms * 3)
 
     expect(history.value.length).toBe(3)
     expect(history.value[0].snapshot).toBe(100)
@@ -23,9 +23,9 @@ describe('useThrottledRefHistory - sync', () => {
     v.value = 300
     v.value = 400
 
-    await promiseTimeout(20)
+    await promiseTimeout(ms * 3)
 
-    expect(history.value.length).toBe(4)
+    expect(history.value.length).toBe(5)
     expect(history.value[0].snapshot).toBe(400)
   })
 })

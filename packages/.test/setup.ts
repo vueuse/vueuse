@@ -1,6 +1,7 @@
 import { install, isVue2, Vue2 } from 'vue-demi'
 import './polyfillFetch'
 import './polyfillPointerEvents'
+import { vitest, beforeEach } from 'vitest'
 
 const createLocalStorage = () => {
   let state: Record<string, any> = {}
@@ -18,16 +19,6 @@ const createLocalStorage = () => {
   })
 }
 
-const createLocation = () => {
-  const baseURL = 'https://vueuse.org'
-  Object.defineProperty(window, 'location', {
-      value: new URL(baseURL),
-      writable: true,
-    })
-    window.location.search = ''
-    window.location.hash = ''
-}
-
 const setupVueSwitch = () => {
   if (isVue2) {
     Vue2.config.productionTip = false
@@ -40,7 +31,6 @@ setupVueSwitch()
 
 beforeEach(() => {
   createLocalStorage()
-  createLocation()
   document.body.innerHTML = ''
   document.head.innerHTML = ''
 })

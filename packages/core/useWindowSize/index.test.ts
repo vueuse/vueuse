@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
@@ -5,6 +6,10 @@ describe('useWindowSize', () => {
 
   beforeEach(() => {
     addEventListenerSpy.mockReset()
+  })
+
+  afterAll(() => {
+    addEventListenerSpy.mockRestore()
   })
 
   it('should be defined', () => {
@@ -21,7 +26,11 @@ describe('useWindowSize', () => {
   it('sets handler for window "resize" event', async() => {
     useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-    const call = addEventListenerSpy.mock.calls.at(-1) as any
+    await nextTick()
+
+    expect(addEventListenerSpy).toHaveBeenCalledOnce()
+
+    const call = addEventListenerSpy.mock.calls[0] as any
     expect(call[0]).toEqual('resize')
     expect(call[2]).toEqual({ passive: true })
   })

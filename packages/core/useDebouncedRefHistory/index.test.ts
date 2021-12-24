@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { useDebouncedRefHistory } from '.'
 
@@ -24,9 +24,9 @@ describe('useDebouncedRefHistory', () => {
 
     v.value = 100
 
-    await promiseTimeout(20)
+    await nextTick()
 
-    expect(history.value.length).toBe(1)
+    expect(history.value.length).toBe(2)
     expect(history.value[0].snapshot).toBe(100)
   })
 })
