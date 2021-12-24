@@ -30,7 +30,6 @@ export default defineConfig({
     reporters: 'dot',
     deps: {
       inline: [
-        'vue',
         'vue2',
         '@vue/composition-api',
         'vue-demi',
