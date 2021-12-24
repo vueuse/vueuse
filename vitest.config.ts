@@ -28,5 +28,13 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
     reporters: 'dot',
+    deps: {
+      inline: [
+        'vue',
+        'vue2',
+        '@vue/composition-api',
+        'vue-demi',
+      ],
+    },
   },
 })
