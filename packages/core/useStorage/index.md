@@ -39,7 +39,7 @@ import { useStorage } from '@vueuse/core'
 useStorage(
   'key',
   {},
-  localStorage,
+  undefined,
   { 
     serializer: {
       read: (v: any) => v ? JSON.parse(v) : null,
@@ -54,6 +54,6 @@ Please note when you provide `null` as the default value, `useStorage` can't ass
 ```ts
 import { useStorage, StorageSerializers } from '@vueuse/core'
 
-const objectLike = useStorage('key', null, localStorage, { serializer: StorageSerializers.object })
+const objectLike = useStorage('key', null, undefined, { serializer: StorageSerializers.object })
 objectLike.value = { foo: 'bar' }
 ```
