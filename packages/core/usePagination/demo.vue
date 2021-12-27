@@ -50,7 +50,7 @@ const {
       })
     },
     onPageSizeChange(pageSize) {
-      fetch(unref(currentPage), pageSize).then((responseData) => {
+      fetch(unref(currentPage), unref(currentPageSize)).then((responseData) => {
         data.value = responseData
       })
     },
