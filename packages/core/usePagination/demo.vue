@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { unref, ref } from 'vue-demi'
 import { usePagination } from '.'
 
 interface User {
@@ -22,21 +22,40 @@ function fetch(page: number, pageSize: number) {
   })
 }
 
+const data: Ref<User[]> = ref([])
+
+const page = ref(1)
+const pageSize = ref(10)
+
+fetch(page.value, pageSize.value).then((responseData) => {
+  data.value = responseData
+})
+
 const {
   currentPage,
-  loading,
-  maxPage,
-  data,
+  currentPageSize,
+  pageCount,
+  isFirstPage,
   isLastPage,
-  nextPage,
-} = usePagination<User>(
+  prev,
+  next,
+} = usePagination(
   {
     total: database.value.length,
-    initialValue: [],
-    fetch,
-    immediate: true,
-    initialPage: 1,
-    pageSize: 10,
+    page: 1,
+    pageSize,
+    onPageChange() {
+      fetch(unref(currentPage), unref(pageSize)).then((responseData) => {
+        data.value = responseData
+      })
+    },
+    onPageSizeChange(pageSize) {
+      console.log(pageSize)
+
+      fetch(unref(currentPage), pageSize).then((responseData) => {
+        data.value = responseData
+      })
+    },
   },
 )
 
@@ -45,28 +64,33 @@ const {
 <template>
   <div>
     currentPage:
-    <input v-model="currentPage" type="text">
+    <input v-model="currentPage" type="number">
   </div>
   <div>
-    maxPage:
-    <input v-model="maxPage" type="text">
+    currentPageSize:
+    <input v-model="currentPageSize" type="number">
   </div>
-  <div>loading:{{ loading }}</div>
   <div>
-    isLastPage:
-    <input v-model="isLastPage" type="text">
+    pageCount:
+    <span>{{ pageCount }}</span>
   </div>
 
   <div>
-    <ul />
+    <button :disabled="isFirstPage" @click="prev">
+      prev
+    </button>
+    <button
+      v-for="item in pageCount"
+      :key="item"
+      :disabled="currentPage === item"
+      @click="currentPage = item"
+    >
+      {{ item }}
+    </button>
+    <button :disabled="isLastPage" @click="next">
+      next
+    </button>
   </div>
-
-  <button
-    :disabled="isLastPage"
-    @click="nextPage"
-  >
-    {{ isLastPage ? 'no more data' : 'fetch next page' }}
-  </button>
 
   <table>
     <thead>

@@ -1,68 +1,93 @@
-import type { Ref } from 'vue-demi'
-import { unref, computed, ref } from 'vue-demi'
+import { watch, isRef, unref, computed } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
+import { noop, useClamp, biSyncRef } from '@vueuse/core'
 
-interface UsePaginationOptions<T> {
-  initialValue: MaybeRef<T[]>
-  initialPage?: MaybeRef<number>
-  fetch: (page: number, pageSize: number) => Promise<T[]>
-  pageSize?: MaybeRef<number>
+interface UsePaginationOptions {
+  /**
+   * The number of items to show per page.
+   */
   total: MaybeRef<number>
-  immediate?: boolean
+
+  /**
+   * The number of items to display per page.
+   * @default 10
+   */
+  pageSize?: MaybeRef<number>
+
+  /**
+   * The current page number.
+   * @default 1
+   */
+  page?: MaybeRef<number>
+
+  /**
+   * Callback when the `page` change.
+   */
+  onPageChange?: (page: number) => any
+
+  /**
+   * Callback when the `pageSize` change.
+   */
+  onPageSizeChange?: (pageSize: number) => any
+
+  /**
+   * Callback when the `pageCount` change.
+   */
+  onPageCountChange?: (pageCount: number) => any
 }
 
-export function usePagination<T = any>(options: UsePaginationOptions<T>) {
+export function usePagination(options: UsePaginationOptions) {
   const {
     total,
-    initialValue = ref([]) as Ref<T[]>,
-    initialPage = 1,
     pageSize = 10,
-    fetch,
-    immediate = true,
+    page = 1,
+    onPageChange = noop,
+    onPageSizeChange = noop,
+    onPageCountChange = noop,
   } = options
-  const currentPage = ref(initialPage)
-  const data = ref(initialValue) as Ref<T[]>
-  const loading = ref(false)
-  const maxPage = computed(() => {
-    if (unref(total) === Infinity) return Infinity
-    return Math.ceil((unref(total)) / unref(pageSize))
+
+  const currentPageSize = useClamp(pageSize, 1, Infinity)
+
+  const pageCount = computed(() => Math.ceil((unref(total)) / unref(currentPageSize)))
+
+  const currentPage = useClamp(page, 1, pageCount)
+
+  const isFirstPage = computed(() => currentPage.value === 1)
+  const isLastPage = computed(() => currentPage.value === pageCount.value)
+
+  if (isRef(page))
+    biSyncRef(page, currentPage)
+
+  if (isRef(pageSize))
+    biSyncRef(pageSize, currentPageSize)
+
+  watch(currentPage, () => {
+    onPageChange(currentPage.value)
   })
-  const isLastPage = computed(() => currentPage.value === maxPage.value)
 
-  async function fetchByPage(page: number) {
-    if (loading.value) return
+  watch(currentPageSize, () => {
+    onPageSizeChange(unref(currentPageSize))
+  })
 
-    if (page > maxPage.value)
-      throw new Error('No more data') // TODO:
+  watch(pageCount, () => {
+    onPageCountChange(pageCount.value)
+  })
 
-    loading.value = true
-    try {
-      const fetchData = await fetch(page, unref(pageSize))
-      data.value = fetchData
-    }
-    catch (error) {
-      // TODO: handle error
-      console.error(error)
-    }
-    finally {
-      loading.value = false
-    }
+  function prev() {
+    currentPage.value--
   }
 
-  function nextPage() {
+  function next() {
     currentPage.value++
-    return fetchByPage(currentPage.value)
   }
-
-  if (immediate)
-    fetchByPage(unref(currentPage))
 
   return {
     currentPage,
-    data,
-    loading,
-    maxPage,
+    currentPageSize,
+    pageCount,
+    isFirstPage,
     isLastPage,
-    nextPage,
+    prev,
+    next,
   }
 }
