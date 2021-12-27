@@ -22,13 +22,13 @@ export const UsePagination = defineComponent({
     const data = reactive(usePagination({
       ...props,
       onPageChange(...args) {
-        emit('page-change', args)
+        emit('page-change', ...args)
       },
       onPageSizeChange(...args) {
-        emit('page-size-change', args)
+        emit('page-size-change', ...args)
       },
       onPageCountChange(...args) {
-        emit('page-count-change', args)
+        emit('page-count-change', ...args)
       },
     }))
 

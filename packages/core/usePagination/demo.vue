@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue-demi'
-import { unref, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { usePagination } from '.'
 
 interface User {
@@ -27,9 +27,16 @@ const data: Ref<User[]> = ref([])
 const page = ref(1)
 const pageSize = ref(10)
 
-fetch(page.value, pageSize.value).then((responseData) => {
-  data.value = responseData
+fetchData({
+  currentPage: page.value,
+  currentPageSize: pageSize.value,
 })
+
+function fetchData({ currentPage, currentPageSize }: { currentPage: number; currentPageSize: number }) {
+  fetch(currentPage, currentPageSize).then((responseData) => {
+    data.value = responseData
+  })
+}
 
 const {
   currentPage,
@@ -44,16 +51,8 @@ const {
     total: database.value.length,
     page: 1,
     pageSize,
-    onPageChange() {
-      fetch(unref(currentPage), unref(currentPageSize)).then((responseData) => {
-        data.value = responseData
-      })
-    },
-    onPageSizeChange() {
-      fetch(unref(currentPage), unref(currentPageSize)).then((responseData) => {
-        data.value = responseData
-      })
-    },
+    onPageChange: fetchData,
+    onPageSizeChange: fetchData,
   },
 )
 
@@ -62,27 +61,30 @@ const {
 <template>
   <div class="inline-grid grid-cols-2 gap-x-4 gap-y-2 items-center">
     <div opacity="50">
-      pageCount:
-    </div>
-    <div>{{ pageCount }}</div>
-    <div opacity="50">
       total:
     </div>
     <div>{{ database.length }}</div>
     <div opacity="50">
-      currentPage:
+      pageCount:
     </div>
-    <div>
-      <input v-model="currentPage" type="number">
-    </div>
+    <div>{{ pageCount }}</div>
     <div opacity="50">
       currentPageSize:
     </div>
-    <div>
-      <input v-model="currentPageSize" type="number">
+    <div>{{ currentPageSize }}</div>
+    <div opacity="50">
+      currentPage:
     </div>
+    <div>{{ currentPage }}</div>
+    <div opacity="50">
+      isFirstPage:
+    </div>
+    <div>{{ isFirstPage }}</div>
+    <div opacity="50">
+      isLastPage:
+    </div>
+    <div>{{ isLastPage }}</div>
   </div>
-
   <div>
     <button :disabled="isFirstPage" @click="prev">
       prev

@@ -1,4 +1,5 @@
-import { watch, isRef, unref, computed } from 'vue-demi'
+import type { UnwrapNestedRefs } from 'vue-demi'
+import { watch, isRef, unref, computed, reactive } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
 import { noop, useClamp, biSyncRef } from '@vueuse/core'
 
@@ -23,17 +24,17 @@ interface UsePaginationOptions {
   /**
    * Callback when the `page` change.
    */
-  onPageChange?: (page: number) => any
+  onPageChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 
   /**
    * Callback when the `pageSize` change.
    */
-  onPageSizeChange?: (pageSize: number) => any
+  onPageSizeChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 
   /**
    * Callback when the `pageCount` change.
    */
-  onPageCountChange?: (pageCount: number) => any
+  onPageCountChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 }
 
 export function usePagination(options: UsePaginationOptions) {
@@ -61,18 +62,6 @@ export function usePagination(options: UsePaginationOptions) {
   if (isRef(pageSize))
     biSyncRef(pageSize, currentPageSize)
 
-  watch(currentPage, () => {
-    onPageChange(currentPage.value)
-  })
-
-  watch(currentPageSize, () => {
-    onPageSizeChange(unref(currentPageSize))
-  })
-
-  watch(pageCount, () => {
-    onPageCountChange(pageCount.value)
-  })
-
   function prev() {
     currentPage.value--
   }
@@ -81,7 +70,7 @@ export function usePagination(options: UsePaginationOptions) {
     currentPage.value++
   }
 
-  return {
+  const returnValue = {
     currentPage,
     currentPageSize,
     pageCount,
@@ -90,4 +79,20 @@ export function usePagination(options: UsePaginationOptions) {
     prev,
     next,
   }
+
+  watch(currentPage, () => {
+    onPageChange(reactive(returnValue))
+  })
+
+  watch(currentPageSize, () => {
+    onPageSizeChange(reactive(returnValue))
+  })
+
+  watch(pageCount, () => {
+    onPageCountChange(reactive(returnValue))
+  })
+
+  return returnValue
 }
+
+export type UsePaginationReturn = ReturnType<typeof usePagination>
