@@ -1,4 +1,4 @@
-import { reactive } from 'vue-demi'
+import { del, isVue2, reactive, set } from 'vue-demi'
 
 type CacheKey = any
 
@@ -26,6 +26,25 @@ export interface MemoizeCache<Key, Value> {
    * Clear cache
    */
   clear (): void
+}
+
+/**
+ * Fallback for Vue 2 not able to make a reactive Map
+ */
+const getMapVue2Compat = <Value>(): MemoizeCache<string, Value> => {
+  const data: Record<string, Value> = reactive({})
+
+  return {
+    get: key => data[key],
+    set: (key, value) => set(data, key, value),
+    has: key => Object.prototype.hasOwnProperty.call(data, key),
+    delete: key => del(data, key),
+    clear: () => {
+      Object.keys(data).forEach((key) => {
+        del(data, key)
+      })
+    },
+  }
 }
 
 /**
@@ -68,7 +87,15 @@ export const useMemoize = <Result, Args extends unknown[]> (
     cache?: MemoizeCache<CacheKey, Result>
   },
 ): MemoizedFn<Result, Args> => {
-  const cache = reactive(options?.cache || new Map<CacheKey, Result>())
+  const initCache = (): MemoizeCache<CacheKey, Result> => {
+    if (options?.cache) return reactive(options.cache)
+
+    // Use fallback for Vue 2 not able to make a reactive Map
+    if (isVue2) return getMapVue2Compat<Result>()
+
+    return reactive(new Map<CacheKey, Result>())
+  }
+  const cache = initCache()
 
   /**
    * Generate key from args

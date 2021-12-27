@@ -20,13 +20,13 @@ const getUser = useMemoize(
     axios.get(`users/${userId}`).then(({ data }) => data)
 )
 
-const user1 = getUser(1) // Request users/1
-const user2 = getUser(2) // Request users/2
+const user1 = await getUser(1) // Request users/1
+const user2 = await getUser(2) // Request users/2
 // ...
-const user1 = getUser(1) // Retrieve from cache
+const user1 = await getUser(1) // Retrieve from cache
 
 // ...
-const user1 = getUser.load(1) // Request users/1
+const user1 = await getUser.load(1) // Request users/1
 
 // ...
 getUser.delete(1) // Delete cache from user 1
@@ -38,7 +38,7 @@ Combine with `computed` or `asyncComputed` to achieve reactivity:
 ```ts
 const user1 = asyncComputed(() => getUser(1))
 // ...
-getUser.load(1) // Will also update user1
+await getUser.load(1) // Will also update user1
 ```
 
 ### Resolving cache key
@@ -57,8 +57,12 @@ const getUser = useMemoize(
 )
 ```
 
+::: warning
+For Vue 2 the key has to be a `string` or `number`
+:::
+
 ### Customize cache mechanism
-By default, the results are cached within a `Map`. You can implement your own mechanism by passing `cache` as options with following structure:
+By default, the results are cached within a `Map` (normal object for Vue 2). You can implement your own mechanism by passing `cache` as options with following structure:
 ```ts
 export interface MemoizeCache<Key, Value> {
   /**
