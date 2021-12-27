@@ -62,17 +62,27 @@ const {
 </script>
 
 <template>
-  <div>
-    currentPage:
-    <input v-model="currentPage" type="number">
-  </div>
-  <div>
-    currentPageSize:
-    <input v-model="currentPageSize" type="number">
-  </div>
-  <div>
-    pageCount:
-    <span>{{ pageCount }}</span>
+  <div class="inline-grid grid-cols-2 gap-x-4 gap-y-2 items-center">
+    <div opacity="50">
+      pageCount:
+    </div>
+    <div>{{ pageCount }}</div>
+    <div opacity="50">
+      total:
+    </div>
+    <div>{{ database.length }}</div>
+    <div opacity="50">
+      currentPage:
+    </div>
+    <div>
+      <input v-model="currentPage" type="number">
+    </div>
+    <div opacity="50">
+      currentPageSize:
+    </div>
+    <div>
+      <input v-model="currentPageSize" type="number">
+    </div>
   </div>
 
   <div>
