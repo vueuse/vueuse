@@ -45,11 +45,11 @@ const {
     page: 1,
     pageSize,
     onPageChange() {
-      fetch(unref(currentPage), unref(pageSize)).then((responseData) => {
+      fetch(unref(currentPage), unref(currentPageSize)).then((responseData) => {
         data.value = responseData
       })
     },
-    onPageSizeChange(pageSize) {
+    onPageSizeChange() {
       fetch(unref(currentPage), unref(currentPageSize)).then((responseData) => {
         data.value = responseData
       })
