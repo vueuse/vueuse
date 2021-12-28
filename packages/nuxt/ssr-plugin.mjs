@@ -4,22 +4,15 @@ import { useCookie } from '#app'
 
 setSSRHandler('getDefaultStorage', () => {
   const cookieMap = new Map()
+  const get = (key) => {
+    if (!cookieMap.get(key))
+      cookieMap.set(key, useCookie(key, { maxAge: 2147483646 }))
+    return cookieMap.get(key)
+  }
   return {
-    getItem: (key) => {
-      if (!cookieMap.get(key))
-        cookieMap.set(key, useCookie(key))
-      return cookieMap.get(key).value
-    },
-    setItem: (key, value) => {
-      if (!cookieMap.get(key))
-        cookieMap.set(key, useCookie(key))
-      cookieMap.get(key).value = value
-    },
-    removeItem: (key) => {
-      if (!cookieMap.get(key))
-        cookieMap.set(key, useCookie(key))
-      cookieMap.get(key).value = undefined
-    },
+    getItem: (key) => get(key).value,
+    setItem: (key, value) => get(key).value = value,
+    removeItem: (key) => get(key).value = undefined
   }
 })
 
@@ -45,4 +38,4 @@ if (process.server) {
   })
 }
 
-export default () => {}
+export default () => { }
