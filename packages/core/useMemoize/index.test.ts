@@ -1,9 +1,10 @@
 import { computed } from 'vue-demi'
+import type { JestMockCompatFn } from 'vitest'
 import type { MemoizeCache } from '.'
 import { useMemoize } from '.'
 
 describe('useMemoize', () => {
-  const resolver = jest.fn<string, [number]>()
+  const resolver = vitest.fn()
 
   beforeEach(() => {
     resolver.mockReset()
@@ -44,7 +45,7 @@ describe('useMemoize', () => {
     })
 
     it('should cache without arguments', () => {
-      const _resolver = jest.fn(() => 'result')
+      const _resolver = vitest.fn(() => 'result')
       const memo = useMemoize(_resolver)
 
       expect(memo()).toBe('result')
@@ -53,7 +54,7 @@ describe('useMemoize', () => {
     })
 
     it('should cache with multiple arguments', () => {
-      const _resolver = jest.fn((arg1: number, arg2: number) => `result-${arg1}-${arg2}`)
+      const _resolver = vitest.fn((arg1: number, arg2: number) => `result-${arg1}-${arg2}`)
       const memo = useMemoize(_resolver)
 
       expect(memo(1, 1)).toBe('result-1-1')
@@ -147,7 +148,7 @@ describe('useMemoize', () => {
   describe('options', () => {
     describe('getKey', () => {
       it('should use custom key', () => {
-        const getKey = jest.fn((arg1: number) => arg1 % 2)
+        const getKey = vitest.fn((arg1: number) => arg1 % 2)
         const memo = useMemoize(resolver, { getKey })
 
         expect(memo(1)).toBe('result-1')
@@ -169,11 +170,11 @@ describe('useMemoize', () => {
 
       beforeEach(() => {
         cache = {
-          get: jest.fn(key => key),
-          set: jest.fn(),
-          has: jest.fn(() => true),
-          delete: jest.fn(),
-          clear: jest.fn(),
+          get: vitest.fn(key => key),
+          set: vitest.fn(),
+          has: vitest.fn(() => true),
+          delete: vitest.fn(),
+          clear: vitest.fn(),
         }
       })
 
@@ -191,7 +192,7 @@ describe('useMemoize', () => {
 
       it('should use given cache on get without cache', () => {
         const memo = useMemoize(resolver, { cache });
-        (cache.has as jest.Mock).mockReturnValue(false)
+        (cache.has as JestMockCompatFn).mockReturnValue(false)
 
         expect(memo(1)).toBe(serializedKey)
         expect(cache.has).toHaveBeenCalledTimes(1)
