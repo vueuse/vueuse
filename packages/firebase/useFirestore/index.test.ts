@@ -3,10 +3,10 @@ import { useFirestore } from './index'
 
 describe('useFirestore', () => {
   const expectArrayRef = (path: string, initialValue: any, result: boolean) => {
-    // @ts-ignore
+    // @ts-expect-error
     const docRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = {
       path,
-      onSnapshot: jest.fn(),
+      onSnapshot: vitest.fn() as any,
     }
 
     const ref = useFirestore(docRef, initialValue)

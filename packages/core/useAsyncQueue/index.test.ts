@@ -1,5 +1,4 @@
-import { ref } from 'vue-demi'
-import { until } from '@vueuse/shared'
+import { retry } from '../../.test'
 import { useAsyncQueue } from '.'
 
 describe('useAsyncQueue', () => {
@@ -27,7 +26,7 @@ describe('useAsyncQueue', () => {
     })
   }
 
-  const p4 = () => {
+  const pError = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(new Error('e'))
@@ -35,68 +34,73 @@ describe('useAsyncQueue', () => {
     })
   }
 
-  it ('should return the tasks result', async() => {
+  it('should return the tasks result', async() => {
     const {
       activeIndex,
       result,
     } = useAsyncQueue([p1, p2, p3])
-    await until(activeIndex).toBe(2)
-    expect(JSON.stringify(result)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
+    await retry(() => {
+      expect(activeIndex.value).toBe(2)
+      expect(JSON.stringify(result)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
+    })
   })
 
-  it ('should passed the current task result to the next task', async() => {
+  it('should passed the current task result to the next task', async() => {
     const {
       activeIndex,
       result,
     } = useAsyncQueue([p1, p2])
-    await until(activeIndex).toBe(1)
-    expect(result[activeIndex.value].data).toBe(2000)
+    await retry(() => {
+      expect(activeIndex.value).toBe(1)
+      expect(result[activeIndex.value].data).toBe(2000)
+    })
   })
 
-  it ('should trigger onFinished when the tasks ends', async() => {
-    const spy = jest.fn()
-    const {
-      activeIndex,
-    } = useAsyncQueue([p1, p2], {
-      onFinished: spy,
+  it('should trigger onFinished when the tasks ends', async() => {
+    const onFinishedSpy = vitest.fn()
+    const { activeIndex } = useAsyncQueue([p1, p2], {
+      onFinished: onFinishedSpy,
     })
-    await until(activeIndex).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    await retry(() => {
+      expect(activeIndex.value).toBe(1)
+      expect(onFinishedSpy).toHaveBeenCalled()
+    })
   })
 
   it ('should trigger onError when the tasks fails', async() => {
-    const spy = jest.fn()
-    const {
-      activeIndex,
-    } = useAsyncQueue([p3, p4], {
-      onError: spy,
+    const onErrorSpy = vitest.fn()
+    const { activeIndex } = useAsyncQueue([p3, pError], {
+      onError: onErrorSpy,
     })
-    await until(activeIndex).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    await retry(() => {
+      expect(activeIndex.value).toBe(1)
+      expect(onErrorSpy).toHaveBeenCalledOnce()
+    })
   })
 
   it ('should interrupt the tasks when current task fails', async() => {
-    const spy = jest.fn(() => Promise.resolve('data'))
-    const finished = ref(0)
-    useAsyncQueue([p1, p4, spy], {
-      onFinished: () => {
-        finished.value = 1
-      },
+    const finalTaskSpy = vitest.fn(() => Promise.resolve('data'))
+    const onFinishedSpy = vitest.fn()
+    useAsyncQueue([p1, pError, finalTaskSpy], {
+      onFinished: onFinishedSpy,
     })
-    await until(finished).toBe(1)
-    expect(spy).toBeCalledTimes(0)
+
+    await retry(() => {
+      expect(onFinishedSpy).toHaveBeenCalled()
+      expect(finalTaskSpy).not.toHaveBeenCalled()
+    })
   })
 
   it ('should not interrupt the tasks when current task fails', async() => {
-    const spy = jest.fn(() => Promise.resolve('data'))
-    const finished = ref(0)
-    useAsyncQueue([p1, p4, spy], {
+    const finalTaskSpy = vitest.fn(() => Promise.resolve('data'))
+    const onFinishedSpy = vitest.fn()
+    useAsyncQueue([p1, pError, finalTaskSpy], {
       interrupt: false,
-      onFinished: () => {
-        finished.value = 1
-      },
+      onFinished: onFinishedSpy,
     })
-    await until(finished).toBe(1)
-    expect(spy).toBeCalledTimes(1)
+    await retry(() => {
+      expect(onFinishedSpy).toHaveBeenCalled()
+      expect(finalTaskSpy).toHaveBeenCalledOnce()
+    })
   })
 })
