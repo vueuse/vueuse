@@ -32,10 +32,10 @@ export interface ResizeObserverOptions extends ConfigurableWindow {
 }
 
 declare class ResizeObserver {
-  constructor(callback: ResizeObserverCallback);
-  disconnect(): void;
-  observe(target: Element, options?: ResizeObserverOptions): void;
-  unobserve(target: Element): void;
+  constructor(callback: ResizeObserverCallback)
+  disconnect(): void
+  observe(target: Element, options?: ResizeObserverOptions): void
+  unobserve(target: Element): void
 }
 
 /**
