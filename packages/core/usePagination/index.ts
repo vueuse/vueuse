@@ -1,7 +1,7 @@
 import type { UnwrapNestedRefs } from 'vue-demi'
-import { watch, isRef, unref, computed, reactive } from 'vue-demi'
+import { computed, isRef, reactive, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
-import { noop, useClamp, biSyncRef } from '@vueuse/core'
+import { biSyncRef, noop, useClamp } from '@vueuse/core'
 
 export interface UsePaginationOptions {
   /**
