@@ -79,10 +79,10 @@ const {
     <div>{{ isLastPage }}</div>
   </div>
   <div>
-    <button @click="prev">
+    <button :disabled="isFirstPage" @click="prev">
       prev
     </button>
-    <button @click="next">
+    <button :disabled="isLastPage" @click="next">
       next
     </button>
   </div>
