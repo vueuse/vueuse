@@ -88,3 +88,46 @@ const {
   </div>
 </UsePagination>
 ```
+
+Component event supported props event callback and event listener.
+
+event listener:
+```html
+<UsePagination
+  v-slot="{
+    currentPage,
+    currentPageSize,
+    next,
+    prev,
+    pageCount,
+    isFirstPage,
+    isLastPage
+  }"
+  :total="database.length"
+  @page-change="fetchData"
+  @page-size-change="fetchData"
+  @page-count-change="onPageCountChange"
+>
+  <!-- your code -->
+</UsePagination>
+```
+or props event callback:
+```html
+<UsePagination
+  v-slot="{
+    currentPage,
+    currentPageSize,
+    next,
+    prev,
+    pageCount,
+    isFirstPage,
+    isLastPage
+  }"
+  :total="database.length"
+  :on-page-change="fetchData"
+  :on-page-size-change="fetchData"
+  :on-page-count-change="onPageCountChange"
+>
+  <!-- your code -->
+</UsePagination>
+```
