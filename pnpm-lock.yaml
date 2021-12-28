@@ -54,7 +54,7 @@ importers:
       simple-git: ^2.48.0
       simple-git-hooks: ^2.7.0
       typescript: 4.5.4
-      unplugin-icons: ^0.12.23
+      unplugin-icons: ^0.13.0
       unplugin-vue-components: ^0.17.11
       vite: ^2.7.7
       vite-plugin-pwa: ^0.11.12
@@ -108,7 +108,7 @@ importers:
       simple-git: 2.48.0
       simple-git-hooks: 2.7.0
       typescript: 4.5.4
-      unplugin-icons: 0.12.23_f8af6d8fa965e5635cfb364523933967
+      unplugin-icons: 0.13.0_f8af6d8fa965e5635cfb364523933967
       unplugin-vue-components: 0.17.11_e0e5be33efeabc7efb6c27985da73f4c
       vite: 2.7.7
       vite-plugin-pwa: 0.11.12_vite@2.7.7
@@ -126,7 +126,7 @@ importers:
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
 
   packages/core:
     specifiers:
@@ -134,7 +134,7 @@ importers:
       vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
 
   packages/electron:
     specifiers:
@@ -143,7 +143,7 @@ importers:
       vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
     devDependencies:
       electron: 13.4.0
 
@@ -153,7 +153,7 @@ importers:
       vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
 
   packages/integrations:
     specifiers:
@@ -164,7 +164,7 @@ importers:
       axios: ^0.24.0
       drauu: ^0.2.1
       focus-trap: ^6.7.1
-      fuse.js: ^6.4.6
+      fuse.js: ^6.5.3
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.5.0
@@ -173,12 +173,12 @@ importers:
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
     optionalDependencies:
       axios: 0.24.0
       drauu: 0.2.1
       focus-trap: 6.7.1
-      fuse.js: 6.4.6
+      fuse.js: 6.5.3
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.5.0
@@ -195,7 +195,7 @@ importers:
     dependencies:
       '@vueuse/core': link:../core
       local-pkg: 0.4.0
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
 
   packages/router:
     specifiers:
@@ -204,7 +204,7 @@ importers:
       vue-router: ^4.0.12
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
     devDependencies:
       vue-router: 4.0.12_vue@3.2.26
 
@@ -215,7 +215,7 @@ importers:
       vue-demi: 0.12.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
     devDependencies:
       rxjs: 6.6.7
 
@@ -223,7 +223,7 @@ importers:
     specifiers:
       vue-demi: 0.12.1
     dependencies:
-      vue-demi: 0.12.1_65945d62777f1a301cfba4917e131965
+      vue-demi: 0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0
 
 packages:
 
@@ -440,6 +440,12 @@ packages:
 
   /@antfu/utils/0.3.0:
     resolution: {integrity: sha512-UU8TLr/EoXdg7OjMp0h9oDoIAVr+Z/oW9cpOxQQyrsz6Qzd2ms/1CdWx8fl2OQdFpxGmq5Vc4TwfLHId6nAZjA==}
+    dependencies:
+      '@types/throttle-debounce': 2.1.0
+    dev: true
+
+  /@antfu/utils/0.4.0:
+    resolution: {integrity: sha512-gqkpvjkgFUu+s3kP+Ly33OKpo5zvVY3FDFhv5BIb98SncS3KD6DNxPfNDjwHIoyXbz1leWo1j8DtRLZ1D2Jv+Q==}
     dependencies:
       '@types/throttle-debounce': 2.1.0
     dev: true
@@ -4785,8 +4791,8 @@ packages:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
     dev: true
 
-  /fuse.js/6.4.6:
-    resolution: {integrity: sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==}
+  /fuse.js/6.5.3:
+    resolution: {integrity: sha512-sA5etGE7yD/pOqivZRBvUBd/NaL2sjAu6QuSaFoe1H2BrJSkH/T/UXAJ8CdXdw7DvY3Hs8CXKYkDWX7RiP5KOg==}
     engines: {node: '>=10'}
     requiresBuild: true
     dev: false
@@ -7480,6 +7486,7 @@ packages:
 
   /universal-cookie/4.0.4:
     resolution: {integrity: sha512-lbRVHoOMtItjWbM7TwDLdl8wug7izB0tq3/YVKhT/ahB4VDvWMyvnADfnJI8y6fSvsjh51Ix7lTGC6Tn4rMPhw==}
+    requiresBuild: true
     dependencies:
       '@types/cookie': 0.3.3
       cookie: 0.4.1
@@ -7496,8 +7503,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unplugin-icons/0.12.23_f8af6d8fa965e5635cfb364523933967:
-    resolution: {integrity: sha512-jhCogt+/3WEdPrfHkUGwiLnNJAOrE469J/Zlsh57KAaeEDxrw+PMqXDXRFA/fZjtal/btGPFcDOeQPPHGW6JHg==}
+  /unplugin-icons/0.13.0_f8af6d8fa965e5635cfb364523933967:
+    resolution: {integrity: sha512-CyAl0HV3bZUGT7ut9agpPRhEYXCvufr80Fh72yrkD57BVCTZ7ze10Rt63ZrvPXiJQpd+aI/Bizm2aqOf3WPSfg==}
     peerDependencies:
       '@svgr/core': ^5.5.0
       '@vue/compiler-sfc': ^3.0.2
@@ -7514,7 +7521,7 @@ packages:
         optional: true
     dependencies:
       '@antfu/install-pkg': 0.1.0
-      '@antfu/utils': 0.3.0
+      '@antfu/utils': 0.4.0
       '@iconify/utils': 1.0.20
       '@vue/compiler-sfc': 3.2.26
       debug: 4.3.3
@@ -7734,7 +7741,7 @@ packages:
       vite: 2.7.7
     dev: true
 
-  /vue-demi/0.12.1_65945d62777f1a301cfba4917e131965:
+  /vue-demi/0.12.1_2f8cc5045e4ac61bb9fbdf1f8e24d5d0:
     resolution: {integrity: sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==}
     engines: {node: '>=12'}
     hasBin: true
@@ -7746,7 +7753,7 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@vue/composition-api': 1.4.2_vue@3.2.26
+      '@vue/composition-api': 1.4.3_vue@3.2.26
       vue: 3.2.26
     dev: false
 

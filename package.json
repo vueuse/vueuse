@@ -85,7 +85,7 @@
     "simple-git": "^2.48.0",
     "simple-git-hooks": "^2.7.0",
     "typescript": "4.5.4",
-    "unplugin-icons": "^0.12.23",
+    "unplugin-icons": "^0.13.0",
     "unplugin-vue-components": "^0.17.11",
     "vite": "^2.7.7",
     "vite-plugin-pwa": "^0.11.12",
