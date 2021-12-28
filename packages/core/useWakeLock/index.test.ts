@@ -1,13 +1,9 @@
 import { nextTick } from 'vue-demi'
-import { defaultDocument } from '../_configurable'
+import { promiseTimeout } from '@vueuse/shared'
 import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 
 describe('useWakeLock', () => {
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
   it('isActive not changed if not supported', async() => {
     const { isActive, request, release } = useWakeLock({ navigator: {} as Navigator })
 
@@ -71,15 +67,16 @@ describe('useWakeLock', () => {
       value: { request: () => createWakeLock() },
       writable: true,
     })
-    const { isActive, request } = useWakeLock({ document: defaultDocument })
+    const { isActive, request } = useWakeLock()
 
     expect(isActive.value).toBeFalsy()
 
     await request('screen')
+    await promiseTimeout(10)
 
     expect(isActive.value).toBeTruthy()
 
-    document.dispatchEvent(new Event('visibilitychange'))
+    document.dispatchEvent(new window.Event('visibilitychange'))
 
     await nextTick()
 
