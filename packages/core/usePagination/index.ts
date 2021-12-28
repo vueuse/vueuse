@@ -3,37 +3,37 @@ import { watch, isRef, unref, computed, reactive } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
 import { noop, useClamp, biSyncRef } from '@vueuse/core'
 
-interface UsePaginationOptions {
+export interface UsePaginationOptions {
   /**
-   * The number of items to show per page.
-   */
+     * The number of items to show per page.
+     */
   total: MaybeRef<number>
 
   /**
-   * The number of items to display per page.
-   * @default 10
-   */
+     * The number of items to display per page.
+     * @default 10
+     */
   pageSize?: MaybeRef<number>
 
   /**
-   * The current page number.
-   * @default 1
-   */
+     * The current page number.
+     * @default 1
+     */
   page?: MaybeRef<number>
 
   /**
-   * Callback when the `page` change.
-   */
+     * Callback when the `page` change.
+     */
   onPageChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 
   /**
-   * Callback when the `pageSize` change.
-   */
+     * Callback when the `pageSize` change.
+     */
   onPageSizeChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 
   /**
-   * Callback when the `pageCount` change.
-   */
+     * Callback when the `pageCount` change.
+     */
   onPageCountChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
 }
 
