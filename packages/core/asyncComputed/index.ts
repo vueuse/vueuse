@@ -71,15 +71,15 @@ export function asyncComputed<T>(
     const counterAtBeginning = counter
     let hasFinished = false
 
-    try {
-      // Defer initial setting of `evaluating` ref
-      // to avoid having it as a dependency
-      if (evaluating) {
-        Promise.resolve().then(() => {
-          evaluating.value = true
-        })
-      }
+    // Defer initial setting of `evaluating` ref
+    // to avoid having it as a dependency
+    if (evaluating) {
+      Promise.resolve().then(() => {
+        evaluating.value = true
+      })
+    }
 
+    try {
       const result = await evaluationCallback((cancelCallback) => {
         onInvalidate(() => {
           if (evaluating)
