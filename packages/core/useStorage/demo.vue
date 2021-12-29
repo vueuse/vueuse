@@ -2,7 +2,7 @@
 import { stringify } from '@vueuse/docs-utils'
 import { useStorage } from '.'
 
-const state = useStorage('vue-use-locale-storage', {
+const state = useStorage('vue-use-local-storage', {
   name: 'Banana',
   color: 'Yellow',
   size: 'Medium',
