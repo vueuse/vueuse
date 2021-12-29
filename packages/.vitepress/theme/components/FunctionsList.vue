@@ -43,6 +43,15 @@ const result = computed(() => {
   }
 })
 
+const hasFilters = computed(() => Boolean(search.value || category.value || hasComponent.value || sortMethod.value))
+
+function resetFilters() {
+  sortMethod.value = null
+  category.value = null
+  hasComponent.value = null
+  search.value = null
+}
+
 function toggleCategory(cate: string) {
   category.value = category.value === cate ? null : cate
 }
@@ -118,7 +127,13 @@ function toggleSort(method: string) {
     <input v-model="search" type="text" role="search" placeholder="Search...">
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="b-4" />
-  <div flex="~ col" gap="2">
+  <div flex="~ col" gap="2" class="relative" p="t-5">
+    <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
+      <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">
+        <CarbonFilterRemove />
+        Clear Filters
+      </button>
+    </div>
     <template v-for="(fn, idx) of result" :key="fn.name">
       <h3
         v-if="showCategory && fn.category !== result[idx - 1]?.category"
@@ -172,7 +187,7 @@ input {
 }
 
 .select-button {
-  @apply rounded text-sm px-2 py-0.5 bg-gray-400/5;
+  @apply rounded text-sm px-2 py-0.5 bg-gray-400/5 hover:bg-gray-400/10;
 }
 .select-button.active:not(.disabled) {
   @apply text-primary bg-primary/5;

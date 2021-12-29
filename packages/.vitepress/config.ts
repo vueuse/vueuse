@@ -97,6 +97,12 @@ const config = {
       {
         text: 'Functions',
         items: [
+          {
+            text: '',
+            items: [
+              { text: 'Recent Updated', link: '/functions#sort=updated' },
+            ],
+          },
           { text: 'Core', items: CoreCategories },
           { text: 'Add-ons', items: AddonCategories },
         ],
