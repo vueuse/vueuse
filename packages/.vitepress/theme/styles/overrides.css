@@ -5,6 +5,9 @@
   --vp-sidebar-width-large: 220px;
 
   --vt-c-brand-active: #44bd87;
+
+  --vt-c-disabled-bg: #88888850;
+  --vt-c-disabled-fg: inherit;
 }
 
 html.dark {

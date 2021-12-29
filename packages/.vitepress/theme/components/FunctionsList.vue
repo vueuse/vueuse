@@ -124,7 +124,7 @@ function toggleSort(method: string) {
   <div h="1px" bg="$vt-c-divider-light" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
     <carbon-search m="r-2" opacity="50" />
-    <input v-model="search" type="text" role="search" placeholder="Search...">
+    <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="b-4" />
   <div flex="~ col" gap="2" class="relative" p="t-5">

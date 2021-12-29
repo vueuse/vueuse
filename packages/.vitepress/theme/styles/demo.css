@@ -83,10 +83,11 @@
     cursor: default;
     background-color: var(--vt-c-disabled-bg);
     color: var(--vt-c-disabled-fg);
-    border-bottom: 2px solid var(--vt-divider-light-1);
+    border-bottom: 2px solid var(--vt-c-disabled-bg);
     pointer-events: none;
     text-shadow: none;
     border-top: 0;
+    opacity: 0.8;
   }
 
 
@@ -105,18 +106,18 @@
   }
 
   textarea[readonly] {
-    background: var(--c-bg-light);
+    background: var(--vt-c-bg-light);
   }
 
   input[type='text'], input[type='search'], input[type='number'] {
     display: block;
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
-    border: 1px solid var(--c-divider-light);
+    border: 1px solid var(--vt-c-divider-light);
     border-radius: 4px;
     outline: none;
-    background: var(--c-bg);
-    color: var(--c-text);
+    background: var(--vt-c-bg);
+    color: var(--vt-c-text);
     min-width: 20rem;
     margin: 0.5rem 0;
   }
