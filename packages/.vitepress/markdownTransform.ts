@@ -1,5 +1,5 @@
 import { join, resolve } from 'path'
-import { Plugin } from 'vite'
+import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { packages } from '../../meta/packages'
 import { functionNames, getFunction } from '../../meta/function-indexes'

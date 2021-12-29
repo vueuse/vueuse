@@ -2,7 +2,7 @@
 // @ts-expect-error
 import changelog from '/virtual-changelog'
 import { computed } from 'vue'
-import { CommitInfo } from '../../../../meta/types'
+import type { CommitInfo } from '../../../../meta/types'
 import { renderCommitMessage } from '../utils'
 
 const allCommits = changelog as CommitInfo[]
@@ -24,8 +24,8 @@ const commits = computed(() => {
   <div class="grid grid-cols-[30px,auto] -ml-1 gap-1.5 children:my-auto">
     <template v-for="(commit, idx) of commits" :key="commit.hash">
       <template v-if="idx === 0 && !commit.version">
-        <div m="t-1"></div>
-        <div m="t-1"></div>
+        <div m="t-1" />
+        <div m="t-1" />
         <div class="m-auto inline-flex bg-gray-400/10 w-7 h-7 rounded-full text-sm opacity-90">
           <octicon-git-pull-request-draft-16 m="auto" />
         </div>
@@ -34,8 +34,8 @@ const commits = computed(() => {
         </div>
       </template>
       <template v-if="commit.version">
-        <div m="t-1"></div>
-        <div m="t-1"></div>
+        <div m="t-1" />
+        <div m="t-1" />
         <div class="m-auto inline-flex bg-gray-400/10 w-7 h-7 rounded-full text-sm opacity-90">
           <octicon-rocket-16 m="auto" />
         </div>
@@ -57,7 +57,7 @@ const commits = computed(() => {
           </a>
           <span text="sm">
             -
-            <span v-html="renderCommitMessage(commit.message.replace(`(${fn})`, ''))"></span>
+            <span v-html="renderCommitMessage(commit.message.replace(`(${fn})`, ''))" />
           </span>
         </div>
       </template>

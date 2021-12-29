@@ -1,6 +1,6 @@
 import md5 from 'md5'
 import Git from 'simple-git'
-import { CommitInfo, ContributorInfo } from '../meta/types'
+import type { CommitInfo, ContributorInfo } from '../meta/types'
 import { functions } from '../meta/function-indexes'
 import { uniq } from './utils'
 

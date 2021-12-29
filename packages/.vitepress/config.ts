@@ -11,7 +11,7 @@ const themeConfig = async() => {
 }
 
 const Guide = [
-  { text: 'Get Started', link: '/guide/index' },
+  { text: 'Get Started', link: '/guide/' },
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
 import { useFetch } from '.'

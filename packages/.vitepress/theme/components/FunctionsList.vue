@@ -2,7 +2,7 @@
 import { computed, ref, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useUrlSearchParams } from '@vueuse/core'
-import { functions, categories } from '../../../../meta/function-indexes'
+import { categories, functions } from '../../../../meta/function-indexes'
 
 // TODO: Sort by recent updated
 
@@ -83,7 +83,7 @@ function toggleCategory(cate: string) {
     </div>
     <div flex="~">
       <label class="checkbox">
-        <input v-model="hasComponent" type="checkbox" />
+        <input v-model="hasComponent" type="checkbox">
         <span>Has Component</span>
       </label>
     </div>
@@ -91,7 +91,7 @@ function toggleCategory(cate: string) {
   <div h="1px" bg="$vt-c-divider-light" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
     <carbon-search m="r-2" opacity="50" />
-    <input v-model="search" type="text" role="search" placeholder="Search..." />
+    <input v-model="search" type="text" role="search" placeholder="Search...">
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="b-4" />
   <div flex="~ col" gap="2">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueUseFunction } from '../../../../meta/types'
+import type { VueUseFunction } from '../../../../meta/types'
 import { renderMarkdown } from '../utils'
 
 defineProps<{ fn: VueUseFunction }>()
@@ -15,8 +15,8 @@ function styledName(name: string) {
 
 <template>
   <div text="sm" class="whitespace-nowrap overflow-hidden overflow-ellipsis">
-    <a :href="`/${fn.package}/${fn.name}/`" bg="gray-400/5" p="x-1.5 y-0.5" class="rounded" v-html="styledName(fn.name)"></a>
+    <a :href="`/${fn.package}/${fn.name}/`" bg="gray-400/5" p="x-1.5 y-0.5" class="rounded" v-html="styledName(fn.name)" />
     -
-    <span class="overflow-hidden overflow-ellipsis" v-html="renderMarkdown(fn.description)"></span>
+    <span class="overflow-hidden overflow-ellipsis" v-html="renderMarkdown(fn.description)" />
   </div>
 </template>
