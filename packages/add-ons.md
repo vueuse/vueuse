@@ -48,6 +48,9 @@ Vue composables for playing sound effects.
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
+## Nuxt - [`@vueuse/nuxt`](https://vueuse.org/nuxt/README.html)
+VueUse Nuxt Module
+
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash
@@ -71,6 +74,7 @@ Enables RxJS reactive functions in Vue
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
   - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind Subject to ref and propagate value changes both ways
   - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 

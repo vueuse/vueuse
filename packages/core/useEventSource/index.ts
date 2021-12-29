@@ -1,4 +1,5 @@
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 

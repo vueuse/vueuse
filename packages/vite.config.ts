@@ -26,6 +26,16 @@ export default defineConfig({
     MarkdownTransform(),
     ChangeLog(),
     Contributors(),
+    // TODO: remove this
+    {
+      name: 'emmm',
+      configResolved(config) {
+        const index = config.plugins.findIndex(i => i.name === 'vite:ssr-require-hook')
+        if (index > -1)
+          // @ts-expect-error
+          config.plugins.splice(index, 1)
+      },
+    },
 
     // plugins
     Components({

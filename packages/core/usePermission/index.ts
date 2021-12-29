@@ -1,7 +1,9 @@
-import { Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 type DescriptorNamePolyfill = 'clipboard-read' | 'clipboard-write' | 'camera' | 'microphone' | 'speaker'
 

@@ -1,11 +1,12 @@
 import { noop, promiseTimeout } from '@vueuse/shared'
-import { Ref, ref, shallowRef } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 
 export interface UseAsyncStateReturn<T> {
   state: Ref<T>
   isReady: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay: number, ...args: any[]) => Promise<T>
+  execute: (delay?: number, ...args: any[]) => Promise<T>
 }
 
 export interface AsyncStateOptions {
@@ -41,6 +42,13 @@ export interface AsyncStateOptions {
    * @default true
    */
   resetOnExecute?: boolean
+
+  /**
+   * Use shallowRef.
+   *
+   * @default true
+   */
+  shallow?: boolean
 }
 
 /**
@@ -62,9 +70,10 @@ export function useAsyncState<T>(
     delay = 0,
     onError = noop,
     resetOnExecute = true,
+    shallow = true,
   } = options
 
-  const state = shallowRef(initialState)
+  const state = shallow ? shallowRef(initialState) : ref(initialState) as Ref<T>
   const isReady = ref(false)
   const error = ref<unknown | undefined>(undefined)
 

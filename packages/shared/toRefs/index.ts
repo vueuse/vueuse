@@ -1,5 +1,6 @@
-import { isRef, ToRefs, toRefs as _toRefs, customRef } from 'vue-demi'
-import { MaybeRef } from '../utils'
+import type { ToRefs } from 'vue-demi'
+import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
+import type { MaybeRef } from '../utils'
 
 /**
  * Extended `toRefs` that also accepts refs of an object.

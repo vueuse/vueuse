@@ -1,7 +1,9 @@
-import { computed, Ref, watch } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { Ref } from 'vue-demi'
+import { computed, watch } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
-import { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
 
 export interface FocusOptions extends ConfigurableWindow {
   /**

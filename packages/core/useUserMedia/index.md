@@ -28,7 +28,7 @@ watchEffect(() => {
 ### Devices
 
 ```js
-import { useUserMedia, useDevicesList } from '@vueuse/core'
+import { useDevicesList, useUserMedia } from '@vueuse/core'
 
 const {
   videoInputs: cameras,
@@ -45,7 +45,7 @@ const { stream } = useUserMedia({
 })
 ```
 
-## Related
+## Related Functions
 
 - `useDevicesList`
 - `usePermission`

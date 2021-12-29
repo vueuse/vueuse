@@ -1,4 +1,5 @@
-import { getCurrentInstance, onMounted, onUpdated, customRef, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { customRef, getCurrentInstance, onMounted, onUpdated } from 'vue-demi'
 
 /**
  * Shorthand for binding ref to template element.

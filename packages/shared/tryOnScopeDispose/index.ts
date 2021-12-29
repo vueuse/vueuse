@@ -1,5 +1,5 @@
 import { getCurrentScope, onScopeDispose } from 'vue-demi'
-import { Fn } from '../utils'
+import type { Fn } from '../utils'
 
 /**
  * Call onScopeDispose() if it's inside a effect scope lifecycle, if not, do nothing

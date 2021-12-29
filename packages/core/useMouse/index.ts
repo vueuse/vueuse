@@ -1,9 +1,16 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { Position } from '../types'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { Position } from '../types'
 
 export interface MouseOptions extends ConfigurableWindow {
+  /**
+   * Mouse position based by page or client
+   *
+   * @default 'page'
+   */
+  type?: 'page' | 'client'
   /**
    * Listen to `touchmove` events
    *
@@ -34,6 +41,7 @@ export type MouseSourceType = 'mouse' | 'touch' | null
  */
 export function useMouse(options: MouseOptions = {}) {
   const {
+    type = 'page',
     touch = true,
     resetOnTouchEnds = false,
     initialValue = { x: 0, y: 0 },
@@ -45,8 +53,14 @@ export function useMouse(options: MouseOptions = {}) {
   const sourceType = ref<MouseSourceType>(null)
 
   const mouseHandler = (event: MouseEvent) => {
-    x.value = event.pageX
-    y.value = event.pageY
+    if (type === 'page') {
+      x.value = event.pageX
+      y.value = event.pageY
+    }
+    else if (type === 'client') {
+      x.value = event.clientX
+      y.value = event.clientY
+    }
     sourceType.value = 'mouse'
   }
   const reset = () => {
@@ -55,8 +69,15 @@ export function useMouse(options: MouseOptions = {}) {
   }
   const touchHandler = (event: TouchEvent) => {
     if (event.touches.length > 0) {
-      x.value = event.touches[0].clientX
-      y.value = event.touches[0].clientY
+      const touch = event.touches[0]
+      if (type === 'page') {
+        x.value = touch.pageX
+        y.value = touch.pageY
+      }
+      else if (type === 'client') {
+        x.value = touch.clientX
+        y.value = touch.clientY
+      }
       sourceType.value = 'touch'
     }
   }

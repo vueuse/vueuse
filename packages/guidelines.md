@@ -18,6 +18,7 @@ You can also find some reasons for those design decisions and also some tips for
 - When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible
 - Use `tryOnUnmounted`  to clear the side-effects gracefully
 - Avoid using console logs
+- When the function is asynchronous, return a PromiseLike
 
 Read also: [Best Practice](/guide/best-practice.html)
 
@@ -156,6 +157,50 @@ export function useShare(
   }
 }
 ```
+
+## Asynchronous Composables
+
+When a composable is asynchronous, like `useFetch`, it is a good idea to return a PromiseLike object from the composable
+so the user is able to await the function. This is especially useful in the case of Vue's `<Suspense>` api.
+
+- Use a `ref` to determine when the function should resolve e.g. `isFinished`
+- Store the return state in a variable as it must be returned twice, once in the return and once in the promise.
+- The return type should be an intersection between the return type and a PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>`
+
+```ts
+export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+  const data = shallowRef<T | undefined>()
+  const error = shallowRef<Error | undefined>()
+  const isFinished = ref(false)
+
+  fetch(unref(url))
+    .then(r => r.json())
+    .then(r => data.value = r)
+    .catch(e => error.value = e)
+    .finally(() => isFinished.value = true)
+
+  // Store the return state in a variable
+  const state: UseFetchReturn<T> = {
+    data,
+    error,
+    isFinished,
+  }
+
+  return {
+    ...state,
+    // Adding `then` to an object allows it to be awaited.
+    then(onFufilled, onRejected) {
+      return new Promise<UseFetchReturn<T>>((resolve, reject) => {
+        until(isFinished)
+          .toBeTruthy()
+          .then(() => resolve(state))
+          .then(() => reject(state))
+      }).then(onFufilled, onRejected)
+    }
+  }
+}
+```
+
 
 ## Renderless Components
 

@@ -1,5 +1,6 @@
-import { Ref, ref } from 'vue-demi'
-import { Pausable } from '../utils'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { Pausable } from '../utils'
 import { useIntervalFn } from '../useIntervalFn'
 
 export interface IntervalOptions<Controls extends boolean> {

@@ -1,26 +1,21 @@
 import { ref } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { controlledComputed } from '.'
 
 describe('controlledComputed', () => {
-  it('should work', (done) => {
-    useSetup(() => {
-      const trigger = ref(0)
-      const data = ref('foo')
+  it('should work', () => {
+    const trigger = ref(0)
+    const data = ref('foo')
 
-      const computed = controlledComputed(trigger, () => data.value.toUpperCase())
+    const computed = controlledComputed(trigger, () => data.value.toUpperCase())
 
-      expect(computed.value).toBe('FOO')
+    expect(computed.value).toBe('FOO')
 
-      data.value = 'bar'
+    data.value = 'bar'
 
-      expect(computed.value).toBe('FOO')
+    expect(computed.value).toBe('FOO')
 
-      trigger.value += 1
+    trigger.value += 1
 
-      expect(computed.value).toBe('BAR')
-
-      done()
-    })
+    expect(computed.value).toBe('BAR')
   })
 })

@@ -1,33 +1,32 @@
-import { ref } from 'vue-demi'
-import { useSetup } from '../../.test'
+import { nextTick, ref } from 'vue-demi'
+import { promiseTimeout } from '@vueuse/shared'
 import { useDebouncedRefHistory } from '.'
 
-describe('useDebouncedRefHistory - ', () => {
-  test('take snapshot of data after given time after data was changed', () => {
-    useSetup(() => {
-      const ms = 1000
-      const v = ref(0)
+describe('useDebouncedRefHistory', () => {
+  test('Once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async() => {
+    const v = ref(0)
 
-      const { history } = useDebouncedRefHistory(v, { debounce: ms })
-      v.value = 100
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe(0)
+    const { history } = useDebouncedRefHistory(v, { debounce: 10 })
+    v.value = 100
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
 
-      setTimeout(() => {
-        expect(history.value.length).toBe(2)
-        expect(history.value[0].snapshot).toBe(100)
-      }, ms)
-    })
+    await promiseTimeout(20)
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(100)
   })
 
-  test('undefined debounce don`t break function', () => {
-    useSetup(() => {
-      const v = ref(0)
+  test('when debounce is undefined', async() => {
+    const v = ref(0)
 
-      const { history } = useDebouncedRefHistory(v, { deep: false })
-      v.value = 100
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(100)
-    })
+    const { history } = useDebouncedRefHistory(v, { deep: false })
+
+    v.value = 100
+
+    await nextTick()
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(100)
   })
 })

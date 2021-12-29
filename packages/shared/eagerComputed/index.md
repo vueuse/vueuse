@@ -19,7 +19,7 @@ import { eagerComputed } from '@vueuse/core'
 const todos = ref([])
 const hasOpenTodos = eagerComputed(() => !!todos.length)
 
-console.log(hasOpenTodos.value) // 0
+console.log(hasOpenTodos.value) // false
 toTodos.value.push({ title: 'Learn Vue' })
-console.log(hasOpenTodos.value) // 1
+console.log(hasOpenTodos.value) // true
 ```

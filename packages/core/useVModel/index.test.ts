@@ -1,5 +1,4 @@
 import { isVue2, nextTick } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { useVModel } from '.'
 
 describe('useVModel', () => {
@@ -9,14 +8,9 @@ describe('useVModel', () => {
     [defaultKey]: defaultValue,
   })
 
-  const emitMock = jest.fn((event: string, values: any[]) => {})
-  beforeEach(() => emitMock.mockClear())
-
   it('should work with default value', () => {
-    useSetup(() => {
-      const data = useVModel(defaultProps())
-      expect(data.value).toBe(defaultValue)
-    })
+    const data = useVModel(defaultProps())
+    expect(data.value).toBe(defaultValue)
   })
 
   it('should work with arguments', () => {
@@ -24,81 +18,79 @@ describe('useVModel', () => {
       ...defaultProps(),
       data: 'data',
     }
-    useSetup(() => {
-      const data = useVModel(props, 'data')
-      expect(data.value).toBe('data')
-    })
+
+    const data = useVModel(props, 'data')
+    expect(data.value).toBe('data')
   })
 
   it('should emit on value change', async() => {
-    useSetup(() => {
-      const data = useVModel(defaultProps(), undefined, emitMock)
-      data.value = 'changed'
-    })
-    expect(emitMock.mock.calls[0][0]).toBe(isVue2 ? 'input' : 'update:modelValue')
-    expect(emitMock.mock.calls[0][1]).toBe('changed')
+    const emitMock = vitest.fn()
+
+    const data = useVModel(defaultProps(), undefined, emitMock)
+    data.value = 'changed'
+
+    expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
   })
 
   it('should use eventName if set', async() => {
-    useSetup(() => {
-      const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
-      data.value = 'changed'
-    })
+    const emitMock = vitest.fn()
 
-    expect(emitMock.mock.calls[0][0]).toBe('onChange')
+    const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
+    data.value = 'changed'
+
+    expect(emitMock).toHaveBeenCalledWith('onChange', 'changed')
   })
 
   it('should emit w/ passive', async() => {
+    const emitMock = vitest.fn()
+
     const props = {
       ...defaultProps(),
       age: 18,
     }
-    useSetup(() => {
-      const data = useVModel(props, 'age', emitMock, { passive: true })
-      data.value = 20
-    })
+
+    const data = useVModel(props, 'age', emitMock, { passive: true })
+    data.value = 20
 
     await nextTick()
 
-    expect(emitMock.mock.calls[0][0]).toBe('update:age')
-    expect(emitMock.mock.calls[0][1]).toBe(20)
+    expect(emitMock).toHaveBeenCalledWith('update:age', 20)
   })
 
   it('should emit w/ object props type', async() => {
+    const emitMock = vitest.fn()
+
     const props = {
       ...defaultProps(),
       data: {
         age: 18,
       },
     }
-    useSetup(() => {
-      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
-      data.value.age = 20
-    })
+
+    const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
+    data.value.age = 20
 
     await nextTick()
 
-    expect(emitMock.mock.calls[0][0]).toBe('update:data')
-    expect(emitMock).toHaveBeenCalledTimes(1)
-    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ age: 20 }))
+    expect(emitMock).toHaveBeenCalledWith('update:data', { age: 20 })
   })
 
   it('should emit w/ array props type', async() => {
+    const emitMock = vitest.fn()
+
     const props = {
       ...defaultProps(),
       data: {
         hobbies: ['coding'],
       },
     }
-    useSetup(() => {
-      const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
-      data.value.hobbies.push('basketball')
-    })
+
+    const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
+    data.value.hobbies.push('basketball')
 
     await nextTick()
 
-    expect(emitMock.mock.calls[0][0]).toBe('update:data')
-    expect(emitMock).toHaveBeenCalledTimes(1)
-    expect(JSON.stringify(emitMock.mock.calls[0][1])).toBe(JSON.stringify({ hobbies: ['coding', 'basketball'] }))
+    expect(emitMock).toBeCalledTimes(1)
+    expect(emitMock).toHaveBeenCalledWith('update:data', { hobbies: ['coding', 'basketball'] })
   })
 })

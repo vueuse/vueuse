@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { stringify } from '@vueuse/docs-utils'
 import Scrubber from './components/Scrubber.vue'
 import Menu from './components/Menu.vue'
@@ -73,7 +73,10 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
         :loop="loop"
         @click="playing = !playing"
       />
-      <div v-if="waiting" class="absolute inset-0 grid place-items-center pointer-events-none bg-black bg-opacity-20">
+      <div
+        v-if="waiting"
+        class="absolute inset-0 grid place-items-center pointer-events-none bg-black bg-opacity-20"
+      >
         <Spinner />
       </div>
     </div>
@@ -99,7 +102,9 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
         <carbon-volume-up v-else />
       </button>
       <Scrubber v-model="volume" :max="1" class="w-32 ml-2" />
-      <div class="flex flex-col flex-1 text-sm ml-2">
+      <div
+        class="flex flex-col flex-1 text-sm ml-2"
+      >
         {{ formatDuration(currentTime) }} / {{ formatDuration(duration) }}
       </div>
 
@@ -130,7 +135,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
           </div>
         </template>
       </Menu>
-      <Menu>
+      <Menu class="mr-2">
         <template #default="{ open }">
           <button class="block" @click="open()">
             <carbon-settings />
@@ -138,7 +143,10 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
         </template>
         <template #menu="{ close }">
           <div class="absolute bottom-0 right-0 shadow py-2 bg-black rounded">
-            <MenuItem v-if="supportsPictureInPicture" @click="() => { togglePictureInPicture(); close(); }">
+            <MenuItem
+              v-if="supportsPictureInPicture"
+              @click="() => { togglePictureInPicture(); close(); }"
+            >
               <carbon-popup />
               <span>{{ isPictureInPicture ? 'Exit' : 'Enter' }} Picture in Picture</span>
             </MenuItem>
@@ -146,6 +154,23 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
               <carbon-repeat />
               <span class="flex-1">Loop</span>
               <carbon-checkmark v-if="loop" />
+            </MenuItem>
+          </div>
+        </template>
+      </Menu>
+      <Menu>
+        <template #default="{ open }">
+          <button class="block" @click="open()">
+            <carbon-meter />
+          </button>
+        </template>
+        <template #menu="{ close }">
+          <div class="absolute bottom-0 right-0 shadow py-2 bg-black rounded">
+            <MenuItem @click="() => { controls.rate.value = 2; close(); }">
+              <carbon-meter-alt />2x
+            </MenuItem>
+            <MenuItem @click="() => { controls.rate.value = 1; close(); }">
+              <carbon-meter-alt />1x
             </MenuItem>
           </div>
         </template>

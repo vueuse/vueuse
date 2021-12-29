@@ -1,11 +1,22 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter, MaybeRef, RemovableRef } from '@vueuse/shared'
-import { ref, Ref, unref, shallowRef } from 'vue-demi'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
+import { watchWithFilter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue-demi'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import { guessSerializerType } from './guess'
 
 export type Serializer<T> = {
   read(raw: string): T
   write(value: T): string
+}
+
+export type SerializerAsync<T> = {
+  read(raw: string): Awaitable<T>
+  write(value: T): Awaitable<string>
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
@@ -38,8 +49,6 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
     write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
   },
 }
-
-export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
 export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
@@ -101,7 +110,7 @@ export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<nul
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
-  storage: StorageLike | undefined = defaultWindow?.localStorage,
+  storage: StorageLike | undefined = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)(),
   options: StorageOptions<T> = {},
 ): RemovableRef<T> {
   const {
@@ -118,24 +127,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   } = options
 
   const rawInit: T = unref(initialValue)
-
-  const type = rawInit == null
-    ? 'any'
-    : rawInit instanceof Set
-      ? 'set'
-      : rawInit instanceof Map
-        ? 'map'
-        : typeof rawInit === 'boolean'
-          ? 'boolean'
-          : typeof rawInit === 'string'
-            ? 'string'
-            : typeof rawInit === 'object'
-              ? 'object'
-              : Array.isArray(rawInit)
-                ? 'object'
-                : !Number.isNaN(rawInit)
-                  ? 'number'
-                  : 'any'
+  const type = guessSerializerType<T>(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
@@ -150,6 +142,9 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
         data.value = rawInit
         if (writeDefaults && rawInit !== null)
           storage.setItem(key, serializer.write(rawInit))
+      }
+      else if (typeof rawValue !== 'string') {
+        data.value = rawValue
       }
       else {
         data.value = serializer.read(rawValue)

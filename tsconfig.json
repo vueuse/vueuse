@@ -23,17 +23,21 @@
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
       "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
-    }
+    },
+    "types": [
+      "vitest",
+      "vitest/global"
+    ]
   },
   "include": [
     "packages",
     "packages/.vitepress/components/*.vue",
     "packages/.vitepress/*.ts",
-    "meta"
+    "meta",
+    "vitest.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
     "**/dist",

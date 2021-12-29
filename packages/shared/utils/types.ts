@@ -1,4 +1,4 @@
-import { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
  * Any function
@@ -48,6 +48,8 @@ export type DeepMaybeRef<T> = T extends Ref<infer V>
 export type ElementOf<T> = T extends (infer E)[] ? E : never
 
 export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
+
+export type Awaitable<T> = Promise<T> | T
 
 export interface Pausable {
   /**
