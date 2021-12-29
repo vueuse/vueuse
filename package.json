@@ -89,7 +89,7 @@
     "vite": "^2.7.9",
     "vite-plugin-pwa": "^0.11.12",
     "vite-plugin-windicss": "^1.6.1",
-    "vitepress": "0.20.5",
+    "vitepress": "^0.20.10",
     "vitest": "^0.0.120",
     "vue": "^3.2.26",
     "vue2": "npm:vue@^2.6.14"
