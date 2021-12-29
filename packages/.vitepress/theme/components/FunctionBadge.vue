@@ -7,6 +7,8 @@ defineProps<{ fn: VueUseFunction }>()
 function styledName(name: string) {
   if (name.startsWith('use'))
     return `<span opacity="70">use</span>${name.slice(3)}`
+  if (name.startsWith('try'))
+    return `<span opacity="70">try</span>${name.slice(3)}`
   if (name.startsWith('on'))
     return `<span opacity="70">on</span>${name.slice(2)}`
   return name

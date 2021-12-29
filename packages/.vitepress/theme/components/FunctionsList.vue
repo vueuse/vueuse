@@ -4,18 +4,17 @@ import Fuse from 'fuse.js'
 import { useUrlSearchParams } from '@vueuse/core'
 import { categories, functions } from '../../../../meta/function-indexes'
 
-// TODO: Sort by recent updated
-
 const coreCategories = categories.filter(i => !i.startsWith('@'))
 const addonCategories = categories.filter(i => i.startsWith('@'))
+const sortMethods = ['category', 'name', 'updated']
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
 const search = toRef(query, 'search')
 const category = toRef(query, 'category')
 const hasComponent = toRef(query, 'component')
-const sortMethod = toRef(query, 'sort')
+const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated'>
 
-const showCategory = computed(() => !search.value)
+const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
 
 const items = computed(() => {
   let fn = functions.filter(i => !i.internal)
@@ -34,13 +33,22 @@ const result = computed(() => {
   }
   else {
     const fns = [...items.value]
-    fns.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
+    if (sortMethod.value === 'updated')
+      fns.sort((a, b) => b.lastUpdated - a.lastUpdated)
+    else if (sortMethod.value === 'name')
+      fns.sort((a, b) => a.name.localeCompare(b.name))
+    else
+      fns.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
     return fns
   }
 })
 
 function toggleCategory(cate: string) {
   category.value = category.value === cate ? null : cate
+}
+
+function toggleSort(method: string) {
+  sortMethod.value = method
 }
 </script>
 
@@ -53,10 +61,8 @@ function toggleCategory(cate: string) {
       <button
         v-for="cate of coreCategories"
         :key="cate"
-        p="x-2 y-0.5"
-        border="rounded"
-        text="sm"
-        :class="category === cate ? 'text-primary bg-primary/5' : 'bg-gray-400/5'"
+        class="select-button"
+        :class="{ active: category === cate }"
         @click="toggleCategory(cate)"
       >
         {{ cate }}
@@ -69,13 +75,31 @@ function toggleCategory(cate: string) {
       <button
         v-for="cate of addonCategories"
         :key="cate"
-        p="x-2 y-0.5"
-        border="rounded"
-        text="sm"
-        :class="category === cate ? 'text-primary bg-primary/5' : 'bg-gray-400/5'"
+        class="select-button"
+        :class="{ active: category === cate }"
         @click="toggleCategory(cate)"
       >
         {{ cate.slice(1) }}
+      </button>
+    </div>
+    <div opacity="80" text="sm">
+      Sort by
+    </div>
+    <div flex="~ wrap" gap="2" m="b-2">
+      <button v-if="search" class="select-button active">
+        Search
+      </button>
+      <button
+        v-for="method of sortMethods"
+        :key="method"
+        class="select-button capitalize"
+        :class="{
+          active: method === (sortMethod || 'category'),
+          disabled: search
+        }"
+        @click="toggleSort(method)"
+      >
+        {{ method }}
       </button>
     </div>
     <div opacity="80" text="sm">
@@ -145,5 +169,15 @@ input {
   span {
     @apply ml-1.5 text-13px opacity-70;
   }
+}
+
+.select-button {
+  @apply rounded text-sm px-2 py-0.5 bg-gray-400/5;
+}
+.select-button.active:not(.disabled) {
+  @apply text-primary bg-primary/5;
+}
+.select-button.disabled {
+  @apply opacity-50 pointer-events-none;
 }
 </style>
