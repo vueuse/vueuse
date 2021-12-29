@@ -22,7 +22,10 @@ type NavigatorWithWakeLock = Navigator & {
  * @param options
  */
 export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocument = {}) => {
-  const { navigator = defaultNavigator, document = defaultDocument } = options
+  const {
+    navigator = defaultNavigator,
+    document = defaultDocument,
+  } = options
   let wakeLock: WakeLockSentinel | null
   const isSupported = navigator && 'wakeLock' in navigator
   const isActive = ref(false)

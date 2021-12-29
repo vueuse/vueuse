@@ -1,27 +1,24 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { useSetup } from '../../.test'
 import { asyncComputed } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
-    const func = jest.fn(() => 'data')
+    const func = vitest.fn(() => 'data')
 
-    useSetup(() => {
-      const data = computed(func)
+    const data = computed(func)
 
-      expect(func).not.toBeCalled()
+    expect(func).not.toBeCalled()
 
-      expect(data.value).toBe('data')
+    expect(data.value).toBe('data')
 
-      expect(func).toBeCalledTimes(1)
-    })
+    expect(func).toBeCalledTimes(1)
   })
 })
 
 describe('asyncComputed', () => {
   it('is not lazy by default', async() => {
-    const func = jest.fn(() => Promise.resolve('data'))
+    const func = vitest.fn(() => Promise.resolve('data'))
 
     const data = asyncComputed(func)
 
@@ -29,15 +26,16 @@ describe('asyncComputed', () => {
 
     expect(data.value).toBeUndefined()
 
-    await nextTick()
-    await nextTick()
+    await promiseTimeout(10)
 
     expect(data.value).toBe('data')
   })
 
   it('call onError when error is thrown', async() => {
     let errorMessage
-    const func = jest.fn(() => Promise.reject(new Error('An Error Message')))
+    const func = vitest.fn(async() => {
+      throw new Error('An Error Message')
+    })
 
     const data = asyncComputed(func, undefined, {
       onError(e) {
@@ -50,15 +48,14 @@ describe('asyncComputed', () => {
 
     expect(data.value).toBeUndefined()
 
-    await nextTick()
-    await nextTick()
+    await promiseTimeout(10)
 
     expect(data.value).toBeUndefined()
     expect(errorMessage).toBe('An Error Message')
   })
 
   it('is lazy if configured', async() => {
-    const func = jest.fn(() => Promise.resolve('data'))
+    const func = vitest.fn(async() => 'data')
 
     const data = asyncComputed(func, undefined, { lazy: true })
 
@@ -66,8 +63,8 @@ describe('asyncComputed', () => {
 
     // Act
     expect(data.value).toBeUndefined()
-    await nextTick()
-    await nextTick()
+
+    await promiseTimeout(10)
 
     // Assert
     expect(func).toBeCalledTimes(1)
@@ -143,7 +140,7 @@ describe('asyncComputed', () => {
   })
 
   test('cancel is called', async() => {
-    const onCancel = jest.fn()
+    const onCancel = vitest.fn()
 
     const data = ref('initial')
     const uppercase = asyncComputed((cancel) => {
@@ -178,7 +175,7 @@ describe('asyncComputed', () => {
   })
 
   test('cancel is called for lazy', async() => {
-    const onCancel = jest.fn()
+    const onCancel = vitest.fn()
 
     const data = ref('initial')
     const uppercase = asyncComputed((cancel) => {

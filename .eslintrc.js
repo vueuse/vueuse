@@ -3,12 +3,10 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    jest: true,
   },
   extends: '@antfu/eslint-config',
   plugins: [
     'markdown',
-    'jest',
   ],
   rules: {
     'react/no-string-refs': 'off',

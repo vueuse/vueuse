@@ -9,7 +9,7 @@ describe('useTimestamp', () => {
 
     await promiseTimeout(50)
 
-    expect(timestamp.value).toBeGreaterThan(initial)
+    expect(timestamp.value).greaterThan(initial)
   })
 
   it('allows for a delayed start', async() => {
@@ -28,6 +28,6 @@ describe('useTimestamp', () => {
 
     await promiseTimeout(50)
 
-    expect(timestamp.value).toBeGreaterThan(initial)
+    expect(timestamp.value).greaterThan(initial)
   })
 })

@@ -43,7 +43,7 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeFalsy()
   })
 
-  it('should track the state of the targets decendants', () => {
+  it('should track the state of the targets descendants', () => {
     const { focused } = useFocusWithin(parent)
 
     expect(focused.value).toBeFalsy()

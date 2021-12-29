@@ -4,7 +4,7 @@ import { watchOnce } from '.'
 describe('watchOnce', () => {
   it('should work', async() => {
     const num = ref(0)
-    const spy = jest.fn()
+    const spy = vitest.fn()
 
     watchOnce(num, spy)
     num.value = 1
