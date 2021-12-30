@@ -50,6 +50,7 @@
     "@types/node": "^17.0.5",
     "@types/prettier": "^2.4.2",
     "@types/semver": "^7.3.9",
+    "@vitest/ui": "^0.0.123",
     "@vue/compiler-sfc": "^3.2.26",
     "@vue/composition-api": "^1.4.3",
     "axios": "^0.24.0",
