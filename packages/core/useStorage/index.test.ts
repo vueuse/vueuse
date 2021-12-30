@@ -38,27 +38,21 @@ describe('useStorage', () => {
   it('number', async() => {
     localStorage.setItem(KEY, '0')
 
-    const instance = useSetup(() => {
-      const ref = useStorage(KEY, 1, localStorage)
+    const store = useStorage(KEY, 1, localStorage)
 
-      return {
-        ref,
-      }
-    })
+    expect(store.value).toBe(0)
 
-    expect(instance.ref).toBe(0)
-
-    instance.ref = 2
+    store.value = 2
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2')
 
-    instance.ref = -1
+    store.value = -1
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '-1')
 
-    instance.ref = 2.3
+    store.value = 2.3
     await nextTick()
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')

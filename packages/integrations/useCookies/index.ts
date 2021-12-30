@@ -1,3 +1,4 @@
+// @ts-ignore TODO: not sure why build failed to find the type
 import type { IncomingMessage } from 'http'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref } from 'vue-demi'

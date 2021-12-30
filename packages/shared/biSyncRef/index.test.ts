@@ -1,35 +1,30 @@
 import { ref } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { biSyncRef } from '.'
 
 describe('biSyncRef', () => {
-  it('should work', (done) => {
-    useSetup(() => {
-      const a = ref('foo')
-      const b = ref('bar')
+  it('should work', () => {
+    const a = ref('foo')
+    const b = ref('bar')
 
-      const stop = biSyncRef(a, b)
+    const stop = biSyncRef(a, b)
 
-      expect(b.value).toBe('foo')
+    expect(b.value).toBe('foo')
 
-      a.value = 'bar'
+    a.value = 'bar'
 
-      expect(a.value).toBe('bar')
-      expect(b.value).toBe('bar')
+    expect(a.value).toBe('bar')
+    expect(b.value).toBe('bar')
 
-      b.value = 'foo'
+    b.value = 'foo'
 
-      expect(a.value).toBe('foo')
-      expect(b.value).toBe('foo')
+    expect(a.value).toBe('foo')
+    expect(b.value).toBe('foo')
 
-      stop()
+    stop()
 
-      a.value = 'bar2'
+    a.value = 'bar2'
 
-      expect(a.value).toBe('bar2')
-      expect(b.value).toBe('foo')
-
-      done()
-    })
+    expect(a.value).toBe('bar2')
+    expect(b.value).toBe('foo')
   })
 })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch, defineAsyncComponent } from 'vue'
-import { useRoute, useData } from 'vitepress'
-import { isSideBarEmpty, getSideBarConfig } from './support/sideBar'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { useData, useRoute } from 'vitepress'
+import { getSideBarConfig, isSideBarEmpty } from './support/sideBar'
 
 // components
 import NavBar from './components/NavBar.vue'

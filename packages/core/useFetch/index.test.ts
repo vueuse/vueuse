@@ -1,131 +1,111 @@
+import { ref } from 'vue-demi'
 import { until } from '@vueuse/shared'
-import fetchMock from 'jest-fetch-mock'
-import { nextTick, ref } from 'vue-demi'
+import { retry } from '../../.test'
+import '../../.test/mockServer'
 import { createFetch, useFetch } from '.'
+
+const jsonMessage = { hello: 'world' }
+const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
+
+// Listen to make sure fetch is actually called.
+// Use msw to stub out the req/res
+let fetchSpy = vitest.spyOn(window, 'fetch')
+let onFetchErrorSpy = vitest.fn()
+let onFetchResponseSpy = vitest.fn()
+let onFetchFinallySpy = vitest.fn()
+
+// @ts-ignore
+const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1].headers
 
 describe('useFetch', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
-    fetchMock.enableMocks()
-    fetchMock.doMock()
+    fetchSpy = vitest.spyOn(window, 'fetch')
+    onFetchErrorSpy = vitest.fn()
+    onFetchResponseSpy = vitest.fn()
+    onFetchFinallySpy = vitest.fn()
   })
 
   test('should have status code of 200 and message of Hello World', async() => {
-    fetchMock.mockResponse('Hello World', { status: 200 })
+    const { statusCode, data } = useFetch('https://example.com?text=hello')
 
-    const { data, statusCode, isFinished } = useFetch('https://example.com')
-
-    await until(isFinished).toBe(true)
-
-    expect(statusCode.value).toBe(200)
-    expect(data.value).toBe('Hello World')
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
   })
 
   test('should be able to use the Headers object', async() => {
-    fetchMock.mockResponse('Hello World', { status: 200 })
-
     const myHeaders = new Headers()
     myHeaders.append('Authorization', 'test')
 
-    const { statusCode, isFinished } = useFetch('https://example.com', { headers: myHeaders })
+    useFetch('https://example.com/', { headers: myHeaders })
 
-    await until(isFinished).toBe(true)
-
-    expect(statusCode.value).toBe(200)
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ authorization: 'test' })
+    await retry(() => {
+      expect(fetchSpyHeaders()).toEqual({ authorization: 'test' })
+    })
   })
 
   test('should parse response as json', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
-
-    const { data, isFinished } = useFetch('https://example.com').json()
-
-    await until(isFinished).toBe(true)
-
-    expect(data.value).toStrictEqual({ message: 'Hello World' })
+    const { data } = useFetch(jsonUrl).json()
+    await retry(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
   })
 
   test('should have an error on 400', async() => {
-    fetchMock.mockResponse('', { status: 400 })
+    const { error, statusCode } = useFetch('https://example.com?status=400')
 
-    const { error, statusCode, isFinished } = useFetch('https://example.com')
-
-    await until(isFinished).toBe(true)
-
-    expect(statusCode.value).toBe(400)
-    expect(error.value).toBe('Bad Request')
+    await retry(() => {
+      expect(statusCode.value).toBe(400)
+      expect(error.value).toBe('Bad Request')
+    })
   })
 
   test('should abort request and set aborted to true', async() => {
-    fetchMock.mockResponse(() => new Promise(resolve => setTimeout(() => resolve({ body: 'ok' }), 1000)))
-
-    const { aborted, abort, isFinished, execute } = useFetch('https://example.com')
-
+    const { aborted, abort, execute } = useFetch('https://example.com')
     setTimeout(() => abort(), 0)
-
-    await until(isFinished).toBe(true)
-    expect(aborted.value).toBe(true)
-
+    await retry(() => expect(aborted.value).toBe(true))
     execute()
-
     setTimeout(() => abort(), 0)
-
-    await until(isFinished).toBe(true)
-    expect(aborted.value).toBe(true)
+    await retry(() => expect(aborted.value).toBe(true))
   })
 
   test('should not call if immediate is false', async() => {
-    fetchMock.mockResponse('')
-
     useFetch('https://example.com', { immediate: false })
-    await nextTick()
-
-    expect(fetchMock).toBeCalledTimes(0)
+    await retry(() => expect(fetchSpy).toBeCalledTimes(0))
   })
 
   test('should refetch if refetch is set to true', async() => {
-    fetchMock.mockResponse('')
-
     const url = ref('https://example.com')
-    const { isFinished } = useFetch(url, { refetch: true })
-
-    await until(isFinished).toBe(true)
-    url.value = 'https://example.com/test'
-    await nextTick()
-    await until(isFinished).toBe(true)
-
-    expect(fetchMock).toBeCalledTimes(2)
+    useFetch(url, { refetch: true })
+    url.value = 'https://example.com?text'
+    await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
   test('should auto refetch when the refetch is set to true and the payload is a ref', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
     const param = ref({ num: 1 })
-    const { isFinished } = useFetch('https://example.com', { refetch: true }).post(param)
-
-    await until(isFinished).toBe(true)
+    useFetch('https://example.com', { refetch: true }).post(param)
     param.value.num = 2
-    await nextTick()
-    await until(isFinished).toBe(true)
-
-    expect(fetchMock).toBeCalledTimes(2)
+    await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
   test('should create an instance of useFetch with a base url', async() => {
-    fetchMock.mockResponse('')
+    const fetchHeaders = { Authorization: 'test' }
+    const requestHeaders = { 'Accept-Language': 'en-US' }
+    const allHeaders = { ...fetchHeaders, ...requestHeaders }
+    const useMyFetch = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: fetchHeaders } })
+    useMyFetch('test', { headers: requestHeaders })
 
-    const useMyFetch = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: { Authorization: 'test' } } })
-    const { isFinished } = useMyFetch('test', { headers: { 'Accept-Language': 'en-US' } })
-
-    await until(isFinished).toBe(true)
-
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'test', 'Accept-Language': 'en-US' })
-    expect(fetchMock.mock.calls[0][0]).toEqual('https://example.com/test')
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(fetchSpy).toHaveBeenCalledWith('https://example.com/test', expect.anything())
+      expect(fetchSpyHeaders()).toMatchObject(allHeaders)
+    })
   })
 
   test('should run the beforeFetch function and add headers to the request', async() => {
-    fetchMock.mockResponse('')
-
-    const { isFinished } = useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
+    useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
       beforeFetch({ options }) {
         options.headers = {
           ...options.headers,
@@ -136,14 +116,12 @@ describe('useFetch', () => {
       },
     })
 
-    await until(isFinished).toBe(true)
-
-    expect(fetchMock.mock.calls[0][1]!.headers).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
+    })
   })
 
   test('should run the beforeFetch function and cancel the request', async() => {
-    fetchMock.mockResponse('')
-
     const { execute } = useFetch('https://example.com', {
       immediate: false,
       beforeFetch({ cancel }) {
@@ -152,47 +130,38 @@ describe('useFetch', () => {
     })
 
     await execute()
-
-    expect(fetchMock).toBeCalledTimes(0)
+    expect(fetchSpy).toBeCalledTimes(0)
   })
 
   test('should run the afterFetch function', async() => {
-    fetchMock.mockResponse(JSON.stringify({ title: 'HxH' }), { status: 200 })
-
-    const { isFinished, data } = useFetch('https://example.com', {
+    const { data } = useFetch(jsonUrl, {
       afterFetch(ctx) {
-        if (ctx.data.title === 'HxH')
-          ctx.data.title = 'Hunter x Hunter'
-
+        ctx.data.title = 'Hunter x Hunter'
         return ctx
       },
     }).json()
 
-    await until(isFinished).toBe(true)
-    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ title: 'Hunter x Hunter' }))
+    })
   })
 
   test('should run the onFetchError function', async() => {
-    fetchMock.mockResponse(JSON.stringify({ title: 'HxH' }), { status: 400 })
-
-    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+    const { data, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
-        if (ctx.data.title === 'HxH')
-          ctx.data.title = 'Hunter x Hunter'
-
+        ctx.data.title = 'Hunter x Hunter'
         return ctx
       },
     }).json()
 
-    await until(isFinished).toBe(true)
-    expect(statusCode.value).toStrictEqual(400)
-    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
+    await retry(() => {
+      expect(statusCode.value).toEqual(400)
+      expect(data.value).toEqual(expect.objectContaining({ title: 'Hunter x Hunter' }))
+    })
   })
 
   test('should run the onFetchError function when network error', async() => {
-    fetchMock.mockResponse('Internal Server Error', { status: 500 })
-
-    const { isFinished, data, statusCode } = useFetch('https://example.com', {
+    const { data, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
       onFetchError(ctx) {
         ctx.data = { title: 'Hunter x Hunter' }
 
@@ -200,128 +169,99 @@ describe('useFetch', () => {
       },
     }).json()
 
-    await until(isFinished).toBe(true)
-    expect(statusCode.value).toStrictEqual(500)
-    expect(data.value).toStrictEqual({ title: 'Hunter x Hunter' })
-  })
-
-  test('should emit onFetchResponse event', async() => {
-    let didEventFire = false
-    const { isFinished, onFetchResponse } = useFetch('https://example.com')
-
-    onFetchResponse(() => {
-      didEventFire = true
+    await retry(() => {
+      expect(statusCode.value).toStrictEqual(500)
+      expect(data.value).toEqual({ title: 'Hunter x Hunter' })
     })
-
-    await until(isFinished).toBe(true)
-    expect(didEventFire).toBe(true)
   })
 
   test('should emit onFetchResponse event', async() => {
-    fetchMock.mockResponse('', { status: 200 })
+    const onResponseSpy = vitest.fn()
+    const { onFetchResponse } = useFetch('https://example.com')
 
-    let didResponseEventFire = false
-    let didErrorEventFire = false
-    let didFinallyEventFire = false
-    const { isFinished, onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
+    onFetchResponse(onResponseSpy)
+    await retry(() => {
+      expect(onResponseSpy).toHaveBeenCalledOnce()
+    })
+  })
 
-    onFetchResponse(() => didResponseEventFire = true)
-    onFetchError(() => didErrorEventFire = true)
-    onFetchFinally(() => didFinallyEventFire = true)
+  test('should emit onFetchResponse event', async() => {
+    const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
-    await until(isFinished).toBe(true)
-    expect(didResponseEventFire).toBe(true)
-    expect(didErrorEventFire).toBe(false)
-    expect(didFinallyEventFire).toBe(true)
+    onFetchResponse(onFetchResponseSpy)
+    onFetchError(onFetchErrorSpy)
+    onFetchFinally(onFetchFinallySpy)
+    await retry(() => {
+      expect(onFetchErrorSpy).not.toHaveBeenCalled()
+      expect(onFetchResponseSpy).toHaveBeenCalled()
+      expect(onFetchFinallySpy).toHaveBeenCalled()
+    })
   })
 
   test('should emit onFetchError event', async() => {
-    fetchMock.mockResponse('', { status: 400 })
+    const { onFetchError, onFetchFinally, onFetchResponse } = useFetch('https://example.com?status=400')
 
-    let didResponseEventFire = false
-    let didErrorEventFire = false
-    let didFinallyEventFire = false
-    const { isFinished, onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
+    onFetchError(onFetchErrorSpy)
+    onFetchResponse(onFetchResponseSpy)
+    onFetchFinally(onFetchFinallySpy)
 
-    onFetchResponse(() => didResponseEventFire = true)
-    onFetchError(() => didErrorEventFire = true)
-    onFetchFinally(() => didFinallyEventFire = true)
-
-    await until(isFinished).toBe(true)
-    expect(didResponseEventFire).toBe(false)
-    expect(didErrorEventFire).toBe(true)
-    expect(didFinallyEventFire).toBe(true)
+    await retry(() => {
+      expect(onFetchErrorSpy).toHaveBeenCalled()
+      expect(onFetchResponseSpy).not.toHaveBeenCalled()
+      expect(onFetchFinallySpy).toHaveBeenCalled()
+    })
   })
 
   test('setting the request method w/ get and return type w/ json', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
-
-    const { data, isFinished } = useFetch('https://example.com').get().json()
-
-    await until(isFinished).toBe(true)
-
-    expect(data.value).toStrictEqual({ message: 'Hello World' })
+    const { data } = useFetch(jsonUrl).get().json()
+    await retry(() => expect(data.value).toEqual(jsonMessage))
   })
 
   test('setting the request method w/ post and return type w/ text', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
-
-    const { data, isFinished } = useFetch('https://example.com').post().text()
-
-    await until(isFinished).toBe(true)
-
-    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+    const { data } = useFetch(jsonUrl).post().text()
+    await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
   })
 
   test('allow setting response type before doing request', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
-
-    const shell = useFetch('https://example.com', {
+    const shell = useFetch(jsonUrl, {
       immediate: false,
     }).get().text()
     shell.json()
     shell.execute()
-    const { isFinished, data } = shell
-    await until(isFinished).toBe(true)
-
-    expect(data.value).toStrictEqual({ message: 'Hello World' })
+    await retry(() => expect(shell.data.value).toEqual(jsonMessage))
   })
 
   test('not allowed setting response type while doing request', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
-
-    const shell = useFetch('https://example.com').get().text()
-    const { isFetching, isFinished, data } = shell
+    const shell = useFetch(jsonUrl).get().text()
+    const { isFetching, data } = shell
     await until(isFetching).toBe(true)
     shell.json()
-    await until(isFinished).toBe(true)
-
-    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+    await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
   })
 
   test('should abort request when timeout reached', async() => {
-    fetchMock.mockResponse(() => new Promise(resolve => setTimeout(() => resolve({ body: 'ok' }), 1000)))
+    const { aborted, execute } = useFetch('https://example.com?delay=100', { timeout: 10 })
 
-    const { aborted, isFinished, execute } = useFetch('https://example.com', { timeout: 10 })
-
-    await until(isFinished).toBe(true)
-    expect(aborted.value).toBe(true)
-
-    execute()
-
-    await until(isFinished).toBe(true)
-    expect(aborted.value).toBe(true)
+    await retry(() => expect(aborted.value).toBeTruthy())
+    await execute()
+    await retry(() => expect(aborted.value).toBeTruthy())
   })
 
   test('should not abort request when timeout is not reached', async() => {
-    fetchMock.mockResponse(JSON.stringify({ message: 'Hello World' }), { status: 200 })
+    const { data } = useFetch(jsonUrl, { timeout: 100 }).json()
+    await retry(() => expect(data.value).toEqual(jsonMessage))
+  })
 
-    const shell = useFetch('https://example.com', { timeout: 100 }).get().text()
-    const { isFetching, isFinished, data } = shell
-    await until(isFetching).toBe(true)
-    shell.json()
-    await until(isFinished).toBe(true)
+  test('should await request', async() => {
+    const { data } = await useFetch(jsonUrl).json()
+    expect(data.value).toEqual(jsonMessage)
+    expect(fetchSpy).toBeCalledTimes(1)
+  })
 
-    expect(data.value).toStrictEqual(JSON.stringify({ message: 'Hello World' }))
+  test('should await json response', async() => {
+    const { data } = await useFetch(jsonUrl).json()
+
+    expect(data.value).toEqual(jsonMessage)
+    expect(fetchSpy).toBeCalledTimes(1)
   })
 })

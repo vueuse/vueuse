@@ -1,148 +1,137 @@
-import { ref, nextTick } from 'vue-demi'
-import { useSetup } from '../../.test'
+import { nextTick, ref } from 'vue-demi'
 import { useRefHistory } from '.'
 
 describe('useRefHistory - sync', () => {
   test('sync: should record', () => {
-    useSetup(() => {
-      const v = ref(0)
-      const { history } = useRefHistory(v, { flush: 'sync' })
+    const v = ref(0)
+    const { history } = useRefHistory(v, { flush: 'sync' })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe(0)
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
 
-      v.value = 2
+    v.value = 2
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(2)
-      expect(history.value[1].snapshot).toBe(0)
-    })
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
   })
 
   test('sync: should be able to undo and redo', () => {
-    useSetup(() => {
-      const v = ref(0)
-      const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
+    const v = ref(0)
+    const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
 
-      expect(canUndo.value).toBe(false)
-      expect(canRedo.value).toBe(false)
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
 
-      v.value = 2
-      v.value = 3
-      v.value = 4
+    v.value = 2
+    v.value = 3
+    v.value = 4
 
-      expect(canUndo.value).toBe(true)
-      expect(canRedo.value).toBe(false)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
 
-      expect(v.value).toBe(4)
-      expect(history.value.length).toBe(4)
-      expect(last.value.snapshot).toBe(4)
-      undo()
+    expect(v.value).toBe(4)
+    expect(history.value.length).toBe(4)
+    expect(last.value.snapshot).toBe(4)
+    undo()
 
-      expect(canUndo.value).toBe(true)
-      expect(canRedo.value).toBe(true)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(true)
 
-      expect(v.value).toBe(3)
-      expect(last.value.snapshot).toBe(3)
-      undo()
-      expect(v.value).toBe(2)
-      expect(last.value.snapshot).toBe(2)
-      redo()
-      expect(v.value).toBe(3)
-      expect(last.value.snapshot).toBe(3)
-      redo()
-      expect(v.value).toBe(4)
-      expect(last.value.snapshot).toBe(4)
+    expect(v.value).toBe(3)
+    expect(last.value.snapshot).toBe(3)
+    undo()
+    expect(v.value).toBe(2)
+    expect(last.value.snapshot).toBe(2)
+    redo()
+    expect(v.value).toBe(3)
+    expect(last.value.snapshot).toBe(3)
+    redo()
+    expect(v.value).toBe(4)
+    expect(last.value.snapshot).toBe(4)
 
-      expect(canUndo.value).toBe(true)
-      expect(canRedo.value).toBe(false)
+    expect(canUndo.value).toBe(true)
+    expect(canRedo.value).toBe(false)
 
-      redo()
-      expect(v.value).toBe(4)
-      expect(last.value.snapshot).toBe(4)
+    redo()
+    expect(v.value).toBe(4)
+    expect(last.value.snapshot).toBe(4)
 
-      clear()
-      expect(canUndo.value).toBe(false)
-      expect(canRedo.value).toBe(false)
-    })
+    clear()
+    expect(canUndo.value).toBe(false)
+    expect(canRedo.value).toBe(false)
   })
 
   test('sync: object with deep', () => {
-    useSetup(() => {
-      const v = ref({ foo: 'bar' })
-      const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
+    const v = ref({ foo: 'bar' })
+    const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot.foo).toBe('bar')
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
-      v.value.foo = 'foo'
+    v.value.foo = 'foo'
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot.foo).toBe('foo')
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot.foo).toBe('foo')
 
-      // different references
-      expect(history.value[1].snapshot.foo).toBe('bar')
-      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+    // different references
+    expect(history.value[1].snapshot.foo).toBe('bar')
+    expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
 
-      undo()
+    undo()
 
-      // history references should not be equal to the source
-      expect(history.value[0].snapshot).not.toBe(v.value)
-    })
+    // history references should not be equal to the source
+    expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
   test('sync: shallow watch with clone', () => {
-    useSetup(() => {
-      const v = ref({ foo: 'bar' })
-      const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
+    const v = ref({ foo: 'bar' })
+    const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot.foo).toBe('bar')
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
-      v.value.foo = 'foo'
+    v.value.foo = 'foo'
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot.foo).toBe('bar')
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
-      v.value = { foo: 'foo' }
+    v.value = { foo: 'foo' }
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot.foo).toBe('foo')
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot.foo).toBe('foo')
 
-      // different references
-      expect(history.value[1].snapshot.foo).toBe('bar')
-      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+    // different references
+    expect(history.value[1].snapshot.foo).toBe('bar')
+    expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
 
-      undo()
+    undo()
 
-      // history references should not be equal to the source
-      expect(history.value[0].snapshot).not.toBe(v.value)
-    })
+    // history references should not be equal to the source
+    expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
   test('sync: dump + parse', () => {
-    useSetup(() => {
-      const v = ref({ a: 'bar' })
-      const { history, undo } = useRefHistory(v, {
-        flush: 'sync',
-        deep: true,
-        dump: v => JSON.stringify(v),
-        parse: (v: string) => JSON.parse(v),
-      })
-
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe('{"a":"bar"}')
-
-      v.value.a = 'foo'
-
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe('{"a":"foo"}')
-      expect(history.value[1].snapshot).toBe('{"a":"bar"}')
-
-      undo()
-
-      expect(v.value.a).toBe('bar')
+    const v = ref({ a: 'bar' })
+    const { history, undo } = useRefHistory(v, {
+      flush: 'sync',
+      deep: true,
+      dump: v => JSON.stringify(v),
+      parse: (v: string) => JSON.parse(v),
     })
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe('{"a":"bar"}')
+
+    v.value.a = 'foo'
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe('{"a":"foo"}')
+    expect(history.value[1].snapshot).toBe('{"a":"bar"}')
+
+    undo()
+
+    expect(v.value.a).toBe('bar')
   })
 
   test('sync: commit', () => {
@@ -218,60 +207,58 @@ describe('useRefHistory - sync', () => {
   })
 
   test('sync: reset', () => {
-    useSetup(() => {
-      const v = ref(0)
-      const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
+    const v = ref(0)
+    const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe(0)
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
 
-      v.value = 1
+    v.value = 1
 
-      pause()
+    pause()
 
-      v.value = 2
+    v.value = 2
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(1)
-      expect(history.value[1].snapshot).toBe(0)
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
-      reset()
+    reset()
 
-      // v value needs to be the last history point, but history is unchanged
-      expect(v.value).toBe(1)
+    // v value needs to be the last history point, but history is unchanged
+    expect(v.value).toBe(1)
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(1)
-      expect(history.value[1].snapshot).toBe(0)
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
-      reset()
+    reset()
 
-      // Calling reset twice is a no-op
-      expect(v.value).toBe(1)
+    // Calling reset twice is a no-op
+    expect(v.value).toBe(1)
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[1].snapshot).toBe(0)
-      expect(history.value[0].snapshot).toBe(1)
+    expect(history.value.length).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
+    expect(history.value[0].snapshot).toBe(1)
 
-      // Same test, but with a non empty redoStack
+    // Same test, but with a non empty redoStack
 
-      v.value = 3
-      commit()
+    v.value = 3
+    commit()
 
-      undo()
+    undo()
 
-      v.value = 2
+    v.value = 2
 
-      reset()
+    reset()
 
-      expect(v.value).toBe(1)
+    expect(v.value).toBe(1)
 
-      expect(undoStack.value.length).toBe(1)
-      expect(undoStack.value[0].snapshot).toBe(0)
+    expect(undoStack.value.length).toBe(1)
+    expect(undoStack.value[0].snapshot).toBe(0)
 
-      expect(redoStack.value.length).toBe(1)
-      expect(redoStack.value[0].snapshot).toBe(3)
-    })
+    expect(redoStack.value.length).toBe(1)
+    expect(redoStack.value[0].snapshot).toBe(3)
   })
 })
 

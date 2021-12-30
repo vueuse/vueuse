@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue-demi'
-import { ref, computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { useVirtualList } from '.'
 
 const index: Ref = ref()

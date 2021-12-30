@@ -34,6 +34,9 @@ export const packages: PackageManifest[] = [
       '@vueuse/core',
       '@vueuse/shared',
       'local-pkg',
+      'fs',
+      'path',
+      'url',
     ],
   },
   {
