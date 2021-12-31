@@ -1,10 +1,9 @@
 import { ref } from 'vue-demi'
-
 import type { Pausable } from '@vueuse/shared'
-
 import { useIntervalFn } from '@vueuse/shared'
+import { ConfigurableNavigator, defaultNavigator } from '..'
 
-export interface UseVibrateOptions {
+export interface UseVibrateOptions extends ConfigurableNavigator {
   /**
    *
    * Vibration Pattern
@@ -15,7 +14,7 @@ export interface UseVibrateOptions {
    * the number of milliseconds the device should vibrate and the
    * number of milliseconds it should not be vibrating
    *
-   * @default [200]
+   * @default []
    *
    */
   pattern?: number[] | number
@@ -39,8 +38,9 @@ export interface UseVibrateOptions {
  */
 export function useVibrate(options?: UseVibrateOptions) {
   const {
-    pattern = [200],
+    pattern = [],
     interval = 1000,
+    navigator = defaultNavigator
   } = options || {}
 
   // Is the vibration web API supported?
@@ -60,8 +60,9 @@ export function useVibrate(options?: UseVibrateOptions) {
   const vibrationIntervalResume = ref(() => {})
 
   // Attempt to start the vibration:
-  const start = () => {
-    if (isSupported) navigator.vibrate(vibratePattern.value)
+  const start = (pattern = vibratePattern.value) => {
+    if (isSupported) 
+      navigator.vibrate(pattern)
   }
 
   // A persistent vibrate pausable (for dynamic vibrateInterval):
@@ -75,9 +76,11 @@ export function useVibrate(options?: UseVibrateOptions) {
   // Attempt to stop the vibration:
   const stop = () => {
     // Stope the vibration if we need to:
-    if (isSupported) navigator.vibrate(0)
+    if (isSupported) 
+      navigator.vibrate(0)
     // Stop the interval if we need to:
-    if (vibrationIntervalActive.value) vibrationIntervalPause.value()
+    if (vibrationIntervalActive.value)
+    vibrationIntervalPause.value()
   }
 
   // Attempt to start the vibration at a set persistent interval:
@@ -89,7 +92,8 @@ export function useVibrate(options?: UseVibrateOptions) {
     vibrationIntervalResume.value = resume
 
     // If the vibration is on:
-    if (!vibrationIntervalActive.value && isSupported) vibrationIntervalResume.value()
+    if (!vibrationIntervalActive.value && isSupported)
+      vibrationIntervalResume.value()
   }
 
   return {
