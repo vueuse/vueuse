@@ -7,14 +7,8 @@ describe('useScriptTag', () => {
   const scriptTagElement = (): HTMLScriptElement | null =>
     document.head.querySelector(`script[src="${src}"]`)
 
-  // Reset JSDOM after each test
-  afterEach(() => {
-    document.getElementsByTagName('html')[0].innerHTML
-      = '<html><head></head><body>Empty DOM</body></html>'
-  })
-
   it('should add script tag', async() => {
-    const appendChildListener = jest.spyOn(document.head, 'appendChild')
+    const appendChildListener = vitest.spyOn(document.head, 'appendChild')
 
     expect(appendChildListener).not.toBeCalled()
 
@@ -33,11 +27,8 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
   })
 
-  /**
-   * @jest-environment jsdom
-   */
   it('should remove script tag on unmount', async() => {
-    const removeChildListener = jest.spyOn(document.head, 'removeChild')
+    const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
 
@@ -67,7 +58,7 @@ describe('useScriptTag', () => {
   })
 
   it('should remove script tag on unload call', async() => {
-    const removeChildListener = jest.spyOn(document.head, 'removeChild')
+    const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
 

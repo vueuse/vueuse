@@ -27,6 +27,7 @@ const dtsPlugin = [
 const externals = [
   'vue-demi',
   '@vueuse/shared',
+  '@vueuse/core',
 ]
 
 const esbuildMinifer = (options: ESBuildOptions) => {

@@ -4,7 +4,7 @@ import { watchAtMost } from '.'
 describe('watchAtMost', () => {
   it('should work', async() => {
     const num = ref(0)
-    const spy = jest.fn()
+    const spy = vitest.fn()
 
     const { count } = watchAtMost(num, spy, {
       count: 2,
