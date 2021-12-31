@@ -162,6 +162,7 @@
   - [`useEventBus`](https://vueuse.org/core/useEventBus/) — a basic event bus
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
+  - [`useMemoize`](https://vueuse.org/core/useMemoize/) — cache results of functions depending on arguments and keep it reactive
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value
   - [`useThrottledRefHistory`](https://vueuse.org/core/useThrottledRefHistory/) — shorthand for `useRefHistory` with throttled filter
