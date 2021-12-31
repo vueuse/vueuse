@@ -1,78 +1,75 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue-demi'
+import { tryOnMounted, ref } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
-export interface BroadcastChannelOptions {
+export interface UseBroadcastChannelOptions {
   /**
-   *
    * The name of the channel.
-   *
    */
   name: string
 }
 
 /**
- *
- * reactive useBroadcastChannel()
+ * Reactive BroadcastChannel
  *
  * @see https://vueuse.org/useBroadcastChannel
  * @see https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel
  * @param options
  *
  */
-export const useBroadcastChannel = (options: BroadcastChannelOptions) => {
+export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
   const {
     name,
   } = options
 
   const isSupported = window && 'BroadcastChannel' in window
 
-  const bc = ref<BroadcastChannel | undefined>()
-
+  const channel = ref<BroadcastChannel | undefined>()
   const data = ref()
-
-  const closed = ref(false)
-
   const error = ref<Event | null>(null)
-
-  const isError = computed(() => {
-    return !!error.value
-  })
-
+  
+  const isClosed = ref(false)
   const post = (data: unknown) => {
-    if (bc.value) bc.value.postMessage(data)
+    if (channel.value)
+    channel.value.postMessage(data)
   }
+  
 
   const close = () => {
-    if (bc.value) bc.value.close()
-    closed.value = true
+    if (channel.value) 
+      channel.value.close()
+    isClosed.value = true
   }
 
-  onMounted(() => {
-    if (isSupported) {
-      bc.value = new BroadcastChannel(name)
+  if (isSupported)
+  tryOnMounted(() => {
+    error.value = null
+    channel.value = new BroadcastChannel(name)
 
-      bc.value.addEventListener('message', (e: MessageEvent) => data.value = e.data, {
-        passive: true,
-      })
+    channel.value.addEventListener('message', (e: MessageEvent) => {
+      data.value = e.data
+    }, { passive: true})
 
-      bc.value.addEventListener('messageerror', (e: MessageEvent) => error.value = e, {
-        passive: true,
-      })
-    }
+    channel.value.addEventListener('messageerror', (e: MessageEvent) => {
+      error.value = e
+    }, { passive: true,})
+
+    channel.value.addEventListener('close', () => {
+      isClosed.value = true
+    })
   })
 
-  onUnmounted(() => {
+  tryOnScopeDispose(() => {
     close()
   })
 
   return {
     isSupported,
-    bc,
+    channel,
     data,
     post,
     close,
-    closed,
     error,
-    isError,
+    isClosed,
   }
 }
 
