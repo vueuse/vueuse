@@ -1,21 +1,6 @@
-import each from 'jest-each'
-import { useSetup } from '../../.test'
 import { SwipeDirection } from '../useSwipe'
 import type { PointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
-
-// polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
-if (!global.PointerEvent) {
-  class PointerEvent extends MouseEvent {
-    public pointerId?: number
-
-    constructor(type: string, params: PointerEventInit = {}) {
-      super(type, params)
-      this.pointerId = params.pointerId
-    }
-  }
-  global.PointerEvent = PointerEvent as any
-}
 
 const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
   clientX: x,
@@ -45,9 +30,9 @@ describe('usePointerSwipe', () => {
   document.body.appendChild(target)
 
   const threshold = 30
-  let onSwipeStart: jest.Mock
-  let onSwipe: jest.Mock
-  let onSwipeEnd: jest.Mock
+  let onSwipeStart: any
+  let onSwipe: any
+  let onSwipeEnd: any
 
   const options = (): PointerSwipeOptions => ({
     threshold,
@@ -57,82 +42,79 @@ describe('usePointerSwipe', () => {
   })
 
   beforeEach(() => {
-    onSwipeStart = jest.fn((e: PointerEvent) => {})
-    onSwipe = jest.fn((e: PointerEvent) => {})
-    onSwipeEnd = jest.fn((e: PointerEvent, direction: SwipeDirection) => {})
+    onSwipeStart = vitest.fn((e: PointerEvent) => {})
+    onSwipe = vitest.fn((e: PointerEvent) => {})
+    onSwipeEnd = vitest.fn((e: PointerEvent, direction: SwipeDirection) => {})
   })
 
   it('threshold is not exceeded', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(0)
-      expect(onSwipeEnd.mock.calls.length).toBe(0)
-    })
+    expect(onSwipeStart.mock.calls.length).toBe(1)
+    expect(onSwipe.mock.calls.length).toBe(0)
+    expect(onSwipeEnd.mock.calls.length).toBe(0)
   })
 
   it('threshold is exceeded', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.RIGHT)
-    })
+    expect(onSwipeStart).toHaveBeenCalledOnce()
+    expect(onSwipe).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
   })
 
   it('threshold is exceeded in between', () => {
-    useSetup(() => {
-      usePointerSwipe(target, options())
+    usePointerSwipe(target, options())
 
-      mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
+    mockPointerEvents(target, [[0, 0], [threshold / 2, 0], [threshold, 0], [threshold - 1, 0], [threshold - 1, 0]])
 
-      expect(onSwipeStart.mock.calls.length).toBe(1)
-      expect(onSwipe.mock.calls.length).toBe(2)
-      expect(onSwipeEnd.mock.calls.length).toBe(1)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
-    })
+    expect(onSwipeStart).toHaveBeenCalledOnce()
+    expect(onSwipe).toHaveBeenCalledTimes(2)
+    expect(onSwipeEnd).toHaveBeenCalledOnce()
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
   })
 
   it('reactivity', () => {
-    useSetup(() => {
-      const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
 
-      target.dispatchEvent(mockPointerDown(0, 0))
-      expect(isSwiping.value).toBeFalsy()
-      expect(direction.value).toBe(SwipeDirection.NONE)
-      expect(distanceX.value).toBe(0)
-      expect(distanceY.value).toBe(0)
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
 
-      target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
-      expect(isSwiping.value).toBeTruthy()
-      expect(direction.value).toBe(SwipeDirection.RIGHT)
-      expect(distanceX.value).toBe(-threshold)
-      expect(distanceY.value).toBe(-threshold / 2)
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeTruthy()
+    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(distanceX.value).toBe(-threshold)
+    expect(distanceY.value).toBe(-threshold / 2)
 
-      target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
-    })
+    target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
   })
 
-  each([
+  const directionTests = [
     [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
     [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
     [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
     [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
-  ]).it('detect swipe to %s', (expected, coords) => {
-    useSetup(() => {
+  ]
+
+  directionTests.forEach((config) => {
+    const _direction = config[0] as unknown as SwipeDirection
+    const coords = config[1] as unknown as number[][]
+
+    it(`detects swipes to the ${_direction}`, () => {
       const { direction } = usePointerSwipe(target, options())
 
       mockPointerEvents(target, coords)
 
-      expect(direction.value).toBe(expected)
-      expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
+      expect(direction.value).toBe(_direction)
+      expect(onSwipeEnd).toHaveBeenLastCalledWith(expect.anything(), _direction)
     })
   })
 })

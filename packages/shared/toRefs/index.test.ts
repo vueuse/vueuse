@@ -58,7 +58,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed objects', () => {
-    const spy = jest.fn()
+    const spy = vitest.fn()
     const obj = computed<{ a: string; b: number }>({
       get() {
         return { a: 'a', b: 0 }
@@ -72,14 +72,14 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(0)
 
     refs.a.value = 'b'
-    expect(spy).toBeCalledWith({ a: 'b', b: 0 })
+    expect(spy).toHaveBeenLastCalledWith({ a: 'b', b: 0 })
 
     refs.b.value = 1
-    expect(spy).toBeCalledWith({ a: 'a', b: 1 })
+    expect(spy).toHaveBeenLastCalledWith({ a: 'a', b: 1 })
   })
 
   it('should work correctly with writable computed arrays', () => {
-    const spy = jest.fn()
+    const spy = vitest.fn()
     const arr = computed<any[]>({
       get() {
         return ['a', 0]
@@ -93,9 +93,9 @@ describe('toRefs', () => {
     expect(refs[1].value).toBe(0)
 
     refs[0].value = 'b'
-    expect(spy).toBeCalledWith(['b', 0])
+    expect(spy).toHaveBeenLastCalledWith(['b', 0])
 
     refs[1].value = 1
-    expect(spy).toBeCalledWith(['a', 1])
+    expect(spy).toHaveBeenLastCalledWith(['a', 1])
   })
 })

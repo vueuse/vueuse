@@ -1,6 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { defaultWindow } from '../_configurable'
 
 type Rect = Omit<DOMRectReadOnly, 'x'|'y'|'toJSON'>
 
@@ -43,7 +44,7 @@ export function useTextSelection(
 ) {
   const state = ref(initialState)
 
-  if (!window?.getSelection) return state
+  if (!defaultWindow?.getSelection) return state
 
   const onMouseup = () => {
     const text = window.getSelection()?.toString()
