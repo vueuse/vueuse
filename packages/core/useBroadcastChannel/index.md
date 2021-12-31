@@ -6,13 +6,13 @@ category: Browser
 
 Reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel). 
 
-Closes a broadcast channel automatically onUnmounted.
+Closes a broadcast channel automatically component unmounted.
 
 ## Usage
 
 The BroadcastChannel interface represents a named channel that any browsing 
 context of a given origin can subscribe to. It allows communication between 
-different documents (in different windows, tabs, frames or iframes) of the 
+different documents (in different windows, tabs, frames, or iframes) of the 
 same origin. 
 
 Messages are broadcasted via a message event fired at all BroadcastChannel 
@@ -24,12 +24,11 @@ import { useBroadcastChannel } from '@vueuse/core'
 
 const {
   isSupported,
-  bc,
+  channel,
   post,
   close,
-  closed,
   error,
-  isError,
+  isClosed,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
 const message = ref('')
