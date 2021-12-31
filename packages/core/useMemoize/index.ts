@@ -5,35 +5,34 @@ type CacheKey = any
 /**
  * Custom memoize cache handler
  */
-export interface MemoizeCache<Key, Value> {
+export interface UseMemoizeCache<Key, Value> {
   /**
    * Get value for key
    */
-  get (key: Key): Value | undefined
+  get(key: Key): Value | undefined
   /**
    * Set value for key
    */
-  set (key: Key, value: Value): void
+  set(key: Key, value: Value): void
   /**
    * Return flag if key exists
    */
-  has (key: Key): boolean
+  has(key: Key): boolean
   /**
    * Delete value for key
    */
-  delete (key: Key): void
+  delete(key: Key): void
   /**
    * Clear cache
    */
-  clear (): void
+  clear(): void
 }
 
 /**
  * Fallback for Vue 2 not able to make a reactive Map
  */
-const getMapVue2Compat = <Value>(): MemoizeCache<string, Value> => {
-  const data: Record<string, Value> = reactive({})
-
+const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
+  const data: Record<CacheKey, Value> = reactive({})
   return {
     get: key => data[key],
     set: (key, value) => set(data, key, value),
@@ -50,7 +49,7 @@ const getMapVue2Compat = <Value>(): MemoizeCache<string, Value> => {
 /**
  * Memoized function
  */
-export interface MemoizedFn <Result, Args extends unknown[]> {
+export interface UseMemoizedFn <Result, Args extends unknown[]> {
   /**
    * Get result from cache or call memoized function
    */
@@ -58,41 +57,41 @@ export interface MemoizedFn <Result, Args extends unknown[]> {
   /**
    * Call memoized function and update cache
    */
-  load (...args: Args): Result
+  load(...args: Args): Result
   /**
    * Delete cache of given arguments
    */
-  delete (...args: Args): void
+  delete(...args: Args): void
   /**
    * Clear cache
    */
-  clear (): void
+  clear(): void
   /**
    * Generate cache key for given arguments
    */
-  generateKey (...args: Args): CacheKey
+  generateKey(...args: Args): CacheKey
   /**
    * Cache container
    */
-  cache: MemoizeCache<CacheKey, Result>
+  cache: UseMemoizeCache<CacheKey, Result>
 }
 
 /**
  * Reactive function result cache based on arguments
  */
-export const useMemoize = <Result, Args extends unknown[]> (
+export function useMemoize<Result, Args extends unknown[]>(
   resolver: (...args: Args) => Result,
   options?: {
-    getKey?: (...args: Args) => CacheKey
-    cache?: MemoizeCache<CacheKey, Result>
+    getKey?: (...args: Args) => string
+    cache?: UseMemoizeCache<CacheKey, Result>
   },
-): MemoizedFn<Result, Args> => {
-  const initCache = (): MemoizeCache<CacheKey, Result> => {
-    if (options?.cache) return reactive(options.cache)
-
+): UseMemoizedFn<Result, Args> {
+  const initCache = (): UseMemoizeCache<CacheKey, Result> => {
+    if (options?.cache)
+      return reactive(options.cache)
     // Use fallback for Vue 2 not able to make a reactive Map
-    if (isVue2) return getMapVue2Compat<Result>()
-
+    if (isVue2)
+      return getMapVue2Compat<Result>()
     return reactive(new Map<CacheKey, Result>())
   }
   const cache = initCache()
@@ -108,7 +107,7 @@ export const useMemoize = <Result, Args extends unknown[]> (
   /**
    * Load data and save in cache
    */
-  const _loadData = (key: CacheKey, ...args: Args): Result => {
+  const _loadData = (key: string, ...args: Args): Result => {
     cache.set(key, resolver(...args))
     return cache.get(key) as Result
   }
@@ -128,11 +127,11 @@ export const useMemoize = <Result, Args extends unknown[]> (
     cache.clear()
   }
 
-  const memoized: Partial<MemoizedFn<Result, Args>> = (...args: Args): Result => {
+  const memoized: Partial<UseMemoizedFn<Result, Args>> = (...args: Args): Result => {
     // Get data from cache
     const key = generateKey(...args)
-    if (cache.has(key)) return cache.get(key) as Result
-
+    if (cache.has(key))
+      return cache.get(key) as Result
     return _loadData(key, ...args)
   }
   memoized.load = loadData
@@ -141,5 +140,5 @@ export const useMemoize = <Result, Args extends unknown[]> (
   memoized.generateKey = generateKey
   memoized.cache = cache
 
-  return memoized as MemoizedFn<Result, Args>
+  return memoized as UseMemoizedFn<Result, Args>
 }

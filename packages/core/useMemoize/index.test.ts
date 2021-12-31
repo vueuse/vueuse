@@ -1,6 +1,6 @@
 import { computed } from 'vue-demi'
 import type { JestMockCompatFn } from 'vitest'
-import type { MemoizeCache } from '.'
+import type { UseMemoizeCache } from '.'
 import { useMemoize } from '.'
 
 describe('useMemoize', () => {
@@ -148,7 +148,7 @@ describe('useMemoize', () => {
   describe('options', () => {
     describe('getKey', () => {
       it('should use custom key', () => {
-        const getKey = vitest.fn((arg1: number) => arg1 % 2)
+        const getKey = vitest.fn((arg1: number) => arg1 % 2) as any
         const memo = useMemoize(resolver, { getKey })
 
         expect(memo(1)).toBe('result-1')
@@ -165,7 +165,7 @@ describe('useMemoize', () => {
     })
 
     describe('cache', () => {
-      let cache: MemoizeCache<string, string>
+      let cache: UseMemoizeCache<string, string>
       const serializedKey = JSON.stringify([1])
 
       beforeEach(() => {
