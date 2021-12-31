@@ -19,6 +19,7 @@
 ### Browser
   - [`useActiveElement`](https://vueuse.org/core/useActiveElement/) — reactive `document.activeElement`
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
+  - [`useBroadcastChannel`](https://vueuse.org/core/useBroadcastChannel/) — reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel)
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark / light / customs) with auto data persistence
