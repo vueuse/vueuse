@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { getCurrentInstance, onUnmounted } from 'vue-demi'
 import type { Fn } from '../utils'
 

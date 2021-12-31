@@ -7,7 +7,6 @@ const {
   data,
   post,
   error,
-  isError,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
 const message = ref('')
@@ -29,7 +28,7 @@ watch(data, () => {
 
   <div v-if="isSupported">
     <form @submit.prevent="post(message)">
-      <input v-model="message" type="text" />
+      <input v-model="message" type="text">
       <button type="submit">
         Send Message
       </button>
