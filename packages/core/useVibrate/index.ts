@@ -1,7 +1,8 @@
 import { ref } from 'vue-demi'
-import type { Pausable } from '@vueuse/shared'
+import type { MaybeRef, Pausable } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
-import { ConfigurableNavigator, defaultNavigator } from '..'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface UseVibrateOptions extends ConfigurableNavigator {
   /**
@@ -17,91 +18,66 @@ export interface UseVibrateOptions extends ConfigurableNavigator {
    * @default []
    *
    */
-  pattern?: number[] | number
+  pattern?: MaybeRef<number[] | number>
   /**
+   * Interval to run a persistent vibration, in ms
    *
-   * Interval to run a persistent vibration:
+   * Pass `0` to disable
    *
-   * @default 1000 (milliseconds, 1 second)
+   * @default 0
    *
    */
-  interval?: | number
+  interval?: number
 }
 
 /**
- *
- * reactive useVibrate()
+ * Reactive vibrate
  *
  * @see https://vueuse.org/useVibrate
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
- * @param options of type UseVibrateOptions
+ * @param options
  */
 export function useVibrate(options?: UseVibrateOptions) {
   const {
     pattern = [],
-    interval = 1000,
-    navigator = defaultNavigator
+    interval = 0,
+    navigator = defaultNavigator,
   } = options || {}
 
-  // Is the vibration web API supported?
   const isSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator
 
-  // Vibration pattern e.g., both number and Array<number>: 200, [200], or [200,100,200]
-  const vibratePattern = ref<number[] | number>(pattern)
+  const patternRef = ref(pattern)
+  let intervalControls: Pausable | undefined
 
-  // If persistent, at what interval does the
-  const vibrateInterval = ref(interval)
-
-  // Holding state for the vibrationPersistent pausable call:
-  const vibrationIntervalActive = ref(false)
-
-  const vibrationIntervalPause = ref(() => {})
-
-  const vibrationIntervalResume = ref(() => {})
-
-  // Attempt to start the vibration:
-  const start = (pattern = vibratePattern.value) => {
-    if (isSupported) 
+  const vibrate = (pattern = patternRef.value) => {
+    if (isSupported)
       navigator.vibrate(pattern)
-  }
-
-  // A persistent vibrate pausable (for dynamic vibrateInterval):
-  const vibratePersistent = (): Pausable => {
-    return useIntervalFn(start, vibrateInterval.value, {
-      immediate: false,
-      immediateCallback: false,
-    })
   }
 
   // Attempt to stop the vibration:
   const stop = () => {
     // Stope the vibration if we need to:
-    if (isSupported) 
+    if (isSupported)
       navigator.vibrate(0)
-    // Stop the interval if we need to:
-    if (vibrationIntervalActive.value)
-    vibrationIntervalPause.value()
+    intervalControls?.pause()
   }
 
-  // Attempt to start the vibration at a set persistent interval:
-  const startPersistent = () => {
-    const { isActive, pause, resume } = vibratePersistent()
-
-    vibrationIntervalActive.value = isActive.value
-    vibrationIntervalPause.value = pause
-    vibrationIntervalResume.value = resume
-
-    // If the vibration is on:
-    if (!vibrationIntervalActive.value && isSupported)
-      vibrationIntervalResume.value()
+  if (interval > 0) {
+    intervalControls = useIntervalFn(
+      vibrate,
+      interval,
+      {
+        immediate: false,
+        immediateCallback: false,
+      },
+    )
   }
 
   return {
     isSupported,
-    pattern: vibratePattern,
-    interval: vibrateInterval,
-    start,
-    startPersistent,
+    pattern,
+    intervalControls,
+    vibrate,
     stop,
   }
 }
