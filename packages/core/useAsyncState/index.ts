@@ -103,7 +103,7 @@ export function useAsyncState<T>(
       error.value = e
       onError(e)
     }
-  
+
     isLoading.value = false
     return state.value
   }
