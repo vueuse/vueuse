@@ -15,7 +15,7 @@ import { onMounted, ref } from 'vue'
 import { useMediaControls } from '@vueuse/core'
 
 const video = ref()
-const { playing, currentTime, duration, volume } = useMediaControls(video, { 
+const { playing, currentTime, duration, volume, controlMedia } = useMediaControls(video, { 
   src: 'video.mp4',
 })
 
@@ -24,6 +24,11 @@ onMounted(() => {
   volume.value = 0.5
   currentTime.value = 60
 })
+
+const { play, stop, pause } = controlMedia()
+play() // Enable media to play
+pause() // Enable media to pause
+stop() // Equivalent to pause()
 </script>
 
 <template>
