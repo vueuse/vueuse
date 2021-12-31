@@ -10,7 +10,7 @@ export interface UseAsyncStateReturn<T, U> {
   execute: (delay?: number, ...args: any[]) => Promise<T>
 }
 
-export interface AsyncStateOptions {
+export interface AsyncStateOptions<T extends boolean> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -49,7 +49,7 @@ export interface AsyncStateOptions {
    *
    * @default true
    */
-  shallow?: boolean
+  shallow?: T
 }
 
 /**
@@ -61,24 +61,11 @@ export interface AsyncStateOptions {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-
-export function useAsyncState<T>(
+export function useAsyncState<T, U extends boolean = true>(
   promise: Promise<T> | ((...args: any[]) => Promise<T>),
   initialState: T,
-  options: Omit<AsyncStateOptions, 'shallow'> & { shallow: false }): UseAsyncStateReturn<T, false>
-export function useAsyncState<T>(
-  promise: Promise<T> | ((...args: any[]) => Promise<T>),
-  initialState: T,
-  options: Omit<AsyncStateOptions, 'shallow'> & { shallow: true }): UseAsyncStateReturn<T, true>
-export function useAsyncState<T>(
-  promise: Promise<T> | ((...args: any[]) => Promise<T>),
-  initialState: T,
-  options?: AsyncStateOptions): UseAsyncStateReturn<T, true>
-export function useAsyncState<T>(
-  promise: Promise<T> | ((...args: any[]) => Promise<T>),
-  initialState: T,
-  options?: AsyncStateOptions,
-): UseAsyncStateReturn<T, true> {
+  options?: AsyncStateOptions<U>,
+): UseAsyncStateReturn<T, U> {
   const {
     immediate = true,
     delay = 0,
