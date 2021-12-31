@@ -42,8 +42,9 @@
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+  - [`useVibrate`](https://vueuse.org/core/useVibrate/) — reactive vibration web API
   - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running
-  - [`useWebNotification`](https://vueuse.org/core/useWebNotification/) — reactive [Web Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
+  - [`useWebNotification`](https://vueuse.org/core/useWebNotification/) — reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
 
 ### Component
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
