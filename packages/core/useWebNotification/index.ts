@@ -1,21 +1,23 @@
-import { onMounted, onUnmounted, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 
 import type { Ref } from 'vue-demi'
 
-import { createEventHook } from '@vueuse/shared'
+import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 
 import type { EventHook } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
+import type { ConfigurableWindow } from '..'
+import { defaultWindow } from '..'
 
-export interface UseWebNotificationOptions {
+export interface WebNotificationOptions {
   /**
    * The title read-only property of the Notification interface indicates
    * the title of the notification
    *
    * @default ''
    */
-  title: string
+  title?: string
   /**
    * The body string of the notification as specified in the constructor's
    * options parameter.
@@ -74,13 +76,16 @@ export interface UseWebNotificationOptions {
    */
   silent?: boolean
   /**
-   *
    * Specifies a vibration pattern for devices with vibration hardware to emit.
    * A vibration pattern, as specified in the Vibration API spec
+   *
    * @see https://w3c.github.io/vibration/
-   * @default [200, 100, 200]
    */
-  vibrate?: []
+  vibrate?: number[]
+}
+
+export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow{
+
 }
 
 /**
@@ -89,82 +94,74 @@ export interface UseWebNotificationOptions {
  * @see https://vueuse.org/useWebNotification
  * @see https://developer.mozilla.org/en-US/docs/Web/API/notification
  * @param title
- * @param options of type WebNotificationOptions
+ * @param defaultOptions of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
  */
 export const useWebNotification = (
-  options: UseWebNotificationOptions,
+  defaultOptions: UseWebNotificationOptions = {},
 ) => {
   const {
-    title,
-    body = '',
-    dir = 'auto',
-    lang = 'EN',
-    tag = '',
-    icon = '',
-    renotify = false,
-    requireInteraction = false,
-    silent = false,
-    vibrate = [200, 100, 200],
-  } = options
+    window = defaultWindow,
+  } = defaultOptions
+
+  const isSupported: boolean = !!window && 'Notification' in window
 
   const notification: Ref<Notification | null> = ref(null)
 
-  // Is the web notifications API supported?:
-  const isSupported: boolean = 'Notification' in window
-
   // Request permission to use web notifications:
   const requestPermission = async() => {
-    if ('permission' in Notification && Notification.permission !== 'denied') await Notification.requestPermission()
+    if (!isSupported)
+      return
+
+    if ('permission' in Notification && Notification.permission !== 'denied')
+      await Notification.requestPermission()
   }
 
-  const notificationOnClick: EventHook = createEventHook<Event>()
-
-  const notificationOnShow: EventHook = createEventHook<Event>()
-
-  const notificationOnError: EventHook = createEventHook<Event>()
-
-  const notificationOnClose: EventHook = createEventHook<Event>()
+  const onClick: EventHook = createEventHook<Event>()
+  const onShow: EventHook = createEventHook<Event>()
+  const onError: EventHook = createEventHook<Event>()
+  const onClose: EventHook = createEventHook<Event>()
 
   // Show notification method:
-  const show = (opts?: UseWebNotificationOptions): void => {
-    if (isSupported) {
-      notification.value = new Notification(
-        title,
-        opts || { body, dir, lang, tag, icon, renotify, requireInteraction, silent, vibrate },
-      )
+  const show = async(overrides?: WebNotificationOptions) => {
+    if (!isSupported)
+      return
 
-      notification.value.onclick = (event: Event) => notificationOnClick.trigger(event)
-      notification.value.onshow = (event: Event) => notificationOnShow.trigger(event)
-      notification.value.onerror = (event: Event) => notificationOnError.trigger(event)
-      notification.value.onclose = (event: Event) => notificationOnClose.trigger(event)
-    }
+    await requestPermission()
+    const options = Object.assign({}, defaultOptions, overrides)
+    notification.value = new Notification(options.title || '', options)
+
+    notification.value.onclick = (event: Event) => onClick.trigger(event)
+    notification.value.onshow = (event: Event) => onShow.trigger(event)
+    notification.value.onerror = (event: Event) => onError.trigger(event)
+    notification.value.onclose = (event: Event) => onClose.trigger(event)
+    return notification.value
   }
 
   // Close notification method:
   const close = (): void => {
-    if (notification.value) notification.value.close()
+    if (notification.value)
+      notification.value.close()
+    notification.value = null
   }
 
   // On mount, attempt to request permission:
-  onMounted(async() => {
-    if (isSupported) await requestPermission()
+  tryOnMounted(async() => {
+    if (isSupported)
+      await requestPermission()
   })
 
   // Attempt cleanup of the notification:
-  onUnmounted(() => {
-    if (notification.value) close()
-    notification.value = null
-  })
+  tryOnScopeDispose(close)
 
   // Use close() to remove a notification that is no longer relevant to to
   // the user (e.g.the user already read the notification on the webpage).
   // Most modern browsers dismiss notifications automatically after a few
   // moments(around four seconds).
-  if (isSupported) {
+  if (isSupported && window) {
+    const document = window.document
     useEventListener(document, 'visibilitychange', (e: Event) => {
       e.preventDefault()
-
       if (document.visibilityState === 'visible') {
         // The tab has become visible so clear the now-stale Notification:
         close()
@@ -177,9 +174,9 @@ export const useWebNotification = (
     notification,
     show,
     close,
-    onClick: notificationOnClick,
-    onShow: notificationOnShow,
-    onError: notificationOnError,
-    onClose: notificationOnClose,
+    onClick,
+    onShow,
+    onError,
+    onClose,
   }
 }

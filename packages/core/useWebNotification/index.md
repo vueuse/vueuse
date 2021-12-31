@@ -20,21 +20,19 @@ const {
   onShow,
   onError,
   onClose,
-} = useWebNotification(
-  {
-    title: 'Hello, VueUse world!',
-    dir: 'auto',
-    lang: 'en',
-    renotify: true,
-  },
-)
+} = useWebNotification({
+  title: 'Hello, VueUse world!',
+  dir: 'auto',
+  lang: 'en',
+  renotify: true,
+})
 
-show()
-
-close()
+if (isSupported) {
+  show()
+}
 ```
 
-This composable also utilises the createEventHook utility from '@vueuse/shared`:
+This composable also utilizes the createEventHook utility from '@vueuse/shared`:
 
 ```ts
 onClick((evt: Event) => {
