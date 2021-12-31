@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { onMounted, ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import {
+  map,
   mapTo,
+  startWith,
   takeUntil,
   withLatestFrom,
-  startWith,
-  map,
 } from 'rxjs/operators'
 import { useSubscription } from '../useSubscription'
-import { fromEvent, from } from '../from'
+import { from, fromEvent } from '../from'
 import { toObserver } from '.'
 
 const count = ref(0)

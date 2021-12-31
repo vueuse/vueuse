@@ -1,7 +1,9 @@
-import { Ref, ref, unref, computed } from 'vue-demi'
-import { MaybeRef, toRefs, isClient } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, ref, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { PointerType, Position } from '../types'
+import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
 
 export interface UseDraggableOptions {
@@ -82,10 +84,10 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     if (unref(options.exact) && e.target !== unref(target))
       return
-    const react = unref(target)!.getBoundingClientRect()
+    const rect = unref(target)!.getBoundingClientRect()
     const pos = {
-      x: e.pageX - react.left,
-      y: e.pageY - react.top,
+      x: e.pageX - rect.left,
+      y: e.pageY - rect.top,
     }
     if (options.onStart?.(pos, e) === false)
       return

@@ -1,5 +1,14 @@
 import { noop, promiseTimeout } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
+
+export interface UseAsyncStateReturn<T> {
+  state: Ref<T>
+  isReady: Ref<boolean>
+  isLoading: Ref<boolean>
+  error: Ref<unknown>
+  execute: (delay?: number, ...args: any[]) => Promise<T>
+}
 
 export interface AsyncStateOptions {
   /**
@@ -34,6 +43,13 @@ export interface AsyncStateOptions {
    * @default true
    */
   resetOnExecute?: boolean
+
+  /**
+   * Use shallowRef.
+   *
+   * @default true
+   */
+  shallow?: boolean
 }
 
 /**
@@ -49,16 +65,18 @@ export function useAsyncState<T>(
   promise: Promise<T> | ((...args: any[]) => Promise<T>),
   initialState: T,
   options: AsyncStateOptions = {},
-) {
+): UseAsyncStateReturn<T> {
   const {
     immediate = true,
     delay = 0,
     onError = noop,
     resetOnExecute = true,
+    shallow = true,
   } = options
 
-  const state = shallowRef(initialState)
+  const state = shallow ? shallowRef(initialState) : ref(initialState) as Ref<T>
   const isReady = ref(false)
+  const isLoading = ref(false)
   const error = ref<unknown | undefined>(undefined)
 
   async function execute(delay = 0, ...args: any[]) {
@@ -66,6 +84,7 @@ export function useAsyncState<T>(
       state.value = initialState
     error.value = undefined
     isReady.value = false
+    isLoading.value = true
 
     if (delay > 0)
       await promiseTimeout(delay)
@@ -84,6 +103,9 @@ export function useAsyncState<T>(
       error.value = e
       onError(e)
     }
+
+    isLoading.value = false
+    return state.value
   }
 
   if (immediate)
@@ -92,9 +114,8 @@ export function useAsyncState<T>(
   return {
     state,
     isReady,
+    isLoading,
     error,
     execute,
   }
 }
-
-export type UseAsyncStateReturn = ReturnType<typeof useAsyncState>

@@ -26,7 +26,7 @@ const key = computed(() => activeElement.value?.dataset?.id || 'null')
       :data-id="i"
       class="!my-0"
       :placeholder="`${i}`"
-    />
+    >
   </div>
   <div class="mt-2">
     Current Active Element:

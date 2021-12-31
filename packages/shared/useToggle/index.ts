@@ -1,4 +1,5 @@
-import { isRef, Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { isRef, ref } from 'vue-demi'
 
 /**
  * A boolean ref with a toggler

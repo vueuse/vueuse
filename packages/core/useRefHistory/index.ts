@@ -1,6 +1,8 @@
-import { Fn, pausableFilter, ignorableWatch, ConfigurableEventFilter } from '@vueuse/shared'
-import { Ref } from 'vue-demi'
-import { useManualRefHistory, UseRefHistoryRecord, CloneFn } from '../useManualRefHistory'
+import type { ConfigurableEventFilter, Fn } from '@vueuse/shared'
+import { ignorableWatch, pausableFilter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import type { CloneFn, UseRefHistoryRecord } from '../useManualRefHistory'
+import { useManualRefHistory } from '../useManualRefHistory'
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter {
   /**

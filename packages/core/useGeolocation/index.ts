@@ -1,8 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 
@@ -26,8 +28,8 @@ export function useGeolocation(options: GeolocationOptions = {}) {
   const error = ref<GeolocationPositionError | null>(null)
   const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
-    latitude: 0,
-    longitude: 0,
+    latitude: Infinity,
+    longitude: Infinity,
     altitude: null,
     altitudeAccuracy: null,
     heading: null,

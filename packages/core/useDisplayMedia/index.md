@@ -30,6 +30,6 @@ watchEffect(() => {
 ```
 
 
-## Related
+## Related Functions
 
 - `useUserMedia`

@@ -1,5 +1,5 @@
 import { join, resolve } from 'path'
-import { UserConfig, Plugin } from 'vite'
+import type { Plugin, UserConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
@@ -46,6 +46,17 @@ const config: UserConfig = {
     },
   },
   plugins: [
+    // TODO: remove this
+    {
+      name: 'emmm',
+      configResolved(config) {
+        const index = config.plugins.findIndex(i => i.name === 'vite:ssr-require-hook')
+        if (index > -1)
+          // @ts-expect-error
+          config.plugins.splice(index, 1)
+      },
+    },
+
     Components({
       dirs: [
         '.vitepress/theme/components',

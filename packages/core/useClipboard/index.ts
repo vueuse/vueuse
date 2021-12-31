@@ -1,15 +1,19 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { MaybeRef, useTimeoutFn } from '@vueuse/shared'
-import { ComputedRef, ref, unref } from 'vue-demi'
-import { useEventListener, WindowEventName } from '../useEventListener'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import { useTimeoutFn } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
+import type { WindowEventName } from '../useEventListener'
+import { useEventListener } from '../useEventListener'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
-   * @default true
+   * @default false
    */
   read?: boolean
 
@@ -44,7 +48,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string>>): Clipb
 export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefined> = {}): ClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
-    read = true,
+    read = false,
     source,
     copiedDuring = 1500,
   } = options

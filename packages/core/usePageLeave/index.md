@@ -18,5 +18,5 @@ const isLeft = usePageLeave()
 ```html
 <UsePageLeave v-slot="{ isLeft }">
   Has Left Page: {{ isLeft }}
-<UsePageLeave>
+</UsePageLeave>
 ```

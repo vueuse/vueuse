@@ -1,5 +1,7 @@
-import { Ref, ref, unref, watch } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, unref, watch } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 
 export interface ToDataURLOptions {
   /**
@@ -31,6 +33,9 @@ export function useBase64(
   const promise = ref() as Ref<Promise<string>>
 
   function execute() {
+    if (!isClient)
+      return
+
     promise.value = new Promise<string>((resolve, reject) => {
       try {
         const _target = unref(target)

@@ -1,6 +1,8 @@
-import { isString, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { isString } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseTitleOptions extends ConfigurableDocument {
@@ -10,6 +12,12 @@ export interface UseTitleOptions extends ConfigurableDocument {
    * @default false
    */
   observe?: boolean
+  /**
+   * The template string to parse the title (e.g., '%s | My Website')
+   *
+   * @default '%s'
+   */
+  titleTemplate?: string
 }
 
 /**
@@ -26,6 +34,7 @@ export function useTitle(
   const {
     document = defaultDocument,
     observe = false,
+    titleTemplate = '%s',
   } = options
   const title = ref(newTitle ?? document?.title ?? null)
 
@@ -33,7 +42,7 @@ export function useTitle(
     title,
     (t, o) => {
       if (isString(t) && t !== o && document)
-        document.title = t
+        document.title = titleTemplate.replace('%s', t)
     },
     { immediate: true },
   )
@@ -43,7 +52,7 @@ export function useTitle(
       document.head?.querySelector('title'),
       () => {
         if (document && document.title !== title.value)
-          title.value = document.title
+          title.value = titleTemplate.replace('%s', document.title)
       },
       { childList: true },
     )
@@ -51,3 +60,5 @@ export function useTitle(
 
   return title
 }
+
+export type UseTitleReturn = ReturnType<typeof useTitle>

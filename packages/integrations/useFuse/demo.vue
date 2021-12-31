@@ -1,6 +1,7 @@
 <script setup lang='ts'>
-import { ref, computed, watch } from 'vue'
-import { useFuse, UseFuseOptions } from '.'
+import { computed, ref, watch } from 'vue'
+import type { UseFuseOptions } from '.'
+import { useFuse } from '.'
 
 type DataItem = {
   firstName: string
@@ -140,21 +141,21 @@ const { results } = useFuse(search, data, options)
       <h2 class="mt-0 self-stretch">
         Search
       </h2>
-      <input v-model="search" type="text" placeholder="Search for someone" />
+      <input v-model="search" type="text" placeholder="Search for someone">
       <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30">
         <legend class="px-1">
           Search by
         </legend>
         <div>
-          <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter" />
+          <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter">
           <label for="radio-both">Both Names</label>
         </div>
         <div>
-          <input id="radio-first" v-model="filterBy" type="radio" value="first" name="filter" />
+          <input id="radio-first" v-model="filterBy" type="radio" value="first" name="filter">
           <label for="radio-first">First Name</label>
         </div>
         <div>
-          <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter" />
+          <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter">
           <label for="radio-last">Last Name</label>
         </div>
       </fieldset>
@@ -163,22 +164,22 @@ const { results } = useFuse(search, data, options)
           Other Options
         </legend>
         <div>
-          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox" />
+          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox">
           <label for="checkbox-exact-match">Exact match</label>
         </div>
         <div>
-          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox" />
+          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox">
           <label for="checkbox-case-sensitive">Case sensistive</label>
         </div>
         <div>
-          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox" />
+          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox">
           <label for="checkbox-match-all">Match all when search is blank</label>
         </div>
       </fieldset>
       <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30">
         <legend>Result count limit</legend>
         <note>Limit the number of results shown.</note>
-        <input id="input-result-limit" v-model="resultLimitString" type="number" />
+        <input id="input-result-limit" v-model="resultLimitString" type="number">
       </fieldset>
     </section>
     <section class="flex-1 flex flex-col min-w-xs max-h-xl">
@@ -189,7 +190,7 @@ const { results } = useFuse(search, data, options)
       <ol v-if="results.length > 0" class="mt-6 overflow-y-scroll space-y-2" start="0">
         <li v-for="(result, index) in results" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
           <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
-          <br />
+          <br>
           <span>Source Index: {{ result.refIndex }}</span>
         </li>
       </ol>
@@ -207,7 +208,7 @@ const { results } = useFuse(search, data, options)
       <ol class="overflow-y-scroll space-y-2" start="0">
         <li v-for="(item, index) in data" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
           First name: {{ item.firstName }}
-          <br />
+          <br>
           Last name: {{ item.lastName }}
         </li>
       </ol>

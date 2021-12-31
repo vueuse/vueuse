@@ -3,8 +3,8 @@ import { ref } from 'vue-demi'
 import { useTransition } from '.'
 
 const expectBetween = (val: number, floor: number, ceiling: number) => {
-  expect(val).toBeGreaterThan(floor)
-  expect(val).toBeLessThan(ceiling)
+  expect(val).to.be.greaterThan(floor)
+  expect(val).to.be.lessThan(ceiling)
 }
 
 describe('useTransition', () => {
@@ -68,18 +68,18 @@ describe('useTransition', () => {
 
   it('supports custom easing functions', async() => {
     const source = ref(0)
-    const linear = jest.fn(n => n)
+    const linear = vitest.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
       transition: linear,
     })
 
-    expect(linear).not.toHaveBeenCalled()
+    expect(linear).not.toBeCalled()
 
     source.value = 1
 
     await promiseTimeout(50)
-    expect(linear).toHaveBeenCalled()
+    expect(linear).toBeCalled()
     expectBetween(transition.value, 0, 1)
 
     await promiseTimeout(100)
@@ -105,8 +105,8 @@ describe('useTransition', () => {
 
   it('supports dynamic transitions', async() => {
     const source = ref(0)
-    const first = jest.fn(n => n)
-    const second = jest.fn(n => n)
+    const first = vitest.fn(n => n)
+    const second = vitest.fn(n => n)
     const easingFn = ref(first)
 
     useTransition(source, {
@@ -114,14 +114,14 @@ describe('useTransition', () => {
       transition: easingFn,
     })
 
-    expect(first).not.toHaveBeenCalled()
-    expect(second).not.toHaveBeenCalled()
+    expect(first).not.toBeCalled()
+    expect(second).not.toBeCalled()
 
     source.value = 1
 
     await promiseTimeout(50)
-    expect(first).toHaveBeenCalled()
-    expect(second).not.toHaveBeenCalled()
+    expect(first).toBeCalled()
+    expect(second).not.toBeCalled()
 
     first.mockReset()
     second.mockReset()
@@ -130,8 +130,8 @@ describe('useTransition', () => {
     source.value = 2
 
     await promiseTimeout(100)
-    expect(first).not.toHaveBeenCalled()
-    expect(second).toHaveBeenCalled()
+    expect(first).not.toBeCalled()
+    expect(second).toBeCalled()
   })
 
   it('supports dynamic durations', async() => {
@@ -159,8 +159,8 @@ describe('useTransition', () => {
 
   it('fires onStarted and onFinished callbacks', async() => {
     const source = ref(0)
-    const onStarted = jest.fn()
-    const onFinished = jest.fn()
+    const onStarted = vitest.fn()
+    const onFinished = vitest.fn()
 
     useTransition(source, {
       duration: 100,
@@ -168,27 +168,27 @@ describe('useTransition', () => {
       onFinished,
     })
 
-    expect(onStarted).not.toHaveBeenCalled()
-    expect(onFinished).not.toHaveBeenCalled()
+    expect(onStarted).not.toBeCalled()
+    expect(onFinished).not.toBeCalled()
 
     source.value = 1
 
     await promiseTimeout(50)
-    expect(onStarted).toHaveBeenCalled()
-    expect(onFinished).not.toHaveBeenCalled()
+    expect(onStarted).toBeCalled()
+    expect(onFinished).not.toBeCalled()
 
     onStarted.mockReset()
     onFinished.mockReset()
 
     await promiseTimeout(100)
-    expect(onStarted).not.toHaveBeenCalled()
-    expect(onFinished).toHaveBeenCalled()
+    expect(onStarted).not.toBeCalled()
+    expect(onFinished).toBeCalled()
   })
 
   it('clears pending transitions before starting a new one', async() => {
     const source = ref(0)
-    const onStarted = jest.fn()
-    const onFinished = jest.fn()
+    const onStarted = vitest.fn()
+    const onFinished = vitest.fn()
 
     useTransition(source, {
       delay: 100,
@@ -198,17 +198,17 @@ describe('useTransition', () => {
     })
 
     await promiseTimeout(150)
-    expect(onStarted).not.toHaveBeenCalled()
+    expect(onStarted).not.toBeCalled()
     source.value = 1
     await promiseTimeout(50)
     source.value = 2
     await promiseTimeout(250)
-    expect(onStarted).toHaveBeenCalledTimes(1)
-    expect(onFinished).toHaveBeenCalledTimes(1)
+    expect(onStarted).toBeCalledTimes(1)
+    expect(onFinished).toBeCalledTimes(1)
   })
 
   it('can be disabled for sychronous changes', async() => {
-    const onStarted = jest.fn()
+    const onStarted = vitest.fn()
     const disabled = ref(false)
     const source = ref(0)
 
@@ -223,7 +223,7 @@ describe('useTransition', () => {
 
     expect(transition.value).toBe(1)
     await promiseTimeout(150)
-    expect(onStarted).not.toHaveBeenCalled()
+    expect(onStarted).not.toBeCalled()
     disabled.value = false
     expect(transition.value).toBe(1)
   })

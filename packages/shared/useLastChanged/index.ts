@@ -1,4 +1,5 @@
-import { watch, ref, WatchSource, WatchOptions, Ref } from 'vue-demi'
+import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<

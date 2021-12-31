@@ -1,5 +1,6 @@
-import { ToRefs } from 'vue-demi'
-import { useVModel, VModelOptions } from '../useVModel'
+import type { ToRefs } from 'vue-demi'
+import type { VModelOptions } from '../useVModel'
+import { useVModel } from '../useVModel'
 
 /**
  * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.

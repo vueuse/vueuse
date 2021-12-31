@@ -1,7 +1,7 @@
 /* This implementation is original ported from https://github.com/shorwood/pompaute by Stanley Horwood */
 
 import { unref } from 'vue-demi'
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 
 export type UnrefFn<T> = T extends (...args: infer A) => infer R
   ? (...args: { [K in keyof A]: MaybeRef<A[K]> }) => R

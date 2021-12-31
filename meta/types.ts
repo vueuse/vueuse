@@ -9,7 +9,12 @@ export interface PackageManifest {
   manualImport?: boolean
   deprecated?: boolean
   submodules?: boolean
+  build?: boolean
   iife?: boolean
+  cjs?: boolean
+  mjs?: boolean
+  dts?: boolean
+  target?: string
 }
 
 export interface VueUseFunction {
@@ -18,7 +23,7 @@ export interface VueUseFunction {
   category?: string
   description?: string
   docs?: string
-  depreacted?: boolean
+  deprecated?: boolean
   internal?: boolean
   component?: boolean
   directive?: boolean

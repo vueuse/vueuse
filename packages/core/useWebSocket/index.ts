@@ -1,5 +1,7 @@
-import { ref, Ref } from 'vue-demi'
-import { Fn, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -155,7 +157,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  const close: WebSocket['close'] = (code, reason) => {
+  // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+  const close: WebSocket['close'] = (code = 1000, reason) => {
     if (!wsRef.value)
       return
     explicitlyClosed = true

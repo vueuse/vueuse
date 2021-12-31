@@ -1,8 +1,10 @@
-import { ref, computed } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { computed, ref } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { MouseSourceType } from '../useMouse'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { MouseSourceType } from '../useMouse'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface MousePressedOptions extends ConfigurableWindow {
   /**

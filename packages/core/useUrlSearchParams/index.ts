@@ -1,7 +1,8 @@
 import { reactive } from 'vue-demi'
 import { pausableWatch } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export type UrlParams = Record<string, string[] | string>
 

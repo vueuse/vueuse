@@ -2,6 +2,7 @@ import path from 'path'
 import assert from 'assert'
 import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
+import fg from 'fast-glob'
 import consola from 'consola'
 import { packages } from '../meta/packages'
 import indexes from '../meta/function-indexes'
@@ -9,6 +10,7 @@ import { version } from '../package.json'
 import { updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
+const watch = process.argv.includes('--watch')
 
 const FILES_COPY_ROOT = [
   'LICENSE',
@@ -16,7 +18,9 @@ const FILES_COPY_ROOT = [
 
 const FILES_COPY_LOCAL = [
   'README.md',
-  'nuxt.cjs',
+  '*.cjs',
+  '*.mjs',
+  '*.d.ts',
 ]
 
 assert(process.cwd() !== __dirname)
@@ -26,18 +30,18 @@ async function buildMetaFiles() {
     const packageRoot = path.resolve(__dirname, '..', 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
-    if (name === 'core') {
+    if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
+
+    if (name === 'core' || name === 'nuxt')
       await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(packageDist, 'indexes.json'))
-    }
 
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
 
-    for (const file of FILES_COPY_LOCAL) {
-      if (fs.existsSync(path.join(packageRoot, file)))
-        await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
-    }
+    const files = await fg(FILES_COPY_LOCAL, { cwd: packageRoot })
+    for (const file of files)
+      await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
     const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
     for (const key of Object.keys(packageJSON.dependencies)) {
@@ -56,7 +60,7 @@ async function build() {
   await updateImport(indexes)
 
   consola.info('Rollup')
-  exec('pnpm run build:rollup', { stdio: 'inherit' })
+  exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
 
   consola.info('Fix types')
   exec('pnpm run types:fix', { stdio: 'inherit' })

@@ -1,10 +1,11 @@
-import { ref, reactive } from 'vue-demi'
-import { useThrottleFn, useDebounceFn, noop, MaybeRef } from '@vueuse/shared'
+import { reactive, ref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
   /**
-   * Throttle time for scroll event,it’s disabled by default.
+   * Throttle time for scroll event, it’s disabled by default.
    *
    * @default 0
    */
@@ -33,13 +34,13 @@ export interface UseScrollOptions {
    * Trigger it when scrolling.
    *
    */
-  onScroll?: () => void
+  onScroll?: (e: Event) => void
 
   /**
    * Trigger it when scrolling ends.
    *
    */
-  onStop?: () => void
+  onStop?: (e: Event) => void
 
   /**
    * Listener options for scroll event.
@@ -87,11 +88,21 @@ export function useScroll(
     top: true,
     bottom: false,
   })
+  const directions = reactive({
+    left: false,
+    right: false,
+    top: false,
+    bottom: false,
+  })
 
   if (element) {
-    const onScrollEnd = useDebounceFn(() => {
+    const onScrollEnd = useDebounceFn((e: Event) => {
       isScrolling.value = false
-      onStop()
+      directions.left = false
+      directions.right = false
+      directions.top = false
+      directions.bottom = false
+      onStop(e)
     }, throttle + idle)
 
     const onScrollHandler = (e: Event) => {
@@ -100,20 +111,24 @@ export function useScroll(
       ) as HTMLElement
 
       const scrollLeft = eventTarget.scrollLeft
+      directions.left = scrollLeft < x.value
+      directions.right = scrollLeft > x.value
       arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
       arrivedState.right
           = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
       x.value = scrollLeft
 
       const scrollTop = eventTarget.scrollTop
+      directions.top = scrollTop < y.value
+      directions.bottom = scrollTop > y.value
       arrivedState.top = scrollTop <= 0 + (offset.top || 0)
       arrivedState.bottom
           = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
       y.value = scrollTop
 
       isScrolling.value = true
-      onScrollEnd()
-      onScroll()
+      onScrollEnd(e)
+      onScroll(e)
     }
 
     useEventListener(
@@ -129,6 +144,7 @@ export function useScroll(
     y,
     isScrolling,
     arrivedState,
+    directions,
   }
 }
 

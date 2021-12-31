@@ -1,12 +1,17 @@
-import { from as fromRxjs, fromEvent as fromEventRx, Observable } from 'rxjs'
+import { Observable, fromEvent as fromEventRx, from as fromRxjs } from 'rxjs'
 import type { ObservableInput } from 'rxjs'
 import { filter, mergeMap } from 'rxjs/operators'
-import { Ref, isRef, watch } from 'vue-demi'
+import type { Ref, WatchOptions } from 'vue-demi'
+import { isRef, watch } from 'vue-demi'
 
-export function from<T>(value: ObservableInput<T> | Ref<T>): Observable<T> {
+export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: WatchOptions): Observable<T> {
   if (isRef<T>(value)) {
     return new Observable((subscriber) => {
-      watch(value, val => subscriber.next(val))
+      const watchStopHandle = watch(value, val => subscriber.next(val), watchOptions)
+
+      return () => {
+        watchStopHandle()
+      }
     })
   }
   else {
@@ -15,7 +20,7 @@ export function from<T>(value: ObservableInput<T> | Ref<T>): Observable<T> {
 }
 
 export function fromEvent<T extends HTMLElement>(value: Ref<T>, event: string): Observable<Event> {
-  return from(value).pipe(
+  return from(value, { immediate: true }).pipe(
     filter(value => value instanceof HTMLElement),
     mergeMap(value => fromEventRx(value, event)),
   )

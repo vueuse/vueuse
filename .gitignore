@@ -10,3 +10,4 @@ packages/core/README.md
 packages/recently-updated.md
 types
 indexes.json
+playgrounds/*/pnpm-lock.yaml
