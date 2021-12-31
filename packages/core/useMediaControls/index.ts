@@ -236,6 +236,47 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   }
 
   /**
+   * Provides some functions to control media better
+   */
+  const controlMedia = () => {
+    if (!document)
+      return
+
+    const el = unref(target)
+    if (!el)
+      return
+
+    /**
+     * Let the media play
+     */
+    const play = () => {
+      if (playing.value)
+        return
+
+      el.play()
+    }
+
+    /**
+     * Let the media pause
+     */
+    const pause = () => {
+      if (!playing.value)
+        return
+
+      el.pause()
+    }
+
+    const stop = () => {
+      pause()
+    }
+
+    return {
+      play,
+      pause,
+      stop,
+    }
+  }
+  /**
    * This will automatically inject sources to the media element. The sources will be
    * appended as children to the media element as `<source>` elements.
    */
@@ -428,15 +469,18 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   tryOnScopeDispose(() => listeners.forEach(listener => listener()))
 
   return {
+    stalled,
+    buffered,
+    playing,
+    rate,
+
+    // Time
     currentTime,
     duration,
     waiting,
     seeking,
     ended,
-    stalled,
-    buffered,
-    playing,
-    rate,
+    controlMedia,
 
     // Volume
     volume,
