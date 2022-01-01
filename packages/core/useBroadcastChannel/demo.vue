@@ -38,7 +38,7 @@ watch(data, () => {
       received: {{ data }}
     </p>
 
-    <p v-if="isError">
+    <p v-if="error">
       error: {{ error }}
     </p>
   </div>
