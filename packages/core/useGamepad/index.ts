@@ -2,7 +2,7 @@ import type { MaybeRef } from '@vueuse/shared'
 import { createEventHook, tryOnMounted } from '@vueuse/shared'
 import { useEventListener, useRafFn } from '@vueuse/core'
 import type { Ref } from 'vue-demi'
-import { reactive, computed } from 'vue-demi'
+import { ref, computed } from 'vue-demi'
 import type { ConfigurableWindow, ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -68,7 +68,7 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     navigator = defaultNavigator,
   } = options
   const isSupported = navigator && 'getGamepads' in navigator
-  const gamepads: Gamepad[] = reactive([])
+  const gamepads = ref<Gamepad[]>([])
 
   const onConnectedHook = createEventHook()
   const onDisconnectedHook = createEventHook()
@@ -101,10 +101,10 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     for (let i = 0; i < _gamepads.length; ++i) {
       const gamepad = _gamepads[i]
       if (gamepad) {
-        const index = gamepads.findIndex(({ index }) => index === gamepad.index)
+        const index = gamepads.value.findIndex(({ index }) => index === gamepad.index)
 
         if (index > -1)
-          gamepads[index] = stateFromGamepad(gamepad)
+          gamepads.value[index] = stateFromGamepad(gamepad)
       }
     }
   }
@@ -112,18 +112,18 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const { isActive, pause, resume } = useRafFn(updateGamepadState)
 
   const onGamepadConnected = (gamepad: Gamepad) => {
-    if (!gamepads.some(({ index }) => index === gamepad.index))
-      gamepads.push(stateFromGamepad(gamepad))
+    if (!gamepads.value.some(({ index }) => index === gamepad.index))
+      gamepads.value.push(stateFromGamepad(gamepad))
 
     resume()
   }
 
-  const onGamepadDisconnected = () => {
-
+  const onGamepadDisconnected = (gamepad: Gamepad) => {
+    gamepads.value = gamepads.value.filter(x => x.index !== gamepad.index)
   }
 
   useEventListener('gamepadconnected', e => onGamepadConnected(e.gamepad))
-  useEventListener('gamepaddisconnected', onGamepadDisconnected)
+  useEventListener('gamepaddisconnected', e => onGamepadDisconnected(e.gamepad))
 
   tryOnMounted(() => {
     const _gamepads = navigator?.getGamepads() || []
