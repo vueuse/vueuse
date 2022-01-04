@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { useDateFormat } from '.'
 
 const now = ref(Date.now())
