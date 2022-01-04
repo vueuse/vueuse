@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue-demi'
 import { useDateFormat } from '.'
 
-useDateFormat()
+const now = ref(Date.now())
+const formatted = computed(() => useDateFormat(now))
+setInterval(() => {
+  now.value = Date.now()
+}, 1000)
+
 </script>
 
 <template>
-  <div>
-  </div>
+  <div>{{ formatted }}</div>
 </template>

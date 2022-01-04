@@ -156,6 +156,7 @@
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
   - [`useCycleList`](https://vueuse.org/core/useCycleList/) — cycle through a list of items
+  - [`useDateFormat`](https://vueuse.org/shared/useDateFormat/) — get the formatted date according to the string of tokens passed in
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
