@@ -19,6 +19,7 @@
 ### Browser
   - [`useActiveElement`](https://vueuse.org/core/useActiveElement/) — reactive `document.activeElement`
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
+  - [`useBroadcastChannel`](https://vueuse.org/core/useBroadcastChannel/) — reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel)
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
   - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark / light / customs) with auto data persistence
@@ -41,7 +42,9 @@
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+  - [`useVibrate`](https://vueuse.org/core/useVibrate/) — reactive vibration web API
   - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running
+  - [`useWebNotification`](https://vueuse.org/core/useWebNotification/) — reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
 
 ### Component
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
@@ -163,6 +166,7 @@
   - [`useEventBus`](https://vueuse.org/core/useEventBus/) — a basic event bus
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
+  - [`useMemoize`](https://vueuse.org/core/useMemoize/) — cache results of functions depending on arguments and keep it reactive
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value
   - [`useThrottledRefHistory`](https://vueuse.org/core/useThrottledRefHistory/) — shorthand for `useRefHistory` with throttled filter

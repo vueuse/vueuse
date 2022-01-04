@@ -1,4 +1,4 @@
-import { defineComponent, h, onUnmounted, ref, watch } from 'vue-demi'
+import { defineComponent, h, onScopeDispose, ref, watch } from 'vue-demi'
 import { createFocusTrap } from 'focus-trap'
 import type { FocusTrap } from 'focus-trap'
 import type { RenderableComponent } from '@vueuse/core'
@@ -23,7 +23,8 @@ export const UseFocusTrap = defineComponent<RenderableComponent>({
       }, { flush: 'post' })
 
     // Cleanup on unmount
-    onUnmounted(() => deactivate())
+    onScopeDispose(() => deactivate())
+
     return () => {
       if (slots.default)
         return h(props.as || 'div', { ref: target }, slots.default())
