@@ -57,10 +57,9 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  let store = storage
-  if (!store) {
+  if (!storage) {
     try {
-      store = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
+      storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
     }
     catch (e) {
       onError(e)
@@ -68,15 +67,15 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   }
 
   async function read(event?: StorageEvent) {
-    if (!store || (event && event.key !== key))
+    if (!storage || (event && event.key !== key))
       return
 
     try {
-      const rawValue = event ? event.newValue : await store.getItem(key)
+      const rawValue = event ? event.newValue : await storage.getItem(key)
       if (rawValue == null) {
         data.value = rawInit
         if (writeDefaults && rawInit !== null)
-          await store.setItem(key, await serializer.write(rawInit))
+          await storage.setItem(key, await serializer.write(rawInit))
       }
       else {
         data.value = await serializer.read(rawValue)
@@ -92,15 +91,15 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
 
-  if (store) {
+  if (storage) {
     watchWithFilter(
       data,
       async() => {
         try {
           if (data.value == null)
-            await store!.removeItem(key)
+            await storage!.removeItem(key)
           else
-            await store!.setItem(key, await serializer.write(data.value))
+            await storage!.setItem(key, await serializer.write(data.value))
         }
         catch (e) {
           onError(e)
