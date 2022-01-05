@@ -56,56 +56,62 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
-  try {
-    const store = storage || getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
-    async function read(event?: StorageEvent) {
-      if (!store || (event && event.key !== key))
-        return
 
-      try {
-        const rawValue = event ? event.newValue : await store.getItem(key)
-        if (rawValue == null) {
-          data.value = rawInit
-          if (writeDefaults && rawInit !== null)
-            await store.setItem(key, await serializer.write(rawInit))
-        }
-        else {
-          data.value = await serializer.read(rawValue)
-        }
+  let store = storage
+  if (!store) {
+    try {
+      store = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
+
+  async function read(event?: StorageEvent) {
+    if (!store || (event && event.key !== key))
+      return
+
+    try {
+      const rawValue = event ? event.newValue : await store.getItem(key)
+      if (rawValue == null) {
+        data.value = rawInit
+        if (writeDefaults && rawInit !== null)
+          await store.setItem(key, await serializer.write(rawInit))
       }
-      catch (e) {
-        onError(e)
+      else {
+        data.value = await serializer.read(rawValue)
       }
     }
-
-    read()
-
-    if (window && listenToStorageChanges)
-      useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
-
-    if (store) {
-      watchWithFilter(
-        data,
-        async () => {
-          try {
-            if (data.value == null)
-              await store.removeItem(key)
-            else
-              await store.setItem(key, await serializer.write(data.value))
-          }
-          catch (e) {
-            onError(e)
-          }
-        },
-        {
-          flush,
-          deep,
-          eventFilter,
-        },
-      )
+    catch (e) {
+      onError(e)
     }
-  } catch (e) {
-    onError(e)
+  }
+
+  read()
+
+  if (window && listenToStorageChanges)
+    useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
+
+  if (store) {
+    watchWithFilter(
+      data,
+      async() => {
+        try {
+          if (data.value == null)
+            await store!.removeItem(key)
+          else
+            await store!.setItem(key, await serializer.write(data.value))
+        }
+        catch (e) {
+          onError(e)
+        }
+      },
+      {
+        flush,
+        deep,
+        eventFilter,
+      },
+    )
   }
 
   return data as RemovableRef<T>
