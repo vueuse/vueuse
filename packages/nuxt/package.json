@@ -34,8 +34,12 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "dependencies": {
+    "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
     "@vueuse/core": "workspace:*",
     "local-pkg": "^0.4.0",
     "vue-demi": "*"
+  },
+  "devDependencies": {
+    "@nuxt/schema": "npm:@nuxt/schema-edge@latest"
   }
 }

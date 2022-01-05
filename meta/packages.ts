@@ -33,6 +33,7 @@ export const packages: PackageManifest[] = [
     external: [
       '@vueuse/core',
       '@vueuse/shared',
+      '@nuxt/kit',
       'local-pkg',
       'fs',
       'path',
