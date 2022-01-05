@@ -2,15 +2,15 @@ import { noop, promiseTimeout } from '@vueuse/shared'
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<T, U> {
-  state: U extends true ? ShallowRef<T> : Ref<T>
+export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
+  state: Shallow extends true ? ShallowRef<Data> : Ref<Data>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay?: number, ...args: any[]) => Promise<T>
+  execute: (delay?: number, ...args: any[]) => Promise<Data>
 }
 
-export interface AsyncStateOptions<T extends boolean> {
+export interface AsyncStateOptions<Shallow extends boolean> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -49,7 +49,7 @@ export interface AsyncStateOptions<T extends boolean> {
    *
    * @default true
    */
-  shallow?: T
+  shallow?: Shallow
 }
 
 /**
@@ -61,11 +61,11 @@ export interface AsyncStateOptions<T extends boolean> {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<T, U extends boolean = true>(
-  promise: Promise<T> | ((...args: any[]) => Promise<T>),
-  initialState: T,
-  options?: AsyncStateOptions<U>,
-): UseAsyncStateReturn<T, U> {
+export function useAsyncState<Data, Shallow extends boolean = true>(
+  promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
+  initialState: Data,
+  options?: AsyncStateOptions<Shallow>,
+): UseAsyncStateReturn<Data, Shallow> {
   const {
     immediate = true,
     delay = 0,
@@ -105,14 +105,14 @@ export function useAsyncState<T, U extends boolean = true>(
     }
 
     isLoading.value = false
-    return state.value as T
+    return state.value as Data
   }
 
   if (immediate)
     execute(delay)
 
   return {
-    state: state as typeof shallow extends true ? ShallowRef<T> : Ref<T>,
+    state: state as Shallow extends true ? ShallowRef<Data> : Ref<Data>,
     isReady,
     isLoading,
     error,
