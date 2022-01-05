@@ -3,8 +3,8 @@ import { unref } from 'vue-demi'
 
 export type UDate = Date | number | string | undefined
 
-export const REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
-export const REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
+const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
 export const padStart = (string: number, length: number, pad: string) => {
   const s = String(string)
@@ -69,3 +69,5 @@ export function useDateFormat(date: MaybeRef<UDate>, formatStr = 'HH:mm:ss') {
   const parsedDate = parseDate(unref(date))
   return formatDate(parsedDate, formatStr)
 }
+
+export type UseDateFormatReturn = ReturnType<typeof useDateFormat>
