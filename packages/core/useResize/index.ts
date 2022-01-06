@@ -1,7 +1,7 @@
 /* eslint-disable curly */
 import { computed, nextTick, reactive, ref, unref, watch } from 'vue-demi'
-import { useEventListener, useResizeObserver } from '@vueuse/core'
-import type { Fn, MaybeRef } from '@vueuse/shared'
+import { useEventListener } from '@vueuse/core'
+import type { MaybeRef } from '@vueuse/shared'
 import { clamp, createEventHook, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -90,36 +90,27 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   ].filter(Boolean).join(''))
 
   watch(style, () => {
-    if (unref(mode) === 'auto')
-      target.value!.setAttribute('style', style.value)
+    if (target.value && unref(mode) === 'auto')
+      target.value.setAttribute('style', style.value)
   })
 
-  let cleanup: Fn[] = []
+  useEventListener(window, 'pointerdown', onPointerDown)
+  useEventListener(window, 'pointerup', onPointerUp)
+  useEventListener(window, 'pointercancel', onPointerUp)
+  useEventListener(window, 'lostpointercapture', onPointerUp)
+  useEventListener(window, 'pointermove', onPointerMove)
+  watch(pointer, handlePointer)
 
   const start = () => {
-    cleanup.push(
-      useEventListener(window, 'pointerdown', onPointerDown),
-      useEventListener(window, 'pointerup', onPointerUp),
-      useEventListener(window, 'pointercancel', onPointerUp),
-      useEventListener(window, 'lostpointercapture', onPointerUp),
-      useEventListener(window, 'pointermove', onPointerMove),
-      watch(pointer, handlePointer),
-    )
     isActive.value = true
   }
 
   const stop = () => {
-    cleanup.forEach(fn => fn())
-    cleanup = []
     container.value = []
     isActive.value = false
     isResizing.value = false
     window!.document.body.style.setProperty('cursor', '')
   }
-  const targetIsVisible = ref(false)
-  useResizeObserver(target, () => {
-    targetIsVisible.value = !!target.value!.getBoundingClientRect().width
-  })
 
   watch(target, (value) => {
     if (value) {
@@ -160,6 +151,9 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   async function onPointerUp(evt: PointerEvent) {
+    if (!target.value)
+      return
+
     isOutside.value = false
 
     if (!isOverEdge.value)
@@ -176,7 +170,10 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
   let scale = 1
   function onPointerMove(evt: PointerEvent) {
-    isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value!)
+    if (!target.value)
+      return
+
+    isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value)
 
     pointer.currentX = evt.x
     pointer.currentY = evt.y
@@ -205,12 +202,12 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     if (direction.value.includes('right'))
       newWidth += (evt.x > pointer.startX ? Math.abs(xDiff) : -Math.abs(xDiff))
 
-    const { left, top } = target.value!.getBoundingClientRect()
+    const { left, top } = target.value.getBoundingClientRect()
 
     widthRef.value = clamp(newWidth, Number(unref(minWidth)), Number(unref(maxWidth)))
     heightRef.value = clamp(newHeight, Number(unref(minHeight)), Number(unref(maxHeight)))
 
-    transform.value = getComputedStyle(target.value!).position === 'fixed'
+    transform.value = getComputedStyle(target.value).position === 'fixed'
       ? `transform:translate(${direction.value.includes('left')
         ? clamp(leftStart.value + xDiff, leftStartMin.value, leftStartMax.value)
         : left}px,${direction.value.includes('top')
@@ -235,21 +232,24 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   async function onPointerDown(evt: PointerEvent) {
+    if (!target.value)
+      return
+
     if (evt.pointerType === 'touch') {
       pointer.currentX = evt.x
       pointer.currentY = evt.y
-      isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value!)
+      isPathIncludesTarget.value = (evt.composedPath() as Element[]).includes(target.value)
       await nextTick()
     }
     if (isOverEdge.value || (isOverEdge.value && evt.pointerType === 'touch')) {
-      scale = Number((+target.value!.style.getPropertyValue('transform').replace('scale(', '').replace(')', '') || 1).toFixed(2));
-      ({ width, height } = target.value!.getBoundingClientRect())
-      leftStart.value = target.value!.getBoundingClientRect().left
-      topStart.value = target.value!.getBoundingClientRect().top
-      leftStartMax.value = (target.value!.getBoundingClientRect().width - Number(unref(minWidth))) + target.value!.getBoundingClientRect().left
-      topStartMax.value = (target.value!.getBoundingClientRect().height - Number(unref(minHeight))) + target.value!.getBoundingClientRect().top
-      leftStartMin.value = target.value!.getBoundingClientRect().left - (Number(unref(maxWidth)) - target.value!.getBoundingClientRect().width)
-      topStartMin.value = target.value!.getBoundingClientRect().top - (Number(unref(maxHeight)) - target.value!.getBoundingClientRect().height)
+      scale = Number((+target.value.style.getPropertyValue('transform').replace('scale(', '').replace(')', '') || 1).toFixed(2))
+      ;({ width, height } = target.value.getBoundingClientRect())
+      leftStart.value = target.value.getBoundingClientRect().left
+      topStart.value = target.value.getBoundingClientRect().top
+      leftStartMax.value = (target.value.getBoundingClientRect().width - Number(unref(minWidth))) + target.value.getBoundingClientRect().left
+      topStartMax.value = (target.value.getBoundingClientRect().height - Number(unref(minHeight))) + target.value.getBoundingClientRect().top
+      leftStartMin.value = target.value.getBoundingClientRect().left - (Number(unref(maxWidth)) - target.value.getBoundingClientRect().width)
+      topStartMin.value = target.value.getBoundingClientRect().top - (Number(unref(maxHeight)) - target.value.getBoundingClientRect().height)
       isResizing.value = true
       pointer.startY = evt.y
       pointer.startX = evt.x
