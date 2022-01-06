@@ -9,7 +9,7 @@ altActionLink: /guide/
 features:
   - title: 🕶 Seamless migration
     details: Works for both Vue 3 and 2
-  - title: ⚡ Fully tree shakable
+  - title: ⚡ Fully tree shakeable
     details: Only take what you want
   - title: 🦾 Type Strong
     details: Written in TypeScript, with TS Docs
