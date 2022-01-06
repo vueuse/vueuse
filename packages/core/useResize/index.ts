@@ -1,9 +1,12 @@
 /* eslint-disable curly */
-import { watch, ref, reactive, unref, nextTick, computed } from 'vue-demi'
+import { computed, nextTick, reactive, ref, unref, watch } from 'vue-demi'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
-import { createEventHook, Fn, tryOnScopeDispose, MaybeRef, clamp } from '@vueuse/shared'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { Fn, MaybeRef } from '@vueuse/shared'
+import { clamp, createEventHook, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 type Edges = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right' | 'top' | 'bottom'
 
