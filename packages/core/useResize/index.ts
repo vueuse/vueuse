@@ -124,7 +124,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
       widthRef.value = width
       heightRef.value = height
-      style.value = `width:${clamp(width, unref(Number(minWidth)), unref(Number(maxWidth)))}px;height:${clamp(height, unref(Number(minHeight)), unref(Number(maxHeight)))}px;`
+      style.value = `width:${clamp(width, unref(minWidth), unref(maxWidth))}px;height:${clamp(height, unref(minHeight), unref(maxHeight))}px;`
 
       if (!unref(disableResize))
         target.value!.setAttribute('style', style.value)
@@ -198,8 +198,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
     const { left, top } = target.value!.getBoundingClientRect()
 
-    widthRef.value = clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth)))
-    heightRef.value = clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight)))
+    widthRef.value = clamp(newWidth, Number(unref(minWidth)), Number(unref(maxWidth)))
+    heightRef.value = clamp(newHeight, Number(unref(minHeight)), Number(unref(maxHeight)))
 
     style.value = `${getComputedStyle(target.value!).position === 'fixed'
       ? `transform:translate(${direction.value.includes('left')
@@ -207,7 +207,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
         : left}px,${direction.value.includes('top')
         ? clamp(topStart.value + yDiff, topStartMin.value, topStartMax.value)
         : top}px);`
-      : ''}width:${clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth)))}px;height:${clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight)))}px;`
+      : ''}width:${widthRef.value}px;height:${heightRef.value}px;`
 
     if (!unref(disableResize))
       target.value!.setAttribute('style', style.value)
@@ -218,8 +218,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       yDiff,
       startX: pointer.startX,
       startY: pointer.startY,
-      newWidth: clamp(newWidth, unref(Number(minWidth)), unref(Number(maxWidth))),
-      newHeight: clamp(newHeight, unref(Number(minHeight)), unref(Number(maxHeight))),
+      newWidth: widthRef.value,
+      newHeight: heightRef.value,
       minHeight: Number(minHeight),
       minWidth: Number(minWidth),
       maxHeight: Number(maxHeight),
