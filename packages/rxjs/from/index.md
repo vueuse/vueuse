@@ -22,7 +22,10 @@ useSubscription(
     .pipe(
       mapTo(1),
       takeUntil(fromEvent(button, 'click')),
-      withLatestFrom(from(count).pipe(startWith(0))),
+      withLatestFrom(from(count, {
+        immediate: true,
+        deep: false,
+      })),
       map(([total, curr]) => curr + total),
     )
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))

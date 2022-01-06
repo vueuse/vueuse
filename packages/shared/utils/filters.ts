@@ -1,5 +1,5 @@
 import { ref, unref } from 'vue-demi'
-import { Fn, Pausable, MaybeRef } from './types'
+import type { Fn, MaybeRef, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -128,7 +128,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = 
       if (preventLeading) preventLeading = false
       else invoke()
     }
-    else if (trailing) {
+    if (trailing) {
       timer = setTimeout(() => {
         lastExec = Date.now()
         if (!leading) preventLeading = true

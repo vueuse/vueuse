@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "7.1.2",
+  "version": "7.5.3",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -84,21 +84,20 @@
     "vue-demi": "*"
   },
   "optionalDependencies": {
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "drauu": "^0.2.1",
     "focus-trap": "^6.7.1",
-    "fuse.js": "^6.4.6",
+    "fuse.js": "^6.5.3",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
-    "qrcode": "^1.4.4",
+    "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
-    "@types/qrcode": "^1.4.1",
-    "@types/universal-cookie": "^3.0.0",
+    "@types/qrcode": "^1.4.2",
     "nprogress": "^0.2.0",
-    "qrcode": "^1.4.4",
+    "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"
   }
 }

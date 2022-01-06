@@ -1,4 +1,4 @@
-import { resolve, join, relative } from 'path'
+import { join, relative, resolve } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
@@ -6,7 +6,7 @@ import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
 import { packages } from '../meta/packages'
-import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
+import type { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
 const DOCS_URL = 'https://vueuse.org'
 const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
@@ -153,7 +153,7 @@ export async function readIndexes() {
       fn.description = description
 
       if (description.includes('DEPRECATED'))
-        fn.depreacted = true
+        fn.deprecated = true
 
       indexes.functions.push(fn)
     }
@@ -208,6 +208,13 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       imports.push(
         'export * from \'./types\'',
         'export * from \'@vueuse/shared\'',
+        'export * from \'./ssr-handlers\'',
+      )
+    }
+
+    if (name === 'nuxt') {
+      imports.push(
+        'export * from \'@vueuse/core\'',
       )
     }
 
@@ -233,8 +240,8 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
 
     const categoryFunctions = functions.filter(i => i.category === category).sort((a, b) => a.name.localeCompare(b.name))
 
-    for (const { name, docs, description, depreacted } of categoryFunctions) {
-      if (depreacted)
+    for (const { name, docs, description, deprecated } of categoryFunctions) {
+      if (deprecated)
         continue
 
       const desc = description ? ` — ${description}` : ''

@@ -3,7 +3,7 @@ import indexes from '../meta/function-indexes'
 
 async function buildRedirects() {
   const redirects = indexes.functions
-    .filter(f => f.docs && !f.internal && !f.depreacted)
+    .filter(f => f.docs && !f.internal && !f.deprecated)
     .map(f => `/${f.name}\t${f.docs}\t302`)
     .join('\n')
 

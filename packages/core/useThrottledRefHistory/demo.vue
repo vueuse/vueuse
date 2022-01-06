@@ -2,7 +2,7 @@
 import { ref } from '@vue/reactivity'
 import { useCounter } from '@vueuse/shared'
 import dayjs from 'dayjs'
-import { Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { useThrottledRefHistory } from '.'
 
 const format = (ts: number) => dayjs(ts).format()
@@ -30,9 +30,9 @@ const { history, undo, redo, canUndo, canRedo } = useThrottledRefHistory(
   <button :disabled="!canRedo" @click="redo()">
     Redo
   </button>
-  <br />
+  <br>
   <span>Delay (in ms):</span>
-  <input v-model="delay" type="number" />
+  <input v-model="delay" type="number">
   <br>
   <br>
   <note>History (limited to 10 records for demo)</note>

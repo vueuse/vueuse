@@ -1,4 +1,4 @@
-import { PackageManifest } from './types'
+import type { PackageManifest } from './types'
 
 export const packages: PackageManifest[] = [
   {
@@ -18,6 +18,25 @@ export const packages: PackageManifest[] = [
     external: [
       '@vueuse/core',
       '@vueuse/shared',
+    ],
+  },
+  {
+    name: 'nuxt',
+    display: 'Nuxt',
+    description: 'VueUse Nuxt Module',
+    manualImport: true,
+    addon: true,
+    iife: false,
+    cjs: false,
+    target: 'node14',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+      '@nuxt/kit',
+      'local-pkg',
+      'fs',
+      'path',
+      'url',
     ],
   },
   {

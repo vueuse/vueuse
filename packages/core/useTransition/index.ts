@@ -1,5 +1,7 @@
-import { computed, ComputedRef, ref, Ref, unref, watch } from 'vue-demi'
-import { clamp, identity as linear, isFunction, isNumber, MaybeRef, noop, useTimeoutFn } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref, unref, watch } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { clamp, isFunction, isNumber, identity as linear, noop, useTimeoutFn } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
 
 /**

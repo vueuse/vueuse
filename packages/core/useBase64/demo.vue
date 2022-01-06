@@ -6,7 +6,7 @@
     </div>
     <div class="input-output">
       <textarea v-model="text" type="text" placeholder="Type something..." />
-      <textarea col="50" rows="5" :value="textBase64" readonly></textarea>
+      <textarea col="50" rows="5" :value="textBase64" readonly />
     </div>
   </div>
   <div class="item">
@@ -16,7 +16,7 @@
     </div>
     <div class="input-output">
       <pre>new ArrayBuffer(1024)</pre>
-      <textarea col="50" rows="5" :value="bufferBase64" readonly></textarea>
+      <textarea col="50" rows="5" :value="bufferBase64" readonly />
     </div>
   </div>
   <div class="item">
@@ -26,9 +26,9 @@
     </div>
     <div class="input-output">
       <div class="py-5">
-        <input type="file" @input="onFileInput" />
+        <input type="file" @input="onFileInput">
       </div>
-      <textarea col="50" rows="5" :value="fileBase64" readonly></textarea>
+      <textarea col="50" rows="5" :value="fileBase64" readonly />
     </div>
   </div>
   <div class="item">
@@ -43,14 +43,15 @@
         height="125"
         class="rounded mt-2"
         src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-      />
-      <textarea col="50" rows="5" :value="imageBase64" readonly></textarea>
+      >
+      <textarea col="50" rows="5" :value="imageBase64" readonly />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 import { useBase64 } from '@vueuse/core'
 
 const text = ref('')

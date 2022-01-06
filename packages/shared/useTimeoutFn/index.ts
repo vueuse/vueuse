@@ -1,6 +1,7 @@
 import { ref, unref } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import { isClient, MaybeRef, Stoppable } from '../utils'
+import type { MaybeRef, Stoppable } from '../utils'
+import { isClient } from '../utils'
 
 export interface TimeoutFnOptions {
   /**

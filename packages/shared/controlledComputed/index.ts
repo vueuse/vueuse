@@ -1,5 +1,6 @@
-import { ComputedRef, customRef, ref, watch, WatchSource } from 'vue-demi'
-import { Fn } from '../utils'
+import type { ComputedRef, WatchSource } from 'vue-demi'
+import { customRef, ref, watch } from 'vue-demi'
+import type { Fn } from '../utils'
 
 /**
  * Explicitly define the deps of computed.

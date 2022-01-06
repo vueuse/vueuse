@@ -1,7 +1,9 @@
 
-import { MaybeRef } from '@vueuse/shared'
-import { watch, Ref, ref, shallowRef } from 'vue-demi'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue-demi'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface UseDisplayMediaOptions extends ConfigurableNavigator {
   /**

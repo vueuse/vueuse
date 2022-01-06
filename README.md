@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
 <a href="https://vueuse.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-169%20functions-13708a">
+<img alt="Function Count" src="https://img.shields.io/badge/-182%20functions-13708a">
 <br>
 <a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
@@ -66,9 +66,17 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 npm i @vueuse/core
 ```
 
-Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
+[Add ons](https://vueuse.org/add-ons.html) | [Nuxt Module](https://vueuse.org/guide/index.html#nuxt)
 
 > From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
+
+###### Demos
+
+- [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
+- [Nuxt 3 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
+- [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
+- [Nuxt 2 + Vue 2](https://github.com/antfu/vitesse-nuxt-bridge)
+- [Vue CLI + Vue 2](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 

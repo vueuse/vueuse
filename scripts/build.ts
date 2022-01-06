@@ -10,6 +10,7 @@ import { version } from '../package.json'
 import { updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
+const watch = process.argv.includes('--watch')
 
 const FILES_COPY_ROOT = [
   'LICENSE',
@@ -29,10 +30,11 @@ async function buildMetaFiles() {
     const packageRoot = path.resolve(__dirname, '..', 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
-    if (name === 'core') {
+    if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
+
+    if (name === 'core' || name === 'nuxt')
       await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(packageDist, 'indexes.json'))
-    }
 
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
@@ -58,7 +60,7 @@ async function build() {
   await updateImport(indexes)
 
   consola.info('Rollup')
-  exec('pnpm run build:rollup', { stdio: 'inherit' })
+  exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
 
   consola.info('Fix types')
   exec('pnpm run types:fix', { stdio: 'inherit' })

@@ -1,0 +1,45 @@
+{
+  "name": "@vueuse/nuxt",
+  "version": "7.5.3",
+  "description": "VueUse Nuxt Module",
+  "keywords": [
+    "vue",
+    "vueuse",
+    "nuxt",
+    "nuxt3",
+    "nuxt-module"
+  ],
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/nuxt#readme",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/nuxt"
+  },
+  "funding": "https://github.com/sponsors/antfu",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
+    "@vueuse/core": "workspace:*",
+    "local-pkg": "^0.4.1",
+    "vue-demi": "*"
+  },
+  "devDependencies": {
+    "@nuxt/schema": "npm:@nuxt/schema-edge@latest"
+  }
+}

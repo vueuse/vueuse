@@ -2,7 +2,8 @@
 
 import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
 export type WebWorkerStatus =

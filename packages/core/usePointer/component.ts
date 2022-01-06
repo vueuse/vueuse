@@ -1,5 +1,6 @@
 import { defineComponent, reactive, ref } from 'vue-demi'
-import { usePointer, UsePointerOptions } from '@vueuse/core'
+import type { UsePointerOptions } from '@vueuse/core'
+import { usePointer } from '@vueuse/core'
 import { defaultWindow } from '../_configurable'
 
 export const UsePointer = defineComponent<Omit<UsePointerOptions, 'target'> & { target: 'window' | 'self' }>({

@@ -30,7 +30,7 @@ const { state, ready } = useAsyncState(
 > You can use `invoke` to call the async function.
 
 ```js
-import { until, useCounter, invoke } from '@vueuse/core'
+import { invoke, until, useCounter } from '@vueuse/core'
 
 const { count } = useCounter()
 

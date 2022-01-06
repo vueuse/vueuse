@@ -1,4 +1,5 @@
-import { MaybeRef, isClient } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 

@@ -9,7 +9,7 @@ Reactive viewport breakpoints
 ## Usage
 
 ```js
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
