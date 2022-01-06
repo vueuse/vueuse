@@ -9,7 +9,7 @@ type Edges = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' 
 
 export interface UseResizeOptions extends ConfigurableWindow {
   disabled?: boolean
-  disableResize?: MaybeRef<boolean>
+  mode?: MaybeRef<'auto' | 'manual'>
   disableCursor?: MaybeRef<boolean>
   xMultiplier?: MaybeRef<number>
   yMultiplier?: MaybeRef<number>
@@ -27,7 +27,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   const {
     window = defaultWindow,
     disabled = false,
-    disableResize = false,
+    mode = 'auto',
     disableCursor = false,
     xMultiplier = 1,
     yMultiplier = 1,
@@ -68,7 +68,6 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   const isResizing = ref(false)
   const isPathIncludesTarget = ref(false)
   const direction = ref('')
-  const style = ref('')
   const leftStart = ref(0)
   const topStart = ref(0)
   const leftStartMax = ref(0)
@@ -80,6 +79,17 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
 
   const widthRef = ref(0)
   const heightRef = ref(0)
+  const transform = ref('')
+  const style = computed(() => [
+    `width: ${unref(widthRef)}px;`,
+    `height: ${unref(heightRef)}px;`,
+    unref(transform) && `transform: ${unref(transform)};`,
+  ].filter(Boolean).join(''))
+
+  watch(style, () => {
+    if (unref(mode) === 'auto')
+      target.value!.setAttribute('style', style.value)
+  })
 
   let cleanup: Fn[] = []
 
@@ -122,12 +132,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       if (!width)
         return
 
-      widthRef.value = width
-      heightRef.value = height
-      style.value = `width:${clamp(width, unref(minWidth), unref(maxWidth))}px;height:${clamp(height, unref(minHeight), unref(maxHeight))}px;`
-
-      if (!unref(disableResize))
-        target.value!.setAttribute('style', style.value)
+      widthRef.value = clamp(width, unref(minWidth), unref(maxWidth))
+      heightRef.value = clamp(height, unref(minHeight), unref(maxHeight))
     }
     else {
       stop()
@@ -201,16 +207,13 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     widthRef.value = clamp(newWidth, Number(unref(minWidth)), Number(unref(maxWidth)))
     heightRef.value = clamp(newHeight, Number(unref(minHeight)), Number(unref(maxHeight)))
 
-    style.value = `${getComputedStyle(target.value!).position === 'fixed'
+    transform.value = getComputedStyle(target.value!).position === 'fixed'
       ? `transform:translate(${direction.value.includes('left')
         ? clamp(leftStart.value + xDiff, leftStartMin.value, leftStartMax.value)
         : left}px,${direction.value.includes('top')
         ? clamp(topStart.value + yDiff, topStartMin.value, topStartMax.value)
         : top}px);`
-      : ''}width:${widthRef.value}px;height:${heightRef.value}px;`
-
-    if (!unref(disableResize))
-      target.value!.setAttribute('style', style.value)
+      : ''
 
     onResizeMove.trigger({
       pointer: evt,
