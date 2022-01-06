@@ -22,6 +22,7 @@ export interface UseResizeOptions extends ConfigurableWindow {
   minHeight?: MaybeRef<number> | 'initial'
   maxHeight?: MaybeRef<number> | 'initial'
   edges?: MaybeRef<Edges[]>
+  edgeWidth?: MaybeRef<number[]>
 }
 
 const container = ref<MaybeElementRef[]>([])
@@ -36,6 +37,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     yMultiplier = 1,
     borderRadius = 0,
     edges = ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'left', 'right', 'top', 'bottom'],
+    edgeWidth = [1, 8],
   } = options
   let {
     minWidth = 1,
@@ -290,45 +292,46 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     top += 1
     bottom -= 1
 
+    let [edgeWidthInside, edgeWidthOutside] = unref(edgeWidth)
+
+    edgeWidthInside -= 1
+    edgeWidthOutside += 1
+
     if (
-      ((currentY - top) < 2 || (currentX - left) < 2)
-      && Math.abs(currentY - top) < 8
-      && Math.abs(currentX - left) < 8
+      (((currentY - top) < 0 ? Math.abs(currentY - top) < edgeWidthOutside : (currentY - top) <= edgeWidthInside)
+      && ((currentX - left) < 0 ? Math.abs(currentX - left) < edgeWidthOutside : (currentX - left) <= edgeWidthInside))
       && isEdgeActive('top-left')
       && isOnForeground(left, top, true, 1, 1)
     )
       setCursorAndDirection('nwse-resize', 'top-left')
 
     else if (
-      ((currentY - top) < 2 || (currentX - right) > -2)
-      && Math.abs(currentY - top) < 8
-      && Math.abs(currentX - right) < 8
+      (((currentY - top) < 0 ? Math.abs(currentY - top) < edgeWidthOutside : (currentY - top) < edgeWidthInside)
+      && ((currentX - right) > 0 ? Math.abs(currentX - right) < edgeWidthOutside : Math.abs(currentX - right) < edgeWidthInside))
       && isEdgeActive('top-right')
       && isOnForeground(right, top, true, -1, 1)
     )
       setCursorAndDirection('nesw-resize', 'top-right')
 
     else if (
-      ((currentY - bottom) > -2 || (currentX - left) < 2)
-      && Math.abs(currentY - bottom) < 8
-      && Math.abs(currentX - left) < 8
+      (((currentY - bottom) > 0 ? Math.abs(currentY - bottom) < edgeWidthOutside : Math.abs(currentY - bottom) < edgeWidthInside)
+      && ((currentX - left) < 0 ? Math.abs(currentX - left) < edgeWidthOutside : (currentX - left) < edgeWidthInside))
       && isEdgeActive('bottom-left')
       && isOnForeground(left, bottom, true, 1, -1)
     )
       setCursorAndDirection('nesw-resize', 'bottom-left')
 
     else if (
-      ((currentY - bottom) > -2 || (currentX - right) > -2)
-      && Math.abs(currentY - bottom) < 8
-      && Math.abs(currentX - right) < 8
+      (((currentY - bottom) > 0 ? Math.abs(currentY - bottom) < edgeWidthOutside : Math.abs(currentY - bottom) < edgeWidthInside)
+      && ((currentX - right) > 0 ? Math.abs(currentX - right) < edgeWidthOutside : Math.abs(currentX - right) < edgeWidthInside))
       && isEdgeActive('bottom-right')
       && isOnForeground(right, bottom, true, -1, -1)
     )
       setCursorAndDirection('nwse-resize', 'bottom-right')
 
     else if (
-      (currentY - bottom) < 8
-      && (currentY - bottom) >= 0
+      (((currentY - bottom) > 0 && Math.abs(currentY - bottom) < edgeWidthOutside)
+      || ((currentY - bottom) <= 0 && Math.abs(currentY - bottom) <= edgeWidthInside))
       && currentX > left
       && currentX < right
       && isEdgeActive('bottom')
@@ -337,8 +340,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('ns-resize', 'bottom')
 
     else if (
-      (currentY - top) > -8
-      && (currentY - top) <= 0
+      (((currentY - top) < 0 && Math.abs(currentY - top) < edgeWidthOutside)
+      || ((currentY - top) >= 0 && Math.abs(currentY - top) <= edgeWidthInside))
       && currentX > left
       && currentX < right
       && isEdgeActive('top')
@@ -347,8 +350,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('ns-resize', 'top')
 
     else if (
-      (currentX - left) > -8
-      && (currentX - left) <= 0
+      (((currentX - left) < 0 && Math.abs(currentX - left) < edgeWidthOutside)
+      || ((currentX - left) >= 0 && Math.abs(currentX - left) <= edgeWidthInside))
       && currentY > top
       && currentY < bottom
       && isEdgeActive('left')
@@ -357,8 +360,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       setCursorAndDirection('ew-resize', 'left')
 
     else if (
-      (currentX - right) < 8
-      && (currentX - right) >= 0
+      (((currentX - right) > 0 && Math.abs(currentX - right) < edgeWidthOutside)
+      || ((currentX - right) <= 0 && Math.abs(currentX - right) <= edgeWidthInside))
       && currentY > top
       && currentY < bottom
       && isEdgeActive('right')

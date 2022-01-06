@@ -12,6 +12,7 @@ const { width, height, isOverEdge, direction, isResizing, onResizeStart, onResiz
   maxHeight: 500,
   borderRadius: 8,
   mode,
+  edgeWidth: [8, 16],
   // edges: ['bottom-right'],
 })
 
@@ -39,7 +40,7 @@ onResizeEnd(({ pointer }) => {
       <p>direction: {{ direction }}</p>
       <p>mode: {{ mode }}</p>
     </div>
-    <div v-if="blockingElement" class="absolute w-full h-1/2 bg-black/50 inset-0 -m-5 rounded-xl"></div>
+    <div v-if="blockingElement" class="absolute w-full h-1/2 bg-black/50 inset-0 -m-5 rounded-xl" />
   </div>
   <button @click="mode !== 'auto' ? mode = 'auto' : mode = 'manual'">
     {{ mode === 'auto' ? 'Auto Resizing' : 'Custom Resizing' }}
