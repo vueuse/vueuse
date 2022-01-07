@@ -2,9 +2,9 @@
 category: Utilities
 ---
 
-# usePagination
+# useOffsetPagination
 
-reactive pagination.
+reactive offset pagination.
 
 ## Usage
 
@@ -23,7 +23,7 @@ const {
   isLastPage,
   prev,
   next,
-} = usePagination(
+} = useOffsetPagination(
   {
     total: database.value.length,
     page: 1,
@@ -38,7 +38,7 @@ const {
 ## Component 
 
 ```html
-<UsePagination
+<UseOffsetPagination
   v-slot="{
     currentPage,
     currentPageSize,
@@ -52,7 +52,7 @@ const {
   @page-change="fetchData"
   @page-size-change="fetchData"
 >
-  <div class="inline-grid grid-cols-2 gap-x-4 gap-y-2 items-center">
+  <div class="gap-x-4 gap-y-2 grid-cols-2 inline-grid items-center">
     <div opacity="50">
       total:
     </div>
@@ -86,14 +86,14 @@ const {
       next
     </button>
   </div>
-</UsePagination>
+</UseOffsetPagination>
 ```
 
 Component event supported props event callback and event listener.
 
 event listener:
 ```html
-<UsePagination
+<UseOffsetPagination
   v-slot="{
     currentPage,
     currentPageSize,
@@ -109,11 +109,11 @@ event listener:
   @page-count-change="onPageCountChange"
 >
   <!-- your code -->
-</UsePagination>
+</UseOffsetPagination>
 ```
 or props event callback:
 ```html
-<UsePagination
+<UseOffsetPagination
   v-slot="{
     currentPage,
     currentPageSize,
@@ -129,5 +129,5 @@ or props event callback:
   :on-page-count-change="onPageCountChange"
 >
   <!-- your code -->
-</UsePagination>
+</UseOffsetPagination>
 ```

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { usePagination } from '.'
+import { useOffsetPagination } from '.'
 
 interface User {
   id: number
@@ -46,7 +46,7 @@ const {
   isLastPage,
   prev,
   next,
-} = usePagination(
+} = useOffsetPagination(
   {
     total: database.value.length,
     page: 1,
@@ -59,7 +59,7 @@ const {
 </script>
 
 <template>
-  <div class="inline-grid grid-cols-2 gap-x-4 gap-y-2 items-center">
+  <div class="gap-x-4 gap-y-2 grid-cols-2 inline-grid items-center">
     <div opacity="50">
       total:
     </div>

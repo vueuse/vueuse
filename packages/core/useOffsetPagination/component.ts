@@ -1,9 +1,9 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { usePagination } from '@vueuse/core'
-import type { UsePaginationOptions } from '.'
+import { useOffsetPagination } from '@vueuse/core'
+import type { UseOffsetPaginationOptions } from '.'
 
-export const UsePagination = defineComponent<UsePaginationOptions>({
-  name: 'UsePagination',
+export const UseOffsetPagination = defineComponent<UseOffsetPaginationOptions>({
+  name: 'UseOffsetPagination',
   props: [
     'total',
     'page',
@@ -18,7 +18,7 @@ export const UsePagination = defineComponent<UsePaginationOptions>({
     'page-count-change',
   ],
   setup(props, { slots, emit }) {
-    const data = reactive(usePagination({
+    const data = reactive(useOffsetPagination({
       ...props,
       onPageChange(...args) {
         props.onPageChange?.(...args)

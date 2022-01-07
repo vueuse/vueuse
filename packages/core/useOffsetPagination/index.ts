@@ -3,7 +3,7 @@ import { computed, isRef, reactive, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
 import { biSyncRef, noop, useClamp } from '@vueuse/core'
 
-export interface UsePaginationOptions {
+export interface UseOffsetPaginationOptions {
   /**
      * The number of items to show per page.
      */
@@ -24,20 +24,20 @@ export interface UsePaginationOptions {
   /**
      * Callback when the `page` change.
      */
-  onPageChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
+  onPageChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 
   /**
      * Callback when the `pageSize` change.
      */
-  onPageSizeChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
+  onPageSizeChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 
   /**
      * Callback when the `pageCount` change.
      */
-  onPageCountChange?: (returnValue: UnwrapNestedRefs<UsePaginationReturn>) => any
+  onPageCountChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 }
 
-export function usePagination(options: UsePaginationOptions) {
+export function useOffsetPagination(options: UseOffsetPaginationOptions) {
   const {
     total,
     pageSize = 10,
@@ -95,4 +95,4 @@ export function usePagination(options: UsePaginationOptions) {
   return returnValue
 }
 
-export type UsePaginationReturn = ReturnType<typeof usePagination>
+export type UseOffsetPaginationReturn = ReturnType<typeof useOffsetPagination>
