@@ -22,7 +22,7 @@ Collection of essential Vue Composition Utilities
 
 - 🎪 [**Interactive docs & demos**](https://vueuse.org)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
+- ⚡ **Fully tree shakeable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
 - 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
 - 🌎 **No bundler required**: Usable via CDN
