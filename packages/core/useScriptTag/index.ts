@@ -156,10 +156,12 @@ export function useScriptTag(
 
     _promise = null
 
-    if (scriptTag.value) {
-      document.head.removeChild(scriptTag.value)
+    if (scriptTag.value)
       scriptTag.value = null
-    }
+
+    const el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    if (el)
+      document.head.removeChild(el)
   }
 
   if (immediate && !manual)

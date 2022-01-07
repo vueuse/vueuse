@@ -1,15 +1,15 @@
-import each from 'jest-each'
-import { useSetup } from '../../.test'
+import { nextTick } from 'vue-demi'
 import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'
 
+  Object.defineProperty(window, 'location', {
+    value: new URL(baseURL),
+    writable: true,
+  })
+
   beforeEach(() => {
-    Object.defineProperty(window, 'location', {
-      value: new URL(baseURL),
-      writable: true,
-    })
     window.location.search = ''
     window.location.hash = ''
   })
@@ -19,34 +19,34 @@ describe('useUrlSearchParams', () => {
     window.location.hash = hash
     window.dispatchEvent(new PopStateEvent('popstate', {
       state: {
-        ...location,
+        ...window.location,
         search,
         hash,
       },
     }))
   }
 
-  each([
+  ([
     'history',
     'hash',
     'hash-params',
-  ]).describe('each mode', (mode: 'history' | 'hash' | 'hash-params') => {
-    test('return initial params', () => {
-      useSetup(() => {
+  ] as const).forEach((mode) => {
+    describe(`${mode} mode`, () => {
+      test('return initial params', async() => {
         if (mode === 'hash')
           window.location.hash = '#/test/?foo=bar'
         else if (mode === 'hash-params')
           window.location.hash = '#foo=bar'
         else
           window.location.search = '?foo=bar'
+
+        const params = useUrlSearchParams(mode)
+
+        await nextTick()
+        expect(params.foo).toBe('bar')
       })
 
-      const params = useUrlSearchParams(mode)
-      expect(params.foo).toBe('bar')
-    })
-
-    test('update params on poststate event', () => {
-      useSetup(() => {
+      test('update params on poststate event', async() => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()
         if (mode === 'hash')
@@ -56,38 +56,34 @@ describe('useUrlSearchParams', () => {
         else
           mockPopstate('?foo=bar', '')
 
+        await nextTick()
         expect(params.foo).toBe('bar')
       })
-    })
 
-    test('update browser location on params change', () => {
-      useSetup(() => {
+      test('update browser location on params change', () => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()
         params.foo = 'bar'
 
         expect(params.foo).toBe('bar')
       })
-    })
 
-    test('array url search param', () => {
-      useSetup(() => {
+      test('array url search param', () => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()
         params.foo = ['bar1', 'bar2']
 
         expect(params.foo).toEqual(['bar1', 'bar2'])
       })
-    })
 
-    test('generic url search params', () => {
-      useSetup(() => {
+      test('generic url search params', () => {
         interface CustomUrlParams extends Record<string, any> {
           customFoo: number | undefined
         }
 
         const params = useUrlSearchParams<CustomUrlParams>(mode)
         expect(params.customFoo).toBeUndefined()
+
         params.customFoo = 42
 
         expect(params.customFoo).toEqual(42)
@@ -96,14 +92,12 @@ describe('useUrlSearchParams', () => {
   })
 
   test('hash url without params', () => {
-    useSetup(() => {
-      window.location.hash = '#/test/'
-      const params = useUrlSearchParams('hash')
-      expect(params).toEqual({})
+    window.location.hash = '#/test/'
+    const params = useUrlSearchParams('hash')
+    expect(params).toEqual({})
 
-      const newHash = '#/change/?foo=bar'
-      window.location.hash = newHash
-      expect(window.location.hash).toBe(newHash)
-    })
+    const newHash = '#/change/?foo=bar'
+    window.location.hash = newHash
+    expect(window.location.hash).toBe(newHash)
   })
 })

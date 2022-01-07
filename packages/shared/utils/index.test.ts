@@ -1,4 +1,4 @@
-import { nextTick, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { createFilterWrapper, debounceFilter, increaseWithUnit, throttleFilter } from '.'
 
 describe('utils', () => {
@@ -15,91 +15,91 @@ describe('utils', () => {
 })
 
 describe('filters', () => {
-  beforeEach(() => jest.useFakeTimers('legacy'))
-  afterEach(() => jest.clearAllTimers())
+  beforeEach(() => {
+    vitest.useFakeTimers()
+  })
 
   it('should debounce', () => {
-    let called = 0
-    const filter = createFilterWrapper(debounceFilter(1000), () => called++)
+    const debouncedFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
 
     setTimeout(filter, 200)
+    vitest.runAllTimers()
+
     setTimeout(filter, 500)
-
-    jest.runAllTimers()
-
-    expect(called).toBe(1)
+    vitest.advanceTimersByTime(500)
+    expect(debouncedFilterSpy).toHaveBeenCalledOnce()
   })
 
   it('should debounce twice', () => {
-    let called = 0
-    const filter = createFilterWrapper(debounceFilter(500), () => called++)
+    const debouncedFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
 
     setTimeout(filter, 500)
+    vitest.advanceTimersByTime(500)
     setTimeout(filter, 1000)
+    vitest.advanceTimersByTime(2000)
 
-    jest.runAllTimers()
-
-    expect(called).toBe(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should debounce with ref', () => {
+    const debouncedFilterSpy = vitest.fn()
     const debounceTime = ref(0)
-
-    let called = 0
-    const filter = createFilterWrapper(debounceFilter(debounceTime), () => called++)
+    const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
 
     filter()
     debounceTime.value = 500
     filter()
     setTimeout(filter, 200)
 
-    jest.runAllTimers()
+    vitest.runAllTimers()
 
-    expect(called).toBe(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should throttle', () => {
-    let called = 0
-    const filter = createFilterWrapper(throttleFilter(1000), () => called++)
+    const debouncedFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
 
-    jest.runAllTimers()
+    vitest.runAllTimers()
 
-    expect(called).toBe(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should throttle', () => {
-    let called = 0
-    const filter = createFilterWrapper(throttleFilter(1000), () => called++)
+    const debouncedFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
 
-    jest.runAllTimers()
+    vitest.runAllTimers()
 
-    expect(called).toBe(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
-  it('should throttle with ref', async() => {
+  it('should throttle with ref', () => {
+    const debouncedFilterSpy = vitest.fn()
     const throttle = ref(0)
-    let called = 0
-    const filter = createFilterWrapper(throttleFilter(throttle), () => called++)
+    const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
     filter()
     throttle.value = 1000
-    await nextTick()
+
     setTimeout(filter, 300)
     setTimeout(filter, 600)
     setTimeout(filter, 900)
 
-    jest.runAllTimers()
+    vitest.runAllTimers()
 
-    expect(called).toBe(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 })

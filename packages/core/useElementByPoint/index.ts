@@ -1,6 +1,6 @@
 import { ref, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { useRafFn } from '@vueuse/core'
+import { useRafFn } from '../useRafFn'
 
 export interface UseElementByPointOptions {
   x: MaybeRef<number>
