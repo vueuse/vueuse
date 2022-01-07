@@ -292,11 +292,11 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     if (isResizing.value || isOutside.value)
       return
 
-    let { left, right, top, bottom } = target.value!.getBoundingClientRect()
+    const clientRect = target.value!.getBoundingClientRect()
+    const { left, top } = clientRect
+    let { right, bottom } = clientRect
 
-    left += 1
     right -= 1
-    top += 1
     bottom -= 1
 
     let [edgeWidthInside, edgeWidthOutside] = unref(edgeWidth)
