@@ -212,7 +212,7 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     heightRef.value = clamp(newHeight, Number(unref(minHeight)), Number(unref(maxHeight)))
 
     transform.value = getComputedStyle(target.value).position === 'fixed'
-      ? `transform:translate(${direction.value.includes('left')
+      ? `translate(${direction.value.includes('left')
         ? clamp(leftStart.value + xDiff, leftStartMin.value, leftStartMax.value)
         : left}px,${direction.value.includes('top')
         ? clamp(topStart.value + yDiff, topStartMin.value, topStartMax.value)
@@ -249,14 +249,16 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
       await nextTick()
     }
     if (isOverEdge.value || (isOverEdge.value && evt.pointerType === 'touch')) {
-      scale = Number((+target.value.style.getPropertyValue('transform').replace('scale(', '').replace(')', '') || 1).toFixed(2))
-      ;({ width, height } = target.value.getBoundingClientRect())
-      leftStart.value = target.value.getBoundingClientRect().left
-      topStart.value = target.value.getBoundingClientRect().top
-      leftStartMax.value = (target.value.getBoundingClientRect().width - Number(unref(minWidth))) + target.value.getBoundingClientRect().left
-      topStartMax.value = (target.value.getBoundingClientRect().height - Number(unref(minHeight))) + target.value.getBoundingClientRect().top
-      leftStartMin.value = target.value.getBoundingClientRect().left - (Number(unref(maxWidth)) - target.value.getBoundingClientRect().width)
-      topStartMin.value = target.value.getBoundingClientRect().top - (Number(unref(maxHeight)) - target.value.getBoundingClientRect().height)
+      scale = Number(target.value.style.getPropertyValue('transform').match(/scale\((.+?)\)/)?.[1] || 1)
+      const clientRect = target.value.getBoundingClientRect()
+      width = clientRect.width
+      height = clientRect.height
+      leftStart.value = clientRect.left
+      topStart.value = clientRect.top
+      leftStartMax.value = (clientRect.width - Number(unref(minWidth))) + clientRect.left
+      topStartMax.value = (clientRect.height - Number(unref(minHeight))) + clientRect.top
+      leftStartMin.value = clientRect.left - (Number(unref(maxWidth)) - clientRect.width)
+      topStartMin.value = clientRect.top - (Number(unref(maxHeight)) - clientRect.height)
       isResizing.value = true
       pointer.startY = evt.y
       pointer.startX = evt.x
