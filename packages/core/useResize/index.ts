@@ -86,8 +86,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   const heightRef = ref(0)
   const transform = ref('')
   const style = computed(() => [
-    `width: ${unref(widthRef)}px;`,
-    `height: ${unref(heightRef)}px;`,
+    unref(widthRef) && `width: ${unref(widthRef)}px;`,
+    unref(heightRef) && `height: ${unref(heightRef)}px;`,
     unref(transform) && `transform: ${unref(transform)};`,
   ].filter(Boolean).join(''))
 
@@ -171,6 +171,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   }
 
   let scale = 1
+  let xMultiplierStatic = 1
+  let yMultiplierStatic = 1
   function onPointerMove(evt: PointerEvent) {
     if (!target.value)
       return
@@ -189,8 +191,8 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
     let newWidth = width / scale
     let newHeight = height / scale
 
-    const xDiff = Math.abs(evt.x - pointer.startX) * unref(xMultiplier)
-    const yDiff = Math.abs(evt.y - pointer.startY) * unref(yMultiplier)
+    const xDiff = Math.abs(evt.x - pointer.startX) * xMultiplierStatic
+    const yDiff = Math.abs(evt.y - pointer.startY) * yMultiplierStatic
 
     if (direction.value.includes('bottom'))
       newHeight += (evt.y > pointer.startY ? Math.abs(yDiff) : -Math.abs(yDiff))
@@ -236,6 +238,9 @@ export function useResize(element: MaybeElementRef, options: UseResizeOptions = 
   async function onPointerDown(evt: PointerEvent) {
     if (!target.value)
       return
+
+    xMultiplierStatic = unref(xMultiplier)
+    yMultiplierStatic = unref(yMultiplier)
 
     if (evt.pointerType === 'touch') {
       pointer.currentX = evt.x
