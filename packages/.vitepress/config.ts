@@ -128,7 +128,8 @@ const config: UserConfig = {
       '/firebase/': FunctionsSideBar,
     },
     algolia: {
-      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      appId: 'NBQWY48OOR',
+      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
       indexName: 'vueuse',
     },
   },

@@ -9,7 +9,7 @@ Update value after a given time with controls.
 ## Usage
 
 ```js
-import { useTimeout, promiseTimeout } from '@vueuse/core'
+import { promiseTimeout, useTimeout } from '@vueuse/core'
 
 const ready = useTimeout(1000)
 ```

@@ -35,3 +35,10 @@ const title = computed(() => {
 
 useTitle(title) // document title will match with the ref "title"
 ```
+
+Pass an optional template tag (Vue Meta Title Template)[https://vue-meta.nuxtjs.org/guide/metainfo.html] 
+to update the title to be injected into this template:
+
+```js
+const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' })
+```

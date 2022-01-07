@@ -19,8 +19,10 @@
 ### Browser
   - [`useActiveElement`](https://vueuse.org/core/useActiveElement/) — reactive `document.activeElement`
   - [`useBreakpoints`](https://vueuse.org/core/useBreakpoints/) — reactive viewport breakpoints
+  - [`useBroadcastChannel`](https://vueuse.org/core/useBroadcastChannel/) — reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel)
   - [`useBrowserLocation`](https://vueuse.org/core/useBrowserLocation/) — reactive browser location
   - [`useClipboard`](https://vueuse.org/core/useClipboard/) — reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
+  - [`useColorMode`](https://vueuse.org/core/useColorMode/) — reactive color mode (dark / light / customs) with auto data persistence
   - [`useCssVar`](https://vueuse.org/core/useCssVar/) — manipulate CSS variables
   - [`useDark`](https://vueuse.org/core/useDark/) — reactive dark mode with auto data persistence
   - [`useEventListener`](https://vueuse.org/core/useEventListener/) — use EventListener with ease
@@ -40,7 +42,9 @@
   - [`useShare`](https://vueuse.org/core/useShare/) — reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)
   - [`useTitle`](https://vueuse.org/core/useTitle/) — reactive document title
   - [`useUrlSearchParams`](https://vueuse.org/core/useUrlSearchParams/) — reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+  - [`useVibrate`](https://vueuse.org/core/useVibrate/) — reactive vibration web API
   - [`useWakeLock`](https://vueuse.org/core/useWakeLock/) — reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) provides a way to prevent devices from dimming or locking the screen when an application needs to keep running
+  - [`useWebNotification`](https://vueuse.org/core/useWebNotification/) — reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification)
 
 ### Component
   - [`computedInject`](https://vueuse.org/core/computedInject/) — combine computed and inject
@@ -94,6 +98,7 @@
   - [`useMouseInElement`](https://vueuse.org/core/useMouseInElement/) — reactive mouse position related to an element
   - [`useMousePressed`](https://vueuse.org/core/useMousePressed/) — reactive mouse pressing state
   - [`useMutationObserver`](https://vueuse.org/core/useMutationObserver/) — watch for changes being made to the DOM tree
+  - [`useNavigatorLanguage`](https://vueuse.org/core/useNavigatorLanguage/) — watch for changes being made to the navigator language preference by the user
   - [`useNetwork`](https://vueuse.org/core/useNetwork/) — reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
   - [`useOnline`](https://vueuse.org/core/useOnline/) — reactive online state
   - [`usePageLeave`](https://vueuse.org/core/usePageLeave/) — reactive state to show whether the mouse leaves the page
@@ -153,12 +158,14 @@
   - [`useClamp`](https://vueuse.org/core/useClamp/) — reactively clamp a value between two other values
   - [`useConfirmDialog`](https://vueuse.org/core/useConfirmDialog/) — creates event hooks to support modals and confirmation dialog chains
   - [`useCounter`](https://vueuse.org/shared/useCounter/) — basic counter with utility functions
+  - [`useCycleList`](https://vueuse.org/core/useCycleList/) — cycle through a list of items
   - [`useDebounce`](https://vueuse.org/shared/useDebounce/) — debounce execution of a ref value
   - [`useDebouncedRefHistory`](https://vueuse.org/core/useDebouncedRefHistory/) — shorthand for `useRefHistory` with debounced filter
   - [`useDebounceFn`](https://vueuse.org/shared/useDebounceFn/) — debounce execution of a function
   - [`useEventBus`](https://vueuse.org/core/useEventBus/) — a basic event bus
   - [`useLastChanged`](https://vueuse.org/shared/useLastChanged/) — records the timestamp of the last change
   - [`useManualRefHistory`](https://vueuse.org/core/useManualRefHistory/) — manually track the change history of a ref when the using calls `commit()`
+  - [`useMemoize`](https://vueuse.org/core/useMemoize/) — cache results of functions depending on arguments and keep it reactive
   - [`useRefHistory`](https://vueuse.org/core/useRefHistory/) — track the change history of a ref
   - [`useSelections`](https://vueuse.org/core/useSelections/) — Multiple selection controller
   - [`useThrottle`](https://vueuse.org/shared/useThrottle/) — throttle changing of a ref value

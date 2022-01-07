@@ -1,5 +1,6 @@
 import type firebase from 'firebase'
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { isDef, tryOnScopeDispose } from '@vueuse/shared'
 
 export interface FirestoreOptions {

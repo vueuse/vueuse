@@ -1,6 +1,7 @@
-import { computed, nextTick, Ref, unref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { computed, nextTick, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
-import { ReactiveRouteOptions } from '../_types'
+import type { ReactiveRouteOptions } from '../_types'
 
 export function useRouteQuery(name: string): Ref<null | string | string[]>
 export function useRouteQuery<T extends null | undefined | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: ReactiveRouteOptions): Ref<T>

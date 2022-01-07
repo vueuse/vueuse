@@ -1,6 +1,6 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 import { useElementVisibility } from '@vueuse/core'
-import { RenderableComponent } from '../types'
+import type { RenderableComponent } from '../types'
 
 export const UseElementVisibility = defineComponent<RenderableComponent>({
   name: 'UseElementVisibility',

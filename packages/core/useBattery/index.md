@@ -11,7 +11,7 @@ Reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/B
 ```js
 import { useBattery } from '@vueuse/core'
 
-const { isCharging, chargingTime, dischargingTime, level } = useBattery()
+const { charging, chargingTime, dischargingTime, level } = useBattery()
 ```
 
 | State           | Type      | Description                                                       |

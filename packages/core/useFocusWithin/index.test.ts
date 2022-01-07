@@ -1,4 +1,5 @@
-import { Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useFocusWithin } from '.'
 
 describe('useFocusWithin', () => {
@@ -42,7 +43,7 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeFalsy()
   })
 
-  it('should track the state of the targets decendants', () => {
+  it('should track the state of the targets descendants', () => {
     const { focused } = useFocusWithin(parent)
 
     expect(focused.value).toBeFalsy()

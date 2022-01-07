@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue-demi'
-import { useElementBounding, useMouse, useEventListener } from '@vueuse/core'
+import { useElementBounding, useEventListener, useMouse } from '@vueuse/core'
 import { useElementByPoint } from '.'
 
 const { x, y } = useMouse({ type: 'client' })
@@ -41,15 +41,15 @@ const pointStyles = computed<Record<string, string | number>>(() => ({
 
 <template>
   <teleport to="body">
-    <div ref="box" :style="boxStyles"></div>
-    <div ref="point" :style="pointStyles" class="w-2 h-2 rounded-full bg-green-400 shadow"></div>
+    <div ref="box" :style="boxStyles" />
+    <div ref="point" :style="pointStyles" class="w-2 h-2 rounded-full bg-green-400 shadow" />
   </teleport>
   <div class="flex items-center">
     <span class="mr-4">x:</span>
-    <input v-model="x" type="number" />
+    <input v-model="x" type="number">
   </div>
   <div class="flex items-center">
     <span class="mr-4">y:</span>
-    <input v-model="y" type="number" />
+    <input v-model="y" type="number">
   </div>
 </template>

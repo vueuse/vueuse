@@ -1,7 +1,8 @@
-import { Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 export * from './breakpoints'
 
 export type Breakpoints<K extends string = string> = Record<K, number | string>

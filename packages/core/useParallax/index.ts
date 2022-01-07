@@ -1,8 +1,10 @@
-import { computed, ComputedRef, reactive } from 'vue-demi'
-import { MaybeElementRef } from '../unrefElement'
+import type { ComputedRef } from 'vue-demi'
+import { computed, reactive } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface ParallaxOptions extends ConfigurableWindow {
   deviceOrientationTiltAdjust?: (i: number) => number

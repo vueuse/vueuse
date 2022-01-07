@@ -1,4 +1,5 @@
-import { isRef, Ref, ShallowUnwrapRef } from 'vue-demi'
+import type { Ref, ShallowUnwrapRef } from 'vue-demi'
+import { isRef } from 'vue-demi'
 import { __onlyVue3 } from '../utils/compatibility'
 
 export interface ExtendRefOptions<Unwrap extends boolean = boolean> {

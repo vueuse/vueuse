@@ -1,6 +1,7 @@
-import { ref, Ref, watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useDebounceFn } from '../useDebounceFn'
-import { DebounceFilterOptions } from '../utils'
+import type { DebounceFilterOptions } from '../utils'
 
 /**
  * Debounce updates of a ref.

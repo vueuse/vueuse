@@ -1,6 +1,7 @@
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 import { unref } from 'vue-demi'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface ShareOptions {
   title?: string

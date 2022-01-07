@@ -1,4 +1,6 @@
-import { getCurrentInstance, onMounted, onUpdated, customRef, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { customRef, getCurrentInstance, onUpdated } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 
 /**
  * Shorthand for binding ref to template element.
@@ -25,7 +27,7 @@ export function templateRef<T extends HTMLElement | SVGElement | null>(
     }
   })
 
-  onMounted(_trigger)
+  tryOnMounted(_trigger)
   onUpdated(_trigger)
 
   return element as Readonly<Ref<T>>

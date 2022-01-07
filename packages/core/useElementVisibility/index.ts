@@ -1,7 +1,9 @@
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
   scrollTarget?: Ref<Element | null | undefined>

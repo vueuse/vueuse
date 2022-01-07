@@ -1,5 +1,7 @@
-import { Fn, noop } from '@vueuse/shared'
-import { ref, isRef, computed, watchEffect, Ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, isRef, ref, watchEffect } from 'vue-demi'
 
 /**
  * Handle overlapping async evaluations.
@@ -69,15 +71,15 @@ export function asyncComputed<T>(
     const counterAtBeginning = counter
     let hasFinished = false
 
-    try {
-      // Defer initial setting of `evaluating` ref
-      // to avoid having it as a dependency
-      if (evaluating) {
-        Promise.resolve().then(() => {
-          evaluating.value = true
-        })
-      }
+    // Defer initial setting of `evaluating` ref
+    // to avoid having it as a dependency
+    if (evaluating) {
+      Promise.resolve().then(() => {
+        evaluating.value = true
+      })
+    }
 
+    try {
       const result = await evaluationCallback((cancelCallback) => {
         onInvalidate(() => {
           if (evaluating)

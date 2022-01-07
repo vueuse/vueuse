@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts">
-import { InjectionKey, Ref, defineComponent, ref } from 'vue-demi'
+import type { InjectionKey, Ref } from 'vue-demi'
+import { defineComponent, ref } from 'vue-demi'
 import { computedInject } from './index'
 
 type OptionsRef = Ref<{ key: number; value: string }[]>

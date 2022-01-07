@@ -1,5 +1,6 @@
 import { defineComponent, h, toRefs } from 'vue-demi'
-import { useVirtualList, UseVirtualListOptions } from '@vueuse/core'
+import type { UseVirtualListOptions } from '@vueuse/core'
+import { useVirtualList } from '@vueuse/core'
 
 export interface UseVirtualListProps {
   /**

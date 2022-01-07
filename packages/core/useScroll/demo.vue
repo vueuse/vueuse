@@ -33,7 +33,7 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
       <div class="px-6 py-4 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
         <span text="right" opacity="75">Position</span>
         <div class="text-primary">
-          {{ x }}, {{ y }}
+          {{ x.toFixed(1) }}, {{ y.toFixed(1) }}
         </div>
         <span text="right" opacity="75">isScrolling</span>
         <BooleanDisplay :value="isScrolling" />
