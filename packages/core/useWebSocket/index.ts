@@ -157,16 +157,13 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  const close: WebSocket['close'] = (code, reason) => {
+  // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+  const close: WebSocket['close'] = (code = 1000, reason) => {
     if (!wsRef.value)
       return
-
-    // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
-    const statusCode = Number.isInteger(code) ? code : 1000
-
     explicitlyClosed = true
     heartbeatPause?.()
-    wsRef.value.close(statusCode, reason)
+    wsRef.value.close(code, reason)
   }
 
   const _sendBuffer = () => {
@@ -250,7 +247,7 @@ export function useWebSocket<Data = any>(
   if (immediate) _init()
 
   if (autoClose) {
-    useEventListener(window, 'beforeunload', close)
+    useEventListener(window, 'beforeunload', () => close())
     tryOnScopeDispose(close)
   }
 
