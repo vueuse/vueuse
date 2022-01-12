@@ -162,8 +162,8 @@ export function useWebSocket<Data = any>(
       return
 
     // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
-    const statusCode = Number.isInteger(code) ? code : 1000;
-    
+    const statusCode = Number.isInteger(code) ? code : 1000
+
     explicitlyClosed = true
     heartbeatPause?.()
     wsRef.value.close(statusCode, reason)
