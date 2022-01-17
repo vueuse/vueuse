@@ -1,7 +1,7 @@
 .demo {
   font-size: var(--vt-doc-code-font-size);
   background: var(--vt-c-bg-soft);
-  padding: 1em 2em;
+  padding: 2em;
   position: relative;
   margin-bottom: 10px;
   border-radius: 4px;
