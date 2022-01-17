@@ -40,7 +40,7 @@ const timeAgo = useTimeAgo(value)
   appearance: none;
   width: 1.3rem;
   height: 1.3rem;
-  background: var(--c-brand);
+  background: var(--vt-c-brand);
   cursor: pointer;
   border-radius: 50%;
 }

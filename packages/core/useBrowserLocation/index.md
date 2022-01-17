@@ -21,5 +21,3 @@ const location = useBrowserLocation()
   Browser Location: {{ location }}
 </UseBrowserLocation>
 ```
-
-<LearnMoreComponents />

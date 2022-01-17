@@ -1,21 +1,17 @@
-import type { UserConfig } from 'vitepress'
-import indexes from '../../indexes.json'
+// @ts-expect-error
+import base from '@vue/theme/config'
 import { currentVersion, versions } from '../../meta/versions'
+import { categories, indexes } from '../../meta/function-indexes'
+import highlight from './highlight'
 
-const categoriesOrder = [
-  'Browser',
-  'Sensors',
-  'Animation',
-  'State',
-  'Component',
-  'Watch',
-  'Formatters',
-  'Utilities',
-  'Misc',
-]
+const themeConfig = async() => {
+  const config = await base()
+  config.markdown.highlight = await highlight()
+  return config
+}
 
 const Guide = [
-  { text: 'Getting Started', link: '/guide/index' },
+  { text: 'Get Started', link: '/guide/' },
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },
@@ -23,90 +19,127 @@ const Guide = [
   { text: 'Guidelines', link: '/guidelines' },
 ]
 
-const Functions = [
-  { text: 'Animation', link: '/functions#animation' },
-  { text: 'Browser', link: '/functions#browser' },
-  { text: 'Component', link: '/functions#component' },
-  { text: 'Formatters', link: '/functions#formatters' },
-  { text: 'Misc', link: '/functions#misc' },
-  { text: 'Sensors', link: '/functions#sensors' },
-  { text: 'State', link: '/functions#state' },
-  { text: 'Utilities', link: '/functions#utilities' },
-  { text: 'Watch', link: '/functions#watch' },
+const CoreCategories = categories
+  .filter(f => !f.startsWith('@'))
+  .map(c => ({
+    text: c,
+    activeMatch: '___', // never active
+    link: `/functions#category=${c}`,
+  }))
+
+const AddonCategories = [
+  ...categories
+    .filter(f => f.startsWith('@'))
+    .map(c => ({
+      text: c.slice(1),
+      activeMatch: '___', // never active
+      link: `/functions#category=${encodeURIComponent(c)}`,
+    })),
+  { text: 'Head', link: '/add-ons.html#head-vueuse-head' },
+  { text: 'Motion', link: '/add-ons.html#motion-vueuse-motion' },
+  { text: 'Gesture', link: '/add-ons.html#gesture-vueuse-gesture' },
+  { text: 'Sound', link: '/add-ons.html#sound-vueuse-sound' },
 ]
 
-const DefaultSideBar = [
-  { text: 'Guide', children: Guide },
-  { text: 'Core Functions', children: Functions },
+const Links = [
   { text: 'Add-ons', link: '/add-ons' },
   { text: 'Ecosystem', link: '/ecosystem' },
   { text: 'Export Size', link: '/export-size' },
-  { text: 'Recently Updated', link: '/recently-updated' },
+  { text: 'Recent Updated', link: '/recent-updated' },
+]
+
+const DefaultSideBar = [
+  { text: 'Guide', items: Guide },
+  { text: 'Core Functions', items: CoreCategories },
+  { text: 'Add-ons', items: AddonCategories },
+  { text: 'Links', items: Links },
 ]
 
 const FunctionsSideBar = getFunctionsSideBar()
 
-const config: UserConfig = {
+/**
+ * @type {import('vitepress').UserConfig}
+ */
+const config = {
+  extends: themeConfig,
+
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+
   themeConfig: {
     logo: '/favicon.svg',
     repo: 'vueuse/vueuse',
     docsDir: 'packages',
+
     editLinks: true,
     editLinkText: 'Edit this page',
     lastUpdated: 'Last Updated',
+
+    algolia: {
+      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      indexName: 'vueuse',
+    },
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/vueuse/vueuse' },
+      { icon: 'twitter', link: 'https://twitter.com/vueuse' },
+    ],
+
     nav: [
-      // { text: 'Home', link: '/' },s
       {
         text: 'Guide',
-        items: Guide,
+        items: [
+          { text: 'Guide', items: Guide },
+          { text: 'Links', items: Links },
+        ],
       },
       {
         text: 'Functions',
-        link: '/functions',
-        items: indexes.categories
-          .filter(f => !f.startsWith('@'))
-          .map((c) => {
-            return {
-              text: c,
-              activeMatch: '___', // never active
-              link: `/functions#${c.toLowerCase()}`,
-            }
-          }),
+        items: [
+          {
+            text: '',
+            items: [
+              { text: 'Recent Updated', link: '/functions#sort=updated' },
+            ],
+          },
+          { text: 'Core', items: CoreCategories },
+          { text: 'Add-ons', items: AddonCategories },
+        ],
       },
       {
         text: 'Add-ons',
         link: '/add-ons',
       },
       {
-        text: 'More',
-        items: [
-          { text: 'Playground', link: 'https://play.vueuse.org' },
-          { text: 'Ecosystem', link: '/ecosystem' },
-          { text: 'Export Size', link: '/export-size' },
-        ],
+        text: 'Playground',
+        link: 'https://play.vueuse.org',
       },
       {
         text: `v${currentVersion}`,
         items: [
-          { text: 'Release Notes', link: 'https://github.com/vueuse/vueuse/releases' },
-          { text: 'What\'s new', link: '/recently-updated' },
-          ...versions.map((i) => {
-            if (i.version === currentVersion) {
-              return {
+          {
+            items: [
+              { text: 'Release Notes', link: 'https://github.com/vueuse/vueuse/releases' },
+              { text: 'What\'s news', link: '/recently-updated' },
+            ],
+          },
+          {
+            text: 'Versions',
+            items: versions.map(i => i.version === currentVersion
+              ? {
                 text: `v${i.version} (Current)`,
                 activeMatch: '/', // always active
                 link: '/',
               }
-            }
-            return {
-              text: `v${i.version}`,
-              link: i.link,
-            }
-          }),
+              : {
+                text: `v${i.version}`,
+                link: i.link,
+              },
+            ),
+          },
         ],
+
       },
     ],
     sidebar: {
@@ -116,7 +149,7 @@ const config: UserConfig = {
       '/ecosystem': DefaultSideBar,
       '/guidelines': DefaultSideBar,
       '/export-size': DefaultSideBar,
-      '/recently-updated': DefaultSideBar,
+      '/recent-updated': DefaultSideBar,
 
       '/functions': FunctionsSideBar,
       '/core/': FunctionsSideBar,
@@ -126,11 +159,6 @@ const config: UserConfig = {
       '/rxjs/': FunctionsSideBar,
       '/integrations/': FunctionsSideBar,
       '/firebase/': FunctionsSideBar,
-    },
-    algolia: {
-      appId: 'NBQWY48OOR',
-      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
-      indexName: 'vueuse',
     },
   },
   head: [
@@ -147,17 +175,13 @@ const config: UserConfig = {
 
     ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
-    ['link', { href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap', rel: 'stylesheet' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap' }],
   ],
 }
 
 function getFunctionsSideBar() {
   const links = []
-  const { categories } = indexes
-
-  categories
-    .sort((a, b) => categoriesOrder.indexOf(a) - categoriesOrder.indexOf(b))
-    .sort((a, b) => a.startsWith('@') ? 1 : b.startsWith('@') ? -1 : 0)
 
   for (const name of categories) {
     if (name.startsWith('_'))
@@ -167,7 +191,7 @@ function getFunctionsSideBar() {
 
     links.push({
       text: name,
-      children: functions.map(i => ({
+      items: functions.map(i => ({
         text: i.name,
         link: `/${i.package}/${i.name}/`,
       })),
