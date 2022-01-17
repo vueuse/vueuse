@@ -1,4 +1,5 @@
 import type { Ref } from 'vue-demi'
+import { reactive, readonly } from 'vue-demi'
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
@@ -48,7 +49,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
       return shortcuts
     }, {} as Record<K, Ref<boolean>>)
 
-  return {
+  return readonly(reactive({
     greater,
     smaller(k: K) {
       return useMediaQuery(`(max-width: ${getValue(k, -0.1)})`, options)
@@ -66,7 +67,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
     ...shortcutMethods,
-  }
+  }))
 }
 
 export type UseBreakpointsReturn = ReturnType<typeof useBreakpoints>
