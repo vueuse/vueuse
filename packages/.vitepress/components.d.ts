@@ -7,12 +7,6 @@ declare module 'vue' {
     BooleanDisplay: typeof import('./theme/components/BooleanDisplay.vue')['default']
     'Carbon:arrowRight': typeof import('~icons/carbon/arrow-right')['default']
     'Carbon:logoGithub': typeof import('~icons/carbon/logo-github')['default']
-    CarbonCafe: typeof import('~icons/carbon/cafe')['default']
-    CarbonContrast: typeof import('~icons/carbon/contrast')['default']
-    CarbonFilterRemove: typeof import('~icons/carbon/filter-remove')['default']
-    CarbonMoon: typeof import('~icons/carbon/moon')['default']
-    CarbonSearch: typeof import('~icons/carbon/search')['default']
-    CarbonSun: typeof import('~icons/carbon/sun')['default']
     Changelog: typeof import('./theme/components/Changelog.vue')['default']
     Contributors: typeof import('./theme/components/Contributors.vue')['default']
     DemoContainer: typeof import('./theme/components/DemoContainer.vue')['default']
@@ -25,9 +19,6 @@ declare module 'vue' {
     HomeHero: typeof import('./theme/components/HomeHero.vue')['default']
     LearnMoreComponents: typeof import('./theme/components/LearnMoreComponents.vue')['default']
     Note: typeof import('./theme/components/Note.vue')['default']
-    OcticonGitCommit16: typeof import('~icons/octicon/git-commit16')['default']
-    OcticonGitPullRequestDraft16: typeof import('~icons/octicon/git-pull-request-draft16')['default']
-    OcticonRocket16: typeof import('~icons/octicon/rocket16')['default']
     ReloadPrompt: typeof import('./theme/components/ReloadPrompt.vue')['default']
   }
 }
