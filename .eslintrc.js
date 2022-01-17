@@ -1,3 +1,5 @@
+const { resolve } = require('path')
+
 module.exports = {
   root: true,
   env: {
@@ -19,7 +21,18 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
-        paths: ['vue', '@vue/composition-api'],
+        paths: [
+          'vue',
+          '@vue/composition-api',
+          '..',
+          '../..',
+          resolve(__dirname, 'packages/core/index.ts'),
+          {
+            name: 'vue-demi',
+            importNames: ['onMounted', 'onUnmounted'],
+            message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+          },
+        ],
       },
     ],
     'node/no-callback-literal': 'off',

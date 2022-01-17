@@ -1,14 +1,10 @@
 import { ref } from 'vue-demi'
-
 import type { Ref } from 'vue-demi'
-
 import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-
 import type { EventHook } from '@vueuse/shared'
-
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '..'
-import { defaultWindow } from '..'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface WebNotificationOptions {
   /**

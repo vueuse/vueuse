@@ -7,7 +7,6 @@ const {
   data,
   post,
   error,
-  isError,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
 const message = ref('')
@@ -39,7 +38,7 @@ watch(data, () => {
       received: {{ data }}
     </p>
 
-    <p v-if="isError">
+    <p v-if="error">
       error: {{ error }}
     </p>
   </div>

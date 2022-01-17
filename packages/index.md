@@ -8,9 +8,9 @@ features:
   - title: 🎛 Feature Rich
     details: 140+ functions for you to choose from
   - title: 🕶 Seamless migration
-    details: Works for both Vue 3 and Vue 2
-  - title: ⚡ Fully tree shakable
-    details: Take only what you need
+    details: Works for both Vue 3 and 2
+  - title: ⚡ Fully tree shakeable
+    details: Only take what you want
   - title: 🦾 Type Strong
     details: Written in TypeScript, with full TS docs
   - title: 🛠 Flexible

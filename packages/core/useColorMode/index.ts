@@ -73,7 +73,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     selector = 'html',
     attribute = 'class',
     window = defaultWindow,
-    storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)(),
+    storage,
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
