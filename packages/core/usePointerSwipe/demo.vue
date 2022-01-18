@@ -44,7 +44,7 @@ const { distanceX, isSwiping } = usePointerSwipe(target, {
 </script>
 
 <template>
-  <div ref="container" class="bg-gray-200 rounded-xl relative w-full h-[80px] max-w-[600px] m-auto flex items-center justify-center overflow-hidden">
+  <div ref="container" class="bg-gray-200 rounded relative w-full h-[80px] m-auto flex items-center justify-center overflow-hidden">
     <button @click="reset">
       Reset
     </button>

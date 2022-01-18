@@ -24,7 +24,7 @@ const key = computed(() => activeElement.value?.dataset?.id || 'null')
       :key="i"
       type="text"
       :data-id="i"
-      class="!my-0"
+      class="!my-0 !min-w-0"
       :placeholder="`${i}`"
     >
   </div>

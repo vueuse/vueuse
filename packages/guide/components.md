@@ -1,8 +1,16 @@
 # Components
 
-In v5.0, we introduced a new package `@vueuse/components` providing renderless component style usage of composable functions.
+In v5.0, we introduced a new package, `@vueuse/components` providing renderless component versions of composable functions.
 
-For example of `onClickOutside`, instead of
+## Install
+
+```bash
+$ npm i @vueuse/core @vueuse/components
+```
+
+## Usage
+
+For example of `onClickOutside`, instead of binding the component ref for functions to consume:
 
 ```html
 <script setup>
@@ -25,7 +33,7 @@ onClickOutside(el, close)
 </template>
 ```
 
-You can now use it in the component way:
+We can now use the renderless component which the binding is done automatically:
 
 ```html
 <script setup>
@@ -45,7 +53,9 @@ function close () {
 </template>
 ```
 
-Similarly, you can also access return values with `v-slot`:
+## Return Value
+
+You can access return values with `v-slot`:
 
 ```html
 <UseMouse v-slot="{ x, y }">
@@ -60,12 +70,6 @@ Similarly, you can also access return values with `v-slot`:
     Is Dark: {{ isDark }}
   </button>
 </UseDark>
-```
-
-## Install
-
-```bash
-$ npm i @vueuse/core @vueuse/components
 ```
 
 Refer to each function's documentation for the detailed usage of component style.

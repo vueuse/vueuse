@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementSize
@@ -43,5 +43,3 @@ export default {
   Height: {{ height }}
 </UseElementSize>
 ```
-
-<LearnMoreComponents />

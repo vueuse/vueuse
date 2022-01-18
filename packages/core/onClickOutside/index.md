@@ -45,5 +45,3 @@ export default {
   </div>
 </OnClickOutside>
 ```
-
-<LearnMoreComponents />

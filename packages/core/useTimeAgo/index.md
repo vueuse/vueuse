@@ -1,5 +1,5 @@
 ---
-category: Formatters
+category: Misc
 ---
 
 # useTimeAgo
@@ -21,5 +21,3 @@ const timeAgo = useTimeAgo(new Date(2021, 0, 1))
   Time Ago: {{ timeAgo }}
 </UseTimeAgo>
 ```
-
-<LearnMoreComponents />
