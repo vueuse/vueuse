@@ -1,4 +1,4 @@
-import { isRef, ref, watch } from 'vue-demi'
+import { isRef, readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
@@ -107,6 +107,6 @@ export function useStyle(...args: any[]): UseStyleReturn {
     css: cssRef,
     unload,
     load,
-    loaded,
+    loaded: readonly(loaded),
   }
 }
