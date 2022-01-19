@@ -69,10 +69,10 @@ export function useStyle(...args: any[]): UseStyleReturn {
   const loaded = ref(false)
 
   const load = () => {
-    if (document.getElementById(id))
-      throw new Error(`Style element with id "${id}" already exists.`)
+    if (!window)
+      return
 
-    const el = document.createElement('style')
+    const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
     el.type = 'text/css'
     el.id = id
     document.head.appendChild(el)
@@ -83,23 +83,22 @@ export function useStyle(...args: any[]): UseStyleReturn {
     stop = watch(
       cssRef,
       (value) => {
-        if (el)
-          el.innerText = value
+        el.innerText = value
       },
       { immediate: true },
     )
   }
 
-  if (window && autoload)
-    load()
-
   const unload = () => {
+    if (!window || !loaded.value)
+      return
+
     stop()
-    if (window && loaded.value) {
-      loaded.value = false
-      document.head.removeChild(document.getElementById(id) as HTMLStyleElement)
-    }
+    document.head.removeChild(document.getElementById(id) as HTMLStyleElement)
+    loaded.value = false
   }
+
+  autoload && load()
 
   tryOnScopeDispose(unload)
 
