@@ -4,7 +4,7 @@ category: Browser
 
 # useStyle
 
-Inject reactive `<style>` element in head.
+Inject reactive `&lt;style&gt;` element in head.
 
 ## Usage
 
