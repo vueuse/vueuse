@@ -26,6 +26,14 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
   manual?: boolean
 }
 
+export type UseStyleTagReturn = {
+  id: string
+  css: Ref<string>
+  load: () => void
+  unload: () => void
+  loaded: Ref<boolean>
+}
+
 let _id = 0
 
 /**
@@ -54,9 +62,9 @@ export function useStyleTag(
   id: string,
   css: MaybeRef<string>,
   options?: UseStyleTagOptions,
-): any
+): UseStyleTagReturn
 
-export function useStyleTag(...args: any[]): UseStyleTagReturn {
+export function useStyleTag(...args: any[]) {
   let id: string
   let css: Ref<string>
 
@@ -123,5 +131,3 @@ export function useStyleTag(...args: any[]): UseStyleTagReturn {
     loaded: readonly(loaded),
   }
 }
-
-export type UseStyleTagReturn = ReturnType<typeof useStyleTag>
