@@ -74,10 +74,12 @@ export function useStyle(...args: any[]): UseStyleReturn {
     const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
     el.type = 'text/css'
     el.id = id
-    document.head.appendChild(el)
-    loaded.value = true
     if (options.media)
       el.media = options.media
+    document.head.appendChild(el)
+
+    if (loaded.value)
+      return
 
     stop = watch(
       css,
@@ -86,6 +88,8 @@ export function useStyle(...args: any[]): UseStyleReturn {
       },
       { immediate: true },
     )
+
+    loaded.value = true
   }
 
   const unload = () => {
