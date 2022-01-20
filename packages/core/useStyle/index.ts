@@ -1,4 +1,4 @@
-import { isRef, readonly, ref, watch } from 'vue-demi'
+import { readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
@@ -50,22 +50,21 @@ export function useStyle(
 
 export function useStyle(...args: any[]): UseStyleReturn {
   let id: string
-  let css: MaybeRef<string>
+  let css: Ref<string>
 
   const options: UseStyleOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
   const { window = defaultWindow, autoload = true } = options
 
   if (args.length === 1) {
     id = `usestyle_${++_id}`
-    css = args[0]
+    css = ref(args[0])
   }
   else {
     id = args[0]
-    css = args[1]
+    css = ref(args[1])
   }
 
   let stop = () => {}
-  const cssRef = isRef(css) ? css : ref(css)
   const loaded = ref(false)
 
   const load = () => {
@@ -81,7 +80,7 @@ export function useStyle(...args: any[]): UseStyleReturn {
       el.media = options.media
 
     stop = watch(
-      cssRef,
+      css,
       (value) => {
         el.innerText = value
       },
@@ -104,7 +103,7 @@ export function useStyle(...args: any[]): UseStyleReturn {
 
   return {
     id,
-    css: cssRef,
+    css,
     unload,
     load,
     loaded: readonly(loaded),
