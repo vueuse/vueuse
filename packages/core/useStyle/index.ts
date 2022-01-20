@@ -2,15 +2,31 @@ import { readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
-interface UseStyleOptions extends ConfigurableWindow {
+export interface UseStyleTagOptions extends ConfigurableDocument {
+  /**
+   * Media query for styles to apply
+   */
   media?: string
-  autoload?: boolean
+
+  /**
+   * Load the style immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
+   * Manual controls the timing of loading and unloading
+   *
+   * @default false
+   */
+  manual?: boolean
 }
 
-type UseStyleReturn = {
+export type UseStyleTagReturn = {
   id: string
   css: Ref<string>
   load: () => void
@@ -25,35 +41,35 @@ let _id = 0
  *
  * Overload: Omitted id
  *
- * @see https://vueuse.org/useStyle
+ * @see https://vueuse.org/useStyleTag
  * @param css
  * @param options
  */
-export function useStyle(
+export function useStyleTag(
   css: MaybeRef<string>,
-  options?: UseStyleOptions,
-): UseStyleReturn
+  options?: UseStyleTagOptions,
+): UseStyleTagReturn
 
 /**
  * Inject <style> element in head.
  *
- * @see https://vueuse.org/useStyle
+ * @see https://vueuse.org/useStyleTag
  * @param id
  * @param css
  * @param options
  */
-export function useStyle(
+export function useStyleTag(
   id: string,
   css: MaybeRef<string>,
-  options?: UseStyleOptions,
-): UseStyleReturn
+  options?: UseStyleTagOptions,
+): UseStyleTagReturn
 
-export function useStyle(...args: any[]): UseStyleReturn {
+export function useStyleTag(...args: any[]): UseStyleTagReturn {
   let id: string
   let css: Ref<string>
 
-  const options: UseStyleOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
-  const { window = defaultWindow, autoload = true } = options
+  const options: UseStyleTagOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
+  const { document = defaultDocument, autoload = true, manual = false } = options
 
   if (args.length === 1) {
     id = `usestyle_${++_id}`
@@ -68,7 +84,7 @@ export function useStyle(...args: any[]): UseStyleReturn {
   const loaded = ref(false)
 
   const load = () => {
-    if (!window)
+    if (!document)
       return
 
     const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
@@ -93,7 +109,7 @@ export function useStyle(...args: any[]): UseStyleReturn {
   }
 
   const unload = () => {
-    if (!window || !loaded.value)
+    if (!document || !loaded.value)
       return
 
     stop()
@@ -101,9 +117,11 @@ export function useStyle(...args: any[]): UseStyleReturn {
     loaded.value = false
   }
 
-  autoload && load()
+  if (autoload && !manual)
+    load()
 
-  tryOnScopeDispose(unload)
+  if (!manual)
+    tryOnScopeDispose(unload)
 
   return {
     id,
