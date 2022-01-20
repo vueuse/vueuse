@@ -65,24 +65,15 @@ export function useStyleTag(
 ): UseStyleTagReturn
 
 export function useStyleTag(...args: any[]) {
-  let id: string
-  let css: Ref<string>
-
-  const options: UseStyleTagOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
-  const { document = defaultDocument, immediate = true, manual = false } = options
-
-  if (args.length === 1) {
-    id = `usestyle_${++_id}`
-    css = ref(args[0])
-  }
-  else {
-    id = args[0]
-    css = ref(args[1])
-  }
-
-  let stop = () => {}
   const loaded = ref(false)
 
+  const options: UseStyleTagOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
+  const css = ref(args.pop() as string)
+  const id = args[0] as string ?? `usestyle_${++_id}`
+
+  const { document = defaultDocument, immediate = true, manual = false } = options
+
+  let stop = () => {}
   const load = () => {
     if (!document)
       return
