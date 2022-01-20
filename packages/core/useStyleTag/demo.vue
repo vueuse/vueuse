@@ -9,7 +9,7 @@ const { id, css, load, unload, loaded } = useStyleTag('.usestyle-demo { margin-t
     Edit CSS:
     <textarea v-model="css" type="text" rows="2" class="w-full" />
   </p>
-  <button @click="load">
+  <button :disabled="loaded" @click="load">
     Load
   </button>
   <button class="orange" :disabled="!loaded" @click="unload">
