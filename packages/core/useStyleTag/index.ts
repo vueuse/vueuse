@@ -26,14 +26,6 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
   manual?: boolean
 }
 
-export type UseStyleTagReturn = {
-  id: string
-  css: Ref<string>
-  load: () => void
-  unload: () => void
-  loaded: Ref<boolean>
-}
-
 let _id = 0
 
 /**
@@ -62,14 +54,14 @@ export function useStyleTag(
   id: string,
   css: MaybeRef<string>,
   options?: UseStyleTagOptions,
-): UseStyleTagReturn
+): any
 
 export function useStyleTag(...args: any[]): UseStyleTagReturn {
   let id: string
   let css: Ref<string>
 
   const options: UseStyleTagOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
-  const { document = defaultDocument, autoload = true, manual = false } = options
+  const { document = defaultDocument, immediate = true, manual = false } = options
 
   if (args.length === 1) {
     id = `usestyle_${++_id}`
@@ -117,7 +109,7 @@ export function useStyleTag(...args: any[]): UseStyleTagReturn {
     loaded.value = false
   }
 
-  if (autoload && !manual)
+  if (immediate && !manual)
     load()
 
   if (!manual)
@@ -131,3 +123,5 @@ export function useStyleTag(...args: any[]): UseStyleTagReturn {
     loaded: readonly(loaded),
   }
 }
+
+export type UseStyleTagReturn = ReturnType<typeof useStyleTag>
