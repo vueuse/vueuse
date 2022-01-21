@@ -35,7 +35,7 @@ export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', update)
     else
-      // @ts-expect-error
+      // @ts-expect-error deprecated API
       mediaQuery.addListener(update)
 
     tryOnScopeDispose(() => {

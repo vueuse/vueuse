@@ -22,11 +22,10 @@ export interface SSRHandlersMap {
 }
 
 const _global = globalThis || this
-
 const globalKey = '__vueuse_ssr_handlers__'
-// @ts-expect-error
+// @ts-expect-error inject global
 _global[globalKey] = _global[globalKey] || {}
-// @ts-expect-error
+// @ts-expect-error inject global
 const handlers: Partial<SSRHandlersMap> = _global[globalKey]
 
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T]): SSRHandlersMap[T]

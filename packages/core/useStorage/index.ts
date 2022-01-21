@@ -9,12 +9,12 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
-export type Serializer<T> = {
+export interface Serializer<T> {
   read(raw: string): T
   write(value: T): string
 }
 
-export type SerializerAsync<T> = {
+export interface SerializerAsync<T> {
   read(raw: string): Awaitable<T>
   write(value: T): Awaitable<string>
 }

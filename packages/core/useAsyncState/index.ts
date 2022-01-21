@@ -95,7 +95,6 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
 
     try {
       const data = await _promise
-      // @ts-ignore
       state.value = data
       isReady.value = true
     }
@@ -112,7 +111,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     execute(delay)
 
   return {
-    state: state as Shallow extends true ? ShallowRef<Data> : Ref<Data>,
+    state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
     isReady,
     isLoading,
     error,

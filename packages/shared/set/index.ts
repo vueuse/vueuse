@@ -14,7 +14,7 @@ export function set(...args: any[]) {
   }
   if (args.length === 3) {
     if (isVue2) {
-      // @ts-expect-error
+      // @ts-expect-error case
       _set(...args)
     }
     else {

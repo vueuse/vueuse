@@ -6,9 +6,10 @@ import Components from 'unplugin-vue-components/vite'
 import { VitePWA as PWA } from 'vite-plugin-pwa'
 import WindiCSS from 'vite-plugin-windicss'
 import Inspect from 'vite-plugin-inspect'
-import { MarkdownTransform } from './.vitepress/markdownTransform'
-import { ChangeLog } from './.vitepress/changelog'
-import { Contributors } from './.vitepress/contributors'
+import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+import { ChangeLog } from './.vitepress/plugins/changelog'
+import { Contributors } from './.vitepress/plugins/contributors'
+import { NavbarFix } from './.vitepress/plugins/navbar'
 
 export default defineConfig({
   server: {
@@ -26,16 +27,7 @@ export default defineConfig({
     MarkdownTransform(),
     ChangeLog(),
     Contributors(),
-    // TODO: remove this
-    {
-      name: 'emmm',
-      configResolved(config) {
-        const index = config.plugins.findIndex(i => i.name === 'vite:ssr-require-hook')
-        if (index > -1)
-          // @ts-expect-error
-          config.plugins.splice(index, 1)
-      },
-    },
+    NavbarFix(),
 
     // plugins
     Components({

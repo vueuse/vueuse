@@ -1,12 +1,10 @@
-// @ts-ignore TODO: not sure why build failed to find the type
+// @ts-expect-error TODO: not sure why build failed to find the type
 import type { IncomingMessage } from 'http'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import Cookie from 'universal-cookie'
 
-type RawCookies = {
-  [name: string]: string
-}
+type RawCookies = Record<string, string>
 
 /**
  * Creates a new {@link useCookies} function

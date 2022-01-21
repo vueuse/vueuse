@@ -1,8 +1,8 @@
-// @ts-expect-error
+// @ts-expect-error missing type
 import base from '@vue/theme/config'
 import { currentVersion, versions } from '../../meta/versions'
 import { categories, indexes } from '../../meta/function-indexes'
-import highlight from './highlight'
+import highlight from './plugins/highlight'
 
 const themeConfig = async() => {
   const config = await base()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// @ts-expect-error
+// @ts-expect-error virtual
 import changelog from '/virtual-changelog'
 import { computed } from 'vue'
 import type { CommitInfo } from '../../../../meta/types'

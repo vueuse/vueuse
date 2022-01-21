@@ -1,9 +1,9 @@
 import { join, resolve } from 'path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
-import { packages } from '../../meta/packages'
-import { functionNames, getFunction } from '../../meta/function-indexes'
-import { getTypeDefinition, replacer } from '../../scripts/utils'
+import { packages } from '../../../meta/packages'
+import { functionNames, getFunction } from '../../../meta/function-indexes'
+import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../types/packages')
