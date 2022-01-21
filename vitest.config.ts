@@ -1,6 +1,6 @@
 /* eslint-disable spaced-comment */
 /// <reference types="vitest" />
-/// <reference types="vitest/global" />
+/// <reference types="vitest/globals" />
 
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
