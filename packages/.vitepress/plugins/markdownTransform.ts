@@ -6,7 +6,7 @@ import { functionNames, getFunction } from '../../../meta/function-indexes'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
-  const DIR_TYPES = resolve(__dirname, '../../types/packages')
+  const DIR_TYPES = resolve(__dirname, '../../../types/packages')
   const hasTypes = fs.existsSync(DIR_TYPES)
 
   if (!hasTypes)
@@ -55,7 +55,7 @@ export function MarkdownTransform(): Plugin {
   }
 }
 
-const DIR_SRC = resolve(__dirname, '..')
+const DIR_SRC = resolve(__dirname, '../..')
 const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 
 export async function getFunctionMarkdown(pkg: string, name: string) {
