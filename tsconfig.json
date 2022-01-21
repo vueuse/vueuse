@@ -22,7 +22,7 @@
       "@vueuse/shared/*": ["./packages/shared/*"],
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
+      "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"]
     },
     "types": [
       "vitest",
