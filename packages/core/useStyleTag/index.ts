@@ -26,12 +26,12 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
   manual?: boolean
 }
 
-export type UseStyleTagReturn = {
+export interface UseStyleTagReturn {
   id: string
   css: Ref<string>
   load: () => void
   unload: () => void
-  loaded: Ref<boolean>
+  loaded: Readonly<Ref<boolean>>
 }
 
 let _id = 0
