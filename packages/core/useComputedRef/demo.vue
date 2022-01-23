@@ -31,7 +31,7 @@ const onIncrMutableIsOdd = () => {
     <div>
       <div>
         <label for="step">Incr Step: </label>
-        <input id="step" v-model="step">
+        <input id="step" v-model.number="step">
       </div>
       <button @click="onIncrStableIsOdd">
         Incr stable IsOdd
