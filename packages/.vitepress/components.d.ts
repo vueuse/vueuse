@@ -5,8 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     BooleanDisplay: typeof import('./theme/components/BooleanDisplay.vue')['default']
-    CarbonMoon: typeof import('~icons/carbon/moon')['default']
-    CarbonSun: typeof import('~icons/carbon/sun')['default']
+    CarbonCheckmark: typeof import('~icons/carbon/checkmark')['default']
+    CarbonError: typeof import('~icons/carbon/error')['default']
     Changelog: typeof import('./theme/components/Changelog.vue')['default']
     Contributors: typeof import('./theme/components/Contributors.vue')['default']
     DemoContainer: typeof import('./theme/components/DemoContainer.vue')['default']
@@ -19,9 +19,6 @@ declare module 'vue' {
     HomeHero: typeof import('./theme/components/HomeHero.vue')['default']
     LearnMoreComponents: typeof import('./theme/components/LearnMoreComponents.vue')['default']
     Note: typeof import('./theme/components/Note.vue')['default']
-    OcticonGitCommit16: typeof import('~icons/octicon/git-commit16')['default']
-    OcticonGitPullRequestDraft16: typeof import('~icons/octicon/git-pull-request-draft16')['default']
-    OcticonRocket16: typeof import('~icons/octicon/rocket16')['default']
     ReloadPrompt: typeof import('./theme/components/ReloadPrompt.vue')['default']
   }
 }
