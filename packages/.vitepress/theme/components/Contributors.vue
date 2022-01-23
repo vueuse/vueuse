@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// @ts-expect-error
+// @ts-expect-error missing types
 import _contributors from '/virtual-contributors'
 import { computed } from 'vue'
 import type { ContributorInfo } from '../../../../meta/types'

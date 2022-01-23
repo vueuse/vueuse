@@ -5,6 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     BooleanDisplay: typeof import('./theme/components/BooleanDisplay.vue')['default']
+    CarbonMoon: typeof import('~icons/carbon/moon')['default']
+    CarbonSun: typeof import('~icons/carbon/sun')['default']
     Changelog: typeof import('./theme/components/Changelog.vue')['default']
     Contributors: typeof import('./theme/components/Contributors.vue')['default']
     DemoContainer: typeof import('./theme/components/DemoContainer.vue')['default']

@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import { getChangeLog } from '../../scripts/changelog'
+import { getChangeLog } from '../../../scripts/changelog'
 
 const ID = '/virtual-changelog'
 

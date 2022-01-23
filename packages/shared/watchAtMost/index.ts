@@ -39,6 +39,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
       current.value += 1
       if (current.value >= unref(count))
         stop()
+      // eslint-disable-next-line n/no-callback-literal
       cb(...args)
     },
     watchOptions,

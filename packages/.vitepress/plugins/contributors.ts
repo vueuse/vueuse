@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import { getFunctionContributors } from '../../scripts/changelog'
+import { getFunctionContributors } from '../../../scripts/changelog'
 
 const ID = '/virtual-contributors'
 

@@ -109,6 +109,8 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
+    if (!pressedDelta.value)
+      return
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)
     preventDefault(e)
