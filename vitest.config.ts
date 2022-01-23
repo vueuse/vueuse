@@ -11,7 +11,7 @@ export default defineConfig({
       '@vueuse/shared': resolve(__dirname, 'packages/shared/index.ts'),
       '@vueuse/core': resolve(__dirname, 'packages/core/index.ts'),
       '@vueuse/components': resolve(__dirname, 'packages/components/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/utils.ts'),
+      '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
     dedupe: [
       'vue',
