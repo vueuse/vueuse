@@ -4,7 +4,7 @@ category: Utilities
 
 # useDiff
 
-Cache the result of a ref. And allows to specify the comparator.
+Cache the a ref with custom comparator.
 
 ## Usage
 
