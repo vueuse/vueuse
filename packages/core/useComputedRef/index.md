@@ -4,15 +4,15 @@ category: Utilities
 
 # useComputedRef
 
-`useComputedRef` is a wrapper for standard computed. The API is same as standard computed.  
+`useComputedRef` is a wrapper for standard computed. The API is same as standard computed.
 
-Standard computed will be mark as dirty when some dependencies inside it's getter has changed.  
+Standard computed will be mark as dirty when some dependencies inside it's getter has changed.
 
-It will always trigger the dependency collect of watcher who watching the computed.  
+It will always trigger the dependency collect of watcher who watching the computed.
 
-In Vue component, there's a invisible watcher behind our template (to trigger render function when some reactive value changed).  
+In Vue component, there's a invisible watcher behind our template (to trigger render function when some reactive value changed).
 
-That means you will always trigger render function whatever your computed value change or not.  
+That means you will always trigger render function whatever your computed value change or not.
 
 The `useComputedRef` will cache and avoid these changes, and only trigger if the computed value changed.
 
