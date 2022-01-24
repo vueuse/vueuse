@@ -1,5 +1,5 @@
 import type { WatchCallback, WatchOptions, WatchSource } from 'vue-demi'
-import { watch } from 'vue-demi'
+import { watch, nextTick } from 'vue-demi'
 import type { MapOldSources, MapSources } from '../utils'
 
 // overlads
@@ -15,8 +15,8 @@ export function watchOnce<Immediate extends Readonly<boolean> = false>(
   cb: any,
   options?: WatchOptions<Immediate>,
 ): void {
-  const stop = watch(source, (...args) => {
-    stop()
+  const stop = watch(source, (...args) => {    
+    nextTick(() => stop())
     // eslint-disable-next-line n/no-callback-literal
     return cb(...args)
   }, options)
