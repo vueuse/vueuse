@@ -52,6 +52,10 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
+    "globalthis": "^1.0.2",
     "vue-demi": "*"
+  },
+  "devDependencies": {
+    "@types/globalthis": "^1.0.1"
   }
 }

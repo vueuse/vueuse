@@ -1,4 +1,5 @@
 import type { Awaitable } from '@vueuse/shared'
+import globalThis from 'globalthis'
 
 export interface StorageLikeAsync {
   getItem(key: string): Awaitable<string | null>
@@ -21,12 +22,11 @@ export interface SSRHandlersMap {
   updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
 }
 
-const _global = globalThis || this
 const globalKey = '__vueuse_ssr_handlers__'
 // @ts-expect-error inject global
-_global[globalKey] = _global[globalKey] || {}
+globalThis[globalKey] = globalThis[globalKey] || {}
 // @ts-expect-error inject global
-const handlers: Partial<SSRHandlersMap> = _global[globalKey]
+const handlers: Partial<SSRHandlersMap> = globalThis[globalKey]
 
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T]): SSRHandlersMap[T]
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T] | undefined): SSRHandlersMap[T] | undefined
