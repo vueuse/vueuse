@@ -1,5 +1,5 @@
 import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
-import { ref, unref } from 'vue-demi'
+import { nextTick, ref, unref } from 'vue-demi'
 import type { MapOldSources, MapSources, MaybeRef } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { watchWithFilter } from '../watchWithFilter'
@@ -38,7 +38,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
     (...args) => {
       current.value += 1
       if (current.value >= unref(count))
-        stop()
+        nextTick(() => stop())
       // eslint-disable-next-line n/no-callback-literal
       cb(...args)
     },
