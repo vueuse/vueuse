@@ -1,5 +1,5 @@
 import type { WatchCallback, WatchOptions, WatchSource } from 'vue-demi'
-import { watch, nextTick } from 'vue-demi'
+import { nextTick, watch } from 'vue-demi'
 import type { MapOldSources, MapSources } from '../utils'
 
 // overlads
