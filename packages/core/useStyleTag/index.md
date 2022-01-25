@@ -4,7 +4,7 @@ category: Browser
 
 # useStyleTag
 
-Inject reactive `&lt;style&gt;` element in head.
+Inject reactive `<style>` element in head.
 
 ## Usage
 
@@ -19,46 +19,49 @@ const {
   css,
   load,
   unload,
-  loaded,
-} = useStyleTag('.usestyle-demo { margin-top: 32px; }')
+  isLoaded,
+} = useStyleTag('.foo { margin-top: 32px; }')
 
 // Later you can modify styles
-css.value = '.usestyle-demo { margin-top: 64px; }'
+css.value = '.foo { margin-top: 64px; }'
 ```
-This code will be injected in `<head>`:
+
+This code will be injected to `<head>`:
+
 ```html
-<style type="text/css" id="usestyle_1">.usestyle-demo { margin-top: 64px; }</style>
+<style type="text/css" id="vueuse_styletag_1">
+.foo { margin-top: 64px; }
+</style>
 ```
 
 ### Custom ID
 
 If you need to define your own id, you can pass `id` as first argument.
+
 ```js
 import { useStyleTag } from '@vueuse/core'
 
-useStyleTag('demo-styles', '.usestyle-demo { margin-top: 32px; }')
+useStyleTag('.foo { margin-top: 32px; }', { id: 'custom-id' })
 ```
+
 ```html
-<!-- Injected in head: -->
-<style type="text/css" id="demo-styles">.usestyle-demo { margin-top: 64px; }</style>
+<!-- injected to <head> -->
+<style type="text/css" id="custom-id">
+.foo { margin-top: 64px; }
+</style>
 ```
 
 ### Media query
 
 You can pass media attributes as last argument within object.
+
 ```js
-useStyleTag('.usestyle-demo { margin-top: 32px; }', { media: 'print' })
-```
-```html
-<!-- Injected in head: -->
-<style type="text/css" id="usestyle_1" media="print">.usestyle-demo { margin-top: 64px; }</style>
+useStyleTag('.foo { margin-top: 32px; }', { media: 'print' })
 ```
 
-With custom id:
-```js
-useStyleTag('demo-styles', '.usestyle-demo { margin-top: 32px; }', { media: 'print' })
-```
 ```html
-<!-- Injected in head: -->
-<style type="text/css" id="demo-styles" media="print">.usestyle-demo { margin-top: 64px; }</style>
+<!-- injected to <head> -->
+<style type="text/css" id="vueuse_styletag_1" media="print">
+.foo { margin-top: 64px; }
+</style>
 ```

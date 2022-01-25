@@ -24,6 +24,13 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
    * @default false
    */
   manual?: boolean
+
+  /**
+   * DOM id of the style tag
+   *
+   * @default auto-incremented
+   */
+  id?: string
 }
 
 export interface UseStyleTagReturn {
@@ -31,7 +38,7 @@ export interface UseStyleTagReturn {
   css: Ref<string>
   load: () => void
   unload: () => void
-  loaded: Readonly<Ref<boolean>>
+  isLoaded: Readonly<Ref<boolean>>
 }
 
 let _id = 0
@@ -47,31 +54,17 @@ let _id = 0
  */
 export function useStyleTag(
   css: MaybeRef<string>,
-  options?: UseStyleTagOptions,
-): UseStyleTagReturn
+  options: UseStyleTagOptions = {},
+): UseStyleTagReturn {
+  const isLoaded = ref(false)
 
-/**
- * Inject <style> element in head.
- *
- * @see https://vueuse.org/useStyleTag
- * @param id
- * @param css
- * @param options
- */
-export function useStyleTag(
-  id: string,
-  css: MaybeRef<string>,
-  options?: UseStyleTagOptions,
-): UseStyleTagReturn
+  const {
+    document = defaultDocument, immediate = true,
+    manual = false,
+    id = `vueuse_styletag_${++_id}`,
+  } = options
 
-export function useStyleTag(...args: any[]) {
-  const loaded = ref(false)
-
-  const options: UseStyleTagOptions = typeof args[args.length - 1] === 'object' ? args.pop() : {}
-  const css = ref(args.pop() as string)
-  const id = args[0] as string ?? `usestyle_${++_id}`
-
-  const { document = defaultDocument, immediate = true, manual = false } = options
+  const cssRef = ref(css)
 
   let stop = () => {}
   const load = () => {
@@ -85,27 +78,26 @@ export function useStyleTag(...args: any[]) {
       el.media = options.media
     document.head.appendChild(el)
 
-    if (loaded.value)
+    if (isLoaded.value)
       return
 
     stop = watch(
-      css,
+      cssRef,
       (value) => {
         el.innerText = value
       },
       { immediate: true },
     )
 
-    loaded.value = true
+    isLoaded.value = true
   }
 
   const unload = () => {
-    if (!document || !loaded.value)
+    if (!document || !isLoaded.value)
       return
-
     stop()
     document.head.removeChild(document.getElementById(id) as HTMLStyleElement)
-    loaded.value = false
+    isLoaded.value = false
   }
 
   if (immediate && !manual)
@@ -116,9 +108,9 @@ export function useStyleTag(...args: any[]) {
 
   return {
     id,
-    css,
+    css: cssRef,
     unload,
     load,
-    loaded: readonly(loaded),
+    isLoaded: readonly(isLoaded),
   }
 }
