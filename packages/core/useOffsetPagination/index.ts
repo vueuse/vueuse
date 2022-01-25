@@ -1,4 +1,4 @@
-import type { UnwrapNestedRefs } from 'vue-demi'
+import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
 import { computed, isRef, reactive, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/core'
 import { biSyncRef, noop, useClamp } from '@vueuse/core'
@@ -7,7 +7,7 @@ export interface UseOffsetPaginationOptions {
   /**
    * Total number of items.
    */
-  total: MaybeRef<number>
+  total?: MaybeRef<number>
 
   /**
    * The number of items to display per page.
@@ -24,22 +24,36 @@ export interface UseOffsetPaginationOptions {
   /**
    * Callback when the `page` change.
    */
-  onPageChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
+  onPageChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => unknown
 
   /**
    * Callback when the `pageSize` change.
    */
-  onPageSizeChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
+  onPageSizeChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => unknown
 
   /**
    * Callback when the `pageCount` change.
    */
-  onPageCountChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
+  onPageCountChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => unknown
 }
 
-export function useOffsetPagination(options: UseOffsetPaginationOptions) {
+export interface UseOffsetPaginationReturn {
+  currentPage: Ref<number>
+  currentPageSize: Ref<number>
+  pageCount: ComputedRef<number>
+  isFirstPage: ComputedRef<boolean>
+  isLastPage: ComputedRef<boolean>
+  prev: () => void
+  next: () => void
+}
+
+export type UseOffsetPaginationInfinityPageReturn = Omit<UseOffsetPaginationReturn, 'isLastPage'>
+
+export function useOffsetPagination(options: Omit<UseOffsetPaginationOptions, 'total'>): UseOffsetPaginationInfinityPageReturn
+export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn
+export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn {
   const {
-    total,
+    total = Infinity,
     pageSize = 10,
     page = 1,
     onPageChange = noop,
@@ -94,5 +108,3 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions) {
 
   return returnValue
 }
-
-export type UseOffsetPaginationReturn = ReturnType<typeof useOffsetPagination>
