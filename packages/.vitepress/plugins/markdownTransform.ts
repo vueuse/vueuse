@@ -55,7 +55,7 @@ export function MarkdownTransform(): Plugin {
   }
 }
 
-const DIR_SRC = resolve(__dirname, '..', '..')
+const DIR_SRC = resolve(__dirname, '../..')
 const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 
 export async function getFunctionMarkdown(pkg: string, name: string) {

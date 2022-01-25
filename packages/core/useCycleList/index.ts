@@ -46,7 +46,7 @@ export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
 
   function set(i: number) {
     const length = list.length
-    const index = i % length + length % length
+    const index = (i % length + length) % length
     const value = list[index]
     state.value = value
     return value
