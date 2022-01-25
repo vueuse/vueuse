@@ -29,8 +29,7 @@
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
     "update": "esno scripts/update.ts",
-    "update:full": "nr update && nr build:types && nr update:recent",
-    "update:recent": "esno scripts/recently-updated.ts"
+    "update:full": "nr update && nr build:types"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
