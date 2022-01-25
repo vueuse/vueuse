@@ -5,35 +5,35 @@ import { biSyncRef, noop, useClamp } from '@vueuse/core'
 
 export interface UseOffsetPaginationOptions {
   /**
-     * The number of items to show per page.
-     */
+   * Total number of items.
+   */
   total: MaybeRef<number>
 
   /**
-     * The number of items to display per page.
-     * @default 10
-     */
+   * The number of items to display per page.
+   * @default 10
+   */
   pageSize?: MaybeRef<number>
 
   /**
-     * The current page number.
-     * @default 1
-     */
+   * The current page number.
+   * @default 1
+   */
   page?: MaybeRef<number>
 
   /**
-     * Callback when the `page` change.
-     */
+   * Callback when the `page` change.
+   */
   onPageChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 
   /**
-     * Callback when the `pageSize` change.
-     */
+   * Callback when the `pageSize` change.
+   */
   onPageSizeChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 
   /**
-     * Callback when the `pageCount` change.
-     */
+   * Callback when the `pageCount` change.
+   */
   onPageCountChange?: (returnValue: UnwrapNestedRefs<UseOffsetPaginationReturn>) => any
 }
 
