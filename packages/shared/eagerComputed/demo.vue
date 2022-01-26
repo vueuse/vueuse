@@ -3,9 +3,7 @@ import { computed, onUpdated, ref } from 'vue-demi'
 import { eagerComputed } from '.'
 
 const eagerValue = ref(1)
-const eagerIsOdd = eagerComputed(() => eagerValue.value % 2 === 0, {
-  flush: 'pre',
-})
+const eagerIsOdd = eagerComputed(() => eagerValue.value % 2 === 0)
 
 const lazyValue = ref(1)
 const lazyIsOdd = computed(() => lazyValue.value % 2 === 0)
