@@ -11,7 +11,7 @@ Reactive mouse position
 ```js
 import { useMouse } from '@vueuse/core'
 
-const { x, y, source } = useMouse()
+const { x, y, sourceType } = useMouse()
 ```
 
 Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
