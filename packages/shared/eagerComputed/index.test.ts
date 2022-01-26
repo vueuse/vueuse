@@ -15,8 +15,6 @@ describe('eagerComputed', () => {
     })
     const plusOneEagerComputed = eagerComputed(() => {
       return foo.value + 1
-    }, {
-      flush: 'pre',
     })
 
     const plusOneComputedSpy = vitest.fn()
@@ -54,8 +52,6 @@ describe('eagerComputed', () => {
     })
     const isOddEagerComputed = eagerComputed(() => {
       return foo.value % 2 === 0
-    }, {
-      flush: 'pre',
     })
 
     const isOddComputedSpy = vitest.fn()
