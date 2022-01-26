@@ -99,7 +99,9 @@ export default defineConfig({
       'qrcode',
       'rxjs',
       'tslib',
+      'fuse.js',
       'universal-cookie',
+      'dayjs/plugin/relativeTime',
     ],
   },
 })

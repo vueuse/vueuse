@@ -121,7 +121,6 @@ const config = {
           {
             items: [
               { text: 'Release Notes', link: 'https://github.com/vueuse/vueuse/releases' },
-              { text: 'What\'s news', link: '/recently-updated' },
             ],
           },
           {
