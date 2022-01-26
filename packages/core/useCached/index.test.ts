@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import { nextTwoTick } from '../../.test'
-import { useDiff } from '.'
+import { useCached } from '.'
 
 function arrayEquals<T>(a: T[], b: T[]): boolean {
   if (a.length !== b.length)
@@ -13,16 +13,16 @@ function arrayEquals<T>(a: T[], b: T[]): boolean {
   return true
 }
 
-describe('useDiff', () => {
+describe('useCached', () => {
   it('should be defined', () => {
-    expect(useDiff).toBeDefined()
+    expect(useCached).toBeDefined()
   })
 
   it('should work', async() => {
     const arrayRef = ref([1])
     const initialArrayValue = arrayRef.value
 
-    const cachedArrayRef = useDiff(arrayRef, arrayEquals)
+    const cachedArrayRef = useCached(arrayRef, arrayEquals)
     await nextTwoTick()
 
     expect(cachedArrayRef.value).toBe(initialArrayValue)

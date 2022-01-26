@@ -2,14 +2,14 @@
 category: Utilities
 ---
 
-# useDiff
+# useCached
 
 Cache the a ref with custom comparator.
 
 ## Usage
 
 ```ts
-import { useDiff } from '@vueuse/core'
+import { useCached } from '@vueuse/core'
 
 interface Value {
   value: number
@@ -18,7 +18,7 @@ interface Value {
 
 const value = ref<Value>({ value: 42, extra: 0 })
 const comparator = (a: Value, b: Value) => a.value === b.value
-const cachedValue = useDiff(value, comparator)
+const cachedValue = useCached(value, comparator)
 
 value.value = {
     value: 42,

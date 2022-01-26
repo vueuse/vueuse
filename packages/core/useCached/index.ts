@@ -1,7 +1,7 @@
 import type { Ref, WatchOptions } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 
-export function useDiff<T>(refValue: Ref<T>, comparator: (a: T, b: T) => boolean, watchOptions?: WatchOptions): Ref<T> {
+export function useCached<T>(refValue: Ref<T>, comparator: (a: T, b: T) => boolean, watchOptions?: WatchOptions): Ref<T> {
   const cachedValue = ref(refValue.value) as Ref<T>
 
   watch(() => refValue.value, (value) => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { useDiff } from '.'
+import { useCached } from '.'
 
 interface Value {
   value: number
@@ -9,7 +9,7 @@ interface Value {
 
 const value = ref<Value>({ value: 42, extra: 0 })
 const comparator = (a: Value, b: Value) => a.value === b.value
-const cachedValue = useDiff(value, comparator)
+const cachedValue = useCached(value, comparator)
 
 const inputValue = ref(value.value.value)
 const inputExtra = ref(value.value.extra)
