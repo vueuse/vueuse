@@ -5,14 +5,13 @@ import type { Ref, WatchOptionsBase } from 'vue-demi'
 import { readonly, shallowRef, watchEffect } from 'vue-demi'
 
 export function eagerComputed<T>(fn: () => T, options?: WatchOptionsBase): Readonly<Ref<T>> {
-  const { flush = 'sync' } = options ?? {}
-
   const result = shallowRef()
 
   watchEffect(() => {
     result.value = fn()
   }, {
-    flush,
+    ...options,
+    flush: options?.flush ?? 'sync',
   })
 
   return readonly(result)
