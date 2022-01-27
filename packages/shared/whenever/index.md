@@ -11,12 +11,12 @@ Shorthand for watching value to be truthy.
 ```js
 import { useAsyncState, whenever } from '@vueuse/core'
 
-const { state, ready } = useAsyncState(
+const { state, isReady } = useAsyncState(
   fetch('https://jsonplaceholder.typicode.com/todos/1').then(t => t.json()),
   {},
 )
 
-whenever(ready, () => console.log(state))
+whenever(isReady, () => console.log(state))
 ```
 
 ```ts
