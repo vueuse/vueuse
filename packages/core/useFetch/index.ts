@@ -86,7 +86,7 @@ export interface UseFetchReturn<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'get' | 'post' | 'put' | 'delete'
+type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
