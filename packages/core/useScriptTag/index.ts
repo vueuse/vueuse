@@ -44,6 +44,8 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  *
  * @see https://vueuse.org/useScriptTag
  * @param src
+ * @param onLoaded
+ * @param options
  */
 export function useScriptTag(
   src: MaybeRef<string>,

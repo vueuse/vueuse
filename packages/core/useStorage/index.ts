@@ -66,7 +66,7 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   listenToStorageChanges?: boolean
 
   /**
-   * Write the default value to the storage when it does not existed
+   * Write the default value to the storage when it does not exist
    *
    * @default true
    */
