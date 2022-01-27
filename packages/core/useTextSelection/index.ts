@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { defaultWindow } from '../_configurable'
 
 function getRangesFromSelection(selection: Selection) {
   const rangeCount = selection.rangeCount ?? 0
