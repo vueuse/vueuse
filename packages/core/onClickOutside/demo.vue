@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
+import type { MaybeElementRef } from '..'
 import { onClickOutside } from '.'
 
 const modal = ref(false)
 const modalRef = ref(null)
+const safebutton = ref<Element>() as MaybeElementRef
 
 onClickOutside(
   modalRef,
   (event) => {
     console.log(event)
     modal.value = false
+  },
+  {
+    safelist: [safebutton],
   },
 )
 
@@ -22,18 +27,28 @@ onClickOutside(
     console.log(event)
     dropdown.value = false
   },
+  {
+    safelist: [safebutton],
+  },
 )
 </script>
 
 <template>
+  <button ref="safebutton">
+    safebutton
+  </button>
   <button @click="modal = true">
     Open Modal
   </button>
-  <div class="relative inline-block ml-2">
+  <div class="ml-2 relative inline-block">
     <button @click="dropdown = true">
       Open Dropdown
     </button>
-    <div v-if="dropdown" ref="dropdownRef" class="dropdown-inner">
+    <div
+      v-if="dropdown"
+      ref="dropdownRef"
+      class="dropdown-inner"
+    >
       Click outside of the dropdown to close it.
     </div>
   </div>
