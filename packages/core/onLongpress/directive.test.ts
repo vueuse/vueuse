@@ -1,10 +1,10 @@
-import { defineComponent } from 'vue'
-import type { LongpressOptions } from '@vueuse/core'
+import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 
 import { vOnLongpress } from './directive'
+import type { LongpressOptions } from '.'
 
 const App = defineComponent({
 
