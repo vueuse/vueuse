@@ -1,7 +1,7 @@
 import { defineComponent, h, ref } from 'vue-demi'
-import type { LongpressOptions } from '@vueuse/core'
-import { onLongpress } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
+import type { LongpressOptions } from '.'
+import { onLongpress } from '.'
 
 export interface OnLongpressProps extends RenderableComponent{
   options?: LongpressOptions
