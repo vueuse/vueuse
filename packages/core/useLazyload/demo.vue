@@ -11,7 +11,12 @@ useLazyload(target)
     <p class="notice">
       Scroll me down!
     </p>
-    <img ref="target" class="target" data-src="/vue.png">
+    <img
+      ref="target"
+      class="target"
+      data-src="/pwa-512x512.png"
+      alt="it's a VueUse icon"
+    >
   </div>
 </template>
 
@@ -31,6 +36,7 @@ useLazyload(target)
   opacity: 0.8;
 }
 .target {
+  /*width: 250px;*/
   border: 2px dashed var(--c-brand);
   padding: 10px;
   max-height: 150px;
