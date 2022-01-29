@@ -449,7 +449,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     patch: setMethod('patch'),
     head: setMethod('head'),
     options: setMethod('options'),
-    
     // type
     json: setType('json'),
     text: setType('text'),
