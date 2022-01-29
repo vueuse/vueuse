@@ -443,6 +443,10 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     put: setMethod('put'),
     post: setMethod('post'),
     delete: setMethod('delete'),
+    patch: setMethod('patch'),
+    head: setMethod('head'),
+    options: setMethod('options'),
+    
     // type
     json: setType('json'),
     text: setType('text'),
