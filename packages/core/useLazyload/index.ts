@@ -1,25 +1,7 @@
-
-import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import type { IntersectionObserverOptions } from '../useIntersectionObserver'
 import { unrefElement } from '../unrefElement'
 import { useIntersectionObserver } from '../useIntersectionObserver'
-
-export interface LazyloadOptions extends ConfigurableWindow{
-  /**
-   * The Element or Document whose bounds are used as the bounding box when testing for intersection.
-   */
-  root?: MaybeElementRef
-
-  /**
-   * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
-   */
-  rootMargin?: string
-
-  /**
-   * Either a single number or an array of numbers between 0.0 and 1.
-   */
-  threshold?: number | number[]
-}
 
 function load(target: MaybeElementRef) {
   const el = unrefElement(target)
@@ -62,7 +44,7 @@ function load(target: MaybeElementRef) {
   if (backgroundImage)
     el.style.backgroundImage = `url(${backgroundImage})`
 }
-export function useLazyload(target: MaybeElementRef, options: LazyloadOptions = {}) {
+export function useLazyload(target: MaybeElementRef, options: IntersectionObserverOptions = {}) {
   const { isSupported } = useIntersectionObserver(target, ([{ isIntersecting }]) => {
     if (isIntersecting)
       load(target)
