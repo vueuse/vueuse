@@ -76,6 +76,9 @@ export interface UseFetchReturn<T> {
   post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
   put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
   delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
 
   // type
   json<JSON = any>(): UseFetchReturn<JSON>
