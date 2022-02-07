@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { useLazyload } from '.'
+import { useImageLazyLoad } from './index'
 
-const target = ref(null)
-useLazyload(target)
+const target = ref()
+const { src } = useImageLazyLoad(target, {
+  src: '/pwa-512x512.png',
+})
 </script>
 
 <template>
@@ -14,7 +16,7 @@ useLazyload(target)
     <img
       ref="target"
       class="target"
-      data-src="/pwa-512x512.png"
+      :src="src"
       alt="it's a VueUse icon"
     >
   </div>
