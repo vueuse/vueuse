@@ -40,7 +40,7 @@ export function useFileDialog(options?: Partial<Options>) {
 
   return {
     files: readonly(files),
-    openFileDialog,
+    open,
   }
 }
 
