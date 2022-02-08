@@ -29,5 +29,3 @@ export default {
   Pixel Ratio: {{ pixelRatio }}
 </UseDevicePixelRatio>
 ```
-
-<LearnMoreComponents />

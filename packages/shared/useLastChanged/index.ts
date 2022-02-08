@@ -4,7 +4,7 @@ import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<
   Immediate extends boolean,
-  InitialValue extends number | null | undefined = undefined
+  InitialValue extends number | null | undefined = undefined,
 > extends WatchOptions<Immediate> {
   initialValue?: InitialValue
 }

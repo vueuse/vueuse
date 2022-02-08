@@ -27,5 +27,3 @@ const { now, pause, resume } = useNow({ controls: true })
   <button @click="resume()">Resume</button>
 </UseNow>
 ```
-
-<LearnMoreComponents />

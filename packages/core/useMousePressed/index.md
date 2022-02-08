@@ -56,5 +56,3 @@ export default {
   Is Pressed: {{ pressed }}
 </UseMousePressed>
 ```
-
-<LearnMoreComponents />

@@ -21,7 +21,7 @@ const { x, y, style } = useDraggable(el, {
       p="x-4 y-2"
       border="~ gray-400 rounded"
       shadow="~ hover:lg"
-      class="fixed bg-$c-bg select-none cursor-move z-10"
+      class="fixed bg-$vt-c-bg select-none cursor-move z-10"
       style="touch-action:none;"
       :style="style"
     >
@@ -36,13 +36,13 @@ const { x, y, style } = useDraggable(el, {
       p="x-4 y-2"
       border="~ gray-400 rounded"
       shadow="~ hover:lg"
-      class="fixed bg-$c-bg select-none cursor-move z-10"
+      class="fixed bg-$vt-c-bg select-none cursor-move z-10"
       :initial-value="{ x: innerWidth / 3.9, y: 150 }"
       :prevent-default="true"
       storage-key="vueuse-draggable-pos"
       storage-type="session"
     >
-      Headless component
+      Renderless component
       <div class="text-xs opacity-50">
         Position persisted in sessionStorage
       </div>

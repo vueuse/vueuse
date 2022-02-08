@@ -37,5 +37,3 @@ You can find [more information about the state on the MDN](https://developer.moz
   Gamma: {{ gamma }}
 </UseDeviceOrientation>
 ```
-
-<LearnMoreComponents />

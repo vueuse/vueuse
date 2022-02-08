@@ -11,7 +11,7 @@ const {
 </script>
 
 <template>
-  <div class="grid grid-cols-3 text-center">
+  <div class="grid grid-cols-3 text-center" gap="2" p="y-4">
     <carbon:camera />
     <carbon:microphone />
     <carbon:headphones />
@@ -27,19 +27,19 @@ const {
     </div>
 
     <div>
-      <div v-for="i of cameras" :key="i.deviceId">
+      <div v-for="i of cameras" :key="i.deviceId" text="sm">
         {{ i.label }}
       </div>
     </div>
 
     <div>
-      <div v-for="i of microphones" :key="i.deviceId">
+      <div v-for="i of microphones" :key="i.deviceId" text="sm">
         {{ i.label }}
       </div>
     </div>
 
     <div>
-      <div v-for="i of speakers" :key="i.deviceId">
+      <div v-for="i of speakers" :key="i.deviceId" text="sm">
         {{ i.label }}
       </div>
     </div>
@@ -52,6 +52,6 @@ svg {
 }
 
 .title {
-  @apply opacity-50 uppercase tracking-widest text-sm;
+  @apply opacity-50 uppercase tracking-wide text-sm;
 }
 </style>

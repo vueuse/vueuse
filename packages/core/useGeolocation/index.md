@@ -33,5 +33,3 @@ const { coords, locatedAt, error } = useGeolocation()
   Longitude: {{ longitude }}
 </UseGeolocation>
 ```
-
-<LearnMoreComponents />

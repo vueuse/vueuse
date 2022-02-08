@@ -151,6 +151,6 @@ const keys = useMagicKeys({ reactive: true })
 <template>
   <div v-if="keys.shift">
     You are holding the Shift key!
-  <div>
+  </div>
 </template>
 ```

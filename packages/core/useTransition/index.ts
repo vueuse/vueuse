@@ -17,7 +17,7 @@ type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export type TransitionOptions = {
+export interface TransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */

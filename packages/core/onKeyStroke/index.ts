@@ -5,7 +5,7 @@ import { defaultWindow } from '../_configurable'
 export type KeyPredicate = (event: KeyboardEvent) => boolean
 export type KeyFilter = null | undefined | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
-export type KeyStrokeOptions = {
+export interface KeyStrokeOptions {
   eventName?: KeyStrokeEventName
   target?: MaybeRef<EventTarget>
   passive?: boolean

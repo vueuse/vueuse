@@ -3,7 +3,7 @@ import { useFirestore } from './index'
 
 describe('useFirestore', () => {
   const expectArrayRef = (path: string, initialValue: any, result: boolean) => {
-    // @ts-expect-error
+    // @ts-expect-error cast
     const docRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = {
       path,
       onSnapshot: vitest.fn() as any,

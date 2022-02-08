@@ -18,7 +18,7 @@ describe('useJwt', () => {
     expect(header.value?.alg).toBe('HS256')
     // NOTE: ts-ignore can be removed as soon as jwt-decode > v3.1.2 was released
     // see: https://github.com/auth0/jwt-decode/pull/115
-    // @ts-ignore
+    // @ts-expect-error cast
     expect(header.value?.typ).toBe('JWT')
     expect(payload.value?.sub).toBe('1234567890')
     expect(payload.value?.iat).toBe(1516239022)

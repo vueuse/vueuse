@@ -21,5 +21,3 @@ const isDark = usePreferredDark()
   Prefers Dark: {{ prefersDark }}
 </UsePreferredDark>
 ```
-
-<LearnMoreComponents />

@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementBounding
@@ -39,5 +39,3 @@ export default {
   Height: {{ height }}
 </UseElementBounding>
 ```
-
-<LearnMoreComponents />

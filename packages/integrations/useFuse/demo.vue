@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import type { UseFuseOptions } from '.'
 import { useFuse } from '.'
 
-type DataItem = {
+interface DataItem {
   firstName: string
   lastName: string
 }
