@@ -11,13 +11,13 @@
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/integrations"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "license": "MIT",
   "author": "Anthony Fu <https://github.com/antfu>",
   "sideEffects": false,
   "exports": {
@@ -75,26 +75,9 @@
   },
   "main": "./index.cjs",
   "jsdelivr": "./index.iife.min.js",
-  "unpkg": "./index.iife.min.js",
   "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
   "types": "./index.d.ts",
-  "dependencies": {
-    "@vueuse/core": "workspace:*",
-    "@vueuse/shared": "workspace:*",
-    "vue-demi": "*"
-  },
-  "devDependencies": {
-    "@types/nprogress": "^0.2.0",
-    "@types/qrcode": "^1.4.2",
-    "axios": "^0.25.0",
-    "drauu": "^0.2.1",
-    "focus-trap": "^6.7.2",
-    "fuse.js": "^6.5.3",
-    "jwt-decode": "^3.1.2",
-    "nprogress": "^0.2.0",
-    "qrcode": "^1.5.0",
-    "universal-cookie": "^4.0.4"
-  },
   "peerDependencies": {
     "axios": "*",
     "drauu": "*",
@@ -130,5 +113,22 @@
     "universal-cookie": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
+  },
+  "devDependencies": {
+    "@types/nprogress": "^0.2.0",
+    "@types/qrcode": "^1.4.2",
+    "axios": "^0.25.0",
+    "drauu": "^0.2.1",
+    "focus-trap": "^6.7.2",
+    "fuse.js": "^6.5.3",
+    "jwt-decode": "^3.1.2",
+    "nprogress": "^0.2.0",
+    "qrcode": "^1.5.0",
+    "universal-cookie": "^4.0.4"
   }
 }
