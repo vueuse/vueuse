@@ -31,6 +31,6 @@ const { activeIndex, result } = useAsyncQueue([p1, p2])
 
 console.log(activeIndex.value) // current pending task index
 
-console.log(result.value) // the tasks result
+console.log(result) // the tasks result
 
 ```

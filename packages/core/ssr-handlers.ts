@@ -21,7 +21,14 @@ export interface SSRHandlersMap {
   updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
 }
 
-const _global = typeof globalThis === 'undefined' ? this : globalThis
+const _global
+  = typeof globalThis !== 'undefined'
+    ? globalThis
+    : typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+        ? global
+        : typeof self !== 'undefined' ? self : {}
 const globalKey = '__vueuse_ssr_handlers__'
 // @ts-expect-error inject global
 _global[globalKey] = _global[globalKey] || {}
