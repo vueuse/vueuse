@@ -1,40 +1,44 @@
-import { watch } from 'vue-demi'
+import type { UnwrapNestedRefs } from 'vue-demi'
+import { reactive, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
 
 export interface UseInfiniteScrollOptions extends UseScrollOptions {
   /**
-   *  the minimum distance between the bottom of the element and the bottom of the viewport
+   * The minimum distance between the bottom of the element and the bottom of the viewport
    *
-   * @default true
+   * @default 0
    */
-  infiniteScrollDistance?: number
-
-  loadMore?: () => void
-
+  distance?: number
 }
 
 /**
  * Reactive infinite scroll.
  *
  * @see https://vueuse.org/useInfiniteScroll
- * @param element
- * @param options
  */
 export function useInfiniteScroll(
   element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => void,
   options: UseInfiniteScrollOptions = {},
 ) {
-  const { arrivedState } = useScroll(element, {
-    ...options,
-    offset: {
-      bottom: options.infiniteScrollDistance,
+  const state = reactive(useScroll(
+    element,
+    {
+      ...options,
+      offset: {
+        bottom: options.distance ?? 0,
+        ...options.offset,
+      },
     },
-  })
+  ))
 
-  watch(arrivedState, () => {
-    if (arrivedState.bottom && options.loadMore)
-      options.loadMore()
-  })
+  watch(
+    () => state.arrivedState.bottom,
+    (v) => {
+      if (v)
+        onLoadMore(state)
+    },
+  )
 }
