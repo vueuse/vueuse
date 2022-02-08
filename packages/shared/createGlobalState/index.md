@@ -31,4 +31,4 @@ export default defineComponent({
 
 ## Related Functions
 
-- `createSharableComposable`
+- `createSharedComposable`

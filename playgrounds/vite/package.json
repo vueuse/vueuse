@@ -6,10 +6,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.26"
+    "vue": "^3.2.30"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.1",
-    "vite": "^2.7.10"
+    "@vitejs/plugin-vue": "^2.1.0",
+    "vite": "^2.7.13"
   }
 }

@@ -1,5 +1,5 @@
 import { computed } from 'vue-demi'
-import type { JestMockCompatFn } from 'vitest'
+import type { MockedFunction } from 'vitest'
 import type { UseMemoizeCache } from '.'
 import { useMemoize } from '.'
 
@@ -192,7 +192,7 @@ describe('useMemoize', () => {
 
       it('should use given cache on get without cache', () => {
         const memo = useMemoize(resolver, { cache });
-        (cache.has as JestMockCompatFn).mockReturnValue(false)
+        (cache.has as MockedFunction<any>).mockReturnValue(false)
 
         expect(memo(1)).toBe(serializedKey)
         expect(cache.has).toHaveBeenCalledTimes(1)
