@@ -4,11 +4,13 @@ category: Utilities
 
 # useOffsetPagination
 
-reactive offset pagination.
+Reactive offset pagination.
 
 ## Usage
 
 ```ts
+import { useOffsetPagination } from '@vueuse/core'
+
 function fetchData({ currentPage, currentPageSize }: { currentPage: number; currentPageSize: number }) {
   fetch(currentPage, currentPageSize).then((responseData) => {
     data.value = responseData
@@ -23,19 +25,16 @@ const {
   isLastPage,
   prev,
   next,
-} = useOffsetPagination(
-  {
-    total: database.value.length,
-    page: 1,
-    pageSize,
-    onPageChange: fetchData,
-    onPageSizeChange: fetchData,
-  },
-)
+} = useOffsetPagination({
+  total: database.value.length,
+  page: 1,
+  pageSize,
+  onPageChange: fetchData,
+  onPageSizeChange: fetchData,
+})
 ```
 
-
-## Component 
+## Component
 
 ```html
 <UseOffsetPagination
@@ -111,7 +110,9 @@ event listener:
   <!-- your code -->
 </UseOffsetPagination>
 ```
+
 or props event callback:
+
 ```html
 <UseOffsetPagination
   v-slot="{

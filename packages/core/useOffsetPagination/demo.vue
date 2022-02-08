@@ -9,7 +9,7 @@ interface User {
 }
 const database = ref([]) as Ref<User[]>
 
-for (let i = 0; i < 101; i++)
+for (let i = 0; i < 80; i++)
   database.value.push({ id: i, name: `user ${i}` })
 
 function fetch(page: number, pageSize: number) {
@@ -46,16 +46,13 @@ const {
   isLastPage,
   prev,
   next,
-} = useOffsetPagination(
-  {
-    total: database.value.length,
-    page: 1,
-    pageSize,
-    onPageChange: fetchData,
-    onPageSizeChange: fetchData,
-  },
-)
-
+} = useOffsetPagination({
+  total: database.value.length,
+  page: 1,
+  pageSize,
+  onPageChange: fetchData,
+  onPageSizeChange: fetchData,
+})
 </script>
 
 <template>
@@ -85,7 +82,7 @@ const {
     </div>
     <div>{{ isLastPage }}</div>
   </div>
-  <div>
+  <div class="my-4">
     <button :disabled="isFirstPage" @click="prev">
       prev
     </button>
