@@ -7,14 +7,19 @@
     "vue-use",
     "utils"
   ],
-  "license": "MIT",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/integrations"
   },
   "funding": "https://github.com/sponsors/antfu",
+  "license": "MIT",
   "author": "Anthony Fu <https://github.com/antfu>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -69,29 +74,14 @@
     }
   },
   "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
+  "unpkg": "./index.iife.min.js",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
-  },
-  "optionalDependencies": {
-    "axios": "^0.25.0",
-    "drauu": "^0.2.1",
-    "focus-trap": "^6.7.2",
-    "fuse.js": "^6.5.3",
-    "jwt-decode": "^3.1.2",
-    "nprogress": "^0.2.0",
-    "qrcode": "^1.5.0",
-    "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
@@ -99,5 +89,41 @@
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"
+  },
+  "peerDependencies": {
+    "axios": "*",
+    "drauu": "*",
+    "focus-trap": "*",
+    "fuse.js": "*",
+    "jwt-decode": "*",
+    "nprogress": "*",
+    "qrcode": "*",
+    "universal-cookie": "*"
+  },
+  "peerDependenciesMeta": {
+    "axios": {
+      "optional": true
+    },
+    "drauu": {
+      "optional": true
+    },
+    "focus-trap": {
+      "optional": true
+    },
+    "fuse.js": {
+      "optional": true
+    },
+    "jwt-decode": {
+      "optional": true
+    },
+    "nprogress": {
+      "optional": true
+    },
+    "qrcode": {
+      "optional": true
+    },
+    "universal-cookie": {
+      "optional": true
+    }
   }
 }
