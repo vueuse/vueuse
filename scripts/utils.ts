@@ -108,7 +108,7 @@ export async function readIndexes() {
 
       fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
 
-      const mdRaw = await fs.readFile(join(dir, fnName, 'index.md'), 'utf-8')
+      const mdRaw = await fs.readFile(mdPath, 'utf-8')
 
       const { content: md, data: frontmatter } = matter(mdRaw)
       const category = frontmatter.category
