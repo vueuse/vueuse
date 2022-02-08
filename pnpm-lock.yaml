@@ -24,7 +24,7 @@ importers:
       '@vue/compiler-sfc': ^3.2.30
       '@vue/composition-api': ^1.4.6
       '@vue/test-utils': ^2.0.0-rc.18
-      '@vue/theme': ^1.0.0
+      '@vue/theme': ^1.0.1
       axios: ^0.25.0
       bumpp: ^7.1.1
       consola: ^2.15.3
@@ -84,7 +84,7 @@ importers:
       '@vue/compiler-sfc': 3.2.30
       '@vue/composition-api': 1.4.6_vue@3.2.30
       '@vue/test-utils': 2.0.0-rc.18_vue@3.2.30
-      '@vue/theme': 1.0.0_b4ee0005b62e2a8821f93ec48f0b95ae
+      '@vue/theme': 1.0.1_b4ee0005b62e2a8821f93ec48f0b95ae
       axios: 0.25.0
       bumpp: 7.1.1
       consola: 2.15.3
@@ -173,6 +173,11 @@ importers:
       '@types/qrcode': ^1.4.2
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
+      axios: ^0.25.0
+      drauu: ^0.2.1
+      focus-trap: ^6.7.2
+      fuse.js: ^6.5.3
+      jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.5.0
       universal-cookie: ^4.0.4
@@ -184,6 +189,11 @@ importers:
     devDependencies:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.4.2
+      axios: 0.25.0
+      drauu: 0.2.1
+      focus-trap: 6.7.2
+      fuse.js: 6.5.3
+      jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.5.0
       universal-cookie: 4.0.4
@@ -1617,6 +1627,12 @@ packages:
       - '@algolia/client-search'
     dev: true
 
+  /@drauu/core/0.2.1:
+    resolution: {integrity: sha512-5CVvRnGNWjk9KVEhVRpLntEEMw3rgcph+lTx2Z+/X0Dli+PIVyPUEnxiOqtOlf5RYcckXZJujVtco1J6RDbecA==}
+    dependencies:
+      perfect-freehand: 1.0.16
+    dev: true
+
   /@electron/get/1.13.0:
     resolution: {integrity: sha512-+SjZhRuRo+STTO1Fdhzqnv9D2ZhjxXP6egsJ9kiO8dtP68cDx7dFCwWi64dlMQV7sWcfW1OYCW4wviEBzmRsfQ==}
     engines: {node: '>=8.6'}
@@ -2633,8 +2649,8 @@ packages:
       vue: 3.2.30
     dev: true
 
-  /@vue/theme/1.0.0_b4ee0005b62e2a8821f93ec48f0b95ae:
-    resolution: {integrity: sha512-Ly1SVRB1xBY0Zj3kMvTgBAJYCMahS2IoQ8I6mXv9R8zD4o2Up/Y2GAV3NNhC9GcgyaOYl8F5cdlz1FvI3AvYyQ==}
+  /@vue/theme/1.0.1_b4ee0005b62e2a8821f93ec48f0b95ae:
+    resolution: {integrity: sha512-yVynG5l1BNAh8eQCGg19cyt5TMcbqQCAErT/XZUJOjVT4FjGK1ofGc3wUnDan1JSRF2WNBLOLZHwjc5dJy1Haw==}
     dependencies:
       '@docsearch/css': 3.0.0-alpha.42
       '@docsearch/js': 3.0.0-alpha.42
@@ -3677,6 +3693,12 @@ packages:
   /dotenv/14.3.2:
     resolution: {integrity: sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==}
     engines: {node: '>=12'}
+
+  /drauu/0.2.1:
+    resolution: {integrity: sha512-bGp/yplU9fXKB4S4utn63vQSCW6QAtN3mPTIpGvcaWhSwvFuBb34A33NkyT4bFGwTWdN9iu491507ObOXmd1ug==}
+    dependencies:
+      '@drauu/core': 0.2.1
+    dev: true
 
   /duplexer/0.1.1:
     resolution: {integrity: sha1-rOb/gIwc5mtX0ev5eXessCM0z8E=}
@@ -4771,6 +4793,12 @@ packages:
     resolution: {integrity: sha512-8/sOawo8tJ4QOBX8YlQBMxL8+RLZfxMQOif9o0KUKTNTjMYElWPE0r/m5VNFxTRd0NSw8qSy8dajrwX4RYI1Hw==}
     dev: true
 
+  /focus-trap/6.7.2:
+    resolution: {integrity: sha512-mRVv9QPCXITaDreu+pNXiPk1Rpn0WQtGvGrDo3Z/s2kdwtzFw/WOPfbLkdxWWvcahoInm9eRztuQOr1RNyQGrw==}
+    dependencies:
+      tabbable: 5.2.1
+    dev: true
+
   /follow-redirects/1.14.7:
     resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
     engines: {node: '>=4.0'}
@@ -5644,6 +5672,10 @@ packages:
       object.assign: 4.1.2
     dev: true
 
+  /jwt-decode/3.1.2:
+    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
+    dev: true
+
   /keyv/3.1.0:
     resolution: {integrity: sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA==}
     dependencies:
@@ -6375,6 +6407,10 @@ packages:
 
   /pend/1.2.0:
     resolution: {integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=}
+    dev: true
+
+  /perfect-freehand/1.0.16:
+    resolution: {integrity: sha512-D4+avUeR8CHSl2vaPbPYX/dNpSMRYO3VOFp7qSSc+LRkSgzQbLATVnXosy7VxtsSHEh1C5t8K8sfmo0zCVnfWQ==}
     dev: true
 
   /picocolors/1.0.0:
@@ -7321,6 +7357,10 @@ packages:
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
+    dev: true
+
+  /tabbable/5.2.1:
+    resolution: {integrity: sha512-40pEZ2mhjaZzK0BnI+QGNjJO8UYx9pP5v7BGe17SORTO0OEuuaAwQTkAp8whcZvqon44wKFOikD+Al11K3JICQ==}
     dev: true
 
   /tapable/2.2.1:
