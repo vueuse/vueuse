@@ -3,8 +3,8 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 
-import { vonLongPress } from './directive'
-import type { LongPressOptions } from '.'
+import { VOnLongPress } from './directive'
+import type { OnLongPressOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -25,7 +25,7 @@ const App = defineComponent({
   `,
 })
 
-describe('vonLongPress', () => {
+describe('vOnLongPress', () => {
   let onLongPress = vi.fn()
   let wrapper: VueWrapper<any>
 
@@ -38,7 +38,7 @@ describe('vonLongPress', () => {
         },
         global: {
           directives: {
-            'on-longpress': vonLongPress,
+            'on-longpress': VOnLongPress,
           },
         },
       })
@@ -59,7 +59,7 @@ describe('vonLongPress', () => {
   describe('given options', () => {
     beforeEach(() => {
       onLongPress = vi.fn()
-      const options: LongPressOptions = {
+      const options: OnLongPressOptions = {
         delay: 1000,
       }
       wrapper = mount(App, {
@@ -69,7 +69,7 @@ describe('vonLongPress', () => {
         },
         global: {
           directives: {
-            'on-longpress': vonLongPress,
+            'on-longpress': VOnLongPress,
           },
         },
       })

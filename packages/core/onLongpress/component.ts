@@ -1,13 +1,13 @@
 import { defineComponent, h, ref } from 'vue-demi'
 import type { RenderableComponent } from '../types'
-import type { LongPressOptions } from '.'
+import type { OnLongPressOptions } from '.'
 import { onLongPress } from '.'
 
-export interface onLongPressProps extends RenderableComponent {
-  options?: LongPressOptions
+export interface OnLongPressProps extends RenderableComponent {
+  options?: OnLongPressOptions
 }
 
-export const OnLongPress = defineComponent<onLongPressProps>({
+export const OnLongPress = defineComponent<OnLongPressProps>({
   name: 'OnLongPress',
   props: ['as', 'options'] as unknown as undefined,
   emits: ['trigger'],
@@ -20,7 +20,6 @@ export const OnLongPress = defineComponent<onLongPressProps>({
       },
       props.options,
     )
-
     return () => {
       if (slots.default)
         return h(props.as || 'div', { ref: target }, slots.default())

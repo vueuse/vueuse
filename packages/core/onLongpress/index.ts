@@ -1,10 +1,10 @@
 import type { MaybeElementRef } from '@vueuse/core'
 import { unrefElement, useEventListener } from '@vueuse/core'
-import { computed, ref } from 'vue-demi'
+import { computed } from 'vue-demi'
 
 const DEFAULT_DELAY = 500
 
-export interface LongPressOptions {
+export interface OnLongPressOptions {
   /**
    * Time in ms till `longpress` gets called
    *
@@ -16,26 +16,28 @@ export interface LongPressOptions {
 export function onLongPress(
   target: MaybeElementRef,
   handler: (evt: PointerEvent) => void,
-  options?: LongPressOptions,
+  options?: OnLongPressOptions,
 ) {
   const elementRef = computed(() => unrefElement(target))
 
-  const timeout = ref<number | null>(null)
+  let timeout: number | null = null
 
-  const onDown = (ev: PointerEvent) => {
-    timeout.value = setTimeout(() => {
-      handler(ev)
-    }, options?.delay ?? DEFAULT_DELAY) as unknown as number
-  }
-
-  const onUp = () => {
-    if (timeout.value !== null) {
-      clearTimeout(timeout.value)
-      timeout.value = null
+  function clear() {
+    if (timeout != null) {
+      clearTimeout(timeout)
+      timeout = null
     }
   }
 
+  function onDown(ev: PointerEvent) {
+    clear()
+    timeout = setTimeout(
+      () => handler(ev),
+      options?.delay ?? DEFAULT_DELAY,
+    ) as unknown as number
+  }
+
   useEventListener(elementRef, 'pointerdown', onDown)
-  useEventListener(elementRef, 'pointerup', onUp)
-  useEventListener(elementRef, 'pointermove', onUp)
+  useEventListener(elementRef, 'pointerup', clear)
+  useEventListener(elementRef, 'pointerleave', clear)
 }

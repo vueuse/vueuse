@@ -38,23 +38,31 @@ export async function getChangeLog(count = 200) {
 }
 
 export async function getContributorsAt(path: string) {
-  const list = (await git.raw(['log', '--pretty=format:"%an|%ae"', '--', path]))
-    .split('\n')
-    .map(i => i.slice(1, -1).split('|') as [string, string])
-  const map: Record<string, ContributorInfo> = {}
+  try {
+    const list = (await git.raw(['log', '--pretty=format:"%an|%ae"', '--', path]))
+      .split('\n')
+      .map(i => i.slice(1, -1).split('|') as [string, string])
+    const map: Record<string, ContributorInfo> = {}
 
-  list.forEach((i) => {
-    if (!map[i[1]]) {
-      map[i[1]] = {
-        name: i[0],
-        count: 0,
-        hash: md5(i[1]),
-      }
-    }
-    map[i[1]].count++
-  })
+    list
+      .filter(i => i[1])
+      .forEach((i) => {
+        if (!map[i[1]]) {
+          map[i[1]] = {
+            name: i[0],
+            count: 0,
+            hash: md5(i[1]),
+          }
+        }
+        map[i[1]].count++
+      })
 
-  return Object.values(map).sort((a, b) => b.count - a.count)
+    return Object.values(map).sort((a, b) => b.count - a.count)
+  }
+  catch (e) {
+    console.error(e)
+    return []
+  }
 }
 
 export async function getFunctionContributors() {
