@@ -2,7 +2,7 @@
 category: Sensors
 ---
 
-# onLongpress
+# onLongPress
 
 Listen for a longpress on an element.
 
