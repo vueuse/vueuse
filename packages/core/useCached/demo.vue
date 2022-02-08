@@ -20,7 +20,6 @@ const onSyncClick = () => {
     extra: inputExtra.value,
   }
 }
-
 </script>
 
 <template>
