@@ -4,33 +4,32 @@ category: Utilities
 
 # useCached
 
-Cache the a ref with custom comparator.
+Cache a ref with a custom comparator.
 
 ## Usage
 
 ```ts
 import { useCached } from '@vueuse/core'
 
-interface Value {
+interface Data {
   value: number
   extra: number
 }
 
-const value = ref<Value>({ value: 42, extra: 0 })
-const comparator = (a: Value, b: Value) => a.value === b.value
-const cachedValue = useCached(value, comparator)
+const source = ref<Data>({ value: 42, extra: 0 })
+const cached = useCached(value, (a, b) => a.value === b.value)
 
-value.value = {
-    value: 42,
-    extra: 1
+source.value = {
+  value: 42,
+  extra: 1
 }
 
-console.log(cachedValue.value) // { value: 42, extra: 0 }
+console.log(cached.value) // { value: 42, extra: 0 }
 
-value.value = {
-    value: 43,
-    extra: 1
+source.value = {
+  value: 43,
+  extra: 1
 }
 
-console.log(cachedValue.value) // { value: 43, extra: 1 }
+console.log(cached.value) // { value: 43, extra: 1 }
 ```
