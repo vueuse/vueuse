@@ -1,6 +1,6 @@
 import { readonly, ref } from 'vue-demi'
 
-export interface Options {
+export interface UseFileDialogOptions {
   multiple?: boolean
   accept?: string
 }
