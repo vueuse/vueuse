@@ -29,11 +29,15 @@ onClickOutside(
   <button @click="modal = true">
     Open Modal
   </button>
-  <div class="relative inline-block ml-2">
+  <div class="ml-2 relative inline-block">
     <button @click="dropdown = true">
       Open Dropdown
     </button>
-    <div v-if="dropdown" ref="dropdownRef" class="dropdown-inner">
+    <div
+      v-if="dropdown"
+      ref="dropdownRef"
+      class="dropdown-inner"
+    >
       Click outside of the dropdown to close it.
     </div>
   </div>
