@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import type { MaybeElementRef } from '..'
 import { onClickOutside } from '.'
 
 const modal = ref(false)
 const modalRef = ref(null)
-const safebutton = ref<Element>() as MaybeElementRef
 
 onClickOutside(
   modalRef,
   (event) => {
     console.log(event)
     modal.value = false
-  },
-  {
-    safelist: [safebutton],
   },
 )
 
@@ -27,16 +22,10 @@ onClickOutside(
     console.log(event)
     dropdown.value = false
   },
-  {
-    safelist: [safebutton],
-  },
 )
 </script>
 
 <template>
-  <button ref="safebutton">
-    safebutton
-  </button>
   <button @click="modal = true">
     Open Modal
   </button>
