@@ -1,17 +1,17 @@
 import type { FunctionDirective } from 'vue-demi'
-import type { LongpressOptions } from '.'
-import { onLongpress } from '.'
+import type { LongPressOptions } from '.'
+import { onLongPress } from '.'
 
 type BindingValueFunction = (evt: PointerEvent) => void
 interface BindingValueObject {
   handler: BindingValueFunction
-  options: LongpressOptions
+  options: LongPressOptions
 }
 
-export const vOnLongpress: FunctionDirective<
+export const vonLongPress: FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueObject
 > = (el, binding) => {
-  if (typeof binding.value === 'function') onLongpress(el, binding.value)
-  else onLongpress(el, binding.value.handler, binding.value.options)
+  if (typeof binding.value === 'function') onLongPress(el, binding.value)
+  else onLongPress(el, binding.value.handler, binding.value.options)
 }

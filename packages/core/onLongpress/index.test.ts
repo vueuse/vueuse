@@ -1,11 +1,11 @@
 import { promiseTimeout } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { onLongpress } from '.'
+import { onLongPress } from '.'
 
 const pointerdownEvent = new PointerEvent('pointerdown')
 
-describe('onLongpress', () => {
+describe('onLongPress', () => {
   let element: Ref<HTMLElement>
 
   beforeEach(() => {
@@ -13,30 +13,30 @@ describe('onLongpress', () => {
   })
 
   it('should be defined', () => {
-    expect(onLongpress).toBeDefined()
+    expect(onLongPress).toBeDefined()
   })
 
   describe('given argument is ref', () => {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', async() => {
-        const onLongpressCallback = vi.fn()
-        onLongpress(element, onLongpressCallback)
+        const onLongPressCallback = vi.fn()
+        onLongPress(element, onLongPressCallback)
         element.value.dispatchEvent(pointerdownEvent)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(0)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(0)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(1)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
     })
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', async() => {
-        const onLongpressCallback = vi.fn()
-        onLongpress(element, onLongpressCallback, { delay: 1000 })
+        const onLongPressCallback = vi.fn()
+        onLongPress(element, onLongPressCallback, { delay: 1000 })
         element.value.dispatchEvent(pointerdownEvent)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(0)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(0)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(1)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
     })
   })
@@ -44,24 +44,24 @@ describe('onLongpress', () => {
   describe('given argument is no ref', () => {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', async() => {
-        const onLongpressCallback = vi.fn()
-        onLongpress(element.value, onLongpressCallback)
+        const onLongPressCallback = vi.fn()
+        onLongPress(element.value, onLongPressCallback)
         element.value.dispatchEvent(pointerdownEvent)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(0)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(0)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(1)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
     })
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', async() => {
-        const onLongpressCallback = vi.fn()
-        onLongpress(element.value, onLongpressCallback, { delay: 1000 })
+        const onLongPressCallback = vi.fn()
+        onLongPress(element.value, onLongPressCallback, { delay: 1000 })
         element.value.dispatchEvent(pointerdownEvent)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(0)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(0)
         await promiseTimeout(500)
-        expect(onLongpressCallback).toHaveBeenCalledTimes(1)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
     })
   })

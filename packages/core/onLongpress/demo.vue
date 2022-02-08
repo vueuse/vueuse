@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { onLongpress } from '.'
+import { onLongPress } from '.'
 
 const htmlRef = ref<HTMLElement | null>(null)
 const htmlRefOptions = ref<HTMLElement | null>(null)
 
 const longPressed = ref(false)
 
-const onLongpressCallback = (e: PointerEvent) => {
+const onLongPressCallback = (e: PointerEvent) => {
   longPressed.value = true
 }
 
@@ -15,8 +15,8 @@ const reset = () => {
   longPressed.value = false
 }
 
-onLongpress(htmlRef, onLongpressCallback)
-onLongpress(htmlRefOptions, onLongpressCallback, { delay: 1000 })
+onLongPress(htmlRef, onLongPressCallback)
+onLongPress(htmlRefOptions, onLongPressCallback, { delay: 1000 })
 </script>
 
 <template>

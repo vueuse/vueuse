@@ -4,7 +4,7 @@ import { computed, ref } from 'vue-demi'
 
 const DEFAULT_DELAY = 500
 
-export interface LongpressOptions{
+export interface LongPressOptions {
   /**
    * Time in ms till `longpress` gets called
    *
@@ -13,10 +13,14 @@ export interface LongpressOptions{
   delay?: number
 }
 
-export function onLongpress(target: MaybeElementRef, handler: (evt: PointerEvent) => void, options?: LongpressOptions) {
+export function onLongPress(
+  target: MaybeElementRef,
+  handler: (evt: PointerEvent) => void,
+  options?: LongPressOptions,
+) {
   const elementRef = computed(() => unrefElement(target))
 
-  const timeout = ref<number|null>(null)
+  const timeout = ref<number | null>(null)
 
   const onDown = (ev: PointerEvent) => {
     timeout.value = setTimeout(() => {

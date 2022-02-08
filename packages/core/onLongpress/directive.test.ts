@@ -3,13 +3,12 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 
-import { vOnLongpress } from './directive'
-import type { LongpressOptions } from '.'
+import { vonLongPress } from './directive'
+import type { LongPressOptions } from '.'
 
 const App = defineComponent({
-
   props: {
-    onLongpress: {
+    onLongPress: {
       type: Function,
       required: true,
     },
@@ -20,26 +19,26 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div data-test="element" v-if="options" v-on-longpress="{handler: onLongpress, options}">Press me</div>
-  <div data-test="element" v-else v-on-longpress="onLongpress">Press me</div>
+  <div data-test="element" v-if="options" v-on-longpress="{handler: onLongPress, options}">Press me</div>
+  <div data-test="element" v-else v-on-longpress="onLongPress">Press me</div>
   </template>
   `,
 })
 
-describe('vOnLongpress', () => {
-  let onLongpress = vi.fn()
+describe('vonLongPress', () => {
+  let onLongPress = vi.fn()
   let wrapper: VueWrapper<any>
 
   describe('given no options', () => {
     beforeEach(() => {
-      onLongpress = vi.fn()
+      onLongPress = vi.fn()
       wrapper = mount(App, {
         props: {
-          onLongpress,
+          onLongPress,
         },
         global: {
           directives: {
-            'on-longpress': vOnLongpress,
+            'on-longpress': vonLongPress,
           },
         },
       })
@@ -53,24 +52,24 @@ describe('vOnLongpress', () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)
-      expect(onLongpress).toHaveBeenCalledTimes(1)
+      expect(onLongPress).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('given options', () => {
     beforeEach(() => {
-      onLongpress = vi.fn()
-      const options: LongpressOptions = {
+      onLongPress = vi.fn()
+      const options: LongPressOptions = {
         delay: 1000,
       }
       wrapper = mount(App, {
         props: {
-          onLongpress,
+          onLongPress,
           options,
         },
         global: {
           directives: {
-            'on-longpress': vOnLongpress,
+            'on-longpress': vonLongPress,
           },
         },
       })
@@ -84,9 +83,9 @@ describe('vOnLongpress', () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)
-      expect(onLongpress).toHaveBeenCalledTimes(0)
+      expect(onLongPress).toHaveBeenCalledTimes(0)
       await promiseTimeout(500)
-      expect(onLongpress).toHaveBeenCalledTimes(1)
+      expect(onLongPress).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -14,13 +14,13 @@ Listen for a longpress on an element.
 ```ts
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onLongpress } from '@vueuse/core'
+import { onLongPress } from '@vueuse/core'
 
 const htmlRefHook = ref<HTMLElement | null>(null)
 
 const longPressedHook = ref(false)
 
-const onLongpressCallbackHook = (e: PointerEvent) => {
+const onLongPressCallbackHook = (e: PointerEvent) => {
   longPressedHook.value = true
 }
 
@@ -28,7 +28,7 @@ const resetHook = () => {
   longPressedHook.value = false
 }
 
-onLongpress(htmlRefHook, onLongpressCallbackHook)
+onLongPress(htmlRefHook, onLongPressCallbackHook)
 </script>
 <template>
   <p>Longpressed: {{ longPressedHook }}</p>
@@ -48,11 +48,11 @@ onLongpress(htmlRefHook, onLongpressCallbackHook)
 ```ts
 <script setup lang="ts">
 import { ref } from 'vue'
-import { OnLongpress } from '@vueuse/components'
+import { OnLongPress } from '@vueuse/components'
 
 const longPressedComponent = ref(false)
 
-const onLongpressCallbackComponent = (e: PointerEvent) => {
+const onLongPressCallbackComponent = (e: PointerEvent) => {
   longPressedComponent.value = true
 }
 
@@ -64,9 +64,9 @@ const resetComponent = () => {
 <template>
   <p>Longpressed: {{ longPressedComponent }}</p>
 
-  <OnLongpress as="button" class="ml-2 button small" @trigger="onLongpressCallbackComponent">
+  <OnLongPress as="button" class="ml-2 button small" @trigger="onLongPressCallbackComponent">
     Press long
-  </OnLongpress>
+  </OnLongPress>
 
   <button class="ml-2 button small" @click="resetComponent">
     Reset
@@ -79,12 +79,12 @@ const resetComponent = () => {
 ```ts
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vOnLongpress } from '@vueuse/directives'
+import { vonLongPress } from '@vueuse/directives'
 
 const longPressedDirective = ref(false)
 
 
-const onLongpressCallbackDirective = (e: PointerEvent) => {
+const onLongPressCallbackDirective = (e: PointerEvent) => {
   longPressedDirective.value = true
 }
 
@@ -96,11 +96,11 @@ const resetDirective = () => {
 <template>
   <p>Longpressed: {{ longPressedDirective }}</p>
 
-  <button v-on-longpress="onLongpressCallbackDirective" class="ml-2 button small">
+  <button v-on-longpress="onLongPressCallbackDirective" class="ml-2 button small">
     Press long
   </button>
 
-  <button v-on-longpress="{handler: onLongpressCallbackDirective, {delay: 1000}}" class="ml-2 button small">
+  <button v-on-longpress="{handler: onLongPressCallbackDirective, {delay: 1000}}" class="ml-2 button small">
     Press long (with options)
   </button>
 
