@@ -90,7 +90,7 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
@@ -121,10 +121,10 @@ export function useScriptTag(
     el.addEventListener('error', event => reject(event))
     el.addEventListener('abort', event => reject(event))
     el.addEventListener('load', () => {
-      el.setAttribute('data-loaded', 'true')
+      el!.setAttribute('data-loaded', 'true')
 
-      onLoaded(el)
-      resolveWithElement(el)
+      onLoaded(el!)
+      resolveWithElement(el!)
     })
 
     // Append the <script> tag to head.
@@ -161,7 +161,7 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
     if (el)
       document.head.removeChild(el)
   }
