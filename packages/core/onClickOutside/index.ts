@@ -5,9 +5,12 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export type OnClickOutsideOptions = {
-  safelist?: MaybeElementRef[]
-} & ConfigurableWindow
+export interface OnClickOutsideOptions extends ConfigurableWindow {
+  /**
+   * List of elements that should not trigger the event.
+   */
+  ignore?: MaybeElementRef[]
+}
 
 /**
  * Listen for clicks outside of an element.
@@ -22,7 +25,7 @@ export function onClickOutside(
   handler: (evt: PointerEvent) => void,
   options: OnClickOutsideOptions = {},
 ) {
-  const { window = defaultWindow, safelist = [] } = options
+  const { window = defaultWindow, ignore } = options
 
   if (!window)
     return
@@ -36,12 +39,12 @@ export function onClickOutside(
     if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
       return
 
-    if (safelist.length > 0) {
-      const isSafe = safelist.some((target) => {
+    if (ignore && ignore.length > 0) {
+      if (ignore.some((target) => {
         const el = unrefElement(target)
         return el && (event.target === el || composedPath.includes(el))
-      })
-      if (isSafe) return
+      }))
+        return
     }
 
     handler(event)
