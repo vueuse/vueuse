@@ -19,21 +19,22 @@ const DEFAULT_OPTIONS: UseFileDialogOptions = {
 export function useFileDialog(options?: Partial<UseFileDialogOptions>) {
   const files = ref<FileList | null>(null)
 
+  const input = document.createElement('input')
+  input.type = 'file'
+
+  input.onchange = (event: Event) => {
+    const result = event.target as HTMLInputElement
+    files.value = result.files
+  }
+
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
     const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    const input = document.createElement('input')
-    input.type = 'file'
     input.multiple = _options.multiple!
     input.accept = _options.accept!
-
-    input.onchange = (event: Event) => {
-      const result = event.target as HTMLInputElement
-      files.value = result.files
-    }
 
     input.click()
   }
