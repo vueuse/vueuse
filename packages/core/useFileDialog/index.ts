@@ -5,7 +5,7 @@ export interface UseFileDialogOptions {
   accept?: string
 }
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: UseFileDialogOptions = {
   multiple: true,
   accept: '*',
 }
@@ -16,11 +16,11 @@ const DEFAULT_OPTIONS: Options = {
  * @see https://vueuse.org/useFileDialog
  * @param options
  */
-export function useFileDialog(options?: Partial<Options>) {
+export function useFileDialog(options?: Partial<UseFileDialogOptions>) {
   const files = ref<FileList | null>(null)
 
-  const openFileDialog = (localOptions?: Partial<Options>) => {
-    const _options: Options = {
+  const open = (localOptions?: Partial<UseFileDialogOptions>) => {
+    const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
@@ -38,9 +38,14 @@ export function useFileDialog(options?: Partial<Options>) {
     input.click()
   }
 
+  const reset = () => {
+    files.value = null
+  }
+
   return {
     files: readonly(files),
     open,
+    reset,
   }
 }
 
