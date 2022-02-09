@@ -51,69 +51,22 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
 </template>
 ```
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+## Using Component
 
-```typescript
-export interface UseFocusTrapOptions extends Options {
-  /**
-   * Immediately activate the trap
-   */
-  immediate?: boolean
-}
-export interface UseFocusTrapReturn {
-  /**
-   * Indicates if the focus trap is currently active
-   */
-  hasFocus: Ref<boolean>
-  /**
-   * Indicates if the focus trap is currently paused
-   */
-  isPaused: Ref<boolean>
-  /**
-   * Activate the focus trap
-   *
-   * @see https://github.com/focus-trap/focus-trap#trapactivateactivateoptions
-   * @param opts Activate focus trap options
-   */
-  activate: (opts?: ActivateOptions) => void
-  /**
-   * Deactivate the focus trap
-   *
-   * @see https://github.com/focus-trap/focus-trap#trapdeactivatedeactivateoptions
-   * @param opts Deactivate focus trap options
-   */
-  deactivate: (opts?: DeactivateOptions) => void
-  /**
-   * Pause the focus trap
-   *
-   * @see https://github.com/focus-trap/focus-trap#trappause
-   */
-  pause: Fn
-  /**
-   * Unpauses the focus trap
-   *
-   * @see https://github.com/focus-trap/focus-trap#trapunpause
-   */
-  unpause: Fn
-}
-/**
- * Reactive focus-trap
- *
- * @see https://vueuse.org/useFocusTrap
- * @param target The target element to trap focus within
- * @param options Focus trap options
- * @param autoFocus Focus trap automatically when mounted
- */
-export declare function useFocusTrap(
-  target: MaybeElementRef,
-  options?: UseFocusTrapOptions
-): UseFocusTrapReturn
+This function can't properly activate focus on elements with conditional rendering. In this case, you can use the `UseFocusTrap` component. Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
+
+```html
+<script setup>
+import { ref } from 'vue'
+import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
+
+const show = ref(false)
+</script>
+
+<template>
+  <UseFocusTrap v-if="show">
+    <div class="modal">...</div>
+  </UseFocusTrap>
+</template>
+
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useFocusTrap/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useFocusTrap/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useFocusTrap/index.md)
-
-
-<!--FOOTER_ENDS-->

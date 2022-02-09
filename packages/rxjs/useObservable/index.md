@@ -49,23 +49,3 @@ const count = useObservable(
   }
 )
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface UseObservableOptions {
-  onError?: (err: any) => void
-}
-export declare function useObservable<H>(
-  observable: Observable<H>,
-  options?: UseObservableOptions
-): Readonly<Ref<H>>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useObservable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useObservable/index.md)
-
-
-<!--FOOTER_ENDS-->

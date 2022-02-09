@@ -1,5 +1,6 @@
-import { Ref, watch } from 'vue-demi'
-import { ConfigurableFlushSync } from '../utils'
+import type { Ref, WatchSource } from 'vue-demi'
+import { watch } from 'vue-demi'
+import type { ConfigurableFlushSync } from '../utils'
 
 export interface SyncRefOptions extends ConfigurableFlushSync {
   /**
@@ -22,19 +23,20 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
  * @param source source ref
  * @param targets
  */
-export function syncRef<R extends Ref<any>>(source: R, targets: R | R[], {
-  flush = 'sync',
-  deep = false,
-  immediate = true,
-}: SyncRefOptions = {}) {
+export function syncRef<T>(
+  source: WatchSource<T>,
+  targets: Ref<T> | Ref<T>[],
+  {
+    flush = 'sync',
+    deep = false,
+    immediate = true,
+  }: SyncRefOptions = {}) {
   if (!Array.isArray(targets))
     targets = [targets]
 
-  return watch(source, (newValue) => {
-    (targets as R[]).forEach(target => target.value = newValue)
-  }, {
-    flush,
-    deep,
-    immediate,
-  })
+  return watch(
+    source,
+    newValue => (targets as Ref<T>[]).forEach(target => target.value = newValue),
+    { flush, deep, immediate },
+  )
 }

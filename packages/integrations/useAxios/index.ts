@@ -1,5 +1,7 @@
-import { Ref, ref, shallowRef } from 'vue-demi'
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CancelTokenSource, AxiosInstance } from 'axios'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
+import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import axios from 'axios'
 
 export interface UseAxiosReturn<T> {
 
@@ -29,7 +31,7 @@ export interface UseAxiosReturn<T> {
   aborted: Ref<boolean>
 
   /**
-   * Any erros that may have occurred
+   * Any errors that may have occurred
    */
   error: Ref<AxiosError<T> | undefined>
 
@@ -37,11 +39,24 @@ export interface UseAxiosReturn<T> {
    * Aborts the current request
    */
   abort: (message?: string | undefined) => void
+
+  /**
+   * Manually call the axios request
+   */
+  execute: (config?: AxiosRequestConfig) => void
+}
+export interface UseAxiosOptions {
+  /**
+   * Will automatically run axios request when `useAxios` is used
+   *
+   * @default true
+   */
+  immediate?: boolean
 }
 
-export function useAxios<T = any>(url: string, config?: AxiosRequestConfig): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, instance?: AxiosInstance): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance): UseAxiosReturn<T>
+export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): UseAxiosReturn<T>
+export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
+export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
 
 /**
  * Wrapper for axios.
@@ -51,9 +66,9 @@ export function useAxios<T = any>(url: string, config: AxiosRequestConfig, insta
  * @param config
  */
 export function useAxios<T = any>(url: string, ...args: any[]) {
-  let config: AxiosRequestConfig = {}
+  let defaultConfig: AxiosRequestConfig = {}
   let instance: AxiosInstance = axios
-
+  let options: UseAxiosOptions = { immediate: true }
   if (args.length > 0) {
     /**
      * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
@@ -63,18 +78,20 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     if ('request' in args[0])
       instance = args[0]
     else
-      config = args[0]
+      defaultConfig = args[0]
   }
 
   if (args.length > 1) {
     if ('request' in args[1])
       instance = args[1]
   }
+  if (args.length >= 2)
+    options = args[args.length - 1]
 
   const response = shallowRef<AxiosResponse<T>>()
   const data = shallowRef<T>()
   const isFinished = ref(false)
-  const isLoading = ref(true)
+  const isLoading = ref(false)
   const aborted = ref(false)
   const error = shallowRef<AxiosError<T>>()
 
@@ -87,19 +104,25 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     isLoading.value = false
     isFinished.value = false
   }
-
-  instance(url, { ...config, cancelToken: cancelToken.token })
-    .then((r: AxiosResponse<T>) => {
-      response.value = r
-      data.value = r.data
-    })
-    .catch((e) => {
-      error.value = e
-    })
-    .finally(() => {
-      isLoading.value = false
-      isFinished.value = true
-    })
+  const loading = (loading: boolean) => {
+    isLoading.value = loading
+    isFinished.value = !loading
+  }
+  const execute = (config: AxiosRequestConfig = {}) => {
+    loading(true)
+    instance(url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
+      .then((r: any) => {
+        response.value = r
+        data.value = r.data
+      })
+      .catch((e: any) => {
+        error.value = e
+      })
+      .finally(() => {
+        loading(false)
+      })
+  }
+  if (options.immediate) execute()
 
   return {
     response,
@@ -113,5 +136,6 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     canceled: aborted,
     aborted,
     abort,
+    execute,
   }
 }

@@ -1,9 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { MaybeElementRef } from '../unrefElement'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 type FunctionMap = [
   'requestFullscreen',
@@ -72,7 +74,7 @@ export function useFullscreen(
   options: ConfigurableDocument = {},
 ) {
   const { document = defaultDocument } = options
-  const targetRef = ref(target || document?.querySelector('html'))
+  const targetRef = target || document?.querySelector('html')
   const isFullscreen = ref(false)
   let isSupported = false
 
@@ -108,8 +110,9 @@ export function useFullscreen(
 
     await exit()
 
-    if (targetRef.value) {
-      await targetRef.value[REQUEST]()
+    const target = unrefElement(targetRef)
+    if (target) {
+      await target[REQUEST]()
       isFullscreen.value = true
     }
   }

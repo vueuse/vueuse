@@ -1,5 +1,8 @@
-import { ref, Ref } from 'vue-demi'
-import { Fn, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 
@@ -62,6 +65,20 @@ export interface WebSocketOptions {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically close a connection
+   *
+   * @default true
+   */
+  autoClose?: boolean
+
+  /**
+   * List of one or more sub-protocol strings
+   *
+   * @default []
+   */
+  protocols?: string[]
 }
 
 export interface WebSocketResult<T> {
@@ -124,6 +141,8 @@ export function useWebSocket<Data = any>(
     onError,
     onMessage,
     immediate = true,
+    autoClose = true,
+    protocols = [],
   } = options
 
   const data: Ref<Data | null> = ref(null)
@@ -138,7 +157,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  const close: WebSocket['close'] = (code, reason) => {
+  // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+  const close: WebSocket['close'] = (code = 1000, reason) => {
     if (!wsRef.value)
       return
     explicitlyClosed = true
@@ -166,7 +186,7 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
-    const ws = new WebSocket(url)
+    const ws = new WebSocket(url, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
     explicitlyClosed = false
@@ -226,13 +246,16 @@ export function useWebSocket<Data = any>(
 
   if (immediate) _init()
 
+  if (autoClose) {
+    useEventListener(window, 'beforeunload', () => close())
+    tryOnScopeDispose(close)
+  }
+
   const open = () => {
     close()
     retried = 0
     _init()
   }
-
-  tryOnScopeDispose(close)
 
   return {
     data,

@@ -1,10 +1,15 @@
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { ref } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export type OnClickOutsideEvents = Pick<WindowEventMap, 'click' | 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup'>
-export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents> extends ConfigurableWindow {
-  event?: E
+export interface OnClickOutsideOptions extends ConfigurableWindow {
+  /**
+   * List of elements that should not trigger the event.
+   */
+  ignore?: MaybeElementRef[]
 }
 
 /**
@@ -15,26 +20,45 @@ export interface OnClickOutsideOptions<E extends keyof OnClickOutsideEvents> ext
  * @param handler
  * @param options
  */
-export function onClickOutside<E extends keyof OnClickOutsideEvents = 'pointerdown'>(
+export function onClickOutside(
   target: MaybeElementRef,
-  handler: (evt: OnClickOutsideEvents[E]) => void,
-  options: OnClickOutsideOptions<E> = {},
+  handler: (evt: PointerEvent) => void,
+  options: OnClickOutsideOptions = {},
 ) {
-  const { window = defaultWindow, event = 'pointerdown' } = options
+  const { window = defaultWindow, ignore } = options
 
   if (!window)
     return
 
-  const listener = (event: OnClickOutsideEvents[E]) => {
+  const shouldListen = ref(true)
+
+  const listener = (event: PointerEvent) => {
     const el = unrefElement(target)
-    if (!el)
+    const composedPath = event.composedPath()
+
+    if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
       return
 
-    if (el === event.target || event.composedPath().includes(el))
-      return
+    if (ignore && ignore.length > 0) {
+      if (ignore.some((target) => {
+        const el = unrefElement(target)
+        return el && (event.target === el || composedPath.includes(el))
+      }))
+        return
+    }
 
     handler(event)
   }
 
-  return useEventListener(window, event, listener, { passive: true })
+  const cleanup = [
+    useEventListener(window, 'click', listener, { passive: true, capture: true }),
+    useEventListener(window, 'pointerdown', (e) => {
+      const el = unrefElement(target)
+      shouldListen.value = !!el && !e.composedPath().includes(el)
+    }, { passive: true }),
+  ]
+
+  const stop = () => cleanup.forEach(fn => fn())
+
+  return stop
 }

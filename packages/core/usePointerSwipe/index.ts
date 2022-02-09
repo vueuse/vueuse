@@ -1,7 +1,9 @@
-import { MaybeRef } from '@vueuse/shared'
-import { computed, reactive, readonly, Ref, ref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { SwipeDirection } from '../useSwipe/index'
+import type { PointerType, Position } from '../types'
 
 export interface PointerSwipeOptions {
   /**
@@ -23,18 +25,20 @@ export interface PointerSwipeOptions {
    * Callback on swipe end
    */
   onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
-}
 
-export interface PointerPosition {
-  x: number
-  y: number
+  /**
+   * Pointer types that listen to.
+   *
+   * @default ['mouse', 'touch', 'pen']
+   */
+  pointerTypes?: PointerType[]
 }
 
 export interface PointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
   direction: Readonly<Ref<SwipeDirection | null>>
-  readonly posStart: PointerPosition
-  readonly posEnd: PointerPosition
+  readonly posStart: Position
+  readonly posEnd: Position
   distanceX: Readonly<Ref<number>>
   distanceY: Readonly<Ref<number>>
   stop: () => void
@@ -59,13 +63,13 @@ export function usePointerSwipe(
     onSwipeStart,
   } = options
 
-  const posStart = reactive<PointerPosition>({ x: 0, y: 0 })
+  const posStart = reactive<Position>({ x: 0, y: 0 })
   const updatePosStart = (x: number, y: number) => {
     posStart.x = x
     posStart.y = y
   }
 
-  const posEnd = reactive({ x: 0, y: 0 })
+  const posEnd = reactive<Position>({ x: 0, y: 0 })
   const updatePosEnd = (x: number, y: number) => {
     posEnd.x = x
     posEnd.y = y
@@ -95,8 +99,16 @@ export function usePointerSwipe(
     }
   })
 
+  const filterEvent = (e: PointerEvent) => {
+    if (options.pointerTypes)
+      return options.pointerTypes.includes(e.pointerType as PointerType)
+    return true
+  }
+
   const stops = [
     useEventListener(target, 'pointerdown', (e: PointerEvent) => {
+      if (!filterEvent(e))
+        return
       isPointerDown.value = true
       // Disable scroll on for TouchEvents
       targetRef.value?.style?.setProperty('touch-action', 'none')
@@ -110,6 +122,8 @@ export function usePointerSwipe(
     }),
 
     useEventListener(target, 'pointermove', (e: PointerEvent) => {
+      if (!filterEvent(e))
+        return
       if (!isPointerDown.value)
         return
 
@@ -122,6 +136,8 @@ export function usePointerSwipe(
     }),
 
     useEventListener(target, 'pointerup', (e: PointerEvent) => {
+      if (!filterEvent(e))
+        return
       if (isSwiping.value)
         onSwipeEnd?.(e, direction.value)
 

@@ -7,7 +7,7 @@ Collection of essential Vue Composition Utilities
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
 <a href="https://vueuse.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
-<img alt="Function Count" src="https://img.shields.io/badge/-136%20functions-13708a">
+<img alt="Function Count" src="https://img.shields.io/badge/-187%20functions-13708a">
 <br>
 <a href="https://github.com/vueuse/vueuse" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/vueuse/vueuse?style=social"></a>
 </p>
@@ -22,7 +22,7 @@ Collection of essential Vue Composition Utilities
 
 - 🎪 [**Interactive docs & demos**](https://vueuse.org)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
-- ⚡ **Fully tree shakable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
+- ⚡ **Fully tree shakeable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
 - 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
 - 🌎 **No bundler required**: Usable via CDN
@@ -66,9 +66,17 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 npm i @vueuse/core
 ```
 
-Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](https://github.com/vueuse/vueuse-vue3-example) / Vue 2 Demo: [Vue CLI](https://github.com/vueuse/vueuse-vue2-example)
+[Add ons](https://vueuse.org/add-ons.html) | [Nuxt Module](https://vueuse.org/guide/index.html#nuxt)
 
 > From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
+
+###### Demos
+
+- [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
+- [Nuxt 3 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
+- [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
+- [Nuxt 2 + Vue 2](https://github.com/antfu/vitesse-nuxt-bridge)
+- [Vue CLI + Vue 2](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 
@@ -78,6 +86,10 @@ Vue 3 Demo: [Vite](https://github.com/vueuse/vueuse-vite-starter), [Webpack](htt
 ```
 
 It will be exposed to global as `window.VueUse`
+
+## 🪴 Project Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/a406ba7461a6a087dbdb14d4395046c948d44c51.svg "Repobeats analytics image")
 
 ## 🧱 Contribute
 
@@ -89,7 +101,6 @@ This project is heavily inspired by the following awesome projects.
 
 - [streamich/react-use](https://github.com/streamich/react-use)
 - [u3u/vue-hooks](https://github.com/u3u/vue-hooks)
-- [shuidi-fed/vue-composition-toolkit](https://github.com/shuidi-fed/vue-composition-toolkit)
 - [logaretm/vue-use-web](https://github.com/logaretm/vue-use-web)
 - [kripod/react-hooks](https://github.com/kripod/react-hooks)
 

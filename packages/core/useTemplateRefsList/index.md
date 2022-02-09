@@ -26,22 +26,3 @@ onUpdated(() => {
 })
 </script>
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare type TemplateRefsList<T> = T[] & {
-  set(el: Object | null): void
-}
-export declare function useTemplateRefsList<T = Element>(): Readonly<
-  Ref<Readonly<TemplateRefsList<T>>>
->
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTemplateRefsList/index.md)
-
-
-<!--FOOTER_ENDS-->

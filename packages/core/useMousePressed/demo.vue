@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { ref, computed, reactive } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { useMousePressed } from '.'
 
 const el = ref<Element | null>(null)
@@ -26,7 +26,7 @@ const text = stringify(mouse)
       </button>
     </div>
     <div
-      class="h-40 w-40 bg-green-200 p-3 flex flex-row items-center text-center"
+      class="h-40 w-40 bg-green-200 text-green-900 p-3 flex flex-row items-center text-center"
       @drop.prevent="() => {}"
     >
       Drop something here to try drag and drop.

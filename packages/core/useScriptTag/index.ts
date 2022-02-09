@@ -1,6 +1,8 @@
-import { MaybeRef, noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
+import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref, unref } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   /**
@@ -42,6 +44,8 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  *
  * @see https://vueuse.org/useScriptTag
  * @param src
+ * @param onLoaded
+ * @param options
  */
 export function useScriptTag(
   src: MaybeRef<string>,
@@ -86,7 +90,7 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
@@ -117,10 +121,10 @@ export function useScriptTag(
     el.addEventListener('error', event => reject(event))
     el.addEventListener('abort', event => reject(event))
     el.addEventListener('load', () => {
-      el.setAttribute('data-loaded', 'true')
+      el!.setAttribute('data-loaded', 'true')
 
-      onLoaded(el)
-      resolveWithElement(el)
+      onLoaded(el!)
+      resolveWithElement(el!)
     })
 
     // Append the <script> tag to head.
@@ -154,10 +158,12 @@ export function useScriptTag(
 
     _promise = null
 
-    if (scriptTag.value) {
-      document.head.removeChild(scriptTag.value)
+    if (scriptTag.value)
       scriptTag.value = null
-    }
+
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
+    if (el)
+      document.head.removeChild(el)
   }
 
   if (immediate && !manual)

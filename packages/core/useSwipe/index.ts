@@ -1,8 +1,11 @@
-import { noop, MaybeRef } from '@vueuse/shared'
-import { computed, reactive, ref, ComputedRef, Ref } from 'vue-demi'
-
+import type { MaybeRef } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { Position } from '../types'
 
 export enum SwipeDirection {
   UP = 'UP',
@@ -45,14 +48,8 @@ export interface SwipeReturn {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
-  coordsStart: {
-    readonly x: number
-    readonly y: number
-  }
-  coordsEnd: {
-    readonly x: number
-    readonly y: number
-  }
+  coordsStart: Readonly<Position>
+  coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
   lengthY: ComputedRef<number>
   stop: () => void
@@ -78,8 +75,8 @@ export function useSwipe(
     window = defaultWindow,
   } = options
 
-  const coordsStart = reactive({ x: 0, y: 0 })
-  const coordsEnd = reactive({ x: 0, y: 0 })
+  const coordsStart = reactive<Position>({ x: 0, y: 0 })
+  const coordsEnd = reactive<Position>({ x: 0, y: 0 })
 
   const diffX = computed(() => coordsStart.x - coordsEnd.x)
   const diffY = computed(() => coordsStart.y - coordsEnd.y)

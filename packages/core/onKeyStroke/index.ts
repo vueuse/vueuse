@@ -1,24 +1,32 @@
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
 export type KeyPredicate = (event: KeyboardEvent) => boolean
-export type KeyFilter = null | undefined | string | KeyPredicate
+export type KeyFilter = null | undefined | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
-export type KeyStrokeOptions = {
+export interface KeyStrokeOptions {
   eventName?: KeyStrokeEventName
   target?: MaybeRef<EventTarget>
   passive?: boolean
 }
 
-const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate =>
-  typeof keyFilter === 'function'
-    ? keyFilter
-    : typeof keyFilter === 'string'
-      ? (event: KeyboardEvent) => event.key === keyFilter
-      : keyFilter
-        ? () => true
-        : () => false
+const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
+  if (typeof keyFilter === 'function')
+    return keyFilter
+
+  else if (typeof keyFilter === 'string')
+    return (event: KeyboardEvent) => event.key === keyFilter
+
+  else if (Array.isArray(keyFilter))
+    return (event: KeyboardEvent) => keyFilter.includes(event.key)
+
+  else if (keyFilter)
+    return () => true
+
+  else
+    return () => false
+}
 
 /**
  * Listen for keyboard keys being stroked.

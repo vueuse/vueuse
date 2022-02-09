@@ -1,6 +1,7 @@
 import { isString } from '@vueuse/shared'
-import { IpcRenderer } from 'electron'
-import { Ref, shallowRef } from 'vue-demi'
+import type { IpcRenderer } from 'electron'
+import type { Ref } from 'vue-demi'
+import { shallowRef } from 'vue-demi'
 
 /**
  * Returns Promise<any> - Resolves with the response from the main process.

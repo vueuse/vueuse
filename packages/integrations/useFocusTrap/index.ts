@@ -1,6 +1,9 @@
-import { MaybeElementRef, unrefElement, tryOnScopeDispose, Fn } from '@vueuse/core'
-import { watch, ref, Ref } from 'vue-demi'
-import { ActivateOptions, createFocusTrap, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
+import type { Fn, MaybeElementRef } from '@vueuse/core'
+import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
+import type { Ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
+import { createFocusTrap } from 'focus-trap'
+import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
 
 export interface UseFocusTrapOptions extends Options {
   /**
@@ -85,7 +88,10 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
 
   watch(
     () => unrefElement(target),
-    (el: HTMLElement) => {
+    (el) => {
+      if (!el)
+        return
+
       trap = createFocusTrap(el, {
         ...focusTrapOptions,
         onActivate() {

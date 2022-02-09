@@ -1,5 +1,6 @@
-import { isRef, ToRefs, toRefs as _toRefs, customRef } from 'vue-demi'
-import { MaybeRef } from '../utils'
+import type { ToRefs } from 'vue-demi'
+import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
+import type { MaybeRef } from '../utils'
 
 /**
  * Extended `toRefs` that also accepts refs of an object.
@@ -24,7 +25,14 @@ export function toRefs<T extends object>(
         return objectRef.value[key]
       },
       set(v) {
-        objectRef.value[key] = v
+        if (Array.isArray(objectRef.value)) {
+          const copy: any = [...objectRef.value]
+          copy[key] = v
+          objectRef.value = copy
+        }
+        else {
+          objectRef.value = { ...objectRef.value, [key]: v }
+        }
       },
     }))
   }

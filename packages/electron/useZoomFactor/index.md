@@ -38,24 +38,3 @@ useZoomFactor(factor) // zoom factor will match with the ref
 
 factor.value = 2 // zoom factor will change
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function useZoomFactor(factor: MaybeRef<number>): Ref<number>
-export declare function useZoomFactor(
-  webFrame: WebFrame,
-  factor: MaybeRef<number>
-): Ref<number>
-export declare function useZoomFactor(webFrame: WebFrame): Ref<number>
-export declare function useZoomFactor(): Ref<number>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/electron/useZoomFactor/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/electron/useZoomFactor/index.md)
-
-
-<!--FOOTER_ENDS-->

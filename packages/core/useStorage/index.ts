@@ -1,15 +1,25 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
+import { watchWithFilter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue-demi'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import { guessSerializerType } from './guess'
 
-export type Serializer<T> = {
+export interface Serializer<T> {
   read(raw: string): T
-
   write(value: T): string
 }
 
-export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string', Serializer<any>> = {
+export interface SerializerAsync<T> {
+  read(raw: string): Awaitable<T>
+  write(value: T): Awaitable<string>
+}
+
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
   boolean: {
     read: (v: any) => v === 'true',
     write: (v: any) => String(v),
@@ -30,9 +40,15 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
     read: (v: any) => v,
     write: (v: any) => String(v),
   },
+  map: {
+    read: (v: any) => new Map(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from((v as Map<any, any>).entries())),
+  },
+  set: {
+    read: (v: any) => new Set(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
+  },
 }
-
-export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 
 export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
@@ -50,6 +66,13 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   listenToStorageChanges?: boolean
 
   /**
+   * Write the default value to the storage when it does not exist
+   *
+   * @default true
+   */
+  writeDefaults?: boolean
+
+  /**
    * Custom data serialization
    */
   serializer?: Serializer<T>
@@ -59,34 +82,43 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
    *
    * Default log error to `console.error`
    */
-  onError?: (error: Error) => void
+  onError?: (error: unknown) => void
+
+  /**
+   * Use shallow ref as reference
+   *
+   * @default false
+   */
+  shallow?: boolean
 }
 
-export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions<string>): Ref<string>
-export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions<boolean>): Ref<boolean>
-export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions<number>): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions<T>): Ref<T>
+export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, initialValue: MaybeRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
+export function useStorage<T> (key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
  *
  * @see https://vueuse.org/useStorage
  * @param key
- * @param defaultValue
+ * @param initialValue
  * @param storage
  * @param options
  */
 export function useStorage<T extends(string|number|boolean|object|null)> (
   key: string,
-  defaultValue: T,
-  storage: StorageLike | undefined = defaultWindow?.localStorage,
+  initialValue: MaybeRef<T>,
+  storage: StorageLike | undefined,
   options: StorageOptions<T> = {},
-) {
+): RemovableRef<T> {
   const {
     flush = 'pre',
     deep = true,
     listenToStorageChanges = true,
+    writeDefaults = true,
+    shallow,
     window = defaultWindow,
     eventFilter,
     onError = (e) => {
@@ -94,22 +126,20 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     },
   } = options
 
-  const type = defaultValue == null
-    ? 'any'
-    : typeof defaultValue === 'boolean'
-      ? 'boolean'
-      : typeof defaultValue === 'string'
-        ? 'string'
-        : typeof defaultValue === 'object'
-          ? 'object'
-          : Array.isArray(defaultValue)
-            ? 'object'
-            : !Number.isNaN(defaultValue)
-              ? 'number'
-              : 'any'
+  const rawInit: T = unref(initialValue)
+  const type = guessSerializerType<T>(rawInit)
 
-  const data = ref<T>(defaultValue)
+  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
+
+  if (!storage) {
+    try {
+      storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
 
   function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
@@ -118,9 +148,12 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     try {
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
-        (data as Ref<T>).value = defaultValue
-        if (defaultValue !== null)
-          storage.setItem(key, serializer.write(defaultValue))
+        data.value = rawInit
+        if (writeDefaults && rawInit !== null)
+          storage.setItem(key, serializer.write(rawInit))
+      }
+      else if (typeof rawValue !== 'string') {
+        data.value = rawValue
       }
       else {
         data.value = serializer.read(rawValue)
@@ -134,30 +167,29 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   read()
 
   if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', read)
+    useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
 
-  watchWithFilter(
-    data,
-    () => {
-      if (!storage) // SSR
-        return
+  if (storage) {
+    watchWithFilter(
+      data,
+      () => {
+        try {
+          if (data.value == null)
+            storage!.removeItem(key)
+          else
+            storage!.setItem(key, serializer.write(data.value))
+        }
+        catch (e) {
+          onError(e)
+        }
+      },
+      {
+        flush,
+        deep,
+        eventFilter,
+      },
+    )
+  }
 
-      try {
-        if (data.value == null)
-          storage.removeItem(key)
-        else
-          storage.setItem(key, serializer.write(data.value))
-      }
-      catch (e) {
-        onError(e)
-      }
-    },
-    {
-      flush,
-      deep,
-      eventFilter,
-    },
-  )
-
-  return data
+  return data as RemovableRef<T>
 }

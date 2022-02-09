@@ -1,17 +1,18 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 import { useElementBounding } from '@vueuse/core'
-import { ResizeObserverOptions } from '../useResizeObserver'
+import type { ResizeObserverOptions } from '../useResizeObserver'
+import type { RenderableComponent } from '../types'
 
-export const UseElementBounding = defineComponent<ResizeObserverOptions>({
+export const UseElementBounding = defineComponent<ResizeObserverOptions & RenderableComponent>({
   name: 'UseElementBounding',
-  props: ['box'] as unknown as undefined,
+  props: ['box', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
-    const data = reactive(useElementBounding(target, props))
+    const data = reactive(useElementBounding(target))
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target }, slots.default(data))
+        return h(props.as || 'div', { ref: target }, slots.default(data))
     }
   },
 })

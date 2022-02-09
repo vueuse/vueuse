@@ -36,35 +36,9 @@ const title = computed(() => {
 useTitle(title) // document title will match with the ref "title"
 ```
 
+Pass an optional template tag (Vue Meta Title Template)[https://vue-meta.nuxtjs.org/guide/metainfo.html] 
+to update the title to be injected into this template:
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface UseTitleOptions extends ConfigurableDocument {
-  /**
-   * Observe `document.title` changes using MutationObserve
-   *
-   * @default false
-   */
-  observe?: boolean
-}
-/**
- * Reactive document title.
- *
- * @see https://vueuse.org/useTitle
- * @param newTitle
- * @param options
- */
-export declare function useTitle(
-  newTitle?: MaybeRef<string | null | undefined>,
-  options?: UseTitleOptions
-): Ref<string | null | undefined>
+```js
+const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' })
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/index.md)
-
-
-<!--FOOTER_ENDS-->

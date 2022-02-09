@@ -1,15 +1,17 @@
-import { resolve, join, relative } from 'path'
+import { join, relative, resolve } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
 import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
-import { activePackages, packages } from '../meta/packages'
-import { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
+import Git from 'simple-git'
+import { packages } from '../meta/packages'
+import type { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
+
+const git = Git()
 
 const DOCS_URL = 'https://vueuse.org'
-const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 
 const DIR_ROOT = resolve(__dirname, '..')
 const DIR_SRC = resolve(__dirname, '../packages')
@@ -30,6 +32,7 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
   types = types
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
+    .replace(/export {}/g, '')
 
   return prettier
     .format(
@@ -45,39 +48,6 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
 
 export function hasDemo(pkg: string, name: string) {
   return fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
-}
-
-export function getFunctionHead(pkg: string, name: string) {
-  let head = packages.find(p => p.name === pkg)!.addon
-    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
-    : ''
-
-  if (head)
-    head = `\n::: tip\n${head}\n:::\n`
-
-  return head
-}
-
-export async function getFunctionFooter(pkg: string, name: string) {
-  const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
-
-  const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
-
-  const types = await getTypeDefinition(pkg, name)
-
-  const typingSection = types && `## Type Declarations\n\n\`\`\`typescript\n${types.trim()}\n\`\`\``
-
-  const links = ([
-    ['Source', `${URL}/index.ts`],
-    hasDemo ? ['Demo', `${URL}/demo.vue`] : undefined,
-    ['Docs', `${URL}/index.md`],
-  ])
-    .filter(i => i)
-    .map(i => `[${i![0]}](${i![1]})`).join(' • ')
-
-  const sourceSection = `## Source\n\n${links}\n`
-
-  return `${typingSection || ''}\n\n${sourceSection}\n`
 }
 
 export async function listFunctions(dir: string, ignore: string[] = []) {
@@ -109,18 +79,20 @@ export async function readIndexes() {
 
     const pkg: VueUsePackage = {
       ...info,
-      dir: relative(DIR_ROOT, dir),
+      dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
     }
 
     indexes.packages[info.name] = pkg
 
-    for (const fnName of functions) {
+    await Promise.all(functions.map(async(fnName) => {
       const mdPath = join(dir, fnName, 'index.md')
+      const tsPath = join(dir, fnName, 'index.ts')
 
       const fn: VueUseFunction = {
         name: fnName,
         package: pkg.name,
+        lastUpdated: +await git.raw(['log', '-1', '--format=%at', tsPath]) * 1000,
       }
 
       if (fs.existsSync(join(dir, fnName, 'component.ts')))
@@ -131,12 +103,12 @@ export async function readIndexes() {
       if (!fs.existsSync(mdPath)) {
         fn.internal = true
         indexes.functions.push(fn)
-        continue
+        return
       }
 
       fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
 
-      const mdRaw = await fs.readFile(join(dir, fnName, 'index.md'), 'utf-8')
+      const mdRaw = await fs.readFile(mdPath, 'utf-8')
 
       const { content: md, data: frontmatter } = matter(mdRaw)
       const category = frontmatter.category
@@ -153,12 +125,13 @@ export async function readIndexes() {
       fn.description = description
 
       if (description.includes('DEPRECATED'))
-        fn.depreacted = true
+        fn.deprecated = true
 
       indexes.functions.push(fn)
-    }
+    }))
   }
 
+  indexes.functions.sort((a, b) => a.name.localeCompare(b.name))
   indexes.categories = getCategories(indexes.functions)
 
   return indexes
@@ -170,7 +143,13 @@ export function getCategories(functions: VueUseFunction[]): string[] {
       .filter(i => !i.internal)
       .map(i => i.category)
       .filter(Boolean),
-  ).sort()
+  ).sort(
+    (a, b) => (a.startsWith('@') && !b.startsWith('@'))
+      ? 1
+      : (b.startsWith('@') && !a.startsWith('@'))
+        ? -1
+        : a.localeCompare(b),
+  )
 }
 
 export async function updateImport({ packages, functions }: PackageIndexes) {
@@ -178,35 +157,47 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     if (manualImport)
       continue
 
-    let content: string
+    let imports: string[]
     if (name === 'components') {
-      content = functions
+      imports = functions
         .sort((a, b) => a.name.localeCompare(b.name))
         .flatMap((fn) => {
-          const arr = []
+          const arr: string[] = []
+
+          // don't include integration components
+          if (fn.package === 'integrations')
+            return arr
+
           if (fn.component)
             arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
           if (fn.directive)
             arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
           return arr
         })
-        .join('\n')
     }
     else {
-      content = functions
+      imports = functions
         .filter(i => i.package === name)
         .map(f => f.name)
         .sort()
         .map(name => `export * from './${name}'`)
-        .join('\n')
     }
 
-    if (name === 'core')
-      content += '\nexport * from \'@vueuse/shared\''
+    if (name === 'core') {
+      imports.push(
+        'export * from \'./types\'',
+        'export * from \'@vueuse/shared\'',
+        'export * from \'./ssr-handlers\'',
+      )
+    }
 
-    content += '\n'
+    if (name === 'nuxt') {
+      imports.push(
+        'export * from \'@vueuse/core\'',
+      )
+    }
 
-    await fs.writeFile(join(dir, 'index.ts'), content)
+    await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
   }
 }
 
@@ -226,10 +217,12 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
     if (title)
       list += `### ${category}\n`
 
-    const categoryFunctions = functions.filter(i => i.category === category).sort((a, b) => a.name.localeCompare(b.name))
+    const categoryFunctions = functions
+      .filter(i => i.category === category)
+      .sort((a, b) => a.name.localeCompare(b.name))
 
-    for (const { name, docs, description, depreacted } of categoryFunctions) {
-      if (depreacted)
+    for (const { name, docs, description, deprecated } of categoryFunctions) {
+      if (deprecated)
         continue
 
       const desc = description ? ` — ${description}` : ''
@@ -285,14 +278,6 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
-  let mdFn = await fs.readFile('packages/functions.md', 'utf-8')
-
-  const coreFunctions = functions.filter(i => ['core', 'shared'].includes(i.package))
-  const functionListMD = stringifyFunctions(coreFunctions)
-
-  mdFn = replacer(mdFn, functionListMD, 'FUNCTIONS_LIST')
-  await fs.writeFile('packages/functions.md', mdFn, 'utf-8')
-
   let mdAddons = await fs.readFile('packages/add-ons.md', 'utf-8')
 
   const addons = Object.values(packages)
@@ -321,9 +306,6 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     let readme = await fs.readFile(mdPath, 'utf-8')
 
-    if (hasTypes)
-      readme = replacer(readme, await getFunctionFooter(fn.package, fn.name), 'FOOTER', 'tail')
-
     const { content, data = {} } = matter(readme)
 
     data.category = fn.category || 'Unknown'
@@ -337,33 +319,40 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = await fs.readJSON('package.json')
 
-  for (const { name, description, author, submodules, iife } of activePackages) {
+  for (const { name, description, author, submodules, iife } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = await fs.readJSON(packageJSONPath)
 
     packageJSON.version = version
     packageJSON.description = description || packageJSON.description
-    packageJSON.author = author || 'Anthony Fu<https://github.com/antfu>'
+    packageJSON.author = author || 'Anthony Fu <https://github.com/antfu>'
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
-    packageJSON.main = './index.cjs.js'
+    packageJSON.repository = {
+      type: 'git',
+      url: 'git+https://github.com/vueuse/vueuse.git',
+      directory: `packages/${name}`,
+    }
+    packageJSON.main = './index.cjs'
     packageJSON.types = './index.d.ts'
-    packageJSON.module = './index.esm.js'
+    packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
     packageJSON.exports = {
       '.': {
-        import: './index.esm.js',
-        require: './index.cjs.js',
+        import: './index.mjs',
+        require: './index.cjs',
+        types: './index.d.ts',
       },
       './*': './*',
+      ...packageJSON.exports,
     }
 
     if (submodules) {
@@ -371,15 +360,18 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.esm.js`,
-            require: `./${i.name}.cjs.js`,
+            import: `./${i.name}.mjs`,
+            require: `./${i.name}.cjs`,
+            types: `./${i.name}.d.ts`,
+          }
+          if (i.component) {
+            packageJSON.exports[`./${i.name}/component`] = {
+              import: `./${i.name}/component.mjs`,
+              require: `./${i.name}/component.cjs`,
+              types: `./${i.name}/component.d.ts`,
+            }
           }
         })
-    }
-
-    for (const key of Object.keys(packageJSON.dependencies)) {
-      if (key.startsWith('@vueuse/'))
-        packageJSON.dependencies[key] = version
     }
 
     await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })

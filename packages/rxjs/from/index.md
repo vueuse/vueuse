@@ -22,30 +22,12 @@ useSubscription(
     .pipe(
       mapTo(1),
       takeUntil(fromEvent(button, 'click')),
-      withLatestFrom(from(count).pipe(startWith(0))),
+      withLatestFrom(from(count, {
+        immediate: true,
+        deep: false,
+      })),
       map(([total, curr]) => curr + total),
     )
     .subscribe(toObserver(count)) // same as ).subscribe(val => (count.value = val))
 )
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function from<T>(
-  value: ObservableInput<T> | Ref<T>
-): Observable<T>
-export declare function fromEvent<T extends HTMLElement>(
-  value: Ref<T>,
-  event: string
-): Observable<Event>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/from/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/from/index.md)
-
-
-<!--FOOTER_ENDS-->

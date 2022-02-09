@@ -1,5 +1,7 @@
-import { Fn } from '@vueuse/shared'
-import { ref, isRef, computed, watchEffect, Ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, isRef, ref, watchEffect } from 'vue-demi'
 
 /**
  * Handle overlapping async evaluations.
@@ -8,15 +10,23 @@ import { ref, isRef, computed, watchEffect, Ref } from 'vue-demi'
  */
 export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
-/**
- * Additional options for asyncComputed
- *
- * @property lazy         Should value be evaluated lazily
- * @property evaluating   Ref passed to receive the updated of async evaluation
- */
-export type AsyncComputedOptions = {
+export interface AsyncComputedOptions {
+  /**
+   * Should value be evaluated lazily
+   *
+   * @default false
+   */
   lazy?: Boolean
+
+  /**
+   * Ref passed to receive the updated of async evaluation
+   */
   evaluating?: Ref<boolean>
+
+  /**
+   * Callback when error is caught.
+   */
+  onError?: (e: unknown) => void
 }
 
 /**
@@ -46,6 +56,7 @@ export function asyncComputed<T>(
   const {
     lazy = false,
     evaluating = undefined,
+    onError = noop,
   } = options
 
   const started = ref(!lazy)
@@ -60,15 +71,15 @@ export function asyncComputed<T>(
     const counterAtBeginning = counter
     let hasFinished = false
 
-    try {
-      // Defer initial setting of `evaluating` ref
-      // to avoid having it as a dependency
-      if (evaluating) {
-        Promise.resolve().then(() => {
-          evaluating.value = true
-        })
-      }
+    // Defer initial setting of `evaluating` ref
+    // to avoid having it as a dependency
+    if (evaluating) {
+      Promise.resolve().then(() => {
+        evaluating.value = true
+      })
+    }
 
+    try {
       const result = await evaluationCallback((cancelCallback) => {
         onInvalidate(() => {
           if (evaluating)
@@ -81,6 +92,9 @@ export function asyncComputed<T>(
 
       if (counterAtBeginning === counter)
         current.value = result
+    }
+    catch (e) {
+      onError(e)
     }
     finally {
       if (evaluating)

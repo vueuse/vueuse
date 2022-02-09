@@ -1,41 +1,62 @@
+const { resolve } = require('path')
+
 module.exports = {
   root: true,
   env: {
     browser: true,
     node: true,
-    jest: true,
   },
   extends: '@antfu/eslint-config',
   plugins: [
     'markdown',
-    'jest',
   ],
   rules: {
-    'no-alert': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    'unicorn/prevent-abbreviations': 'off',
-    'unicorn/consistent-function-scoping': 'off',
-    'unicorn/no-null': 'off',
-    'unicorn/filename-case': 'off',
-    'react/react-in-jsx-scope': 'off',
     'react/no-string-refs': 'off',
-    'no-new': 'off',
-    'import/named': 'off',
     'react/no-unknown-property': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',
-    'spaced-comment': ['error', 'always', { exceptions: ['@__PURE__'] }],
+    'vue/no-template-shadow': 'off',
+    'vue/require-prop-types': 'off',
+    'spaced-comment': ['error', 'always', { exceptions: ['#__PURE__'] }],
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          'vue',
+          '@vue/composition-api',
+          '..',
+          '../..',
+          resolve(__dirname, 'packages/core/index.ts'),
+          {
+            name: 'vue-demi',
+            importNames: ['onMounted', 'onUnmounted'],
+            message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+          },
+        ],
+      },
+    ],
+    'node/no-callback-literal': 'off',
+    'import/namespace': 'off',
+    'import/default': 'off',
+    'import/no-named-as-default': 'off',
+    'import/no-named-as-default-member': 'off',
   },
   overrides: [
     {
-      files: ['*.md', 'demo.vue', 'scripts/*.ts'],
+      files: ['*.md', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {
+        'no-alert': 'off',
         'no-console': 'off',
         'no-undef': 'off',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
+        'no-restricted-imports': 'off',
+      },
+    },
+    {
+      files: ['packages/.vitepress/**/*.*', 'playgrounds/**/*.*'],
+      rules: {
+        'no-restricted-imports': 'off',
       },
     },
   ],

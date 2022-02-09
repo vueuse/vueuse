@@ -48,6 +48,9 @@ Vue composables for playing sound effects.
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
+## Nuxt - [`@vueuse/nuxt`](https://vueuse.org/nuxt/README.html)
+VueUse Nuxt Module
+
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash
@@ -58,7 +61,9 @@ Utilities for vue-router
 Integration wrappers for utility libraries
   - [`useAxios`](https://vueuse.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useCookies`](https://vueuse.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
+  - [`useDrauu`](https://vueuse.org/integrations/useDrauu/) — reactive instance for [drauu](https://github.com/antfu/drauu)
   - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)
+  - [`useFuse`](https://vueuse.org/integrations/useFuse/) — easily implement fuzzy search using a composable on top of the zero-dependency library [Fuse.js](https://github.com/krisk/fuse)
   - [`useJwt`](https://vueuse.org/integrations/useJwt/) — wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
@@ -69,6 +74,7 @@ Enables RxJS reactive functions in Vue
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
   - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
   - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind Subject to ref and propagate value changes both ways
   - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
 
 

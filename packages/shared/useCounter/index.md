@@ -6,7 +6,7 @@ category: Utilities
 
 Basic counter with utility functions.
 
-## Usage
+## Basic Usage
 
 ```js
 import { useCounter } from '@vueuse/core'
@@ -14,30 +14,10 @@ import { useCounter } from '@vueuse/core'
 const { count, inc, dec, set, reset } = useCounter()
 ```
 
+## Usage with options
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+```js
+import { useCounter } from '@vueuse/core'
 
-```typescript
-/**
- * Basic counter with utility functions.
- *
- * @see https://vueuse.org/useCounter
- * @param [initialValue=0]
- */
-export declare function useCounter(initialValue?: number): {
-  count: Ref<number>
-  inc: (delta?: number) => number
-  dec: (delta?: number) => number
-  get: () => number
-  set: (val: number) => number
-  reset: (val?: number) => number
-}
+const { count, inc, dec, set, reset } = useCounter(1, { min: 0, max: 16 })
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useCounter/index.md)
-
-
-<!--FOOTER_ENDS-->

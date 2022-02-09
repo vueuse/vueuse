@@ -1,9 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { computed, ComputedRef, Ref, ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface UseDevicesListOptions extends ConfigurableNavigator {
   onUpdated?: (devices: MediaDeviceInfo[]) => void
@@ -14,6 +16,12 @@ export interface UseDevicesListOptions extends ConfigurableNavigator {
    * @default false
    */
   requestPermissions?: boolean
+  /**
+   * Request for types of media permissions
+   *
+   * @default { audio: true, video: true }
+   */
+  constraints?: MediaStreamConstraints
 }
 
 export interface UseDevicesListReturn {
@@ -39,6 +47,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   const {
     navigator = defaultNavigator,
     requestPermissions = false,
+    constraints = { audio: true, video: true },
     onUpdated,
   } = options
 
@@ -67,7 +76,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     const { state, query } = usePermission('camera', { controls: true })
     await query()
     if (state.value !== 'granted') {
-      const stream = await navigator!.mediaDevices.getUserMedia({ audio: true, video: true })
+      const stream = await navigator!.mediaDevices.getUserMedia(constraints)
       stream.getTracks().forEach(t => t.stop())
       update()
       permissionGranted.value = true

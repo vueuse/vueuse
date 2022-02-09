@@ -5,22 +5,22 @@ import { onKeyStroke } from '.'
 const translateX = ref(0)
 const translateY = ref(0)
 
-onKeyStroke('ArrowUp', (e: KeyboardEvent) => {
+onKeyStroke(['w', 'W', 'ArrowUp'], (e: KeyboardEvent) => {
   translateY.value -= 10
   e.preventDefault()
 })
 
-onKeyStroke('ArrowDown', (e: KeyboardEvent) => {
+onKeyStroke(['s', 'S', 'ArrowDown'], (e: KeyboardEvent) => {
   translateY.value += 10
   e.preventDefault()
 })
 
-onKeyStroke('ArrowLeft', (e: KeyboardEvent) => {
+onKeyStroke(['a', 'A', 'ArrowLeft'], (e: KeyboardEvent) => {
   translateX.value -= 10
   e.preventDefault()
 })
 
-onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
+onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   translateX.value += 10
   e.preventDefault()
 })
@@ -28,11 +28,11 @@ onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
 
 <template>
   <div>
-    <div class="container">
+    <div class="container border-base">
       <div class="ball" :style="{transform: `translate(${translateX}px, ${translateY}px)`}" />
     </div>
     <div class="text-center mt-4">
-      Use the arrow keys to control the movement of the ball.
+      Use the arrow keys or w a s d keys to control the movement of the ball.
     </div>
   </div>
 </template>
@@ -42,11 +42,13 @@ onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: 100px;
   margin: auto;
   overflow: hidden;
-  border: 1px solid #a1a1a1;
+  border: 1px solid #a1a1a130;
+  border-radius: 5px;
 }
 
 .ball {
@@ -55,5 +57,4 @@ onKeyStroke('ArrowRight', (e: KeyboardEvent) => {
   background: #a1a1a1;
   border-radius: 50%;
 }
-
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue-demi'
-import { useMouseInElement, useVModel, useEventListener } from '@vueuse/core'
+import { useEventListener, useMouseInElement, useVModel } from '@vueuse/core'
 
 const scrubber = ref()
 const scrubbing = ref(false)

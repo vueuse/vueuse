@@ -9,13 +9,13 @@ Thanks for being interested in contributing to this project!
 Clone this repo to your local machine and install the dependencies.
 
 ```bash
-yarn install
+pnpm install
 ```
 
 We use Vitepress for rapid development and documenting. You can start it locally by
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ## Contributing
@@ -70,7 +70,7 @@ A function folder typicality contains these 4 files:
 ```bash
 index.ts            # function source code itself
 demo.vue            # documentation demo
-index.test.ts       # jest unit testing
+index.test.ts       # vitest unit testing
 index.md            # documentation
 ```
 

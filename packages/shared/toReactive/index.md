@@ -24,23 +24,3 @@ refState.value = { bar: 'foo' }
 console.log(state.foo) // => undefined
 console.log(state.bar) // => 'foo'
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Converts ref to reactive.
- *
- * @see https://vueuse.org/toReactive
- * @param objectRef A ref of object
- */
-export declare function toReactive<T extends object>(objectRef: MaybeRef<T>): T
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/toReactive/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/toReactive/index.md)
-
-
-<!--FOOTER_ENDS-->

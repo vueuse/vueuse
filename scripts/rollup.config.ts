@@ -1,11 +1,12 @@
 import fs from 'fs'
 import { resolve } from 'path'
-import typescript from 'rollup-plugin-typescript2'
-import { terser } from 'rollup-plugin-terser'
+import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
+import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
-import { OutputOptions, Plugin, RollupOptions } from 'rollup'
+import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
-import { activePackages } from '../meta/packages'
+import { packages } from '../meta/packages'
+import { functions } from '../meta/function-indexes'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
@@ -17,7 +18,31 @@ const injectVueDemi: Plugin = {
   },
 }
 
-for (const { globals, name, external, submodules, iife } of activePackages) {
+const esbuildPlugin = esbuild()
+
+const dtsPlugin = [
+  dts(),
+]
+
+const externals = [
+  'vue-demi',
+  '@vueuse/shared',
+  '@vueuse/core',
+]
+
+const esbuildMinifer = (options: ESBuildOptions) => {
+  const { renderChunk } = esbuild(options)
+
+  return {
+    name: 'esbuild-minifer',
+    renderChunk,
+  }
+}
+
+for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target } of packages) {
+  if (build === false)
+    continue
+
   const iifeGlobals = {
     'vue-demi': 'VueDemi',
     '@vueuse/shared': 'VueUse',
@@ -32,18 +57,27 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
     functionNames.push(...fg.sync('*/index.ts', { cwd: resolve(`packages/${name}`) }).map(i => i.split('/')[0]))
 
   for (const fn of functionNames) {
-    const input = fn === 'index' ? `packages/${name}/index.ts` : `packages/${name}/${fn}/index.ts`
+    const input = fn === 'index'
+      ? `packages/${name}/index.ts`
+      : `packages/${name}/${fn}/index.ts`
 
-    const output: OutputOptions[] = [
-      {
-        file: `packages/${name}/dist/${fn}.cjs.js`,
-        format: 'cjs',
-      },
-      {
-        file: `packages/${name}/dist/${fn}.esm.js`,
+    const info = functions.find(i => i.name === fn)
+
+    const output: OutputOptions[] = []
+
+    if (mjs !== false) {
+      output.push({
+        file: `packages/${name}/dist/${fn}.mjs`,
         format: 'es',
-      },
-    ]
+      })
+    }
+
+    if (cjs !== false) {
+      output.push({
+        file: `packages/${name}/dist/${fn}.cjs`,
+        format: 'cjs',
+      })
+    }
 
     if (iife !== false) {
       output.push(
@@ -65,10 +99,8 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
           globals: iifeGlobals,
           plugins: [
             injectVueDemi,
-            terser({
-              format: {
-                comments: false,
-              },
+            esbuildMinifer({
+              minify: true,
             }),
           ],
         },
@@ -79,36 +111,66 @@ for (const { globals, name, external, submodules, iife } of activePackages) {
       input,
       output,
       plugins: [
-        typescript({
-          tsconfigOverride: {
-            compilerOptions: {
-              declaration: false,
-            },
-          },
-        }),
+        target
+          ? esbuild({ target })
+          : esbuildPlugin,
       ],
       external: [
-        'vue-demi',
-        '@vueuse/shared',
+        ...externals,
         ...(external || []),
       ],
     })
 
-    configs.push({
-      input,
-      output: {
-        file: `packages/${name}/dist/${fn}.d.ts`,
-        format: 'es',
-      },
-      plugins: [
-        dts(),
-      ],
-      external: [
-        'vue-demi',
-        '@vueuse/shared',
-        ...(external || []),
-      ],
-    })
+    if (dts !== false) {
+      configs.push({
+        input,
+        output: {
+          file: `packages/${name}/dist/${fn}.d.ts`,
+          format: 'es',
+        },
+        plugins: dtsPlugin,
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+    }
+
+    if (info?.component) {
+      configs.push({
+        input: `packages/${name}/${fn}/component.ts`,
+        output: [
+          {
+            file: `packages/${name}/dist/${fn}/component.cjs`,
+            format: 'cjs',
+          },
+          {
+            file: `packages/${name}/dist/${fn}/component.mjs`,
+            format: 'es',
+          },
+        ],
+        plugins: [
+          esbuildPlugin,
+        ],
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+
+      configs.push({
+        input: `packages/${name}/${fn}/component.ts`,
+        output: {
+          file: `packages/${name}/dist/${fn}/component.d.ts`,
+          format: 'es',
+        },
+        plugins: dtsPlugin,
+        external: [
+          ...externals,
+          ...(external || []),
+        ],
+      })
+    }
   }
 }
 

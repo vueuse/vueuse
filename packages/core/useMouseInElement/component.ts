@@ -1,16 +1,18 @@
-import { h, ref, defineComponent, reactive } from 'vue-demi'
-import { useMouseInElement, MouseInElementOptions } from '@vueuse/core'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
+import type { MouseInElementOptions } from '@vueuse/core'
+import { useMouseInElement } from '@vueuse/core'
+import type { RenderableComponent } from '../types'
 
-export const UseMouseInElement = defineComponent<MouseInElementOptions>({
+export const UseMouseInElement = defineComponent<MouseInElementOptions & RenderableComponent>({
   name: 'UseMouseElement',
-  props: ['handleOutside'] as unknown as undefined,
+  props: ['handleOutside', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const data = reactive(useMouseInElement(target, props))
 
     return () => {
       if (slots.default)
-        return h('div', { ref: target }, slots.default(data))
+        return h(props.as || 'div', { ref: target }, slots.default(data))
     }
   },
 })

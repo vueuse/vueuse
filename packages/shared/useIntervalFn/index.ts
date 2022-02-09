@@ -1,6 +1,7 @@
-import { ref } from 'vue-demi'
+import { isRef, ref, unref, watch } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import { Pausable, Fn, isClient } from '../utils'
+import type { Fn, MaybeRef, Pausable } from '../utils'
+import { isClient } from '../utils'
 
 export interface IntervalFnOptions {
   /**
@@ -25,7 +26,7 @@ export interface IntervalFnOptions {
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOptions = {}): Pausable {
+export function useIntervalFn(cb: Fn, interval: MaybeRef<number> = 1000, options: IntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
     immediateCallback = false,
@@ -53,11 +54,19 @@ export function useIntervalFn(cb: Fn, interval = 1000, options: IntervalFnOption
     if (immediateCallback)
       cb()
     clean()
-    timer = setInterval(cb, interval)
+    timer = setInterval(cb, unref(interval))
   }
 
   if (immediate && isClient)
     resume()
+
+  if (isRef(interval)) {
+    const stopWatch = watch(interval, () => {
+      if (immediate && isClient)
+        resume()
+    })
+    tryOnScopeDispose(stopWatch)
+  }
 
   tryOnScopeDispose(pause)
 

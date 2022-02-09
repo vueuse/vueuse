@@ -1,4 +1,5 @@
-import { computed, ComputedRef, ref, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import type firebase from 'firebase/app'
 
 export interface FirebaseAuthOptions {

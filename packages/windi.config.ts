@@ -7,10 +7,14 @@ export default defineConfig({
       '.vitepress/theme/**/*.vue',
     ],
   },
+  attributify: true,
   theme: {
     extend: {
       colors: {
         primary: '#3eaf7c',
+      },
+      fontFamily: {
+        mono: 'var(--vt-font-family-mono)',
       },
     },
   },

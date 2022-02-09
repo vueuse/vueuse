@@ -21,28 +21,3 @@ const languages = usePreferredLanguages()
   Preferred Languages: {{ languages }}
 </UsePreferredLanguages>
 ```
-
-<LearnMoreComponents />
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive Navigator Languages.
- *
- * @see https://vueuse.org/usePreferredLanguages
- * @param options
- */
-export declare function usePreferredLanguages(
-  options?: ConfigurableWindow
-): Ref<readonly string[]>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredLanguages/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredLanguages/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/usePreferredLanguages/index.md)
-
-
-<!--FOOTER_ENDS-->

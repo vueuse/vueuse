@@ -17,7 +17,21 @@ const debouncedFn = useDebounceFn(() => {
   // do something
 }, 1000)
 
-document.addEventLisenter('resize', debouncedFn)
+document.addEventListener('resize', debouncedFn)
+```
+
+You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
+
+```js
+import { useDebounceFn } from '@vueuse/core'
+
+// If no invokation after 5000ms due to repeated input,
+// the function will be called anyway.
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000, { maxWait: 5000 })
+
+document.addEventListener('resize', debouncedFn)
 ```
 
 ## Related Functions
@@ -30,29 +44,3 @@ document.addEventLisenter('resize', debouncedFn)
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Debounce execution of a function.
- *
- * @param  fn          A function to be executed after delay milliseconds debounced.
- * @param  ms          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
- *
- * @return A new, debounce, function.
- */
-export declare function useDebounceFn<T extends FunctionArgs>(
-  fn: T,
-  ms?: MaybeRef<number>
-): T
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/useDebounceFn/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/shared/useDebounceFn/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/useDebounceFn/index.md)
-
-
-<!--FOOTER_ENDS-->

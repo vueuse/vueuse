@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { useUrlSearchParams } from '.'
 
@@ -9,7 +8,7 @@ params.vueuse = 'awesome'
 
 <template>
   <div>
-    <ul>
+    <ul class="!m-0">
       <li v-for="key in Object.keys(params)" :key="key">
         {{ key }}={{ params[key] }}
       </li>

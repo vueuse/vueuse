@@ -1,4 +1,5 @@
-import { Fn, isString, MaybeRef, noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { Fn, MaybeRef } from '@vueuse/shared'
+import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
 import { unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -10,7 +11,7 @@ interface InferEventTarget<Events> {
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
 
-export type GeneralEventListener<E = Event> = {
+export interface GeneralEventListener<E = Event> {
   (evt: E): void
 }
 

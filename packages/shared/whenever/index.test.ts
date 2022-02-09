@@ -1,4 +1,5 @@
-import { nextTick, Ref, ref, unref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { nextTick, ref, unref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { whenever } from '.'
 
