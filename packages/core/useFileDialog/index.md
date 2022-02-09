@@ -11,11 +11,11 @@ Open file dialog with ease.
 ```ts
 import { useFileDialog } from '@vueuse/core'
 
-const { files, openFileDialog } = useDialog()
+const { files, open, reset } = useDialog()
 ```
 
 ```html
 <template>
-  <button type="button" @click="openFileDialog">Choose file</button>
+  <button type="button" @click="open">Choose file</button>
 </template>
 ```
