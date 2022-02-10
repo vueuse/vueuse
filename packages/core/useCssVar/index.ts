@@ -20,20 +20,13 @@ export function useCssVar(
 ) {
   const variable = ref('')
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
-  const attr = computed(() => unref(prop))
+  const propRef = computed(() => unref(prop))
 
   watch(
-    attr,
-    (v) => {
-      variable.value = window?.getComputedStyle(elRef.value!).getPropertyValue(v) || ''
-    },
-  )
-
-  watch(
-    elRef,
-    (el) => {
+    [elRef, propRef],
+    ([el, prop]) => {
       if (el && window)
-        variable.value = window.getComputedStyle(el).getPropertyValue(attr.value)
+        variable.value = window.getComputedStyle(el).getPropertyValue(prop)
     },
     { immediate: true },
   )
@@ -42,7 +35,7 @@ export function useCssVar(
     variable,
     (val) => {
       if (elRef.value?.style)
-        elRef.value.style.setProperty(attr.value, val)
+        elRef.value.style.setProperty(propRef.value, val)
     },
   )
 
