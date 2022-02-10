@@ -18,7 +18,7 @@ export function usePageLeave(options: ConfigurableWindow = {}) {
       return
 
     event = event || (window.event as any)
-    // @ts-ignore
+    // @ts-expect-error missing types
     const from = event.relatedTarget || event.toElement
     isLeft.value = !from
   }

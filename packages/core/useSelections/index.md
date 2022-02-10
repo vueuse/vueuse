@@ -15,7 +15,7 @@ Multiple selection controller.
 import { useSelections } from '@vueuse/core'
 
 const data = [1, 2, 3, 4, 5]
-const { selected, noneSelected, allSelected, partiallySelected, isSelected, toggle, selectAll, unSelectAll } = useSelections(data, [1, 2, 3])
+const { selected, noneSelected, allSelected, partiallySelected, isSelected, toggle, select, unSelect } = useSelections(data, [1, 2, 3])
 
 </script>
 ```

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useSelections } from '.'
 const data = [1, 2, 3, 4, 5]
-const { selected, noneSelected, allSelected, partiallySelected, isSelected, toggle, selectAll, unSelectAll } = useSelections(data, [1, 2, 3])
+const { selected, noneSelected, allSelected, partiallySelected, isSelected, toggle, select, unSelect } = useSelections(data, [1, 2, 3])
 
 </script>
 
 <template>
-  <div>
-    <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30 space-y-1">
+  <div class="flex">
+    <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30 space-y-1 mr-10">
       <legend class="px-1">
         Checkbox
       </legend>
@@ -16,8 +16,8 @@ const { selected, noneSelected, allSelected, partiallySelected, isSelected, togg
           id="checkbox-exact-match"
           :checked="isSelected(item)"
           type="checkbox"
-          @click="toggle(item)"
-        />
+          @click.self="toggle(item)"
+        >
         <label for="checkbox-exact-match">{{ item }} {{ isSelected(item) }}</label>
       </div>
     </fieldset>
@@ -39,12 +39,11 @@ const { selected, noneSelected, allSelected, partiallySelected, isSelected, togg
       </div>
       <BooleanDisplay :value="partiallySelected" />
     </div>
-
-    <button opacity="75" @click="selectAll">
-      Select All
-    </button>
-    <button opacity="75" @click="unSelectAll">
-      UnSelect All
-    </button>
   </div>
+  <button opacity="75" @click="select()">
+    Select All
+  </button>
+  <button opacity="75" @click="unSelect()">
+    UnSelect All
+  </button>
 </template>

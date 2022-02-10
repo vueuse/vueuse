@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: State
 ---
 
 # useThrottledRefHistory

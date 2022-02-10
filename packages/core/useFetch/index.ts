@@ -76,6 +76,9 @@ export interface UseFetchReturn<T> {
   post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
   put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
   delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
 
   // type
   json<JSON = any>(): UseFetchReturn<JSON>
@@ -86,7 +89,7 @@ export interface UseFetchReturn<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'get' | 'post' | 'put' | 'delete'
+type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -260,7 +263,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
-  type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
+  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'get',
     type: 'text' as DataType,
@@ -443,6 +446,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     put: setMethod('put'),
     post: setMethod('post'),
     delete: setMethod('delete'),
+    patch: setMethod('patch'),
+    head: setMethod('head'),
+    options: setMethod('options'),
     // type
     json: setType('json'),
     text: setType('text'),

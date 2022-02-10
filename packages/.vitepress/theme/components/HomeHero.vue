@@ -1,37 +1,47 @@
 <template>
-  <header v-if="showHero" class="home-hero pt-25 pb-10 px-5">
+  <header v-if="showHero" class="home-hero pt-15 pb-10 px-5">
     <p align="center">
       <a href="https://github.com/vueuse/vueuse">
-        <img v-show="isDark" src="/logo-vertical-dark.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
-        <img v-show="!isDark" src="/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" height="300">
+        <img
+          class="!h-75 light:hidden"
+          src="/logo-vertical-dark.png"
+          alt="VueUse - Collection of essential Vue Composition Utilities"
+        >
+        <img
+          class="!h-75 dark:hidden"
+          src="/logo-vertical.png"
+          alt="VueUse - Collection of essential Vue Composition Utilities"
+        >
       </a>
       <br>
     </p>
-    <div class="description">
+    <div class="description mx-auto -mt-8 mb-2">
       Collection of essential Vue Composition Utilities
     </div>
 
-    <NavLink
-      v-if="frontmatter.actionLink && frontmatter.actionText"
-      :item="{ link: frontmatter.actionLink, text: frontmatter.actionText }"
-      class="action"
-    />
+    <div class="mb-15 flex gap-1 place-content-center">
+      <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
+      <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
+      <img alt="Function Count" src="https://img.shields.io/badge/-142%20functions-1e8a7a">
+    </div>
 
-    <NavLink
-      v-if="frontmatter.altActionLink && frontmatter.altActionText"
-      :item="{
-        link: frontmatter.altActionLink,
-        text: frontmatter.altActionText
-      }"
-      class="action alt"
-    />
+    <p class="actions flex gap-2 place-content-center">
+      <a class="get-started" href="/guide/">Get Started <carbon:arrow-right class="icon" /></a>
+      <a class="setup" href="/functions">All Functions</a>
+      <a class="setup" href="https://github.com/vueuse/vueuse" target="_blank"><carbon:logo-github class="icon" /> GitHub</a>
+    </p>
+
+    <p id="sponsor" class="mt-18 text-center">
+      <a href="https://github.com/sponsors/antfu">
+        <img src="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg" class="m-auto">
+      </a>
+    </p>
   </header>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
-import NavLink from './NavLink.vue'
 
 const { site, frontmatter } = useData()
 
@@ -67,6 +77,10 @@ const heroText = computed(() => frontmatter.value.heroText || site.value.title)
   }
 }
 
+html:not(.dark) .light\:hidden {
+  display: none;
+}
+
 .figure {
   padding: 0 1.5rem;
 }
@@ -97,52 +111,65 @@ const heroText = computed(() => frontmatter.value.heroText || site.value.title)
 }
 
 .description {
-  margin: 0;
-  line-height: 1.3;
-  font-size: 1.2rem;
-  color: var(--c-text-light);
+  max-width: 760px;
+  line-height: 1.5;
+  color: var(--vt-c-text-2);
+  transition: color 0.5s;
+  font-size: 19px;
 }
 
-.action {
-  margin-top: 1.5rem;
+.actions a {
+  font-size: 16px;
   display: inline-block;
-}
-
-.action.alt {
-  margin-left: 1.5rem;
-}
-
-@media (min-width: 420px) {
-  .action {
-    margin-top: 2rem;
-    display: inline-block;
-  }
-}
-
-.action :deep(.item) {
-  display: inline-block;
-  border-radius: 6px;
-  padding: 0 18px;
-  line-height: 40px;
-  font-size: 1.1rem;
+  background-color: var(--vt-c-bg-mute);
+  padding: 8px 18px;
   font-weight: 500;
-  border: 0;
-  color: #ffffff;
-  background-color: var(--c-brand);
-  transition: background-color 0.1s ease;
+  border-radius: 8px;
+  transition: background-color 0.5s, color 0.5s;
 }
 
-.action :deep(.item:hover) {
-  text-decoration: none;
-  color: #ffffff;
-  background-color: var(--c-brand-light);
+.actions .get-started {
+  font-weight: 600;
+  background-color: var(--vt-c-brand);
+  color: #fff;
 }
 
-.action.alt :deep(.item) {
-  background-color: #476582;
+.actions .icon {
+  display: inline;
+  position: relative;
+  top: -1px;
+  margin-left: 2px;
+  fill: currentColor;
+  transition: transform 0.2s;
 }
 
-.action.alt :deep(.item:hover) {
-  background-color: #304a64;
+.dark .actions .get-started {
+  color: var(--vt-c-indigo);
+}
+
+.actions .get-started:hover {
+  background-color: var(--vt-c-green-dark);
+  transition-duration: 0.2s;
+}
+
+.actions .get-started:hover .icon {
+  transform: translateX(2px);
+}
+
+.dark .actions .get-started:hover {
+  background-color: var(--vt-c-green-light);
+}
+
+.actions .setup {
+  color: var(--vt-c-text-code);
+}
+
+.actions .setup:hover {
+  background-color: var(--vt-c-gray-light-4);
+  transition-duration: 0.2s;
+}
+
+.dark .actions .setup:hover {
+  background-color: var(--vt-c-gray-dark-3);
 }
 </style>

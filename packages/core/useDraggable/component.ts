@@ -21,6 +21,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
   name: 'UseDraggable',
   props: [
     'storageKey',
+    'storageType',
     'initialValue',
     'exact',
     'preventDefault',

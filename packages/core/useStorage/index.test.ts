@@ -8,11 +8,11 @@ const KEY = 'custom-key'
 describe('useStorage', () => {
   afterEach(() => {
     localStorage.clear()
-    // @ts-expect-error
+    // @ts-expect-error mock
     localStorage.setItem.mockClear()
-    // @ts-expect-error
+    // @ts-expect-error mock
     localStorage.getItem.mockClear()
-    // @ts-expect-error
+    // @ts-expect-error mock
     localStorage.removeItem.mockClear()
   })
 
@@ -201,7 +201,7 @@ describe('useStorage', () => {
 
     await nextTick()
     await promiseTimeout(300)
-    // @ts-expect-error
+    // @ts-expect-error mock
     localStorage.setItem.mockClear()
 
     instance.ref.name = 'b'
@@ -211,7 +211,7 @@ describe('useStorage', () => {
 
     expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    // @ts-expect-error
+    // @ts-expect-error mock
     localStorage.setItem.mockClear()
 
     instance.ref.data = 321

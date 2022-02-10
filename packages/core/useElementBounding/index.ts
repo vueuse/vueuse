@@ -9,11 +9,8 @@ import { useResizeObserver } from '../useResizeObserver'
  *
  * @see https://vueuse.org/useElementBounding
  * @param target
- * @param options
  */
-export function useElementBounding(
-  target: MaybeElementRef,
-) {
+export function useElementBounding(target: MaybeElementRef) {
   const height = ref(0)
   const bottom = ref(0)
   const left = ref(0)

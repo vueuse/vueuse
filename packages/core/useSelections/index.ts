@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 
 /**
  * Multiple selection controller.
@@ -7,47 +7,48 @@ import { ref, computed } from 'vue-demi'
  * @param items: T[]
  * @param defaultSelected: T[] = []
  */
-
 export function useSelections<T>(items: T[], defaultSelected: T[] = []) {
   const selected = ref<Set<T>>(new Set(defaultSelected))
+
   const selectedAry = computed(() => Array.from(selected.value))
-  const isSelected = (item: T) => selected.value.has(item)
 
-  const select = (item: T) => {
-    selected.value.add(item)
-  }
+  const noneSelected = computed(() => selectedAry.value.length === 0)
 
-  const unSelect = (item: T) => {
-    selected.value.delete(item)
-  }
-
-  const toggle = (item: T) => {
-    if (isSelected(item))
-      unSelect(item)
-
-    else
-      select(item)
-  }
-
-  const selectAll = () => {
-    items.forEach((o) => {
-      selected.value.add(o)
-    })
-  }
-
-  const unSelectAll = () => {
-    items.forEach((o) => {
-      selected.value.delete(o)
-    })
-  }
-
-  const noneSelected = computed(() => items.every(o => !selected.value.has(o)))
-
-  const allSelected = computed(() => items.every(o => selected.value.has(o) && !noneSelected.value))
+  const allSelected = computed(() => selectedAry.value.length === items.length)
 
   const partiallySelected = computed(() => !noneSelected.value && !allSelected.value)
 
-  const toggleAll = () => (allSelected.value ? unSelectAll() : selectAll())
+  const isSelected = (item: T) => selected.value.has(item)
+
+  const select = (item?: T) => {
+    if (item !== undefined) {
+      selected.value.add(item)
+    }
+    else {
+      items.forEach((o) => {
+        selected.value.add(o)
+      })
+    }
+  }
+
+  const unSelect = (item?: T) => {
+    if (item !== undefined) {
+      selected.value.delete(item)
+    }
+    else {
+      items.forEach((o) => {
+        selected.value.delete(o)
+      })
+    }
+  }
+
+  const toggle = (item?: T) => {
+    if (item !== undefined)
+      isSelected(item) ? unSelect(item) : select(item)
+
+    else
+      allSelected.value ? unSelect() : select()
+  }
 
   return {
     selected: selectedAry,
@@ -58,9 +59,6 @@ export function useSelections<T>(items: T[], defaultSelected: T[] = []) {
     select,
     unSelect,
     toggle,
-    selectAll,
-    unSelectAll,
-    toggleAll,
   }
 }
 

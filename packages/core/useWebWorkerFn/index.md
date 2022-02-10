@@ -4,7 +4,7 @@ category: Misc
 
 # useWebWorkerFn
 
-Run expensive function without blocking the UI, using a simple syntax that makes use of Promise. A port of [alewin/useWorker](https://github.com/alewin/useWorker).
+Run expensive functions without blocking the UI, using a simple syntax that makes use of Promise. A port of [alewin/useWorker](https://github.com/alewin/useWorker).
 
 ## Usage
 

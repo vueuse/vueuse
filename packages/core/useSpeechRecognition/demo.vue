@@ -29,7 +29,7 @@ const speech = useSpeechRecognition({
 const color = ref('transparent')
 
 if (speech.isSupported) {
-  // @ts-ignore
+  // @ts-expect-error missing types
   const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
   const speechRecognitionList = new SpeechGrammarList()
   speechRecognitionList.addFromString(grammar, 1)

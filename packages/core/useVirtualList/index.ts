@@ -18,7 +18,7 @@ export interface UseVirtualListOptions {
   overscan?: number
 }
 
-export type UseVirtualListItem<T> = {
+export interface UseVirtualListItem<T> {
   data: T
   index: number
 }

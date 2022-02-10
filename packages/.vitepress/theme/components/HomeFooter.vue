@@ -1,17 +1,18 @@
 <template>
-  <footer v-if="$frontmatter.footer" class="footer">
+  <footer v-if="frontmatter.footer" class="footer !mt-20">
     <div class="container">
-      <p class="text">
-        {{ $frontmatter.footer }}
-      </p>
-      <p class="text-center opacity-75">
-        <a href="https://www.netlify.com">
-          <img src="/netlify.svg" alt="Deploys by Netlify">
-        </a>
+      <p class="text opacity-60">
+        {{ frontmatter.footer }}
       </p>
     </div>
   </footer>
 </template>
+
+<script setup lang="ts">
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+</script>
 
 <style scoped>
 .footer {
@@ -29,10 +30,8 @@
   padding: 2rem 1.5rem 2.25rem;
 }
 
-.home-hero + .footer .container,
-.home-features + .footer .container,
-.home-content + .footer .container {
-  border-top: 1px solid var(--c-divider);
+.footer {
+  border-top: 1px solid var(--vt-c-divider-light);
 }
 
 @media (min-width: 420px) {
@@ -46,6 +45,6 @@
   text-align: center;
   line-height: 1.4;
   font-size: .9rem;
-  color: var(--c-text-light);
+  color: var(--vt-c-text-light);
 }
 </style>

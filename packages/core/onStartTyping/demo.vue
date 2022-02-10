@@ -5,7 +5,6 @@ import { onStartTyping } from '.'
 const input = ref<HTMLInputElement | null>(null)
 
 onStartTyping(() => {
-  // @ts-ignore
   if (!input.value?.active)
     input.value!.focus()
 })

@@ -13,6 +13,9 @@ export default defineConfig({
       colors: {
         primary: '#3eaf7c',
       },
+      fontFamily: {
+        mono: 'var(--vt-font-family-mono)',
+      },
     },
   },
 })

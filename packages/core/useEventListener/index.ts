@@ -11,7 +11,7 @@ interface InferEventTarget<Events> {
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
 
-export type GeneralEventListener<E = Event> = {
+export interface GeneralEventListener<E = Event> {
   (evt: E): void
 }
 
