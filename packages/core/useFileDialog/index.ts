@@ -7,7 +7,7 @@ export interface UseFileDialogOptions {
    * Select the input source for the capture file.
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
-  capture?: 'user' | 'environment'
+  capture?: string
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
