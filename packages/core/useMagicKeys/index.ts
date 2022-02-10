@@ -90,10 +90,12 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     const values = [code, key].filter(Boolean)
 
     // current set
-    if (value)
-      current.add(e.code)
-    else
-      current.delete(e.code)
+    if (code) {
+      if (value)
+        current.add(e.code)
+      else
+        current.delete(e.code)
+    }
 
     for (const key of values) {
       if (key in refs) {
