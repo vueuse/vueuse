@@ -3,6 +3,7 @@ import { readonly, ref } from 'vue-demi'
 export interface UseFileDialogOptions {
   multiple?: boolean
   accept?: string
+  capture?: 'user' | 'environment'
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -35,6 +36,7 @@ export function useFileDialog(options?: Partial<UseFileDialogOptions>) {
     }
     input.multiple = _options.multiple!
     input.accept = _options.accept!
+    input.capture = _options.capture!
 
     input.click()
   }
