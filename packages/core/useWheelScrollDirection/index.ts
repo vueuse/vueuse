@@ -1,6 +1,8 @@
-import { unref } from 'vue-demi'
+import { computed, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeElementRef } from '@vueuse/core'
 import { useEventListener } from '@vueuse/core'
+import { unrefElement } from '../unrefElement'
 
 export interface UseWheelScrollDirectionOptions {
   direction?: MaybeRef<'horizontal' | 'vertical' | 'auto' | undefined>
@@ -10,12 +12,14 @@ export interface UseWheelScrollDirectionOptions {
 /**
  * Restrict wheel scroll direction.
  *
- * @param element
+ * @param target
  * @param options - UseWheelScrollDirectionOptions
  * @see https://vueuse.org/useWheelScrollDirection
  */
-export function useWheelScrollDirection(element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>, options: UseWheelScrollDirectionOptions = {}) {
-  useEventListener(element, 'wheel', (e: WheelEvent & {
+export function useWheelScrollDirection(target: MaybeElementRef, options: UseWheelScrollDirectionOptions = {}) {
+  const elementRef = computed(() => unrefElement(target))
+
+  useEventListener(elementRef, 'wheel', (e: WheelEvent & {
     wheelDelta: number
     wheelDeltaX: number
     wheelDeltaY: number
@@ -25,13 +29,13 @@ export function useWheelScrollDirection(element: MaybeRef<HTMLElement | SVGEleme
     const direction = unref(directionOption) ?? 'auto'
 
     if (direction === 'auto')
-      // default wheel event
+    // default wheel event
       return
 
     // Take over wheel events
     e.preventDefault()
 
-    const ele = unref(element) as HTMLElement
+    const ele = unref(elementRef) as HTMLElement
 
     const processWheelDelta = (delta: number) => -delta * unref(scrollDeltaRatio)
 
