@@ -3,6 +3,10 @@ import { readonly, ref } from 'vue-demi'
 export interface UseFileDialogOptions {
   multiple?: boolean
   accept?: string
+  /**
+   * Select the input source for the capture file.
+   * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
+   */
   capture?: 'user' | 'environment'
 }
 
