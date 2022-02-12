@@ -4,7 +4,7 @@ category: Browser
 
 # useStyleTag
 
-Inject reactive `<style>` element in head.
+Inject reactive `style` element in head.
 
 ## Usage
 
