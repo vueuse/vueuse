@@ -33,10 +33,8 @@ export function useElementSize(
     options,
   )
   watch(() => unref(target), (ele) => {
-    if (!ele) {
-      width.value = initialSize.width
-      height.value = initialSize.height
-    }
+    width.value = ele ? initialSize.width : 0
+    height.value = ele ? initialSize.height : 0
   })
   return {
     width,
