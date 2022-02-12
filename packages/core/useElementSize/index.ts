@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref, unref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import type { ResizeObserverOptions } from '../useResizeObserver'
 import { useResizeObserver } from '../useResizeObserver'
@@ -32,7 +32,12 @@ export function useElementSize(
     },
     options,
   )
-
+  watch(() => unref(target), (ele) => {
+    if (!ele) {
+      width.value = initialSize.width
+      height.value = initialSize.height
+    }
+  })
   return {
     width,
     height,
