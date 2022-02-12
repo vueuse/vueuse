@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import type { IntervalFnOptions } from '@vueuse/shared'
-import { isClient, useIntervalFn } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
 
 /**
  * Performance.memory
@@ -40,7 +40,7 @@ type PerformanceMemory = Performance & {
  */
 export function useMemory(options: MemoryOptions = {}) {
   const memory = ref<MemoryInfo>()
-  const isSupported = isClient && performance && 'memory' in performance
+  const isSupported = typeof performance !== 'undefined' && 'memory' in performance
 
   if (isSupported) {
     const { interval = 1000 } = options
