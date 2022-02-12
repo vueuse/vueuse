@@ -25,6 +25,7 @@ const {
   dir: 'auto',
   lang: 'en',
   renotify: true,
+  tag: 'test',
 })
 
 if (isSupported) {

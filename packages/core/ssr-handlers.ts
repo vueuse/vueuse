@@ -21,11 +21,19 @@ export interface SSRHandlersMap {
   updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
 }
 
+const _global
+  = typeof globalThis !== 'undefined'
+    ? globalThis
+    : typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+        ? global
+        : typeof self !== 'undefined' ? self : {}
 const globalKey = '__vueuse_ssr_handlers__'
-// @ts-expect-error
-globalThis[globalKey] = globalThis[globalKey] || {}
-// @ts-expect-error
-const handlers: Partial<SSRHandlersMap> = globalThis[globalKey]
+// @ts-expect-error inject global
+_global[globalKey] = _global[globalKey] || {}
+// @ts-expect-error inject global
+const handlers: Partial<SSRHandlersMap> = _global[globalKey]
 
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T]): SSRHandlersMap[T]
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T] | undefined): SSRHandlersMap[T] | undefined

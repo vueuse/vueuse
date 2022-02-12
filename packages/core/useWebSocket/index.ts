@@ -247,7 +247,7 @@ export function useWebSocket<Data = any>(
   if (immediate) _init()
 
   if (autoClose) {
-    useEventListener(window, 'beforeunload', close)
+    useEventListener(window, 'beforeunload', () => close())
     tryOnScopeDispose(close)
   }
 

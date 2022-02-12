@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import fg from 'fast-glob'
 import consola from 'consola'
 import { packages } from '../meta/packages'
-import indexes from '../meta/function-indexes'
+import { indexes } from '../meta/function-indexes'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 

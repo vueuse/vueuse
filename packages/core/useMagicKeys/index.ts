@@ -85,15 +85,17 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
-    const key = e.key.toLowerCase()
-    const code = e.code.toLowerCase()
-    const values = [code, key]
+    const key = e.key?.toLowerCase()
+    const code = e.code?.toLowerCase()
+    const values = [code, key].filter(Boolean)
 
     // current set
-    if (value)
-      current.add(e.code)
-    else
-      current.delete(e.code)
+    if (code) {
+      if (value)
+        current.add(e.code)
+      else
+        current.delete(e.code)
+    }
 
     for (const key of values) {
       if (key in refs) {

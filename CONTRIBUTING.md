@@ -70,7 +70,7 @@ A function folder typicality contains these 4 files:
 ```bash
 index.ts            # function source code itself
 demo.vue            # documentation demo
-index.test.ts       # jest unit testing
+index.test.ts       # vitest unit testing
 index.md            # documentation
 ```
 

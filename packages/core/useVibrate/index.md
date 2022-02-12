@@ -4,7 +4,7 @@ category: Browser
 
 # useVibrate
 
-Reactive vibration web API
+Reactive [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API)
 
 Most modern mobile devices include vibration hardware, which lets software 
 code provides physical feedback to the user by causing the device to shake. 

@@ -11,7 +11,7 @@ const alt = useKeyModifier('Alt')
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
     <Key :value="capsLock || false">
       capsLock
     </Key>

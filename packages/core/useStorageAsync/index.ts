@@ -35,7 +35,7 @@ export function useStorageAsync<T = unknown> (key: string, initialValue: MaybeRe
 export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   key: string,
   initialValue: MaybeRef<T>,
-  storage: StorageLikeAsync | undefined = getSSRHandler('getDefaultStorageAsync', () => defaultWindow?.localStorage)(),
+  storage: StorageLikeAsync | undefined,
   options: StorageAsyncOptions<T> = {},
 ): RemovableRef<T> {
   const {
@@ -56,6 +56,15 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
+
+  if (!storage) {
+    try {
+      storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
 
   async function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
@@ -88,9 +97,9 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
       async() => {
         try {
           if (data.value == null)
-            await storage.removeItem(key)
+            await storage!.removeItem(key)
           else
-            await storage.setItem(key, await serializer.write(data.value))
+            await storage!.setItem(key, await serializer.write(data.value))
         }
         catch (e) {
           onError(e)

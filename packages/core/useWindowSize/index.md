@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useWindowSize
@@ -22,5 +22,3 @@ const { width, height } = useWindowSize()
   Height: {{ height }}
 </UseWindowSize>
 ```
-
-<LearnMoreComponents />

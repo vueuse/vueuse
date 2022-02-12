@@ -1,22 +1,21 @@
-import Layout from './Layout.vue'
-import NotFound from './NotFound.vue'
+import { VPTheme } from '@vue/theme'
 import { handleRedirects } from './redirects'
 
-import './styles/vars.css'
-import './styles/layout.css'
+import 'virtual:windi-base.css'
+import 'virtual:windi-components.css'
 import './styles/code.css'
 import './styles/demo.css'
-import './styles/custom-blocks.css'
-import './styles/sidebar-links.css'
 import './styles/utils.css'
-import 'windi.css'
+import 'virtual:windi-utilities.css'
+import './styles/overrides.css'
 
-const theme = {
-  Layout,
-  NotFound,
-  enhanceApp({ router }) {
+const theme: any = {
+  ...VPTheme,
+  enhanceApp(ctx: any) {
+    VPTheme.enhanceApp?.(ctx)
+
     if (typeof window !== 'undefined')
-      handleRedirects(router)
+      handleRedirects(ctx.router)
   },
 }
 

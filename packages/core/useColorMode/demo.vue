@@ -14,10 +14,10 @@ const { next } = useCycleList(['dark', 'light', 'cafe', 'contrast'], { initialVa
 
 <template>
   <button @click="next()">
-    <carbon-moon v-show="mode === 'dark'" class="align-middle" />
-    <carbon-sun v-show="mode === 'light'" class="align-middle" />
-    <carbon-cafe v-show="mode === 'cafe'" class="align-middle" />
-    <carbon-contrast v-show="mode === 'contrast'" class="align-middle" />
+    <carbon-moon v-if="mode === 'dark'" class="align-middle" />
+    <carbon-sun v-if="mode === 'light'" class="align-middle" />
+    <carbon-cafe v-if="mode === 'cafe'" class="align-middle" />
+    <carbon-contrast v-if="mode === 'contrast'" class="align-middle" />
 
     <span class="ml-2 capitalize">{{ mode }}</span>
   </button>

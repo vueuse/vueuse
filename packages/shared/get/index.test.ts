@@ -16,9 +16,9 @@ describe('get', () => {
     expect(get(reactive, 'foo')).toBe('bar')
     expect(get(plain, 'foo')).toBe('bar')
 
-    // @ts-expect-error
+    // @ts-expect-error cast
     expect(get(reactive, 'bar')).toBeUndefined()
-    // @ts-expect-error
+    // @ts-expect-error cast
     expect(get(plain, 'bar')).toBeUndefined()
   })
 
@@ -29,9 +29,9 @@ describe('get', () => {
     expect(get(reactive, 2)).toBe(3)
     expect(get(plain, 2)).toBe(3)
 
-    // @ts-expect-error
+    // @ts-expect-error cast
     expect(get(reactive, 'bar')).toBeUndefined()
-    // @ts-expect-error
+    // @ts-expect-error cast
     expect(get(plain, 'bar')).toBeUndefined()
   })
 })
