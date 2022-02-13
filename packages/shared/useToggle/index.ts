@@ -25,6 +25,7 @@ export function useToggle(initialValue: boolean | Ref<boolean> = false) {
       boolean.value = typeof value === 'boolean'
         ? value
         : !boolean.value
+      return boolean.value
     }
 
     return [boolean, toggle] as const
