@@ -30,14 +30,11 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 
 ```html
 <script setup lang="ts">
-import { ref, computed } from 'vue-demi'
-import { useDateFormat } from '@vueuse/core'
 
-const now = ref(Date.now())
-const formatted = computed(() => useDateFormat(now))
-setInterval(() => {
-  now.value = Date.now()
-}, 1000)
+import { ref, computed } from 'vue-demi'
+import { useNow, useDateFormat } from '@vueuse/core'
+
+const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 
 </script>
 

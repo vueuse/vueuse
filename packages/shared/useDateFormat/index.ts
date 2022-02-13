@@ -1,5 +1,5 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { unref } from 'vue-demi'
+import { computed, unref } from 'vue-demi'
 
 export type UDate = Date | number | string | undefined
 
@@ -65,9 +65,8 @@ export const parseDate = (date: UDate) => {
  * @param formatStr
  */
 
-export function useDateFormat(date: MaybeRef<UDate>, formatStr = 'HH:mm:ss') {
-  const parsedDate = parseDate(unref(date))
-  return formatDate(parsedDate, formatStr)
+export function useDateFormat(date: MaybeRef<UDate>, formatStr: MaybeRef<string>) {
+  return computed(() => formatDate(parseDate(unref(date)), unref(formatStr) || 'HH:mm:ss'))
 }
 
 export type UseDateFormatReturn = ReturnType<typeof useDateFormat>

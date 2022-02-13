@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { useNow } from '@vueuse/core'
 import { useDateFormat } from '.'
 
-const now = ref(Date.now())
-const formatted = computed(() => useDateFormat(now))
-setInterval(() => {
-  now.value = Date.now()
-}, 1000)
+const formatter = ref('YYYY-MM-DD HH:mm:ss')
+const formatted = useDateFormat(useNow(), formatter)
 
 </script>
 
 <template>
-  <div>{{ formatted }}</div>
+  <p class="text-20px font-bold text-emerald-500">
+    {{ formatted }}
+  </p>
+  <div class="flex items-center">
+    <span class="mr-5px text-18px">
+      Formatter Editor :
+    </span>
+    <input v-model="formatter" type="text">
+  </div>
 </template>
