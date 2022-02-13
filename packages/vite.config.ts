@@ -14,7 +14,7 @@ import { NavbarFix } from './.vitepress/plugins/navbar'
 
 export default defineConfig(async() => {
   const [changeLog, contributions] = await Promise.all([
-    getChangeLog(400),
+    getChangeLog(800),
     getFunctionContributors(),
   ])
 
