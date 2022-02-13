@@ -11,5 +11,5 @@ Creating, Reading and Writing local files.
 ```ts
 import { useFileSystemAccess } from '@vueuse/core'
 
-const { isSupported, data, create, save, open } = useFileSystemAccess()
+const { isSupported, data, create, open, save, saveAs } = useFileSystemAccess()
 ```

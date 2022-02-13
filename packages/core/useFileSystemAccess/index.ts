@@ -160,6 +160,7 @@ export function useFileSystemAccess(options: any = {}): any {
     open,
     create,
     save,
+    saveAs,
   }
 }
 
@@ -169,4 +170,5 @@ export interface UseFileSystemAccessReturn<T = string> {
   open: (_options?: UseFileSystemAccessCommonOptions) => Awaitable<void>
   create: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
   save: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
+  saveAs: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
 }

@@ -33,6 +33,11 @@ async function onSave() {
     >
       save
     </button>
+    <button
+      @click="res.saveAs()"
+    >
+      save as
+    </button>
 
     <div>
       <textarea v-model="content" rows="20" cols="40" />
