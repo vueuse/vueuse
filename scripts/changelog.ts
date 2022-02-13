@@ -4,7 +4,9 @@ import type { CommitInfo, ContributorInfo } from '../meta/types'
 import { functions } from '../meta/function-indexes'
 import { uniq } from './utils'
 
-const git = Git()
+const git = Git({
+  maxConcurrentProcesses: 200,
+})
 let cache: CommitInfo[] | undefined
 
 export async function getChangeLog(count = 200) {
