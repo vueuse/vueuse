@@ -1,105 +1,172 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { Awaitable } from '@vueuse/shared'
+import { ref, unref } from 'vue-demi'
+import type { Awaitable, MaybeRef } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface FileSystemAccessOpenFileOptions {
+/**
+ * window.showOpenFilePicker parameters
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker#parameters
+ */
+export interface FileSystemAccessShowOpenFileOptions {
   multiple?: boolean
   types?: Array<{
     description?: string
-    accept?: Record<string, string[]>
+    accept: Record<string, string[]>
   }>
   excludeAcceptAllOption?: boolean
 }
 
-export interface FileSystemAccessSaveFileOptions {
+/**
+ * window.showSaveFilePicker parameters
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/window/showSaveFilePicker#parameters
+ */
+export interface FileSystemAccessShowSaveFileOptions {
+  suggestedName?: string
   types?: Array<{
     description?: string
-    accept?: Record<string, string[]>
+    accept: Record<string, string[]>
   }>
-  suggestedName?: string
   excludeAcceptAllOption?: boolean
 }
 
-interface FileSystemFileHandle {
+/**
+ * FileHandle
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileHandle
+ */
+export interface FileSystemFileHandle {
   getFile: () => Promise<File>
   createWritable: () => FileSystemWritableFileStream
 }
 
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream
+ */
 interface FileSystemWritableFileStream extends WritableStream {
-  // TODO: types https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/write
-  write: (data: string | BufferSource | Blob) => Promise<void>
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/write
+   */
+  write: FileSystemWritableFileStreamWrite
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/seek
+   */
   seek: (position: number) => Promise<void>
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/truncate
+   */
   truncate: (size: number) => Promise<void>
 }
 
-type FileSystemAccessWindow = Window & {
-  showSaveFilePicker: (options: FileSystemAccessSaveFileOptions) => Promise<FileSystemFileHandle>
-  showOpenFilePicker: (options: FileSystemAccessOpenFileOptions) => Promise<FileSystemFileHandle[]>
+/**
+ * FileStream.write
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/write
+ */
+interface FileSystemWritableFileStreamWrite {
+  (data: string | BufferSource | Blob): Promise<void>
+  (options: { type: 'write'; position: number; data: string | BufferSource | Blob }): Promise<void>
+  (options: { type: 'seek'; position: number }): Promise<void>
+  (options: { type: 'truncate'; size: number }): Promise<void>
 }
 
-export interface UseFileSystemAccessOptions extends ConfigurableWindow {
+/**
+ * FileStream.write
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystemWritableFileStream/write
+ */
+export type FileSystemAccessWindow = Window & {
+  showSaveFilePicker: (options: FileSystemAccessShowSaveFileOptions) => Promise<FileSystemFileHandle>
+  showOpenFilePicker: (options: FileSystemAccessShowOpenFileOptions) => Promise<FileSystemFileHandle[]>
 }
 
-export type UseFileSystemAccessMultipleReturn = UseFileSystemAccessReturn & {
-  content: Ref<any>// TODO: types
+export type UseFileSystemAccessCommonOptions = Pick<FileSystemAccessShowOpenFileOptions, 'types' | 'excludeAcceptAllOption'>
+export type UseFileSystemAccessShowSaveFileOptions = Pick<FileSystemAccessShowSaveFileOptions, 'suggestedName'>
+
+export type UseFileSystemAccessOptions<T = 'Text' | 'ArrayBuffer' | 'Blob'> = ConfigurableWindow & UseFileSystemAccessCommonOptions & {
+  /**
+   * file data type
+   */
+  dataType?: T
 }
 
-export interface UseFileSystemAccessReturn {
-  isSupported: boolean
-  content: Ref<any> // TODO: types
-  open: () => Awaitable<void>
-  create: () => Awaitable<void>
-  save: () => Awaitable<void>
-}
-
-export function useFileSystemAccess(options: UseFileSystemAccessOptions & { multiple: true }): UseFileSystemAccessMultipleReturn
-export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): UseFileSystemAccessReturn {
-  const { window = defaultWindow } = options
+/**
+ * Creating, Reading and Writing local files.
+ * @see https://vueuse.org/useElementByPoint
+ * @param options
+ */
+export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'Text'>>): UseFileSystemAccessReturn<string>
+export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'ArrayBuffer'>>): UseFileSystemAccessReturn<ArrayBuffer>
+export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'Blob'>>): UseFileSystemAccessReturn<Blob>
+export function useFileSystemAccess(options: any = {}): any {
+  const { window = defaultWindow, dataType = 'Text' } = unref(options)
   const isSupported = Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
-  const content = ref()
+  const data = ref<string| ArrayBuffer | Blob>()
 
-  async function open(options: FileSystemAccessOpenFileOptions = {}) {
+  async function open(_options: UseFileSystemAccessCommonOptions = {}) {
     if (isSupported) {
-      const [handle] = await (window as FileSystemAccessWindow).showOpenFilePicker(options)
+      const [handle] = await (window as FileSystemAccessWindow).showOpenFilePicker({ ...unref(options), ..._options })
       fileHandle.value = handle
-      await readContent()
+      await readFileData()
     }
   }
 
-  async function create(options: FileSystemAccessSaveFileOptions = {}) {
+  async function create(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
     if (isSupported) {
-      fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker(options)
-      content.value = undefined
+      fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+      data.value = undefined
+      await readFileData()
     }
   }
 
-  async function save(options: FileSystemAccessSaveFileOptions = {}) {
+  async function save(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
     if (isSupported) {
       if (!fileHandle.value)
         // save as
-        fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker(options)
+        return saveAs(_options)
 
-      const writableStream = await fileHandle.value.createWritable()
-      await writableStream.write(content.value)
-      await writableStream.close()
+      if (data.value) {
+        const writableStream = await fileHandle.value.createWritable()
+        await writableStream.write(data.value)
+        await writableStream.close()
+      }
     }
   }
 
-  async function readContent() {
+  async function saveAs(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
+    if (isSupported) {
+      fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+
+      if (data.value) {
+        const writableStream = await fileHandle.value.createWritable()
+        await writableStream.write(data.value)
+        await writableStream.close()
+      }
+    }
+  }
+
+  async function readFileData() {
     const file = await fileHandle.value?.getFile()
-    if (file)
-      content.value = await file.text()
+    if (dataType === 'Text')
+      data.value = await file?.text()
+    if (dataType === 'ArrayBuffer')
+      data.value = await file?.arrayBuffer()
+    if (dataType === 'Blob')
+      data.value = file
   }
 
   return {
     isSupported,
-    content,
+    data,
     open,
     create,
     save,
   }
+}
+
+export interface UseFileSystemAccessReturn<T = string> {
+  isSupported: boolean
+  data: Ref<T>
+  open: (_options?: UseFileSystemAccessCommonOptions) => Awaitable<void>
+  create: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
+  save: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
 }

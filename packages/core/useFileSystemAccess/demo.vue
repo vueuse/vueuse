@@ -1,31 +1,35 @@
 <script setup lang="ts">
 import { useFileSystemAccess } from '.'
 
-const { content, create, save, open } = useFileSystemAccess()
+const res = useFileSystemAccess({
+  dataType: 'Text',
+  types: [{
+    description: 'text',
+    accept: {
+      'text/plain': ['.txt', '.html'],
+    },
+  }],
+  excludeAcceptAllOption: true,
+})
 
+const content = res.data
+
+async function onSave() {
+  await res.save()
+  alert('saved')
+}
 </script>
 
 <template>
   <div>
-    <button @click="create">
+    <button @click="res.create()">
       new file
     </button>
-    <button @click="open">
+    <button @click="res.open()">
       open
     </button>
     <button
-      @click="save({
-        suggestedName:'jelf',
-        types: [
-          {
-            description:'file',
-            accept: {
-              'image/*' : ['.png','.jpg']
-            }
-          }
-        ],
-        excludeAcceptAllOption: true
-      })"
+      @click="onSave"
     >
       save
     </button>
