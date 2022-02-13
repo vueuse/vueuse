@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -53,6 +53,8 @@ export function useElementBounding(target: MaybeElementRef) {
     target,
     update,
   )
+
+  watch(() => unrefElement(target), ele => !ele && update())
 
   return {
     height,
