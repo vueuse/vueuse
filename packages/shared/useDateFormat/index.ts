@@ -65,7 +65,7 @@ export const parseDate = (date: UDate) => {
  * @param formatStr
  */
 
-export function useDateFormat(date: MaybeRef<UDate>, formatStr: MaybeRef<string>) {
+export function useDateFormat(date: MaybeRef<UDate>, formatStr?: MaybeRef<string>) {
   return computed(() => formatDate(parseDate(unref(date)), unref(formatStr) || 'HH:mm:ss'))
 }
 
