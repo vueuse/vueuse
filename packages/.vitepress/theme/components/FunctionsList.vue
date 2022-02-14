@@ -34,7 +34,7 @@ const result = computed(() => {
   else {
     const fns = [...items.value]
     if (sortMethod.value === 'updated')
-      fns.sort((a, b) => b.lastUpdated - a.lastUpdated)
+      fns.sort((a, b) => (b.lastUpdated) || 0 - (a.lastUpdated || 0))
     else if (sortMethod.value === 'name')
       fns.sort((a, b) => a.name.localeCompare(b.name))
     else
