@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref, unref } from 'vue-demi'
+import { computed, ref, unref, watch } from 'vue-demi'
 import type { Awaitable, MaybeRef } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -80,33 +80,41 @@ export type FileSystemAccessWindow = Window & {
 export type UseFileSystemAccessCommonOptions = Pick<FileSystemAccessShowOpenFileOptions, 'types' | 'excludeAcceptAllOption'>
 export type UseFileSystemAccessShowSaveFileOptions = Pick<FileSystemAccessShowSaveFileOptions, 'suggestedName'>
 
-export type UseFileSystemAccessOptions<T = 'Text' | 'ArrayBuffer' | 'Blob'> = ConfigurableWindow & UseFileSystemAccessCommonOptions & {
+export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAccessCommonOptions & {
   /**
    * file data type
    */
-  dataType?: T
+  dataType?: MaybeRef<'Text' | 'ArrayBuffer' | 'Blob'>
 }
 
 /**
- * Creating, Reading and Writing local files.
+ * Create and read and write local files.
  * @see https://vueuse.org/useElementByPoint
  * @param options
  */
-export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'Text'>>): UseFileSystemAccessReturn<string>
-export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'ArrayBuffer'>>): UseFileSystemAccessReturn<ArrayBuffer>
-export function useFileSystemAccess(options: MaybeRef<UseFileSystemAccessOptions<'Blob'>>): UseFileSystemAccessReturn<Blob>
-export function useFileSystemAccess(options: any = {}): any {
+export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Text' }): UseFileSystemAccessReturn<string>
+export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'ArrayBuffer' }): UseFileSystemAccessReturn<ArrayBuffer>
+export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Blob' }): UseFileSystemAccessReturn<Blob>
+export function useFileSystemAccess(options: UseFileSystemAccessOptions): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
+export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): UseFileSystemAccessReturn<string | ArrayBuffer | Blob> {
   const { window = defaultWindow, dataType = 'Text' } = unref(options)
   const isSupported = Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
-  const data = ref<string| ArrayBuffer | Blob>()
+  const data = ref<string | ArrayBuffer | Blob>()
+
+  const file = ref<File>()
+  const fileName = computed(() => file.value?.name ?? '')
+  const fileMIME = computed(() => file.value?.type ?? '')
+  const fileSize = computed(() => file.value?.size ?? 0)
+  const fileLastModified = computed(() => file.value?.lastModified ?? 0)
 
   async function open(_options: UseFileSystemAccessCommonOptions = {}) {
     if (isSupported) {
       const [handle] = await (window as FileSystemAccessWindow).showOpenFilePicker({ ...unref(options), ..._options })
       fileHandle.value = handle
-      await readFileData()
+      await updateFile()
+      await updateData()
     }
   }
 
@@ -114,7 +122,8 @@ export function useFileSystemAccess(options: any = {}): any {
     if (isSupported) {
       fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
       data.value = undefined
-      await readFileData()
+      await updateFile()
+      await updateData()
     }
   }
 
@@ -129,6 +138,7 @@ export function useFileSystemAccess(options: any = {}): any {
         await writableStream.write(data.value)
         await writableStream.close()
       }
+      await updateFile()
     }
   }
 
@@ -141,34 +151,53 @@ export function useFileSystemAccess(options: any = {}): any {
         await writableStream.write(data.value)
         await writableStream.close()
       }
+
+      await updateFile()
     }
   }
 
-  async function readFileData() {
-    const file = await fileHandle.value?.getFile()
-    if (dataType === 'Text')
-      data.value = await file?.text()
-    if (dataType === 'ArrayBuffer')
-      data.value = await file?.arrayBuffer()
-    if (dataType === 'Blob')
-      data.value = file
+  async function updateFile() {
+    file.value = await fileHandle.value?.getFile()
   }
+
+  async function updateData() {
+    if (unref(dataType) === 'Text')
+      data.value = await file.value?.text()
+    if (unref(dataType) === 'ArrayBuffer')
+      data.value = await file.value?.arrayBuffer()
+    if (unref(dataType) === 'Blob')
+      data.value = file.value
+  }
+
+  watch(() => unref(dataType), updateData)
 
   return {
     isSupported,
     data,
+    file,
+    fileName,
+    fileMIME,
+    fileSize,
+    fileLastModified,
     open,
     create,
     save,
     saveAs,
+    updateData,
   }
 }
 
 export interface UseFileSystemAccessReturn<T = string> {
   isSupported: boolean
-  data: Ref<T>
+  data: Ref<T | undefined>
+  file: Ref<File | undefined>
+  fileName: Ref<string>
+  fileMIME: Ref<string>
+  fileSize: Ref<number>
+  fileLastModified: Ref<number>
   open: (_options?: UseFileSystemAccessCommonOptions) => Awaitable<void>
   create: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
   save: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
   saveAs: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
+  updateData: () => Awaitable<void>
 }
