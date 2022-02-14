@@ -50,7 +50,7 @@
     "@types/node": "^17.0.16",
     "@types/prettier": "^2.4.3",
     "@types/semver": "^7.3.9",
-    "@vitest/ui": "^0.2.8",
+    "@vitest/ui": "^0.3.4",
     "@vue/compiler-sfc": "^3.2.30",
     "@vue/composition-api": "^1.4.6",
     "@vue/test-utils": "^2.0.0-rc.18",
@@ -96,7 +96,7 @@
     "vite-plugin-pwa": "^0.11.13",
     "vite-plugin-windicss": "^1.7.0",
     "vitepress": "^0.21.6",
-    "vitest": "^0.2.8",
+    "vitest": "^0.3.4",
     "vue": "^3.2.30",
     "vue2": "npm:vue@^2.6.14"
   },
