@@ -192,9 +192,11 @@ function getFunctionsSideBar() {
       text: name,
       items: functions.map(i => ({
         text: i.name,
-        link: `/${i.package}/${i.name}/`,
+        link: i.external || `/${i.package}/${i.name}/`,
       })),
-      link: name.startsWith('@') ? `/${functions[0].package}/README` : undefined,
+      link: name.startsWith('@')
+        ? functions[0].external || `/${functions[0].package}/README`
+        : undefined,
     })
   }
 

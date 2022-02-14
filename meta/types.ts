@@ -28,6 +28,7 @@ export interface VueUseFunction {
   internal?: boolean
   component?: boolean
   directive?: boolean
+  external?: string
 }
 
 export interface VueUsePackage extends PackageManifest {
