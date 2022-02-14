@@ -110,13 +110,15 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   }
   const execute = (config: AxiosRequestConfig = {}) => {
     loading(true)
-    instance(url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
+    return instance(url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
         data.value = r.data
+        return Promise.resolve(r)
       })
       .catch((e: any) => {
         error.value = e
+        return Promise.reject(e)
       })
       .finally(() => {
         loading(false)
