@@ -2,6 +2,7 @@ import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
+import { until } from '@vueuse/shared'
 
 export interface UseAxiosReturn<T> {
 
@@ -54,9 +55,9 @@ export interface UseAxiosOptions {
   immediate?: boolean
 }
 
-export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
+export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
+export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
+export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
 
 /**
  * Wrapper for axios.
@@ -110,23 +111,22 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   }
   const execute = (config: AxiosRequestConfig = {}) => {
     loading(true)
-    return instance(url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
+    instance(url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
         data.value = r.data
-        return Promise.resolve(r)
       })
       .catch((e: any) => {
         error.value = e
-        return Promise.reject(e)
       })
       .finally(() => {
         loading(false)
       })
+    return waitUntilFinished()
   }
   if (options.immediate) execute()
 
-  return {
+  const shell = {
     response,
     data,
     error,
@@ -139,5 +139,21 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     aborted,
     abort,
     execute,
+  }
+
+  function waitUntilFinished() {
+    return new Promise<UseAxiosReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        .then(() => resolve(shell))
+        .catch(error => reject(error))
+    })
+  }
+
+  return {
+    ...shell,
+    then(onFulfilled: () => any, onRejected: () => any) {
+      return waitUntilFinished()
+        .then(onFulfilled, onRejected)
+    },
   }
 }
