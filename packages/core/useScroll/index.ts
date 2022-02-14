@@ -94,6 +94,7 @@ export function useScroll(
     top: false,
     bottom: false,
   })
+  let removeEventListener = noop
 
   if (element) {
     const onScrollEnd = useDebounceFn((e: Event) => {
@@ -131,7 +132,7 @@ export function useScroll(
       onScroll(e)
     }
 
-    useEventListener(
+    removeEventListener = useEventListener(
       element,
       'scroll',
       throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
@@ -145,6 +146,7 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    removeEventListener,
   }
 }
 
