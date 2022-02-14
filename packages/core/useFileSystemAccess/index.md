@@ -4,7 +4,7 @@ category: Browser
 
 # useFileSystemAccess
 
-create and read and write local files[FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)
+Create and read and write local files with [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)
 
 ## Usage
 
