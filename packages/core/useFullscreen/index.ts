@@ -65,7 +65,7 @@ const functionsMap: FunctionMap[] = [
 
 export interface UseFullscreenOptions extends ConfigurableDocument {
   /**
-   * Automatically exit
+   * Automatically exit fullscreen when component is unmounted
    *
    * @default false
    */
