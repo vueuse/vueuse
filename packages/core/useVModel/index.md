@@ -25,12 +25,13 @@ export default {
 
 ```ts
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core';
-const props = defineProps<{
-  modelValue: string;
-}>();
-const emit = defineEmits(['update:modelValue']);
+import { useVModel } from '@vueuse/core'
 
-const data = useVModel(props, 'modelValue', emit);
+const props = defineProps<{
+  modelValue: string
+}>()
+const emit = defineEmits(['update:modelValue'])
+
+const data = useVModel(props, 'modelValue', emit)
 </script>
 ```
