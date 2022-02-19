@@ -54,3 +54,69 @@ const mode = useColorMode({
 - `useDark`
 - `usePreferredDark`
 - `useStorage`
+
+## Advanced Usage
+
+When accessing `useColorMode()` in multiple components, the different instances of mode will not be reactive between each other.
+
+Example:
+
+```
+components
+|-- DarkModeToggle.vue
+
+app.vue
+...
+```
+
+```html
+<!-- DarkModeToogle.vue -->
+
+<template>
+  Toggle HTML...
+</template>
+
+<script setup lang="ts">
+const color = useColorMode();
+
+function toggleDark(): void {
+  color.value = color.value === 'dark' ? 'light' : 'dark';
+}
+</script>
+
+<!-- app.vue -->
+
+<template>
+  <DarkModeToggle />
+  <p>
+    Mode: {{ color }}
+  </p>
+</template>
+
+<script setup lang="ts">
+  const color = useColorMode();
+</script>
+```
+
+With the above code, the `color` variable in `app.vue` will not update if we toggle it with the `DarkModeToggle` component.
+
+To solve this we can use a composable like so:
+
+```
+composables
+|-- useColorModeReactive()
+```
+
+```js
+import { useColorMode } from '@vueuse/core';
+import { ref } from 'vue';
+
+const color = ref();
+export function useColorModeReactive() {
+  if (color.value) return color;
+  color.value = useColorMode()?.value;
+  return color;
+}
+```
+
+and replace `useColorMode()` in the example with `useColorModeReactive()` and it will work.
