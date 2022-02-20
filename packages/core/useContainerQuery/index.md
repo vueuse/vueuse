@@ -4,11 +4,11 @@ category: Browser
 
 # useContainerQuery
 
-A composable implementation of CSS container queries. CSS container queries are tantalisingly powerful in what they will achieve. 
-However, the specification is at an early stage specification and has not yet been adopted or implemented in any main stream browser, 
+A composable implementation of CSS container queries. CSS container queries are tantalisingly powerful in what they will achieve.
+However, the specification is at an early stage specification and has not yet been adopted or implemented in any mainstream browser,
 although they can be experimented with by utilising experiment flags in Chrome Canary.
 
-This composable implemnts them in JS.
+This composable implements them in JS.
 
 ## Usage
 
