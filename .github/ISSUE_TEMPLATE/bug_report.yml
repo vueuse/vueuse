@@ -26,8 +26,8 @@ body:
     id: system-info
     attributes:
       label: System Info
-      description: Output of `npx envinfo --system --npmPackages {vue,@vueuse/*} --binaries --browsers`
-      render: shell
+      description: Output of `npx envinfo --system --npmPackages '{vue,@vueuse/*}' --binaries --browsers`
+      render: Shell
       placeholder: System, Binaries, Browsers
     validations:
       required: true
