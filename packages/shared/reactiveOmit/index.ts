@@ -1,6 +1,6 @@
 import type { UnwrapRef } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
-import { reactivePick, toReactive } from '../index'
+import { computed } from 'vue-demi'
+import { controlledComputed, reactivePick, toReactive } from '../index'
 
 /**
  * Reactively omit fields from a reactive object
@@ -11,12 +11,8 @@ export function reactiveOmit<T extends object, K extends keyof T>(
   obj: T,
   ...keys: K[]
 ): { [S in Exclude<keyof T, K>]: UnwrapRef<T[S]> } {
-  const v = ref({} as { [S in Exclude<keyof T, K>]: UnwrapRef<T[S]> })
   const k = computed(() => Object.keys(obj).filter(k => !keys.includes(k as any)) as Array<Exclude<keyof T, K>>)
-
-  watch(k, () => {
-    v.value = reactivePick(obj, ...k.value)
-  }, { immediate: true })
+  const v = controlledComputed(k, () => reactivePick(obj, ...k.value))
 
   return toReactive(v)
 }
