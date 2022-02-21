@@ -36,7 +36,6 @@ const someTemplateRef = ref(null)
 
 const breakpoints = {
   sm: {
-    min: 320,
     max: 480,
   },
   md: {
