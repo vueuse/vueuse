@@ -1,7 +1,5 @@
-import { ref, watch } from 'vue-demi'
-
-import type { Ref } from 'vue-demi'
-
+import { computed, ref } from 'vue-demi'
+import type { MaybeElementRef } from '@vueuse/core'
 import { useResizeObserver } from '../useResizeObserver'
 
 export interface Breakpoint {
@@ -10,7 +8,7 @@ export interface Breakpoint {
    * minimum value of breakpoint (in pixels)
    *
    */
-  min: number
+  min?: number
   /**
    *
    * maximum value of breakpoint (in pixels) *optional
@@ -21,13 +19,13 @@ export interface Breakpoint {
 
 export type QueryBreakpoints = Record<string, Breakpoint>
 
-export interface UseContainerQueryOptions<T> {
+export interface UseContainerQueryOptions {
   /**
    *
    * Target Element for the container query
    *
    */
-  el: Ref<T | null>
+  el: MaybeElementRef
   /**
    *
    * Explicit key/value map of the predefined breakpoints
@@ -52,13 +50,12 @@ export interface UseContainerQueryOptions<T> {
  * @see https://caniuse.com/css-container-queries
  * @returns the active breakpoint from your specific list of breakpoints e.g,. sm
  */
-export const useContainerQuery = <T extends HTMLElement>(options: UseContainerQueryOptions<T>) => {
+export function useContainerQuery(options: UseContainerQueryOptions) {
   // Set the default element and breakpoints:
   const {
     el,
     breakpoints = {
       sm: {
-        min: 320,
         max: 480,
       },
       md: {
@@ -79,48 +76,13 @@ export const useContainerQuery = <T extends HTMLElement>(options: UseContainerQu
     },
   } = options
 
-  // This is some initial value
-  const initialBreakpoint = Object.keys(breakpoints)[0]
-
-  const activeBreakpoint = ref(initialBreakpoint)
-
   const width = ref(0)
 
-  useResizeObserver(el, (entries) => {
-    const entry = entries[0]
-    width.value = Math.round(entry.contentRect.width)
-  })
+  useResizeObserver(el, ([entry]) => width.value = Math.round(entry.contentRect.width))
 
-  // Matches the observed "container" current width to a breakpoint:
-  const getObservedBreakpoint = () => {
-    let observedBreakpoint
-    for (const [key, { min, max }] of Object.entries(breakpoints)) {
-      if (width.value >= min) {
-        if (max === undefined) {
-          observedBreakpoint = key
-          break
-        }
-        else if (width.value <= max) {
-          observedBreakpoint = key
-          break
-        }
-      }
-    }
-
-    return observedBreakpoint || activeBreakpoint.value
-  }
-
-  const handleElementResize = () => {
-    const observedBreakpoint = getObservedBreakpoint()
-
-    if (observedBreakpoint !== activeBreakpoint.value)
-      activeBreakpoint.value = observedBreakpoint
-  }
-
-  watch(width, (newWidth: number, prevWidth: number) => {
-    if (newWidth === prevWidth) return
-
-    handleElementResize()
+  const activeBreakpoint = computed(() => {
+    for (const [key, { min = 0, max }] of Object.entries(breakpoints))
+      if (width.value >= min && (max === undefined || width.value <= max)) return key
   })
 
   return {
