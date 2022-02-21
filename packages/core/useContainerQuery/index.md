@@ -22,7 +22,7 @@ const someTemplateRef = ref(null)
 const {
   activeBreakpoint,
   width,
-} = useContainerQuery({ el: someTemplateRef })
+} = useContainerQuery({ element: someTemplateRef })
 ```
 
 As well as the default sm-xl standard breakpoints, you can specify your own custom breakpoints by passing them via options:
@@ -62,5 +62,5 @@ const breakpoints = {
 const {
   activeBreakpoint,
   width
-} = useContainerQuery({ el: someTemplateRef })
+} = useContainerQuery({ element: someTemplateRef })
 ```

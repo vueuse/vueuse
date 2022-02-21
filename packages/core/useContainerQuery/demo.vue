@@ -2,12 +2,12 @@
 import { ref } from 'vue-demi'
 import { useContainerQuery } from '../useContainerQuery'
 
-const el = ref(null)
+const element = ref(null)
 
 const {
   activeBreakpoint,
   width,
-} = useContainerQuery({ el })
+} = useContainerQuery({ element })
 </script>
 
 <template>

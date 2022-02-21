@@ -25,7 +25,7 @@ export interface UseContainerQueryOptions {
    * Target Element for the container query
    *
    */
-  el: MaybeElementRef
+  element: MaybeElementRef
   /**
    *
    * Explicit key/value map of the predefined breakpoints
@@ -53,7 +53,7 @@ export interface UseContainerQueryOptions {
 export function useContainerQuery(options: UseContainerQueryOptions) {
   // Set the default element and breakpoints:
   const {
-    el,
+    element,
     breakpoints = {
       sm: {
         max: 480,
@@ -78,7 +78,7 @@ export function useContainerQuery(options: UseContainerQueryOptions) {
 
   const width = ref(0)
 
-  useResizeObserver(el, ([entry]) => width.value = Math.round(entry.contentRect.width))
+  useResizeObserver(element, ([entry]) => width.value = Math.round(entry.contentRect.width))
 
   const activeBreakpoint = computed(() => {
     for (const [key, { min = 0, max }] of Object.entries(unref(breakpoints)))
