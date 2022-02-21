@@ -15,48 +15,48 @@ describe('useContainerQuery', () => {
     } = useContainerQuery({ element })
 
     // default
-    expect(activeBreakpoint).toBe('sm')
+    expect(activeBreakpoint.value).toBe('sm')
 
     // small screen size in pixels (no change)
     width.value = 479
-    expect(activeBreakpoint).toBe('sm')
+    expect(activeBreakpoint.value).toBe('sm')
 
     // medium screen size in pixels
     width.value = 481
-    expect(activeBreakpoint).toBe('md')
+    expect(activeBreakpoint.value).toBe('md')
 
     width.value = 600
-    expect(activeBreakpoint).toBe('md')
+    expect(activeBreakpoint.value).toBe('md')
 
     width.value = 768
-    expect(activeBreakpoint).toBe('md')
+    expect(activeBreakpoint.value).toBe('md')
 
     // large screen size in pixels
     width.value = 769
-    expect(activeBreakpoint).toBe('lg')
+    expect(activeBreakpoint.value).toBe('lg')
 
     width.value = 900
-    expect(activeBreakpoint).toBe('lg')
+    expect(activeBreakpoint.value).toBe('lg')
 
     width.value = 1024
-    expect(activeBreakpoint).toBe('lg')
+    expect(activeBreakpoint.value).toBe('lg')
 
     // extra large screen size in pixels
     width.value = 1025
-    expect(activeBreakpoint).toBe('xl')
+    expect(activeBreakpoint.value).toBe('xl')
 
     width.value = 1100
-    expect(activeBreakpoint).toBe('xl')
+    expect(activeBreakpoint.value).toBe('xl')
 
     width.value = 1200
-    expect(activeBreakpoint).toBe('xl')
+    expect(activeBreakpoint.value).toBe('xl')
 
     // extra extra large screen size in pixels (lower boundary)
     width.value = 1201
-    expect(activeBreakpoint).toBe('xxl')
+    expect(activeBreakpoint.value).toBe('xxl')
 
     // extra extra large screen size in pixels (stupidly large)
     width.value = 10000
-    expect(activeBreakpoint).toBe('xxl')
+    expect(activeBreakpoint.value).toBe('xxl')
   })
 })
