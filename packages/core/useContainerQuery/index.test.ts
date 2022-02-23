@@ -1,62 +1,59 @@
-import { ref } from 'vue-demi'
+import { rand } from '@vueuse/shared'
 import { useContainerQuery } from '../useContainerQuery'
+import { matchBreakPoint } from './matchBreakPoint'
 
 describe('useContainerQuery', () => {
+  const breakpoints = {
+    sm: {
+      max: 480,
+    },
+    md: {
+      min: 481,
+      max: 768,
+    },
+    lg: {
+      min: 769,
+      max: 1024,
+    },
+    xl: {
+      min: 1025,
+      max: 1200,
+    },
+    xxl: {
+      min: 1201,
+    },
+  }
+
   it('should be defined', () => {
     expect(useContainerQuery).toBeDefined()
   })
 
-  it('should be set to default breakpoint', () => {
-    const element = ref(null)
+  it('should be undefined', () => {
+    expect(matchBreakPoint(breakpoints, -1)).toBeUndefined()
+  })
 
-    const {
-      activeBreakpoint,
-      width,
-    } = useContainerQuery({ element })
+  it('should be sm', () => {
+    expect(matchBreakPoint(breakpoints, rand(0, 480))).toBe('sm')
+  })
 
-    // default
-    expect(activeBreakpoint.value).toBe('sm')
+  it('should be md', () => {
+    expect(matchBreakPoint(breakpoints, rand(481, 768))).toBe('md')
+  })
 
-    // small screen size in pixels (no change)
-    width.value = 479
-    expect(activeBreakpoint.value).toBe('sm')
+  it('should be lg', () => {
+    expect(matchBreakPoint(breakpoints, rand(769, 1024))).toBe('lg')
+  })
 
-    // medium screen size in pixels
-    width.value = 481
-    expect(activeBreakpoint.value).toBe('md')
+  it('should be xl', () => {
+    expect(matchBreakPoint(breakpoints, rand(1025, 1200))).toBe('xl')
+  })
 
-    width.value = 600
-    expect(activeBreakpoint.value).toBe('md')
+  it('should be xxl', () => {
+    expect(matchBreakPoint(breakpoints, rand(1201, 9999))).toBe('xxl')
+  })
 
-    width.value = 768
-    expect(activeBreakpoint.value).toBe('md')
-
-    // large screen size in pixels
-    width.value = 769
-    expect(activeBreakpoint.value).toBe('lg')
-
-    width.value = 900
-    expect(activeBreakpoint.value).toBe('lg')
-
-    width.value = 1024
-    expect(activeBreakpoint.value).toBe('lg')
-
-    // extra large screen size in pixels
-    width.value = 1025
-    expect(activeBreakpoint.value).toBe('xl')
-
-    width.value = 1100
-    expect(activeBreakpoint.value).toBe('xl')
-
-    width.value = 1200
-    expect(activeBreakpoint.value).toBe('xl')
-
-    // extra extra large screen size in pixels (lower boundary)
-    width.value = 1201
-    expect(activeBreakpoint.value).toBe('xxl')
-
-    // extra extra large screen size in pixels (stupidly large)
-    width.value = 10000
-    expect(activeBreakpoint.value).toBe('xxl')
+  it('should rounding width', () => {
+    expect(matchBreakPoint(breakpoints, 480.4)).toBe('sm')
+    expect(matchBreakPoint(breakpoints, 480.5)).toBe('md')
   })
 })

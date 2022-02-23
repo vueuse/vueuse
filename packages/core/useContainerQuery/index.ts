@@ -1,6 +1,7 @@
-import { computed, ref, unref } from 'vue-demi'
+import { computed, readonly, ref } from 'vue-demi'
 import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
 import { useResizeObserver } from '../useResizeObserver'
+import { matchBreakPoint } from './matchBreakPoint'
 
 export interface Breakpoint {
   /**
@@ -80,13 +81,10 @@ export function useContainerQuery(options: UseContainerQueryOptions) {
 
   useResizeObserver(element, ([entry]) => width.value = Math.round(entry.contentRect.width))
 
-  const activeBreakpoint = computed(() => {
-    for (const [key, { min = 0, max }] of Object.entries(unref(breakpoints)))
-      if (width.value >= min && (max === undefined || width.value <= max)) return key
-  })
+  const activeBreakpoint = computed(() => matchBreakPoint(breakpoints, width))
 
   return {
     activeBreakpoint,
-    width,
+    width: readonly(width),
   }
 }
