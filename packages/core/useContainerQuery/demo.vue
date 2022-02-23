@@ -17,7 +17,7 @@ const {
   <note class="mb-2">
     Resize the box to see changes to the element's container query
   </note>
-  <textarea ref="el" class="w-full resizer" disabled />
+  <textarea ref="element" class="w-full resizer" disabled />
 
   <div class="font-mono">
     <div>
