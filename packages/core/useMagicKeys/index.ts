@@ -110,9 +110,6 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         current.delete(e.code)
     }
 
-    if (meta.value)
-      [...current, ...currentValues].forEach(code => metaDeps.add(code))
-
     if (key === 'meta' && !value) {
       metaDeps.forEach((key) => {
         current.delete(key)
@@ -129,6 +126,9 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
 
       setRefs(key, value)
     }
+
+    if (meta.value)
+      [...current, ...currentValues].forEach(code => metaDeps.add(code))
   }
 
   if (target) {
