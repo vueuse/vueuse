@@ -128,7 +128,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     }
 
     if (meta.value)
-      [...current, ...currentValues].forEach(code => metaDeps.add(code))
+      [...current, ...currentValues].forEach(key => metaDeps.add(key))
   }
 
   if (target) {
