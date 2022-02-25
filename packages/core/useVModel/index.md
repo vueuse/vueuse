@@ -35,3 +35,9 @@ const emit = defineEmits(['update:modelValue'])
 const data = useVModel(props, 'modelValue', emit)
 </script>
 ```
+
+## Component
+```html
+<UseVModel :data="data" @update:data="data = $event"/>
+```
+
