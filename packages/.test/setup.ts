@@ -1,7 +1,7 @@
-import { install, isVue2, Vue2 } from 'vue-demi'
+import { Vue2, install, isVue2 } from 'vue-demi'
 import './polyfillFetch'
 import './polyfillPointerEvents'
-import { vitest, beforeEach } from 'vitest'
+import { beforeEach, vitest } from 'vitest'
 
 const createLocalStorage = () => {
   let state: Record<string, any> = {}
@@ -9,8 +9,7 @@ const createLocalStorage = () => {
   const localStorageMock: Storage = {
     getItem: vitest.fn(x => state[x]),
     setItem: vitest.fn((x, v) => state[x] = v),
-    // @ts-ignore
-    removeItem: vitest.fn((x, v) => delete state[x]),
+    removeItem: vitest.fn(x => delete state[x]),
     clear: vitest.fn(() => state = {}),
   }
 
@@ -28,6 +27,10 @@ const setupVueSwitch = () => {
 }
 
 setupVueSwitch()
+
+beforeAll(() => {
+  setupVueSwitch()
+})
 
 beforeEach(() => {
   createLocalStorage()

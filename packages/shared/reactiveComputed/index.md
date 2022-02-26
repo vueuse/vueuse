@@ -6,6 +6,8 @@ category: Utilities
 
 Computed reactive object. Instead of returning a ref that `computed` does, `reactiveComputed` returns a reactive object.
 
+<RequiresProxy />
+
 ## Usage
 
 ```ts
