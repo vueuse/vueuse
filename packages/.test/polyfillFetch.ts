@@ -1,5 +1,4 @@
 import nodeFetch from 'node-fetch'
 
-// @ts-ignore
+// @ts-expect-error override
 window.fetch = nodeFetch
-
