@@ -90,8 +90,6 @@ ${code}
     .filter(i => i)
     .map(i => `[${i![0]}](${i![1]})`).join(' • ')
 
-  const demoLink = `[source](${URL}/demo.vue){target="_blank" class="demo-source-link"}`
-  const demoHeadSection = `## Demo\n\n${demoLink}\n`
   const sourceSection = `## Source\n\n${links}\n`
   const ContributorsSection = `
 ## Contributors
@@ -108,8 +106,13 @@ ${code}
 <script setup>
 import Demo from \'./demo.vue\'
 </script>
-${demoHeadSection}
-<DemoContainer><Demo/></DemoContainer>
+
+# Demo
+
+<DemoContainer>
+<p class="demo-source-link"><a href="${URL}/demo.vue" targat="blank">source</a></p>
+<Demo/>
+</DemoContainer>
 `
     : ''
   const packageNote = packages.find(p => p.name === pkg)!.addon
