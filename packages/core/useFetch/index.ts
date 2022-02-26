@@ -382,7 +382,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch)
+          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
 
           data.value = responseData
