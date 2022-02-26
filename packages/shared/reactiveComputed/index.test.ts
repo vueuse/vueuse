@@ -1,4 +1,4 @@
-import { nextTick, ref, watch, watchEffect } from 'vue-demi'
+import { isVue2, nextTick, ref, watch, watchEffect } from 'vue-demi'
 import { reactiveComputed } from '.'
 
 describe('reactiveComputed', () => {
@@ -46,9 +46,11 @@ describe('reactiveComputed', () => {
     expect(state.foo).toBe(true)
     expect(state.bar).toBe(undefined)
 
-    await nextTick()
+    if (!isVue2) {
+      await nextTick()
 
-    expect(dummy).toBe(1)
-    expect(type).toBe('foo')
+      expect(dummy).toBe(1)
+      expect(type).toBe('foo')
+    }
   })
 })
