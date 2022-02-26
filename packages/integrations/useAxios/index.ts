@@ -1,4 +1,4 @@
-import type { Ref, ShallowRef } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
@@ -8,12 +8,12 @@ export interface UseAxiosReturn<T> {
   /**
    * Axios Response
    */
-  response: ShallowRef<AxiosResponse<T> | undefined>
+  response: Ref<AxiosResponse<T> | undefined>
 
   /**
    * Axios response data
    */
-  data: ShallowRef<T | undefined>
+  data: Ref<T | undefined>
 
   /**
    * Indicates if the request has finished
@@ -33,7 +33,7 @@ export interface UseAxiosReturn<T> {
   /**
    * Any errors that may have occurred
    */
-  error: ShallowRef<AxiosError<T> | undefined>
+  error: Ref<AxiosError<T> | undefined>
 
   /**
    * Aborts the current request

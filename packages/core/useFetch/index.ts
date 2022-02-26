@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref, ShallowRef } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import type { EventHookOn, Fn, MaybeRef, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
@@ -18,17 +18,17 @@ export interface UseFetchReturn<T> {
   /**
    * The raw response of the fetch response
    */
-  response: ShallowRef<Response | null>
+  response: Ref<Response | null>
 
   /**
    * Any fetch errors that may have occurred
    */
-  error: ShallowRef<any>
+  error: Ref<any>
 
   /**
    * The fetch response body, may either be JSON or text
    */
-  data: ShallowRef<T | null>
+  data: Ref<T | null>
 
   /**
    * Indicates if the request is currently being fetched.
