@@ -20,7 +20,7 @@ export interface PackageManifest {
 export interface VueUseFunction {
   name: string
   package: string
-  lastUpdated: number
+  lastUpdated?: number
   category?: string
   description?: string
   docs?: string
@@ -28,6 +28,7 @@ export interface VueUseFunction {
   internal?: boolean
   component?: boolean
   directive?: boolean
+  external?: string
 }
 
 export interface VueUsePackage extends PackageManifest {

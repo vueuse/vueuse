@@ -20,3 +20,18 @@ export default {
   },
 }
 ```
+
+### `<script setup>`
+
+```ts
+<script lang="ts" setup>
+import { useVModel } from '@vueuse/core'
+
+const props = defineProps<{
+  modelValue: string
+}>()
+const emit = defineEmits(['update:modelValue'])
+
+const data = useVModel(props, 'modelValue', emit)
+</script>
+```

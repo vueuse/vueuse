@@ -90,6 +90,8 @@ ${code}
     .filter(i => i)
     .map(i => `[${i![0]}](${i![1]})`).join(' • ')
 
+  const demoLink = `[source](${URL}/demo.vue){target="_blank" class="demo-source-link"}`
+  const demoHeadSection = `## Demo\n\n${demoLink}\n`
   const sourceSection = `## Source\n\n${links}\n`
   const ContributorsSection = `
 ## Contributors
@@ -106,8 +108,7 @@ ${code}
 <script setup>
 import Demo from \'./demo.vue\'
 </script>
-## Demo
-<a href="${URL}/demo.vue" target="_blank" class="demo-source-link">source</a>
+${demoHeadSection}
 <DemoContainer><Demo/></DemoContainer>
 `
     : ''

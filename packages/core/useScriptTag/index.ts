@@ -36,7 +36,14 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   crossOrigin?: 'anonymous' | 'use-credentials'
   referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
   noModule?: boolean
+
   defer?: boolean
+
+  /**
+   * Add custom attribute to the script tag
+   *
+   */
+  attrs?: Record<string, string>
 }
 
 /**
@@ -62,6 +69,7 @@ export function useScriptTag(
     noModule,
     defer,
     document = defaultDocument,
+    attrs = {},
   } = options
   const scriptTag = ref<HTMLScriptElement | null>(null)
 
@@ -108,6 +116,9 @@ export function useScriptTag(
         el.noModule = noModule
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
+
+      for (const attr in attrs)
+        (el as any)[attr] = attrs[attr]
 
       // Enables shouldAppend
       shouldAppend = true

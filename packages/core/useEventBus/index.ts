@@ -2,32 +2,32 @@ import type { Fn } from '@vueuse/shared'
 import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
-export type EventBusListener<T = unknown> = (event: T) => void
-export type EventBusEvents<T> = EventBusListener<T>[]
+export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void
+export type EventBusEvents<T, P = any> = EventBusListener<T, P>[]
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
 
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
 
-export interface UseEventBusReturn<T> {
+export interface UseEventBusReturn<T, P> {
   /**
    * Subscribe to an event. When calling emit, the listeners will execute.
    * @param listener watch listener.
    * @returns a stop function to remove the current callback.
    */
-  on: (listener: EventBusListener<T>) => Fn
+  on: (listener: EventBusListener<T, P>) => Fn
   /**
    * Similar to `on`, but only fires once
    * @param listener watch listener.
    * @returns a stop function to remove the current callback.
    */
-  once: (listener: EventBusListener<T>) => Fn
+  once: (listener: EventBusListener<T, P>) => Fn
   /**
    * Emit an event, the corresponding event listeners will execute.
    * @param event data sent.
    */
-  emit: (event?: T) => void
+  emit: (event?: T, payload?: P) => void
   /**
    * Remove the corresponding listener.
    * @param listener watch listener.
@@ -39,10 +39,10 @@ export interface UseEventBusReturn<T> {
   reset: () => void
 }
 
-export function useEventBus<T = unknown>(key: EventBusIdentifier<T>): UseEventBusReturn<T> {
+export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
   const scope = getCurrentScope()
 
-  function on(listener: EventBusListener<T>) {
+  function on(listener: EventBusListener<T, P>) {
     const listeners = events.get(key) || []
     listeners.push(listener)
     events.set(key, listeners)
@@ -53,7 +53,7 @@ export function useEventBus<T = unknown>(key: EventBusIdentifier<T>): UseEventBu
     return _off
   }
 
-  function once(listener: EventBusListener<T>) {
+  function once(listener: EventBusListener<T, P>) {
     function _listener(...args: any[]) {
       off(_listener)
       // @ts-expect-error cast
@@ -78,8 +78,8 @@ export function useEventBus<T = unknown>(key: EventBusIdentifier<T>): UseEventBu
     events.delete(key)
   }
 
-  function emit(event?: T) {
-    events.get(key)?.forEach(v => v(event))
+  function emit(event?: T, payload?: P) {
+    events.get(key)?.forEach(v => v(event, payload))
   }
 
   return { on, once, off, emit, reset }

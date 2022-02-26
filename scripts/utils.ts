@@ -6,6 +6,7 @@ import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
+import { ecosystemFunctions } from '../meta/ecosystem-functions'
 import { packages } from '../meta/packages'
 import type { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
 
@@ -69,7 +70,9 @@ export async function readIndexes() {
   const indexes: PackageIndexes = {
     packages: {},
     categories: [],
-    functions: [],
+    functions: [
+      ...ecosystemFunctions,
+    ],
   }
 
   for (const info of packages) {
