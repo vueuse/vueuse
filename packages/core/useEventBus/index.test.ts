@@ -102,4 +102,14 @@ describe('useEventBus', () => {
     await nextTick()
     expect(events).toEqual(emptyMap)
   })
+
+  it('should work with payload', async() => {
+    const { on, emit } = useEventBus<'inc'|'dec', number>('counter')
+    const counter = useCounter(0)
+    on((event, payload) => counter[event](payload))
+    emit('inc', 3)
+    expect(counter.count.value).toBe(3)
+    emit('dec', 1)
+    expect(counter.count.value).toBe(2)
+  })
 })

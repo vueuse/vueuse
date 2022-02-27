@@ -4,15 +4,20 @@
   padding: 2em;
   position: relative;
   margin-bottom: 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: background-color 0.5s;
 }
 
 .demo-source-link {
   color: var(--vt-c-text-2) !important;
-  @apply text-sm float-right !font-400 transform -translate-y-30px px-1;
-  @apply opacity-60 hover:opacity-100;
-  @apply !transition-opacity;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vt-c-text-dark-3);
+  transition: color 0.5s;
 }
 
 @media (min-width: 720px) {

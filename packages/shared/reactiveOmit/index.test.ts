@@ -1,4 +1,4 @@
-import { reactive } from 'vue-demi'
+import { isVue2, reactive } from 'vue-demi'
 import { reactiveOmit } from '.'
 
 interface TargetObject {
@@ -20,6 +20,9 @@ describe('reactiveOmit', () => {
     expect(state).toEqual({
       foo: 'foo',
     })
+
+    if (isVue2)
+      return
 
     source.qux = true
 

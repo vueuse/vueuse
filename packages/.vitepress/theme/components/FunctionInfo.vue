@@ -14,7 +14,7 @@ const link = computed(() => `/functions\#category=${encodeURIComponent(info.valu
 </script>
 
 <template>
-  <div class="grid grid-cols-[100px,auto] gap-2 text-sm -mt-2 mb-8">
+  <div class="grid grid-cols-[100px_auto] gap-2 text-sm -mt-2 mb-8">
     <div opacity="50">
       Category
     </div>
