@@ -4,7 +4,7 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import { VitePWA as PWA } from 'vite-plugin-pwa'
-import WindiCSS from 'vite-plugin-windicss'
+import Unocss from 'unocss/vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
@@ -72,9 +72,7 @@ export default defineConfig(async() => {
           ],
         },
       }),
-      WindiCSS({
-        preflight: false,
-      }),
+      Unocss(),
       Inspect(),
     ],
     resolve: {

@@ -30,7 +30,7 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
       </div>
     </div>
     <div class="m-auto w-280px pl-4">
-      <div class="px-6 py-4 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
+      <div class="px-6 py-4 rounded grid grid-cols-[120px_auto] gap-2 bg-gray-500/5">
         <span text="right" opacity="75">Position</span>
         <div class="text-primary">
           {{ x.toFixed(1) }}, {{ y.toFixed(1) }}

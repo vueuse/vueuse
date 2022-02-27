@@ -21,7 +21,7 @@ const commits = computed(() => {
 <template>
   <em v-if="!commits.length" opacity="70">No recent changes</em>
 
-  <div class="grid grid-cols-[30px,auto] -ml-1 gap-1.5 children:my-auto">
+  <div class="grid grid-cols-[30px_auto] -ml-1 gap-1.5 children:my-auto">
     <template v-for="(commit, idx) of commits" :key="commit.hash">
       <template v-if="idx === 0 && !commit.version">
         <div m="t-1" />
