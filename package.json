@@ -27,7 +27,7 @@
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
-    "update": "esno scripts/update.ts",
+    "update": "nr -C packages/metadata prepare && esno scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "esno scripts/build.ts --watch"
   },

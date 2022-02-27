@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { biSyncRef } from '.'
+import { syncRef } from '.'
 
 const a = ref('')
 const b = ref('')
 
-biSyncRef(a, b)
+syncRef(a, b)
 </script>
 
 <template>

@@ -9,3 +9,4 @@ packages/core/README.md
 types
 playgrounds/*/pnpm-lock.yaml
 components.d.ts
+*.log

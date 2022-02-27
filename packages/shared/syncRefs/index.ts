@@ -2,7 +2,7 @@ import type { Ref, WatchSource } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 
-export interface SyncRefOptions extends ConfigurableFlushSync {
+export interface SyncRefsOptions extends ConfigurableFlushSync {
   /**
    * Watch deeply
    *
@@ -26,11 +26,13 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
 export function syncRefs<T>(
   source: WatchSource<T>,
   targets: Ref<T> | Ref<T>[],
-  {
+  options: SyncRefsOptions = {},
+) {
+  const {
     flush = 'sync',
     deep = false,
     immediate = true,
-  }: SyncRefOptions = {}) {
+  } = options
   if (!Array.isArray(targets))
     targets = [targets]
 
