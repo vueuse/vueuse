@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue-demi'
-import { useDebounce } from '.'
+import { refDebounced } from '.'
 
 const input = ref('')
-const debounced = useDebounce(input, 1000)
+const debounced = refDebounced(input, 1000)
 const updated = ref(0)
 
 watch(debounced, () => (updated.value += 1))

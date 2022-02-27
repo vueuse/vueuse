@@ -1,18 +1,19 @@
 ---
 category: Utilities
+alias: useDebounce, debouncedRef
 ---
 
-# useDebounce
+# refDebounced
 
 Debounce execution of a ref value.
 
 ## Usage
 
 ```js {4}
-import { useDebounce } from '@vueuse/core'
+import { refDebounced } from '@vueuse/core'
 
 const input = ref('foo')
-const debounced = useDebounce(input, 1000)
+const debounced = refDebounced(input, 1000)
 
 input.value = 'bar'
 console.log(debounced.value) // 'foo'
@@ -22,13 +23,6 @@ await sleep(1100)
 console.log(debounced.value) // 'bar'
 ```
 You can also pass an optional 3rd parameter including maxWait option. See `useDebounceFn` for details.
-
-## Related Functions
-
-- `useThrottle`
-- `useThrottleFn`
-- `useDebounce`
-- `useDebounceFn`
 
 ## Recommended Reading
 
