@@ -1,6 +1,6 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { asyncComputed } from '.'
+import { computedAsync } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
@@ -16,11 +16,11 @@ describe('computed', () => {
   })
 })
 
-describe('asyncComputed', () => {
+describe('computedAsync', () => {
   it('is not lazy by default', async() => {
     const func = vitest.fn(() => Promise.resolve('data'))
 
-    const data = asyncComputed(func)
+    const data = computedAsync(func)
 
     expect(func).toBeCalledTimes(1)
 
@@ -37,7 +37,7 @@ describe('asyncComputed', () => {
       throw new Error('An Error Message')
     })
 
-    const data = asyncComputed(func, undefined, {
+    const data = computedAsync(func, undefined, {
       onError(e) {
         if (e instanceof Error)
           errorMessage = e.message
@@ -57,7 +57,7 @@ describe('asyncComputed', () => {
   it('is lazy if configured', async() => {
     const func = vitest.fn(async() => 'data')
 
-    const data = asyncComputed(func, undefined, { lazy: true })
+    const data = computedAsync(func, undefined, { lazy: true })
 
     expect(func).not.toBeCalled()
 
@@ -73,7 +73,7 @@ describe('asyncComputed', () => {
 
   it('re-computes when dependency changes', async() => {
     const counter = ref(1)
-    const double = asyncComputed(() => {
+    const double = computedAsync(() => {
       const result = counter.value * 2
       return Promise.resolve(result)
     })
@@ -96,7 +96,7 @@ describe('asyncComputed', () => {
   test('evaluating works', async() => {
     const evaluating = ref(false)
 
-    const data = asyncComputed(() =>
+    const data = computedAsync(() =>
       new Promise(resolve => setTimeout(() => resolve('data'), 0)),
     undefined,
     evaluating)
@@ -113,7 +113,7 @@ describe('asyncComputed', () => {
 
   test('triggers', async() => {
     const counter = ref(1)
-    const double = asyncComputed(() => {
+    const double = computedAsync(() => {
       const result = counter.value * 2
       return Promise.resolve(result)
     })
@@ -143,7 +143,7 @@ describe('asyncComputed', () => {
     const onCancel = vitest.fn()
 
     const data = ref('initial')
-    const uppercase = asyncComputed((cancel) => {
+    const uppercase = computedAsync((cancel) => {
       cancel(() => onCancel())
 
       const uppercased = data.value.toUpperCase()
@@ -178,7 +178,7 @@ describe('asyncComputed', () => {
     const onCancel = vitest.fn()
 
     const data = ref('initial')
-    const uppercase = asyncComputed((cancel) => {
+    const uppercase = computedAsync((cancel) => {
       cancel(() => onCancel())
 
       const uppercased = data.value.toUpperCase()

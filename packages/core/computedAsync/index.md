@@ -1,9 +1,9 @@
 ---
 category: Utilities
-alias: computedAsync
+alias: asyncComputed
 ---
 
-# asyncComputed
+# computedAsync
 
 Computed for async functions
 
@@ -11,11 +11,11 @@ Computed for async functions
 
 ```js
 import { ref } from 'vue'
-import { asyncComputed } from '@vueuse/core'
+import { computedAsync } from '@vueuse/core'
 
 const name = ref('jack')
 
-const userInfo = asyncComputed(
+const userInfo = computedAsync(
   async() => {
     return await mockLookUp(name.value)
   },
@@ -29,11 +29,11 @@ You will need to pass a ref to track if the async function is evaluating,
 
 ```js
 import { ref } from 'vue'
-import { asyncComputed } from '@vueuse/core'
+import { computedAsync } from '@vueuse/core'
 
 const evaluating = ref(false)
 
-const userInfo = asyncComputed(
+const userInfo = computedAsync(
   async() => { /* your logic */ },
   null,
   evaluating,
@@ -47,7 +47,7 @@ When the computed source changed before the previous async function gets resolve
 ```js
 const packageName = ref('@vueuse/core')
 
-const downloads = asyncComputed(async(onCancel) => {
+const downloads = computedAsync(async(onCancel) => {
   const abortController = new AbortController()
 
   onCancel(() => abortController.abort())
@@ -63,15 +63,15 @@ const downloads = asyncComputed(async(onCancel) => {
 
 ### Lazy
 
-By default, `asyncComputed` will start resolving immediately on creation, specify `lazy: true` to make it start resolving on the first accessing.
+By default, `computedAsync` will start resolving immediately on creation, specify `lazy: true` to make it start resolving on the first accessing.
 
 ```js
 import { ref } from 'vue'
-import { asyncComputed } from '@vueuse/core'
+import { computedAsync } from '@vueuse/core'
 
 const evaluating = ref(false)
 
-const userInfo = asyncComputed(
+const userInfo = computedAsync(
   async() => { /* your logic */ },
   null,
   { lazy: true, evaluating },
@@ -80,6 +80,6 @@ const userInfo = asyncComputed(
 
 ## Caveats
 
-- Just like Vue's built-in `computed` function, `asyncComputed` does dependency tracking and is automatically re-evaluated when dependencies change. Note however that only dependency referenced in the first call stack are considered for this. In other words: **Dependencies that are accessed asynchronously will not trigger re-evaluation of the async computed value.**
+- Just like Vue's built-in `computed` function, `computedAsync` does dependency tracking and is automatically re-evaluated when dependencies change. Note however that only dependency referenced in the first call stack are considered for this. In other words: **Dependencies that are accessed asynchronously will not trigger re-evaluation of the async computed value.**
 
 - As opposed to Vue's built-in `computed` function, re-evaluation of the async computed value is triggered whenever dependencies are changing, regardless of whether its result is currently being tracked or not.

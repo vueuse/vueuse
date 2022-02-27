@@ -32,12 +32,12 @@ export interface AsyncComputedOptions {
 /**
  * Create an asynchronous computed dependency.
  *
- * @see https://vueuse.org/asyncComputed
+ * @see https://vueuse.org/computedAsync
  * @param evaluationCallback     The promise-returning callback which generates the computed value
  * @param initialState           The initial state, used until the first evaluation finishes
  * @param optionsOrRef           Additional options or a ref passed to receive the updates of the async evaluation
  */
-export function asyncComputed<T>(
+export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
@@ -116,4 +116,4 @@ export function asyncComputed<T>(
 }
 
 // alias
-export { asyncComputed as computedAsync }
+export { computedAsync as asyncComputed }
