@@ -45,11 +45,11 @@ const pointStyles = computed<Record<string, string | number>>(() => ({
     <div ref="point" :style="pointStyles" class="w-2 h-2 rounded-full bg-green-400 shadow" />
   </teleport>
   <div class="flex items-center">
-    <span class="mr-4">x:</span>
+    <span class="mr-4">X</span>
     <input v-model="x" type="number">
   </div>
   <div class="flex items-center">
-    <span class="mr-4">y:</span>
+    <span class="mr-4">Y</span>
     <input v-model="y" type="number">
   </div>
 </template>

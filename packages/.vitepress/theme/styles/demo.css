@@ -116,7 +116,7 @@
 
   input[type='text'], input[type='search'], input[type='number'] {
     display: block;
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     padding: 0.5em 1em 0.4em 1em;
     border: 1px solid var(--vt-c-divider-light);
     border-radius: 4px;

@@ -1,13 +1,16 @@
 .DS_Store
 .idea
 .nuxt
-.teamp
+.temp
 *.log
 components.d.ts
 dist
+index.json
+indexes.json
 node_modules
 packages/*/LICENSE
 packages/contributing.md
 packages/core/README.md
+packages/public/badge-*
 playgrounds/*/pnpm-lock.yaml
 types

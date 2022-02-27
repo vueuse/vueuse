@@ -48,6 +48,7 @@ importers:
       md5: ^2.3.0
       msw: ^0.38.1
       node-fetch: ^3.2.0
+      ohmyfetch: ^0.4.15
       pnpm: ^6.32.1
       postcss: ^8.4.7
       postcss-nested: ^5.0.6
@@ -109,6 +110,7 @@ importers:
       md5: 2.3.0
       msw: 0.38.1
       node-fetch: 3.2.0
+      ohmyfetch: 0.4.15
       pnpm: 6.32.1
       postcss: 8.4.7
       postcss-nested: 5.0.6_postcss@8.4.7
@@ -6605,6 +6607,15 @@ packages:
       es-abstract: 1.19.1
     dev: true
 
+  /ohmyfetch/0.4.15:
+    resolution: {integrity: sha512-AJKiMh4s+VYLLiAQi3tZn4Zh/xYr94nOX9FLGVVdbXo7QWrrKIfGweACIKaB06PjQdZtkICzcmNN+CQSR+9vQQ==}
+    dependencies:
+      destr: 1.1.0
+      node-fetch: 3.2.0
+      ufo: 0.7.11
+      undici: 4.14.1
+    dev: true
+
   /once/1.4.0:
     resolution: {integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=}
     dependencies:
@@ -8029,6 +8040,11 @@ packages:
   /unctx/1.0.2:
     resolution: {integrity: sha512-qxRfnQZWJqkg180JeOCJEvtjj5/7wnWVqkNHln8muY5/z8kMWBFqikFBPwIPCQrZJ+jtaSWkVHJkuHUAXls6zw==}
     dev: false
+
+  /undici/4.14.1:
+    resolution: {integrity: sha512-WJ+g+XqiZcATcBaUeluCajqy4pEDcQfK1vy+Fo+bC4/mqXI9IIQD/XWHLS70fkGUT6P52Drm7IFslO651OdLPQ==}
+    engines: {node: '>=12.18'}
+    dev: true
 
   /unherit/1.1.3:
     resolution: {integrity: sha512-Ft16BJcnapDKp0+J/rqFC3Rrk6Y/Ng4nzsC028k2jdDII/rdZ7Wd3pPT/6+vIIxRagwRc9K0IUX0Ra4fKvw+WQ==}
