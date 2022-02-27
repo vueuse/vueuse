@@ -82,13 +82,20 @@ export function useScroll(
   const x = ref(0)
   const y = ref(0)
   const isScrolling = ref(false)
+  const isWheeling = ref(false)
   const arrivedState = reactive({
     left: true,
     right: false,
     top: true,
     bottom: false,
   })
-  const directions = reactive({
+  const scrollDirections = reactive({
+    left: false,
+    right: false,
+    top: false,
+    bottom: false,
+  })
+  const wheelDirections = reactive({
     left: false,
     right: false,
     top: false,
@@ -98,10 +105,15 @@ export function useScroll(
   if (element) {
     const onScrollEnd = useDebounceFn((e: Event) => {
       isScrolling.value = false
-      directions.left = false
-      directions.right = false
-      directions.top = false
-      directions.bottom = false
+      isWheeling.value = false
+      wheelDirections.left = false
+      wheelDirections.right = false
+      wheelDirections.top = false
+      wheelDirections.bottom = false
+      scrollDirections.left = false
+      scrollDirections.right = false
+      scrollDirections.top = false
+      scrollDirections.bottom = false
       onStop(e)
     }, throttle + idle)
 
@@ -111,16 +123,16 @@ export function useScroll(
       ) as HTMLElement
 
       const scrollLeft = eventTarget.scrollLeft
-      directions.left = scrollLeft < x.value
-      directions.right = scrollLeft > x.value
+      scrollDirections.left = scrollLeft < x.value
+      scrollDirections.right = scrollLeft > x.value
       arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
       arrivedState.right
           = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
       x.value = scrollLeft
 
       const scrollTop = eventTarget.scrollTop
-      directions.top = scrollTop < y.value
-      directions.bottom = scrollTop > y.value
+      scrollDirections.top = scrollTop < y.value
+      scrollDirections.bottom = scrollTop > y.value
       arrivedState.top = scrollTop <= 0 + (offset.top || 0)
       arrivedState.bottom
           = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
@@ -131,10 +143,33 @@ export function useScroll(
       onScroll(e)
     }
 
+    const onWheelHandler = (e: WheelEvent) => {
+      if (e.shiftKey) {
+        wheelDirections.left = e.deltaY < 0
+        wheelDirections.right = e.deltaY > 0
+      }
+      else {
+        wheelDirections.top = e.deltaY < 0
+        wheelDirections.bottom = e.deltaY > 0
+        wheelDirections.left = e.deltaX < 0
+        wheelDirections.right = e.deltaX > 0
+      }
+
+      isWheeling.value = true
+      onScrollEnd(e)
+    }
+
     useEventListener(
       element,
       'scroll',
       throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
+      eventListenerOptions,
+    )
+
+    useEventListener(
+      element,
+      'wheel',
+      throttle ? useThrottleFn(onWheelHandler, throttle) : onWheelHandler,
       eventListenerOptions,
     )
   }
@@ -143,8 +178,10 @@ export function useScroll(
     x,
     y,
     isScrolling,
+    isWheeling,
     arrivedState,
-    directions,
+    scrollDirections,
+    wheelDirections,
   }
 }
 

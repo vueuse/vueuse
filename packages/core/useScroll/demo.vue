@@ -3,15 +3,16 @@ import { ref, toRefs } from 'vue-demi'
 import { useScroll } from '.'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
+const { x, y, isScrolling, isWheeling, arrivedState, scrollDirections, wheelDirections } = useScroll(el)
 const { left, right, top, bottom } = toRefs(arrivedState)
-const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
+const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(scrollDirections)
+const { left: wheelLeft, right: wheelRight, top: wheelTop, bottom: wheelBottom } = toRefs(wheelDirections)
 </script>
 
 <template>
-  <div class="flex">
-    <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
-      <div class="w-500px h-400px relative">
+  <div class="flex flex-col">
+    <div ref="el" class="w-11/12 h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
+      <div class="w-900px h-400px relative">
         <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
           TopLeft
         </div>
@@ -29,14 +30,12 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
         </div>
       </div>
     </div>
-    <div class="m-auto w-280px pl-4">
-      <div class="px-6 py-4 rounded grid grid-cols-[120px,auto] gap-2 bg-gray-500/5">
+    <div class="m-auto flex mt-4">
+      <div class="w-208px px-6 py-4 rounded grid grid-cols-[110px,auto] gap-2 bg-gray-500/5">
         <span text="right" opacity="75">Position</span>
-        <div class="text-primary">
-          {{ x.toFixed(1) }}, {{ y.toFixed(1) }}
+        <div class="text-primary overflow-visible">
+          {{ x.toFixed(1) }},<br>{{ y.toFixed(1) }}
         </div>
-        <span text="right" opacity="75">isScrolling</span>
-        <BooleanDisplay :value="isScrolling" />
         <div text="right" opacity="75">
           Top Arrived
         </div>
@@ -53,6 +52,10 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
           Left Arrived
         </div>
         <BooleanDisplay :value="left" />
+      </div>
+      <div class="px-6 py-4 rounded grid grid-cols-[110px,auto] gap-2 bg-gray-500/5">
+        <span text="right" opacity="75">isScrolling</span>
+        <BooleanDisplay :value="isScrolling" />
         <div text="right" opacity="75">
           Scrolling Up
         </div>
@@ -69,6 +72,26 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
           Scrolling Left
         </div>
         <BooleanDisplay :value="toLeft" />
+      </div>
+      <div class="px-6 py-4 rounded grid grid-cols-[110px,auto] gap-2 bg-gray-500/5">
+        <span text="right" opacity="75">isWheeling</span>
+        <BooleanDisplay :value="isWheeling" />
+        <div text="right" opacity="75">
+          Wheeling Up
+        </div>
+        <BooleanDisplay :value="wheelTop" />
+        <div text="right" opacity="75">
+          Wheeling Right
+        </div>
+        <BooleanDisplay :value="wheelRight" />
+        <div text="right" opacity="75">
+          Wheeling Down
+        </div>
+        <BooleanDisplay :value="wheelBottom" />
+        <div text="right" opacity="75">
+          Wheeling Left
+        </div>
+        <BooleanDisplay :value="wheelLeft" />
       </div>
     </div>
   </div>
