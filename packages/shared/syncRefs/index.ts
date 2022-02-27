@@ -23,7 +23,7 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
  * @param source source ref
  * @param targets
  */
-export function syncRef<T>(
+export function syncRefs<T>(
   source: WatchSource<T>,
   targets: Ref<T> | Ref<T>[],
   {

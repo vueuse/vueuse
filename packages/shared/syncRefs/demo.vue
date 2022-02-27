@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { syncRef } from '.'
+import { syncRefs } from '.'
 
 const source = ref('')
 const target1 = ref('')
 const target2 = ref('')
 
-syncRef(source, [target1, target2])
+syncRefs(source, [target1, target2])
 </script>
 
 <template>

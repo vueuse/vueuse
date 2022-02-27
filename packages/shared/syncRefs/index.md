@@ -2,19 +2,19 @@
 category: Utilities
 ---
 
-# syncRef
+# syncRefs
 
 Keep target refs in sync with a source ref
 
 ## Usage
 
 ```ts
-import { syncRef } from '@vueuse/core'
+import { syncRefs } from '@vueuse/core'
 
 const source = ref('hello')
 const target = ref('target')
 
-const stop = syncRef(source, target)
+const stop = syncRefs(source, target)
 
 console.log(target.value) // hello
 
@@ -25,7 +25,7 @@ console.log(target.value) // foo
 
 ## Watch options
 
-The options for `syncRef` are similar to `watch`'s `WatchOptions` but with different default values.
+The options for `syncRefs` are similar to `watch`'s `WatchOptions` but with different default values.
 
 ```ts
 export interface SyncRefOptions {
@@ -53,12 +53,12 @@ export interface SyncRefOptions {
 When setting `{ flush: 'pre' }`, the target reference will be updated at [the end of the current "tick"](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) before rendering starts.
 
 ```ts
-import { syncRef } from '@vueuse/core'
+import { syncRefs } from '@vueuse/core'
 
 const source = ref('hello')
 const target = ref('target')
 
-syncRef(source, target, { flush: 'pre' })
+syncRefs(source, target, { flush: 'pre' })
 
 console.log(target.value) // hello
 
