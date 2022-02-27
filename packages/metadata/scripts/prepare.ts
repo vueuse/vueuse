@@ -84,6 +84,10 @@ export async function readMetadata() {
       const { content: md, data: frontmatter } = matter(mdRaw)
       const category = frontmatter.category
 
+      let alias = frontmatter.alias
+      if (typeof alias === 'string')
+        alias = alias.split(',').map(s => s.trim()).filter(Boolean)
+
       let description = (md
         .replace(/\r\n/g, '\n')
         .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || []
@@ -97,6 +101,9 @@ export async function readMetadata() {
 
       if (description.includes('DEPRECATED'))
         fn.deprecated = true
+
+      if (alias?.length)
+        fn.alias = alias
 
       indexes.functions.push(fn)
     }))

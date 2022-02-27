@@ -107,7 +107,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
             const imports = metadata
               .functions
               .filter(i => i.package === pkg && !i.internal)
-              .map(i => i.name)
+              .flatMap(i => [i.name, ...i.alias || []])
               .filter(i => i.length >= 4 && !disabledFunctions.includes(i))
 
             sources.push({

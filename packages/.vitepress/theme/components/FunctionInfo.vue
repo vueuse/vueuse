@@ -14,7 +14,7 @@ const link = computed(() => `/functions\#category=${encodeURIComponent(info.valu
 </script>
 
 <template>
-  <div class="grid grid-cols-[100px_auto] gap-2 text-sm -mt-2 mb-8">
+  <div class="grid grid-cols-[100px_auto] gap-2 text-sm -mt-2 mb-8 items-center">
     <div opacity="50">
       Category
     </div>
@@ -30,6 +30,14 @@ const link = computed(() => `/functions\#category=${encodeURIComponent(info.valu
         Last Changed
       </div>
       <div>{{ format(info.lastUpdated) }}</div>
+    </template>
+    <template v-if="info.alias?.length">
+      <div opacity="50">
+        Alias
+      </div>
+      <div flex="~ gap-1">
+        <code v-for="a, idx of info.alias" :key="idx" class="!py-0">{{ a }}</code>
+      </div>
     </template>
   </div>
 </template>

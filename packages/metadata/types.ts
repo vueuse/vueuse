@@ -31,6 +31,7 @@ export interface VueUseFunction {
   component?: boolean
   directive?: boolean
   external?: string
+  alias?: string[]
 }
 
 export interface VueUsePackage extends PackageManifest {

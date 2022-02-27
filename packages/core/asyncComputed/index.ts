@@ -114,3 +114,8 @@ export function asyncComputed<T>(
     return current
   }
 }
+
+/**
+ * Alias of `asyncComputed`
+ */
+export const computedAsync = asyncComputed

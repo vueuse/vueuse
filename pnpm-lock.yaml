@@ -144,9 +144,11 @@ importers:
 
   packages/core:
     specifiers:
+      '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
       vue-demi: 0.12.1
     dependencies:
+      '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
       vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
 
