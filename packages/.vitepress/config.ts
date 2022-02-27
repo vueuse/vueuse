@@ -113,7 +113,7 @@ const config = {
         link: 'https://play.vueuse.org',
       },
       {
-        text: `v${currentVersion}`,
+        text: currentVersion,
         items: [
           {
             items: [
@@ -124,7 +124,7 @@ const config = {
             text: 'Versions',
             items: versions.map(i => i.version === currentVersion
               ? {
-                text: `v${i.version} (Current)`,
+                text: `${i.version} (Current)`,
                 activeMatch: '/', // always active
                 link: '/',
               }
