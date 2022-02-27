@@ -87,6 +87,9 @@ export async function readMetadata() {
       let alias = frontmatter.alias
       if (typeof alias === 'string')
         alias = alias.split(',').map(s => s.trim()).filter(Boolean)
+      let related = frontmatter.related
+      if (typeof related === 'string')
+        related = related.split(',').map(s => s.trim()).filter(Boolean)
 
       let description = (md
         .replace(/\r\n/g, '\n')
@@ -104,6 +107,9 @@ export async function readMetadata() {
 
       if (alias?.length)
         fn.alias = alias
+
+      if (related?.length)
+        fn.related = related
 
       indexes.functions.push(fn)
     }))

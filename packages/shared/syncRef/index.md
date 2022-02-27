@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: syncRefs
 ---
 
 # syncRef
@@ -27,6 +28,13 @@ a.value = 'bar'
 console.log(b.value) // bar
 ```
 
-## Related Functions
+One directional
 
-- `syncRefs`
+```ts
+import { syncRef } from '@vueuse/core'
+
+const a = ref('a')
+const b = ref('b')
+
+const stop = syncRef(a, b, { direction: 'rtl' })
+```

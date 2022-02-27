@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: syncRef
 ---
 
 # syncRefs
@@ -70,7 +71,3 @@ await nextTick()
 
 console.log(target.value) // foo <- changed!
 ```
-
-## Related Functions
-
-- `biSyncRef`

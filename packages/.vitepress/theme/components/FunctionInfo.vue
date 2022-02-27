@@ -11,6 +11,11 @@ const props = defineProps<{ fn: string }>()
 const info = computed(() => functions.find(i => i.name === props.fn))
 const format = (ts: number) => dayjs(ts).fromNow()
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
+
+const getFunctionLink = (fn: string) => {
+  const info = functions.find(i => i.name === fn)
+  return info?.docs.replace(/https?:\/\/vueuse\.org\//g, '/')
+}
 </script>
 
 <template>
@@ -37,6 +42,21 @@ const link = computed(() => `/functions\#category=${encodeURIComponent(info.valu
       </div>
       <div flex="~ gap-1">
         <code v-for="a, idx of info.alias" :key="idx" class="!py-0">{{ a }}</code>
+      </div>
+    </template>
+    <template v-if="info.related?.length">
+      <div opacity="50">
+        Related
+      </div>
+      <div flex="~ gap-1">
+        <a
+          v-for="name, idx of info.related"
+          :key="idx"
+          class="!py-0"
+          :href="getFunctionLink(name)"
+        >
+          <code>{{ name }}</code>
+        </a>
       </div>
     </template>
   </div>
