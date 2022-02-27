@@ -1,10 +1,10 @@
 import { computed, ref, watch } from 'vue-demi'
 import { nextTwoTick } from '../../.test'
-import { eagerComputed } from '.'
+import { computedEager } from '.'
 
-describe('eagerComputed', () => {
+describe('computedEager', () => {
   it('should be defined', () => {
-    expect(eagerComputed).toBeDefined()
+    expect(computedEager).toBeDefined()
   })
 
   it('should work', async() => {
@@ -13,7 +13,7 @@ describe('eagerComputed', () => {
     const plusOneComputed = computed(() => {
       return foo.value + 1
     })
-    const plusOneEagerComputed = eagerComputed(() => {
+    const plusOneEagerComputed = computedEager(() => {
       return foo.value + 1
     })
 
@@ -50,7 +50,7 @@ describe('eagerComputed', () => {
     const isOddComputed = computed(() => {
       return foo.value % 2 === 0
     })
-    const isOddEagerComputed = eagerComputed(() => {
+    const isOddEagerComputed = computedEager(() => {
       return foo.value % 2 === 0
     })
 

@@ -4,7 +4,7 @@
 import type { Ref, WatchOptionsBase } from 'vue-demi'
 import { readonly, shallowRef, watchEffect } from 'vue-demi'
 
-export function eagerComputed<T>(fn: () => T, options?: WatchOptionsBase): Readonly<Ref<T>> {
+export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Readonly<Ref<T>> {
   const result = shallowRef()
 
   watchEffect(() => {
@@ -16,3 +16,8 @@ export function eagerComputed<T>(fn: () => T, options?: WatchOptionsBase): Reado
 
   return readonly(result)
 }
+
+/**
+ * Alias of `computedEager`
+ */
+export const eagerComputed = computedEager

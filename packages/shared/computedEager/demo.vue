@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onUpdated, ref } from 'vue-demi'
-import { eagerComputed } from '.'
+import { computedEager } from '.'
 
 const eagerValue = ref(1)
-const eagerIsOdd = eagerComputed(() => eagerValue.value % 2 === 0)
+const eagerIsOdd = computedEager(() => eagerValue.value % 2 === 0)
 
 const lazyValue = ref(1)
 const lazyIsOdd = computed(() => lazyValue.value % 2 === 0)
