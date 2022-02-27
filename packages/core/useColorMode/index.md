@@ -1,5 +1,9 @@
 ---
 category: Browser
+related:
+  - useDark
+  - usePreferredDark
+  - useStorage
 ---
 
 # useColorMode
@@ -48,9 +52,3 @@ const mode = useColorMode({
   </button>
 </UseColorMode>
 ```
-
-## Related Functions
-
-- `useDark`
-- `usePreferredDark`
-- `useStorage`

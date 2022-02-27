@@ -118,6 +118,23 @@ export async function readMetadata() {
   indexes.functions.sort((a, b) => a.name.localeCompare(b.name))
   indexes.categories = getCategories(indexes.functions)
 
+  // interop related
+  indexes.functions.forEach((fn) => {
+    if (!fn.related)
+      return
+
+    fn.related.forEach((name) => {
+      const target = indexes.functions.find(f => f.name === name)
+      if (!target)
+        throw new Error(`Unknown related function: ${name}`)
+      if (!target.related)
+        target.related = []
+      if (!target.related.includes(fn.name))
+        target.related.push(fn.name)
+    })
+  })
+  indexes.functions.forEach(fn => fn.related?.sort())
+
   return indexes
 }
 

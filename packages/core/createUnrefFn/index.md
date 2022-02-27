@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: reactify
 ---
 
 # createUnrefFn
@@ -27,7 +28,3 @@ const unrefPost = createUnrefFn(post)
 post(url, data)        /* ❌ Will throw an error because the arguments are refs */
 unrefPost(url, data)   /* ✔️ Will Work because the arguments will be auto unref */
 ```
-
-## Related Functions
-
-- `reactify`
