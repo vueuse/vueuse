@@ -32,7 +32,7 @@ describe('syncRef', () => {
     const left = ref('left')
     const right = ref('right')
 
-    const stop = syncRef(left, right, { direction: 'rtl' })
+    syncRef(left, right, { direction: 'rtl' })
 
     expect(left.value).toBe('right')
     expect(right.value).toBe('right')
