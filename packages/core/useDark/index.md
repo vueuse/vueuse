@@ -9,7 +9,8 @@ Reactive dark mode with auto data persistence.
 ## Basic Usage
 
 ```js
-import { useDark, useToggle } from '@vueuse/core'
+import { useDark } from '@vueuse/core'
+import { useToggle } from '@vueuse/shared'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
