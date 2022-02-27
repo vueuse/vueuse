@@ -8,7 +8,7 @@ import type { Fn } from '../utils'
  * @param source
  * @param fn
  */
-export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
+export function computedWithControl<T, S>(source: WatchSource<S>, fn: () => T) {
   let v: T = undefined!
   let track: Fn
   let trigger: Fn
@@ -40,3 +40,8 @@ export function controlledComputed<T, S>(source: WatchSource<S>, fn: () => T) {
     }
   }) as ComputedRef<T>
 }
+
+/**
+ * Alias of `computedWithControl`
+ */
+export const controlledComputed = computedWithControl

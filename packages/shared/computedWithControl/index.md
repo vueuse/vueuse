@@ -1,20 +1,21 @@
 ---
 category: Utilities
+alias: controlledComputed
 ---
 
-# controlledComputed
+# computedWithControl
 
 Explicitly define the deps of computed.
 
 ## Usage
 
 ```ts
-import { controlledComputed } from '@vueuse/core'
+import { computedWithControl } from '@vueuse/core'
 
 let source = ref('foo')
 let counter = ref(0)
 
-const computedRef = controlledComputed(
+const computedRef = computedWithControl(
   () => source.value, // watch source, same as `watch`
   () => counter.value, // computed getter, same as `computed`
 )
