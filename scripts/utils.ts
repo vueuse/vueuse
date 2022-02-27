@@ -281,13 +281,13 @@ export async function updateIndexREADME({ functions }: PackageIndexes) {
 }
 
 export async function updatePackageIndexMD({ functions }: PackageIndexes) {
-  let readme = await fs.readFile('packages/index.md', 'utf-8')
+  let content = await fs.readFile('packages/index.md', 'utf-8')
 
   const functionsCount = functions.filter(i => !i.internal).length
 
-  readme = replacer(readme, `<Home :functionsCount="${functionsCount}" />`, 'HOME')
+  content = replacer(content, `<Home :functionsCount="${functionsCount}" />`, 'HOME')
 
-  await fs.writeFile('packages/index.md', `${readme.trim()}\n`, 'utf-8')
+  await fs.writeFile('packages/index.md', `${content.trim()}\n`, 'utf-8')
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
