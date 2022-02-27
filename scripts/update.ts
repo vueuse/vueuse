@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import { metadata } from '../packages/metadata/metadata'
-import { updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
+import { updateCountBadge, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
 
 async function run() {
   await Promise.all([
@@ -17,7 +17,3 @@ async function run() {
 }
 
 run()
-
-function updateCountBadge(metadata: any): any {
-  throw new Error('Function not implemented.')
-}
