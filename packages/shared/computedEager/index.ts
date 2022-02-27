@@ -17,7 +17,5 @@ export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Reado
   return readonly(result)
 }
 
-/**
- * Alias of `computedEager`
- */
-export const eagerComputed = computedEager
+// alias
+export { computedEager as eagerComputed }

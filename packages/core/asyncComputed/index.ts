@@ -115,7 +115,5 @@ export function asyncComputed<T>(
   }
 }
 
-/**
- * Alias of `asyncComputed`
- */
-export const computedAsync = asyncComputed
+// alias
+export { asyncComputed as computedAsync }

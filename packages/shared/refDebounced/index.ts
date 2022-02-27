@@ -23,12 +23,8 @@ export function refDebounced<T>(value: Ref<T>, ms = 200, options: DebounceFilter
   return debounced
 }
 
-/**
- * Alias of `refDebounced`
- */
-export const useDebounce = refDebounced
-
-/**
- * Alias of `refDebounced`
- */
-export const debouncedRef = refDebounced
+// alias
+export {
+  refDebounced as useDebounce,
+  refDebounced as debouncedRef,
+}

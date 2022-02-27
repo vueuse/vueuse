@@ -41,7 +41,5 @@ export function computedWithControl<T, S>(source: WatchSource<S>, fn: () => T) {
   }) as ComputedRef<T>
 }
 
-/**
- * Alias of `computedWithControl`
- */
-export const controlledComputed = computedWithControl
+// alias
+export { computedWithControl as controlledComputed }
