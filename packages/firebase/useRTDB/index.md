@@ -24,7 +24,7 @@ const todos = useRTDB(db.ref('todos'))
 You can reuse the db reference by passing `autoDispose: false`
 
 ```ts
-const todos = useRTDB(db.collection('todos'), { autoDispose: false })
+const todos = useRTDB(db.ref('todos'), { autoDispose: false })
 ```
 
 or use `createGlobalState` from the core package

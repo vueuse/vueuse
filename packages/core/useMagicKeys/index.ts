@@ -1,5 +1,7 @@
-import { computed, ComputedRef, reactive, ref, unref } from 'vue-demi'
-import { MaybeRef, noop } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
+import { computed, reactive, ref, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -83,15 +85,17 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
-    const key = e.key.toLowerCase()
-    const code = e.code.toLowerCase()
-    const values = [code, key]
+    const key = e.key?.toLowerCase()
+    const code = e.code?.toLowerCase()
+    const values = [code, key].filter(Boolean)
 
     // current set
-    if (value)
-      current.add(e.code)
-    else
-      current.delete(e.code)
+    if (code) {
+      if (value)
+        current.add(e.code)
+      else
+        current.delete(e.code)
+    }
 
     for (const key of values) {
       if (key in refs) {

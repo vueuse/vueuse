@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { stringify } from '@vueuse/docs-utils'
 import Scrubber from './components/Scrubber.vue'
 import Menu from './components/Menu.vue'
@@ -64,7 +64,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
     @keydown.right="currentTime += 10"
     @keydown.left="currentTime -= 10"
   >
-    <div class="relative bg-black">
+    <div class="mt-5 relative bg-black rounded-md shadow overflow-hidden">
       <video
         ref="video"
         crossorigin="anonymous"
@@ -177,5 +177,5 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
       </Menu>
     </div>
   </div>
-  <pre lang="yaml">{{ text }}</pre>
+  <pre class="code-block" lang="yaml">{{ text }}</pre>
 </template>

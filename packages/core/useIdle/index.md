@@ -18,7 +18,7 @@ console.log(idle.value) // true or false
 
 ## Component
 ```html
-<UseIdle v-slot="{ isIdle }" :timeout="5 * 60 * 1000">
-  Is Idle: {{ isIdle }}
+<UseIdle v-slot="{ idle }" :timeout="5 * 60 * 1000">
+  Is Idle: {{ idle }}
 </UseIdle>
 ```

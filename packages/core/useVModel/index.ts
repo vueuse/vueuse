@@ -1,4 +1,5 @@
-import { computed, getCurrentInstance, isVue2, ref, watch, UnwrapRef } from 'vue-demi'
+import type { UnwrapRef } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
 export interface VModelOptions {
   /**

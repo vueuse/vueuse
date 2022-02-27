@@ -36,5 +36,3 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
   </button>
 </UseFullscreen>
 ```
-
-<LearnMoreComponents />

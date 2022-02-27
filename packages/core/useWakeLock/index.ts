@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { defaultNavigator, ConfigurableNavigator, defaultDocument, ConfigurableDocument } from '../_configurable'
+import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
+import { defaultDocument, defaultNavigator } from '../_configurable'
 
 type WakeLockType = 'screen'
 
@@ -21,7 +22,10 @@ type NavigatorWithWakeLock = Navigator & {
  * @param options
  */
 export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocument = {}) => {
-  const { navigator = defaultNavigator, document = defaultDocument } = options
+  const {
+    navigator = defaultNavigator,
+    document = defaultDocument,
+  } = options
   let wakeLock: WakeLockSentinel | null
   const isSupported = navigator && 'wakeLock' in navigator
   const isActive = ref(false)

@@ -21,5 +21,3 @@ const preferredColor = usePreferredColorScheme()
   Preferred Color Scheme: {{ colorScheme }}
 <UsePreferredColorScheme>
 ```
-
-<LearnMoreComponents />

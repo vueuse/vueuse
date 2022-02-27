@@ -8,8 +8,9 @@ Executes each asynchronous task sequentially and passed the current task result 
 
 ## Usage
 
+```ts
+import { useAsyncQueue } from '@vueuse/core'
 
-```js
 const p1 = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -30,6 +31,6 @@ const { activeIndex, result } = useAsyncQueue([p1, p2])
 
 console.log(activeIndex.value) // current pending task index
 
-console.log(result.value) // the tasks result
+console.log(result) // the tasks result
 
 ```

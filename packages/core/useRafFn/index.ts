@@ -1,6 +1,8 @@
 import { ref } from 'vue-demi'
-import { Pausable, tryOnScopeDispose, Fn } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { Fn, Pausable } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface RafFnOptions extends ConfigurableWindow {
   /**
@@ -27,15 +29,15 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   const isActive = ref(false)
 
   function loop() {
-    if (!isActive.value)
+    if (!isActive.value || !window)
       return
+
     fn()
-    if (window)
-      window.requestAnimationFrame(loop)
+    window.requestAnimationFrame(loop)
   }
 
   function resume() {
-    if (!isActive.value) {
+    if (!isActive.value && window) {
       isActive.value = true
       loop()
     }

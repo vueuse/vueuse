@@ -2,7 +2,8 @@
 
 import { ref } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Reactive Media Query.
@@ -34,7 +35,7 @@ export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', update)
     else
-      // @ts-expect-error
+      // @ts-expect-error deprecated API
       mediaQuery.addListener(update)
 
     tryOnScopeDispose(() => {

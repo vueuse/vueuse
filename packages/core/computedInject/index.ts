@@ -1,4 +1,5 @@
-import { computed, inject, ComputedRef, InjectionKey } from 'vue-demi'
+import type { ComputedRef, InjectionKey } from 'vue-demi'
+import { computed, inject } from 'vue-demi'
 
 export type ComputedInjectGetter<T, K> = (source: T | undefined, ctx?: any) => K
 export type ComputedInjectGetterWithDefault<T, K> = (source: T, ctx?: any) => K

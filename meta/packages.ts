@@ -1,6 +1,14 @@
-import { PackageManifest } from './types'
+import type { PackageManifest } from '@vueuse/metadata'
 
 export const packages: PackageManifest[] = [
+  {
+    name: 'metadata',
+    display: 'Metadata for VueUse functions',
+    manualImport: true,
+    iife: false,
+    utils: true,
+    target: 'node14',
+  },
   {
     name: 'shared',
     display: 'Shared utilities',
@@ -18,6 +26,26 @@ export const packages: PackageManifest[] = [
     external: [
       '@vueuse/core',
       '@vueuse/shared',
+    ],
+  },
+  {
+    name: 'nuxt',
+    display: 'Nuxt',
+    description: 'VueUse Nuxt Module',
+    manualImport: true,
+    addon: true,
+    iife: false,
+    cjs: false,
+    utils: true,
+    target: 'node14',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+      '@nuxt/kit',
+      'local-pkg',
+      'fs',
+      'path',
+      'url',
     ],
   },
   {

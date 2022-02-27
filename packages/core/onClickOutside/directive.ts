@@ -1,4 +1,4 @@
-import { FunctionDirective } from 'vue-demi'
+import type { FunctionDirective } from 'vue-demi'
 import { onClickOutside } from '.'
 
 /**

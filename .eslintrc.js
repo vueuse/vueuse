@@ -1,14 +1,14 @@
+const { resolve } = require('path')
+
 module.exports = {
   root: true,
   env: {
     browser: true,
     node: true,
-    jest: true,
   },
   extends: '@antfu/eslint-config',
   plugins: [
     'markdown',
-    'jest',
   ],
   rules: {
     'react/no-string-refs': 'off',
@@ -21,7 +21,18 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
-        paths: ['vue', '@vue/composition-api'],
+        paths: [
+          'vue',
+          '@vue/composition-api',
+          '..',
+          '../..',
+          resolve(__dirname, 'packages/core/index.ts'),
+          {
+            name: 'vue-demi',
+            importNames: ['onMounted', 'onUnmounted'],
+            message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+          },
+        ],
       },
     ],
     'node/no-callback-literal': 'off',

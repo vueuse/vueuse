@@ -1,4 +1,6 @@
-import { Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { retry } from '../../.test'
 import { useFocus } from '.'
 
 describe('useFocus', () => {
@@ -38,10 +40,11 @@ describe('useFocus', () => {
     expect(focused.value).toBeFalsy()
 
     focused.value = true
-    expect(document.activeElement).toBe(target.value)
+
+    await retry(() => expect(document.activeElement).toBe(target.value))
 
     focused.value = false
-    expect(document.activeElement).not.toBe(target.value)
+    await retry(() => expect(document.activeElement).not.toBe(target.value))
   })
 
   describe('when target is missing', () => {
@@ -56,8 +59,10 @@ describe('useFocus', () => {
     it('should initialize focus', async() => {
       const { focused } = useFocus(target, { initialValue: true })
 
-      expect(document.activeElement).toBe(target.value)
-      expect(focused.value).toBeTruthy()
+      await retry(() => {
+        expect(document.activeElement).toBe(target.value)
+        expect(focused.value).toBeTruthy()
+      })
     })
   })
 })

@@ -15,21 +15,30 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "paths": {
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"],
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/docs-utils": ["./packages/.vitepress/utils.ts"]
-    }
+      "@vueuse/metadata": ["./packages/metadata/index.ts"],
+      "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"]
+    },
+    "types": [
+      "vitest",
+      "vitest/globals"
+    ]
   },
   "include": [
-    "packages"
+    "packages",
+    "packages/.vitepress/components/*.vue",
+    "packages/.vitepress/*.ts",
+    "meta",
+    "vitest.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "**/**/*.test.ts",
     "**/**/*.stories.tsx",
     "**/**/*.md",
     "**/dist",

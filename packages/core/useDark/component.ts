@@ -1,5 +1,6 @@
 import { defineComponent, reactive } from 'vue-demi'
-import { useDark, UseDarkOptions } from '@vueuse/core'
+import type { UseDarkOptions } from '@vueuse/core'
+import { useDark } from '@vueuse/core'
 import { useToggle } from '@vueuse/shared'
 
 export const UseDark = defineComponent<UseDarkOptions>({

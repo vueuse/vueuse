@@ -21,5 +21,3 @@ const languages = usePreferredLanguages()
   Preferred Languages: {{ languages }}
 </UsePreferredLanguages>
 ```
-
-<LearnMoreComponents />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
 import { useFetch } from '.'
@@ -26,9 +26,15 @@ const text = stringify(reactive({
   canAbort,
   statusCode,
   error,
-  data,
+  data: computed(() => {
+    try {
+      return JSON.parse(data.value as string)
+    }
+    catch (e) {
+      return null
+    }
+  }),
 }))
-
 </script>
 
 <template>
@@ -68,6 +74,6 @@ const text = stringify(reactive({
     <button v-if="canAbort" class="orange" @click="abort">
       Abort
     </button>
-    <pre lang="yaml">{{ text }}</pre>
+    <pre class="code-block">{{ text }}</pre>
   </div>
 </template>

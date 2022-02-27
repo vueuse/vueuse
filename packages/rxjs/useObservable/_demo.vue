@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { interval } from 'rxjs'
-import { mapTo, startWith, scan } from 'rxjs/operators'
+import { mapTo, scan, startWith } from 'rxjs/operators'
 import { useObservable } from '.'
 
 const count = useObservable(

@@ -1,7 +1,8 @@
-import { Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { increaseWithUnit } from '@vueuse/shared'
 import { useMediaQuery } from '../useMediaQuery'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 export * from './breakpoints'
 
 export type Breakpoints<K extends string = string> = Record<K, number | string>
@@ -68,4 +69,11 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
   }
 }
 
-export type UseBreakpointsReturn = ReturnType<typeof useBreakpoints>
+export type UseBreakpointsReturn<K extends string = string> = {
+  greater: (k: K) => Ref<boolean>
+  smaller(k: K): Ref<boolean>
+  between(a: K, b: K): Ref<boolean>
+  isGreater(k: K): boolean
+  isSmaller(k: K): boolean
+  isInBetween(a: K, b: K): boolean
+} & Record<K, Ref<boolean>>

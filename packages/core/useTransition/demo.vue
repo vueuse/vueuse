@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { rand } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition, TransitionPresets } from '.'
+import { TransitionPresets, useTransition } from '.'
 
 const duration = 1500
 
@@ -85,7 +85,7 @@ const toggle = () => {
 }
 
 .sled {
-  background: var(--c-brand);
+  background: var(--vt-c-brand);
   border-radius: 50%;
   height: 1rem;
   position: absolute;

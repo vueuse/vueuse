@@ -1,6 +1,8 @@
-import { isString, MaybeRef } from '@vueuse/shared'
-import { ref, watch, isRef } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import { isString } from '@vueuse/shared'
+import { isRef, ref, watch } from 'vue-demi'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 export interface FaviconOptions extends ConfigurableDocument {
   baseUrl?: string

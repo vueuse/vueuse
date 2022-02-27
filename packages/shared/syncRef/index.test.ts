@@ -1,32 +1,50 @@
 import { ref } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { syncRef } from '.'
 
 describe('syncRef', () => {
-  it('should work', (done) => {
-    useSetup(() => {
-      const source = ref('foo')
-      const target1 = ref('bar')
-      const target2 = ref('bar2')
+  it('should work', () => {
+    const a = ref('foo')
+    const b = ref('bar')
 
-      const stop = syncRef(source, [target1, target2])
+    const stop = syncRef(a, b)
 
-      expect(target1.value).toBe('foo')
-      expect(target2.value).toBe('foo')
+    expect(b.value).toBe('foo')
 
-      source.value = 'bar'
+    a.value = 'bar'
 
-      expect(target1.value).toBe('bar')
-      expect(target2.value).toBe('bar')
+    expect(a.value).toBe('bar')
+    expect(b.value).toBe('bar')
 
-      stop()
+    b.value = 'foo'
 
-      source.value = 'bar2'
+    expect(a.value).toBe('foo')
+    expect(b.value).toBe('foo')
 
-      expect(target1.value).toBe('bar')
-      expect(target2.value).toBe('bar')
+    stop()
 
-      done()
-    })
+    a.value = 'bar2'
+
+    expect(a.value).toBe('bar2')
+    expect(b.value).toBe('foo')
+  })
+
+  it('trl', () => {
+    const left = ref('left')
+    const right = ref('right')
+
+    syncRef(left, right, { direction: 'rtl' })
+
+    expect(left.value).toBe('right')
+    expect(right.value).toBe('right')
+
+    left.value = 'bar'
+
+    expect(left.value).toBe('bar')
+    expect(right.value).toBe('right')
+
+    right.value = 'foobar'
+
+    expect(left.value).toBe('foobar')
+    expect(right.value).toBe('foobar')
   })
 })
