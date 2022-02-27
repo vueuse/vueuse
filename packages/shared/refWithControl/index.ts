@@ -24,7 +24,7 @@ export interface ControlledRefOptions<T> {
  * @param source
  * @param fn
  */
-export function controlledRef<T>(initial: T, options: ControlledRefOptions<T> = {}) {
+export function refWithControl<T>(initial: T, options: ControlledRefOptions<T> = {}) {
   let source = initial
   let track: Fn
   let trigger: Fn
@@ -101,3 +101,8 @@ export function controlledRef<T>(initial: T, options: ControlledRefOptions<T> = 
     { enumerable: true },
   )
 }
+
+/**
+ * Alias for `refWithControl`
+ */
+export const controlledRef = refWithControl

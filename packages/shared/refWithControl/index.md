@@ -1,19 +1,21 @@
 ---
 category: Utilities
+alias: controlledRef
+related: computedWithControl
 ---
 
-# controlledRef
+# refWithControl
 
 Fine-grained controls over ref and its reactivity. (Vue 3 Only)
 
 ## Usage
 
-`controlledRef` uses `extendRef` to provide two extra functions `get` and `set` to have better control over when it should track/trigger the reactivity.
+`refWithControl` uses `extendRef` to provide two extra functions `get` and `set` to have better control over when it should track/trigger the reactivity.
 
 ```ts
-import { controlledRef } from '@vueuse/core'
+import { refWithControl } from '@vueuse/core'
 
-let num = controlledRef(0)
+let num = refWithControl(0)
 const doubled = computed(() => num.value * 2)
 
 // just like normal ref
@@ -40,7 +42,7 @@ console.log(doubled.value) // 100 (updated again since it's a reactive set)
 We also provide some shorthands for doing the get/set without track/triggering the reactivity system. The following lines are equivalent.
 
 ```ts
-const foo = controlledRef('foo')
+const foo = refWithControl('foo')
 ```
 
 ```ts
@@ -64,7 +66,7 @@ foo.lay('bar') // an alias for `silentSet`
 `onBeforeChange` option is offered to give control over if a new value should be accepted. For example:
 
 ```ts
-const num = controlledRef(0, {
+const num = refWithControl(0, {
   onBeforeChange(value, oldValue) {
     // disallow changes larger then ±5 in one operation
     if (Math.abs(value - oldValue) > 5)
@@ -84,7 +86,7 @@ console.log(num.value) // 1 (change been dismissed)
 `onChanged` option offers a similar functionally as Vue's `watch` but being synchronoused with less overhead compare to `watch`.
 
 ```ts
-const num = controlledRef(0, {
+const num = refWithControl(0, {
   onChanged(value, oldValue) {
     console.log(value)
   }

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { isRef, isVue2, watch, watchEffect } from 'vue-demi'
-import { controlledRef } from '.'
+import { refWithControl } from '.'
 
 describe('controlledRef', () => {
   if (isVue2) {
@@ -10,7 +10,7 @@ describe('controlledRef', () => {
 
   it('should act like normal ref', () => {
     let dummy = 0
-    const ref = controlledRef(0)
+    const ref = refWithControl(0)
 
     watch(ref, () => {
       dummy += 1
@@ -34,7 +34,7 @@ describe('controlledRef', () => {
 
   it('should be able to set without triggering', () => {
     let dummy = 0
-    const ref = controlledRef(0)
+    const ref = refWithControl(0)
 
     watch(ref, () => {
       dummy += 1
@@ -57,7 +57,7 @@ describe('controlledRef', () => {
   it('should be able to get without tracking', () => {
     let dummy1 = 0
     let dummy2 = 0
-    const ref = controlledRef(0)
+    const ref = refWithControl(0)
 
     watchEffect(() => {
       ref.get()
@@ -90,7 +90,7 @@ describe('controlledRef', () => {
     let dummy = 0
     let dismissed = 0
 
-    const ref = controlledRef(0, {
+    const ref = refWithControl(0, {
       onBeforeChange(value, oldValue) {
         // disallow changes larger then ±5 in one operation
         if (Math.abs(value - oldValue) > 5) {
