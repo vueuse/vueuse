@@ -6,6 +6,7 @@ import parser from 'prettier/parser-typescript'
 import prettier from 'prettier'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
+import { $fetch } from 'ohmyfetch'
 import { ecosystemFunctions } from '../meta/ecosystem-functions'
 import { packages } from '../meta/packages'
 import type { PackageIndexes, VueUseFunction, VueUsePackage } from '../meta/types'
@@ -317,6 +318,13 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     await fs.writeFile(mdPath, `${readme.trim()}\n`, 'utf-8')
   }
+}
+
+export async function updateCountBadge(indexes: PackageIndexes) {
+  const functionsCount = indexes.functions.filter(i => !i.internal).length
+  const url = `https://img.shields.io/badge/-${functionsCount}%20functions-13708a`
+  const data = await $fetch(url, { responseType: 'text' })
+  await fs.writeFile(join(DIR_ROOT, 'packages/public/badge-function-count.svg'), data, 'utf-8')
 }
 
 export async function updatePackageJSON(indexes: PackageIndexes) {

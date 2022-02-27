@@ -77,6 +77,7 @@
     "md5": "^2.3.0",
     "msw": "^0.38.1",
     "node-fetch": "^3.2.0",
+    "ohmyfetch": "^0.4.15",
     "pnpm": "^6.32.1",
     "postcss": "^8.4.7",
     "postcss-nested": "^5.0.6",
