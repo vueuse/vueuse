@@ -1,8 +1,9 @@
 ---
 category: Watch
+alias: pausableWatch
 ---
 
-# pausableWatch
+# watchPausable
 
 Pausable watch
 
@@ -11,12 +12,12 @@ Pausable watch
 Use as normal the `watch`, but return extra `pause()` and `resume()` functions to control.
 
 ```ts
-import { pausableWatch } from '@vueuse/core'
+import { watchPausable } from '@vueuse/core'
 import { ref, nextTick } from 'vue'
 
 const source = ref('foo')
 
-const { stop, pause, resume } = pausableWatch(
+const { stop, pause, resume } = watchPausable(
   source,
   (v) => console.log(`Changed to ${v}!`),
 )
