@@ -14,6 +14,9 @@
   },
   "funding": "https://github.com/sponsors/antfu",
   "author": "Anthony Fu <https://github.com/antfu>",
+  "files": [
+    "index.*"
+  ],
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -26,9 +29,6 @@
   "types": "./index.d.ts",
   "module": "./index.mjs",
   "sideEffects": false,
-  "files": [
-    "index.*"
-  ],
   "scripts": {
     "prepare": "esno scripts/prepare.ts"
   },

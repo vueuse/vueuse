@@ -51,8 +51,8 @@
     }
   },
   "dependencies": {
-    "@vueuse/shared": "workspace:*",
     "@vueuse/metadata": "workspace:*",
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }
