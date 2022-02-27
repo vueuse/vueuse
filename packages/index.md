@@ -6,7 +6,7 @@ description: Vue is designed from the ground up to be incrementally adoptable. T
 
 features:
   - title: 🎛 Feature Rich
-    details: 140+ functions for you to choose from
+    details: Many functions for you to choose from
   - title: 🕶 Seamless migration
     details: Works for both Vue 3 and 2
   - title: ⚡ Fully tree shakeable
@@ -27,4 +27,7 @@ features:
 footer: MIT Licensed | Copyright © 2020-PRESENT Anthony Fu and @VueUse contributors
 ---
 
-<Home />
+<!--GENERATED FUNCTIONS COUNT, DO NOT MODIFY MANUALLY-->
+<!--HOME_STARTS-->
+<Home :functionsCount="198" />
+<!--HOME_ENDS-->

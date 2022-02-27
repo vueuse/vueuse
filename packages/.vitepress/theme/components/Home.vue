@@ -1,6 +1,6 @@
 <template>
   <main class="home" aria-labelledby="main-title">
-    <HomeHero />
+    <HomeHero :count="props.functionsCount" />
     <slot name="hero" />
     <HomeFeatures />
     <slot name="features" />
@@ -13,6 +13,11 @@
 import HomeHero from './HomeHero.vue'
 import HomeFeatures from './HomeFeatures.vue'
 import HomeFooter from './HomeFooter.vue'
+const props = defineProps({
+  functionsCount: {
+    type: Number,
+  },
+})
 </script>
 
 <style scoped>
