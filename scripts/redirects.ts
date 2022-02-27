@@ -1,8 +1,8 @@
 import fs from 'fs-extra'
-import { indexes } from '../meta/function-indexes'
+import { functions } from '../packages/metadata/metadata'
 
 async function buildRedirects() {
-  const redirects = indexes.functions
+  const redirects = functions
     .filter(f => f.docs && !f.internal && !f.deprecated)
     .map(f => `/${f.name}\t${f.docs}\t302`)
     .join('\n')

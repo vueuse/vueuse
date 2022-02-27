@@ -13,6 +13,7 @@ importers:
       '@antfu/eslint-config': ^0.16.1
       '@antfu/ni': ^0.13.2
       '@iconify/json': ^2.1.7
+      '@rollup/plugin-json': ^4.1.0
       '@rollup/plugin-replace': ^4.0.0
       '@types/fs-extra': ^9.0.13
       '@types/js-yaml': ^4.0.5
@@ -73,6 +74,7 @@ importers:
       '@antfu/eslint-config': 0.16.1_eslint@8.10.0+typescript@4.5.5
       '@antfu/ni': 0.13.2
       '@iconify/json': 2.1.7
+      '@rollup/plugin-json': 4.1.0_rollup@2.68.0
       '@rollup/plugin-replace': 4.0.0_rollup@2.68.0
       '@types/fs-extra': 9.0.13
       '@types/js-yaml': 4.0.5
@@ -198,16 +200,21 @@ importers:
       qrcode: 1.5.0
       universal-cookie: 4.0.4
 
+  packages/metadata:
+    specifiers: {}
+
   packages/nuxt:
     specifiers:
       '@nuxt/kit': npm:@nuxt/kit-edge@latest
       '@nuxt/schema': npm:@nuxt/schema-edge@latest
       '@vueuse/core': workspace:*
+      '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.1
       vue-demi: 0.12.1
     dependencies:
       '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27430570.4cfad4d
       '@vueuse/core': link:../core
+      '@vueuse/metadata': link:../metadata
       local-pkg: 0.4.1
       vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
     devDependencies:
@@ -2201,6 +2208,15 @@ packages:
     dependencies:
       '@babel/core': 7.16.5
       '@babel/helper-module-imports': 7.16.0
+      '@rollup/pluginutils': 3.1.0_rollup@2.68.0
+      rollup: 2.68.0
+    dev: true
+
+  /@rollup/plugin-json/4.1.0_rollup@2.68.0:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.68.0
       rollup: 2.68.0
     dev: true

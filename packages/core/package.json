@@ -21,7 +21,12 @@
       "require": "./index.cjs",
       "types": "./index.d.ts"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./metadata": {
+      "import": "./metadata.mjs",
+      "require": "./metadata.cjs",
+      "types": "./metadata.d.ts"
+    }
   },
   "main": "./index.cjs",
   "types": "./index.d.ts",
@@ -47,6 +52,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
+    "@vueuse/metadata": "workspace:*",
     "vue-demi": "*"
   }
 }

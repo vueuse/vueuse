@@ -1,7 +1,7 @@
 // @ts-expect-error missing type
 import base from '@vue/theme/config'
 import { currentVersion, versions } from '../../meta/versions'
-import { categories, indexes } from '../../meta/function-indexes'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
 import highlight from './plugins/highlight'
 
 const themeConfig = async() => {
@@ -19,17 +19,14 @@ const Guide = [
   { text: 'Guidelines', link: '/guidelines' },
 ]
 
-const CoreCategories = categories
-  .filter(f => !f.startsWith('@'))
-  .map(c => ({
-    text: c,
-    activeMatch: '___', // never active
-    link: `/functions#category=${c}`,
-  }))
+const CoreCategories = coreCategoryNames.map(c => ({
+  text: c,
+  activeMatch: '___', // never active
+  link: `/functions#category=${c}`,
+}))
 
 const AddonCategories = [
-  ...categories
-    .filter(f => f.startsWith('@'))
+  ...addonCategoryNames
     .map(c => ({
       text: c.slice(1),
       activeMatch: '___', // never active
@@ -182,11 +179,11 @@ const config = {
 function getFunctionsSideBar() {
   const links = []
 
-  for (const name of categories) {
+  for (const name of categoryNames) {
     if (name.startsWith('_'))
       continue
 
-    const functions = indexes.functions.filter(i => i.category === name && !i.internal)
+    const functions = metadata.functions.filter(i => i.category === name && !i.internal)
 
     links.push({
       text: name,

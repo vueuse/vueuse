@@ -5,9 +5,7 @@ dist
 node_modules
 packages/*/LICENSE
 packages/contributing.md
-packages/core/indexes.json
 packages/core/README.md
 types
-indexes.json
 playgrounds/*/pnpm-lock.yaml
 components.d.ts

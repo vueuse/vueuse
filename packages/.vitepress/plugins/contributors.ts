@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import type { ContributorInfo } from '../../../meta/types'
+import type { ContributorInfo } from '@vueuse/metadata'
 
 const ID = '/virtual-contributors'
 

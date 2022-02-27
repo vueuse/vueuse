@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { computed } from 'vue'
-import { functions } from '../../../../meta/function-indexes'
+import { functions } from '../../../../packages/metadata/metadata'
 
 dayjs.extend(relativeTime)
 

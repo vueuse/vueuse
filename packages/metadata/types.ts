@@ -15,6 +15,8 @@ export interface PackageManifest {
   mjs?: boolean
   dts?: boolean
   target?: string
+  utils?: boolean
+  copy?: string[]
 }
 
 export interface VueUseFunction {

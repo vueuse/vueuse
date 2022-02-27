@@ -2,10 +2,10 @@
 import { computed, ref, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useUrlSearchParams } from '@vueuse/core'
-import { categories, functions } from '../../../../meta/function-indexes'
+import { categoryNames, functions } from '../../../../packages/metadata/metadata'
 
-const coreCategories = categories.filter(i => !i.startsWith('@'))
-const addonCategories = categories.filter(i => i.startsWith('@'))
+const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
+const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
@@ -38,7 +38,7 @@ const result = computed(() => {
     else if (sortMethod.value === 'name')
       fns.sort((a, b) => a.name.localeCompare(b.name))
     else
-      fns.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
+      fns.sort((a, b) => categoryNames.indexOf(a.category) - categoryNames.indexOf(b.category))
     return fns
   }
 })

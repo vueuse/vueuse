@@ -1,4 +1,4 @@
-import type { VueUseFunction } from './types'
+import type { VueUseFunction } from '@vueuse/metadata'
 
 export const head: VueUseFunction[] = [
   {

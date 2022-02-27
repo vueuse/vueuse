@@ -36,6 +36,7 @@
   "dependencies": {
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
     "@vueuse/core": "workspace:*",
+    "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.1",
     "vue-demi": "*"
   },
