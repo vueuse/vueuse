@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue-demi'
-import { useThrottle } from '.'
+import { refThrottled } from '.'
 
 const trailing = ref(true)
 const leading = ref(false)
 const input = ref('')
-const throttled = useThrottle(input, 1000, trailing.value, leading.value)
+const throttled = refThrottled(input, 1000, trailing.value, leading.value)
 const updated = ref(0)
 
 watch(throttled, () => {

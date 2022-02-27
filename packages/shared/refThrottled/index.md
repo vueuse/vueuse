@@ -1,18 +1,19 @@
 ---
 category: Utilities
+alias: useThrottle, throttledRef
 ---
 
-# useThrottle
+# refThrottled
 
 Throttle changing of a ref value.
 
 ## Usage
 
 ```js
-import { useThrottle } from '@vueuse/core'
+import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = useThrottle(input, 1000)
+const throttled = refThrottled(input, 1000)
 ```
 
 ### Trailing
@@ -20,10 +21,10 @@ const throttled = useThrottle(input, 1000)
 If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
 
 ```js
-import { useThrottle } from '@vueuse/core'
+import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = useThrottle(input, 1000, false)
+const throttled = refThrottled(input, 1000, false)
 ```
 
 ### Leading
@@ -31,18 +32,11 @@ const throttled = useThrottle(input, 1000, false)
 Allows the callback to be invoked immediately (on the leading edge of the `ms` timeout). If you don't want this begavior, set 4rd param `false` (it's `true` by default):
 
 ```js
-import { useThrottle } from '@vueuse/core'
+import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = useThrottle(input, 1000, undefined, false)
+const throttled = refThrottled(input, 1000, undefined, false)
 ```
-
-## Related Functions
-
-- `useThrottle`
-- `useThrottleFn`
-- `useDebounce`
-- `useDebounceFn`
 
 ## Recommended Reading
 
