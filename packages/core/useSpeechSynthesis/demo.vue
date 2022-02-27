@@ -9,8 +9,6 @@ const speech = useSpeechSynthesis(text, {
   lang,
 })
 
-console.log(speech.isPlaying.value)
-
 let synth: SpeechSynthesis
 
 const voices = ref<SpeechSynthesisVoice[]>([])

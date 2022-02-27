@@ -129,7 +129,7 @@ const config = {
                 link: '/',
               }
               : {
-                text: `v${i.version}`,
+                text: i.version,
                 link: i.link,
               },
             ),
