@@ -298,7 +298,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const aborted = ref(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
-  const error = ref<any>(null)
+  const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
