@@ -1,8 +1,9 @@
 ---
 category: Watch
+alias: throttledWatch
 ---
 
-# throttledWatch
+# watchThrottled
 
 Throttled watch.
 
@@ -11,9 +12,9 @@ Throttled watch.
 Similar to `watch`, but offering an extra option `throttle` which will be applied to the callback function.
 
 ```ts
-import { throttledWatch } from '@vueuse/core'
+import { watchThrottled } from '@vueuse/core'
 
-throttledWatch(
+watchThrottled(
   source,
   () => { console.log('changed!') },
   { throttle: 500 }
