@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
@@ -28,7 +32,8 @@
     },
     "types": [
       "vitest",
-      "vitest/globals"
+      "vitest/globals",
+      "@types/web-bluetooth"
     ]
   },
   "include": [
