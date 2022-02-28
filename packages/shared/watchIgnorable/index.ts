@@ -4,27 +4,27 @@ import type { Fn, MapOldSources, MapSources } from '../utils'
 import { bypassFilter, createFilterWrapper } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 
-// ignorableWatch(source,callback,options) composable
+// watchIgnorable(source,callback,options) composable
 //
 // Extended watch that exposes a ignoreUpdates(updater) function that allows to update the source without triggering effects
 
 export type IgnoredUpdater = (updater: () => void) => void
 
-export interface IgnorableWatchReturn {
+export interface WatchIgnorableReturn {
   ignoreUpdates: IgnoredUpdater
   ignorePrevAsyncUpdates: () => void
   stop: WatchStopHandle
 }
 
-export function ignorableWatch<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): IgnorableWatchReturn
-export function ignorableWatch<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): IgnorableWatchReturn
-export function ignorableWatch<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): IgnorableWatchReturn
+export function watchIgnorable<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
+export function watchIgnorable<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
+export function watchIgnorable<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
 
-export function ignorableWatch<Immediate extends Readonly<boolean> = false>(
+export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
   options: WatchWithFilterOptions<Immediate> = {},
-): IgnorableWatchReturn {
+): WatchIgnorableReturn {
   const {
     eventFilter = bypassFilter,
     ...watchOptions
@@ -127,3 +127,6 @@ export function ignorableWatch<Immediate extends Readonly<boolean> = false>(
 
   return { stop, ignoreUpdates, ignorePrevAsyncUpdates }
 }
+
+// alias
+export { watchIgnorable as ignorableWatch }
