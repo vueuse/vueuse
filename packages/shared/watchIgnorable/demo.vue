@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { ignorableWatch } from '.'
+import { watchIgnorable } from '.'
 
 const input = ref<HTMLInputElement | null>()
 const log = ref('')
 const source = ref(0)
 
-const { ignoreUpdates } = ignorableWatch(
+const { ignoreUpdates } = watchIgnorable(
   source,
   v => (log.value += `Changed to "${v}"\n`),
   { flush: 'sync' },

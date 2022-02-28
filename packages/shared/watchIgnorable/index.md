@@ -1,8 +1,9 @@
 ---
 category: Watch
+alias: ignorableWatch
 ---
 
-# ignorableWatch
+# watchIgnorable
 
 Ignorable watch
 
@@ -11,12 +12,12 @@ Ignorable watch
 Extended `watch` that returns extra `ignoreUpdates(updater)` and `ignorePrevAsyncUpdates()` to ignore particular updates to the source.
 
 ```ts
-import { ignorableWatch } from '@vueuse/core'
+import { watchIgnorable } from '@vueuse/core'
 import { ref, nextTick } from 'vue'
 
 const source = ref('foo')
 
-const { stop, ignoreUpdates } = ignorableWatch(
+const { stop, ignoreUpdates } = watchIgnorable(
   source,
   (v) => console.log(`Changed to ${v}!`),
 )
@@ -42,7 +43,7 @@ await nextTick() // logs: Changed to logged!
 
 ## Flush timing
 
-`ignorableWatch` accepts the same options as `watch` and uses the same defaults.
+`watchIgnorable` accepts the same options as `watch` and uses the same defaults.
 So, by default the composable works using `flush: 'pre'`.
 
 ## `ignorePrevAsyncUpdates`
@@ -50,12 +51,12 @@ So, by default the composable works using `flush: 'pre'`.
 This feature is only for async flush `'pre'` and `'post'`. If `flush: 'sync'` is used, `ignorePrevAsyncUpdates()` is a no-op as the watch will trigger immediately after each update to the source. It is still provided for sync flush so the code can be more generic.
 
 ```ts
-import { ignorableWatch } from '@vueuse/core'
+import { watchIgnorable } from '@vueuse/core'
 import { ref, nextTick } from 'vue'
 
 const source = ref('foo')
 
-const { ignorePrevAsyncUpdates } = ignorableWatch(
+const { ignorePrevAsyncUpdates } = watchIgnorable(
   source,
   (v) => console.log(`Changed to ${v}!`),
 )

@@ -1,5 +1,5 @@
 import type { ConfigurableEventFilter, Fn } from '@vueuse/shared'
-import { ignorableWatch, pausableFilter } from '@vueuse/shared'
+import { pausableFilter, watchIgnorable } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import type { CloneFn, UseRefHistoryRecord } from '../useManualRefHistory'
 import { useManualRefHistory } from '../useManualRefHistory'
@@ -165,7 +165,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     ignoreUpdates,
     ignorePrevAsyncUpdates,
     stop,
-  } = ignorableWatch(
+  } = watchIgnorable(
     source,
     commit,
     { deep, flush, eventFilter: composedFilter },
