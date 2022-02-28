@@ -1,10 +1,11 @@
 ---
 category: Watch
+alias: ignorableWatch
 ---
 
 # watchIgnorable
 
-Watch ignorable
+Ignorable watch
 
 ## Usage
 
