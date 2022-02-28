@@ -1,10 +1,11 @@
 ---
 category: Watch
+alias: throttledWatch
 ---
 
 # watchThrottled
 
-Watch throttled .
+Throttled watch.
 
 ## Usage
 
