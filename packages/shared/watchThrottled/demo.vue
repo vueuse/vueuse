@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { throttledWatch } from '.'
+import { watchThrottled } from '.'
 
 const input = ref('')
 const updated = ref(0)
 
-throttledWatch(input, () => {
+watchThrottled(input, () => {
   updated.value += 1
 }, { throttle: 500 })
 </script>
