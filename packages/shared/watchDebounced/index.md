@@ -1,10 +1,11 @@
 ---
 category: Watch
+alias: debouncedWatch
 ---
 
 # watchDebounced
 
-Watch debounced 
+Debounced watch
 
 ## Usage
 
