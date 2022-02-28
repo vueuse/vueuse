@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue-demi'
-import { debouncedWatch } from '.'
+import { watchDebounced } from '.'
 
 const input = ref('')
 const updated = ref(0)
 
-debouncedWatch(input, () => {
+watchDebounced(input, () => {
   updated.value += 1
 }, { debounce: 1000 })
 </script>

@@ -80,20 +80,20 @@ useActiveElement({ window: window.parent })
 
 ## Watch Options
 
-When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `debouncedWatch`:
+When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `watchDebounced`:
 
 ```ts
 import { WatchOptions } from 'vue-demi'
 
 // extend the watch options
-export interface DebouncedWatchOptions extends WatchOptions {
+export interface WatchDebouncedOptions extends WatchOptions {
   debounce?: number
 }
 
-export function debouncedWatch(
+export function watchDebounced(
   source: any,
   cb: any,
-  options: DebouncedWatchOptions = {},
+  options: WatchDebouncedOptions = {},
 ): WatchStopHandle {
   return watch(
     source,
