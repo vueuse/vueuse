@@ -1,12 +1,12 @@
 import { nextTick, ref } from 'vue-demi'
 import { useSetup } from '../../.test'
-import { ignorableWatch } from '.'
+import { watchIgnorable } from '.'
 
-describe('ignorableWatch', () => {
+describe('watchIgnorable', () => {
   test('ignore async updates', async() => {
     const source = ref(0)
     const target = ref(0)
-    const { ignoreUpdates } = ignorableWatch(source, value => target.value = value)
+    const { ignoreUpdates } = watchIgnorable(source, value => target.value = value)
 
     source.value = 1
 
@@ -33,7 +33,7 @@ describe('ignorableWatch', () => {
   test('ignore prev async updates', async() => {
     const source = ref(0)
     const target = ref(0)
-    const { ignorePrevAsyncUpdates } = ignorableWatch(source, value => target.value = value)
+    const { ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value)
 
     source.value = 1
 
@@ -59,7 +59,7 @@ describe('ignorableWatch', () => {
     useSetup(() => {
       const source = ref(0)
       const target = ref(0)
-      const { ignoreUpdates } = ignorableWatch(source, value => target.value = value, { flush: 'sync' })
+      const { ignoreUpdates } = watchIgnorable(source, value => target.value = value, { flush: 'sync' })
 
       source.value = 1
 
