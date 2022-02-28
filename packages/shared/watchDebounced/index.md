@@ -1,8 +1,9 @@
 ---
 category: Watch
+alias: debouncedWatch
 ---
 
-# debouncedWatch
+# watchDebounced
 
 Debounced watch
 
@@ -11,9 +12,9 @@ Debounced watch
 Similar to `watch`, but offering an extra option `debounce` which will be applied to the callback function.
 
 ```ts
-import { debouncedWatch } from '@vueuse/core'
+import { watchDebounced } from '@vueuse/core'
 
-debouncedWatch(
+watchDebounced(
   source,
   () => { console.log('changed!') },
   { debounce: 500 }
