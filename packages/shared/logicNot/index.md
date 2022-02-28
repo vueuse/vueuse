@@ -1,25 +1,20 @@
 ---
 category: Utilities
+alias: note
 ---
 
-# not
+# logicNot
 
 `NOT` condition for ref.
 
 ## Usage
 
 ```ts
-import { not } from '@vueuse/core'
+import { logicNot } from '@vueuse/core'
 
 const a = ref(true)
 
-whenever(not(a), () => {
+whenever(logicNot(a), () => {
   console.log('a is now falsy!')
 })
 ```
-
-## Related Functions
-
-- `and`
-- `or`
-- `whenever`

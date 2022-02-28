@@ -5,8 +5,11 @@ import type { MaybeRef } from '../utils'
 /**
  * `OR` conditions for refs.
  *
- * @see https://vueuse.org/or
+ * @see https://vueuse.org/logicOr
  */
-export function or(...args: MaybeRef<any>[]): ComputedRef<boolean> {
+export function logicOr(...args: MaybeRef<any>[]): ComputedRef<boolean> {
   return computed(() => args.some(i => unref(i)))
 }
+
+// alias
+export { logicOr as or }

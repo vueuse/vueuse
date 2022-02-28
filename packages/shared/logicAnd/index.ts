@@ -5,8 +5,11 @@ import type { MaybeRef } from '../utils'
 /**
  * `AND` conditions for refs.
  *
- * @see https://vueuse.org/and
+ * @see https://vueuse.org/logicAnd
  */
-export function and(...args: MaybeRef<any>[]): ComputedRef<boolean> {
+export function logicAnd(...args: MaybeRef<any>[]): ComputedRef<boolean> {
   return computed(() => args.every(i => unref(i)))
 }
+
+// alias
+export { logicAnd as and }

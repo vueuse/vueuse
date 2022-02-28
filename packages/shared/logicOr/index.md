@@ -1,26 +1,22 @@
 ---
 category: Utilities
+alias: or
+related: logicAnd, logicNot
 ---
 
-# or
+# logicOr
 
 `OR` conditions for refs.
 
 ## Usage
 
 ```ts
-import { or } from '@vueuse/core'
+import { logicOr } from '@vueuse/core'
 
 const a = ref(true)
 const b = ref(false)
 
-whenever(or(a, b), () => {
+whenever(logicOr(a, b), () => {
   console.log('either a or b is truthy!')
 })
 ```
-
-## Related Functions
-
-- `and`
-- `not`
-- `whenever`

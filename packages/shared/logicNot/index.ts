@@ -5,8 +5,11 @@ import type { MaybeRef } from '../utils'
 /**
  * `NOT` conditions for refs.
  *
- * @see https://vueuse.org/not
+ * @see https://vueuse.org/logicNot
  */
-export function not(v: MaybeRef<any>): ComputedRef<boolean> {
+export function logicNot(v: MaybeRef<any>): ComputedRef<boolean> {
   return computed(() => !unref(v))
 }
+
+// alias
+export { logicNot as not }
