@@ -5,11 +5,11 @@ import type { MaybeRef } from '@vueuse/shared'
 /**
  * Create a ref which will be reset to the default value after some time.
  *
- * @see https://vueuse.org/autoResetRef
+ * @see https://vueuse.org/refAutoReset
  * @param defaultValue The value which will be set.
  * @param afterMs      A zero-or-greater delay in milliseconds.
  */
-export function autoResetRef<T>(defaultValue: T, afterMs: MaybeRef<number> = 10000): Ref<T> {
+export function refAutoReset<T>(defaultValue: T, afterMs: MaybeRef<number> = 10000): Ref<T> {
   return customRef<T>((track, trigger) => {
     let value: T = defaultValue
     let timer: any
@@ -35,3 +35,6 @@ export function autoResetRef<T>(defaultValue: T, afterMs: MaybeRef<number> = 100
     }
   })
 }
+
+// alias
+export { refAutoReset as autoResetRef }
