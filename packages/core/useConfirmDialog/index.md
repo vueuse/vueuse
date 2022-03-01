@@ -11,8 +11,8 @@ Functions can be used on the template, and hooks are a handy skeleton for the bu
 ## Functions and hooks
 
 - `reveal()` - triggers `onReveal` hook and sets `revealed.value` to `true`. Returns promise that resolves by `confirm()` or `cancel()`.
-- `confirm()` - sets `show.value` to `false` and triggers `onConfirm` hook.
-- `cancel()` - sets `show.value` to `false` and triggers `onCancel` hook.
+- `confirm()` - sets `isRevealed.value` to `false` and triggers `onConfirm` hook.
+- `cancel()` - sets `isRevealed.value` to `false` and triggers `onCancel` hook.
 
 ## Basic Usage
 
@@ -56,25 +56,19 @@ If you prefer working with promises:
 <script setup>
 import { useConfirmDialog, onClickOutside } from '@vueuse/core'
 
-const show = ref(true)
-
 const {
   isRevealed,
   reveal,
   confirm,
   cancel,
-} = useConfirmDialog(show)
+} = useConfirmDialog()
 
 const openDialog = async () => {
   const { data, isCanceled } = await reveal()
-  if (!isCanceled.value) {
+  if (!isCanceled) {
     console.log(data)
   }
 }
-
-// on click outside logic
-const target = ref(null)
-onClickOutside(target, () => cancel())
 </script>
 
 <template>
@@ -82,7 +76,7 @@ onClickOutside(target, () => cancel())
 
   <teleport to="body">
     <div v-if="isRevealed" class="modal-layout">
-      <div ref="target" class="modal">
+      <div class="modal">
         <h2>Confirm?</h2>
         <button @click="confirm(true)">Yes</button>
         <button @click="confirm(false)">No</button>
