@@ -89,7 +89,7 @@ export interface UseFetchReturn<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -442,13 +442,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     onFetchError: errorEvent.on,
     onFetchFinally: finallyEvent.on,
     // method
-    get: setMethod('get'),
-    put: setMethod('put'),
-    post: setMethod('post'),
-    delete: setMethod('delete'),
-    patch: setMethod('patch'),
-    head: setMethod('head'),
-    options: setMethod('options'),
+    get: setMethod('GET'),
+    put: setMethod('PUT'),
+    post: setMethod('POST'),
+    delete: setMethod('DELETE'),
+    patch: setMethod('PATCH'),
+    head: setMethod('HEAD'),
+    options: setMethod('OPTIONS'),
     // type
     json: setType('json'),
     text: setType('text'),
