@@ -74,7 +74,7 @@ function onIntersectionObserer([{ isIntersecting }]) {
     <p>
       Scroll me down!
     </p>
-    <div v-intersection-observer="{handler:onIntersectionObserer,options:{root}}">
+    <div v-intersection-observer="{handler: onIntersectionObserer, options: { root } }">
       <p>Hello world!</p>
     </div>
   </div>
