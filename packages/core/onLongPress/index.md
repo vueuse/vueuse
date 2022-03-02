@@ -99,7 +99,7 @@ const resetDirective = () => {
     Press long
   </button>
 
-  <button v-on-long-press="{handler: onLongPressCallbackDirective, {delay: 1000}}" class="ml-2 button small">
+  <button v-on-long-press="{handler: onLongPressCallbackDirective, options: {delay: 1000}}" class="ml-2 button small">
     Press long (with options)
   </button>
 
