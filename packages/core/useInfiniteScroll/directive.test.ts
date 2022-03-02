@@ -2,17 +2,8 @@ import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 
-import { VInfiniteScroll } from './directive'
-// import type { UseInfiniteScrollOptions } from '.'
-
-const mockScrollEventInit = (): Partial<any> => ({
-  clientHeight: 100,
-  scrollTop: 50,
-  scrollHeight: 50,
-})
-
-const mockScrollEvent = () => new CustomEvent('scroll', mockScrollEventInit(),
-)
+import { vInfiniteScroll } from './directive'
+import type { UseInfiniteScrollOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -27,8 +18,8 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div data-test="element" v-if="options" v-infinite-scroll="{handler: onInfiniteScroll, options}">Press me</div>
-  <div class="message" data-test="element" v-else v-infinite-scroll="onInfiniteScroll" style="width:100px;height:100px;overflow:scroll;"><p style="width:100px;height:5000px">scroll Item</p></div>
+  <div v-if="options" v-infinite-scroll="{handler: onInfiniteScroll, options}">Hello world!</div>
+  <div v-else v-infinite-scroll="onInfiniteScroll">Hello world!</div>
   </template>
   `,
 })
@@ -46,7 +37,7 @@ describe('vInfiniteScroll', () => {
         },
         global: {
           directives: {
-            'infinite-scroll': VInfiniteScroll,
+            'infinite-scroll': vInfiniteScroll,
           },
         },
       })
@@ -55,44 +46,29 @@ describe('vInfiniteScroll', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
-
-    it('should trigger callback', async() => {
-      const element = wrapper.get('[data-test=element]')
-      element.element.dispatchEvent(mockScrollEvent())
-      expect(onInfiniteScroll).toHaveBeenCalledTimes(1)
-    })
   })
 
-  // describe('given options', () => {
-  //   beforeEach(() => {
-  //     onInfiniteScroll = vi.fn()
-  //     const options: UseInfiniteScrollOptions = {
-  //       distance: 10,
-  //     }
-  //     wrapper = mount(App, {
-  //       props: {
-  //         onInfiniteScroll,
-  //         options,
-  //       },
-  //       global: {
-  //         directives: {
-  //           'infinite-scroll': VInfiniteScroll,
-  //         },
-  //       },
-  //     })
-  //   })
+  describe('given options', () => {
+    beforeEach(() => {
+      onInfiniteScroll = vi.fn()
+      const options: UseInfiniteScrollOptions = {
+        distance: 10,
+      }
+      wrapper = mount(App, {
+        props: {
+          onInfiniteScroll,
+          options,
+        },
+        global: {
+          directives: {
+            'infinite-scroll': vInfiniteScroll,
+          },
+        },
+      })
+    })
 
-  //   it('should be defined', () => {
-  //     expect(wrapper).toBeDefined()
-  //   })
-
-  //   it('should trigger longpress after 500ms', async() => {
-  //     const element = wrapper.get('[data-test=element]')
-  //     await element.trigger('pointerdown')
-  //     await promiseTimeout(500)
-  //     expect(onInfiniteScroll).toHaveBeenCalledTimes(0)
-  //     await promiseTimeout(500)
-  //     expect(onInfiniteScroll).toHaveBeenCalledTimes(1)
-  //   })
-  // })
+    it('should be defined', () => {
+      expect(wrapper).toBeDefined()
+    })
+  })
 })

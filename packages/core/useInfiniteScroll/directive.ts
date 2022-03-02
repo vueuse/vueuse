@@ -9,7 +9,7 @@ interface BindingValueObject {
   options: UseInfiniteScrollOptions
 }
 
-export const VInfiniteScroll: FunctionDirective<
+export const vInfiniteScroll: FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueObject
 > = (el, binding) => {
