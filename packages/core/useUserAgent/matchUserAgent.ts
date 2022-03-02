@@ -13,10 +13,7 @@ const userAgentRules: UserAgentRule[] = [
   ['miui', /MiuiBrowser\/([0-9\.]+)$/],
   ['beaker', /BeakerBrowser\/([0-9\.]+)/],
   ['edge-chromium', /EdgA?\/([0-9\.]+)/],
-  [
-    'chromium-webview',
-    /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/,
-  ],
+  ['chromium-webview', /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
   ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
   ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/],
   ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/],
@@ -56,8 +53,8 @@ export const matchUserAgent = (userAgent: string): UserAgentMatch => {
         if (matched)
           return matched
 
-        const uaMatch = regex.exec(userAgent)
-        return !!uaMatch && [browser, uaMatch]
+        const userAgentMatched = regex.exec(userAgent)
+        return !!userAgentMatched && [browser, userAgentMatched]
       },
       false,
     )
