@@ -265,7 +265,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
   interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
-    method: 'get',
+    method: 'GET',
     type: 'text' as DataType,
     payload: undefined as unknown,
   }
