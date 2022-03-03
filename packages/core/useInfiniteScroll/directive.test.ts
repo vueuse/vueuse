@@ -18,7 +18,7 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div v-if="options" v-infinite-scroll="{handler: onInfiniteScroll, options}">Hello world!</div>
+  <div v-if="options" v-infinite-scroll="[onInfiniteScroll,options]">Hello world!</div>
   <div v-else v-infinite-scroll="onInfiniteScroll">Hello world!</div>
   </template>
   `,

@@ -62,7 +62,7 @@ function onLoadMore() {
   </div>
 
   <!-- with options -->
-  <div v-infinite-scroll="{handler: onLoadMore , options: { 'distance' : 10 } }">
+  <div v-infinite-scroll="[onLoadMore, { 'distance' : 10 }]">
     <div v-for="item in data" :key="item">
       {{ item }}
     </div>
