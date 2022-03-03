@@ -18,7 +18,7 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div v-if="options" v-intersection-observer="{handler: onIntersectionObserver, options}">Hello world!</div>
+  <div v-if="options" v-intersection-observer="[onIntersectionObserver,options]">Hello world!</div>
   <div v-else v-intersection-observer="onIntersectionObserver">Hello world!</div>
   </template>
   `,

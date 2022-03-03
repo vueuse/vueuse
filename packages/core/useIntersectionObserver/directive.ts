@@ -4,17 +4,14 @@ import type { IntersectionObserverOptions } from '.'
 
 type BindingValueFunction = IntersectionObserverCallback
 
-interface BindingValueObject {
-  handler: BindingValueFunction
-  options: IntersectionObserverOptions
-}
+type BindingValueArray = [BindingValueFunction, IntersectionObserverOptions]
 
 export const vIntersectionObserver: FunctionDirective<
 HTMLElement,
-BindingValueFunction | BindingValueObject
+BindingValueFunction | BindingValueArray
 > = (el, binding) => {
   if (typeof binding.value === 'function')
     useIntersectionObserver(el, binding.value)
   else
-    useIntersectionObserver(el, binding.value.handler, binding.value.options)
+    useIntersectionObserver(el, ...binding.value)
 }
