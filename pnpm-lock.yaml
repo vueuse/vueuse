@@ -182,6 +182,7 @@ importers:
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.5.0
+      title-case: ^3.0.3
       universal-cookie: ^4.0.4
       vue-demi: 0.12.1
     dependencies:
@@ -198,6 +199,7 @@ importers:
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.5.0
+      title-case: 3.0.3
       universal-cookie: 4.0.4
 
   packages/nuxt:
@@ -7819,6 +7821,12 @@ packages:
   /tinyspy/0.3.0:
     resolution: {integrity: sha512-c5uFHqtUp74R2DJE3/Efg0mH5xicmgziaQXMm/LvuuZn3RdpADH32aEGDRyCzObXT1DNfwDMqRQ/Drh1MlO12g==}
     engines: {node: '>=14.0.0'}
+    dev: true
+
+  /title-case/3.0.3:
+    resolution: {integrity: sha512-e1zGYRvbffpcHIrnuqT0Dh+gEJtDaxDSoG4JAIpq4oDFyooziLBIiYQv0GBT4FUAnUop5uZ1hiIAj7oAF6sOCA==}
+    dependencies:
+      tslib: 2.3.1
     dev: true
 
   /tmp/0.0.33:

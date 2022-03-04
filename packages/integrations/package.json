@@ -71,6 +71,11 @@
       "import": "./useQRCode.mjs",
       "require": "./useQRCode.cjs",
       "types": "./useQRCode.d.ts"
+    },
+    "./useTitleCase": {
+      "import": "./useTitleCase.mjs",
+      "require": "./useTitleCase.cjs",
+      "types": "./useTitleCase.d.ts"
     }
   },
   "main": "./index.cjs",
@@ -86,7 +91,8 @@
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
-    "universal-cookie": "*"
+    "universal-cookie": "*",
+    "title-case": "*"
   },
   "peerDependenciesMeta": {
     "axios": {
@@ -129,6 +135,7 @@
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.0",
+    "title-case": "^3.0.3",
     "universal-cookie": "^4.0.4"
   }
 }
