@@ -1,18 +1,12 @@
-import type { MaybeRef } from '@vueuse/shared'
 import { createEventHook, tryOnMounted } from '@vueuse/shared'
 import { useEventListener, useRafFn } from '@vueuse/core'
 import type { Ref } from 'vue-demi'
-import { ref, computed } from 'vue-demi'
-import type { ConfigurableWindow, ConfigurableNavigator } from '../_configurable'
+import { computed, ref } from 'vue-demi'
+import type { ConfigurableNavigator, ConfigurableWindow } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
 export interface UseGamepadOptions extends ConfigurableWindow, ConfigurableNavigator {
-  /**
-   * The interval at which to poll the controller
-   *
-   * @default 60
-   */
-  pollInterval?: MaybeRef<number>
+
 }
 
 /**
@@ -70,8 +64,8 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const isSupported = navigator && 'getGamepads' in navigator
   const gamepads = ref<Gamepad[]>([])
 
-  const onConnectedHook = createEventHook()
-  const onDisconnectedHook = createEventHook()
+  const onConnectedHook = createEventHook<number>()
+  const onDisconnectedHook = createEventHook<number>()
 
   const stateFromGamepad = (gamepad: Gamepad) => {
     const hapticActuators = []
@@ -112,14 +106,17 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const { isActive, pause, resume } = useRafFn(updateGamepadState)
 
   const onGamepadConnected = (gamepad: Gamepad) => {
-    if (!gamepads.value.some(({ index }) => index === gamepad.index))
+    if (!gamepads.value.some(({ index }) => index === gamepad.index)) {
       gamepads.value.push(stateFromGamepad(gamepad))
+      onConnectedHook.trigger(gamepad.index)
+    }
 
     resume()
   }
 
   const onGamepadDisconnected = (gamepad: Gamepad) => {
     gamepads.value = gamepads.value.filter(x => x.index !== gamepad.index)
+    onDisconnectedHook.trigger(gamepad.index)
   }
 
   useEventListener('gamepadconnected', e => onGamepadConnected(e.gamepad))

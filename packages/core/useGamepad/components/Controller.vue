@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs, computed } from 'vue-demi'
+import { computed, toRefs } from 'vue-demi'
 import { mapGamepadToXbox360Controller } from '../index'
 const props = defineProps<{ gamepad: Gamepad }>()
 const { gamepad } = toRefs(props)
@@ -150,7 +150,7 @@ const isRightStickActive = computed(() => {
 
 <style>
   .active-control {
-    fill: var(--c-brand);
-    stroke: var(--c-brand) !important;
+    fill: var(--vt-c-brand-active);
+    stroke: var(--vt-c-brand-active) !important;
   }
 </style>

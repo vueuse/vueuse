@@ -86,12 +86,12 @@ const vibrate = () => {
         Vibrate
       </button>
     </div>
-    <div flex="~ row shrink-none" place="items-center content-center" p="8" bg="dark:dark-900 light-400" border="l-1 dark-50 opacity-20 dark:black">
+    <div flex="~ row shrink-none" place="items-center content-center" p="8" bg="dark:dark-900 light-400">
       <template v-if="gamepad.mapping === 'standard'">
         <Controller :gamepad="gamepad" text="dark-100 opacity-70 dark:(light-900 opacity-70)" />
       </template>
       <template v-else>
-        <span font="medium" text="dark:(light-900 opacity-70)">
+        <span font-medium text="dark:(light-900 opacity-70)">
           Unknown Controller Type
         </span>
       </template>
