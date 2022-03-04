@@ -40,7 +40,7 @@ type PerformanceMemory = Performance & {
  */
 export function useMemory(options: MemoryOptions = {}) {
   const memory = ref<MemoryInfo>()
-  const isSupported = performance && 'memory' in performance
+  const isSupported = typeof performance !== 'undefined' && 'memory' in performance
 
   if (isSupported) {
     const { interval = 1000 } = options

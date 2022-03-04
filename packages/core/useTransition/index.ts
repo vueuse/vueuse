@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { clamp, identity as linear, isFunction, isNumber, noop, useTimeoutFn } from '@vueuse/shared'
+import { clamp, isFunction, isNumber, identity as linear, noop, useTimeoutFn } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
 
 /**
@@ -17,7 +17,7 @@ type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export type TransitionOptions = {
+export interface TransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */

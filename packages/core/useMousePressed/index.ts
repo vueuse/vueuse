@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'

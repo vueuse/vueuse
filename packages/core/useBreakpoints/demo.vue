@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBreakpoints, breakpointsTailwind } from '.'
+import { breakpointsTailwind, useBreakpoints } from '.'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 

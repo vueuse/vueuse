@@ -1,4 +1,4 @@
-import { h, ref, defineComponent } from 'vue-demi'
+import { defineComponent, h, ref } from 'vue-demi'
 import { onClickOutside } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 

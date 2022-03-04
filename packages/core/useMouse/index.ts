@@ -1,10 +1,11 @@
 import { ref } from 'vue-demi'
+import type { ConfigurableEventFilter } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export interface MouseOptions extends ConfigurableWindow {
+export interface MouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Mouse position based by page or client
    *
@@ -46,6 +47,7 @@ export function useMouse(options: MouseOptions = {}) {
     resetOnTouchEnds = false,
     initialValue = { x: 0, y: 0 },
     window = defaultWindow,
+    eventFilter,
   } = options
 
   const x = ref(initialValue.x)
@@ -82,12 +84,20 @@ export function useMouse(options: MouseOptions = {}) {
     }
   }
 
+  const mouseHandlerWrapper = (event: MouseEvent) => {
+    return eventFilter === undefined ? mouseHandler(event) : eventFilter(() => mouseHandler(event), {} as any)
+  }
+
+  const touchHandlerWrapper = (event: TouchEvent) => {
+    return eventFilter === undefined ? touchHandler(event) : eventFilter(() => touchHandler(event), {} as any)
+  }
+
   if (window) {
-    useEventListener(window, 'mousemove', mouseHandler, { passive: true })
-    useEventListener(window, 'dragover', mouseHandler, { passive: true })
+    useEventListener(window, 'mousemove', mouseHandlerWrapper, { passive: true })
+    useEventListener(window, 'dragover', mouseHandlerWrapper, { passive: true })
     if (touch) {
-      useEventListener(window, 'touchstart', touchHandler, { passive: true })
-      useEventListener(window, 'touchmove', touchHandler, { passive: true })
+      useEventListener(window, 'touchstart', touchHandlerWrapper, { passive: true })
+      useEventListener(window, 'touchmove', touchHandlerWrapper, { passive: true })
       if (resetOnTouchEnds)
         useEventListener(window, 'touchend', reset, { passive: true })
     }

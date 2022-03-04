@@ -16,7 +16,6 @@
     "prepublish",
     "vue"
   ],
-  "volar.tsPlugin": true,
   "vite.vitepress": true,
   "vite.vitepressBase": "packages",
   "vite.vitepressAutoRouting": true,

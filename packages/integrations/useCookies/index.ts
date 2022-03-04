@@ -3,9 +3,7 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import Cookie from 'universal-cookie'
 
-type RawCookies = {
-  [name: string]: string
-}
+type RawCookies = Record<string, string>
 
 /**
  * Creates a new {@link useCookies} function

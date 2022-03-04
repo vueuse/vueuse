@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref, computed, unref } from 'vue-demi'
+import { computed, ref, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { clamp } from '@vueuse/shared'
 
@@ -15,7 +15,7 @@ export function useClamp(value: MaybeRef<number>, min: MaybeRef<number>, max: Ma
   const _value = ref(value)
   return computed<number>({
     get() {
-      return clamp(_value.value, unref(min), unref(max))
+      return _value.value = clamp(_value.value, unref(min), unref(max))
     },
     set(value) {
       _value.value = clamp(value, unref(min), unref(max))

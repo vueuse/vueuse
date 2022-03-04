@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { ref, unref, computed } from 'vue-demi'
+import { computed, ref, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { toRefs, isClient } from '@vueuse/shared'
+import { isClient, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -108,6 +108,8 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
   }
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
+      return
+    if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)

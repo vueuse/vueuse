@@ -1,5 +1,5 @@
 import { ref, unref } from 'vue-demi'
-import type { Fn, Pausable, MaybeRef } from './types'
+import type { Fn, MaybeRef, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 

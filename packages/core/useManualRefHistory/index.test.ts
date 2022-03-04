@@ -1,23 +1,21 @@
-import { ref, isReactive } from 'vue-demi'
+import { isReactive, ref } from 'vue-demi'
 import { useSetup } from '../../.test'
 import { useManualRefHistory } from '.'
 
 describe('useManualRefHistory', () => {
   test('should record', () => {
-    useSetup(() => {
-      const v = ref(0)
-      const { history, commit } = useManualRefHistory(v)
+    const v = ref(0)
+    const { history, commit } = useManualRefHistory(v)
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe(0)
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
 
-      v.value = 2
-      commit()
+    v.value = 2
+    commit()
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(2)
-      expect(history.value[1].snapshot).toBe(0)
-    })
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
   })
 
   test('should be able to undo and redo', () => {
@@ -72,133 +70,125 @@ describe('useManualRefHistory', () => {
   })
 
   test('object with deep', () => {
-    useSetup(() => {
-      const v = ref({ foo: 'bar' })
-      const { commit, undo, history } = useManualRefHistory(v, { clone: true })
+    const v = ref({ foo: 'bar' })
+    const { commit, undo, history } = useManualRefHistory(v, { clone: true })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot.foo).toBe('bar')
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
-      v.value.foo = 'foo'
-      commit()
+    v.value.foo = 'foo'
+    commit()
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot.foo).toBe('foo')
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot.foo).toBe('foo')
 
-      // different references
-      expect(history.value[1].snapshot.foo).toBe('bar')
-      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+    // different references
+    expect(history.value[1].snapshot.foo).toBe('bar')
+    expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
 
-      undo()
+    undo()
 
-      // history references should not be equal to the source
-      expect(history.value[0].snapshot).not.toBe(v.value)
-    })
+    // history references should not be equal to the source
+    expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
   test('object with clone function', () => {
-    useSetup(() => {
-      const v = ref({ foo: 'bar' })
-      const { commit, undo, history } = useManualRefHistory(v, { clone: x => JSON.parse(JSON.stringify(x)) })
+    const v = ref({ foo: 'bar' })
+    const { commit, undo, history } = useManualRefHistory(v, { clone: x => JSON.parse(JSON.stringify(x)) })
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot.foo).toBe('bar')
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot.foo).toBe('bar')
 
-      v.value.foo = 'foo'
-      commit()
+    v.value.foo = 'foo'
+    commit()
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot.foo).toBe('foo')
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot.foo).toBe('foo')
 
-      // different references
-      expect(history.value[1].snapshot.foo).toBe('bar')
-      expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
+    // different references
+    expect(history.value[1].snapshot.foo).toBe('bar')
+    expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
 
-      undo()
+    undo()
 
-      // history references should not be equal to the source
-      expect(history.value[0].snapshot).not.toBe(v.value)
-    })
+    // history references should not be equal to the source
+    expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
   test('dump + parse', () => {
-    useSetup(() => {
-      const v = ref({ a: 'bar' })
-      const { history, commit, undo } = useManualRefHistory(v, {
-        dump: v => JSON.stringify(v),
-        parse: (v: string) => JSON.parse(v),
-      })
-
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe('{"a":"bar"}')
-
-      v.value.a = 'foo'
-      commit()
-
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe('{"a":"foo"}')
-      expect(history.value[1].snapshot).toBe('{"a":"bar"}')
-
-      undo()
-
-      expect(v.value.a).toBe('bar')
+    const v = ref({ a: 'bar' })
+    const { history, commit, undo } = useManualRefHistory(v, {
+      dump: v => JSON.stringify(v),
+      parse: (v: string) => JSON.parse(v),
     })
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe('{"a":"bar"}')
+
+    v.value.a = 'foo'
+    commit()
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe('{"a":"foo"}')
+    expect(history.value[1].snapshot).toBe('{"a":"bar"}')
+
+    undo()
+
+    expect(v.value.a).toBe('bar')
   })
 
   test('reset', () => {
-    useSetup(() => {
-      const v = ref(0)
-      const { history, commit, undoStack, redoStack, reset, undo } = useManualRefHistory(v)
+    const v = ref(0)
+    const { history, commit, undoStack, redoStack, reset, undo } = useManualRefHistory(v)
 
-      expect(history.value.length).toBe(1)
-      expect(history.value[0].snapshot).toBe(0)
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
 
-      v.value = 1
-      commit()
+    v.value = 1
+    commit()
 
-      v.value = 2
+    v.value = 2
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(1)
-      expect(history.value[1].snapshot).toBe(0)
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
-      reset()
+    reset()
 
-      // v value needs to be the last history point, but history is unchanged
-      expect(v.value).toBe(1)
+    // v value needs to be the last history point, but history is unchanged
+    expect(v.value).toBe(1)
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[0].snapshot).toBe(1)
-      expect(history.value[1].snapshot).toBe(0)
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(1)
+    expect(history.value[1].snapshot).toBe(0)
 
-      reset()
+    reset()
 
-      // Calling reset twice is a no-op
-      expect(v.value).toBe(1)
+    // Calling reset twice is a no-op
+    expect(v.value).toBe(1)
 
-      expect(history.value.length).toBe(2)
-      expect(history.value[1].snapshot).toBe(0)
-      expect(history.value[0].snapshot).toBe(1)
+    expect(history.value.length).toBe(2)
+    expect(history.value[1].snapshot).toBe(0)
+    expect(history.value[0].snapshot).toBe(1)
 
-      // Same test, but with a non empty redoStack
+    // Same test, but with a non empty redoStack
 
-      v.value = 3
-      commit()
+    v.value = 3
+    commit()
 
-      undo()
+    undo()
 
-      v.value = 2
+    v.value = 2
 
-      reset()
+    reset()
 
-      expect(v.value).toBe(1)
+    expect(v.value).toBe(1)
 
-      expect(undoStack.value.length).toBe(1)
-      expect(undoStack.value[0].snapshot).toBe(0)
+    expect(undoStack.value.length).toBe(1)
+    expect(undoStack.value[0].snapshot).toBe(0)
 
-      expect(redoStack.value.length).toBe(1)
-      expect(redoStack.value[0].snapshot).toBe(3)
-    })
+    expect(redoStack.value.length).toBe(1)
+    expect(redoStack.value[0].snapshot).toBe(3)
   })
 
   test('snapshots should not be reactive', async() => {

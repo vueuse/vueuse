@@ -28,7 +28,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
 
 <template>
   <div>
-    <div class="container">
+    <div class="container border-base">
       <div class="ball" :style="{transform: `translate(${translateX}px, ${translateY}px)`}" />
     </div>
     <div class="text-center mt-4">
@@ -47,7 +47,8 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   height: 100px;
   margin: auto;
   overflow: hidden;
-  border: 1px solid #a1a1a1;
+  border: 1px solid #a1a1a130;
+  border-radius: 5px;
 }
 
 .ball {
@@ -56,5 +57,4 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   background: #a1a1a1;
   border-radius: 50%;
 }
-
 </style>

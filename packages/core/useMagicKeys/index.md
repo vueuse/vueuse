@@ -6,7 +6,7 @@ category: Sensors
 
 Reactive keys pressed state, with magical keys combination support.
 
-> This function uses [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) which is NOT supported by IE 11 or below.
+<RequiresProxy />
 
 ## Usage
 
@@ -151,6 +151,6 @@ const keys = useMagicKeys({ reactive: true })
 <template>
   <div v-if="keys.shift">
     You are holding the Shift key!
-  <div>
+  </div>
 </template>
 ```

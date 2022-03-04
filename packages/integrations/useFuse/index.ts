@@ -1,10 +1,10 @@
 import Fuse from 'fuse.js'
 import type { ComputedRef } from 'vue-demi'
-import { ref, computed, watch, unref } from 'vue-demi'
+import { computed, ref, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 
 export type FuseOptions<T> = Fuse.IFuseOptions<T>
-export type UseFuseOptions<T> = {
+export interface UseFuseOptions<T> {
   fuseOptions?: FuseOptions<T>
   resultLimit?: number
   matchAllWhenSearchEmpty?: boolean

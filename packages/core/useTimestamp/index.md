@@ -27,5 +27,3 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
   <button @click="resume()">Resume</button>
 </UseTimestamp>
 ```
-
-<LearnMoreComponents />

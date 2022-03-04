@@ -1,5 +1,5 @@
-import { toRefs } from '@vueuse/core'
 import { isReactive, nextTick, reactive, ref, watchSyncEffect } from 'vue-demi'
+import { toRefs } from '../toRefs'
 import { toReactive } from '.'
 
 describe('toRefs', () => {

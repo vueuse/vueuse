@@ -28,12 +28,15 @@ export const packages: PackageManifest[] = [
     addon: true,
     iife: false,
     cjs: false,
-    dts: false,
     target: 'node14',
     external: [
       '@vueuse/core',
       '@vueuse/shared',
+      '@nuxt/kit',
       'local-pkg',
+      'fs',
+      'path',
+      'url',
     ],
   },
   {

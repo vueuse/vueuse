@@ -5,11 +5,12 @@ import fs from 'fs-extra'
 import fg from 'fast-glob'
 import consola from 'consola'
 import { packages } from '../meta/packages'
-import indexes from '../meta/function-indexes'
+import { indexes } from '../meta/function-indexes'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 
 const rootDir = path.resolve(__dirname, '..')
+const watch = process.argv.includes('--watch')
 
 const FILES_COPY_ROOT = [
   'LICENSE',
@@ -59,7 +60,7 @@ async function build() {
   await updateImport(indexes)
 
   consola.info('Rollup')
-  exec('pnpm run build:rollup', { stdio: 'inherit' })
+  exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
 
   consola.info('Fix types')
   exec('pnpm run types:fix', { stdio: 'inherit' })

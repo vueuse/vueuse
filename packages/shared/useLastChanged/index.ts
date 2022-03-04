@@ -1,10 +1,10 @@
-import type { WatchSource, WatchOptions, Ref } from 'vue-demi'
-import { watch, ref } from 'vue-demi'
+import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<
   Immediate extends boolean,
-  InitialValue extends number | null | undefined = undefined
+  InitialValue extends number | null | undefined = undefined,
 > extends WatchOptions<Immediate> {
   initialValue?: InitialValue
 }

@@ -20,13 +20,15 @@ export interface PackageManifest {
 export interface VueUseFunction {
   name: string
   package: string
+  lastUpdated?: number
   category?: string
   description?: string
   docs?: string
-  depreacted?: boolean
+  deprecated?: boolean
   internal?: boolean
   component?: boolean
   directive?: boolean
+  external?: string
 }
 
 export interface VueUsePackage extends PackageManifest {
@@ -38,4 +40,22 @@ export interface PackageIndexes {
   packages: Record<string, VueUsePackage>
   categories: string[]
   functions: VueUseFunction[]
+}
+
+export interface CommitInfo {
+  functions: string[]
+  version?: string
+  hash: string
+  date: string
+  message: string
+  refs?: string
+  body?: string
+  author_name: string
+  author_email: string
+}
+
+export interface ContributorInfo {
+  name: string
+  count: number
+  hash: string
 }

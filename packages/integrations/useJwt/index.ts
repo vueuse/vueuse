@@ -32,7 +32,7 @@ export interface JwtResult<Payload, Header, Fallback> {
 export function useJwt<
   Payload extends object = JwtPayload,
   Header extends object = JwtHeader,
-  Fallback = null
+  Fallback = null,
 >(
   encodedJwt: MaybeRef<string>,
   options: JwtOptions<Fallback> = {},

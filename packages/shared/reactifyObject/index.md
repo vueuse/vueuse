@@ -11,9 +11,9 @@ Apply `reactify` to an object
 ```ts
 import { reactifyObject } from '@vueuse/core'
 
-const console = reactifyObject(console)
+const reactifiedConsole = reactifyObject(console)
 
 const a = ref('42')
 
-console.log(a) // no longer need `.value`
+reactifiedConsole.log(a) // no longer need `.value`
 ```

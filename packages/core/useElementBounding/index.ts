@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -9,11 +9,8 @@ import { useResizeObserver } from '../useResizeObserver'
  *
  * @see https://vueuse.org/useElementBounding
  * @param target
- * @param options
  */
-export function useElementBounding(
-  target: MaybeElementRef,
-) {
+export function useElementBounding(target: MaybeElementRef) {
   const height = ref(0)
   const bottom = ref(0)
   const left = ref(0)
@@ -56,6 +53,8 @@ export function useElementBounding(
     target,
     update,
   )
+
+  watch(() => unrefElement(target), ele => !ele && update())
 
   return {
     height,
