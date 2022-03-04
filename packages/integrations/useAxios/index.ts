@@ -85,12 +85,11 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     if ('request' in args[1])
       instance = args[1]
   }
-  if (args.length >= 2) {
-    const instanceInArgs1 = "request" in args[1]
-    if (!instanceInArgs1 && args.length !== 2) {
-      options = args[args.length - 1];
-    }
-  }
+  if (
+    (args.length === 2 && !('request' in args[1]))
+    || args.length === 3
+  )
+    options = args[args.length - 1]
 
   const response = shallowRef<AxiosResponse<T>>()
   const data = shallowRef<T>()
