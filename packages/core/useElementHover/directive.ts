@@ -4,7 +4,7 @@ import { useElementHover } from '.'
 
 type BindingValueFunction = (state: boolean) => void
 
-export const vHover: FunctionDirective<
+export const vElementHover: FunctionDirective<
 HTMLElement,
 BindingValueFunction
 > = (el, binding) => {

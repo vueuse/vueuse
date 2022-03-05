@@ -2,7 +2,7 @@ import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 
-import { vHover } from './directive'
+import { vElementHover } from './directive'
 
 const App = defineComponent({
   props: {
@@ -13,7 +13,7 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div v-hover="onHover">Hover me</div>
+  <div v-element-hover="onHover">Hover me</div>
   </template>
   `,
 })
@@ -30,7 +30,7 @@ describe('vOnLongPress', () => {
       },
       global: {
         directives: {
-          hover: vHover,
+          hover: vElementHover,
         },
       },
     })

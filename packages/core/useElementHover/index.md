@@ -31,7 +31,7 @@ const isHovered = useElementHover(myHoverableElement)
 ```html
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vHover } from '@vueuse/components'
+import { vElementHover } from '@vueuse/components'
 
 const isHovered = ref(false)
 function onHover(state: boolean) {
@@ -40,7 +40,7 @@ function onHover(state: boolean) {
 </script>
 
 <template>
-  <button v-hover="onHover">
+  <button v-element-hover="onHover">
     {{ isHovered ? 'Thank you!' : 'Hover me' }}
   </button>
 </template>
