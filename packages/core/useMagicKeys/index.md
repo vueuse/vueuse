@@ -10,6 +10,8 @@ Reactive keys pressed state, with magical keys combination support.
 
 ## Usage
 
+### As a hook
+
 ```js
 import { useMagicKeys } from '@vueuse/core'
 
@@ -152,5 +154,29 @@ const keys = useMagicKeys({ reactive: true })
   <div v-if="keys.shift">
     You are holding the Shift key!
   </div>
+</template>
+```
+
+### As a directive
+
+<LearnMoreComponents />
+
+```html
+<script setup lang="ts">
+import { vMagicKeys } from '@vueuse/components'
+
+function onUpdate(key: string, state: boolean) {
+  console.log('updated', key, state)
+}
+
+function onEventFired(e: KeyboardEvent) {
+  console.log(e)
+}
+</script>
+
+<template>
+  <input v-magic-keys:ctrl_c,ctrl_v="onUpdate" type="text">
+  <!-- with options -->
+  <input v-magic-keys:ctrl_c,ctrl_v="[onUpdate, { onEventFired }]" type="text">
 </template>
 ```
