@@ -18,7 +18,7 @@ const App = defineComponent({
   `,
 })
 
-describe('vOnLongPress', () => {
+describe('vHover', () => {
   let onHover = vi.fn()
   let wrapper: VueWrapper<any>
 
