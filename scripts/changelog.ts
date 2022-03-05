@@ -1,10 +1,12 @@
 import md5 from 'md5'
 import Git from 'simple-git'
-import type { CommitInfo, ContributorInfo } from '../meta/types'
-import { functions } from '../meta/function-indexes'
+import type { CommitInfo, ContributorInfo } from '@vueuse/metadata'
+import { functions } from '../packages/metadata/metadata'
 import { uniq } from './utils'
 
-const git = Git()
+const git = Git({
+  maxConcurrentProcesses: 200,
+})
 let cache: CommitInfo[] | undefined
 
 export async function getChangeLog(count = 200) {
@@ -13,6 +15,7 @@ export async function getChangeLog(count = 200) {
 
   const logs = (await git.log({ maxCount: count })).all.filter(i =>
     i.message.includes('chore: release')
+    || i.message.includes('!')
     || i.message.startsWith('feat')
     || i.message.startsWith('fix'),
   ) as CommitInfo[]

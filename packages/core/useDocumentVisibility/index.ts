@@ -10,7 +10,7 @@ import { defaultDocument } from '../_configurable'
  * @see https://vueuse.org/useDocumentVisibility
  * @param options
  */
-export function useDocumentVisibility({ document = defaultDocument }: ConfigurableDocument = {}): Ref<VisibilityState> {
+export function useDocumentVisibility({ document = defaultDocument }: ConfigurableDocument = {}): Ref<Document['visibilityState']> {
   if (!document)
     return ref('visible')
 

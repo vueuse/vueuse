@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import fg from 'fast-glob'
 import consola from 'consola'
 import { packages } from '../meta/packages'
-import { indexes } from '../meta/function-indexes'
+import { metadata } from '../packages/metadata/metadata'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 
@@ -18,6 +18,7 @@ const FILES_COPY_ROOT = [
 
 const FILES_COPY_LOCAL = [
   'README.md',
+  'index.json',
   '*.cjs',
   '*.mjs',
   '*.d.ts',
@@ -33,9 +34,6 @@ async function buildMetaFiles() {
     if (name === 'core')
       await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
 
-    if (name === 'core' || name === 'nuxt')
-      await fs.copyFile(path.join(rootDir, 'indexes.json'), path.join(packageDist, 'indexes.json'))
-
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
 
@@ -44,7 +42,7 @@ async function buildMetaFiles() {
       await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
     const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
-    for (const key of Object.keys(packageJSON.dependencies)) {
+    for (const key of Object.keys(packageJSON.dependencies || {})) {
       if (key.startsWith('@vueuse/'))
         packageJSON.dependencies[key] = version
     }
@@ -57,7 +55,7 @@ async function build() {
   exec('pnpm run clean', { stdio: 'inherit' })
 
   consola.info('Generate Imports')
-  await updateImport(indexes)
+  await updateImport(metadata)
 
   consola.info('Rollup')
   exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })

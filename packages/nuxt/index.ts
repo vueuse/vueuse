@@ -1,9 +1,8 @@
-import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { isPackageExists } from 'local-pkg'
 import { defineNuxtModule } from '@nuxt/kit'
-import type { PackageIndexes } from '../../meta/types'
+import { metadata } from '@vueuse/metadata'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -76,8 +75,6 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     nuxt.options.build.transpile = nuxt.options.build.transpile || []
     nuxt.options.build.transpile.push(...fullPackages)
 
-    let indexes: PackageIndexes | undefined
-
     if (options.ssrHandlers) {
       const pluginPath = resolve(_dirname, './ssr-plugin.mjs')
       nuxt.options.plugins = nuxt.options.plugins || []
@@ -90,21 +87,10 @@ export default defineNuxtModule<VueUseNuxtOptions>({
         if (sources.find(i => fullPackages.includes(i.from)))
           return
 
-        if (!indexes) {
-          try {
-            indexes = JSON.parse(fs.readFileSync(resolve(_dirname, './indexes.json'), 'utf-8'))
-            indexes?.functions.forEach((i) => {
-              if (i.package === 'shared')
-                i.package = 'core'
-            })
-          }
-          catch (e) {
-            throw new Error('[@vueuse/nuxt] Failed to load indexes.json')
-          }
-        }
-
-        if (!indexes)
-          return
+        metadata.functions.forEach((i) => {
+          if (i.package === 'shared')
+            i.package = 'core'
+        })
 
         for (const pkg of packages) {
           if (pkg === 'shared')
@@ -113,18 +99,21 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (!isPackageExists(`@vueuse/${pkg}`))
             continue
 
-          const functions = indexes
+          const functions = metadata
             .functions
             .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
 
           if (functions.length) {
+            const imports = metadata
+              .functions
+              .filter(i => i.package === pkg && !i.internal)
+              .flatMap(i => [i.name, ...i.alias || []])
+              .filter(i => i.length >= 4 && !disabledFunctions.includes(i))
+
             sources.push({
               from: `@vueuse/${pkg}`,
-              names: indexes
-                .functions
-                .filter(i => i.package === pkg && !i.internal)
-                .map(i => i.name)
-                .filter(i => i.length >= 4 && !disabledFunctions.includes(i)),
+              names: imports,
+              imports,
             })
           }
         }

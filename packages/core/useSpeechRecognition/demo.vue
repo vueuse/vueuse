@@ -71,13 +71,19 @@ watch(isListening, isListening => isListening ? null : selectedLanguage.value = 
       >more details</a>
     </div>
     <div v-else>
-      <div>
-        <input id="en-US" v-model="lang" type="radio" value="en-US">
-        <label for="en-US">English (US)</label>
-        <input id="fr" v-model="lang" type="radio" value="fr">
-        <label for="fr">French</label>
-        <input id="es" v-model="lang" type="radio" value="es">
-        <label for="es">Spanish</label>
+      <div space-x-4>
+        <label class="radio">
+          <input v-model="lang" value="en-US" type="radio">
+          <span>English (US)</span>
+        </label>
+        <label class="radio">
+          <input v-model="lang" value="fr" type="radio">
+          <span>French</span>
+        </label>
+        <label class="radio">
+          <input v-model="lang" value="es" type="radio">
+          <span>Spanish</span>
+        </label>
       </div>
       <button v-if="!isListening" @click="start">
         Press and talk
@@ -114,10 +120,48 @@ watch(isListening, isListening => isListening ? null : selectedLanguage.value = 
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .tag {
   padding: 0.3rem 0.6rem;
   margin-right: 0.5rem;
   border-radius: 4px;
+}
+</style> -->
+
+<style scoped lang="postcss">
+input {
+  --tw-ring-offset-width: 1px !important;
+  --tw-ring-color: #8885 !important;
+  --tw-ring-offset-color: transparent !important;
+}
+
+.radio {
+  @apply inline-flex items-center my-auto cursor-pointer select-none;
+}
+
+.radio input {
+  appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  @apply bg-gray-400/30;
+  @apply rounded-full h-4 w-4 select-none relative;
+  @apply mr-1;
+}
+
+.radio input:checked::after {
+  content: '';
+  @apply absolute inset-[3px] rounded-full bg-primary;
+}
+
+.checkbox span {
+  @apply ml-1.5 text-13px opacity-70;
 }
 </style>

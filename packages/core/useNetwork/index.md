@@ -26,7 +26,7 @@ const network = reactive(useNetwork())
 console.log(network.isOnline)
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseNetwork v-slot="{ isOnline, type }">

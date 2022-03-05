@@ -1,7 +1,7 @@
 // @ts-expect-error missing type
 import base from '@vue/theme/config'
 import { currentVersion, versions } from '../../meta/versions'
-import { categories, indexes } from '../../meta/function-indexes'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
 import highlight from './plugins/highlight'
 
 const themeConfig = async() => {
@@ -19,17 +19,14 @@ const Guide = [
   { text: 'Guidelines', link: '/guidelines' },
 ]
 
-const CoreCategories = categories
-  .filter(f => !f.startsWith('@'))
-  .map(c => ({
-    text: c,
-    activeMatch: '___', // never active
-    link: `/functions#category=${c}`,
-  }))
+const CoreCategories = coreCategoryNames.map(c => ({
+  text: c,
+  activeMatch: '___', // never active
+  link: `/functions#category=${c}`,
+}))
 
 const AddonCategories = [
-  ...categories
-    .filter(f => f.startsWith('@'))
+  ...addonCategoryNames
     .map(c => ({
       text: c.slice(1),
       activeMatch: '___', // never active
@@ -100,6 +97,7 @@ const config = {
           {
             text: '',
             items: [
+              { text: 'All Functions', link: '/functions#' },
               { text: 'Recent Updated', link: '/functions#sort=updated' },
             ],
           },
@@ -116,7 +114,7 @@ const config = {
         link: 'https://play.vueuse.org',
       },
       {
-        text: `v${currentVersion}`,
+        text: currentVersion,
         items: [
           {
             items: [
@@ -127,12 +125,12 @@ const config = {
             text: 'Versions',
             items: versions.map(i => i.version === currentVersion
               ? {
-                text: `v${i.version} (Current)`,
+                text: `${i.version} (Current)`,
                 activeMatch: '/', // always active
                 link: '/',
               }
               : {
-                text: `v${i.version}`,
+                text: i.version,
                 link: i.link,
               },
             ),
@@ -182,19 +180,21 @@ const config = {
 function getFunctionsSideBar() {
   const links = []
 
-  for (const name of categories) {
+  for (const name of categoryNames) {
     if (name.startsWith('_'))
       continue
 
-    const functions = indexes.functions.filter(i => i.category === name && !i.internal)
+    const functions = metadata.functions.filter(i => i.category === name && !i.internal)
 
     links.push({
       text: name,
       items: functions.map(i => ({
         text: i.name,
-        link: `/${i.package}/${i.name}/`,
+        link: i.external || `/${i.package}/${i.name}/`,
       })),
-      link: name.startsWith('@') ? `/${functions[0].package}/README` : undefined,
+      link: name.startsWith('@')
+        ? functions[0].external || `/${functions[0].package}/README`
+        : undefined,
     })
   }
 

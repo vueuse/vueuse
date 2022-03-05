@@ -63,7 +63,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 </template>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseVirtualList :list="list" :options="options" height="300px">
