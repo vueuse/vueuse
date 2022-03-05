@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "7.7.0",
+  "version": "7.7.1",
   "description": "Collection of essential Vue Composition Utilities",
   "keywords": [
     "vue",
