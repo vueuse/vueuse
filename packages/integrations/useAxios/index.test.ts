@@ -27,7 +27,7 @@ describe('useAxios', () => {
   })
 
   test('params: url config', (done) => {
-    const { isFinished, data, then } = useAxios(url, config)
+    const { isFinished, then } = useAxios(url, config)
     expect(isFinished.value).toBeFalsy()
     const onRejected = vitest.fn()
 
