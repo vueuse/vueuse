@@ -30,7 +30,7 @@
   "module": "./index.mjs",
   "sideEffects": false,
   "scripts": {
-    "prepare": "esno scripts/prepare.ts"
+    "update": "esno scripts/update.ts"
   },
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
