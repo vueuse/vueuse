@@ -90,12 +90,8 @@ const data = ref<DataItem[]>([
     lastName: 'Kinsley',
   },
 ])
-const shuffleData = () => {
-  data.value.sort(() => Math.random() - 0.5)
-}
 
 const search = ref('')
-
 const filterBy = ref('both')
 const keys = computed(() => {
   if (filterBy.value === 'first') return ['firstName']
@@ -120,7 +116,7 @@ watch(resultLimitString, () => {
 
 const exactMatch = ref(false)
 const isCaseSensitive = ref(false)
-const matchAllWhenSearchEmpty = ref(false)
+const matchAllWhenSearchEmpty = ref(true)
 
 const options = computed<UseFuseOptions<DataItem>>(() => ({
   fuseOptions: {
@@ -136,82 +132,94 @@ const { results } = useFuse(search, data, options)
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-8">
-    <section class="flex-1 flex flex-col items-start min-w-xs max-h-xl space-y-4">
-      <h2 class="mt-0 self-stretch">
-        Search
-      </h2>
-      <input v-model="search" type="text" placeholder="Search for someone">
-      <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30">
-        <legend class="px-1">
-          Search by
-        </legend>
-        <div>
-          <input id="radio-both" v-model="filterBy" type="radio" value="both" name="filter">
-          <label for="radio-both">Both Names</label>
-        </div>
-        <div>
-          <input id="radio-first" v-model="filterBy" type="radio" value="first" name="filter">
-          <label for="radio-first">First Name</label>
-        </div>
-        <div>
-          <input id="radio-last" v-model="filterBy" type="radio" value="last" name="filter">
-          <label for="radio-last">Last Name</label>
-        </div>
-      </fieldset>
-      <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30 space-y-1">
-        <legend class="px-1">
-          Other Options
-        </legend>
-        <div>
-          <input id="checkbox-exact-match" v-model="exactMatch" type="checkbox">
-          <label for="checkbox-exact-match">Exact match</label>
-        </div>
-        <div>
-          <input id="checkbox-case-sensitive" v-model="isCaseSensitive" type="checkbox">
-          <label for="checkbox-case-sensitive">Case sensistive</label>
-        </div>
-        <div>
-          <input id="checkbox-match-all" v-model="matchAllWhenSearchEmpty" type="checkbox">
-          <label for="checkbox-match-all">Match all when search is blank</label>
-        </div>
-      </fieldset>
-      <fieldset class="max-w-max border-2 rounded-lg border-gray-400/30">
-        <legend>Result count limit</legend>
-        <note>Limit the number of results shown.</note>
-        <input id="input-result-limit" v-model="resultLimitString" type="number">
-      </fieldset>
-    </section>
-    <section class="flex-1 flex flex-col min-w-xs max-h-xl">
-      <h2 class="mt-0">
-        Results
-      </h2>
-      <note>Result Count: {{ results.length }}</note>
-      <ol v-if="results.length > 0" class="mt-6 overflow-y-scroll space-y-2" start="0">
-        <li v-for="(result, index) in results" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
-          <span>{{ result.item.firstName }} {{ result.item.lastName }}</span>
-          <br>
-          <span>Source Index: {{ result.refIndex }}</span>
-        </li>
-      </ol>
-      <div v-else class="mt-4 text-2xl">
-        No results
+  <div>
+    <input v-model="search" placeholder="Search for someone..." type="text" w-full>
+    <div flex flex-wrap>
+      <div bg="dark:(dark-300) light-700" mr-2 border="1 light-900 dark:(dark-700)" rounded relative flex items-center>
+        <carbon-filter absolute left-2 opacity-70 />
+        <select v-model="filterBy" px-8 bg-transparent>
+          <option bg="dark:(dark-300) light-700" value="both">
+            Full Name
+          </option>
+          <option bg="dark:(dark-300) light-700" value="first">
+            First Name
+          </option>
+          <option bg="dark:(dark-300) light-700" value="last">
+            Last Name
+          </option>
+        </select>
+        <carbon-chevron-down absolute right-2 pointer-events-none opacity-70 />
       </div>
-    </section>
-    <section class="flex-1 flex flex-col min-w-xs max-h-xl">
-      <h2 class="mt-0 mb-3">
-        Source Data
-      </h2>
-      <button class="self-center" @click="shuffleData">
-        Shuffle Data
-      </button>
-      <ol class="overflow-y-scroll space-y-2" start="0">
-        <li v-for="(item, index) in data" :key="index" class="mr-2 px-2 py-1 rounded-lg bg-gray-400/20">
-          First name: {{ item.firstName }}
-          <br>
-          Last name: {{ item.lastName }}
-        </li>
-      </ol>
-    </section>
+      <span flex-1 />
+      <div flex flex-row flex-wrap gap-x-4>
+        <label class="checkbox">
+          <input v-model="exactMatch" type="checkbox">
+          <span>Exact Match</span>
+        </label>
+        <label class="checkbox">
+          <input v-model="isCaseSensitive" type="checkbox">
+          <span>Case Sensistive</span>
+        </label>
+        <label class="checkbox">
+          <input v-model="matchAllWhenSearchEmpty" type="checkbox">
+          <span>Match all when empty</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div mt-4>
+    <template v-if="results.length > 0">
+      <div v-for="result in results" :key="result.item.firstName + result.item.lastName" py-2>
+        <div flex flex-col>
+          <span>
+            {{ result.item.firstName }} {{ result.item.lastName }}
+          </span>
+          <span text-sm opacity-50>
+            Score Index: {{ result.refIndex }}
+          </span>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div text-center pt-8 pb-4 opacity-80>
+        No Results Found
+      </div>
+    </template>
   </div>
 </template>
+
+<style scoped lang="postcss">
+input {
+  --tw-ring-offset-width: 1px !important;
+  --tw-ring-color: #8885 !important;
+  --tw-ring-offset-color: transparent !important;
+}
+
+.checkbox {
+  @apply inline-flex items-center my-auto cursor-pointer select-none;
+}
+
+.checkbox input {
+  appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  @apply bg-gray-400/30;
+  @apply rounded-md h-4 w-4 select-none;
+}
+
+.checkbox input:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+.checkbox span {
+  @apply ml-1.5 text-13px opacity-70;
+}
+</style>
