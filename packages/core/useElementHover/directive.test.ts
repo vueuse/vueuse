@@ -18,7 +18,7 @@ const App = defineComponent({
   `,
 })
 
-describe('vHover', () => {
+describe('vElementHover', () => {
   let onHover = vi.fn()
   let wrapper: VueWrapper<any>
 
