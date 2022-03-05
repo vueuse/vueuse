@@ -1,5 +1,10 @@
 <template>
-  <div>ComputedArr: {{ computedArr }}</div>
+  <div>
+    <div text-primary font-bold mb-2>
+      Computed Array
+    </div>
+    <pre>{{ computedArr }}</pre>
+  </div>
 </template>
 
 <script lang="ts">

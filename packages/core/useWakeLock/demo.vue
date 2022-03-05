@@ -8,6 +8,12 @@ const onClick = () => wakeLock.isActive ? wakeLock.request('screen') : wakeLock.
 </script>
 
 <template>
+  <div>
+    Is Supported: <BooleanDisplay :value="wakeLock.isSupported" />
+  </div>
+  <div>
+    Is Active: <BooleanDisplay :value="wakeLock.isActive" />
+  </div>
   <button @click="onClick">
     {{ text }}
   </button>

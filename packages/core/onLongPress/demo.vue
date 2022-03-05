@@ -20,7 +20,7 @@ onLongPress(htmlRefOptions, onLongPressCallback, { delay: 1000 })
 </script>
 
 <template>
-  <p>Long Pressed: {{ longPressed }}</p>
+  <p>Long Pressed: <BooleanDisplay :value="longPressed" /></p>
   <button ref="htmlRef" class="ml-2 button small">
     Press long (500ms)
   </button>
