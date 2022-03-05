@@ -123,7 +123,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
     "axios": "^0.26.0",
-    "drauu": "^0.2.1",
+    "drauu": "^0.3.0",
     "focus-trap": "^6.7.3",
     "fuse.js": "^6.5.3",
     "jwt-decode": "^3.1.2",
