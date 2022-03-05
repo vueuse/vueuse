@@ -13,6 +13,7 @@ importers:
       '@antfu/eslint-config': ^0.16.1
       '@antfu/ni': ^0.13.2
       '@iconify/json': ^2.1.7
+      '@rollup/plugin-json': ^4.1.0
       '@rollup/plugin-replace': ^4.0.0
       '@types/fs-extra': ^9.0.13
       '@types/js-yaml': ^4.0.5
@@ -47,6 +48,7 @@ importers:
       md5: ^2.3.0
       msw: ^0.38.1
       node-fetch: ^3.2.0
+      ohmyfetch: ^0.4.15
       pnpm: ^6.32.1
       postcss: ^8.4.7
       postcss-nested: ^5.0.6
@@ -73,6 +75,7 @@ importers:
       '@antfu/eslint-config': 0.16.1_eslint@8.10.0+typescript@4.5.5
       '@antfu/ni': 0.13.2
       '@iconify/json': 2.1.7
+      '@rollup/plugin-json': 4.1.0_rollup@2.68.0
       '@rollup/plugin-replace': 4.0.0_rollup@2.68.0
       '@types/fs-extra': 9.0.13
       '@types/js-yaml': 4.0.5
@@ -107,6 +110,7 @@ importers:
       md5: 2.3.0
       msw: 0.38.1
       node-fetch: 3.2.0
+      ohmyfetch: 0.4.15
       pnpm: 6.32.1
       postcss: 8.4.7
       postcss-nested: 5.0.6_postcss@8.4.7
@@ -142,9 +146,11 @@ importers:
 
   packages/core:
     specifiers:
+      '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
       vue-demi: 0.12.1
     dependencies:
+      '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
       vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
 
@@ -198,16 +204,21 @@ importers:
       qrcode: 1.5.0
       universal-cookie: 4.0.4
 
+  packages/metadata:
+    specifiers: {}
+
   packages/nuxt:
     specifiers:
       '@nuxt/kit': npm:@nuxt/kit-edge@latest
       '@nuxt/schema': npm:@nuxt/schema-edge@latest
       '@vueuse/core': workspace:*
+      '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.1
       vue-demi: 0.12.1
     dependencies:
       '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27430570.4cfad4d
       '@vueuse/core': link:../core
+      '@vueuse/metadata': link:../metadata
       local-pkg: 0.4.1
       vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
     devDependencies:
@@ -2201,6 +2212,15 @@ packages:
     dependencies:
       '@babel/core': 7.16.5
       '@babel/helper-module-imports': 7.16.0
+      '@rollup/pluginutils': 3.1.0_rollup@2.68.0
+      rollup: 2.68.0
+    dev: true
+
+  /@rollup/plugin-json/4.1.0_rollup@2.68.0:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.68.0
       rollup: 2.68.0
     dev: true
@@ -6587,6 +6607,15 @@ packages:
       es-abstract: 1.19.1
     dev: true
 
+  /ohmyfetch/0.4.15:
+    resolution: {integrity: sha512-AJKiMh4s+VYLLiAQi3tZn4Zh/xYr94nOX9FLGVVdbXo7QWrrKIfGweACIKaB06PjQdZtkICzcmNN+CQSR+9vQQ==}
+    dependencies:
+      destr: 1.1.0
+      node-fetch: 3.2.0
+      ufo: 0.7.11
+      undici: 4.14.1
+    dev: true
+
   /once/1.4.0:
     resolution: {integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=}
     dependencies:
@@ -8011,6 +8040,11 @@ packages:
   /unctx/1.0.2:
     resolution: {integrity: sha512-qxRfnQZWJqkg180JeOCJEvtjj5/7wnWVqkNHln8muY5/z8kMWBFqikFBPwIPCQrZJ+jtaSWkVHJkuHUAXls6zw==}
     dev: false
+
+  /undici/4.14.1:
+    resolution: {integrity: sha512-WJ+g+XqiZcATcBaUeluCajqy4pEDcQfK1vy+Fo+bC4/mqXI9IIQD/XWHLS70fkGUT6P52Drm7IFslO651OdLPQ==}
+    engines: {node: '>=12.18'}
+    dev: true
 
   /unherit/1.1.3:
     resolution: {integrity: sha512-Ft16BJcnapDKp0+J/rqFC3Rrk6Y/Ng4nzsC028k2jdDII/rdZ7Wd3pPT/6+vIIxRagwRc9K0IUX0Ra4fKvw+WQ==}

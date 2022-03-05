@@ -14,7 +14,7 @@ import { useTimeAgo } from '@vueuse/core'
 const timeAgo = useTimeAgo(new Date(2021, 0, 1))
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseTimeAgo v-slot="{ timeAgo }" :time="new Date(2021, 0, 1)">

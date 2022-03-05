@@ -7,3 +7,4 @@ types/
 !/.eslintrc.js
 !/rollup.config.js
 !.test
+.temp

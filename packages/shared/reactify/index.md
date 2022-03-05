@@ -1,5 +1,6 @@
 ---
 category: Utilities
+alias: createReactiveFn
 ---
 
 # reactify

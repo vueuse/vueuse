@@ -1,5 +1,8 @@
 ---
 category: State
+related:
+  - useRefHistory
+  - useThrottledRefHistory
 ---
 
 # useDebouncedRefHistory
@@ -17,8 +20,3 @@ import { useDebouncedRefHistory } from '@vueuse/core'
 const counter = ref(0)
 const { history, undo, redo } = useDebouncedRefHistory(counter, { deep: true, debounce: 1000 })
 ```
-
-## Related Functions
-
-- `useRefHistory`
-- `useThrottledRefHistory`

@@ -21,7 +21,7 @@ The `dragover` event is used to track mouse position while dragging.
 const { x, y } = useMouse({ touch: false })
 ```
 
-## Component
+## Component Usage
 ```html
 <UseMouse v-slot="{ x, y }">
   x: {{ x }}
