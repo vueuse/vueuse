@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { useAxios } from '.'
+import { useAxios } from '@vueuse/core'
 
 const { data, isLoading, isFinished, execute } = useAxios(
   'https://jsonplaceholder.typicode.com/todos/1',

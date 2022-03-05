@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onClickOutside } from '.'
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 
 const modal = ref(false)
 const modalRef = ref(null)

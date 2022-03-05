@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { watchThrottled } from '.'
+import { ref } from 'vue'
+import { watchThrottled } from '@vueuse/core'
 
 const input = ref('')
 const updated = ref(0)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useCssVar } from '.'
+import { ref } from 'vue'
+import { useCssVar } from '@vueuse/core'
 
 const el = ref(null)
 const color = useCssVar('--color', el)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
+import { useIdle } from '@vueuse/core'
 import { useTimestamp } from '../useTimestamp'
-import { useIdle } from '.'
 
 const { idle, lastActive } = useIdle(5000)
 

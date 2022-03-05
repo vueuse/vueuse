@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue-demi'
-import { useDeviceMotion } from '.'
+import { computed, reactive } from 'vue'
+import { useDeviceMotion } from '@vueuse/core'
 
 const motion = reactive(useDeviceMotion())
 const text = computed(() => JSON.stringify(motion, null, 2))

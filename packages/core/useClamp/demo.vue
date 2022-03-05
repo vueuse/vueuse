@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useClamp } from '@vueuse/core'
 const min = ref(0)
 const max = ref(10)

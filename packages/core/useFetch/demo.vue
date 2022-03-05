@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { useFetch } from '.'
+import { useFetch } from '@vueuse/core'
 
 const url = ref('https://httpbin.org/get')
 const refetch = ref(false)

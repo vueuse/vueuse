@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useFocusWithin } from '.'
+import { ref } from 'vue'
+import { useFocusWithin } from '@vueuse/core'
 
 const target = ref()
 

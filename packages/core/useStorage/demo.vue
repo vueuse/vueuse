@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { useStorage } from '.'
+import { useStorage } from '@vueuse/core'
 
 const state = useStorage('vue-use-local-storage', {
   name: 'Banana',

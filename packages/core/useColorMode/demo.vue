@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useColorMode } from '@vueuse/core'
 import { useCycleList } from '../useCycleList'
-import { useColorMode } from '.'
 
 const mode = useColorMode({
   modes: {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue-demi'
-import { useMousePressed } from '.'
+import { computed, reactive, ref } from 'vue'
+import { useMousePressed } from '@vueuse/core'
 
 const el = ref<Element | null>()
 const [withTarget, toggle] = useToggle()

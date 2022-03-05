@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onKeyStroke } from '.'
+import { ref } from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 
 const translateX = ref(0)
 const translateY = ref(0)

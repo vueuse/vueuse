@@ -8,8 +8,6 @@ Lock scrolling of the element.
 
 ## Usage
 
-### As a hook
-
 ```html
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
@@ -26,9 +24,7 @@ isLocked.value = false // unlock
 </template>
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">

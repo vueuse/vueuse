@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { watchIgnorable } from '.'
+import { ref } from 'vue'
+import { watchIgnorable } from '@vueuse/core'
 
-const input = ref<HTMLInputElement | null>()
 const log = ref('')
 const source = ref(0)
 

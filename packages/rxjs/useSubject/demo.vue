@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { BehaviorSubject } from 'rxjs'
-import { onMounted, watch } from 'vue-demi'
-import { useSubject } from '.'
+import { onMounted, watch } from 'vue'
+import { useSubject } from '@vueuse/core'
 
 const countSubject = new BehaviorSubject(0)
 const count = useSubject(countSubject)

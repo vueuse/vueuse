@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { promiseTimeout } from '@vueuse/shared'
-import { useTimeoutPoll } from '.'
+import { useTimeoutPoll } from '@vueuse/core'
 
 const count = ref(0)
 

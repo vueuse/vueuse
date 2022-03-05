@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue-demi'
+import { reactive } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
-import { usePointer } from '.'
+import { usePointer } from '@vueuse/core'
 
 const pointer = reactive(usePointer())
 </script>

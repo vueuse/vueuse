@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onLongPress } from '.'
+import { ref } from 'vue'
+import { onLongPress } from '@vueuse/core'
 
 const htmlRef = ref<HTMLElement | null>(null)
 const htmlRefOptions = ref<HTMLElement | null>(null)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
-import { useOnline } from '.'
+import { computed } from 'vue'
+import { useOnline } from '@vueuse/core'
 
 const online = useOnline()
 

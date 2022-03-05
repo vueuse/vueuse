@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useSpeechSynthesis } from '.'
+import { ref } from 'vue'
+import { useSpeechSynthesis } from '@vueuse/core'
 
 const lang = ref('en-US')
 const text = ref('Hello, everyone! Good morning!')

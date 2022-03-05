@@ -2,8 +2,8 @@
 import { ref } from '@vue/reactivity'
 import { useCounter } from '@vueuse/shared'
 import dayjs from 'dayjs'
-import type { Ref } from 'vue-demi'
-import { useThrottledRefHistory } from '.'
+import type { Ref } from 'vue'
+import { useThrottledRefHistory } from '@vueuse/core'
 
 const format = (ts: number) => dayjs(ts).format()
 const delay: Ref<number> = ref(1000)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { reactive } from 'vue-demi'
-import { useDeviceOrientation } from '.'
+import { reactive } from 'vue'
+import { useDeviceOrientation } from '@vueuse/core'
 
 const orientation = reactive(useDeviceOrientation())
 const text = stringify(orientation)

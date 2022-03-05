@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { computed, reactive } from 'vue-demi'
-import { useElementBounding, useEventListener, useMouse } from '@vueuse/core'
-import { useElementByPoint } from '.'
+import { computed, reactive } from 'vue'
+import { useElementBounding, useElementByPoint, useEventListener, useMouse } from '@vueuse/core'
 
 const { x, y } = useMouse({ type: 'client' })
 const { element } = useElementByPoint({ x, y })
@@ -9,7 +8,7 @@ const bounding = reactive(useElementBounding(element))
 
 useEventListener('scroll', bounding.update, true)
 
-const boxStyles = computed<Record<string, string | number>>(() => {
+const boxStyles = computed(() => {
   if (element.value) {
     return {
       position: 'fixed',
@@ -22,7 +21,7 @@ const boxStyles = computed<Record<string, string | number>>(() => {
       zIndex: 9999,
       transition: 'all 0.05s linear',
       border: '1px solid var(--c-brand)',
-    }
+    } as Record<string, string | number>
   }
   return {
     display: 'none',

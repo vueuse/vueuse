@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue-demi'
-import { refThrottled } from '.'
+import { ref, watch } from 'vue'
+import { refThrottled } from '@vueuse/core'
 
 const trailing = ref(true)
 const leading = ref(false)

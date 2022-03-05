@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, ref } from 'vue'
 
-import { useJwt } from '.'
+import { useJwt } from '@vueuse/core'
 
 export default defineComponent({
   setup() {

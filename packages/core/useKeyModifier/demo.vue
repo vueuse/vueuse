@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useKeyModifier } from '@vueuse/core'
 import Key from '../useMagicKeys/Key.vue'
-import { useKeyModifier } from '.'
 
 const capsLock = useKeyModifier('CapsLock')
 const numLock = useKeyModifier('NumLock')

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { count } from './demo/state'
 import LazyDemo from './demo/LazyDemo.vue'
 import EagerDemo from './demo/EagerDemo.vue'

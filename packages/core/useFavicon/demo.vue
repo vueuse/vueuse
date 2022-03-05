@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue-demi'
-import { useFavicon } from '.'
+import { computed, ref } from 'vue'
+import { useFavicon } from '@vueuse/core'
 
 const type = ref('vueuse')
 

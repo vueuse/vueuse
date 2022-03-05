@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue-demi'
-import { useTextSelection } from './index'
+import { computed, ref } from 'vue'
+import { useTextSelection } from '@vueuse/core'
 
 const demo = ref()
 const { rects, text } = useTextSelection()

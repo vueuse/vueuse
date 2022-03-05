@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue-demi'
-import { refDebounced } from '.'
+import { ref, watch } from 'vue'
+import { refDebounced } from '@vueuse/core'
 
 const input = ref('')
 const debounced = refDebounced(input, 1000)

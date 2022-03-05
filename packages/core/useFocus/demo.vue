@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useFocus } from '.'
+import { ref } from 'vue'
+import { useFocus } from '@vueuse/core'
 
 const text = ref()
 const input = ref()

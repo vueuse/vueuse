@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue-demi'
-import { useScroll } from '.'
+import { ref, toRefs } from 'vue'
+import { useScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
