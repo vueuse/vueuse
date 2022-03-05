@@ -1,6 +1,6 @@
 import { ref, unref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef } from '@vueuse/shared'
-import { createEventHook, ignorableWatch, isNumber, isObject, isString, tryOnScopeDispose } from '@vueuse/shared'
+import { createEventHook, isNumber, isObject, isString, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -363,7 +363,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * If we did not use an ignorable watch, then the current time update from
    * the timeupdate event would cause the media to stutter.
    */
-  const { ignoreUpdates: ignoreCurrentTimeUpdates } = ignorableWatch(currentTime, (time) => {
+  const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(currentTime, (time) => {
     const el = unref(target)
     if (!el)
       return
@@ -375,7 +375,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * Using an ignorable watch so we can control the play state using a ref and not
    * a function
    */
-  const { ignoreUpdates: ignorePlayingUpdates } = ignorableWatch(playing, (isPlaying) => {
+  const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(playing, (isPlaying) => {
     const el = unref(target)
     if (!el)
       return

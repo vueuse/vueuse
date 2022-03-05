@@ -14,7 +14,7 @@ import { useEyeDropper } from '@vueuse/core'
 const { isSupported, open, sRGBHex } = useEyeDropper()
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseEyeDropper v-slot="{ isSupported, sRGBHex, open }">

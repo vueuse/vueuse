@@ -2,7 +2,7 @@ import { join, resolve } from 'path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { packages } from '../../../meta/packages'
-import { functionNames, getFunction } from '../../../meta/function-indexes'
+import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
@@ -46,8 +46,10 @@ export function MarkdownTransform(): Plugin {
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
-        code = code.replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
+        code = code
+          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n')
+          .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnModeDirectives />\n')
       }
 
       return code

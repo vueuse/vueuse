@@ -1,5 +1,4 @@
-export * from './asyncComputed'
-export * from './autoResetRef'
+export * from './computedAsync'
 export * from './computedInject'
 export * from './createUnrefFn'
 export * from './onClickOutside'

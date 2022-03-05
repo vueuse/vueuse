@@ -21,7 +21,7 @@ const {
 } = useScreenSafeArea()
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseScreenSafeArea top right bottom left>content</UseScreenSafeArea>

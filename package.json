@@ -7,7 +7,6 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "scripts": {
     "build": "nr update && esno scripts/build.ts",
-    "watch": "esno scripts/build.ts --watch",
     "build:redirects": "esno scripts/redirects.ts",
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
@@ -28,11 +27,9 @@
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
-    "update": "esno scripts/update.ts",
-    "update:full": "nr update && nr build:types"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "update": "nr -C packages/metadata prepare && esno scripts/update.ts",
+    "update:full": "nr update && nr build:types",
+    "watch": "esno scripts/build.ts --watch"
   },
   "lint-staged": {
     "{packages,.vitepress,scripts,meta}/**/*.{js,ts,tsx,vue,md}": [
@@ -43,6 +40,7 @@
     "@antfu/eslint-config": "^0.16.1",
     "@antfu/ni": "^0.13.2",
     "@iconify/json": "^2.1.7",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/js-yaml": "^4.0.5",
@@ -108,5 +106,8 @@
     "overrides": {
       "vue-demi": "0.12.1"
     }
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   }
 }

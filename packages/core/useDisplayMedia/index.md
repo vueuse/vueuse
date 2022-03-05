@@ -1,5 +1,6 @@
 ---
 category: Sensors
+related: useUserMedia
 ---
 
 # useDisplayMedia
@@ -26,8 +27,3 @@ watchEffect(() => {
   video.srcObject = stream.value
 })
 ```
-
-
-## Related Functions
-
-- `useUserMedia`

@@ -5,12 +5,11 @@
 *.log
 components.d.ts
 dist
-indexes.json
 index.json
+indexes.json
 node_modules
 packages/*/LICENSE
 packages/contributing.md
-packages/core/indexes.json
 packages/core/README.md
 packages/public/badge-*
 playgrounds/*/pnpm-lock.yaml

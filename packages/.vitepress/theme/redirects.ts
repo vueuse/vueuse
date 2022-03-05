@@ -1,5 +1,5 @@
 import type { Router } from 'vitepress'
-import { functions } from '../../../meta/function-indexes'
+import { functions } from '../../../packages/metadata/metadata'
 
 export function handleRedirects(router: Router) {
   const query = new URLSearchParams(location.search)

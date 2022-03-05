@@ -14,7 +14,7 @@ import { useWindowSize } from '@vueuse/core'
 const { width, height } = useWindowSize()
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseWindowSize v-slot="{ width, height }">

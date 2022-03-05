@@ -2,17 +2,13 @@
 import { ref } from 'vue-demi'
 import { syncRef } from '.'
 
-const source = ref('')
-const target1 = ref('')
-const target2 = ref('')
+const a = ref('')
+const b = ref('')
 
-syncRef(source, [target1, target2])
+syncRef(a, b)
 </script>
 
 <template>
-  <div>
-    <input v-model="source" placeholder="Source" type="text">
-    <input v-model="target1" placeholder="Target1" type="text">
-    <input v-model="target2" placeholder="Target2" type="text">
-  </div>
+  <input v-model="a" placeholder="A" type="text">
+  <input v-model="b" placeholder="B" type="text">
 </template>

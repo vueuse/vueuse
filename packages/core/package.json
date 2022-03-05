@@ -22,10 +22,10 @@
       "types": "./index.d.ts"
     },
     "./*": "./*",
-    "./nuxt": {
-      "import": "./nuxt.mjs",
-      "require": "./nuxt.cjs",
-      "types": "./nuxt.d.ts"
+    "./metadata": {
+      "import": "./metadata.mjs",
+      "require": "./metadata.cjs",
+      "types": "./metadata.d.ts"
     }
   },
   "main": "./index.cjs",
@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }

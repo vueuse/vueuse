@@ -18,7 +18,7 @@ const now = useNow()
 const { now, pause, resume } = useNow({ controls: true })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseNow v-slot="{ now, pause, resume }">
