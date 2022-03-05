@@ -46,8 +46,10 @@ export function MarkdownTransform(): Plugin {
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
-        code = code.replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
+        code = code
+          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/## (Components?|As a component)/i, '## $1\n<LearnMoreComponents />\n')
+          .replace(/## (Directives?|As a directive)/i, '## $1\n<LearnModeDirectives />\n')
       }
 
       return code
