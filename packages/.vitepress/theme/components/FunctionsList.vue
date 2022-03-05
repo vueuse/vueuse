@@ -2,16 +2,17 @@
 import { computed, ref, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useUrlSearchParams } from '@vueuse/core'
-import { categories, functions } from '../../../../meta/function-indexes'
+import { categoryNames, functions } from '../../../../packages/metadata/metadata'
 
-const coreCategories = categories.filter(i => !i.startsWith('@'))
-const addonCategories = categories.filter(i => i.startsWith('@'))
+const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
+const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
 const search = toRef(query, 'search')
 const category = toRef(query, 'category')
 const hasComponent = toRef(query, 'component')
+const hasDirective = toRef(query, 'directive')
 const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated'>
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
@@ -19,7 +20,9 @@ const showCategory = computed(() => !search.value && (!sortMethod.value || sortM
 const items = computed(() => {
   let fn = functions.filter(i => !i.internal)
   if (hasComponent.value)
-    fn = fn.filter(i => i.component || i.directive)
+    fn = fn.filter(i => i.component)
+  if (hasDirective.value)
+    fn = fn.filter(i => i.directive)
   if (!category.value)
     return fn
   return fn.filter(item => item.category === category.value)
@@ -38,7 +41,7 @@ const result = computed(() => {
     else if (sortMethod.value === 'name')
       fns.sort((a, b) => a.name.localeCompare(b.name))
     else
-      fns.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category))
+      fns.sort((a, b) => categoryNames.indexOf(a.category) - categoryNames.indexOf(b.category))
     return fns
   }
 })
@@ -114,10 +117,14 @@ function toggleSort(method: string) {
     <div opacity="80" text="sm">
       Filters
     </div>
-    <div flex="~">
+    <div flex="~ gap-4">
       <label class="checkbox">
         <input v-model="hasComponent" type="checkbox">
         <span>Has Component</span>
+      </label>
+      <label class="checkbox">
+        <input v-model="hasDirective" type="checkbox">
+        <span>Has Directive</span>
       </label>
     </div>
   </div>
@@ -145,8 +152,16 @@ function toggleSort(method: string) {
       </h3>
       <FunctionBadge :fn="fn" />
     </template>
+    <div v-if="!result.length" text-center pt-6>
+      <div m2 op50>
+        No result matched
+      </div>
+      <button class="select-button flex-inline gap-1 items-center !px-2 !py-1" @click="resetFilters()">
+        <CarbonFilterRemove />
+        Clear Filters
+      </button>
+    </div>
   </div>
-  <div h="1px" bg="$vt-c-divider-light" m="t-4" />
 </template>
 
 <style scoped lang="postcss">

@@ -1,4 +1,4 @@
-import type { Ref, WatchSource } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 
@@ -15,28 +15,49 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Direction of syncing
+   *
+   * @default 'both'
+   */
+  direction?: 'ltr' | 'rtl' | 'both'
 }
 
 /**
- * Keep target ref(s) in sync with the source ref
+ * Two-way refs synchronization.
  *
- * @param source source ref
- * @param targets
+ * @param left
+ * @param right
  */
-export function syncRef<T>(
-  source: WatchSource<T>,
-  targets: Ref<T> | Ref<T>[],
-  {
+export function syncRef<R extends Ref<any>>(left: R, right: R, options: SyncRefOptions = {}) {
+  const {
     flush = 'sync',
     deep = false,
     immediate = true,
-  }: SyncRefOptions = {}) {
-  if (!Array.isArray(targets))
-    targets = [targets]
+    direction = 'both',
+  } = options
 
-  return watch(
-    source,
-    newValue => (targets as Ref<T>[]).forEach(target => target.value = newValue),
-    { flush, deep, immediate },
-  )
+  let stop1: Function, stop2: Function
+
+  if (direction === 'both' || direction === 'ltr') {
+    stop1 = watch(
+      left,
+      newValue => right.value = newValue,
+      { flush, deep, immediate },
+    )
+  }
+
+  if (direction === 'both' || direction === 'rtl') {
+    stop2 = watch(
+      right,
+      newValue => left.value = newValue,
+      { flush, deep, immediate },
+    )
+  }
+
+  return () => {
+    stop1?.()
+    stop2?.()
+  }
 }

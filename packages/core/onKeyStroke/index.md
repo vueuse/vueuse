@@ -51,7 +51,7 @@ onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 
 
-## Alias
+## Shorthands
 
 - `onKeyDown` - alias for `onKeyStroke(key, handler, {eventName: 'keydown'})`
 - `onKeyPressed` - alias for `onKeyStroke(key, handler, {eventName: 'keypress'})`

@@ -1,0 +1,39 @@
+{
+  "name": "@vueuse/metadata",
+  "version": "7.7.1",
+  "description": "Metadata for VueUse functions",
+  "keywords": [
+    "vue",
+    "vue-use"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/metadata"
+  },
+  "funding": "https://github.com/sponsors/antfu",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "files": [
+    "index.*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "module": "./index.mjs",
+  "sideEffects": false,
+  "scripts": {
+    "prepare": "esno scripts/prepare.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/metadata#readme"
+}

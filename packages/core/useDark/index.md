@@ -1,5 +1,9 @@
 ---
 category: Browser
+related:
+  - useColorMode
+  - usePreferredDark
+  - useStorage
 ---
 
 # useDark
@@ -70,7 +74,7 @@ const isDark = useDark({
 })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseDark v-slot="{ isDark, toggleDark }">
@@ -79,9 +83,3 @@ const isDark = useDark({
   </button>
 </UseDark>
 ```
-
-## Related Functions
-
-- `useColorMode`
-- `usePreferredDark`
-- `useStorage`

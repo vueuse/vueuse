@@ -22,7 +22,7 @@ export default {
 }
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseDevicePixelRatio v-slot="{ pixelRatio }">

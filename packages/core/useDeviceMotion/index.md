@@ -29,7 +29,7 @@ const {
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#Properties).
 
 
-## Component
+## Component Usage
 
 ```html
 <UseDeviceMotion v-slot="{ acceleration }">

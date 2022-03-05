@@ -18,3 +18,8 @@ export function reactify<T extends Function>(fn: T): Reactify<T> {
     return computed(() => fn.apply(this, args.map(i => unref(i))))
   } as Reactify<T>
 }
+
+// alias
+export {
+  reactify as createReactiveFn,
+}

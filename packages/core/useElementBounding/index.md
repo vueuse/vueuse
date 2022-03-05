@@ -31,7 +31,7 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseElementBounding v-slot="{ width, height }">

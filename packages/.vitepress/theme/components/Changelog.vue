@@ -2,7 +2,7 @@
 // @ts-expect-error virtual
 import changelog from '/virtual-changelog'
 import { computed } from 'vue'
-import type { CommitInfo } from '../../../../meta/types'
+import type { CommitInfo } from '../@vueuse/metadata'
 import { renderCommitMessage } from '../utils'
 
 const allCommits = changelog as CommitInfo[]

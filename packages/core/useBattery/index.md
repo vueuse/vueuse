@@ -31,7 +31,7 @@ Our applications normally are not empathetic to battery level, we can make a few
 - Limit network calls and reduce CPU/Memory consumption.
 
 
-## Component
+## Component Usage
 ```html
 <UseBattery v-slot="{ charging }">
   Is Charging: {{ charging }}

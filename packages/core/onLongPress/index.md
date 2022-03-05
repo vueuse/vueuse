@@ -8,7 +8,6 @@ Listen for a long press on an element.
 
 ## Usage
 
-### As a hook
 
 ```html
 <script setup lang="ts">
@@ -41,9 +40,7 @@ onLongPress(htmlRefHook, onLongPressCallbackHook)
 </template>
 ```
 
-### As a component
-
-<LearnMoreComponents />
+### Component Usage
 
 ```html
 <script setup lang="ts">
@@ -73,9 +70,7 @@ const resetComponent = () => {
 </template>
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">
