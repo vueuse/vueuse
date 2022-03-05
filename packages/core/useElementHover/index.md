@@ -8,8 +8,6 @@ Reactive element's hover state.
 
 ## Usage
 
-### As a hook 
-
 ```vue
 <template>
   <button ref="myHoverableElement">
@@ -24,9 +22,8 @@ const myHoverableElement = ref()
 const isHovered = useElementHover(myHoverableElement)
 </script>
 ```
-### As a directive
 
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">
@@ -44,5 +41,4 @@ function onHover(state: boolean) {
     {{ isHovered ? 'Thank you!' : 'Hover me' }}
   </button>
 </template>
-
 ```

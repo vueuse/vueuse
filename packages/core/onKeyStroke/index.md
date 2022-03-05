@@ -8,8 +8,6 @@ Listen for keyboard key being stroked.
 
 ## Usage
 
-### As a hook
-
 ```js
 import { onKeyStroke } from '@vueuse/core'
 
@@ -38,9 +36,7 @@ onKeyStroke('A', (e) => {
 }, { target: document })
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">
