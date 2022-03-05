@@ -19,7 +19,7 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div data-test="element" v-if="options" v-on-longpress="{handler: onLongPress, options}">Press me</div>
+  <div data-test="element" v-if="options" v-on-longpress="[onLongPress, options]">Press me</div>
   <div data-test="element" v-else v-on-longpress="onLongPress">Press me</div>
   </template>
   `,
