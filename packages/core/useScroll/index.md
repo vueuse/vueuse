@@ -8,7 +8,6 @@ Reactive scroll position and state
 
 ## Usage
 
-### As a hook
 
 ```html
 <script setup lang="ts">
@@ -30,9 +29,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
 })
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">

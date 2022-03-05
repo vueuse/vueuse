@@ -8,7 +8,6 @@ Infinite scrolling of the element.
 
 ## Usage
 
-### As a hook
 
 ```html
 <script setup lang="ts">
@@ -37,9 +36,7 @@ useInfiniteScroll(
 </template>
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">

@@ -34,7 +34,7 @@ const {
 })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseOffsetPagination

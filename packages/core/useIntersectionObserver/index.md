@@ -8,8 +8,6 @@ Detects that a target element's visibility.
 
 ## Usage
 
-### As a hook
-
 ```html
 <div ref="target">
   <h1>Hello world</h1>
@@ -40,9 +38,7 @@ export default {
 }
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">

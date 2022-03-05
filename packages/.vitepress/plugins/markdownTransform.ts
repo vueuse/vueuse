@@ -48,8 +48,8 @@ export function MarkdownTransform(): Plugin {
 
         code = code
           .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-          .replace(/## (Components?|As a component)/i, '## $1\n<LearnMoreComponents />\n')
-          .replace(/## (Directives?|As a directive)/i, '## $1\n<LearnModeDirectives />\n')
+          .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n')
+          .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnModeDirectives />\n')
       }
 
       return code

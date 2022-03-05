@@ -74,7 +74,7 @@ const isDark = useDark({
 })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseDark v-slot="{ isDark, toggleDark }">

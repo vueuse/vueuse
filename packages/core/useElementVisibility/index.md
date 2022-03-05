@@ -33,7 +33,7 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseElementVisibility v-slot="{ isVisible }">
