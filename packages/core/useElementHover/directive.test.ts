@@ -30,7 +30,7 @@ describe('vElementHover', () => {
       },
       global: {
         directives: {
-          hover: vElementHover,
+          elementHover: vElementHover,
         },
       },
     })
