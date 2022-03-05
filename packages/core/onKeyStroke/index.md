@@ -8,6 +8,8 @@ Listen for keyboard key being stroked.
 
 ## Usage
 
+### As a hook
+
 ```js
 import { onKeyStroke } from '@vueuse/core'
 
@@ -34,6 +36,25 @@ onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
 onKeyStroke('A', (e) => {
   console.log('Key A pressed on document')
 }, { target: document })
+```
+
+### As a directive
+
+<LearnMoreComponents />
+
+```html
+<script setup lang="ts">
+import { vOnKeyStroke } from '@vueuse/components'
+function onUpdate(e: KeyboardEvent) {
+  // impl...
+}
+</script>
+
+<template>
+  <input v-on-key-stroke:c,v="onUpdate" type="text">
+  <!-- with options -->
+  <input v-on-key-stroke:c,v="[onUpdate, { eventName: 'keyup' }]" type="text">
+</template>
 ```
 
 ### Custom Keyboard Event
