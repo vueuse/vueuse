@@ -1,4 +1,6 @@
 import { computed, ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 function getRangesFromSelection(selection: Selection) {
@@ -16,7 +18,11 @@ function getRangesFromSelection(selection: Selection) {
  *
  * @see https://vueuse.org/useTextSelection
  */
-export function useTextSelection() {
+export function useTextSelection(options: ConfigurableWindow = {}) {
+  const {
+    window = defaultWindow,
+  } = options
+
   const selection = ref<Selection | null>(null)
   const text = computed(() => selection.value?.toString() ?? '')
   const ranges = computed<Range[]>(() => selection.value ? getRangesFromSelection(selection.value) : [])
@@ -24,10 +30,13 @@ export function useTextSelection() {
 
   function onSelectionChange() {
     selection.value = null // trigger computed update
-    selection.value = window.getSelection()
+    if (window)
+      selection.value = window.getSelection()
   }
 
-  useEventListener(document, 'selectionchange', onSelectionChange)
+  if (window)
+    useEventListener(window.document, 'selectionchange', onSelectionChange)
+
   return {
     text,
     rects,
