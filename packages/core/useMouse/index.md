@@ -22,6 +22,7 @@ const { x, y } = useMouse({ touch: false })
 ```
 
 ## Component Usage
+
 ```html
 <UseMouse v-slot="{ x, y }">
   x: {{ x }}

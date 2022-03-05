@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useFocusTrap } from '@vueuse/core'
+import { useFocusTrap } from '.'
 
 const target = ref()
 const { hasFocus, activate, deactivate } = useFocusTrap(target)

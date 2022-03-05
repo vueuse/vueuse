@@ -2,7 +2,7 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { BehaviorSubject } from 'rxjs'
 import { onMounted, watch } from 'vue'
-import { useSubject } from '@vueuse/core'
+import { useSubject } from '.'
 
 const countSubject = new BehaviorSubject(0)
 const count = useSubject(countSubject)

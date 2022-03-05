@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed, ref, watch } from 'vue'
-import type { UseFuseOptions } from '@vueuse/core'
-import { useFuse } from '@vueuse/core'
+import type { UseFuseOptions } from '.'
+import { useFuse } from '.'
 
 interface DataItem {
   firstName: string

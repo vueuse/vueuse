@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { useAxios } from '@vueuse/core'
+import { useAxios } from '.'
 
 const { data, isLoading, isFinished, execute } = useAxios(
   'https://jsonplaceholder.typicode.com/todos/1',
@@ -9,7 +9,7 @@ const text = stringify(data)
 </script>
 
 <template>
-  <button @click="execute">
+  <button @click="execute()">
     Execute
   </button>
   <note>Loading: {{ isLoading.toString() }}</note>

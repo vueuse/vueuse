@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { toRefs } from '@vueuse/shared'
-import { useDrauu } from '@vueuse/core'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
+import { useDrauu } from '.'
 
 const colors = ref(['black', '#ef4444', '#22c55e', '#3b82f6'])
 const target = ref()

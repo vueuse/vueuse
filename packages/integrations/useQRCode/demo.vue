@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useQRCode } from '@vueuse/core'
+import { useQRCode } from '.'
 
 const text = ref('https://vueuse.org')
 const qrcode = useQRCode(text, {
