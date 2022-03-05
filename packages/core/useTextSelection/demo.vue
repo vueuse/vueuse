@@ -9,7 +9,7 @@ const size = computed(() => ({ width: state.value.width, height: state.value.hei
 </script>
 <template>
   <div>
-    <p class="font-600 text-blue-600">
+    <p class="font-600 text-primary">
       You can select any text on the page.
     </p>
     <p><strong class="w-140px inline-block">Selected Text:</strong> <em :class="selectedStyle">{{ state.text || 'No selected' }}</em></p>

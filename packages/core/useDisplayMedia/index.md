@@ -8,7 +8,7 @@ Reactive [`mediaDevices.getDisplayMedia`](https://developer.mozilla.org/en-US/do
 
 ## Usage
 
-```js
+```ts
 import { useDisplayMedia } from '@vueuse/core'
 
 const { stream, start } = useDisplayMedia()
@@ -16,8 +16,6 @@ const { stream, start } = useDisplayMedia()
 // start streaming
 
 start()
-
-
 ```
 
 ```ts
