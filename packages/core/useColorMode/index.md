@@ -43,7 +43,7 @@ const mode = useColorMode({
 }) // Ref<'dark' | 'light' | 'dim' | 'cafe'>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseColorMode v-slot="{ mode }">

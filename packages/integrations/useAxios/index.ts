@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
+import { until } from '@vueuse/shared'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
 
@@ -54,9 +55,9 @@ export interface UseAxiosOptions {
   immediate?: boolean
 }
 
-export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
-export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T>
+export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
+export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
+export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>>
 
 /**
  * Wrapper for axios.
@@ -65,7 +66,7 @@ export function useAxios<T = any>(url: string, config: AxiosRequestConfig, insta
  * @param url
  * @param config
  */
-export function useAxios<T = any>(url: string, ...args: any[]) {
+export function useAxios<T = any>(url: string, ...args: any[]): UseAxiosReturn<T> & PromiseLike<UseAxiosReturn<T>> {
   let defaultConfig: AxiosRequestConfig = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions = { immediate: true }
@@ -85,7 +86,10 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     if ('request' in args[1])
       instance = args[1]
   }
-  if (args.length >= 2)
+  if (
+    (args.length === 2 && !('request' in args[1]))
+    || args.length === 3
+  )
     options = args[args.length - 1]
 
   const response = shallowRef<AxiosResponse<T>>()
@@ -124,7 +128,7 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
   }
   if (options.immediate) execute()
 
-  return {
+  const result = {
     response,
     data,
     error,
@@ -137,5 +141,21 @@ export function useAxios<T = any>(url: string, ...args: any[]) {
     aborted,
     abort,
     execute,
+  }
+
+  function waitUntilFinished() {
+    return new Promise<UseAxiosReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        .then(() => resolve(result))
+        .catch(error => reject(error))
+    })
+  }
+
+  return {
+    ...result,
+    then(onFulfilled, onRejected) {
+      return waitUntilFinished()
+        .then(onFulfilled, onRejected)
+    },
   }
 }

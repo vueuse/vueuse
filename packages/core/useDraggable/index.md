@@ -28,7 +28,7 @@ const { x, y, style } = useDraggable(el, {
 </template>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseDraggable :initialValue="{ x: 10, y: 10 }" v-slot="{ x, y }">

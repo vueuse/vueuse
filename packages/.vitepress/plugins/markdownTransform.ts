@@ -46,8 +46,10 @@ export function MarkdownTransform(): Plugin {
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
-        code = code.replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
+        code = code
+          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n')
+          .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnModeDirectives />\n')
       }
 
       return code
@@ -116,7 +118,7 @@ import Demo from \'./demo.vue\'
 `
     : ''
   const packageNote = packages.find(p => p.name === pkg)!.addon
-    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
+    ? `available in add-on <a href="/${pkg}/README">@vueuse/${pkg}</a>\n`
     : ''
 
   const footer = `${typingSection}\n\n${sourceSection}\n${ContributorsSection}\n${changelogSection}\n`

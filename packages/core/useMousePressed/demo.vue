@@ -4,7 +4,7 @@ import { useToggle } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue-demi'
 import { useMousePressed } from '.'
 
-const el = ref<Element | null>(null)
+const el = ref<Element | null>()
 const [withTarget, toggle] = useToggle()
 const target = computed<Element | null>(() => {
   if (withTarget.value)
@@ -25,11 +25,11 @@ const text = stringify(mouse)
         {{ withTarget ? 'Demo section' : 'Entire page' }}
       </button>
     </div>
-    <div
+    <!-- <div
       class="h-40 w-40 bg-green-200 text-green-900 p-3 flex flex-row items-center text-center"
       @drop.prevent="() => {}"
     >
       Drop something here to try drag and drop.
-    </div>
+    </div> -->
   </div>
 </template>
