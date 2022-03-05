@@ -1,4 +1,4 @@
-name: Unit Test
+name: Lint
 
 on:
   push:
@@ -17,10 +17,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14, 16]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,19 +26,13 @@ jobs:
         with:
           version: 6.24.3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
           cache: "pnpm"
 
       - run: pnpm install
 
-      - name: TypeCheck
-        run: pnpm run update:full
-
-      - name: Test Vue 3
-        run: pnpm run test:3
-
-      - name: Test Vue 2
-        run: pnpm run test:2
+      - name: Lint
+        run: pnpm run lint
