@@ -2,7 +2,7 @@
 category: '@Integrations'
 ---
 
-# useAxios
+# useChangeCase
 
 wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
 
