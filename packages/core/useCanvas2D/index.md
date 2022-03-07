@@ -14,7 +14,9 @@ Reactive [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_AP
 
 ```vue
 <template>
-  <canvas ref="canvas" class="h-128 w-128"></canvas>
+  <div ref="bound" class="w-full h-128 sm:w-128 lg:w-256">
+    <canvas ref="canvas"/>
+  </div>
 </template>
 ```
 
@@ -34,14 +36,6 @@ useRafFn(() => {
     // do something with the context ...
   }
 })
-```
-
-```vue
-<template>
-  <div ref="bound" class="w-full h-128 sm:w-128 lg:w-256">
-    <canvas ref="canvas"></canvas>
-  </div>
-</template>
 ```
 
 For more on canvas 2D context attributes, please see [CanvasRenderingContext2D.getContextAttributes()](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getContextAttributes) on Mozilla Docs.
