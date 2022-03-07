@@ -3,7 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 
-import { VOnLongPress } from './directive'
+import { vOnLongPress } from './directive'
 import type { OnLongPressOptions } from '.'
 
 const App = defineComponent({
@@ -38,7 +38,7 @@ describe('vOnLongPress', () => {
         },
         global: {
           directives: {
-            'on-longpress': VOnLongPress,
+            'on-longpress': vOnLongPress,
           },
         },
       })
@@ -69,7 +69,7 @@ describe('vOnLongPress', () => {
         },
         global: {
           directives: {
-            'on-longpress': VOnLongPress,
+            'on-longpress': vOnLongPress,
           },
         },
       })
