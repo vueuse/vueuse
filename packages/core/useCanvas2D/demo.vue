@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, reactive } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import YAML from 'js-yaml'
 import { useRafFn } from '../useRafFn'
 import { useCanvas2D } from '.'
@@ -45,7 +45,7 @@ useRafFn(() => {
 
 <template>
   <div ref="bound" class="w-full h-128">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" />
   </div>
 
   <pre lang="yaml">{{ properties }}</pre>
