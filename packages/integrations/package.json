@@ -85,14 +85,14 @@
   "types": "./index.d.ts",
   "peerDependencies": {
     "axios": "*",
+    "change-case": "*",
     "drauu": "*",
     "focus-trap": "*",
     "fuse.js": "*",
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
-    "universal-cookie": "*",
-    "change-case": "*"
+    "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
     "axios": {
