@@ -71,6 +71,11 @@
       "import": "./useQRCode.mjs",
       "require": "./useQRCode.cjs",
       "types": "./useQRCode.d.ts"
+    },
+    "./useChangeCase": {
+      "import": "./useChangeCase.mjs",
+      "require": "./useChangeCase.cjs",
+      "types": "./useChangeCase.d.ts"
     }
   },
   "main": "./index.cjs",
@@ -86,7 +91,8 @@
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
-    "universal-cookie": "*"
+    "universal-cookie": "*",
+    "change-case": "*"
   },
   "peerDependenciesMeta": {
     "axios": {
@@ -123,6 +129,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
     "axios": "^0.26.0",
+    "change-case": "^4.1.2",
     "drauu": "^0.3.0",
     "focus-trap": "^6.7.3",
     "fuse.js": "^6.5.3",
