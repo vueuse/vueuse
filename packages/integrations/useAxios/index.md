@@ -45,3 +45,11 @@ const instance = axios.create({
 
 const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance)
 ```
+
+do not pass 'url'. The default value is {immediate: false}
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const { execute } = useAxios()
+execute(url)
+```

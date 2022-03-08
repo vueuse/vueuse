@@ -43,12 +43,12 @@ describe('useAxios', () => {
   test('params: url config options', (done) => {
     const { isLoading, execute, then } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
-    execute()
+    execute('https://jsonplaceholder.typicode.com/todos/2')
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(2)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -100,6 +100,67 @@ describe('useAxios', () => {
     const { isLoading, then, execute } = useAxios(path, config, instance, options)
     expect(isLoading.value).toBeFalsy()
     execute()
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    then((result) => {
+      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+      done()
+    }, onRejected)
+  })
+
+  test('params no url: nil', (done) => {
+    const { isLoading, then, execute } = useAxios()
+    expect(isLoading.value).toBeFalsy()
+    execute(url)
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    then((result) => {
+      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+      done()
+    }, onRejected)
+  })
+
+  test('params no url: config', (done) => {
+    const { isLoading, then, execute } = useAxios(config)
+    expect(isLoading.value).toBeFalsy()
+    execute(url)
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    then()
+      .then((result) => {
+        expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+        expect(isLoading.value).toBeFalsy()
+        expect(onRejected).toBeCalledTimes(0)
+        done()
+      }, onRejected)
+  })
+
+  test('params no url: instance', (done) => {
+    const { isLoading, then, execute } = useAxios(instance)
+    expect(isLoading.value).toBeFalsy()
+    execute(url)
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    then((result) => {
+      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+      done()
+    }, onRejected)
+  })
+
+  test('params no url: config instance', (done) => {
+    const { isLoading, then, execute } = useAxios(config, instance)
+    expect(isLoading.value).toBeFalsy()
+    execute(path)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
 
