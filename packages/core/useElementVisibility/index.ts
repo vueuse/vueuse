@@ -1,12 +1,12 @@
+import type { MaybeRef } from '@vueuse/shared'
 import { tryOnMounted } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: Ref<Element | null | undefined>
+  scrollTarget?: MaybeRef<Element | null | undefined>
 }
 
 /**
@@ -17,9 +17,11 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
  * @param options
  */
 export function useElementVisibility(
-  element: Ref<Element|null|undefined>,
+  element: MaybeRef<Element|null|undefined>,
   { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
+  const _element = ref(element)
+  const _scrollTarget = unref(scrollTarget)
   const elementIsVisible = ref(false)
 
   const testBounding = () => {
@@ -27,15 +29,14 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    if (!element.value) {
+    if (!_element.value) {
       elementIsVisible.value = false
     }
     else {
-      const rect = element.value.getBoundingClientRect()
-
+      const rect = _element.value.getBoundingClientRect()
       elementIsVisible.value = (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight)
-          && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+        rect.top <= (_scrollTarget?.clientHeight || window.innerHeight || document.documentElement.clientHeight)
+        && rect.left <= (_scrollTarget?.clientWidth || window.innerWidth || document.documentElement.clientWidth)
           && rect.bottom >= 0
           && rect.right >= 0
       )
@@ -45,7 +46,7 @@ export function useElementVisibility(
   tryOnMounted(testBounding)
 
   if (window)
-    tryOnMounted(() => useEventListener(scrollTarget?.value || window, 'scroll', testBounding, { capture: false, passive: true }))
+    tryOnMounted(() => useEventListener(_scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true }))
 
   return elementIsVisible
 }
