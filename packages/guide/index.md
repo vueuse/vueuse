@@ -36,7 +36,7 @@ It will be exposed to global as `window.VueUse`
 From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
 
 ```bash
-npm i -D @vueuse/nuxt
+npm i -D @vueuse/nuxt @vueuse/core
 ```
 
 ```ts
