@@ -9,7 +9,7 @@ type BindingValueArray = [
   OnLongPressOptions,
 ]
 
-export const VOnLongPress: FunctionDirective<
+export const vOnLongPress: FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
 > = (el, binding) => {
@@ -18,3 +18,6 @@ BindingValueFunction | BindingValueArray
   else
     onLongPress(el, ...binding.value)
 }
+
+// alias
+export { vOnLongPress as VOnLongPress }

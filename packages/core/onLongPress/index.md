@@ -78,7 +78,7 @@ const resetComponent = () => {
 ```html
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VOnLongPress } from '@vueuse/components'
+import { vOnLongPress } from '@vueuse/components'
 
 const longPressedDirective = ref(false)
 
