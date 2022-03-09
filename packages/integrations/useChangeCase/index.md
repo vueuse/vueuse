@@ -18,7 +18,7 @@ npm i change-case
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 // `changeCase` will be a computed
-const changeCase = useChangeCase('hello world', 'camelCase') 
+const changeCase = useChangeCase('hello world', 'camelCase')
 changeCase.value // helloWorld
 changeCase.value = 'vue use'
 changeCase.value // vueUse
@@ -48,7 +48,7 @@ import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 const input = ref('helloWorld')
 const changeCase = useChangeCase(input, 'camelCase', {
   delimiter: '-',
-}) 
+})
 changeCase.value // hello-World
 ref.value = 'vue use'
 changeCase.value // vue-Use

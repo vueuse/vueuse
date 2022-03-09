@@ -10,7 +10,7 @@ Shorthand for binding ref to template element.
 
 ```vue
 <template>
-  <div ref="target"></div>
+  <div ref="target" />
 </template>
 
 <script lang="ts">
@@ -21,7 +21,7 @@ export default {
     const target = templateRef('target')
 
     // no need to return the `target`, it will bind to the ref magically
-  }
+  },
 }
 </script>
 ```
@@ -47,7 +47,7 @@ There is no need for this when using with `<script setup>` since all the variabl
 
 ```vue
 <template>
-  <div ref="target"></div>
+  <div ref="target" />
 </template>
 
 <script setup lang="ts">

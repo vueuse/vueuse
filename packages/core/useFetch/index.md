@@ -34,7 +34,7 @@ const { isFetching, error, data } = await useFetch(url)
 Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
 
 ```ts
-const url = ref('https://my-api.com/user/1') 
+const url = ref('https://my-api.com/user/1')
 
 const { data } = useFetch(url, { refetch: true })
 
@@ -88,9 +88,9 @@ const { data } = useFetch(url, {
     }
 
     return {
-      options
+      options,
     }
-  }
+  },
 })
 ```
 
@@ -112,13 +112,13 @@ The `onFetchError` option can intercept the response data and error before it is
 const { data } = useFetch(url, {
   onFetchError(ctx) {
     // ctx.data can be null when 5xx response
-    if (ctx.data === null) 
+    if (ctx.data === null)
       ctx.data = { title: 'Hunter x Hunter' } // Modifies the response data
 
     ctx.error = new Error('Custom Error') // Modifies the error
 
     return ctx
-  }
+  },
 })
 ```
 
@@ -144,8 +144,8 @@ const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
 The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it. This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
 
 ```ts
-const useMyFetch = createFetch({ 
-  baseUrl: 'https://my-api.com', 
+const useMyFetch = createFetch({
+  baseUrl: 'https://my-api.com',
   options: {
     async beforeFetch({ options }) {
       const myToken = await getMyToken()
@@ -153,7 +153,7 @@ const useMyFetch = createFetch({
 
       return { options }
     },
-  }, 
+  },
   fetchOptions: {
     mode: 'cors',
   },

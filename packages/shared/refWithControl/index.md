@@ -15,7 +15,7 @@ Fine-grained controls over ref and its reactivity. (Vue 3 Only)
 ```ts
 import { refWithControl } from '@vueuse/core'
 
-let num = refWithControl(0)
+const num = refWithControl(0)
 const doubled = computed(() => num.value * 2)
 
 // just like normal ref
@@ -89,6 +89,6 @@ console.log(num.value) // 1 (change been dismissed)
 const num = refWithControl(0, {
   onChanged(value, oldValue) {
     console.log(value)
-  }
+  },
 })
 ```

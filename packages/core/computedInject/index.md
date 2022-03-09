@@ -10,9 +10,15 @@ Combine computed and inject
 
 In Provider Component
 ```ts
-import { InjectionKey, provide, Ref, ref } from 'vue-demi';
+import type { InjectionKey, Ref } from 'vue-demi'
+import { provide, ref } from 'vue-demi'
 
-export const ArrayKey: InjectionKey<Ref<{ key: number, value: string }[]>> = Symbol()
+interface Item {
+  key: number
+  value: string
+}
+
+export const ArrayKey: InjectionKey<Ref<Item[]>> = Symbol('symbol-key')
 
 const array = ref([{ key: 1, value: '1' }, { key: 2, value: '2' }, { key: 3, value: '3' }])
 
@@ -23,7 +29,7 @@ In Receiver Component
 ```ts
 import { computedInject } from '@vueuse/core'
 
-import { ArrayKey } from "./provider"
+import { ArrayKey } from './provider'
 
 const computedArray = computedInject(ArrayKey, (source) => {
   const arr = [...source.value]

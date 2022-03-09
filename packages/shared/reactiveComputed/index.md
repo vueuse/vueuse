@@ -16,7 +16,7 @@ import { reactiveComputed } from '@vueuse/core'
 const state = reactiveComputed(() => {
   return {
     foo: 'bar',
-    bar: 'baz'
+    bar: 'baz',
   }
 })
 

@@ -14,7 +14,7 @@ Shorthand for `useRefHistory` with debounced filter.
 This function takes a snapshot of your counter after 1000ms when the value of it starts to change.
 
 ```ts
-import { ref } from 'vue' 
+import { ref } from 'vue'
 import { useDebouncedRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
