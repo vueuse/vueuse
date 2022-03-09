@@ -298,10 +298,10 @@ async function fetchContributors(page = 1) {
   if (data.length === 100)
     collaborators.push(...(await fetchContributors(page + 1)))
 
-  return [
+  return Array.from(new Set([
     ...collaborators.filter(collaborator => !['renovate[bot]', 'dependabot[bot]', 'renovate-bot'].includes(collaborator)),
     ...additional,
-  ]
+  ]))
 }
 
 export async function updateContributors() {
