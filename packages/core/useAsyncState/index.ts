@@ -19,7 +19,7 @@ export interface AsyncStateOptions<Shallow extends boolean> {
   delay?: number
 
   /**
-   * Excute the promise right after the function is invoked.
+   * Execute the promise right after the function is invoked.
    * Will apply the delay if any.
    *
    * When set to false, you will need to execute it manually.
@@ -53,7 +53,7 @@ export interface AsyncStateOptions<Shallow extends boolean> {
 }
 
 /**
- * Reactive async state. Will not block your setup function and will triggers changes once
+ * Reactive async state. Will not block your setup function and will trigger changes once
  * the promise is ready.
  *
  * @see https://vueuse.org/useAsyncState

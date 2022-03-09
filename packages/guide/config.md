@@ -7,7 +7,7 @@ These show the general configurations for most of the functions in VueUse.
 From v4.0, we provide the Event Filters system to give the flexibility to control when will events get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
 
 ```ts
-import { throttleFilter, debounceFilter, useLocalStorage, useMouse } from '@vueuse/core'
+import { debounceFilter, throttleFilter, useLocalStorage, useMouse } from '@vueuse/core'
 
 // changes will write to localStorage with a throttled 1s
 const storage = useLocalStorage('my-key', { foo: 'bar' }, { eventFilter: throttleFilter(1000) })
@@ -25,7 +25,7 @@ const motionControl = pausableFilter()
 
 const motion = useDeviceMotion({ eventFilter: motionControl.eventFilter })
 
-motionControl.pause() 
+motionControl.pause()
 
 // motion updates paused
 
@@ -47,7 +47,7 @@ const { pause, resume } = pausableWatch(
   () => {
     // Safely access updated DOM
   },
-  { flush: 'post' }
+  { flush: 'post' },
 )
 ```
 
@@ -74,7 +74,7 @@ const childMousePos = useMouse({ window: iframe.contextWindow })
 
 ```ts
 // testing
-const mockWindow = /* ... */
+const mockWindow = { /* ... */ }
 
 const { x, y } = useMouse({ window: mockWindow })
 ```

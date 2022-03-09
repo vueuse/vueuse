@@ -12,8 +12,8 @@ Explicitly define the deps of computed.
 ```ts
 import { computedWithControl } from '@vueuse/core'
 
-let source = ref('foo')
-let counter = ref(0)
+const source = ref('foo')
+const counter = ref(0)
 
 const computedRef = computedWithControl(
   () => source.value, // watch source, same as `watch`

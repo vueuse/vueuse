@@ -25,9 +25,9 @@ whenever(ready, () => console.log(state))
 
 // is equivalent to:
 watch(ready, (isReady) => {
-  if (isReady) {
+  if (isReady)
     console.log(state)
-  }
+
 })
 ```
 
@@ -37,9 +37,9 @@ Same as `watch`, the callback will be called with `cb(value, oldValue, onInvalid
 
 ```ts
 whenever(height, (current, lastHeight) => {
-  if (current > lastHeight) {
+  if (current > lastHeight)
     console.log(`Increasing height by ${current - lastHeight}`)
-  }
+
 })
 ```
 
@@ -50,7 +50,7 @@ Same as `watch`, you can pass a getter function to calculate on each change.
 ```ts
 // this
 whenever(
-  () => counter.value === 7, 
+  () => counter.value === 7,
   () => console.log('counter is 7 now!'),
 )
 ```
@@ -62,8 +62,8 @@ Options and defaults are same with `watch`.
 ```ts
 // this
 whenever(
-  () => counter.value === 7, 
+  () => counter.value === 7,
   () => console.log('counter is 7 now!'),
-  { flush: 'sync' }
+  { flush: 'sync' },
 )
 ```

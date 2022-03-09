@@ -9,7 +9,7 @@ Manually track the change history of a ref when the using calls `commit()`, also
 ## Usage
 
 ```ts {5}
-import { ref } from 'vue' 
+import { ref } from 'vue'
 import { useManualRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
@@ -20,7 +20,7 @@ commit()
 
 console.log(history.value)
 /* [
-  { snapshot: 1, timestamp: 1601912898062 }, 
+  { snapshot: 1, timestamp: 1601912898062 },
   { snapshot: 0, timestamp: 1601912898061 }
 ] */
 ```
@@ -38,7 +38,7 @@ console.log(counter.value) // 0
 If you are going to mutate the source, you need to pass a custom clone function or use `clone` `true` as a param, that is a shortcut for a minimal clone function `x => JSON.parse(JSON.stringify(x))` that will be used in both `dump` and `parse`.
 
 ```ts {5}
-import { ref } from 'vue' 
+import { ref } from 'vue'
 import { useManualRefHistory } from '@vueuse/core'
 
 const counter = ref({ foo: 1, bar: 2 })
@@ -77,9 +77,9 @@ Instead of using the `clone` param, you can pass custom functions to control the
 ```ts
 import { useManualRefHistory } from '@vueuse/core'
 
-const refHistory = useManualRefHistory(target, { 
+const refHistory = useManualRefHistory(target, {
   dump: JSON.stringify,
-  parse: JSON.parse
+  parse: JSON.parse,
 })
 ```
 

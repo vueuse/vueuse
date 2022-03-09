@@ -27,7 +27,7 @@ import axios from 'axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
-  baseURL: '/api'
+  baseURL: '/api',
 })
 
 const { data, isFinished } = useAxios('/posts', instance)
@@ -40,7 +40,7 @@ import axios from 'axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
-  baseURL: '/api'
+  baseURL: '/api',
 })
 
 const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance)

@@ -15,6 +15,6 @@ import { watchOnce } from '@vueuse/core'
 
 watchOnce(source, () => {
   // triggers only once
-  console.log('source changed!') 
+  console.log('source changed!')
 })
 ```

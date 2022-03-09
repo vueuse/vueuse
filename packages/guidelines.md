@@ -48,18 +48,19 @@ When using global variables like `window` or `document`, support `configurableWi
 Learn more about the implementation: [`_configurable.ts`](https://github.com/vueuse/vueuse/blob/main/packages/core/_configurable.ts)
 
 ```ts
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export function useActiveElement<T extends HTMLElement>(
-  options: ConfigurableWindow = {}
+  options: ConfigurableWindow = {},
 ) {
   const {
     // defaultWindow = isClient ? window : undefined
-    window = defaultWindow
+    window = defaultWindow,
   } = options
 
   let el: T
-  
+
   // skip when in Node.js environment (SSR)
   if (window) {
     window.addEventListener('blur', () => {
@@ -83,7 +84,7 @@ useActiveElement({ window: window.parent })
 When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `watchDebounced`:
 
 ```ts
-import { WatchOptions } from 'vue-demi'
+import type { WatchOptions } from 'vue-demi'
 
 // extend the watch options
 export interface WatchDebouncedOptions extends WatchOptions {
@@ -97,7 +98,7 @@ export function watchDebounced(
 ): WatchStopHandle {
   return watch(
     source,
-    () => /* ... */,
+    () => { /* ... */ },
     options, // pass watch options
   )
 }
@@ -140,14 +141,14 @@ For example `useShare`:
 ```ts
 export function useShare(
   shareOptions: MaybeRef<ShareOptions> = {},
-  options: ConfigurableNavigator = {}
+  options: ConfigurableNavigator = {},
 ) {
   const { navigator = defaultNavigator } = options
   const isSupported = navigator && 'canShare' in navigator
 
   const share = async(overrideOptions) => {
     if (isSupported) {
-      /* ...implementation */ 
+      /* ...implementation */
     }
   }
 
@@ -196,7 +197,7 @@ export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseL
           .then(() => resolve(state))
           .then(() => reject(state))
       }).then(onFufilled, onRejected)
-    }
+    },
   }
 }
 ```
@@ -211,7 +212,8 @@ export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseL
 
 ```ts
 import { defineComponent, reactive } from 'vue-demi'
-import { useMouse, MouseOptions } from '@vueuse/core'
+import type { MouseOptions } from '@vueuse/core'
+import { useMouse } from '@vueuse/core'
 
 export const UseMouse = defineComponent<MouseOptions>({
   name: 'UseMouse',
@@ -231,11 +233,12 @@ Sometimes a function may have multiple parameters, in that case, you maybe need 
 into a single interface for the component props.
 
 ```ts
-import { useTimeAgo, TimeAgoOptions } from '@vueuse/core'
+import type { TimeAgoOptions } from '@vueuse/core'
+import { useTimeAgo } from '@vueuse/core'
 
 interface UseTimeAgoComponentOptions extends Omit<TimeAgoOptions<true>, 'controls'> {
   time: MaybeRef<Date | number | string>
 }
 
-export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({...})
+export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({ /* ... */ })
 ```

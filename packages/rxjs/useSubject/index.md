@@ -29,9 +29,9 @@ const subject = new Subject()
 // setup()
 const subjectRef = useSubject(subject,
   {
-    onError: err => {
+    onError: (err) => {
       console.log(err.message) // "oops"
-    }
-  }
+    },
+  },
 )
 ```

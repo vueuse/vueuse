@@ -42,23 +42,6 @@ npm i universal-cookie
 </script>
 ```
 
-### SSR support ([Nuxt](https://github.com/nuxt/nuxt.js) plugin example)
-
-```ts
-// universal-cookies.js
-import { createCookies } from '@vueuse/integrations/useCookies'
-
-let useUniversalCookies
-
-const cookiesPlugin = ({ req }) => {
-  useUniversalCookies = createCookies(req)
-}
-
-export default cookiesPlugin
-
-export { useUniversalCookies } // now import and call useUniversalCookies instead of useCookies
-```
-
 ## Options
 
 Access and modify cookies using vue composition-api.

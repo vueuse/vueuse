@@ -47,7 +47,7 @@ watch(shiftCtrlA, (v) => {
 ```ts
 import { useMagicKeys } from '@vueuse/core'
 
-const { Ctrl_A_B, space, alt_s, /* ... */ } = useMagicKeys()
+const { Ctrl_A_B, space, alt_s /* ... */ } = useMagicKeys()
 
 watch(Ctrl_A_B, (v) => {
   if (v)
@@ -80,7 +80,7 @@ console.log(current) // Set { 'control', 'a' }
 
 whenever(
   () => current.has('a') && !current.has('b'),
-  () => console.log('A is pressed but not B')
+  () => console.log('A is pressed but not B'),
 )
 ```
 
@@ -91,8 +91,8 @@ import { useMagicKeys, whenever } from '@vueuse/core'
 
 const { shift_cool } = useMagicKeys({
   aliasMap: {
-    cool: 'space'
-  }
+    cool: 'space',
+  },
 })
 
 whenever(shift_cool, () => console.log('Shift + Space have been pressed'))
@@ -105,12 +105,12 @@ By default, we have some [preconfigured alias for common practices](https://gith
 You might have some `<input />` elements in your apps, and you don't want to trigger the magic keys handling when users focused on those inputs. There is an example of using `useActiveElement` and `and` to do that.
 
 ```ts
-import { useMagicKeys, useActiveElement, whenever, and } from '@vueuse/core'
+import { and, useActiveElement, useMagicKeys, whenever } from '@vueuse/core'
 
 const activeElement = useActiveElement()
-const notUsingInput = computed(() => 
+const notUsingInput = computed(() =>
   activeElement.value?.tagName !== 'INPUT'
-  && activeElement.value?.tagName !== 'TEXTAREA'
+  && activeElement.value?.tagName !== 'TEXTAREA',
 )
 
 const { tab } = useMagicKeys()
@@ -128,10 +128,10 @@ import { useMagicKeys, whenever } from '@vueuse/core'
 const { ctrl_s } = useMagicKeys({
   passive: false,
   onEventFired(e) {
-    if (e.ctrlKey && e.key === 's' && e.type === 'keydown') {
+    if (e.ctrlKey && e.key === 's' && e.type === 'keydown')
       e.preventDefault()
-    }
-  }
+
+  },
 })
 
 whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
