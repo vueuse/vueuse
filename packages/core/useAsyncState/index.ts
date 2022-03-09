@@ -19,7 +19,7 @@ export interface AsyncStateOptions<Shallow extends boolean> {
   delay?: number
 
   /**
-   * Excute the promise right after the function is invoked.
+   * Execute the promise right after the function is invoked.
    * Will apply the delay if any.
    *
    * When set to false, you will need to execute it manually.
