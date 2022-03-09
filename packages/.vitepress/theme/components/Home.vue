@@ -1,9 +1,16 @@
 <template>
-  <main class="home" aria-labelledby="main-title">
+  <main class="home" aria-labelledby="main-title" flex flex-col items-center>
     <HomeHero />
     <slot name="hero" />
     <HomeFeatures />
     <slot name="features" />
+
+    <HomeTeam />
+
+    <HomeContributors />
+
+    <HomeSponsors />
+
     <HomeFooter />
     <slot name="footer" />
   </main>

@@ -283,3 +283,23 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })
   }
 }
+
+async function fetchContributors(page = 1) {
+  const collaborators: string[] = []
+  const data = await $fetch<{ login: string }[]>(`https://api.github.com/repos/vueuse/vueuse/contributors?per_page=100&page=${page}`, {
+    method: 'get',
+    headers: {
+      'content-type': 'application/json',
+    },
+  }) || []
+  collaborators.push(...data.map(i => i.login))
+  if (data.length === 100)
+    collaborators.push(...(await fetchContributors(page + 1)))
+
+  return collaborators.filter(collaborator => !['renovate[bot]', 'dependabot[bot]', 'renovate-bot'].includes(collaborator))
+}
+
+export async function updateContributors() {
+  const collaborators = await fetchContributors()
+  await fs.writeFile(join(DIR_SRC, './contributors.json'), JSON.stringify(collaborators, null, 2), 'utf8')
+}
