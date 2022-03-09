@@ -285,6 +285,8 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
 }
 
 async function fetchContributors(page = 1) {
+  const additional = ['egoist']
+
   const collaborators: string[] = []
   const data = await $fetch<{ login: string }[]>(`https://api.github.com/repos/vueuse/vueuse/contributors?per_page=100&page=${page}`, {
     method: 'get',
@@ -296,7 +298,10 @@ async function fetchContributors(page = 1) {
   if (data.length === 100)
     collaborators.push(...(await fetchContributors(page + 1)))
 
-  return collaborators.filter(collaborator => !['renovate[bot]', 'dependabot[bot]', 'renovate-bot'].includes(collaborator))
+  return [
+    ...collaborators.filter(collaborator => !['renovate[bot]', 'dependabot[bot]', 'renovate-bot'].includes(collaborator)),
+    ...additional,
+  ]
 }
 
 export async function updateContributors() {

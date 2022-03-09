@@ -12,6 +12,8 @@ export interface CoreTeam {
   twitter?: string
   sponsors?: boolean
   description: string
+  packages?: string[]
+  functions?: string[]
 }
 
 const contributorsAvatars: Record<string, string> = {}
@@ -32,6 +34,7 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'antfu7',
     sponsors: true,
     description: 'A fanatical open sourceror<br>Core team member of Vite & Vue<br>Working at NuxtLabs',
+    packages: ['core'],
   },
   {
     avatar: contributorsAvatars['patak-dev'],
@@ -48,6 +51,8 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'wheatjs',
     sponsors: false,
     description: '',
+    functions: ['useFetch'],
+    packages: ['components'],
   },
   {
     avatar: contributorsAvatars.Tahul,
@@ -56,6 +61,7 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'yaeeelglx',
     sponsors: true,
     description: '',
+    packages: ['motion', 'gesture', 'sound'],
   },
   {
     avatar: contributorsAvatars.anteriovieira,
@@ -112,6 +118,15 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'webfansplz',
     sponsors: false,
     description: 'FE Developer<br>Love open source',
+  },
+  {
+    avatar: contributorsAvatars.egoist,
+    name: 'EGOIST',
+    github: 'egoist',
+    twitter: '_egoistlily',
+    sponsors: true,
+    description: '',
+    packages: ['head'],
   },
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))

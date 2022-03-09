@@ -5,11 +5,11 @@ import { contributors, coreTeamMembers } from '../../../contributors'
   <h2 op50 font-normal pt-5 pb-2>
     Meet The Team
   </h2>
-  <div grid="~ sm:cols-3 gap-x-8 gap-y-20 items-center" p-10>
-    <Avatar
+  <div grid="~ sm:cols-2 md:cols-3 lg:cols-4 gap-x-3 gap-y-20 items-center" p-10>
+    <TeamMember
       v-for="c of coreTeamMembers"
       :key="c.github"
-      v-bind="c"
+      :data="c"
     />
   </div>
 </template>
