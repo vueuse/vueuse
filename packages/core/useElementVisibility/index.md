@@ -52,7 +52,7 @@ const target = ref(null)
 const isVisible = ref(false)
 
 function onElementVisibility(state) {
-  isVisible.value = stat
+  isVisible.value = state
 }
 </script>
 

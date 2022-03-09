@@ -20,7 +20,6 @@ export function useElementVisibility(
   element: MaybeRef<Element|null|undefined>,
   { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
-  const _element = ref(element)
   const _scrollTarget = unref(scrollTarget)
   const elementIsVisible = ref(false)
 
@@ -29,17 +28,19 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    if (!_element.value) {
+    if (!unref(element)) {
       elementIsVisible.value = false
     }
     else {
-      const rect = _element.value.getBoundingClientRect()
-      elementIsVisible.value = (
-        rect.top <= (_scrollTarget?.clientHeight || window.innerHeight || document.documentElement.clientHeight)
-        && rect.left <= (_scrollTarget?.clientWidth || window.innerWidth || document.documentElement.clientWidth)
+      const rect = unref(element)?.getBoundingClientRect()
+      if (rect) {
+        elementIsVisible.value = (
+          rect.top <= (unref(scrollTarget)?.clientHeight || window.innerHeight || document.documentElement.clientHeight)
+          && rect.left <= (unref(scrollTarget)?.clientWidth || window.innerWidth || document.documentElement.clientWidth)
           && rect.bottom >= 0
           && rect.right >= 0
-      )
+        )
+      }
     }
   }
 

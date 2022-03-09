@@ -13,12 +13,12 @@ BindingValueFunction | BindingValueArray
 > = (el, binding) => {
   if (typeof binding.value === 'function') {
     const handler = binding.value
-    const isVisibility = useElementVisibility(el)
-    watch(isVisibility, v => handler(v))
+    const isVisible = useElementVisibility(el)
+    watch(isVisible, v => handler(v))
   }
   else {
     const [handler, options] = binding.value
-    const isVisibility = useElementVisibility(el, options)
-    watch(isVisibility, v => handler(v))
+    const isVisible = useElementVisibility(el, options)
+    watch(isVisible, v => handler(v))
   }
 }
