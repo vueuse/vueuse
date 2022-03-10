@@ -80,8 +80,7 @@ export interface UseAxiosOptions {
    */
   immediate?: boolean
 }
-
-type createUseAxiosReturn<T = any, URL = string> = (URL extends string ? StrictUseAxiosReturn<T> : EasyUseAxiosReturn<T>)
+type OverallUseAxiosReturn<T> = StrictUseAxiosReturn<T> | EasyUseAxiosReturn<T>
 export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
 export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
 export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
@@ -95,7 +94,7 @@ export function useAxios<T = any>(config?: AxiosRequestConfig, instance?: AxiosI
  * @param url
  * @param config
  */
-export function useAxios<T = any, URL = string>(...args: any[]): createUseAxiosReturn<T, URL> & PromiseLike<createUseAxiosReturn<T, URL>> {
+export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & PromiseLike<OverallUseAxiosReturn<T>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
   const argsPlaceholder = url ? 1 : 0
   let defaultConfig: AxiosRequestConfig = {}
@@ -143,7 +142,7 @@ export function useAxios<T = any, URL = string>(...args: any[]): createUseAxiosR
     isLoading.value = loading
     isFinished.value = !loading
   }
-  const execute: createUseAxiosReturn<T, URL>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
+  const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
     let _url = ''
     let _config
     if (typeof executeUrl === 'string') {
@@ -181,9 +180,9 @@ export function useAxios<T = any, URL = string>(...args: any[]): createUseAxiosR
     aborted,
     abort,
     execute,
-  } as createUseAxiosReturn<T, URL>
+  } as OverallUseAxiosReturn<T>
   function waitUntilFinished() {
-    return new Promise<createUseAxiosReturn<T, URL>>((resolve, reject) => {
+    return new Promise<OverallUseAxiosReturn<T>>((resolve, reject) => {
       until(isFinished).toBe(true)
         .then(() => resolve(result))
         .catch(error => reject(error))
