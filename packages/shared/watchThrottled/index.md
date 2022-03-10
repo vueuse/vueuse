@@ -17,20 +17,20 @@ import { watchThrottled } from '@vueuse/core'
 watchThrottled(
   source,
   () => { console.log('changed!') },
-  { throttle: 500 }
+  { throttle: 500 },
 )
 ```
 
 It's essentially a shorthand for the following code:
 
 ```ts
-import { watchWithFilter, throttleFilter } from '@vueuse/core'
+import { throttleFilter, watchWithFilter } from '@vueuse/core'
 
 watchWithFilter(
   source,
   () => { console.log('changed!') },
   {
     eventFilter: throttleFilter(500),
-  }
+  },
 )
 ```

@@ -88,7 +88,7 @@ const dumped = stringify(obj)
 
 console.log(dumped.value) // '42'
 
-obj.value = { foo: "bar" }
+obj.value = { foo: 'bar' }
 
 console.log(dumped.value) // '{"foo":"bar"}'
 ```

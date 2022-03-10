@@ -32,7 +32,7 @@ Collection of essential Vue Composition Utilities
 ## 🦄 Usage
 
 ```ts
-import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
 
 export default {
   setup() {
@@ -52,7 +52,7 @@ export default {
     )
 
     return { x, y, isDark, store }
-  }
+  },
 }
 ```
 

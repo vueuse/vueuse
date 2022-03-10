@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import { metadata } from '../packages/metadata/metadata'
-import { updateCountBadge, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
+import { updateContributors, updateCountBadge, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
 
 async function run() {
   await Promise.all([
@@ -11,6 +11,7 @@ async function run() {
     updateFunctionREADME(metadata),
     updatePackageJSON(metadata),
     updateCountBadge(metadata),
+    updateContributors(),
   ])
 
   await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')

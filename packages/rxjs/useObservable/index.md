@@ -12,7 +12,7 @@ Use an Observable, return a ref and automatically unsubscribe from it when the c
 import { ref } from 'vue'
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
-import { mapTo, startWith, scan } from 'rxjs/operators'
+import { mapTo, scan, startWith } from 'rxjs/operators'
 
 // setup()
 const count = useObservable(
@@ -20,7 +20,7 @@ const count = useObservable(
     mapTo(1),
     startWith(0),
     scan((total, next) => next + total),
-  )
+  ),
 )
 ```
 
@@ -35,17 +35,17 @@ import { map } from 'rxjs/operators'
 // setup()
 const count = useObservable(
   interval(1000).pipe(
-    map(n => {
-      if (n === 10) {
+    map((n) => {
+      if (n === 10)
         throw new Error('oops')
-      }
+
       return n + n
-    })
+    }),
   ),
   {
-    onError: err => {
+    onError: (err) => {
       console.log(err.message) // "oops"
-    }
-  }
+    },
+  },
 )
 ```

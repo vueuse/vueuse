@@ -10,9 +10,9 @@ setSSRHandler('getDefaultStorage', () => {
     return cookieMap.get(key)
   }
   return {
-    getItem: (key) => get(key).value,
+    getItem: key => get(key).value,
     setItem: (key, value) => get(key).value = value,
-    removeItem: (key) => get(key).value = undefined
+    removeItem: key => get(key).value = undefined,
   }
 })
 

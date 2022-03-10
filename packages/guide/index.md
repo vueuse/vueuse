@@ -43,8 +43,8 @@ npm i -D @vueuse/nuxt @vueuse/core
 // nuxt.config.js
 export default {
   buildModules: [
-    '@vueuse/nuxt'
-  ]
+    '@vueuse/nuxt',
+  ],
 }
 ```
 
@@ -65,7 +65,7 @@ const { x, y } = useMouse()
 Simply importing the functions you need from `@vueuse/core`
 
 ```ts
-import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
 
 export default {
   setup() {
@@ -77,7 +77,7 @@ export default {
 
     // persist state in localStorage
     const store = useLocalStorage(
-      'my-storage', 
+      'my-storage',
       {
         name: 'Apple',
         color: 'red',
@@ -85,7 +85,7 @@ export default {
     )
 
     return { x, y, isDark, store }
-  }
+  },
 }
 ```
 
