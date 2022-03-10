@@ -22,6 +22,13 @@ export interface UseDraggableOptions {
   preventDefault?: MaybeRef<boolean>
 
   /**
+   * Prevent events propagation
+   *
+   * @default false
+   */
+  stopPropagation?: MaybeRef<boolean>
+
+  /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
@@ -79,6 +86,12 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (unref(options.preventDefault))
       e.preventDefault()
   }
+
+  const stopPropagation = (e: PointerEvent) => {
+    if (unref(options.stopPropagation))
+      e.stopPropagation()
+  }
+
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
@@ -93,6 +106,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     pressedDelta.value = pos
     preventDefault(e)
+    stopPropagation(e)
   }
   const move = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -105,6 +119,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     }
     options.onMove?.(position.value, e)
     preventDefault(e)
+    stopPropagation(e)
   }
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -114,6 +129,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)
     preventDefault(e)
+    stopPropagation(e)
   }
 
   if (isClient) {
