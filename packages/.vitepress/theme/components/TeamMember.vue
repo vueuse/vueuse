@@ -35,6 +35,15 @@ defineProps<{
         rel="noopener noreferrer"
         :aria-label="`${data.name} on Twitter`"
       />
+      <a
+        v-if="data.sponsors"
+        class="i-carbon-favorite-filled inline-block mya text-current op30 hover:op100 transition duration-200"
+        :href="`https://github.com/sponsors/${data.github}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        :title="`Sponsor ${data.name}`"
+        :aria-label="`Sponsor ${data.name}`"
+      />
     </div>
     <div v-if="data.functions || data.packages" bg-gray:5 mb2 p2 rounded grid="~ cols-[20px_1fr] gap-y-2" items-start w-max mxa>
       <template v-if="data.functions">
@@ -53,18 +62,6 @@ defineProps<{
           </a>
         </div>
       </template>
-    </div>
-    <div v-if="data.sponsors">
-      <a
-        p="x3 y0.5"
-        class="rounded inline-flex justify-center items-center gap-2 text-white leading-30px mt-1 bg-pink-500 hover:bg-pink-600"
-        target="_blank"
-        rel="noopener noreferrer"
-        :href="`https://github.com/sponsors/${data.github}`"
-      >
-        <span class="i-carbon-favorite-filled inline-block" />
-        Sponsor
-      </a>
     </div>
   </div>
 </template>
