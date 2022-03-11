@@ -97,7 +97,11 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions & { data
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Blob' }): UseFileSystemAccessReturn<Blob>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): UseFileSystemAccessReturn<string | ArrayBuffer | Blob> {
-  const { window = defaultWindow, dataType = 'Text' } = unref(options)
+  const {
+    window: _window = defaultWindow,
+    dataType = 'Text',
+  } = unref(options)
+  const window = _window as FileSystemAccessWindow
   const isSupported = Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
@@ -110,50 +114,52 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const fileLastModified = computed(() => file.value?.lastModified ?? 0)
 
   async function open(_options: UseFileSystemAccessCommonOptions = {}) {
-    if (isSupported) {
-      const [handle] = await (window as FileSystemAccessWindow).showOpenFilePicker({ ...unref(options), ..._options })
-      fileHandle.value = handle
-      await updateFile()
-      await updateData()
-    }
+    if (!isSupported)
+      return
+    const [handle] = await window.showOpenFilePicker({ ...unref(options), ..._options })
+    fileHandle.value = handle
+    await updateFile()
+    await updateData()
   }
 
   async function create(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (isSupported) {
-      fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
-      data.value = undefined
-      await updateFile()
-      await updateData()
-    }
+    if (!isSupported)
+      return
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    data.value = undefined
+    await updateFile()
+    await updateData()
   }
 
   async function save(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (isSupported) {
-      if (!fileHandle.value)
-        // save as
-        return saveAs(_options)
+    if (!isSupported)
+      return
 
-      if (data.value) {
-        const writableStream = await fileHandle.value.createWritable()
-        await writableStream.write(data.value)
-        await writableStream.close()
-      }
-      await updateFile()
+    if (!fileHandle.value)
+    // save as
+      return saveAs(_options)
+
+    if (data.value) {
+      const writableStream = await fileHandle.value.createWritable()
+      await writableStream.write(data.value)
+      await writableStream.close()
     }
+    await updateFile()
   }
 
   async function saveAs(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (isSupported) {
-      fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    if (!isSupported)
+      return
 
-      if (data.value) {
-        const writableStream = await fileHandle.value.createWritable()
-        await writableStream.write(data.value)
-        await writableStream.close()
-      }
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
 
-      await updateFile()
+    if (data.value) {
+      const writableStream = await fileHandle.value.createWritable()
+      await writableStream.write(data.value)
+      await writableStream.close()
     }
+
+    await updateFile()
   }
 
   async function updateFile() {

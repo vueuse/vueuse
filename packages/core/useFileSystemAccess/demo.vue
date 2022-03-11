@@ -28,45 +28,51 @@ const str = stringify(reactive({
 
 async function onSave() {
   await res.save()
-  alert('saved')
 }
 </script>
 
 <template>
   <div>
-    <button @click="res.create()">
-      new file
-    </button>
-    <button @click="res.open()">
-      open
-    </button>
-    <button @click="onSave">
-      save
-    </button>
-    <button @click="res.saveAs()">
-      save as
-    </button>
+    <div flex="~ gap-1" items-center>
+      <button @click="res.open()">
+        Open
+      </button>
+      <button @click="res.create()">
+        New file
+      </button>
+      <button :disabled="!res.file.value" @click="onSave">
+        Save
+      </button>
+      <button :disabled="!res.file.value" @click="res.saveAs()">
+        Save as
+      </button>
 
-    <div>
-      choose dataType:
-      <select v-model="dataType" class="border outline-none h-9 ml-5 w-50">
-        <option value="Text">
-          Text
-        </option>
-        <option value="ArrayBuffer">
-          ArrayBuffer
-        </option>
-        <option value="Blob">
-          Blob
-        </option>
-      </select>
+      <div ml5>
+        <div text-xs op50>
+          DataType
+        </div>
+        <select v-model="dataType" class="outline-none w-30 px2 py1 text-sm" border="~ main rounded">
+          <option value="Text">
+            Text
+          </option>
+          <option value="ArrayBuffer">
+            ArrayBuffer
+          </option>
+          <option value="Blob">
+            Blob
+          </option>
+        </select>
+      </div>
     </div>
 
     <pre class="code-block" lang="yaml">{{ str }}</pre>
 
-    <div>
-      content:
-      <textarea v-if="dataType ==='Text' " v-model="content" rows="20" cols="40" />
+    <div v-if="content">
+      Content
+      <textarea
+        v-if="typeof content === 'string'"
+        v-model="content" rows="20" cols="40" w-full
+      />
       <span v-else>{{ content }}</span>
     </div>
   </div>
