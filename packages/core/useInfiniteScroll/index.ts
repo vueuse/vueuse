@@ -1,5 +1,5 @@
 import type { UnwrapNestedRefs } from 'vue-demi'
-import { reactive, watch, unref, nextTick } from 'vue-demi'
+import { nextTick, reactive, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
@@ -11,7 +11,7 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
    * @default 0
    */
   distance?: number
-  
+
   /**
    * The direction in which to listen the scroll.
    *
