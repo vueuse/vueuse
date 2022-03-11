@@ -99,7 +99,7 @@ const coreTeamMembers: CoreTeam[] = [
     avatar: contributorsAvatars.okxiaoliang4,
     name: 'Jelf',
     github: 'okxiaoliang4',
-    twitter: '',
+    twitter: 'okxiaoliang4',
     sponsors: false,
     description: '',
   },
