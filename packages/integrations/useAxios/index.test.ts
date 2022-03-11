@@ -18,7 +18,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(data.value).length > 0).toBeTruthy()
+      expect(data.value.id).toBe(1)
       expect(result.data).toBe(data)
       expect(isFinished.value).toBeTruthy()
       expect(onRejected).toBeCalledTimes(0)
@@ -33,7 +33,7 @@ describe('useAxios', () => {
 
     then()
       .then((result) => {
-        expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+        expect(result.data.value.id).toBe(1)
         expect(isFinished.value).toBeTruthy()
         expect(onRejected).toBeCalledTimes(0)
         done()
@@ -61,7 +61,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isFinished.value).toBeTruthy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -76,7 +76,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -89,7 +89,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isFinished.value).toBeTruthy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -104,7 +104,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -119,7 +119,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -135,7 +135,7 @@ describe('useAxios', () => {
 
     then()
       .then((result) => {
-        expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+        expect(result.data.value.id).toBe(1)
         expect(isLoading.value).toBeFalsy()
         expect(onRejected).toBeCalledTimes(0)
         done()
@@ -150,7 +150,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
@@ -165,7 +165,7 @@ describe('useAxios', () => {
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(Object.keys(result.data.value).length > 0).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
