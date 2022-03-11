@@ -3,7 +3,7 @@ import { useWebNotification } from '@vueuse/core'
 import type { UseWebNotificationOptions } from '@vueuse/core'
 
 const options: UseWebNotificationOptions = {
-  title: 'Hello, VueUse world!',
+  title: 'Hello, world from VueUse!',
   dir: 'auto',
   lang: 'en',
   renotify: true,
@@ -19,14 +19,13 @@ const {
 <template>
   <div>
     <p>
-      Supported:
-      <b>{{ isSupported }}</b>
+      Supported: <BooleanDisplay :value="isSupported" />
     </p>
   </div>
 
   <div v-if="isSupported">
-    <button @click="show">
-      show notification
+    <button @click="show()">
+      Show Notification
     </button>
   </div>
   <div v-else>
