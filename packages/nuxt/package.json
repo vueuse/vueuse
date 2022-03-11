@@ -14,14 +14,16 @@
     "url": "https://github.com/vueuse/vueuse/issues"
   },
   "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/nuxt"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
-  "sideEffects": false,
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -30,9 +32,7 @@
     },
     "./*": "./*"
   },
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "sideEffects": false,
   "dependencies": {
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
     "@vueuse/core": "workspace:*",

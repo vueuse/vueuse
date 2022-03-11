@@ -7,16 +7,16 @@
     "vue-use"
   ],
   "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/metadata"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
-  "files": [
-    "index.*"
-  ],
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -25,9 +25,9 @@
     },
     "./*": "./*"
   },
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
+  "files": [
+    "index.*"
+  ],
   "sideEffects": false,
   "scripts": {
     "update": "esno scripts/update.ts"

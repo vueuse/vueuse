@@ -31,15 +31,10 @@
     "update:full": "nr update && nr build:types",
     "watch": "esno scripts/build.ts --watch"
   },
-  "lint-staged": {
-    "{packages,.vitepress,scripts,meta}/**/*.{js,ts,tsx,vue,md}": [
-      "eslint --fix"
-    ]
-  },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.18.3",
+    "@antfu/eslint-config": "^0.18.8",
     "@antfu/ni": "^0.13.2",
-    "@iconify/json": "^2.1.13",
+    "@iconify/json": "^2.1.14",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
@@ -53,7 +48,7 @@
     "@vue/composition-api": "^1.4.9",
     "@vue/test-utils": "^2.0.0-rc.18",
     "@vue/theme": "^1.0.1",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "bumpp": "^7.1.1",
     "consola": "^2.15.3",
     "cross-env": "^7.0.3",
@@ -87,7 +82,7 @@
     "simple-git": "^3.2.6",
     "simple-git-hooks": "^2.7.0",
     "typescript": "4.6.2",
-    "unocss": "^0.27.2",
+    "unocss": "^0.27.6",
     "unplugin-icons": "^0.13.3",
     "unplugin-vue-components": "^0.17.21",
     "vite": "^2.8.6",
@@ -97,6 +92,11 @@
     "vitest": "^0.6.0",
     "vue": "^3.2.31",
     "vue2": "npm:vue@^2.6.14"
+  },
+  "lint-staged": {
+    "{packages,.vitepress,scripts,meta}/**/*.{js,ts,tsx,vue,md}": [
+      "eslint --fix"
+    ]
   },
   "pnpm": {
     "neverBuiltDependencies": [

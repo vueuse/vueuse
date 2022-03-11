@@ -12,14 +12,18 @@
     "url": "https://github.com/vueuse/vueuse/issues"
   },
   "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/integrations"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
-  "sideEffects": false,
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -78,11 +82,7 @@
       "types": "./useChangeCase.d.ts"
     }
   },
-  "main": "./index.cjs",
-  "jsdelivr": "./index.iife.min.js",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "sideEffects": false,
   "peerDependencies": {
     "axios": "*",
     "change-case": "*",
@@ -128,7 +128,7 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "change-case": "^4.1.2",
     "drauu": "^0.3.0",
     "focus-trap": "^6.7.3",

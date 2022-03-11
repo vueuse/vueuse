@@ -10,13 +10,16 @@
     "renderer"
   ],
   "license": "MIT",
+  "author": "Archer Gu<https://github.com/ArcherGu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/electron"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Archer Gu<https://github.com/ArcherGu>",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -25,9 +28,6 @@
     },
     "./*": "./*"
   },
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
   "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
