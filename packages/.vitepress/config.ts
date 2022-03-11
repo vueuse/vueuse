@@ -32,10 +32,6 @@ const AddonCategories = [
       activeMatch: '___', // never active
       link: `/functions#category=${encodeURIComponent(c)}`,
     })),
-  { text: 'Head', link: '/add-ons.html#head-vueuse-head' },
-  { text: 'Motion', link: '/add-ons.html#motion-vueuse-motion' },
-  { text: 'Gesture', link: '/add-ons.html#gesture-vueuse-gesture' },
-  { text: 'Sound', link: '/add-ons.html#sound-vueuse-sound' },
 ]
 
 const Links = [
