@@ -9,7 +9,7 @@ Track the change history of a ref, also provides undo and redo functionality
 ## Usage
 
 ```ts {5}
-import { ref } from 'vue' 
+import { ref } from 'vue'
 import { useRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
@@ -24,7 +24,7 @@ counter.value += 1
 await nextTick()
 console.log(history.value)
 /* [
-  { snapshot: 1, timestamp: 1601912898062 }, 
+  { snapshot: 1, timestamp: 1601912898062 },
   { snapshot: 0, timestamp: 1601912898061 }
 ] */
 ```
@@ -90,9 +90,9 @@ Instead of using the `clone` param, you can pass custom functions to control the
 ```ts
 import { useRefHistory } from '@vueuse/core'
 
-const refHistory = useRefHistory(target, { 
+const refHistory = useRefHistory(target, {
   dump: JSON.stringify,
-  parse: JSON.parse
+  parse: JSON.parse,
 })
 ```
 
@@ -116,7 +116,7 @@ In the same way as `watch`, you can modify the flush timing using the `flush` op
 
 ```ts
 const refHistory = useRefHistory(target, {
-  flush: 'sync' // options 'pre' (default), 'post' and 'sync'
+  flush: 'sync', // options 'pre' (default), 'post' and 'sync'
 })
 ```
 
@@ -161,11 +161,11 @@ console.log(history.value)
 If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a mutable `splice` in an array. `splice` can generate up to three atomic operations that will be pushed to the ref history.
 
 ```ts
-const arr = ref([1,2,3])
+const arr = ref([1, 2, 3])
 const { history, batch } = useRefHistory(r, { deep: true, flush: 'sync' })
 
 batch(() => {
-  arr.value.splice(1,1) // batch ensures only one history point is generated
+  arr.value.splice(1, 1) // batch ensures only one history point is generated
 })
 ```
 

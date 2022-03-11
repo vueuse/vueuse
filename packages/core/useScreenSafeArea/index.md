@@ -13,10 +13,10 @@ Reactive `env(safe-area-inset-*)`
 ```ts
 import { useScreenSafeArea } from '@vueuse/core'
 
-const { 
-  top, 
-  right, 
-  bottom, 
+const {
+  top,
+  right,
+  bottom,
   left,
 } = useScreenSafeArea()
 ```

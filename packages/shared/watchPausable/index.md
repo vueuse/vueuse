@@ -13,13 +13,13 @@ Use as normal the `watch`, but return extra `pause()` and `resume()` functions t
 
 ```ts
 import { watchPausable } from '@vueuse/core'
-import { ref, nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const source = ref('foo')
 
 const { stop, pause, resume } = watchPausable(
   source,
-  (v) => console.log(`Changed to ${v}!`),
+  v => console.log(`Changed to ${v}!`),
 )
 
 source.value = 'bar'

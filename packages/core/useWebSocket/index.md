@@ -46,7 +46,7 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
     retries: 3,
     delay: 1000,
     onFailed() {
-      alert('Failed to connect WebSocket after 3 retires')
+      alert('Failed to connect WebSocket after 3 retries')
     },
   },
 })

@@ -46,7 +46,7 @@ const isDark = useDark({
   selector: 'body',
   attribute: 'color-scheme',
   valueDark: 'dark',
-  valueLight: 'light'
+  valueLight: 'light',
 })
 ```
 
@@ -70,7 +70,7 @@ If the configuration above still not fitting to your needs, you can use `onChang
 const isDark = useDark({
   onChanged(dark: boolean) {
     // update the dom, call the API or something
-  }
+  },
 })
 ```
 

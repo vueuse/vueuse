@@ -16,8 +16,8 @@ The results are not cleared automatically. Call `clear()` in case you no longer 
 import { useMemoize } from '@vueuse/core'
 
 const getUser = useMemoize(
-  async (userId: number): Promise<UserData> =>
-    axios.get(`users/${userId}`).then(({ data }) => data)
+  async(userId: number): Promise<UserData> =>
+    axios.get(`users/${userId}`).then(({ data }) => data),
 )
 
 const user1 = await getUser(1) // Request users/1
@@ -48,12 +48,12 @@ This will allow equal objects to receive the same cache key. In case you want to
 
 ```ts
 const getUser = useMemoize(
-  async (userId: number, headers: AxiosRequestHeaders): Promise<UserData> =>
+  async(userId: number, headers: AxiosRequestHeaders): Promise<UserData> =>
     axios.get(`users/${userId}`, { headers }).then(({ data }) => data),
   {
     // Use only userId to get/set cache and ignore headers
-    getKey: (userId, headers) => userId
-  }
+    getKey: (userId, headers) => userId,
+  },
 )
 ```
 

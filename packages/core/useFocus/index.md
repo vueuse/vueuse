@@ -11,10 +11,10 @@ Reactive utility to track or set the focus state of a DOM element. State changes
 ```ts
 import { useFocus } from '@vueuse/core'
 
-const target = ref();
+const target = ref()
 const { focused } = useFocus(target)
 
-watch(focused, focused => {
+watch(focused, (focused) => {
   if (focused) console.log('input element has been focused')
   else console.log('input element has lost focus')
 })
@@ -27,7 +27,7 @@ To focus the element on it's first render one can provide the `initialValue` opt
 ```ts
 import { useFocus } from '@vueuse/core'
 
-const target = ref();
+const target = ref()
 const { focused } = useFocus(target, { initialValue: true })
 ```
 

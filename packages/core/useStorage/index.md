@@ -40,19 +40,19 @@ useStorage(
   'key',
   {},
   undefined,
-  { 
+  {
     serializer: {
       read: (v: any) => v ? JSON.parse(v) : null,
       write: (v: any) => JSON.stringify(v),
-    }
-  }
-})
+    },
+  },
+)
 ```
 
 Please note when you provide `null` as the default value, `useStorage` can't assume the data type from it. In this case, you can provide a custom serializer or reuse the built-in ones explicitly.
 
 ```ts
-import { useStorage, StorageSerializers } from '@vueuse/core'
+import { StorageSerializers, useStorage } from '@vueuse/core'
 
 const objectLike = useStorage('key', null, undefined, { serializer: StorageSerializers.object })
 objectLike.value = { foo: 'bar' }

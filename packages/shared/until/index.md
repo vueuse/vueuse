@@ -51,7 +51,8 @@ await until(ref).toBe(true, { timeout: 1000 })
 try {
   await until(ref).toBe(true, { timeout: 1000, throwOnTimeout: true })
   // ref.value === true
-} catch(e) {
+}
+catch (e) {
   // timeout
 }
 ```

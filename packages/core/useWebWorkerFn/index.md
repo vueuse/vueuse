@@ -24,13 +24,13 @@ const { workerFn } = useWebWorkerFn(() => {
 import { useWebWorkerFn } from '@vueuse/core'
 
 const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
-  dates => dates.sort(dateFns.compareAsc), 
+  dates => dates.sort(dateFns.compareAsc),
   {
     timeout: 50000,
     dependencies: [
-      'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js' // dateFns
+      'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js', // dateFns
     ],
-  }
+  },
 )
 ```
 

@@ -30,12 +30,6 @@
       <a class="setup" href="/functions">All Functions</a>
       <a class="setup" href="https://github.com/vueuse/vueuse" target="_blank"><carbon:logo-github class="icon" /> GitHub</a>
     </p>
-
-    <p id="sponsor" class="mt-18 text-center">
-      <a href="https://github.com/sponsors/antfu">
-        <img src="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg" class="m-auto">
-      </a>
-    </p>
   </header>
 </template>
 
