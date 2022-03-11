@@ -58,6 +58,6 @@ The `execute` function `url` here is optional, and `url2` will replace the `url1
 ```ts
 import { useAxios } from '@vueuse/integrations/useAxios'
 
-const { execute } = useAxios(url1, {}, {immediate: false})
+const { execute } = useAxios(url1, {}, { immediate: false })
 execute(url2)
 ```
