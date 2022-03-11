@@ -124,8 +124,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)
-    preventDefault(e)
-    stopPropagation(e)
+    handleEvent(e)
   }
 
   if (isClient) {
