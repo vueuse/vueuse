@@ -82,12 +82,10 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return options.pointerTypes.includes(e.pointerType as PointerType)
     return true
   }
-  const preventDefault = (e: PointerEvent) => {
+
+  const handleEvent = (e: PointerEvent) => {
     if (unref(options.preventDefault))
       e.preventDefault()
-  }
-
-  const stopPropagation = (e: PointerEvent) => {
     if (unref(options.stopPropagation))
       e.stopPropagation()
   }
@@ -105,8 +103,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (options.onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
-    preventDefault(e)
-    stopPropagation(e)
+    handleEvent(e)
   }
   const move = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -118,8 +115,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       y: e.pageY - pressedDelta.value.y,
     }
     options.onMove?.(position.value, e)
-    preventDefault(e)
-    stopPropagation(e)
+    handleEvent(e)
   }
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
