@@ -109,7 +109,7 @@ ${code}
 import Demo from \'./demo.vue\'
 </script>
 
-# Demo
+## Demo
 
 <DemoContainer>
 <p class="demo-source-link"><a href="${URL}/demo.vue" targat="blank">source</a></p>
