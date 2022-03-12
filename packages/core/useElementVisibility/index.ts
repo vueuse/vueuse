@@ -20,7 +20,6 @@ export function useElementVisibility(
   element: MaybeRef<Element|null|undefined>,
   { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
-  const _scrollTarget = unref(scrollTarget)
   const elementIsVisible = ref(false)
 
   const testBounding = () => {
@@ -35,10 +34,10 @@ export function useElementVisibility(
       const rect = unref(element)?.getBoundingClientRect()
       if (rect) {
         elementIsVisible.value = (
-          rect.top <= (unref(scrollTarget)?.clientHeight || window.innerHeight || document.documentElement.clientHeight)
-          && rect.left <= (unref(scrollTarget)?.clientWidth || window.innerWidth || document.documentElement.clientWidth)
-          && rect.bottom >= 0
-          && rect.right >= 0
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight)
+           && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+           && rect.bottom >= 0
+           && rect.right >= 0
         )
       }
     }
@@ -47,7 +46,7 @@ export function useElementVisibility(
   tryOnMounted(testBounding)
 
   if (window)
-    tryOnMounted(() => useEventListener(_scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true }))
+    tryOnMounted(() => useEventListener(unref(scrollTarget) || window, 'scroll', testBounding, { capture: false, passive: true }))
 
   return elementIsVisible
 }
