@@ -51,7 +51,7 @@ export function onClickOutside(
   }
 
   const cleanup = [
-    useEventListener(window, 'click', listener, { passive: true, capture: true }),
+    useEventListener(window, 'click', listener, { passive: true }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen.value = !!el && !e.composedPath().includes(el)
