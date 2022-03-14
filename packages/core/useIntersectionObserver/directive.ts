@@ -6,12 +6,18 @@ type BindingValueFunction = IntersectionObserverCallback
 
 type BindingValueArray = [BindingValueFunction, IntersectionObserverOptions]
 
-export const vIntersectionObserver: FunctionDirective<
+const vIntersectionObserverHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> = (el, binding) => {
-  if (typeof binding.value === 'function')
-    useIntersectionObserver(el, binding.value)
-  else
-    useIntersectionObserver(el, ...binding.value)
+> => {
+  let isMounted = false
+  return (el, binding) => {
+    if (isMounted) return
+    isMounted = true
+    if (typeof binding.value === 'function')
+      useIntersectionObserver(el, binding.value)
+    else
+      useIntersectionObserver(el, ...binding.value)
+  }
 }
+export const vIntersectionObserver = vIntersectionObserverHandler()
