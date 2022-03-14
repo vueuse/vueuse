@@ -31,7 +31,7 @@ export function useElementVisibility(
       elementIsVisible.value = false
     }
     else {
-      const rect = (element as HTMLElement).getBoundingClientRect()
+      const rect = (unref(element) as HTMLElement).getBoundingClientRect()
       elementIsVisible.value = (
         rect.top <= (window.innerHeight || document.documentElement.clientHeight)
           && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
