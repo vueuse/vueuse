@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "VueUse Nuxt Module",
   "keywords": [
     "vue",
