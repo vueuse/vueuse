@@ -68,8 +68,7 @@ export function useResizeObserver(
       cleanup()
 
       if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.ResizeObserver(callback)
+        observer = new ResizeObserver(callback)
         observer!.observe(el, observerOptions)
       }
     },

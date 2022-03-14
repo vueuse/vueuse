@@ -48,8 +48,7 @@ export function useWebWorker<Data = any>(
   }
 
   if (window) {
-    // @ts-expect-error untyped
-    worker.value = new window.Worker(url, workerOptions)
+    worker.value = new Worker(url, workerOptions)
 
     worker.value!.onmessage = (e: MessageEvent) => {
       data.value = e.data
