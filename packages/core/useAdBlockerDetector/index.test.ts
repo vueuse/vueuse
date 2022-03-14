@@ -1,38 +1,21 @@
-import { useCounter } from '.'
+import { useAdBlockerDetector } from '@vueuse/core'
+import { vitest } from 'vitest'
 
-describe('useCounter', () => {
+describe('useAdBlockerDetector', () => {
   it('should be defined', () => {
-    expect(useCounter).toBeDefined()
+    expect(useAdBlockerDetector).toBeDefined()
   })
 
-  it('should be update counter', () => {
-    const { count, inc, dec, get, set, reset } = useCounter()
+  it('should not detect any ad blocker', async() => {
+    const hasBlockerDetector = await useAdBlockerDetector()
 
-    expect(count.value).toBe(0)
-    expect(get()).toBe(0)
-    inc()
-    expect(count.value).toBe(1)
-    expect(get()).toBe(1)
-    inc(2)
-    expect(count.value).toBe(3)
-    expect(get()).toBe(3)
-    dec()
-    expect(count.value).toBe(2)
-    expect(get()).toBe(2)
-    dec(5)
-    expect(count.value).toBe(-3)
-    expect(get()).toBe(-3)
-    set(100)
-    expect(count.value).toBe(100)
-    expect(get()).toBe(100)
-    reset()
-    expect(count.value).toBe(0)
-    expect(get()).toBe(0)
-    reset(25)
-    expect(count.value).toBe(25)
-    expect(get()).toBe(25)
-    reset()
-    expect(count.value).toBe(25)
-    expect(get()).toBe(25)
+    expect(hasBlockerDetector.value).toBe(false)
+  })
+
+  it.only('should not detect any ad blocker', async() => {
+    vitest.spyOn(window, 'fetch').mockImplementation(() => { throw Error })
+    const hasBlockerDetector = await useAdBlockerDetector()
+
+    expect(hasBlockerDetector.value).toBe(true)
   })
 })

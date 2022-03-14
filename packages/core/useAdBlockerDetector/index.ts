@@ -1,24 +1,17 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { defaultWindow } from '../_configurable'
 
-const HONEY_POT_URL = '/&ad_code=34&ad_height=23&ad_ids=23&ad_network_23&ad_slot=23&ad_sub=23&ad_system=67'
+// Parameters taken from easylist general advert blocking filters
+// https://easylist.to/easylist/easylist.txt
+const HONEY_POT_URL = '/&ad_code=ad&ad_height=ad&ad_ids=ad&ad_network_ad&ad_slot=ad&ad_sub=ad&ad_system=ad'
 
 export async function useAdBlockerDetector(): Promise<Ref<boolean>> {
-  return new Promise((resolve) => {
-    const hasAdBlocker = ref(false)
-    if (!defaultWindow?.XMLHttpRequest) {
-      resolve(hasAdBlocker)
-      return
-    }
-    const xhr = new defaultWindow.XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4)
-        hasAdBlocker.value = xhr.status === 0
-
-      resolve(hasAdBlocker)
-    }
-    xhr.open('get', HONEY_POT_URL, true)
-    xhr.send()
-  })
+  const hasAdBlocker = ref(false)
+  try {
+    await fetch(HONEY_POT_URL)
+  }
+  catch (e) {
+    hasAdBlocker.value = true
+  }
+  return hasAdBlocker
 }
