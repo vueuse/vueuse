@@ -3,8 +3,8 @@ import { unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 
 export type VueInstance = ComponentPublicInstance
-export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T | undefined | null>
-export type MaybeElement = HTMLElement | SVGElement | VueInstance
+export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
+export type MaybeElement = HTMLElement | SVGElement | VueInstance | undefined | null
 
 export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extends VueInstance ? HTMLElement | SVGElement | undefined | null : T | undefined
 
@@ -15,5 +15,5 @@ export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extend
  */
 export function unrefElement<T extends MaybeElement>(elRef: MaybeElementRef<T>): UnRefElementReturn<T> {
   const plain = unref(elRef)
-  return (plain as unknown as VueInstance)?.$el ?? plain
+  return (plain as VueInstance)?.$el ?? plain
 }
