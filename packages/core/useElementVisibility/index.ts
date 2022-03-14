@@ -27,19 +27,17 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    if (!unref(element)) {
+    if (!element || !unref(element)) {
       elementIsVisible.value = false
     }
     else {
-      const rect = unref(element)?.getBoundingClientRect()
-      if (rect) {
-        elementIsVisible.value = (
-          rect.top <= (window.innerHeight || document.documentElement.clientHeight)
-           && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-           && rect.bottom >= 0
-           && rect.right >= 0
-        )
-      }
+      const rect = (element as HTMLElement).getBoundingClientRect()
+      elementIsVisible.value = (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight)
+          && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+          && rect.bottom >= 0
+          && rect.right >= 0
+      )
     }
   }
 
