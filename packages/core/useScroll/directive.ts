@@ -6,33 +6,39 @@ type BindingValueFunction = (state: UseScrollReturn) => void
 
 type BindingValueArray = [BindingValueFunction, UseScrollOptions]
 
-export const vScroll: FunctionDirective<
+const vScrollHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> = (el, binding) => {
-  if (typeof binding.value === 'function') {
-    const handler = binding.value
-    const state = useScroll(el, {
-      onScroll() {
-        handler(state)
-      },
-      onStop() {
-        handler(state)
-      },
-    })
-  }
-  else {
-    const [handler, options] = binding.value
-    const state = useScroll(el, {
-      ...options,
-      onScroll(e) {
-        options.onScroll?.(e)
-        handler(state)
-      },
-      onStop(e) {
-        options.onStop?.(e)
-        handler(state)
-      },
-    })
+> => {
+  let isMounted = false
+  return (el, binding) => {
+    if (isMounted) return
+    isMounted = true
+    if (typeof binding.value === 'function') {
+      const handler = binding.value
+      const state = useScroll(el, {
+        onScroll() {
+          handler(state)
+        },
+        onStop() {
+          handler(state)
+        },
+      })
+    }
+    else {
+      const [handler, options] = binding.value
+      const state = useScroll(el, {
+        ...options,
+        onScroll(e) {
+          options.onScroll?.(e)
+          handler(state)
+        },
+        onStop(e) {
+          options.onStop?.(e)
+          handler(state)
+        },
+      })
+    }
   }
 }
+export const vScroll = vScrollHandler()
