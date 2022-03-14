@@ -4,12 +4,19 @@ import { useElementHover } from '.'
 
 type BindingValueFunction = (state: boolean) => void
 
-export const vElementHover: FunctionDirective<
+export const vElementHoverHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction
-> = (el, binding) => {
-  if (typeof binding.value === 'function') {
-    const isHovered = useElementHover(el)
-    watch(isHovered, v => binding.value(v))
+> => {
+  let isMounted = false
+  return (el, binding) => {
+    if (isMounted) return
+    isMounted = true
+    if (typeof binding.value === 'function') {
+      const isHovered = useElementHover(el)
+      watch(isHovered, v => binding.value(v))
+    }
   }
 }
+
+export const vElementHover = vElementHoverHandler()
