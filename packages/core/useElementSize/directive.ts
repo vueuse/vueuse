@@ -1,5 +1,6 @@
-import type { FunctionDirective } from 'vue-demi'
+import type { ObjectDirective } from 'vue-demi'
 import { watch } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
 import { useElementSize } from '.'
 import type { ElementSize } from '.'
 
@@ -11,13 +12,15 @@ type BindingValueFunction = (size: ElementSize) => void
 type VElementSizeOptions = RemoveFirstFromTuple<Parameters<typeof useElementSize>>
 type BindingValueArray = [BindingValueFunction, ...VElementSizeOptions]
 
-export const vElementSize: FunctionDirective<
+export const vElementSize: ObjectDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> = (el, binding) => {
-  const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
-  const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
+> = {
+  [directiveHooks.mounted](el, binding) {
+    const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
+    const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
 
-  const { width, height } = useElementSize(el, ...options)
-  watch([width, height], ([width, height]) => handler({ width, height }))
+    const { width, height } = useElementSize(el, ...options)
+    watch([width, height], ([width, height]) => handler({ width, height }))
+  },
 }
