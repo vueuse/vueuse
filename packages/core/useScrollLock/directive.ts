@@ -6,15 +6,12 @@ const onScrollLock = (): FunctionDirective<
 HTMLElement,
 boolean
 > => {
-  let isMounted = false
-  let ele = null as unknown as HTMLElement
+  let mountedEle: HTMLElement | null = null
   const state = ref(false)
   return (el, binding) => {
     state.value = binding.value
-    if (el !== ele) isMounted = false
-    if (isMounted) return
-    isMounted = true
-    ele = el
+    if (el === mountedEle) return
+    mountedEle = el
 
     const isLocked = useScrollLock(el, binding.value)
     watch(state, v => isLocked.value = v)
