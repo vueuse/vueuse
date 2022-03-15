@@ -10,9 +10,13 @@ HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
   let isMounted = false
+  let ele = null as unknown as HTMLElement
   return (el, binding) => {
+    if (el !== ele) isMounted = false
     if (isMounted) return
     isMounted = true
+    ele = el
+
     if (typeof binding.value === 'function')
       useInfiniteScroll(el, binding.value)
     else
