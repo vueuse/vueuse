@@ -1,4 +1,5 @@
-import type { FunctionDirective } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
+import type { ObjectDirective } from 'vue-demi'
 import type { KeyStrokeOptions } from '.'
 import { onKeyStroke } from '.'
 
@@ -6,15 +7,11 @@ type BindingValueFunction = (event: KeyboardEvent) => void
 
 type BindingValueArray = [BindingValueFunction, KeyStrokeOptions]
 
-const vOnKeyStrokeHandler = (): FunctionDirective<
+export const vOnKeyStroke: ObjectDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> => {
-  let mountedEle: HTMLElement | null = null
-  return (el, binding) => {
-    if (el === mountedEle) return
-    mountedEle = el
-
+> = {
+  [directiveHooks.mounted](el, binding) {
     const keys = binding.arg?.split(',') ?? []
     if (typeof binding.value === 'function') {
       onKeyStroke(keys, binding.value, {
@@ -28,7 +25,5 @@ BindingValueFunction | BindingValueArray
         ...options,
       })
     }
-  }
+  },
 }
-
-export const vOnKeyStroke = vOnKeyStrokeHandler()
