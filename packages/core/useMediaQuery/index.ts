@@ -39,7 +39,7 @@ export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
       mediaQuery.addListener(update)
 
     tryOnScopeDispose(() => {
-      if ('removeEventListener' in update)
+      if ('removeEventListener' in mediaQuery!)
         mediaQuery!.removeEventListener('change', update)
       else
         mediaQuery!.removeListener(update)

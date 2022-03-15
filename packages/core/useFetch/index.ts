@@ -72,20 +72,20 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get(): UseFetchReturn<T>
-  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
-  json<JSON = any>(): UseFetchReturn<JSON>
-  text(): UseFetchReturn<string>
-  blob(): UseFetchReturn<Blob>
-  arrayBuffer(): UseFetchReturn<ArrayBuffer>
-  formData(): UseFetchReturn<FormData>
+  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
