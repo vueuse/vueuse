@@ -10,6 +10,11 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * List of elements that should not trigger the event.
    */
   ignore?: MaybeElementRef[]
+  /**
+   * Use capturing phase for internal event listener.
+   * @default true
+   */
+  capture?: boolean
 }
 
 /**
@@ -25,7 +30,7 @@ export function onClickOutside(
   handler: (evt: PointerEvent) => void,
   options: OnClickOutsideOptions = {},
 ) {
-  const { window = defaultWindow, ignore } = options
+  const { window = defaultWindow, ignore, capture = true } = options
 
   if (!window)
     return
@@ -51,7 +56,7 @@ export function onClickOutside(
   }
 
   const cleanup = [
-    useEventListener(window, 'click', listener, { passive: true, capture: true }),
+    useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen.value = !!el && !e.composedPath().includes(el)
