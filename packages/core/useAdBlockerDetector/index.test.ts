@@ -7,13 +7,14 @@ describe('useAdBlockerDetector', () => {
   })
 
   it('should not detect any ad blocker', async() => {
+    vitest.spyOn(window, 'fetch').mockImplementationOnce(() => Promise.resolve({} as Response))
     const hasBlockerDetector = await useAdBlockerDetector()
 
     expect(hasBlockerDetector.value).toBe(false)
   })
 
-  it.only('should not detect any ad blocker', async() => {
-    vitest.spyOn(window, 'fetch').mockImplementation(() => { throw Error })
+  it('should detect an ad blocker', async() => {
+    vitest.spyOn(window, 'fetch').mockImplementationOnce(() => { throw Error })
     const hasBlockerDetector = await useAdBlockerDetector()
 
     expect(hasBlockerDetector.value).toBe(true)

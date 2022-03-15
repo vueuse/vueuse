@@ -2,7 +2,7 @@
 category: Sensors
 ---
 
-# useCounter
+# useAdBlockerDetector
 
 Detect if the use has or has not an Ad blocker.
 
