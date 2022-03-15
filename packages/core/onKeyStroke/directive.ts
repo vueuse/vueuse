@@ -11,9 +11,13 @@ HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
   let isMounted = false
+  let ele = null as unknown as HTMLElement
   return (el, binding) => {
+    if (el !== ele) isMounted = false
     if (isMounted) return
     isMounted = true
+    ele = el
+
     const keys = binding.arg?.split(',') ?? []
     if (typeof binding.value === 'function') {
       onKeyStroke(keys, binding.value, {
