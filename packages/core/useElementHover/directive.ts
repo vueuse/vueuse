@@ -9,9 +9,13 @@ HTMLElement,
 BindingValueFunction
 > => {
   let isMounted = false
+  let ele = null as unknown as HTMLElement
   return (el, binding) => {
+    if (el !== ele) isMounted = false
     if (isMounted) return
     isMounted = true
+    ele = el
+
     if (typeof binding.value === 'function') {
       const isHovered = useElementHover(el)
       watch(isHovered, v => binding.value(v))
