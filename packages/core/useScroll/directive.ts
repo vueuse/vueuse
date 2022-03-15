@@ -10,14 +10,10 @@ const vScrollHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
-  let isMounted = false
-  let ele = null as unknown as HTMLElement
+  let mountedEle: HTMLElement | null = null
   return (el, binding) => {
-    if (el !== ele) isMounted = false
-    if (isMounted) return
-    isMounted = true
-    ele = el
-
+    if (el === mountedEle) return
+    mountedEle = el
     if (typeof binding.value === 'function') {
       const handler = binding.value
       const state = useScroll(el, {
