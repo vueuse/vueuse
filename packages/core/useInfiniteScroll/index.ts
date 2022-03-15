@@ -20,11 +20,11 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
   direction?: 'top' | 'bottom'
 
   /**
-   * Whether to keep the current scroll position when loading more items.
+   * Whether to preserve the current scroll position when loading more items.
    *
    * @default false
    */
-  keepScrollPosition?: boolean
+  preserveScrollPosition?: boolean
 }
 
 /**
@@ -61,7 +61,7 @@ export function useInfiniteScroll(
 
         await onLoadMore(state)
 
-        if (options.keepScrollPosition && elem) {
+        if (options.preserveScrollPosition && elem) {
           nextTick(() => {
             elem.scrollTo({
               top: elem.scrollHeight - previous.height,
