@@ -15,13 +15,11 @@ export const vElementSizeHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
-  let isMounted = false
-  let ele = null as unknown as HTMLElement
+  let mountedEle: HTMLElement | null = null
+
   return (el, binding) => {
-    if (el !== ele) isMounted = false
-    if (isMounted) return
-    isMounted = true
-    ele = el
+    if (el === mountedEle) return
+    mountedEle = el
 
     const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
     const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
