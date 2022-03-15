@@ -27,7 +27,7 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    if (!element || !unref(element)) {
+    if (!unref(element)) {
       elementIsVisible.value = false
     }
     else {

@@ -7,18 +7,26 @@ type BindingValueFunction = (state: boolean) => void
 
 type BindingValueArray = [BindingValueFunction, VisibilityScrollTargetOptions]
 
-export const vElementVisibility: FunctionDirective<
+const vElementVisibilityHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> = (el, binding) => {
-  if (typeof binding.value === 'function') {
-    const handler = binding.value
-    const isVisible = useElementVisibility(el)
-    watch(isVisible, v => handler(v), { immediate: true })
-  }
-  else {
-    const [handler, options] = binding.value
-    const isVisible = useElementVisibility(el, options)
-    watch(isVisible, v => handler(v), { immediate: true })
+> => {
+  let mountedEle: HTMLElement | unknown = null
+  return (el, binding) => {
+    if (el === mountedEle) return
+    mountedEle = el
+
+    if (typeof binding.value === 'function') {
+      const handler = binding.value
+      const isVisible = useElementVisibility(el)
+      watch(isVisible, v => handler(v), { immediate: true })
+    }
+    else {
+      const [handler, options] = binding.value
+      const isVisible = useElementVisibility(el, options)
+      watch(isVisible, v => handler(v), { immediate: true })
+    }
   }
 }
+
+export const vElementVisibility = vElementVisibilityHandler()
