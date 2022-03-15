@@ -12,6 +12,34 @@ Reactive [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_AP
 
 ## Usage
 
+This is the default usage of useCanvas2D, which simply returns the context for the specified attributes.
+
+```vue
+<template>
+  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256"/>
+</template>
+```
+
+```ts
+import { useCanvas2D, useElementBounding, useRafFn } from '@vueuse/core'
+
+// This is the canvas HTMLCanvasElement element as a ref:
+const canvas = ref<null | HTMLCanvasElement>(null)
+
+// Get the ctx:
+const { ctx } = useCanvas2D(canvas, { alpha: true, desynchronized: false })
+
+useRafFn(() => {
+  if (ctx.value) {
+    // do something with the context ...
+  }
+})
+```
+
+## Bounding Element Example
+
+Sometime's it's useful to have a canvas element that will be reactive to it's bounding element or parent element, and adjust it's height and width reactively to those changes.
+
 ```vue
 <template>
   <div ref="bound" class="w-full h-128 sm:w-128 lg:w-256">
@@ -21,7 +49,7 @@ Reactive [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_AP
 ```
 
 ```ts
-import { useCanvas2D, useRafFn } from '@vueuse/core'
+import { useCanvas2D, useElementBounding, useRafFn } from '@vueuse/core'
 
 const bound = ref<null | HTMLElement>(null)
 
@@ -29,7 +57,22 @@ const bound = ref<null | HTMLElement>(null)
 const canvas = ref<null | HTMLCanvasElement>(null)
 
 // Get the ctx:
-const { ctx } = useCanvas2D(canvas, bound, { alpha: true, desynchronized: false })
+const { ctx } = useCanvas2D(canvas, { alpha: true, desynchronized: false })
+
+// Obtain the bounding element's width and height:
+const { width, height } = useElementBounding(bound)
+
+// Watch for changes to the bounding element's width:
+watch(width, (widthValue) => {
+  if (!canvas.value) return
+  canvas.value.width = widthValue
+})
+
+// Watch for changes to the bounding element's height:
+watch(height, (heightValue) => {
+  if (!canvas.value) return
+  canvas.value.height = heightValue
+})
 
 useRafFn(() => {
   if (ctx.value) {

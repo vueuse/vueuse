@@ -1,27 +1,35 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue-demi'
-import YAML from 'js-yaml'
+import { reactive, ref, watch } from 'vue-demi'
+import { stringify } from '@vueuse/docs-utils'
 import { useRafFn } from '../useRafFn'
+import { useElementBounding } from '../useElementBounding'
 import { useCanvas2D } from '.'
 
-// Be sure to specify a bounding parent element:
+// Provide a bounding parent element:
 const bound = ref<null | HTMLElement>(null)
 
-// This is the canvas HTMLCanvasElement element as a ref:
+// Canvas HTMLCanvasElement element as a ref:
 const canvas = ref<null | HTMLCanvasElement>(null)
 
-const {
-  ctx,
+// Obtain the element bounding:
+const { width, height } = useElementBounding(bound)
+
+watch(width, (widthValue) => {
+  if (!canvas.value) return
+  canvas.value.width = widthValue
+})
+
+watch(height, (heightValue) => {
+  if (!canvas.value) return
+  canvas.value.height = heightValue
+})
+
+const { ctx } = useCanvas2D(canvas, { alpha: false })
+
+const properties = stringify(reactive({
   width,
   height,
-} = useCanvas2D(canvas, bound, { alpha: false })
-
-const properties = computed(() => YAML.dump(
-  reactive({
-    width,
-    height,
-  }),
-))
+}))
 
 useRafFn(() => {
   if (ctx.value) {
