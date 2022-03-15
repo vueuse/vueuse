@@ -16,9 +16,13 @@ HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
   let isMounted = false
+  let ele = null as unknown as HTMLElement
   return (el, binding) => {
+    if (el !== ele) isMounted = false
     if (isMounted) return
     isMounted = true
+    ele = el
+
     const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
     const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
 
