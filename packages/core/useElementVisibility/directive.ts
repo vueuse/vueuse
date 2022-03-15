@@ -11,7 +11,7 @@ const vElementVisibilityHandler = (): FunctionDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
 > => {
-  let mountedEle: HTMLElement | unknown = null
+  let mountedEle: HTMLElement | null = null
   return (el, binding) => {
     if (el === mountedEle) return
     mountedEle = el
