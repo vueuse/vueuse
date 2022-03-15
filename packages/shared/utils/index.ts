@@ -1,6 +1,7 @@
 export * from './is'
 export * from './filters'
 export * from './types'
+export * from './compatibility'
 
 export function promiseTimeout(
   ms: number,
