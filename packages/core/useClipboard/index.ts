@@ -34,7 +34,7 @@ export interface ClipboardReturn<Optional> {
   isSupported: boolean
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
-  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
+  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string | MouseEvent) => Promise<void>
 }
 
 /**
@@ -72,6 +72,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
   }
 
   async function copy(value = unref(source)) {
+    if (typeof value !== 'string') value = unref(source)
     if (isSupported && value != null) {
       await navigator!.clipboard.writeText(value)
       text.value = value
