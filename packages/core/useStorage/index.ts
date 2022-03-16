@@ -151,7 +151,6 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       return
 
     try {
-      synced = true
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
         data.value = rawInit
@@ -172,22 +171,28 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
 
   read()
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', (e) => {
+      setTimeout(() => {
+        if (synced) {
+          synced = false
+          return
+        }
+        read(e)
+      }, 0)
+    })
+  }
 
   if (storage) {
     watchWithFilter(
       data,
       () => {
         try {
-          if (synced) {
-            synced = false
-            return
-          }
           if (data.value == null)
             storage!.removeItem(key)
           else
             storage!.setItem(key, serializer.write(data.value))
+          synced = true
         }
         catch (e) {
           onError(e)
