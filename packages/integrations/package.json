@@ -80,6 +80,11 @@
       "import": "./useChangeCase.mjs",
       "require": "./useChangeCase.cjs",
       "types": "./useChangeCase.d.ts"
+    },
+    "./useKatex": {
+      "import": "./useKatex.mjs",
+      "require": "./useKatex.cjs",
+      "types": "./useKatex.d.ts"
     }
   },
   "sideEffects": false,
@@ -90,6 +95,7 @@
     "focus-trap": "*",
     "fuse.js": "*",
     "jwt-decode": "*",
+    "katex": "^0.15.3",
     "nprogress": "*",
     "qrcode": "*",
     "universal-cookie": "*"
@@ -126,6 +132,7 @@
     "vue-demi": "*"
   },
   "devDependencies": {
+    "@types/katex": "^0.11.1",
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
     "axios": "^0.26.1",
@@ -134,6 +141,7 @@
     "focus-trap": "^6.7.3",
     "fuse.js": "^6.5.3",
     "jwt-decode": "^3.1.2",
+    "katex": "^0.15.3",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"
