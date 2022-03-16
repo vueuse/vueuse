@@ -141,11 +141,17 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     }
   }
 
+  /**
+   * Prevent writing while reading #808
+   */
+  let synced = false
+
   function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
       return
 
     try {
+      synced = true
       const rawValue = event ? event.newValue : storage.getItem(key)
       if (rawValue == null) {
         data.value = rawInit
@@ -174,6 +180,10 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       data,
       () => {
         try {
+          if (synced) {
+            synced = false
+            return
+          }
           if (data.value == null)
             storage!.removeItem(key)
           else
