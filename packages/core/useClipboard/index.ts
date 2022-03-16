@@ -34,7 +34,7 @@ export interface ClipboardReturn<Optional> {
   isSupported: boolean
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
-  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string | MouseEvent) => Promise<void>
+  copy: Optional extends true ? (text?: string | MouseEvent) => Promise<void> : (text: string) => Promise<void>
 }
 
 /**
