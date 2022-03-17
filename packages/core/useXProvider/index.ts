@@ -1,6 +1,6 @@
 import type { DefineComponent, PropType, SetupContext, VNode } from 'vue-demi'
 import { defineComponent, h, inject, isVue2, provide, reactive, readonly } from 'vue-demi'
-import { tryOnMounted } from '../../shared/tryOnMounted'
+import { tryOnUnmounted } from '@vueuse/shared'
 import { setData } from './type'
 import type { Path, PathValue, Tobj } from './type'
 
@@ -44,9 +44,8 @@ export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerC
 
       provide(injectKeyName, readonly(state))
 
-      tryOnMounted(() => {
+      tryOnUnmounted(() => {
         Object.keys(state).forEach((key) => {
-          // @ts-expect-error no need for tslint
           delete state[key]
         })
       })
