@@ -1,35 +1,42 @@
-import { defineComponent, provide, inject, readonly, SetupContext, PropType, reactive, onUnmounted, isVue2, h, DefineComponent, VNode } from 'vue-demi'
+import type { DefineComponent, PropType, SetupContext, VNode } from 'vue-demi'
+import { defineComponent, h, inject, isVue2, provide, reactive, readonly } from 'vue-demi'
+import { tryOnMounted } from '../../shared/tryOnMounted'
+import { setData } from './type'
+import type { Path, PathValue, Tobj } from './type'
 
-type Tobj = {
-  [key: PropertyKey]: any
-}
 type TProviderComponent = DefineComponent<{ value: Tobj }, () => VNode | VNode[] | undefined, any>
 /**
  * @see https://vueuse.org/useXProvider
  */
 export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerComponentName = 'Context.Provider', injectKeyName = Symbol('xProvider')) => {
-  const state = reactive<T>({} as any)
+  const state = reactive<T>({} as unknown as T)
 
-  const setState = (obj: Partial<T>) => {
-    Object.entries(obj).forEach(([k, v]) => {
-      // @ts-ignore
-      state[k] = v
-    })
-  }
-
-  const setStateSimple = <K extends keyof T, V extends T[K]>(key: K, value: V) => {
-    // @ts-ignore
-    state[key] = value
+  // @ts-expect-error ignore ts(2589): Type instantiation is excessively deep and possibly infinite.
+  function setState(...args: [obj: Partial<T>]): void
+  function setState<TT extends Partial<T>, P extends Path<TT>>(...args: [path: P, value: PathValue<TT, P>]): void
+  function setState<TT extends Partial<T>, P extends Path<TT>>(...args: [obj: Partial<T>] | [path: P, value: PathValue<TT, P>]): void {
+    if (args.length === 1) {
+      const [obj] = args
+      Object.entries(obj).forEach(([k, v]) => {
+        // @ts-expect-error no need for tslint
+        state[k] = v
+      })
+    }
+    else {
+      const [path, value] = args
+      setData(state as TT, path, value)
+    }
   }
 
   const ProviderComponent = defineComponent({
     name: providerComponentName,
     props: {
       value: {
-        type: Object as PropType<Partial<T>>,
+        type: {} as unknown as PropType<Partial<T>>,
         required: false,
       },
     },
+    // @ts-expect-error ignore overload check
     setup(props: { value: any }, { slots }: SetupContext) {
       setState(defaultState)
       if (props.value)
@@ -37,9 +44,9 @@ export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerC
 
       provide(injectKeyName, readonly(state))
 
-      onUnmounted(() => {
+      tryOnMounted(() => {
         Object.keys(state).forEach((key) => {
-          // @ts-ignore
+          // @ts-expect-error no need for tslint
           delete state[key]
         })
       })
@@ -55,7 +62,6 @@ export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerC
     ProviderComponent,
     state,
     setState,
-    setStateSimple,
     useContext,
   }
 }
