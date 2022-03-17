@@ -48,7 +48,7 @@ export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerC
     },
   }) as TProviderComponent
 
-  const useConText = () => {
+  const useContext = () => {
     return inject(injectKeyName, defaultState as T || ({} as T))
   }
   return {
@@ -56,6 +56,6 @@ export const useXProvider = <T extends Tobj>(defaultState: Partial<T>, providerC
     state,
     setState,
     setStateSimple,
-    useConText,
+    useContext,
   }
 }
