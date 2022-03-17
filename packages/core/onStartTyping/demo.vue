@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onStartTyping } from '.'
+import { ref } from 'vue'
+import { onStartTyping } from '@vueuse/core'
 
 const input = ref<HTMLInputElement | null>(null)
 
 onStartTyping(() => {
-  // @ts-ignore
   if (!input.value?.active)
     input.value!.focus()
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useGeolocation } from '.'
+import { useGeolocation } from '@vueuse/core'
 
 const { coords, locatedAt, error } = useGeolocation()
 </script>

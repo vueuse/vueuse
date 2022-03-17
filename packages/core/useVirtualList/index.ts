@@ -1,4 +1,5 @@
-import { watch, Ref, ref, computed, shallowRef } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
 
@@ -17,7 +18,7 @@ export interface UseVirtualListOptions {
   overscan?: number
 }
 
-export type UseVirtualListItem<T> = {
+export interface UseVirtualListItem<T> {
   data: T
   index: number
 }

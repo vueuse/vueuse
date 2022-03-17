@@ -1,6 +1,9 @@
-import { tryOnScopeDispose, MaybeRef } from '@vueuse/shared'
-import { Ref, ref, watch, shallowRef, unref, computed } from 'vue-demi'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export type Status = 'init' | 'play' | 'pause' | 'end'
 

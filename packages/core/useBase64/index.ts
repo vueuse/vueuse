@@ -1,5 +1,7 @@
-import { Ref, ref, unref, watch } from 'vue-demi'
-import { isClient, MaybeRef } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref, unref, watch } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 
 export interface ToDataURLOptions {
   /**

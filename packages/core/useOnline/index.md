@@ -14,7 +14,7 @@ import { useOnline } from '@vueuse/core'
 const online = useOnline()
 ```
 
-## Component
+## Component Usage
 ```html
 <UseOnline v-slot="{ isOnline }">
   Is Online: {{ isOnline }}

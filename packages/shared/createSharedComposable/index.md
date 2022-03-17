@@ -20,6 +20,6 @@ const { x, y } = useSharedMouse()
 const { x, y } = useSharedMouse()
 ```
 
-## Related
+## Related Functions
 
 - `createGlobalState`

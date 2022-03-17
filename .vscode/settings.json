@@ -16,7 +16,18 @@
     "prepublish",
     "vue"
   ],
-  "volar.tsPlugin": true,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "vue",
+    "html",
+    "json",
+    "jsonc",
+    "json5",
+    "markdown"
+  ],
   "vite.vitepress": true,
   "vite.vitepressBase": "packages",
   "vite.vitepressAutoRouting": true,

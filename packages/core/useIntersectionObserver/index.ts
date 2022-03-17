@@ -1,7 +1,9 @@
 import { watch } from 'vue-demi'
 import { noop, tryOnScopeDispose } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 
 export interface IntersectionObserverOptions extends ConfigurableWindow {
   /**
@@ -56,8 +58,7 @@ export function useIntersectionObserver(
         if (!el)
           return
 
-        // @ts-expect-error missing type
-        const observer = new window.IntersectionObserver(
+        const observer = new IntersectionObserver(
           callback,
           {
             root,

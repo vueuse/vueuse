@@ -1,6 +1,7 @@
 import { ref, unref } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import { isClient, MaybeRef, Stoppable } from '../utils'
+import type { MaybeRef, Stoppable } from '../utils'
+import { isClient } from '../utils'
 
 export interface TimeoutFnOptions {
   /**
@@ -49,7 +50,7 @@ export function useTimeoutFn(
     timer = setTimeout(() => {
       isPending.value = false
       timer = null
-      // eslint-disable-next-line node/no-callback-literal
+      // eslint-disable-next-line n/no-callback-literal
       cb(...args)
     }, unref(interval)) as unknown as number
   }

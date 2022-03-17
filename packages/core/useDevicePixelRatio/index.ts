@@ -1,7 +1,8 @@
 import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 // device pixel ratio statistics from https://www.mydevice.io/
 const DEVICE_PIXEL_RATIO_SCALES = [

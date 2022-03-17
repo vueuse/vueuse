@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue-demi'
+import { computed, reactive, ref } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
+import { useMediaControls } from '@vueuse/core'
 import Scrubber from './components/Scrubber.vue'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'
 import Spinner from './components/Spinner.vue'
-
-import { useMediaControls } from '.'
 
 const video = ref<HTMLVideoElement>()
 const loop = ref(false)
@@ -20,13 +19,13 @@ const controls = useMediaControls(video, {
   tracks: [
     {
       default: true,
-      src: 'https://gist.githubusercontent.com/jacobclevenger/a85a65a82d87d7c098e1a0972ef1f726/raw/f135ca4b6ce78552d80b515d68af5f5e5e2eb7c5/sentil-subtitles.vtt',
+      src: 'https://gist.githubusercontent.com/wheatjs/a85a65a82d87d7c098e1a0972ef1f726/raw',
       kind: 'subtitles',
       label: 'English',
       srcLang: 'en',
     },
     {
-      src: 'https://gist.githubusercontent.com/jacobclevenger/38f32925d20c683bf77ba33ff737891b/raw/0505e841cbbc3a4a598584b57ab411d29bfdcf0d/subtitles-fr.vtt',
+      src: 'https://gist.githubusercontent.com/wheatjs/38f32925d20c683bf77ba33ff737891b/raw',
       kind: 'subtitles',
       label: 'French',
       srcLang: 'fr',
@@ -52,7 +51,7 @@ const {
 } = controls
 const text = stringify(reactive(controls))
 const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
-const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString().substr(14, 5)
+const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString().slice(14, 19)
 </script>
 
 <template>
@@ -64,7 +63,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
     @keydown.right="currentTime += 10"
     @keydown.left="currentTime -= 10"
   >
-    <div class="relative bg-black">
+    <div class="mt-5 relative bg-black rounded-md shadow overflow-hidden">
       <video
         ref="video"
         crossorigin="anonymous"
@@ -177,5 +176,5 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
       </Menu>
     </div>
   </div>
-  <pre lang="yaml">{{ text }}</pre>
+  <pre class="code-block" lang="yaml">{{ text }}</pre>
 </template>

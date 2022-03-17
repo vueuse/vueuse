@@ -30,7 +30,7 @@ const { state, ready } = useAsyncState(
 > You can use `invoke` to call the async function.
 
 ```js
-import { until, useCounter, invoke } from '@vueuse/core'
+import { invoke, until, useCounter } from '@vueuse/core'
 
 const { count } = useCounter()
 
@@ -51,7 +51,8 @@ await until(ref).toBe(true, { timeout: 1000 })
 try {
   await until(ref).toBe(true, { timeout: 1000, throwOnTimeout: true })
   // ref.value === true
-} catch(e) {
+}
+catch (e) {
   // timeout
 }
 ```

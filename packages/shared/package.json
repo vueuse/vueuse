@@ -1,19 +1,24 @@
 {
   "name": "@vueuse/shared",
-  "version": "7.2.2",
+  "version": "8.1.1",
   "keywords": [
     "vue",
     "vue-use",
     "utils"
   ],
   "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/shared"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -22,11 +27,6 @@
     },
     "./*": "./*"
   },
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"

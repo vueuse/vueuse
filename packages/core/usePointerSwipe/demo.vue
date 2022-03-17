@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { SwipeDirection } from '../useSwipe'
-import { usePointerSwipe } from '.'
+import { usePointerSwipe } from '@vueuse/core'
+import type { SwipeDirection } from '../useSwipe'
 
 const target = ref<Element | null>(null)
 const container = ref<HTMLElement | null>(null)
@@ -44,7 +44,7 @@ const { distanceX, isSwiping } = usePointerSwipe(target, {
 </script>
 
 <template>
-  <div ref="container" class="bg-gray-200 rounded-xl relative w-full h-[80px] max-w-[600px] m-auto flex items-center justify-center overflow-hidden">
+  <div ref="container" class="bg-gray-200 rounded relative w-full h-[80px] m-auto flex items-center justify-center overflow-hidden">
     <button @click="reset">
       Reset
     </button>

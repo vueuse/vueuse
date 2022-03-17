@@ -1,10 +1,12 @@
+import type { MaybeRef } from '@vueuse/shared'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: Ref<Element | null | undefined>
+  scrollTarget?: MaybeRef<Element | null | undefined>
 }
 
 /**
@@ -15,7 +17,7 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
  * @param options
  */
 export function useElementVisibility(
-  element: Ref<Element|null|undefined>,
+  element: MaybeRef<Element|null|undefined>,
   { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
   const elementIsVisible = ref(false)
@@ -25,12 +27,11 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    if (!element.value) {
+    if (!unref(element)) {
       elementIsVisible.value = false
     }
     else {
-      const rect = element.value.getBoundingClientRect()
-
+      const rect = (unref(element) as HTMLElement).getBoundingClientRect()
       elementIsVisible.value = (
         rect.top <= (window.innerHeight || document.documentElement.clientHeight)
           && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
@@ -43,7 +44,7 @@ export function useElementVisibility(
   tryOnMounted(testBounding)
 
   if (window)
-    tryOnMounted(() => useEventListener(scrollTarget?.value || window, 'scroll', testBounding, { capture: false, passive: true }))
+    tryOnMounted(() => useEventListener(unref(scrollTarget) || window, 'scroll', testBounding, { capture: false, passive: true }))
 
   return elementIsVisible
 }

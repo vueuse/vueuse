@@ -49,12 +49,10 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseMousePressed v-slot="{ pressed }">
   Is Pressed: {{ pressed }}
 </UseMousePressed>
 ```
-
-<LearnMoreComponents />

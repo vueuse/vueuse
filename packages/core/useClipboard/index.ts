@@ -1,9 +1,13 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { MaybeRef, useTimeoutFn } from '@vueuse/shared'
-import { ComputedRef, ref, unref } from 'vue-demi'
-import { useEventListener, WindowEventName } from '../useEventListener'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
+import { useTimeoutFn } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
+import { ref, unref } from 'vue-demi'
+import type { WindowEventName } from '../useEventListener'
+import { useEventListener } from '../useEventListener'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
 export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   /**
@@ -57,8 +61,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    // @ts-expect-error untyped API
-    navigator.clipboard.readText().then((value) => {
+    navigator!.clipboard.readText().then((value) => {
       text.value = value
     })
   }
@@ -70,8 +73,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
 
   async function copy(value = unref(source)) {
     if (isSupported && value != null) {
-      // @ts-expect-error untyped API
-      await navigator.clipboard.writeText(value)
+      await navigator!.clipboard.writeText(value)
       text.value = value
       copied.value = true
       timeout.start()

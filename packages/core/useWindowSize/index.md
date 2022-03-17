@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useWindowSize
@@ -14,7 +14,7 @@ import { useWindowSize } from '@vueuse/core'
 const { width, height } = useWindowSize()
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseWindowSize v-slot="{ width, height }">
@@ -22,5 +22,3 @@ const { width, height } = useWindowSize()
   Height: {{ height }}
 </UseWindowSize>
 ```
-
-<LearnMoreComponents />

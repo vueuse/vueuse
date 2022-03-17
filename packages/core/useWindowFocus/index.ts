@@ -1,6 +1,8 @@
-import { Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Reactively track window focus with `window.onfocus` and `window.onblur`.

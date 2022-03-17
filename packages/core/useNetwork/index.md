@@ -16,7 +16,7 @@ const { isOnline, offlineAt, downlink, downlinkMax, effectiveType, saveData, typ
 console.log(isOnline.value)
 ```
 
-To use as an object, wrapper it with `reactive()`
+To use as an object, wrap it with `reactive()`
 
 ```js
 import { reactive } from 'vue'
@@ -26,7 +26,7 @@ const network = reactive(useNetwork())
 console.log(network.isOnline)
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseNetwork v-slot="{ isOnline, type }">
@@ -34,5 +34,3 @@ console.log(network.isOnline)
   Type: {{ type }}
 <UseNetwork>
 ```
-
-<LearnMoreComponents />

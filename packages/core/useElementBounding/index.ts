@@ -1,5 +1,7 @@
-import { ref } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { ref, watch } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
 
 /**
@@ -7,11 +9,8 @@ import { useResizeObserver } from '../useResizeObserver'
  *
  * @see https://vueuse.org/useElementBounding
  * @param target
- * @param options
  */
-export function useElementBounding(
-  target: MaybeElementRef,
-) {
+export function useElementBounding(target: MaybeElementRef) {
   const height = ref(0)
   const bottom = ref(0)
   const left = ref(0)
@@ -23,7 +22,20 @@ export function useElementBounding(
 
   function update() {
     const el = unrefElement(target)
-    const rect = el!.getBoundingClientRect()
+
+    if (!el) {
+      height.value = 0
+      bottom.value = 0
+      left.value = 0
+      right.value = 0
+      top.value = 0
+      width.value = 0
+      x.value = 0
+      y.value = 0
+      return
+    }
+
+    const rect = el.getBoundingClientRect()
 
     height.value = rect.height
     bottom.value = rect.bottom
@@ -35,10 +47,14 @@ export function useElementBounding(
     y.value = rect.y
   }
 
+  useEventListener('scroll', update, true)
+
   useResizeObserver(
     target,
     update,
   )
+
+  watch(() => unrefElement(target), ele => !ele && update())
 
   return {
     height,

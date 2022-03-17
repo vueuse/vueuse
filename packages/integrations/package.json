@@ -1,20 +1,29 @@
 {
   "name": "@vueuse/integrations",
-  "version": "7.2.2",
+  "version": "8.1.1",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
     "vue-use",
     "utils"
   ],
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/integrations"
   },
   "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
   "exports": {
     ".": {
       "import": "./index.mjs",
@@ -66,39 +75,67 @@
       "import": "./useQRCode.mjs",
       "require": "./useQRCode.cjs",
       "types": "./useQRCode.d.ts"
+    },
+    "./useChangeCase": {
+      "import": "./useChangeCase.mjs",
+      "require": "./useChangeCase.cjs",
+      "types": "./useChangeCase.d.ts"
     }
   },
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
   "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
+  "peerDependencies": {
+    "axios": "*",
+    "change-case": "*",
+    "drauu": "*",
+    "focus-trap": "*",
+    "fuse.js": "*",
+    "jwt-decode": "*",
+    "nprogress": "*",
+    "qrcode": "*",
+    "universal-cookie": "*"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
+  "peerDependenciesMeta": {
+    "axios": {
+      "optional": true
+    },
+    "drauu": {
+      "optional": true
+    },
+    "focus-trap": {
+      "optional": true
+    },
+    "fuse.js": {
+      "optional": true
+    },
+    "jwt-decode": {
+      "optional": true
+    },
+    "nprogress": {
+      "optional": true
+    },
+    "qrcode": {
+      "optional": true
+    },
+    "universal-cookie": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
-  "optionalDependencies": {
-    "axios": "^0.23.0",
-    "drauu": "^0.2.1",
-    "focus-trap": "^6.7.1",
-    "fuse.js": "^6.4.6",
-    "jwt-decode": "^3.1.2",
-    "nprogress": "^0.2.0",
-    "qrcode": "^1.4.4",
-    "universal-cookie": "^4.0.4"
-  },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
-    "@types/qrcode": "^1.4.1",
-    "@types/universal-cookie": "^3.0.0",
+    "@types/qrcode": "^1.4.2",
+    "axios": "^0.26.1",
+    "change-case": "^4.1.2",
+    "drauu": "^0.3.0",
+    "focus-trap": "^6.7.3",
+    "fuse.js": "^6.5.3",
+    "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
-    "qrcode": "^1.4.4",
+    "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"
   }
 }

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useFocus } from '.'
+import { ref } from 'vue'
+import { useFocus } from '@vueuse/core'
 
 const text = ref()
 const input = ref()
 const button = ref()
 
-const { focused: paragraphFocus } = useFocus({ target: text })
-const { focused: inputFocus } = useFocus({ target: input, initialValue: true })
-const { focused: buttonFocus } = useFocus({ target: button })
+const { focused: paragraphFocus } = useFocus(text)
+const { focused: inputFocus } = useFocus(input, { initialValue: true })
+const { focused: buttonFocus } = useFocus(button)
 </script>
 
 <template>
@@ -16,11 +16,11 @@ const { focused: buttonFocus } = useFocus({ target: button })
     <p ref="text" class="demo-el px-2 rounded" tabindex="0">
       Paragraph that can be focused
     </p>
-    <input ref="input" class="demo-el" type="text" placeholder="Input that can be focused" />
+    <input ref="input" class="demo-el" type="text" placeholder="Input that can be focused">
     <button ref="button" class="demo-el button">
       Button that can be focused
     </button>
-    <hr />
+    <hr>
     <note class="mb-2">
       <template v-if="paragraphFocus">
         The paragraph has focus

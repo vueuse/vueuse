@@ -1,5 +1,6 @@
-import { unref, ref, computed } from 'vue-demi'
-import { MaybeRef, isClient, Fn } from '@vueuse/shared'
+import { computed, ref, unref, watch } from 'vue-demi'
+import type { Fn, MaybeRef } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 function preventDefault(rawEvent: TouchEvent): boolean {
@@ -29,10 +30,19 @@ export function useScrollLock(
   let touchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
+  watch(() => unref(element), (el) => {
+    if (el) {
+      const ele = el as HTMLElement
+      initialOverflow = ele.style.overflow
+      if (isLocked.value) ele.style.overflow = 'hidden'
+    }
+  }, {
+    immediate: true,
+  })
+
   const lock = () => {
     const ele = (unref(element) as HTMLElement)
     if (!ele || isLocked.value) return
-    initialOverflow = ele.style.overflow
     if (isIOS) {
       touchMoveListener = useEventListener(
         document,
@@ -41,16 +51,15 @@ export function useScrollLock(
         { passive: false },
       )
     }
-    else {
-      ele.style.overflow = 'hidden'
-    }
+    ele.style.overflow = 'hidden'
     isLocked.value = true
   }
 
   const unlock = () => {
     const ele = (unref(element) as HTMLElement)
     if (!ele || !isLocked.value) return
-    isIOS ? touchMoveListener?.() : ele.style.overflow = initialOverflow
+    isIOS && touchMoveListener?.()
+    ele.style.overflow = initialOverflow
     isLocked.value = false
   }
 

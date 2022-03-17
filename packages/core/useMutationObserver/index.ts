@@ -1,7 +1,9 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface MutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 
@@ -36,8 +38,7 @@ export function useMutationObserver(
       cleanup()
 
       if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.MutationObserver(callback)
+        observer = new MutationObserver(callback)
         observer!.observe(el, mutationOptions)
       }
     },

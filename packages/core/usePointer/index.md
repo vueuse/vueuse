@@ -14,7 +14,7 @@ import { usePointer } from '@vueuse/core'
 const { x, y, pressure, pointerType } = usePointer()
 ```
 
-## Component
+## Component Usage
 
 By default, the component will track the pointer on `window`
 

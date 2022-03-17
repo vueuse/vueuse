@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, Ref, computed } from 'vue-demi'
-import { useVirtualList } from '.'
+import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useVirtualList } from '@vueuse/core'
 
 const index: Ref = ref()
 const search = ref('')
@@ -33,7 +34,7 @@ const handleScrollTo = () => {
     <div>
       <div class="inline-block mr-4">
         Jump to index
-        <input v-model="index" placeholder="Index" type="number" />
+        <input v-model="index" placeholder="Index" type="number">
       </div>
       <button type="button" @click="handleScrollTo">
         Go
@@ -42,7 +43,7 @@ const handleScrollTo = () => {
     <div>
       <div class="inline-block mr-4">
         Filter list by size
-        <input v-model="search" placeholder="e.g. small, medium, large" type="search" />
+        <input v-model="search" placeholder="e.g. small, medium, large" type="search">
       </div>
     </div>
     <div v-bind="containerProps" class="h-300px overflow-auto p-2 bg-gray-500/5 rounded">

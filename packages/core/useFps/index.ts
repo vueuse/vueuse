@@ -1,4 +1,5 @@
-import { Ref, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 
 export interface UseFpsOptions {
@@ -11,6 +12,8 @@ export interface UseFpsOptions {
 
 export function useFps(options?: UseFpsOptions): Ref<number> {
   const fps = ref(0)
+  if (typeof performance === 'undefined')
+    return fps
   const every = options?.every ?? 10
 
   let last = performance.now()

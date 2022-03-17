@@ -1,5 +1,5 @@
 ---
-category: Browser
+category: Elements
 ---
 
 # useActiveElement
@@ -18,12 +18,10 @@ watch(activeElement, (el) => {
 })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseActiveElement v-slot="{ element }">
   Active element is {{ element.dataset.id }}
 </UseActiveElement>
 ```
-
-<LearnMoreComponents />

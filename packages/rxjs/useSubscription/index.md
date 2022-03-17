@@ -20,6 +20,6 @@ useSubscription(
     .subscribe(() => {
       count.value++
       console.log(count)
-    })
+    }),
 )
 ```

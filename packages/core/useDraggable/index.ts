@@ -1,7 +1,9 @@
-import { Ref, ref, unref, computed } from 'vue-demi'
-import { MaybeRef, toRefs, isClient } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, ref, unref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { PointerType, Position } from '../types'
+import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
 
 export interface UseDraggableOptions {
@@ -18,6 +20,13 @@ export interface UseDraggableOptions {
    * @default false
    */
   preventDefault?: MaybeRef<boolean>
+
+  /**
+   * Prevent events propagation
+   *
+   * @default false
+   */
+  stopPropagation?: MaybeRef<boolean>
 
   /**
    * Element to attach `pointermove` and `pointerup` events to.
@@ -73,10 +82,14 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return options.pointerTypes.includes(e.pointerType as PointerType)
     return true
   }
-  const preventDefault = (e: PointerEvent) => {
+
+  const handleEvent = (e: PointerEvent) => {
     if (unref(options.preventDefault))
       e.preventDefault()
+    if (unref(options.stopPropagation))
+      e.stopPropagation()
   }
+
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
@@ -90,7 +103,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (options.onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
-    preventDefault(e)
+    handleEvent(e)
   }
   const move = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -102,14 +115,16 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       y: e.pageY - pressedDelta.value.y,
     }
     options.onMove?.(position.value, e)
-    preventDefault(e)
+    handleEvent(e)
   }
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
+    if (!pressedDelta.value)
+      return
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)
-    preventDefault(e)
+    handleEvent(e)
   }
 
   if (isClient) {

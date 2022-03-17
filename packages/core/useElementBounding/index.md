@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementBounding
@@ -31,7 +31,7 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseElementBounding v-slot="{ width, height }">
@@ -39,5 +39,3 @@ export default {
   Height: {{ height }}
 </UseElementBounding>
 ```
-
-<LearnMoreComponents />

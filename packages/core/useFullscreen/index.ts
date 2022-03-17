@@ -1,9 +1,12 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 type FunctionMap = [
   'requestFullscreen',
@@ -60,6 +63,15 @@ const functionsMap: FunctionMap[] = [
   ],
 ] as any
 
+export interface UseFullscreenOptions extends ConfigurableDocument {
+  /**
+   * Automatically exit fullscreen when component is unmounted
+   *
+   * @default false
+   */
+  autoExit?: boolean
+}
+
 /**
  * Reactive Fullscreen API.
  *
@@ -69,9 +81,9 @@ const functionsMap: FunctionMap[] = [
  */
 export function useFullscreen(
   target?: MaybeElementRef,
-  options: ConfigurableDocument = {},
+  options: UseFullscreenOptions = {},
 ) {
-  const { document = defaultDocument } = options
+  const { document = defaultDocument, autoExit = false } = options
   const targetRef = target || document?.querySelector('html')
   const isFullscreen = ref(false)
   let isSupported = false
@@ -127,6 +139,9 @@ export function useFullscreen(
       isFullscreen.value = !!document?.[ELEMENT]
     }, false)
   }
+
+  if (autoExit)
+    tryOnScopeDispose(exit)
 
   return {
     isSupported,

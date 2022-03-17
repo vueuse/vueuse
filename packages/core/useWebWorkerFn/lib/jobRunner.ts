@@ -18,11 +18,9 @@ const jobRunner = (userFunc: Function) => (e: MessageEvent) => {
   // eslint-disable-next-line prefer-spread
   return Promise.resolve(userFunc.apply(undefined, userFuncArgs))
     .then((result) => {
-      // @ts-ignore
       postMessage(['SUCCESS', result])
     })
     .catch((error) => {
-      // @ts-ignore
       postMessage(['ERROR', error])
     })
 }

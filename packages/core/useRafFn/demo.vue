@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useRafFn } from '.'
+import { ref } from 'vue'
+import { useRafFn } from '@vueuse/core'
 
 const count = ref(0)
 const { pause, resume } = useRafFn(() => count.value += 1)

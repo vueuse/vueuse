@@ -18,7 +18,7 @@ const timestamp = useTimestamp({ offset: 0 })
 const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseTimestamp v-slot="{ timestamp, pause, resume }">
@@ -27,5 +27,3 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
   <button @click="resume()">Resume</button>
 </UseTimestamp>
 ```
-
-<LearnMoreComponents />

@@ -1,14 +1,16 @@
 import { noop, promiseTimeout } from '@vueuse/shared'
-import { Ref, ref, shallowRef } from 'vue-demi'
+import type { Ref, UnwrapRef } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<T> {
-  state: Ref<T>
+export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
+  state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
+  isLoading: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay?: number, ...args: any[]) => Promise<T>
+  execute: (delay?: number, ...args: any[]) => Promise<Data>
 }
 
-export interface AsyncStateOptions {
+export interface AsyncStateOptions<Shallow extends boolean> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -17,7 +19,7 @@ export interface AsyncStateOptions {
   delay?: number
 
   /**
-   * Excute the promise right after the function is invoked.
+   * Execute the promise right after the function is invoked.
    * Will apply the delay if any.
    *
    * When set to false, you will need to execute it manually.
@@ -41,10 +43,17 @@ export interface AsyncStateOptions {
    * @default true
    */
   resetOnExecute?: boolean
+
+  /**
+   * Use shallowRef.
+   *
+   * @default true
+   */
+  shallow?: Shallow
 }
 
 /**
- * Reactive async state. Will not block your setup function and will triggers changes once
+ * Reactive async state. Will not block your setup function and will trigger changes once
  * the promise is ready.
  *
  * @see https://vueuse.org/useAsyncState
@@ -52,20 +61,22 @@ export interface AsyncStateOptions {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<T>(
-  promise: Promise<T> | ((...args: any[]) => Promise<T>),
-  initialState: T,
-  options: AsyncStateOptions = {},
-): UseAsyncStateReturn<T> {
+export function useAsyncState<Data, Shallow extends boolean = true>(
+  promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
+  initialState: Data,
+  options?: AsyncStateOptions<Shallow>,
+): UseAsyncStateReturn<Data, Shallow> {
   const {
     immediate = true,
     delay = 0,
     onError = noop,
     resetOnExecute = true,
-  } = options
+    shallow = true,
+  } = options ?? {}
 
-  const state = shallowRef(initialState)
+  const state = shallow ? shallowRef(initialState) : ref(initialState)
   const isReady = ref(false)
+  const isLoading = ref(false)
   const error = ref<unknown | undefined>(undefined)
 
   async function execute(delay = 0, ...args: any[]) {
@@ -73,6 +84,7 @@ export function useAsyncState<T>(
       state.value = initialState
     error.value = undefined
     isReady.value = false
+    isLoading.value = true
 
     if (delay > 0)
       await promiseTimeout(delay)
@@ -83,7 +95,6 @@ export function useAsyncState<T>(
 
     try {
       const data = await _promise
-      // @ts-ignore
       state.value = data
       isReady.value = true
     }
@@ -92,15 +103,17 @@ export function useAsyncState<T>(
       onError(e)
     }
 
-    return state.value
+    isLoading.value = false
+    return state.value as Data
   }
 
   if (immediate)
     execute(delay)
 
   return {
-    state,
+    state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
     isReady,
+    isLoading,
     error,
     execute,
   }

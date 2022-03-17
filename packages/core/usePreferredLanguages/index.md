@@ -14,12 +14,10 @@ import { usePreferredLanguages } from '@vueuse/core'
 const languages = usePreferredLanguages()
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UsePreferredLanguages v-slot="{ languages }">
   Preferred Languages: {{ languages }}
 </UsePreferredLanguages>
 ```
-
-<LearnMoreComponents />

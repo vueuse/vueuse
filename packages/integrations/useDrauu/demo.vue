@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { toRefs } from '@vueuse/shared'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
 import { useDrauu } from '.'
@@ -29,8 +29,9 @@ const { mode, color, size } = toRefs(brush)
       flex="~ col"
     >
       <div
-        bg="$c-bg"
-        border="b-1 $c-divider"
+        bg="$vt-c-bg"
+        border="1 $vt-c-divider"
+        rounded-t
         flex="~ row"
         items="center"
         p="2"
@@ -45,7 +46,7 @@ const { mode, color, size } = toRefs(brush)
             m="r-1"
             @click="() => color = _color"
           >
-            <div :style="{ background: _color }" w="6" h="6" border="2 dark:(light-900 opacity-50) rounded-full"></div>
+            <div :style="{ background: _color }" w="6" h="6" border="2 dark:(light-900 opacity-50) rounded-full" />
           </button>
         </div>
         <div flex="~ row 1 shrink-1" items="center" w="full" max-w="64">
@@ -66,8 +67,9 @@ const { mode, color, size } = toRefs(brush)
       </div>
       <div flex="~ row 1" h="72">
         <div
-          bg="$c-bg"
-          border="r-1"
+          bg="$vt-c-bg"
+          border="t-0 1 $vt-c-divider"
+          rounded-b
           flex="~ col"
           space="y-2"
           place="items-center"
@@ -91,7 +93,7 @@ const { mode, color, size } = toRefs(brush)
           w="full"
           h="full"
           bg="white"
-        ></svg>
+        />
       </div>
     </div>
   </div>

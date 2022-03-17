@@ -1,5 +1,7 @@
-import { containsProp, createEventHook, EventHookOn, Fn, MaybeRef, Stoppable, useTimeoutFn } from '@vueuse/shared'
-import { computed, ComputedRef, isRef, Ref, ref, shallowRef, unref, watch } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import type { EventHookOn, Fn, MaybeRef, Stoppable } from '@vueuse/shared'
+import { containsProp, createEventHook, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -70,21 +72,24 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get(): UseFetchReturn<T>
-  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
-  json<JSON = any>(): UseFetchReturn<JSON>
-  text(): UseFetchReturn<string>
-  blob(): UseFetchReturn<Blob>
-  arrayBuffer(): UseFetchReturn<ArrayBuffer>
-  formData(): UseFetchReturn<FormData>
+  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'get' | 'post' | 'put' | 'delete'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -249,18 +254,18 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
+export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
-export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchReturn<T> {
+export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
-  type InternalConfig = {method: HttpMethod; type: DataType; payload: unknown; payloadType?: string}
+  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
-    method: 'get',
+    method: 'GET',
     type: 'text' as DataType,
     payload: undefined as unknown,
   }
@@ -293,7 +298,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const aborted = ref(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
-  const error = ref<any>(null)
+  const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
@@ -351,7 +356,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
     if (isCanceled || !fetch) {
       loading(false)
-      return Promise.resolve()
+      return Promise.resolve(null)
     }
 
     let responseData: any = null
@@ -359,7 +364,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     if (timer)
       timer.start()
 
-    return new Promise((resolve, reject) => {
+    return new Promise<Response | null>((resolve, reject) => {
       fetch(
         context.url,
         {
@@ -377,15 +382,17 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch)
+          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+
           data.value = responseData
+
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
 
           responseEvent.trigger(fetchResponse)
-          resolve(fetchResponse)
+          return resolve(fetchResponse)
         })
         .catch(async(fetchError) => {
           let errorData = fetchError.message || fetchError.name
@@ -397,9 +404,9 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
-            reject(fetchError)
-          else
-            resolve(undefined)
+            return reject(fetchError)
+
+          return resolve(null)
         })
         .finally(() => {
           loading(false)
@@ -435,10 +442,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     onFetchError: errorEvent.on,
     onFetchFinally: finallyEvent.on,
     // method
-    get: setMethod('get'),
-    put: setMethod('put'),
-    post: setMethod('post'),
-    delete: setMethod('delete'),
+    get: setMethod('GET'),
+    put: setMethod('PUT'),
+    post: setMethod('POST'),
+    delete: setMethod('DELETE'),
+    patch: setMethod('PATCH'),
+    head: setMethod('HEAD'),
+    options: setMethod('OPTIONS'),
     // type
     json: setType('json'),
     text: setType('text'),
@@ -477,11 +487,25 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
   }
 
+  function waitUntilFinished() {
+    return new Promise<UseFetchReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        .then(() => resolve(shell))
+        .catch(error => reject(error))
+    })
+  }
+
   function setType(type: DataType) {
     return () => {
       if (!isFetching.value) {
         config.type = type
-        return shell as any
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }
@@ -490,7 +514,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   if (options.immediate)
     setTimeout(execute, 0)
 
-  return shell
+  return {
+    ...shell,
+    then(onFulfilled, onRejected) {
+      return waitUntilFinished()
+        .then(onFulfilled, onRejected)
+    },
+  }
 }
 
 function joinPaths(start: string, end: string): string {

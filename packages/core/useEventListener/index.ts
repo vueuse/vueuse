@@ -1,5 +1,8 @@
-import { Fn, isString, MaybeRef, noop, tryOnScopeDispose } from '@vueuse/shared'
-import { unref, watch } from 'vue-demi'
+import type { Fn, MaybeRef } from '@vueuse/shared'
+import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
+import { watch } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 
 interface InferEventTarget<Events> {
@@ -10,7 +13,7 @@ interface InferEventTarget<Events> {
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
 
-export type GeneralEventListener<E = Event> = {
+export interface GeneralEventListener<E = Event> {
   (evt: E): void
 }
 
@@ -98,7 +101,7 @@ export function useEventListener(...args: any[]) {
   let cleanup = noop
 
   const stopWatch = watch(
-    () => unref(target),
+    () => unrefElement(target as unknown as MaybeElementRef),
     (el) => {
       cleanup()
       if (!el)

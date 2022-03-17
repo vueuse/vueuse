@@ -1,6 +1,7 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Reactive state to show whether mouse leaves the page.
@@ -17,7 +18,7 @@ export function usePageLeave(options: ConfigurableWindow = {}) {
       return
 
     event = event || (window.event as any)
-    // @ts-ignore
+    // @ts-expect-error missing types
     const from = event.relatedTarget || event.toElement
     isLeft.value = !from
   }

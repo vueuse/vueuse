@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
-import { useActiveElement } from '.'
+import { computed } from 'vue'
+import { useActiveElement } from '@vueuse/core'
 
 const activeElement = useActiveElement()
 const key = computed(() => activeElement.value?.dataset?.id || 'null')
@@ -24,9 +24,9 @@ const key = computed(() => activeElement.value?.dataset?.id || 'null')
       :key="i"
       type="text"
       :data-id="i"
-      class="!my-0"
+      class="!my-0 !min-w-0"
       :placeholder="`${i}`"
-    />
+    >
   </div>
   <div class="mt-2">
     Current Active Element:

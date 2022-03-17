@@ -1,5 +1,7 @@
-import { Pausable, useIntervalFn } from '@vueuse/shared'
-import { Ref, ref } from 'vue-demi'
+import type { Pausable } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 
 export interface UseNowOptions<Controls extends boolean> {

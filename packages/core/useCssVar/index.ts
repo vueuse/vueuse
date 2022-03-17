@@ -1,6 +1,9 @@
-import { computed, ref, watch } from 'vue-demi'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { computed, ref, unref, watch } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 
 /**
  * Manipulate CSS variables.
@@ -11,7 +14,7 @@ import { MaybeElementRef, unrefElement } from '../unrefElement'
  * @param options
  */
 export function useCssVar(
-  prop: string,
+  prop: MaybeRef<string>,
   target?: MaybeElementRef,
   { window = defaultWindow }: ConfigurableWindow = {},
 ) {
@@ -19,8 +22,8 @@ export function useCssVar(
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   watch(
-    elRef,
-    (el) => {
+    [elRef, () => unref(prop)],
+    ([el, prop]) => {
       if (el && window)
         variable.value = window.getComputedStyle(el).getPropertyValue(prop)
     },
@@ -31,7 +34,7 @@ export function useCssVar(
     variable,
     (val) => {
       if (elRef.value?.style)
-        elRef.value.style.setProperty(prop, val)
+        elRef.value.style.setProperty(unref(prop), val)
     },
   )
 

@@ -18,6 +18,7 @@ You can also find some reasons for those design decisions and also some tips for
 - When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible
 - Use `tryOnUnmounted`  to clear the side-effects gracefully
 - Avoid using console logs
+- When the function is asynchronous, return a PromiseLike
 
 Read also: [Best Practice](/guide/best-practice.html)
 
@@ -47,18 +48,19 @@ When using global variables like `window` or `document`, support `configurableWi
 Learn more about the implementation: [`_configurable.ts`](https://github.com/vueuse/vueuse/blob/main/packages/core/_configurable.ts)
 
 ```ts
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export function useActiveElement<T extends HTMLElement>(
-  options: ConfigurableWindow = {}
+  options: ConfigurableWindow = {},
 ) {
   const {
     // defaultWindow = isClient ? window : undefined
-    window = defaultWindow
+    window = defaultWindow,
   } = options
 
   let el: T
-  
+
   // skip when in Node.js environment (SSR)
   if (window) {
     window.addEventListener('blur', () => {
@@ -79,24 +81,24 @@ useActiveElement({ window: window.parent })
 
 ## Watch Options
 
-When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `debouncedWatch`:
+When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `watchDebounced`:
 
 ```ts
-import { WatchOptions } from 'vue-demi'
+import type { WatchOptions } from 'vue-demi'
 
 // extend the watch options
-export interface DebouncedWatchOptions extends WatchOptions {
+export interface WatchDebouncedOptions extends WatchOptions {
   debounce?: number
 }
 
-export function debouncedWatch(
+export function watchDebounced(
   source: any,
   cb: any,
-  options: DebouncedWatchOptions = {},
+  options: WatchDebouncedOptions = {},
 ): WatchStopHandle {
   return watch(
     source,
-    () => /* ... */,
+    () => { /* ... */ },
     options, // pass watch options
   )
 }
@@ -139,14 +141,14 @@ For example `useShare`:
 ```ts
 export function useShare(
   shareOptions: MaybeRef<ShareOptions> = {},
-  options: ConfigurableNavigator = {}
+  options: ConfigurableNavigator = {},
 ) {
   const { navigator = defaultNavigator } = options
   const isSupported = navigator && 'canShare' in navigator
 
   const share = async(overrideOptions) => {
     if (isSupported) {
-      /* ...implementation */ 
+      /* ...implementation */
     }
   }
 
@@ -157,6 +159,50 @@ export function useShare(
 }
 ```
 
+## Asynchronous Composables
+
+When a composable is asynchronous, like `useFetch`, it is a good idea to return a PromiseLike object from the composable
+so the user is able to await the function. This is especially useful in the case of Vue's `<Suspense>` api.
+
+- Use a `ref` to determine when the function should resolve e.g. `isFinished`
+- Store the return state in a variable as it must be returned twice, once in the return and once in the promise.
+- The return type should be an intersection between the return type and a PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>`
+
+```ts
+export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+  const data = shallowRef<T | undefined>()
+  const error = shallowRef<Error | undefined>()
+  const isFinished = ref(false)
+
+  fetch(unref(url))
+    .then(r => r.json())
+    .then(r => data.value = r)
+    .catch(e => error.value = e)
+    .finally(() => isFinished.value = true)
+
+  // Store the return state in a variable
+  const state: UseFetchReturn<T> = {
+    data,
+    error,
+    isFinished,
+  }
+
+  return {
+    ...state,
+    // Adding `then` to an object allows it to be awaited.
+    then(onFufilled, onRejected) {
+      return new Promise<UseFetchReturn<T>>((resolve, reject) => {
+        until(isFinished)
+          .toBeTruthy()
+          .then(() => resolve(state))
+          .then(() => reject(state))
+      }).then(onFufilled, onRejected)
+    },
+  }
+}
+```
+
+
 ## Renderless Components
 
 - Use render functions instead of Vue SFC
@@ -166,7 +212,8 @@ export function useShare(
 
 ```ts
 import { defineComponent, reactive } from 'vue-demi'
-import { useMouse, MouseOptions } from '@vueuse/core'
+import type { MouseOptions } from '@vueuse/core'
+import { useMouse } from '@vueuse/core'
 
 export const UseMouse = defineComponent<MouseOptions>({
   name: 'UseMouse',
@@ -186,11 +233,12 @@ Sometimes a function may have multiple parameters, in that case, you maybe need 
 into a single interface for the component props.
 
 ```ts
-import { useTimeAgo, TimeAgoOptions } from '@vueuse/core'
+import type { TimeAgoOptions } from '@vueuse/core'
+import { useTimeAgo } from '@vueuse/core'
 
 interface UseTimeAgoComponentOptions extends Omit<TimeAgoOptions<true>, 'controls'> {
   time: MaybeRef<Date | number | string>
 }
 
-export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({...})
+export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({ /* ... */ })
 ```

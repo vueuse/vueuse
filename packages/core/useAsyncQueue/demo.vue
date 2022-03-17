@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAsyncQueue } from '.'
+import { useAsyncQueue } from '@vueuse/core'
 
 const p1 = () => {
   return new Promise((resolve) => {

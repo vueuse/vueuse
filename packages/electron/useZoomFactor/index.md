@@ -11,7 +11,7 @@ Reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom
 ```ts
 import { useZoomFactor } from '@vueuse/electron'
 
-// enable nodeIntegration if you don't provide webFrame explicitly 
+// enable nodeIntegration if you don't provide webFrame explicitly
 // @see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
 // Ref result will return
 const factor = useZoomFactor()
