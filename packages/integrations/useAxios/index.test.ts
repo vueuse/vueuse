@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { until } from '@vueuse/shared'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
@@ -108,6 +109,28 @@ describe('useAxios', () => {
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
       done()
+    }, onRejected)
+  })
+
+  test('params: url; reuse url in execute', (done) => {
+    const { isFinished, data, then, execute, error } = useAxios(url)
+    expect(isFinished.value).toBeFalsy()
+    const onRejected = vitest.fn()
+
+    then((result) => {
+      expect(data.value.id).toBe(1)
+      expect(result.data).toBe(data)
+      expect(isFinished.value).toBeTruthy()
+      expect(onRejected).toBeCalledTimes(0)
+
+      execute({})
+      expect(isFinished.value).toBeFalsy()
+      until(isFinished).toBe(true)
+        .then(() => {
+          expect(data.value.id).toBe(1)
+          expect(error.value).toBeUndefined()
+          done()
+        })
     }, onRejected)
   })
 
