@@ -1,6 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
-import { until } from '@vueuse/shared'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
