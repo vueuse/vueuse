@@ -42,9 +42,11 @@ export interface WebSocketOptions {
     /**
      * Maximum retry times.
      *
+     * Or you can pass a predicate function (which returns true if you want to retry).
+     *
      * @default -1
      */
-    retries?: number
+    retries?: number | (() => boolean)
 
     /**
      * Delay for reconnect, in milliseconds
@@ -211,7 +213,9 @@ export function useWebSocket<Data = any>(
         } = resolveNestedOptions(options.autoReconnect)
         retried += 1
 
-        if (retries < 0 || retried < retries)
+        if (typeof retries === 'number' && (retries < 0 || retried < retries))
+          setTimeout(_init, delay)
+        else if (typeof retries === 'function' && retries())
           setTimeout(_init, delay)
         else
           onFailed?.()
