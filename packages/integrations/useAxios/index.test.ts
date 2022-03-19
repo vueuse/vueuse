@@ -112,25 +112,18 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url; reuse url in execute', (done) => {
-    const { isFinished, data, then, execute, error } = useAxios(url)
-    expect(isFinished.value).toBeFalsy()
+  test('params: url config instance options, execute: config', (done) => {
+    const { isLoading, then, execute } = useAxios(path, config, instance, options)
+    expect(isLoading.value).toBeFalsy()
+    execute(config)
+    expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
 
     then((result) => {
-      expect(data.value.id).toBe(1)
-      expect(result.data).toBe(data)
-      expect(isFinished.value).toBeTruthy()
+      expect(result.data.value.id).toBe(1)
+      expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
-
-      execute({})
-      expect(isFinished.value).toBeFalsy()
-      until(isFinished).toBe(true)
-        .then(() => {
-          expect(data.value.id).toBe(1)
-          expect(error.value).toBeUndefined()
-          done()
-        })
+      done()
     }, onRejected)
   })
 
