@@ -37,7 +37,8 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
   if (document) {
     events.forEach((listenerEvent) => {
       useEventListener(document, listenerEvent, (evt: KeyboardEvent) => {
-        state.value = evt.getModifierState(modifier)
+        if (typeof evt.getModifierState === 'function')
+          state.value = evt.getModifierState(modifier)
       })
     })
   }
