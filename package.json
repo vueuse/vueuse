@@ -103,7 +103,7 @@
       "electron"
     ],
     "overrides": {
-      "vue-demi": "0.12.1"
+      "vue-demi": "0.12.4"
     }
   },
   "simple-git-hooks": {
