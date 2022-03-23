@@ -92,9 +92,11 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   shallow?: boolean
 
   /**
-   * Ensure sync usage. Prevents endless update loops.
+   * Time to wait (in ms) before resetting sync read/write detection
+   *
+   * @default 150
    */
-  ensureSync?: boolean
+  syncResetTimeout?: number
 }
 
 export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
@@ -124,7 +126,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     listenToStorageChanges = true,
     writeDefaults = true,
     shallow,
-    ensureSync = true,
+    syncResetTimeout = 150,
     window = defaultWindow,
     eventFilter,
     onError = (e) => {
@@ -181,7 +183,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', (e) => {
       setTimeout(() => {
-        if (ensureSync && synced) {
+        if (synced) {
           synced = false
           clearTimeout(syncReset)
           return
@@ -200,10 +202,8 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
             storage!.removeItem(key)
           else
             storage!.setItem(key, serializer.write(data.value))
-          if (ensureSync) {
-            synced = true
-            syncReset = setTimeout(() => {synced = false}, 150)
-          }
+          synced = true
+          syncReset = setTimeout(() => {synced = false}, syncResetTimeout)
         }
         catch (e) {
           onError(e)
