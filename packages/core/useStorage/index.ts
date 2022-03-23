@@ -145,6 +145,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
    * Prevent writing while reading #808
    */
   let synced = false
+  let syncReset: ReturnType<typeof setTimeout>;
 
   function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
@@ -176,6 +177,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       setTimeout(() => {
         if (synced) {
           synced = false
+          clearTimeout(syncReset);
           return
         }
         read(e)
@@ -193,6 +195,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
           else
             storage!.setItem(key, serializer.write(data.value))
           synced = true
+          syncReset = setTimeout(() => {synced = false}, 150)
         }
         catch (e) {
           onError(e)
