@@ -4,7 +4,7 @@ neverBuiltDependencies:
   - electron
 
 overrides:
-  vue-demi: 0.12.1
+  vue-demi: 0.12.4
 
 importers:
 
@@ -136,40 +136,40 @@ importers:
     specifiers:
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
 
   packages/core:
     specifiers:
       '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
 
   packages/electron:
     specifiers:
       '@vueuse/shared': workspace:*
       electron: ^13.1.0
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     devDependencies:
       electron: 13.4.0
 
   packages/firebase:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
 
   packages/integrations:
     specifiers:
@@ -186,11 +186,11 @@ importers:
       nprogress: ^0.2.0
       qrcode: ^1.5.0
       universal-cookie: ^4.0.4
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     devDependencies:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.4.2
@@ -214,24 +214,24 @@ importers:
       '@vueuse/core': workspace:*
       '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.1
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27457855.7c0b914_rollup@2.70.1+vite@2.8.6
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27467056.93c4dfe_rollup@2.70.1+vite@2.8.6
       '@vueuse/core': link:../core
       '@vueuse/metadata': link:../metadata
       local-pkg: 0.4.1
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     devDependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27457855.7c0b914_rollup@2.70.1+vite@2.8.6
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27467056.93c4dfe_rollup@2.70.1+vite@2.8.6
 
   packages/router:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
       vue-router: ^4.0.14
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     devDependencies:
       vue-router: 4.0.14_vue@3.2.31
 
@@ -239,18 +239,18 @@ importers:
     specifiers:
       '@vueuse/shared': workspace:*
       rxjs: ^6.6.7
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     devDependencies:
       rxjs: 6.6.7
 
   packages/shared:
     specifiers:
-      vue-demi: 0.12.1
+      vue-demi: 0.12.4
     dependencies:
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
 
 packages:
 
@@ -2325,14 +2325,14 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@nuxt/kit-edge/3.0.0-27457855.7c0b914_rollup@2.70.1+vite@2.8.6:
-    resolution: {integrity: sha512-i1h0q0Dt9Jy6EhIqSOn1c6W4yG9lV/MYH6BNw4qX27QFLo/pCL2Z52hgRh5iBMAqVdnCMCCyL+6lVON+LkCoKw==}
+  /@nuxt/kit-edge/3.0.0-27467056.93c4dfe_rollup@2.70.1+vite@2.8.6:
+    resolution: {integrity: sha512-mtTXVnfOtMnu23q9t94SxsDX988slEIQj5WqXdUCmtY0phhJoRPBGhSzVMno1eakpOfX9WBo2Rgw8KXcrTEFJQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27457855.7c0b914_rollup@2.70.1+vite@2.8.6
-      c12: 0.2.2
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27467056.93c4dfe_rollup@2.70.1+vite@2.8.6
+      c12: 0.2.4
       consola: 2.15.3
-      defu: 5.0.1
+      defu: 6.0.0
       globby: 13.1.1
       hash-sum: 2.0.0
       ignore: 5.2.0
@@ -2344,8 +2344,8 @@ packages:
       pkg-types: 0.3.2
       scule: 0.2.1
       semver: 7.3.5
-      unctx: 1.0.2
-      unimport: 0.1.0_rollup@2.70.1+vite@2.8.6
+      unctx: 1.1.0_rollup@2.70.1+vite@2.8.6
+      unimport: 0.1.2_rollup@2.70.1+vite@2.8.6
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -2355,20 +2355,20 @@ packages:
       - webpack
     dev: false
 
-  /@nuxt/schema-edge/3.0.0-27457855.7c0b914_rollup@2.70.1+vite@2.8.6:
-    resolution: {integrity: sha512-S/wTt0h0v0bTjJLBVucCfs4P+tFo+pmeEWbluaNqwj95EQ4YrtphRMWydjI2GBmbqSKPJ9DjAKwa4BAOfMJ2/A==}
+  /@nuxt/schema-edge/3.0.0-27467056.93c4dfe_rollup@2.70.1+vite@2.8.6:
+    resolution: {integrity: sha512-IBWqpdLMoY1E9VHiFYLtZptNBqZ6xyGNcBSnE8HOI3MrZELVPIpGNimSjjlhQ/EgjsdTi/oRA2yc64Jf6tV0PQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      c12: 0.2.2
+      c12: 0.2.4
       create-require: 1.1.1
-      defu: 5.0.1
+      defu: 6.0.0
       jiti: 1.13.0
       pathe: 0.2.0
       postcss-import-resolver: 2.0.0
       scule: 0.2.1
       std-env: 3.0.1
       ufo: 0.8.1
-      unimport: 0.1.0_rollup@2.70.1+vite@2.8.6
+      unimport: 0.1.2_rollup@2.70.1+vite@2.8.6
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -3093,7 +3093,7 @@ packages:
       '@vue/composition-api': 1.4.9_vue@3.2.31
       '@vueuse/shared': 7.4.1_ac2a42527c362575429f172d82b9d821
       vue: 3.2.31
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     dev: true
 
   /@vueuse/shared/7.4.1_ac2a42527c362575429f172d82b9d821:
@@ -3109,7 +3109,7 @@ packages:
     dependencies:
       '@vue/composition-api': 1.4.9_vue@3.2.31
       vue: 3.2.31
-      vue-demi: 0.12.1_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.12.4_ac2a42527c362575429f172d82b9d821
     dev: true
 
   /@xmldom/xmldom/0.7.5:
@@ -3151,7 +3151,6 @@ packages:
     resolution: {integrity: sha512-V/LGr1APy+PXIwKebEWrkZPwoeoF+w1jiOBUmuxuiUIaOHtob8Qc9BTrYo7VuI5fR8tqsy+buA2WFooR5olqvQ==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
 
   /agent-base/6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -3248,7 +3247,6 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.0
-    dev: true
 
   /argparse/1.0.10:
     resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
@@ -3382,7 +3380,6 @@ packages:
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
-    dev: true
 
   /bl/4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -3481,8 +3478,8 @@ packages:
       semver: 7.3.5
     dev: true
 
-  /c12/0.2.2:
-    resolution: {integrity: sha512-OzcWDDBtc7+spt0WrCJhA1Sw7bkW2Wnj+pGrtlZ/gLz1mHeEKzEErFQyTGyWvzsdDa6CewZttkHOswtwHGXjCQ==}
+  /c12/0.2.4:
+    resolution: {integrity: sha512-xI2RSKS+DFzR7tMnRv7QtVO6W716PVDzAXVPpAM/NsMZbqQ17jpqcKhTmNF9X/WpeNvo6wOdFViS1GRUF7Qyrg==}
     dependencies:
       defu: 5.0.1
       dotenv: 14.3.2
@@ -3640,7 +3637,6 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /chownr/1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
@@ -4049,6 +4045,9 @@ packages:
 
   /defu/5.0.1:
     resolution: {integrity: sha512-EPS1carKg+dkEVy3qNTqIdp2qV7mUP08nIsupfwQpz++slCVRw7qbQyWvSTig+kFPwz2XXp5/kIIkH+CwrJKkQ==}
+
+  /defu/6.0.0:
+    resolution: {integrity: sha512-t2MZGLf1V2rV4VBZbWIaXKdX/mUcYW0n2znQZoADBkGGxYL8EWqCuCZBmJPJ/Yy9fofJkyuuSuo5GSwo0XdEgw==}
 
   /delayed-stream/1.0.0:
     resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=}
@@ -5521,7 +5520,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /function-bind/1.1.1:
@@ -5955,7 +5953,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.2.0
-    dev: true
 
   /is-boolean-object/1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
@@ -6794,7 +6791,6 @@ packages:
   /normalize-path/3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /normalize-url/4.5.1:
     resolution: {integrity: sha512-9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==}
@@ -7387,7 +7383,6 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.0
-    dev: true
 
   /regenerate-unicode-properties/9.0.0:
     resolution: {integrity: sha512-3E12UeNSPfjrgwjkR81m5J7Aw/T55Tu7nUyZVQYCKEOs+2dkxEY+DpPtZzO4YruuiPb7NkYLVcyJC4+zCbk5pA==}
@@ -8302,8 +8297,18 @@ packages:
       - stylus
     dev: true
 
-  /unctx/1.0.2:
-    resolution: {integrity: sha512-qxRfnQZWJqkg180JeOCJEvtjj5/7wnWVqkNHln8muY5/z8kMWBFqikFBPwIPCQrZJ+jtaSWkVHJkuHUAXls6zw==}
+  /unctx/1.1.0_rollup@2.70.1+vite@2.8.6:
+    resolution: {integrity: sha512-Ae6vlXs1HC5Sg4PS1aNm8o9vqLonziZzGQ9m8Yiwvlan2CCwkOsdJXiiTmkjWqKn98PhJrpp8CGKfzA0tLuoZA==}
+    dependencies:
+      acorn: 8.7.0
+      estree-walker: 2.0.2
+      magic-string: 0.26.1
+      unplugin: 0.5.2_rollup@2.70.1+vite@2.8.6
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
     dev: false
 
   /undici/4.14.1:
@@ -8334,8 +8339,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /unimport/0.1.0_rollup@2.70.1+vite@2.8.6:
-    resolution: {integrity: sha512-GqMgP1Mj8YYD+9I3MK/Ca/oeoCS0HdmCc/O1IW0si85RgXgPKYIoK84XbMVwOl9Qv/XGfZa/F5JagTWGtMOXCw==}
+  /unimport/0.1.2_rollup@2.70.1+vite@2.8.6:
+    resolution: {integrity: sha512-1MTVh/DP8NTyrzsOGp6GaHLKuDWdh4RQbc1gSncbzZ7ttWpIJD9e330MKCCoXe6LkUoLNELmyYUVlk0F0Hwvow==}
     dependencies:
       '@rollup/pluginutils': 4.2.0
       escape-string-regexp: 5.0.0
@@ -8520,6 +8525,30 @@ packages:
       vite: 2.8.6
       webpack-virtual-modules: 0.4.3
     dev: true
+
+  /unplugin/0.5.2_rollup@2.70.1+vite@2.8.6:
+    resolution: {integrity: sha512-3SPYtus/56cxyD4jfjrnqCvb6jPxvdqJNaRXnEaG2BhNEMaoygu/39AG+LwKmiIUzj4XHyitcfZ7scGlWfEigA==}
+    peerDependencies:
+      esbuild: '>=0.13'
+      rollup: ^2.50.0
+      vite: ^2.3.0
+      webpack: 4 || 5
+    peerDependenciesMeta:
+      esbuild:
+        optional: true
+      rollup:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+    dependencies:
+      chokidar: 3.5.3
+      rollup: 2.70.1
+      vite: 2.8.6
+      webpack-sources: 3.2.3
+      webpack-virtual-modules: 0.4.3
+    dev: false
 
   /untyped/0.4.3:
     resolution: {integrity: sha512-IFlE2be3vW69rLjdkmj5pa/JK/rAzbvFyJZfs+63QX/RN+jgx2CQUZckhTxNsV2H/JSXfc7NEqpX8tLoI2+eOg==}
@@ -8731,8 +8760,8 @@ packages:
     resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
     dev: true
 
-  /vue-demi/0.12.1_ac2a42527c362575429f172d82b9d821:
-    resolution: {integrity: sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==}
+  /vue-demi/0.12.4_ac2a42527c362575429f172d82b9d821:
+    resolution: {integrity: sha512-ztPDkFt0TSUdoq1ZI6oD730vgztBkiByhUW7L1cOTebiSBqSYfSQgnhYakYigBkyAybqCTH7h44yZuDJf2xILQ==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
@@ -8823,6 +8852,11 @@ packages:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
     engines: {node: '>=12'}
     dev: true
+
+  /webpack-sources/3.2.3:
+    resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
+    engines: {node: '>=10.13.0'}
+    dev: false
 
   /webpack-virtual-modules/0.4.3:
     resolution: {integrity: sha512-5NUqC2JquIL2pBAAo/VfBP6KuGkHIZQXW/lNKupLPfhViwh8wNsu0BObtl09yuKZszeEUfbXz8xhrHvSG16Nqw==}
