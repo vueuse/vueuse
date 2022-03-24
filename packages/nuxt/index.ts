@@ -114,6 +114,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
               from: `@vueuse/${pkg}`,
               names: imports,
               imports,
+              priority: -1,
             })
           }
         }
