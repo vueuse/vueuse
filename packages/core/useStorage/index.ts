@@ -1,7 +1,6 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
-import { watchWithFilter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref, shallowRef, unref } from 'vue-demi'
+import { pausableWatch } from '@vueuse/shared'
+import { nextTick, ref, shallowRef, unref } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -125,12 +124,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       console.error(e)
     },
   } = options
-
-  const rawInit: T = unref(initialValue)
-  const type = guessSerializerType<T>(rawInit)
-
-  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
-  const serializer = options.serializer ?? StorageSerializers[type]
+  const data = (shallow ? shallowRef : ref)(initialValue) as RemovableRef<T>
 
   if (!storage) {
     try {
@@ -141,70 +135,75 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     }
   }
 
-  /**
-   * Prevent writing while reading #808
-   */
-  let synced = false
+  if (!storage)
+    return data
 
-  function read(event?: StorageEvent) {
-    if (!storage || (event && event.key !== key))
-      return
+  const rawInit: T = unref(initialValue)
+  const type = guessSerializerType<T>(rawInit)
+  const serializer = options.serializer ?? StorageSerializers[type]
 
+  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
+    data,
+    () => write(data.value),
+    { flush, deep, eventFilter },
+  )
+
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', (e) => {
+      setTimeout(() => update(e), 0)
+    })
+  }
+
+  update()
+
+  return data
+
+  function write(v: unknown) {
     try {
-      const rawValue = event ? event.newValue : storage.getItem(key)
-      if (rawValue == null) {
-        data.value = rawInit
-        if (writeDefaults && rawInit !== null)
-          storage.setItem(key, serializer.write(rawInit))
-      }
-      else if (typeof rawValue !== 'string') {
-        data.value = rawValue
-      }
-      else {
-        data.value = serializer.read(rawValue)
-      }
+      if (v == null)
+        storage!.removeItem(key)
+      else
+        storage!.setItem(key, serializer.write(v))
     }
     catch (e) {
       onError(e)
     }
   }
 
-  read()
+  function read(event?: StorageEvent) {
+    if (event && event.key !== key)
+      return
 
-  if (window && listenToStorageChanges) {
-    useEventListener(window, 'storage', (e) => {
-      setTimeout(() => {
-        if (synced) {
-          synced = false
-          return
-        }
-        read(e)
-      }, 0)
-    })
+    pauseWatch()
+    try {
+      const rawValue = event
+        ? event.newValue
+        : storage!.getItem(key)
+
+      if (rawValue == null) {
+        if (writeDefaults && rawInit !== null)
+          storage!.setItem(key, serializer.write(rawInit))
+        return rawInit
+      }
+      else if (typeof rawValue !== 'string') {
+        return rawValue
+      }
+      else {
+        return serializer.read(rawValue)
+      }
+    }
+    catch (e) {
+      onError(e)
+    }
+    finally {
+      nextTick(resumeWatch)
+    }
   }
 
-  if (storage) {
-    watchWithFilter(
-      data,
-      () => {
-        try {
-          if (data.value == null)
-            storage!.removeItem(key)
-          else
-            storage!.setItem(key, serializer.write(data.value))
-          synced = true
-        }
-        catch (e) {
-          onError(e)
-        }
-      },
-      {
-        flush,
-        deep,
-        eventFilter,
-      },
-    )
-  }
+  function update(event?: StorageEvent) {
+    if (event && event.key !== key)
+      return
 
-  return data as RemovableRef<T>
+    data.value = read(event)
+  }
 }
