@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
-import { useCounter } from '.'
+import { defineComponent } from 'vue'
+import { useCounter } from '@vueuse/core'
 
 return useCounter()
 </script>

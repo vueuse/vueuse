@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useCached } from '.'
+import { ref } from 'vue'
+import { useCached } from '@vueuse/core'
 
 interface Value {
   value: number

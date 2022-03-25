@@ -141,6 +141,11 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     }
   }
 
+  /**
+   * Prevent writing while reading #808
+   */
+  let synced = false
+
   function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
       return
@@ -166,8 +171,17 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
 
   read()
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => setTimeout(() => read(e), 0))
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', (e) => {
+      setTimeout(() => {
+        if (synced) {
+          synced = false
+          return
+        }
+        read(e)
+      }, 0)
+    })
+  }
 
   if (storage) {
     watchWithFilter(
@@ -178,6 +192,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
             storage!.removeItem(key)
           else
             storage!.setItem(key, serializer.write(data.value))
+          synced = true
         }
         catch (e) {
           onError(e)

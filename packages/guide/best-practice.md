@@ -20,7 +20,7 @@ console.log(mouse.x.value)
 If you prefer to use them as object properties style, you can unwrap the refs by using `reactive()`. For example:
 
 ```ts
-import { reactive } from 'vue' 
+import { reactive } from 'vue'
 import { useMouse } from '@vueuse/core'
 
 const mouse = reactive(useMouse())

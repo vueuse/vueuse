@@ -1,6 +1,8 @@
 import type { Fn, MaybeRef } from '@vueuse/shared'
 import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
-import { unref, watch } from 'vue-demi'
+import { watch } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 
 interface InferEventTarget<Events> {
@@ -99,7 +101,7 @@ export function useEventListener(...args: any[]) {
   let cleanup = noop
 
   const stopWatch = watch(
-    () => unref(target),
+    () => unrefElement(target as unknown as MaybeElementRef),
     (el) => {
       cleanup()
       if (!el)

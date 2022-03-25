@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDevicesList } from '.'
+import { useDevicesList } from '@vueuse/core'
 
 const {
   videoInputs: cameras,

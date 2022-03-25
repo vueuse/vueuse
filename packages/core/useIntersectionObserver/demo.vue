@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useIntersectionObserver } from '.'
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const root = ref(null)
 const target = ref(null)

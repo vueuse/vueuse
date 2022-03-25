@@ -11,5 +11,5 @@ Reactive Memory Info.
 ```ts
 import { useMemory } from '@vueuse/core'
 
-const {isSupported, memory} = useMemory()
+const { isSupported, memory } = useMemory()
 ```

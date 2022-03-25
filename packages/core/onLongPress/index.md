@@ -8,8 +8,6 @@ Listen for a long press on an element.
 
 ## Usage
 
-### As a hook
-
 ```html
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -41,9 +39,7 @@ onLongPress(htmlRefHook, onLongPressCallbackHook)
 </template>
 ```
 
-### As a component
-
-<LearnMoreComponents />
+## Component Usage
 
 ```html
 <script setup lang="ts">
@@ -63,7 +59,11 @@ const resetComponent = () => {
 <template>
   <p>Long Pressed: {{ longPressedComponent }}</p>
 
-  <OnLongPress as="button" class="ml-2 button small" @trigger="onLongPressCallbackComponent">
+  <OnLongPress
+    as="button"
+    class="ml-2 button small"
+    @trigger="onLongPressCallbackComponent"
+  >
     Press long
   </OnLongPress>
 
@@ -73,14 +73,12 @@ const resetComponent = () => {
 </template>
 ```
 
-### As a directive
-
-<LearnMoreComponents />
+## Directive Usage
 
 ```html
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VOnLongPress } from '@vueuse/components'
+import { vOnLongPress } from '@vueuse/components'
 
 const longPressedDirective = ref(false)
 
@@ -99,7 +97,7 @@ const resetDirective = () => {
     Press long
   </button>
 
-  <button v-on-long-press="{handler: onLongPressCallbackDirective, {delay: 1000}}" class="ml-2 button small">
+  <button v-on-long-press="[onLongPressCallbackDirective, {delay: 1000}]" class="ml-2 button small">
     Press long (with options)
   </button>
 

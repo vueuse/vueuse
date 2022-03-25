@@ -2,7 +2,7 @@ import { join, resolve } from 'path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { packages } from '../../../meta/packages'
-import { functionNames, getFunction } from '../../../meta/function-indexes'
+import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
@@ -46,8 +46,10 @@ export function MarkdownTransform(): Plugin {
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
-        code = code.replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-        code = code.replace(/## Component/, '## Component\n<LearnMoreComponents />\n')
+        code = code
+          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n\n')
+          .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnMoreDirectives />\n\n')
       }
 
       return code
@@ -90,8 +92,6 @@ ${code}
     .filter(i => i)
     .map(i => `[${i![0]}](${i![1]})`).join(' • ')
 
-  const demoLink = `[source](${URL}/demo.vue){target="_blank" class="demo-source-link"}`
-  const demoHeadSection = `## Demo\n\n${demoLink}\n`
   const sourceSection = `## Source\n\n${links}\n`
   const ContributorsSection = `
 ## Contributors
@@ -108,12 +108,17 @@ ${code}
 <script setup>
 import Demo from \'./demo.vue\'
 </script>
-${demoHeadSection}
-<DemoContainer><Demo/></DemoContainer>
+
+## Demo
+
+<DemoContainer>
+<p class="demo-source-link"><a href="${URL}/demo.vue" targat="blank">source</a></p>
+<Demo/>
+</DemoContainer>
 `
     : ''
   const packageNote = packages.find(p => p.name === pkg)!.addon
-    ? `available in add-on [\`@vueuse/${pkg}\`](/${pkg}/README)`
+    ? `available in add-on <a href="/${pkg}/README">@vueuse/${pkg}</a>\n`
     : ''
 
   const footer = `${typingSection}\n\n${sourceSection}\n${ContributorsSection}\n${changelogSection}\n`

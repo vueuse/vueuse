@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMounted } from '.'
+import { useMounted } from '@vueuse/core'
 
 const isMounted = useMounted()
 </script>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { useOffsetPagination } from '.'
+import type { Ref } from 'vue'
+import { ref } from 'vue'
+import { useOffsetPagination } from '@vueuse/core'
 
 interface User {
   id: number

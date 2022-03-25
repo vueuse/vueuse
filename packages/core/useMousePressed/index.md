@@ -49,7 +49,7 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseMousePressed v-slot="{ pressed }">

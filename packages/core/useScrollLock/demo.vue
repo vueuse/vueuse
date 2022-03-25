@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useToggle } from '@vueuse/shared'
+import { useScrollLock } from '@vueuse/core'
 import { useScroll } from '../useScroll'
-import { useScrollLock } from '.'
 
 const el = ref<HTMLElement | null>(null)
 useScroll(el)

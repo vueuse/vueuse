@@ -4,7 +4,7 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import { VitePWA as PWA } from 'vite-plugin-pwa'
-import WindiCSS from 'vite-plugin-windicss'
+import Unocss from 'unocss/vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
@@ -30,7 +30,7 @@ export default defineConfig(async() => {
       },
     },
     plugins: [
-    // custom
+      // custom
       MarkdownTransform(),
       ChangeLog(changeLog),
       Contributors(contributions),
@@ -72,15 +72,14 @@ export default defineConfig(async() => {
           ],
         },
       }),
-      WindiCSS({
-        preflight: false,
-      }),
+      Unocss(),
       Inspect(),
     ],
     resolve: {
       alias: {
         '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
         '@vueuse/core': resolve(__dirname, 'core/index.ts'),
+        '@vueuse/integrations': resolve(__dirname, 'integrations/index.ts'),
         '@vueuse/components': resolve(__dirname, 'components/index.ts'),
         '@vueuse/docs-utils': resolve(__dirname, '.vitepress/plugins/utils.ts'),
       },

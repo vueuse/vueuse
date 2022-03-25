@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useIntervalFn } from '.'
+import { ref } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
 
 const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好']
 const word = ref('Hello')

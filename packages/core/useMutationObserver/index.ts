@@ -38,8 +38,7 @@ export function useMutationObserver(
       cleanup()
 
       if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.MutationObserver(callback)
+        observer = new MutationObserver(callback)
         observer!.observe(el, mutationOptions)
       }
     },

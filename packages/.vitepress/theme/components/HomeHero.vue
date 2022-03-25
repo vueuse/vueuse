@@ -22,19 +22,13 @@
     <div class="mb-15 flex gap-1 place-content-center">
       <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
       <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
-      <img alt="Function Count" src="https://img.shields.io/badge/-142%20functions-1e8a7a">
+      <img alt="Function Count" src="https://vueuse.org/badge-function-count.svg">
     </div>
 
     <p class="actions flex gap-2 place-content-center">
       <a class="get-started" href="/guide/">Get Started <carbon:arrow-right class="icon" /></a>
       <a class="setup" href="/functions">All Functions</a>
       <a class="setup" href="https://github.com/vueuse/vueuse" target="_blank"><carbon:logo-github class="icon" /> GitHub</a>
-    </p>
-
-    <p id="sponsor" class="mt-18 text-center">
-      <a href="https://github.com/sponsors/antfu">
-        <img src="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg" class="m-auto">
-      </a>
     </p>
   </header>
 </template>

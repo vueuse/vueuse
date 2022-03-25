@@ -46,6 +46,3 @@ jobs:
 
       - name: Test Vue 2
         run: pnpm run test:2
-
-      - name: Lint
-        run: pnpm run lint

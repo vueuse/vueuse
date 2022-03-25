@@ -1,5 +1,9 @@
 ---
 category: Browser
+related:
+  - useDark
+  - usePreferredDark
+  - useStorage
 ---
 
 # useColorMode
@@ -39,7 +43,7 @@ const mode = useColorMode({
 }) // Ref<'dark' | 'light' | 'dim' | 'cafe'>
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseColorMode v-slot="{ mode }">
@@ -48,9 +52,3 @@ const mode = useColorMode({
   </button>
 </UseColorMode>
 ```
-
-## Related Functions
-
-- `useDark`
-- `usePreferredDark`
-- `useStorage`

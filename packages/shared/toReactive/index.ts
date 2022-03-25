@@ -1,4 +1,4 @@
-import { isRef, reactive } from 'vue-demi'
+import { isRef, reactive, unref } from 'vue-demi'
 import type { MaybeRef } from '../utils'
 
 /**
@@ -15,10 +15,13 @@ export function toReactive<T extends object>(
 
   const proxy = new Proxy({}, {
     get(_, p, receiver) {
-      return Reflect.get(objectRef.value, p, receiver)
+      return unref(Reflect.get(objectRef.value, p, receiver))
     },
     set(_, p, value) {
-      (objectRef.value as any)[p] = value
+      if (isRef((objectRef.value as any)[p]) && !isRef(value))
+        (objectRef.value as any)[p].value = value
+      else
+        (objectRef.value as any)[p] = value
       return true
     },
     deleteProperty(_, p) {

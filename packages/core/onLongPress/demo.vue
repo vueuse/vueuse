@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onLongPress } from '.'
+import { ref } from 'vue'
+import { onLongPress } from '@vueuse/core'
 
 const htmlRef = ref<HTMLElement | null>(null)
 const htmlRefOptions = ref<HTMLElement | null>(null)
@@ -20,7 +20,7 @@ onLongPress(htmlRefOptions, onLongPressCallback, { delay: 1000 })
 </script>
 
 <template>
-  <p>Long Pressed: {{ longPressed }}</p>
+  <p>Long Pressed: <BooleanDisplay :value="longPressed" /></p>
   <button ref="htmlRef" class="ml-2 button small">
     Press long (500ms)
   </button>

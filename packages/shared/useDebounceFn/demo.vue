@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useDebounceFn } from '.'
+import { ref } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 
 const updated = ref(0)
 const clicked = ref(0)
