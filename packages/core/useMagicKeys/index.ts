@@ -83,6 +83,16 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const current = reactive(new Set<string>())
   const obj = { toJSON() { return {} }, current }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
+  const metaDeps = new Set<string>()
+
+  function setRefs(key: string, value: boolean) {
+    if (key in refs) {
+      if (useReactive)
+        refs[key] = value
+      else
+        refs[key].value = value
+    }
+  }
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
     const key = e.key?.toLowerCase()
@@ -97,13 +107,22 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         current.delete(e.code)
     }
 
-    for (const key of values) {
-      if (key in refs) {
-        if (useReactive)
-          refs[key] = value
-        else
-          refs[key].value = value
-      }
+    for (const key of values)
+      setRefs(key, value)
+
+    // #1312
+    // In macOS, keys won't trigger "keyup" event when Meta key is released
+    // We track it's combination and relese manually
+    if (key === 'meta' && !value) {
+      // Meta key released
+      metaDeps.forEach((key) => {
+        current.delete(key)
+        setRefs(key, false)
+      })
+      metaDeps.clear()
+    }
+    else if (e.getModifierState('Meta') && value) {
+      [...current, ...values].forEach(key => metaDeps.add(key))
     }
   }
 
