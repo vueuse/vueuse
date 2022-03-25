@@ -3,7 +3,6 @@ import { computed, reactive, ref, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { useKeyModifier } from '../useKeyModifier'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
@@ -82,10 +81,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
-  const currentValues = new Set<string>()
   const obj = { toJSON() { return {} }, current }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
-  const meta = useKeyModifier('Meta')
   const metaDeps = new Set<string>()
 
   function setRefs(key: string, value: boolean) {
@@ -110,24 +107,22 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         current.delete(e.code)
     }
 
-    for (const key of values) {
-      if (value)
-        currentValues.add(key)
-      else
-        currentValues.delete(key)
-
+    for (const key of values)
       setRefs(key, value)
-    }
 
-    if (meta.value)
-      [...current, ...currentValues].forEach(key => metaDeps.add(key))
-
+    // #1312
+    // In macOS, keys won't trigger "keyup" event when Meta key is released
+    // We track it's combination and relese manually
     if (key === 'meta' && !value) {
+      // Meta key released
       metaDeps.forEach((key) => {
         current.delete(key)
         setRefs(key, false)
       })
       metaDeps.clear()
+    }
+    else if (e.getModifierState('Meta') && value) {
+      [...current, ...values].forEach(key => metaDeps.add(key))
     }
   }
 
