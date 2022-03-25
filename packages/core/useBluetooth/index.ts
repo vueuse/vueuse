@@ -110,7 +110,7 @@ export function useBluetooth(options?: UseBluetoothOptions) {
 
   tryOnMounted(() => {
     if (device.value)
-      device.value.gatt?.disconnect()
+      device.value.gatt?.connect()
   })
 
   tryOnScopeDispose(() => {
