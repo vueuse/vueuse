@@ -144,7 +144,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
   /**
    * Prevent writing while reading #808
    */
-  let synced = false
+  let synced = true
 
   function read(event?: StorageEvent) {
     if (!storage || (event && event.key !== key))
@@ -176,9 +176,8 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       setTimeout(() => {
         if (synced) {
           synced = false
-          return
+          read(e)
         }
-        read(e)
       }, 0)
     })
   }
