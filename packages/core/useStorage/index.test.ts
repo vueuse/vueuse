@@ -1,24 +1,30 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
-import { useSetup } from '../../.test'
+import { ref } from 'vue-demi'
+import { nextTwoTick, useSetup } from '../../.test'
 import { useStorage } from '.'
 
 const KEY = 'custom-key'
 
 describe('useStorage', () => {
-  afterEach(() => {
-    localStorage.clear()
-    // @ts-expect-error mock
-    localStorage.setItem.mockClear()
-    // @ts-expect-error mock
-    localStorage.getItem.mockClear()
-    // @ts-expect-error mock
-    localStorage.removeItem.mockClear()
+  const storageState = new Map<string, string | undefined>()
+  const storageMock = {
+    getItem: vi.fn(x => storageState.get(x)),
+    setItem: vi.fn((x, v) => storageState.set(x, v)),
+    removeItem: vi.fn(x => storageState.delete(x)),
+    clear: vi.fn(() => storageState.clear()),
+  }
+  const storage = storageMock as any as Storage
+
+  beforeEach(() => {
+    storageState.clear()
+    storageMock.setItem.mockClear()
+    storageMock.getItem.mockClear()
+    storageMock.removeItem.mockClear()
   })
 
   it('string', async() => {
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, 'a')
+      const ref = useStorage(KEY, 'a', storage)
 
       return {
         ref,
@@ -26,109 +32,108 @@ describe('useStorage', () => {
     })
 
     expect(instance.ref).toBe('a')
-    expect(localStorage.setItem).toBeCalledWith(KEY, 'a')
+    expect(storage.setItem).toBeCalledWith(KEY, 'a')
 
     instance.ref = 'b'
-    await nextTick()
+    await nextTwoTick()
 
     expect(instance.ref).toBe('b')
-    expect(localStorage.setItem).toBeCalledWith(KEY, 'b')
+    expect(storage.setItem).toBeCalledWith(KEY, 'b')
   })
 
   it('number', async() => {
-    localStorage.setItem(KEY, '0')
+    storageState.set(KEY, '0')
 
-    const store = useStorage(KEY, 1, localStorage)
-
+    const store = useStorage(KEY, 1, storage)
     expect(store.value).toBe(0)
 
     store.value = 2
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    expect(storage.setItem).toBeCalledWith(KEY, '2')
 
     store.value = -1
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '-1')
+    expect(storage.setItem).toBeCalledWith(KEY, '-1')
 
     store.value = 2.3
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '2.3')
+    expect(storage.setItem).toBeCalledWith(KEY, '2.3')
   })
 
   it('boolean', async() => {
-    localStorage.removeItem(KEY)
+    storage.removeItem(KEY)
 
-    const store = useStorage(KEY, true, localStorage)
+    const store = useStorage(KEY, true, storage)
 
     expect(store.value).toBe(true)
 
     store.value = false
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, 'false')
+    expect(storage.setItem).toBeCalledWith(KEY, 'false')
 
     store.value = true
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, 'true')
+    expect(storage.setItem).toBeCalledWith(KEY, 'true')
   })
 
   it('null string', () => {
-    localStorage.setItem(KEY, 'null')
+    storage.setItem(KEY, 'null')
 
-    const store = useStorage(KEY, null)
-    const storedValue = localStorage.getItem(KEY)
+    const store = useStorage(KEY, null, storage)
+    const storedValue = storage.getItem(KEY)
 
     expect(store.value).toBe('null')
     expect(storedValue).toBe('null')
   })
 
   it('null value', () => {
-    localStorage.removeItem(KEY)
+    storage.removeItem(KEY)
 
     const store = useStorage(KEY, null)
-    const storedValue = localStorage.getItem(KEY)
+    const storedValue = storage.getItem(KEY)
 
     expect(store.value).toBe(null)
     expect(storedValue).toBeFalsy()
   })
 
   it('remove value', async() => {
-    localStorage.setItem(KEY, 'null')
+    storage.setItem(KEY, 'null')
 
-    const store = useStorage(KEY, null)
+    const store = useStorage(KEY, null, storage)
     store.value = null
 
-    await nextTick()
+    await nextTwoTick()
 
     expect(store.value).toBe(null)
-    expect(localStorage.getItem(KEY)).toBeFalsy()
+    expect(storage.getItem(KEY)).toBeFalsy()
   })
 
   it('string', async() => {
-    localStorage.setItem(KEY, '0')
+    storageState.set(KEY, '0')
 
-    const store = useStorage(KEY, '1', localStorage)
+    const store = useStorage(KEY, '1', storage)
     expect(store.value).toBe('0')
 
     store.value = '2'
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '2')
+    expect(storage.setItem).toBeCalledWith(KEY, '2')
   })
 
   it('object', async() => {
-    expect(localStorage.getItem(KEY)).toEqual(undefined)
+    expect(storage.getItem(KEY)).toEqual(undefined)
 
     const store = useStorage(KEY, {
       name: 'a',
       data: 123,
-    })
+    }, storage)
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
     expect(store.value).toEqual({
       name: 'a',
@@ -136,42 +141,42 @@ describe('useStorage', () => {
     })
 
     store.value.name = 'b'
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
     store.value.data = 321
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
     store.value = null
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.removeItem).toBeCalledWith(KEY)
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
   it('pass ref as initialValue', async() => {
-    expect(localStorage.getItem(KEY)).toEqual(undefined)
+    expect(storage.getItem(KEY)).toEqual(undefined)
 
     const init = ref({
       name: 'a',
       data: 123,
     })
-    const storage = useStorage(KEY, init)
+    const state = useStorage(KEY, init, storage)
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    expect(storage).toBe(init)
+    expect(state).toBe(init)
 
     init.value.name = 'b'
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
   })
 
   it('eventFilter', async() => {
-    expect(localStorage.getItem(KEY)).toEqual(undefined)
+    expect(storage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {
       const ref = useStorage(
@@ -180,14 +185,14 @@ describe('useStorage', () => {
           name: 'a',
           data: 123,
         },
-        localStorage,
+        storage,
         {
           eventFilter: debounceFilter(100),
         },
       )
 
       // set on empty storage
-      expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+      expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
       expect(ref.value).toEqual({
         name: 'a',
@@ -199,36 +204,36 @@ describe('useStorage', () => {
       }
     })
 
-    await nextTick()
+    await nextTwoTick()
     await promiseTimeout(300)
     // @ts-expect-error mock
-    localStorage.setItem.mockClear()
+    storage.setItem.mockClear()
 
     instance.ref.name = 'b'
-    await nextTick()
-    expect(localStorage.setItem).not.toBeCalled()
+    await nextTwoTick()
+    expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
     // @ts-expect-error mock
-    localStorage.setItem.mockClear()
+    storage.setItem.mockClear()
 
     instance.ref.data = 321
-    await nextTick()
-    expect(localStorage.setItem).not.toBeCalled()
+    await nextTwoTick()
+    expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
   })
 
   it('custom serializer', async() => {
-    expect(localStorage.getItem(KEY)).toEqual(undefined)
+    expect(storage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {
-      const ref = useStorage(KEY, 0, localStorage, { serializer: { read: JSON.parse, write: JSON.stringify } })
+      const ref = useStorage(KEY, 0, storage, { serializer: { read: JSON.parse, write: JSON.stringify } })
 
-      expect(localStorage.setItem).toBeCalledWith(KEY, '0')
+      expect(storage.setItem).toBeCalledWith(KEY, '0')
 
       expect(ref.value).toBe(0)
 
@@ -238,23 +243,23 @@ describe('useStorage', () => {
     })
 
     instance.ref = { name: 'a', data: 123 }
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
     instance.ref.name = 'b'
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
     instance.ref.data = 321
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
     instance.ref = null
-    await nextTick()
+    await nextTwoTick()
 
-    expect(localStorage.removeItem).toBeCalledWith(KEY)
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 })
