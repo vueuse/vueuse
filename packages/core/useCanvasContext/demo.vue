@@ -3,7 +3,7 @@ import { reactive, ref, watch } from 'vue-demi'
 import { stringify } from '@vueuse/docs-utils'
 import { useRafFn } from '../useRafFn'
 import { useElementBounding } from '../useElementBounding'
-import { useCanvas2D } from '.'
+import { useCanvasContext } from '.'
 
 // Provide a bounding parent element:
 const bound = ref<null | HTMLElement>(null)
@@ -24,7 +24,7 @@ watch(height, (heightValue) => {
   canvas.value.height = heightValue
 })
 
-const { ctx } = useCanvas2D(canvas, { alpha: false })
+const { ctx } = useCanvasContext(canvas, { alpha: false })
 
 const properties = stringify(reactive({
   width,

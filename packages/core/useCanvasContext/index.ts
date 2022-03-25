@@ -44,7 +44,7 @@ export interface UseCanvasAttributes {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
  * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
  */
-export function useCanvas2D(
+export function useCanvasContext(
   el: Ref<HTMLCanvasElement | null>,
   attributes?: UseCanvasAttributes,
 ) {
@@ -90,4 +90,4 @@ export function useCanvas2D(
   }
 }
 
-export type UseCanvas2DReturn = ReturnType<typeof useCanvas2D>
+export type useCanvasContextReturn = ReturnType<typeof useCanvasContext>
