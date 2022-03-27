@@ -1,6 +1,7 @@
 export * from './computedAsync'
 export * from './computedInject'
 export * from './createUnrefFn'
+export * from './eventRef'
 export * from './onClickOutside'
 export * from './onKeyStroke'
 export * from './onLongPress'
