@@ -5,7 +5,22 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
-type DescriptorNamePolyfill = 'clipboard-read' | 'clipboard-write' | 'camera' | 'microphone' | 'speaker'
+type DescriptorNamePolyfill =
+  'accelerometer' |
+  'accessibility-events' |
+  'ambient-light-sensor' |
+  'background-sync' |
+  'camera' |
+  'clipboard-read' |
+  'clipboard-write' |
+  'gyroscope' |
+  'magnetometer' |
+  'microphone' |
+  'notifications' |
+  'payment-handler' |
+  'persistent-storage' |
+  'push' |
+  'speaker'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
