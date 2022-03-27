@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from 'vue-demi'
+import { getCurrentInstance, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -27,6 +27,8 @@ export interface BrowserLocationState {
  * @param options
  */
 export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
+  if (getCurrentInstance()?.appContext.config.globalProperties.$router) throw new Error('Do not use `useBrowserLocation` with Vue Router installed, use `useRoute` provided by Vue Router instead.')
+
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
     const { hash, host, hostname, href, origin, pathname, port, protocol, search } = window?.location || {}
