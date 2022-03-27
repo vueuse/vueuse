@@ -143,7 +143,7 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isFinished.value = !loading
   }
   const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
-    let _url = ''
+    let _url = url ?? ''
     let _config
     if (typeof executeUrl === 'string') {
       _url = executeUrl

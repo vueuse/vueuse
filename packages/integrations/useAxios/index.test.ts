@@ -111,6 +111,21 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
+  test('params: url config instance options, execute: config', (done) => {
+    const { isLoading, then, execute } = useAxios(path, config, instance, options)
+    expect(isLoading.value).toBeFalsy()
+    execute(config)
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    then((result) => {
+      expect(result.data.value.id).toBe(1)
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+      done()
+    }, onRejected)
+  })
+
   test('params no url: nil', (done) => {
     const { isLoading, then, execute } = useAxios()
     expect(isLoading.value).toBeFalsy()
