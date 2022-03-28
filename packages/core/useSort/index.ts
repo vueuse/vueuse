@@ -13,19 +13,29 @@ export interface UseSortOptions<T> {
   dirty?: boolean
 }
 
-export function useSort<T>(arr: MaybeRef<T[]>, sortFn: UseSortFn<T>, options: UseSortOptions<T> = {}) {
+export function useSort<T>(source: MaybeRef<T[]>, sortFn: UseSortFn<T>, options: UseSortOptions<T> = {}) {
   const { compareFn = defaultCompare, dirty = false } = options
-  if (!dirty) return computed(() => sortFn(unref(arr), compareFn as UseSortCompareFn<T>))
+
+  if (!dirty) return computed(() => sortFn(unref(source), compareFn as UseSortCompareFn<T>))
 
   // dirty
   watchEffect(() => {
-    const result = sortFn(unref(arr), compareFn as UseSortCompareFn<T>)
-    if (isRef(arr)) { arr.value = result }
+    const result = sortFn(unref(source), compareFn as UseSortCompareFn<T>)
+    if (isRef(source)) { source.value = result }
     else {
-      arr.length = 0
-      arr.push(...result)
+      source.length = 0
+      source.push(...result)
     }
   })
 
-  return arr
+  return source
+}
+
+export function useSortWrapFn<T>(sortFn: UseSortFn<T>, options: UseSortOptions<T> = {}) {
+  return (arr: MaybeRef<T[]>, _options: UseSortOptions<T> = {}) => {
+    return useSort<T>(arr, sortFn, {
+      ...options,
+      ..._options,
+    })
+  }
 }
