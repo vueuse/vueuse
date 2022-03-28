@@ -77,6 +77,12 @@ describe('useSort', () => {
 
     expect(unref(sorted)).toMatchObject(objectSorted)
   })
+})
+
+describe('useSortWrapFn', () => {
+  it('should be defined', () => {
+    expect(useSortWrapFn).toBeDefined()
+  })
 
   it('should wrap function', () => {
     const wrapFn = useSortWrapFn(quickSort)
