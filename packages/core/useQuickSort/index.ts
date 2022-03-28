@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { UseSortCompareFn, UseSortOptions } from '../useSort'
-import { useSort } from '../useSort'
+import type { UseSortCompareFn } from '../useSort'
+import { useSortWrapFn } from '../useSort'
 
 export function quickSort<T>(source: T[], compareFn: UseSortCompareFn<T>): T[] {
   // sorted
@@ -25,6 +24,4 @@ export function quickSort<T>(source: T[], compareFn: UseSortCompareFn<T>): T[] {
   return quickSort(left, compareFn).concat(centerArr, quickSort(right, compareFn))
 }
 
-export function useQuickSort<T>(source: MaybeRef<T[]>, options: UseSortOptions<T> = {}) {
-  return useSort(source, quickSort, options)
-}
+export const useQuickSort = useSortWrapFn(quickSort)
