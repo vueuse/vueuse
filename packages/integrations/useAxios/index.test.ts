@@ -114,7 +114,7 @@ describe('useAxios', () => {
   test('params: url config instance options, execute: config', (done) => {
     const { isLoading, then, execute } = useAxios(path, config, instance, options)
     expect(isLoading.value).toBeFalsy()
-    execute(config)
+    execute(undefined, config)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
 
