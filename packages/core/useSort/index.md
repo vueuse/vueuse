@@ -1,5 +1,5 @@
 ---
-category: Math
+category: Sort
 ---
 
 # useSort
@@ -29,6 +29,21 @@ const objArr = [{
   age: 22,
 }]
 const objSorted = useSort(objArr, quickSort, {
+  compareFn: (a, b) => a.age - b.age,
+})
+```
+
+### useSortWrapFn
+
+```ts
+const wrapFn = useSortWrapFn<User>(quickSort, {
+  compareFn: (a, b) => a.age - b.age,
+})
+const sorted = wrapFn(objArr)
+
+// or
+const wrapFn = useSortWrapFn<User>(quickSort)
+const sorted = wrapFn(objArr, {
   compareFn: (a, b) => a.age - b.age,
 })
 ```

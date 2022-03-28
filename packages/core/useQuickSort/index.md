@@ -1,5 +1,5 @@
 ---
-category: Math
+category: Sort
 ---
 
 # useQuickSort
