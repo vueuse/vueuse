@@ -88,6 +88,7 @@ export const packages: PackageManifest[] = [
       'focus-trap': 'focusTrap',
       'drauu': 'Drauu',
       'fuse.js': 'Fuse',
+      'change-case': 'changeCase',
     },
   },
   {
