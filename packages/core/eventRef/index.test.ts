@@ -1,4 +1,4 @@
-import { nextTick, ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { eventRef } from '.'
 
 type FnHandler = (val: number | string) => void
@@ -46,20 +46,25 @@ describe('eventRef', () => {
     expect(eventRef).toBeDefined()
   })
 
-  it('should reactive by mock event', async() => {
+  it('should reactive by mock event', (done) => {
     const [scrollTop] = eventRef<number>((handler) => {
       _scroll.on(handler)
       return () => _scroll.off(handler)
     }, (val?: number) => val ?? _scroll.value as number)
 
-    expect(scrollTop.value).toBe(0)
+    const handleChange = vi.fn()
+      .mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(0)
+        _update(10)
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(10)
+        done()
+      })
 
-    _update(10)
-    await nextTick()
-    expect(scrollTop.value).toBe(10)
+    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
   })
 
-  it('should recomputed when getter with reactive value change', async() => {
+  it('should recomputed when getter with reactive value change', (done) => {
     const offset = ref(0)
 
     const [scrollTop] = eventRef<number>((handler) => {
@@ -67,18 +72,22 @@ describe('eventRef', () => {
       return () => _scroll.off(handler)
     }, (val?: number) => (val ?? _scroll.value as number) + offset.value)
 
-    expect(scrollTop.value).toBe(0)
+    const handleChange = vi.fn()
+      .mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(0)
+        offset.value = 10
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(10)
+        _update(10)
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(20)
+        done()
+      })
 
-    offset.value = 10
-    await nextTick()
-    expect(scrollTop.value).toBe(10)
-
-    _update(10)
-    await nextTick()
-    expect(scrollTop.value).toBe(20)
+    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
   })
 
-  it('should add listener again when register with reactive value change', async() => {
+  it('should add listener again when register with reactive value change', (done) => {
     const toString = ref(false)
 
     const [scrollTop] = eventRef<number | string>((handler) => {
@@ -86,18 +95,21 @@ describe('eventRef', () => {
       return () => _scroll.off(handler)
     }, (val?: number | string) => val ?? _scroll.value)
 
-    expect(scrollTop.value).toBe(0)
+    const handleChange = vi.fn()
+      .mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(0)
+        toString.value = true
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe('0')
+        _update(10)
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe('10')
+        toString.value = false
+      }).mockImplementationOnce(() => {
+        expect(scrollTop.value).toBe(10)
+        done()
+      })
 
-    toString.value = true
-    await nextTick()
-    expect(scrollTop.value).toBe('0')
-
-    _update(10)
-    await nextTick()
-    expect(scrollTop.value).toBe('10')
-
-    toString.value = false
-    await nextTick()
-    expect(scrollTop.value).toBe(10)
+    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
   })
 })
