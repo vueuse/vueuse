@@ -126,19 +126,15 @@ describe('useStorage', () => {
   })
 
   it('date', async() => {
-    const initialValue = new Date('2000-01-01')
-    const initialValueString = 'Sat Jan 01 2000 01:00:00 GMT+0100 (Central European Standard Time)'
-    storageState.set(KEY, initialValueString)
+    storageState.set(KEY, '2000-01-01T00:00:00.000Z')
 
-    const store = useStorage(KEY, new Date('2000-01-02'), storage)
-    expect(store.value).toEqual(initialValue)
+    const store = useStorage(KEY, new Date('2000-01-02T00:00:00.000Z'), storage)
+    expect(store.value).toEqual(new Date('2000-01-01T00:00:00.000Z'))
 
-    const secondValue = new Date('2000-01-03')
-    const secondValueString = 'Mon Jan 03 2000 01:00:00 GMT+0100 (Central European Standard Time)'
-    store.value = secondValue
+    store.value = new Date('2000-01-03T00:00:00.000Z')
     await nextTwoTick()
 
-    expect(storage.setItem).toBeCalledWith(KEY, secondValueString)
+    expect(storage.setItem).toBeCalledWith(KEY, '2000-01-03T00:00:00.000Z')
   })
 
   it('object', async() => {

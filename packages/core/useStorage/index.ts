@@ -49,7 +49,7 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   },
   date: {
     read: (v: any) => new Date(v),
-    write: (v: any) => String(v),
+    write: (v: any) => v.toISOString(),
   },
 }
 
