@@ -1,11 +1,3 @@
-<template>
-  <div>
-    <div text-primary font-bold mb-2>
-      Computed Array
-    </div>
-    <pre>{{ computedArr }}</pre>
-  </div>
-</template>
 
 <script lang="ts">
 import type { InjectionKey, Ref } from 'vue-demi'
@@ -33,6 +25,11 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<template>
+  <div>
+    <div text-primary font-bold mb-2>
+      Computed Array
+    </div>
+    <pre>{{ computedArr }}</pre>
+  </div>
+</template>

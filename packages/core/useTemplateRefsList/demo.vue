@@ -1,17 +1,3 @@
-<template>
-  <span v-for="i of count" :key="i" :ref="refs.set" class="mr-2">
-    {{ i }}
-  </span>
-  <br>
-  <button @click="count += 1">
-    Inc
-  </button>
-  <button :disabled="count <= 0" @click="count -= 1">
-    Dec
-  </button>
-  <note>Open the console to see the output</note>
-</template>
-
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue'
 import { useTemplateRefsList } from '@vueuse/core'
@@ -27,3 +13,17 @@ watch(refs, async() => {
   flush: 'post',
 })
 </script>
+
+<template>
+  <span v-for="i of count" :key="i" :ref="refs.set" class="mr-2">
+    {{ i }}
+  </span>
+  <br>
+  <button @click="count += 1">
+    Inc
+  </button>
+  <button :disabled="count <= 0" @click="count -= 1">
+    Dec
+  </button>
+  <note>Open the console to see the output</note>
+</template>
