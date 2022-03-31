@@ -125,6 +125,18 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '2')
   })
 
+  it('date', async() => {
+    storageState.set(KEY, '2000-01-01T00:00:00.000Z')
+
+    const store = useStorage(KEY, new Date('2000-01-02T00:00:00.000Z'), storage)
+    expect(store.value).toEqual(new Date('2000-01-01T00:00:00.000Z'))
+
+    store.value = new Date('2000-01-03T00:00:00.000Z')
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '2000-01-03T00:00:00.000Z')
+  })
+
   it('object', async() => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 

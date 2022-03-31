@@ -18,7 +18,7 @@ export interface SerializerAsync<T> {
   write(value: T): Awaitable<string>
 }
 
-export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
   boolean: {
     read: (v: any) => v === 'true',
     write: (v: any) => String(v),
@@ -46,6 +46,10 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   set: {
     read: (v: any) => new Set(JSON.parse(v)),
     write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
+  },
+  date: {
+    read: (v: any) => new Date(v),
+    write: (v: any) => v.toISOString(),
   },
 }
 
