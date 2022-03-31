@@ -5,15 +5,17 @@ export function guessSerializerType<T extends(string | number | boolean | object
       ? 'set'
       : rawInit instanceof Map
         ? 'map'
-        : typeof rawInit === 'boolean'
-          ? 'boolean'
-          : typeof rawInit === 'string'
-            ? 'string'
-            : typeof rawInit === 'object'
-              ? 'object'
-              : Array.isArray(rawInit)
+        : rawInit instanceof Date
+          ? 'date'
+          : typeof rawInit === 'boolean'
+            ? 'boolean'
+            : typeof rawInit === 'string'
+              ? 'string'
+              : typeof rawInit === 'object'
                 ? 'object'
-                : !Number.isNaN(rawInit)
-                  ? 'number'
-                  : 'any'
+                : Array.isArray(rawInit)
+                  ? 'object'
+                  : !Number.isNaN(rawInit)
+                    ? 'number'
+                    : 'any'
 }

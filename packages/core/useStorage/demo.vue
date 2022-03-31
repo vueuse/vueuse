@@ -9,7 +9,7 @@ const state = useStorage('vue-use-local-storage', {
   count: 0,
 })
 
-const text = stringify(state.value)
+const text = stringify(state)
 </script>
 
 <template>

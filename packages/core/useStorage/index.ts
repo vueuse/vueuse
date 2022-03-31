@@ -1,6 +1,6 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
 import { pausableWatch } from '@vueuse/shared'
-import { nextTick, ref, shallowRef, unref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -18,7 +18,7 @@ export interface SerializerAsync<T> {
   write(value: T): Awaitable<string>
 }
 
-export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set', Serializer<any>> = {
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
   boolean: {
     read: (v: any) => v === 'true',
     write: (v: any) => String(v),
@@ -46,6 +46,10 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   set: {
     read: (v: any) => new Set(JSON.parse(v)),
     write: (v: any) => JSON.stringify(Array.from((v as Set<any>).entries())),
+  },
+  date: {
+    read: (v: any) => new Date(v),
+    write: (v: any) => v.toISOString(),
   },
 }
 
@@ -148,11 +152,8 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     { flush, deep, eventFilter },
   )
 
-  if (window && listenToStorageChanges) {
-    useEventListener(window, 'storage', (e) => {
-      setTimeout(() => update(e), 0)
-    })
-  }
+  if (window && listenToStorageChanges)
+    useEventListener(window, 'storage', update)
 
   update()
 
@@ -196,7 +197,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       onError(e)
     }
     finally {
-      nextTick(resumeWatch)
+      resumeWatch()
     }
   }
 
