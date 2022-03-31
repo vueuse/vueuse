@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/metadata",
-  "version": "8.2.2",
+  "version": "8.2.3",
   "description": "Metadata for VueUse functions",
   "keywords": [
     "vue",
