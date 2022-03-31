@@ -16,7 +16,7 @@ const packages = [
   'core',
   'shared',
   'nuxt',
-  'integrations',
+  // 'integrations',
   'components',
   'motion',
   'firebase',
