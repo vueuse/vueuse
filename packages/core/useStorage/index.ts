@@ -1,6 +1,6 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
 import { pausableWatch } from '@vueuse/shared'
-import { nextTick, ref, shallowRef, unref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -148,11 +148,8 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
     { flush, deep, eventFilter },
   )
 
-  if (window && listenToStorageChanges) {
-    useEventListener(window, 'storage', (e) => {
-      setTimeout(() => update(e), 0)
-    })
-  }
+  if (window && listenToStorageChanges)
+    useEventListener(window, 'storage', update)
 
   update()
 
@@ -196,7 +193,7 @@ export function useStorage<T extends(string|number|boolean|object|null)> (
       onError(e)
     }
     finally {
-      nextTick(resumeWatch)
+      resumeWatch()
     }
   }
 
