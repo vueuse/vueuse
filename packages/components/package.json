@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "Renderless components for VueUse",
   "keywords": [
     "vue",
