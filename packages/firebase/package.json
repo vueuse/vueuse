@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "8.2.3",
+  "version": "8.2.4",
   "description": "Enables realtime bindings for Firebase",
   "keywords": [
     "vue",
