@@ -10,9 +10,6 @@
  */
 import type { Ref } from 'vue-demi'
 import { isRef } from 'vue-demi'
-import { uniq } from '../../../scripts/utils'
-import { isSupportKey } from './keyboard'
-
 export interface MDCListTextAndIndex {
   // The text of the item in the original list
   text: string // 原始列表文本
@@ -47,12 +44,68 @@ const flag = {
   // skip
   IS_SKIP: '__th_skip', // 是否跳过
 }
-
+export const KEYBOARD_MAP = {
+  Digit1: true,
+  Digit2: true,
+  Digit3: true,
+  Digit4: true,
+  Digit5: true,
+  Digit6: true,
+  Digit7: true,
+  Digit8: true,
+  Digit9: true,
+  Numpad1: true,
+  Numpad2: true,
+  Numpad3: true,
+  Numpad4: true,
+  Numpad5: true,
+  Numpad6: true,
+  Numpad7: true,
+  Numpad8: true,
+  Numpad9: true,
+  Space: true,
+  KeyA: true,
+  KeyB: true,
+  KeyC: true,
+  KeyD: true,
+  KeyE: true,
+  KeyF: true,
+  KeyG: true,
+  KeyH: true,
+  KeyI: true,
+  KeyJ: true,
+  KeyK: true,
+  KeyL: true,
+  KeyM: true,
+  KeyN: true,
+  KeyO: true,
+  KeyP: true,
+  KeyQ: true,
+  KeyR: true,
+  KeyS: true,
+  KeyT: true,
+  KeyU: true,
+  KeyV: true,
+  KeyW: true,
+  KeyX: true,
+  KeyY: true,
+  KeyZ: true,
+  // 以下按键视为不是文本输入，而是用户的特殊操作，需要处理
+  Backspace: true,
+  ArrowUp: true,
+  ArrowDown: true,
+}
+function uniq<T extends any[]>(a: T) {
+  return Array.from(new Set(a))
+}
+function isSupportKey(e: KeyboardEvent): boolean {
+  return Object.prototype.hasOwnProperty.call(KEYBOARD_MAP, e.code)
+}
 /**
  * 初始化生成 TypeaheadState 实例
  * Initialize generation of typeahead state instance
  */
-export function initState(): TypeaheadState {
+function initState(): TypeaheadState {
   return {
     bufferClearTimeout: 0,
     typeaheadBuffer: '',
@@ -69,7 +122,7 @@ export function initState(): TypeaheadState {
  * @param typeh initState方法的返回值
  * Return value of initstate function
  */
-export function initSortedIndex(
+function initSortedIndex(
   listItemCount: number,
   typeh: TypeAHeadInstance): Map<string, MDCListTextAndIndex[]> {
   const sortedIndexByFirstChar = new Map<string, MDCListTextAndIndex[]>()
@@ -115,7 +168,7 @@ export function initSortedIndex(
  * which will be used in the up and down key operation
  * @param item
  */
-export function isItemAtIndexDisabledOrSkip(item: any) {
+function isItemAtIndexDisabledOrSkip(item: any) {
   return item[flag.IS_DISABLED] || item[flag.IS_SKIP]
 }
 
@@ -130,7 +183,7 @@ export function isItemAtIndexDisabledOrSkip(item: any) {
  * @param direction 方向，取值为 'down' / 'up'
  * Direction, the value is' down '/'up'
  */
-export function findNextItemIndex(focusedItemIndex: number, list: MDCListTextAndIndex[], direction: string) {
+function findNextItemIndex(focusedItemIndex: number, list: MDCListTextAndIndex[], direction: string) {
   let result: number = focusedItemIndex
   // 当前聚焦索引为跳过或者禁用，且按下的是 ArrowDown
   // If the current focus index is skipped or disabled, and you press 'ArrowDown'
@@ -165,7 +218,7 @@ export function findNextItemIndex(focusedItemIndex: number, list: MDCListTextAnd
  * @param state TypeaheadState 实例
  * TypeaheadState instance
  */
-export function matchFirstChar(
+function matchFirstChar(
   sortedIndexByFirstChar: Map<string, MDCListTextAndIndex[]>,
   focusedItemIndex: number,
   state: TypeaheadState): number {
@@ -215,7 +268,7 @@ export function matchFirstChar(
  * @param state TypeaheadState 实例
  * TypeaheadState instance
  */
-export function matchAllChars(
+function matchAllChars(
   sortedIndexByFirstChar: Map<string, MDCListTextAndIndex[]>,
   focusedItemIndex: number,
   state: TypeaheadState): number {
@@ -347,7 +400,7 @@ class TypeAHeadInstance {
  * @param state TypeaheadState 实例
  * TypeaheadState instance
  */
-export function clearBuffer(state: TypeaheadState) {
+function clearBuffer(state: TypeaheadState) {
   state.typeaheadBuffer = ''
   state.typeaheadBufferInput = ''
 }
@@ -360,7 +413,7 @@ export function clearBuffer(state: TypeaheadState) {
  * @param textKey 原始数据列表 item中 文本的建
  * Key of the text field of item in the Raw data list
  */
-export function useTypeAHead(list: [] | Ref, textKey: string): TypeAHeadInstance {
+export function useTypeAHead(list: [] | Ref, textKey: string) {
   const originList = isRef(list) ? list.value : list
   const len = originList.length
   const typeAHead = new TypeAHeadInstance(originList, textKey)
