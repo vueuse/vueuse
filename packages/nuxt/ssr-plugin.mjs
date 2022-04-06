@@ -1,6 +1,5 @@
 import { setSSRHandler } from '@vueuse/core'
-import { useMeta } from '#meta'
-import { useCookie } from '#app'
+import { useCookie, useHead } from '#app'
 
 setSSRHandler('getDefaultStorage', () => {
   const cookieMap = new Map()
@@ -19,14 +18,14 @@ setSSRHandler('getDefaultStorage', () => {
 if (process.server) {
   setSSRHandler('updateHTMLAttrs', (selector, attr, value) => {
     if (selector === 'html') {
-      useMeta({
+      useHead({
         htmlAttrs: {
           [attr]: value,
         },
       })
     }
     else if (selector === 'body') {
-      useMeta({
+      useHead({
         bodyAttrs: {
           [attr]: value,
         },
