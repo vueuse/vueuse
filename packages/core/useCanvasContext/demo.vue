@@ -15,12 +15,14 @@ const canvas = ref<null | HTMLCanvasElement>(null)
 const { width, height } = useElementBounding(bound)
 
 watch(width, (widthValue) => {
-  if (!canvas.value) return
+  if (!canvas.value)
+    return
   canvas.value.width = widthValue
 })
 
 watch(height, (heightValue) => {
-  if (!canvas.value) return
+  if (!canvas.value)
+    return
   canvas.value.height = heightValue
 })
 

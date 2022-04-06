@@ -32,9 +32,8 @@ const canvas = ref<null | HTMLCanvasElement>(null)
 const { ctx, isCanvasRenderingContext2D } = useCanvasContext(canvas, '2d', { alpha: false })
 
 useRafFn(() => {
-  if (ctx.value && isCanvasRenderingContext2D(ctx.value)) {
+  if (ctx.value && isCanvasRenderingContext2D(ctx.value)) 
     // do something with the context ...
-  }
 })
 ```
 
@@ -56,9 +55,8 @@ const canvas = ref<null | HTMLCanvasElement>(null)
 const { ctx, isCanvasRenderingContextWebGL } = useCanvasContext(canvas, 'webgl', { alpha: false })
 
 useRafFn(() => {
-  if (ctx.value && isCanvasRenderingContextWebGL(ctx.value)) {
+  if (ctx.value && isCanvasRenderingContextWebGL(ctx.value))
     // do something with the context ...
-  }
 })
 ```
 
@@ -90,13 +88,15 @@ const { width, height } = useElementBounding(bound)
 
 // Watch for changes to the bounding element's width:
 watch(width, (widthValue) => {
-  if (!canvas.value) return
+  if (!canvas.value) 
+    return
   canvas.value.width = widthValue
 })
 
 // Watch for changes to the bounding element's height:
 watch(height, (heightValue) => {
-  if (!canvas.value) return
+  if (!canvas.value) 
+    return
   canvas.value.height = heightValue
 })
 
