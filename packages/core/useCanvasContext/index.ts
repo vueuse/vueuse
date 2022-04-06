@@ -67,7 +67,8 @@ export function useCanvasContext(
 
   // Wrapper functionality for getting the context
   const getContext = (): undefined | CanvasRenderingContext2D | WebGL2RenderingContext => {
-    if (!canvas.value) return undefined
+    if (!canvas.value)
+      return undefined
 
     const context = canvas.value.getContext(contextId, attributes)
 
@@ -82,7 +83,9 @@ export function useCanvasContext(
 
   // Watching the canvas to ensure we can get the canvas' context:
   watch(canvas, (canvasValue) => {
-    if (!canvasValue) return
+    if (!canvasValue)
+      return
+
     ctx.value = getContext()
   }, {
     immediate: true,

@@ -18,7 +18,7 @@ This is the default usage of useCanvas2D, which simply returns the context for t
 
 ```vue
 <template>
-  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256"/>
+  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256" />
 </template>
 ```
 
@@ -42,7 +42,7 @@ useRafFn(() => {
 
 ```vue
 <template>
-  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256"/>
+  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256" />
 </template>
 ```
 
@@ -69,7 +69,7 @@ Sometime's it's useful to have a canvas element that will be reactive to it's bo
 ```vue
 <template>
   <div ref="bound" class="w-full h-128 sm:w-128 lg:w-256">
-    <canvas ref="canvas"/>
+    <canvas ref="canvas" />
   </div>
 </template>
 ```
