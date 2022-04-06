@@ -24,7 +24,7 @@ watch(height, (heightValue) => {
   canvas.value.height = heightValue
 })
 
-const { ctx } = useCanvasContext(canvas, { alpha: false })
+const { ctx, isCanvasRenderingContext2D } = useCanvasContext(canvas, '2d', { alpha: false })
 
 const properties = stringify(reactive({
   width,
@@ -32,7 +32,7 @@ const properties = stringify(reactive({
 }))
 
 useRafFn(() => {
-  if (ctx.value) {
+  if (ctx.value && isCanvasRenderingContext2D(ctx.value)) {
     const centerX = width.value / 2
     const centerY = height.value / 2
 

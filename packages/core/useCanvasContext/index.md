@@ -14,6 +14,8 @@ Reactive [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_AP
 
 This is the default usage of useCanvas2D, which simply returns the context for the specified attributes.
 
+## 2D Canvas Context
+
 ```vue
 <template>
   <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256"/>
@@ -21,16 +23,40 @@ This is the default usage of useCanvas2D, which simply returns the context for t
 ```
 
 ```ts
-import { useCanvas2D, useElementBounding, useRafFn } from '@vueuse/core'
+import { useCanvasContext, useElementBounding, useRafFn } from '@vueuse/core'
 
 // This is the canvas HTMLCanvasElement element as a ref:
 const canvas = ref<null | HTMLCanvasElement>(null)
 
 // Get the ctx:
-const { ctx } = useCanvas2D(canvas, { alpha: true, desynchronized: false })
+const { ctx, isCanvasRenderingContext2D } = useCanvasContext(canvas, '2d', { alpha: false })
 
 useRafFn(() => {
-  if (ctx.value) {
+  if (ctx.value && isCanvasRenderingContext2D(ctx.value)) {
+    // do something with the context ...
+  }
+})
+```
+
+## 3D WebGL Context
+
+```vue
+<template>
+  <canvas ref="canvas" class="w-full h-128 sm:w-128 lg:w-256"/>
+</template>
+```
+
+```ts
+import { useCanvasContext, useElementBounding, useRafFn } from '@vueuse/core'
+
+// This is the canvas HTMLCanvasElement element as a ref:
+const canvas = ref<null | HTMLCanvasElement>(null)
+
+// Get the ctx:
+const { ctx, isCanvasRenderingContextWebGL } = useCanvasContext(canvas, 'webgl', { alpha: false })
+
+useRafFn(() => {
+  if (ctx.value && isCanvasRenderingContextWebGL(ctx.value)) {
     // do something with the context ...
   }
 })

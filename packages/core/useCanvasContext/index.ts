@@ -1,24 +1,24 @@
-import { computed, ref, watch } from 'vue-demi'
+import { computed, isRef, ref, watch } from 'vue-demi'
 
-import type { Ref } from 'vue-demi'
+import type { MaybeRef } from '@vueuse/shared'
 
 /**
-   *
-   * A DOMString containing the context identifier
-   * defining the drawing context associated to the canvas.
-   *
-   * Note: The identifier "experimental-webgl" is used in
-   * new implementations of WebGL. These implementations
-   * have either not reached test suite conformance,
-   * or the graphics drivers on the platform are not yet
-   * stable.
-   *
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-   *
-   * @default '2d'
-   *
-   */
-export type UseCanvasContextType = '2d' | 'webgl' | 'experimental-webgl' | 'webgl2' | 'bitmaprenderer'
+ *
+ * A DOMString containing the context identifier
+ * defining the drawing context associated to the canvas.
+ *
+ * Note: The identifier "experimental-webgl" is used in
+ * new implementations of WebGL. These implementations
+ * have either not reached test suite conformance,
+ * or the graphics drivers on the platform are not yet
+ * stable.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
+ *
+ * @default '2d'
+ *
+ */
+export type UseCanvasContextType = '2d' | 'webgl'
 
 export interface UseCanvasAttributes {
   /**
@@ -45,27 +45,36 @@ export interface UseCanvasAttributes {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
  */
 export function useCanvasContext(
-  el: Ref<HTMLCanvasElement | null>,
+  el: MaybeRef<HTMLCanvasElement | null>,
+  contextId: UseCanvasContextType,
   attributes?: UseCanvasAttributes,
 ) {
   // Reactive canvas element:
-  const canvas = el
+  const canvas = isRef(el) ? el : ref<HTMLCanvasElement | null>(el)
 
   // Reactive canvas context:
-  const ctx = ref<undefined | CanvasRenderingContext2D>(undefined)
+  const ctx = ref<undefined | CanvasRenderingContext2D | WebGL2RenderingContext>(undefined)
 
   // Ensure the rendering context is a 2D context:
   const isCanvasRenderingContext2D = (v: RenderingContext): v is CanvasRenderingContext2D => {
     return !!v && v instanceof CanvasRenderingContext2D
   }
 
+  // Ensure the rendering context is a WebGL context:
+  const isCanvasRenderingContextWebGL = (v: RenderingContext): v is WebGL2RenderingContext => {
+    return !!v && v instanceof WebGL2RenderingContext
+  }
+
   // Wrapper functionality for getting the context
-  const getContext = (): undefined | CanvasRenderingContext2D => {
+  const getContext = (): undefined | CanvasRenderingContext2D | WebGL2RenderingContext => {
     if (!canvas.value) return undefined
 
-    const context = canvas.value.getContext('2d', attributes)
+    const context = canvas.value.getContext(contextId, attributes)
 
     if (context && isCanvasRenderingContext2D(context))
+      return context
+
+    if (context && isCanvasRenderingContextWebGL(context))
       return context
 
     return undefined
@@ -85,8 +94,10 @@ export function useCanvasContext(
   })
 
   return {
-    isReady,
     ctx,
+    isCanvasRenderingContext2D,
+    isCanvasRenderingContextWebGL,
+    isReady,
   }
 }
 
