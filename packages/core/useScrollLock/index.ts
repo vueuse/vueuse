@@ -6,9 +6,11 @@ import { useEventListener } from '../useEventListener'
 function preventDefault(rawEvent: TouchEvent): boolean {
   const e = rawEvent || window.event
   // Do not prevent if the event has more than one touch (usually meaning this is a multi touch gesture like pinch to zoom).
-  if (e.touches.length > 1) return true
+  if (e.touches.length > 1)
+    return true
 
-  if (e.preventDefault) e.preventDefault()
+  if (e.preventDefault)
+    e.preventDefault()
 
   return false
 }
@@ -34,7 +36,8 @@ export function useScrollLock(
     if (el) {
       const ele = el as HTMLElement
       initialOverflow = ele.style.overflow
-      if (isLocked.value) ele.style.overflow = 'hidden'
+      if (isLocked.value)
+        ele.style.overflow = 'hidden'
     }
   }, {
     immediate: true,
@@ -42,7 +45,8 @@ export function useScrollLock(
 
   const lock = () => {
     const ele = (unref(element) as HTMLElement)
-    if (!ele || isLocked.value) return
+    if (!ele || isLocked.value)
+      return
     if (isIOS) {
       touchMoveListener = useEventListener(
         document,
@@ -57,7 +61,8 @@ export function useScrollLock(
 
   const unlock = () => {
     const ele = (unref(element) as HTMLElement)
-    if (!ele || !isLocked.value) return
+    if (!ele || !isLocked.value)
+      return
     isIOS && touchMoveListener?.()
     ele.style.overflow = initialOverflow
     isLocked.value = false
@@ -68,7 +73,8 @@ export function useScrollLock(
       return isLocked.value
     },
     set(v) {
-      if (v) lock()
+      if (v)
+        lock()
       else unlock()
     },
   })

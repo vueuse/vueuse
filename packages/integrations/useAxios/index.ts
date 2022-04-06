@@ -131,7 +131,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
   const abort = (message?: string) => {
-    if (isFinished.value || !isLoading.value) return
+    if (isFinished.value || !isLoading.value)
+      return
 
     cancelToken.cancel(message)
     aborted.value = true
@@ -165,7 +166,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
         loading(false)
       })
   }
-  if (options.immediate && url) (execute as StrictUseAxiosReturn<T>['execute'])()
+  if (options.immediate && url)
+    (execute as StrictUseAxiosReturn<T>['execute'])()
 
   const result = {
     response,

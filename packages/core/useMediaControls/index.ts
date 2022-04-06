@@ -399,7 +399,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
     const el = unref(target)
-    if (!el) return
+    if (!el)
+      return
 
     volume.value = el.volume
     muted.value = el.muted

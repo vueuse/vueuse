@@ -12,7 +12,8 @@ const {
 const message = ref('')
 
 watch(data, () => {
-  if (data.value) alert(data.value)
+  if (data.value)
+    alert(data.value)
 })
 </script>
 

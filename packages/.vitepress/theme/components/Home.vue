@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import HomeHero from './HomeHero.vue'
 import HomeFeatures from './HomeFeatures.vue'

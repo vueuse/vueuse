@@ -94,8 +94,10 @@ const data = ref<DataItem[]>([
 const search = ref('')
 const filterBy = ref('both')
 const keys = computed(() => {
-  if (filterBy.value === 'first') return ['firstName']
-  else if (filterBy.value === 'last') return ['lastName']
+  if (filterBy.value === 'first')
+    return ['firstName']
+  else if (filterBy.value === 'last')
+    return ['lastName']
   else return ['firstName', 'lastName']
 })
 

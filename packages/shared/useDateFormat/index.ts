@@ -35,9 +35,12 @@ export const formatDate = (date: Date, formatStr: string) => {
 }
 
 export const normalizeDate = (date: DateLike) => {
-  if (date === null) return new Date(NaN) // null is invalid
-  if (date === undefined) return new Date()
-  if (date instanceof Date) return new Date(date)
+  if (date === null)
+    return new Date(NaN) // null is invalid
+  if (date === undefined)
+    return new Date()
+  if (date instanceof Date)
+    return new Date(date)
   if (typeof date === 'string' && !/Z$/i.test(date)) {
     const d = date.match(REGEX_PARSE) as any
     if (d) {
