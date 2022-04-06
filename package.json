@@ -32,7 +32,7 @@
     "watch": "esno scripts/build.ts --watch"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.19.4",
+    "@antfu/eslint-config": "^0.20.2",
     "@antfu/ni": "^0.14.0",
     "@iconify/json": "^2.1.25",
     "@rollup/plugin-json": "^4.1.0",
@@ -43,7 +43,7 @@
     "@types/node": "^17.0.23",
     "@types/prettier": "^2.4.4",
     "@types/semver": "^7.3.9",
-    "@vitest/ui": "^0.8.4",
+    "@vitest/ui": "^0.9.0",
     "@vue/compiler-sfc": "^3.2.31",
     "@vue/composition-api": "^1.4.9",
     "@vue/test-utils": "^2.0.0-rc.19",
@@ -89,7 +89,7 @@
     "vite-plugin-inspect": "^0.4.3",
     "vite-plugin-pwa": "^0.11.13",
     "vitepress": "^0.22.3",
-    "vitest": "^0.8.4",
+    "vitest": "^0.9.0",
     "vue": "^3.2.31",
     "vue2": "npm:vue@^2.6.14"
   },
