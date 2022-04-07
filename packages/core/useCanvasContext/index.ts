@@ -18,21 +18,21 @@ export interface UseCanvasContextSettingsMap {
 }
 
 /**
-    *
-    * A DOMString containing the context identifier
-    * defining the drawing context associated to the canvas.
-    *
-    * Note: The identifier "experimental-webgl" is used in
-    * new implementations of WebGL. These implementations
-    * have either not reached test suite conformance,
-    * or the graphics drivers on the platform are not yet
-    * stable.
-    *
-    * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-    *
-    * @default '2d'
-    *
-    */
+  *
+  * A DOMString containing the context identifier
+  * defining the drawing context associated to the canvas.
+  *
+  * Note: The identifier "experimental-webgl" is used in
+  * new implementations of WebGL. These implementations
+  * have either not reached test suite conformance,
+  * or the graphics drivers on the platform are not yet
+  * stable.
+  *
+  * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
+  *
+  * @default '2d'
+  *
+  */
 export type UseCanvasContextType = keyof UseCanvasContextSettingsMap
 
 export type ContextSettings = CanvasRenderingContext2DSettings
