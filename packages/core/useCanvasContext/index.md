@@ -6,11 +6,20 @@ category: Browser
 
 Reactive [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API). The Canvas API provides a means for drawing graphics via JavaScript and the HTML `<canvas>` element. Among other things, it can be used for animation, game graphics, data visualization, photo manipulation, and real-time video processing.
 
+The list of available contexts are as follows:
+
+- `'2d'`
+- `'bitmaprenderer'`
+- `'webgl'`
+- `'webgl2'`
+
 **N.B.** The Canvas API largely focuses on 2D graphics and this composable is designed for specific usage with the 2-dimensional canvas rendering context. 
 
 **N.B.** The WebGL API, which also uses the `<canvas>` element, draws hardware-accelerated 2D and 3D graphics.
 
 ## Usage
+
+### Canvas 2D Example
 
 This is the default usage of useCanvasContext, which simply returns the context for the specified attributes.
 
@@ -27,7 +36,7 @@ import { useCanvasContext, useElementBounding, useRafFn } from '@vueuse/core'
 const canvas = ref<null | HTMLCanvasElement>(null)
 
 // Get the ctx:
-const { ctx } = useCanvasContext(canvas)
+const { ctx } = useCanvasContext(canvas, '2d')
 
 useRafFn(() => {
   if (ctx.value) {
@@ -36,7 +45,33 @@ useRafFn(() => {
 })
 ```
 
-## Bounding Element Example
+### Canvas WebGL Example
+
+If you wish to utilise the `webgl` rendering context, simply pass in `'webgl'` instead of `'2d'` when calling `useCanvasContext`.
+
+```vue
+<template>
+  <canvas ref="canvas" class="h-128 w-full sm:w-128 lg:w-256" />
+</template>
+```
+
+```ts
+import { useCanvasContext, useElementBounding, useRafFn } from '@vueuse/core'
+
+// This is the canvas HTMLCanvasElement element as a ref:
+const canvas = ref<null | HTMLCanvasElement>(null)
+
+// Get the ctx:
+const { ctx } = useCanvasContext(canvas, 'webgl')
+
+useRafFn(() => {
+  if (ctx.value) {
+    // do something with the context ...
+  }
+})
+```
+
+### Bounding Element Example
 
 Sometime's it's useful to have a canvas element that will be reactive to it's bounding element or parent element, and adjust it's height and width reactively to those changes.
 
@@ -57,7 +92,7 @@ const bound = ref<null | HTMLElement>(null)
 const canvas = ref<null | HTMLCanvasElement>(null)
 
 // Get the ctx:
-const { ctx } = useCanvasContext(canvas)
+const { ctx } = useCanvasContext(canvas, '2d')
 
 // Obtain the bounding element's width and height:
 const { width, height } = useElementBounding(bound)
