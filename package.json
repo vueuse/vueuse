@@ -25,7 +25,6 @@
     "test:3": "vue-demi-switch 3 && vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "vitest --watch",
-    "test:useTypeAHead": "vitest --watch --dir packages/core/useTypeAHead/",
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
     "update": "nr -C packages/metadata update && esno scripts/update.ts",
