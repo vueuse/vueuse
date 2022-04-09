@@ -12,7 +12,7 @@ Clone this repo to your local machine and install the dependencies.
 pnpm install
 ```
 
-We use Vitepress for rapid development and documenting. You can start it locally by
+We use VitePress for rapid development and documenting. You can start it locally by
 
 ```bash
 pnpm dev

@@ -1,5 +1,5 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { isVue3, ref } from 'vue-demi'
 import { nextTwoTick, useSetup } from '../../.test'
 import { useStorage } from '.'
 
@@ -166,6 +166,63 @@ describe('useStorage', () => {
     await nextTwoTick()
 
     expect(storage.removeItem).toBeCalledWith(KEY)
+  })
+
+  it('map', async() => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const store = useStorage(KEY, new Map<number, string | number>([
+      [1, 'a'],
+      [2, 2],
+    ]), storage)
+
+    expect(storage.setItem).toBeCalledWith(KEY, '[[1,"a"],[2,2]]')
+
+    expect(store.value).toEqual(new Map<number, string | number>([[1, 'a'], [2, 2]]))
+
+    if (isVue3) {
+      store.value.set(1, 'c')
+      await nextTwoTick()
+
+      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,2]]')
+
+      store.value.set(2, 3)
+      await nextTwoTick()
+
+      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,3]]')
+
+      store.value = null
+      await nextTwoTick()
+
+      expect(storage.removeItem).toBeCalledWith(KEY)
+    }
+  })
+
+  it('set', async() => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const store = useStorage(KEY, new Set<string | number>([1, '2']), storage)
+
+    expect(storage.setItem).toBeCalledWith(KEY, '[1,"2"]')
+
+    expect(store.value).toEqual(new Set<string | number>([1, '2']))
+
+    if (isVue3) {
+      store.value.add('1')
+      await nextTwoTick()
+
+      expect(storage.setItem).toBeCalledWith(KEY, '[1,"2","1"]')
+
+      store.value.delete(1)
+      await nextTwoTick()
+
+      expect(storage.setItem).toBeCalledWith(KEY, '["2","1"]')
+
+      store.value = null
+      await nextTwoTick()
+
+      expect(storage.removeItem).toBeCalledWith(KEY)
+    }
   })
 
   it('pass ref as initialValue', async() => {
