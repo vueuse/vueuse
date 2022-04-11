@@ -225,7 +225,9 @@ function matchFirstChar(
   // 从 map 中获取对应首字母的文本信息
   // Get the text information of the corresponding initials from the map
   const firstCharDict = sortedIndexByFirstChar.get(state.typeaheadBuffer)
-  if (!firstCharDict) return numbers.UNSET_INDEX
+  if (!firstCharDict)
+    return numbers.UNSET_INDEX
+
   // 当单个输入字母变化了，重置 focusedItemIndex
   // When a single input letter changes, reset the focuseditemindex
   if (state.firstCharisChange !== state.typeaheadBuffer) {
@@ -284,7 +286,9 @@ function matchAllChars(
   // 根据字符串的首个字母，找到对应map存储的数组
   // Get the text information of the corresponding initials from the map
   const firstCharDict = sortedIndexByFirstChar.get(firstChar)
-  if (!firstCharDict) return numbers.UNSET_INDEX
+  if (!firstCharDict)
+    return numbers.UNSET_INDEX
+
   let resIndex = numbers.UNSET_INDEX
   // 遍历找到符合的索引
   // Traversal to find a matching index
