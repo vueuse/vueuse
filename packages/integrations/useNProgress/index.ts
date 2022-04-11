@@ -13,7 +13,7 @@ import { computed, isRef, ref, watchEffect } from 'vue-demi'
  */
 export function useNProgress(
   currentProgress: MaybeRef<number | null | undefined> = null,
-  options?: NProgressOptions | undefined,
+  options?: Partial<NProgressOptions>,
 ) {
   const progress = isRef(currentProgress)
     ? currentProgress
