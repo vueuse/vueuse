@@ -107,4 +107,21 @@ describe('until', () => {
       }, 100)
     })
   })
+
+  it('should immediately timeout', () => {
+    return new Promise((resolve, reject) => {
+      const r = ref(0)
+
+      invoke(async() => {
+        expect(r.value).toBe(0)
+        const _r = await until(r).toBe(1, { timeout: 0 })
+        expect(_r).toBe(0)
+        resolve()
+      }).catch(reject)
+
+      setTimeout(() => {
+        r.value = 1
+      }, 100)
+    })
+  })
 })
