@@ -31,6 +31,11 @@
       "types": "./index.d.ts"
     },
     "./*": "./*",
+    "./useAsyncValidator": {
+      "import": "./useAsyncValidator.mjs",
+      "require": "./useAsyncValidator.cjs",
+      "types": "./useAsyncValidator.d.ts"
+    },
     "./useAxios": {
       "import": "./useAxios.mjs",
       "require": "./useAxios.cjs",
@@ -84,6 +89,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
+    "async-validator": "*",
     "axios": "*",
     "change-case": "*",
     "drauu": "*",
@@ -96,6 +102,9 @@
   },
   "peerDependenciesMeta": {
     "axios": {
+      "optional": true
+    },
+    "async-validator": {
       "optional": true
     },
     "drauu": {
@@ -128,6 +137,7 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
+    "async-validator": "^4.0.7",
     "axios": "^0.26.1",
     "change-case": "^4.1.2",
     "drauu": "^0.3.0",
