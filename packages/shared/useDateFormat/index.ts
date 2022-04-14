@@ -14,6 +14,7 @@ export const formatDate = (date: Date, formatStr: string) => {
   const minutes = date.getMinutes()
   const seconds = date.getSeconds()
   const milliseconds = date.getMilliseconds()
+  const day = date.getDay()
   const matches: Record<string, string|number> = {
     YY: String(years).slice(-2),
     YYYY: years,
@@ -30,6 +31,7 @@ export const formatDate = (date: Date, formatStr: string) => {
     s: String(seconds),
     ss: `${seconds}`.padStart(2, '0'),
     SSS: `${milliseconds}`.padStart(3, '0'),
+    d: day,
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match])
 }
