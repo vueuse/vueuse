@@ -10,6 +10,8 @@ const disabledFunctions = [
   'useFetch',
   'toRefs',
   'useCookie',
+  'useHead',
+  'useTitle',
 ]
 
 const packages = [
