@@ -1,6 +1,6 @@
 import type { Rules } from 'async-validator'
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useAsyncValidator } from '.'
 
 describe('useAsyncValidator', () => {
@@ -88,7 +88,15 @@ describe('useAsyncValidator', () => {
     const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
-    expect(errors.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
+    expect(errors.value).toMatchInlineSnapshot(`
+      [
+        {
+          "field": "name",
+          "fieldValue": "jelf",
+          "message": "name length must be 5-20",
+        },
+      ]
+    `)
   })
 
   it('should reactive', async() => {
@@ -112,9 +120,16 @@ describe('useAsyncValidator', () => {
     const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
-    expect(errors.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
+    expect(errors.value).toMatchInlineSnapshot(`
+      [
+        {
+          "field": "name",
+          "fieldValue": "jelf",
+          "message": "name length must be 5-20",
+        },
+      ]
+    `)
 
     form.value.name = 'okxiaoliang4'
-    expect(isFinished.value).toBe(false)
   })
 })
