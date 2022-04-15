@@ -29,11 +29,11 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, error, isFinished, then } = useAsyncValidator(form, rules)
+    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules)
     then(() => {
       expect(isFinished.value).toBe(true)
       expect(pass.value).toBe(true)
-      expect(error.value).toMatchObject([])
+      expect(errors.value).toMatchObject([])
     })
   })
 
@@ -46,15 +46,15 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, error, isFinished, then } = useAsyncValidator(form, rules)
+    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(false)
     expect(pass.value).toBe(false)
-    expect(error.value).toMatchObject([])
+    expect(errors.value).toMatchObject([])
 
     then(() => {
       expect(isFinished.value).toBe(true)
       expect(pass.value).toBe(true)
-      expect(error.value).toMatchObject([])
+      expect(errors.value).toMatchObject([])
     })
   })
 
@@ -67,10 +67,10 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, error, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(true)
-    expect(error.value).toMatchObject([])
+    expect(errors.value).toMatchObject([])
   })
 
   it('should fail to validate', async() => {
@@ -85,10 +85,10 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, error, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
-    expect(error.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
+    expect(errors.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
   })
 
   it('should reactive', async() => {
@@ -109,10 +109,10 @@ describe('useAsyncValidator', () => {
       },
     }) as Ref<Rules>
 
-    const { pass, error, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
-    expect(error.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
+    expect(errors.value).toMatchInlineSnapshot('[Error: Async Validation Error]')
 
     form.value.name = 'okxiaoliang4'
     expect(isFinished.value).toBe(false)

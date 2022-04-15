@@ -85,6 +85,11 @@
       "import": "./useChangeCase.mjs",
       "require": "./useChangeCase.cjs",
       "types": "./useChangeCase.d.ts"
+    },
+    "./useAsyncValidator/component": {
+      "import": "./useAsyncValidator/component.mjs",
+      "require": "./useAsyncValidator/component.cjs",
+      "types": "./useAsyncValidator/component.d.ts"
     }
   },
   "sideEffects": false,
