@@ -120,6 +120,15 @@ describe('useFetch', () => {
     })
   })
 
+  test('should run the beforeFetch has default headers', async() => {
+    useFetch('https://example.com', {
+      beforeFetch({ options }) {
+        expect(options.headers).toBeDefined()
+        return { options }
+      },
+    })
+  })
+
   test('should run the beforeFetch function and cancel the request', async() => {
     const { execute } = useFetch('https://example.com', {
       immediate: false,

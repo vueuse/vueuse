@@ -349,7 +349,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = { url: unref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
