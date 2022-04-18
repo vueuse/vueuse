@@ -46,7 +46,7 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
 
   function pause() {
     isActive.value = false
-    if(rafId.value && window){
+    if(rafId.value && window) {
       window.cancelAnimationFrame(rafId.value)
       rafId.value = null
     }
