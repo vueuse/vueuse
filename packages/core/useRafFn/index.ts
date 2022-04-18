@@ -1,3 +1,4 @@
+import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import type { Fn, Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
@@ -27,7 +28,7 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   } = options
 
   const isActive = ref(false)
-  const rafId = ref(null)
+  const rafId = ref(null) as Ref<null | number>
 
   function loop() {
     if (!isActive.value || !window)
@@ -46,7 +47,7 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
 
   function pause() {
     isActive.value = false
-    if(rafId.value && window) {
+    if (rafId.value && window) {
       window.cancelAnimationFrame(rafId.value)
       rafId.value = null
     }
