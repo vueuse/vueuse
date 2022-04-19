@@ -22,8 +22,7 @@ export function refAutoReset<T>(defaultValue: T, afterMs: MaybeRef<number> = 100
       }, unref(afterMs))
 
     tryOnScopeDispose(() => {
-      if (timer)
-        clearTimeout(timer)
+       clearTimeout(timer)
     })
 
     return {
