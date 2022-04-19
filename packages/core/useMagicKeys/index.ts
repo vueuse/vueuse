@@ -51,7 +51,7 @@ export interface MagicKeysInternal {
    * A Set of currently pressed keys,
    * Stores raw keyCodes.
    *
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
    */
   current: Set<string>
 }
@@ -100,11 +100,11 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     const values = [code, key].filter(Boolean)
 
     // current set
-    if (code) {
+    if (key) {
       if (value)
-        current.add(e.code)
+        current.add(key)
       else
-        current.delete(e.code)
+        current.delete(key)
     }
 
     for (const key of values)
@@ -112,7 +112,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
 
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
-    // We track it's combination and relese manually
+    // We track it's combination and release manually
     if (key === 'meta' && !value) {
       // Meta key released
       metaDeps.forEach((key) => {
