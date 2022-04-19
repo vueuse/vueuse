@@ -8,4 +8,10 @@ const { pause, resume } = useRafFn(() => count.value += 1)
 
 <template>
   <div>Count: {{ count }}</div>
+  <button @click="pause">
+    pause
+  </button>
+  <button @click="resume">
+    resume
+  </button>
 </template>
