@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { customRef, unref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 /**
  * Create a ref which will be reset to the default value after some time.
@@ -19,6 +20,10 @@ export function refAutoReset<T>(defaultValue: T, afterMs: MaybeRef<number> = 100
         value = defaultValue
         trigger()
       }, unref(afterMs))
+
+    tryOnScopeDispose(() => {
+       clearTimeout(timer)
+    })
 
     return {
       get() {
