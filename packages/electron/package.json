@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "8.2.6",
+  "version": "8.3.0",
   "description": "Electron renderer process modules for VueUse",
   "keywords": [
     "vue",
