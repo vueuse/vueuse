@@ -117,8 +117,7 @@ export function useScriptTag(
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
 
-      for (const attr in attrs)
-        (el as any)[attr] = attrs[attr]
+      Object.entries(attrs).forEach(([name, value]) => el?.setAttribute(name, value))
 
       // Enables shouldAppend
       shouldAppend = true
