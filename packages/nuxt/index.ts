@@ -17,14 +17,11 @@ const disabledFunctions = [
 const packages = [
   'core',
   'shared',
-  'nuxt',
-  // 'integrations',
   'components',
   'motion',
   'firebase',
   'rxjs',
   'sound',
-  'head',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
