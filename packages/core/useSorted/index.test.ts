@@ -1,5 +1,5 @@
 import { unref } from 'vue'
-import { useQuickSort } from '.'
+import { useSorted } from '.'
 
 interface User {
   name: string
@@ -46,31 +46,31 @@ const objectSorted: User[] = [
   },
 ]
 
-describe('useQuickSort', () => {
+describe('useSorted', () => {
   it('should be defined', () => {
-    expect(useQuickSort).toBeDefined()
+    expect(useSorted).toBeDefined()
   })
 
   it('should sort', () => {
-    const sorted = useQuickSort(arr)
+    const sorted = useSorted(arr)
     expect(unref(sorted)).toMatchObject(arrSorted)
   })
 
   it('should pure sort function', () => {
-    const sorted = useQuickSort(arr)
+    const sorted = useSorted(arr)
     expect(unref(sorted)).toMatchObject(arrSorted)
   })
 
   it('should dirty sort', () => {
     const dirtyArr = [...arr]
-    const sorted = useQuickSort(dirtyArr, { dirty: true })
+    const sorted = useSorted(dirtyArr, { dirty: true })
 
     expect(unref(sorted)).toMatchObject(arrSorted)
     expect(unref(dirtyArr)).toMatchObject(arrSorted)
   })
 
   it('should sort object', () => {
-    const sorted = useQuickSort(objArr, {
+    const sorted = useSorted(objArr, {
       compareFn: (a, b) => a.age - b.age,
     })
 

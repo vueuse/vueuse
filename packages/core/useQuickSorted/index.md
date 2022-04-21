@@ -2,17 +2,17 @@
 category: Sort
 ---
 
-# useQuickSort
+# useQuickSorted
 
 reactive quicksort array
 
 ## Usage
 
 ```ts
-import { useQuickSort } from '@vueuse/core'
+import { useQuickSorted } from '@vueuse/core'
 
 // general sort
-const sorted = useQuickSort([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
+const sorted = useQuickSorted([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
 
 // object sort
 const objArr = [{
@@ -28,7 +28,7 @@ const objArr = [{
   name: 'Jenny',
   age: 22,
 }]
-const objSorted = useQuickSort(objArr, {
+const objSorted = useQuickSorted(objArr, {
   compareFn: (a, b) => a.age - b.age,
 })
 ```

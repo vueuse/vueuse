@@ -1,7 +1,7 @@
-import type { UseSortCompareFn } from '../useSort'
-import { useSortWrapFn } from '../useSort'
+import type { UseSortedCompareFn } from '../useSorted'
+import { useSortedWrapFn } from '../useSorted'
 
-export function quickSort<T>(source: T[], compareFn: UseSortCompareFn<T>): T[] {
+export function quickSort<T>(source: T[], compareFn: UseSortedCompareFn<T>): T[] {
   // sorted
   if (source.length <= 1) return source
 
@@ -24,4 +24,4 @@ export function quickSort<T>(source: T[], compareFn: UseSortCompareFn<T>): T[] {
   return quickSort(left, compareFn).concat(centerArr, quickSort(right, compareFn))
 }
 
-export const useQuickSort = useSortWrapFn(quickSort)
+export const useQuickSorted = useSortedWrapFn(quickSort)
