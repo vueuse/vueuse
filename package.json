@@ -95,7 +95,7 @@
     "vue2": "npm:vue@^2.6.14"
   },
   "lint-staged": {
-    "{packages,.vitepress,scripts,meta}/**/*.{js,ts,tsx,vue,md}": [
+    "*.{js,ts,tsx,vue,md}": [
       "eslint --fix"
     ]
   },
