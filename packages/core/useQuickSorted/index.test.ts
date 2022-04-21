@@ -1,6 +1,5 @@
 import { unref } from 'vue'
-import { quickSort } from '../useQuickSort'
-import { useSort, useSortWrapFn } from '.'
+import { useQuickSorted } from '.'
 
 interface User {
   name: string
@@ -47,57 +46,33 @@ const objectSorted: User[] = [
   },
 ]
 
-describe('useSort', () => {
+describe('useQuickSorted', () => {
   it('should be defined', () => {
-    expect(useSort).toBeDefined()
+    expect(useQuickSorted).toBeDefined()
   })
 
   it('should sort', () => {
-    const sorted = useSort(arr, quickSort)
+    const sorted = useQuickSorted(arr)
     expect(unref(sorted)).toMatchObject(arrSorted)
   })
 
   it('should pure sort function', () => {
-    const sorted = useSort(arr, quickSort)
+    const sorted = useQuickSorted(arr)
     expect(unref(sorted)).toMatchObject(arrSorted)
   })
 
   it('should dirty sort', () => {
     const dirtyArr = [...arr]
-    const sorted = useSort(dirtyArr, quickSort, { dirty: true })
+    const sorted = useQuickSorted(dirtyArr, { dirty: true })
 
     expect(unref(sorted)).toMatchObject(arrSorted)
     expect(unref(dirtyArr)).toMatchObject(arrSorted)
   })
 
   it('should sort object', () => {
-    const sorted = useSort(objArr, quickSort, {
+    const sorted = useQuickSorted(objArr, {
       compareFn: (a, b) => a.age - b.age,
     })
-
-    expect(unref(sorted)).toMatchObject(objectSorted)
-  })
-})
-
-describe('useSortWrapFn', () => {
-  it('should be defined', () => {
-    expect(useSortWrapFn).toBeDefined()
-  })
-
-  it('should wrap function', () => {
-    const wrapFn = useSortWrapFn(quickSort)
-    const sorted = wrapFn(objArr, {
-      compareFn: (a, b) => a.age - b.age,
-    })
-
-    expect(unref(sorted)).toMatchObject(objectSorted)
-  })
-
-  it('should wrap function with options', () => {
-    const wrapFn = useSortWrapFn<User>(quickSort, {
-      compareFn: (a, b) => a.age - b.age,
-    })
-    const sorted = wrapFn(objArr)
 
     expect(unref(sorted)).toMatchObject(objectSorted)
   })

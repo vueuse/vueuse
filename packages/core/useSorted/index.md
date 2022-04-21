@@ -2,17 +2,17 @@
 category: Sort
 ---
 
-# useSort
+# useSorted
 
 reactive sort array
 
 ## Usage
 
 ```ts
-import { quickSort, useSort } from '@vueuse/core'
+import { quickSort, useSorted } from '@vueuse/core'
 
 // general sort
-const sorted = useSort([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
+const sorted = useSorted([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
 
 // object sort
 const objArr = [{
@@ -28,21 +28,21 @@ const objArr = [{
   name: 'Jenny',
   age: 22,
 }]
-const objSorted = useSort(objArr, quickSort, {
+const objSorted = useSorted(objArr, quickSort, {
   compareFn: (a, b) => a.age - b.age,
 })
 ```
 
-### useSortWrapFn
+### useSortedWrapFn
 
 ```ts
-const wrapFn = useSortWrapFn<User>(quickSort, {
+const wrapFn = useSortedWrapFn<User>(quickSort, {
   compareFn: (a, b) => a.age - b.age,
 })
 const sorted = wrapFn(objArr)
 
 // or
-const wrapFn = useSortWrapFn<User>(quickSort)
+const wrapFn = useSortedWrapFn<User>(quickSort)
 const sorted = wrapFn(objArr, {
   compareFn: (a, b) => a.age - b.age,
 })
