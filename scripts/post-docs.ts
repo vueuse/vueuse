@@ -24,7 +24,7 @@ async function generateSVG(fn: VueUseFunction, output: string) {
 
   console.log(`Generating ${output}`)
   await sharp(Buffer.from(svg))
-    .resize(1200 * 2, 630 * 2)
+    .resize(1200 * 1.1, 630 * 1.1)
     .png()
     .toFile(output)
 }
@@ -41,7 +41,7 @@ export async function fix() {
       await generateSVG(fn, `packages/.vitepress/dist/og-${fn.name}.png`)
       html = html.replace(
         /vueuse\.org\/og\.png/g,
-        `vueuse.org/og-${fn.name}.png`,
+        `vueuse.org/og-${fn.name}.png`.toLocaleLowerCase(),
       )
     }
 
