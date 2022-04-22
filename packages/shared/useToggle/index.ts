@@ -1,5 +1,14 @@
 import type { Ref } from 'vue-demi'
-import { isRef, ref } from 'vue-demi'
+import { isRef, ref, unref } from 'vue-demi'
+import type { MaybeRef } from '../utils'
+
+export interface UseToggleOptions<Truly, Falsely> {
+  trulyValue?: MaybeRef<Truly>
+  falselyValue?: MaybeRef<Falsely>
+}
+
+export function useToggle<Truly, Falsely, T = Truly | Falsely>(initialValue?: Ref<T>, options?: UseToggleOptions<Truly, Falsely>): (value?: T) => T
+export function useToggle<Truly, Falsely, T = Truly | Falsely>(initialValue?: T, options?: UseToggleOptions<Truly, Falsely>): [Ref<T>, (value?: T) => T]
 
 /**
  * A boolean ref with a toggler
@@ -7,27 +16,33 @@ import { isRef, ref } from 'vue-demi'
  * @see https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
-export function useToggle(value: Ref<boolean>): (value?: boolean) => boolean
-export function useToggle(initialValue?: boolean): [Ref<boolean>, (value?: boolean) => boolean]
+export function useToggle(initialValue: MaybeRef<unknown> = false, options: UseToggleOptions<true, false> = {}) {
+  const {
+    trulyValue = true,
+    falselyValue = false,
+  } = options
 
-export function useToggle(initialValue: boolean | Ref<boolean> = false) {
-  if (isRef(initialValue)) {
-    return (value?: boolean) => {
-      initialValue.value = typeof value === 'boolean'
-        ? value
-        : !initialValue.value
-      return initialValue.value
-    }
-  }
-  else {
-    const boolean = ref(initialValue)
-    const toggle = (value?: boolean) => {
-      boolean.value = typeof value === 'boolean'
-        ? value
-        : !boolean.value
-      return boolean.value
+  const valueIsRef = isRef(initialValue)
+  const innerValue = ref(initialValue) as Ref<boolean>
+
+  function toggle(value?: boolean) {
+    const _toggle = (value?: boolean) => {
+      if (value! === unref(trulyValue))
+        innerValue.value = unref(falselyValue)
+      else
+        innerValue.value = unref(trulyValue)
+      return innerValue.value
     }
 
-    return [boolean, toggle] as const
+    // has arguments
+    if (arguments.length)
+      return _toggle(value!)
+    else
+      return _toggle(innerValue.value)
   }
+
+  if (valueIsRef)
+    return toggle
+  else
+    return [innerValue, toggle]
 }
