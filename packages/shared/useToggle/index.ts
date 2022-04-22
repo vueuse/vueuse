@@ -16,7 +16,7 @@ export function useToggle<Truly = true, Falsely = false, T = Truly | Falsely>(in
  * @see https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
-export function useToggle(initialValue: MaybeRef<unknown> = false, options: UseToggleOptions<true, false> = {}) {
+export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseToggleOptions<true, false> = {}) {
   const {
     trulyValue = true,
     falselyValue = false,
