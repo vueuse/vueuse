@@ -25,7 +25,7 @@ export interface UseAxiosReturn<T> {
    * Indicates if the request is currently loading
    */
   isLoading: Ref<boolean>
-  
+
   /**
    * Indicates if the request was canceled
    */
@@ -43,16 +43,19 @@ export interface UseAxiosReturn<T> {
 
   /**
    * isFinished alias
+   * @deprecated use `isFinished` instead
    */
   finished: Ref<boolean>
 
   /**
    * isLoading alias
+   * @deprecated use `isLoading` instead
    */
   loading: Ref<boolean>
-  
+
   /**
    * isAborted alias
+   * @deprecated use `isAborted` instead
    */
   aborted: Ref<boolean>
 
