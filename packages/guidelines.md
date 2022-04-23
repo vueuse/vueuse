@@ -20,7 +20,7 @@ You can also find some reasons for those design decisions and also some tips for
 - Avoid using console logs
 - When the function is asynchronous, return a PromiseLike
 
-Read also: [Best Practice](/guide/best-practice.html)
+Read also: [Best Practice](./guide/best-practice.md)
 
 ## ShallowRef
 
