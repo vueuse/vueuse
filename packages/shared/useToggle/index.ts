@@ -40,5 +40,5 @@ export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseT
   if (valueIsRef)
     return toggle
   else
-    return [innerValue, toggle]
+    return [innerValue, toggle] as const
 }
