@@ -19,14 +19,14 @@ N.B. This API is not available in Web Workers (not exposed via WorkerNavigator).
 ```ts
 import { useBluetooth } from '@vueuse/core'
 
-const { 
+const {
   isSupported,
   isConnected,
   device,
   requestDevice,
-  server
+  server,
 } = useBluetooth({
-  acceptAllDevices: true
+  acceptAllDevices: true,
 })
 ```
 
@@ -49,32 +49,32 @@ Here, we use the characteristicvaluechanged event listener to handle reading bat
 ```ts
 import { pausableWatch, useBluetooth } from '@vueuse/core'
 
-const { 
+const {
   isSupported,
   isConnected,
   device,
   requestDevice,
-  server
+  server,
 } = useBluetooth({
   acceptAllDevices: true,
   optionalServices: [
-    "battery_service"
-  ]
+    'battery_service',
+  ],
 })
 
 const batteryPercent = ref<undefined | number>()
 
 const isGettingBatteryLevels = ref(false)
 
-const getBatteryLevels = async () => {
+const getBatteryLevels = async() => {
   isGettingBatteryLevels.value = true
 
   // Get the battery service:
-  const batteryService = await server.getPrimaryService("battery_service")
+  const batteryService = await server.getPrimaryService('battery_service')
 
   // Get the current battery level
   const batteryLevelCharacteristic = await batteryService.getCharacteristic(
-    "battery_level"
+    'battery_level',
   )
 
   // Listen to when characteristic value changes on `characteristicvaluechanged` event:
@@ -89,7 +89,8 @@ const getBatteryLevels = async () => {
 }
 
 const { stop } = pausableWatch(isConnected, (newIsConnected) => {
-  if (!newIsConnected || !server.value || isGettingBatteryLevels.value) return
+  if (!newIsConnected || !server.value || isGettingBatteryLevels.value)
+    return
   // Attempt to get the battery levels of the device:
   getBatteryLevels()
   // We only want to run this on the initial connection, as we will use a event listener to handle updates:

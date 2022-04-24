@@ -63,7 +63,8 @@ export function useBluetooth(options?: UseBluetoothOptions) {
 
   async function requestDevice(): Promise<void> {
     // This is the function can only be called if Bluetooth API is supported:
-    if (!isSupported) return
+    if (!isSupported)
+      return
 
     // Reset any errors we currently have:
     error.value = null
