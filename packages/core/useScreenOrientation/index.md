@@ -42,6 +42,6 @@ and then unlock again, with the following:
 unlockOrientation()
 ```
 
-Accepted orientation types are one of "portrait-primary", "portrait-secondary", "landscape-primary", or "landscape-secondary".
+Accepted orientation types are one of `"landscape-primary"`, `"landscape-secondary"`, `"portrait-primary"`, `"portrait-secondary"`, `"any"`, `"landscape"`, `"natural"` and `"portrait"`.
 
 [Screen Orientation API MDN](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Orientation_API)
