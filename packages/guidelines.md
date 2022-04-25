@@ -190,13 +190,13 @@ export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseL
   return {
     ...state,
     // Adding `then` to an object allows it to be awaited.
-    then(onFufilled, onRejected) {
+    then(onFulfilled, onRejected) {
       return new Promise<UseFetchReturn<T>>((resolve, reject) => {
         until(isFinished)
           .toBeTruthy()
           .then(() => resolve(state))
           .then(() => reject(state))
-      }).then(onFufilled, onRejected)
+      }).then(onFulfilled, onRejected)
     },
   }
 }
