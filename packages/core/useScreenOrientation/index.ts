@@ -14,30 +14,36 @@ export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
     window = defaultWindow,
   } = options
 
-  const isSupported = window && 'screen' in window && 'orientation' in window.screen
+  const isSupported = !!(window && 'screen' in window && 'orientation' in window.screen)
 
-  const screen = isSupported ? window.screen : {} as Screen
+  const screenOrientation = isSupported ? window.screen.orientation : {} as ScreenOrientation
 
-  const screenOrientation = screen.orientation
+  const orientation = ref<OrientationType | undefined>(screenOrientation.type)
+  const angle = ref(screenOrientation.angle || 0)
 
-  const orientation = ref<OrientationType>(screenOrientation.type)
-
-  useEventListener(window, 'orientationchange', () => {
-    orientation.value = screenOrientation.type
-  })
+  if (isSupported) {
+    useEventListener(screenOrientation, 'change', () => {
+      orientation.value = screenOrientation.type
+      angle.value = screenOrientation.angle
+    })
+  }
 
   const lockOrientation = (type: OrientationLockType) => {
-    screenOrientation.lock(type)
+    if (!isSupported)
+      return Promise.reject(new Error('Not supported'))
+
+    return screenOrientation.lock(type)
   }
 
   const unlockOrientation = () => {
-    screenOrientation.unlock()
+    if (isSupported)
+      screenOrientation.unlock()
   }
 
   return {
     isSupported,
-    screen,
     orientation,
+    angle,
     lockOrientation,
     unlockOrientation,
   }

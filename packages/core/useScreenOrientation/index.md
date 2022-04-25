@@ -13,8 +13,8 @@ import { useScreenOrientation } from '.'
 
 const {
   isSupported,
-  screen,
   orientation,
+  angle,
   lockOrientation,
   unlockOrientation,
 } = useScreenOrientation()
@@ -27,8 +27,8 @@ import { useScreenOrientation } from '.'
 
 const {
   isSupported,
-  screen,
   orientation,
+  angle,
   lockOrientation,
   unlockOrientation,
 } = useScreenOrientation()
