@@ -20,7 +20,7 @@ You can also find some reasons for those design decisions and also some tips for
 - Avoid using console logs
 - When the function is asynchronous, return a PromiseLike
 
-Read also: [Best Practice](/guide/best-practice.html)
+Read also: [Best Practice](./guide/best-practice.md)
 
 ## ShallowRef
 
@@ -190,13 +190,13 @@ export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseL
   return {
     ...state,
     // Adding `then` to an object allows it to be awaited.
-    then(onFufilled, onRejected) {
+    then(onFulfilled, onRejected) {
       return new Promise<UseFetchReturn<T>>((resolve, reject) => {
         until(isFinished)
           .toBeTruthy()
           .then(() => resolve(state))
           .then(() => reject(state))
-      }).then(onFufilled, onRejected)
+      }).then(onFulfilled, onRejected)
     },
   }
 }

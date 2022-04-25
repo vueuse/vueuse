@@ -10,19 +10,18 @@ const disabledFunctions = [
   'useFetch',
   'toRefs',
   'useCookie',
+  'useHead',
+  'useTitle',
 ]
 
 const packages = [
   'core',
   'shared',
-  'nuxt',
-  // 'integrations',
   'components',
   'motion',
   'firebase',
   'rxjs',
   'sound',
-  'head',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
@@ -79,6 +78,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       const pluginPath = resolve(_dirname, './ssr-plugin.mjs')
       nuxt.options.plugins = nuxt.options.plugins || []
       nuxt.options.plugins.push(pluginPath)
+      nuxt.options.build.transpile.push(pluginPath)
     }
 
     if (options.autoImports) {

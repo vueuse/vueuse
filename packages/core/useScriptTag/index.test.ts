@@ -54,6 +54,32 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
   })
 
+  it('should support custom attributes', async() => {
+    const appendChildListener = vitest.spyOn(document.head, 'appendChild')
+
+    expect(appendChildListener).not.toBeCalled()
+
+    expect(scriptTagElement()).toBeNull()
+
+    useSetup(() => {
+      const { scriptTag } = useScriptTag(src, () => {}, {
+        attrs: { 'id': 'id-value', 'data-test': 'data-test-value' },
+        immediate: true,
+      })
+
+      return {
+        scriptTag,
+      }
+    })
+
+    expect(appendChildListener).toBeCalled()
+
+    const element = scriptTagElement()
+    expect(element).toBeInstanceOf(HTMLScriptElement)
+    expect(element?.getAttribute('id')).toBe('id-value')
+    expect(element?.getAttribute('data-test')).toBe('data-test-value')
+  })
+
   it('should remove script tag on unmount', async() => {
     const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 

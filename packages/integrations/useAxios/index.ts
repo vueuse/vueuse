@@ -29,7 +29,7 @@ export interface UseAxiosReturn<T> {
   /**
    * Indicates if the request was canceled
    */
-  aborted: Ref<boolean>
+  isAborted: Ref<boolean>
 
   /**
    * Any errors that may have occurred
@@ -43,13 +43,21 @@ export interface UseAxiosReturn<T> {
 
   /**
    * isFinished alias
+   * @deprecated use `isFinished` instead
    */
   finished: Ref<boolean>
 
   /**
-   * loading alias
+   * isLoading alias
+   * @deprecated use `isLoading` instead
    */
   loading: Ref<boolean>
+
+  /**
+   * isAborted alias
+   * @deprecated use `isAborted` instead
+   */
+  aborted: Ref<boolean>
 
   /**
    * abort alias
@@ -126,7 +134,7 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
   const data = shallowRef<T>()
   const isFinished = ref(false)
   const isLoading = ref(false)
-  const aborted = ref(false)
+  const isAborted = ref(false)
   const error = shallowRef<AxiosError<T>>()
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
@@ -135,7 +143,7 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
       return
 
     cancelToken.cancel(message)
-    aborted.value = true
+    isAborted.value = true
     isLoading.value = false
     isFinished.value = false
   }
@@ -178,8 +186,9 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isFinished,
     isLoading,
     cancel: abort,
-    canceled: aborted,
-    aborted,
+    isAborted,
+    canceled: isAborted,
+    aborted: isAborted,
     abort,
     execute,
   } as OverallUseAxiosReturn<T>

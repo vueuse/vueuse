@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue'
 import Fuse from 'fuse.js'
-import { useUrlSearchParams } from '@vueuse/core'
+import { useEventListener, useUrlSearchParams } from '@vueuse/core'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
 
 const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
 const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
+
+useEventListener('click', (e) => {
+  if (e.target.tagName === 'A')
+    window.dispatchEvent(new Event('hashchange'))
+})
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
 const search = toRef(query, 'search')
