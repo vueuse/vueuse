@@ -22,7 +22,7 @@ export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
   const angle = ref(screenOrientation.angle || 0)
 
   if (isSupported) {
-    useEventListener(screenOrientation, 'change', () => {
+    useEventListener(window, 'orientationchange', () => {
       orientation.value = screenOrientation.type
       angle.value = screenOrientation.angle
     })
