@@ -2,13 +2,13 @@ import type { Ref } from 'vue-demi'
 import { isRef, ref, unref } from 'vue-demi'
 import type { MaybeRef } from '../utils'
 
-export interface UseToggleOptions<Truly, Falsely> {
-  trulyValue?: MaybeRef<Truly>
-  falselyValue?: MaybeRef<Falsely>
+export interface UseToggleOptions<Truthy, Falsy> {
+  truthyValue?: MaybeRef<Truthy>
+  falsyValue?: MaybeRef<Falsy>
 }
 
-export function useToggle<Truly, Falsely, T = Truly | Falsely>(initialValue: Ref<T>, options?: UseToggleOptions<Truly, Falsely>): (value?: T) => T
-export function useToggle<Truly = true, Falsely = false, T = Truly | Falsely>(initialValue?: T, options?: UseToggleOptions<Truly, Falsely>): [Ref<T>, (value?: T) => T]
+export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
+export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [Ref<T>, (value?: T) => T]
 
 /**
  * A boolean ref with a toggler
@@ -18,8 +18,8 @@ export function useToggle<Truly = true, Falsely = false, T = Truly | Falsely>(in
  */
 export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseToggleOptions<true, false> = {}) {
   const {
-    trulyValue = true,
-    falselyValue = false,
+    truthyValue = true,
+    falsyValue = false,
   } = options
 
   const valueIsRef = isRef(initialValue)
@@ -32,7 +32,7 @@ export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseT
       return innerValue.value
     }
     else {
-      innerValue.value = innerValue.value === unref(trulyValue) ? unref(falselyValue) : unref(trulyValue)
+      innerValue.value = innerValue.value === unref(truthyValue) ? unref(falsyValue) : unref(truthyValue)
       return innerValue.value
     }
   }

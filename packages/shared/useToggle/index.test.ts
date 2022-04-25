@@ -71,11 +71,11 @@ describe('useToggle', () => {
     expect(unref(isDark)).toBe(true)
   })
 
-  it('should toggle with truly & falsely', () => {
+  it('should toggle with truthy & falsy', () => {
     const status = ref('ON')
     const toggle = useToggle(status, {
-      trulyValue: 'ON',
-      falselyValue: 'OFF',
+      truthyValue: 'ON',
+      falsyValue: 'OFF',
     })
 
     expect(unref(status)).toBe('ON')
