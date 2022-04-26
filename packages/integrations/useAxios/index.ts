@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { isString, until } from '@vueuse/shared'
+import { isObject, isString, until } from '@vueuse/shared'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
 
@@ -108,24 +108,27 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
   let defaultConfig: AxiosRequestConfig = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions = { immediate: !!argsPlaceholder }
+
+  const isAxiosInstance = (val: any) => isObject(val) && 'request' in val
+
   if (args.length > 0 + argsPlaceholder) {
     /**
      * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
      * so instead we are checking if there is a `requset` on the object to see if it is an
      * axios instance
      */
-    if ('request' in args[0 + argsPlaceholder])
+    if (isAxiosInstance(args[0 + argsPlaceholder]))
       instance = args[0 + argsPlaceholder]
     else
       defaultConfig = args[0 + argsPlaceholder]
   }
 
   if (args.length > 1 + argsPlaceholder) {
-    if ('request' in args[1 + argsPlaceholder])
+    if (isAxiosInstance(args[1 + argsPlaceholder]))
       instance = args[1 + argsPlaceholder]
   }
   if (
-    (args.length === 2 + argsPlaceholder && !('request' in args[1 + argsPlaceholder]))
+    (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
   )
     options = args[args.length - 1]
