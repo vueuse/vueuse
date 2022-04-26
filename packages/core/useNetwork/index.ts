@@ -21,6 +21,10 @@ export interface NetworkState {
    */
   offlineAt: Ref<number | undefined>
   /**
+   * At this time, if the user is offline and reconnects
+   */
+  onlineAt: Ref<number | undefined>
+  /**
    * The download speed in Mbps.
    */
   downlink: Ref<number | undefined>
@@ -60,6 +64,7 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
   const isOnline = ref(true)
   const saveData = ref(false)
   const offlineAt: Ref<number | undefined> = ref(undefined)
+  const onlineAt: Ref<number | undefined> = ref(undefined)
   const downlink: Ref<number | undefined> = ref(undefined)
   const downlinkMax: Ref<number | undefined> = ref(undefined)
   const rtt: Ref<number | undefined> = ref(undefined)
@@ -74,6 +79,7 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
 
     isOnline.value = navigator.onLine
     offlineAt.value = isOnline.value ? undefined : Date.now()
+    onlineAt.value = isOnline.value ? Date.now() : undefined
 
     if (connection) {
       downlink.value = connection.downlink
@@ -93,6 +99,7 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
 
     useEventListener(window, 'online', () => {
       isOnline.value = true
+      onlineAt.value = Date.now()
     })
   }
 
@@ -106,6 +113,7 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     isOnline,
     saveData,
     offlineAt,
+    onlineAt,
     downlink,
     downlinkMax,
     effectiveType,
