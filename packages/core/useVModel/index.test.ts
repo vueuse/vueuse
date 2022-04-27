@@ -93,4 +93,13 @@ describe('useVModel', () => {
     expect(emitMock).toBeCalledTimes(1)
     expect(emitMock).toHaveBeenCalledWith('update:data', { hobbies: ['coding', 'basketball'] })
   })
+
+  it('should work with user define defaultValue', () => {
+    const props = {
+      ...defaultProps(),
+    }
+    const emitMock = vitest.fn()
+    const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data' })
+    expect(data.value).toBe('default-data')
+  })
 })
