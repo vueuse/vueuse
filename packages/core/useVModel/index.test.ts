@@ -102,4 +102,13 @@ describe('useVModel', () => {
     const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data' })
     expect(data.value).toBe('default-data')
   })
+
+  it('should work with user define defaultValue with passive', () => {
+    const props = {
+      ...defaultProps(),
+    }
+    const emitMock = vitest.fn()
+    const data = useVModel(props, 'data', emitMock, { passive: true, defaultValue: 'default-data' })
+    expect(data.value).toBe('default-data')
+  })
 })

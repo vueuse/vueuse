@@ -22,7 +22,7 @@ export interface VModelOptions<T> {
    */
   deep?: boolean
   /**
-   * Let user define their default what for return ref
+   * Defining default value for return ref when no value is passed.
    *
    * @default undefined
    */
