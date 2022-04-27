@@ -21,8 +21,8 @@ export default defineComponent({
     })
 
     return {
-      language
+      language,
     }
-  }
+  },
 })
 ```

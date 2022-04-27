@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScreenSafeArea } from '.'
+import { useScreenSafeArea } from '@vueuse/core'
 
 const {
   top,

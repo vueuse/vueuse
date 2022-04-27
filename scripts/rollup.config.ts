@@ -3,10 +3,11 @@ import { resolve } from 'path'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
+import json from '@rollup/plugin-json'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { packages } from '../meta/packages'
-import { functions } from '../meta/function-indexes'
+import { functions } from '../packages/metadata/metadata'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
@@ -28,6 +29,7 @@ const externals = [
   'vue-demi',
   '@vueuse/shared',
   '@vueuse/core',
+  '@vueuse/metadata',
 ]
 
 const esbuildMinifer = (options: ESBuildOptions) => {
@@ -114,6 +116,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
         target
           ? esbuild({ target })
           : esbuildPlugin,
+        json(),
       ],
       external: [
         ...externals,

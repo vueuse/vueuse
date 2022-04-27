@@ -26,7 +26,7 @@ export interface UseCycleListOptions<T> {
  * @see https://vueuse.org/useCycleList
  */
 export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
-  const state = shallowRef(options?.initialValue || list[0]) as Ref<T>
+  const state = shallowRef(options?.initialValue ?? list[0]) as Ref<T>
 
   const index = computed<number>({
     get() {

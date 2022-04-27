@@ -15,8 +15,10 @@ const commonTransformers = (req: RestRequest<DefaultRequestBody, PathParams>, _:
   const t = []
   const qs = req.url.searchParams
 
-  if (qs.get('delay')) t.push(ctx.delay(Number(qs.get('delay'))))
-  if (qs.get('status')) t.push(ctx.status(Number(qs.get('status'))))
+  if (qs.get('delay'))
+    t.push(ctx.delay(Number(qs.get('delay'))))
+  if (qs.get('status'))
+    t.push(ctx.status(Number(qs.get('status'))))
   if (qs.get('text') != null) {
     t.push(ctx.text(qs.get('text') ?? defaultTextMessage))
   }
@@ -43,7 +45,8 @@ export const server = setupServer(
     const t = commonTransformers(req, res, ctx)
 
     // Echo back the request payload
-    if (typeof req.body === 'number' || typeof req.body === 'string') t.push(ctx.text(String(req.body)))
+    if (typeof req.body === 'number' || typeof req.body === 'string')
+      t.push(ctx.text(String(req.body)))
     else t.push(ctx.json(req.body))
 
     return res(...t)

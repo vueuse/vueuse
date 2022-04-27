@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useElementHover } from '.'
+import { ref } from 'vue'
+import { useElementHover } from '@vueuse/core'
 
 const el = ref()
 const isHovered = useElementHover(el)

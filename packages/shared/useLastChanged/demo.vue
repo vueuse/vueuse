@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { timestamp, useTimeAgo } from '@vueuse/core'
-import { ref } from 'vue-demi'
-import { useLastChanged } from '.'
+import { timestamp, useLastChanged, useTimeAgo } from '@vueuse/core'
+import { ref } from 'vue'
 
 const input = ref('')
 const ms = useLastChanged(input, { initialValue: timestamp() - 1000 * 60 * 5 })

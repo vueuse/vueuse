@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import YAML from 'js-yaml'
-import { computed, reactive, ref } from 'vue-demi'
-import type { CSSProperties } from 'vue-demi'
+import { computed, reactive, ref } from 'vue'
+import type { CSSProperties } from 'vue'
+import { useParallax } from '@vueuse/core'
 import { useMediaQuery } from '../useMediaQuery'
-import { useParallax } from '.'
 
 const target = ref(null)
 const isMobile = useMediaQuery('(max-width: 700px)')

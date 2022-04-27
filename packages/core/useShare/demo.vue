@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { isClient } from '@vueuse/shared'
-import { useShare } from '.'
+import { useShare } from '@vueuse/core'
 
 const options = ref({
-  title: 'Vueuse',
+  title: 'VueUse',
   text: 'Collection of essential Vue Composition Utilities!',
   url: isClient ? location.href : '',
 })

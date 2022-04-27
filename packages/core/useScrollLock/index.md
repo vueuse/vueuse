@@ -23,3 +23,25 @@ isLocked.value = false // unlock
   <div ref="el"></div>
 </template>
 ```
+
+## Directive Usage
+
+```html
+<script setup lang="ts">
+import { vScrollLock } from '@vueuse/components'
+const data = ref([1, 2, 3, 4, 5, 6])
+const isLocked = ref(false)
+const toggleLock = useToggle(isLocked)
+</script>
+
+<template>
+  <div v-scroll-lock="isLocked">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+  </div>
+  <button @click="toggleLock()">
+    Toggle lock state
+  </button>
+</template>
+```

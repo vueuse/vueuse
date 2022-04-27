@@ -1,10 +1,12 @@
 import md5 from 'md5'
 import Git from 'simple-git'
-import type { CommitInfo, ContributorInfo } from '../meta/types'
-import { functions } from '../meta/function-indexes'
+import type { CommitInfo, ContributorInfo } from '@vueuse/metadata'
+import { functions } from '../packages/metadata/metadata'
 import { uniq } from './utils'
 
-const git = Git()
+const git = Git({
+  maxConcurrentProcesses: 200,
+})
 let cache: CommitInfo[] | undefined
 
 export async function getChangeLog(count = 200) {
@@ -13,6 +15,7 @@ export async function getChangeLog(count = 200) {
 
   const logs = (await git.log({ maxCount: count })).all.filter(i =>
     i.message.includes('chore: release')
+    || i.message.includes('!')
     || i.message.startsWith('feat')
     || i.message.startsWith('fix'),
   ) as CommitInfo[]
@@ -38,23 +41,31 @@ export async function getChangeLog(count = 200) {
 }
 
 export async function getContributorsAt(path: string) {
-  const list = (await git.raw(['log', '--pretty=format:"%an|%ae"', '--', path]))
-    .split('\n')
-    .map(i => i.slice(1, -1).split('|') as [string, string])
-  const map: Record<string, ContributorInfo> = {}
+  try {
+    const list = (await git.raw(['log', '--pretty=format:"%an|%ae"', '--', path]))
+      .split('\n')
+      .map(i => i.slice(1, -1).split('|') as [string, string])
+    const map: Record<string, ContributorInfo> = {}
 
-  list.forEach((i) => {
-    if (!map[i[1]]) {
-      map[i[1]] = {
-        name: i[0],
-        count: 0,
-        hash: md5(i[1]),
-      }
-    }
-    map[i[1]].count++
-  })
+    list
+      .filter(i => i[1])
+      .forEach((i) => {
+        if (!map[i[1]]) {
+          map[i[1]] = {
+            name: i[0],
+            count: 0,
+            hash: md5(i[1]),
+          }
+        }
+        map[i[1]].count++
+      })
 
-  return Object.values(map).sort((a, b) => b.count - a.count)
+    return Object.values(map).sort((a, b) => b.count - a.count)
+  }
+  catch (e) {
+    console.error(e)
+    return []
+  }
 }
 
 export async function getFunctionContributors() {

@@ -1,7 +1,3 @@
-<template>
-  <div>ComputedArr: {{ computedArr }}</div>
-</template>
-
 <script lang="ts">
 import type { InjectionKey, Ref } from 'vue-demi'
 import { defineComponent, ref } from 'vue-demi'
@@ -15,7 +11,8 @@ export default defineComponent({
   name: 'DemoProvider',
   setup() {
     const computedArr = computedInject(ArrayKey, (source) => {
-      if (!source) return ref([]) as OptionsRef
+      if (!source)
+        return ref([]) as OptionsRef
       const arr = [...source.value]
       arr.unshift({ key: 0, value: 'all' })
       return arr
@@ -28,6 +25,11 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<template>
+  <div>
+    <div text-primary font-bold mb-2>
+      Computed Array
+    </div>
+    <pre>{{ computedArr }}</pre>
+  </div>
+</template>

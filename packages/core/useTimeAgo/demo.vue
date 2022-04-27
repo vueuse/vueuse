@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { timestamp } from '@vueuse/shared'
-import { computed, ref } from 'vue-demi'
-import { useTimeAgo } from '.'
+import { computed, ref } from 'vue'
+import { useTimeAgo } from '@vueuse/core'
 
 const slider = ref(0)
 const value = computed(() => timestamp() + slider.value ** 3)

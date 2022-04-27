@@ -12,7 +12,7 @@ Clone this repo to your local machine and install the dependencies.
 pnpm install
 ```
 
-We use Vitepress for rapid development and documenting. You can start it locally by
+We use VitePress for rapid development and documenting. You can start it locally by
 
 ```bash
 pnpm dev
@@ -35,7 +35,7 @@ There are some notes for adding new functions
 - You can find the function template under `packages/core/_template/`, details explained in the [Function Folder](#function-folder) section.
 - When writing documentation for your function, the `<!--FOOTER_STARTS-->` and `<!--FOOTER_ENDS-->` will be automatically updated at build time, so don't feel the need to update them.
 
-> Please note you don't need to update the `indexes.json` or packages' `index.ts`. They are auto-generated.
+> Please note you don't need to update packages' `index.ts`. They are auto-generated.
 
 ### New add-ons
 

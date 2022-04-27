@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useFocus } from '.'
+import { ref } from 'vue'
+import { useFocus } from '@vueuse/core'
 
 const text = ref()
 const input = ref()
 const button = ref()
 
-const { focused: paragraphFocus } = useFocus({ target: text })
-const { focused: inputFocus } = useFocus({ target: input, initialValue: true })
-const { focused: buttonFocus } = useFocus({ target: button })
+const { focused: paragraphFocus } = useFocus(text)
+const { focused: inputFocus } = useFocus(input, { initialValue: true })
+const { focused: buttonFocus } = useFocus(button)
 </script>
 
 <template>

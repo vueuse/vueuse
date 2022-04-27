@@ -38,4 +38,44 @@ export default {
 }
 ```
 
+## Directive Usage
+
+```html
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vIntersectionObserver } from '@vueuse/components'
+
+const root = ref(null)
+
+const isVisible = ref(false)
+
+function onIntersectionObserer([{ isIntersecting }]) {
+  isVisible.value = isIntersecting
+}
+
+</script>
+
+<template>
+  <div>
+    <p>
+      Scroll me down!
+    </p>
+    <div v-intersection-observer="onIntersectionObserer">
+      <p>Hello world!</p>
+    </div>
+  </div>
+
+  <!-- with options -->
+  <div ref="root">
+    <p>
+      Scroll me down!
+    </p>
+    <div v-intersection-observer="[onIntersectionObserer, { root }]">
+      <p>Hello world!</p>
+    </div>
+  </div>
+</template>
+```
+
+
 [IntersectionObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver)

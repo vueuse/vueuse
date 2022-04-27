@@ -12,11 +12,10 @@ npm i <b>@vueuse/nuxt</b>
 
 ```ts
 // nuxt.config
-
-export function defineNuxtConfig({
-  buildModules: [
-    '@vueuse/nuxt'
-  ]
+export default defineNuxtConfig({
+  modules: [
+    '@vueuse/nuxt',
+  ],
 })
 ```
 

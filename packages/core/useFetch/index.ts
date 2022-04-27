@@ -72,21 +72,24 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get(): UseFetchReturn<T>
-  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
-  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T>
+  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
-  json<JSON = any>(): UseFetchReturn<JSON>
-  text(): UseFetchReturn<string>
-  blob(): UseFetchReturn<Blob>
-  arrayBuffer(): UseFetchReturn<ArrayBuffer>
-  formData(): UseFetchReturn<FormData>
+  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'get' | 'post' | 'put' | 'delete'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -175,7 +178,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: { data: any; response: Response | null; error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -262,7 +265,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
   interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
-    method: 'get',
+    method: 'GET',
     type: 'text' as DataType,
     payload: undefined as unknown,
   }
@@ -295,7 +298,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   const aborted = ref(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
-  const error = ref<any>(null)
+  const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
@@ -346,7 +349,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = { url: unref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
@@ -379,7 +382,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
           responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch)
+          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
             ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
 
           data.value = responseData
@@ -395,7 +398,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
-            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError }))
+            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
           data.value = responseData
           error.value = errorData
 
@@ -439,10 +442,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     onFetchError: errorEvent.on,
     onFetchFinally: finallyEvent.on,
     // method
-    get: setMethod('get'),
-    put: setMethod('put'),
-    post: setMethod('post'),
-    delete: setMethod('delete'),
+    get: setMethod('GET'),
+    put: setMethod('PUT'),
+    post: setMethod('POST'),
+    delete: setMethod('DELETE'),
+    patch: setMethod('PATCH'),
+    head: setMethod('HEAD'),
+    options: setMethod('OPTIONS'),
     // type
     json: setType('json'),
     text: setType('text'),

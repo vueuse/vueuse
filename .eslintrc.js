@@ -7,12 +7,10 @@ module.exports = {
     node: true,
   },
   extends: '@antfu/eslint-config',
-  plugins: [
-    'markdown',
-  ],
   rules: {
     'react/no-string-refs': 'off',
     'react/no-unknown-property': 'off',
+    'react/display-name': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',
     'vue/no-template-shadow': 'off',
@@ -43,14 +41,15 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.md', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
+      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {
         'no-alert': 'off',
         'no-console': 'off',
         'no-undef': 'off',
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
         'no-restricted-imports': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-redeclare': 'off',
       },
     },
     {

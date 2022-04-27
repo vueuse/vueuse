@@ -58,8 +58,7 @@ export function useIntersectionObserver(
         if (!el)
           return
 
-        // @ts-expect-error missing type
-        const observer = new window.IntersectionObserver(
+        const observer = new IntersectionObserver(
           callback,
           {
             root,

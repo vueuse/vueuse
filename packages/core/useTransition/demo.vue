@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { rand } from '@vueuse/shared'
-import { ref } from 'vue-demi'
-import { TransitionPresets, useTransition } from '.'
+import { ref } from 'vue'
+import { TransitionPresets, useTransition } from '@vueuse/core'
 
 const duration = 1500
 

@@ -14,7 +14,7 @@ import { useWindowFocus } from '@vueuse/core'
 const focused = useWindowFocus()
 ```
 
-## Component
+## Component Usage
 ```html
 <UseWindowFocus v-slot="{ focused }">
   Document Focus: {{ focused }}
