@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: '@Math'
 ---
 
 # useProjection
@@ -9,7 +9,7 @@ Basic projection and co-projection with utility functions.
 ## Usage
 
 ```ts
-import { useProjection } from '@vueuse/core'
+import { useProjection } from '@vueuse/math'
 
 const domainStart = ref(0)
 const domainEnd = ref(10)
