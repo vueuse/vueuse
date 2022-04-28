@@ -114,5 +114,9 @@
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
+  },
+  "dependencies": {
+    "@types/spark-md5": "^3.0.2",
+    "spark-md5": "^3.0.2"
   }
 }
