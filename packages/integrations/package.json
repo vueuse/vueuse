@@ -98,6 +98,9 @@
     "axios": {
       "optional": true
     },
+    "change-case": {
+      "optional": true
+    },
     "drauu": {
       "optional": true
     },
