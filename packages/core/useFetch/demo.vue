@@ -66,8 +66,8 @@ const text = stringify(reactive({
       Execute
     </button>
     <button @click="toggleRefetch">
-      <carbon-checkmark v-if="refetch" />
-      <carbon-error v-else />
+      <i v-if="refetch" inline-block align-middle i-carbon-checkmark />
+      <i v-else inline-block align-middle i-carbon-error />
 
       <span class="ml-2">{{ refetch ? 'Refetch On': 'Refetch Off' }}</span>
     </button>
