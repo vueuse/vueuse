@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { computed, nextTick, ref } from 'vue'
-import { useWebWorkerFn } from '@vueuse/core'
-import { useTimestamp } from '../useTimestamp'
+import { useTimestamp, useWebWorkerFn } from '@vueuse/core'
 
 const heavyTask = () => {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
