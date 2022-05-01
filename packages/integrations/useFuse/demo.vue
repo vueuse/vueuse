@@ -138,7 +138,7 @@ const { results } = useFuse(search, data, options)
     <input v-model="search" placeholder="Search for someone..." type="text" w-full>
     <div flex flex-wrap>
       <div bg="dark:(dark-300) light-700" mr-2 border="1 light-900 dark:(dark-700)" rounded relative flex items-center>
-        <carbon-filter absolute left-2 opacity-70 />
+        <i i-carbon-filter absolute left-2 opacity-70 />
         <select v-model="filterBy" px-8 bg-transparent>
           <option bg="dark:(dark-300) light-700" value="both">
             Full Name
@@ -150,7 +150,7 @@ const { results } = useFuse(search, data, options)
             Last Name
           </option>
         </select>
-        <carbon-chevron-down absolute right-2 pointer-events-none opacity-70 />
+        <i i-carbon-chevron-down absolute right-2 pointer-events-none opacity-70 />
       </div>
       <span flex-1 />
       <div flex flex-row flex-wrap gap-x-4>
