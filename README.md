@@ -1,5 +1,11 @@
 <p align="center">
-<a href="https://github.com/vueuse/vueuse"><img src="https://raw.githubusercontent.com/vueuse/vueuse/main/packages/public/logo-vertical.png" alt="VueUse - Collection of essential Vue Composition Utilities" width="300"></a><br>
+<a href="https://github.com/vueuse/vueuse#gh-light-mode-only">
+  <img src="https://raw.githubusercontent.com/vueuse/vueuse/main/packages/public/logo-vertical.png#gh-light-mode-only" alt="VueUse - Collection of essential Vue Composition Utilities" width="300">
+</a>
+<a href="https://github.com/vueuse/vueuse#gh-dark-mode-only">
+  <img src="https://raw.githubusercontent.com/vueuse/vueuse/main/packages/public/logo-vertical-dark.png#gh-dark-mode-only" alt="VueUse - Collection of essential Vue Composition Utilities" width="300">
+</a>
+<br>
 Collection of essential Vue Composition Utilities
 </p>
 
@@ -23,7 +29,7 @@ Collection of essential Vue Composition Utilities
 - 🎪 [**Interactive docs & demos**](https://vueuse.org)
 - 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
 - ⚡ **Fully tree shakeable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
-- 🦾 **Type Strong**: Written in [Typescript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
+- 🦾 **Type Strong**: Written in [TypeScript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
 - 🌎 **No bundler required**: Usable via CDN
 - 🔩 **Flexible**: Configurable event filters and targets

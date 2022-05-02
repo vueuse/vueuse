@@ -1,3 +1,13 @@
+<script lang="ts" setup>
+import { useMemory } from '@vueuse/core'
+
+const size = (v: number) => {
+  const kb = v / 1024 / 1024
+  return `${kb.toFixed(2)} MB`
+}
+const { isSupported, memory } = useMemory()
+</script>
+
 <template>
   <div v-if="isSupported && memory" class="inline-grid grid-cols-2 gap-x-4 gap-y-2">
     <template v-if="memory">
@@ -16,13 +26,3 @@
     Your browser does not support performance memory API
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useMemory } from '@vueuse/core'
-
-const size = (v: number) => {
-  const kb = v / 1024 / 1024
-  return `${kb.toFixed(2)} MB`
-}
-const { isSupported, memory } = useMemory()
-</script>

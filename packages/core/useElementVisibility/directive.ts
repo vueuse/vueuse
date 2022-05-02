@@ -1,5 +1,7 @@
 import { watch } from 'vue-demi'
-import type { FunctionDirective } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
+import type { ObjectDirective } from 'vue-demi'
+
 import type { VisibilityScrollTargetOptions } from '.'
 import { useElementVisibility } from '.'
 
@@ -7,15 +9,11 @@ type BindingValueFunction = (state: boolean) => void
 
 type BindingValueArray = [BindingValueFunction, VisibilityScrollTargetOptions]
 
-const vElementVisibilityHandler = (): FunctionDirective<
+export const vElementVisibility: ObjectDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> => {
-  let mountedEle: HTMLElement | null = null
-  return (el, binding) => {
-    if (el === mountedEle) return
-    mountedEle = el
-
+> = {
+  [directiveHooks.mounted](el, binding) {
     if (typeof binding.value === 'function') {
       const handler = binding.value
       const isVisible = useElementVisibility(el)
@@ -26,7 +24,5 @@ BindingValueFunction | BindingValueArray
       const isVisible = useElementVisibility(el, options)
       watch(isVisible, v => handler(v), { immediate: true })
     }
-  }
+  },
 }
-
-export const vElementVisibility = vElementVisibilityHandler()

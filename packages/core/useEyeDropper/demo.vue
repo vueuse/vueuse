@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { useEyeDropper } from '@vueuse/core'
+
+const { isSupported, open, sRGBHex } = useEyeDropper()
+</script>
+
 <template>
   <template v-if="isSupported">
     <div>isSupported: {{ isSupported }}</div>
@@ -12,9 +18,3 @@
     </button>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useEyeDropper } from '@vueuse/core'
-
-const { isSupported, open, sRGBHex } = useEyeDropper()
-</script>

@@ -31,7 +31,8 @@ export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocumen
   const isActive = ref(false)
 
   async function onVisibilityChange() {
-    if (!isSupported || !wakeLock) return
+    if (!isSupported || !wakeLock)
+      return
 
     if (document && document.visibilityState === 'visible')
       wakeLock = await (navigator as NavigatorWithWakeLock).wakeLock.request('screen')
@@ -43,13 +44,15 @@ export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocumen
     useEventListener(document, 'visibilitychange', onVisibilityChange, { passive: true })
 
   async function request(type: WakeLockType) {
-    if (!isSupported) return
+    if (!isSupported)
+      return
     wakeLock = await (navigator as NavigatorWithWakeLock).wakeLock.request(type)
     isActive.value = !wakeLock.released
   }
 
   async function release() {
-    if (!isSupported || !wakeLock) return
+    if (!isSupported || !wakeLock)
+      return
     await wakeLock.release()
     isActive.value = !wakeLock.released
     wakeLock = null

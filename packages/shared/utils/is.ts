@@ -2,7 +2,8 @@ export const isClient = typeof window !== 'undefined'
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const assert = (condition: boolean, ...infos: any[]) => {
   // eslint-disable-next-line no-console
-  if (!condition) console.warn(...infos)
+  if (!condition)
+    console.warn(...infos)
 }
 const toString = Object.prototype.toString
 export const isBoolean = (val: any): val is boolean => typeof val === 'boolean'

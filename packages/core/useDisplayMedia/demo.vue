@@ -6,7 +6,8 @@ const video = ref<HTMLVideoElement>()
 const { stream, enabled } = useDisplayMedia()
 
 watchEffect(() => {
-  if (video.value) video.value.srcObject = stream.value!
+  if (video.value)
+    video.value.srcObject = stream.value!
 })
 </script>
 

@@ -102,8 +102,10 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
       error.value = e
       onError(e)
     }
+    finally {
+      isLoading.value = false
+    }
 
-    isLoading.value = false
     return state.value as Data
   }
 

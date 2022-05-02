@@ -7,7 +7,7 @@ const updated = ref(0)
 
 watchThrottled(input, () => {
   updated.value += 1
-}, { throttle: 500 })
+}, { throttle: 1000 })
 </script>
 
 <template>

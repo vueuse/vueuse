@@ -9,7 +9,10 @@ import { watch } from 'vue-demi'
 export function whenever<T>(source: WatchSource<T | false | null | undefined>, cb: WatchCallback<T>, options?: WatchOptions) {
   return watch(
     source,
-    (v, ov, onInvalidate) => { if (v) cb(v, ov, onInvalidate) },
+    (v, ov, onInvalidate) => {
+      if (v)
+        cb(v, ov, onInvalidate)
+    },
     options,
   )
 }

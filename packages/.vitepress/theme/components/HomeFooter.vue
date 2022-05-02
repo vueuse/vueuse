@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+</script>
+
 <template>
   <footer v-if="frontmatter.footer" class="footer !mt-20">
     <div class="container">
@@ -7,12 +13,6 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-import { useData } from 'vitepress'
-
-const { frontmatter } = useData()
-</script>
 
 <style scoped>
 .footer {

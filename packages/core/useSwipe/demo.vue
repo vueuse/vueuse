@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { SwipeDirection } from '@vueuse/core'

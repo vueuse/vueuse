@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "8.0.1",
+  "version": "8.3.1",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",
@@ -96,6 +96,9 @@
   },
   "peerDependenciesMeta": {
     "axios": {
+      "optional": true
+    },
+    "change-case": {
       "optional": true
     },
     "drauu": {

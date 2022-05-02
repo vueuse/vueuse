@@ -25,4 +25,7 @@ describe('useDateFormat', () => {
   it('should work with HH:mm:ss:SSS', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05:999'), 'HH:mm:ss:SSS').value).toBe('15:05:05:999')
   })
+  it('should work with HH:mm:ss d', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'HH:mm:ss d').value).toBe('15:05:05 6')
+  })
 })

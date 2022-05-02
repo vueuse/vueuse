@@ -1,4 +1,3 @@
-
 /**
  * This function accepts as a parameter a function "userFunc"
  * And as a result returns an anonymous function.

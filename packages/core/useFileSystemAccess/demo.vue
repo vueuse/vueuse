@@ -2,7 +2,7 @@
 import { stringify } from '@vueuse/docs-utils'
 import type { Ref } from 'vue'
 import { reactive, ref } from 'vue'
-import { useFileSystemAccess } from '.'
+import { useFileSystemAccess } from '@vueuse/core'
 
 const dataType = ref('Text') as Ref<'Text' | 'ArrayBuffer' | 'Blob'>
 const res = useFileSystemAccess({

@@ -12,9 +12,9 @@ const {
 
 <template>
   <div class="grid grid-cols-3 text-center" gap="2" p="y-4">
-    <carbon:camera />
-    <carbon:microphone />
-    <carbon:headphones />
+    <i i-carbon-camera />
+    <i i-carbon-microphone />
+    <i i-carbon-headphones />
 
     <div class="title">
       Camera ({{ cameras.length }})
@@ -47,7 +47,7 @@ const {
 </template>
 
 <style lang="postcss" scoped>
-svg {
+i {
   @apply text-2xl opacity-50 m-auto;
 }
 
