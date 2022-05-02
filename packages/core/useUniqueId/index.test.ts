@@ -23,8 +23,8 @@ describe('useUniqueId', () => {
     expect(id5.value).not.toBe(id7.value)
     expect(id6.value).not.toBe(id3.value)
 
-    expect(id1.value).toBe('1')
-    expect(id2.value).toBe('2')
+    expect(id1.value).toBe('$$unique_1')
+    expect(id2.value).toBe('$$unique_2')
     expect(id3.value).toBe('prefix_1')
     expect(id4.value).toBe('prefix_2')
     expect(id5.value).toBe('prefix2_1')

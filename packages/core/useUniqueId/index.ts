@@ -18,13 +18,13 @@ export function useUniqueId(prefix?: MaybeRef<string>, options: WatchOptions = {
     if (!existPrefix) {
       uniqueId.set(str, 1)
 
-      return str === normalPrefix ? '1' : `${str}1`
+      return str === normalPrefix ? '$$unique_1' : `${str}1`
     }
 
     let id = uniqueId.get(str)!
     uniqueId.set(str, ++id)
 
-    return str === normalPrefix ? id.toString() : `${str}${id}`
+    return str === normalPrefix ? `$$unique_${id}` : `${str}${id}`
   }
 
   if (!prefix)
