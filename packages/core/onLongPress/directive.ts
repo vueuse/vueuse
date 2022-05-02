@@ -1,4 +1,6 @@
-import type { FunctionDirective } from 'vue-demi'
+import type { ObjectDirective } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
+
 import type { OnLongPressOptions } from '.'
 import { onLongPress } from '.'
 
@@ -9,14 +11,16 @@ type BindingValueArray = [
   OnLongPressOptions,
 ]
 
-export const vOnLongPress: FunctionDirective<
+export const vOnLongPress: ObjectDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
-> = (el, binding) => {
-  if (typeof binding.value === 'function')
-    onLongPress(el, binding.value)
-  else
-    onLongPress(el, ...binding.value)
+> = {
+  [directiveHooks.mounted](el, binding) {
+    if (typeof binding.value === 'function')
+      onLongPress(el, binding.value)
+    else
+      onLongPress(el, ...binding.value)
+  },
 }
 
 // alias

@@ -1,7 +1,6 @@
 import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { promiseTimeout } from '@vueuse/shared'
 
 import { vOnLongPress } from './directive'
 import type { OnLongPressOptions } from '.'
@@ -47,13 +46,6 @@ describe('vOnLongPress', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
-
-    it('should trigger longpress after 500ms', async() => {
-      const element = wrapper.get('[data-test=element]')
-      await element.trigger('pointerdown')
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(1)
-    })
   })
 
   describe('given options', () => {
@@ -77,15 +69,6 @@ describe('vOnLongPress', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
-    })
-
-    it('should trigger longpress after 500ms', async() => {
-      const element = wrapper.get('[data-test=element]')
-      await element.trigger('pointerdown')
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(0)
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(1)
     })
   })
 })
