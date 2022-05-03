@@ -93,6 +93,61 @@ describe('computedAsync', () => {
     expect(double.value).toBe(4)
   })
 
+  it('uses last result', async() => {
+    const evaluating = ref(false)
+    const resolutions: Array<() => void> = []
+
+    const counter = ref(1)
+    const double = computedAsync(() => {
+      const result = counter.value * 2
+      return new Promise(resolve => (resolutions.push(() => resolve(result))))
+    }, undefined, evaluating)
+
+    await nextTick()
+
+    expect(double.value).toBeUndefined()
+    expect(evaluating.value).toBe(true)
+    expect(resolutions).toHaveLength(1)
+
+    resolutions[0]()
+    await nextTick()
+    await nextTick()
+
+    expect(double.value).toBe(2)
+    expect(evaluating.value).toBe(false)
+
+    counter.value = 2
+    await nextTick()
+    counter.value = 3
+    await nextTick()
+    counter.value = 4
+    await nextTick()
+
+    expect(evaluating.value).toBe(true)
+    expect(resolutions).toHaveLength(4)
+
+    resolutions[1]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(true)
+    expect(double.value).toBe(2)
+
+    resolutions[3]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(false)
+    expect(double.value).toBe(8)
+
+    resolutions[2]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(false)
+    expect(double.value).toBe(8)
+  })
+
   test('evaluating works', async() => {
     const evaluating = ref(false)
 
