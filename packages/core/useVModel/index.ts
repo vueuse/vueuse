@@ -1,7 +1,7 @@
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
-export interface VModelOptions<T = undefined> {
+export interface VModelOptions<T> {
   /**
    * When passive is set to `true`, it will use `watch` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
