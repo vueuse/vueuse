@@ -18,19 +18,17 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(1)
   })
 
-  it('should behave as vue\'s toRefs when a normal array was passed', () => {
-    // FIXME: Vue 2 misalignment
-    if (isVue3) {
-      const arr = reactive(['a', 0])
-      const refs = toRefs(arr)
-      expect(refs[0].value).toBe('a')
-      expect(refs[1].value).toBe(0)
+  // FIXME: Vue 2 misalignment
+  it.runIf(isVue3)('should behave as vue\'s toRefs when a normal array was passed', () => {
+    const arr = reactive(['a', 0])
+    const refs = toRefs(arr)
+    expect(refs[0].value).toBe('a')
+    expect(refs[1].value).toBe(0)
 
-      arr[0] = 'b'
-      arr[1] = 1
-      expect(refs[0].value).toBe('b')
-      expect(refs[1].value).toBe(1)
-    }
+    arr[0] = 'b'
+    arr[1] = 1
+    expect(refs[0].value).toBe('b')
+    expect(refs[1].value).toBe(1)
   })
 
   it('should return refs when a object ref was passed', () => {

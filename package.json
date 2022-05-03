@@ -46,7 +46,7 @@
     "@types/prettier": "^2.4.4",
     "@types/semver": "^7.3.9",
     "@types/sharp": "^0.30.2",
-    "@vitest/ui": "^0.9.0",
+    "@vitest/ui": "^0.10.2",
     "@vue/compiler-sfc": "^3.2.31",
     "@vue/composition-api": "^1.4.9",
     "@vue/test-utils": "^2.0.0-rc.19",
@@ -95,7 +95,7 @@
     "vite-plugin-inspect": "^0.4.3",
     "vite-plugin-pwa": "^0.11.13",
     "vitepress": "^0.22.3",
-    "vitest": "^0.9.0",
+    "vitest": "^0.10.2",
     "vue": "^3.2.31",
     "vue2": "npm:vue@^2.6.14"
   },
