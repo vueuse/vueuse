@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "8.3.1",
+  "version": "8.4.0",
   "description": "Integration wrappers for utility libraries",
   "keywords": [
     "vue",

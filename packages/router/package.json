@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "8.3.1",
+  "version": "8.4.0",
   "description": "Utilities for vue-router",
   "keywords": [
     "vue",
