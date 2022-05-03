@@ -93,12 +93,12 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
 
     <div class="flex flex-row items-center items-center">
       <button @click="playing = !playing">
-        <carbon-play v-if="!playing" />
-        <carbon-pause v-else />
+        <i v-if="!playing" inline-block align-middle i-carbon-play />
+        <i v-else i-carbon-pause inline-block align-middle />
       </button>
       <button @click="muted = !muted">
-        <carbon-volume-mute v-if="muted" />
-        <carbon-volume-up v-else />
+        <i v-if="muted" i-carbon-volume-mute inline-block align-middle />
+        <i v-else i-carbon-volume-up inline-block align-middle />
       </button>
       <Scrubber v-model="volume" :max="1" class="w-32 ml-2" />
       <div
@@ -110,7 +110,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
       <Menu class="mr-2">
         <template #default="{ open }">
           <button @click="open">
-            <carbon-closed-caption />
+            <i i-carbon-closed-caption inline-block align-middle />
           </button>
         </template>
         <template #menu="{ close }">
@@ -120,7 +120,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
               @click="() => { disableTrack(); close() }"
             >
               <span class="flex-1">Off</span>
-              <carbon-checkmark :class="{ 'opacity-0': selectedTrack !== -1 }" />
+              <i i-carbon-checkmark inline-block align-middle :class="{ 'opacity-0': selectedTrack !== -1 }" />
             </MenuItem>
             <MenuItem
               v-for="track in tracks"
@@ -129,7 +129,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
               @click="() => { enableTrack(track); close() }"
             >
               <span class="flex-1">{{ track.label }}</span>
-              <carbon-checkmark :class="{ 'opacity-0': track.mode !== 'showing' }" />
+              <i i-carbon-checkmark inline-block align-middle :class="{ 'opacity-0': track.mode !== 'showing' }" />
             </MenuItem>
           </div>
         </template>
@@ -137,7 +137,7 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
       <Menu class="mr-2">
         <template #default="{ open }">
           <button class="block" @click="open()">
-            <carbon-settings />
+            <i i-carbon-settings inline-block align-middle />
           </button>
         </template>
         <template #menu="{ close }">
@@ -146,13 +146,13 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
               v-if="supportsPictureInPicture"
               @click="() => { togglePictureInPicture(); close(); }"
             >
-              <carbon-popup />
+              <i i-carbon-popup />
               <span>{{ isPictureInPicture ? 'Exit' : 'Enter' }} Picture in Picture</span>
             </MenuItem>
             <MenuItem @click="() => { loop = !loop; close(); }">
-              <carbon-repeat />
+              <i i-carbon-repeat />
               <span class="flex-1">Loop</span>
-              <carbon-checkmark v-if="loop" />
+              <i v-if="loop" i-carbon-checkmark />
             </MenuItem>
           </div>
         </template>
@@ -160,16 +160,16 @@ const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString
       <Menu>
         <template #default="{ open }">
           <button class="block" @click="open()">
-            <carbon-meter />
+            <i i-carbon-meter inline-block align-middle />
           </button>
         </template>
         <template #menu="{ close }">
           <div class="absolute bottom-0 right-0 shadow py-2 bg-black rounded">
             <MenuItem @click="() => { controls.rate.value = 2; close(); }">
-              <carbon-meter-alt />2x
+              <i i-carbon-meter-alt />2x
             </MenuItem>
             <MenuItem @click="() => { controls.rate.value = 1; close(); }">
-              <carbon-meter-alt />1x
+              <i i-carbon-meter-alt />1x
             </MenuItem>
           </div>
         </template>

@@ -1,4 +1,5 @@
-import { defineComponent } from 'vue-demi'
+import { defineComponent, isVue3 } from 'vue-demi'
+
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
@@ -49,10 +50,12 @@ describe('vOnLongPress', () => {
     })
 
     it('should trigger longpress after 500ms', async() => {
-      const element = wrapper.get('[data-test=element]')
-      await element.trigger('pointerdown')
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(1)
+      if (isVue3) {
+        const element = wrapper.get('[data-test=element]')
+        await element.trigger('pointerdown')
+        await promiseTimeout(500)
+        expect(onLongPress).toHaveBeenCalledTimes(1)
+      }
     })
   })
 
@@ -80,12 +83,14 @@ describe('vOnLongPress', () => {
     })
 
     it('should trigger longpress after 500ms', async() => {
-      const element = wrapper.get('[data-test=element]')
-      await element.trigger('pointerdown')
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(0)
-      await promiseTimeout(500)
-      expect(onLongPress).toHaveBeenCalledTimes(1)
+      if (isVue3) {
+        const element = wrapper.get('[data-test=element]')
+        await element.trigger('pointerdown')
+        await promiseTimeout(500)
+        expect(onLongPress).toHaveBeenCalledTimes(0)
+        await promiseTimeout(500)
+        expect(onLongPress).toHaveBeenCalledTimes(1)
+      }
     })
   })
 })

@@ -135,14 +135,14 @@ function toggleSort(method: string) {
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
-    <carbon-search m="r-2" opacity="50" />
+    <i i-carbon-search m="r-2" opacity="50" />
     <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
   <div h="1px" bg="$vt-c-divider-light" m="b-4" />
   <div flex="~ col" gap="2" class="relative" p="t-5">
     <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
       <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">
-        <CarbonFilterRemove />
+        <i i-carbon-filter-remove />
         Clear Filters
       </button>
     </div>
@@ -162,7 +162,7 @@ function toggleSort(method: string) {
         No result matched
       </div>
       <button class="select-button flex-inline gap-1 items-center !px-2 !py-1" @click="resetFilters()">
-        <CarbonFilterRemove />
+        <i i-carbon-filter-remove />
         Clear Filters
       </button>
     </div>

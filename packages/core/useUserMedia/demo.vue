@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
-import { useUserMedia } from '@vueuse/core'
-import { useDevicesList } from '../useDevicesList'
+import { useDevicesList, useUserMedia } from '@vueuse/core'
 
 const currentCamera = ref<string>()
 const { videoInputs: cameras } = useDevicesList({

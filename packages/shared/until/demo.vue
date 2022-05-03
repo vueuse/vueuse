@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { until, useCounter } from '@vueuse/shared'
-import { invoke } from '../utils'
+import { invoke, until, useCounter } from '@vueuse/shared'
 
 const { count, inc, dec } = useCounter()
 
