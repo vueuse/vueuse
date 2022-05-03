@@ -191,7 +191,7 @@ describe('useManualRefHistory', () => {
     expect(redoStack.value[0].snapshot).toBe(3)
   })
 
-  test('snapshots should not be reactive', async() => {
+  test('snapshots should not be reactive', async () => {
     const v = ref(0)
     const { history, commit } = useManualRefHistory(v)
 

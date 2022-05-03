@@ -4,9 +4,9 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { computed } from 'vue'
 import { functions } from '../../../../packages/metadata/metadata'
 
-dayjs.extend(relativeTime)
-
 const props = defineProps<{ fn: string }>()
+
+dayjs.extend(relativeTime)
 
 const info = computed(() => functions.find(i => i.name === props.fn))
 const format = (ts: number) => dayjs(ts).fromNow()

@@ -12,7 +12,7 @@ import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
 import { NavbarFix } from './.vitepress/plugins/navbar'
 
-export default defineConfig(async() => {
+export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
     getChangeLog(800),
     getFunctionContributors(),

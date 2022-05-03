@@ -51,8 +51,8 @@ const { distanceX, isSwiping } = usePointerSwipe(target, {
     <div
       ref="target"
       class="absolute w-full h-full top-0 left-0 bg-[#3eaf7c] flex items-center justify-center"
-      :class="{'transition-all duration-200 ease-linear': !isSwiping}"
-      :style="{left, opacity}"
+      :class="{ 'transition-all duration-200 ease-linear': !isSwiping }"
+      :style="{ left, opacity }"
     >
       <p class="flex text-white items-center">
         Swipe <mdi-arrow-right />

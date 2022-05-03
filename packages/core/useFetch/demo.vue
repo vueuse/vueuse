@@ -69,7 +69,7 @@ const text = stringify(reactive({
       <i v-if="refetch" inline-block align-middle i-carbon-checkmark />
       <i v-else inline-block align-middle i-carbon-error />
 
-      <span class="ml-2">{{ refetch ? 'Refetch On': 'Refetch Off' }}</span>
+      <span class="ml-2">{{ refetch ? 'Refetch On' : 'Refetch Off' }}</span>
     </button>
     <button v-if="canAbort" class="orange" @click="abort">
       Abort

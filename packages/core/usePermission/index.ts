@@ -77,7 +77,7 @@ export function usePermission(
       state.value = permissionStatus.state
   }
 
-  const query = createSingletonPromise(async() => {
+  const query = createSingletonPromise(async () => {
     if (!isSupported)
       return
     if (!permissionStatus) {

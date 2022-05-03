@@ -34,7 +34,7 @@ describe('useAsyncQueue', () => {
     })
   }
 
-  it('should return the tasks result', async() => {
+  it('should return the tasks result', async () => {
     const {
       activeIndex,
       result,
@@ -45,7 +45,7 @@ describe('useAsyncQueue', () => {
     })
   })
 
-  it('should passed the current task result to the next task', async() => {
+  it('should passed the current task result to the next task', async () => {
     const {
       activeIndex,
       result,
@@ -56,7 +56,7 @@ describe('useAsyncQueue', () => {
     })
   })
 
-  it('should trigger onFinished when the tasks ends', async() => {
+  it('should trigger onFinished when the tasks ends', async () => {
     const onFinishedSpy = vitest.fn()
     const { activeIndex } = useAsyncQueue([p1, p2], {
       onFinished: onFinishedSpy,
@@ -67,7 +67,7 @@ describe('useAsyncQueue', () => {
     })
   })
 
-  it ('should trigger onError when the tasks fails', async() => {
+  it ('should trigger onError when the tasks fails', async () => {
     const onErrorSpy = vitest.fn()
     const { activeIndex } = useAsyncQueue([p3, pError], {
       onError: onErrorSpy,
@@ -78,7 +78,7 @@ describe('useAsyncQueue', () => {
     })
   })
 
-  it ('should interrupt the tasks when current task fails', async() => {
+  it ('should interrupt the tasks when current task fails', async () => {
     const finalTaskSpy = vitest.fn(() => Promise.resolve('data'))
     const onFinishedSpy = vitest.fn()
     useAsyncQueue([p1, pError, finalTaskSpy], {
@@ -91,7 +91,7 @@ describe('useAsyncQueue', () => {
     })
   })
 
-  it ('should not interrupt the tasks when current task fails', async() => {
+  it ('should not interrupt the tasks when current task fails', async () => {
     const finalTaskSpy = vitest.fn(() => Promise.resolve('data'))
     const onFinishedSpy = vitest.fn()
     useAsyncQueue([p1, pError, finalTaskSpy], {

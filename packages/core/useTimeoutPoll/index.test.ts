@@ -3,7 +3,7 @@ import { promiseTimeout } from '@vueuse/shared'
 import { useTimeoutPoll } from '.'
 
 describe('useTimeoutFn', () => {
-  it('supports reactive intervals', async() => {
+  it('supports reactive intervals', async () => {
     const callback = vitest.fn()
     const interval = ref(0)
     const { pause, resume } = useTimeoutPoll(callback, interval)

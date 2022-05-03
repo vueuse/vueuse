@@ -2,7 +2,7 @@ import { promiseTimeout } from '@vueuse/shared'
 import { useTimestamp } from '.'
 
 describe('useTimestamp', () => {
-  it('starts immediately by default', async() => {
+  it('starts immediately by default', async () => {
     const timestamp = useTimestamp()
 
     const initial = timestamp.value
@@ -12,7 +12,7 @@ describe('useTimestamp', () => {
     expect(timestamp.value).greaterThan(initial)
   })
 
-  it('allows for a delayed start', async() => {
+  it('allows for a delayed start', async () => {
     const { resume, timestamp } = useTimestamp({
       controls: true,
       immediate: false,

@@ -18,14 +18,14 @@ const running = computed(() => workerStatus.value === 'RUNNING')
 const data = ref<number[] | null>(null)
 const runner = ref('')
 
-const baseSort = async() => {
+const baseSort = async () => {
   data.value = null
   await nextTick()
   data.value = heavyTask()
   runner.value = 'Main'
 }
 
-const workerSort = async() => {
+const workerSort = async () => {
   data.value = null
   await nextTick()
   data.value = await workerFn()

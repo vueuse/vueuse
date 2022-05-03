@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
-          cache: "pnpm"
+          cache: pnpm
 
       - run: pnpm install
 
@@ -34,5 +34,5 @@ jobs:
       - run: pnpm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          NODE_OPTIONS: '--max-old-space-size=6144'
+          NODE_OPTIONS: --max-old-space-size=6144
 

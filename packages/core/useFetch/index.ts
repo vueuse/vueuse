@@ -319,7 +319,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   if (timeout)
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
-  const execute = async(throwOnFailed = false) => {
+  const execute = async (throwOnFailed = false) => {
     loading(true)
     error.value = null
     statusCode.value = null
@@ -376,7 +376,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           },
         },
       )
-        .then(async(fetchResponse) => {
+        .then(async (fetchResponse) => {
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
@@ -394,7 +394,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           responseEvent.trigger(fetchResponse)
           return resolve(fetchResponse)
         })
-        .catch(async(fetchError) => {
+        .catch(async (fetchError) => {
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)

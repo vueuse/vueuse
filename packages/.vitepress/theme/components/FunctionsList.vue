@@ -112,7 +112,7 @@ function toggleSort(method: string) {
         class="select-button capitalize"
         :class="{
           active: method === (sortMethod || 'category'),
-          disabled: search
+          disabled: search,
         }"
         @click="toggleSort(method)"
       >

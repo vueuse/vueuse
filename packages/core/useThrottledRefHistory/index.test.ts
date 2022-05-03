@@ -3,7 +3,7 @@ import { promiseTimeout } from '@vueuse/shared'
 import { useThrottledRefHistory } from '.'
 
 describe('useThrottledRefHistory - sync', () => {
-  test('take first snapshot right after data was changed and second after given time', async() => {
+  test('take first snapshot right after data was changed and second after given time', async () => {
     const ms = 10
     const v = ref(0)
 

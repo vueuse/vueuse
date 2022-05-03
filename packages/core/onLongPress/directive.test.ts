@@ -49,7 +49,7 @@ describe('vOnLongPress', () => {
       expect(wrapper).toBeDefined()
     })
 
-    it.runIf(isVue3)('should trigger longpress after 500ms', async() => {
+    it.runIf(isVue3)('should trigger longpress after 500ms', async () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)
@@ -80,7 +80,7 @@ describe('vOnLongPress', () => {
       expect(wrapper).toBeDefined()
     })
 
-    it.runIf(isVue3)('should trigger longpress after 500ms', async() => {
+    it.runIf(isVue3)('should trigger longpress after 500ms', async () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)

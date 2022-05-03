@@ -18,7 +18,7 @@ describe('reactiveComputed', () => {
     expect(state.count).toBe(1)
   })
 
-  it('should work with dynamic props', async() => {
+  it('should work with dynamic props', async () => {
     const foo = ref(false)
 
     const state = reactiveComputed(() => {

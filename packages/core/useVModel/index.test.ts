@@ -23,7 +23,7 @@ describe('useVModel', () => {
     expect(data.value).toBe('data')
   })
 
-  it('should emit on value change', async() => {
+  it('should emit on value change', async () => {
     const emitMock = vitest.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock)
@@ -32,7 +32,7 @@ describe('useVModel', () => {
     expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
   })
 
-  it('should use eventName if set', async() => {
+  it('should use eventName if set', async () => {
     const emitMock = vitest.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
@@ -41,7 +41,7 @@ describe('useVModel', () => {
     expect(emitMock).toHaveBeenCalledWith('onChange', 'changed')
   })
 
-  it('should emit w/ passive', async() => {
+  it('should emit w/ passive', async () => {
     const emitMock = vitest.fn()
 
     const props = {
@@ -57,7 +57,7 @@ describe('useVModel', () => {
     expect(emitMock).toHaveBeenCalledWith('update:age', 20)
   })
 
-  it('should emit w/ object props type', async() => {
+  it('should emit w/ object props type', async () => {
     const emitMock = vitest.fn()
 
     const props = {
@@ -75,7 +75,7 @@ describe('useVModel', () => {
     expect(emitMock).toHaveBeenCalledWith('update:data', { age: 20 })
   })
 
-  it('should emit w/ array props type', async() => {
+  it('should emit w/ array props type', async () => {
     const emitMock = vitest.fn()
 
     const props = {
