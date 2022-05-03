@@ -34,13 +34,13 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.0",
+    "@nuxt/kit": "^3.0.0-rc.2",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.1",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.0"
+    "@nuxt/schema": "^3.0.0-rc.2"
   }
 }
