@@ -1,4 +1,5 @@
 import { ref, watch } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -24,6 +25,13 @@ export interface UseElementBoundingOptions {
    * @default true
    */
   windowScroll?: boolean
+
+  /**
+   * Immediately call update on component mounted
+   *
+   * @default true
+   */
+  immediate?: boolean
 }
 
 /**
@@ -40,6 +48,7 @@ export function useElementBounding(
     reset = true,
     windowResize = true,
     windowScroll = true,
+    immediate = true,
   } = options
 
   const height = ref(0)
@@ -87,6 +96,11 @@ export function useElementBounding(
     useEventListener('scroll', update, { passive: true })
   if (windowResize)
     useEventListener('resize', update, { passive: true })
+
+  tryOnMounted(() => {
+    if (immediate)
+      update()
+  })
 
   return {
     height,
