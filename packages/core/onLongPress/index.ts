@@ -1,6 +1,7 @@
-import type { MaybeElementRef } from '@vueuse/core'
-import { unrefElement, useEventListener } from '@vueuse/core'
 import { computed } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 
 const DEFAULT_DELAY = 500
 
