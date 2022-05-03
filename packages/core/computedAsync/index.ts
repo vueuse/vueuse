@@ -97,7 +97,7 @@ export function computedAsync<T>(
       onError(e)
     }
     finally {
-      if (evaluating)
+      if (evaluating && counterAtBeginning === counter)
         evaluating.value = false
 
       hasFinished = true
