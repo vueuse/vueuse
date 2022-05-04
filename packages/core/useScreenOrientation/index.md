@@ -9,7 +9,7 @@ Reactive [Screen Orientation API](https://developer.mozilla.org/en-US/docs/Web/A
 ## Usage
 
 ```ts
-import { useScreenOrientation } from '.'
+import { useScreenOrientation } from '@vueuse/core'
 
 const {
   isSupported,
@@ -23,7 +23,7 @@ const {
 To lock the orientation, you can pass an [OrientationLockType](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation/type) to the lockOrientation function:
 
 ```ts
-import { useScreenOrientation } from '.'
+import { useScreenOrientation } from '@vueuse/core'
 
 const {
   isSupported,
