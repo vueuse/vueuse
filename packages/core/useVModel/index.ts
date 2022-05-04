@@ -86,7 +86,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   else {
     return computed<P[K]>({
       get() {
-        return props[key!] || defaultValue!
+        return props[key!] ?? defaultValue!
       },
       set(value) {
         _emit(event, value)
