@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { DeepReadonly, Ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import type { EventHook, EventHookOn } from '@vueuse/shared'
 import { createEventHook, noop } from '@vueuse/shared'
 
@@ -16,7 +16,7 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Revealing state
    */
-  isRevealed: ComputedRef<boolean>
+  isRevealed: DeepReadonly<Ref<boolean>>
 
   /**
    * Opens the dialog.
@@ -96,7 +96,7 @@ export function useConfirmDialog<
   }
 
   return {
-    isRevealed: computed(() => revealed.value),
+    isRevealed: readonly(revealed),
     reveal,
     confirm,
     cancel,

@@ -85,3 +85,80 @@ const openDialog = async () => {
   </teleport>
 </template>
 ```
+
+### Binding on `v-model`
+
+Since the return `isRevealed` is `readonly`, it can't be bound on `v-model` directly.
+
+```html
+<script setup>
+import { ref } from 'vue'
+import { useConfirmDialog, onClickOutside } from '@vueuse/core'
+
+const isRevealed = ref(false)
+
+const {
+  // isRevealed,
+  reveal,
+  confirm,
+  cancel,
+} = useConfirmDialog(isRevealed)
+
+const openDialog = async () => {
+  const { data, isCanceled } = await reveal()
+  if (!isCanceled) {
+    console.log(data)
+  }
+}
+</script>
+
+<template>
+  <button @click="openDialog">Show Modal</button>
+
+  <teleport to="body">
+    <ThreeRdComponent @v-model:visible="isRevealed" class="modal-layout">
+      <div class="modal">
+        <h2>Confirm?</h2>
+        <button @click="confirm(true)">Yes</button>
+        <button @click="confirm(false)">No</button>
+      </div>
+    </ThreeRdComponent>
+  </teleport>
+</template>
+```
+
+or
+
+```html
+<script setup>
+import { useConfirmDialog, onClickOutside } from '@vueuse/core'
+
+const {
+  isRevealed,
+  reveal,
+  confirm,
+  cancel,
+} = useConfirmDialog()
+
+const openDialog = async () => {
+  const { data, isCanceled } = await reveal()
+  if (!isCanceled) {
+    console.log(data)
+  }
+}
+</script>
+
+<template>
+  <button @click="openDialog">Show Modal</button>
+
+  <teleport to="body">
+    <ThreeRdComponent :visible="isRevealed" @update:visible="cancel" class="modal-layout">
+      <div class="modal">
+        <h2>Confirm?</h2>
+        <button @click="confirm(true)">Yes</button>
+        <button @click="confirm(false)">No</button>
+      </div>
+    </ThreeRdComponent>
+  </teleport>
+</template>
+```
