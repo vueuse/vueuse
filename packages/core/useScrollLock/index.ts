@@ -50,7 +50,7 @@ export function useScrollLock(
       return
     if (isIOS) {
       stopTouchMoveListener = useEventListener(
-        document,
+        ele,
         'touchmove',
         preventDefault,
         { passive: false },
