@@ -70,8 +70,10 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = eventName || event || `update:${key}`
 
+  const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
+
   if (passive) {
-    const proxy = ref<P[K]>(props[key!] ?? defaultValue!)
+    const proxy = ref<P[K]>(getValue()!)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
@@ -87,7 +89,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   else {
     return computed<P[K]>({
       get() {
-        return isDef(props[key!]) ? props[key!] : defaultValue!
+        return getValue()!
       },
       set(value) {
         _emit(event, value)

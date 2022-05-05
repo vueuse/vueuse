@@ -105,32 +105,54 @@ describe('useVModel', () => {
   })
 
   it('should work with user define defaultValue', () => {
-    const props = {
+    const props: Record<string, unknown> = {
       ...defaultProps(),
-      data: undefined as string | undefined,
       a: 0,
       b: '',
       c: false,
+      d: null,
+      e: undefined,
     }
     const emitMock = vitest.fn()
 
     const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data' })
-    const dataA = useVModel(props, 'a', emitMock)
-    const dataB = useVModel(props, 'b', emitMock)
-    const dataC = useVModel(props, 'c', emitMock)
+    const dataA = useVModel(props, 'a', emitMock, { defaultValue: 'default-data' })
+    const dataB = useVModel(props, 'b', emitMock, { defaultValue: 'default-data' })
+    const dataC = useVModel(props, 'c', emitMock, { defaultValue: 'default-data' })
+    const dataD = useVModel(props, 'd', emitMock, { defaultValue: 'default-data' })
+    const dataE = useVModel(props, 'e', emitMock, { defaultValue: 'default-data' })
 
     expect(data.value).toBe('default-data')
     expect(dataA.value).toBe(0)
     expect(dataB.value).toBe('')
     expect(dataC.value).toBe(false)
+    expect(dataD.value).toBe(null)
+    expect(dataE.value).toBe('default-data')
   })
 
   it('should work with user define defaultValue with passive', () => {
-    const props = {
+    const props: Record<string, unknown> = {
       ...defaultProps(),
+      a: 0,
+      b: '',
+      c: false,
+      d: null as string | null,
+      e: undefined as string | undefined,
     }
     const emitMock = vitest.fn()
-    const data = useVModel(props, 'data', emitMock, { passive: true, defaultValue: 'default-data' })
+
+    const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data', passive: true })
+    const dataA = useVModel(props, 'a', emitMock, { defaultValue: 'default-data', passive: true })
+    const dataB = useVModel(props, 'b', emitMock, { defaultValue: 'default-data', passive: true })
+    const dataC = useVModel(props, 'c', emitMock, { defaultValue: 'default-data', passive: true })
+    const dataD = useVModel(props, 'd', emitMock, { defaultValue: 'default-data', passive: true })
+    const dataE = useVModel(props, 'e', emitMock, { defaultValue: 'default-data', passive: true })
+
     expect(data.value).toBe('default-data')
+    expect(dataA.value).toBe(0)
+    expect(dataB.value).toBe('')
+    expect(dataC.value).toBe(false)
+    expect(dataD.value).toBe(null)
+    expect(dataE.value).toBe('default-data')
   })
 })
