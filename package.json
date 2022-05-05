@@ -21,7 +21,7 @@
     "publish:ci": "esno scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
     "release": "esno scripts/release.ts && git push --follow-tags",
-    "size": " esno scripts/export-size.ts",
+    "size": "esno scripts/export-size.ts",
     "test": "nr test:3",
     "test:2": "vue-demi-switch 2 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",

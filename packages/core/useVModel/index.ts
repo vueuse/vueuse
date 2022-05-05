@@ -71,7 +71,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key}`
 
   if (passive) {
-    const proxy = ref<P[K]>(props[key!] || defaultValue!)
+    const proxy = ref<P[K]>(props[key!] ?? defaultValue!)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
