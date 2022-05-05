@@ -1,3 +1,4 @@
+import { isDef } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
@@ -86,7 +87,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   else {
     return computed<P[K]>({
       get() {
-        return props[key!] ?? defaultValue!
+        return isDef(props[key!]) ? props[key!] : defaultValue!
       },
       set(value) {
         _emit(event, value)
