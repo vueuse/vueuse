@@ -13,6 +13,11 @@ describe('useVModel', () => {
     expect(data.value).toBe(defaultValue)
   })
 
+  it('should work with null', () => {
+    const data = useVModel({ [defaultKey]: null })
+    expect(data.value).toBe(null)
+  })
+
   it('should work with boolean', () => {
     const data = useVModel({ [defaultKey]: false })
     expect(data.value).toBe(false)
