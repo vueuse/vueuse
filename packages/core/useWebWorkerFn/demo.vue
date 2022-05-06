@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import { computed, nextTick, ref } from 'vue'
-import { useTimestamp, useWebWorkerFn } from '@vueuse/core'
+import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
 
 const heavyTask = () => {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
@@ -12,7 +11,7 @@ const heavyTask = () => {
 
 const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask)
 const time = useTimestamp()
-const computedTime = computed(() => dayjs(time.value).format('YYYY-MM-DD HH:mm:ss SSS'))
+const computedTime = useDateFormat(time, 'YYYY-MM-DD HH:mm:ss SSS')
 const running = computed(() => workerStatus.value === 'RUNNING')
 
 const data = ref<number[] | null>(null)

@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import { useTimeAgo } from '@vueuse/core'
 import { computed } from 'vue'
 import { functions } from '../../../../packages/metadata/metadata'
 
 const props = defineProps<{ fn: string }>()
 
-dayjs.extend(relativeTime)
-
 const info = computed(() => functions.find(i => i.name === props.fn))
-const format = (ts: number) => dayjs(ts).fromNow()
+const format = (ts: number) => ago(-1, 'day')
+const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
 
 const getFunctionLink = (fn: string) => {
@@ -34,7 +32,7 @@ const getFunctionLink = (fn: string) => {
       <div opacity="50">
         Last Changed
       </div>
-      <div>{{ format(info.lastUpdated) }}</div>
+      <div>{{ lastUpdated }}</div>
     </template>
     <template v-if="info.alias?.length">
       <div opacity="50">

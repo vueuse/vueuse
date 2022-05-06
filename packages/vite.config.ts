@@ -99,7 +99,6 @@ export default defineConfig(async () => {
       ],
       include: [
         'axios',
-        'dayjs',
         'js-yaml',
         'nprogress',
         'qrcode',
@@ -107,7 +106,6 @@ export default defineConfig(async () => {
         'tslib',
         'fuse.js',
         'universal-cookie',
-        'dayjs/plugin/relativeTime',
       ],
     },
   }

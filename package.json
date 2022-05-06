@@ -55,7 +55,6 @@
     "bumpp": "^7.1.1",
     "consola": "^2.15.3",
     "cross-env": "^7.0.3",
-    "dayjs": "^1.11.1",
     "esbuild-register": "^3.3.2",
     "eslint": "^8.14.0",
     "esno": "^0.14.1",
