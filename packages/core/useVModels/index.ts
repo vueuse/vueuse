@@ -12,7 +12,7 @@ import { useVModel } from '../useVModel'
 export function useVModels<P extends object, Name extends string>(
   props: P,
   emit?: (name: Name, ...args: any[]) => void,
-  options: VModelOptions = {},
+  options: VModelOptions<any> = {},
 ): ToRefs<P> {
   const ret: any = {}
   // eslint-disable-next-line no-restricted-syntax

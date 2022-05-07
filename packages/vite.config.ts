@@ -12,7 +12,7 @@ import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
 import { NavbarFix } from './.vitepress/plugins/navbar'
 
-export default defineConfig(async() => {
+export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
     getChangeLog(800),
     getFunctionContributors(),
@@ -99,7 +99,6 @@ export default defineConfig(async() => {
       ],
       include: [
         'axios',
-        'dayjs',
         'js-yaml',
         'nprogress',
         'qrcode',
@@ -107,7 +106,6 @@ export default defineConfig(async() => {
         'tslib',
         'fuse.js',
         'universal-cookie',
-        'dayjs/plugin/relativeTime',
       ],
     },
   }

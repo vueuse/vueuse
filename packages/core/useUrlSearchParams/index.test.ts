@@ -32,7 +32,7 @@ describe('useUrlSearchParams', () => {
     'hash-params',
   ] as const).forEach((mode) => {
     describe(`${mode} mode`, () => {
-      test('return initial params', async() => {
+      test('return initial params', async () => {
         if (mode === 'hash')
           window.location.hash = '#/test/?foo=bar'
         else if (mode === 'hash-params')
@@ -46,7 +46,7 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBe('bar')
       })
 
-      test('update params on poststate event', async() => {
+      test('update params on poststate event', async () => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()
         if (mode === 'hash')

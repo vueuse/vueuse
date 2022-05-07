@@ -6,7 +6,7 @@ import type { ElementSize } from '.'
 
 type RemoveFirstFromTuple<T extends any[]> =
   T['length'] extends 0 ? undefined :
-    (((...b: T) => void) extends (a: any, ...b: infer I) => void ? I : [])
+      (((...b: T) => void) extends (a: any, ...b: infer I) => void ? I : [])
 
 type BindingValueFunction = (size: ElementSize) => void
 type VElementSizeOptions = RemoveFirstFromTuple<Parameters<typeof useElementSize>>

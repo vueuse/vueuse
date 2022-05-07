@@ -10,8 +10,8 @@ export function getCategories(functions: VueUseFunction[]): string[] {
     (a, b) => (a.startsWith('@') && !b.startsWith('@'))
       ? 1
       : (b.startsWith('@') && !a.startsWith('@'))
-        ? -1
-        : a.localeCompare(b),
+          ? -1
+          : a.localeCompare(b),
   )
 }
 

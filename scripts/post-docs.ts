@@ -32,7 +32,7 @@ async function generateSVG(fn: VueUseFunction, output: string) {
 export async function fix() {
   const names = await fg('packages/.vitepress/dist/**/*.html', { onlyFiles: true })
 
-  await Promise.all(names.map(async(file) => {
+  await Promise.all(names.map(async (file) => {
     let html = await fs.readFile(file, 'utf-8')
 
     const dirbase = basename(dirname(file))

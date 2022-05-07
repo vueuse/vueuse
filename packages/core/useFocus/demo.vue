@@ -35,13 +35,13 @@ const { focused: buttonFocus } = useFocus(button)
         &nbsp;<!-- prevents paragraph from collapsing when empty otherwise -->
       </template>
     </note>
-    <button class="button small !ml-0" :class="{orange: paragraphFocus}" @click="paragraphFocus = !paragraphFocus">
+    <button class="button small !ml-0" :class="{ orange: paragraphFocus }" @click="paragraphFocus = !paragraphFocus">
       Focus text
     </button>
-    <button class="button small" :class="{orange: inputFocus}" @click="inputFocus = !inputFocus">
+    <button class="button small" :class="{ orange: inputFocus }" @click="inputFocus = !inputFocus">
       Focus input
     </button>
-    <button class="button small" :class="{orange: buttonFocus}" @click="buttonFocus = !buttonFocus">
+    <button class="button small" :class="{ orange: buttonFocus }" @click="buttonFocus = !buttonFocus">
       Focus button
     </button>
   </div>

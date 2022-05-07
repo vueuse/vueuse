@@ -31,24 +31,24 @@ function isDocumentReference<T>(docRef: any): docRef is firebase.firestore.Docum
   return (docRef.path?.match(/\//g) || []).length % 2 !== 0
 }
 
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: firebase.firestore.DocumentReference<T>,
   initialValue: T,
   options?: FirestoreOptions
 ): Ref<T | null>
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: firebase.firestore.Query<T>,
   initialValue: T[],
   options?: FirestoreOptions
 ): Ref<T[]>
 
 // nullable initial values
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: firebase.firestore.DocumentReference<T>,
   initialValue?: T | undefined,
   options?: FirestoreOptions,
 ): Ref<T | undefined | null>
-export function useFirestore<T extends firebase.firestore.DocumentData> (
+export function useFirestore<T extends firebase.firestore.DocumentData>(
   docRef: firebase.firestore.Query<T>,
   initialValue?: T[],
   options?: FirestoreOptions
@@ -75,7 +75,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
   } = options
 
   if (isDocumentReference<T>(docRef)) {
-    const data = ref(initialValue) as Ref<T|null|undefined>
+    const data = ref(initialValue) as Ref<T | null | undefined>
 
     const close = docRef.onSnapshot((snapshot) => {
       data.value = getData(snapshot) || null

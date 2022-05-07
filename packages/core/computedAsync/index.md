@@ -16,7 +16,7 @@ import { computedAsync } from '@vueuse/core'
 const name = ref('jack')
 
 const userInfo = computedAsync(
-  async() => {
+  async () => {
     return await mockLookUp(name.value)
   },
   null, // initial state
@@ -34,7 +34,7 @@ import { computedAsync } from '@vueuse/core'
 const evaluating = ref(false)
 
 const userInfo = computedAsync(
-  async() => { /* your logic */ },
+  async () => { /* your logic */ },
   null,
   evaluating,
 )
@@ -47,7 +47,7 @@ When the computed source changed before the previous async function gets resolve
 ```js
 const packageName = ref('@vueuse/core')
 
-const downloads = computedAsync(async(onCancel) => {
+const downloads = computedAsync(async (onCancel) => {
   const abortController = new AbortController()
 
   onCancel(() => abortController.abort())
@@ -72,7 +72,7 @@ import { computedAsync } from '@vueuse/core'
 const evaluating = ref(false)
 
 const userInfo = computedAsync(
-  async() => { /* your logic */ },
+  async () => { /* your logic */ },
   null,
   { lazy: true, evaluating },
 )

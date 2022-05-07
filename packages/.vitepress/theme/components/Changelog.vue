@@ -5,9 +5,9 @@ import { computed } from 'vue'
 import type { CommitInfo } from '../@vueuse/metadata'
 import { renderCommitMessage } from '../utils'
 
-const allCommits = changelog as CommitInfo[]
 const props = defineProps<{ fn: string }>()
 
+const allCommits = changelog as CommitInfo[]
 const commits = computed(() => {
   const commits = allCommits.filter(c => c.version || c.functions?.includes(props.fn))
   return commits.filter((i, idx) => {

@@ -56,7 +56,7 @@ export async function readMetadata() {
 
     indexes.packages[info.name] = pkg
 
-    await Promise.all(functions.map(async(fnName) => {
+    await Promise.all(functions.map(async (fnName) => {
       const mdPath = join(dir, fnName, 'index.md')
       const tsPath = join(dir, fnName, 'index.ts')
 

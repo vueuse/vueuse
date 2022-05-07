@@ -7,7 +7,7 @@ describe('useScriptTag', () => {
   const scriptTagElement = (): HTMLScriptElement | null =>
     document.head.querySelector(`script[src="${src}"]`)
 
-  it('should add script tag', async() => {
+  it('should add script tag', async () => {
     const appendChildListener = vitest.spyOn(document.head, 'appendChild')
 
     expect(appendChildListener).not.toBeCalled()
@@ -27,7 +27,7 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
   })
 
-  it('should re-use the same src for multiple loads', async() => {
+  it('should re-use the same src for multiple loads', async () => {
     const addChildListener = vitest.spyOn(document.head, 'appendChild')
 
     expect(addChildListener).not.toBeCalled()
@@ -54,7 +54,7 @@ describe('useScriptTag', () => {
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
   })
 
-  it('should support custom attributes', async() => {
+  it('should support custom attributes', async () => {
     const appendChildListener = vitest.spyOn(document.head, 'appendChild')
 
     expect(appendChildListener).not.toBeCalled()
@@ -80,7 +80,7 @@ describe('useScriptTag', () => {
     expect(element?.getAttribute('data-test')).toBe('data-test-value')
   })
 
-  it('should remove script tag on unmount', async() => {
+  it('should remove script tag on unmount', async () => {
     const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
@@ -110,7 +110,7 @@ describe('useScriptTag', () => {
     expect(vm.scriptTag).toBeNull()
   })
 
-  it('should remove script tag on unload call', async() => {
+  it('should remove script tag on unload call', async () => {
     const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
@@ -144,7 +144,7 @@ describe('useScriptTag', () => {
     expect(vm.scriptTag).toBeNull()
   })
 
-  it('should remove script tag on unload call after multiple loads', async() => {
+  it('should remove script tag on unload call after multiple loads', async () => {
     const removeChildListener = vitest.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()

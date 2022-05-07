@@ -1,5 +1,14 @@
 import type { Ref } from 'vue-demi'
-import { isRef, ref } from 'vue-demi'
+import { isRef, ref, unref } from 'vue-demi'
+import type { MaybeRef } from '../utils'
+
+export interface UseToggleOptions<Truthy, Falsy> {
+  truthyValue?: MaybeRef<Truthy>
+  falsyValue?: MaybeRef<Falsy>
+}
+
+export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
+export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [Ref<T>, (value?: T) => T]
 
 /**
  * A boolean ref with a toggler
@@ -7,27 +16,29 @@ import { isRef, ref } from 'vue-demi'
  * @see https://vueuse.org/useToggle
  * @param [initialValue=false]
  */
-export function useToggle(value: Ref<boolean>): (value?: boolean) => boolean
-export function useToggle(initialValue?: boolean): [Ref<boolean>, (value?: boolean) => boolean]
+export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseToggleOptions<true, false> = {}) {
+  const {
+    truthyValue = true,
+    falsyValue = false,
+  } = options
 
-export function useToggle(initialValue: boolean | Ref<boolean> = false) {
-  if (isRef(initialValue)) {
-    return (value?: boolean) => {
-      initialValue.value = typeof value === 'boolean'
-        ? value
-        : !initialValue.value
-      return initialValue.value
+  const valueIsRef = isRef(initialValue)
+  const innerValue = ref(initialValue) as Ref<boolean>
+
+  function toggle(value?: boolean) {
+    // has arguments
+    if (arguments.length) {
+      innerValue.value = value!
+      return innerValue.value
+    }
+    else {
+      innerValue.value = innerValue.value === unref(truthyValue) ? unref(falsyValue) : unref(truthyValue)
+      return innerValue.value
     }
   }
-  else {
-    const boolean = ref(initialValue)
-    const toggle = (value?: boolean) => {
-      boolean.value = typeof value === 'boolean'
-        ? value
-        : !boolean.value
-      return boolean.value
-    }
 
-    return [boolean, toggle] as const
-  }
+  if (valueIsRef)
+    return toggle
+  else
+    return [innerValue, toggle] as const
 }

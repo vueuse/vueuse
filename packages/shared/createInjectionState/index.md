@@ -56,6 +56,7 @@ import { useProvideCounterStore } from './useCounterStore'
 
 useProvideCounterStore(0)
 </script>
+
 <template>
   <div>
     <slot />
@@ -76,8 +77,8 @@ const { count, double } = useCounterStore()!
 // const { count, double } = useCounterStoreWithDefaultValue()
 // or throw error
 // const { count, double } = useCounterStoreOrThrow()
-
 </script>
+
 <template>
   <ul>
     <li>
@@ -97,8 +98,8 @@ import { useCounterStore } from './useCounterStore'
 
 // use non-null assertion operator to ignore the case that store is not provided.
 const { increment } = useCounterStore()!
-
 </script>
+
 <template>
   <button @click="increment">
     +

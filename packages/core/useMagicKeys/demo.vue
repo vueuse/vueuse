@@ -12,7 +12,7 @@ const keys = computed(() => Array.from(current))
     <img
       src="/vue.svg"
       class="h-38 py-8 m-auto transform transistion duration-500"
-      :class="{'opacity-0': !v_u_e, 'rotate-180': shift }"
+      :class="{ 'opacity-0': !v_u_e, 'rotate-180': shift }"
     >
 
     <div>
@@ -70,7 +70,7 @@ const keys = computed(() => Array.from(current))
     <img
       src="/favicon.svg"
       class="h-38 py-8 m-auto transform transistion duration-500"
-      :class="{'opacity-0': !u_s_e, 'rotate-180': shift }"
+      :class="{ 'opacity-0': !u_s_e, 'rotate-180': shift }"
     >
   </div>
 </template>

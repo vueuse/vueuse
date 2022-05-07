@@ -37,7 +37,11 @@ export function onClickOutside(
 
   const shouldListen = ref(true)
 
+  let fallback: number
+
   const listener = (event: PointerEvent) => {
+    window.clearTimeout(fallback)
+
     const el = unrefElement(target)
     const composedPath = event.composedPath()
 
@@ -60,6 +64,9 @@ export function onClickOutside(
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen.value = !!el && !e.composedPath().includes(el)
+    }, { passive: true }),
+    useEventListener(window, 'pointerup', (e) => {
+      fallback = window.setTimeout(() => listener(e), 50)
     }, { passive: true }),
   ]
 

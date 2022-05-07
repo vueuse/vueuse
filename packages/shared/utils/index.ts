@@ -49,7 +49,7 @@ export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromis
       _promise = fn()
     return _promise
   }
-  wrapper.reset = async() => {
+  wrapper.reset = async () => {
     const _prev = _promise
     _promise = undefined
     if (_prev)

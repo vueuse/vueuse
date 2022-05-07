@@ -152,7 +152,7 @@ export function useScriptTag(
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement | boolean> => {
     if (!_promise)
       _promise = loadScript(waitForScriptLoad)
 

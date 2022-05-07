@@ -1,7 +1,8 @@
+import { isDef } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
-export interface VModelOptions {
+export interface VModelOptions<T> {
   /**
    * When passive is set to `true`, it will use `watch` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
@@ -21,6 +22,12 @@ export interface VModelOptions {
    * @default false
    */
   deep?: boolean
+  /**
+   * Defining default value for return ref when no value is passed.
+   *
+   * @default undefined
+   */
+  defaultValue?: T
 }
 
 /**
@@ -35,12 +42,13 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   props: P,
   key?: K,
   emit?: (name: Name, ...args: any[]) => void,
-  options: VModelOptions = {},
+  options: VModelOptions<P[K]> = {},
 ) {
   const {
     passive = false,
     eventName,
     deep = false,
+    defaultValue,
   } = options
 
   const vm = getCurrentInstance()
@@ -62,8 +70,10 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = eventName || event || `update:${key}`
 
+  const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
+
   if (passive) {
-    const proxy = ref<P[K]>(props[key!])
+    const proxy = ref<P[K]>(getValue()!)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
@@ -79,7 +89,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   else {
     return computed<P[K]>({
       get() {
-        return props[key!]
+        return getValue()!
       },
       set(value) {
         _emit(event, value)
