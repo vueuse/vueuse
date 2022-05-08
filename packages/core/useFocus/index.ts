@@ -36,6 +36,8 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
   const targetElement = computed(() => unrefElement(target))
   const focused = computed({
     get() {
+      if (activeElement.value === undefined && targetElement.value === undefined)
+        return false
       return activeElement.value === targetElement.value
     },
     set(value: boolean) {
