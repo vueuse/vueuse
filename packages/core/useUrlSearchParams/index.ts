@@ -44,7 +44,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   if (!window)
     return reactive(initialValue) as T
 
-  const state: Record<string, any> = reactive(initialValue)
+  const state: Record<string, any> = reactive({})
 
   function getRawParams() {
     if (mode === 'history') {
@@ -129,7 +129,11 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   if (mode !== 'history')
     useEventListener(window, 'hashchange', onChanged, false)
 
-  updateState(read())
+  const initial = read()
+  if (initial.keys().next().value)
+    updateState(initial)
+  else
+    Object.assign(state, initialValue)
 
   return state as T
 }
