@@ -69,7 +69,7 @@ export interface UseAxiosReturn<T> {
    * @deprecated use `isCanceled` instead
    */
   canceled: Ref<boolean>
-  
+
   /**
    * isAborted alias
    */
