@@ -23,3 +23,4 @@ export const rand = (min: number, max: number) => {
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
+export const isIOS = isClient && window?.navigator && window?.navigator?.userAgent && /iP(ad|hone|od)/.test(window?.navigator?.userAgent)
