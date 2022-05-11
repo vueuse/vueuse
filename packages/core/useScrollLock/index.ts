@@ -1,6 +1,6 @@
 import { computed, ref, unref, watch } from 'vue-demi'
 import type { Fn, MaybeRef } from '@vueuse/shared'
-import { isClient, tryOnScopeDispose } from '@vueuse/shared'
+import { isIOS, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
 
@@ -15,9 +15,6 @@ function preventDefault(rawEvent: TouchEvent): boolean {
 
   return false
 }
-
-// TODO: move to @vueuse/share
-const isIOS = /* #__PURE__ */ isClient && window?.navigator && window?.navigator?.platform && /iP(ad|hone|od)/.test(window?.navigator?.platform)
 
 /**
  * Lock scrolling of the element.
