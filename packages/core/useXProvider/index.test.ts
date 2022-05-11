@@ -53,7 +53,7 @@ describe('useXProvider', () => {
 
     mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { scopedSlots: { default: () => h(descendNode) } })
       },
     }))
 
@@ -112,7 +112,7 @@ describe('useXProvider', () => {
 
     mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { scopedSlots: { default: () => h(descendNode) } })
       },
     }))
   })
@@ -172,6 +172,7 @@ describe('useXProvider', () => {
 
         expect(name.value).toEqual('phillyx')
 
+        // equal to setStateWithStr
         setState('name', 'world')
         setState('age', 30)
         setState(0, 1000)
@@ -211,7 +212,7 @@ describe('useXProvider', () => {
 
     mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { scopedSlots: { default: () => h(descendNode) } })
       },
     }))
   })
@@ -254,7 +255,7 @@ describe('useXProvider', () => {
 
     mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { scopedSlots: { default: () => h(descendNode) } })
       },
     }))
   })
@@ -291,7 +292,7 @@ describe('useXProvider', () => {
 
     mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, { value: { name: 'new world' } }, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { props: { value: { name: 'new world' } }, scopedSlots: { default: () => h(descendNode) } })
       },
     }))
   })
@@ -329,7 +330,7 @@ describe('useXProvider', () => {
 
     const vm = mount(defineComponent({
       render() {
-        return h(providerFoundation.ProviderComponent, { value: { name: 'new world' } }, () => h(descendNode))
+        return h(providerFoundation.ProviderComponent, { props: { value: { name: 'new world' } }, scopedSlots: { default: () => h(descendNode) } })
       },
     }))
 

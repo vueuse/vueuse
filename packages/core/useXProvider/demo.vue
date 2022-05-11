@@ -28,6 +28,6 @@ const DescendNode = defineComponent({
 
 <template>
   <ProviderComponent>
-    <DescendNode></DescendNode>
+    <DescendNode />
   </ProviderComponent>
 </template>
