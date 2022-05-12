@@ -88,4 +88,15 @@ describe('filters', () => {
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
+
+  it('should not duplicate single event', () => {
+    const debouncedFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+
+    setTimeout(filter, 500)
+
+    vitest.runAllTimers()
+
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+  })
 })
