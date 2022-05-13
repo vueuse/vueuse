@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { computed, nextTick, ref } from 'vue-demi'
 
 export interface EyeDropperOpenOptions {
   /**
@@ -31,17 +31,23 @@ export interface UseEyeDropperOptions {
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options
-  const isSupported = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
+  const supported = ref(false)
+  const isSupported = computed(() => supported.value)
+
   const sRGBHex = ref(initialValue)
 
   async function open(openOptions?: EyeDropperOpenOptions) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     const eyeDropper: EyeDropper = new (window as any).EyeDropper()
     const result = await eyeDropper.open(openOptions)
     sRGBHex.value = result.sRGBHex
     return result
   }
+
+  nextTick(() => {
+    supported.value = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
+  })
 
   return { isSupported, sRGBHex, open }
 }
