@@ -7,17 +7,17 @@ const { form, status, reset, onSubmit, clearErrors } = useForm({
     age: '',
   }),
   // Verification rules
-  rule: () => ({
+  rule: {
     age: [
       /* required */ val => !!val || 'Required',
       /* number */ val => !isNaN(val) || 'Expected number',
       /* length */ val => val.length < 3 || 'Length needs to be less than 3',
     ],
-  }),
+  },
 })
 
 function mySubmit() {
-  alert(`Age: ${form.value.age}`)
+  alert(`Age: ${form.age}`)
 }
 </script>
 

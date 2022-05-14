@@ -1,10 +1,12 @@
-import { reactive, ref, watch, watchEffect } from 'vue-demi'
-import type { Ref, WatchStopHandle } from 'vue-demi'
+import { reactive, watchEffect } from 'vue-demi'
+import type { WatchStopHandle } from 'vue-demi'
+import type { IgnoredUpdater } from '@vueuse/shared'
+import { watchIgnorable } from '@vueuse/shared'
 
-type Form = () => Record<string, any>
+type FormBuilder<Form extends {} = {}> = () => Form
 
-type RuleItem = ((val: any) => boolean | string)[]
-type Ruler = () => Record<string, RuleItem>
+type RuleItem = ((val: any) => boolean | string)
+type FormRule = Record<string, RuleItem | RuleItem[]>
 type FormStatus = Record<string, {
   /** 是否出错 */
   isError: boolean
@@ -16,20 +18,24 @@ type FormStatus = Record<string, {
   init: () => void
   /** 重制规则校验 */
   clearError: () => void
+  /** 忽略更新 */
+  _ignoreUpdate: IgnoredUpdater
 }>
 
-export function useForm<FormT extends Form>(param: {
-  form: FormT
-  rule: Ruler
+export function useForm<FormT extends {}>(param: {
+  form: FormBuilder<FormT>
+  rule?: FormRule
 }) {
-  const { form, rule } = param
-  const formRef = ref(form()) as Ref<ReturnType<FormT>>
+  const { form: formBuilder, rule: FormRule } = param
+
+  let initialForm = formBuilder()
+  const form = reactive<FormT>(initialForm)
 
   const status = reactive({} as FormStatus)
-  initStatus(status, formRef, rule)
+  initStatus(status, form, FormRule)
 
   return {
-    form: formRef,
+    form,
     status,
     verify,
     clearErrors,
@@ -52,38 +58,50 @@ export function useForm<FormT extends Form>(param: {
   }
 
   function reset() {
-    formRef.value = form() as ReturnType<FormT>
+    initialForm = formBuilder()
+    for (const key in form) {
+      if (Object.prototype.hasOwnProperty.call(form, key)) {
+        if (Object.prototype.hasOwnProperty.call(initialForm, key)) {
+          status[key]._ignoreUpdate(() => {
+            form[key] = (initialForm as any)[key] as any
+          })
+        }
+        else {
+          delete form[key]
+        }
+      }
+    }
     clearErrors()
   }
 }
 
-function initStatus<FormT extends Form>(
+function initStatus<FormT extends FormBuilder>(
   status: FormStatus,
-  formRef: Ref<ReturnType<FormT>>,
-  ruler: Ruler,
+  formObj: ReturnType<FormT>,
+  formRule?: FormRule,
 ) {
-  const ruleObj = ruler()
+  for (const key in formObj) {
+    /** 用来停止 watchEffect 的句柄 */
+    let stopEffect: WatchStopHandle | null = null
 
-  for (const key in formRef.value) {
+    // 当用户输入时开始校验
+    const { ignoreUpdates } = watchIgnorable(() => formObj[key], init)
+
     status[key] = {
       message: '',
       isError: false,
       verify,
       clearError,
       init,
+      _ignoreUpdate: ignoreUpdates,
     }
-
-    /** 用来停止 watchEffect 的句柄 */
-    let stopEffect: WatchStopHandle | null = null
-
-    // 当用户输入时开始校验
-    watch(() => formRef.value[key], init)
 
     // 初始化规则校验
     function init() {
       // 判断是否已经初始化过了
       if (stopEffect)
         return
+
       // 监听变化
       stopEffect = watchEffect(verify)
     }
@@ -100,10 +118,18 @@ function initStatus<FormT extends Form>(
 
     /** 进行校验 */
     function verify() {
-      const rules = ruleObj[key]
+      if (!formRule?.[key])
+        return true
+
+      // Functions or arrays of functions are allowed
+      const formRuleItem = formRule[key]
+      const rules = typeof formRuleItem === 'function'
+        ? [formRuleItem]
+        : formRuleItem
+
       // 遍历规则集，进行规则检查
       for (const rule of rules || []) {
-        const result = rule(formRef.value[key])
+        const result = rule(formObj[key])
 
         // result is false
         if (!result) {
