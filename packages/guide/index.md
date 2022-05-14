@@ -40,7 +40,16 @@ npm i -D @vueuse/nuxt @vueuse/core
 ```
 
 ```ts
-// nuxt.config.js
+// Nuxt 3 - nuxt.config.ts
+export default {
+  modules: [
+    '@vueuse/nuxt',
+  ],
+}
+```
+
+```ts
+// Nuxt 2 - nuxt.config.js
 export default {
   buildModules: [
     '@vueuse/nuxt',
