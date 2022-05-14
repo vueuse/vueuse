@@ -39,8 +39,9 @@ From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nu
 npm i -D @vueuse/nuxt @vueuse/core
 ```
 
+Nuxt 3
 ```ts
-// Nuxt 3 - nuxt.config.ts
+// nuxt.config.ts
 export default {
   modules: [
     '@vueuse/nuxt',
@@ -48,8 +49,9 @@ export default {
 }
 ```
 
+Nuxt 2
 ```ts
-// Nuxt 2 - nuxt.config.js
+// nuxt.config.js
 export default {
   buildModules: [
     '@vueuse/nuxt',
