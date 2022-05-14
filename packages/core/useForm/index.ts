@@ -46,7 +46,7 @@ export function useForm<FormT extends {}>(param: {
   function verify() {
     let isPass = true
     Object.keys(status).forEach((key) => {
-      isPass &&= status[key].verify()
+      isPass = isPass && status[key].verify()
     })
     return isPass
   }
