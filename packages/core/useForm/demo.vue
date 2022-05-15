@@ -10,7 +10,7 @@ const { form, status, reset, onSubmit, clearErrors } = useForm({
   rule: {
     age: [
       /* required */ val => !!val || 'Required',
-      /* number */ val => !isNaN(val) || 'Expected number',
+      /* number */ val => !isNaN(Number(val)) || 'Expected number',
       /* length */ val => val.length < 3 || 'Length needs to be less than 3',
     ],
   },

@@ -15,13 +15,21 @@ describe('useForm', () => {
           age: '',
         }),
         rule: {
-          age: val => !isNaN(val) || 'expect numbers',
+          age: val => !isNaN(+val) || 'expect numbers',
         },
       })
       return { form, status }
     })
 
+    // Is it modified
+    expect(wrapper.status.name.isDirty).false
+    expect(wrapper.status.age.isDirty).false
+
     wrapper.form.age = 'abc'
+
+    // Is it modified
+    expect(wrapper.status.name.isDirty).false
+    expect(wrapper.status.age.isDirty).true
 
     await nextTick()
     // age
@@ -34,6 +42,10 @@ describe('useForm', () => {
     expect(wrapper.status.name.message).toBe('')
 
     wrapper.form.age = '18'
+
+    // Is it modified
+    expect(wrapper.status.name.isDirty).false
+    expect(wrapper.status.age.isDirty).true
 
     await nextTick()
     // age
@@ -73,6 +85,10 @@ describe('useForm', () => {
 
     wrapper.form.age = '18'
 
+    // Is it modified
+    expect(wrapper.status.name.isDirty).false
+    expect(wrapper.status.age.isDirty).true
+
     await nextTick()
     // age
     expect(wrapper.status.age.isError).false
@@ -82,6 +98,10 @@ describe('useForm', () => {
     expect(wrapper.status.name.message).toBe('')
 
     wrapper.form.age = ''
+
+    // Is it modified
+    expect(wrapper.status.name.isDirty).false
+    expect(wrapper.status.age.isDirty).false
 
     await nextTick()
     // age
@@ -153,7 +173,7 @@ describe('useForm', () => {
         rule: {
           age: [
             val => !!val || 'required',
-            val => !isNaN(val) || 'expect numbers',
+            val => !isNaN(+val) || 'expect numbers',
           ],
         },
       })
@@ -169,8 +189,8 @@ describe('useForm', () => {
     wrapper.form.age = ''
 
     await nextTick()
-    expect(wrapper.status.age.isError).true
     expect(wrapper.status.age.message).toBe('required')
+    expect(wrapper.status.age.isError).true
 
     wrapper.unmount()
   })
@@ -202,17 +222,21 @@ describe('useForm', () => {
   })
 
   it('reset the form', async () => {
+    // Increments by one for each call
+    const counter = ((i = 0) => () => i++)()
+
     const wrapper = useSetup(() => {
       const { form, status, reset } = useForm({
         form: () => ({
-          age: '',
+          // The initial value is mutable
+          age: `${counter()}`,
           isAgree: true,
         }),
         rule: {
           isAgree: val => !!val || 'required',
           age: [
             val => !!val || 'required',
-            val => !isNaN(val) || 'expect numbers',
+            val => !isNaN(+val) || 'expect numbers',
           ],
         },
       })
@@ -223,18 +247,24 @@ describe('useForm', () => {
     wrapper.form.age = 'abc'
 
     await nextTick()
+    // isAgree
     expect(wrapper.status.isAgree.isError).true
     expect(wrapper.status.isAgree.message).toBe('required')
+    // age
     expect(wrapper.status.age.isError).true
     expect(wrapper.status.age.message).toBe('expect numbers')
 
     wrapper.reset()
 
     await nextTick()
+    // isAgree
     expect(wrapper.form.isAgree).toBe(true)
+    expect(wrapper.status.isAgree.isDirty).false
     expect(wrapper.status.isAgree.isError).false
     expect(wrapper.status.isAgree.message).toBe('')
-    expect(wrapper.form.age).toBe('')
+    // age
+    expect(wrapper.form.age).toBe('1')
+    expect(wrapper.status.age.isDirty).false
     expect(wrapper.status.age.isError).false
     expect(wrapper.status.age.message).toBe('')
 

@@ -1,38 +1,52 @@
-import { reactive, watchEffect } from 'vue-demi'
-import type { WatchStopHandle } from 'vue-demi'
+import { computed, reactive, ref, watchEffect } from 'vue-demi'
+import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue-demi'
 import type { IgnoredUpdater } from '@vueuse/shared'
 import { watchIgnorable } from '@vueuse/shared'
 
 type FormBuilder<Form extends {} = {}> = () => Form
 
-type RuleItem = ((val: any) => boolean | string)
-type FormRule = Record<string, RuleItem | RuleItem[]>
+type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
+type FormRule<FormT extends {}> = {
+  readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
+}
 type FormStatus = Record<string, {
   /** 是否出错 */
   isError: boolean
   /** 错误信息 */
   message: string
+  /** field is modified */
+  isDirty: boolean
   /** 立即进行校验 */
   verify: () => boolean
   /** 初始化规则校验 */
   init: () => void
+  /** 设置错误 */
+  setError: (message: string, isError?: boolean) => void
   /** 重制规则校验 */
   clearError: () => void
   /** 忽略更新 */
   _ignoreUpdate: IgnoredUpdater
 }>
 
+/**
+ *  Form state management and validation
+ * @see https://vueuse.org/useForm
+ * @param param
+ * @returns
+ */
 export function useForm<FormT extends {}>(param: {
+  /** Initial form value */
   form: FormBuilder<FormT>
-  rule?: FormRule
+  /** Verification rules */
+  rule?: FormRule<FormT>
 }) {
   const { form: formBuilder, rule: FormRule } = param
 
-  let initialForm = formBuilder()
-  const form = reactive<FormT>(initialForm)
+  const initialForm = ref(formBuilder()) as Ref<FormT>
+  const form = reactive<FormT>({ ...initialForm.value })
 
   const status = reactive({} as FormStatus)
-  initStatus(status, form, FormRule)
+  initStatus<FormT>(status, form, initialForm, FormRule)
 
   return {
     form,
@@ -58,12 +72,12 @@ export function useForm<FormT extends {}>(param: {
   }
 
   function reset() {
-    initialForm = formBuilder()
+    initialForm.value = formBuilder()
     for (const key in form) {
-      if (Object.prototype.hasOwnProperty.call(form, key)) {
-        if (Object.prototype.hasOwnProperty.call(initialForm, key)) {
+      if (hasOwn(form, key)) {
+        if (hasOwn(initialForm.value, key)) {
           status[key]._ignoreUpdate(() => {
-            form[key] = (initialForm as any)[key] as any
+            form[key] = (initialForm.value as any)[key] as any
           })
         }
         else {
@@ -75,78 +89,82 @@ export function useForm<FormT extends {}>(param: {
   }
 }
 
-function initStatus<FormT extends FormBuilder>(
+function initStatus<FormT extends {}>(
   status: FormStatus,
-  formObj: ReturnType<FormT>,
-  formRule?: FormRule,
+  formObj: UnwrapNestedRefs<FormT>,
+  initialForm: Ref<FormT>,
+  formRule?: FormRule<FormT>,
 ) {
   for (const key in formObj) {
-    /** 用来停止 watchEffect 的句柄 */
+    if (!hasOwn(formObj, key))
+      continue
+
+    /** Used to stop watchEffect */
     let stopEffect: WatchStopHandle | null = null
 
-    // 当用户输入时开始校验
+    // Begin validation when user input
     const { ignoreUpdates } = watchIgnorable(() => formObj[key], init)
 
-    status[key] = {
+    status[key] = reactive({
       message: '',
       isError: false,
+      isDirty: computed(() => formObj[key] !== (initialForm.value as any)[key]),
       verify,
+      setError,
       clearError,
       init,
       _ignoreUpdate: ignoreUpdates,
-    }
+    })
 
-    // 初始化规则校验
+    // Initialization rule check
     function init() {
-      // 判断是否已经初始化过了
+      // Determine if it has been initialized
       if (stopEffect)
         return
-
-      // 监听变化
+      // monitor changes
       stopEffect = watchEffect(verify)
     }
 
-    // 重制规则校验状态
+    function setError(message: string, isError = true) {
+      status[key].message = message
+      status[key].isError = isError
+    }
+
     function clearError() {
       if (stopEffect) {
         stopEffect()
         stopEffect = null
       }
-      status[key].message = ''
-      status[key].isError = false
+      setError('', false)
     }
 
-    /** 进行校验 */
     function verify() {
-      if (!formRule?.[key])
+      const fri: RuleItem | RuleItem[] = (formRule as any)?.[key]
+      if (!fri)
         return true
-
       // Functions or arrays of functions are allowed
-      const formRuleItem = formRule[key]
-      const rules = typeof formRuleItem === 'function'
-        ? [formRuleItem]
-        : formRuleItem
+      const fieldRules = typeof fri === 'function' ? [fri] : fri
 
-      // 遍历规则集，进行规则检查
-      for (const rule of rules || []) {
+      // Traverse the ruleset and check the rules
+      for (const rule of fieldRules || []) {
         const result = rule(formObj[key])
 
-        // result is false
-        if (!result) {
-          status[key].isError = true
-          status[key].message = ''
+        // result as string or falsity
+        // Exit validation on error
+        if (!result || typeof result === 'string') {
+          setError(result || '')
           break
         }
-        // result is string
-        if (typeof result === 'string') {
-          status[key].isError = true
-          status[key].message = result
-          break
+        // no errors
+        else {
+          setError('', false)
         }
-        status[key].isError = false
-        status[key].message = ''
       }
       return !status[key].isError
     }
   }
+}
+
+function hasOwn<T extends {}>(object: T, key: PropertyKey): key is keyof T {
+  return Object.prototype.hasOwnProperty.call(object, key)
 }
