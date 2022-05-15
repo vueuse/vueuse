@@ -3,7 +3,7 @@ import { useSetup } from '../../.test'
 import { createGlobalState } from '.'
 
 describe('createGlobalState', () => {
-  it('should work after dispose 1', async() => {
+  it('should work after dispose 1', async () => {
     const useGlobalState = createGlobalState(() => {
       const counter = ref(1)
       const doubled = computed(() => counter.value * 2)

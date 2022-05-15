@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useColorMode } from '@vueuse/core'
-import { useCycleList } from '../useCycleList'
+import { useColorMode, useCycleList } from '@vueuse/core'
 
 const mode = useColorMode({
   modes: {
@@ -14,10 +13,10 @@ const { next } = useCycleList(['dark', 'light', 'cafe', 'contrast'], { initialVa
 
 <template>
   <button @click="next()">
-    <carbon-moon v-if="mode === 'dark'" class="align-middle" />
-    <carbon-sun v-if="mode === 'light'" class="align-middle" />
-    <carbon-cafe v-if="mode === 'cafe'" class="align-middle" />
-    <carbon-contrast v-if="mode === 'contrast'" class="align-middle" />
+    <i v-if="mode === 'dark'" i-carbon-moon inline-block align-middle class="align-middle" />
+    <i v-if="mode === 'light'" i-carbon-sun inline-block align-middle class="align-middle" />
+    <i v-if="mode === 'cafe'" i-carbon-cafe inline-block align-middle class="align-middle" />
+    <i v-if="mode === 'contrast'" i-carbon-contrast inline-block align-middle class="align-middle" />
 
     <span class="ml-2 capitalize">{{ mode }}</span>
   </button>

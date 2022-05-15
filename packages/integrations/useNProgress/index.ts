@@ -17,7 +17,7 @@ export function useNProgress(
 ) {
   const progress = isRef(currentProgress)
     ? currentProgress
-    : ref<number|null>(currentProgress)
+    : ref<number | null>(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
     get: () => isNumber(progress.value) && progress.value < 1,

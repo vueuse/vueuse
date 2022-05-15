@@ -1,6 +1,7 @@
 import { computed, ref, unref, watch } from 'vue-demi'
 import type { Fn, MaybeRef } from '@vueuse/shared'
-import { isClient } from '@vueuse/shared'
+import { isIOS, tryOnScopeDispose } from '@vueuse/shared'
+
 import { useEventListener } from '../useEventListener'
 
 function preventDefault(rawEvent: TouchEvent): boolean {
@@ -15,9 +16,6 @@ function preventDefault(rawEvent: TouchEvent): boolean {
   return false
 }
 
-// TODO: move to @vueuse/share
-const isIOS = /* #__PURE__ */ isClient && window?.navigator && window?.navigator?.platform && /iP(ad|hone|od)/.test(window?.navigator?.platform)
-
 /**
  * Lock scrolling of the element.
  *
@@ -29,7 +27,7 @@ export function useScrollLock(
   initialState = false,
 ) {
   const isLocked = ref(initialState)
-  let touchMoveListener: Fn | null = null
+  let stopTouchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
   watch(() => unref(element), (el) => {
@@ -48,8 +46,8 @@ export function useScrollLock(
     if (!ele || isLocked.value)
       return
     if (isIOS) {
-      touchMoveListener = useEventListener(
-        document,
+      stopTouchMoveListener = useEventListener(
+        ele,
         'touchmove',
         preventDefault,
         { passive: false },
@@ -63,10 +61,12 @@ export function useScrollLock(
     const ele = (unref(element) as HTMLElement)
     if (!ele || !isLocked.value)
       return
-    isIOS && touchMoveListener?.()
+    isIOS && stopTouchMoveListener?.()
     ele.style.overflow = initialOverflow
     isLocked.value = false
   }
+
+  tryOnScopeDispose(unlock)
 
   return computed<boolean>({
     get() {

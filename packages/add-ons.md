@@ -46,6 +46,19 @@ Vue composables for playing sound effects.
 
 > Created and maintained by [@Tahul](https://github.com/Tahul)
 
+## SchemaOrg - [`@vueuse/schema-org`](https://github.com/vueuse/schema-org) <carbon-link class="external-link"/>
+
+Schema.org for Vue. Supports typed and automated Google Rich Results
+
+- 😊 No Schema knowledge required, get up and running in minutes with minimal configuration
+- ✨ 20+ Typed Schemas for best practice ([Google](https://developers.google.com/search/docs/advanced/structured-data/search-gallery), [Yoast](https://developer.yoast.com/features/schema/overview)) Rich Results
+- 🧙 Automated Schema: `@id`, URL / date resolving, route meta and more
+- 🤝 Integrations for [VitePress](https://vitepress.vue.com), [Nuxt](https://nuxtjs.org/), [Vitesse](https://nuxtjs.org/) and [Vite](https://vitejs.dev/) with auto-imports
+- 🍞 Choose your preferred API: Composables or Components
+- 🌳 SSR, tree-shaking and Schema inheritance ready
+
+> Created and maintained by [@harlan-zw](https://github.com/harlan-zw)
+
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)

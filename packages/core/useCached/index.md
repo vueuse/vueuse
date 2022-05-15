@@ -17,7 +17,7 @@ interface Data {
 }
 
 const source = ref<Data>({ value: 42, extra: 0 })
-const cached = useCached(value, (a, b) => a.value === b.value)
+const cached = useCached(source, (a, b) => a.value === b.value)
 
 source.value = {
   value: 42,

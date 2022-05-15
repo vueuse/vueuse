@@ -218,7 +218,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    */
   const togglePictureInPicture = () => {
     return new Promise((resolve, reject) => {
-      usingElRef<HTMLVideoElement>(target, async(el) => {
+      usingElRef<HTMLVideoElement>(target, async (el) => {
         if (supportsPictureInPicture) {
           if (!isPictureInPicture.value) {
             (el as any).requestPictureInPicture()

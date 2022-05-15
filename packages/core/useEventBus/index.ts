@@ -49,7 +49,8 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
 
     const _off = () => off(listener)
     // auto unsubscribe when scope get disposed
-    scope?.cleanups.push(_off)
+    // @ts-expect-error vue3 and vue2 mis-align
+    scope?.cleanups?.push(_off)
     return _off
   }
 

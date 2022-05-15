@@ -6,7 +6,7 @@ import { defaultWindow } from '../_configurable'
 
 export type UrlParams = Record<string, string[] | string>
 
-export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow{
+export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
   /**
    * @default true
    */

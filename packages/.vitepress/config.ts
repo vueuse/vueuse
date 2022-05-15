@@ -4,7 +4,7 @@ import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
 import highlight from './plugins/highlight'
 
-const themeConfig = async() => {
+const themeConfig = async () => {
   const config = await base()
   config.markdown.highlight = await highlight()
   return config
@@ -121,14 +121,14 @@ const config = {
             text: 'Versions',
             items: versions.map(i => i.version === currentVersion
               ? {
-                text: `${i.version} (Current)`,
-                activeMatch: '/', // always active
-                link: '/',
-              }
+                  text: `${i.version} (Current)`,
+                  activeMatch: '/', // always active
+                  link: '/',
+                }
               : {
-                text: i.version,
-                link: i.link,
-              },
+                  text: i.version,
+                  link: i.link,
+                },
             ),
           },
         ],

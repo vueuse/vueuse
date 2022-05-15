@@ -63,7 +63,7 @@ export function computedAsync<T>(
   const current = ref(initialState) as Ref<T>
   let counter = 0
 
-  watchEffect(async(onInvalidate) => {
+  watchEffect(async (onInvalidate) => {
     if (!started.value)
       return
 
@@ -97,7 +97,7 @@ export function computedAsync<T>(
       onError(e)
     }
     finally {
-      if (evaluating)
+      if (evaluating && counterAtBeginning === counter)
         evaluating.value = false
 
       hasFinished = true

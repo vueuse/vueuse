@@ -33,8 +33,10 @@ const changeCase = computed(() => {
   <input v-model="input" type="text">
   <pre lang="yaml">{{ changeCase }}</pre>
 </template>
+
 <style scoped>
 </style>
+
 <style scoped lang="postcss">
 input {
   --tw-ring-offset-width: 1px !important;

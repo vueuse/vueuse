@@ -7,7 +7,7 @@ export interface UseRefHistoryRecord<T> {
   timestamp: number
 }
 
-export type CloneFn<F, T=F> = (x: F) => T
+export type CloneFn<F, T = F> = (x: F) => T
 
 export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   /**

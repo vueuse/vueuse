@@ -5,7 +5,7 @@ import { useTemplateRefsList } from '@vueuse/core'
 const count = ref(5)
 const refs = useTemplateRefsList<HTMLDivElement>()
 
-watch(refs, async() => {
+watch(refs, async () => {
   await nextTick()
   console.log([...refs.value])
 }, {

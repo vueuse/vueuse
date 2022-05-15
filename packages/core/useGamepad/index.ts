@@ -1,7 +1,8 @@
 import { createEventHook, tryOnMounted } from '@vueuse/shared'
-import { useEventListener, useRafFn } from '@vueuse/core'
 import type { Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
+import { useRafFn } from '../useRafFn'
+import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator, ConfigurableWindow } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 

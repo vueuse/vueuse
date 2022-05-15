@@ -7,7 +7,7 @@ describe('computedEager', () => {
     expect(computedEager).toBeDefined()
   })
 
-  it('should work', async() => {
+  it('should work', async () => {
     const foo = ref(0)
 
     const plusOneComputed = computed(() => {
@@ -44,7 +44,7 @@ describe('computedEager', () => {
     expect(plusOneComputedRefSpy).toBeCalledTimes(2)
   })
 
-  it('should not trigger collect change if result is not changed', async() => {
+  it('should not trigger collect change if result is not changed', async () => {
     const foo = ref(1)
 
     const isOddComputed = computed(() => {

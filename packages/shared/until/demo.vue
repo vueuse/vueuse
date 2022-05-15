@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { until, useCounter } from '@vueuse/shared'
-import { invoke } from '../utils'
+import { invoke, until, useCounter } from '@vueuse/shared'
 
 const { count, inc, dec } = useCounter()
 
-invoke(async() => {
+invoke(async () => {
   await until(count).toBe(7)
 
   alert('You got 7!')

@@ -12,7 +12,7 @@ export type UnrefFn<T> = T extends (...args: infer A) => infer R
  * Returns the same value the unconverted function returns, with proper typing.
  */
 export const createUnrefFn = <T extends Function>(fn: T): UnrefFn<T> => {
-  return function(this: any, ...args: any[]) {
+  return function (this: any, ...args: any[]) {
     return fn.apply(this, args.map(i => unref(i)))
   } as UnrefFn<T>
 }

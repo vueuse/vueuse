@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue-demi'
-import { mapGamepadToXbox360Controller } from '../index'
+import { mapGamepadToXbox360Controller } from '@vueuse/core'
 const props = defineProps<{ gamepad: Gamepad }>()
 const { gamepad } = toRefs(props)
 const controller = mapGamepadToXbox360Controller(gamepad)
