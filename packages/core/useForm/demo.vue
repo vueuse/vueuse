@@ -26,8 +26,8 @@ function mySubmit() {
 
   <form @submit.prevent="onSubmit(mySubmit)">
     <label>
-      <input v-model="form.age" type="text">
-      <p class="text-red">{{ status.age.message || '&nbsp;' }}</p>
+      <input v-model="form.age" type="text" :class="status.age.isError && '!border-red'">
+      <p class="text-red !mb-0 !mt-1 text-sm">{{ status.age.message || '&nbsp;' }}</p>
     </label>
 
     <button type="submit">
