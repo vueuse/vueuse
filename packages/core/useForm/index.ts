@@ -1,56 +1,72 @@
-import { computed, reactive, ref, watchEffect } from 'vue-demi'
+import { computed, reactive, readonly, ref, watchEffect } from 'vue-demi'
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue-demi'
 import type { IgnoredUpdater } from '@vueuse/shared'
 import { watchIgnorable } from '@vueuse/shared'
 
-type FormBuilder<Form extends {} = {}> = () => Form
-
 type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
-type FormRule<FormT extends {}> = {
+interface StatusItem {
+  isError: boolean
+  /** Error message */
+  message: string
+  /** Field is modified */
+  isDirty: boolean
+  /** Manual verify */
+  verify: () => boolean
+  init: () => void
+  setError: (message: string, isError?: boolean) => void
+  clearError: () => void
+
+  _ignoreUpdate: IgnoredUpdater
+}
+type FormStatus<FormT extends {}> = {
+  readonly [K in keyof FormT]: StatusItem
+}
+
+export type UseFormBuilder<Form extends {} = {}> = () => Form
+export type UseFormRule<FormT extends {}> = {
   readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
 }
-type FormStatus = Record<string, {
-  /** 是否出错 */
-  isError: boolean
-  /** 错误信息 */
-  message: string
-  /** field is modified */
-  isDirty: boolean
-  /** 立即进行校验 */
+
+export interface UseFormReturn<FormT> {
+  /** form object */
+  form: UnwrapNestedRefs<FormT>
+  /** Form status */
+  status: FormStatus<FormT>
+  /** Manual verify */
   verify: () => boolean
-  /** 初始化规则校验 */
-  init: () => void
-  /** 设置错误 */
-  setError: (message: string, isError?: boolean) => void
-  /** 重制规则校验 */
-  clearError: () => void
-  /** 忽略更新 */
-  _ignoreUpdate: IgnoredUpdater
-}>
+  clearErrors: () => void
+  /** Reset form  */
+  reset: () => void
+  /**
+   * Submit form
+   * Verify before submitting, and execute callback if passed
+   */
+  onSubmit: (callback: () => any) => any
+}
 
 /**
- *  Form state management and validation
+ *  Form state management and rule validation
  * @see https://vueuse.org/useForm
- * @param param
- * @returns
+ * @param param Form and Rule object
+ * @returns Form and Form Status
  */
 export function useForm<FormT extends {}>(param: {
   /** Initial form value */
-  form: FormBuilder<FormT>
+  form: UseFormBuilder<FormT>
   /** Verification rules */
-  rule?: FormRule<FormT>
-}) {
+  rule?: UseFormRule<FormT>
+}): UseFormReturn<FormT> {
   const { form: formBuilder, rule: FormRule } = param
 
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>({ ...initialForm.value })
 
-  const status = reactive({} as FormStatus)
+  const status = reactive({} as Record<PropertyKey, StatusItem>)
   initStatus<FormT>(status, form, initialForm, FormRule)
 
   return {
     form,
-    status,
+    status: readonly(status) as any,
     verify,
     clearErrors,
     reset,
@@ -90,10 +106,10 @@ export function useForm<FormT extends {}>(param: {
 }
 
 function initStatus<FormT extends {}>(
-  status: FormStatus,
+  status: Record<PropertyKey, StatusItem>,
   formObj: UnwrapNestedRefs<FormT>,
   initialForm: Ref<FormT>,
-  formRule?: FormRule<FormT>,
+  formRule?: UseFormRule<FormT>,
 ) {
   for (const key in formObj) {
     if (!hasOwn(formObj, key))
