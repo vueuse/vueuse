@@ -7,7 +7,11 @@ Form state management and validation
 
 ## Usage
 ### Form state management
-将 `form` 用 `v-model` 绑定到 `<input>` 或是其他组件, 值改变时 `status` 会产生对应的变化；使用 reset 方法重置表单的值到初始状态
+
+Use `v-model` to bind `form[key]` on to the `<input>` element or other components.
+
+`status` value will be changed corresponded when the form values have been modified. Use the `reset` function to reset the form values back to its initial states.
+
 ```ts
 const { form, status, reset } = useForm({
   // Initial form value
@@ -25,8 +29,10 @@ status.password.isDirty
 // Reset form, restore form values to default
 reset()
 ```
-### mutable form initial value
-`useForm` 的表单初始值可以其它变量或 pinia 的状态，初始值的改变将在表单重置时同步到 `form` 对象中
+### Mutable initial value of form
+
+The initial states of `useForm` could be any other variables or pinia states. The changes made to the initial values will be synced into the `form` object when the form has been resetted.
+
 ```ts
 const userStore = useUserStore()
 
@@ -37,19 +43,22 @@ const { form, reset } = useForm({
   }),
 })
 
-// 初始值的改变将在表单重置时同步到 form 对象中
+// update the value of username and intro properties
 userStore.setInfo(/** xxx info */)
+// changes made to the `userStore` will be synced into the `form` object,
+// when reset is being called
 reset()
 
-// 更新
-userStore.intro
+// these properties will be the values of `userStore` where `setInfo` has been called previously
 form.username
+form.intro
 ```
 
-### 表单规则校验
+### Validating rules for form
 
-用 `rule` 定义字段规则，当值改变时验证会自动执行，验证结果在 `status[key].isError` 和 `status[key].message` 中呈现。如果一个字段有多条规则，可以使用函数数组的方式表示。
-> 你可以维护自己的规则集，并在需要使用的地方导入。
+Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more then one rule, it can be declared by using function arrays.
+
+> You can also maintain your rule collections on your own, and import them where they are needed.
 
 ```ts
 function isRequired(value) {
@@ -68,7 +77,7 @@ const { form, status, onSubmit, clearErrors } = useForm({
   // Verification rules
   rule: () => ({
     name: isRequired,
-    // 如果一个字段有多条规则，可以使用数组
+    // If one fields requires more then one rule, it can be declared by using function arrays.
     age: [
       isRequired,
       // is number
@@ -84,35 +93,42 @@ function mySubmit() {
 }
 ```
 
-#### 手动触发校验
+In addition, you can use any reactive values in the validation error message, such as the `t('required')` function call from `vue-i18n` as the examples shown above.
+
+#### Manually trigger the validation
+
 ```ts
-// 表单校验
+// validate the form
 verify()
-// 字段校验
+// validate individual fields
 status.username.verify()
 ```
 
-#### 手动指定错误
+#### Manually specify error message
 
 ```ts
 status.username.setError('username has been registered')
 ```
 
-#### 清除错误
+#### Maunally clear the errors
+
 ```ts
-// 清除字段的错误
+// clear the error for individual field
 status.username.clearError()
-// 清除全部错误
+// clear all the errors
 clearErrors()
-// 重置表单也会清除错误
+// reset will also clear the errors
 reset()
 ```
 
-### 在表单中展示错误
-一些表单值展示时的建议：
-1. 使用 `@submit.prevent` 而不是 `@submit`，可以屏蔽表单默认提交行为
-2. 判断 `isError` 的值动态的给表单添加红色描边
-3. 使用 `&nbsp;` 来避免没有 message 时 `<p>`出现高度塌陷
+### Suggestions
+
+Some suggestions:
+
+1. Use `@submit.prevent` instead of `@submit`, this can prevent the submitting action take place by form's default
+2. Use `isError` to determine whether to add a red border around the form dynamically
+3. Use `&nbsp;` to avoid height collapse of `<p>`  when there is no messages
+
 ```vue
 <template>
   <h3>Please enter your age</h3>
