@@ -481,7 +481,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         if (!payloadType && unref(payload) && Object.getPrototypeOf(unref(payload)) === Object.prototype)
           config.payloadType = 'json'
 
-        return shell as any
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }
