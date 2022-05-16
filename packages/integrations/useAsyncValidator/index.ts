@@ -30,7 +30,7 @@ export function useAsyncValidator(value: MaybeRef<Record<string, any>>, rules: M
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
-  watchEffect(async() => {
+  watchEffect(async () => {
     isFinished.value = false
     pass.value = false
     const validator = new Schema(unref(rules))

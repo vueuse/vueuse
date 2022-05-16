@@ -37,7 +37,7 @@ describe('useAsyncValidator', () => {
     })
   })
 
-  it('should async', async() => {
+  it('should async', async () => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -58,7 +58,7 @@ describe('useAsyncValidator', () => {
     })
   })
 
-  it('should can be await', async() => {
+  it('should can be await', async () => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -73,7 +73,7 @@ describe('useAsyncValidator', () => {
     expect(errors.value).toMatchObject([])
   })
 
-  it('should fail to validate', async() => {
+  it('should fail to validate', async () => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -99,7 +99,7 @@ describe('useAsyncValidator', () => {
     `)
   })
 
-  it('should reactive', async() => {
+  it('should reactive', async () => {
     const form = ref({
       name: 'jelf',
       age: 24,
