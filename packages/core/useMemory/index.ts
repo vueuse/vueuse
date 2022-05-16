@@ -24,7 +24,7 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface MemoryOptions extends IntervalFnOptions {
+export interface UseMemoryOptions extends IntervalFnOptions {
   interval?: number
 }
 
@@ -38,7 +38,7 @@ type PerformanceMemory = Performance & {
  * @see https://vueuse.org/useMemory
  * @param options
  */
-export function useMemory(options: MemoryOptions = {}) {
+export function useMemory(options: UseMemoryOptions = {}) {
   const memory = ref<MemoryInfo>()
   const isSupported = typeof performance !== 'undefined' && 'memory' in performance
 
