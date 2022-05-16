@@ -52,6 +52,18 @@ describe('useFetch', () => {
     })
   })
 
+  test('should use custom fetch', async () => {
+    let count = 0
+    await useFetch('https://example.com/', {
+      fetch(input: RequestInfo, init?: RequestInit | undefined) {
+        count = 1
+        return window.fetch(input, init)
+      },
+    })
+
+    expect(count).toEqual(1)
+  })
+
   test('should have an error on 400', async () => {
     const { error, statusCode } = useFetch('https://example.com?status=400')
 
