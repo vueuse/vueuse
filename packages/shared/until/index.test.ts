@@ -114,7 +114,7 @@ describe('until', () => {
     return new Promise((resolve, reject) => {
       const r = ref(0)
 
-      invoke(async() => {
+      invoke(async () => {
         expect(r.value).toBe(0)
         const x = await until(r).toBe(1, { timeout: 0 })
         expect(x).toBe(0)
@@ -128,7 +128,7 @@ describe('until', () => {
   })
 
   it('should type check', () => {
-    async() => {
+    async () => {
       const x = ref<'x'>()
       // type checks are done this way to prevent unused variable warnings
       // and duplicate name warnings
