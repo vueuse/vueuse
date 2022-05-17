@@ -2,7 +2,7 @@ import { ref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 
 export interface ColorOptions {
-  type?: 'RGB' | 'RGBA' | 'HEX'
+  type?: 'RGB' | 'RGBA' | 'HEX' | 'HSV' | 'HSL' | 'HSLA'
   initialValue?: MaybeRef<string>
 }
 
@@ -13,43 +13,71 @@ export function useRandomColor(options: ColorOptions = {}) {
   } = options
   const color = ref(initialValue)
   let changeColor = () => (color.value = randomHEXColor())
-  if (type === 'HEX') {
+  if (type.toUpperCase() === 'HEX') {
     color.value = randomHEXColor()
     changeColor = () => (color.value = randomHEXColor())
   }
-  else if (type === 'RGB') {
+  else if (type.toUpperCase() === 'RGB') {
     color.value = randomRGBColor()
     changeColor = () => (color.value = randomRGBColor())
   }
-  else if (type === 'RGBA') {
+  else if (type.toUpperCase() === 'RGBA') {
     color.value = randomRGBAColor()
     changeColor = () => (color.value = randomRGBAColor())
+  }
+  else if (type.toUpperCase() === 'HSV') {
+    color.value = randomHSVColor()
+    changeColor = () => (color.value = randomHSVColor())
+  }
+  else if (type.toUpperCase() === 'HSL') {
+    color.value = randomHSLColor()
+    changeColor = () => (color.value = randomHSLColor())
+  }
+  else if (type.toUpperCase() === 'HSLA') {
+    color.value = randomHSLAColor()
+    changeColor = () => (color.value = randomHSLAColor())
   }
 
   return { color, changeColor }
 }
-// function randomHEXColor() { // 随机生成十六进制颜色
-//   let hex = Math.floor(Math.random() * 16777216).toString(16) // 生成ffffff以内16进制数
-//   while (hex.length < 6) { // while循环判断hex位数，少于6位前面加0凑够6位
-//     hex = `0${hex}`
-//   }
-//   return `#${hex}` // 返回‘#’开头16进制颜色
-// }
 
-function randomHEXColor() { // 随机生成十六进制颜色
+function randomHEXColor() {
   return `#${(`00000${(Math.random() * 0x1000000 << 0).toString(16)}`).substr(-6)}`
 }
-function randomRGBColor() { // 随机生成RGB颜色
-  const r = Math.floor(Math.random() * 256) // 随机生成256以内r值
-  const g = Math.floor(Math.random() * 256) // 随机生成256以内g值
-  const b = Math.floor(Math.random() * 256) // 随机生成256以内b值
-  return `rgb(${r},${g},${b})` // 返回rgb(r,g,b)格式颜色
+
+function randomHSVColor() {
+  const h = Math.random() * 360
+  const s = Math.random() * 100
+  const v = Math.random() * 100
+  return `hsv(${h}, ${s}%, ${v}%)`
 }
-function randomRGBAColor() { // 随机生成RGBA颜色
-  const r = Math.floor(Math.random() * 256) // 随机生成256以内r值
-  const g = Math.floor(Math.random() * 256) // 随机生成256以内g值
-  const b = Math.floor(Math.random() * 256) // 随机生成256以内b值
-  const alpha = Math.random() // 随机生成1以内a值
-  return `rgb(${r},${g},${b},${alpha})` // 返回rgba(r,g,b,a)格式颜色
+
+function randomHSLColor() {
+  const h = Math.random() * 360
+  const s = Math.random() * 100
+  const l = Math.random() * 100
+  return `hsl(${h}, ${s}%, ${l}%)`
+}
+
+function randomHSLAColor() {
+  const h = Math.random() * 360
+  const s = Math.random() * 100
+  const l = Math.random() * 100
+  const a = Math.random() * 100
+  return `hsla(${h}, ${s}%, ${l}%, ${a}%)`
+}
+
+function randomRGBColor() {
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
+  return `rgb(${r},${g},${b})`
+}
+function randomRGBAColor() {
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
+  const alpha = Math.random()
+  return `rgb(${r},${g},${b},${alpha})`
 }
 
