@@ -4,7 +4,7 @@ category: Utilities
 
 # useRandomColor
 
-Reactive Random Color. Supports RGB, RGBA, HEX.
+Reactive Random Color. Supports RGB, RGBA, HEX, HSV, HSL, HSLA.
 
 ## Basic Usage
 
