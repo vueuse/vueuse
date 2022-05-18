@@ -1,23 +1,23 @@
 // import { ref } from 'vue-demi'
-interface Props {
+export interface Props {
   duration?: number
-  easingEnter?: string
-  easingLeave?: string
+  easingExpand?: string
+  easingShrink?: string
   opacityClosed?: number
   opacityOpened?: number
 }
 
-export function useHeightTransition(props?: Props) {
+export function useHeightTransition(propsUser?: Props) {
   // console.log(propsDefaults)
-  const propsDefaults: Props = {
-    duration: 1250,
-    easingEnter: 'ease-in-out',
-    easingLeave: 'ease-in-out',
+  const props: Props = {
+    duration: 250,
+    easingExpand: 'ease-in-out',
+    easingShrink: 'ease-in-out',
     opacityClosed: 0,
     opacityOpened: 1,
   }
 
-  Object.assign(propsDefaults, props)
+  Object.assign(props, propsUser)
 
   const closed = '0px'
 
@@ -36,22 +36,24 @@ export function useHeightTransition(props?: Props) {
   }
 
   function getElementStyle(element: HTMLElement) {
+    // const style = window.getComputedStyle(element, null)
+    const style = element.style
     return {
-      height: element.style.height,
-      width: element.style.width,
-      position: element.style.position,
-      visibility: element.style.visibility,
-      overflow: element.style.overflow,
-      paddingTop: element.style.paddingTop,
-      paddingBottom: element.style.paddingBottom,
-      borderTopWidth: element.style.borderTopWidth,
-      borderBottomWidth: element.style.borderBottomWidth,
-      marginTop: element.style.marginTop,
-      marginBottom: element.style.marginBottom,
+      height: style.height,
+      width: style.width,
+      position: style.position,
+      visibility: style.visibility,
+      overflow: style.overflow,
+      paddingTop: style.paddingTop,
+      paddingBottom: style.paddingBottom,
+      borderTopWidth: style.borderTopWidth,
+      borderBottomWidth: style.borderBottomWidth,
+      marginTop: style.marginTop,
+      marginBottom: style.marginBottom,
     }
   }
 
-  function prepareElement(element: HTMLElement, initialStyle: initialStyle) {
+  function getElementFullHeight(element: HTMLElement, initialStyle: initialStyle) {
     const { width } = getComputedStyle(element)
     element.style.width = width
     element.style.position = 'absolute'
@@ -86,10 +88,10 @@ export function useHeightTransition(props?: Props) {
   }
 
   function getEnterKeyframes(height: string, initialStyle: initialStyle) {
-    return [
+    const keyframes = [
       {
         height: closed,
-        opacity: propsDefaults.opacityClosed,
+        opacity: props.opacityClosed,
         paddingTop: closed,
         paddingBottom: closed,
         borderTopWidth: closed,
@@ -99,7 +101,7 @@ export function useHeightTransition(props?: Props) {
       },
       {
         height,
-        opacity: propsDefaults.opacityOpened,
+        opacity: props.opacityOpened,
         paddingTop: initialStyle.paddingTop,
         paddingBottom: initialStyle.paddingBottom,
         borderTopWidth: initialStyle.borderTopWidth,
@@ -108,26 +110,39 @@ export function useHeightTransition(props?: Props) {
         marginBottom: initialStyle.marginBottom,
       },
     ]
+    // for (const key in initialStyle) {
+    //   console.log(key)
+
+    //   console.log(initialStyle[key])
+    //   // if (initialStyle[key] === "") {
+    //   //   delete keyframes[0][key]
+    //   //   delete keyframes[1][key]
+    //   // }
+    // }
+    return keyframes
   }
 
-  function expandHeight(element: Element, done: () => void) {
+  function expandHeight(element: Element, done?: () => void) {
     const HTMLElement = element as HTMLElement
-    // console.log(HTMLElement)
     const initialStyle = getElementStyle(HTMLElement)
-    const height = prepareElement(HTMLElement, initialStyle)
+
+    const height = getElementFullHeight(HTMLElement, initialStyle)
     const keyframes = getEnterKeyframes(height, initialStyle)
-    const options = { duration: propsDefaults.duration, easing: propsDefaults.easingEnter }
+
+    const options = { duration: props.duration, easing: props.easingExpand }
     animateTransition(HTMLElement, initialStyle, keyframes, done, options)
   }
 
   function shrinkHeight(element: Element, done?: () => void) {
     const HTMLElement = element as HTMLElement
     const initialStyle = getElementStyle(HTMLElement)
+
     const { height } = getComputedStyle(HTMLElement)
     HTMLElement.style.height = height
     HTMLElement.style.overflow = 'hidden'
     const keyframes = getEnterKeyframes(height, initialStyle).reverse()
-    const options = { duration: propsDefaults.duration, easing: propsDefaults.easingLeave }
+
+    const options = { duration: props.duration, easing: props.easingShrink }
     animateTransition(HTMLElement, initialStyle, keyframes, done, options)
   }
 

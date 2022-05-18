@@ -1,43 +1,44 @@
 <script setup lang="ts">
-import { useHeightTransition } from '@vueuse/core'
-import { ref, watch } from 'vue-demi'
+import { ref } from 'vue-demi'
+import HeightTransitionDemo from './components/HeightTransitionDemo.vue'
+import HeightTransitionGroupDemo from './components/HeightTransitionGroupDemo.vue'
+import HeightTransition from './components/HeightTransition.vue'
 
-const { shrinkHeight, expandHeight } = useHeightTransition()
-const show = ref(false)
+const demoOptions = [
+  'basic',
+  'Transition',
+  'TransitionGroup',
+  'Transition',
+  'empty']
+const demoChoice = ref(0)
 
-const el = ref<HTMLDivElement | null>(null)
-
-watch(show, () => {
-  console.log(show.value)
-  // console.log(el.value)
-  // (el.value)
-  if (show)
-    expandHeight(el.value)
-  else
-    shrinkHeight(el.value)
-})
+const modeOptions = ['', 'out-in', 'in-out']
+const modeChoice = ref(2)
 </script>
 
 <template>
-  <div>
-    <button @click="show = !show">
-      Toggle
-    </button>
-    <Transition :css="false" @enter="expandHeight" @leave="shrinkHeight">
-      <p v-if="show">
-        hello
-      </p>
-    </Transition>
-    <p>separator text</p>
-    <p ref="el">
-      Some text to show transition
-    </p>
-    <p>separator text</p>
-    <!-- <button @click="inc()">
-      Increment
-    </button>
-    <button @click="dec()">
-      Decrement
-    </button> -->
+  <div text-xs>
+    Current demo settings:
+    <span font-mono>
+      demo='{{ demoOptions[demoChoice] }}',
+      mode='{{ modeOptions[modeChoice] ? modeOptions[modeChoice] : "default" }}
+    </span>'
   </div>
+
+  <div>
+    <button @click="demoChoice = (demoChoice + 1) % demoOptions.length">
+      Next demo
+    </button>
+    <button @click="modeChoice = (modeChoice + 1) % modeOptions.length">
+      Next mode
+    </button>
+  </div>
+
+  <HeightTransition :mode="modeOptions[modeChoice]">
+    <HeightTransitionGroupDemo v-if="demoOptions[demoChoice] === 'TransitionGroup'" />
+    <HeightTransitionDemo v-if="demoOptions[demoChoice] === 'Transition'" />
+    <div v-if="demoOptions[demoChoice] === 'basic'">
+      Basic &lt;div&gt; demo. Note height transition of demo section on "Next demo" button click.
+    </div>
+  </HeightTransition>
 </template>
