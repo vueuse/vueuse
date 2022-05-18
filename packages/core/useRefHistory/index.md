@@ -110,7 +110,7 @@ refHistory.clear() // explicitly clear all the history
 
 ### History Flush Timing
 
-From [Vue's documentation](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
+From [Vue's documentation](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
 
 In the same way as `watch`, you can modify the flush timing using the `flush` option.
 
