@@ -10,22 +10,27 @@ import { unrefElement } from '../unrefElement'
  *
  * @see https://vueuse.org/useCssVar
  * @param prop
- * @param el
+ * @param target
+ * @param initialValue
  * @param options
  */
 export function useCssVar(
   prop: MaybeRef<string>,
   target?: MaybeElementRef,
+  initialValue?: MaybeRef<string>,
   { window = defaultWindow }: ConfigurableWindow = {},
 ) {
   const variable = ref('')
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
+  const _initialValue = unref(initialValue)
 
   watch(
     [elRef, () => unref(prop)],
     ([el, prop]) => {
-      if (el && window)
-        variable.value = window.getComputedStyle(el).getPropertyValue(prop)
+      if (el && window) {
+        const value = window.getComputedStyle(el).getPropertyValue(prop)
+        variable.value = value == '' ? _initialValue : value
+      }
     },
     { immediate: true },
   )
