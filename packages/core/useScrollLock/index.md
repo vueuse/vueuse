@@ -12,8 +12,12 @@ Lock scrolling of the element.
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
 const el = ref<HTMLElement | null>(null)
-const isLocked = useScrollLock(el)
+const isLocked = useScrollLock(el, false, {
+  avoidShake: !isMobile
+})
 
 isLocked.value = true // lock
 isLocked.value = false // unlock
