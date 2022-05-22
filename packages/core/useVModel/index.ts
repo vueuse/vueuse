@@ -18,6 +18,7 @@ export interface VModelOptions<T> {
   eventName?: string
   /**
    * Attempting to check for changes of properties in a deeply nested object or array.
+   * Apply only when `passive` option is set to `true`
    *
    * @default false
    */
