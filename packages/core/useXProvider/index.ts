@@ -18,9 +18,9 @@ type TProviderComponent = DefineComponent<
 any
 >
 /**
- * @see https://vueuse.org/useXProvider
+ * @see https://vueuse.org/useXprovider
  */
-export const useXProvider = <T extends Tobj>(
+export const useXprovider = <T extends Tobj>(
   defaultState: Partial<T>,
   providerComponentName = 'Context.Provider',
   injectKeyName = Symbol('xProvider'),
@@ -44,13 +44,6 @@ export const useXProvider = <T extends Tobj>(
       setData(state as T, path, value)
     }
   }
-
-  // function setState(obj: PartialT) {
-  //   Object.entries(obj).forEach(([k, v]) => {
-  //     // @ts-expect-error no need for tslint
-  //     state[k] = v
-  //   })
-  // }
 
   function setStateWithStr<P extends Path<T>>(path: P, value: PathValue<T, P>) {
     setData(state as T, path, value)

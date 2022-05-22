@@ -1,8 +1,8 @@
 
 import { computed, defineComponent, h } from 'vue-demi'
 import { mount } from '../../.test'
-import { useXProvider } from '.'
-describe('useXProvider', () => {
+import { useXprovider } from '.'
+describe('useXprovider', () => {
   it('should not work without instantiation of ProviderComponent', () => {
     interface IContext {
       name: string
@@ -13,7 +13,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
 
     const state = providerFoundation.state
 
@@ -31,7 +31,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
     const state = providerFoundation.state
     const useContext = providerFoundation.useContext
 
@@ -71,7 +71,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
     const state = providerFoundation.state
     const useContext = providerFoundation.useContext
     const setState = providerFoundation.setState
@@ -160,7 +160,7 @@ describe('useXProvider', () => {
       },
       cars,
     } as unknown as IPerson
-    const providerFoundation = useXProvider<IPerson>(person)
+    const providerFoundation = useXprovider<IPerson>(person)
     const useContext = providerFoundation.useContext
     const setState = providerFoundation.setState
 
@@ -226,7 +226,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
     const state = providerFoundation.state
     const useContext = providerFoundation.useContext
 
@@ -270,7 +270,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
     const useContext = providerFoundation.useContext
 
     const descendNode = defineComponent({
@@ -307,7 +307,7 @@ describe('useXProvider', () => {
       name: 'hello',
       age: 20,
     }
-    const providerFoundation = useXProvider<IContext>(defaultState)
+    const providerFoundation = useXprovider<IContext>(defaultState)
     const useContext = providerFoundation.useContext
     const state = providerFoundation.state
 
