@@ -7,7 +7,7 @@ const word = ref('Hello')
 const interval = ref(500)
 
 const { pause, resume, isActive } = useIntervalFn(() => {
-  word.value = greetings[Math.round(Math.random() * (greetings.length - 1))]
+  word.value = greetings[Math.floor(Math.random() * greetings.length)]
 }, interval)
 </script>
 
