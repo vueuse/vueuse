@@ -88,7 +88,7 @@ describe('useEventBus', () => {
     expect(events).toEqual(emptyMap)
   })
 
-  it('setup unmount off', async() => {
+  it('setup unmount off', async () => {
     const vm = useSetup(() => {
       const { on } = useEventBus('setup-unmount')
       on(() => {})
@@ -103,8 +103,8 @@ describe('useEventBus', () => {
     expect(events).toEqual(emptyMap)
   })
 
-  it('should work with payload', async() => {
-    const { on, emit } = useEventBus<'inc'|'dec', number>('counter')
+  it('should work with payload', async () => {
+    const { on, emit } = useEventBus<'inc' | 'dec', number>('counter')
     const counter = useCounter(0)
     on((event, payload) => counter[event](payload))
     emit('inc', 3)

@@ -13,11 +13,11 @@ import { computed, isRef, ref, watchEffect } from 'vue-demi'
  */
 export function useNProgress(
   currentProgress: MaybeRef<number | null | undefined> = null,
-  options?: NProgressOptions | undefined,
+  options?: Partial<NProgressOptions>,
 ) {
   const progress = isRef(currentProgress)
     ? currentProgress
-    : ref<number|null>(currentProgress)
+    : ref<number | null>(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
     get: () => isNumber(progress.value) && progress.value < 1,

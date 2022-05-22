@@ -1,6 +1,6 @@
 ---
 category: Utilities
-alias: note
+alias: not
 ---
 
 # logicNot

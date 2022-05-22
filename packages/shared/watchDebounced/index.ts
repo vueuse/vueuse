@@ -1,9 +1,9 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import type { MapOldSources, MapSources, MaybeRef } from '../utils'
+import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeRef } from '../utils'
 import { debounceFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
-export interface WatchDebouncedOptions<Immediate> extends WatchOptions<Immediate> {
+export interface WatchDebouncedOptions<Immediate> extends WatchOptions<Immediate>, DebounceFilterOptions {
   debounce?: MaybeRef<number>
 }
 
@@ -20,6 +20,7 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
 ): WatchStopHandle {
   const {
     debounce = 0,
+    maxWait = undefined,
     ...watchOptions
   } = options
 
@@ -28,7 +29,7 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
     cb,
     {
       ...watchOptions,
-      eventFilter: debounceFilter(debounce),
+      eventFilter: debounceFilter(debounce, { maxWait }),
     },
   )
 }

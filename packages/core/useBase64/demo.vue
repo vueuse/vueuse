@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import type { Ref } from 'vue'
+import { ref } from 'vue'
+import { useBase64 } from '@vueuse/core'
+
+const text = ref('')
+const file = ref() as Ref<File>
+const image = ref() as Ref<HTMLImageElement>
+
+const { base64: textBase64 } = useBase64(text)
+const { base64: fileBase64 } = useBase64(file)
+const { base64: imageBase64 } = useBase64(image)
+const { base64: bufferBase64 } = useBase64(new ArrayBuffer(8))
+
+function onFileInput(e: Event) {
+  file.value = (e.target as HTMLInputElement).files![0]
+}
+</script>
+
 <template>
   <div space-y-4>
     <div grid md:grid-cols-2 gap-2>
@@ -53,41 +72,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import type { Ref } from 'vue'
-import { ref } from 'vue'
-import { useBase64 } from '@vueuse/core'
-
-const text = ref('')
-const file = ref() as Ref<File>
-const image = ref() as Ref<HTMLImageElement>
-
-const { base64: textBase64 } = useBase64(text)
-const { base64: fileBase64 } = useBase64(file)
-const { base64: imageBase64 } = useBase64(image)
-const { base64: bufferBase64 } = useBase64(new ArrayBuffer(8))
-
-function onFileInput(e: Event) {
-  file.value = (e.target as HTMLInputElement).files![0]
-}
-</script>
-
 <style scoped>
-/* .title {
-  margin-top: 10px;
-  opacity: 0.8;
-}
-
-.input-output, .title {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.input-output textarea {
-  resize: none;
-} */
-
 textarea {
   min-width: 0px !important;
   width: 100%;

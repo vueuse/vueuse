@@ -23,7 +23,7 @@ describe('useWindowSize', () => {
     expect(height.value).toBe(window.innerHeight)
   })
 
-  it('sets handler for window "resize" event', async() => {
+  it('sets handler for window "resize" event', async () => {
     useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
     await nextTick()

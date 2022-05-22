@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnBeforeMount, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -14,19 +14,20 @@ import { defaultWindow } from '../_configurable'
  */
 export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
+  const isSupported = Boolean(window && 'matchMedia' in window)
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
 
   const update = () => {
-    if (!window)
+    if (!isSupported)
       return
     if (!mediaQuery)
-      mediaQuery = window.matchMedia(query)
+      mediaQuery = window!.matchMedia(query)
     matches.value = mediaQuery.matches
   }
 
-  tryOnMounted(() => {
+  tryOnBeforeMount(() => {
     update()
 
     if (!mediaQuery)

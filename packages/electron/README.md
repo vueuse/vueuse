@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/electron?color=a1b858)](https://www.npmjs.com/package/@vueuse/electron)
 
-> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), enables electron renderer process API as composition API.
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), enables electron renderer process API as Composition API.
 
 ## Install
 

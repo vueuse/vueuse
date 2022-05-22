@@ -74,6 +74,7 @@ export const packages: PackageManifest[] = [
       'nprogress',
       'jwt-decode',
       'focus-trap',
+      'change-case',
       'drauu',
       '@vueuse/core',
       '@vueuse/shared',
@@ -88,6 +89,7 @@ export const packages: PackageManifest[] = [
       'focus-trap': 'focusTrap',
       'drauu': 'Drauu',
       'fuse.js': 'Fuse',
+      'change-case': 'changeCase',
     },
   },
   {

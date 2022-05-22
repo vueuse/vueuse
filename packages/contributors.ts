@@ -128,6 +128,15 @@ const coreTeamMembers: CoreTeam[] = [
     description: '',
     packages: ['head'],
   },
+  {
+    avatar: contributorsAvatars['harlan-zw'],
+    name: 'Harlan Wilton',
+    github: 'harlan-zw',
+    twitter: 'harlan_zw',
+    sponsors: true,
+    description: '',
+    packages: ['schema-org'],
+  },
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))
 

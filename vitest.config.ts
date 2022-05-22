@@ -1,9 +1,5 @@
-/* eslint-disable spaced-comment */
-/// <reference types="vitest" />
-/// <reference types="vitest/globals" />
-
 import { resolve } from 'path'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   resolve: {
@@ -24,7 +20,7 @@ export default defineConfig({
     __VUE_PROD_DEVTOOLS__: 'false',
   },
   test: {
-    global: true,
+    globals: true,
     environment: 'jsdom',
     setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
     reporters: 'dot',

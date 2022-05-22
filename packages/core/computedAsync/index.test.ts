@@ -17,7 +17,7 @@ describe('computed', () => {
 })
 
 describe('computedAsync', () => {
-  it('is not lazy by default', async() => {
+  it('is not lazy by default', async () => {
     const func = vitest.fn(() => Promise.resolve('data'))
 
     const data = computedAsync(func)
@@ -31,9 +31,9 @@ describe('computedAsync', () => {
     expect(data.value).toBe('data')
   })
 
-  it('call onError when error is thrown', async() => {
+  it('call onError when error is thrown', async () => {
     let errorMessage
-    const func = vitest.fn(async() => {
+    const func = vitest.fn(async () => {
       throw new Error('An Error Message')
     })
 
@@ -54,8 +54,8 @@ describe('computedAsync', () => {
     expect(errorMessage).toBe('An Error Message')
   })
 
-  it('is lazy if configured', async() => {
-    const func = vitest.fn(async() => 'data')
+  it('is lazy if configured', async () => {
+    const func = vitest.fn(async () => 'data')
 
     const data = computedAsync(func, undefined, { lazy: true })
 
@@ -71,7 +71,7 @@ describe('computedAsync', () => {
     expect(data.value).toBe('data')
   })
 
-  it('re-computes when dependency changes', async() => {
+  it('re-computes when dependency changes', async () => {
     const counter = ref(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
@@ -93,7 +93,62 @@ describe('computedAsync', () => {
     expect(double.value).toBe(4)
   })
 
-  test('evaluating works', async() => {
+  it('uses last result', async () => {
+    const evaluating = ref(false)
+    const resolutions: Array<() => void> = []
+
+    const counter = ref(1)
+    const double = computedAsync(() => {
+      const result = counter.value * 2
+      return new Promise(resolve => (resolutions.push(() => resolve(result))))
+    }, undefined, evaluating)
+
+    await nextTick()
+
+    expect(double.value).toBeUndefined()
+    expect(evaluating.value).toBe(true)
+    expect(resolutions).toHaveLength(1)
+
+    resolutions[0]()
+    await nextTick()
+    await nextTick()
+
+    expect(double.value).toBe(2)
+    expect(evaluating.value).toBe(false)
+
+    counter.value = 2
+    await nextTick()
+    counter.value = 3
+    await nextTick()
+    counter.value = 4
+    await nextTick()
+
+    expect(evaluating.value).toBe(true)
+    expect(resolutions).toHaveLength(4)
+
+    resolutions[1]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(true)
+    expect(double.value).toBe(2)
+
+    resolutions[3]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(false)
+    expect(double.value).toBe(8)
+
+    resolutions[2]()
+    await nextTick()
+    await nextTick()
+
+    expect(evaluating.value).toBe(false)
+    expect(double.value).toBe(8)
+  })
+
+  test('evaluating works', async () => {
     const evaluating = ref(false)
 
     const data = computedAsync(() =>
@@ -111,7 +166,7 @@ describe('computedAsync', () => {
     expect(data.value).toBe('data')
   })
 
-  test('triggers', async() => {
+  test('triggers', async () => {
     const counter = ref(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
@@ -139,7 +194,7 @@ describe('computedAsync', () => {
     expect(other.value).toBe(5)
   })
 
-  test('cancel is called', async() => {
+  test('cancel is called', async () => {
     const onCancel = vitest.fn()
 
     const data = ref('initial')
@@ -174,7 +229,7 @@ describe('computedAsync', () => {
     expect(uppercase.value).toBe('FINAL')
   })
 
-  test('cancel is called for lazy', async() => {
+  test('cancel is called for lazy', async () => {
     const onCancel = vitest.fn()
 
     const data = ref('initial')

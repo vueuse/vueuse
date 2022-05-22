@@ -5,7 +5,7 @@ import { ref, watch } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { UseObservableOptions } from '../useObservable'
 
-export interface UseSubjectOptions extends UseObservableOptions {
+export interface UseSubjectOptions<I = undefined> extends Omit<UseObservableOptions<I>, 'initialValue'> {
 }
 
 export function useSubject<H>(subject: BehaviorSubject<H>, options?: UseSubjectOptions): Ref<H>

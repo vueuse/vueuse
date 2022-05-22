@@ -31,7 +31,11 @@ export function toRefs<T extends object>(
           objectRef.value = copy
         }
         else {
-          objectRef.value = { ...objectRef.value, [key]: v }
+          const newObject = { ...objectRef.value, [key]: v }
+
+          Object.setPrototypeOf(newObject, objectRef.value)
+
+          objectRef.value = newObject
         }
       },
     }))

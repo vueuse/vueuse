@@ -5,13 +5,12 @@ import { useTimeoutPoll } from '@vueuse/core'
 
 const count = ref(0)
 
-const fetchData = async() => {
+const fetchData = async () => {
   await promiseTimeout(1000)
   count.value++
 }
 
 const { isActive, pause, resume } = useTimeoutPoll(fetchData, 1000)
-
 </script>
 
 <template>

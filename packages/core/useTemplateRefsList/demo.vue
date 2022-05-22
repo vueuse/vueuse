@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { nextTick, ref, watch } from 'vue'
+import { useTemplateRefsList } from '@vueuse/core'
+
+const count = ref(5)
+const refs = useTemplateRefsList<HTMLDivElement>()
+
+watch(refs, async () => {
+  await nextTick()
+  console.log([...refs.value])
+}, {
+  deep: true,
+  flush: 'post',
+})
+</script>
+
 <template>
   <span v-for="i of count" :key="i" :ref="refs.set" class="mr-2">
     {{ i }}
@@ -11,19 +27,3 @@
   </button>
   <note>Open the console to see the output</note>
 </template>
-
-<script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
-import { useTemplateRefsList } from '@vueuse/core'
-
-const count = ref(5)
-const refs = useTemplateRefsList<HTMLDivElement>()
-
-watch(refs, async() => {
-  await nextTick()
-  console.log([...refs.value])
-}, {
-  deep: true,
-  flush: 'post',
-})
-</script>

@@ -61,3 +61,18 @@ import { useAxios } from '@vueuse/integrations/useAxios'
 const { execute } = useAxios(url1, {}, { immediate: false })
 execute(url2)
 ```
+
+use an instance of axios with `immediate` options
+
+```ts
+import axios from 'axios'
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const instance = axios.create({
+  baseURL: '/api',
+})
+
+const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance, {
+  immediate: false,
+})
+```

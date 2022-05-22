@@ -80,7 +80,7 @@ export interface WebNotificationOptions {
   vibrate?: number[]
 }
 
-export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow{
+export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
 
 }
 
@@ -105,7 +105,7 @@ export const useWebNotification = (
   const notification: Ref<Notification | null> = ref(null)
 
   // Request permission to use web notifications:
-  const requestPermission = async() => {
+  const requestPermission = async () => {
     if (!isSupported)
       return
 
@@ -119,7 +119,7 @@ export const useWebNotification = (
   const onClose: EventHook = createEventHook<Event>()
 
   // Show notification method:
-  const show = async(overrides?: WebNotificationOptions) => {
+  const show = async (overrides?: WebNotificationOptions) => {
     if (!isSupported)
       return
 
@@ -142,7 +142,7 @@ export const useWebNotification = (
   }
 
   // On mount, attempt to request permission:
-  tryOnMounted(async() => {
+  tryOnMounted(async () => {
     if (isSupported)
       await requestPermission()
   })

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { contributors, coreTeamMembers } from '../../../contributors'
 </script>
+
 <template>
   <h2 op50 font-normal pt-5 pb-2>
     Meet The Team
@@ -13,7 +14,3 @@ import { contributors, coreTeamMembers } from '../../../contributors'
     />
   </div>
 </template>
-
-<script setup lang="ts">
-
-</script>
