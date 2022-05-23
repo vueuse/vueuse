@@ -48,7 +48,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRef<number> = 1000, options
   }
 
   function resume() {
-    if (interval <= 0)
+    if (unref(interval) <= 0)
       return
     isActive.value = true
     if (immediateCallback)
