@@ -55,7 +55,7 @@ describe('useFetch', () => {
   test('should use custom fetch', async () => {
     let count = 0
     await useFetch('https://example.com/', {
-      fetch(input: RequestInfo, init?: RequestInit | undefined) {
+      fetch(input, init) {
         count = 1
         return window.fetch(input, init)
       },
