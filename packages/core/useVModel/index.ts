@@ -18,6 +18,7 @@ export interface VModelOptions<T> {
   eventName?: string
   /**
    * Attempting to check for changes of properties in a deeply nested object or array.
+   * Apply only when `passive` option is set to `true`
    *
    * @default false
    */
@@ -68,7 +69,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     }
   }
 
-  event = eventName || event || `update:${key}`
+  event = eventName || event || `update:${key!.toString()}`
 
   const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
 
