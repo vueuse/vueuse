@@ -6,7 +6,7 @@ category: Browser
 
 Reactive browser location
 
-> NOTE: If Vue Router is installed, use [`useRoute`](https://router.vuejs.org/guide/advanced/composition-api.html) provided by Vue Router instead.
+> NOTE: If you're using Vue Router, use [`useRoute`](https://router.vuejs.org/guide/advanced/composition-api.html) provided by Vue Router instead.
 
 ## Usage
 
