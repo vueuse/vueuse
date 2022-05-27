@@ -16,7 +16,7 @@ const toggleLock = useToggle(isLocked)
 
 <template>
   <div class="flex flex-wrap">
-    <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
+    <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded p-1" style="padding-right: 10px;padding-bottom:20px;">
       <div class="w-500px h-400px relative">
         <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
           TopLeft

@@ -80,12 +80,13 @@ export function useScrollLock(
       if (isLockedHorizontal) {
         previousStatus.padding.bottom = ele.style.paddingBottom
 
-        ele.style.paddingBottom = ele.style.paddingBottom ? `calc(${ele.style.paddingBottom} + ${scrollbarSize!.vertical})` : scrollbarSize!.vertical
+        ele.style.paddingBottom =  `calc(${getComputedStyle(ele).paddingBottom} + ${scrollbarSize!.vertical})`
       }
 
       if (isLockedVertical) {
         previousStatus.padding.right = ele.style.paddingRight
-        ele.style.paddingRight = ele.style.paddingRight ? `calc(${ele.style.paddingRight} + ${scrollbarSize!.vertical})` : scrollbarSize!.vertical
+
+        ele.style.paddingRight =  `calc(${getComputedStyle(ele).paddingRight} + ${scrollbarSize!.vertical})`
       }
     }
 
