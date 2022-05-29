@@ -1,38 +1,33 @@
 import { ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
-
-export interface UseDropZoneHandlers {
-  dragenter: (event: DragEvent) => void
-  dragover: (event: DragEvent) => void
-  dragleave: (event: DragEvent) => void
-  drop: (event: DragEvent) => void
-}
+import type { MaybeRef } from '@vueuse/shared'
+import { isClient } from '@vueuse/shared'
+import { useEventListener } from '../useEventListener'
 
 export interface UseDropZoneReturn {
   isOverDropZone: Ref<boolean>
-  handlers: UseDropZoneHandlers
 }
 
-export function useDropZone(onDrop: (files: File[] | null) => void): UseDropZoneReturn {
+export function useDropZone(target: MaybeRef<HTMLElement | null>, onDrop: (files: File[] | null) => void): UseDropZoneReturn {
   const isOverDropZone = ref(false)
   const counter = ref(0)
 
-  const handlers = {
-    dragenter(event: DragEvent) {
+  if (isClient) {
+    useEventListener<DragEvent>(target, 'dragenter', (event) => {
       event.preventDefault()
       counter.value += 1
       isOverDropZone.value = true
-    },
-    dragover(event: DragEvent) {
+    })
+    useEventListener<DragEvent>(target, 'dragover', (event) => {
       event.preventDefault()
-    },
-    dragleave(event: DragEvent) {
+    })
+    useEventListener<DragEvent>(target, 'dragleave', (event) => {
       event.preventDefault()
       counter.value -= 1
       if (counter.value === 0)
         isOverDropZone.value = false
-    },
-    drop(event: DragEvent) {
+    })
+    useEventListener<DragEvent>(target, 'drop', (event) => {
       event.preventDefault()
       counter.value = 0
       isOverDropZone.value = false
@@ -42,11 +37,10 @@ export function useDropZone(onDrop: (files: File[] | null) => void): UseDropZone
         return
       }
       onDrop(files)
-    },
+    })
   }
 
   return {
     isOverDropZone,
-    handlers,
   }
 }

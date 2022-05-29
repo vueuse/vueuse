@@ -12,14 +12,16 @@ Create an zone where files can be dropped.
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
 
+const dropZoneRef = ref(null)
+
 function onDrop(files: File[] | null) {
   // Trigger an event when file(s) is drop on zone
 }
 
-const { handlers, isOverDropZone } = useDropZone(onDrop)
+const { isOverDropZone } = useDropZone(onDrop)
 
 <template>
-  <div v-on="handlers">
+  <div ref="dropZoneRef">
     Drop files here
   </div>
 </template>
