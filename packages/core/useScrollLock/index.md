@@ -16,7 +16,7 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 const el = ref<HTMLElement | null>(null)
 const isLocked = useScrollLock(el, false, {
-  avoidShake: !isMobile
+  placeholder: !isMobile
 })
 
 isLocked.value = true // lock

@@ -31,14 +31,19 @@ export function useScrollLock(
   element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
   option: {
-    avoidShake?: boolean
+    /**
+     * This option will try to add a placeholder for the scrollbar if true.
+     *
+     * @default false
+     */
+    placeholder?: boolean
   } = {}
 ) {
   const isLocked = ref(initialState)
   let stopTouchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
-  if (option.avoidShake && !scrollbarSize) {
+  if (option.placeholder && !scrollbarSize) {
     scrollbarSize = getScrollbarSize()
   }
 
@@ -70,7 +75,7 @@ export function useScrollLock(
     if (!ele || isLocked.value)
       return
 
-    if (option.avoidShake) {
+    if (option.placeholder) {
       const isLockedHorizontal = ele.clientWidth !== ele.scrollWidth
       const isLockedVertical = ele.clientHeight !== ele.scrollHeight
 
