@@ -14,7 +14,7 @@ import { useDropZone } from '@vueuse/core'
 
 const dropZoneRef = ref(null)
 
-function onDrop(files: File[] | null) {
+function onDrop(dropZoneRef, files: File[] | null) {
   // Trigger an event when file(s) is drop on zone
 }
 
