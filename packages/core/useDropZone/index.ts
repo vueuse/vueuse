@@ -10,12 +10,12 @@ export interface UseDropZoneReturn {
 
 export function useDropZone(target: MaybeRef<HTMLElement | null>, onDrop: (files: File[] | null) => void): UseDropZoneReturn {
   const isOverDropZone = ref(false)
-  const counter = ref(0)
+  let counter = 0
 
   if (isClient) {
     useEventListener<DragEvent>(target, 'dragenter', (event) => {
       event.preventDefault()
-      counter.value += 1
+      counter += 1
       isOverDropZone.value = true
     })
     useEventListener<DragEvent>(target, 'dragover', (event) => {
@@ -23,13 +23,13 @@ export function useDropZone(target: MaybeRef<HTMLElement | null>, onDrop: (files
     })
     useEventListener<DragEvent>(target, 'dragleave', (event) => {
       event.preventDefault()
-      counter.value -= 1
-      if (counter.value === 0)
+      counter -= 1
+      if (counter === 0)
         isOverDropZone.value = false
     })
     useEventListener<DragEvent>(target, 'drop', (event) => {
       event.preventDefault()
-      counter.value = 0
+      counter = 0
       isOverDropZone.value = false
       const files = Array.from(event.dataTransfer?.files ?? [])
       if (files.length === 0) {
