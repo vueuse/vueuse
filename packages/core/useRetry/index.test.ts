@@ -16,6 +16,22 @@ describe('useRetry', () => {
     expect(useRetry).toBeDefined()
   })
 
+  it('should retry until counter reach 2', async () => {
+    let counter = 0
+
+    const finalValue = await useRetry(() => counter++, value => value === 2)
+
+    expect(finalValue).toBe(2)
+  })
+
+  it('should retry until maxRetries are reached', async () => {
+    let counter = 0
+
+    const finalValue = await useRetry(() => counter++, value => value === 5)
+
+    expect(finalValue).toBe(3)
+  })
+
   it('should retry until 2xx response', async () => {
     const mockUrls = [
       'status=400',

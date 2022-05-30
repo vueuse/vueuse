@@ -9,7 +9,7 @@ export interface UseRetryOptions {
 export async function useRetry<T extends (...args: any) => R | Promise<R>, R = ReturnType<T>>(
   source: T,
   cb: (result: R) => boolean | Promise<boolean>,
-  options: UseRetryOptions,
+  options: UseRetryOptions = {},
 ): Promise<R> {
   const {
     maxRetries = 3,
@@ -18,14 +18,16 @@ export async function useRetry<T extends (...args: any) => R | Promise<R>, R = R
   } = options
 
   let fulfilled = false
+  let retries = 0
 
   let returnValue: R
 
   // TODO @Shinigami92 2022-05-30: Use interval and timeout
   do {
+    retries++
     returnValue = await source()
     fulfilled = await cb(returnValue)
-  } while (!fulfilled)
+  } while (!fulfilled && retries <= maxRetries)
 
   return returnValue
 }
