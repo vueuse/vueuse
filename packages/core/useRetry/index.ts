@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export interface UseRetryOptions {
+  maxRetries?: number
   interval?: number
   timeout?: number
 }
@@ -11,6 +12,7 @@ export async function useRetry<T extends (...args: any) => R | Promise<R>, R = R
   options: UseRetryOptions,
 ): Promise<R> {
   const {
+    maxRetries = 3,
     interval = 100,
     timeout = 1000,
   } = options
