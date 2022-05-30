@@ -34,6 +34,13 @@ export interface AsyncStateOptions {
    * @default true
    */
   resetOnExecute?: boolean
+  /**
+   *
+   * An error is thrown when executing the execute function
+   *
+   * @default false
+   */
+  throw?: boolean
 }
 
 /**
@@ -84,6 +91,7 @@ export function useAsyncState<T>(
     catch (e) {
       error.value = e
       onError(e)
+      throw error
     }
   }
 
