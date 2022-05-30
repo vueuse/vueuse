@@ -1,0 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export interface UseRetryOptions {
+  interval?: number
+  timeout?: number
+}
+
+// TODO @Shinigami92 2022-05-30: Find out how to exactly type R so it can be used in the callback
+export async function useRetry<T extends (...args: any) => R | Promise<R>, R = ReturnType<T>>(
+  source: T,
+  cb: (result: R) => boolean | Promise<boolean>,
+  options: UseRetryOptions,
+): Promise<R> {
+  const {
+    interval = 100,
+    timeout = 1000,
+  } = options
+
+  let fulfilled = false
+
+  let returnValue: R
+
+  // TODO @Shinigami92 2022-05-30: Use interval and timeout
+  do {
+    returnValue = await source()
+    fulfilled = await cb(returnValue)
+  } while (!fulfilled)
+
+  return returnValue
+}
