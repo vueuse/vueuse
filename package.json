@@ -2,7 +2,7 @@
   "name": "@vueuse/monorepo",
   "version": "8.5.0",
   "private": true,
-  "packageManager": "pnpm@7.0.0",
+  "packageManager": "pnpm@7.1.7",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
@@ -73,7 +73,7 @@
     "msw": "^0.41.0",
     "node-fetch": "^3.2.4",
     "ohmyfetch": "^0.4.18",
-    "pnpm": "^7.1.5",
+    "pnpm": "^7.1.7",
     "postcss": "^8.4.14",
     "postcss-nested": "^5.0.6",
     "prettier": "^2.6.2",
@@ -103,7 +103,7 @@
       "electron"
     ],
     "overrides": {
-      "vue-demi": "0.12.5"
+      "vue-demi": "0.13.0"
     }
   },
   "simple-git-hooks": {
