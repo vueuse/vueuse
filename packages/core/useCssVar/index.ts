@@ -31,7 +31,7 @@ export function useCssVar(
     ([el, prop]) => {
       if (el && window) {
         const value = window.getComputedStyle(el).getPropertyValue(prop)
-        variable.value = value || initialValue || ''
+        variable.value = value || initialValue
       }
     },
     { immediate: true },
