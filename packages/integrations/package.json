@@ -27,6 +27,11 @@
       "require": "./index.cjs"
     },
     "./*": "./*",
+    "./useAsyncValidator": {
+      "types": "./useAsyncValidator.d.ts",
+      "import": "./useAsyncValidator.mjs",
+      "require": "./useAsyncValidator.cjs"
+    },
     "./useAxios": {
       "types": "./useAxios.d.ts",
       "import": "./useAxios.mjs",
@@ -76,6 +81,11 @@
       "types": "./useChangeCase.d.ts",
       "import": "./useChangeCase.mjs",
       "require": "./useChangeCase.cjs"
+    },
+    "./useAsyncValidator/component": {
+      "types": "./useAsyncValidator/component.d.ts",
+      "import": "./useAsyncValidator/component.mjs",
+      "require": "./useAsyncValidator/component.cjs"
     }
   },
   "main": "./index.cjs",
@@ -84,6 +94,7 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
   "peerDependencies": {
+    "async-validator": "*",
     "axios": "*",
     "change-case": "*",
     "drauu": "*",
@@ -96,6 +107,9 @@
   },
   "peerDependenciesMeta": {
     "axios": {
+      "optional": true
+    },
+    "async-validator": {
       "optional": true
     },
     "change-case": {
@@ -131,6 +145,7 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
+    "async-validator": "^4.0.7",
     "axios": "^0.27.2",
     "change-case": "^4.1.2",
     "drauu": "^0.3.0",
