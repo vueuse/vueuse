@@ -5,6 +5,10 @@ import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 
+export interface UseCssVarOptions extends ConfigurableWindow {
+  initialValue?: string
+}
+
 /**
  * Manipulate CSS variables.
  *
@@ -17,10 +21,9 @@ import { unrefElement } from '../unrefElement'
 export function useCssVar(
   prop: MaybeRef<string>,
   target?: MaybeElementRef,
-  initialValue?: string,
-  { window = defaultWindow }: ConfigurableWindow = {},
+  { window = defaultWindow, initialValue = '' }: UseCssVarOptions = {},
 ) {
-  const variable = ref('')
+  const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   watch(
