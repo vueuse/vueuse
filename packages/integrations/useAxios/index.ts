@@ -65,9 +65,15 @@ export interface UseAxiosReturn<T> {
   cancel: (message?: string | undefined) => void
 
   /**
-   * abort aborted
+   * isAborted alias
+   * @deprecated use `isCanceled` instead
    */
   canceled: Ref<boolean>
+
+  /**
+   * isAborted alias
+   */
+  isCanceled: Ref<boolean>
 }
 export interface StrictUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
@@ -192,6 +198,7 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isAborted,
     canceled: isAborted,
     aborted: isAborted,
+    isCanceled: isAborted,
     abort,
     execute,
   } as OverallUseAxiosReturn<T>

@@ -46,6 +46,16 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBe('bar')
       })
 
+      test('return initialValue', async () => {
+        const params = useUrlSearchParams(mode, {
+          initialValue: {
+            foo: 'bar',
+          },
+        })
+
+        expect(params.foo).toBe('bar')
+      })
+
       test('update params on poststate event', async () => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()

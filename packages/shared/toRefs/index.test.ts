@@ -96,4 +96,22 @@ describe('toRefs', () => {
     refs[1].value = 1
     expect(spy).toHaveBeenLastCalledWith(['a', 1])
   })
+
+  it('should save instance of class', () => {
+    class SomeClass {
+      v = 1
+
+      fn() {
+
+      }
+    }
+
+    const obj = ref(new SomeClass())
+
+    const { v } = toRefs(obj)
+
+    v.value = 10
+
+    expect(obj.value instanceof SomeClass).toBeTruthy()
+  })
 })

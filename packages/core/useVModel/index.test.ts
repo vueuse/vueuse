@@ -155,4 +155,26 @@ describe('useVModel', () => {
     expect(dataD.value).toBe(null)
     expect(dataE.value).toBe('default-data')
   })
+
+  it('Should work with classes', async () => {
+    const emitMock = vitest.fn()
+
+    class SomeClass {
+      num1 = 1
+
+      someMethod() {}
+    }
+
+    const props = { cl: new SomeClass() }
+
+    const ref = useVModel(props, 'cl', emitMock, { passive: true, deep: true })
+
+    ref.value.num1 = 10
+
+    await nextTick()
+
+    const emitValue = (emitMock as any).calls[0][1]
+
+    expect(emitValue instanceof SomeClass).toBeTruthy()
+  })
 })
