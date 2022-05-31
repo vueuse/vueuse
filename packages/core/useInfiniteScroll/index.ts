@@ -51,7 +51,7 @@ export function useInfiniteScroll(
 
   watch(
     () => state.arrivedState[direction],
-    async(v) => {
+    async (v) => {
       if (v) {
         const elem = unref(element) as Element
         const previous = {
