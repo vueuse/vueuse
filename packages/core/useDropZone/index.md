@@ -18,12 +18,12 @@ function onDrop(dropZoneRef, files: File[] | null) {
   // Trigger an event when file(s) is drop on zone
 }
 
-const { isOverDropZone } = useDropZone(onDrop)
+const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
+</script>
 
 <template>
   <div ref="dropZoneRef">
     Drop files here
   </div>
 </template>
-</script>
 ```
