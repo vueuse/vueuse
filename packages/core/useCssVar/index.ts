@@ -17,19 +17,18 @@ import { unrefElement } from '../unrefElement'
 export function useCssVar(
   prop: MaybeRef<string>,
   target?: MaybeElementRef,
-  initialValue?: MaybeRef<string>,
+  initialValue?: string,
   { window = defaultWindow }: ConfigurableWindow = {},
 ) {
   const variable = ref('')
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
-  const _initialValue = unref(initialValue)
 
   watch(
     [elRef, () => unref(prop)],
     ([el, prop]) => {
       if (el && window) {
         const value = window.getComputedStyle(el).getPropertyValue(prop)
-        variable.value = value == '' ? _initialValue : value
+        variable.value = value || initialValue || ''
       }
     },
     { immediate: true },
