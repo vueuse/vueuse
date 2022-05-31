@@ -28,9 +28,9 @@
     },
     "./*": "./*",
     "./useAsyncValidator": {
+      "types": "./useAsyncValidator.d.ts",
       "import": "./useAsyncValidator.mjs",
-      "require": "./useAsyncValidator.cjs",
-      "types": "./useAsyncValidator.d.ts"
+      "require": "./useAsyncValidator.cjs"
     },
     "./useAxios": {
       "types": "./useAxios.d.ts",
@@ -83,9 +83,9 @@
       "require": "./useChangeCase.cjs"
     },
     "./useAsyncValidator/component": {
+      "types": "./useAsyncValidator/component.d.ts",
       "import": "./useAsyncValidator/component.mjs",
-      "require": "./useAsyncValidator/component.cjs",
-      "types": "./useAsyncValidator/component.d.ts"
+      "require": "./useAsyncValidator/component.cjs"
     }
   },
   "main": "./index.cjs",
