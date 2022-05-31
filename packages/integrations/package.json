@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "8.5.0",
+  "version": "8.6.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
