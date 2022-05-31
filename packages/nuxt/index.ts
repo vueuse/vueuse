@@ -12,6 +12,7 @@ const disabledFunctions = [
   'useCookie',
   'useHead',
   'useTitle',
+  'useStorage',
 ]
 
 const packages = [
