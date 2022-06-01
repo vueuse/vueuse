@@ -1,33 +1,116 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { EventHookOn } from '@vueuse/shared'
+import { createEventHook, until } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+
 export interface UseRetryOptions {
+  /**
+   * Max retries
+   * `0` means no retries
+   *
+   * @default 3
+   */
   maxRetries?: number
+
+  /**
+   * Interval for retry number of millisecond
+   * `0` means use browser default
+   *
+   * @default 100
+   */
   interval?: number
+
+  /**
+   * Timeout for abort retry after number of millisecond
+   * `0` means use browser default
+   *
+   * @default 1000
+   */
   timeout?: number
 }
 
-// TODO @Shinigami92 2022-05-30: Find out how to exactly type R so it can be used in the callback
-export async function useRetry<T extends (...args: any) => R | Promise<R>, R = ReturnType<T>>(
-  source: T,
-  cb: (result: R) => boolean | Promise<boolean>,
-  options: UseRetryOptions = {},
-): Promise<R> {
-  const {
-    maxRetries = 3,
-    interval = 100,
-    timeout = 1000,
-  } = options
+export interface UseRetryReturn<T> {
+  /**
+   * Indicates if the retry has finished
+   */
+  isFinished: Ref<boolean>
 
-  let fulfilled = false
+  /**
+   * Fires after the retry has finished
+   */
+  onFinish: EventHookOn<T>
+
+  // TODO @Shinigami92 2022-06-01: Add retry readonly ref
+
+  // TODO @Shinigami92 2022-06-01: Add loading (?)
+}
+
+export function useRetry<T>(
+  source: () => T,
+  cb: (result: T) => boolean | PromiseLike<boolean>,
+  options: UseRetryOptions = {},
+): UseRetryReturn<T> & PromiseLike<UseRetryReturn<T>> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { maxRetries = 3, interval = 100, timeout = 1000 } = options
+
+  // Event Hooks
+  const finishEvent = createEventHook<T>()
+
+  const isFinished = ref(false)
+
+  // TODO @Shinigami92 2022-06-01: Support abort
+
   let retries = 0
 
-  let returnValue: R
+  const execute = async (): Promise<void> => {
+    return new Promise<T>((resolve, reject) => {
+      const returnValue = source()
+      return Promise.resolve(cb(returnValue))
+        .then((fulfilled) => {
+          if (fulfilled)
+            resolve(returnValue)
+          else
+            reject(returnValue)
+        })
+    })
+      .then((returnValue) => {
+        finishEvent.trigger(returnValue)
+        isFinished.value = true
+      })
+      .catch((returnValue) => {
+        // TODO @Shinigami92 2022-06-01: Check timeout
+        if (retries < maxRetries) {
+          retries++
+          setTimeout(execute, interval)
+        }
+        else {
+          finishEvent.trigger(returnValue)
+          isFinished.value = true
+        }
+      })
+  }
 
-  // TODO @Shinigami92 2022-05-30: Use interval and timeout
-  do {
-    retries++
-    returnValue = await source()
-    fulfilled = await cb(returnValue)
-  } while (!fulfilled && retries <= maxRetries)
+  execute()
 
-  return returnValue
+  const shell: UseRetryReturn<T> = {
+    isFinished,
+
+    onFinish: finishEvent.on,
+  }
+
+  function waitUntilFinished(): Promise<UseRetryReturn<T>> {
+    return new Promise<UseRetryReturn<T>>((resolve, reject) => {
+      until(isFinished)
+        .toBe(true)
+        .then(() => resolve(shell))
+        .catch(error => reject(error))
+    })
+  }
+
+  return {
+    ...shell,
+    then(onFulfilled, onRejected) {
+      return waitUntilFinished().then(onFulfilled, onRejected)
+    },
+  }
 }

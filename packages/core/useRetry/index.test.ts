@@ -3,13 +3,11 @@ import { useFetch } from '../useFetch'
 import { useRetry } from '.'
 import '../../.test/mockServer'
 
-let onFetchErrorSpy = vitest.fn()
-let onFetchResponseSpy = vitest.fn()
+let onFinishSpy = vitest.fn()
 
 describe('useRetry', () => {
   beforeEach(() => {
-    onFetchErrorSpy = vitest.fn()
-    onFetchResponseSpy = vitest.fn()
+    onFinishSpy = vitest.fn()
   })
 
   it('should be defined', () => {
@@ -19,17 +17,37 @@ describe('useRetry', () => {
   it('should retry until counter reach 2', async () => {
     let counter = 0
 
-    const finalValue = await useRetry(() => counter++, value => value === 2)
+    const { onFinish, isFinished } = await useRetry(
+      () => counter++,
+      value => value === 2,
+      { interval: 10 },
+    )
 
-    expect(finalValue).toBe(2)
+    expect(isFinished.value).toBeTruthy()
+
+    onFinish(onFinishSpy)
+    await retry(() => {
+      expect(onFinishSpy).toHaveBeenCalled()
+    })
   })
 
   it('should retry until maxRetries are reached', async () => {
     let counter = 0
 
-    const finalValue = await useRetry(() => counter++, value => value === 5)
+    const { onFinish, isFinished } = await useRetry(
+      () => counter++,
+      value => value === 5,
+      { interval: 10 },
+    )
 
-    expect(finalValue).toBe(3)
+    expect(isFinished.value).toBeTruthy()
+
+    expect(counter).toBe(4)
+
+    onFinish(onFinishSpy)
+    await retry(() => {
+      expect(onFinishSpy).toHaveBeenCalled()
+    })
   })
 
   it('should retry until 2xx response', async () => {
@@ -41,7 +59,7 @@ describe('useRetry', () => {
 
     let cycleStatusCodesCounter = 0
 
-    const { statusCode: finalStatusCode, onFetchResponse, onFetchError } = await useRetry(
+    const { onFinish, isFinished } = useRetry(
       () => {
         const useFetchResult = useFetch(`https://example.com?${mockUrls[cycleStatusCodesCounter]}`)
         cycleStatusCodesCounter++
@@ -51,18 +69,15 @@ describe('useRetry', () => {
         // TODO @Shinigami92 2022-05-30: Remove this log statement
         // console.log(statusCode.value)
 
-        return statusCode.value != null && statusCode.value >= 200 && statusCode.value < 300
+        return statusCode.value === 200
       },
-      { interval: 100, timeout: 1000 },
+      { interval: 10 },
     )
 
-    onFetchResponse(onFetchResponseSpy)
-    onFetchError(onFetchErrorSpy)
+    onFinish(onFinishSpy)
     await retry(() => {
-      expect(onFetchErrorSpy).not.toHaveBeenCalled()
-      expect(finalStatusCode.value).toEqual(200)
-      // TODO @Shinigami92 2022-05-30: Find out why onFetchResponseSpy is not called
-      // expect(onFetchResponseSpy).toHaveBeenCalled()
+      expect(isFinished.value).toBeTruthy()
+      expect(onFinishSpy).toHaveBeenCalled()
     })
   })
 })
