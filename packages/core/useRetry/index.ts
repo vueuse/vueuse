@@ -50,7 +50,6 @@ export function useRetry<T>(
   cb: (result: T) => boolean | PromiseLike<boolean>,
   options: UseRetryOptions = {},
 ): UseRetryReturn<T> & PromiseLike<UseRetryReturn<T>> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { maxRetries = 3, interval = 100, timeout = 1000 } = options
 
   // Event Hooks
@@ -61,6 +60,8 @@ export function useRetry<T>(
   // TODO @Shinigami92 2022-06-01: Support abort
 
   let retries = 0
+
+  const startedAt = Date.now()
 
   const execute = async (): Promise<void> => {
     return new Promise<T>((resolve, reject) => {
@@ -78,8 +79,9 @@ export function useRetry<T>(
         isFinished.value = true
       })
       .catch((returnValue) => {
-        // TODO @Shinigami92 2022-06-01: Check timeout
-        if (retries < maxRetries) {
+        const now = Date.now()
+        const elapsed = now - startedAt
+        if (retries < maxRetries && elapsed < timeout) {
           retries++
           setTimeout(execute, interval)
         }

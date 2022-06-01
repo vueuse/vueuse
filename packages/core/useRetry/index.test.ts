@@ -50,6 +50,20 @@ describe('useRetry', () => {
     })
   })
 
+  it('should retry until timeout is reached', async () => {
+    const { onFinish, isFinished } = useRetry(
+      () => true,
+      value => value === false,
+      { interval: 10, timeout: 20, maxRetries: Infinity },
+    )
+
+    onFinish(onFinishSpy)
+    await retry(() => {
+      expect(isFinished.value).toBeTruthy()
+      expect(onFinishSpy).toHaveBeenCalled()
+    })
+  })
+
   it('should retry until 2xx response', async () => {
     const mockUrls = [
       'status=400',
