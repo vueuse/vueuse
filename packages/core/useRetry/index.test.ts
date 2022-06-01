@@ -17,16 +17,15 @@ describe('useRetry', () => {
   it('should retry until counter reach 2', async () => {
     let counter = 0
 
-    const { onFinish, isFinished } = await useRetry(
+    const { onFinish, isFinished } = useRetry(
       () => counter++,
       value => value === 2,
       { interval: 10 },
     )
 
-    expect(isFinished.value).toBeTruthy()
-
     onFinish(onFinishSpy)
     await retry(() => {
+      expect(isFinished.value).toBeTruthy()
       expect(onFinishSpy).toHaveBeenCalled()
     })
   })
@@ -34,18 +33,16 @@ describe('useRetry', () => {
   it('should retry until maxRetries are reached', async () => {
     let counter = 0
 
-    const { onFinish, isFinished } = await useRetry(
+    const { onFinish, isFinished } = useRetry(
       () => counter++,
       value => value === 5,
       { interval: 10 },
     )
 
-    expect(isFinished.value).toBeTruthy()
-
-    expect(counter).toBe(4)
-
     onFinish(onFinishSpy)
     await retry(() => {
+      expect(isFinished.value).toBeTruthy()
+      expect(counter).toBe(4)
       expect(onFinishSpy).toHaveBeenCalled()
     })
   })
@@ -79,12 +76,7 @@ describe('useRetry', () => {
         cycleStatusCodesCounter++
         return useFetchResult
       },
-      ({ statusCode }) => {
-        // TODO @Shinigami92 2022-05-30: Remove this log statement
-        // console.log(statusCode.value)
-
-        return statusCode.value === 200
-      },
+      ({ statusCode }) => statusCode.value === 200,
       { interval: 10 },
     )
 

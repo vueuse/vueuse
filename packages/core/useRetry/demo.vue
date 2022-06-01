@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { useFetch, useRetry } from '@vueuse/core'
+import { ref } from 'vue'
 
-const { statusCode: finalStatusCode } = await useRetry(
+const finalStatusCode = ref<number | null>(null)
+
+const { onFinish } = useRetry(
   () => useFetch('https://example.com/api/users'),
-  ({ statusCode }) => {
-    return statusCode.value != null && statusCode.value >= 200 && statusCode.value < 300
-  },
+  ({ statusCode }) => statusCode.value != null && statusCode.value >= 200 && statusCode.value < 300,
   { interval: 100, timeout: 1000 },
 )
+
+onFinish(({ statusCode }) => {
+  finalStatusCode.value = statusCode.value
+})
 </script>
 
 <template>

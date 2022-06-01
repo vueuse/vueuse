@@ -1,5 +1,5 @@
 import type { EventHookOn } from '@vueuse/shared'
-import { createEventHook, until } from '@vueuse/shared'
+import { createEventHook } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 
@@ -49,7 +49,7 @@ export function useRetry<T>(
   source: () => T,
   cb: (result: T) => boolean | PromiseLike<boolean>,
   options: UseRetryOptions = {},
-): UseRetryReturn<T> & PromiseLike<UseRetryReturn<T>> {
+): UseRetryReturn<T> {
   const { maxRetries = 3, interval = 100, timeout = 1000 } = options
 
   // Event Hooks
@@ -100,19 +100,7 @@ export function useRetry<T>(
     onFinish: finishEvent.on,
   }
 
-  function waitUntilFinished(): Promise<UseRetryReturn<T>> {
-    return new Promise<UseRetryReturn<T>>((resolve, reject) => {
-      until(isFinished)
-        .toBe(true)
-        .then(() => resolve(shell))
-        .catch(error => reject(error))
-    })
-  }
-
   return {
     ...shell,
-    then(onFulfilled, onRejected) {
-      return waitUntilFinished().then(onFulfilled, onRejected)
-    },
   }
 }
