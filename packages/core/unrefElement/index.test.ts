@@ -11,7 +11,7 @@ describe('unrefElement', () => {
   it('works with regular html elements', () => {
     const refKey = 'target'
 
-    const vm = mount(defineComponent({
+    mount(defineComponent({
       setup() {
         const targetEl = templateRef(refKey)
 
@@ -47,7 +47,7 @@ describe('unrefElement', () => {
 
     })
 
-    const vm = mount(defineComponent({
+    mount(defineComponent({
       setup() {
         const targetEl = ref<InstanceType<typeof helperComponent> | null>(null)
         const myText = ref('')
