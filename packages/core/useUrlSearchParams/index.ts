@@ -116,7 +116,11 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (shouldUpdate)
       updateState(params)
 
-    window.history.replaceState({}, '', window.location.pathname + constructQuery(params))
+    window.history.replaceState(
+      window.history.state,
+      window.document.title,
+      window.location.pathname + constructQuery(params)
+    )
 
     resume()
   }
