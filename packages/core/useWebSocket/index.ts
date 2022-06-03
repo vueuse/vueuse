@@ -20,10 +20,12 @@ export interface WebSocketOptions {
   heartbeat?: boolean | {
     /**
      * Message for the heartbeat
+     * 
+     * Or you can pass a function to generate message.
      *
      * @default 'ping'
      */
-    message?: string
+    message?: string | (() => string)
 
     /**
      * Interval, in milliseconds
@@ -239,7 +241,12 @@ export function useWebSocket<Data = any>(
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
-      () => send(message, false),
+      () => {
+        if (typeof message === 'string')
+          send(message, false)
+        else if (typeof message === 'function')
+          send(message(), false)
+      },
       interval,
       { immediate: false },
     )
