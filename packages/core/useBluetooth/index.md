@@ -66,7 +66,7 @@ const batteryPercent = ref<undefined | number>()
 
 const isGettingBatteryLevels = ref(false)
 
-const getBatteryLevels = async() => {
+const getBatteryLevels = async () => {
   isGettingBatteryLevels.value = true
 
   // Get the battery service:
