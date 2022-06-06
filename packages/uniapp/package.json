@@ -1,0 +1,41 @@
+{
+  "name": "@vueuse/uniapp",
+  "version": "8.6.0",
+  "description": "uniapp",
+  "license": "MIT",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/uniapp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/uniapp"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils",
+    "uniapp"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.cjs"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+  },
+  "dependencies": {
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
+  }
+}

@@ -132,4 +132,9 @@ export const packages: PackageManifest[] = [
     ],
     iife: false,
   },
+  {
+    name: 'uniapp',
+    display: 'UniApp',
+    description: 'Utilities for uniapp',
+  },
 ]
