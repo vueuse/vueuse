@@ -14,5 +14,5 @@ Basic internal clock that ticks every second
 ```ts
 import { useInternalClock } from '.'
 
-const { currentTime } = useInternalClock()
+const { currentTime } = useInternalClock({ tickRate: 100 })
 ```
