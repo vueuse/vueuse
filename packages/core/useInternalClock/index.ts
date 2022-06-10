@@ -22,11 +22,13 @@ export const useInternalClock = (options?: UseInternalClockOptions) => {
 
   const currentTime = ref(new Date())
 
-  useIntervalFn (() => {
+  const { pause, resume } = useIntervalFn (() => {
     currentTime.value = new Date()
   }, tickRate)
 
   return {
+    pause,
+    resume,
     currentTime,
   }
 }
