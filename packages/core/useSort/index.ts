@@ -54,8 +54,8 @@ export function useSort<T>(source: MaybeRef<T[]>, sortFn: UseSortFn<T>, options:
  * @param options
  */
 export function useSortWrapFn<T>(sortFn: UseSortFn<T>, options: UseSortOptions<T> = {}) {
-  return (arr: MaybeRef<T[]>, _options: UseSortOptions<T> = {}) => {
-    return useSort<T>(arr, sortFn, {
+  return (source: MaybeRef<T[]>, _options: UseSortOptions<T> = {}) => {
+    return useSort<T>(source, sortFn, {
       ...options,
       ..._options,
     })
