@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useQuickSort } from '@vueuse/core'
 import { rand } from '@vueuse/shared'
 import { computed, ref } from 'vue'
+import { quickSort } from '../useQuickSort'
+import { useSort } from '.'
 
 const objArr = [{
   name: 'John',
@@ -16,13 +17,13 @@ const objArr = [{
   name: 'Jenny',
   age: 22,
 }]
-const result2 = useQuickSort(objArr, {
+const result2 = useSort(objArr, quickSort, {
   compareFn: (a, b) => a.age - b.age,
 })
 
 const arrText = ref('')
 const inputArr = computed(() => arrText.value.split(','))
-const inputOut = useQuickSort(inputArr)
+const inputOut = useSort(inputArr, quickSort)
 
 function randomArr() {
   const arr = []
