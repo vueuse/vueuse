@@ -18,6 +18,13 @@ describe('useQuickSort', () => {
     expect(unref(sorted)).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   })
 
+  it('should dirty sort', () => {
+    const dirtyArr = [...arr]
+    const sorted = useQuickSort(dirtyArr, { dirty: true })
+    expect(unref(sorted)).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    expect(unref(dirtyArr)).toMatchObject([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  })
+
   it('should sort object', () => {
     const objArr = [
       {
