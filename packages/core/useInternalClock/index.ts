@@ -30,3 +30,5 @@ export const useInternalClock = (options?: UseInternalClockOptions) => {
     currentTime,
   }
 }
+
+export type UseInternalClockReturn = ReturnType<typeof useInternalClock>
