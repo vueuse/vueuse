@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useWizard } from '@vueuse/core'
+import { useStepper } from '@vueuse/core'
 import { reactive } from 'vue'
 
-const { index, current, next, steps, backTo, currentStepIs, isFirst, isLast, todo } = useWizard([
+const { index, current, next, steps, backTo, currentStepIs, isFirst, isLast, todo } = useStepper([
   'Billing address',
   'Terms',
   'Payment',

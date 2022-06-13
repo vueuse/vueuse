@@ -1,12 +1,12 @@
-import { useWizard } from '.'
+import { useStepper } from '.'
 
-describe('useWizard', () => {
+describe('useStepper', () => {
   it('should be defined', () => {
-    expect(useWizard).toBeDefined()
+    expect(useStepper).toBeDefined()
   })
 
   it('can navigate through steps', () => {
-    const { isFirst, isLast, next, previous, current, index, goTo, backTo, isPrevious, isNext, currentStepIs, currentStepIsAfter, currentStepIsBefore } = useWizard([
+    const { isFirst, isLast, next, previous, current, index, goTo, backTo, isPrevious, isNext, currentStepIs, currentStepIsAfter, currentStepIsBefore } = useStepper([
       'First step',
       'Second step',
       'Last step',
