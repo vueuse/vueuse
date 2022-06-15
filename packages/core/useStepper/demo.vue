@@ -2,7 +2,7 @@
 import { useStepper } from '@vueuse/core'
 import { reactive } from 'vue'
 
-const { index, current, next, steps, backTo, currentStepIs, isFirst, isLast, todo } = useStepper([
+const { index, current, next, steps, backTo, currentStepIs, isFirst, isLast, currentStepIsBefore: todo } = useStepper([
   'Billing address',
   'Terms',
   'Payment',

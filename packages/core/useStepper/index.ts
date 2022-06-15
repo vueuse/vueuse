@@ -49,18 +49,6 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
     return index.value < steps.indexOf(step)
   }
 
-  function completed(step: T) {
-    return currentStepIsAfter(step)
-  }
-
-  function active(step: T) {
-    return currentStepIs(step)
-  }
-
-  function todo(step: T) {
-    return currentStepIsBefore(step)
-  }
-
   return {
     backTo,
     goTo,
@@ -72,9 +60,6 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
     currentStepIs,
     currentStepIsAfter,
     currentStepIsBefore,
-    completed,
-    active,
-    todo,
     isFirst,
     isLast,
     isNext,
