@@ -23,69 +23,69 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
     "./*": "./*",
     "./useAsyncValidator": {
       "types": "./useAsyncValidator.d.ts",
-      "import": "./useAsyncValidator.mjs",
-      "require": "./useAsyncValidator.cjs"
+      "require": "./useAsyncValidator.cjs",
+      "import": "./useAsyncValidator.mjs"
     },
     "./useAxios": {
       "types": "./useAxios.d.ts",
-      "import": "./useAxios.mjs",
-      "require": "./useAxios.cjs"
+      "require": "./useAxios.cjs",
+      "import": "./useAxios.mjs"
     },
     "./useCookies": {
       "types": "./useCookies.d.ts",
-      "import": "./useCookies.mjs",
-      "require": "./useCookies.cjs"
+      "require": "./useCookies.cjs",
+      "import": "./useCookies.mjs"
     },
     "./useDrauu": {
       "types": "./useDrauu.d.ts",
-      "import": "./useDrauu.mjs",
-      "require": "./useDrauu.cjs"
+      "require": "./useDrauu.cjs",
+      "import": "./useDrauu.mjs"
     },
     "./useFocusTrap": {
       "types": "./useFocusTrap.d.ts",
-      "import": "./useFocusTrap.mjs",
-      "require": "./useFocusTrap.cjs"
+      "require": "./useFocusTrap.cjs",
+      "import": "./useFocusTrap.mjs"
     },
     "./useFocusTrap/component": {
       "types": "./useFocusTrap/component.d.ts",
-      "import": "./useFocusTrap/component.mjs",
-      "require": "./useFocusTrap/component.cjs"
+      "require": "./useFocusTrap/component.cjs",
+      "import": "./useFocusTrap/component.mjs"
     },
     "./useFuse": {
       "types": "./useFuse.d.ts",
-      "import": "./useFuse.mjs",
-      "require": "./useFuse.cjs"
+      "require": "./useFuse.cjs",
+      "import": "./useFuse.mjs"
     },
     "./useJwt": {
       "types": "./useJwt.d.ts",
-      "import": "./useJwt.mjs",
-      "require": "./useJwt.cjs"
+      "require": "./useJwt.cjs",
+      "import": "./useJwt.mjs"
     },
     "./useNProgress": {
       "types": "./useNProgress.d.ts",
-      "import": "./useNProgress.mjs",
-      "require": "./useNProgress.cjs"
+      "require": "./useNProgress.cjs",
+      "import": "./useNProgress.mjs"
     },
     "./useQRCode": {
       "types": "./useQRCode.d.ts",
-      "import": "./useQRCode.mjs",
-      "require": "./useQRCode.cjs"
+      "require": "./useQRCode.cjs",
+      "import": "./useQRCode.mjs"
     },
     "./useChangeCase": {
       "types": "./useChangeCase.d.ts",
-      "import": "./useChangeCase.mjs",
-      "require": "./useChangeCase.cjs"
+      "require": "./useChangeCase.cjs",
+      "import": "./useChangeCase.mjs"
     },
     "./useAsyncValidator/component": {
       "types": "./useAsyncValidator/component.d.ts",
-      "import": "./useAsyncValidator/component.mjs",
-      "require": "./useAsyncValidator/component.cjs"
+      "require": "./useAsyncValidator/component.cjs",
+      "import": "./useAsyncValidator/component.mjs"
     }
   },
   "main": "./index.cjs",
@@ -145,11 +145,11 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
-    "async-validator": "^4.0.7",
+    "async-validator": "^4.1.1",
     "axios": "^0.27.2",
     "change-case": "^4.1.2",
     "drauu": "^0.3.0",
-    "focus-trap": "^6.9.2",
+    "focus-trap": "^6.9.4",
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",

@@ -25,24 +25,24 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
     "./*": "./*",
     "./useAuth": {
       "types": "./useAuth.d.ts",
-      "import": "./useAuth.mjs",
-      "require": "./useAuth.cjs"
+      "require": "./useAuth.cjs",
+      "import": "./useAuth.mjs"
     },
     "./useFirestore": {
       "types": "./useFirestore.d.ts",
-      "import": "./useFirestore.mjs",
-      "require": "./useFirestore.cjs"
+      "require": "./useFirestore.cjs",
+      "import": "./useFirestore.mjs"
     },
     "./useRTDB": {
       "types": "./useRTDB.d.ts",
-      "import": "./useRTDB.mjs",
-      "require": "./useRTDB.cjs"
+      "require": "./useRTDB.cjs",
+      "import": "./useRTDB.mjs"
     }
   },
   "main": "./index.cjs",

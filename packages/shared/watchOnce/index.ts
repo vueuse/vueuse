@@ -17,7 +17,7 @@ export function watchOnce<Immediate extends Readonly<boolean> = false>(
 ): void {
   const stop = watch(source, (...args) => {
     nextTick(() => stop())
-    // eslint-disable-next-line n/no-callback-literal
+
     return cb(...args)
   }, options)
 }

@@ -23,14 +23,14 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
     "./*": "./*",
     "./metadata": {
       "types": "./metadata.d.ts",
-      "import": "./metadata.mjs",
-      "require": "./metadata.cjs"
+      "require": "./metadata.cjs",
+      "import": "./metadata.mjs"
     }
   },
   "main": "./index.cjs",

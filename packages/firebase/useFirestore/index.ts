@@ -69,7 +69,7 @@ export function useFirestore<T extends firebase.firestore.DocumentData>(
   options: FirestoreOptions = {},
 ) {
   const {
-    // eslint-disable-next-line no-console
+
     errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
   } = options

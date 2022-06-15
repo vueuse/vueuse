@@ -24,8 +24,8 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
     "./*": "./*"
   },
@@ -42,6 +42,6 @@
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.15"
+    "vue-router": "^4.0.16"
   }
 }
