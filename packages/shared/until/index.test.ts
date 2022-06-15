@@ -4,7 +4,7 @@ import { until } from '.'
 
 describe('until', () => {
   it('should work', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
@@ -21,7 +21,7 @@ describe('until', () => {
   })
 
   it('should work for changedTimes', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
@@ -40,7 +40,7 @@ describe('until', () => {
   })
 
   it('should support `not`', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
@@ -57,7 +57,7 @@ describe('until', () => {
   })
 
   it('should support toBeNull()', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref<number | null>(null)
 
       invoke(async () => {
@@ -74,7 +74,7 @@ describe('until', () => {
   })
 
   it('should support array', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref<number[]>([1, 2, 3])
 
       invoke(async () => {
@@ -91,7 +91,7 @@ describe('until', () => {
   })
 
   it('should support array with not', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref<number[]>([1, 2, 3])
 
       invoke(async () => {
