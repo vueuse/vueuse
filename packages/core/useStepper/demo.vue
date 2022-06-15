@@ -2,7 +2,7 @@
 import { useStepper } from '@vueuse/core'
 import { reactive } from 'vue'
 
-const { index, current, next, steps, backTo, currentStepIs, isFirst, isLast, currentStepIsBefore: todo } = useStepper([
+const { index, current, goToNext, steps, backTo, currentStepIs, isFirst, isLast, currentStepIsBefore: todo } = useStepper([
   'Billing address',
   'Terms',
   'Payment',
@@ -37,7 +37,7 @@ function submit() {
   if (!canGoNext())
     return
 
-  next()
+  goToNext()
 }
 </script>
 

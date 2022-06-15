@@ -5,6 +5,8 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
   const current = computed(() => steps[index.value])
   const isFirst = computed(() => index.value === 0)
   const isLast = computed(() => index.value === steps.length - 1)
+  const nextStep = computed(() => isLast.value ? undefined : steps[index.value + 1])
+  const previousStep = computed(() => isFirst.value ? undefined : steps[index.value - 1])
 
   function backTo(step: T) {
     if (currentStepIsAfter(step))
@@ -15,14 +17,14 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
     index.value = steps.indexOf(step)
   }
 
-  function next() {
+  function goToNext() {
     if (isLast.value)
       return
 
     index.value++
   }
 
-  function previous() {
+  function goToPrevious() {
     if (isFirst.value)
       return
 
@@ -54,8 +56,8 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
     goTo,
     current,
     index,
-    next,
-    previous,
+    goToNext,
+    goToPrevious,
     steps,
     currentStepIs,
     currentStepIsAfter,
@@ -64,5 +66,7 @@ export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
     isLast,
     isNext,
     isPrevious,
+    nextStep,
+    previousStep,
   }
 }
