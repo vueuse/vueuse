@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue-demi'
 
-export function useStepper<T extends string>(steps: readonly T[], initial?: T) {
+export function useStepper<T>(steps: readonly T[], initial?: T) {
   const index = ref(steps.indexOf(initial ?? steps[0]))
   const current = computed(() => steps[index.value])
   const isFirst = computed(() => index.value === 0)

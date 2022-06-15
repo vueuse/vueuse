@@ -47,4 +47,24 @@ describe('useStepper', () => {
     expect(current.value).toBe('Last step')
     expect(isLast.value).toBe(true)
   })
+
+  it('can use objects as steps', () => {
+    const { goToNext, index, current } = useStepper([
+      { id: 1, label: 'First step' },
+      { id: 2, label: 'Second step' },
+      { id: 3, label: 'Third step' },
+    ])
+
+    expect(index.value).toBe(0)
+    expect(current.value).toMatchObject({ id: 1, label: 'First step' })
+
+    goToNext()
+    expect(index.value).toBe(1)
+    expect(current.value).toMatchObject({ id: 2, label: 'Second step' })
+
+    goToNext()
+    goToNext()
+    expect(index.value).toBe(2)
+    expect(current.value).toMatchObject({ id: 3, label: 'Third step' })
+  })
 })
