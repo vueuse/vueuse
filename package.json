@@ -39,6 +39,7 @@
     "@iconify/json": "^2.1.62",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@type-challenges/utils": "^0.1.1",
     "@types/fs-extra": "^9.0.13",
     "@types/js-yaml": "^4.0.5",
     "@types/md5": "^2.3.2",
