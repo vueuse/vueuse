@@ -6,7 +6,7 @@ describe('useStepper', () => {
   })
 
   it('can navigate through steps', () => {
-    const { isFirst, isLast, goToNext, goToPrevious, nextStep, previousStep, current, index, goTo, backTo, isPrevious, isNext, currentStepIs, currentStepIsAfter, currentStepIsBefore } = useStepper([
+    const { isFirst, isLast, goToNext, goToPrevious, nextStep, previousStep, current, index, goTo, isPrevious, isNext, currentStepIs, isStepAfter, isStepBefore } = useStepper([
       'First step',
       'Second step',
       'Last step',
@@ -19,7 +19,7 @@ describe('useStepper', () => {
     expect(previousStep.value).toBeUndefined()
     expect(currentStepIs('First step')).toBe(true)
     expect(currentStepIs('Second step')).toBe(false)
-    expect(currentStepIsAfter('Second step')).toBe(false)
+    expect(isStepAfter('Second step')).toBe(false)
 
     goToNext()
     expect(index.value).toBe(1)
@@ -28,15 +28,11 @@ describe('useStepper', () => {
     expect(previousStep.value).toBe('First step')
     expect(isPrevious('First step')).toBe(true)
     expect(isNext('Last step')).toBe(true)
-    expect(currentStepIsAfter('First step')).toBe(true)
-    expect(currentStepIsBefore('First step')).toBe(false)
-    expect(currentStepIsBefore('Last step')).toBe(true)
+    expect(isStepAfter('First step')).toBe(true)
+    expect(isStepBefore('First step')).toBe(false)
+    expect(isStepBefore('Last step')).toBe(true)
 
     goToPrevious()
-    expect(index.value).toBe(0)
-    expect(current.value).toBe('First step')
-
-    backTo('Last step') // we can't go back to a future step
     expect(index.value).toBe(0)
     expect(current.value).toBe('First step')
 

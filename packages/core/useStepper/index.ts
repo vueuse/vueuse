@@ -8,11 +8,6 @@ export function useStepper<T>(steps: readonly T[], initial?: T) {
   const nextStep = computed<T | undefined>(() => steps[index.value + 1])
   const previousStep = computed<T | undefined>(() => steps[index.value - 1])
 
-  function backTo(step: T) {
-    if (currentStepIsAfter(step))
-      goTo(step)
-  }
-
   function goTo(step: T) {
     index.value = steps.indexOf(step)
   }
@@ -31,28 +26,42 @@ export function useStepper<T>(steps: readonly T[], initial?: T) {
     index.value--
   }
 
+  /**
+   * Checks if the given step is the step just after the current step.
+   */
   function isNext(step: T) {
     return steps.indexOf(step) === index.value + 1
   }
 
+  /**
+   * Checks if the given step is the step just before the current step.
+   */
   function isPrevious(step: T) {
     return steps.indexOf(step) === index.value - 1
   }
 
+  /**
+   * Checks if the current step is the same as the given step.
+   */
   function currentStepIs(step: T) {
     return steps.indexOf(step) === index.value
   }
 
-  function currentStepIsAfter(step: T) {
+  /**
+   * Checks if the current step is after given step.
+   */
+  function isStepAfter(step: T) {
     return index.value > steps.indexOf(step)
   }
 
-  function currentStepIsBefore(step: T) {
+  /**
+   * Checks if the current step is before given step.
+   */
+  function isStepBefore(step: T) {
     return index.value < steps.indexOf(step)
   }
 
   return {
-    backTo,
     goTo,
     current,
     index,
@@ -60,8 +69,8 @@ export function useStepper<T>(steps: readonly T[], initial?: T) {
     goToPrevious,
     steps,
     currentStepIs,
-    currentStepIsAfter,
-    currentStepIsBefore,
+    isStepAfter,
+    isStepBefore,
     isFirst,
     isLast,
     isNext,

@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { useStepper } from '@vueuse/core'
+import type { UnwrapRef } from 'vue'
 import { reactive } from 'vue'
 
-const { index, current, goToNext, steps, backTo, currentStepIs, isFirst, isLast, currentStepIsBefore: todo } = useStepper([
+const { index, current, goToNext, goTo, steps, currentStepIs, isFirst, isLast, isStepBefore: todo, isStepAfter: completed, nextStep, previousStep } = useStepper([
   'Billing address',
   'Terms',
   'Payment',
 ] as const)
+
+function backTo(step: UnwrapRef<typeof current>) {
+  if (completed(step))
+    goTo(step)
+}
 
 const form = reactive({
   billingAddress: '',
@@ -21,6 +27,8 @@ const wizard = reactive({
   steps,
   isFirst,
   isLast,
+  nextStep,
+  previousStep,
 })
 
 function canGoNext() {
