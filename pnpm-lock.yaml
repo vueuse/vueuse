@@ -29,7 +29,7 @@ importers:
       '@vue/test-utils': ^2.0.1
       '@vue/theme': ^1.0.2
       axios: ^0.27.2
-      bumpp: ^8.1.0
+      bumpp: ^8.2.0
       consola: ^2.15.3
       cross-env: ^7.0.3
       esbuild-register: ^3.3.3
@@ -94,7 +94,7 @@ importers:
       '@vue/test-utils': 2.0.1_vue@3.2.37
       '@vue/theme': 1.0.2_u2gkp2u25pdfnxvdjnifvavkfu
       axios: 0.27.2
-      bumpp: 8.1.0
+      bumpp: 8.2.0
       consola: 2.15.3
       cross-env: 7.0.3
       esbuild-register: 3.3.3
@@ -3462,8 +3462,8 @@ packages:
       semver: 7.3.7
     dev: true
 
-  /bumpp/8.1.0:
-    resolution: {integrity: sha512-USNqoYA+xM50vJGDoChjG9J7IeZeyymi7OUC9WT58pUF9l2Ue0Q6f8ec5vdai2dD70C+bs1d5WRe/JHNNXiMGg==}
+  /bumpp/8.2.0:
+    resolution: {integrity: sha512-DhFa4DSREOwnHJQyQ+Qhj9pUJAIZKMEtuHN7BuQij4CoxSBc6n4bBZnlvFWuLXNMr0aCtsMXnkQWC/7GyGypYw==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
