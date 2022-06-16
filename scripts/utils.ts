@@ -267,14 +267,14 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
             types: `./${i.name}.d.ts`,
-            import: `./${i.name}.mjs`,
             require: `./${i.name}.cjs`,
+            import: `./${i.name}.mjs`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
               types: `./${i.name}/component.d.ts`,
-              import: `./${i.name}/component.mjs`,
               require: `./${i.name}/component.cjs`,
+              import: `./${i.name}/component.mjs`,
             }
           }
         })
