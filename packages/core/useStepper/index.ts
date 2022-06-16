@@ -5,8 +5,8 @@ export function useStepper<T>(steps: readonly T[], initial?: T) {
   const current = computed(() => steps[index.value])
   const isFirst = computed(() => index.value === 0)
   const isLast = computed(() => index.value === steps.length - 1)
-  const nextStep = computed(() => isLast.value ? undefined : steps[index.value + 1])
-  const previousStep = computed(() => isFirst.value ? undefined : steps[index.value - 1])
+  const nextStep = computed<T | undefined>(() => steps[index.value + 1])
+  const previousStep = computed<T | undefined>(() => steps[index.value - 1])
 
   function backTo(step: T) {
     if (currentStepIsAfter(step))
