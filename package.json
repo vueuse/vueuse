@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/monorepo",
-  "version": "8.7.0",
+  "version": "8.7.1",
   "private": true,
   "packageManager": "pnpm@7.1.7",
   "description": "Collection of essential Vue Composition Utilities",
@@ -20,7 +20,7 @@
     "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
-    "release": "npm run build:types && bumpp -x 'npm run update' --all package.json packages/**/package.json",
+    "release": "npm run build:types && bumpp --execute='npm run update' --all",
     "size": "esno scripts/export-size.ts",
     "test": "nr test:3",
     "test:2": "vue-demi-switch 2 vue2 && vitest run --silent",
