@@ -111,7 +111,7 @@ describe('until', () => {
   })
 
   it('should immediately timeout', () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
