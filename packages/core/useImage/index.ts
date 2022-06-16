@@ -20,8 +20,10 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
     const { src, srcset, sizes } = options
 
     img.src = src
-    if (srcset) img.srcset = srcset
-    if (sizes) img.sizes = sizes
+    if (srcset)
+      img.srcset = srcset
+    if (sizes)
+      img.sizes = sizes
 
     img.onload = () => resolve(img)
     img.onerror = reject
