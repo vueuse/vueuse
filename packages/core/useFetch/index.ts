@@ -209,9 +209,8 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
-  if (headers instanceof Headers)
+  if (typeof Headers !== 'undefined' && headers instanceof Headers)
     return Object.fromEntries([...headers.entries()])
-
   return headers
 }
 

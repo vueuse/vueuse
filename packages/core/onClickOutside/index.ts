@@ -66,7 +66,11 @@ export function onClickOutside(
       shouldListen.value = !!el && !e.composedPath().includes(el)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
-      fallback = window.setTimeout(() => listener(e), 50)
+      if (e.button === 0) {
+        const path = e.composedPath()
+        e.composedPath = () => path
+        fallback = window.setTimeout(() => listener(e), 50)
+      }
     }, { passive: true }),
   ]
 

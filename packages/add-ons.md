@@ -69,6 +69,7 @@ Utilities for vue-router
 
 ## Integrations - [`@vueuse/integrations`](https://vueuse.org/integrations/README.html)
 Integration wrappers for utility libraries
+  - [`useAsyncValidator`](https://vueuse.org/integrations/useAsyncValidator/) — wrapper for [`async-validator`](https://github.com/yiminghe/async-validator)
   - [`useAxios`](https://vueuse.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
   - [`useChangeCase`](https://vueuse.org/integrations/useChangeCase/) — wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
   - [`useCookies`](https://vueuse.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)

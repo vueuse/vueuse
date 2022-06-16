@@ -25,6 +25,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
     'initialValue',
     'exact',
     'preventDefault',
+    'stopPropagation',
     'pointerTypes',
     'as',
   ] as unknown as undefined,
