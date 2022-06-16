@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useData, withBase } from 'vitepress'
+
+const { site, frontmatter } = useData()
+
+const showHero = computed(() => {
+  const {
+    heroImage,
+    heroText,
+    tagline,
+    actionLink,
+    actionText,
+  } = frontmatter.value
+  return heroImage || heroText || tagline || (actionLink && actionText)
+})
+
+const heroText = computed(() => frontmatter.value.heroText || site.value.title)
+</script>
+
 <template>
   <header v-if="showHero" class="home-hero pt-15 pb-10 px-5">
     <p align="center">
@@ -32,26 +52,6 @@
     </p>
   </header>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useData, withBase } from 'vitepress'
-
-const { site, frontmatter } = useData()
-
-const showHero = computed(() => {
-  const {
-    heroImage,
-    heroText,
-    tagline,
-    actionLink,
-    actionText,
-  } = frontmatter.value
-  return heroImage || heroText || tagline || (actionLink && actionText)
-})
-
-const heroText = computed(() => frontmatter.value.heroText || site.value.title)
-</script>
 
 <style scoped>
 .home-hero {

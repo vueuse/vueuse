@@ -56,7 +56,7 @@ const stop = () => {
       <br>
       <label class="font-bold mr-2">Language</label>
       <div bg="$vt-c-bg" border="$vt-c-divider-light 1" inline-flex items-center relative rounded>
-        <carbon-language absolute left-2 opacity-80 pointer-events-none />
+        <i i-carbon-language absolute left-2 opacity-80 pointer-events-none />
         <select v-model="lang" px-8 border-0 bg-transparent h-9 rounded appearance-none>
           <option bg="$vt-c-bg" disabled>
             Select Language
@@ -70,7 +70,7 @@ const stop = () => {
             {{ `${voice.name} (${voice.lang})` }}
           </option>
         </select>
-        <carbon-chevron-down absolute right-2 opacity-80 pointer-events-none />
+        <i i-carbon-chevron-down absolute right-2 opacity-80 pointer-events-none />
       </div>
 
       <div class="mt-2">

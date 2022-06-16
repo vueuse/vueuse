@@ -117,8 +117,7 @@ export function useScriptTag(
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
 
-      for (const attr in attrs)
-        (el as any)[attr] = attrs[attr]
+      Object.entries(attrs).forEach(([name, value]) => el?.setAttribute(name, value))
 
       // Enables shouldAppend
       shouldAppend = true
@@ -153,7 +152,7 @@ export function useScriptTag(
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement | boolean> => {
     if (!_promise)
       _promise = loadScript(waitForScriptLoad)
 

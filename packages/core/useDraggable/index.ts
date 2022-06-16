@@ -33,7 +33,7 @@ export interface UseDraggableOptions {
    *
    * @default window
    */
-  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null>
+  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
    * Pointer types that listen to.
@@ -72,7 +72,7 @@ export interface UseDraggableOptions {
  * @param target
  * @param options
  */
-export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, options: UseDraggableOptions = {}) {
+export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
   const draggingElement = options.draggingElement ?? defaultWindow
   const position: Ref<Position> = ref(options.initialValue ?? { x: 0, y: 0 })
   const pressedDelta = ref<Position>()

@@ -14,7 +14,8 @@ export const formatDate = (date: Date, formatStr: string) => {
   const minutes = date.getMinutes()
   const seconds = date.getSeconds()
   const milliseconds = date.getMilliseconds()
-  const matches: Record<string, string|number> = {
+  const day = date.getDay()
+  const matches: Record<string, string | number> = {
     YY: String(years).slice(-2),
     YYYY: years,
     M: month + 1,
@@ -30,14 +31,18 @@ export const formatDate = (date: Date, formatStr: string) => {
     s: String(seconds),
     ss: `${seconds}`.padStart(2, '0'),
     SSS: `${milliseconds}`.padStart(3, '0'),
+    d: day,
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match])
 }
 
 export const normalizeDate = (date: DateLike) => {
-  if (date === null) return new Date(NaN) // null is invalid
-  if (date === undefined) return new Date()
-  if (date instanceof Date) return new Date(date)
+  if (date === null)
+    return new Date(NaN) // null is invalid
+  if (date === undefined)
+    return new Date()
+  if (date instanceof Date)
+    return new Date(date)
   if (typeof date === 'string' && !/Z$/i.test(date)) {
     const d = date.match(REGEX_PARSE) as any
     if (d) {

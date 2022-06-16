@@ -4,7 +4,7 @@ import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 
 describe('useWakeLock', () => {
-  it('isActive not changed if not supported', async() => {
+  it('isActive not changed if not supported', async () => {
     const { isActive, request, release } = useWakeLock({ navigator: {} as Navigator })
 
     expect(isActive.value).toBeFalsy()
@@ -18,7 +18,7 @@ describe('useWakeLock', () => {
     expect(isActive.value).toBeFalsy()
   })
 
-  it('isActive changed if supported', async() => {
+  it('isActive changed if supported', async () => {
     const createWakeLock = () => {
       let _released = false
       return {
@@ -49,7 +49,7 @@ describe('useWakeLock', () => {
     expect(isActive.value).toBeFalsy()
   })
 
-  it('isActive changed if show other tabs or minimize window', async() => {
+  it('isActive changed if show other tabs or minimize window', async () => {
     const createWakeLock = () => {
       let _released = false
       return {

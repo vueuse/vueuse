@@ -4,19 +4,21 @@
  */
 
 import { setupServer } from 'msw/node'
-import type { DefaultRequestBody, PathParams, RestContext, RestRequest } from 'msw'
+import type { RestContext, RestRequest } from 'msw'
 import { rest } from 'msw'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
 const baseUrl = 'https://example.com'
 
-const commonTransformers = (req: RestRequest<DefaultRequestBody, PathParams>, _: any, ctx: RestContext) => {
+const commonTransformers = (req: RestRequest, _: any, ctx: RestContext) => {
   const t = []
   const qs = req.url.searchParams
 
-  if (qs.get('delay')) t.push(ctx.delay(Number(qs.get('delay'))))
-  if (qs.get('status')) t.push(ctx.status(Number(qs.get('status'))))
+  if (qs.get('delay'))
+    t.push(ctx.delay(Number(qs.get('delay'))))
+  if (qs.get('status'))
+    t.push(ctx.status(Number(qs.get('status'))))
   if (qs.get('text') != null) {
     t.push(ctx.text(qs.get('text') ?? defaultTextMessage))
   }
@@ -43,7 +45,8 @@ export const server = setupServer(
     const t = commonTransformers(req, res, ctx)
 
     // Echo back the request payload
-    if (typeof req.body === 'number' || typeof req.body === 'string') t.push(ctx.text(String(req.body)))
+    if (typeof req.body === 'number' || typeof req.body === 'string')
+      t.push(ctx.text(String(req.body)))
     else t.push(ctx.json(req.body))
 
     return res(...t)

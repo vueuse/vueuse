@@ -119,7 +119,7 @@ describe('useConfirmDialog', () => {
     expect(message.value).toBe('confirm')
   })
 
-  it('should pass data from cancel fn to `onCancel` hook', async() => {
+  it('should pass data from cancel fn to `onCancel` hook', async () => {
     const message = ref('initial')
     const show = ref(false)
     const data = { value: 'confirm' }
@@ -140,7 +140,7 @@ describe('useConfirmDialog', () => {
     expect(message.value).toBe('confirm')
   })
 
-  it('should return promise that will be resolved on `confirm()`', async() => {
+  it('should return promise that will be resolved on `confirm()`', async () => {
     const show = ref(false)
 
     const {
@@ -160,7 +160,7 @@ describe('useConfirmDialog', () => {
     expect(isCanceled).toBe(false)
   })
 
-  it('should return promise that will be resolved on `cancel()`', async() => {
+  it('should return promise that will be resolved on `cancel()`', async () => {
     const show = ref(false)
 
     const {

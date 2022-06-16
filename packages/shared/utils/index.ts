@@ -49,7 +49,7 @@ export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromis
       _promise = fn()
     return _promise
   }
-  wrapper.reset = async() => {
+  wrapper.reset = async () => {
     const _prev = _promise
     _promise = undefined
     if (_prev)
@@ -94,8 +94,10 @@ export function increaseWithUnit(target: string | number, delta: number): string
  */
 export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((n, k) => {
-    if (k in obj)
-      if (!omitUndefined || !obj[k] === undefined) n[k] = obj[k]
+    if (k in obj) {
+      if (!omitUndefined || obj[k] !== undefined)
+        n[k] = obj[k]
+    }
     return n
   }, {} as Pick<O, T>)
 }

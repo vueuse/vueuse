@@ -32,7 +32,7 @@ describe('useSubject', () => {
     })
   })
 
-  it('should propagate value change to Subject', async() => {
+  it('should propagate value change to Subject', async () => {
     const subject = new BehaviorSubject(false)
 
     const value = await new Promise((resolve) => {

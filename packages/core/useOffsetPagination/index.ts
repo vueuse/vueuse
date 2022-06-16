@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
 import { computed, isRef, reactive, unref, watch } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/core'
 import { noop, syncRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 import { useClamp } from '../useClamp'
 
 export interface UseOffsetPaginationOptions {

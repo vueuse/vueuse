@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtConfig } from 'nuxt3'
+import { defineNuxtConfig } from 'nuxt'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

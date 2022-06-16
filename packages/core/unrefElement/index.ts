@@ -15,5 +15,6 @@ export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extend
  */
 export function unrefElement<T extends MaybeElement>(elRef: MaybeElementRef<T>): UnRefElementReturn<T> {
   const plain = unref(elRef)
-  return (plain as VueInstance)?.$el ?? plain
+
+  return plain != null && '$el' in (plain as VueInstance) ? (plain as VueInstance).$el : plain
 }

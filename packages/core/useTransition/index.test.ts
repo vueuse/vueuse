@@ -8,7 +8,7 @@ const expectBetween = (val: number, floor: number, ceiling: number) => {
 }
 
 describe('useTransition', () => {
-  it('transitions between numbers', async() => {
+  it('transitions between numbers', async () => {
     const source = ref(0)
     const transition = useTransition(source, { duration: 100 })
 
@@ -23,7 +23,7 @@ describe('useTransition', () => {
     expect(transition.value).toBe(1)
   })
 
-  it('transitions between vectors', async() => {
+  it('transitions between vectors', async () => {
     const source = ref([0, 0])
     const transition = useTransition(source, { duration: 100 })
 
@@ -40,7 +40,7 @@ describe('useTransition', () => {
     expect(transition.value[1]).toBe(1)
   })
 
-  it('supports cubic bezier curves', async() => {
+  it('supports cubic bezier curves', async () => {
     const source = ref(0)
 
     // https://cubic-bezier.com/#0,2,0,1
@@ -66,7 +66,7 @@ describe('useTransition', () => {
     expect(easeInBack.value).toBe(1)
   })
 
-  it('supports custom easing functions', async() => {
+  it('supports custom easing functions', async () => {
     const source = ref(0)
     const linear = vitest.fn(n => n)
     const transition = useTransition(source, {
@@ -86,7 +86,7 @@ describe('useTransition', () => {
     expect(transition.value).toBe(1)
   })
 
-  it('supports delayed transitions', async() => {
+  it('supports delayed transitions', async () => {
     const source = ref(0)
 
     const transition = useTransition(source, {
@@ -103,7 +103,7 @@ describe('useTransition', () => {
     expectBetween(transition.value, 0, 1)
   })
 
-  it('supports dynamic transitions', async() => {
+  it('supports dynamic transitions', async () => {
     const source = ref(0)
     const first = vitest.fn(n => n)
     const second = vitest.fn(n => n)
@@ -134,7 +134,7 @@ describe('useTransition', () => {
     expect(second).toBeCalled()
   })
 
-  it('supports dynamic durations', async() => {
+  it('supports dynamic durations', async () => {
     const source = ref(0)
     const duration = ref(100)
     const transition = useTransition(source, { duration })
@@ -157,7 +157,7 @@ describe('useTransition', () => {
     expect(transition.value).toBe(2)
   })
 
-  it('fires onStarted and onFinished callbacks', async() => {
+  it('fires onStarted and onFinished callbacks', async () => {
     const source = ref(0)
     const onStarted = vitest.fn()
     const onFinished = vitest.fn()
@@ -185,7 +185,7 @@ describe('useTransition', () => {
     expect(onFinished).toBeCalled()
   })
 
-  it('clears pending transitions before starting a new one', async() => {
+  it('clears pending transitions before starting a new one', async () => {
     const source = ref(0)
     const onStarted = vitest.fn()
     const onFinished = vitest.fn()
@@ -207,7 +207,7 @@ describe('useTransition', () => {
     expect(onFinished).toBeCalledTimes(1)
   })
 
-  it('can be disabled for sychronous changes', async() => {
+  it('can be disabled for sychronous changes', async () => {
     const onStarted = vitest.fn()
     const disabled = ref(false)
     const source = ref(0)

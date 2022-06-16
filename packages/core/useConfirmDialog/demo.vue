@@ -26,7 +26,8 @@ dialog2.onReveal(() => {
 })
 
 dialog2.onConfirm((result) => {
-  if (result) message.value = 'Confirmed!'
+  if (result)
+    message.value = 'Confirmed!'
   else message.value = 'Rejected!'
 })
 

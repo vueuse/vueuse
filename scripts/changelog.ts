@@ -69,7 +69,7 @@ export async function getContributorsAt(path: string) {
 }
 
 export async function getFunctionContributors() {
-  const result = await Promise.all(functions.map(async(i) => {
+  const result = await Promise.all(functions.map(async (i) => {
     return [i.name, await getContributorsAt(`packages/${i.package}/${i.name}`)] as const
   }))
   return Object.fromEntries(result)
