@@ -13,7 +13,7 @@ const text = computed(() =>
 )
 
 const handleOnClick = () => {
-  dir.value = dir.value === 'rtl' ? 'lrt' : 'rtl'
+  dir.value = dir.value === 'rtl' ? 'ltr' : 'rtl'
 }
 </script>
 
