@@ -6,6 +6,8 @@ category: Sensors
 
 Infinite scrolling of the element. 
 
+> **Note**: You should ensure that the container element's height < content's height.
+
 ## Usage
 
 
