@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onUnmounted } from 'vue'
 
-import { useDir } from './index'
+import { useTextDirection } from './index'
 
-const dir = useDir({
-  selector: '#_useDirDemo',
+const dir = useTextDirection({
+  selector: '#_useTextDirectionDemo',
 })
 const text = computed(() =>
   dir.value === 'ltr'
@@ -18,7 +18,7 @@ const handleOnClick = () => {
 </script>
 
 <template>
-  <div id="_useDirDemo">
+  <div id="_useTextDirectionDemo">
     <p>
       {{ text }}
     </p>
@@ -31,7 +31,7 @@ const handleOnClick = () => {
 </template>
 
 <style scoped>
-#_useDirDemo[dir='rtl']
+#_useTextDirectionDemo[dir='rtl']
 p {
   color: red;
 }

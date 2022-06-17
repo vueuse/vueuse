@@ -3,7 +3,7 @@ import { ref, watch } from 'vue-demi'
 import type { MaybeElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
 
-export interface UseDirOptions {
+export interface UseTextDirectionOptions {
   /**
    * CSS Selector for the target element applying to
    *
@@ -21,11 +21,11 @@ export interface UseDirOptions {
 /**
  * Reactive dir of the element's text.
  *
- * @see https://vueuse.org/useDir
+ * @see https://vueuse.org/useTextDirection
  * @param options
  */
-export const useDir = (
-  options: UseDirOptions = {},
+export const useTextDirection = (
+  options: UseTextDirectionOptions = {},
 ) => {
   const {
     selector = 'html',
