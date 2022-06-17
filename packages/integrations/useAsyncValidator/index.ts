@@ -1,16 +1,16 @@
 import type { MaybeRef } from '@vueuse/shared'
 import { until } from '@vueuse/shared'
 import Schema from 'async-validator'
-import type { Rules, ValidateError } from 'async-validator'
+import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
 import { computed, ref, unref, watchEffect } from 'vue-demi'
 
-type AsyncValidatorError = Error & {
+export type AsyncValidatorError = Error & {
   errors: ValidateError[]
   fields: Record<string, ValidateError[]>
 }
 
-interface UseAsyncValidatorReturn {
+export interface UseAsyncValidatorReturn {
   pass: Ref<boolean>
   errorInfo: Ref<AsyncValidatorError | null>
   isFinished: Ref<boolean>
@@ -18,24 +18,34 @@ interface UseAsyncValidatorReturn {
   errorFields: Ref<AsyncValidatorError['fields'] | undefined>
 }
 
+export interface UseAsyncValidatorOptions {
+  /**
+   * @see https://github.com/yiminghe/async-validator#options
+   */
+  validateOption?: ValidateOption
+}
+
 /**
  * Wrapper for async-validator.
  *
  * @see https://vueuse.org/useAsyncValidator
+ * @see https://github.com/yiminghe/async-validator
  */
-export function useAsyncValidator(value: MaybeRef<Record<string, any>>, rules: MaybeRef<Rules>): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
+export function useAsyncValidator(value: MaybeRef<Record<string, any>>, rules: MaybeRef<Rules>, options: UseAsyncValidatorOptions = {}): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
   const errorInfo = ref<AsyncValidatorError | null>()
   const isFinished = ref(false)
   const pass = ref(false)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
+  const { validateOption = {} } = options
+
   watchEffect(async () => {
     isFinished.value = false
     pass.value = false
     const validator = new Schema(unref(rules))
     try {
-      await validator.validate(unref(value))
+      await validator.validate(unref(value), validateOption)
       pass.value = true
       errorInfo.value = null
     }
