@@ -23,7 +23,6 @@ importers:
       '@types/prettier': ^2.6.3
       '@types/semver': ^7.3.10
       '@types/sharp': ^0.30.4
-      '@types/web-bluetooth': ^0.0.14
       '@vitest/ui': ^0.15.1
       '@vue/compiler-sfc': ^3.2.37
       '@vue/composition-api': ^1.6.2
@@ -89,7 +88,6 @@ importers:
       '@types/prettier': 2.6.3
       '@types/semver': 7.3.10
       '@types/sharp': 0.30.4
-      '@types/web-bluetooth': 0.0.14
       '@vitest/ui': 0.15.1
       '@vue/compiler-sfc': 3.2.37
       '@vue/composition-api': 1.6.2_vue@3.2.37
@@ -154,10 +152,12 @@ importers:
 
   packages/core:
     specifiers:
+      '@types/web-bluetooth': ^0.0.14
       '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
       vue-demi: 0.13.0
     dependencies:
+      '@types/web-bluetooth': 0.0.14
       '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
       vue-demi: 0.13.0
@@ -2651,7 +2651,7 @@ packages:
 
   /@types/web-bluetooth/0.0.14:
     resolution: {integrity: sha512-5d2RhCard1nQUC3aHcq/gHzWYO6K0WJmAbjO7mQJgCQKtZpgXxv1rOM6O/dBDhDYYVutk1sciOgNSe+5YyfM8A==}
-    dev: true
+    dev: false
 
   /@typescript-eslint/eslint-plugin/5.26.0_c75vrstjak6ulzoy6wy5a4ug4i:
     resolution: {integrity: sha512-oGCmo0PqnRZZndr+KwvvAUvD3kNE4AfyoGCwOZpoCncSh4MVD06JTE8XQa2u9u+NX5CsyZMBTEc2C72zx38eYA==}

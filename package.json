@@ -48,7 +48,6 @@
     "@types/prettier": "^2.6.3",
     "@types/semver": "^7.3.10",
     "@types/sharp": "^0.30.4",
-    "@types/web-bluetooth": "^0.0.14",
     "@vitest/ui": "^0.15.1",
     "@vue/compiler-sfc": "^3.2.37",
     "@vue/composition-api": "^1.6.2",

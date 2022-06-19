@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "@types/web-bluetooth": "^0.0.14",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
