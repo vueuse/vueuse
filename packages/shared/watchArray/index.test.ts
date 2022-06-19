@@ -1,7 +1,7 @@
-import { nextTick, ref } from 'vue-demi'
-import { watchListChanges } from '.'
+import { nextTick, reactive, ref } from 'vue-demi'
+import { watchArray } from '.'
 
-describe('watchListChanges', () => {
+describe('watchArray', () => {
   it('should work when two lists are different', async () => {
     const spy = vitest.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 1, 4])
@@ -11,7 +11,7 @@ describe('watchListChanges', () => {
     })
 
     const num = ref([1, 2, 3])
-    watchListChanges(num, spy)
+    watchArray(num, spy)
     num.value = [1, 1, 4]
     await nextTick()
     expect(spy).toBeCalledTimes(1)
@@ -26,7 +26,7 @@ describe('watchListChanges', () => {
     })
 
     const num = ref([1, 2, 3])
-    watchListChanges(num, spy)
+    watchArray(num, spy)
     num.value = [1, 2, 3]
     await nextTick()
     expect(spy).toBeCalledTimes(1)
@@ -41,7 +41,7 @@ describe('watchListChanges', () => {
     })
 
     const num = ref([1, 2, 3])
-    watchListChanges(num, spy, { deep: true })
+    watchArray(num, spy, { deep: true })
     num.value.push(4)
     await nextTick()
     expect(spy).toBeCalledTimes(1)
@@ -56,8 +56,38 @@ describe('watchListChanges', () => {
     })
 
     const num = ref([1, 2, 3])
-    watchListChanges(num, spy, { deep: true })
+    watchArray(num, spy, { deep: true })
     num.value.splice(1, 1, 5, 6, 7)
+    await nextTick()
+    expect(spy).toBeCalledTimes(1)
+  })
+
+  it('should work with reactive source', async () => {
+    const spy = vitest.fn((newList, oldList, added, removed) => {
+      expect(newList).toEqual([1, 2, 3, 4])
+      expect(oldList).toEqual([1, 2, 3])
+      expect(added).toEqual([4])
+      expect(removed).toEqual([])
+    })
+
+    const num = reactive([1, 2, 3])
+    watchArray(num, spy)
+    num.push(4)
+    await nextTick()
+    expect(spy).toBeCalledTimes(1)
+  })
+
+  it('should work with functional source', async () => {
+    const spy = vitest.fn((newList, oldList, added, removed) => {
+      expect(newList).toEqual([1, 2, 3, 4])
+      expect(oldList).toEqual([1, 2, 3])
+      expect(added).toEqual([4])
+      expect(removed).toEqual([])
+    })
+
+    const num = ref([1, 2, 3])
+    watchArray(() => num.value, spy)
+    num.value = [...num.value, 4]
     await nextTick()
     expect(spy).toBeCalledTimes(1)
   })
