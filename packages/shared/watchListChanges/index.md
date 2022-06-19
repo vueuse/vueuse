@@ -8,7 +8,7 @@ category: Watch
 
 ## Usage
 
-Similar to `watch`, but provides the added and removed elements to the callback function. Pass ``{ deep: true }`` if the list is updated in-place with ``push``, ``splice``, etc.
+Similar to `watch`, but provides the added and removed elements to the callback function. Pass `{ deep: true }` if the list is updated in place with `push`, `splice`, etc.
 
 ```ts
 import { watchListChanges } from '@vueuse/core'
