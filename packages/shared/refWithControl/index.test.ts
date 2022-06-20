@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { isRef, isVue2, watch, watchEffect } from 'vue-demi'
 import { refWithControl } from '.'
 

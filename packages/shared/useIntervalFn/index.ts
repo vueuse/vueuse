@@ -62,7 +62,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRef<number> = 1000, options
 
   if (isRef(interval)) {
     const stopWatch = watch(interval, () => {
-      if (immediate && isClient)
+      if (isActive.value && isClient)
         resume()
     })
     tryOnScopeDispose(stopWatch)
