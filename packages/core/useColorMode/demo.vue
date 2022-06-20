@@ -2,7 +2,7 @@
 import { useColorMode, useCycleList } from '@vueuse/core'
 
 const mode = useColorMode({
-  omitAuto: false,
+  emitAuto: true,
   modes: {
     contrast: 'dark contrast',
     cafe: 'cafe',

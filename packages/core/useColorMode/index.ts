@@ -62,13 +62,14 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
   storage?: StorageLike
 
   /**
-   * Omit `auto` mode from state
+   * Emit `auto` mode from state
    *
-   * When set to `true`, preferred mode is translated into `light` or `dark`
+   * When set to `true`, preferred mode won't be translated into `light` or `dark`.
+   * This is useful when the fact that `auto` mode was selected needs to be known.
    *
-   * @default true
+   * @default false
    */
-  omitAuto?: boolean
+  emitAuto?: boolean
 }
 
 /**
@@ -86,7 +87,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
-    omitAuto = true,
+    emitAuto = false,
   } = options
 
   const modes = {
@@ -105,7 +106,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
 
   const state = computed<T | BasicColorSchema>({
     get() {
-      return store.value === 'auto' && omitAuto
+      return store.value === 'auto' && !emitAuto
         ? preferredMode.value
         : store.value
     },
