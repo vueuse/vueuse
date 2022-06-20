@@ -8,7 +8,7 @@ export interface UseToggleOptions<Truthy, Falsy> {
 }
 
 export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
-export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [Ref<T>, (value?: T) => T]
+export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [Ref<T>, (value?: T) => T, () => T, () => T]
 
 /**
  * A boolean ref with a toggler
@@ -37,8 +37,20 @@ export function useToggle(initialValue: MaybeRef<boolean> = false, options: UseT
     }
   }
 
+  function setTrue() {
+    innerValue.value = unref(truthyValue)
+
+    return innerValue.value
+  }
+
+  function setFalse() {
+    innerValue.value = unref(falsyValue)
+
+    return innerValue.value
+  }
+
   if (valueIsRef)
     return toggle
   else
-    return [innerValue, toggle] as const
+    return [innerValue, toggle, setTrue, setFalse] as const
 }
