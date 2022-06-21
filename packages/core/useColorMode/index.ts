@@ -67,7 +67,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    * When set to `true`, preferred mode won't be translated into `light` or `dark`.
    * This is useful when the fact that `auto` mode was selected needs to be known.
    *
-   * @default false
+   * @default undefined
    */
   emitAuto?: boolean
 }
@@ -87,7 +87,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     storageKey = 'vueuse-color-scheme',
     listenToStorageChanges = true,
     storageRef,
-    emitAuto = false,
+    emitAuto,
   } = options
 
   const modes = {
