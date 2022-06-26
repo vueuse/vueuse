@@ -19,7 +19,7 @@ BindingValueFunction | BindingValueArray
     if (typeof binding.value === 'function')
       onLongPress(el, binding.value, { modifiers: binding.modifiers })
     else
-      onLongPress(el, binding.value[0], { ...binding.value[1], modifiers: binding.modifiers })
+      onLongPress(el, ...binding.value)
   },
 }
 
