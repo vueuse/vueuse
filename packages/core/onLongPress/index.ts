@@ -53,9 +53,7 @@ export function onLongPress(
       ev.stopPropagation()
 
     timeout = setTimeout(
-      () => {
-        handler(ev)
-      },
+      () => handler(ev),
       options?.delay ?? DEFAULT_DELAY,
     ) as unknown as number
   }

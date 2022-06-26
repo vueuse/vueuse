@@ -6,7 +6,7 @@ category: Sensors
 
 Listen for a long press on an element.
 
-Function provide modifiers in options
+Function provides modifiers in options
   * stop
   * once
   * prevent
