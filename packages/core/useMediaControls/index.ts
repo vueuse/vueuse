@@ -218,7 +218,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    */
   const togglePictureInPicture = () => {
     return new Promise((resolve, reject) => {
-      usingElRef<HTMLVideoElement>(target, async(el) => {
+      usingElRef<HTMLVideoElement>(target, async (el) => {
         if (supportsPictureInPicture) {
           if (!isPictureInPicture.value) {
             (el as any).requestPictureInPicture()
@@ -399,7 +399,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
     const el = unref(target)
-    if (!el) return
+    if (!el)
+      return
 
     volume.value = el.volume
     muted.value = el.muted

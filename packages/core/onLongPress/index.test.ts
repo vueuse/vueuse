@@ -18,7 +18,7 @@ describe('onLongPress', () => {
 
   describe('given argument is ref', () => {
     describe('given no options', () => {
-      it('should trigger longpress after 500ms', async() => {
+      it('should trigger longpress after 500ms', async () => {
         const onLongPressCallback = vi.fn()
         onLongPress(element, onLongPressCallback)
         element.value.dispatchEvent(pointerdownEvent)
@@ -29,7 +29,7 @@ describe('onLongPress', () => {
     })
 
     describe('given options', () => {
-      it('should trigger longpress after options.delay ms', async() => {
+      it('should trigger longpress after options.delay ms', async () => {
         const onLongPressCallback = vi.fn()
         onLongPress(element, onLongPressCallback, { delay: 1000 })
         element.value.dispatchEvent(pointerdownEvent)
@@ -43,7 +43,7 @@ describe('onLongPress', () => {
 
   describe('given argument is no ref', () => {
     describe('given no options', () => {
-      it('should trigger longpress after 500ms', async() => {
+      it('should trigger longpress after 500ms', async () => {
         const onLongPressCallback = vi.fn()
         onLongPress(element.value, onLongPressCallback)
         element.value.dispatchEvent(pointerdownEvent)
@@ -54,7 +54,7 @@ describe('onLongPress', () => {
     })
 
     describe('given options', () => {
-      it('should trigger longpress after options.delay ms', async() => {
+      it('should trigger longpress after options.delay ms', async () => {
         const onLongPressCallback = vi.fn()
         onLongPress(element.value, onLongPressCallback, { delay: 1000 })
         element.value.dispatchEvent(pointerdownEvent)

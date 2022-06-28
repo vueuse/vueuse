@@ -18,7 +18,6 @@ const p2 = (result: number) => {
 }
 
 const { activeIndex, result } = useAsyncQueue([p1, p2])
-
 </script>
 
 <template>

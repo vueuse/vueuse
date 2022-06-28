@@ -248,7 +248,8 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (immediate) _init()
+  if (immediate)
+    _init()
 
   if (autoClose) {
     useEventListener(window, 'beforeunload', () => close())

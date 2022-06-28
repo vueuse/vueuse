@@ -26,7 +26,6 @@ const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
 const handleScrollTo = () => {
   scrollTo(index.value)
 }
-
 </script>
 
 <template>

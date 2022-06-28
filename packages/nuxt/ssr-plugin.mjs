@@ -1,6 +1,5 @@
 import { setSSRHandler } from '@vueuse/core'
-import { useMeta } from '#meta'
-import { useCookie } from '#app'
+import { useCookie, useMeta } from '#imports'
 
 setSSRHandler('getDefaultStorage', () => {
   const cookieMap = new Map()

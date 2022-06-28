@@ -10,7 +10,8 @@ boolean
   const state = ref(false)
   return (el, binding) => {
     state.value = binding.value
-    if (isMounted) return
+    if (isMounted)
+      return
     isMounted = true
     const isLocked = useScrollLock(el, binding.value)
     watch(state, v => isLocked.value = v)

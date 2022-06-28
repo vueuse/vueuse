@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { computed, watch } from 'vue-demi'
+import { isDef } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
@@ -36,7 +37,7 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
   const targetElement = computed(() => unrefElement(target))
   const focused = computed({
     get() {
-      return activeElement.value === targetElement.value
+      return isDef(activeElement.value) && isDef(targetElement.value) && activeElement.value === targetElement.value
     },
     set(value: boolean) {
       if (!value && focused.value)

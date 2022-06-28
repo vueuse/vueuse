@@ -51,7 +51,7 @@ export interface SyncRefOptions {
 }
 ```
 
-When setting `{ flush: 'pre' }`, the target reference will be updated at [the end of the current "tick"](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) before rendering starts.
+When setting `{ flush: 'pre' }`, the target reference will be updated at [the end of the current "tick"](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing) before rendering starts.
 
 ```ts
 import { syncRefs } from '@vueuse/core'

@@ -4,7 +4,7 @@ These show the general configurations for most of the functions in VueUse.
 
 ### Event Filters
 
-From v4.0, we provide the Event Filters system to give the flexibility to control when will events get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
+From v4.0, we provide the Event Filters system to give the flexibility to control when events will get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
 
 ```ts
 import { debounceFilter, throttleFilter, useLocalStorage, useMouse } from '@vueuse/core'
@@ -36,7 +36,7 @@ motionControl.resume()
 
 ### Reactive Timing
 
-VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) where possible.
+VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing) where possible.
 
 For `watch`-like composables (e.g. `pausableWatch`, `whenever`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
 

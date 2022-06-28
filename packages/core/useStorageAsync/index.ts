@@ -20,8 +20,8 @@ export interface StorageAsyncOptions<T> extends Omit<StorageOptions<T>, 'seriali
 export function useStorageAsync(key: string, initialValue: MaybeRef<string>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<string>): RemovableRef<string>
 export function useStorageAsync(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<boolean>): RemovableRef<boolean>
 export function useStorageAsync(key: string, initialValue: MaybeRef<number>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<number>): RemovableRef<number>
-export function useStorageAsync<T> (key: string, initialValue: MaybeRef<T>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
-export function useStorageAsync<T = unknown> (key: string, initialValue: MaybeRef<null>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync<T>(key: string, initialValue: MaybeRef<T>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRef<null>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
 
 /**
  * Reactive Storage in with async support.
@@ -32,7 +32,7 @@ export function useStorageAsync<T = unknown> (key: string, initialValue: MaybeRe
  * @param storage
  * @param options
  */
-export function useStorageAsync<T extends(string|number|boolean|object|null)> (
+export function useStorageAsync<T extends(string | number | boolean | object | null)>(
   key: string,
   initialValue: MaybeRef<T>,
   storage: StorageLikeAsync | undefined,
@@ -94,7 +94,7 @@ export function useStorageAsync<T extends(string|number|boolean|object|null)> (
   if (storage) {
     watchWithFilter(
       data,
-      async() => {
+      async () => {
         try {
           if (data.value == null)
             await storage!.removeItem(key)

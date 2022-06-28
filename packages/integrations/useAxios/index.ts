@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { until } from '@vueuse/shared'
+import { isString, until } from '@vueuse/shared'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
 
@@ -29,7 +29,7 @@ export interface UseAxiosReturn<T> {
   /**
    * Indicates if the request was canceled
    */
-  aborted: Ref<boolean>
+  isAborted: Ref<boolean>
 
   /**
    * Any errors that may have occurred
@@ -43,13 +43,21 @@ export interface UseAxiosReturn<T> {
 
   /**
    * isFinished alias
+   * @deprecated use `isFinished` instead
    */
   finished: Ref<boolean>
 
   /**
-   * loading alias
+   * isLoading alias
+   * @deprecated use `isLoading` instead
    */
   loading: Ref<boolean>
+
+  /**
+   * isAborted alias
+   * @deprecated use `isAborted` instead
+   */
+  aborted: Ref<boolean>
 
   /**
    * abort alias
@@ -57,9 +65,15 @@ export interface UseAxiosReturn<T> {
   cancel: (message?: string | undefined) => void
 
   /**
-   * abort aborted
+   * isAborted alias
+   * @deprecated use `isCanceled` instead
    */
   canceled: Ref<boolean>
+
+  /**
+   * isAborted alias
+   */
+  isCanceled: Ref<boolean>
 }
 export interface StrictUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
@@ -96,28 +110,31 @@ export function useAxios<T = any>(config?: AxiosRequestConfig, instance?: AxiosI
  */
 export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & PromiseLike<OverallUseAxiosReturn<T>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
-  const argsPlaceholder = url ? 1 : 0
+  const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: AxiosRequestConfig = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions = { immediate: !!argsPlaceholder }
+
+  const isAxiosInstance = (val: any) => !!val?.request
+
   if (args.length > 0 + argsPlaceholder) {
     /**
      * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
      * so instead we are checking if there is a `requset` on the object to see if it is an
      * axios instance
      */
-    if ('request' in args[0 + argsPlaceholder])
+    if (isAxiosInstance(args[0 + argsPlaceholder]))
       instance = args[0 + argsPlaceholder]
     else
       defaultConfig = args[0 + argsPlaceholder]
   }
 
   if (args.length > 1 + argsPlaceholder) {
-    if ('request' in args[1 + argsPlaceholder])
+    if (isAxiosInstance(args[1 + argsPlaceholder]))
       instance = args[1 + argsPlaceholder]
   }
   if (
-    (args.length === 2 + argsPlaceholder && !('request' in args[1 + argsPlaceholder]))
+    (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
   )
     options = args[args.length - 1]
@@ -126,15 +143,16 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
   const data = shallowRef<T>()
   const isFinished = ref(false)
   const isLoading = ref(false)
-  const aborted = ref(false)
+  const isAborted = ref(false)
   const error = shallowRef<AxiosError<T>>()
 
   const cancelToken: CancelTokenSource = axios.CancelToken.source()
   const abort = (message?: string) => {
-    if (isFinished.value || !isLoading.value) return
+    if (isFinished.value || !isLoading.value)
+      return
 
     cancelToken.cancel(message)
-    aborted.value = true
+    isAborted.value = true
     isLoading.value = false
     isFinished.value = false
   }
@@ -143,7 +161,7 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isFinished.value = !loading
   }
   const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
-    let _url = ''
+    let _url = url ?? ''
     let _config
     if (typeof executeUrl === 'string') {
       _url = executeUrl
@@ -165,7 +183,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
         loading(false)
       })
   }
-  if (options.immediate && url) (execute as StrictUseAxiosReturn<T>['execute'])()
+  if (options.immediate && url)
+    (execute as StrictUseAxiosReturn<T>['execute'])()
 
   const result = {
     response,
@@ -176,8 +195,10 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isFinished,
     isLoading,
     cancel: abort,
-    canceled: aborted,
-    aborted,
+    isAborted,
+    canceled: isAborted,
+    aborted: isAborted,
+    isCanceled: isAborted,
     abort,
     execute,
   } as OverallUseAxiosReturn<T>

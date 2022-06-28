@@ -18,7 +18,7 @@ describe('refAutoReset', () => {
     expect(val.value).toBe('update')
   })
 
-  it('should be reset', async() => {
+  it('should be reset', async () => {
     const val = refAutoReset('default', 100)
     val.value = 'update'
 
@@ -26,7 +26,7 @@ describe('refAutoReset', () => {
     expect(val.value).toBe('default')
   })
 
-  it('should change afterMs', async() => {
+  it('should change afterMs', async () => {
     const afterMs = ref(150)
     const val = refAutoReset('default', afterMs)
     val.value = 'update'

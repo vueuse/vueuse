@@ -21,15 +21,15 @@ export const UseOffsetPagination = defineComponent<UseOffsetPaginationOptions>({
     const data = reactive(useOffsetPagination({
       ...props,
       onPageChange(...args) {
-        props.onPageChange?.(...args)
+        props.onPageChange?.(...args as unknown as [])
         emit('page-change', ...args)
       },
       onPageSizeChange(...args) {
-        props.onPageSizeChange?.(...args)
+        props.onPageSizeChange?.(...args as unknown as [])
         emit('page-size-change', ...args)
       },
       onPageCountChange(...args) {
-        props.onPageCountChange?.(...args)
+        props.onPageCountChange?.(...args as unknown as [])
         emit('page-count-change', ...args)
       },
     }))

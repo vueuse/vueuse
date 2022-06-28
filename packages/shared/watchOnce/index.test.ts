@@ -2,7 +2,7 @@ import { nextTick, ref } from 'vue-demi'
 import { watchOnce } from '.'
 
 describe('watchOnce', () => {
-  it('should work', async() => {
+  it('should work', async () => {
     const num = ref(0)
     const spy = vitest.fn()
 

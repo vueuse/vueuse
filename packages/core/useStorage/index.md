@@ -6,6 +6,10 @@ category: State
 
 Reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage.html). Use explicit import if you want to use the function from VueUse.
+:::
+
 ## Usage
 
 ```js

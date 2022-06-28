@@ -19,7 +19,7 @@ export function useQRCode(
 
   watch(
     src,
-    async(value) => {
+    async (value) => {
       if (src.value && isClient)
         result.value = await QRCode.toDataURL(value, options)
     },

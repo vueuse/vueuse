@@ -17,7 +17,7 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
  * @param options
  */
 export function useElementVisibility(
-  element: MaybeRef<Element|null|undefined>,
+  element: MaybeRef<Element | null | undefined>,
   { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
 ) {
   const elementIsVisible = ref(false)

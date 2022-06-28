@@ -29,7 +29,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
 <template>
   <div>
     <div class="container border-base">
-      <div class="ball" :style="{transform: `translate(${translateX}px, ${translateY}px)`}" />
+      <div class="ball" :style="{ transform: `translate(${translateX}px, ${translateY}px)` }" />
     </div>
     <div class="text-center mt-4">
       Use the arrow keys or w a s d keys to control the movement of the ball.

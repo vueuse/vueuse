@@ -71,8 +71,26 @@ export const sound: VueUseFunction[] = [
   },
 ]
 
+export const schemaOrg: VueUseFunction[] = [
+  {
+    name: 'createSchemaOrg',
+    package: 'schema-org',
+    description: 'create the schema.org manager instance.',
+    category: '@SchemaOrg',
+    external: 'https://vue-schema-org.netlify.app/api/core/create-schema-org.html',
+  },
+  {
+    name: 'useSchemaOrg',
+    package: 'schema-org',
+    description: 'update schema.org reactively.',
+    category: '@SchemaOrg',
+    external: 'https://vue-schema-org.netlify.app/api/core/use-schema-org.html',
+  },
+]
+
 export const ecosystemFunctions = [
   ...head,
   ...motion,
+  ...schemaOrg,
   ...sound,
 ]

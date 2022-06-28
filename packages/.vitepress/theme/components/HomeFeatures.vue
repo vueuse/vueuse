@@ -24,7 +24,6 @@ const features = computed<Feature[]>(() => {
 </template>
 
 <style scoped>
-
 #highlights {
   max-width: 960px;
   margin: 0px auto;

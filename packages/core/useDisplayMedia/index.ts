@@ -1,4 +1,3 @@
-
 import type { MaybeRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
