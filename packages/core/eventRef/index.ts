@@ -125,7 +125,7 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
     }
 
     nextTick(() => trigger())
-  }, { flush: 'pre' })
+  })
 
   const stop = () => {
     stopRegisterWatch()

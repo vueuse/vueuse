@@ -61,7 +61,7 @@ describe('eventRef', () => {
         done()
       })
 
-    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
+    watch(scrollTop, handleChange, { immediate: true })
   })
 
   it('should recomputed when getter with reactive value change', (done) => {
@@ -84,7 +84,7 @@ describe('eventRef', () => {
         done()
       })
 
-    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
+    watch(scrollTop, handleChange, { immediate: true })
   })
 
   it('should add listener again when register with reactive value change', (done) => {
@@ -110,6 +110,6 @@ describe('eventRef', () => {
         done()
       })
 
-    watch(scrollTop, handleChange, { immediate: true, flush: 'post' })
+    watch(scrollTop, handleChange, { immediate: true })
   })
 })
