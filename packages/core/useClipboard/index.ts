@@ -32,7 +32,7 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * backup option; call `window.prompt` method
    */
-  promptInfo?: string
+  useAlert?: false
 }
 
 export interface ClipboardReturn<Optional> {
@@ -57,7 +57,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
     read = false,
     source,
     copiedDuring = 1500,
-    promptInfo,
+    useAlert,
   } = options
 
   const events = ['copy', 'cut']
@@ -75,7 +75,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
     })
   }
 
-  if (isSupported && read) {
+  if (isSupportClipBoard && read) {
     for (const event of events)
       useEventListener(event as WindowEventName, updateText)
   }
@@ -103,8 +103,8 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
       document.execCommand('copy', true)
       document.body.removeChild(textarea)
     }
-    else if (promptInfo) {
-      window.prompt(promptInfo, value)
+    else if (useAlert) {
+      window.alert(value)
     }
     else {
       throw new Error('The current browser does not support the clipboard')
