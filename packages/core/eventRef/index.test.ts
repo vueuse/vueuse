@@ -24,7 +24,8 @@ describe('eventRef', () => {
       toString: false,
       _value: 0,
       get value() {
-        if (_scroll.toString) return `${_scroll._value}`
+        if (_scroll.toString)
+          return `${_scroll._value}`
         return _scroll._value
       },
       on: (handler, toString) => {

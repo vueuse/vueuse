@@ -110,7 +110,8 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
   }) as THandler
 
   const stopRegisterWatch = watchEffect((onCleanup) => {
-    if (!started.value) return
+    if (!started.value)
+      return
 
     onCleanup(() => cleanup())
 
@@ -136,9 +137,9 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
     computed({
       get: lazy
         ? () => {
-          started.value = true
-          return targetRef.value
-        }
+            started.value = true
+            return targetRef.value
+          }
         : () => targetRef.value,
       set: set ?? noop,
     }),
