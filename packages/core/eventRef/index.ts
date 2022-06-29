@@ -1,4 +1,4 @@
-import { computed, customRef, nextTick, ref, watchEffect } from 'vue-demi'
+import { computed, ref, shallowRef, triggerRef, watchEffect } from 'vue-demi'
 import { isObject, noop } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 
@@ -90,24 +90,21 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
   }
 
   let cleanup = noop
-  let trigger = noop
   let handlerArgs: Partial<Parameters<THandler>> = [] as any
   const started = ref(!lazy)
-  const targetRef = customRef((track, _trigger) => {
-    trigger = _trigger
-    return {
-      get: () => {
-        track()
-        return get(...handlerArgs)
-      },
-      set,
-    }
-  })
+  const changed = shallowRef()
+  const targetRef = shallowRef() as Ref<T>
 
   const handler = ((..._args: Parameters<THandler>) => {
     handlerArgs = _args
-    trigger()
+    Promise.resolve().then(() => triggerRef(changed))
   }) as THandler
+
+  const stopGetterWatch = watchEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    changed.value
+    targetRef.value = get(...handlerArgs)
+  })
 
   const stopRegisterWatch = watchEffect((onCleanup) => {
     if (!started.value)
@@ -125,10 +122,11 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
       cleanup = noop
     }
 
-    nextTick(() => trigger())
+    Promise.resolve().then(() => triggerRef(changed))
   })
 
   const stop = () => {
+    stopGetterWatch()
     stopRegisterWatch()
     cleanup()
   }

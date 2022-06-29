@@ -47,7 +47,7 @@ describe('eventRef', () => {
     expect(eventRef).toBeDefined()
   })
 
-  it('should reactive by mock event', () => new Promise<void>(done => {
+  it('should reactive by mock event', () => new Promise<void>((resolve) => {
     const [scrollTop] = eventRef<number>((handler) => {
       _scroll.on(handler)
       return () => _scroll.off(handler)
@@ -59,13 +59,13 @@ describe('eventRef', () => {
         _update(10)
       }).mockImplementationOnce(() => {
         expect(scrollTop.value).toBe(10)
-        done()
+        resolve()
       })
 
     watch(scrollTop, handleChange, { immediate: true })
   }))
 
-  it('should recomputed when getter with reactive value change', () => new Promise<void>(done => {
+  it('should recomputed when getter with reactive value change', () => new Promise<void>((resolve) => {
     const offset = ref(0)
 
     const [scrollTop] = eventRef<number>((handler) => {
@@ -82,13 +82,13 @@ describe('eventRef', () => {
         _update(10)
       }).mockImplementationOnce(() => {
         expect(scrollTop.value).toBe(20)
-        done()
+        resolve()
       })
 
     watch(scrollTop, handleChange, { immediate: true })
   }))
 
-  it('should add listener again when register with reactive value change', () => new Promise<void>(done => {
+  it('should add listener again when register with reactive value change', () => new Promise<void>((resolve) => {
     const toString = ref(false)
 
     const [scrollTop] = eventRef<number | string>((handler) => {
@@ -108,7 +108,7 @@ describe('eventRef', () => {
         toString.value = false
       }).mockImplementationOnce(() => {
         expect(scrollTop.value).toBe(10)
-        done()
+        resolve()
       })
 
     watch(scrollTop, handleChange, { immediate: true })
