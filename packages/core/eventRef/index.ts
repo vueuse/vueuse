@@ -91,28 +91,19 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
 
   let cleanup = noop
   let handlerArgs: Partial<Parameters<THandler>> = [] as any
+  let hasCleaned = false
   const started = ref(!lazy)
   const changed = shallowRef()
   const targetRef = shallowRef() as Ref<T>
 
   const handler = ((..._args: Parameters<THandler>) => {
     handlerArgs = _args
-    Promise.resolve().then(() => triggerRef(changed))
+    triggerRef(changed)
   }) as THandler
-
-  const stopGetterWatch = watchEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    changed.value
-    targetRef.value = get(...handlerArgs)
-  })
 
   const stopRegisterWatch = watchEffect((onCleanup) => {
     if (!started.value)
       return
-
-    onCleanup(() => cleanup())
-
-    cleanup()
 
     const unregister = register(handler)
 
@@ -122,7 +113,22 @@ export function eventRef<T, THandler extends FnHandler =(() => void)>(
       cleanup = noop
     }
 
-    Promise.resolve().then(() => triggerRef(changed))
+    onCleanup(() => {
+      hasCleaned = cleanup !== noop
+      cleanup()
+    })
+
+    if (hasCleaned)
+      Promise.resolve().then(() => triggerRef(changed))
+  })
+
+  const stopGetterWatch = watchEffect(() => {
+    if (!started.value)
+      return
+
+    // eslint-disable-next-line no-unused-expressions
+    changed.value
+    targetRef.value = get(...handlerArgs)
   })
 
   const stop = () => {
