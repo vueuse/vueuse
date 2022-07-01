@@ -75,7 +75,9 @@ export function useIntersectionObserver(
       },
       { immediate: true, flush: 'post' },
     )
-    : noop
+    : () => {
+        throw new Error('Please install Resize-Observer to implement polyfill')
+      }
 
   const stop = () => {
     cleanup()
