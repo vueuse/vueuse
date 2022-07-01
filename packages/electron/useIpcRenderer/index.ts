@@ -147,7 +147,7 @@ export function useIpcRenderer(ipcRenderer?: IpcRenderer): UseIpcRendererReturn 
     throw new Error('provide IpcRenderer module or enable nodeIntegration')
 
   return {
-    on: (channel: string, listener: IpcRendererListener) => useIpcRendererOn(channel, listener),
+    on: (channel: string, listener: IpcRendererListener) => useIpcRendererOn(ipcRenderer!, channel, listener),
     once: ipcRenderer.once.bind(ipcRenderer),
     removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
     removeAllListeners: ipcRenderer.removeAllListeners.bind(ipcRenderer),
