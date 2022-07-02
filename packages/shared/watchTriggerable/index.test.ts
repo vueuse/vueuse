@@ -82,4 +82,16 @@ describe('watchTriggerable', () => {
     expect(effect.value).toBe(source.a)
     expect(cleanupCount).toBe(1)
   })
+
+  test('trigger should await', async () => {
+    const source = ref(1)
+    const effect = ref(0)
+    const { trigger } = watchTriggerable(source, async (value) => {
+      await new Promise(resolve => setTimeout(resolve, 10))
+      effect.value = value
+    })
+
+    await trigger()
+    expect(effect.value).toBe(source.value)
+  })
 })

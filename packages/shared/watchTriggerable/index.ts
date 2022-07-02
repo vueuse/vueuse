@@ -1,4 +1,4 @@
-import type { WatchCallback, WatchSource } from 'vue-demi'
+import type { WatchSource } from 'vue-demi'
 import { isReactive, unref } from 'vue-demi'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
@@ -8,14 +8,18 @@ import type { WatchWithFilterOptions } from '../watchWithFilter'
 // Watch that can be triggered manually
 // A `watch` wrapper that supports manual triggering of `WatchCallback`, which returns an additional `trigger` to execute a `WatchCallback` immediately.
 
-export interface WatchTriggerableReturn extends WatchIgnorableReturn {
+export interface WatchTriggerableReturn<FnReturnT = void> extends WatchIgnorableReturn {
   /** Execute `WatchCallback` immediately */
-  trigger: () => void
+  trigger: () => FnReturnT
 }
 
-export function watchTriggerable<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>, options?: WatchWithFilterOptions<Immediate>): WatchTriggerableReturn
-export function watchTriggerable<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, T | undefined>, options?: WatchWithFilterOptions<Immediate>): WatchTriggerableReturn
-export function watchTriggerable<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, T | undefined>, options?: WatchWithFilterOptions<Immediate>): WatchTriggerableReturn
+type OnCleanup = (cleanupFn: () => void) => void
+
+export type WatchTriggerableCallback<V = any, OV = any, R = void> = (value: V, oldValue: OV, onCleanup: OnCleanup) => R
+
+export function watchTriggerable<T extends Readonly<WatchSource<unknown>[]>, FnReturnT>(sources: [...T], cb: WatchTriggerableCallback<MapSources<T>, MapOldSources<T, true>, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
+export function watchTriggerable<T, FnReturnT>(source: WatchSource<T>, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
+export function watchTriggerable<T extends object, FnReturnT>(source: T, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
 
 export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
   source: any,
@@ -45,15 +49,17 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
     // When a new side effect occurs, clean up the previous side effect
     onEffect()
 
-    cb(value, oldValue, onCleanup)
+    return cb(value, oldValue, onCleanup)
   }
   const res = watchIgnorable(source, _cb, options)
   const { ignoreUpdates } = res
 
   const trigger = () => {
+    let res: any
     ignoreUpdates(() => {
-      _cb(getWatchSources(source), getOldValue(source))
+      res = _cb(getWatchSources(source), getOldValue(source))
     })
+    return res
   }
 
   return {
