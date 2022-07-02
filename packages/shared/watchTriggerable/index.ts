@@ -5,7 +5,11 @@ import type { WatchIgnorableReturn } from '../watchIgnorable'
 import { watchIgnorable } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 
+// Watch that can be triggered manually
+// A `watch` wrapper that supports manual triggering of `WatchCallback`, which returns an additional `trigger` to execute a `WatchCallback` immediately.
+
 export interface WatchTriggerableReturn extends WatchIgnorableReturn {
+  /** Execute `WatchCallback` immediately */
   trigger: () => void
 }
 
@@ -18,13 +22,18 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
   cb: any,
   options: WatchWithFilterOptions<Immediate> = {},
 ): WatchTriggerableReturn {
-  let cleanupFn: () => void
+  let cleanupFn: (() => void) | undefined
 
   function onEffect() {
-    if (cleanupFn)
-      cleanupFn()
+    if (!cleanupFn)
+      return
+
+    const fn = cleanupFn
+    cleanupFn = undefined
+    fn()
   }
 
+  /** Register the function `cleanupFn` */
   function onCleanup(callback: () => void) {
     cleanupFn = callback
   }
@@ -32,9 +41,10 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
   const _cb = (
     value: any,
     oldValue: any,
-    // onCleanup: any,
   ) => {
+    // When a new side effect occurs, clean up the previous side effect
     onEffect()
+
     cb(value, oldValue, onCleanup)
   }
   const res = watchIgnorable(source, _cb, options)

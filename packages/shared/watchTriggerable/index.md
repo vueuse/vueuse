@@ -4,7 +4,7 @@ category: Watch
 
 # watchTriggerable
 
-watch that can be triggered manually
+Watch that can be triggered manually
 
 ## Usage
 
