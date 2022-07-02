@@ -53,5 +53,5 @@ const { trigger } = watchTriggerable(
 )
 
 source.value = 1 // no log
-trigger() // logs (after 500 ms): The value is "1"
+await trigger() // logs (after 500 ms): The value is "1"
 ```
