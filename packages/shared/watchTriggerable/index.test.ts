@@ -1,4 +1,4 @@
-import { nextTick, reactive, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue-demi'
 import { watchTriggerable } from '.'
 describe('watchTriggerable', () => {
   test('this should work', async () => {
