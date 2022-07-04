@@ -5,27 +5,34 @@ import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 
+export interface UseCssVarOptions extends ConfigurableWindow {
+  initialValue?: string
+}
+
 /**
  * Manipulate CSS variables.
  *
  * @see https://vueuse.org/useCssVar
  * @param prop
- * @param el
+ * @param target
+ * @param initialValue
  * @param options
  */
 export function useCssVar(
   prop: MaybeRef<string>,
   target?: MaybeElementRef,
-  { window = defaultWindow }: ConfigurableWindow = {},
+  { window = defaultWindow, initialValue = '' }: UseCssVarOptions = {},
 ) {
-  const variable = ref('')
+  const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   watch(
     [elRef, () => unref(prop)],
     ([el, prop]) => {
-      if (el && window)
-        variable.value = window.getComputedStyle(el).getPropertyValue(prop)
+      if (el && window) {
+        const value = window.getComputedStyle(el).getPropertyValue(prop)
+        variable.value = value || initialValue
+      }
     },
     { immediate: true },
   )

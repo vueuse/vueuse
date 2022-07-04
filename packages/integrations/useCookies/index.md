@@ -4,7 +4,11 @@ category: '@Integrations'
 
 # useCookies
 
-wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
+Wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie).
+
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useCookie()`](https://v3.nuxtjs.org/api/composables/use-cookie). Use explicit import if you want to use the function from VueUse.
+:::
 
 ## Install 
 

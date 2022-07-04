@@ -39,6 +39,17 @@ From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nu
 npm i -D @vueuse/nuxt @vueuse/core
 ```
 
+Nuxt 3
+```ts
+// nuxt.config.ts
+export default {
+  modules: [
+    '@vueuse/nuxt',
+  ],
+}
+```
+
+Nuxt 2
 ```ts
 // nuxt.config.js
 export default {

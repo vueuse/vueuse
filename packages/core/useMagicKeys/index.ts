@@ -121,7 +121,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       })
       metaDeps.clear()
     }
-    else if (e.getModifierState('Meta') && value) {
+    else if (typeof e.getModifierState === 'function' && e.getModifierState('Meta') && value) {
       [...current, ...values].forEach(key => metaDeps.add(key))
     }
   }

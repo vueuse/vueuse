@@ -118,7 +118,12 @@ export function useScroll(
           = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
       x.value = scrollLeft
 
-      const scrollTop = eventTarget.scrollTop
+      let scrollTop = eventTarget.scrollTop
+
+      // patch for mobile compatible
+      if (e.target === document && !scrollTop)
+        scrollTop = document.body.scrollTop
+
       directions.top = scrollTop < y.value
       directions.bottom = scrollTop > y.value
       arrivedState.top = scrollTop <= 0 + (offset.top || 0)
