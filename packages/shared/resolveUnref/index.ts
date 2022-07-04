@@ -1,5 +1,5 @@
 import { unref } from 'vue-demi'
-import type { MaybeComputedRef } from '../resolveRef'
+import type { MaybeComputedRef } from '../utils'
 
 /**
  * Normalize value/ref/getter to `ref` or `computed`.

@@ -1,25 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
-
-/**
- * Maybe it's a ref, or a plain value
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeRef<T> = T | Ref<T>
-
-/**
- * Maybe it's a ref, or a getter function
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeComputedRef<T> = T extends Function
-  ? never
-  : (() => T) | MaybeRef<T>
+import type { MaybeComputedRef, MaybeRef } from '../utils'
 
 /**
  * Normalize value/ref/getter to `ref` or `computed`.
