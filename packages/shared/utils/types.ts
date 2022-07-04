@@ -51,6 +51,8 @@ export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
 
+export type Many<T> =  ReadonlyArray<T> | T
+
 export interface Pausable {
   /**
    * A ref indicate whether a pusable instance is active
