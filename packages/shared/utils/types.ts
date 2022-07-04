@@ -6,15 +6,6 @@ import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 export type Fn = () => void
 
 /**
- * Maybe it's a ref, or not.
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeRef<T> = T | Ref<T>
-
-/**
  * A ref that allow to set null or undefined
  */
 export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
