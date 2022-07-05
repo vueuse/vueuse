@@ -1,3 +1,4 @@
+import type { MaybeRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 
@@ -5,9 +6,9 @@ type Primitive = string | number
 
 interface UseStepperReturn<StepName, Steps, Step> {
   /** List of steps. */
-  steps: Readonly<Steps>
+  steps: Readonly<Ref<Steps>>
   /** List of step names. */
-  stepNames: readonly StepName[]
+  stepNames: Readonly<Ref<StepName[]>>
   /** Index of the current step. */
   index: Ref<number>
   /** Current step. */
@@ -44,34 +45,35 @@ interface UseStepperReturn<StepName, Steps, Step> {
   isAfter: (step: StepName) => boolean
 }
 
-export function useStepper<T extends Primitive>(steps: T[], initialStep?: T): UseStepperReturn<T, T[], T>
-export function useStepper<T extends Record<string, any>>(steps: T, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
-export function useStepper<T, K>(steps: T, initialStep?: K) {
-  const stepNames: any[] = Array.isArray(steps) ? steps : Object.keys(steps)
-  const index = ref(stepNames.indexOf(initialStep ?? stepNames[0]))
+export function useStepper<T extends Primitive>(steps: MaybeRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
+export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
+export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any, any, any> {
+  const stepsRef = ref<any[]>(steps)
+  const stepNames = computed<any[]>(() => Array.isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))
+  const index = ref(stepNames.value.indexOf(initialStep ?? stepNames.value[0]))
   const current = computed(() => at(index.value))
   const isFirst = computed(() => index.value === 0)
-  const isLast = computed(() => index.value === stepNames.length - 1)
-  const next = computed(() => stepNames[index.value + 1])
-  const previous = computed(() => stepNames[index.value - 1])
+  const isLast = computed(() => index.value === stepNames.value.length - 1)
+  const next = computed(() => stepNames.value[index.value + 1])
+  const previous = computed(() => stepNames.value[index.value - 1])
 
   function at(index: number) {
-    if (Array.isArray(steps))
-      return steps[index]
+    if (Array.isArray(stepsRef.value))
+      return stepsRef.value[index]
 
-    return (steps as any)[stepNames[index]]
+    return stepsRef.value[stepNames.value[index]]
   }
 
   function get(step: any) {
-    if (!stepNames.includes(step))
+    if (!stepNames.value.includes(step))
       return
 
-    return at(stepNames.indexOf(step))
+    return at(stepNames.value.indexOf(step))
   }
 
   function goTo(step: any) {
-    if (stepNames.includes(step))
-      index.value = stepNames.indexOf(step)
+    if (stepNames.value.includes(step))
+      index.value = stepNames.value.indexOf(step)
   }
 
   function goToNext() {
@@ -94,27 +96,27 @@ export function useStepper<T, K>(steps: T, initialStep?: K) {
   }
 
   function isNext(step: any) {
-    return stepNames.indexOf(step) === index.value + 1
+    return stepNames.value.indexOf(step) === index.value + 1
   }
 
   function isPrevious(step: any) {
-    return stepNames.indexOf(step) === index.value - 1
+    return stepNames.value.indexOf(step) === index.value - 1
   }
 
   function isCurrent(step: any) {
-    return stepNames.indexOf(step) === index.value
+    return stepNames.value.indexOf(step) === index.value
   }
 
   function isBefore(step: any) {
-    return index.value < stepNames.indexOf(step)
+    return index.value < stepNames.value.indexOf(step)
   }
 
   function isAfter(step: any) {
-    return index.value > stepNames.indexOf(step)
+    return index.value > stepNames.value.indexOf(step)
   }
 
   return {
-    steps,
+    steps: stepsRef,
     stepNames,
     index,
     current,

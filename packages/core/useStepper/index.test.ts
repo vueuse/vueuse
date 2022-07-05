@@ -1,3 +1,4 @@
+import { reactive, ref } from 'vue-demi'
 import { useStepper } from '.'
 
 describe('useStepper', () => {
@@ -6,6 +7,26 @@ describe('useStepper', () => {
   })
 
   describe('common', () => {
+    test('steps are reactive', () => {
+      const flag = ref(true)
+      const steps = reactive({
+        first: {
+          title: 'First',
+          enabled: flag,
+        },
+        second: {
+          title: 'Second',
+          enabled: flag,
+        },
+      })
+
+      const stepper = useStepper(steps)
+
+      expect(stepper.current.value.enabled).toBe(true)
+      flag.value = false
+      expect(stepper.current.value.enabled).toBe(false)
+    })
+
     it('does not navigate to steps that do not exist', () => {
       const stepper = useStepper({
         first: 'First',
@@ -159,8 +180,8 @@ describe('useStepper', () => {
         'Last step',
       ])
 
-      expect(stepper.stepNames).toEqual(['First step', 'Second step', 'Last step'])
-      expect(stepper.steps).toEqual(['First step', 'Second step', 'Last step'])
+      expect(stepper.stepNames.value).toEqual(['First step', 'Second step', 'Last step'])
+      expect(stepper.steps.value).toEqual(['First step', 'Second step', 'Last step'])
     })
 
     it('can get a step at a specific index', () => {
@@ -207,8 +228,8 @@ describe('useStepper', () => {
         last: 'Last',
       })
 
-      expect(stepper.stepNames).toEqual(['first', 'second', 'last'])
-      expect(stepper.steps).toEqual({
+      expect(stepper.stepNames.value).toEqual(['first', 'second', 'last'])
+      expect(stepper.steps.value).toEqual({
         first: 'First',
         second: 'Second',
         last: 'Last',

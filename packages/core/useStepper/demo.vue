@@ -45,7 +45,7 @@ function allStepsBeforeAreValid(index: number): boolean {
 <template>
   <div>
     <div class="flex gap-2 justify-center">
-      <div v-for="(step, id, i) in stepper.steps" :key="id" class="">
+      <div v-for="(step, id, i) in stepper.steps.value" :key="id" class="">
         <button
           :disabled="!allStepsBeforeAreValid(i) && stepper.isBefore(id)"
           @click="stepper.goTo(id)"
