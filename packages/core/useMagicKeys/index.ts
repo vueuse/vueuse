@@ -135,6 +135,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       updateRefs(e, false)
       return onEventFired(e)
     }, { passive })
+    useEventListener(target, 'blur', (e: KeyboardEvent) => {
+      updateRefs(e, false)
+      return onEventFired(e)
+    }, { passive })
   }
 
   const proxy = new Proxy(
