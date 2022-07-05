@@ -135,7 +135,11 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       updateRefs(e, false)
       return onEventFired(e)
     }, { passive })
-    useEventListener(target, 'blur', (e: KeyboardEvent) => {
+    useEventListener('blur', (e: FocusEvent) => {
+      updateRefs(e, false)
+      return onEventFired(e)
+    }, { passive })
+    useEventListener('focus', (e: FocusEvent) => {
       updateRefs(e, false)
       return onEventFired(e)
     }, { passive })
