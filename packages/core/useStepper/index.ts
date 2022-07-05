@@ -1,15 +1,77 @@
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 
-export function useStepper<T>(steps: readonly T[], initial?: T) {
-  const index = ref(steps.indexOf(initial ?? steps[0]))
-  const current = computed(() => steps[index.value])
-  const isFirst = computed(() => index.value === 0)
-  const isLast = computed(() => index.value === steps.length - 1)
-  const nextStep = computed<T | undefined>(() => steps[index.value + 1])
-  const previousStep = computed<T | undefined>(() => steps[index.value - 1])
+type Primitive = string | number
 
-  function goTo(step: T) {
-    index.value = steps.indexOf(step)
+interface UseStepperReturn<StepName, Steps, Step> {
+  /** List of steps. */
+  steps: Readonly<Steps>
+  /** List of step names. */
+  stepNames: readonly StepName[]
+  /** Index of the current step. */
+  index: Ref<number>
+  /** Current step. */
+  current: ComputedRef<Step>
+  /** Next step, or undefined if the current step is the last one. */
+  next: ComputedRef<StepName | undefined>
+  /** Previous step, or undefined if the current step is the first one. */
+  previous: ComputedRef<StepName | undefined>
+  /** Whether the current step is the first one. */
+  isFirst: ComputedRef<boolean>
+  /** Whether the current step is the last one. */
+  isLast: ComputedRef<boolean>
+  /** Get the step at the specified index. */
+  at: (index: number) => Step | undefined
+  /** Get a step by the specified name. */
+  get: (step: StepName) => Step | undefined
+  /** Go to the specified step. */
+  goTo: (step: StepName) => void
+  /** Go to the next step. Does nothing if the current step is the last one. */
+  goToNext: () => void
+  /** Go to the previous step. Does nothing if the current step is the previous one. */
+  goToPrevious: () => void
+  /** Go back to the given step, only if the current step is after. */
+  goBackTo: (step: StepName) => void
+  /** Checks whether the given step is the next step. */
+  isNext: (step: StepName) => boolean
+  /** Checks whether the given step is the previous step. */
+  isPrevious: (step: StepName) => boolean
+  /** Checks whether the given step is the current step. */
+  isCurrent: (step: StepName) => boolean
+  /** Checks if the current step is before the given step. */
+  isBefore: (step: StepName) => boolean
+  /** Checks if the current step is after the given step. */
+  isAfter: (step: StepName) => boolean
+}
+
+export function useStepper<T extends Primitive>(steps: T[], initialStep?: T): UseStepperReturn<T, T[], T>
+export function useStepper<T extends Record<string, any>>(steps: T, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
+export function useStepper<T, K>(steps: T, initialStep?: K) {
+  const stepNames: any[] = Array.isArray(steps) ? steps : Object.keys(steps)
+  const index = ref(stepNames.indexOf(initialStep ?? stepNames[0]))
+  const current = computed(() => at(index.value))
+  const isFirst = computed(() => index.value === 0)
+  const isLast = computed(() => index.value === stepNames.length - 1)
+  const next = computed(() => stepNames[index.value + 1])
+  const previous = computed(() => stepNames[index.value - 1])
+
+  function at(index: number) {
+    if (Array.isArray(steps))
+      return steps[index]
+
+    return (steps as any)[stepNames[index]]
+  }
+
+  function get(step: any) {
+    if (!stepNames.includes(step))
+      return
+
+    return at(stepNames.indexOf(step))
+  }
+
+  function goTo(step: any) {
+    if (stepNames.includes(step))
+      index.value = stepNames.indexOf(step)
   }
 
   function goToNext() {
@@ -26,56 +88,50 @@ export function useStepper<T>(steps: readonly T[], initial?: T) {
     index.value--
   }
 
-  /**
-   * Checks if the given step is the step just after the current step.
-   */
-  function isNext(step: T) {
-    return steps.indexOf(step) === index.value + 1
+  function goBackTo(step: any) {
+    if (isAfter(step))
+      goTo(step)
   }
 
-  /**
-   * Checks if the given step is the step just before the current step.
-   */
-  function isPrevious(step: T) {
-    return steps.indexOf(step) === index.value - 1
+  function isNext(step: any) {
+    return stepNames.indexOf(step) === index.value + 1
   }
 
-  /**
-   * Checks if the current step is the same as the given step.
-   */
-  function currentStepIs(step: T) {
-    return steps.indexOf(step) === index.value
+  function isPrevious(step: any) {
+    return stepNames.indexOf(step) === index.value - 1
   }
 
-  /**
-   * Checks if the current step is after given step.
-   */
-  function isStepAfter(step: T) {
-    return index.value > steps.indexOf(step)
+  function isCurrent(step: any) {
+    return stepNames.indexOf(step) === index.value
   }
 
-  /**
-   * Checks if the current step is before given step.
-   */
-  function isStepBefore(step: T) {
-    return index.value < steps.indexOf(step)
+  function isBefore(step: any) {
+    return index.value < stepNames.indexOf(step)
+  }
+
+  function isAfter(step: any) {
+    return index.value > stepNames.indexOf(step)
   }
 
   return {
-    goTo,
-    current,
-    index,
-    goToNext,
-    goToPrevious,
     steps,
-    currentStepIs,
-    isStepAfter,
-    isStepBefore,
+    stepNames,
+    index,
+    current,
+    next,
+    previous,
     isFirst,
     isLast,
+    at,
+    get,
+    goTo,
+    goToNext,
+    goToPrevious,
+    goBackTo,
     isNext,
     isPrevious,
-    nextStep,
-    previousStep,
+    isCurrent,
+    isBefore,
+    isAfter,
   }
 }
