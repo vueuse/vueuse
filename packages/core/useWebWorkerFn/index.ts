@@ -113,7 +113,6 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {
-      /* eslint-disable-next-line no-console */
       console.error(
         '[useWebWorkerFn] You can only run one instance of the worker at a time.',
       )

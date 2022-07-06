@@ -18,7 +18,7 @@ import { useColorMode } from '@vueuse/core'
 const mode = useColorMode() // Ref<'dark' | 'light'>
 ```
 
-By default, it will match with users' browser preference using `usePreferredDark` (a.k.a `auto` mode). When reading the ref, it will always return the current color mode (`dark`, `light` or your custom modes). When writing to the ref, it will trigger DOM updates and persist the color mode to local storage (or your custom storage). You can pass `auto` to set back to auto mode.
+By default, it will match with users' browser preference using `usePreferredDark` (a.k.a `auto` mode). When reading the ref, it will by default return the current color mode (`dark`, `light` or your custom modes). The `auto` mode can be included in the returned modes by enabling the `emitAuto` option. When writing to the ref, it will trigger DOM updates and persist the color mode to local storage (or your custom storage). You can pass `auto` to set back to auto mode.
 
 ```ts
 mode.value // 'dark' | 'light'

@@ -15,7 +15,7 @@ export function useVModels<P extends object, Name extends string>(
   options: VModelOptions<any> = {},
 ): ToRefs<P> {
   const ret: any = {}
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const key in props)
     ret[key] = useVModel(props, key, emit, options)
   return ret
