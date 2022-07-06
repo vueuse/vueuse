@@ -4,7 +4,7 @@ category: Watch
 
 # watchArray
 
-`watchArray` watches for the additions and removals in a list.
+Watch for an array with additions and removals.
 
 ## Usage
 

@@ -3,9 +3,21 @@ import { unref, watch } from 'vue-demi'
 
 export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue: OV, added: V, removed: OV, onCleanup: (cleanupFn: () => void) => void) => any
 
-export function watchArray<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T[]>, cb: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>, options?: WatchOptions<Immediate>) {
-  let oldList: T[] = options?.immediate ? [] : [...(source instanceof Function ? source() : unref(source))]
-  watch(source, (newList, _, onCleanup) => {
+/**
+ * Watch for an array with additions and removals.
+ *
+ * @see https://vueuse.org/watchArray
+ */
+export function watchArray<T, Immediate extends Readonly<boolean> = false>(
+  source: WatchSource<T[]>,
+  cb: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>,
+  options?: WatchOptions<Immediate>,
+) {
+  let oldList: T[] = options?.immediate
+    ? []
+    : [...(source instanceof Function ? source() : unref(source))]
+
+  return watch(source, (newList, _, onCleanup) => {
     const oldListRemains = new Array<boolean>(oldList.length)
     const added: T[] = []
     for (const obj of newList) {
