@@ -18,4 +18,47 @@ describe('computedWithControl', () => {
 
     expect(computed.value).toBe('BAR')
   })
+
+  it('custom trigger', () => {
+    let count = 0
+    const computed = computedWithControl(() => {}, () => count)
+
+    expect(computed.value).toBe(0)
+
+    count += 1
+
+    expect(computed.value).toBe(0)
+
+    computed.trigger()
+
+    expect(computed.value).toBe(1)
+  })
+
+  it('getter and setter', () => {
+    const trigger = ref(0)
+    const data = ref('foo')
+
+    const computed = computedWithControl(trigger, {
+      get() {
+        return data.value.toUpperCase()
+      },
+      set(v) {
+        data.value = v
+      },
+    })
+
+    expect(computed.value).toBe('FOO')
+
+    data.value = 'bar'
+
+    expect(computed.value).toBe('FOO')
+
+    trigger.value += 1
+
+    expect(computed.value).toBe('BAR')
+
+    computed.value = 'BAZ'
+
+    expect(data.value).toBe('BAZ')
+  })
 })
