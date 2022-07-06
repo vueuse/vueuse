@@ -101,8 +101,8 @@
     min-width: 20rem;
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
-    border: 1px solid var(--vt-c-divider);
     border-radius: 4px;
+    box-shadow: var(--vt-c-divider) 0px 0px 0px 1px;
     margin: 0.5rem 0;
     outline: none;
     background: var(--vt-c-bg);
