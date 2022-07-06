@@ -214,6 +214,16 @@ function headersToObject(headers: HeadersInit | undefined) {
   return headers
 }
 
+function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
+  return (ctx: T) => {
+    callbacks.forEach(async (callback) => {
+      if (callback)
+        ctx = { ...ctx, ...(await callback(ctx)) }
+    })
+    return ctx
+  }
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   const _options = config.options || {}
   const _fetchOptions = config.fetchOptions || {}
@@ -230,7 +240,13 @@ export function createFetch(config: CreateFetchOptions = {}) {
     // Merge properties into a single object
     if (args.length > 0) {
       if (isFetchOptions(args[0])) {
-        options = { ...options, ...args[0] }
+        options = {
+          ...options,
+          ...args[0],
+          beforeFetch: chainCallbacks(_options.beforeFetch, args[0].beforeFetch),
+          afterFetch: chainCallbacks(_options.afterFetch, args[0].afterFetch),
+          onFetchError: chainCallbacks(_options.onFetchError, args[0].onFetchError),
+        }
       }
       else {
         fetchOptions = {
