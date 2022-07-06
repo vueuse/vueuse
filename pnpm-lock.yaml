@@ -216,6 +216,14 @@ importers:
       qrcode: 1.5.0
       universal-cookie: 4.0.4
 
+  packages/math:
+    specifiers:
+      '@vueuse/shared': workspace:*
+      vue-demi: 0.12.5
+    dependencies:
+      '@vueuse/shared': link:../shared
+      vue-demi: 0.12.5_ac2a42527c362575429f172d82b9d821
+
   packages/metadata:
     specifiers: {}
 
