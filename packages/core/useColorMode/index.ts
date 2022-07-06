@@ -140,7 +140,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     })
 
   function defaultOnChanged(mode: T | BasicColorSchema) {
-    updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)
+    const resolvedMode = mode === 'auto' ? preferredMode.value : mode
+    updateHTMLAttrs(selector, attribute, modes[resolvedMode] ?? resolvedMode)
   }
 
   function onChanged(mode: T | BasicColorSchema) {
