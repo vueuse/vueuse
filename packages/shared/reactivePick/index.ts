@@ -8,7 +8,7 @@ import { reactive, toRef } from 'vue-demi'
  */
 export function reactivePick<T extends object, K extends keyof T>(
   obj: T,
-  ...keys: K[]
+  ...keys: (K | K[])[]
 ): { [S in K]: UnwrapRef<T[S]> } {
   return reactive(Object.fromEntries(keys.map(k => [k, toRef(obj, k)]))) as any
 }
