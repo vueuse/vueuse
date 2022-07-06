@@ -14,7 +14,7 @@ import { defaultWindow } from '../_configurable'
  */
 export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const isSupported = Boolean(window && 'matchMedia' in window)
+  const isSupported = Boolean(window && 'matchMedia' in window && typeof 'matchMedia' === 'function')
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)

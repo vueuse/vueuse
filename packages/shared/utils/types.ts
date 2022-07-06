@@ -6,15 +6,6 @@ import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 export type Fn = () => void
 
 /**
- * Maybe it's a ref, or not.
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeRef<T> = T | Ref<T>
-
-/**
  * A ref that allow to set null or undefined
  */
 export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
@@ -26,6 +17,26 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
  * @deprecated Use `RemovableRef`
  */
 export type RemoveableRef<T> = RemovableRef<T>
+
+/**
+ * Maybe it's a ref, or a plain value
+ *
+ * ```ts
+ * type MaybeRef<T> = T | Ref<T>
+ * ```
+ */
+export type MaybeRef<T> = T | Ref<T>
+
+/**
+ * Maybe it's a ref, or a getter function
+ *
+ * ```ts
+ * type MaybeRef<T> = T | Ref<T>
+ * ```
+ */
+export type MaybeComputedRef<T> = T extends Function
+  ? never
+  : (() => T) | MaybeRef<T>
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>

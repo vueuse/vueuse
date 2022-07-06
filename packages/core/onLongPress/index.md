@@ -6,6 +6,13 @@ category: Sensors
 
 Listen for a long press on an element.
 
+Function provides modifiers in options
+  * stop
+  * once
+  * prevent
+  * capture
+  * self
+
 ## Usage
 
 ```html
@@ -23,7 +30,11 @@ const resetHook = () => {
   longPressedHook.value = false
 }
 
-onLongPress(htmlRefHook, onLongPressCallbackHook)
+onLongPress(
+  htmlRefHook,
+  onLongPressCallbackHook,
+  { modifiers: { prevent: true } }
+)
 </script>
 
 <template>
@@ -93,11 +104,14 @@ const resetDirective = () => {
 <template>
   <p>Long Pressed: {{ longPressedDirective }}</p>
 
-  <button v-on-long-press="onLongPressCallbackDirective" class="ml-2 button small">
+  <button v-on-long-press.prevent="onLongPressCallbackDirective" class="ml-2 button small">
     Press long
   </button>
 
-  <button v-on-long-press="[onLongPressCallbackDirective, {delay: 1000}]" class="ml-2 button small">
+  <button
+    v-on-long-press="[onLongPressCallbackDirective, {delay: 1000, modifiers: { stop: true }}]"
+    class="ml-2button small"
+  >
     Press long (with options)
   </button>
 
