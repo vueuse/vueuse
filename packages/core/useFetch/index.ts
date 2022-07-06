@@ -4,6 +4,8 @@ import { containsProp, createEventHook, until, useTimeoutFn } from '@vueuse/shar
 import { computed, isRef, ref, shallowRef, unref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
+export interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
+
 export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
@@ -118,6 +120,8 @@ export interface AfterFetchContext<T = any> {
   response: Response
 
   data: T | null
+
+  config: InternalConfig
 }
 
 export interface OnFetchErrorContext<T = any, E = any> {
@@ -263,7 +267,6 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
-  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'GET',
     type: 'text' as DataType,
@@ -383,7 +386,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           responseData = await fetchResponse[config.type]()
 
           if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse, config }))
 
           data.value = responseData
 
