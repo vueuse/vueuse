@@ -64,6 +64,7 @@ Schema.org for Vue. Supports typed and automated Google Rich Results
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash
+  - [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for reactive route.params
   - [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for reactive route.query
 
 
