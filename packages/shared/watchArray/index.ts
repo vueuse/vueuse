@@ -9,15 +9,20 @@ export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue:
  * @see https://vueuse.org/watchArray
  */
 export function watchArray<T, Immediate extends Readonly<boolean> = false>(
-  source: WatchSource<T[]>,
+  source: WatchSource<T[]> | T[],
   cb: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>,
   options?: WatchOptions<Immediate>,
 ) {
   let oldList: T[] = options?.immediate
     ? []
-    : [...(source instanceof Function ? source() : unref(source))]
+    : [...(source instanceof Function
+        ? source()
+        : Array.isArray(source)
+          ? source
+          : unref(source)),
+      ]
 
-  return watch(source, (newList, _, onCleanup) => {
+  return watch(source as WatchSource<T[]>, (newList, _, onCleanup) => {
     const oldListRemains = new Array<boolean>(oldList.length)
     const added: T[] = []
     for (const obj of newList) {
