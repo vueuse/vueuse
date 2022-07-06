@@ -94,6 +94,15 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     }
   }
 
+  function reset() {
+    for (const key of Object.keys(refs)) {
+      if (useReactive)
+        refs[key] = false
+      else
+        refs[key].value = false
+    }
+  }
+
   function updateRefs(e: KeyboardEvent, value: boolean) {
     const key = e.key?.toLowerCase()
     const code = e.code?.toLowerCase()
@@ -135,6 +144,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       updateRefs(e, false)
       return onEventFired(e)
     }, { passive })
+
+    // #1350
+    useEventListener('blur', reset, { passive: true })
+    useEventListener('focus', reset, { passive: true })
   }
 
   const proxy = new Proxy(
