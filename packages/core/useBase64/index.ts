@@ -48,12 +48,21 @@ export function useBase64(
     promise.value = new Promise<string>((resolve, reject) => {
       try {
         const _target = unref(target)
-        // undefined
-        if (_target === undefined) { resolve('') }
-        else if (typeof _target === 'string') { resolve(blobToBase64(new Blob([_target], { type: 'text/plain' }))) }
-        else if (_target instanceof Blob) { resolve(blobToBase64(_target)) }
-        else if (_target instanceof ArrayBuffer) { resolve(window.btoa(String.fromCharCode(...new Uint8Array(_target)))) }
-        else if (_target instanceof HTMLCanvasElement) { resolve(_target.toDataURL(options?.type, options?.quality)) }
+        if (_target == null) {
+          resolve('')
+        }
+        else if (typeof _target === 'string') {
+          resolve(blobToBase64(new Blob([_target], { type: 'text/plain' })))
+        }
+        else if (_target instanceof Blob) {
+          resolve(blobToBase64(_target))
+        }
+        else if (_target instanceof ArrayBuffer) {
+          resolve(window.btoa(String.fromCharCode(...new Uint8Array(_target))))
+        }
+        else if (_target instanceof HTMLCanvasElement) {
+          resolve(_target.toDataURL(options?.type, options?.quality))
+        }
         else if (_target instanceof HTMLImageElement) {
           const img = _target.cloneNode(false) as HTMLImageElement
           img.crossOrigin = 'Anonymous'
