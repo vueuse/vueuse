@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { isVue3, ref } from 'vue-demi'
 import { computedWithControl } from '.'
 
 describe('computedWithControl', () => {
@@ -19,7 +19,7 @@ describe('computedWithControl', () => {
     expect(computed.value).toBe('BAR')
   })
 
-  it('custom trigger', () => {
+  it.runIf(isVue3)('custom trigger', () => {
     let count = 0
     const computed = computedWithControl(() => {}, () => count)
 

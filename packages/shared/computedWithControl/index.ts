@@ -67,7 +67,9 @@ export function computedWithControl<T, S>(
     }
   }) as ComputedRefWithControl<T>
 
-  result.trigger = update
+  if (Object.isExtensible(result))
+    result.trigger = update
+
   return result
 }
 

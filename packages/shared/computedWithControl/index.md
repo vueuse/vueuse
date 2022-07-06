@@ -37,6 +37,8 @@ console.log(computedRef.value) // 1
 
 ### Manual Triggering
 
+> This only works in Vue 3
+
 You can also manually trigger the update of the computed by:
 
 ```ts
