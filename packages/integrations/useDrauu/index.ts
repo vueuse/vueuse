@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Brush, Drauu, Options } from 'drauu'
+import type { Brush, Drauu, DrawingMode, Options } from 'drauu'
 import { createDrauu } from 'drauu'
 import type { EventHookOn, MaybeElementRef } from '@vueuse/core'
 import { createEventHook, unrefElement } from '@vueuse/core'
@@ -66,8 +66,10 @@ export function useDrauu(
   watch(brush, () => {
     const instance = drauuInstance.value
 
-    if (instance)
+    if (instance) {
       instance.brush = brush.value
+      instance.mode = brush.value.mode as DrawingMode
+    }
   }, { deep: true })
 
   const undo = () => drauuInstance.value?.undo()

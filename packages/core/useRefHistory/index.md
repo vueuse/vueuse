@@ -65,7 +65,15 @@ console.log(history.value)
 
 `useRefHistory` only embeds the minimal clone function `x => JSON.parse(JSON.stringify(x))`. To use a full featured or custom clone function, you can set up via the `dump` options.
 
-For example, using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
+For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
+
+```ts
+import { useRefHistory } from '@vueuse/core'
+
+const refHistory = useRefHistory(target, { dump: structuredClone })
+```
+
+Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
 
 ```ts
 import { cloneDeep } from 'lodash-es'
