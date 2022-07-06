@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import { useVirtualList } from '.'
+import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useVirtualList } from '@vueuse/core'
 
 const index: Ref = ref()
 const search = ref('')
@@ -26,7 +26,6 @@ const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
 const handleScrollTo = () => {
   scrollTo(index.value)
 }
-
 </script>
 
 <template>

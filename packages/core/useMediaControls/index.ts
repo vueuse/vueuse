@@ -1,6 +1,6 @@
 import { ref, unref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef } from '@vueuse/shared'
-import { createEventHook, ignorableWatch, isNumber, isObject, isString, tryOnScopeDispose } from '@vueuse/shared'
+import { createEventHook, isNumber, isObject, isString, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -218,7 +218,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    */
   const togglePictureInPicture = () => {
     return new Promise((resolve, reject) => {
-      usingElRef<HTMLVideoElement>(target, async(el) => {
+      usingElRef<HTMLVideoElement>(target, async (el) => {
         if (supportsPictureInPicture) {
           if (!isPictureInPicture.value) {
             (el as any).requestPictureInPicture()
@@ -363,7 +363,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * If we did not use an ignorable watch, then the current time update from
    * the timeupdate event would cause the media to stutter.
    */
-  const { ignoreUpdates: ignoreCurrentTimeUpdates } = ignorableWatch(currentTime, (time) => {
+  const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(currentTime, (time) => {
     const el = unref(target)
     if (!el)
       return
@@ -375,7 +375,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * Using an ignorable watch so we can control the play state using a ref and not
    * a function
    */
-  const { ignoreUpdates: ignorePlayingUpdates } = ignorableWatch(playing, (isPlaying) => {
+  const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(playing, (isPlaying) => {
     const el = unref(target)
     if (!el)
       return
@@ -399,7 +399,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
     const el = unref(target)
-    if (!el) return
+    if (!el)
+      return
 
     volume.value = el.volume
     muted.value = el.muted

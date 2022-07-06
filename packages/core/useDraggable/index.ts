@@ -22,11 +22,18 @@ export interface UseDraggableOptions {
   preventDefault?: MaybeRef<boolean>
 
   /**
+   * Prevent events propagation
+   *
+   * @default false
+   */
+  stopPropagation?: MaybeRef<boolean>
+
+  /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
    */
-  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null>
+  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
    * Pointer types that listen to.
@@ -65,7 +72,7 @@ export interface UseDraggableOptions {
  * @param target
  * @param options
  */
-export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, options: UseDraggableOptions = {}) {
+export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
   const draggingElement = options.draggingElement ?? defaultWindow
   const position: Ref<Position> = ref(options.initialValue ?? { x: 0, y: 0 })
   const pressedDelta = ref<Position>()
@@ -75,10 +82,14 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return options.pointerTypes.includes(e.pointerType as PointerType)
     return true
   }
-  const preventDefault = (e: PointerEvent) => {
+
+  const handleEvent = (e: PointerEvent) => {
     if (unref(options.preventDefault))
       e.preventDefault()
+    if (unref(options.stopPropagation))
+      e.stopPropagation()
   }
+
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
@@ -92,7 +103,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
     if (options.onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
-    preventDefault(e)
+    handleEvent(e)
   }
   const move = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -104,7 +115,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       y: e.pageY - pressedDelta.value.y,
     }
     options.onMove?.(position.value, e)
-    preventDefault(e)
+    handleEvent(e)
   }
   const end = (e: PointerEvent) => {
     if (!filterEvent(e))
@@ -113,7 +124,7 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null>, 
       return
     pressedDelta.value = undefined
     options.onEnd?.(position.value, e)
-    preventDefault(e)
+    handleEvent(e)
   }
 
   if (isClient) {

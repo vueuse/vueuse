@@ -3,7 +3,7 @@ import { promiseTimeout } from '../utils'
 import { useTimeoutFn } from '.'
 
 describe('useTimeoutFn', () => {
-  it('supports reactive intervals', async() => {
+  it('supports reactive intervals', async () => {
     const callback = vitest.fn()
     const interval = ref(0)
     const { start } = useTimeoutFn(callback, interval)

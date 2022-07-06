@@ -199,7 +199,8 @@ export function useTransition(
       outputVector.value = sourceVector.value.slice(0)
     }
     else {
-      if (unref(delay) <= 0) start()
+      if (unref(delay) <= 0)
+        start()
       else timeout.start()
     }
   }, { deep: true })

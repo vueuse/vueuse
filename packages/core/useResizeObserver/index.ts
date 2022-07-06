@@ -18,7 +18,6 @@ export interface ResizeObserverEntry {
   readonly devicePixelContentBoxSize?: ReadonlyArray<ResizeObserverSize>
 }
 
-// eslint-disable-next-line no-use-before-define
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
 
 export interface ResizeObserverOptions extends ConfigurableWindow {
@@ -68,8 +67,7 @@ export function useResizeObserver(
       cleanup()
 
       if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.ResizeObserver(callback)
+        observer = new ResizeObserver(callback)
         observer!.observe(el, observerOptions)
       }
     },

@@ -18,7 +18,7 @@ const { state, ready } = useAsyncState(
   {},
 )
 
-;(async() => {
+;(async () => {
   await until(ready).toBe(true)
 
   console.log(state) // state is now ready!
@@ -34,7 +34,7 @@ import { invoke, until, useCounter } from '@vueuse/core'
 
 const { count } = useCounter()
 
-invoke(async() => {
+invoke(async () => {
   await until(count).toMatch(v => v > 7)
 
   alert('Counter is now larger than 7!')
@@ -51,7 +51,8 @@ await until(ref).toBe(true, { timeout: 1000 })
 try {
   await until(ref).toBe(true, { timeout: 1000, throwOnTimeout: true })
   // ref.value === true
-} catch(e) {
+}
+catch (e) {
   // timeout
 }
 ```

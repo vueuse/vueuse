@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { toRefs } from '@vueuse/shared'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
 import { useDrauu } from '.'
@@ -29,8 +29,9 @@ const { mode, color, size } = toRefs(brush)
       flex="~ col"
     >
       <div
-        bg="$c-bg"
-        border="b-1 $c-divider"
+        bg="$vt-c-bg"
+        border="1 $vt-c-divider"
+        rounded-t
         flex="~ row"
         items="center"
         p="2"
@@ -49,41 +50,42 @@ const { mode, color, size } = toRefs(brush)
           </button>
         </div>
         <div flex="~ row 1 shrink-1" items="center" w="full" max-w="64">
-          <carbon-paint-brush m="r-2" />
+          <i i-carbon-paint-brush m="r-2" />
           <Scrubber v-model="size" w="full" :min="1" :max="10" />
         </div>
         <div flex="~ row 1" justify="end">
           <button class="tool-button" :disabled="!canUndo" @click="undo()">
-            <carbon-undo />
+            <i i-carbon-undo />
           </button>
           <button class="tool-button" :disabled="!canRedo" @click="redo()">
-            <carbon-redo />
+            <i i-carbon-redo />
           </button>
           <button class="tool-button" @click="clear()">
-            <carbon-clean />
+            <i i-carbon-clean />
           </button>
         </div>
       </div>
       <div flex="~ row 1" h="72">
         <div
-          bg="$c-bg"
-          border="r-1"
+          bg="$vt-c-bg"
+          border="t-0 1 $vt-c-divider"
+          rounded-b
           flex="~ col"
           space="y-2"
           place="items-center"
           p="2"
         >
           <button :class="{ active: brush.mode === 'draw' }" class="tool-button" @click="mode = 'draw'">
-            <carbon-pen />
+            <i i-carbon-pen />
           </button>
           <button :class="{ active: brush.mode === 'line' && !brush.arrowEnd }" class="tool-button" @click="mode = 'line'">
-            <mdi-slash-forward />
+            <i i-mdi-slash-forward />
           </button>
           <button :class="{ active: brush.mode === 'rectangle' }" class="tool-button" @click="mode = 'rectangle'">
-            <carbon-checkbox />
+            <i i-carbon-checkbox />
           </button>
           <button :class="{ active: brush.mode === 'ellipse' }" class="tool-button" @click="mode = 'ellipse'">
-            <mdi-light-shape-circle />
+            <i i-mdi-light-shape-circle />
           </button>
         </div>
         <svg

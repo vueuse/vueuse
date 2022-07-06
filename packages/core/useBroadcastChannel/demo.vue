@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue-demi'
-import { useBroadcastChannel } from '.'
+import { ref, watch } from 'vue'
+import { useBroadcastChannel } from '@vueuse/core'
 
 const {
   isSupported,
@@ -12,7 +12,8 @@ const {
 const message = ref('')
 
 watch(data, () => {
-  if (data.value) alert(data.value)
+  if (data.value)
+    alert(data.value)
 })
 </script>
 

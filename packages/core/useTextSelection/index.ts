@@ -1,70 +1,48 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import { computed, ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
-type Rect = Omit<DOMRectReadOnly, 'x'|'y'|'toJSON'>
-
-export interface UseTextSelectionState extends Rect {
-  text: string
+function getRangesFromSelection(selection: Selection) {
+  const rangeCount = selection.rangeCount ?? 0
+  const ranges = new Array(rangeCount)
+  for (let i = 0; i < rangeCount; i++) {
+    const range = selection.getRangeAt(i)
+    ranges[i] = range
+  }
+  return ranges
 }
 
-const initialRect: Rect = {
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  height: 0,
-  width: 0,
-}
+/**
+ * Reactively track user text selection based on [`Window.getSelection`](https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection).
+ *
+ * @see https://vueuse.org/useTextSelection
+ */
+export function useTextSelection(options: ConfigurableWindow = {}) {
+  const {
+    window = defaultWindow,
+  } = options
 
-const initialState: UseTextSelectionState = {
-  text: '',
-  ...initialRect,
-}
+  const selection = ref<Selection | null>(null)
+  const text = computed(() => selection.value?.toString() ?? '')
+  const ranges = computed<Range[]>(() => selection.value ? getRangesFromSelection(selection.value) : [])
+  const rects = computed(() => ranges.value.map(range => range.getBoundingClientRect()))
 
-function getRectFromSelection(selection: Selection | null): Rect {
-  if (!selection || selection.rangeCount < 1)
-    return initialRect
+  function onSelectionChange() {
+    selection.value = null // trigger computed update
+    if (window)
+      selection.value = window.getSelection()
+  }
 
-  const range = selection.getRangeAt(0)
-  const { height, width, top, left, right, bottom } = range.getBoundingClientRect()
+  if (window)
+    useEventListener(window.document, 'selectionchange', onSelectionChange)
+
   return {
-    height,
-    width,
-    top,
-    left,
-    right,
-    bottom,
+    text,
+    rects,
+    ranges,
+    selection,
   }
-}
-
-export function useTextSelection(
-  element?: MaybeRef<HTMLElement | Document | null | undefined>,
-) {
-  const state = ref(initialState)
-
-  if (!defaultWindow?.getSelection) return state
-
-  const onMouseup = () => {
-    const text = window.getSelection()?.toString()
-    if (text) {
-      const rect = getRectFromSelection(window.getSelection())
-      state.value = {
-        ...state.value,
-        ...rect,
-        text,
-      }
-    }
-  }
-  const onMousedown = () => {
-    state.value.text && (state.value = initialState)
-    window.getSelection()?.removeAllRanges()
-  }
-  useEventListener(element ?? document, 'mouseup', onMouseup)
-  useEventListener(document, 'mousedown', onMousedown)
-
-  return state
 }
 
 export type UseTextSelectionReturn = ReturnType<typeof useTextSelection>

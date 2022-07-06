@@ -23,7 +23,7 @@ export function useMyFetch(url) {
 
   return {
     onResult: fetchResult.on,
-    onError: fetchError.on
+    onError: fetchError.on,
   }
 }
 ```

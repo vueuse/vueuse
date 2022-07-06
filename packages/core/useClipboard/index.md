@@ -16,7 +16,7 @@ const { text, copy, copied, isSupported } = useClipboard({ source })
 ```
 
 ```html
-<button @click='copy'>
+<button @click='copy()'>
   <!-- by default, `copied` will be reset in 1.5s -->
   <span v-if='!copied'>Copy</span>
   <span v-else>Copied!</span>

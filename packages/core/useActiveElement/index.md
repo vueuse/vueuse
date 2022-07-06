@@ -18,7 +18,7 @@ watch(activeElement, (el) => {
 })
 ```
 
-## Component
+## Component Usage
 
 ```html
 <UseActiveElement v-slot="{ element }">

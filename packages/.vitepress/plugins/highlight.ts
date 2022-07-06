@@ -12,7 +12,7 @@ function escapeHtml(html: string) {
   return html.replace(/[&<>"']/g, chr => htmlEscapes[chr])
 }
 
-export default async() => {
+export default async () => {
   const highlighter = await getHighlighter({
     themes: [
       'vitesse-dark',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePageLeave } from '.'
+import { usePageLeave } from '@vueuse/core'
 
 const isLeft = usePageLeave()
 </script>

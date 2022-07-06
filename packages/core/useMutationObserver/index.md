@@ -16,9 +16,9 @@ export default {
   setup() {
     const el = ref(null)
     const messages = ref([])
-  
+
     useMutationObserver(el, (mutations) => {
-      if (!mutations[0])
+      if (mutations[0])
         messages.value.push(mutations[0].attributeName)
     }, {
       attributes: true,

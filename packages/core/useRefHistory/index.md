@@ -9,7 +9,7 @@ Track the change history of a ref, also provides undo and redo functionality
 ## Usage
 
 ```ts {5}
-import { ref } from 'vue' 
+import { ref } from 'vue'
 import { useRefHistory } from '@vueuse/core'
 
 const counter = ref(0)
@@ -24,7 +24,7 @@ counter.value += 1
 await nextTick()
 console.log(history.value)
 /* [
-  { snapshot: 1, timestamp: 1601912898062 }, 
+  { snapshot: 1, timestamp: 1601912898062 },
   { snapshot: 0, timestamp: 1601912898061 }
 ] */
 ```
@@ -65,7 +65,15 @@ console.log(history.value)
 
 `useRefHistory` only embeds the minimal clone function `x => JSON.parse(JSON.stringify(x))`. To use a full featured or custom clone function, you can set up via the `dump` options.
 
-For example, using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
+For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
+
+```ts
+import { useRefHistory } from '@vueuse/core'
+
+const refHistory = useRefHistory(target, { dump: structuredClone })
+```
+
+Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
 
 ```ts
 import { cloneDeep } from 'lodash-es'
@@ -90,9 +98,9 @@ Instead of using the `clone` param, you can pass custom functions to control the
 ```ts
 import { useRefHistory } from '@vueuse/core'
 
-const refHistory = useRefHistory(target, { 
+const refHistory = useRefHistory(target, {
   dump: JSON.stringify,
-  parse: JSON.parse
+  parse: JSON.parse,
 })
 ```
 
@@ -110,13 +118,13 @@ refHistory.clear() // explicitly clear all the history
 
 ### History Flush Timing
 
-From [Vue's documentation](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
+From [Vue's documentation](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
 
 In the same way as `watch`, you can modify the flush timing using the `flush` option.
 
 ```ts
 const refHistory = useRefHistory(target, {
-  flush: 'sync' // options 'pre' (default), 'post' and 'sync'
+  flush: 'sync', // options 'pre' (default), 'post' and 'sync'
 })
 ```
 
@@ -161,11 +169,11 @@ console.log(history.value)
 If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a mutable `splice` in an array. `splice` can generate up to three atomic operations that will be pushed to the ref history.
 
 ```ts
-const arr = ref([1,2,3])
+const arr = ref([1, 2, 3])
 const { history, batch } = useRefHistory(r, { deep: true, flush: 'sync' })
 
 batch(() => {
-  arr.value.splice(1,1) // batch ensures only one history point is generated
+  arr.value.splice(1, 1) // batch ensures only one history point is generated
 })
 ```
 

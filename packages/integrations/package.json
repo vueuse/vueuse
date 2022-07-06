@@ -1,101 +1,157 @@
 {
   "name": "@vueuse/integrations",
-  "version": "7.5.4",
+  "version": "8.8.1",
   "description": "Integration wrappers for utility libraries",
-  "keywords": [
-    "vue",
-    "vue-use",
-    "utils"
-  ],
+  "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/integrations"
   },
-  "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
-    },
-    "./*": "./*",
-    "./useAxios": {
-      "import": "./useAxios.mjs",
-      "require": "./useAxios.cjs",
-      "types": "./useAxios.d.ts"
-    },
-    "./useCookies": {
-      "import": "./useCookies.mjs",
-      "require": "./useCookies.cjs",
-      "types": "./useCookies.d.ts"
-    },
-    "./useDrauu": {
-      "import": "./useDrauu.mjs",
-      "require": "./useDrauu.cjs",
-      "types": "./useDrauu.d.ts"
-    },
-    "./useFocusTrap": {
-      "import": "./useFocusTrap.mjs",
-      "require": "./useFocusTrap.cjs",
-      "types": "./useFocusTrap.d.ts"
-    },
-    "./useFocusTrap/component": {
-      "import": "./useFocusTrap/component.mjs",
-      "require": "./useFocusTrap/component.cjs",
-      "types": "./useFocusTrap/component.d.ts"
-    },
-    "./useFuse": {
-      "import": "./useFuse.mjs",
-      "require": "./useFuse.cjs",
-      "types": "./useFuse.d.ts"
-    },
-    "./useJwt": {
-      "import": "./useJwt.mjs",
-      "require": "./useJwt.cjs",
-      "types": "./useJwt.d.ts"
-    },
-    "./useNProgress": {
-      "import": "./useNProgress.mjs",
-      "require": "./useNProgress.cjs",
-      "types": "./useNProgress.d.ts"
-    },
-    "./useQRCode": {
-      "import": "./useQRCode.mjs",
-      "require": "./useQRCode.cjs",
-      "types": "./useQRCode.d.ts"
-    }
-  },
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
-  "sideEffects": false,
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/integrations#readme",
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*",
+    "./useAsyncValidator": {
+      "types": "./useAsyncValidator.d.ts",
+      "require": "./useAsyncValidator.cjs",
+      "import": "./useAsyncValidator.mjs"
+    },
+    "./useAxios": {
+      "types": "./useAxios.d.ts",
+      "require": "./useAxios.cjs",
+      "import": "./useAxios.mjs"
+    },
+    "./useCookies": {
+      "types": "./useCookies.d.ts",
+      "require": "./useCookies.cjs",
+      "import": "./useCookies.mjs"
+    },
+    "./useDrauu": {
+      "types": "./useDrauu.d.ts",
+      "require": "./useDrauu.cjs",
+      "import": "./useDrauu.mjs"
+    },
+    "./useFocusTrap": {
+      "types": "./useFocusTrap.d.ts",
+      "require": "./useFocusTrap.cjs",
+      "import": "./useFocusTrap.mjs"
+    },
+    "./useFocusTrap/component": {
+      "types": "./useFocusTrap/component.d.ts",
+      "require": "./useFocusTrap/component.cjs",
+      "import": "./useFocusTrap/component.mjs"
+    },
+    "./useFuse": {
+      "types": "./useFuse.d.ts",
+      "require": "./useFuse.cjs",
+      "import": "./useFuse.mjs"
+    },
+    "./useJwt": {
+      "types": "./useJwt.d.ts",
+      "require": "./useJwt.cjs",
+      "import": "./useJwt.mjs"
+    },
+    "./useNProgress": {
+      "types": "./useNProgress.d.ts",
+      "require": "./useNProgress.cjs",
+      "import": "./useNProgress.mjs"
+    },
+    "./useQRCode": {
+      "types": "./useQRCode.d.ts",
+      "require": "./useQRCode.cjs",
+      "import": "./useQRCode.mjs"
+    },
+    "./useChangeCase": {
+      "types": "./useChangeCase.d.ts",
+      "require": "./useChangeCase.cjs",
+      "import": "./useChangeCase.mjs"
+    },
+    "./useAsyncValidator/component": {
+      "types": "./useAsyncValidator/component.d.ts",
+      "require": "./useAsyncValidator/component.cjs",
+      "import": "./useAsyncValidator/component.mjs"
+    }
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+    "async-validator": "*",
+    "axios": "*",
+    "change-case": "*",
+    "drauu": "*",
+    "focus-trap": "*",
+    "fuse.js": "*",
+    "jwt-decode": "*",
+    "nprogress": "*",
+    "qrcode": "*",
+    "universal-cookie": "*"
+  },
+  "peerDependenciesMeta": {
+    "axios": {
+      "optional": true
+    },
+    "async-validator": {
+      "optional": true
+    },
+    "change-case": {
+      "optional": true
+    },
+    "drauu": {
+      "optional": true
+    },
+    "focus-trap": {
+      "optional": true
+    },
+    "fuse.js": {
+      "optional": true
+    },
+    "jwt-decode": {
+      "optional": true
+    },
+    "nprogress": {
+      "optional": true
+    },
+    "qrcode": {
+      "optional": true
+    },
+    "universal-cookie": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   },
-  "optionalDependencies": {
-    "axios": "^0.24.0",
-    "drauu": "^0.2.1",
-    "focus-trap": "^6.7.1",
-    "fuse.js": "^6.5.3",
-    "jwt-decode": "^3.1.2",
-    "nprogress": "^0.2.0",
-    "qrcode": "^1.5.0",
-    "universal-cookie": "^4.0.4"
-  },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
+    "async-validator": "^4.2.5",
+    "axios": "^0.27.2",
+    "change-case": "^4.1.2",
+    "drauu": "^0.3.0",
+    "focus-trap": "^6.9.4",
+    "fuse.js": "^6.6.2",
+    "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.0",
     "universal-cookie": "^4.0.4"

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { reactive } from 'vue-demi'
-import YAML from 'js-yaml'
-import { useDevicePixelRatio } from '.'
+import { reactive } from 'vue'
+import { stringify } from '@vueuse/docs-utils'
+import { useDevicePixelRatio } from '@vueuse/core'
 
 const pixelRatio = reactive(useDevicePixelRatio())
-const code = YAML.dump(pixelRatio)
+const code = stringify(pixelRatio)
 </script>
 
 <template>

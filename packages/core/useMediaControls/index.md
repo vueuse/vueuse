@@ -33,7 +33,7 @@ onMounted(() => {
 </template>
 ```
 
-### Proving Captions, Subtitles, etc...
+### Providing Captions, Subtitles, etc...
 You can provide captions, subtitles, etc in the `tracks` options of the
 `useMediaControls` function. The function will return an array of tracks
 along with two functions for controlling them, `enableTrack`, `disableTrack`, and `selectedTrack`.

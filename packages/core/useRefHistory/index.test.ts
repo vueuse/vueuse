@@ -263,7 +263,7 @@ describe('useRefHistory - sync', () => {
 })
 
 describe('useRefHistory - pre', () => {
-  test('pre: should record', async() => {
+  test('pre: should record', async () => {
     const v = ref(0)
     const { history } = useRefHistory(v)
 
@@ -278,7 +278,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('pre: should be able to undo and redo', async() => {
+  test('pre: should be able to undo and redo', async () => {
     const v = ref(0)
     const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v)
 
@@ -328,7 +328,7 @@ describe('useRefHistory - pre', () => {
     expect(canRedo.value).toBe(false)
   })
 
-  test('pre: object with deep', async() => {
+  test('pre: object with deep', async () => {
     const v = ref({ foo: 'bar' })
     const { history } = useRefHistory(v, { deep: true })
 
@@ -346,7 +346,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
   })
 
-  test('pre: dump + parse', async() => {
+  test('pre: dump + parse', async () => {
     const v = ref({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       deep: true,
@@ -370,7 +370,7 @@ describe('useRefHistory - pre', () => {
     expect(v.value.a).toBe('bar')
   })
 
-  test('pre: commit', async() => {
+  test('pre: commit', async () => {
     const v = ref(0)
     const { commit, history, undo } = useRefHistory(v)
 
@@ -393,7 +393,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('pre: pause and resume', async() => {
+  test('pre: pause and resume', async () => {
     const v = ref(1)
     const { history, pause, resume, last } = useRefHistory(v)
 
@@ -421,7 +421,7 @@ describe('useRefHistory - pre', () => {
     expect(last.value.snapshot).toBe(3)
   })
 
-  test('pre: reset', async() => {
+  test('pre: reset', async () => {
     const v = ref(0)
     const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
 
@@ -481,7 +481,7 @@ describe('useRefHistory - pre', () => {
     expect(redoStack.value[0].snapshot).toBe(3)
   })
 
-  test('pre: auto batching', async() => {
+  test('pre: auto batching', async () => {
     const v = ref(0)
     const { history } = useRefHistory(v)
 

@@ -26,11 +26,11 @@ npm i <b>@vueuse/rxjs</b> rxjs
 ## Example
 
 ```ts
-import { fromEvent, from, useObservable } from '@vueuse/rxjs'
+import { from, fromEvent, useObservable } from '@vueuse/rxjs'
 import { ref } from 'vue'
-import { of, forkJoin } from 'rxjs'
+import { forkJoin, of } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
-import { take, mergeMap, concatAll, pluck, map, scan } from 'rxjs/operators'
+import { concatAll, map, mergeMap, pluck, scan, take } from 'rxjs/operators'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
 const button = ref<HTMLButtonElement>(null)
@@ -43,15 +43,15 @@ const posts = useObservable(
       mergeMap(({ id, userId, title }) => forkJoin({
         id: of(id),
         comments: ajax.getJSON(`${BASE_URL}/posts/${id}/comments`).pipe(
-          map(comments => comments.length)
+          map(comments => comments.length),
         ),
         username: ajax.getJSON(`${BASE_URL}/users/${userId}`).pipe(
-          pluck('username')
-        )
+          pluck('username'),
+        ),
       }), 2),
-      scan((acc, curr) => [...acc, curr], [])
-    ))
-  )
+      scan((acc, curr) => [...acc, curr], []),
+    )),
+  ),
 )
 ```
 

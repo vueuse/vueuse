@@ -25,11 +25,11 @@ const {
   dir: 'auto',
   lang: 'en',
   renotify: true,
+  tag: 'test',
 })
 
-if (isSupported) {
+if (isSupported)
   show()
-}
 ```
 
 This composable also utilizes the createEventHook utility from '@vueuse/shared`:

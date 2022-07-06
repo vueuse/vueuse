@@ -8,9 +8,8 @@ const toggleDark = useToggle(isDark)
 
 <template>
   <button @click="toggleDark()">
-    <carbon-moon v-show="isDark" class="align-middle" />
-    <carbon-sun v-show="!isDark" class="align-middle" />
+    <i inline-block align-middle i="dark:carbon-moon carbon-sun" />
 
-    <span class="ml-2">{{ isDark ? 'Dark': 'Light' }}</span>
+    <span class="ml-2">{{ isDark ? 'Dark' : 'Light' }}</span>
   </button>
 </template>

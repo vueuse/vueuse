@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAsyncQueue } from '.'
+import { useAsyncQueue } from '@vueuse/core'
 
 const p1 = () => {
   return new Promise((resolve) => {
@@ -18,7 +18,6 @@ const p2 = (result: number) => {
 }
 
 const { activeIndex, result } = useAsyncQueue([p1, p2])
-
 </script>
 
 <template>

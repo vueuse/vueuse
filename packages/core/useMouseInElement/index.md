@@ -31,7 +31,7 @@ export default {
 </script>
 ```
 
-## Component
+## Component Usage
 ```html
 <UseMouseInElement v-slot="{ elementX, elementY, isOutside }">
   x: {{ elementX }}

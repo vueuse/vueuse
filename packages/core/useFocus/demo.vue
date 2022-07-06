@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useFocus } from '.'
+import { ref } from 'vue'
+import { useFocus } from '@vueuse/core'
 
 const text = ref()
 const input = ref()
 const button = ref()
 
-const { focused: paragraphFocus } = useFocus({ target: text })
-const { focused: inputFocus } = useFocus({ target: input, initialValue: true })
-const { focused: buttonFocus } = useFocus({ target: button })
+const { focused: paragraphFocus } = useFocus(text)
+const { focused: inputFocus } = useFocus(input, { initialValue: true })
+const { focused: buttonFocus } = useFocus(button)
 </script>
 
 <template>
@@ -35,13 +35,13 @@ const { focused: buttonFocus } = useFocus({ target: button })
         &nbsp;<!-- prevents paragraph from collapsing when empty otherwise -->
       </template>
     </note>
-    <button class="button small !ml-0" :class="{orange: paragraphFocus}" @click="paragraphFocus = !paragraphFocus">
+    <button class="button small !ml-0" :class="{ orange: paragraphFocus }" @click="paragraphFocus = !paragraphFocus">
       Focus text
     </button>
-    <button class="button small" :class="{orange: inputFocus}" @click="inputFocus = !inputFocus">
+    <button class="button small" :class="{ orange: inputFocus }" @click="inputFocus = !inputFocus">
       Focus input
     </button>
-    <button class="button small" :class="{orange: buttonFocus}" @click="buttonFocus = !buttonFocus">
+    <button class="button small" :class="{ orange: buttonFocus }" @click="buttonFocus = !buttonFocus">
       Focus button
     </button>
   </div>

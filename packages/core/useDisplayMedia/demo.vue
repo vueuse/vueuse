@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue-demi'
-import { useDisplayMedia } from '.'
+import { ref, watchEffect } from 'vue'
+import { useDisplayMedia } from '@vueuse/core'
 
 const video = ref<HTMLVideoElement>()
 const { stream, enabled } = useDisplayMedia()
 
 watchEffect(() => {
-  if (video.value) video.value.srcObject = stream.value!
+  if (video.value)
+    video.value.srcObject = stream.value!
 })
 </script>
 

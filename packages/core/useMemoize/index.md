@@ -17,7 +17,7 @@ import { useMemoize } from '@vueuse/core'
 
 const getUser = useMemoize(
   async (userId: number): Promise<UserData> =>
-    axios.get(`users/${userId}`).then(({ data }) => data)
+    axios.get(`users/${userId}`).then(({ data }) => data),
 )
 
 const user1 = await getUser(1) // Request users/1
@@ -52,8 +52,8 @@ const getUser = useMemoize(
     axios.get(`users/${userId}`, { headers }).then(({ data }) => data),
   {
     // Use only userId to get/set cache and ignore headers
-    getKey: (userId, headers) => userId
-  }
+    getKey: (userId, headers) => userId,
+  },
 )
 ```
 

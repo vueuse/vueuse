@@ -11,7 +11,7 @@ Provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it'
 ```ts
 import { useIpcRenderer } from '@vueuse/electron'
 
-// enable nodeIntegration if you don't provide ipcRenderer explicitly 
+// enable nodeIntegration if you don't provide ipcRenderer explicitly
 // @see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
 const ipcRenderer = useIpcRenderer()
 
@@ -21,7 +21,6 @@ const msg = computed(() => result.value?.msg)
 
 // remove listener automatically on unmounted
 ipcRenderer.on('custom-event', (event, ...args) => {
-    console.log(args)
+  console.log(args)
 })
-
 ```

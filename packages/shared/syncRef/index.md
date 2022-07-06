@@ -1,76 +1,40 @@
 ---
 category: Utilities
+related: syncRefs
 ---
 
 # syncRef
 
-Keep target refs in sync with a source ref
+Two-way refs synchronization.
 
 ## Usage
 
 ```ts
 import { syncRef } from '@vueuse/core'
 
-const source = ref('hello')
-const target = ref('target')
+const a = ref('a')
+const b = ref('b')
 
-const stop = syncRef(source, target)
+const stop = syncRef(a, b)
 
-console.log(target.value) // hello
+console.log(a.value) // a
 
-source.value = 'foo'
+b.value = 'foo'
 
-console.log(target.value) // foo
+console.log(a.value) // foo
+
+a.value = 'bar'
+
+console.log(b.value) // bar
 ```
 
-## Watch options
-
-The options for `syncRef` are similar to `watch`'s `WatchOptions` but with different default values.
-
-```ts
-export interface SyncRefOptions {
-  /**
-   * Timing for syncing, same as watch's flush option
-   *
-   * @default 'sync'
-   */
-  flush?: WatchOptions['flush']
-  /**
-   * Watch deeply
-   *
-   * @default false
-   */
-  deep?: boolean
-  /**
-   * Sync values immediately
-   *
-   * @default true
-   */
-  immediate?: boolean
-}
-```
-
-When setting `{ flush: 'pre' }`, the target reference will be updated at [the end of the current "tick"](https://v3.vuejs.org/guide/reactivity-computed-watchers.html#effect-flush-timing) before rendering starts.
+One directional
 
 ```ts
 import { syncRef } from '@vueuse/core'
 
-const source = ref('hello')
-const target = ref('target')
+const a = ref('a')
+const b = ref('b')
 
-syncRef(source, target, { flush: 'pre' })
-
-console.log(target.value) // hello
-
-source.value = 'foo'
-
-console.log(target.value) // hello <- still unchanged, because of flush 'pre'
-
-await nextTick()
-
-console.log(target.value) // foo <- changed!
+const stop = syncRef(a, b, { direction: 'rtl' })
 ```
-
-## Related Functions
-
-- `biSyncRef`

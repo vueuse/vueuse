@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useElementVisibility } from '.'
+import { ref } from 'vue'
+import { useElementVisibility } from '@vueuse/core'
 
 const el = ref(null)
 const isVisible = useElementVisibility(el)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useConfirmDialog } from '.'
+import { ref } from 'vue'
+import { useConfirmDialog } from '@vueuse/core'
 
 const message = ref('')
 const revaled1 = ref(false)
@@ -26,7 +26,8 @@ dialog2.onReveal(() => {
 })
 
 dialog2.onConfirm((result) => {
-  if (result) message.value = 'Confirmed!'
+  if (result)
+    message.value = 'Confirmed!'
   else message.value = 'Rejected!'
 })
 

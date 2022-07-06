@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: reactify
 ---
 
 # createUnrefFn
@@ -24,10 +25,6 @@ const data = ref({ foo: 'bar' })
 const post = (url, data) => fetch(url, { data })
 const unrefPost = createUnrefFn(post)
 
-post(url, data)        /* ❌ Will throw an error because the arguments are refs */
-unrefPost(url, data)   /* ✔️ Will Work because the arguments will be auto unref */
+post(url, data) /* ❌ Will throw an error because the arguments are refs */
+unrefPost(url, data) /* ✔️ Will Work because the arguments will be auto unref */
 ```
-
-## Related Functions
-
-- `reactify`

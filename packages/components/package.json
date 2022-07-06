@@ -1,37 +1,37 @@
 {
   "name": "@vueuse/components",
-  "version": "7.5.4",
+  "version": "8.8.1",
   "description": "Renderless components for VueUse",
-  "keywords": [
-    "vue",
-    "vue-use",
-    "utils"
-  ],
+  "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
     "directory": "packages/components"
   },
-  "author": "Jacob Clevenger<https://github.com/wheatjs>",
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils"
+  ],
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./index.mjs",
+      "types": "./index.d.ts",
       "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "import": "./index.mjs"
     },
     "./*": "./*"
   },
   "main": "./index.cjs",
-  "types": "./index.d.ts",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
+  "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
