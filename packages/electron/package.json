@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "8.8.1",
+  "version": "8.9.0",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
