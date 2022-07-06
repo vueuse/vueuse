@@ -68,7 +68,7 @@ export function useDrauu(
 
     if (instance) {
       instance.brush = brush.value
-      instance.mode = brush.value.mode as DrawingMode // bug fix
+      instance.mode = brush.value.mode as DrawingMode
     }
   }, { deep: true })
 
