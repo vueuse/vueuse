@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { isRef, ref, unref, watch } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { isClient } from '@vueuse/shared'
+import { isRef, ref, watch } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isClient, isFunction, resolveUnref } from '@vueuse/shared'
 import { getDefaultSerialization } from './serialization'
 
 export interface ToDataURLOptions {
@@ -25,15 +25,15 @@ export interface UseBase64Return {
   execute: () => Promise<string>
 }
 
-export function useBase64(target: MaybeRef<string>): UseBase64Return
-export function useBase64(target: MaybeRef<Blob>): UseBase64Return
-export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Return
-export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64<T extends Record<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Map<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Set<unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T>(target: MaybeRef<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
+export function useBase64(target: MaybeComputedRef<string>): UseBase64Return
+export function useBase64(target: MaybeComputedRef<Blob>): UseBase64Return
+export function useBase64(target: MaybeComputedRef<ArrayBuffer>): UseBase64Return
+export function useBase64(target: MaybeComputedRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64(target: MaybeComputedRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64<T extends Record<string, unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Map<string, unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Set<unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T>(target: MaybeComputedRef<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
 export function useBase64(
   target: any,
   options?: any,
@@ -47,7 +47,7 @@ export function useBase64(
 
     promise.value = new Promise<string>((resolve, reject) => {
       try {
-        const _target = unref(target)
+        const _target = resolveUnref(target)
         if (_target == null) {
           resolve('')
         }
@@ -94,7 +94,7 @@ export function useBase64(
     return promise.value
   }
 
-  if (isRef(target))
+  if (isRef(target) || isFunction(target))
     watch(target, execute, { immediate: true })
   else
     execute()

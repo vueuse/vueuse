@@ -4,7 +4,6 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 /**
- *
  * Reactive screen orientation
  *
  * @see https://vueuse.org/useScreenOrientation

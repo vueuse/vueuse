@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { computed, ref, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { clamp } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
+import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import { clamp, resolveUnref } from '@vueuse/shared'
 
 /**
  * Reactively clamp a value between two other values.
@@ -11,14 +11,14 @@ import { clamp } from '@vueuse/shared'
  * @param min
  * @param max
  */
-export function useClamp(value: MaybeRef<number>, min: MaybeRef<number>, max: MaybeRef<number>): Ref<number> {
+export function useClamp(value: MaybeRef<number>, min: MaybeComputedRef<number>, max: MaybeComputedRef<number>): Ref<number> {
   const _value = ref(value)
   return computed<number>({
     get() {
-      return _value.value = clamp(_value.value, unref(min), unref(max))
+      return _value.value = clamp(_value.value, resolveUnref(min), resolveUnref(max))
     },
     set(value) {
-      _value.value = clamp(value, unref(min), unref(max))
+      _value.value = clamp(value, resolveUnref(min), resolveUnref(max))
     },
   })
 }

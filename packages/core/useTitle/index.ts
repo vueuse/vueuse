@@ -1,6 +1,7 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { isString } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import { isFunction, isString, resolveRef } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { unref, watch } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
@@ -17,8 +18,18 @@ export interface UseTitleOptions extends ConfigurableDocument {
    *
    * @default '%s'
    */
-  titleTemplate?: string
+  titleTemplate?: MaybeRef<string> | ((title: string) => string)
 }
+
+export function useTitle(
+  newTitle?: MaybeRef<string | null | undefined>,
+  options?: UseTitleOptions,
+): Ref<string>
+
+export function useTitle(
+  newTitle?: MaybeComputedRef<string | null | undefined>,
+  options?: UseTitleOptions,
+): ComputedRef<string>
 
 /**
  * Reactive document title.
@@ -28,7 +39,7 @@ export interface UseTitleOptions extends ConfigurableDocument {
  * @param options
  */
 export function useTitle(
-  newTitle: MaybeRef<string | null | undefined> = null,
+  newTitle: MaybeComputedRef<string | null | undefined> = null,
   options: UseTitleOptions = {},
 ) {
   const {
@@ -36,23 +47,31 @@ export function useTitle(
     observe = false,
     titleTemplate = '%s',
   } = options
-  const title = ref(newTitle ?? document?.title ?? null)
+
+  const title = resolveRef(newTitle ?? document?.title ?? null) as Ref<string>
+  const isReadonly = newTitle && isFunction(newTitle)
+
+  function format(t: string) {
+    return isFunction(titleTemplate)
+      ? titleTemplate(t)
+      : unref(titleTemplate).replace('%s', t)
+  }
 
   watch(
     title,
     (t, o) => {
       if (isString(t) && t !== o && document)
-        document.title = titleTemplate.replace('%s', t)
+        document.title = format(t)
     },
     { immediate: true },
   )
 
-  if (observe && document) {
+  if (observe && document && !isReadonly) {
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {
         if (document && document.title !== title.value)
-          title.value = titleTemplate.replace('%s', document.title)
+          title.value = format(document.title)
       },
       { childList: true },
     )
