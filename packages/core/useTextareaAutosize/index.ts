@@ -2,7 +2,7 @@ import type { MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 
-interface UseTextareaAutosizeOptions {
+export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
   element?: MaybeRef<HTMLTextAreaElement | undefined>
   /** Textarea content. */
@@ -13,7 +13,7 @@ interface UseTextareaAutosizeOptions {
   onResize?: () => void
 }
 
-export function useTextarea(options?: UseTextareaAutosizeOptions) {
+export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   const textarea = ref<HTMLTextAreaElement>(options?.element as any)
   const input = ref<string>(options?.input as any)
 

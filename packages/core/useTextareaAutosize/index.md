@@ -10,7 +10,7 @@ Automatically update the height of a textarea element depending on its content.
 
 ```vue
 <script setup lang="ts">
-const { textarea, input } = useTextarea()
+const { textarea, input } = useTextareaAutosize()
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useTextarea } from '@vueuse/core'
+import { useTextareaAutosize } from '@vueuse/core'
 
-const { textarea, input } = useTextarea()
+const { textarea, input } = useTextareaAutosize()
 </script>
 
 <template>
