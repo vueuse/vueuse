@@ -36,15 +36,26 @@ It will be exposed to global as `window.VueUse`
 From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
 
 ```bash
-npm i -D @vueuse/nuxt
+npm i -D @vueuse/nuxt @vueuse/core
 ```
 
+Nuxt 3
+```ts
+// nuxt.config.ts
+export default {
+  modules: [
+    '@vueuse/nuxt',
+  ],
+}
+```
+
+Nuxt 2
 ```ts
 // nuxt.config.js
 export default {
   buildModules: [
-    '@vueuse/nuxt'
-  ]
+    '@vueuse/nuxt',
+  ],
 }
 ```
 
@@ -65,7 +76,7 @@ const { x, y } = useMouse()
 Simply importing the functions you need from `@vueuse/core`
 
 ```ts
-import { useMouse, usePreferredDark, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
 
 export default {
   setup() {
@@ -77,7 +88,7 @@ export default {
 
     // persist state in localStorage
     const store = useLocalStorage(
-      'my-storage', 
+      'my-storage',
       {
         name: 'Apple',
         color: 'red',
@@ -85,7 +96,7 @@ export default {
     )
 
     return { x, y, isDark, store }
-  }
+  },
 }
 ```
 

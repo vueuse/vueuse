@@ -12,13 +12,25 @@ npm i <b>@vueuse/nuxt</b>
 
 ```ts
 // nuxt.config
-
-export function defineNuxtConfig({
-  buildModules: [
-    '@vueuse/nuxt'
-  ]
+export default defineNuxtConfig({
+  modules: [
+    '@vueuse/nuxt',
+  ],
 })
 ```
+
+## Caveats
+
+The following utils are **disabled** from auto-import for Nuxt to avoid conflicts with Nuxt's built-in utils:
+
+- `toRefs`
+- `useFetch`
+- `useCookie`
+- `useHead`
+- `useTitle`
+- `useStorage`
+
+You can always use them by explicitly import from `@vueuse/core`
 
 ## License
 

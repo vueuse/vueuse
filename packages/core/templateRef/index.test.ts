@@ -23,7 +23,7 @@ describe('templateRef', () => {
     expect(vm.targetEl).toBe(vm.$el)
   })
 
-  it('string ref update', async() => {
+  it('string ref update', async () => {
     const vm = mount(defineComponent({
       setup() {
         const refKey = ref('foo')
@@ -50,7 +50,7 @@ describe('templateRef', () => {
     expect(vm.barEl).toBe(vm.$el)
   })
 
-  it('string ref unmount', async() => {
+  it('string ref unmount', async () => {
     const vm = mount(defineComponent({
       setup() {
         const toggle = ref(true)

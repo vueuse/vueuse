@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import { useTimeAgo } from '@vueuse/core'
 import { computed } from 'vue'
-import { functions } from '../../../../meta/function-indexes'
-
-dayjs.extend(relativeTime)
+import { functions } from '../../../../packages/metadata/metadata'
 
 const props = defineProps<{ fn: string }>()
 
 const info = computed(() => functions.find(i => i.name === props.fn))
-const format = (ts: number) => dayjs(ts).fromNow()
+const format = (ts: number) => ago(-1, 'day')
+const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
+
+const getFunctionLink = (fn: string) => {
+  const info = functions.find(i => i.name === fn)
+  return info?.docs.replace(/https?:\/\/vueuse\.org\//g, '/')
+}
 </script>
 
 <template>
-  <div class="grid grid-cols-[100px,auto] gap-2 text-sm -mt-2 mb-8">
+  <div class="grid grid-cols-[100px_auto] gap-2 text-sm -mt-2 mb-8 items-start">
     <div opacity="50">
       Category
     </div>
@@ -29,7 +32,30 @@ const link = computed(() => `/functions\#category=${encodeURIComponent(info.valu
       <div opacity="50">
         Last Changed
       </div>
-      <div>{{ format(info.lastUpdated) }}</div>
+      <div>{{ lastUpdated }}</div>
+    </template>
+    <template v-if="info.alias?.length">
+      <div opacity="50">
+        Alias
+      </div>
+      <div flex="~ gap-1 wrap">
+        <code v-for="a, idx of info.alias" :key="idx" class="!py-0">{{ a }}</code>
+      </div>
+    </template>
+    <template v-if="info.related?.length">
+      <div opacity="50">
+        Related
+      </div>
+      <div flex="~ gap-1 wrap">
+        <a
+          v-for="name, idx of info.related"
+          :key="idx"
+          class="!py-0"
+          :href="getFunctionLink(name)"
+        >
+          <code>{{ name }}</code>
+        </a>
+      </div>
     </template>
   </div>
 </template>

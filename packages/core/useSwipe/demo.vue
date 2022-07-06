@@ -1,8 +1,7 @@
-
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { SwipeDirection } from '.'
-import { useSwipe } from '.'
+import type { SwipeDirection } from '@vueuse/core'
+import { useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
@@ -50,12 +49,12 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
       <button @click="reset">
         Reset
       </button>
-      <div ref="target" class="overlay" :class="{animated: !isSwiping}" :style="{left, opacity}">
+      <div ref="target" class="overlay" :class="{ animated: !isSwiping }" :style="{ left, opacity }">
         <p>Swipe right</p>
       </div>
     </div>
     <p class="status">
-      Direction: {{ direction? direction : '-' }} <br>
+      Direction: {{ direction ? direction : '-' }} <br>
       lengthX: {{ lengthX }} | lengthY: {{ lengthY }}
     </p>
   </div>

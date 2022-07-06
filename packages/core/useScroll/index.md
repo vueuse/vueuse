@@ -8,6 +8,7 @@ Reactive scroll position and state
 
 ## Usage
 
+
 ```html
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
@@ -26,4 +27,34 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
 })
+```
+
+## Directive Usage
+
+```html
+<script setup lang="ts">
+import type { UseScrollReturn } from '@vueuse/core'
+import { vScroll } from '@vueuse/components'
+
+const data = ref([1, 2, 3, 4, 5, 6])
+
+function onScroll(state: UseScrollReturn) {
+  console.log(state) // {x, y, isScrolling, arrivedState, directions}
+}
+</script>
+
+<template>
+  <div v-scroll="onScroll">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+  </div>
+
+  <!-- with options -->
+  <div v-scroll="[onScroll, { 'throttle' : 10 }]">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+  </div>
+</template>
 ```

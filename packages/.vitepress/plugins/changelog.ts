@@ -1,17 +1,18 @@
 import type { Plugin } from 'vite'
-import { getChangeLog } from '../../../scripts/changelog'
+import type { CommitInfo } from '@vueuse/metadata'
 
 const ID = '/virtual-changelog'
 
-export function ChangeLog(): Plugin {
+export function ChangeLog(data: CommitInfo[]): Plugin {
   return {
     name: 'vueuse-changelog',
     resolveId(id) {
       return id === ID ? ID : null
     },
-    async load(id) {
-      if (id !== ID) return null
-      return `export default ${JSON.stringify(await getChangeLog(400))}`
+    load(id) {
+      if (id !== ID)
+        return null
+      return `export default ${JSON.stringify(data)}`
     },
   }
 }

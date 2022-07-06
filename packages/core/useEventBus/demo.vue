@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useEventBus } from '.'
+import { ref } from 'vue'
+import { useEventBus } from '@vueuse/core'
 
 const { on, emit } = useEventBus<string>('vue-use-event-bus')
 const message = ref('')

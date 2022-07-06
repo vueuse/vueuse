@@ -46,3 +46,10 @@ html.dark {
 .VPContentDoc .container {
   place-content: space-around !important;
 }
+
+.home h2 {
+  margin-top: 2rem;
+  font-size: 1.35rem;
+  border-bottom: none;
+  margin-bottom: 0;
+}

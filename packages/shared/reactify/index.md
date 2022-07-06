@@ -1,5 +1,6 @@
 ---
 category: Utilities
+alias: createReactiveFn
 ---
 
 # reactify
@@ -65,7 +66,7 @@ You can also do it this way:
 import { reactify } from '@vueuse/core'
 
 function pythagorean(a: number, b: number) {
-  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+  return Math.sqrt(a ** 2 + b ** 2)
 }
 
 const a = ref(3)
@@ -87,7 +88,7 @@ const dumped = stringify(obj)
 
 console.log(dumped.value) // '42'
 
-obj.value = { foo: "bar" }
+obj.value = { foo: 'bar' }
 
 console.log(dumped.value) // '{"foo":"bar"}'
 ```

@@ -1,7 +1,8 @@
 import type { Ref } from 'vue-demi'
-import { ref, unref, watch } from 'vue-demi'
+import { isRef, ref, unref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { isClient } from '@vueuse/shared'
+import { getDefaultSerialization } from './serialization'
 
 export interface ToDataURLOptions {
   /**
@@ -12,6 +13,10 @@ export interface ToDataURLOptions {
    * Image quality of jpeg or webp
    */
   quality?: any
+}
+
+export interface UseBase64ObjectOptions<T> {
+  serializer: (v: T) => string
 }
 
 export interface UseBase64Return {
@@ -25,6 +30,10 @@ export function useBase64(target: MaybeRef<Blob>): UseBase64Return
 export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Return
 export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
 export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64<T extends Record<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Map<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Set<unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T>(target: MaybeRef<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
 export function useBase64(
   target: any,
   options?: any,
@@ -39,12 +48,21 @@ export function useBase64(
     promise.value = new Promise<string>((resolve, reject) => {
       try {
         const _target = unref(target)
-        // undefined or null
-        if (_target === undefined || _target === null) { resolve('') }
-        else if (typeof _target === 'string') { resolve(blobToBase64(new Blob([_target], { type: 'text/plain' }))) }
-        else if (_target instanceof Blob) { resolve(blobToBase64(_target)) }
-        else if (_target instanceof ArrayBuffer) { resolve(window.btoa(String.fromCharCode(...new Uint8Array(_target)))) }
-        else if (_target instanceof HTMLCanvasElement) { resolve(_target.toDataURL(options?.type, options?.quality)) }
+        if (_target == null) {
+          resolve('')
+        }
+        else if (typeof _target === 'string') {
+          resolve(blobToBase64(new Blob([_target], { type: 'text/plain' })))
+        }
+        else if (_target instanceof Blob) {
+          resolve(blobToBase64(_target))
+        }
+        else if (_target instanceof ArrayBuffer) {
+          resolve(window.btoa(String.fromCharCode(...new Uint8Array(_target))))
+        }
+        else if (_target instanceof HTMLCanvasElement) {
+          resolve(_target.toDataURL(options?.type, options?.quality))
+        }
         else if (_target instanceof HTMLImageElement) {
           const img = _target.cloneNode(false) as HTMLImageElement
           img.crossOrigin = 'Anonymous'
@@ -56,6 +74,13 @@ export function useBase64(
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
             resolve(canvas.toDataURL(options?.type, options?.quality))
           }).catch(reject)
+        }
+        else if (typeof _target === 'object') {
+          const _serializeFn = options?.serializer || getDefaultSerialization(_target)
+
+          const serialized = _serializeFn(_target)
+
+          return resolve(blobToBase64(new Blob([serialized], { type: 'application/json' })))
         }
         else {
           reject(new Error('target is unsupported types'))
@@ -69,7 +94,10 @@ export function useBase64(
     return promise.value
   }
 
-  watch(target, execute, { immediate: true })
+  if (isRef(target))
+    watch(target, execute, { immediate: true })
+  else
+    execute()
 
   return {
     base64,

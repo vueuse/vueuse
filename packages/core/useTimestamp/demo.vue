@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTimestamp } from '.'
+import { useTimestamp } from '@vueuse/core'
 
 const timestamp = useTimestamp()
 </script>

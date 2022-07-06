@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCycleList } from './index'
+import { useCycleList } from '@vueuse/core'
 
 const list = [
   'Dog',

@@ -36,6 +36,23 @@ onKeyStroke('A', (e) => {
 }, { target: document })
 ```
 
+## Directive Usage
+
+```html
+<script setup lang="ts">
+import { vOnKeyStroke } from '@vueuse/components'
+function onUpdate(e: KeyboardEvent) {
+  // impl...
+}
+</script>
+
+<template>
+  <input v-on-key-stroke:c,v="onUpdate" type="text">
+  <!-- with options -->
+  <input v-on-key-stroke:c,v="[onUpdate, { eventName: 'keyup' }]" type="text">
+</template>
+```
+
 ### Custom Keyboard Event
 
 ```js
@@ -51,7 +68,7 @@ onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 
 
-## Alias
+## Shorthands
 
 - `onKeyDown` - alias for `onKeyStroke(key, handler, {eventName: 'keydown'})`
 - `onKeyPressed` - alias for `onKeyStroke(key, handler, {eventName: 'keypress'})`

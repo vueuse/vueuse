@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
 import { useCounter } from '@vueuse/shared'
-import dayjs from 'dayjs'
-import type { Ref } from 'vue-demi'
-import { useThrottledRefHistory } from '.'
+import { formatDate, useThrottledRefHistory } from '@vueuse/core'
+import type { Ref } from 'vue'
 
-const format = (ts: number) => dayjs(ts).format()
+const format = (ts: number) => formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()

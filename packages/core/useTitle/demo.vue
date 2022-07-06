@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTitle } from '.'
+import { useTitle } from '@vueuse/core'
 
 const title = useTitle(null)
 </script>

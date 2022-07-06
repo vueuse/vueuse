@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
-import { useActiveElement } from '.'
+import { computed } from 'vue'
+import { useActiveElement } from '@vueuse/core'
 
 const activeElement = useActiveElement()
 const key = computed(() => activeElement.value?.dataset?.id || 'null')

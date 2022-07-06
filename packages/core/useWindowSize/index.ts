@@ -7,6 +7,12 @@ import { defaultWindow } from '../_configurable'
 export interface WindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number
   initialHeight?: number
+  /**
+   * Listen to window `orientationchange` event
+   *
+   * @default true
+   */
+  listenOrientation?: boolean
 }
 
 /**
@@ -15,7 +21,14 @@ export interface WindowSizeOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useWindowSize
  * @param options
  */
-export function useWindowSize({ window = defaultWindow, initialWidth = Infinity, initialHeight = Infinity }: WindowSizeOptions = {}) {
+export function useWindowSize(options: WindowSizeOptions = {}) {
+  const {
+    window = defaultWindow,
+    initialWidth = Infinity,
+    initialHeight = Infinity,
+    listenOrientation = true,
+  } = options
+
   const width = ref(initialWidth)
   const height = ref(initialHeight)
 
@@ -29,6 +42,9 @@ export function useWindowSize({ window = defaultWindow, initialWidth = Infinity,
   update()
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
+
+  if (listenOrientation)
+    useEventListener('orientationchange', update, { passive: true })
 
   return { width, height }
 }

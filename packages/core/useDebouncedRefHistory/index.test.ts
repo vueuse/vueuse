@@ -3,7 +3,7 @@ import { promiseTimeout } from '@vueuse/shared'
 import { useDebouncedRefHistory } from '.'
 
 describe('useDebouncedRefHistory', () => {
-  test('Once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async() => {
+  test('Once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async () => {
     const v = ref(0)
 
     const { history } = useDebouncedRefHistory(v, { debounce: 10 })
@@ -17,7 +17,7 @@ describe('useDebouncedRefHistory', () => {
     expect(history.value[0].snapshot).toBe(100)
   })
 
-  test('when debounce is undefined', async() => {
+  test('when debounce is undefined', async () => {
     const v = ref(0)
 
     const { history } = useDebouncedRefHistory(v, { deep: false })

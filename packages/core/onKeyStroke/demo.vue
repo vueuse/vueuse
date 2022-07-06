@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { onKeyStroke } from '.'
+import { ref } from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 
 const translateX = ref(0)
 const translateY = ref(0)
@@ -29,7 +29,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
 <template>
   <div>
     <div class="container border-base">
-      <div class="ball" :style="{transform: `translate(${translateX}px, ${translateY}px)`}" />
+      <div class="ball" :style="{ transform: `translate(${translateX}px, ${translateY}px)` }" />
     </div>
     <div class="text-center mt-4">
       Use the arrow keys or w a s d keys to control the movement of the ball.

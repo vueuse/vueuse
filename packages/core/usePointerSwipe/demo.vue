@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { SwipeDirection } from '../useSwipe'
-import { usePointerSwipe } from '.'
+import { usePointerSwipe } from '@vueuse/core'
+import type { SwipeDirection } from '@vueuse/core'
 
 const target = ref<Element | null>(null)
 const container = ref<HTMLElement | null>(null)
@@ -51,8 +51,8 @@ const { distanceX, isSwiping } = usePointerSwipe(target, {
     <div
       ref="target"
       class="absolute w-full h-full top-0 left-0 bg-[#3eaf7c] flex items-center justify-center"
-      :class="{'transition-all duration-200 ease-linear': !isSwiping}"
-      :style="{left, opacity}"
+      :class="{ 'transition-all duration-200 ease-linear': !isSwiping }"
+      :style="{ left, opacity }"
     >
       <p class="flex text-white items-center">
         Swipe <mdi-arrow-right />

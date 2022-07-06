@@ -23,7 +23,7 @@ export function useMutationObserver(
 ) {
   const { window = defaultWindow, ...mutationOptions } = options
   let observer: MutationObserver | undefined
-  const isSupported = window && 'IntersectionObserver' in window
+  const isSupported = window && 'MutationObserver' in window
 
   const cleanup = () => {
     if (observer) {
@@ -38,8 +38,7 @@ export function useMutationObserver(
       cleanup()
 
       if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.MutationObserver(callback)
+        observer = new MutationObserver(callback)
         observer!.observe(el, mutationOptions)
       }
     },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStyleTag } from '.'
+import { useStyleTag } from '@vueuse/core'
 
 const { id, css, load, unload, isLoaded } = useStyleTag('.demo { background: #ad4c2e50 }')
 </script>

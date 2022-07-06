@@ -1,7 +1,19 @@
 {
   "name": "@vueuse/rxjs",
-  "version": "7.5.5",
+  "version": "8.8.1",
   "description": "Enables RxJS reactive functions in Vue",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/rxjs"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "keywords": [
     "vue",
     "vue-use",
@@ -9,32 +21,20 @@
     "rxjs",
     "reactive"
   ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git",
-    "directory": "packages/rxjs"
-  },
-  "funding": "https://github.com/sponsors/antfu",
-  "author": "Anthony Fu <https://github.com/antfu>",
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./index.mjs",
+      "types": "./index.d.ts",
       "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "import": "./index.mjs"
     },
     "./*": "./*"
   },
   "main": "./index.cjs",
-  "types": "./index.d.ts",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "rxjs": ">=6.0.0"
   },

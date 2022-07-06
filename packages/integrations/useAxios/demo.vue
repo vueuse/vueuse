@@ -9,7 +9,7 @@ const text = stringify(data)
 </script>
 
 <template>
-  <button @click="execute">
+  <button @click="execute()">
     Execute
   </button>
   <note>Loading: {{ isLoading.toString() }}</note>

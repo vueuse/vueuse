@@ -1,8 +1,38 @@
-import { ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
+
+export interface UseElementBoundingOptions {
+  /**
+   * Reset values to 0 on component unmounted
+   *
+   * @default true
+   */
+  reset?: boolean
+
+  /**
+   * Listen to window resize event
+   *
+   * @default true
+   */
+  windowResize?: boolean
+  /**
+   * Listen to window scroll event
+   *
+   * @default true
+   */
+  windowScroll?: boolean
+
+  /**
+   * Immediately call update on component mounted
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
 
 /**
  * Reactive bounding box of an HTML element.
@@ -10,7 +40,17 @@ import { useResizeObserver } from '../useResizeObserver'
  * @see https://vueuse.org/useElementBounding
  * @param target
  */
-export function useElementBounding(target: MaybeElementRef) {
+export function useElementBounding(
+  target: MaybeElementRef,
+  options: UseElementBoundingOptions = {},
+) {
+  const {
+    reset = true,
+    windowResize = true,
+    windowScroll = true,
+    immediate = true,
+  } = options
+
   const height = ref(0)
   const bottom = ref(0)
   const left = ref(0)
@@ -24,14 +64,16 @@ export function useElementBounding(target: MaybeElementRef) {
     const el = unrefElement(target)
 
     if (!el) {
-      height.value = 0
-      bottom.value = 0
-      left.value = 0
-      right.value = 0
-      top.value = 0
-      width.value = 0
-      x.value = 0
-      y.value = 0
+      if (reset) {
+        height.value = 0
+        bottom.value = 0
+        left.value = 0
+        right.value = 0
+        top.value = 0
+        width.value = 0
+        x.value = 0
+        y.value = 0
+      }
       return
     }
 
@@ -47,12 +89,18 @@ export function useElementBounding(target: MaybeElementRef) {
     y.value = rect.y
   }
 
-  useEventListener('scroll', update, true)
+  useResizeObserver(target, update)
+  watch(() => unrefElement(target), ele => !ele && update())
 
-  useResizeObserver(
-    target,
-    update,
-  )
+  if (windowScroll)
+    useEventListener('scroll', update, { passive: true })
+  if (windowResize)
+    useEventListener('resize', update, { passive: true })
+
+  tryOnMounted(() => {
+    if (immediate)
+      update()
+  })
 
   return {
     height,

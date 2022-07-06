@@ -36,7 +36,14 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   crossOrigin?: 'anonymous' | 'use-credentials'
   referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
   noModule?: boolean
+
   defer?: boolean
+
+  /**
+   * Add custom attribute to the script tag
+   *
+   */
+  attrs?: Record<string, string>
 }
 
 /**
@@ -62,6 +69,7 @@ export function useScriptTag(
     noModule,
     defer,
     document = defaultDocument,
+    attrs = {},
   } = options
   const scriptTag = ref<HTMLScriptElement | null>(null)
 
@@ -90,7 +98,7 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
@@ -109,6 +117,8 @@ export function useScriptTag(
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
 
+      Object.entries(attrs).forEach(([name, value]) => el?.setAttribute(name, value))
+
       // Enables shouldAppend
       shouldAppend = true
     }
@@ -121,10 +131,10 @@ export function useScriptTag(
     el.addEventListener('error', event => reject(event))
     el.addEventListener('abort', event => reject(event))
     el.addEventListener('load', () => {
-      el.setAttribute('data-loaded', 'true')
+      el!.setAttribute('data-loaded', 'true')
 
-      onLoaded(el)
-      resolveWithElement(el)
+      onLoaded(el!)
+      resolveWithElement(el!)
     })
 
     // Append the <script> tag to head.
@@ -142,7 +152,7 @@ export function useScriptTag(
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement | boolean> => {
     if (!_promise)
       _promise = loadScript(waitForScriptLoad)
 
@@ -161,7 +171,7 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
     if (el)
       document.head.removeChild(el)
   }

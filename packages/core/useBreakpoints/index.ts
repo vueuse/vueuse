@@ -69,4 +69,11 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
   }
 }
 
-export type UseBreakpointsReturn = ReturnType<typeof useBreakpoints>
+export type UseBreakpointsReturn<K extends string = string> = {
+  greater: (k: K) => Ref<boolean>
+  smaller(k: K): Ref<boolean>
+  between(a: K, b: K): Ref<boolean>
+  isGreater(k: K): boolean
+  isSmaller(k: K): boolean
+  isInBetween(a: K, b: K): boolean
+} & Record<K, Ref<boolean>>

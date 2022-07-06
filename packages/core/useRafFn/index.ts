@@ -27,13 +27,14 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
   } = options
 
   const isActive = ref(false)
+  let rafId: null | number = null
 
   function loop() {
     if (!isActive.value || !window)
       return
 
     fn()
-    window.requestAnimationFrame(loop)
+    rafId = window.requestAnimationFrame(loop)
   }
 
   function resume() {
@@ -45,6 +46,10 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
 
   function pause() {
     isActive.value = false
+    if (rafId != null && window) {
+      window.cancelAnimationFrame(rafId)
+      rafId = null
+    }
   }
 
   if (immediate)
