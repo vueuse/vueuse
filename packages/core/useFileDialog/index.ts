@@ -1,7 +1,13 @@
 import { readonly, ref } from 'vue-demi'
 
 export interface UseFileDialogOptions {
+  /**
+   * @default true
+   */
   multiple?: boolean
+  /**
+   * @default '*'
+   */
   accept?: string
   /**
    * Select the input source for the capture file.
