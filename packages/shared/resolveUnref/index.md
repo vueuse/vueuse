@@ -1,6 +1,6 @@
 ---
 category: Utilities
-related: resolveUnref
+related: resolveRef
 ---
 
 # resolveUnref
