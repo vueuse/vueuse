@@ -10,7 +10,7 @@ export interface WindowSizeOptions extends ConfigurableWindow {
   /**
    * Listen to window `orientationchange` event
    *
-   * @default false
+   * @default true
    */
   listenOrientation?: boolean
 }
@@ -26,7 +26,7 @@ export function useWindowSize(options: WindowSizeOptions = {}) {
     window = defaultWindow,
     initialWidth = Infinity,
     initialHeight = Infinity,
-    listenOrientation = false,
+    listenOrientation = true,
   } = options
 
   const width = ref(initialWidth)
