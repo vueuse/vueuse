@@ -15,7 +15,7 @@ export interface ToDataURLOptions {
   quality?: any
 }
 
-export interface ObjectOptions<T> {
+export interface UseBase64ObjectOptions<T> {
   serializer: (v: T) => string
 }
 
@@ -30,10 +30,10 @@ export function useBase64(target: MaybeRef<Blob>): UseBase64Return
 export function useBase64(target: MaybeRef<ArrayBuffer>): UseBase64Return
 export function useBase64(target: MaybeRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
 export function useBase64(target: MaybeRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64<T extends Record<string, unknown>>(target: MaybeRef<T>, options?: ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Map<string, unknown>>(target: MaybeRef<T>, options?: ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Set<unknown>>(target: MaybeRef<T>, options?: ObjectOptions<T>): UseBase64Return
-export function useBase64<T>(target: MaybeRef<T[]>, options?: ObjectOptions<T[]>): UseBase64Return
+export function useBase64<T extends Record<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Map<string, unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Set<unknown>>(target: MaybeRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T>(target: MaybeRef<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
 export function useBase64(
   target: any,
   options?: any,
