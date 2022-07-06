@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { until } from '@vueuse/shared'
+import { isString, until } from '@vueuse/shared'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
 
@@ -65,21 +65,27 @@ export interface UseAxiosReturn<T> {
   cancel: (message?: string | undefined) => void
 
   /**
-   * abort aborted
+   * isAborted alias
+   * @deprecated use `isCanceled` instead
    */
   canceled: Ref<boolean>
+
+  /**
+   * isAborted alias
+   */
+  isCanceled: Ref<boolean>
 }
 export interface StrictUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string, config?: AxiosRequestConfig) => void
+  execute: (url?: string, config?: AxiosRequestConfig) => PromiseLike<StrictUseAxiosReturn<T>>
 }
 export interface EasyUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
    * Manually call the axios request
    */
-  execute: (url: string, config?: AxiosRequestConfig) => void
+  execute: (url: string, config?: AxiosRequestConfig) => PromiseLike<EasyUseAxiosReturn<T>>
 }
 export interface UseAxiosOptions {
   /**
@@ -104,28 +110,31 @@ export function useAxios<T = any>(config?: AxiosRequestConfig, instance?: AxiosI
  */
 export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & PromiseLike<OverallUseAxiosReturn<T>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
-  const argsPlaceholder = url ? 1 : 0
+  const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: AxiosRequestConfig = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions = { immediate: !!argsPlaceholder }
+
+  const isAxiosInstance = (val: any) => !!val?.request
+
   if (args.length > 0 + argsPlaceholder) {
     /**
      * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
      * so instead we are checking if there is a `requset` on the object to see if it is an
      * axios instance
      */
-    if ('request' in args[0 + argsPlaceholder])
+    if (isAxiosInstance(args[0 + argsPlaceholder]))
       instance = args[0 + argsPlaceholder]
     else
       defaultConfig = args[0 + argsPlaceholder]
   }
 
   if (args.length > 1 + argsPlaceholder) {
-    if ('request' in args[1 + argsPlaceholder])
+    if (isAxiosInstance(args[1 + argsPlaceholder]))
       instance = args[1 + argsPlaceholder]
   }
   if (
-    (args.length === 2 + argsPlaceholder && !('request' in args[1 + argsPlaceholder]))
+    (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
   )
     options = args[args.length - 1]
@@ -151,18 +160,21 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isLoading.value = loading
     isFinished.value = !loading
   }
+  const waitUntilFinished = () =>
+    new Promise<OverallUseAxiosReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        .then(() => resolve(result))
+        .catch(reject)
+    })
+  const then: PromiseLike<OverallUseAxiosReturn<T>>['then'] = (onFulfilled, onRejected) =>
+    waitUntilFinished().then(onFulfilled, onRejected)
   const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
-    let _url = url ?? ''
-    let _config
-    if (typeof executeUrl === 'string') {
-      _url = executeUrl
-      _config = config
-    }
-    else {
-      _config = config
-    }
+    const _url = typeof executeUrl === 'string'
+      ? executeUrl
+      : url ?? ''
     loading(true)
-    instance(_url, { ...defaultConfig, ..._config, cancelToken: cancelToken.token })
+    instance(_url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
         data.value = r.data
@@ -170,9 +182,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
       .catch((e: any) => {
         error.value = e
       })
-      .finally(() => {
-        loading(false)
-      })
+      .finally(() => loading(false))
+    return { then }
   }
   if (options.immediate && url)
     (execute as StrictUseAxiosReturn<T>['execute'])()
@@ -189,22 +200,13 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isAborted,
     canceled: isAborted,
     aborted: isAborted,
+    isCanceled: isAborted,
     abort,
     execute,
   } as OverallUseAxiosReturn<T>
-  function waitUntilFinished() {
-    return new Promise<OverallUseAxiosReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true)
-        .then(() => resolve(result))
-        .catch(error => reject(error))
-    })
-  }
 
   return {
     ...result,
-    then(onFulfilled, onRejected) {
-      return waitUntilFinished()
-        .then(onFulfilled, onRejected)
-    },
+    then,
   }
 }

@@ -205,13 +205,12 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
-  if (headers instanceof Headers)
+  if (typeof Headers !== 'undefined' && headers instanceof Headers)
     return Object.fromEntries([...headers.entries()])
-
   return headers
 }
 
@@ -335,7 +334,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   if (timeout)
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
-  const execute = async(throwOnFailed = false) => {
+  const execute = async (throwOnFailed = false) => {
     loading(true)
     error.value = null
     statusCode.value = null
@@ -392,7 +391,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           },
         },
       )
-        .then(async(fetchResponse) => {
+        .then(async (fetchResponse) => {
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
@@ -410,7 +409,7 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
           responseEvent.trigger(fetchResponse)
           return resolve(fetchResponse)
         })
-        .catch(async(fetchError) => {
+        .catch(async (fetchError) => {
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
@@ -497,7 +496,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
         if (!payloadType && unref(payload) && Object.getPrototypeOf(unref(payload)) === Object.prototype)
           config.payloadType = 'json'
 
-        return shell as any
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }

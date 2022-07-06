@@ -18,7 +18,7 @@ describe('useCached', () => {
     expect(useCached).toBeDefined()
   })
 
-  it('should work', async() => {
+  it('should work', async () => {
     const arrayRef = ref([1])
     const initialArrayValue = arrayRef.value
 

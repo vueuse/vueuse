@@ -15,7 +15,7 @@ export const formatDate = (date: Date, formatStr: string) => {
   const seconds = date.getSeconds()
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
-  const matches: Record<string, string|number> = {
+  const matches: Record<string, string | number> = {
     YY: String(years).slice(-2),
     YYYY: years,
     M: month + 1,

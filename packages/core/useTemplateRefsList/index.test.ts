@@ -79,7 +79,7 @@ else {
       expect(vm.refs[2]).toBe(vm.$el.querySelector('#div3'))
     })
 
-    it('v-for source update', async() => {
+    it('v-for source update', async () => {
       const vm = mount(Component1)
 
       vm.list = [1, 2, 3, 4]
@@ -89,7 +89,7 @@ else {
       expect(vm.refs[3]).toBe(vm.$el.querySelector('#div4'))
     })
 
-    it('call child component methods', async() => {
+    it('call child component methods', async () => {
       const vm = mount(testCom2)
 
       expect(vm.refs[0].foo()).toBe('foo1')

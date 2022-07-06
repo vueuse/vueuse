@@ -14,7 +14,7 @@ export type Reactify<T> = T extends (...args: infer A) => infer R
  * @param fn - Source function
  */
 export function reactify<T extends Function>(fn: T): Reactify<T> {
-  return function(this: any, ...args: any[]) {
+  return function (this: any, ...args: any[]) {
     return computed(() => fn.apply(this, args.map(i => unref(i))))
   } as Reactify<T>
 }

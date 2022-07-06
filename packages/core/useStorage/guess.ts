@@ -16,6 +16,6 @@ export function guessSerializerType<T extends(string | number | boolean | object
                 : Array.isArray(rawInit)
                   ? 'object'
                   : !Number.isNaN(rawInit)
-                    ? 'number'
-                    : 'any'
+                      ? 'number'
+                      : 'any'
 }

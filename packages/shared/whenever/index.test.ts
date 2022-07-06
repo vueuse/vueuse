@@ -6,13 +6,13 @@ import { whenever } from '.'
 describe('whenever', () => {
   const expectType = <T>(value: T) => value
 
-  it('ignore falsy state change', async() => {
+  it('ignore falsy state change', async () => {
     // use a component to simulate normal use case
     const wrapper = useSetup(() => {
       const number = ref<number | null | undefined>(1)
       const changeNumber = (v: number) => number.value = v
       const watchCount = ref(0)
-      const watchValue: Ref<number|undefined> = ref()
+      const watchValue: Ref<number | undefined> = ref()
 
       whenever(number, (value) => {
         watchCount.value += 1

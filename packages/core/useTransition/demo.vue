@@ -50,7 +50,7 @@ const toggle = () => {
 
     <div class="track number">
       <div class="relative">
-        <div class="sled" :style="{ left: cubicBezierNumber + '%' }" />
+        <div class="sled" :style="{ left: `${cubicBezierNumber}%` }" />
       </div>
     </div>
 
@@ -60,7 +60,7 @@ const toggle = () => {
 
     <div class="track number">
       <div class="relative">
-        <div class="sled" :style="{ left: customFnNumber + '%' }" />
+        <div class="sled" :style="{ left: `${customFnNumber}%` }" />
       </div>
     </div>
 
@@ -70,7 +70,7 @@ const toggle = () => {
 
     <div class="track vector">
       <div class="relative">
-        <div class="sled" :style="{ left: vector[0] + '%', top: vector[1] + '%' }" />
+        <div class="sled" :style="{ left: `${vector[0]}%`, top: `${vector[1]}%` }" />
       </div>
     </div>
   </div>

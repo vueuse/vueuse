@@ -22,7 +22,7 @@ describe('useStorage', () => {
     storageMock.removeItem.mockClear()
   })
 
-  it('string', async() => {
+  it('string', async () => {
     const instance = useSetup(() => {
       const ref = useStorage(KEY, 'a', storage)
 
@@ -41,7 +41,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, 'b')
   })
 
-  it('number', async() => {
+  it('number', async () => {
     storageState.set(KEY, '0')
 
     const store = useStorage(KEY, 1, storage)
@@ -63,7 +63,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '2.3')
   })
 
-  it('boolean', async() => {
+  it('boolean', async () => {
     storage.removeItem(KEY)
 
     const store = useStorage(KEY, true, storage)
@@ -101,7 +101,7 @@ describe('useStorage', () => {
     expect(storedValue).toBeFalsy()
   })
 
-  it('remove value', async() => {
+  it('remove value', async () => {
     storage.setItem(KEY, 'null')
 
     const store = useStorage(KEY, null, storage)
@@ -113,7 +113,7 @@ describe('useStorage', () => {
     expect(storage.getItem(KEY)).toBeFalsy()
   })
 
-  it('string', async() => {
+  it('string', async () => {
     storageState.set(KEY, '0')
 
     const store = useStorage(KEY, '1', storage)
@@ -125,7 +125,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '2')
   })
 
-  it('date', async() => {
+  it('date', async () => {
     storageState.set(KEY, '2000-01-01T00:00:00.000Z')
 
     const store = useStorage(KEY, new Date('2000-01-02T00:00:00.000Z'), storage)
@@ -137,7 +137,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '2000-01-03T00:00:00.000Z')
   })
 
-  it('object', async() => {
+  it('object', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const store = useStorage(KEY, {
@@ -168,7 +168,7 @@ describe('useStorage', () => {
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
-  it('map', async() => {
+  it('map', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const store = useStorage(KEY, new Map<number, string | number>([
@@ -198,7 +198,7 @@ describe('useStorage', () => {
     }
   })
 
-  it('set', async() => {
+  it('set', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const store = useStorage(KEY, new Set<string | number>([1, '2']), storage)
@@ -225,7 +225,7 @@ describe('useStorage', () => {
     }
   })
 
-  it('pass ref as initialValue', async() => {
+  it('pass ref as initialValue', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const init = ref({
@@ -244,7 +244,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
   })
 
-  it('eventFilter', async() => {
+  it('eventFilter', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {
@@ -296,7 +296,7 @@ describe('useStorage', () => {
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
   })
 
-  it('custom serializer', async() => {
+  it('custom serializer', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
     const instance = useSetup(() => {

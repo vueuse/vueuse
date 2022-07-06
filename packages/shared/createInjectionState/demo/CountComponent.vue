@@ -9,8 +9,8 @@ const { count, double } = useCounterStore()!
 // const { count, double } = useCounterStoreWithDefaultValue()
 // or throw error
 // const { count, double } = useCounterStoreOrThrow()
-
 </script>
+
 <template>
   <ul>
     <li>

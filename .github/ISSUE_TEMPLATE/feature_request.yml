@@ -1,6 +1,6 @@
-name: "\U0001F680 New feature proposal"
+name: 🚀 New feature proposal
 description: Propose a new feature to be added to VueUse
-labels: ["enhancement"]
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
@@ -10,14 +10,14 @@ body:
     id: feature-description
     attributes:
       label: Clear and concise description of the problem
-      description: "As a developer using VueUse I want [goal / wish] so that [benefit]. If you intend to submit a PR for this issue, tell us in the description. Thanks!"
+      description: 'As a developer using VueUse I want [goal / wish] so that [benefit]. If you intend to submit a PR for this issue, tell us in the description. Thanks!'
     validations:
       required: true
   - type: textarea
     id: suggested-solution
     attributes:
       label: Suggested solution
-      description: "In module [xy] we could provide following implementation..."
+      description: 'In module [xy] we could provide following implementation...'
     validations:
       required: true
   - type: textarea

@@ -3,7 +3,7 @@ import { useSetup } from '../../.test'
 import { watchIgnorable } from '.'
 
 describe('watchIgnorable', () => {
-  test('ignore async updates', async() => {
+  test('ignore async updates', async () => {
     const source = ref(0)
     const target = ref(0)
     const { ignoreUpdates } = watchIgnorable(source, value => target.value = value)
@@ -30,7 +30,7 @@ describe('watchIgnorable', () => {
     expect(target.value).toBe(5)
   })
 
-  test('ignore prev async updates', async() => {
+  test('ignore prev async updates', async () => {
     const source = ref(0)
     const target = ref(0)
     const { ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value)

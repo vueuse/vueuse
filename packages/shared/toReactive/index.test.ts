@@ -28,7 +28,7 @@ describe('toRefs', () => {
     expect(state).toEqual(obj)
   })
 
-  it('should be reactive', async() => {
+  it('should be reactive', async () => {
     const r = ref({ a: 'a', b: 0 })
     const state = toReactive(r)
     let dummy = 0
@@ -53,7 +53,7 @@ describe('toRefs', () => {
     expect(r.value.b).toBe(2)
   })
 
-  it('should be replaceable', async() => {
+  it('should be replaceable', async () => {
     const r = ref<any>({ a: 'a', b: 0 })
     const state = toReactive(r)
     let dummy = 0

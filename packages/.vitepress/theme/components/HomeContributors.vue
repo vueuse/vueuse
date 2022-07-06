@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { contributors } from '../../../contributors'
 </script>
+
 <template>
   <h2 op50 font-normal pt-5 pb-2>
     Contributors

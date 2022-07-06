@@ -98,8 +98,8 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
 export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
 export function useStorage(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
 export function useStorage(key: string, initialValue: MaybeRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
-export function useStorage<T> (key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage<T>(key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -110,7 +110,7 @@ export function useStorage<T = unknown> (key: string, initialValue: MaybeRef<nul
  * @param storage
  * @param options
  */
-export function useStorage<T extends(string|number|boolean|object|null)> (
+export function useStorage<T extends(string | number | boolean | object | null)>(
   key: string,
   initialValue: MaybeRef<T>,
   storage: StorageLike | undefined,

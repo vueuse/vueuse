@@ -30,7 +30,7 @@ const changeVar = () => {
   <button @click="switchColor">
     Change Color
   </button>
-  <div ref="elv" style="--color: #7fa998; --color-one: #df8543;" :style="{color: colorVal}">
+  <div ref="elv" style="--color: #7fa998; --color-one: #df8543;" :style="{ color: colorVal }">
     Sample text, {{ key }}: {{ colorVal }}
   </div>
   <button style="margin-left: 0;" @click="changeVar">

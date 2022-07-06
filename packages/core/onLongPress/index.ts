@@ -1,6 +1,7 @@
-import type { MaybeElementRef } from '@vueuse/core'
-import { unrefElement, useEventListener } from '@vueuse/core'
 import { computed } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 
 const DEFAULT_DELAY = 500
 
@@ -11,6 +12,16 @@ export interface OnLongPressOptions {
    * @default 500
    */
   delay?: number
+
+  modifiers?: OnLongPressModifiers
+}
+
+export interface OnLongPressModifiers {
+  stop?: boolean
+  once?: boolean
+  prevent?: boolean
+  capture?: boolean
+  self?: boolean
 }
 
 export function onLongPress(
@@ -30,14 +41,29 @@ export function onLongPress(
   }
 
   function onDown(ev: PointerEvent) {
+    if (options?.modifiers?.self && ev.target !== elementRef.value)
+      return
+
     clear()
+
+    if (options?.modifiers?.prevent)
+      ev.preventDefault()
+
+    if (options?.modifiers?.stop)
+      ev.stopPropagation()
+
     timeout = setTimeout(
       () => handler(ev),
       options?.delay ?? DEFAULT_DELAY,
     ) as unknown as number
   }
 
-  useEventListener(elementRef, 'pointerdown', onDown)
-  useEventListener(elementRef, 'pointerup', clear)
-  useEventListener(elementRef, 'pointerleave', clear)
+  const listenerOptions: AddEventListenerOptions = {
+    capture: options?.modifiers?.capture,
+    once: options?.modifiers?.once,
+  }
+
+  useEventListener(elementRef, 'pointerdown', onDown, listenerOptions)
+  useEventListener(elementRef, 'pointerup', clear, listenerOptions)
+  useEventListener(elementRef, 'pointerleave', clear, listenerOptions)
 }

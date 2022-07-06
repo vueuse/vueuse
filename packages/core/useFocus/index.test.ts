@@ -34,7 +34,7 @@ describe('useFocus', () => {
     expect(focused.value).toBeFalsy()
   })
 
-  it('reflect reactive ref `focused` state changes in DOM', async() => {
+  it('reflect reactive ref `focused` state changes in DOM', async () => {
     const { focused } = useFocus(target)
 
     expect(focused.value).toBeFalsy()
@@ -56,7 +56,7 @@ describe('useFocus', () => {
   })
 
   describe('when initialValue=true passed in', () => {
-    it('should initialize focus', async() => {
+    it('should initialize focus', async () => {
       const { focused } = useFocus(target, { initialValue: true })
 
       await retry(() => {
