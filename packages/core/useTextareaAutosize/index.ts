@@ -35,5 +35,6 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   return {
     textarea,
     input,
+    triggerResize,
   }
 }
