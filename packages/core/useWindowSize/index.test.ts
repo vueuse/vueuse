@@ -24,7 +24,7 @@ describe('useWindowSize', () => {
   })
 
   it('sets handler for window "resize" event', async () => {
-    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+    useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
 
     await nextTick()
 
@@ -36,7 +36,7 @@ describe('useWindowSize', () => {
   })
 
   it('sets handler for window "orientationchange" event', async () => {
-    useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: true })
+    useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
     await nextTick()
 
