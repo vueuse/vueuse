@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "8.7.4",
+  "version": "8.8.0",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -42,6 +42,6 @@
     "vue-demi": "*"
   },
   "devDependencies": {
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.1.1"
   }
 }

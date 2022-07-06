@@ -24,7 +24,7 @@ describe('useWindowSize', () => {
   })
 
   it('sets handler for window "resize" event', async () => {
-    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+    useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
 
     await nextTick()
 
@@ -32,6 +32,18 @@ describe('useWindowSize', () => {
 
     const call = addEventListenerSpy.mock.calls[0] as any
     expect(call[0]).toEqual('resize')
+    expect(call[2]).toEqual({ passive: true })
+  })
+
+  it('sets handler for window "orientationchange" event', async () => {
+    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+
+    await nextTick()
+
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
+
+    const call = addEventListenerSpy.mock.calls[1] as any
+    expect(call[0]).toEqual('orientationchange')
     expect(call[2]).toEqual({ passive: true })
   })
 })

@@ -30,7 +30,7 @@ export function useCssVar(
     [elRef, () => unref(prop)],
     ([el, prop]) => {
       if (el && window) {
-        const value = window.getComputedStyle(el).getPropertyValue(prop)
+        const value = window.getComputedStyle(el).getPropertyValue(prop)?.trim()
         variable.value = value || initialValue
       }
     },
