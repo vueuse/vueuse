@@ -29,6 +29,16 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'math',
+    display: 'Math',
+    description: 'Math functions for VueUse',
+    author: 'Jacob Clevenger<https://github.com/wheatjs>',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'nuxt',
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',

@@ -1,14 +1,15 @@
 {
-  "name": "@vueuse/shared",
-  "version": "8.8.1",
-  "author": "Anthony Fu <https://github.com/antfu>",
+  "name": "@vueuse/math",
+  "version": "7.5.5",
+  "description": "Math functions for VueUse",
+  "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/shared#readme",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/math#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueuse/vueuse.git",
-    "directory": "packages/shared"
+    "directory": "packages/math"
   },
   "bugs": {
     "url": "https://github.com/vueuse/vueuse/issues"
@@ -16,6 +17,7 @@
   "keywords": [
     "vue",
     "vue-use",
+    "math",
     "utils"
   ],
   "sideEffects": false,
@@ -32,19 +34,8 @@
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
-  "peerDependencies": {
-    "@vue/composition-api": "^1.1.0",
-    "vue": "^2.6.0 || ^3.2.0"
-  },
-  "peerDependenciesMeta": {
-    "vue": {
-      "optional": true
-    },
-    "@vue/composition-api": {
-      "optional": true
-    }
-  },
   "dependencies": {
+    "@vueuse/shared": "workspace:*",
     "vue-demi": "*"
   }
 }
