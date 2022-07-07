@@ -2,38 +2,38 @@
   "name": "@vueuse/math",
   "version": "7.5.5",
   "description": "Math functions for VueUse",
+  "author": "Jacob Clevenger<https://github.com/wheatjs>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/math#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/math"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "keywords": [
     "vue",
     "vue-use",
     "math",
     "utils"
   ],
-  "license": "MIT",
-  "author": "Jacob Clevenger<https://github.com/wheatjs>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git",
-    "directory": "packages/math"
-  },
-  "funding": "https://github.com/sponsors/antfu",
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./index.mjs",
+      "types": "./index.d.ts",
       "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "import": "./index.mjs"
     },
     "./*": "./*"
   },
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/math#readme",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"

@@ -219,10 +219,10 @@ importers:
   packages/math:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.12.5
+      vue-demi: 0.13.0
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.12.5_ac2a42527c362575429f172d82b9d821
+      vue-demi: 0.13.0
 
   packages/metadata:
     specifiers: {}
