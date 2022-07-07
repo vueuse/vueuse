@@ -1,5 +1,6 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { computed, unref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
+import { computed } from 'vue-demi'
 
 export type DateLike = Date | number | string | undefined
 
@@ -49,7 +50,7 @@ export const normalizeDate = (date: DateLike) => {
       const m = d[2] - 1 || 0
       const ms = (d[7] || '0').substring(0, 3)
       return new Date(d[1], m, d[3]
-          || 1, d[4] || 0, d[5] || 0, d[6] || 0, ms)
+        || 1, d[4] || 0, d[5] || 0, d[6] || 0, ms)
     }
   }
 
@@ -64,8 +65,8 @@ export const normalizeDate = (date: DateLike) => {
  * @param formatStr
  */
 
-export function useDateFormat(date: MaybeRef<DateLike>, formatStr: MaybeRef<string> = 'HH:mm:ss') {
-  return computed(() => formatDate(normalizeDate(unref(date)), unref(formatStr)))
+export function useDateFormat(date: MaybeComputedRef<DateLike>, formatStr: MaybeComputedRef<string> = 'HH:mm:ss') {
+  return computed(() => formatDate(normalizeDate(resolveUnref(date)), resolveUnref(formatStr)))
 }
 
 export type UseDateFormatReturn = ReturnType<typeof useDateFormat>
