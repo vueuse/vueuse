@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -52,7 +52,7 @@ export interface PointerSwipeReturn {
  * @param options
  */
 export function usePointerSwipe(
-  target: MaybeRef<HTMLElement | null | undefined>,
+  target: MaybeComputedRef<HTMLElement | null | undefined>,
   options: PointerSwipeOptions = {},
 ): PointerSwipeReturn {
   const targetRef = ref(target)
