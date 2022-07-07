@@ -1,6 +1,6 @@
 import { reactive, ref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -59,7 +59,7 @@ export interface UseScrollOptions {
  */
 
 export function useScroll(
-  element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -95,7 +95,7 @@ export function useScroll(
     bottom: false,
   })
 
-  if (element) {
+  if (resolveUnref(element)) {
     const onScrollEnd = useDebounceFn((e: Event) => {
       isScrolling.value = false
       directions.left = false

@@ -1,5 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
@@ -15,7 +15,7 @@ export interface SpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 'en-US'
    */
-  lang?: MaybeRef<string>
+  lang?: MaybeComputedRef<string>
   /**
    * Gets and sets the pitch at which the utterance will be spoken at.
    *
@@ -47,7 +47,7 @@ export interface SpeechSynthesisOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
  * @param options
  */
-export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthesisOptions = {}) {
+export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: SpeechSynthesisOptions = {}) {
   const {
     pitch = 1,
     rate = 1,
@@ -66,8 +66,8 @@ export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthe
     name: options.voice?.name || '',
   }
 
-  const spokenText = ref(text || '')
-  const lang = ref(options.lang || 'en-US')
+  const spokenText = resolveRef(text || '')
+  const lang = resolveRef(options.lang || 'en-US')
   const error = shallowRef(undefined) as Ref<SpeechSynthesisErrorEvent | undefined>
 
   const toggle = (value = !isPlaying.value) => {
