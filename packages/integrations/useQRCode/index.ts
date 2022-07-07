@@ -1,5 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { isClient } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isClient, resolveUnref } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 
@@ -11,7 +11,7 @@ import QRCode from 'qrcode'
  * @param options
  */
 export function useQRCode(
-  text: MaybeRef<string>,
+  text: MaybeComputedRef<string>,
   options?: QRCode.QRCodeToDataURLOptions,
 ) {
   const src = ref(text)
@@ -21,7 +21,7 @@ export function useQRCode(
     src,
     async (value) => {
       if (src.value && isClient)
-        result.value = await QRCode.toDataURL(value, options)
+        result.value = await QRCode.toDataURL(resolveUnref(value), options)
     },
     { immediate: true },
   )
