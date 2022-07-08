@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { useTimeoutFn } from '@vueuse/shared'
+import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
-import { ref, unref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -71,7 +71,7 @@ export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> 
       useEventListener(event as WindowEventName, updateText)
   }
 
-  async function copy(value = unref(source)) {
+  async function copy(value = resolveUnref(source)) {
     if (isSupported && value != null) {
       await navigator!.clipboard.writeText(value)
       text.value = value
