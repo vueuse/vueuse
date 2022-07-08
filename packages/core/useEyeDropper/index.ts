@@ -1,3 +1,4 @@
+import { isSup } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 
 export interface EyeDropperOpenOptions {
@@ -31,7 +32,7 @@ export interface UseEyeDropperOptions {
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options
-  const isSupported = Boolean(typeof window !== 'undefined' && 'EyeDropper' in window)
+  const isSupported = isSup(() => Boolean(typeof window !== 'undefined' && 'EyeDropper' in window))
   const sRGBHex = ref(initialValue)
 
   async function open(openOptions?: EyeDropperOpenOptions) {
