@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
-import type { MaybeComputedRef } from '../utils'
+import { resolveUnref } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 
 /**
  * `NOT` conditions for refs.
