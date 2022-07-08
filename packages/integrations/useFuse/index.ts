@@ -1,7 +1,8 @@
 import Fuse from 'fuse.js'
 import type { ComputedRef } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 
 export type FuseOptions<T> = Fuse.IFuseOptions<T>
 export interface UseFuseOptions<T> {
@@ -11,44 +12,44 @@ export interface UseFuseOptions<T> {
 }
 
 export function useFuse<DataItem>(
-  search: MaybeRef<string>,
-  data: MaybeRef<DataItem[]>,
-  options?: MaybeRef<UseFuseOptions<DataItem>>,
+  search: MaybeComputedRef<string>,
+  data: MaybeComputedRef<DataItem[]>,
+  options?: MaybeComputedRef<UseFuseOptions<DataItem>>,
 ) {
-  const createFuse = (data: MaybeRef<DataItem[]>, options?: FuseOptions<DataItem>) => {
-    const _options = options
-
+  const createFuse = () => {
     return new Fuse(
-      unref(data) ?? [],
-      _options,
+      resolveUnref(data) ?? [],
+      resolveUnref(options)?.fuseOptions,
     )
   }
 
-  const fuse = ref(createFuse(data, unref(options)?.fuseOptions))
+  const fuse = ref(createFuse())
 
   watch(
-    () => unref(options)?.fuseOptions,
-    (newOptions) => { fuse.value = createFuse(data, newOptions) },
+    () => resolveUnref(options)?.fuseOptions,
+    () => { fuse.value = createFuse() },
     { deep: true },
   )
 
   watch(
-    () => unref(data),
+    () => resolveUnref(data),
     (newData) => { fuse.value.setCollection(newData) },
     { deep: true },
   )
 
   const results: ComputedRef<Fuse.FuseResult<DataItem>[]> = computed(() => {
+    const resolved = resolveUnref(options)
     // This will also be recomputed when `data` changes, as it causes a change
     // to the Fuse instance, which is tracked here.
-    if (unref(options)?.matchAllWhenSearchEmpty && !unref(search))
-      return unref(data).map((item, index) => ({ item, refIndex: index }))
+    if (resolved?.matchAllWhenSearchEmpty && !unref(search))
+      return resolveUnref(data).map((item, index) => ({ item, refIndex: index }))
 
-    const limit = unref(options)?.resultLimit
-    return fuse.value.search(unref(search), (limit ? { limit } : undefined))
+    const limit = resolved?.resultLimit
+    return fuse.value.search(resolveUnref(search), (limit ? { limit } : undefined))
   })
 
   return {
+    fuse,
     results,
   }
 }
