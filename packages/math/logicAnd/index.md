@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: '@Math'
 alias: and
 related: logicNot, logicOr
 ---
@@ -11,7 +11,8 @@ related: logicNot, logicOr
 ## Usage
 
 ```ts
-import { logicAnd } from '@vueuse/core'
+import { logicAnd } from '@vueuse/math'
+import { whenever } from '@vueuse/core'
 
 const a = ref(true)
 const b = ref(false)
