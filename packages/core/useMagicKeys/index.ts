@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, reactive, ref, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
@@ -19,7 +19,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    *
    * @default window
    */
-  target?: MaybeRef<EventTarget>
+  target?: MaybeComputedRef<EventTarget>
 
   /**
    * Alias map for keys, all the keys should be lowercase
@@ -126,16 +126,14 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     }
   }
 
-  if (target) {
-    useEventListener(target, 'keydown', (e: KeyboardEvent) => {
-      updateRefs(e, true)
-      return onEventFired(e)
-    }, { passive })
-    useEventListener(target, 'keyup', (e: KeyboardEvent) => {
-      updateRefs(e, false)
-      return onEventFired(e)
-    }, { passive })
-  }
+  useEventListener(target, 'keydown', (e: KeyboardEvent) => {
+    updateRefs(e, true)
+    return onEventFired(e)
+  }, { passive })
+  useEventListener(target, 'keyup', (e: KeyboardEvent) => {
+    updateRefs(e, false)
+    return onEventFired(e)
+  }, { passive })
 
   const proxy = new Proxy(
     refs,
