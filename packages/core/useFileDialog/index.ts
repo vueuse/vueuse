@@ -1,6 +1,8 @@
 import { readonly, ref } from 'vue-demi'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
-export interface UseFileDialogOptions {
+export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
    * @default true
    */
@@ -27,18 +29,27 @@ const DEFAULT_OPTIONS: UseFileDialogOptions = {
  * @see https://vueuse.org/useFileDialog
  * @param options
  */
-export function useFileDialog(options?: Partial<UseFileDialogOptions>) {
+export function useFileDialog(options: UseFileDialogOptions = {}) {
+  const {
+    document = defaultDocument,
+  } = options
+
   const files = ref<FileList | null>(null)
 
-  const input = document.createElement('input')
-  input.type = 'file'
+  let input: HTMLInputElement | undefined
+  if (document) {
+    input = document.createElement('input')
+    input.type = 'file'
 
-  input.onchange = (event: Event) => {
-    const result = event.target as HTMLInputElement
-    files.value = result.files
+    input.onchange = (event: Event) => {
+      const result = event.target as HTMLInputElement
+      files.value = result.files
+    }
   }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
+    if (!input)
+      return
     const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
@@ -53,6 +64,8 @@ export function useFileDialog(options?: Partial<UseFileDialogOptions>) {
 
   const reset = () => {
     files.value = null
+    if (input)
+      input.value = ''
   }
 
   return {
