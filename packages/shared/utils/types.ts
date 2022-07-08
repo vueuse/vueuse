@@ -34,7 +34,7 @@ export type MaybeRef<T> = T | Ref<T>
  * type MaybeComputedRef<T> = T | Ref<T> | (() => T)
  * ```
  */
-export type MaybeComputedRef<T> = T extends Function
+export type MaybeComputedRef<T> = T extends () => void
   ? never
   : (() => T) | MaybeRef<T>
 
