@@ -1,6 +1,6 @@
-import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
-import { pausableWatch } from '@vueuse/shared'
-import { ref, shallowRef, unref } from 'vue-demi'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
+import { pausableWatch, resolveUnref } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -95,11 +95,11 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   shallow?: boolean
 }
 
-export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, initialValue: MaybeRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -112,7 +112,7 @@ export function useStorage<T = unknown>(key: string, initialValue: MaybeRef<null
  */
 export function useStorage<T extends(string | number | boolean | object | null)>(
   key: string,
-  initialValue: MaybeRef<T>,
+  initialValue: MaybeComputedRef<T>,
   storage: StorageLike | undefined,
   options: StorageOptions<T> = {},
 ): RemovableRef<T> {
@@ -142,7 +142,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (!storage)
     return data
 
-  const rawInit: T = unref(initialValue)
+  const rawInit: T = resolveUnref(initialValue)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
