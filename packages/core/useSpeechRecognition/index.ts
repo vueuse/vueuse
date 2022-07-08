@@ -2,7 +2,8 @@
 // by https://github.com/wobsoriano
 
 import type { MaybeRef } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { isSup, tryOnScopeDispose } from '@vueuse/shared'
+
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref, watch } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
@@ -63,11 +64,11 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   }
 
   const SpeechRecognition = window && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
-  const isSupported = Boolean(SpeechRecognition)
+  const isSupported = isSup(() => Boolean(SpeechRecognition))
 
   let recognition: SpeechRecognition | undefined
 
-  if (isSupported) {
+  if (isSupported.value) {
     recognition = new SpeechRecognition() as SpeechRecognition
 
     recognition.continuous = continuous

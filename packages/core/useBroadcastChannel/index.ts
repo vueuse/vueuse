@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { isSup, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -24,7 +24,7 @@ export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
     window = defaultWindow,
   } = options
 
-  const isSupported = window && 'BroadcastChannel' in window
+  const isSupported = isSup(() => Boolean(window && 'BroadcastChannel' in window))
   const isClosed = ref(false)
 
   const channel = ref<BroadcastChannel | undefined>()
@@ -42,7 +42,7 @@ export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
     isClosed.value = true
   }
 
-  if (isSupported) {
+  if (isSupported.value) {
     tryOnMounted(() => {
       error.value = null
       channel.value = new BroadcastChannel(name)

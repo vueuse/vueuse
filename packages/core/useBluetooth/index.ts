@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { isSup, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 
 import { defaultNavigator } from '../_configurable'
@@ -51,7 +51,7 @@ export function useBluetooth(options?: UseBluetoothOptions) {
     navigator = defaultNavigator,
   } = options || {}
 
-  const isSupported = navigator && 'bluetooth' in navigator
+  const isSupported = isSup(() => Boolean(navigator && 'bluetooth' in navigator))
 
   const device = ref<undefined | BluetoothDevice>(undefined)
 
@@ -63,7 +63,7 @@ export function useBluetooth(options?: UseBluetoothOptions) {
 
   async function requestDevice(): Promise<void> {
     // This is the function can only be called if Bluetooth API is supported:
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     // Reset any errors we currently have:

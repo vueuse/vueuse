@@ -1,4 +1,4 @@
-import { createEventHook, tryOnMounted } from '@vueuse/shared'
+import { createEventHook, isSup, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
@@ -62,7 +62,7 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const {
     navigator = defaultNavigator,
   } = options
-  const isSupported = navigator && 'getGamepads' in navigator
+  const isSupported = isSup(() => Boolean(navigator && 'getGamepads' in navigator))
   const gamepads = ref<Gamepad[]>([])
 
   const onConnectedHook = createEventHook<number>()

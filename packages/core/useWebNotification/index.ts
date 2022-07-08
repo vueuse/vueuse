@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
-import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { createEventHook, isSup, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { EventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
@@ -100,13 +100,13 @@ export const useWebNotification = (
     window = defaultWindow,
   } = defaultOptions
 
-  const isSupported: boolean = !!window && 'Notification' in window
+  const isSupported = isSup(() => !!window && 'Notification' in window)
 
   const notification: Ref<Notification | null> = ref(null)
 
   // Request permission to use web notifications:
   const requestPermission = async () => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     if ('permission' in Notification && Notification.permission !== 'denied')
@@ -120,7 +120,7 @@ export const useWebNotification = (
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     await requestPermission()
@@ -143,7 +143,7 @@ export const useWebNotification = (
 
   // On mount, attempt to request permission:
   tryOnMounted(async () => {
-    if (isSupported)
+    if (isSupported.value)
       await requestPermission()
   })
 
@@ -154,7 +154,7 @@ export const useWebNotification = (
   // the user (e.g.the user already read the notification on the webpage).
   // Most modern browsers dismiss notifications automatically after a few
   // moments(around four seconds).
-  if (isSupported && window) {
+  if (isSupported.value && window) {
     const document = window.document
     useEventListener(document, 'visibilitychange', (e: Event) => {
       e.preventDefault()

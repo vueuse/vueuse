@@ -1,4 +1,4 @@
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { isSup, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -52,7 +52,7 @@ export function useResizeObserver(
 ) {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
-  const isSupported = window && 'ResizeObserver' in window
+  const isSupported = isSup(() => Boolean(window && 'ResizeObserver' in window))
 
   const cleanup = () => {
     if (observer) {
@@ -66,7 +66,7 @@ export function useResizeObserver(
     (el) => {
       cleanup()
 
-      if (isSupported && window && el) {
+      if (isSupported.value && window && el) {
         observer = new ResizeObserver(callback)
         observer!.observe(el, observerOptions)
       }

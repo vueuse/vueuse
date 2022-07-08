@@ -1,5 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
+import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -11,7 +12,7 @@ export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   /**
    * If the user is currently connected.
    */
@@ -59,7 +60,7 @@ export interface NetworkState {
 export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {
   const { window = defaultWindow } = options
   const navigator = window?.navigator
-  const isSupported = Boolean(navigator && 'connection' in navigator)
+  const isSupported = isSup(() => Boolean(navigator && 'connection' in navigator))
 
   const isOnline = ref(true)
   const saveData = ref(false)
@@ -71,7 +72,7 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
   const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
   const type: Ref<NetworkType> = ref<NetworkType>('unknown')
 
-  const connection = isSupported && (navigator as any).connection
+  const connection = isSupported.value && (navigator as any).connection
 
   function updateNetworkInformation() {
     if (!navigator)

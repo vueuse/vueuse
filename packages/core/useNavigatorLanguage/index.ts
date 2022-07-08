@@ -1,3 +1,4 @@
+import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 
@@ -7,7 +8,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface NavigatorLanguageState {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   /**
    *
    * ISO 639-1 standard Language Code
@@ -40,7 +41,7 @@ export const useNavigatorLanguage = (options: ConfigurableWindow = {}): Readonly
 
   const navigator = window?.navigator
 
-  const isSupported = Boolean(navigator && 'language' in navigator)
+  const isSupported = isSup(() => Boolean(navigator && 'language' in navigator))
 
   const language = ref<string | undefined>(navigator?.language)
 
