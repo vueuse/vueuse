@@ -1,6 +1,5 @@
-import { ref } from 'vue-demi'
-import type { MaybeRef, Pausable } from '@vueuse/shared'
-import { useIntervalFn } from '@vueuse/shared'
+import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
+import { resolveRef, useIntervalFn } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -18,7 +17,7 @@ export interface UseVibrateOptions extends ConfigurableNavigator {
    * @default []
    *
    */
-  pattern?: MaybeRef<number[] | number>
+  pattern?: MaybeComputedRef<number[] | number>
   /**
    * Interval to run a persistent vibration, in ms
    *
@@ -46,7 +45,7 @@ export function useVibrate(options?: UseVibrateOptions) {
 
   const isSupported = typeof navigator !== 'undefined' && 'vibrate' in navigator
 
-  const patternRef = ref(pattern)
+  const patternRef = resolveRef(pattern)
   let intervalControls: Pausable | undefined
 
   const vibrate = (pattern = patternRef.value) => {
