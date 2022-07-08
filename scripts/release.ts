@@ -1,5 +1,6 @@
 import { execSync } from 'child_process'
 import { readJSONSync } from 'fs-extra'
+import { updateContributors } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
@@ -11,6 +12,8 @@ if (oldVersion === version) {
   console.log('canceled')
   process.exit()
 }
+
+updateContributors()
 
 execSync('npm run build:types', { stdio: 'inherit' })
 execSync('npm run update', { stdio: 'inherit' })

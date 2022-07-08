@@ -11,7 +11,6 @@ async function run() {
     updateFunctionREADME(metadata),
     updatePackageJSON(metadata),
     updateCountBadge(metadata),
-    updateContributors(),
   ])
 
   await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')
