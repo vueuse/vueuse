@@ -36,7 +36,7 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const sRGBHex = ref(initialValue)
 
   async function open(openOptions?: EyeDropperOpenOptions) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     const eyeDropper: EyeDropper = new (window as any).EyeDropper()
     const result = await eyeDropper.open(openOptions)
