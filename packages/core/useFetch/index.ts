@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue-demi'
-import type { EventHookOn, Fn, MaybeComputedRef, MaybeRef, Stoppable } from '@vueuse/shared'
+import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
@@ -185,7 +185,7 @@ export interface CreateFetchOptions {
   /**
    * The base URL that will be prefixed to all urls
    */
-  baseUrl?: MaybeRef<string>
+  baseUrl?: MaybeComputedRef<string>
 
   /**
    * Default Options for the useFetch function

@@ -1,23 +1,19 @@
 import type { NProgressOptions } from 'nprogress'
 import nprogress from 'nprogress'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { isNumber, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, isRef, ref, watchEffect } from 'vue-demi'
+import { computed, ref, watchEffect } from 'vue-demi'
 
 /**
  * Reactive progress bar.
  *
  * @see https://vueuse.org/useNProgress
- * @param currentProgress
- * @param options
  */
 export function useNProgress(
-  currentProgress: MaybeRef<number | null | undefined> = null,
+  currentProgress: MaybeComputedRef<number | null | undefined> = null,
   options?: Partial<NProgressOptions>,
 ) {
-  const progress = isRef(currentProgress)
-    ? currentProgress
-    : ref<number | null>(currentProgress)
+  const progress = ref(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
     get: () => isNumber(progress.value) && progress.value < 1,
