@@ -28,10 +28,10 @@ export type RemoveableRef<T> = RemovableRef<T>
 export type MaybeRef<T> = T | Ref<T>
 
 /**
- * Maybe it's a ref, or a getter function
+ * Maybe it's a ref, or a plain value, or a getter function
  *
  * ```ts
- * type MaybeRef<T> = T | Ref<T>
+ * type MaybeComputedRef<T> = T | Ref<T> | (() => T)
  * ```
  */
 export type MaybeComputedRef<T> = T extends Function
