@@ -1,6 +1,6 @@
-import { MaybeComputedRef, resolveUnref } from '@vueuse/shared'
-import { isString } from '@vueuse/shared'
-import { isRef, ref, watch } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isString, resolveRef } from '@vueuse/shared'
+import { watch } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
@@ -26,6 +26,7 @@ export function useFavicon(
     document = defaultDocument,
   } = options
 
+  const favicon = resolveRef(newIcon)
 
   const applyIcon = (icon: string) => {
     document?.head
@@ -34,7 +35,7 @@ export function useFavicon(
   }
 
   watch(
-    () => resolveUnref(newIcon),
+    favicon,
     (i, o) => {
       if (isString(i) && i !== o)
         applyIcon(i)
