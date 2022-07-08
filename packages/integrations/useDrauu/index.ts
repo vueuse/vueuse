@@ -2,7 +2,7 @@ import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import type { Brush, Drauu, DrawingMode, Options } from 'drauu'
 import { createDrauu } from 'drauu'
-import type { EventHookOn, MaybeElementRef } from '@vueuse/core'
+import type { EventHookOn, MaybeComputedElementRef } from '@vueuse/core'
 import { createEventHook, unrefElement } from '@vueuse/core'
 import type { Fn } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
@@ -36,7 +36,7 @@ export interface UseDrauuReturn {
  * @param options Drauu Options
  */
 export function useDrauu(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   options?: UseDrauuOptions,
 ): UseDrauuReturn {
   const drauuInstance = ref<Drauu>()

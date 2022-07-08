@@ -1,6 +1,6 @@
 import { reactive, ref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -95,54 +95,52 @@ export function useScroll(
     bottom: false,
   })
 
-  if (resolveUnref(element)) {
-    const onScrollEnd = useDebounceFn((e: Event) => {
-      isScrolling.value = false
-      directions.left = false
-      directions.right = false
-      directions.top = false
-      directions.bottom = false
-      onStop(e)
-    }, throttle + idle)
+  const onScrollEnd = useDebounceFn((e: Event) => {
+    isScrolling.value = false
+    directions.left = false
+    directions.right = false
+    directions.top = false
+    directions.bottom = false
+    onStop(e)
+  }, throttle + idle)
 
-    const onScrollHandler = (e: Event) => {
-      const eventTarget = (
-        e.target === document ? (e.target as Document).documentElement : e.target
-      ) as HTMLElement
+  const onScrollHandler = (e: Event) => {
+    const eventTarget = (
+      e.target === document ? (e.target as Document).documentElement : e.target
+    ) as HTMLElement
 
-      const scrollLeft = eventTarget.scrollLeft
-      directions.left = scrollLeft < x.value
-      directions.right = scrollLeft > x.value
-      arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
-      arrivedState.right
+    const scrollLeft = eventTarget.scrollLeft
+    directions.left = scrollLeft < x.value
+    directions.right = scrollLeft > x.value
+    arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
+    arrivedState.right
           = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
-      x.value = scrollLeft
+    x.value = scrollLeft
 
-      let scrollTop = eventTarget.scrollTop
+    let scrollTop = eventTarget.scrollTop
 
-      // patch for mobile compatible
-      if (e.target === document && !scrollTop)
-        scrollTop = document.body.scrollTop
+    // patch for mobile compatible
+    if (e.target === document && !scrollTop)
+      scrollTop = document.body.scrollTop
 
-      directions.top = scrollTop < y.value
-      directions.bottom = scrollTop > y.value
-      arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-      arrivedState.bottom
+    directions.top = scrollTop < y.value
+    directions.bottom = scrollTop > y.value
+    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
+    arrivedState.bottom
           = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
-      y.value = scrollTop
+    y.value = scrollTop
 
-      isScrolling.value = true
-      onScrollEnd(e)
-      onScroll(e)
-    }
-
-    useEventListener(
-      element,
-      'scroll',
-      throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
-      eventListenerOptions,
-    )
+    isScrolling.value = true
+    onScrollEnd(e)
+    onScroll(e)
   }
+
+  useEventListener(
+    element,
+    'scroll',
+    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
+    eventListenerOptions,
+  )
 
   return {
     x,
