@@ -4,7 +4,7 @@ category: Browser
 
 # useTextareaAutosize
 
-Automatically update the height of a textarea element depending on its content.
+Automatically update the height of a textarea depending on the content.
 
 ## Usage
 
