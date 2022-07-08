@@ -1,6 +1,6 @@
-import { ref, unref, watch, watchEffect } from 'vue-demi'
-import type { Fn, MaybeRef } from '@vueuse/shared'
-import { createEventHook, isNumber, isObject, isString, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { ref, watch, watchEffect } from 'vue-demi'
+import type { Fn, MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import { createEventHook, isNumber, isObject, isString, resolveUnref, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -58,12 +58,12 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * The source for the media, may either be a string, a `UseMediaSource` object, or a list
    * of `UseMediaSource` objects.
    */
-  src?: MaybeRef<string | UseMediaSource | UseMediaSource[]>
+  src?: MaybeComputedRef<string | UseMediaSource | UseMediaSource[]>
 
   /**
    * A list of text tracks for the media
    */
-  tracks?: MaybeRef<UseMediaTextTrackSource[]>
+  tracks?: MaybeComputedRef<UseMediaTextTrackSource[]>
 }
 
 export interface UseMediaTextTrack {
@@ -113,9 +113,9 @@ export interface UseMediaTextTrack {
 /**
  * Automatically check if the ref exists and if it does run the cb fn
  */
-function usingElRef<T = any>(source: MaybeRef<any>, cb: (el: T) => void) {
-  if (unref(source))
-    cb(unref(source))
+function usingElRef<T = any>(source: MaybeComputedRef<any>, cb: (el: T) => void) {
+  if (resolveUnref(source))
+    cb(resolveUnref(source))
 }
 
 /**
@@ -243,11 +243,11 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!document)
       return
 
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
-    const src = unref(options.src)
+    const src = resolveUnref(options.src)
     let sources: UseMediaSource[] = []
 
     if (!src)
@@ -285,7 +285,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   // Remove source error listeners
   tryOnScopeDispose(() => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -296,7 +296,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * Watch volume and change player volume when volume prop changes
    */
   watch(volume, (vol) => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -304,7 +304,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   watch(muted, (mute) => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -312,7 +312,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   watch(rate, (rate) => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -326,8 +326,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!document)
       return
 
-    const textTracks = unref(options.tracks)
-    const el = unref(target)
+    const textTracks = resolveUnref(options.tracks)
+    const el = resolveUnref(target)
 
     if (!textTracks || !textTracks.length || !el)
       return
@@ -364,7 +364,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * the timeupdate event would cause the media to stutter.
    */
   const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(currentTime, (time) => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -376,21 +376,21 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * a function
    */
   const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(playing, (isPlaying) => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
     isPlaying ? el.play() : el.pause()
   })
 
-  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (unref(target))!.currentTime))
-  useEventListener(target, 'durationchange', () => duration.value = (unref(target))!.duration)
-  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((unref(target))!.buffered))
+  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (resolveUnref(target))!.currentTime))
+  useEventListener(target, 'durationchange', () => duration.value = (resolveUnref(target))!.duration)
+  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((resolveUnref(target))!.buffered))
   useEventListener(target, 'seeking', () => seeking.value = true)
   useEventListener(target, 'seeked', () => seeking.value = false)
   useEventListener(target, 'waiting', () => waiting.value = true)
   useEventListener(target, 'playing', () => waiting.value = false)
-  useEventListener(target, 'ratechange', () => rate.value = (unref(target))!.playbackRate)
+  useEventListener(target, 'ratechange', () => rate.value = (resolveUnref(target))!.playbackRate)
   useEventListener(target, 'stalled', () => stalled.value = true)
   useEventListener(target, 'ended', () => ended.value = true)
   useEventListener(target, 'pause', () => ignorePlayingUpdates(() => playing.value = false))
@@ -398,7 +398,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 
@@ -414,7 +414,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const listeners: Fn[] = []
 
   const stop = watch([target], () => {
-    const el = unref(target)
+    const el = resolveUnref(target)
     if (!el)
       return
 

@@ -1,4 +1,4 @@
-import type { FunctionArgs, MaybeRef } from '../utils'
+import type { FunctionArgs, MaybeComputedRef } from '../utils'
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**
@@ -15,7 +15,7 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  *
  * @return  A new, throttled, function.
  */
-export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, trailing = false, leading = true): T {
+export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeComputedRef<number> = 200, trailing = false, leading = true): T {
   return createFilterWrapper(
     throttleFilter(ms, trailing, leading),
     fn,

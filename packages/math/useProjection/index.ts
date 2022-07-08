@@ -20,6 +20,7 @@ function useGenericProjection<T, U>(
   valueEnd: MaybeRef<U>,
   options: CoProjectionOptions<T, U>
 ): readonly [Projector<T, U>, CoProjector<T, U>]
+
 function useGenericProjection<T, U>(
   domainStart: MaybeRef<T>,
   domainEnd: MaybeRef<T>,
@@ -27,6 +28,7 @@ function useGenericProjection<T, U>(
   valueEnd: MaybeRef<U>,
   options: ProjectionOptions<T, U>
 ): readonly [Projector<T, U>]
+
 function useGenericProjection<T, U>(
   domainStart: MaybeRef<T>,
   domainEnd: MaybeRef<T>,
@@ -34,6 +36,7 @@ function useGenericProjection<T, U>(
   valueEnd: MaybeRef<U>,
   options: ProjectionOptions<T, U> | CoProjectionOptions<T, U>
 ): readonly [Projector<T, U>] | readonly [Projector<T, U>, CoProjector<T, U>]
+
 function useGenericProjection<T, U>(
   domainStart: MaybeRef<T>,
   domainEnd: MaybeRef<T>,
@@ -53,13 +56,13 @@ function useGenericProjection<T, U>(
   if (!valueToDomain)
     return [projector] as const
 
-  const coprojector = (value: MaybeRef<U>) => computed(() => {
+  const coProjector = (value: MaybeRef<U>) => computed(() => {
     return unref(valueToDomain)(unref(domainStart), unref(domainEnd), unref(valueStart), unref(valueEnd), unref(value))
   })
 
   return [
     projector,
-    coprojector,
+    coProjector,
   ] as const
 }
 

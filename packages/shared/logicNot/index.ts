@@ -1,14 +1,15 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, unref } from 'vue-demi'
-import type { MaybeRef } from '../utils'
+import { computed } from 'vue-demi'
+import { resolveUnref } from '../resolveUnref'
+import type { MaybeComputedRef } from '../utils'
 
 /**
  * `NOT` conditions for refs.
  *
  * @see https://vueuse.org/logicNot
  */
-export function logicNot(v: MaybeRef<any>): ComputedRef<boolean> {
-  return computed(() => !unref(v))
+export function logicNot(v: MaybeComputedRef<any>): ComputedRef<boolean> {
+  return computed(() => !resolveUnref(v))
 }
 
 // alias

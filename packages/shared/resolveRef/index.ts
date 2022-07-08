@@ -7,6 +7,7 @@ import type { MaybeComputedRef, MaybeRef } from '../utils'
  */
 export function resolveRef<T>(r: MaybeComputedRef<T>): ComputedRef<T>
 export function resolveRef<T>(r: MaybeRef<T>): Ref<T>
+export function resolveRef<T>(r: T): Ref<T>
 export function resolveRef<T>(r: MaybeComputedRef<T>) {
   return typeof r === 'function'
     ? computed<T>(r as any)

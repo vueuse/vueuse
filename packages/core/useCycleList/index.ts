@@ -1,13 +1,12 @@
 import type { Ref } from 'vue-demi'
 import { computed, shallowRef } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
 
 export interface UseCycleListOptions<T> {
   /**
    * The initial value of the state.
    * A ref can be provided to reuse.
    */
-  initialValue?: MaybeRef<T>
+  initialValue?: T
 
   /**
    * The default index when

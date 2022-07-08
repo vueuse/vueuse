@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef } from '@vueuse/shared'
-import { useTimeoutFn } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
-import { ref, unref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -44,8 +44,8 @@ export interface ClipboardReturn<Optional> {
  * @param options
  */
 export function useClipboard(options?: ClipboardOptions<undefined>): ClipboardReturn<false>
-export function useClipboard(options: ClipboardOptions<MaybeRef<string>>): ClipboardReturn<true>
-export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefined> = {}): ClipboardReturn<boolean> {
+export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string>>): ClipboardReturn<true>
+export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> | undefined> = {}): ClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
     read = false,
@@ -71,7 +71,7 @@ export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefi
       useEventListener(event as WindowEventName, updateText)
   }
 
-  async function copy(value = unref(source)) {
+  async function copy(value = resolveUnref(source)) {
     if (isSupported && value != null) {
       await navigator!.clipboard.writeText(value)
       text.value = value

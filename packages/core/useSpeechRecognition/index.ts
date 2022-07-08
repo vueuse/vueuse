@@ -1,8 +1,8 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeRef } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref, watch } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
@@ -27,7 +27,7 @@ export interface SpeechRecognitionOptions extends ConfigurableWindow {
    *
    * @default 'en-US'
    */
-  lang?: MaybeRef<string>
+  lang?: MaybeComputedRef<string>
 }
 
 /**
@@ -44,7 +44,7 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
     window = defaultWindow,
   } = options
 
-  const lang = ref(options.lang || 'en-US')
+  const lang = resolveRef(options.lang || 'en-US')
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')

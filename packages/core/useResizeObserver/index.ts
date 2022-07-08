@@ -1,6 +1,6 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -46,7 +46,7 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   callback: ResizeObserverCallback,
   options: ResizeObserverOptions = {},
 ) {
