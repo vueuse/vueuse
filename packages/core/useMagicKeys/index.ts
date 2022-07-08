@@ -84,6 +84,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const obj = { toJSON() { return {} }, current }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
+  const usedKeys = new Set<string>()
 
   function setRefs(key: string, value: boolean) {
     if (key in refs) {
@@ -95,7 +96,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   function reset() {
-    for (const key of Object.keys(refs)) {
+    for (const key of usedKeys) {
       if (useReactive)
         refs[key] = false
       else
@@ -116,8 +117,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         current.delete(e.code)
     }
 
-    for (const key of values)
+    for (const key of values) {
+      usedKeys.add(key)
       setRefs(key, value)
+    }
 
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
