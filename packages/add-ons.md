@@ -64,6 +64,7 @@ Schema.org for Vue. Supports typed and automated Google Rich Results
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
   - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash
+  - [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for reactive route.params
   - [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for reactive route.query
 
 
@@ -75,7 +76,7 @@ Integration wrappers for utility libraries
   - [`useCookies`](https://vueuse.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
   - [`useDrauu`](https://vueuse.org/integrations/useDrauu/) — reactive instance for [drauu](https://github.com/antfu/drauu)
   - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)
-  - [`useFuse`](https://vueuse.org/integrations/useFuse/) — easily implement fuzzy search using a composable on top of the zero-dependency library [Fuse.js](https://github.com/krisk/fuse)
+  - [`useFuse`](https://vueuse.org/integrations/useFuse/) — easily implement fuzzy search using a composable with [Fuse.js](https://github.com/krisk/fuse)
   - [`useJwt`](https://vueuse.org/integrations/useJwt/) — wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)

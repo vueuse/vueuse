@@ -29,12 +29,12 @@ const link = computed(() => {
 </script>
 
 <template>
-  <div text="sm" class="whitespace-nowrap overflow-hidden overflow-ellipsis">
-    <a v-bind="link" bg="gray-400/5" p="x-1.5 y-0.5" class="rounded items-center" flex="inline gap-1">
+  <div text="sm" flex="~ gap1" items-center>
+    <a v-bind="link" bg="gray-400/5" p="x-1.5 y-0.5" class="rounded items-center" flex="inline gap-1 none" my-auto>
       <span v-html="styledName(fn.name)" />
       <i v-if="fn.external" i-carbon-launch class="opacity-80 text-xs" />
     </a>
-    -
-    <span class="overflow-hidden overflow-ellipsis" v-html="renderMarkdown(fn.description)" />
+    <span op50>-</span>
+    <span class="whitespace-wrap" v-html="renderMarkdown(fn.description)" />
   </div>
 </template>

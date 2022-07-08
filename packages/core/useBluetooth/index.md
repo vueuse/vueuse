@@ -4,7 +4,7 @@ category: Browser
 
 # useBluetooth
 
-A reactive for working with the [Web Bluetooth API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API) which provides the ability to connect and interact with Bluetooth Low Energy peripherals.
+Reactive [Web Bluetooth API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API). Provides the ability to connect and interact with Bluetooth Low Energy peripherals.
 
 The Web Bluetooth API lets websites discover and communicate with devices over the Bluetooth 4 wireless standard using the Generic Attribute Profile (GATT).
 
