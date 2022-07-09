@@ -73,7 +73,7 @@ export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> 
   }
 
   async function copy(value = resolveUnref(source)) {
-    if (isSupported && value != null) {
+    if (isSupported.value && value != null) {
       await navigator!.clipboard.writeText(value)
       text.value = value
       copied.value = true

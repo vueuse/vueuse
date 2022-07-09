@@ -13,7 +13,7 @@ let synth: SpeechSynthesis
 
 const voices = ref<SpeechSynthesisVoice[]>([])
 
-if (speech.isSupported) {
+if (speech.isSupported.value) {
   // load at last
   setTimeout(() => {
     synth = window.speechSynthesis
@@ -42,7 +42,7 @@ const stop = () => {
 
 <template>
   <div>
-    <div v-if="!speech.isSupported">
+    <div v-if="!speech.isSupported.value">
       Your browser does not support SpeechSynthesis API,
       <a
         href="https://caniuse.com/mdn-api_speechsynthesis"
