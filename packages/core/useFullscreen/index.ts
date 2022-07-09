@@ -1,12 +1,13 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { isSup, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 type FunctionMap = [
   'requestFullscreen',
@@ -88,7 +89,7 @@ export function useFullscreen(
   const isFullscreen = ref(false)
   let map: FunctionMap = functionsMap[0]
 
-  const isSupported = isSup(() => {
+  const isSupported = useSupported(() => {
     if (!document) {
       return false
     }

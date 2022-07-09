@@ -1,7 +1,8 @@
-import { isSup, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -52,7 +53,7 @@ export function useResizeObserver(
 ) {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
-  const isSupported = isSup(() => Boolean(window && 'ResizeObserver' in window))
+  const isSupported = useSupported(() => window && 'ResizeObserver' in window)
 
   const cleanup = () => {
     if (observer) {

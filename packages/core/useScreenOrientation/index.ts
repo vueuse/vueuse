@@ -1,6 +1,6 @@
-import { isSup } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -14,7 +14,7 @@ export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
     window = defaultWindow,
   } = options
 
-  const isSupported = isSup(() => Boolean(window && 'screen' in window && 'orientation' in window.screen))
+  const isSupported = useSupported(() => window && 'screen' in window && 'orientation' in window.screen)
 
   const screenOrientation = isSupported.value ? window!.screen.orientation : {} as ScreenOrientation
 

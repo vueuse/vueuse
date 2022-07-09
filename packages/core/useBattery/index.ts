@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { isSup } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -26,7 +26,7 @@ type NavigatorWithBattery = Navigator & {
 export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
-  const isSupported = isSup(() => Boolean(navigator && 'getBattery' in navigator))
+  const isSupported = useSupported(() => navigator && 'getBattery' in navigator)
 
   const charging = ref(false)
   const chargingTime = ref(0)

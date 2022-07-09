@@ -1,11 +1,12 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isSup, resolveUnref, useTimeoutFn } from '@vueuse/shared'
+import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -54,7 +55,7 @@ export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> 
   } = options
 
   const events = ['copy', 'cut']
-  const isSupported = isSup(() => Boolean(navigator && 'clipboard' in navigator))
+  const isSupported = useSupported(() => navigator && 'clipboard' in navigator)
   const text = ref('')
   const copied = ref(false)
 

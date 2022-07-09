@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeRef } from '@vueuse/shared'
-import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -51,7 +51,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   const videoDeviceId = ref(options.videoDeviceId)
   const audioDeviceId = ref(options.audioDeviceId)
   const { navigator = defaultNavigator } = options
-  const isSupported = isSup(() => Boolean(navigator?.mediaDevices?.getUserMedia))
+  const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
 

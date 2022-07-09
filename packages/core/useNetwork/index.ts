@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -60,7 +60,7 @@ export interface NetworkState {
 export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {
   const { window = defaultWindow } = options
   const navigator = window?.navigator
-  const isSupported = isSup(() => Boolean(navigator && 'connection' in navigator))
+  const isSupported = useSupported(() => navigator && 'connection' in navigator)
 
   const isOnline = ref(true)
   const saveData = ref(false)

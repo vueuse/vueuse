@@ -1,9 +1,10 @@
 import { watch } from 'vue-demi'
-import { isSup, noop, tryOnScopeDispose } from '@vueuse/shared'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 
 export interface IntersectionObserverOptions extends ConfigurableWindow {
   /**
@@ -42,7 +43,7 @@ export function useIntersectionObserver(
     window = defaultWindow,
   } = options
 
-  const isSupported = isSup(() => Boolean(window && 'IntersectionObserver' in window))
+  const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
 
   let cleanup = noop
 

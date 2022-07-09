@@ -1,5 +1,6 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isSup, resolveUnref } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -26,7 +27,7 @@ export function useShare(shareOptions: MaybeComputedRef<ShareOptions> = {}, opti
   const { navigator = defaultNavigator } = options
 
   const _navigator = (navigator as NavigatorWithShare)
-  const isSupported = isSup(() => Boolean(_navigator && 'canShare' in _navigator))
+  const isSupported = useSupported(() => _navigator && 'canShare' in _navigator)
 
   const share = async (overrideOptions: MaybeComputedRef<ShareOptions> = {}) => {
     if (isSupported.value) {

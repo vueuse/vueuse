@@ -1,7 +1,8 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isSup, resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -56,7 +57,7 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: Spee
   } = options
 
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
-  const isSupported = isSup(() => Boolean(synth))
+  const isSupported = useSupported(() => synth)
 
   const isPlaying = ref(false)
   const status = ref<Status>('init')

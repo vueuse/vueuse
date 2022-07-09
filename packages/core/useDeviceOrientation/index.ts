@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -15,7 +15,7 @@ import { defaultWindow } from '../_configurable'
  */
 export function useDeviceOrientation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const isSupported = isSup(() => Boolean(window && 'DeviceOrientationEvent' in window))
+  const isSupported = useSupported(() => window && 'DeviceOrientationEvent' in window)
 
   const isAbsolute = ref(false)
   const alpha: Ref<number | null> = ref(null)

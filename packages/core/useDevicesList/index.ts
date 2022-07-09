@@ -1,10 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { isSup } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -56,7 +56,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
-  const isSupported = isSup(() => Boolean(navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices))
+  const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
   const permissionGranted = ref(false)
 
   async function update() {

@@ -1,6 +1,6 @@
-import { isSup } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
 import { defaultDocument, defaultNavigator } from '../_configurable'
 
@@ -28,7 +28,7 @@ export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocumen
     document = defaultDocument,
   } = options
   let wakeLock: WakeLockSentinel | null
-  const isSupported = isSup(() => Boolean(navigator && 'wakeLock' in navigator))
+  const isSupported = useSupported(() => navigator && 'wakeLock' in navigator)
   const isActive = ref(false)
 
   async function onVisibilityChange() {

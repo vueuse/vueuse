@@ -1,9 +1,9 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
 import type { Awaitable, MaybeComputedRef } from '@vueuse/shared'
-import { isSup } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * window.showOpenFilePicker parameters
@@ -103,7 +103,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
     dataType = 'Text',
   } = unref(options)
   const window = _window as FileSystemAccessWindow
-  const isSupported = isSup(() => Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window))
+  const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
   const data = ref<string | ArrayBuffer | Blob>()

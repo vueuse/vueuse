@@ -2,9 +2,10 @@
 
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { isSup, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 
@@ -22,7 +23,7 @@ export function useGeolocation(options: GeolocationOptions = {}) {
     navigator = defaultNavigator,
   } = options
 
-  const isSupported = isSup(() => Boolean(navigator && 'geolocation' in navigator))
+  const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
   const locatedAt: Ref<number | null> = ref(null)
   const error = ref<GeolocationPositionError | null>(null)

@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { isSup } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -33,7 +33,7 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
   const video = options.video
   const audio = options.audio
   const { navigator = defaultNavigator } = options
-  const isSupported = isSup(() => Boolean(navigator?.mediaDevices?.getDisplayMedia))
+  const isSupported = useSupported(() => navigator?.mediaDevices?.getDisplayMedia)
 
   const constraint: DisplayMediaStreamConstraints = { audio, video }
 

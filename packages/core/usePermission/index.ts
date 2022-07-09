@@ -1,9 +1,10 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { createSingletonPromise, isSup } from '@vueuse/shared'
+import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 type DescriptorNamePolyfill =
   'accelerometer' |
@@ -64,7 +65,7 @@ export function usePermission(
     navigator = defaultNavigator,
   } = options
 
-  const isSupported = isSup(() => Boolean(navigator && 'permissions' in navigator))
+  const isSupported = useSupported(() => navigator && 'permissions' in navigator)
   let permissionStatus: PermissionStatus | undefined
 
   const desc = typeof permissionDesc === 'string'

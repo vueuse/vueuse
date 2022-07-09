@@ -1,10 +1,11 @@
 import { ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
-import { createEventHook, isSup, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { EventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface WebNotificationOptions {
   /**
@@ -100,7 +101,7 @@ export const useWebNotification = (
     window = defaultWindow,
   } = defaultOptions
 
-  const isSupported = isSup(() => !!window && 'Notification' in window)
+  const isSupported = useSupported(() => !!window && 'Notification' in window)
 
   const notification: Ref<Notification | null> = ref(null)
 
