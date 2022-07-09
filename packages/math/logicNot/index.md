@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: '@Math'
 alias: not
 ---
 
@@ -10,7 +10,8 @@ alias: not
 ## Usage
 
 ```ts
-import { logicNot } from '@vueuse/core'
+import { logicNot } from '@vueuse/math'
+import { whenever } from '@vueuse/core'
 
 const a = ref(true)
 

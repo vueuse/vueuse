@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -7,7 +7,7 @@ export type KeyFilter = null | undefined | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
 export interface KeyStrokeOptions {
   eventName?: KeyStrokeEventName
-  target?: MaybeRef<EventTarget>
+  target?: MaybeComputedRef<EventTarget>
   passive?: boolean
 }
 

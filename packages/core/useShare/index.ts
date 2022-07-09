@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { isSup } from '@vueuse/shared'
-import { unref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isSup, resolveUnref } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -23,17 +22,17 @@ interface NavigatorWithShare {
  * @param shareOptions
  * @param options
  */
-export function useShare(shareOptions: MaybeRef<ShareOptions> = {}, options: ConfigurableNavigator = {}) {
+export function useShare(shareOptions: MaybeComputedRef<ShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
 
   const _navigator = (navigator as NavigatorWithShare)
   const isSupported = isSup(() => Boolean(_navigator && 'canShare' in _navigator))
 
-  const share = async (overrideOptions: MaybeRef<ShareOptions> = {}) => {
+  const share = async (overrideOptions: MaybeComputedRef<ShareOptions> = {}) => {
     if (isSupported.value) {
       const data = {
-        ...unref(shareOptions),
-        ...unref(overrideOptions),
+        ...resolveUnref(shareOptions),
+        ...resolveUnref(overrideOptions),
       }
       let granted = true
 

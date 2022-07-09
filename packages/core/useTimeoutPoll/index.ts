@@ -1,8 +1,8 @@
 import { ref } from 'vue-demi'
-import type { Awaitable, MaybeRef, Pausable, TimeoutFnOptions } from '@vueuse/shared'
+import type { Awaitable, MaybeComputedRef, Pausable, TimeoutFnOptions } from '@vueuse/shared'
 import { tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 
-export function useTimeoutPoll(fn: () => Awaitable<void>, interval: MaybeRef<number>, timeoutPollOptions?: TimeoutFnOptions): Pausable {
+export function useTimeoutPoll(fn: () => Awaitable<void>, interval: MaybeComputedRef<number>, timeoutPollOptions?: TimeoutFnOptions): Pausable {
   const { start } = useTimeoutFn(loop, interval)
 
   const isActive = ref(false)

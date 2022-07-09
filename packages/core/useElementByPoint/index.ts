@@ -1,10 +1,11 @@
-import { ref, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { ref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
 
 export interface UseElementByPointOptions {
-  x: MaybeRef<number>
-  y: MaybeRef<number>
+  x: MaybeComputedRef<number>
+  y: MaybeComputedRef<number>
 }
 
 /**
@@ -19,7 +20,7 @@ export function useElementByPoint(options: UseElementByPointOptions) {
   const { x, y } = options
 
   const controls = useRafFn(() => {
-    element.value = document.elementFromPoint(unref(x), unref(y)) as HTMLElement | null
+    element.value = document.elementFromPoint(resolveUnref(x), resolveUnref(y)) as HTMLElement | null
   })
 
   return {

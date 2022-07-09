@@ -16,7 +16,7 @@ npm i <b>@vueuse/integrations</b>
 <!--FUNCTIONS_LIST_STARTS-->
   - [`useAsyncValidator`](https://vueuse.org/integrations/useAsyncValidator/) — wrapper for [`async-validator`](https://github.com/yiminghe/async-validator)
   - [`useAxios`](https://vueuse.org/integrations/useAxios/) — wrapper for [`axios`](https://github.com/axios/axios)
-  - [`useChangeCase`](https://vueuse.org/integrations/useChangeCase/) — wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
+  - [`useChangeCase`](https://vueuse.org/integrations/useChangeCase/) — reactive wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
   - [`useCookies`](https://vueuse.org/integrations/useCookies/) — wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
   - [`useDrauu`](https://vueuse.org/integrations/useDrauu/) — reactive instance for [drauu](https://github.com/antfu/drauu)
   - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)

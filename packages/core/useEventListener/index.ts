@@ -1,4 +1,4 @@
-import type { Fn, MaybeRef } from '@vueuse/shared'
+import type { Fn, MaybeComputedRef } from '@vueuse/shared'
 import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
@@ -27,7 +27,11 @@ export interface GeneralEventListener<E = Event> {
  * @param listener
  * @param options
  */
-export function useEventListener<E extends keyof WindowEventMap>(event: E, listener: (this: Window, ev: WindowEventMap[E]) => any, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<E extends keyof WindowEventMap>(
+  event: E,
+  listener: (this: Window, ev: WindowEventMap[E]) => any,
+  options?: boolean | AddEventListenerOptions
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -40,7 +44,12 @@ export function useEventListener<E extends keyof WindowEventMap>(event: E, liste
  * @param listener
  * @param options
  */
-export function useEventListener<E extends keyof WindowEventMap>(target: Window, event: E, listener: (this: Window, ev: WindowEventMap[E]) => any, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<E extends keyof WindowEventMap>(
+  target: Window,
+  event: E,
+  listener: (this: Window, ev: WindowEventMap[E]) => any,
+  options?: boolean | AddEventListenerOptions
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -53,7 +62,12 @@ export function useEventListener<E extends keyof WindowEventMap>(target: Window,
  * @param listener
  * @param options
  */
-export function useEventListener<E extends keyof DocumentEventMap>(target: Document, event: E, listener: (this: Document, ev: DocumentEventMap[E]) => any, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<E extends keyof DocumentEventMap>(
+  target: Document,
+  event: E,
+  listener: (this: Document, ev: DocumentEventMap[E]) => any,
+  options?: boolean | AddEventListenerOptions
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -66,7 +80,12 @@ export function useEventListener<E extends keyof DocumentEventMap>(target: Docum
  * @param listener
  * @param options
  */
-export function useEventListener<Names extends string, EventType = Event>(target: InferEventTarget<Names>, event: Names, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<Names extends string, EventType = Event>(
+  target: InferEventTarget<Names>,
+  event: Names,
+  listener: GeneralEventListener<EventType>,
+  options?: boolean | AddEventListenerOptions
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
@@ -79,10 +98,15 @@ export function useEventListener<Names extends string, EventType = Event>(target
  * @param listener
  * @param options
  */
-export function useEventListener<EventType = Event>(target: MaybeRef<EventTarget | null | undefined>, event: string, listener: GeneralEventListener<EventType>, options?: boolean | AddEventListenerOptions): Fn
+export function useEventListener<EventType = Event>(
+  target: MaybeComputedRef<EventTarget | null | undefined>,
+  event: string,
+  listener: GeneralEventListener<EventType>,
+  options?: boolean | AddEventListenerOptions
+): Fn
 
 export function useEventListener(...args: any[]) {
-  let target: MaybeRef<EventTarget> | undefined
+  let target: MaybeComputedRef<EventTarget> | undefined
   let event: string
   let listener: any
   let options: any
