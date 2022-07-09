@@ -1,3 +1,7 @@
+---
+category: Utilities
+---
+
 # useSupported
 
 SSR compatibility `isSupported`
