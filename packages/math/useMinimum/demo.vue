@@ -1,31 +1,33 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMinimum } from '@vueuse/math'
-const other = ref(10)
-
-const value = useMinimum(0, other)
+const min1 = ref(10)
+const min2 = ref(20)
+const result = useMinimum(min1, min2)
 </script>
 
 <template>
   <div>
     <div>
-      other:
-      <input v-model="other" type="number">
-      <button @click="other--">
-        other -= 1
+      min1:
+      <input v-model="min1" type="number">
+      <button @click="min1--">
+        min1 -= 1
       </button>
-      <button @click="other++">
-        other += 1
+      <button @click="min1++">
+        min1 += 1
       </button>
     </div>
-    value:{{ value }}
     <div>
-      <button @click="value--">
-        value -= 1
+      min2:
+      <input v-model="min2" type="number">
+      <button @click="min2--">
+        min2 -= 1
       </button>
-      <button @click="value++">
-        value += 1
+      <button @click="min2++">
+        min2 += 1
       </button>
     </div>
+    result:{{ result }}
   </div>
 </template>

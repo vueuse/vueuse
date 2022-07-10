@@ -1,26 +1,18 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import { computed } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
 /**
- * Reactively get useMinimum of values.
+ * Reactively get minimum of values.
  *
  * @see https://vueuse.org/useMinimum
- * @param value number
- * @param {...number[]} values
- *
+ * @param values
  */
-export function useMinimum(defaultValue: MaybeRef<number>, ...mins: MaybeComputedRef<number>[]): Ref<number> {
-  const _value = ref(defaultValue)
-  return computed<number>({
-    get() {
-      return _value.value = Math.min(_value.value, ...mins.map(value => resolveUnref(value)))
-    },
-    set(value) {
-      _value.value = Math.min(value, ...mins.map(value => resolveUnref(value)))
-    },
-  })
+export function useMinimum(...mins: MaybeComputedRef<number>[]) {
+  return computed<number>(() =>
+    Math.min(...mins.map(value => resolveUnref(value))),
+  )
 }
 
-export const useMin = useMinimum
+// alias
+export { useMinimum as useMin }

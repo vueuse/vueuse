@@ -17,11 +17,7 @@ describe('useClamp', () => {
     const value2 = ref(100)
     const value3 = ref(1000)
 
-    const v = useMinimum(50, value1, value2, value3)
-
-    expect(v.value).toBe(10)
-
-    v.value = 1001
+    const v = useMinimum(value1, value2, value3)
     expect(v.value).toBe(10)
 
     value1.value = 9
