@@ -1,25 +1,20 @@
 ---
 category: '@Math'
+related: createGenericProjection
 ---
 
 # useProjection
 
-Basic projection and co-projection with utility functions.
+Reactive numeric projection from one domain to another.
 
 ## Usage
 
 ```ts
 import { useProjection } from '@vueuse/math'
 
-const domainStart = ref(0)
-const domainEnd = ref(10)
-const valueStart = ref(0)
-const valueEnd = ref(100)
+const input = ref(0)
+const projected = useProjection(input, [0, 10], [0, 100])
 
-const [useProjector] = useProjection(domainStart, domainEnd, valueStart, valueEnd)
-const domain = ref(0)
-const value = useProjector(domain) // value.value === 0
-
-domain.value = 5 // value.value === 50
-domain.value = 10 // value.value === 100
+input.value = 5 // projected.value === 50
+input.value = 10 // projected.value === 100
 ```
