@@ -2,11 +2,11 @@ import { reactive, ref } from 'vue-demi'
 import { useSum } from '.'
 
 describe('useSum', () => {
-  test('should be defined', () => {
+  it('should be defined', () => {
     expect(useSum).toBeDefined()
   })
 
-  test('this should work', () => {
+  it('this should work', () => {
     const value1 = ref(10)
     const value2 = ref(20)
 
@@ -21,7 +21,7 @@ describe('useSum', () => {
     expect(sum.value).toBe(50)
   })
 
-  test('reactive list', () => {
+  it('reactive list', () => {
     const list = reactive([10, 20])
 
     const sum = useSum(list)
@@ -32,5 +32,18 @@ describe('useSum', () => {
 
     list.push(5)
     expect(sum.value).toBe(46)
+  })
+
+  it('maybe ref list', () => {
+    const list = ref([10, 20])
+
+    const sum = useSum(list)
+    expect(sum.value).toBe(30)
+
+    list.value[0] = 21
+    expect(sum.value).toBe(41)
+
+    list.value = [10, 20, 5]
+    expect(sum.value).toBe(35)
   })
 })

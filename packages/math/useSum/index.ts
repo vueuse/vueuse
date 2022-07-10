@@ -3,9 +3,9 @@ import { resolveUnref } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 
-export function useSum<T = number>(list: MaybeRef<T>[]): ComputedRef<T> {
+export function useSum<T = number>(list: MaybeRef<MaybeRef<T>[]>): ComputedRef<T> {
   return computed(() => {
-    const reduce = Array.prototype.reduce.bind(list)
+    const reduce = Array.prototype.reduce.bind(resolveUnref(list))
     return reduce((sum: any, value: any) => resolveUnref(sum) + resolveUnref(value))
   })
 }
