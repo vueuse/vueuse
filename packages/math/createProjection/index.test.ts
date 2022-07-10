@@ -1,9 +1,9 @@
 import { ref } from 'vue-demi'
-import { createNumbericProjection } from '.'
+import { createProjection } from '.'
 
 describe('createProjection', () => {
   it('should be defined', () => {
-    expect(createNumbericProjection).toBeDefined()
+    expect(createProjection).toBeDefined()
   })
 
   it('should work with projector', () => {
@@ -11,7 +11,7 @@ describe('createProjection', () => {
     const fromEnd = ref(10)
     const toRange = ref<[number, number]>([1, 100])
 
-    const useProjector = createNumbericProjection(
+    const useProjector = createProjection(
       () => [fromStart.value, fromEnd.value],
       toRange,
     )
