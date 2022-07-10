@@ -91,6 +91,8 @@ const coreTeamMembers: CoreTeam[] = [
     sponsors: false,
     functions: [
       'useTransition',
+      'useDocumentVisibility',
+      'useElementVisibility',
     ],
     description: '',
   },
