@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -13,14 +14,14 @@ export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
     window = defaultWindow,
   } = options
 
-  const isSupported = !!(window && 'screen' in window && 'orientation' in window.screen)
+  const isSupported = useSupported(() => window && 'screen' in window && 'orientation' in window.screen)
 
-  const screenOrientation = isSupported ? window.screen.orientation : {} as ScreenOrientation
+  const screenOrientation = isSupported.value ? window!.screen.orientation : {} as ScreenOrientation
 
   const orientation = ref<OrientationType | undefined>(screenOrientation.type)
   const angle = ref(screenOrientation.angle || 0)
 
-  if (isSupported) {
+  if (isSupported.value) {
     useEventListener(window, 'orientationchange', () => {
       orientation.value = screenOrientation.type
       angle.value = screenOrientation.angle
@@ -28,14 +29,14 @@ export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
   }
 
   const lockOrientation = (type: OrientationLockType) => {
-    if (!isSupported)
+    if (!isSupported.value)
       return Promise.reject(new Error('Not supported'))
 
     return screenOrientation.lock(type)
   }
 
   const unlockOrientation = () => {
-    if (isSupported)
+    if (isSupported.value)
       screenOrientation.unlock()
   }
 

@@ -3,6 +3,7 @@ import { computed, ref, unref, watch } from 'vue-demi'
 import type { Awaitable, MaybeComputedRef } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * window.showOpenFilePicker parameters
@@ -102,7 +103,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
     dataType = 'Text',
   } = unref(options)
   const window = _window as FileSystemAccessWindow
-  const isSupported = Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
+  const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
   const data = ref<string | ArrayBuffer | Blob>()
@@ -114,7 +115,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const fileLastModified = computed(() => file.value?.lastModified ?? 0)
 
   async function open(_options: UseFileSystemAccessCommonOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     const [handle] = await window.showOpenFilePicker({ ...unref(options), ..._options })
     fileHandle.value = handle
@@ -123,7 +124,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function create(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
     data.value = undefined
@@ -132,7 +133,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function save(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     if (!fileHandle.value)
@@ -148,7 +149,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function saveAs(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
@@ -194,7 +195,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
 }
 
 export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   data: Ref<T | undefined>
   file: Ref<File | undefined>
   fileName: Ref<string>

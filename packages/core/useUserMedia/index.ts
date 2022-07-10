@@ -3,6 +3,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -50,7 +51,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   const videoDeviceId = ref(options.videoDeviceId)
   const audioDeviceId = ref(options.audioDeviceId)
   const { navigator = defaultNavigator } = options
-  const isSupported = Boolean(navigator?.mediaDevices?.getUserMedia)
+  const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
 
@@ -65,7 +66,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   }
 
   async function _start() {
-    if (!isSupported || stream.value)
+    if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getUserMedia({
       video: getDeviceOptions(videoDeviceId),

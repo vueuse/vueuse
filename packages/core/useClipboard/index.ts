@@ -2,10 +2,11 @@
 
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -31,7 +32,7 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface ClipboardReturn<Optional> {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
@@ -54,7 +55,7 @@ export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> 
   } = options
 
   const events = ['copy', 'cut']
-  const isSupported = Boolean(navigator && 'clipboard' in navigator)
+  const isSupported = useSupported(() => navigator && 'clipboard' in navigator)
   const text = ref('')
   const copied = ref(false)
 
@@ -66,13 +67,13 @@ export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> 
     })
   }
 
-  if (isSupported && read) {
+  if (isSupported.value && read) {
     for (const event of events)
       useEventListener(event as WindowEventName, updateText)
   }
 
   async function copy(value = resolveUnref(source)) {
-    if (isSupported && value != null) {
+    if (isSupported.value && value != null) {
       await navigator!.clipboard.writeText(value)
       text.value = value
       copied.value = true

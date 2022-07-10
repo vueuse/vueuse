@@ -4,6 +4,7 @@ import { ref } from 'vue-demi'
 import { tryOnBeforeMount, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * Reactive Media Query.
@@ -14,13 +15,13 @@ import { defaultWindow } from '../_configurable'
  */
 export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const isSupported = Boolean(window && 'matchMedia' in window && typeof window!.matchMedia === 'function')
+  const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window!.matchMedia === 'function')
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
 
   const update = () => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     if (!mediaQuery)
       mediaQuery = window!.matchMedia(query)

@@ -144,10 +144,10 @@ export function useShare(
   options: ConfigurableNavigator = {},
 ) {
   const { navigator = defaultNavigator } = options
-  const isSupported = navigator && 'canShare' in navigator
+  const isSupported = useSupported(() => navigator && 'canShare' in navigator)
 
   const share = async (overrideOptions) => {
-    if (isSupported) {
+    if (isSupported.value) {
       /* ...implementation */
     }
   }

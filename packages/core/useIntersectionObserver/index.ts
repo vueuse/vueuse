@@ -4,6 +4,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 
 export interface IntersectionObserverOptions extends ConfigurableWindow {
   /**
@@ -42,11 +43,11 @@ export function useIntersectionObserver(
     window = defaultWindow,
   } = options
 
-  const isSupported = window && 'IntersectionObserver' in window
+  const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
 
   let cleanup = noop
 
-  const stopWatch = isSupported
+  const stopWatch = isSupported.value
     ? watch(
       () => ({
         el: unrefElement(target),

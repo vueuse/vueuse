@@ -5,6 +5,7 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
@@ -63,11 +64,11 @@ export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
   }
 
   const SpeechRecognition = window && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
-  const isSupported = Boolean(SpeechRecognition)
+  const isSupported = useSupported(() => SpeechRecognition)
 
   let recognition: SpeechRecognition | undefined
 
-  if (isSupported) {
+  if (isSupported.value) {
     recognition = new SpeechRecognition() as SpeechRecognition
 
     recognition.continuous = continuous

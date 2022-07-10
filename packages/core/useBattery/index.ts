@@ -2,6 +2,7 @@
 
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -25,7 +26,7 @@ type NavigatorWithBattery = Navigator & {
 export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigator = {}) {
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
-  const isSupported = navigator && 'getBattery' in navigator
+  const isSupported = useSupported(() => navigator && 'getBattery' in navigator)
 
   const charging = ref(false)
   const chargingTime = ref(0)
@@ -41,7 +42,7 @@ export function useBattery({ navigator = defaultNavigator }: ConfigurableNavigat
     level.value = this.level
   }
 
-  if (isSupported) {
+  if (isSupported.value) {
     (navigator as NavigatorWithBattery)
       .getBattery()
       .then((_battery) => {

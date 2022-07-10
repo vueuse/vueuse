@@ -7,6 +7,7 @@ import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 type FunctionMap = [
   'requestFullscreen',
@@ -86,27 +87,27 @@ export function useFullscreen(
   const { document = defaultDocument, autoExit = false } = options
   const targetRef = target || document?.querySelector('html')
   const isFullscreen = ref(false)
-  let isSupported = false
-
   let map: FunctionMap = functionsMap[0]
 
-  if (!document) {
-    isSupported = false
-  }
-  else {
-    for (const m of functionsMap) {
-      if (m[1] in document) {
-        map = m
-        isSupported = true
-        break
+  const isSupported = useSupported(() => {
+    if (!document) {
+      return false
+    }
+    else {
+      for (const m of functionsMap) {
+        if (m[1] in document) {
+          map = m
+          return true
+        }
       }
     }
-  }
+    return false
+  })
 
   const [REQUEST, EXIT, ELEMENT,, EVENT] = map
 
   async function exit() {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     if (document?.[ELEMENT])
       await document[EXIT]()
@@ -115,7 +116,7 @@ export function useFullscreen(
   }
 
   async function enter() {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     await exit()

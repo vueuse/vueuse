@@ -11,7 +11,7 @@ Open file dialog with ease.
 ```ts
 import { useFileDialog } from '@vueuse/core'
 
-const { files, open, reset } = useDialog()
+const { files, open, reset } = useFileDialog()
 ```
 
 ```html
