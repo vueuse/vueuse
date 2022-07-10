@@ -88,7 +88,6 @@ const coreTeamMembers: CoreTeam[] = [
     avatar: contributorsAvatars.scottbedard,
     name: 'Scott Bedard',
     github: 'scottbedard',
-    twitter: 'scottbedard',
     sponsors: false,
     functions: [
       'useTransition',
