@@ -26,6 +26,8 @@ export function useSum<T>(
 
     const reduceCallback = (sum: any, value: any, index: number) => adder(resolveUnref(sum), resolveUnref(value), index)
 
+    // Depending on the behavior of reduce, undefined is also a valid initialization value,
+    // and this code will distinguish the behavior between them.
     return args.length
       ? reduce(reduceCallback, args[0])
       : reduce(reduceCallback)
