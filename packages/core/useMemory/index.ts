@@ -52,3 +52,5 @@ export function useMemory(options: UseMemoryOptions = {}) {
 
   return { isSupported, memory }
 }
+
+export type UseMemoryReturn = ReturnType<typeof useMemory>
