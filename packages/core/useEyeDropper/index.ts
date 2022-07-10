@@ -46,3 +46,5 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
 
   return { isSupported, sRGBHex, open }
 }
+
+export type UseEyeDropperReturn = ReturnType<typeof useEyeDropper>
