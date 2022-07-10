@@ -1,3 +1,4 @@
+import type { Fn } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -15,6 +16,11 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * @default true
    */
   capture?: boolean
+  /**
+   * Run handler function if focus moves to an iframe.
+   * @default false
+   */
+  detectIframe?: boolean
 }
 
 /**
@@ -25,12 +31,12 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: (evt: PointerEvent) => void,
-  options: OnClickOutsideOptions = {},
+  handler: <E = T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent>(evt: E) => void,
+  options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true } = options
+  const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
 
   if (!window)
     return
@@ -72,7 +78,15 @@ export function onClickOutside(
         fallback = window.setTimeout(() => listener(e), 50)
       }
     }, { passive: true }),
-  ]
+    detectIframe && useEventListener(window, 'blur', (event) => {
+      const el = unrefElement(target)
+      if (
+        document.activeElement?.tagName === 'IFRAME'
+        && !el?.contains(document.activeElement)
+      )
+        handler(event)
+    }),
+  ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
 
