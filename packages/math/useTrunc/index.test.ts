@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { useTrunk } from '.'
+import { useTrunc } from '.'
 
 // Returns:
 //  0        ->  0
@@ -15,11 +15,11 @@ import { useTrunk } from '.'
 
 describe('useTrunk', () => {
   it('should be defined', () => {
-    expect(useTrunk).toBeDefined()
+    expect(useTrunc).toBeDefined()
   })
   it('should work', () => {
     const base = ref(1.95)
-    const result = useTrunk(base)
+    const result = useTrunc(base)
     expect(result.value).toBe(1)
     base.value = -7.004
     expect(result.value).toBe(-7)

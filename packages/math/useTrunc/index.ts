@@ -9,11 +9,6 @@ import { resolveUnref } from '@vueuse/shared'
  * @see https://vueuse.org/useTrunc
  * @param value
  */
-export function useTrunk(value: MaybeComputedRef<number>): ComputedRef<number> {
-  return computed<number>(() => {
-    if (resolveUnref(value) > 0)
-      return Math.floor(resolveUnref(value))
-    else
-      return Math.ceil(resolveUnref(value))
-  })
+export function useTrunc(value: MaybeComputedRef<number>): ComputedRef<number> {
+  return computed<number>(() => Math.trunc(resolveUnref(value)))
 }
