@@ -3,7 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 
 import { vElementVisibility } from './directive'
-import type { VisibilityScrollTargetOptions } from '.'
+import type { UseElementVisibilityOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -51,7 +51,7 @@ describe('vElementVisibility', () => {
   describe('given options', () => {
     beforeEach(() => {
       onVisibility = vi.fn()
-      const options: VisibilityScrollTargetOptions = {
+      const options: UseElementVisibilityOptions = {
         scrollTarget: document.body,
       }
       wrapper = mount(App, {

@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
+export interface UseElementVisibilityOptions extends ConfigurableWindow {
   scrollTarget?: MaybeComputedRef<HTMLElement | undefined | null>
 }
 
@@ -19,7 +19,7 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
  */
 export function useElementVisibility(
   element: MaybeComputedElementRef,
-  { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
+  { window = defaultWindow, scrollTarget }: UseElementVisibilityOptions = {},
 ) {
   const elementIsVisible = ref(false)
 
