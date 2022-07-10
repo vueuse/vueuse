@@ -8,16 +8,16 @@ describe('useSum', () => {
 
   it('this should work', () => {
     const value1 = ref(10)
-    const value2 = ref(20)
+    const value2 = reactive({ a: 20 })
 
-    const sum = useSum([value1, value2])
+    const sum = useSum([value1, () => value2.a])
 
     expect(sum.value).toBe(30)
 
     value1.value = 20
     expect(sum.value).toBe(40)
 
-    value2.value = 30
+    value2.a = 30
     expect(sum.value).toBe(50)
   })
 
@@ -35,6 +35,22 @@ describe('useSum', () => {
       expect(sum.value).toBe(46)
     })
   }
+
+  it('getter list', async () => {
+    const obj = reactive({ list: [10, 20] })
+
+    const sum = useSum(() => obj.list)
+    expect(sum.value).toBe(30)
+
+    if (isVue2)
+      set(obj.list, 0, 21)
+    else
+      obj.list[0] = 21
+    expect(sum.value).toBe(41)
+
+    obj.list.push(5)
+    expect(sum.value).toBe(46)
+  })
 
   it('maybe ref list', () => {
     const list = ref([10, 20])
