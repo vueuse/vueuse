@@ -3,14 +3,14 @@ import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
-import type { StorageOptions } from '../useStorage'
+import type { UseStorageOptions } from '../useStorage'
 import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 
 export type BasicColorSchema = 'light' | 'dark' | 'auto'
 
-export interface UseColorModeOptions<T extends string = BasicColorSchema> extends StorageOptions<T | BasicColorSchema> {
+export interface UseColorModeOptions<T extends string = BasicColorSchema> extends UseStorageOptions<T | BasicColorSchema> {
   /**
    * CSS Selector for the target element applying to
    *
