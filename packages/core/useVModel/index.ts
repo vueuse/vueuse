@@ -54,7 +54,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
-  const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
+  const _emit = emit || vm?.emit || vm?.$emit?.bind(vm) || vm?.proxy?.emit
   let event: string | undefined = eventName
 
   if (!key) {
