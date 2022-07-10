@@ -32,7 +32,7 @@ describe('createProjection', () => {
     fromEnd.value = 20
     expect(output.value).toBe(52.5)
 
-    toRange.value[0] = 90
-    expect(output.value).toBe(90.5)
+    toRange.value = [80, 120]
+    expect(output.value).toBe(82)
   })
 })
