@@ -21,16 +21,16 @@ describe('useSum', () => {
     expect(sum.value).toBe(50)
   })
 
-  // test('reactive list', () => {
-  //   const list = reactive([10, 20])
+  test('reactive list', () => {
+    const list = reactive([10, 20])
 
-  //   const sum = useSum(list)
-  //   expect(sum.value).toBe(30)
+    const sum = useSum(list)
+    expect(sum.value).toBe(30)
 
-  //   list[0] = 21
-  //   expect(sum.value).toBe(41)
+    list[0] = 21
+    expect(sum.value).toBe(41)
 
-  //   list.push(5)
-  //   expect(sum.value).toBe(46)
-  // })
+    list.push(5)
+    expect(sum.value).toBe(46)
+  })
 })
