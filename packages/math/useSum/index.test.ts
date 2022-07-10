@@ -1,4 +1,4 @@
-import { isVue2, reactive, ref, set } from 'vue-demi'
+import { isVue2, isVue3, reactive, ref, set } from 'vue-demi'
 import { useSum } from '.'
 
 describe('useSum', () => {
@@ -21,21 +21,20 @@ describe('useSum', () => {
     expect(sum.value).toBe(50)
   })
 
-  it('reactive list', async () => {
-    if (isVue2)
-      return
+  if (isVue3) {
+    it('reactive list', async () => {
+      const list = reactive([10, 20])
 
-    const list = reactive([10, 20])
+      const sum = useSum(list)
+      expect(sum.value).toBe(30)
 
-    const sum = useSum(list)
-    expect(sum.value).toBe(30)
+      list[0] = 21
+      expect(sum.value).toBe(41)
 
-    list[0] = 21
-    expect(sum.value).toBe(41)
-
-    list.push(5)
-    expect(sum.value).toBe(46)
-  })
+      list.push(5)
+      expect(sum.value).toBe(46)
+    })
+  }
 
   it('maybe ref list', () => {
     const list = ref([10, 20])
