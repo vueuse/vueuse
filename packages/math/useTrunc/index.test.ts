@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
 import { useTrunk } from '.'
 
-// 返回：
+// Returns:
 //  0        ->  0
 // -0        -> -0
 //  0.2      ->  0
