@@ -1,3 +1,4 @@
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -41,7 +42,7 @@ export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, C
   acceptAllDevices?: boolean
 }
 
-export function useBluetooth(options?: UseBluetoothOptions) {
+export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn {
   let {
     acceptAllDevices = false,
   } = options || {}
@@ -131,4 +132,13 @@ export function useBluetooth(options?: UseBluetoothOptions) {
     // Errors:
     error,
   }
+}
+
+export interface UseBluetoothReturn {
+  isSupported: Ref<boolean>
+  isConnected: ComputedRef<boolean>
+  device: Ref<BluetoothDevice | undefined>
+  requestDevice: () => Promise<void>
+  server: Ref<BluetoothRemoteGATTServer | undefined>
+  error: Ref<unknown | null>
 }
