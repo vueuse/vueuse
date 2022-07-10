@@ -177,3 +177,5 @@ export const useWebNotification = (
     onClose,
   }
 }
+
+export type UseWebNotificationReturn = ReturnType<typeof useWebNotification>
