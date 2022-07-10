@@ -13,7 +13,7 @@
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr update && nr docs",
-    "docs": "vitepress dev packages --open",
+    "docs": "vue-demi-switch 3 && vitepress dev packages --open",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint .",
