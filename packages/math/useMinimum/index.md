@@ -4,7 +4,7 @@ category: '@Math'
 
 # useMinimum
 
-Reactively access a value no greater than max.
+Reactively get useMinimum of values.
 
 ## Usage
 

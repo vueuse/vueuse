@@ -4,11 +4,11 @@ import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
 /**
- * Reactively access a value no greater than max.
+ * Reactively get useMinimum of values.
  *
  * @see https://vueuse.org/useMinimum
- * @param value1
- * @param value2
+ * @param value number
+ * @param {...number[]} values
  */
 export function useMinimum(defaultValue: MaybeRef<number>, ...mins: MaybeComputedRef<number>[]): Ref<number> {
   const _value = ref(defaultValue)
