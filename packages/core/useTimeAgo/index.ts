@@ -99,14 +99,16 @@ const DEFAULT_MESSAGES: UseTimeAgoMessages = {
 
 const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
 
+export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
+
 /**
  * Reactive time ago formatter.
  *
  * @see https://vueuse.org/useTimeAgo
  * @param options
  */
-export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options?: UseTimeAgoOptions<false>): ComputedRef<string>
-export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<true>): { timeAgo: ComputedRef<string> } & Pausable
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options?: UseTimeAgoOptions<false>): UseTimeAgoReturn<false>
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<true>): UseTimeAgoReturn<true>
 export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
