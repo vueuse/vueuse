@@ -12,4 +12,4 @@ npm i <b>@vueuse/math</b> @vueuse/core
 
 ## License
 
-[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2021-PRESENT [Jacob Clevenger](https://github.com/wheatjs)
+[MIT License](https://github.com/vueuse/vueuse/blob/master/LICENSE) © 2019-PRESENT [Anthony Fu](https://github.com/antfu)

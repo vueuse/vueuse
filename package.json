@@ -23,7 +23,7 @@
     "release": "bumpp --execute=\"npm run release:prepare\" --all",
     "release:prepare": "npm run build:types && npm run update",
     "size": "esno scripts/export-size.ts",
-    "test": "nr test:3",
+    "test": "vitest",
     "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
