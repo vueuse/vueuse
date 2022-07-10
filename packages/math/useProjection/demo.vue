@@ -2,27 +2,26 @@
 import { ref } from 'vue-demi'
 import { useProjection } from '.'
 
-const domainStart = ref(0)
-const domainEnd = ref(10)
-const valueStart = ref(0)
-const valueEnd = ref(100)
+const from = ref<[number, number]>([0, 10])
+const to = ref<[number, number]>([10, 100])
+const input = ref(0)
 
-const [useProjector] = useProjection(domainStart, domainEnd, valueStart, valueEnd)
-const domain = ref(0)
-const value = useProjector(domain)
+const output = useProjection(input, from, to)
 </script>
 
 <template>
   <div>
     <div>
-      Projection from [{{ domainStart }}, {{ domainEnd }}] to [{{ valueStart }}, {{ valueEnd }}];
+      Projection from [{{ from[0] }}, {{ from[1] }}] to [{{ to[0] }}, {{ to[1] }}]
     </div>
     <div>
-      <label for="domain">Domain: {{ domain }}</label>
-      <input id="domain" v-model.number="domain" type="range" :min="domainStart" :max="domainEnd">
+      <input id="input" v-model.number="input" type="range" :min="from[0]" :max="from[1]">
     </div>
     <div>
-      Value: {{ value }}
+      Input: {{ input }}
+    </div>
+    <div>
+      Output: {{ output }}
     </div>
   </div>
 </template>
