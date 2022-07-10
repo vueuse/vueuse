@@ -1,7 +1,7 @@
 import { watch } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
-import type { AsyncStateOptions } from '../useAsyncState'
+import type { UseAsyncStateOptions } from '../useAsyncState'
 import { useAsyncState } from '../useAsyncState'
 
 export interface UseImageOptions {
@@ -38,7 +38,7 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
  */
 export const useImage = <Shallow extends true>(
   options: MaybeComputedRef<UseImageOptions>,
-  asyncStateOptions: AsyncStateOptions<Shallow> = {},
+  asyncStateOptions: UseAsyncStateOptions<Shallow> = {},
 ) => {
   const state = useAsyncState<HTMLImageElement | undefined>(
     () => loadImage(resolveUnref(options)),
