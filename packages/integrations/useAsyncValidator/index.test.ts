@@ -29,7 +29,11 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules)
+    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+    })
     then(() => {
       expect(isFinished.value).toBe(true)
       expect(pass.value).toBe(true)
@@ -46,7 +50,11 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules)
+    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+    })
     expect(isFinished.value).toBe(false)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchObject([])
@@ -67,7 +75,11 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+    })
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(true)
     expect(errors.value).toMatchObject([])
@@ -85,7 +97,11 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+    })
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchInlineSnapshot(`
@@ -117,7 +133,11 @@ describe('useAsyncValidator', () => {
       },
     }) as Ref<Rules>
 
-    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+    })
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchInlineSnapshot(`
