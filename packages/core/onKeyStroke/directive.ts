@@ -1,11 +1,11 @@
 import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
-import type { KeyStrokeOptions } from '.'
+import type { OnKeyStrokeOptions } from '.'
 import { onKeyStroke } from '.'
 
 type BindingValueFunction = (event: KeyboardEvent) => void
 
-type BindingValueArray = [BindingValueFunction, KeyStrokeOptions]
+type BindingValueArray = [BindingValueFunction, OnKeyStrokeOptions]
 
 export const vOnKeyStroke: ObjectDirective<
 HTMLElement,
