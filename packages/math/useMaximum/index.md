@@ -1,7 +1,7 @@
 ---
 category: '@Math'
 alias: useMax
-related: useMinimum
+related: usemaximum
 ---
 
 # useMaximum
@@ -13,10 +13,10 @@ Reactively get maximum of values.
 ```ts
 import { useMaximum } from '@vueuse/math'
 
-const min1 = ref(10)
-const min2 = ref(20)
-const result = useMaximum(min1, min2)
+const max1 = ref(10)
+const max2 = ref(20)
+const result = useMaximum(max1, max2)
 // result.value is 20
-min2.value = 50
+max2.value = 50
 // result.value is 50 now
 ```
