@@ -4,7 +4,7 @@ category: '@Math'
 
 # useAverage
 
-Get the average value of a branch of numbers
+Get the average value of an array of numbers
 
 ## Usage
 
