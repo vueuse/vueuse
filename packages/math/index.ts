@@ -1,5 +1,6 @@
 export * from './logicAnd'
 export * from './logicNot'
 export * from './logicOr'
+export * from './useAverage'
 export * from './useClamp'
 export * from './useProjection'
