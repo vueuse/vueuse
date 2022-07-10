@@ -24,7 +24,9 @@
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
       "@vueuse/shared": ["./packages/shared/index.ts"],
-      "@vueuse/shared/*": ["./packages/shared/*"]
+      "@vueuse/shared/*": ["./packages/shared/*"],
+      "@vueuse/math": ["./packages/math/index.ts"],
+      "@vueuse/math/*": ["./packages/math/*"]
     },
     "types": [
       "vitest",
