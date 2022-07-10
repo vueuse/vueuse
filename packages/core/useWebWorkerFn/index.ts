@@ -13,7 +13,7 @@ export type WebWorkerStatus =
   | 'ERROR'
   | 'TIMEOUT_EXPIRED'
 
-export interface WebWorkerOptions extends ConfigurableWindow {
+export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
    * Number of milliseconds before killing the worker
    *
@@ -35,7 +35,7 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  */
 export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  options: WebWorkerOptions = {},
+  options: UseWebWorkerOptions = {},
 ) => {
   const {
     dependencies = [],
