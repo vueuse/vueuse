@@ -73,4 +73,4 @@ export function useEventSource(url: string, events: Array<string> = [], options:
   }
 }
 
-export type UseEventListenerReturn = ReturnType<typeof useEventListener>
+export type UseEventSourceReturn = ReturnType<typeof useEventSource>
