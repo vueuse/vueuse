@@ -4,7 +4,7 @@ category: '@Math'
 
 # useAverage
 
-Get the average value of an array of numbers
+Get the average of an array reactively.
 
 ## Usage
 
