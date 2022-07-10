@@ -9,6 +9,7 @@ import { resolveUnref } from '@vueuse/shared'
  * @see https://vueuse.org/useMinimum
  * @param value number
  * @param {...number[]} values
+ *
  */
 export function useMinimum(defaultValue: MaybeRef<number>, ...mins: MaybeComputedRef<number>[]): Ref<number> {
   const _value = ref(defaultValue)

@@ -9,7 +9,7 @@ describe('useClamp', () => {
 
   it('should accept numbers', () => {
     const v = useMinimum(0, 100)
-    expect(v.value).toBe(100)
+    expect(v.value).toBe(0)
   })
 
   it('should accept refs', () => {
@@ -17,7 +17,7 @@ describe('useClamp', () => {
     const value2 = ref(100)
     const value3 = ref(1000)
 
-    const v = useMinimum(0, value1, value2, value3)
+    const v = useMinimum(50, value1, value2, value3)
 
     expect(v.value).toBe(10)
 
@@ -38,7 +38,7 @@ describe('useClamp', () => {
     const value1 = 10
     const value2 = ref(100)
 
-    const v = useMinimum(0, value1, value2)
+    const v = useMinimum(50, value1, value2)
 
     expect(v.value).toBe(10)
 
