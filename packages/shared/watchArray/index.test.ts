@@ -1,4 +1,4 @@
-import { isVue2, nextTick, reactive, ref } from 'vue-demi'
+import { nextTick, reactive, ref } from 'vue-demi'
 import { watchArray } from '.'
 
 describe('watchArray', () => {
@@ -44,8 +44,7 @@ describe('watchArray', () => {
     watchArray(num, spy, { deep: true })
     num.value.push(4)
     await nextTick()
-    // TODO: Vue 2 somehow get trigger twice
-    expect(spy).toBeCalledTimes(isVue2 ? 2 : 1)
+    expect(spy).toBeCalledTimes(1)
   })
 
   it('should work with list splice', async () => {
@@ -60,8 +59,7 @@ describe('watchArray', () => {
     watchArray(num, spy, { deep: true })
     num.value.splice(1, 1, 5, 6, 7)
     await nextTick()
-    // TODO: Vue 2 somehow get trigger twice
-    expect(spy).toBeCalledTimes(isVue2 ? 2 : 1)
+    expect(spy).toBeCalledTimes(1)
   })
 
   it('should work with reactive source', async () => {

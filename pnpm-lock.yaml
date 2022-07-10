@@ -4,7 +4,7 @@ neverBuiltDependencies:
   - electron
 
 overrides:
-  vue-demi: 0.13.0
+  vue-demi: 0.13.2
 
 importers:
 
@@ -142,42 +142,42 @@ importers:
     specifiers:
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
 
   packages/core:
     specifiers:
       '@types/web-bluetooth': ^0.0.14
       '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@types/web-bluetooth': 0.0.14
       '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
 
   packages/electron:
     specifiers:
       '@vueuse/shared': workspace:*
       electron: ^13.1.0
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     devDependencies:
       electron: 13.6.9
 
   packages/firebase:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
 
   packages/integrations:
     specifiers:
@@ -195,11 +195,11 @@ importers:
       nprogress: ^0.2.0
       qrcode: ^1.5.0
       universal-cookie: ^4.0.4
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/core': link:../core
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     devDependencies:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.4.2
@@ -217,10 +217,10 @@ importers:
   packages/math:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
 
   packages/metadata:
     specifiers: {}
@@ -232,24 +232,24 @@ importers:
       '@vueuse/core': workspace:*
       '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.1
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@nuxt/kit': 3.0.0-rc.4
       '@vueuse/core': link:../core
       '@vueuse/metadata': link:../metadata
       local-pkg: 0.4.1
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.4
 
   packages/router:
     specifiers:
       '@vueuse/shared': workspace:*
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
       vue-router: ^4.1.1
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     devDependencies:
       vue-router: 4.1.1
 
@@ -257,18 +257,18 @@ importers:
     specifiers:
       '@vueuse/shared': workspace:*
       rxjs: ^6.6.7
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
       '@vueuse/shared': link:../shared
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     devDependencies:
       rxjs: 6.6.7
 
   packages/shared:
     specifiers:
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
     dependencies:
-      vue-demi: 0.13.0
+      vue-demi: 0.13.2
 
 packages:
 
@@ -846,7 +846,6 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.17.0
-    dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/7.16.2_@babel+core@7.17.7:
     resolution: {integrity: sha512-h37CvpLSf8gb2lIJ2CgC3t+EjFbi0t8qS7LCS1xcJIlEXE4czlofwaW7W1HA8zpgOCzI9C1nmoqNR1zWkk0pQg==}
@@ -1669,7 +1668,7 @@ packages:
       '@babel/helper-function-name': 7.16.0
       '@babel/helper-hoist-variables': 7.16.0
       '@babel/helper-split-export-declaration': 7.16.0
-      '@babel/parser': 7.17.7
+      '@babel/parser': 7.18.8
       '@babel/types': 7.17.0
       debug: 4.3.4
       globals: 11.12.0
@@ -1687,7 +1686,7 @@ packages:
       '@babel/helper-function-name': 7.16.7
       '@babel/helper-hoist-variables': 7.16.7
       '@babel/helper-split-export-declaration': 7.16.7
-      '@babel/parser': 7.17.7
+      '@babel/parser': 7.18.8
       '@babel/types': 7.17.0
       debug: 4.3.4
       globals: 11.12.0
@@ -2910,7 +2909,7 @@ packages:
   /@vue/compiler-core/3.2.37:
     resolution: {integrity: sha512-81KhEjo7YAOh0vQJoSmAD68wLfYqJvoiD4ulyedzF+OEk/bk6/hx3fTNVfuzugIIaTrOx4PGx6pAiBRe5e9Zmg==}
     dependencies:
-      '@babel/parser': 7.17.7
+      '@babel/parser': 7.18.8
       '@vue/shared': 3.2.37
       estree-walker: 2.0.2
       source-map: 0.6.1
@@ -2960,7 +2959,7 @@ packages:
   /@vue/reactivity-transform/3.2.37:
     resolution: {integrity: sha512-IWopkKEb+8qpu/1eMKVeXrK0NLw9HicGviJzhJDEyfxTR9e1WtpnnbYkJWurX6WwoFP0sz10xQg8yL8lgskAZg==}
     dependencies:
-      '@babel/parser': 7.17.7
+      '@babel/parser': 7.18.8
       '@vue/compiler-core': 3.2.37
       '@vue/shared': 3.2.37
       estree-walker: 2.0.2
@@ -3041,7 +3040,7 @@ packages:
     dependencies:
       '@vueuse/shared': 7.4.1_vue@3.2.37
       vue: 3.2.37
-      vue-demi: 0.13.0_vue@3.2.37
+      vue-demi: 0.13.2_vue@3.2.37
     dev: true
 
   /@vueuse/shared/7.4.1_vue@3.2.37:
@@ -3056,7 +3055,7 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.37
-      vue-demi: 0.13.0_vue@3.2.37
+      vue-demi: 0.13.2_vue@3.2.37
     dev: true
 
   /@xmldom/xmldom/0.7.5:
@@ -8893,8 +8892,8 @@ packages:
     resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
     dev: true
 
-  /vue-demi/0.13.0:
-    resolution: {integrity: sha512-pu9R4Nydj+LMcKkIL1cnP1L2anJBTmVZzVWSdy5P1rkSRs9fxGCFrZmXdPTEsN37m5JtBVBSYKPk6xnORfjUsQ==}
+  /vue-demi/0.13.2:
+    resolution: {integrity: sha512-41ukrclEbMddAyP7PvxMSYqnOSzPV6r7GNnyTSKSCNTaz19GehxmTiXyP9kwHSUv2+Dr6hHqiUiF7L1VAw2KdQ==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
@@ -8906,8 +8905,8 @@ packages:
         optional: true
     dev: false
 
-  /vue-demi/0.13.0_vue@3.2.37:
-    resolution: {integrity: sha512-pu9R4Nydj+LMcKkIL1cnP1L2anJBTmVZzVWSdy5P1rkSRs9fxGCFrZmXdPTEsN37m5JtBVBSYKPk6xnORfjUsQ==}
+  /vue-demi/0.13.2_vue@3.2.37:
+    resolution: {integrity: sha512-41ukrclEbMddAyP7PvxMSYqnOSzPV6r7GNnyTSKSCNTaz19GehxmTiXyP9kwHSUv2+Dr6hHqiUiF7L1VAw2KdQ==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true

@@ -24,7 +24,7 @@
     "release:prepare": "npm run build:types && npm run update",
     "size": "esno scripts/export-size.ts",
     "test": "nr test:3",
-    "test:2": "vue-demi-switch 2 vue2 && vitest run --silent",
+    "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "vitest --watch",
@@ -104,7 +104,7 @@
       "electron"
     ],
     "overrides": {
-      "vue-demi": "0.13.0"
+      "vue-demi": "0.13.2"
     }
   },
   "simple-git-hooks": {
