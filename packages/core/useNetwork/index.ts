@@ -122,3 +122,5 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     type,
   }
 }
+
+export type UseNetworkReturn = ReturnType<typeof useNetwork>
