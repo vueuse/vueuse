@@ -24,7 +24,7 @@
     "release:prepare": "npm run build:types && npm run update",
     "size": "esno scripts/export-size.ts",
     "test": "nr test:3",
-    "test:2": "vue-demi-switch 2 vue2 && vitest run --silent",
+    "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:watch": "vitest --watch",
@@ -50,7 +50,6 @@
     "@types/sharp": "^0.30.4",
     "@vitest/ui": "^0.17.0",
     "@vue/compiler-sfc": "^3.2.37",
-    "@vue/composition-api": "^1.7.0",
     "@vue/test-utils": "^2.0.2",
     "@vue/theme": "^1.0.2",
     "axios": "^0.27.2",
@@ -98,14 +97,14 @@
     "vitepress": "^0.22.4",
     "vitest": "^0.17.0",
     "vue": "^3.2.37",
-    "vue2": "npm:vue@^2.6.14"
+    "vue2": "npm:vue@^2.7.4"
   },
   "pnpm": {
     "neverBuiltDependencies": [
       "electron"
     ],
     "overrides": {
-      "vue-demi": "0.13.0"
+      "vue-demi": "0.13.2"
     }
   },
   "simple-git-hooks": {

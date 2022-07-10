@@ -38,18 +38,6 @@
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
-  "peerDependencies": {
-    "@vue/composition-api": "^1.1.0",
-    "vue": "^2.6.0 || ^3.2.0"
-  },
-  "peerDependenciesMeta": {
-    "vue": {
-      "optional": true
-    },
-    "@vue/composition-api": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "@types/web-bluetooth": "^0.0.14",
     "@vueuse/metadata": "workspace:*",
