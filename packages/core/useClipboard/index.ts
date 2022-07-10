@@ -10,7 +10,7 @@ import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
-export interface ClipboardOptions<Source> extends ConfigurableNavigator {
+export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
@@ -31,7 +31,7 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   copiedDuring?: number
 }
 
-export interface ClipboardReturn<Optional> {
+export interface UseClipboardReturn<Optional> {
   isSupported: Ref<boolean>
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
@@ -44,9 +44,9 @@ export interface ClipboardReturn<Optional> {
  * @see https://vueuse.org/useClipboard
  * @param options
  */
-export function useClipboard(options?: ClipboardOptions<undefined>): ClipboardReturn<false>
-export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string>>): ClipboardReturn<true>
-export function useClipboard(options: ClipboardOptions<MaybeComputedRef<string> | undefined> = {}): ClipboardReturn<boolean> {
+export function useClipboard(options?: UseClipboardOptions<undefined>): UseClipboardReturn<false>
+export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string>>): UseClipboardReturn<true>
+export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string> | undefined> = {}): UseClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
     read = false,
