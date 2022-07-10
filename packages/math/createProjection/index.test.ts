@@ -9,30 +9,30 @@ describe('createProjection', () => {
   it('should work with projector', () => {
     const fromStart = ref(0)
     const fromEnd = ref(10)
-    const toRange = ref<[number, number]>([1, 100])
+    const toRange = ref<[number, number]>([50, 100])
 
     const useProjector = createProjection(
       () => [fromStart.value, fromEnd.value],
       toRange,
     )
-    const domain = ref(0)
-    const value = useProjector(domain)
+    const input = ref(0)
+    const output = useProjector(input)
 
-    expect(value.value).toBe(0)
+    expect(output.value).toBe(50)
 
-    domain.value = 10
-    expect(value.value).toBe(100)
+    input.value = 10
+    expect(output.value).toBe(100)
 
-    domain.value = 5
-    expect(value.value).toBe(50)
+    input.value = 5
+    expect(output.value).toBe(75)
 
-    domain.value = 1
-    expect(value.value).toBe(10)
+    input.value = 1
+    expect(output.value).toBe(55)
 
     fromEnd.value = 20
-    expect(value.value).toBe(5)
+    expect(output.value).toBe(52.5)
 
-    toRange.value[0] = 50
-    expect(value.value).toBe(52.5)
+    toRange.value[0] = 90
+    expect(output.value).toBe(90.5)
   })
 })
