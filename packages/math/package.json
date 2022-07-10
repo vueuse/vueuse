@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/math",
-  "version": "8.8.1",
+  "version": "8.9.1",
   "description": "Math functions for VueUse",
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",
