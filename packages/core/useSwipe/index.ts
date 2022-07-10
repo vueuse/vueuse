@@ -15,7 +15,7 @@ export enum SwipeDirection {
   NONE = 'NONE',
 }
 
-export interface SwipeOptions extends ConfigurableWindow {
+export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Register events as passive
    *
@@ -44,7 +44,7 @@ export interface SwipeOptions extends ConfigurableWindow {
   onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
 }
 
-export interface SwipeReturn {
+export interface UseSwipeReturn {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
@@ -64,8 +64,8 @@ export interface SwipeReturn {
  */
 export function useSwipe(
   target: MaybeComputedRef<EventTarget | null | undefined>,
-  options: SwipeOptions = {},
-): SwipeReturn {
+  options: UseSwipeOptions = {},
+): UseSwipeReturn {
   const {
     threshold = 50,
     onSwipe,
