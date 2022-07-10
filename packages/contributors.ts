@@ -158,7 +158,7 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'harlan-zw',
     twitter: 'harlan_zw',
     sponsors: true,
-    description: '',
+    description: 'Building delightful open source<br>Nuxt freelance developer',
     packages: ['schema-org'],
   },
 ]
