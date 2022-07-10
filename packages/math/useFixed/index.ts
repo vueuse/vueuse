@@ -4,12 +4,12 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
 /**
- * Reactively clamp a value between two other values.
+ * Reactively and optimized number.toFixed.
  *
  * @see https://vueuse.org/useFixed
  * @param value number
  * @param digits The number of digits to appear after the decimal point
- * @param max
+ * @returns the optimized fixed value
  */
 export function useFixed(value: MaybeComputedRef<number>, digits: MaybeComputedRef<number> = 0): Ref<number> {
   return computed(() => +(resolveUnref(value)).toFixed(resolveUnref(digits)))
