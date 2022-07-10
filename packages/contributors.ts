@@ -42,6 +42,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'patak-dev',
     twitter: 'patak_dev',
     sponsors: true,
+    functions: [
+      'useRefHistory',
+      'ignorableWatch',
+    ],
     description: 'A collaborative being<br>Core team member of Vite<br>Team member of Vue',
   },
   {
@@ -77,6 +81,7 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'cawa-93',
     twitter: 'alex_kozack',
     sponsors: false,
+    functions: ['useMediaControls'],
     description: '',
   },
   {
@@ -85,6 +90,9 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'scottbedard',
     twitter: 'scottbedard',
     sponsors: false,
+    functions: [
+      'useTransition',
+    ],
     description: '',
   },
   {
@@ -94,6 +102,10 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'sibbng',
     sponsors: false,
     description: '',
+    functions: [
+      'onClickOutside',
+      'useStyleTag',
+    ],
   },
   {
     avatar: contributorsAvatars.okxiaoliang4,
@@ -101,6 +113,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'okxiaoliang4',
     twitter: 'okxiaoliang4',
     sponsors: false,
+    functions: [
+      'useElementByPoint',
+      'useSafeArea',
+    ],
     description: '',
   },
   {
@@ -109,6 +125,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'lstoeferle',
     twitter: '54ku1',
     sponsors: false,
+    functions: [
+      'useSwipe',
+      'useUrlSearchParams',
+    ],
     description: '',
   },
   {
@@ -117,6 +137,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'webfansplz',
     twitter: 'webfansplz',
     sponsors: false,
+    functions: [
+      'useDateFormat',
+      'useAsyncQueue',
+    ],
     description: 'FE Developer<br>Love open source',
   },
   {
