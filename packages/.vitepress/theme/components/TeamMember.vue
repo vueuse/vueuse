@@ -17,7 +17,7 @@ defineProps<{
     <div text-xl mt-2 mb-1>
       {{ data.name }}
     </div>
-    <div op60 v-html="data.description" />
+    <div op60 h-80px v-html="data.description" />
 
     <div flex="~ inline gap-2" py2 text-2xl>
       <a
@@ -45,7 +45,7 @@ defineProps<{
         :aria-label="`Sponsor ${data.name}`"
       />
     </div>
-    <div v-if="data.functions || data.packages" bg-gray:5 mb2 p2 rounded grid="~ cols-[20px_1fr] gap-y-2" items-start w-max mxa>
+    <div v-if="data.functions || data.packages" bg-gray:5 mb2 p2 rounded grid="~ cols-[20px_1fr] gap-y-2" items-start w="5/6" mxa>
       <template v-if="data.functions">
         <div op50 i-carbon:function-math title="Functions" />
         <div flex="~ col gap-1" text-left text-sm w-max>
@@ -58,7 +58,7 @@ defineProps<{
         <div op50 i-carbon-cube title="Packages" />
         <div flex="~ col gap-1" text-left text-sm w-max>
           <a v-for="f of data.packages" :key="f" href="/add-ons">
-            <code>{{ f }}</code>
+            <code>@vueuse/{{ f }}</code>
           </a>
         </div>
       </template>
