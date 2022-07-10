@@ -46,4 +46,19 @@ describe('useSum', () => {
     list.value = [10, 20, 5]
     expect(sum.value).toBe(35)
   })
+
+  it('custom adder and initialValue', () => {
+    const value1 = ref({ a: 10 })
+    const value2 = ref({ a: 20 })
+
+    const sum = useSum([value1, value2], (sum, val) => sum + val.a, 0)
+
+    expect(sum.value).toBe(30)
+
+    value1.value.a = 20
+    expect(sum.value).toBe(40)
+
+    value2.value.a = 30
+    expect(sum.value).toBe(50)
+  })
 })
