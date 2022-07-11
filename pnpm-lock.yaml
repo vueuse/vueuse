@@ -184,6 +184,7 @@ importers:
   packages/integrations:
     specifiers:
       '@types/nprogress': ^0.2.0
+      '@types/pangu': ^3.3.0
       '@types/qrcode': ^1.4.2
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
@@ -195,6 +196,7 @@ importers:
       fuse.js: ^6.6.2
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
+      pangu: ^4.0.7
       qrcode: ^1.5.0
       universal-cookie: ^4.0.4
       vue-demi: 0.13.0
@@ -204,6 +206,7 @@ importers:
       vue-demi: 0.13.0
     devDependencies:
       '@types/nprogress': 0.2.0
+      '@types/pangu': 3.3.0
       '@types/qrcode': 1.4.2
       async-validator: 4.2.5
       axios: 0.27.2
@@ -213,6 +216,7 @@ importers:
       fuse.js: 6.6.2
       jwt-decode: 3.1.2
       nprogress: 0.2.0
+      pangu: 4.0.7
       qrcode: 1.5.0
       universal-cookie: 4.0.4
 
@@ -2564,6 +2568,10 @@ packages:
 
   /@types/nprogress/0.2.0:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: true
+
+  /@types/pangu/3.3.0:
+    resolution: {integrity: sha512-uD56QlIuQJvfO9sMJKTkJleWyMhZ//TPO0/WmVIwCTomCHZzllm/KZOaN4Og6R7EJXU5sIMunexTqyxy9bCT/g==}
     dev: true
 
   /@types/prettier/2.6.3:
@@ -7023,6 +7031,11 @@ packages:
   /p-try/2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
+    dev: true
+
+  /pangu/4.0.7:
+    resolution: {integrity: sha512-weZKJIwwy5gjt4STGVUH9bix3BGk7wZ2ahtIypwe3e/mllsrIZIvtfLx1dPX56GcpZFOCFKmeqI1qVuB9enRzA==}
+    hasBin: true
     dev: true
 
   /param-case/3.0.4:

@@ -79,6 +79,7 @@ Integration wrappers for utility libraries
   - [`useFuse`](https://vueuse.org/integrations/useFuse/) — easily implement fuzzy search using a composable with [Fuse.js](https://github.com/krisk/fuse)
   - [`useJwt`](https://vueuse.org/integrations/useJwt/) — wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
+  - [`usePangu`](https://vueuse.org/integrations/usePangu/) — wrapper for [`pangu`](https://github.com/vinta/pangu.js)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
 
