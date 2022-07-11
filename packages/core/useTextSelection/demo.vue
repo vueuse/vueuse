@@ -21,7 +21,7 @@ const selectedStyle = computed(() => text.value ? 'text-primary' : 'text-gray-40
     </p>
     <p>
       <strong class="w-140px inline-block">Selected rects:</strong>
-      {{ JSON.stringify(rects) }}
+      <pre lang="json">{{ rects }}</pre>
     </p>
   </div>
 </template>
