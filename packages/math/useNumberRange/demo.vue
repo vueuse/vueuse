@@ -14,7 +14,6 @@ const range = useNumberRange(
   start,
   end,
 )
-
 </script>
 
 <template>
