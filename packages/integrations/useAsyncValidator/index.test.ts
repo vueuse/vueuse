@@ -37,7 +37,7 @@ describe('useAsyncValidator', () => {
     })
   })
 
-  it('should async', async () => {
+  it('should async', async() => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -58,7 +58,7 @@ describe('useAsyncValidator', () => {
     })
   })
 
-  it('should can be await', async () => {
+  it('should can be await', async() => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -73,7 +73,7 @@ describe('useAsyncValidator', () => {
     expect(errors.value).toMatchObject([])
   })
 
-  it('should fail to validate', async () => {
+  it('should fail to validate', async() => {
     const rules: Rules = {
       name: {
         type: 'string',
@@ -85,11 +85,7 @@ describe('useAsyncValidator', () => {
         type: 'number',
       },
     }
-    const { pass, errors, isFinished } = await useAsyncValidator(form, rules, {
-      validateOption: {
-        suppressWarning: true,
-      },
-    })
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchInlineSnapshot(`
@@ -103,7 +99,7 @@ describe('useAsyncValidator', () => {
     `)
   })
 
-  it('should reactive', async () => {
+  it('should reactive', async() => {
     const form = ref({
       name: 'jelf',
       age: 24,
@@ -121,11 +117,7 @@ describe('useAsyncValidator', () => {
       },
     }) as Ref<Rules>
 
-    const { pass, errors, isFinished } = await useAsyncValidator(form, rules, {
-      validateOption: {
-        suppressWarning: true,
-      },
-    })
+    const { pass, errors, isFinished } = await useAsyncValidator(form, rules)
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchInlineSnapshot(`
