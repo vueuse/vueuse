@@ -5,7 +5,7 @@ import { resolveUnref } from '@vueuse/shared'
 export function useMax(values: MaybeRef<number | MaybeRef<number>[]> | MaybeRef<number>[], maximum?: MaybeRef<number>) {
   const _defaultValue = computed(() => {
     let maxValue = null
-    const _maximum = resolveUnref(maximum || 0)
+    const _maximum = resolveUnref(maximum ?? Number.MAX_SAFE_INTEGER)
     const _values = resolveUnref<MaybeRef<number | MaybeRef<number>[]> | MaybeRef<number>[]>(values)
     if (Array.isArray(_values)) {
       const initailValues = _values.map(resolveUnref)
