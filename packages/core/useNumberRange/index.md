@@ -2,14 +2,14 @@
 category: Utilities
 ---
 
-# useSlidingWindow
+# useNumberRange
 
 Basic sliding window with utility functions.
 
 ## Usage
 
 ```ts
-import { useSlidingWindow } from '@vueuse/core'
+import { useNumberRange } from '@vueuse/core'
 import { computed, ref } from 'vue-demi'
 
 const start = ref(0)
@@ -18,7 +18,7 @@ const end = computed(() => start.value + size.value)
 const min = ref(0)
 const max = ref(100)
 
-const range = useSlidingWindow(
+const range = useNumberRange(
   min,
   max,
   start,

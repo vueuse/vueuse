@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue-demi'
-import { useSlidingWindow } from '.'
+import { useNumberRange } from './index'
 
 const start = ref(0)
 const size = ref(10)
@@ -8,7 +8,7 @@ const end = computed(() => start.value + size.value)
 const min = ref(0)
 const max = ref(100)
 
-const range = useSlidingWindow(
+const range = useNumberRange(
   min,
   max,
   start,

@@ -3,7 +3,7 @@ import { assert } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
 
-export function useSlidingWindow(
+export function useNumberRange(
   min: MaybeRef<number>,
   max: MaybeRef<number>,
   start: MaybeRef<number>,

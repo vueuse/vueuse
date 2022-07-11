@@ -1,9 +1,9 @@
 import { computed, ref } from 'vue-demi'
-import { useSlidingWindow } from '.'
+import { useNumberRange } from './index'
 
-describe('useSlidingWindow', () => {
+describe('useNumberRange', () => {
   it('should be defined', () => {
-    expect(useSlidingWindow).toBeDefined()
+    expect(useNumberRange).toBeDefined()
   })
 
   it('should work with sliding window', () => {
@@ -34,7 +34,7 @@ describe('useSlidingWindow', () => {
     ]
 
     cases.forEach(([args, expected]) => {
-      const result = useSlidingWindow(...args)
+      const result = useNumberRange(...args)
       expect(result.value).toEqual(expected)
     })
   })
@@ -75,7 +75,7 @@ describe('useSlidingWindow', () => {
     const start = ref(0)
     const end = ref(10)
 
-    const range = useSlidingWindow(min, max, start, end)
+    const range = useNumberRange(min, max, start, end)
 
     cases.forEach(([args, expected]) => {
       const [minValue, maxValue, startValue, endValue] = args
@@ -94,7 +94,7 @@ describe('useSlidingWindow', () => {
     const start = ref(0)
     const size = ref(10)
     const end = computed(() => start.value + size.value)
-    const range = useSlidingWindow(min, max, start, end)
+    const range = useNumberRange(min, max, start, end)
 
     expect(range.value).toEqual([0, 10])
 
