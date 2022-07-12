@@ -1,8 +1,8 @@
 import { defineComponent, reactive } from 'vue-demi'
-import type { GeolocationOptions } from '@vueuse/core'
+import type { UseGeolocationOptions } from '@vueuse/core'
 import { useGeolocation } from '@vueuse/core'
 
-export const UseGeolocation = defineComponent<GeolocationOptions>({
+export const UseGeolocation = defineComponent<UseGeolocationOptions>({
   name: 'UseGeolocation',
   props: ['enableHighAccuracy', 'maximumAge', 'timeout', 'navigator'] as unknown as undefined,
   setup(props, { slots }) {
