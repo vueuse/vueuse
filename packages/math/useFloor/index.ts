@@ -4,11 +4,9 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
 /**
- * Reactively Math.floor(value).
+ * Reactive `Math.floor`
  *
  * @see https://vueuse.org/useFloor
- * @param base
- * @param exponent
  */
 export function useFloor(value: MaybeComputedRef<number>): ComputedRef<number> {
   return computed<number>(() => Math.floor(resolveUnref(value)))

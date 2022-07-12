@@ -7,12 +7,7 @@ import { resolveUnref } from '@vueuse/shared'
  * Get the sum of a set of numbers.
  *
  * @see https://vueuse.org/useSum
- * @param nums
  */
-export function useSum(nums: MaybeComputedRef<Array<MaybeComputedRef<number>>>): ComputedRef<number> {
-  return computed(
-    () => resolveUnref(nums).reduce(
-      (prev: number, curr: MaybeComputedRef<number>) => prev + resolveUnref(curr), 0,
-    ),
-  )
+export function useSum(array: MaybeComputedRef<Array<MaybeComputedRef<number>>>): ComputedRef<number> {
+  return computed(() => resolveUnref(array).reduce<number>((sum, v) => sum += resolveUnref(v), 0))
 }
