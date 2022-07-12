@@ -8,10 +8,8 @@ export function useArrayFind<T>(
   fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => boolean,
 ): ComputedRef<T | undefined> {
   return computed(() => {
-    const find = Array.prototype.find.bind(resolveUnref(list))
-
     const findCallback = (element: MaybeComputedRef<T>, index: number, array: MaybeComputedRef<T>[]) => fn(resolveUnref(element), index, array)
-
-    return resolveUnref(find(findCallback))
+    const found = resolveUnref(list).find(findCallback)
+    return found !== undefined ? resolveUnref(found) : undefined
   })
 }
