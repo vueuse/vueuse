@@ -1,6 +1,5 @@
 ---
 category: '@Math'
-alias: abs
 ---
 
 # useAbs
