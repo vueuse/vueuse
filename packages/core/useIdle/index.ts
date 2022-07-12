@@ -10,7 +10,7 @@ import { defaultWindow } from '../_configurable'
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000
 
-export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
+export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Event names that listen to for detected user activity
    *
@@ -45,7 +45,7 @@ export interface UseIdleReturn {
  */
 export function useIdle(
   timeout: number = oneMinute,
-  options: IdleOptions = {},
+  options: UseIdleOptions = {},
 ): UseIdleReturn {
   const {
     initialState = false,
