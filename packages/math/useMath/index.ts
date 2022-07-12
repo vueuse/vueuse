@@ -78,7 +78,6 @@ type MathMethods<MethodKeys extends keyof Math = ExcludeProperty<Math>[number]> 
 
 type UseMath = () => MathMethods
 
-// 没有想到较好的办法去获取Math的属性名，Object.keys(Math) => [] 获取到的是一个空数组
 const MathMethodNames = ['abs',
   'acos',
   'acosh',
