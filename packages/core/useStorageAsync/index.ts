@@ -4,13 +4,13 @@ import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
-import type { SerializerAsync, StorageOptions } from '../useStorage'
+import type { SerializerAsync, UseStorageOptions } from '../useStorage'
 import { StorageSerializers } from '../useStorage'
 import { useEventListener } from '../useEventListener'
 import { guessSerializerType } from '../useStorage/guess'
 import { defaultWindow } from '../_configurable'
 
-export interface StorageAsyncOptions<T> extends Omit<StorageOptions<T>, 'serializer'> {
+export interface StorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**
    * Custom data serialization
    */
