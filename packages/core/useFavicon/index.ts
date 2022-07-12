@@ -4,7 +4,7 @@ import { watch } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-export interface FaviconOptions extends ConfigurableDocument {
+export interface UseFaviconOptions extends ConfigurableDocument {
   baseUrl?: string
   rel?: string
 }
@@ -18,7 +18,7 @@ export interface FaviconOptions extends ConfigurableDocument {
  */
 export function useFavicon(
   newIcon: MaybeComputedRef<string | null | undefined> = null,
-  options: FaviconOptions = {},
+  options: UseFaviconOptions = {},
 ) {
   const {
     baseUrl = '',
@@ -45,3 +45,5 @@ export function useFavicon(
 
   return favicon
 }
+
+export type UseFaviconReturn = ReturnType<typeof useFavicon>
