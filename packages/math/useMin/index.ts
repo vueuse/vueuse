@@ -13,10 +13,12 @@ export function useMin(...args: MaybeComputedRef<number>[]): ComputedRef<number>
  * @param nums
  */
 export function useMin(...args: any[]): ComputedRef<number> {
-  return computed(() => Math.min(...args.flatMap((i) => {
-    const v = resolveUnref(i)
-    if (Array.isArray(v))
-      return v.map(i => resolveUnref(i))
-    return [v]
-  })))
+  return computed(() => Math.min(
+    ...args.flatMap((i) => {
+      const v = resolveUnref(i)
+      if (Array.isArray(v))
+        return v.map(resolveUnref)
+      return [v]
+    })),
+  )
 }
