@@ -28,7 +28,7 @@ export function useVerificationCode(
 
   if (storagData && storagData.value) {
     const remainingSecond = seconds - Math.ceil((Date.now() - storagData.value) / 1000)
-    if (remainingSecond) {
+    if (remainingSecond > 0) {
       innerSeconds.value = remainingSecond
       _handleStart()
     }
