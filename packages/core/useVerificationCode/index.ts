@@ -4,22 +4,24 @@ import { useLocalStorage } from '../useLocalStorage'
 
 interface UseVerificationCodeConfig {
   /** Start the countdown at what */
-  seconds: number
+  seconds?: number
   /**  Whether to refresh to continue countdown upon re-entry */
-  keepRunning: boolean
+  keepRunning?: boolean
+  /** uniqueKey */
+  uniqueKey?: string
 }
 
 export function useVerificationCode(
-  config: UseVerificationCodeConfig = { seconds: 60, keepRunning: false },
+  config: UseVerificationCodeConfig = {},
 ) {
-  const { seconds, keepRunning } = config
-  const storageKey = 'verificationCodeStorageKey'
+  const { seconds = 60, keepRunning = false, uniqueKey = 'verificationCodeStorageKey' } = config
+  const storageKey = uniqueKey
   const storagData = keepRunning ? useLocalStorage<number | null>(storageKey, null) : null
   const innerSeconds = ref<number>(seconds)
-  const { pause, isActive, resume } = useIntervalFn(() => {
+  const { pause, resume, isActive } = useIntervalFn(() => {
     innerSeconds.value--
     if (innerSeconds.value < 0)
-      handleEnd()
+      _handleEnd()
   }, 1000, {
     immediate: false,
   })
@@ -28,28 +30,28 @@ export function useVerificationCode(
     const remainingSecond = seconds - Math.ceil((Date.now() - storagData.value) / 1000)
     if (remainingSecond) {
       innerSeconds.value = remainingSecond
-      handleStart()
+      _handleStart()
     }
     else {
-      handleEnd()
+      _handleEnd()
     }
+  }
+
+  function _handleStart() {
+    resume()
+  }
+
+  function _handleEnd() {
+    pause()
+    storagData && (storagData.value = null)
+    innerSeconds.value = seconds
   }
 
   function getCode() {
     if (isActive.value)
       return
     storagData && (storagData.value = Date.now())
-    handleStart()
-  }
-
-  function handleStart() {
-    resume()
-  }
-
-  function handleEnd() {
-    pause()
-    storagData && (storagData.value = null)
-    innerSeconds.value = seconds
+    _handleStart()
   }
 
   return {
