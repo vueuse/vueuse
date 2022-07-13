@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 
-export interface WebSocketOptions {
+export interface UseWebSocketOptions {
   onConnected?: (ws: WebSocket) => void
   onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
   onError?: (ws: WebSocket, event: Event) => void
@@ -83,7 +83,7 @@ export interface WebSocketOptions {
   protocols?: string[]
 }
 
-export interface WebSocketResult<T> {
+export interface UseWebSocketReturn<T> {
   /**
    * Reference to the latest data received via the websocket,
    * can be watched to respond to incoming messages
@@ -135,8 +135,8 @@ function resolveNestedOptions<T>(options: T | true): T {
  */
 export function useWebSocket<Data = any>(
   url: string,
-  options: WebSocketOptions = {},
-): WebSocketResult<Data> {
+  options: UseWebSocketOptions = {},
+): UseWebSocketReturn<Data> {
   const {
     onConnected,
     onDisconnected,
