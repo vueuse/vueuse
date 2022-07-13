@@ -12,7 +12,7 @@ const speech = useSpeechSynthesis(text, {
 
 let synth: SpeechSynthesis
 
-if (speech.isSupported) {
+if (speech.isSupported.value) {
   // load at last
   setTimeout(() => {
     synth = window.speechSynthesis
