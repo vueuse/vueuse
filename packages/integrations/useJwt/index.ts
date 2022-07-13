@@ -5,7 +5,7 @@ import { resolveUnref } from '@vueuse/shared'
 import jwt_decode from 'jwt-decode'
 import type { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
 
-export interface JwtOptions<Fallback> {
+export interface UseJwtOptions<Fallback> {
   /**
    * Value returned when encounter error on decoding
    *
@@ -19,7 +19,7 @@ export interface JwtOptions<Fallback> {
   onError?: (error: unknown) => void
 }
 
-export interface JwtResult<Payload, Header, Fallback> {
+export interface UseJwtReturn<Payload, Header, Fallback> {
   header: ComputedRef<Header | Fallback>
   payload: ComputedRef<Payload | Fallback>
 }
@@ -36,8 +36,8 @@ export function useJwt<
   Fallback = null,
 >(
   encodedJwt: MaybeComputedRef<string>,
-  options: JwtOptions<Fallback> = {},
-): JwtResult<Payload, Header, Fallback> {
+  options: UseJwtOptions<Fallback> = {},
+): UseJwtReturn<Payload, Header, Fallback> {
   const {
     onError,
     fallbackValue = null,
