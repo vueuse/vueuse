@@ -6,7 +6,7 @@ import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface MutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
+export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 
 /**
  * Watch for changes being made to the DOM tree.
@@ -20,7 +20,7 @@ export interface MutationObserverOptions extends MutationObserverInit, Configura
 export function useMutationObserver(
   target: MaybeElementRef,
   callback: MutationCallback,
-  options: MutationObserverOptions = {},
+  options: UseMutationObserverOptions = {},
 ) {
   const { window = defaultWindow, ...mutationOptions } = options
   let observer: MutationObserver | undefined
