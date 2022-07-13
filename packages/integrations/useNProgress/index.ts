@@ -4,6 +4,8 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { isNumber, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref, watchEffect } from 'vue-demi'
 
+export type UseNProgressOptions = Partial<NProgressOptions>
+
 /**
  * Reactive progress bar.
  *
@@ -11,7 +13,7 @@ import { computed, ref, watchEffect } from 'vue-demi'
  */
 export function useNProgress(
   currentProgress: MaybeComputedRef<number | null | undefined> = null,
-  options?: Partial<NProgressOptions>,
+  options?: UseNProgressOptions,
 ) {
   const progress = ref(currentProgress)
   const isLoading = computed({
@@ -46,3 +48,5 @@ export function useNProgress(
     },
   }
 }
+
+export type UseNProgressReturn = ReturnType<typeof useNProgress>
