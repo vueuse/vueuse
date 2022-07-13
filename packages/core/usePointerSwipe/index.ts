@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 import { SwipeDirection } from '../useSwipe/index'
 import type { PointerType, Position } from '../types'
 
-export interface PointerSwipeOptions {
+export interface UsePointerSwipeOptions {
   /**
    * @default 50
    */
@@ -35,7 +35,7 @@ export interface PointerSwipeOptions {
   pointerTypes?: PointerType[]
 }
 
-export interface PointerSwipeReturn {
+export interface UsePointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
   direction: Readonly<Ref<SwipeDirection | null>>
   readonly posStart: Position
@@ -54,8 +54,8 @@ export interface PointerSwipeReturn {
  */
 export function usePointerSwipe(
   target: MaybeComputedRef<HTMLElement | null | undefined>,
-  options: PointerSwipeOptions = {},
-): PointerSwipeReturn {
+  options: UsePointerSwipeOptions = {},
+): UsePointerSwipeReturn {
   const targetRef = resolveRef(target)
   const {
     threshold = 50,
