@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
 import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
@@ -7,8 +7,6 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export type Status = 'init' | 'play' | 'pause' | 'end'
-
-export type VoiceInfo = Pick<SpeechSynthesisVoice, 'lang' | 'name'>
 
 export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   /**
@@ -32,7 +30,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   /**
    * Gets and sets the voice that will be used to speak the utterance.
    */
-  voice?: SpeechSynthesisVoice
+  voice?: MaybeRef<SpeechSynthesisVoice>
   /**
    * Gets and sets the volume that the utterance will be spoken at.
    *
@@ -62,11 +60,6 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
   const isPlaying = ref(false)
   const status = ref<Status>('init')
 
-  const voiceInfo = {
-    lang: options.voice?.lang || 'default',
-    name: options.voice?.name || '',
-  }
-
   const spokenText = resolveRef(text || '')
   const lang = resolveRef(options.lang || 'en-US')
   const error = shallowRef(undefined) as Ref<SpeechSynthesisErrorEvent | undefined>
@@ -77,8 +70,7 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
 
   const bindEventsForUtterance = (utterance: SpeechSynthesisUtterance) => {
     utterance.lang = unref(lang)
-
-    options.voice && (utterance.voice = options.voice)
+    utterance.voice = unref(options.voice) || null
     utterance.pitch = pitch
     utterance.rate = rate
     utterance.volume = volume
@@ -150,7 +142,6 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
     isSupported,
     isPlaying,
     status,
-    voiceInfo,
     utterance,
     error,
 
