@@ -56,7 +56,7 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type MagicKeys<Reactive extends Boolean> =
+export type UseMagicKeysReturn<Reactive extends Boolean> =
   Readonly<
   Omit<Reactive extends true
     ? Record<string, boolean>
@@ -70,8 +70,8 @@ export type MagicKeys<Reactive extends Boolean> =
  *
  * @see https://vueuse.org/useMagicKeys
  */
-export function useMagicKeys(options?: UseMagicKeysOptions<false>): MagicKeys<false>
-export function useMagicKeys(options: UseMagicKeysOptions<true>): MagicKeys<true>
+export function useMagicKeys(options?: UseMagicKeysOptions<false>): UseMagicKeysReturn<false>
+export function useMagicKeys(options: UseMagicKeysOptions<true>): UseMagicKeysReturn<true>
 export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const {
     reactive: useReactive = false,

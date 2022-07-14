@@ -1,8 +1,8 @@
 import { defineComponent, reactive } from 'vue-demi'
-import type { MouseOptions } from '@vueuse/core'
+import type { UseMouseOptions } from '@vueuse/core'
 import { useMouse } from '@vueuse/core'
 
-export const UseMouse = defineComponent<MouseOptions>({
+export const UseMouse = defineComponent<UseMouseOptions>({
   name: 'UseMouse',
   props: ['touch', 'resetOnTouchEnds', 'initialValue'] as unknown as undefined,
   setup(props, { slots }) {

@@ -4,7 +4,7 @@ category: '@Math'
 
 # useRound
 
-Reactively Math.round(value).
+Reactive `Math.round`.
 
 ## Usage
 
@@ -12,5 +12,5 @@ Reactively Math.round(value).
 import { useRound } from '@vueuse/math'
 
 const value = ref(20.49)
-const result = useRound(value)
+const result = useRound(value) // 20
 ```

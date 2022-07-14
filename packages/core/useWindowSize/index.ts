@@ -4,7 +4,7 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface WindowSizeOptions extends ConfigurableWindow {
+export interface UseWindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number
   initialHeight?: number
   /**
@@ -21,7 +21,7 @@ export interface WindowSizeOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useWindowSize
  * @param options
  */
-export function useWindowSize(options: WindowSizeOptions = {}) {
+export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
     window = defaultWindow,
     initialWidth = Infinity,

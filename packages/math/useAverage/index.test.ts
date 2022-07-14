@@ -52,4 +52,15 @@ describe('useAverage', () => {
     last.value = 10
     expect(v.value).toBe(4)
   })
+
+  it('should work with rest', () => {
+    const a = ref(1)
+    const b = ref(2)
+    const sum = useAverage(a, () => b.value, 3)
+    expect(sum.value).toBe(2)
+    b.value = 11
+    expect(sum.value).toBe(5)
+    a.value = 10
+    expect(sum.value).toBe(8)
+  })
 })

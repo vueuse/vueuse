@@ -1,5 +1,5 @@
 import type { ToRefs } from 'vue-demi'
-import type { VModelOptions } from '../useVModel'
+import type { UseVModelOptions } from '../useVModel'
 import { useVModel } from '../useVModel'
 
 /**
@@ -12,7 +12,7 @@ import { useVModel } from '../useVModel'
 export function useVModels<P extends object, Name extends string>(
   props: P,
   emit?: (name: Name, ...args: any[]) => void,
-  options: VModelOptions<any> = {},
+  options: UseVModelOptions<any> = {},
 ): ToRefs<P> {
   const ret: any = {}
 

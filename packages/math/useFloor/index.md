@@ -4,7 +4,7 @@ category: '@Math'
 
 # useFloor
 
-Reactively Math.floor(value).
+Reactive `Math.floor`.
 
 ## Usage
 
@@ -12,5 +12,5 @@ Reactively Math.floor(value).
 import { useFloor } from '@vueuse/math'
 
 const value = ref(45.95)
-const result = useFloor(value)
+const result = useFloor(value) // 45
 ```

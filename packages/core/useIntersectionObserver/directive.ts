@@ -1,11 +1,11 @@
 import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
 import { useIntersectionObserver } from '.'
-import type { IntersectionObserverOptions } from '.'
+import type { UseIntersectionObserverOptions } from '.'
 
 type BindingValueFunction = IntersectionObserverCallback
 
-type BindingValueArray = [BindingValueFunction, IntersectionObserverOptions]
+type BindingValueArray = [BindingValueFunction, UseIntersectionObserverOptions]
 
 export const vIntersectionObserver: ObjectDirective<
 HTMLElement,

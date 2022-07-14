@@ -10,7 +10,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 
-export interface SpeechRecognitionOptions extends ConfigurableWindow {
+export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
   /**
    * Controls whether continuous results are returned for each recognition, or only a single result.
    *
@@ -38,7 +38,7 @@ export interface SpeechRecognitionOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition SpeechRecognition
  * @param options
  */
-export function useSpeechRecognition(options: SpeechRecognitionOptions = {}) {
+export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) {
   const {
     interimResults = true,
     continuous = true,

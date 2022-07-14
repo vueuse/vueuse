@@ -10,7 +10,7 @@ export type Status = 'init' | 'play' | 'pause' | 'end'
 
 export type VoiceInfo = Pick<SpeechSynthesisVoice, 'lang' | 'name'>
 
-export interface SpeechSynthesisOptions extends ConfigurableWindow {
+export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   /**
    * Language for SpeechSynthesis
    *
@@ -48,7 +48,7 @@ export interface SpeechSynthesisOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
  * @param options
  */
-export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: SpeechSynthesisOptions = {}) {
+export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseSpeechSynthesisOptions = {}) {
   const {
     pitch = 1,
     rate = 1,
