@@ -1,4 +1,4 @@
-import { readonly, ref, watch } from 'vue-demi'
+import { nextTick, readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
@@ -89,7 +89,7 @@ export function useStyleTag(
       { immediate: true },
     )
 
-    isLoaded.value = true
+    nextTick(() => isLoaded.value = true)
   }
 
   const unload = () => {
