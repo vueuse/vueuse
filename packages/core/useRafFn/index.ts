@@ -4,7 +4,7 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface RafFnOptions extends ConfigurableWindow {
+export interface UseRafFnOptions extends ConfigurableWindow {
   /**
    * Start the requestAnimationFrame loop immediately on creation
    *
@@ -20,7 +20,7 @@ export interface RafFnOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useRafFn(fn: Fn, options: RafFnOptions = {}): Pausable {
+export function useRafFn(fn: Fn, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
     window = defaultWindow,

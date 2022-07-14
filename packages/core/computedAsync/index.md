@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: Reactivity
 alias: asyncComputed
 ---
 

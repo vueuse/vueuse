@@ -4,7 +4,7 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 
-export interface TimestampOptions<Controls extends boolean> {
+export interface UseTimestampOptions<Controls extends boolean> {
   /**
    * Expose more controls
    *
@@ -40,9 +40,9 @@ export interface TimestampOptions<Controls extends boolean> {
  * @see https://vueuse.org/useTimestamp
  * @param options
  */
-export function useTimestamp(options?: TimestampOptions<false>): Ref<number>
-export function useTimestamp(options: TimestampOptions<true>): { timestamp: Ref<number> } & Pausable
-export function useTimestamp(options: TimestampOptions<boolean> = {}) {
+export function useTimestamp(options?: UseTimestampOptions<false>): Ref<number>
+export function useTimestamp(options: UseTimestampOptions<true>): { timestamp: Ref<number> } & Pausable
+export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     offset = 0,

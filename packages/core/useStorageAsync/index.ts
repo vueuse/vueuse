@@ -10,18 +10,18 @@ import { useEventListener } from '../useEventListener'
 import { guessSerializerType } from '../useStorage/guess'
 import { defaultWindow } from '../_configurable'
 
-export interface StorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
+export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**
    * Custom data serialization
    */
   serializer?: SerializerAsync<T>
 }
 
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<string>): RemovableRef<string>
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<boolean>): RemovableRef<boolean>
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<number>): RemovableRef<number>
-export function useStorageAsync<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
-export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLikeAsync, options?: StorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
+export function useStorageAsync(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean>
+export function useStorageAsync(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number>
+export function useStorageAsync<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
 
 /**
  * Reactive Storage in with async support.
@@ -36,7 +36,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   key: string,
   initialValue: MaybeComputedRef<T>,
   storage: StorageLikeAsync | undefined,
-  options: StorageAsyncOptions<T> = {},
+  options: UseStorageAsyncOptions<T> = {},
 ): RemovableRef<T> {
   const {
     flush = 'pre',

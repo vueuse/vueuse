@@ -4,7 +4,7 @@ category: '@Math'
 
 # useCeil
 
-Reactively Math.ceil(value).
+Reactive `Math.ceil`
 
 ## Usage
 
@@ -12,5 +12,5 @@ Reactively Math.ceil(value).
 import { useCeil } from '@vueuse/math'
 
 const value = ref(0.95)
-const result = useCeil(value)
+const result = useCeil(value) // 1
 ```

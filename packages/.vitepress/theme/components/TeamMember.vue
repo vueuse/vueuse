@@ -49,7 +49,7 @@ defineProps<{
       <template v-if="data.functions">
         <div op50 i-carbon:function-math title="Functions" />
         <div flex="~ col gap-1" text-left text-sm w-max>
-          <a v-for="f of data.functions" :key="f" :href="`/${f}`">
+          <a v-for="f of data.functions" :key="f" :href="`/${f}`" target="_blank">
             <code>{{ f }}</code>
           </a>
         </div>

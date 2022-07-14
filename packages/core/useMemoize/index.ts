@@ -49,7 +49,7 @@ const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
 /**
  * Memoized function
  */
-export interface UseMemoizedFn <Result, Args extends unknown[]> {
+export interface UseMemoizeReturn <Result, Args extends unknown[]> {
   /**
    * Get result from cache or call memoized function
    */
@@ -76,16 +76,18 @@ export interface UseMemoizedFn <Result, Args extends unknown[]> {
   cache: UseMemoizeCache<CacheKey, Result>
 }
 
+export interface UseMemoizeOptions<Result, Args extends unknown[]> {
+  getKey?: (...args: Args) => string
+  cache?: UseMemoizeCache<CacheKey, Result>
+}
+
 /**
  * Reactive function result cache based on arguments
  */
 export function useMemoize<Result, Args extends unknown[]>(
   resolver: (...args: Args) => Result,
-  options?: {
-    getKey?: (...args: Args) => string
-    cache?: UseMemoizeCache<CacheKey, Result>
-  },
-): UseMemoizedFn<Result, Args> {
+  options?: UseMemoizeOptions<Result, Args>,
+): UseMemoizeReturn<Result, Args> {
   const initCache = (): UseMemoizeCache<CacheKey, Result> => {
     if (options?.cache)
       return reactive(options.cache)
@@ -127,7 +129,7 @@ export function useMemoize<Result, Args extends unknown[]>(
     cache.clear()
   }
 
-  const memoized: Partial<UseMemoizedFn<Result, Args>> = (...args: Args): Result => {
+  const memoized: Partial<UseMemoizeReturn<Result, Args>> = (...args: Args): Result => {
     // Get data from cache
     const key = generateKey(...args)
     if (cache.has(key))
@@ -140,5 +142,5 @@ export function useMemoize<Result, Args extends unknown[]>(
   memoized.generateKey = generateKey
   memoized.cache = cache
 
-  return memoized as UseMemoizedFn<Result, Args>
+  return memoized as UseMemoizeReturn<Result, Args>
 }
