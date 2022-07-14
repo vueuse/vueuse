@@ -116,7 +116,7 @@ const coreTeamMembers: CoreTeam[] = [
     sponsors: false,
     functions: [
       'useElementByPoint',
-      'useSafeArea',
+      'useScreenSafeArea',
     ],
     description: '',
   },
