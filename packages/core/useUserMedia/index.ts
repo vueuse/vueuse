@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
@@ -12,13 +12,13 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    * If the stream is enabled
    * @default false
    */
-  enabled?: MaybeRef<boolean>
+  enabled?: MaybeComputedRef<boolean>
   /**
    * Recreate stream when the input devices id changed
    *
    * @default true
    */
-  autoSwitch?: MaybeRef<boolean>
+  autoSwitch?: MaybeComputedRef<boolean>
   /**
    * The device id of video input
    *
@@ -27,7 +27,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    *
    * @default undefined
    */
-  videoDeviceId?: MaybeRef<string | undefined | false | 'none'>
+  videoDeviceId?: MaybeComputedRef<string | undefined | false | 'none'>
   /**
    * The device id of audi input
    *
@@ -36,7 +36,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    *
    * @default undefined
    */
-  audioDeviceId?: MaybeRef<string | undefined | false | 'none'>
+  audioDeviceId?: MaybeComputedRef<string | undefined | false | 'none'>
 }
 
 /**

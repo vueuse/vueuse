@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { throttleFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import type { UseRefHistoryOptions, UseRefHistoryReturn } from '../useRefHistory'
@@ -13,7 +13,7 @@ import { useRefHistory } from '../useRefHistory'
  */
 export function useThrottledRefHistory<Raw, Serialized = Raw>(
   source: Ref<Raw>,
-  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeRef<number>; trailing?: boolean } = {},
+  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeComputedRef<number>; trailing?: boolean } = {},
 ): UseRefHistoryReturn<Raw, Serialized> {
   const { throttle = 200, trailing = true } = options
   const filter = throttleFilter(throttle, trailing)

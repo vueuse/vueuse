@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
@@ -10,7 +10,7 @@ export interface UseDisplayMediaOptions extends ConfigurableNavigator {
    * If the stream is enabled
    * @default false
    */
-  enabled?: MaybeRef<boolean>
+  enabled?: MaybeComputedRef<boolean>
 
   /**
    * If the stream video media constraints

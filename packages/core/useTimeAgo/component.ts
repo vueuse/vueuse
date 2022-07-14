@@ -1,10 +1,10 @@
 import { defineComponent, reactive } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { UseTimeAgoOptions } from '@vueuse/core'
 import { useTimeAgo } from '@vueuse/core'
 
 interface UseTimeAgoComponentOptions extends Omit<UseTimeAgoOptions<true>, 'controls'> {
-  time: MaybeRef<Date | number | string>
+  time: MaybeComputedRef<Date | number | string>
 }
 
 export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({

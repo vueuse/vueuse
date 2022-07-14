@@ -1,7 +1,7 @@
 import { readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
@@ -53,7 +53,7 @@ let _id = 0
  * @param options
  */
 export function useStyleTag(
-  css: MaybeRef<string>,
+  css: MaybeComputedRef<string>,
   options: UseStyleTagOptions = {},
 ): UseStyleTagReturn {
   const isLoaded = ref(false)

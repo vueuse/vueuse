@@ -1,6 +1,6 @@
 import { readonly, ref, unref, watch } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 
 /**
  * Reactive URL representing an object.
@@ -8,7 +8,7 @@ import type { MaybeRef } from '@vueuse/shared'
  * @see https://vueuse.org/useObjectUrl
  * @param object
  */
-export function useObjectUrl(object: MaybeRef<Blob | MediaSource | undefined>) {
+export function useObjectUrl(object: MaybeComputedRef<Blob | MediaSource | undefined>) {
   const url = ref<string | undefined>()
 
   const release = () => {

@@ -1,6 +1,6 @@
 import type { ToRefs } from 'vue-demi'
 import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
-import type { MaybeRef } from '../utils'
+import type { MaybeComputedRef } from '../utils'
 
 /**
  * Extended `toRefs` that also accepts refs of an object.
@@ -9,7 +9,7 @@ import type { MaybeRef } from '../utils'
  * @param objectRef A ref or normal object or array.
  */
 export function toRefs<T extends object>(
-  objectRef: MaybeRef<T>,
+  objectRef: MaybeComputedRef<T>,
 ): ToRefs<T> {
   if (!isRef(objectRef))
     return _toRefs(objectRef)

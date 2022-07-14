@@ -1,5 +1,5 @@
 import { isRef, reactive, unref } from 'vue-demi'
-import type { MaybeRef } from '../utils'
+import type { MaybeComputedRef } from '../utils'
 
 /**
  * Converts ref to reactive.
@@ -8,7 +8,7 @@ import type { MaybeRef } from '../utils'
  * @param objectRef A ref of object
  */
 export function toReactive<T extends object>(
-  objectRef: MaybeRef<T>,
+  objectRef: MaybeComputedRef<T>,
 ): T {
   if (!isRef(objectRef))
     return reactive(objectRef) as T

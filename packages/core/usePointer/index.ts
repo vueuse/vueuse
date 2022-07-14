@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { objectPick, toRefs } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
@@ -29,12 +29,12 @@ export interface UsePointerOptions extends ConfigurableWindow {
   /**
    * Initial values
    */
-  initialValue?: MaybeRef<Partial<UsePointerState>>
+  initialValue?: MaybeComputedRef<Partial<UsePointerState>>
 
   /**
    * @default window
    */
-  target?: MaybeRef<EventTarget | null | undefined> | Document | Window
+  target?: MaybeComputedRef<EventTarget | null | undefined> | Document | Window
 }
 
 const defaultState: UsePointerState = /* #__PURE__ */ {

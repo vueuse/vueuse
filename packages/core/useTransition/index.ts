@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { clamp, isFunction, isNumber, identity as linear, noop, useTimeoutFn } from '@vueuse/shared'
 import { useRafFn } from '../useRafFn'
 
@@ -21,17 +21,17 @@ export interface UseTransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */
-  delay?: MaybeRef<number>
+  delay?: MaybeComputedRef<number>
 
   /**
    * Disables the transition
    */
-  disabled?: MaybeRef<boolean>
+  disabled?: MaybeComputedRef<boolean>
 
   /**
    * Transition duration in milliseconds
    */
-  duration?: MaybeRef<number>
+  duration?: MaybeComputedRef<number>
 
   /**
    * Callback to execute after transition finishes
@@ -46,7 +46,7 @@ export interface UseTransitionOptions {
   /**
    * Easing function or cubic bezier points for calculating transition values
    */
-  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
+  transition?: MaybeComputedRef<EasingFunction | CubicBezierPoints>
 }
 
 /**
@@ -115,7 +115,7 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
 export function useTransition(source: Ref<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeComputedRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
 export function useTransition<T extends Ref<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
@@ -128,7 +128,7 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: UseT
  * @param options
  */
 export function useTransition(
-  source: Ref<number | number[]> | MaybeRef<number>[],
+  source: Ref<number | number[]> | MaybeComputedRef<number>[],
   options: UseTransitionOptions = {},
 ): ComputedRef<any> {
   const {
@@ -148,7 +148,7 @@ export function useTransition(
 
   // raw source value
   const sourceValue = computed(() => {
-    const s = unref<number | MaybeRef<number>[]>(source)
+    const s = unref<number | MaybeComputedRef<number>[]>(source)
     return isNumber(s) ? s : s.map(unref) as number[]
   })
 

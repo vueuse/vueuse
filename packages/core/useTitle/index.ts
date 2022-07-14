@@ -1,4 +1,4 @@
-import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { isFunction, isString, resolveRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { unref, watch } from 'vue-demi'
@@ -18,11 +18,11 @@ export interface UseTitleOptions extends ConfigurableDocument {
    *
    * @default '%s'
    */
-  titleTemplate?: MaybeRef<string> | ((title: string) => string)
+  titleTemplate?: MaybeComputedRef<string> | ((title: string) => string)
 }
 
 export function useTitle(
-  newTitle?: MaybeRef<string | null | undefined>,
+  newTitle?: MaybeComputedRef<string | null | undefined>,
   options?: UseTitleOptions,
 ): Ref<string>
 

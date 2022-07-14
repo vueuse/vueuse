@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { useRoute, useRouter } from 'vue-router'
 
 export interface ReactiveRouteOptions {
@@ -7,7 +7,7 @@ export interface ReactiveRouteOptions {
    *
    * @default 'replace'
    */
-  mode?: MaybeRef<'replace' | 'push'>
+  mode?: MaybeComputedRef<'replace' | 'push'>
 
   /**
    * Route instance, use `useRoute()` if not given

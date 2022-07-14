@@ -1,12 +1,12 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 
 export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
-  element?: MaybeRef<HTMLTextAreaElement | undefined>
+  element?: MaybeComputedRef<HTMLTextAreaElement | undefined>
   /** Textarea content. */
-  input?: MaybeRef<string | undefined>
+  input?: MaybeComputedRef<string | undefined>
   /** Watch sources that should trigger a textarea resize. */
   watch?: WatchSource | Array<WatchSource>
   /** Function called when the textarea size changes. */

@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 
@@ -43,8 +43,8 @@ export interface UseStepperReturn<StepName, Steps, Step> {
   isAfter: (step: StepName) => boolean
 }
 
-export function useStepper<T extends string | number>(steps: MaybeRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
-export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
+export function useStepper<T extends string | number>(steps: MaybeComputedRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
+export function useStepper<T extends Record<string, any>>(steps: MaybeComputedRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
 export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any, any, any> {
   const stepsRef = ref<any[]>(steps)
   const stepNames = computed<any[]>(() => Array.isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))

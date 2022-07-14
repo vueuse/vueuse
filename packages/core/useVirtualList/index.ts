@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, watch } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
 
 export interface UseVirtualListOptions {
@@ -23,7 +23,7 @@ export interface UseVirtualListItem<T> {
   index: number
 }
 
-export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions) {
+export function useVirtualList <T = any>(list: MaybeComputedRef<T[]>, options: UseVirtualListOptions) {
   const containerRef: Ref = ref<HTMLElement | null>()
   const size = useElementSize(containerRef)
 
