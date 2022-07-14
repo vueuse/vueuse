@@ -112,7 +112,7 @@ import Demo from \'./demo.vue\'
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/demo.vue" targat="blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/demo.vue" target="_blank">source</a></p>
 <Demo/>
 </DemoContainer>
 `
