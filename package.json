@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/monorepo",
-  "version": "8.9.1",
+  "version": "8.9.3",
   "private": true,
   "packageManager": "pnpm@7.1.7",
   "description": "Collection of essential Vue Composition Utilities",
@@ -27,7 +27,6 @@
     "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
-    "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
     "update": "nr -C packages/metadata update && esno scripts/update.ts",

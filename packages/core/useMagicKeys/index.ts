@@ -96,12 +96,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   function reset() {
-    for (const key of usedKeys) {
-      if (useReactive)
-        refs[key] = false
-      else
-        refs[key].value = false
-    }
+    for (const key of usedKeys)
+      setRefs(key, false)
   }
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
