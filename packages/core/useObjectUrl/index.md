@@ -18,7 +18,7 @@ import { shallowRef } from 'vue'
 const file = shallowRef()
 const url = useObjectUrl(file)
 
-const onFileChange = (e) => {
+const onFileChange = (event) => {
   file.value = event.target.files[0]
 }
 </script>
