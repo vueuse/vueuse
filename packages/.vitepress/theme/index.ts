@@ -1,5 +1,6 @@
 import { VPTheme } from '@vue/theme'
 import { handleRedirects } from './redirects'
+import { setupGlobDirectives } from './directives'
 
 import './styles/code.css'
 import './styles/demo.css'
@@ -12,8 +13,10 @@ const theme: any = {
   enhanceApp(ctx: any) {
     VPTheme.enhanceApp?.(ctx)
 
-    if (typeof window !== 'undefined')
+    if (typeof window !== 'undefined') {
       handleRedirects(ctx.router)
+      setupGlobDirectives(ctx.app)
+    }
   },
 }
 

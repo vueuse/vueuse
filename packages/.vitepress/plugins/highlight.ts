@@ -19,10 +19,11 @@ export default async () => {
       'vitesse-light',
     ],
   })
-
+  // if not `pre` tag, will rerender
+  const copy = '<pre class="copy" v-copy></pre>'
   return (code: string, lang: string) => {
     if (!lang || lang === 'text')
-      return `<pre v-pre><code>${escapeHtml(code)}</code></pre>`
+      return `${copy}<pre v-pre><code>${escapeHtml(code)}</code></pre>`
 
     const dark = highlighter
       .codeToHtml(code, { lang, theme: 'vitesse-dark' })
@@ -30,6 +31,6 @@ export default async () => {
     const light = highlighter
       .codeToHtml(code, { lang, theme: 'vitesse-light' })
       .replace('<pre class="shiki"', '<pre v-pre class="shiki shiki-light"')
-    return dark + light
+    return copy + dark + light
   }
 }

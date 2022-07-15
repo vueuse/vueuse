@@ -11,7 +11,7 @@ html .vt-doc {
   --vt-code-constant: #a65e2b;
   --vt-code-keyword: #1c6b48;
   --vt-code-variable: #c2b36e;
-  
+
   --vt-code-string: #b56959;
   --vt-code-boolean: #1c6b48;
   --vt-code-number: #296aa3;
@@ -21,6 +21,11 @@ html .vt-doc {
 
   --vt-code-inserted: #1c6b48;
   --vt-code-deleted: #a14f55;
+
+  --vt-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' class='h-6 w-6' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E");
+  --vt-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' class='h-6 w-6' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4'/%3E%3C/svg%3E");
+
+  --vt-code-copy-code-hover-bg: rgba(0, 0, 0, 0.05);
 }
 
 html.dark .vt-doc {
@@ -30,7 +35,7 @@ html.dark .vt-doc {
   --vt-code-constant: #a65e2b;
   --vt-code-keyword: #4d9375;
   --vt-code-variable: #c2b36e;
-  
+
   --vt-code-string: #d48372;
   --vt-code-boolean: #1c6b48;
   --vt-code-number: #6394bf;
@@ -40,6 +45,8 @@ html.dark .vt-doc {
 
   --vt-code-inserted: #4d9375;
   --vt-code-deleted: #bc6066;
+
+  --vt-code-copy-code-hover-bg: rgba(255, 255, 255, 0.05);
 }
 
 /* Overrides */
@@ -89,7 +96,7 @@ html:not(.dark) .shiki-dark {
 }
 
 /* Line highlighting */
-/* 
+/*
 .highlight-lines {
   position: absolute;
   top: 0;
@@ -108,3 +115,61 @@ html:not(.dark) .shiki-dark {
 .highlight-lines .highlighted {
   background-color: var(--prism-line-highlight-background);
 } */
+
+.vt-doc [class*='language-'] > pre.copy {
+  padding: 0;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--vt-code-block-bg);
+  opacity: 0;
+  cursor: pointer;
+  background-image: var(--vt-icon-copy);
+  background-position: 50%;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  transition: opacity 0.25s;
+}
+.vt-doc [class*='language-']:hover::before {
+  opacity: 0;
+}
+.vt-doc [class*='language-']:hover > pre.copy {
+  opacity: 1;
+  overflow: visible;
+}
+
+.vt-doc [class*='language-'] > pre.copy:hover {
+  background-color: var(--vt-code-copy-code-hover-bg);
+}
+
+.vt-doc [class*='language-'] > pre.copy.copied,
+.vt-doc [class*='language-'] > pre.copy:hover.copied {
+  border-radius: 0 4px 4px 0;
+  background-color: var(--vt-code-copy-code-hover-bg);
+  background-image: var(--vt-icon-copied);
+}
+
+.vt-doc [class*='language-'] > pre.copy.copied::before,
+.vt-doc [class*='language-'] > pre.copy:hover.copied::before {
+  position: relative;
+  left: -65px;
+  display: block;
+  border-radius: 4px 0 0 4px;
+  padding-top: 10px;
+  width: 64px;
+  height: 40px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(128,128,128,1);
+  background-color: var(--vt-code-copy-code-hover-bg);
+  white-space: nowrap;
+  content: "Copied";
+}
