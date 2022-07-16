@@ -1,4 +1,3 @@
-import { useSetup } from '../../.test'
 import { useCounter } from '../useCounter'
 
 describe('useCounter', () => {

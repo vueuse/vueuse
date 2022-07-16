@@ -1,5 +1,4 @@
 import { nextTick, ref } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { watchIgnorable } from '.'
 
 describe('watchIgnorable', () => {
