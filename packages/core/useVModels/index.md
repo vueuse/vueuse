@@ -1,5 +1,6 @@
 ---
 category: Component
+related: useVModel
 ---
 
 # useVModels
@@ -24,7 +25,3 @@ export default {
   },
 }
 ```
-
-## Related Functions
-
-- `useVModel`

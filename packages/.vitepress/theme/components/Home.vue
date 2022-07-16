@@ -5,25 +5,11 @@ import HomeFooter from './HomeFooter.vue'
 </script>
 
 <template>
-  <main class="home" aria-labelledby="main-title" flex flex-col items-center>
-    <HomeHero />
-    <slot name="hero" />
-    <HomeFeatures />
-    <slot name="features" />
-
+  <div class="home" mt-4 flex flex-col items-center>
     <HomeTeam />
-
-    <HomeContributors />
 
     <HomeSponsors />
 
-    <HomeFooter />
-    <slot name="footer" />
-  </main>
+    <HomeContributors />
+  </div>
 </template>
-
-<style scoped>
-.home {
-  padding-top: var(--header-height);
-}
-</style>
