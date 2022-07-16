@@ -1,10 +1,10 @@
 ---
-category: Utilities
+category: Array
 ---
 
 # useArrayReduce
 
-Reactively array reduce.
+Reactive `Array.reduce`.
 
 ## Usage
 

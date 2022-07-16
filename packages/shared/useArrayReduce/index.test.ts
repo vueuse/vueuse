@@ -7,7 +7,7 @@ describe('useArrayReduce', () => {
     expect(useArrayReduce).toBeDefined()
   })
 
-  it('should calulate the array sum', () => {
+  it('should calculate the array sum', () => {
     useSetup(() => {
       const item1 = ref(1)
       const item2 = ref(2)
@@ -35,7 +35,7 @@ describe('useArrayReduce', () => {
 
   it('should work with initialValue', () => {
     const list = reactive([{ num: 1 }, { num: 2 }])
-    const sum = useArrayReduce(list, (sum, val) => sum + val.num, 0)
+    const sum = useArrayReduce(list, (sum, val) => sum + val.num, 0 as number)
     expect(sum.value).toBe(3)
 
     list.push({ num: 3 })
