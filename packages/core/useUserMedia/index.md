@@ -1,5 +1,6 @@
 ---
 category: Sensors
+related: useDevicesList, usePermission
 ---
 
 # useUserMedia
@@ -44,8 +45,3 @@ const { stream } = useUserMedia({
   audioDeviceId: currentMicrophone,
 })
 ```
-
-## Related Functions
-
-- `useDevicesList`
-- `usePermission`

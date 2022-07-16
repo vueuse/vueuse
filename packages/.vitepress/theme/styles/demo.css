@@ -1,6 +1,6 @@
 .demo {
   font-size: var(--vt-doc-code-font-size);
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-code-block-bg);
   padding: 2em;
   position: relative;
   margin-bottom: 10px;
@@ -73,7 +73,7 @@
   }
 
   button:hover {
-    background-color: var(--vp-c-brand-active);
+    background-color: var(--vp-c-brand-dark);
   }
 
   button:active {

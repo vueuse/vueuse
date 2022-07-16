@@ -16,7 +16,7 @@ export function MarkdownTransform(): Plugin {
     name: 'vueuse-md-transform',
     enforce: 'pre',
     async transform(code, id) {
-      if (!id.endsWith('.md'))
+      if (!id.match(/\.md\b/))
         return null
 
       // linkify function names
@@ -75,7 +75,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 ## Type Declarations
 
 <details>
-<summary>Show Type Declarations</summary>
+<summary op50 italic>Show Type Declarations</summary>
 
 ${code}
 

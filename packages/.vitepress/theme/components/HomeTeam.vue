@@ -3,9 +3,11 @@ import { contributors, coreTeamMembers } from '../../../contributors'
 </script>
 
 <template>
-  <h2 op50 font-normal pt-5 pb-2>
-    Meet The Team
-  </h2>
+  <div class="vp-doc">
+    <h2 op50 font-normal pt-5 pb-2>
+      Meet The Team
+    </h2>
+  </div>
   <div grid="~ sm:cols-2 md:cols-3 lg:cols-4 gap-x-3 gap-y-20 items-center" p-10>
     <TeamMember
       v-for="c of coreTeamMembers"

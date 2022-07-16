@@ -1,5 +1,6 @@
 ---
 category: State
+related: useManualRefHistory
 ---
 
 # useRefHistory
@@ -178,10 +179,6 @@ batch(() => {
 ```
 
 Another option is to avoid mutating the original ref value using `arr.value = [...arr.value].splice(1,1)`.
-
-## Related Functions
-
-- `useManualRefHistory`
 
 ## Recommended Readings
 
