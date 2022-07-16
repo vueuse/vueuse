@@ -5,8 +5,7 @@ import { computed } from 'vue-demi'
 
 export function useArraySome<T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
-  fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => boolean,
+  fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => unknown,
 ): ComputedRef<boolean> {
-  const cb = (element: MaybeComputedRef<T>, index: number, array: MaybeComputedRef<T>[]) => fn(resolveUnref(element), index, array)
-  return computed(() => resolveUnref(list).some(cb))
+  return computed(() => resolveUnref(list).some((element, index, array) => fn(resolveUnref(element), index, array)))
 }
