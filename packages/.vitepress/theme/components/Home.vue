@@ -8,8 +8,6 @@ import HomeFooter from './HomeFooter.vue'
   <main class="home" aria-labelledby="main-title" flex flex-col items-center>
     <HomeHero />
     <slot name="hero" />
-    <HomeFeatures />
-    <slot name="features" />
 
     <HomeTeam />
 

@@ -27,14 +27,14 @@ const features = computed<Feature[]>(() => {
 #highlights {
   max-width: 960px;
   margin: 0px auto;
-  color: var(--vt-c-text-2);
+  color: var(--vp-c-text-2);
 }
 
 #highlights h3 {
   font-weight: 600;
   font-size: 20px;
   letter-spacing: -0.4px;
-  color: var(--vt-c-text-1);
+  color: var(--vp-c-text-1);
   transition: color 0.5s;
   margin-bottom: 0.75em;
 }

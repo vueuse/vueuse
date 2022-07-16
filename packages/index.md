@@ -1,8 +1,14 @@
 ---
-page: true
-heroText: VueUse
-tagline: Collection of Essential<br>Vue Composition Utilities
-description: Vue is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects.
+layout: home
+sidebar: false
+
+hero:
+  name: VueUse
+  text: Collection of Vue Composition Utilities
+  tagline: Collection of Essential Vue Composition Utilities
+  image:
+      src: /favicon.svg
+      alt: VueUse
 
 features:
   - title: 🎛 Feature Rich
@@ -23,8 +29,6 @@ features:
     details: Documentation of functions also come with interactive demos!
   - title: 🔌 Add-ons
     details: Support various add-ons like Router, Firebase, RxJS, etc.
-
-footer: MIT Licensed | Copyright © 2020-PRESENT Anthony Fu and @VueUse contributors
 ---
 
 <Home />

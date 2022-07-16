@@ -107,7 +107,7 @@ html:not(.dark) .light\:hidden {
 .description {
   max-width: 760px;
   line-height: 1.5;
-  color: var(--vt-c-text-2);
+  color: var(--vp-c-text-2);
   transition: color 0.5s;
   font-size: 19px;
 }
@@ -115,7 +115,7 @@ html:not(.dark) .light\:hidden {
 .actions a {
   font-size: 16px;
   display: inline-block;
-  background-color: var(--vt-c-bg-mute);
+  background-color: var(--vp-c-bg-mute);
   padding: 8px 18px;
   font-weight: 500;
   border-radius: 8px;
@@ -124,7 +124,7 @@ html:not(.dark) .light\:hidden {
 
 .actions .get-started {
   font-weight: 600;
-  background-color: var(--vt-c-brand);
+  background-color: var(--vp-c-brand);
   color: #fff;
 }
 
@@ -138,11 +138,11 @@ html:not(.dark) .light\:hidden {
 }
 
 .dark .actions .get-started {
-  color: var(--vt-c-indigo);
+  color: var(--vp-c-indigo);
 }
 
 .actions .get-started:hover {
-  background-color: var(--vt-c-green-dark);
+  background-color: var(--vp-c-green-dark);
   transition-duration: 0.2s;
 }
 
@@ -151,19 +151,19 @@ html:not(.dark) .light\:hidden {
 }
 
 .dark .actions .get-started:hover {
-  background-color: var(--vt-c-green-light);
+  background-color: var(--vp-c-green-light);
 }
 
 .actions .setup {
-  color: var(--vt-c-text-code);
+  color: var(--vp-c-text-code);
 }
 
 .actions .setup:hover {
-  background-color: var(--vt-c-gray-light-4);
+  background-color: var(--vp-c-gray-light-4);
   transition-duration: 0.2s;
 }
 
 .dark .actions .setup:hover {
-  background-color: var(--vt-c-gray-dark-3);
+  background-color: var(--vp-c-gray-dark-3);
 }
 </style>

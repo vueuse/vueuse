@@ -50,7 +50,6 @@
     "@vitest/ui": "^0.18.0",
     "@vue/compiler-sfc": "^3.2.37",
     "@vue/test-utils": "^2.0.2",
-    "@vue/theme": "^1.0.2",
     "axios": "^0.27.2",
     "bumpp": "^8.2.1",
     "consola": "^2.15.3",
@@ -93,7 +92,7 @@
     "vite": "^2.9.14",
     "vite-plugin-inspect": "^0.5.1",
     "vite-plugin-pwa": "^0.12.2",
-    "vitepress": "^0.22.4",
+    "vitepress": "^1.0.0-alpha.4",
     "vitest": "^0.18.0",
     "vue": "^3.2.37",
     "vue2": "npm:vue@^2.7.4"

@@ -31,7 +31,7 @@ const { frontmatter } = useData()
 }
 
 .footer {
-  border-top: 1px solid var(--vt-c-divider-light);
+  border-top: 1px solid var(--vp-c-divider-light);
 }
 
 @media (min-width: 420px) {
@@ -45,6 +45,6 @@ const { frontmatter } = useData()
   text-align: center;
   line-height: 1.4;
   font-size: .9rem;
-  color: var(--vt-c-text-light);
+  color: var(--vp-c-text-light);
 }
 </style>
