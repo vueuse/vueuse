@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useSpeechSynthesis } from '@vueuse/core'
 
-const lang = ref('en-US')
+const voice = ref<SpeechSynthesisVoice>({ lang: 'en-US' } as SpeechSynthesisVoice)
 const text = ref('Hello, everyone! Good morning!')
 
 const speech = useSpeechSynthesis(text, {
-  lang,
+  lang: voice.value.lang,
 })
 
 let synth: SpeechSynthesis
 
 const voices = ref<SpeechSynthesisVoice[]>([])
 
+watch(voice, (newVoice) => {
+  speech.utterance.value.voice = newVoice
+})
+
 if (speech.isSupported) {
   // load at last
   setTimeout(() => {
     synth = window.speechSynthesis
     voices.value = synth.getVoices()
+    voice.value = voices.value[0]
   })
 }
 
@@ -57,7 +62,7 @@ const stop = () => {
       <label class="font-bold mr-2">Language</label>
       <div bg="$vt-c-bg" border="$vt-c-divider-light 1" inline-flex items-center relative rounded>
         <i i-carbon-language absolute left-2 opacity-80 pointer-events-none />
-        <select v-model="lang" px-8 border-0 bg-transparent h-9 rounded appearance-none>
+        <select v-model="voice" px-8 border-0 bg-transparent h-9 rounded appearance-none>
           <option bg="$vt-c-bg" disabled>
             Select Language
           </option>
@@ -65,7 +70,7 @@ const stop = () => {
             v-for="(voice, i) in voices"
             :key="i"
             bg="$vt-c-bg"
-            :value="voice.lang"
+            :value="voice"
           >
             {{ `${voice.name} (${voice.lang})` }}
           </option>
