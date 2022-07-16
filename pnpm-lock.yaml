@@ -26,7 +26,6 @@ importers:
       '@vitest/ui': ^0.18.0
       '@vue/compiler-sfc': ^3.2.37
       '@vue/test-utils': ^2.0.2
-      '@vue/theme': ^1.0.2
       axios: ^0.27.2
       bumpp: ^8.2.1
       consola: ^2.15.3
@@ -90,7 +89,6 @@ importers:
       '@vitest/ui': 0.18.0
       '@vue/compiler-sfc': 3.2.37
       '@vue/test-utils': 2.0.2_vue@3.2.37
-      '@vue/theme': 1.0.2_vue@3.2.37
       axios: 0.27.2
       bumpp: 8.2.1
       consola: 2.15.3
@@ -272,30 +270,10 @@ importers:
 
 packages:
 
-  /@algolia/autocomplete-core/1.5.0:
-    resolution: {integrity: sha512-E7+VJwcvwMM8vPeaVn7fNUgix8WHV8A1WUeHDi2KHemCaaGc8lvUnP3QnvhMxiDhTe7OpMEv4o2TBUMyDgThaw==}
-    dependencies:
-      '@algolia/autocomplete-shared': 1.5.0
-    dev: true
-
   /@algolia/autocomplete-core/1.6.3:
     resolution: {integrity: sha512-dqQqRt01fX3YuVFrkceHsoCnzX0bLhrrg8itJI1NM68KjrPYQPYsE+kY8EZTCM4y8VDnhqJErR73xe/ZsV+qAA==}
     dependencies:
       '@algolia/autocomplete-shared': 1.6.3
-    dev: true
-
-  /@algolia/autocomplete-preset-algolia/1.5.0_algoliasearch@4.11.0:
-    resolution: {integrity: sha512-iiFxKERGHkvkiupmrFJbvESpP/zv5jSgH714XRiP5LDvUHaYOo4GLAwZCFf2ef/L5tdtPBARvekn6k1Xf33gjA==}
-    peerDependencies:
-      '@algolia/client-search': ^4.9.1
-      algoliasearch: ^4.9.1
-    dependencies:
-      '@algolia/autocomplete-shared': 1.5.0
-      algoliasearch: 4.11.0
-    dev: true
-
-  /@algolia/autocomplete-shared/1.5.0:
-    resolution: {integrity: sha512-bRSkqHHHSwZYbFY3w9hgMyQRm86Wz27bRaGCbNldLfbk0zUjApmE4ajx+ZCVSLqxvcUEjMqZFJzDsder12eKsg==}
     dev: true
 
   /@algolia/autocomplete-shared/1.6.3:
@@ -1700,24 +1678,8 @@ packages:
       '@babel/helper-validator-identifier': 7.16.7
       to-fast-properties: 2.0.0
 
-  /@docsearch/css/3.0.0-alpha.42:
-    resolution: {integrity: sha512-AGwI2AXUacYhVOHmYnsXoYDJKO6Ued2W+QO80GERbMLhC7GH5tfvtW5REs/s7jSdcU3vzFoxT8iPDBCh/PkrlQ==}
-    dev: true
-
   /@docsearch/css/3.1.0:
     resolution: {integrity: sha512-bh5IskwkkodbvC0FzSg1AxMykfDl95hebEKwxNoq4e5QaGzOXSBgW8+jnMFZ7JU4sTBiB04vZWoUSzNrPboLZA==}
-    dev: true
-
-  /@docsearch/js/3.0.0-alpha.42:
-    resolution: {integrity: sha512-8rxxsvFKS5GzDX2MYMETeib4EOwAkoxVUHFP5R4tSENXojhuCEy3np+k3Q0c9WPT+MUmWLxKJab5jyl0jmaeBQ==}
-    dependencies:
-      '@docsearch/react': 3.0.0-alpha.42
-      preact: 10.6.4
-    transitivePeerDependencies:
-      - '@algolia/client-search'
-      - '@types/react'
-      - react
-      - react-dom
     dev: true
 
   /@docsearch/js/3.1.0:
@@ -1729,21 +1691,6 @@ packages:
       - '@types/react'
       - react
       - react-dom
-    dev: true
-
-  /@docsearch/react/3.0.0-alpha.42:
-    resolution: {integrity: sha512-1aOslZJDxwUUcm2QRNmlEePUgL8P5fOAeFdOLDMctHQkV2iTja9/rKVbkP8FZbIUnZxuuCCn8ErLrjD/oXWOag==}
-    peerDependencies:
-      '@types/react': '>= 16.8.0 < 18.0.0'
-      react: '>= 16.8.0 < 18.0.0'
-      react-dom: '>= 16.8.0 < 18.0.0'
-    dependencies:
-      '@algolia/autocomplete-core': 1.5.0
-      '@algolia/autocomplete-preset-algolia': 1.5.0_algoliasearch@4.11.0
-      '@docsearch/css': 3.0.0-alpha.42
-      algoliasearch: 4.11.0
-    transitivePeerDependencies:
-      - '@algolia/client-search'
     dev: true
 
   /@docsearch/react/3.1.0:
@@ -3008,40 +2955,6 @@ packages:
       vue: 3.2.37
     dev: true
 
-  /@vue/theme/1.0.2_vue@3.2.37:
-    resolution: {integrity: sha512-jBALidvFMLgcR76UQ2foi4yD5gHn1YrigXJglZe3Rb0rm4KRVLxPeCe/CAfD42Wsm9xAfSNDUxRneQfbQpA1eg==}
-    dependencies:
-      '@docsearch/css': 3.0.0-alpha.42
-      '@docsearch/js': 3.0.0-alpha.42
-      '@vueuse/core': 7.4.1_vue@3.2.37
-      body-scroll-lock: 3.1.5
-      normalize.css: 8.0.1
-      shiki: 0.9.15
-    transitivePeerDependencies:
-      - '@algolia/client-search'
-      - '@types/react'
-      - '@vue/composition-api'
-      - react
-      - react-dom
-      - vue
-    dev: true
-
-  /@vueuse/core/7.4.1_vue@3.2.37:
-    resolution: {integrity: sha512-8UeLPCAieeQLXFHF1/28SIEK6ILLPb/4hp03hR+xkXF00gB/YUp0CEVcRAL9uQ8HTZa3S2T/jTISMc1ZjilM0A==}
-    peerDependencies:
-      '@vue/composition-api': ^1.1.0
-      vue: ^2.6.0 || ^3.2.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-      vue:
-        optional: true
-    dependencies:
-      '@vueuse/shared': 7.4.1_vue@3.2.37
-      vue: 3.2.37
-      vue-demi: 0.13.2_vue@3.2.37
-    dev: true
-
   /@vueuse/core/8.9.3_vue@3.2.37:
     resolution: {integrity: sha512-q2pr3N7FPG7IBBhEXTYOJU+38VwKMLP5IfD33byzBV4Th7f1JHT4qPKvJrvr17knAefPRzNqgt9et+xFqaRlPQ==}
     peerDependencies:
@@ -3062,21 +2975,6 @@ packages:
 
   /@vueuse/metadata/8.9.3:
     resolution: {integrity: sha512-57gZZKtWAmcJaUBmciCohvmumVLz4+FnoVnWj7U5BWs5PC2/7gU9Z0/i1i9leDNeboAauFzAq7z1GjS8eYnT+w==}
-    dev: true
-
-  /@vueuse/shared/7.4.1_vue@3.2.37:
-    resolution: {integrity: sha512-Pzb7XoHIcgPwwBJ5Ow9lZb0HTDyaLDV3pgxKauPGTMN9qvEylG06kUG+VTjJXkPsRtiGu46di8XyFeMw2dongA==}
-    peerDependencies:
-      '@vue/composition-api': ^1.1.0
-      vue: ^2.6.0 || ^3.2.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-      vue:
-        optional: true
-    dependencies:
-      vue: 3.2.37
-      vue-demi: 0.13.2_vue@3.2.37
     dev: true
 
   /@vueuse/shared/8.9.3_vue@3.2.37:
@@ -3380,10 +3278,6 @@ packages:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.0
-    dev: true
-
-  /body-scroll-lock/3.1.5:
-    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
     dev: true
 
   /body-scroll-lock/4.0.0-beta.0:
@@ -6840,10 +6734,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /normalize.css/8.0.1:
-    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
-    dev: true
-
   /npm-conf/1.1.3:
     resolution: {integrity: sha512-Yic4bZHJOt9RCFbRP3GgpqhScOY4HH3V2P8yBj6CeYq118Qr+BLXqT2JvpJ00mryLESpgOxf5XlFv4ZjXxLScw==}
     engines: {node: '>=4'}
@@ -7847,14 +7737,6 @@ packages:
 
   /shiki/0.10.1:
     resolution: {integrity: sha512-VsY7QJVzU51j5o1+DguUd+6vmCmZ5v/6gYu4vyYAhzjuNQU6P/vmSy4uQaOhvje031qQMiW0d2BwgMH52vqMng==}
-    dependencies:
-      jsonc-parser: 3.0.0
-      vscode-oniguruma: 1.6.1
-      vscode-textmate: 5.2.0
-    dev: true
-
-  /shiki/0.9.15:
-    resolution: {integrity: sha512-/Y0z9IzhJ8nD9nbceORCqu6NgT9X6I8Fk8c3SICHI5NbZRLdZYFaB233gwct9sU0vvSypyaL/qaKvzyQGJBZSw==}
     dependencies:
       jsonc-parser: 3.0.0
       vscode-oniguruma: 1.6.1
