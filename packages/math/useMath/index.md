@@ -19,6 +19,5 @@ const num = ref(2)
 const root = useMath('sqrt', num) // Ref<1.4142135623730951>
 
 num.value = 4
-console.log(root.value) // 2.8284271247461903
-```
+console.log(root.value) // 2
 ```
