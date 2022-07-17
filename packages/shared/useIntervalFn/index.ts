@@ -4,7 +4,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import type { Fn, MaybeComputedRef, Pausable } from '../utils'
 import { isClient } from '../utils'
 
-export interface IntervalFnOptions {
+export interface UseIntervalFnOptions {
   /**
    * Start the timer immediately
    *
@@ -27,7 +27,7 @@ export interface IntervalFnOptions {
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000, options: IntervalFnOptions = {}): Pausable {
+export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000, options: UseIntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
     immediateCallback = false,

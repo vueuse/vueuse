@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import type { IntervalFnOptions } from '@vueuse/shared'
+import type { UseIntervalFnOptions } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
 import { useSupported } from '../useSupported'
 
@@ -25,7 +25,7 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface UseMemoryOptions extends IntervalFnOptions {
+export interface UseMemoryOptions extends UseIntervalFnOptions {
   interval?: number
 }
 
