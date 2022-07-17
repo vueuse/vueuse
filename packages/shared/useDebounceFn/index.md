@@ -11,7 +11,7 @@ Debounce execution of a function.
 ## Usage
 
 ```js
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/shared'
 
 const debouncedFn = useDebounceFn(() => {
   // do something
@@ -23,7 +23,7 @@ document.addEventListener('resize', debouncedFn)
 You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
 
 ```js
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/shared'
 
 // If no invokation after 5000ms due to repeated input,
 // the function will be called anyway.
