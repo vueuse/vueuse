@@ -4,7 +4,7 @@ category: '@Math'
 
 # useTrunc
 
-Reactively Math.trunc(value).
+Reactive `Math.trunc`.
 
 ## Usage
 

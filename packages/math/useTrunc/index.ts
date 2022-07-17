@@ -4,10 +4,9 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
 /**
- * Reactively Math.trunc(value).
+ * Reactive `Math.trunc`.
  *
  * @see https://vueuse.org/useTrunc
- * @param value
  */
 export function useTrunc(value: MaybeComputedRef<number>): ComputedRef<number> {
   return computed<number>(() => Math.trunc(resolveUnref(value)))
