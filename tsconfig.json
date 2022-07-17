@@ -23,6 +23,7 @@
       "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"],
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
+      "@vueuse/math": ["./packages/math/index.ts"],
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"]
     },

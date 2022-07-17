@@ -15,13 +15,16 @@ const { x, y, style } = useDraggable(el, {
 </script>
 
 <template>
-  <div class="h-30">
+  <div>
+    <p italic op50 text-center>
+      Check the floatting boxes
+    </p>
     <div
       ref="el"
       p="x-4 y-2"
-      border="~ gray-400 rounded"
+      border="~ gray-400/30 rounded"
       shadow="~ hover:lg"
-      class="fixed bg-$vt-c-bg select-none cursor-move z-10"
+      class="fixed bg-$vp-c-bg select-none cursor-move z-10"
       style="touch-action:none;"
       :style="style"
     >
@@ -34,9 +37,9 @@ const { x, y, style } = useDraggable(el, {
     <Draggable
       v-slot="{ x, y }"
       p="x-4 y-2"
-      border="~ gray-400 rounded"
+      border="~ gray-400/30 rounded"
       shadow="~ hover:lg"
-      class="fixed bg-$vt-c-bg select-none cursor-move z-10"
+      class="fixed bg-$vp-c-bg select-none cursor-move z-10"
       :initial-value="{ x: innerWidth / 3.9, y: 150 }"
       :prevent-default="true"
       storage-key="vueuse-draggable-pos"

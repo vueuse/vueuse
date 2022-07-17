@@ -17,7 +17,7 @@ const getFunctionLink = (fn: string) => {
 </script>
 
 <template>
-  <div class="grid grid-cols-[100px_auto] gap-2 text-sm -mt-2 mb-8 items-start">
+  <div class="grid grid-cols-[100px_auto] gap-2 text-sm mt-4 mb-8 items-start">
     <div opacity="50">
       Category
     </div>

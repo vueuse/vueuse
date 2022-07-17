@@ -36,7 +36,7 @@ const pointStyles = computed<Record<string, string | number>>(() => ({
     fixed
     pointer-events-none
     z-9999
-    border="1 $vt-c-brand"
+    border="1 $vp-c-brand"
   />
   <div
     :style="pointStyles"

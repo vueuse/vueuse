@@ -1,13 +1,13 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
 export type KeyPredicate = (event: KeyboardEvent) => boolean
 export type KeyFilter = null | undefined | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
-export interface KeyStrokeOptions {
+export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
-  target?: MaybeRef<EventTarget>
+  target?: MaybeComputedRef<EventTarget>
   passive?: boolean
 }
 
@@ -36,7 +36,7 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
  * @param handler
  * @param options
  */
-export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: KeyStrokeOptions = {}) {
+export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: OnKeyStrokeOptions = {}) {
   const { target = defaultWindow, eventName = 'keydown', passive = false } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
@@ -55,7 +55,7 @@ export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => v
  * @param handler
  * @param options
  */
-export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<OnKeyStrokeOptions, 'eventName'> = {}) {
   return onKeyStroke(key, handler, { ...options, eventName: 'keydown' })
 }
 
@@ -67,7 +67,7 @@ export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => voi
  * @param handler
  * @param options
  */
-export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<OnKeyStrokeOptions, 'eventName'> = {}) {
   return onKeyStroke(key, handler, { ...options, eventName: 'keypress' })
 }
 
@@ -79,6 +79,6 @@ export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => 
  * @param handler
  * @param options
  */
-export function onKeyUp(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<KeyStrokeOptions, 'eventName'> = {}) {
+export function onKeyUp(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<OnKeyStrokeOptions, 'eventName'> = {}) {
   return onKeyStroke(key, handler, { ...options, eventName: 'keyup' })
 }

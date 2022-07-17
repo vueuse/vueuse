@@ -2,7 +2,7 @@ import { isDef } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
-export interface VModelOptions<T> {
+export interface UseVModelOptions<T> {
   /**
    * When passive is set to `true`, it will use `watch` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
@@ -43,7 +43,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   props: P,
   key?: K,
   emit?: (name: Name, ...args: any[]) => void,
-  options: VModelOptions<P[K]> = {},
+  options: UseVModelOptions<P[K]> = {},
 ) {
   const {
     passive = false,

@@ -4,6 +4,7 @@ import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 type DescriptorNamePolyfill =
   'accelerometer' |
@@ -38,7 +39,7 @@ export interface UsePermissionOptions<Controls extends boolean> extends Configur
 export type UsePermissionReturn = Readonly<Ref<PermissionState | undefined>>
 export interface UsePermissionReturnWithControls {
   state: UsePermissionReturn
-  isSupported: boolean
+  isSupported: Ref<boolean>
   query: () => Promise<PermissionStatus | undefined>
 }
 
@@ -64,7 +65,7 @@ export function usePermission(
     navigator = defaultNavigator,
   } = options
 
-  const isSupported = Boolean(navigator && 'permissions' in navigator)
+  const isSupported = useSupported(() => navigator && 'permissions' in navigator)
   let permissionStatus: PermissionStatus | undefined
 
   const desc = typeof permissionDesc === 'string'
@@ -78,7 +79,7 @@ export function usePermission(
   }
 
   const query = createSingletonPromise(async () => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     if (!permissionStatus) {
       try {

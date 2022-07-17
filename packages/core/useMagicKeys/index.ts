@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, reactive, ref, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
@@ -19,7 +19,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    *
    * @default window
    */
-  target?: MaybeRef<EventTarget>
+  target?: MaybeComputedRef<EventTarget>
 
   /**
    * Alias map for keys, all the keys should be lowercase
@@ -51,12 +51,12 @@ export interface MagicKeysInternal {
    * A Set of currently pressed keys,
    * Stores raw keyCodes.
    *
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
    */
   current: Set<string>
 }
 
-export type MagicKeys<Reactive extends Boolean> =
+export type UseMagicKeysReturn<Reactive extends Boolean> =
   Readonly<
   Omit<Reactive extends true
     ? Record<string, boolean>
@@ -70,8 +70,8 @@ export type MagicKeys<Reactive extends Boolean> =
  *
  * @see https://vueuse.org/useMagicKeys
  */
-export function useMagicKeys(options?: UseMagicKeysOptions<false>): MagicKeys<false>
-export function useMagicKeys(options: UseMagicKeysOptions<true>): MagicKeys<true>
+export function useMagicKeys(options?: UseMagicKeysOptions<false>): UseMagicKeysReturn<false>
+export function useMagicKeys(options: UseMagicKeysOptions<true>): UseMagicKeysReturn<true>
 export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const {
     reactive: useReactive = false,
@@ -106,11 +106,11 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     const values = [code, key].filter(Boolean)
 
     // current set
-    if (code) {
+    if (key) {
       if (value)
-        current.add(e.code)
+        current.add(key)
       else
-        current.delete(e.code)
+        current.delete(key)
     }
 
     for (const key of values) {
@@ -120,7 +120,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
 
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
-    // We track it's combination and relese manually
+    // We track it's combination and release manually
     if (key === 'meta' && !value) {
       // Meta key released
       metaDeps.forEach((key) => {
@@ -134,20 +134,18 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     }
   }
 
-  if (target) {
-    useEventListener(target, 'keydown', (e: KeyboardEvent) => {
-      updateRefs(e, true)
-      return onEventFired(e)
-    }, { passive })
-    useEventListener(target, 'keyup', (e: KeyboardEvent) => {
-      updateRefs(e, false)
-      return onEventFired(e)
-    }, { passive })
+  useEventListener(target, 'keydown', (e: KeyboardEvent) => {
+    updateRefs(e, true)
+    return onEventFired(e)
+  }, { passive })
+  useEventListener(target, 'keyup', (e: KeyboardEvent) => {
+    updateRefs(e, false)
+    return onEventFired(e)
+  }, { passive })
 
-    // #1350
-    useEventListener('blur', reset, { passive: true })
-    useEventListener('focus', reset, { passive: true })
-  }
+  // #1350
+  useEventListener('blur', reset, { passive: true })
+  useEventListener('focus', reset, { passive: true })
 
   const proxy = new Proxy(
     refs,

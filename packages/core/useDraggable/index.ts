@@ -1,7 +1,6 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { isClient, toRefs } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isClient, resolveUnref, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -12,28 +11,28 @@ export interface UseDraggableOptions {
    *
    * @default false
    */
-  exact?: MaybeRef<boolean>
+  exact?: MaybeComputedRef<boolean>
 
   /**
    * Prevent events defaults
    *
    * @default false
    */
-  preventDefault?: MaybeRef<boolean>
+  preventDefault?: MaybeComputedRef<boolean>
 
   /**
    * Prevent events propagation
    *
    * @default false
    */
-  stopPropagation?: MaybeRef<boolean>
+  stopPropagation?: MaybeComputedRef<boolean>
 
   /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
    */
-  draggingElement?: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>
+  draggingElement?: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
    * Pointer types that listen to.
@@ -47,7 +46,7 @@ export interface UseDraggableOptions {
    *
    * @default { x: 0, y: 0}
    */
-  initialValue?: MaybeRef<Position>
+  initialValue?: MaybeComputedRef<Position>
 
   /**
    * Callback when the dragging starts. Return `false` to prevent dragging.
@@ -72,9 +71,9 @@ export interface UseDraggableOptions {
  * @param target
  * @param options
  */
-export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
+export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
   const draggingElement = options.draggingElement ?? defaultWindow
-  const position: Ref<Position> = ref(options.initialValue ?? { x: 0, y: 0 })
+  const position = ref<Position>(resolveUnref(options.initialValue) ?? { x: 0, y: 0 })
   const pressedDelta = ref<Position>()
 
   const filterEvent = (e: PointerEvent) => {
@@ -84,18 +83,18 @@ export function useDraggable(target: MaybeRef<HTMLElement | SVGElement | null | 
   }
 
   const handleEvent = (e: PointerEvent) => {
-    if (unref(options.preventDefault))
+    if (resolveUnref(options.preventDefault))
       e.preventDefault()
-    if (unref(options.stopPropagation))
+    if (resolveUnref(options.stopPropagation))
       e.stopPropagation()
   }
 
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
-    if (unref(options.exact) && e.target !== unref(target))
+    if (resolveUnref(options.exact) && e.target !== resolveUnref(target))
       return
-    const rect = unref(target)!.getBoundingClientRect()
+    const rect = resolveUnref(target)!.getBoundingClientRect()
     const pos = {
       x: e.pageX - rect.left,
       y: e.pageY - rect.top,

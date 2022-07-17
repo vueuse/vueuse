@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: refThrottled, refDebounced, useDebounceFn
 ---
 
 # useThrottleFn
@@ -19,13 +20,6 @@ const throttledFn = useThrottleFn(() => {
 
 document.addEventListener('resize', throttledFn)
 ```
-
-## Related Functions
-
-- `useThrottle`
-- `useThrottleFn`
-- `useDebounce`
-- `useDebounceFn`
 
 ## Recommended Reading
 

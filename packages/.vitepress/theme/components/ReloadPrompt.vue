@@ -16,7 +16,7 @@ const close = async () => {
 <template>
   <div
     v-if="needRefresh"
-    class="pwa-toast bg-$vt-c-bg border border-$vt-c-divider fixed right-0 bottom-0 m-6 px-6 py-4 rounded shadow-xl"
+    class="pwa-toast bg-$vp-c-bg border border-$vp-c-divider fixed right-0 bottom-0 m-6 px-6 py-4 rounded shadow-xl"
     role="alert"
   >
     <div class="mb-3">
@@ -24,13 +24,13 @@ const close = async () => {
     </div>
     <button
       v-if="needRefresh"
-      class="border border-$vt-c-divider bg-$vt-c-brand text-white mr-2 px-3 py-1 rounded hover:bg-$vt-c-brand-dark"
+      class="border border-$vp-c-divider bg-$vp-c-brand text-white mr-2 px-3 py-1 rounded hover:bg-$vp-c-brand-dark"
       @click="updateServiceWorker()"
     >
       Reload
     </button>
     <button
-      class="border border-$vt-c-divider bg-$vt-c-brand text-white mr-2 px-3 py-1 rounded hover:bg-$vt-c-brand-dark"
+      class="border border-$vp-c-divider bg-$vp-c-brand text-white mr-2 px-3 py-1 rounded hover:bg-$vp-c-brand-dark"
       @click="close"
     >
       Close

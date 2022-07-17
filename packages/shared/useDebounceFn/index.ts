@@ -1,6 +1,6 @@
-import type { DebounceFilterOptions, FunctionArgs, MaybeRef } from '../utils'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import type { DebounceFilterOptions, FunctionArgs } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
-
 /**
  * Debounce execution of a function.
  *
@@ -10,7 +10,7 @@ import { createFilterWrapper, debounceFilter } from '../utils'
  *
  * @return A new, debounce, function.
  */
-export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeRef<number> = 200, options: DebounceFilterOptions = {}): T {
+export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeComputedRef<number> = 200, options: DebounceFilterOptions = {}): T {
   return createFilterWrapper(
     debounceFilter(ms, options),
     fn,

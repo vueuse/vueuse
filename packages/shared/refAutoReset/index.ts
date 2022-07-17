@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { customRef, unref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { customRef } from 'vue-demi'
+import { resolveUnref } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 /**
@@ -10,7 +11,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
  * @param defaultValue The value which will be set.
  * @param afterMs      A zero-or-greater delay in milliseconds.
  */
-export function refAutoReset<T>(defaultValue: T, afterMs: MaybeRef<number> = 10000): Ref<T> {
+export function refAutoReset<T>(defaultValue: T, afterMs: MaybeComputedRef<number> = 10000): Ref<T> {
   return customRef<T>((track, trigger) => {
     let value: T = defaultValue
     let timer: any
@@ -19,7 +20,7 @@ export function refAutoReset<T>(defaultValue: T, afterMs: MaybeRef<number> = 100
       setTimeout(() => {
         value = defaultValue
         trigger()
-      }, unref(afterMs))
+      }, resolveUnref(afterMs))
 
     tryOnScopeDispose(() => {
       clearTimeout(timer)

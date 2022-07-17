@@ -1,5 +1,6 @@
 ---
 category: State
+related: useLocalStorage, useSessionStorage, useStorageAsync
 ---
 
 # useStorage

@@ -1,7 +1,8 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -20,7 +21,7 @@ export interface ResizeObserverEntry {
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
 
-export interface ResizeObserverOptions extends ConfigurableWindow {
+export interface UseResizeObserverOptions extends ConfigurableWindow {
   /**
    * Sets which box model the observer will observe changes to. Possible values
    * are `content-box` (the default), and `border-box`.
@@ -33,7 +34,7 @@ export interface ResizeObserverOptions extends ConfigurableWindow {
 declare class ResizeObserver {
   constructor(callback: ResizeObserverCallback)
   disconnect(): void
-  observe(target: Element, options?: ResizeObserverOptions): void
+  observe(target: Element, options?: UseResizeObserverOptions): void
   unobserve(target: Element): void
 }
 
@@ -46,13 +47,13 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   callback: ResizeObserverCallback,
-  options: ResizeObserverOptions = {},
+  options: UseResizeObserverOptions = {},
 ) {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
-  const isSupported = window && 'ResizeObserver' in window
+  const isSupported = useSupported(() => window && 'ResizeObserver' in window)
 
   const cleanup = () => {
     if (observer) {
@@ -66,7 +67,7 @@ export function useResizeObserver(
     (el) => {
       cleanup()
 
-      if (isSupported && window && el) {
+      if (isSupported.value && window && el) {
         observer = new ResizeObserver(callback)
         observer!.observe(el, observerOptions)
       }

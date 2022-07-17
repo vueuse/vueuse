@@ -1,6 +1,6 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref, unref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { noop, resolveUnref, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
@@ -55,7 +55,7 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  * @param options
  */
 export function useScriptTag(
-  src: MaybeRef<string>,
+  src: MaybeComputedRef<string>,
   onLoaded: (el: HTMLScriptElement) => void = noop,
   options: UseScriptTagOptions = {},
 ) {
@@ -105,7 +105,7 @@ export function useScriptTag(
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = unref(src)
+      el.src = resolveUnref(src)
 
       // Optional attributes
       if (defer)

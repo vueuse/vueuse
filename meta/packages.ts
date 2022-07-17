@@ -29,6 +29,14 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'math',
+    display: 'Math',
+    description: 'Math functions for VueUse',
+    external: [
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'nuxt',
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',

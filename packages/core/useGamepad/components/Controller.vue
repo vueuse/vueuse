@@ -150,7 +150,7 @@ const isRightStickActive = computed(() => {
 
 <style>
   .active-control {
-    fill: var(--vt-c-brand-active);
-    stroke: var(--vt-c-brand-active) !important;
+    fill: var(--vp-c-brand-active);
+    stroke: var(--vp-c-brand-active) !important;
   }
 </style>

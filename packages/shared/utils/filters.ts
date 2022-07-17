@@ -1,5 +1,6 @@
-import { ref, unref } from 'vue-demi'
-import type { Fn, MaybeRef, Pausable } from './types'
+import { ref } from 'vue-demi'
+import { resolveUnref } from '../resolveUnref'
+import type { Fn, MaybeComputedRef, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -28,7 +29,7 @@ export interface DebounceFilterOptions {
    * The maximum time allowed to be delayed before it's invoked.
    * In milliseconds.
    */
-  maxWait?: number
+  maxWait?: MaybeComputedRef<number>
 }
 
 /**
@@ -52,13 +53,13 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param ms
  * @param [maxWait=null]
  */
-export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOptions = {}) {
+export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
-    const duration = unref(ms)
-    const maxDuration = unref(options.maxWait)
+    const duration = resolveUnref(ms)
+    const maxDuration = resolveUnref(options.maxWait)
 
     if (timer)
       clearTimeout(timer)
@@ -71,7 +72,7 @@ export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOpti
       return invoke()
     }
 
-    // Create the maxTimer. Clears the regular timer on invokation
+    // Create the maxTimer. Clears the regular timer on invoke
     if (maxDuration && !maxTimer) {
       maxTimer = setTimeout(() => {
         if (timer)
@@ -81,7 +82,7 @@ export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOpti
       }, maxDuration)
     }
 
-    // Create the regular timer. Clears the max timer on invokation
+    // Create the regular timer. Clears the max timer on invoke
     timer = setTimeout(() => {
       if (maxTimer)
         clearTimeout(maxTimer)
@@ -100,7 +101,7 @@ export function debounceFilter(ms: MaybeRef<number>, options: DebounceFilterOpti
  * @param [trailing=true]
  * @param [leading=true]
  */
-export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = true) {
+export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, leading = true) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   let isLeading = true
@@ -113,7 +114,7 @@ export function throttleFilter(ms: MaybeRef<number>, trailing = true, leading = 
   }
 
   const filter: EventFilter = (invoke) => {
-    const duration = unref(ms)
+    const duration = resolveUnref(ms)
     const elapsed = Date.now() - lastExec
 
     clear()

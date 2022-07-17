@@ -28,13 +28,13 @@ export type RemoveableRef<T> = RemovableRef<T>
 export type MaybeRef<T> = T | Ref<T>
 
 /**
- * Maybe it's a ref, or a getter function
+ * Maybe it's a ref, or a plain value, or a getter function
  *
  * ```ts
- * type MaybeRef<T> = T | Ref<T>
+ * type MaybeComputedRef<T> = T | Ref<T> | (() => T)
  * ```
  */
-export type MaybeComputedRef<T> = T extends Function
+export type MaybeComputedRef<T> = T extends () => void
   ? never
   : (() => T) | MaybeRef<T>
 
@@ -61,6 +61,8 @@ export type ElementOf<T> = T extends (infer E)[] ? E : never
 export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
+
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
 
 export interface Pausable {
   /**

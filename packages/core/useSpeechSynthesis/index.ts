@@ -1,21 +1,20 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export type Status = 'init' | 'play' | 'pause' | 'end'
+export type UseSpeechSynthesisStatus = 'init' | 'play' | 'pause' | 'end'
 
-export type VoiceInfo = Pick<SpeechSynthesisVoice, 'lang' | 'name'>
-
-export interface SpeechSynthesisOptions extends ConfigurableWindow {
+export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   /**
    * Language for SpeechSynthesis
    *
    * @default 'en-US'
    */
-  lang?: MaybeRef<string>
+  lang?: MaybeComputedRef<string>
   /**
    * Gets and sets the pitch at which the utterance will be spoken at.
    *
@@ -31,7 +30,7 @@ export interface SpeechSynthesisOptions extends ConfigurableWindow {
   /**
    * Gets and sets the voice that will be used to speak the utterance.
    */
-  voice?: SpeechSynthesisVoice
+  voice?: MaybeRef<SpeechSynthesisVoice>
   /**
    * Gets and sets the volume that the utterance will be spoken at.
    *
@@ -47,7 +46,7 @@ export interface SpeechSynthesisOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
  * @param options
  */
-export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthesisOptions = {}) {
+export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseSpeechSynthesisOptions = {}) {
   const {
     pitch = 1,
     rate = 1,
@@ -56,18 +55,13 @@ export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthe
   } = options
 
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
-  const isSupported = Boolean(synth)
+  const isSupported = useSupported(() => synth)
 
   const isPlaying = ref(false)
-  const status = ref<Status>('init')
+  const status = ref<UseSpeechSynthesisStatus>('init')
 
-  const voiceInfo = {
-    lang: options.voice?.lang || 'default',
-    name: options.voice?.name || '',
-  }
-
-  const spokenText = ref(text || '')
-  const lang = ref(options.lang || 'en-US')
+  const spokenText = resolveRef(text || '')
+  const lang = resolveRef(options.lang || 'en-US')
   const error = shallowRef(undefined) as Ref<SpeechSynthesisErrorEvent | undefined>
 
   const toggle = (value = !isPlaying.value) => {
@@ -76,8 +70,7 @@ export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthe
 
   const bindEventsForUtterance = (utterance: SpeechSynthesisUtterance) => {
     utterance.lang = unref(lang)
-
-    options.voice && (utterance.voice = options.voice)
+    utterance.voice = unref(options.voice) || null
     utterance.pitch = pitch
     utterance.rate = rate
     utterance.volume = volume
@@ -125,7 +118,7 @@ export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthe
     utterance && synth!.speak(utterance.value)
   }
 
-  if (isSupported) {
+  if (isSupported.value) {
     bindEventsForUtterance(utterance.value)
 
     watch(lang, (lang) => {
@@ -149,7 +142,6 @@ export function useSpeechSynthesis(text: MaybeRef<string>, options: SpeechSynthe
     isSupported,
     isPlaying,
     status,
-    voiceInfo,
     utterance,
     error,
 

@@ -4,6 +4,7 @@ import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
+import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 
@@ -34,7 +35,7 @@ export interface UseDevicesListReturn {
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
   permissionGranted: Ref<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: boolean
+  isSupported: Ref<boolean>
 }
 
 /**
@@ -55,11 +56,11 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
-  let isSupported = false
+  const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
   const permissionGranted = ref(false)
 
   async function update() {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     devices.value = await navigator!.mediaDevices.enumerateDevices()
@@ -67,7 +68,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   }
 
   async function ensurePermissions() {
-    if (!isSupported)
+    if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
@@ -88,16 +89,12 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     return permissionGranted.value
   }
 
-  if (navigator) {
-    isSupported = Boolean(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
+  if (isSupported.value) {
+    if (requestPermissions)
+      ensurePermissions()
 
-    if (isSupported) {
-      if (requestPermissions)
-        ensurePermissions()
-
-      useEventListener(navigator.mediaDevices, 'devicechange', update)
-      update()
-    }
+    useEventListener(navigator!.mediaDevices, 'devicechange', update)
+    update()
   }
 
   return {

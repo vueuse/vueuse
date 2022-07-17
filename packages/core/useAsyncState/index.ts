@@ -10,7 +10,7 @@ export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
   execute: (delay?: number, ...args: any[]) => Promise<Data>
 }
 
-export interface AsyncStateOptions<Shallow extends boolean> {
+export interface UseAsyncStateOptions<Shallow extends boolean> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -64,7 +64,7 @@ export interface AsyncStateOptions<Shallow extends boolean> {
 export function useAsyncState<Data, Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
   initialState: Data,
-  options?: AsyncStateOptions<Shallow>,
+  options?: UseAsyncStateOptions<Shallow>,
 ): UseAsyncStateReturn<Data, Shallow> {
   const {
     immediate = true,

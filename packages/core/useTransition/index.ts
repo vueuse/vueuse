@@ -17,7 +17,7 @@ type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export interface TransitionOptions {
+export interface UseTransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */
@@ -112,13 +112,13 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
 }
 
 // option 1: reactive number
-export function useTransition(source: Ref<number>, options?: TransitionOptions): ComputedRef<number>
+export function useTransition(source: Ref<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: TransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
-export function useTransition<T extends Ref<number[]>>(source: T, options?: TransitionOptions): ComputedRef<number[]>
+export function useTransition<T extends Ref<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
  * Transition between values.
@@ -129,7 +129,7 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: Tran
  */
 export function useTransition(
   source: Ref<number | number[]> | MaybeRef<number>[],
-  options: TransitionOptions = {},
+  options: UseTransitionOptions = {},
 ): ComputedRef<any> {
   const {
     delay = 0,
