@@ -1,14 +1,13 @@
 import { ref } from 'vue-demi'
-import { useMax, useMaximum } from '.'
+import { useMax } from '.'
 
-describe('useClamp', () => {
+describe('useMax', () => {
   it('should be defined', () => {
     expect(useMax).toBeDefined()
-    expect(useMaximum).toBeDefined()
   })
 
   it('should accept numbers', () => {
-    const v = useMaximum(50, 100)
+    const v = useMax(50, 100)
     expect(v.value).toBe(100)
   })
 
@@ -17,7 +16,7 @@ describe('useClamp', () => {
     const value2 = ref(100)
     const value3 = ref(1000)
 
-    const v = useMaximum(value1, value2, value3)
+    const v = useMax(value1, value2, value3)
     expect(v.value).toBe(1000)
 
     value1.value = 2000
@@ -34,11 +33,21 @@ describe('useClamp', () => {
     const value1 = 10
     const value2 = ref(100)
 
-    const v = useMaximum(50, value1, value2)
+    const v = useMax(50, value1, value2)
 
     expect(v.value).toBe(100)
 
     value2.value = 200
     expect(v.value).toBe(200)
+  })
+
+  it('should accept single arg', () => {
+    const v = useMax(50)
+    expect(v.value).toBe(50)
+  })
+
+  it('should accept zero arg', () => {
+    const v = useMax()
+    expect(v.value).toBe(-Infinity)
   })
 })

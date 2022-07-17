@@ -5,14 +5,11 @@ import { resolveUnref } from '@vueuse/shared'
 /**
  * Reactively get maximum of values.
  *
- * @see https://vueuse.org/useMaximum
+ * @see https://vueuse.org/useMax
  * @param values
  */
-export function useMaximum(...maximums: MaybeComputedRef<number>[]) {
+export function useMax(...values: MaybeComputedRef<number>[]) {
   return computed<number>(() =>
-    Math.max(...maximums.map(value => resolveUnref(value))),
+    Math.max(...values.map(value => resolveUnref(value))),
   )
 }
-
-// alias
-export { useMaximum as useMax }
