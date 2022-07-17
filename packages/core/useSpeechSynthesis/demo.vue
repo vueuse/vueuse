@@ -1,18 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useSpeechSynthesis } from '@vueuse/core'
 
-const voices = ref<SpeechSynthesisVoice[]>([])
-const voice = ref()
+const voice = ref<SpeechSynthesisVoice>({ lang: 'en-US' } as SpeechSynthesisVoice)
 const text = ref('Hello, everyone! Good morning!')
 
 const speech = useSpeechSynthesis(text, {
-  voice,
+  lang: voice.value.lang,
 })
 
 let synth: SpeechSynthesis
 
-if (speech.isSupported.value) {
+const voices = ref<SpeechSynthesisVoice[]>([])
+
+watch(voice, (newVoice) => {
+  speech.utterance.value.voice = newVoice
+})
+
+if (speech.isSupported) {
   // load at last
   setTimeout(() => {
     synth = window.speechSynthesis
@@ -42,7 +47,7 @@ const stop = () => {
 
 <template>
   <div>
-    <div v-if="!speech.isSupported.value">
+    <div v-if="!speech.isSupported">
       Your browser does not support SpeechSynthesis API,
       <a
         href="https://caniuse.com/mdn-api_speechsynthesis"

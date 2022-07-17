@@ -9,8 +9,8 @@ export interface UseDropZoneReturn {
 }
 
 export function useDropZone(
-  target: MaybeComputedRef<HTMLElement | null>,
-  onDrop: (files: File[] | null) => void,
+  target: MaybeComputedRef<HTMLElement | null | undefined>,
+  onDrop?: (files: File[] | null) => void,
 ): UseDropZoneReturn {
   const isOverDropZone = ref(false)
   let counter = 0
@@ -35,11 +35,7 @@ export function useDropZone(
       counter = 0
       isOverDropZone.value = false
       const files = Array.from(event.dataTransfer?.files ?? [])
-      if (files.length === 0) {
-        onDrop(null)
-        return
-      }
-      onDrop(files)
+      onDrop?.(files.length === 0 ? null : files)
     })
   }
 

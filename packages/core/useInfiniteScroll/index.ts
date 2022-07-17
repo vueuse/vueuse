@@ -18,7 +18,7 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
    *
    * @default 'bottom'
    */
-  direction?: 'top' | 'bottom'
+  direction?: 'top' | 'bottom' | 'left' | 'right'
 
   /**
    * Whether to preserve the current scroll position when loading more items.
