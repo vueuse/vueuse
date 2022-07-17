@@ -11,11 +11,15 @@ Reactive `Math.max`.
 ```ts
 import { useMax } from '@vueuse/math'
 
-const max1 = ref(10)
-const max2 = ref(20)
-const result = useMax(max1, max2)
-// result.value is 20
+const array = ref([1, 2, 3, 4])
+const sum = useMax(array) // Ref<4>
+```
 
-max1.value = 50
-// result.value is 50 now
+```ts
+import { useMax } from '@vueuse/math'
+
+const a = ref(1)
+const b = ref(3)
+
+const sum = useMax(a, b, 2) // Ref<3>
 ```

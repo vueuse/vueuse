@@ -1,7 +1,8 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeComputedRefArgs } from '../utils'
+import { resolveUnrefArgsFlat } from '../utils'
 
 export function useSum(array: MaybeComputedRef<MaybeComputedRef<number>[]>): ComputedRef<number>
 export function useSum(...args: MaybeComputedRef<number>[]): ComputedRef<number>
@@ -11,14 +12,6 @@ export function useSum(...args: MaybeComputedRef<number>[]): ComputedRef<number>
  *
  * @see https://vueuse.org/useSum
  */
-export function useSum(...args: any[]): ComputedRef<number> {
-  return computed(() => args
-    .flatMap((i) => {
-      const v = resolveUnref(i)
-      if (Array.isArray(v))
-        return v.map(i => resolveUnref(i))
-      return [v]
-    })
-    .reduce<number>((sum, v) => sum += v, 0),
-  )
+export function useSum(...args: MaybeComputedRefArgs<number>): ComputedRef<number> {
+  return computed(() => resolveUnrefArgsFlat(args).reduce((sum, v) => sum += v, 0))
 }
