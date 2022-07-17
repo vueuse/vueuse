@@ -54,7 +54,7 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'wheatjs',
     twitter: 'wheatjs',
     sponsors: false,
-    description: '',
+    description: 'Software Developer. Open Source Contributor. Electrical Engineer.',
     functions: ['useFetch'],
     packages: ['components'],
   },
