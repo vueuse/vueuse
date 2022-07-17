@@ -62,6 +62,8 @@ export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
 
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
+
 export interface Pausable {
   /**
    * A ref indicate whether a pusable instance is active
