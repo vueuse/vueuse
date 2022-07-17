@@ -98,11 +98,6 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
     utterance.onerror = (event) => {
       error.value = event
     }
-
-    utterance.onend = () => {
-      isPlaying.value = false
-      utterance.lang = unref(lang)
-    }
   }
 
   const utterance = computed(() => {
@@ -125,6 +120,12 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
       if (utterance.value && !isPlaying.value)
         utterance.value.lang = lang
     })
+
+    if (options.voice) {
+      watch(options.voice, () => {
+        synth!.cancel()
+      })
+    }
 
     watch(isPlaying, () => {
       if (isPlaying.value)
