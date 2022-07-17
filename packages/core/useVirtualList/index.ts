@@ -1,4 +1,4 @@
-import type { Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
@@ -23,7 +23,24 @@ export interface UseVirtualListItem<T> {
   index: number
 }
 
-export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions) {
+export interface UseVirtualListReturn<T> {
+  list: Ref<UseVirtualListItem<T>[]>
+  scrollTo: (index: number) => void
+  containerProps: {
+    ref: Ref<HTMLElement | null>
+    onScroll: () => void
+    style: Partial<CSSStyleDeclaration>
+  }
+  wrapperProps: ComputedRef<{
+    style: {
+      width: string
+      height: string
+      marginTop: string
+    }
+  }>
+}
+
+export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
   const containerRef: Ref = ref<HTMLElement | null>()
   const size = useElementSize(containerRef)
 

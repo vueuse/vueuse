@@ -57,3 +57,5 @@ export const useImage = <Shallow extends true>(
 
   return state
 }
+
+export type UseImageReturn = ReturnType<typeof useImage>

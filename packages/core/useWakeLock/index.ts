@@ -16,13 +16,15 @@ type NavigatorWithWakeLock = Navigator & {
   wakeLock: { request: (type: WakeLockType) => Promise<WakeLockSentinel> }
 }
 
+export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument
+
 /**
  * Reactive Screen Wake Lock API.
  *
  * @see https://vueuse.org/useWakeLock
  * @param options
  */
-export const useWakeLock = (options: ConfigurableNavigator & ConfigurableDocument = {}) => {
+export const useWakeLock = (options: UseWakeLockOptions = {}) => {
   const {
     navigator = defaultNavigator,
     document = defaultDocument,

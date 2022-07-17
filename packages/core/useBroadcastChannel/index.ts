@@ -1,3 +1,4 @@
+import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
@@ -19,7 +20,7 @@ export interface UseBroadcastChannelOptions extends ConfigurableWindow {
  * @param options
  *
  */
-export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
+export const useBroadcastChannel = <D, P>(options: UseBroadcastChannelOptions): UseBroadcastChannelReturn<D, P> => {
   const {
     name,
     window = defaultWindow,
@@ -77,4 +78,12 @@ export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
   }
 }
 
-export type UseBroadcastChannelReturn = ReturnType<typeof useBroadcastChannel>
+export interface UseBroadcastChannelReturn<D, P> {
+  isSupported: Ref<boolean>
+  channel: Ref<BroadcastChannel | undefined>
+  data: Ref<D>
+  post: (data: P) => void
+  close: () => void
+  error: Ref<Event | null>
+  isClosed: Ref<boolean>
+}

@@ -149,3 +149,5 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     isActive,
   }
 }
+
+export type UseGamepadReturn = ReturnType<typeof useGamepad>

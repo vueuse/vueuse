@@ -139,3 +139,5 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
     style: computed(() => `left:${position.value.x}px;top:${position.value.y}px;`),
   }
 }
+
+export type UseDraggableReturn = ReturnType<typeof useDraggable>
