@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/shared",
-  "version": "8.9.4",
+  "version": "9.0.0-beta.0",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
