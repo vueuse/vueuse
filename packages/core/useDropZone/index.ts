@@ -8,7 +8,7 @@ export interface UseDropZoneReturn {
   isOverDropZone: Ref<boolean>
 }
 
-export function useDropZone(target: MaybeRef<HTMLElement | null>, onDrop: (files: File[] | null) => void): UseDropZoneReturn {
+export function useDropZone(target: MaybeRef<HTMLElement | null | undefined>, onDrop: (files: File[] | null) => void): UseDropZoneReturn {
   const isOverDropZone = ref(false)
   let counter = 0
 

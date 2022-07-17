@@ -12,7 +12,7 @@ Create an zone where files can be dropped.
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
 
-const dropZoneRef = ref(null)
+const dropZoneRef = ref<HTMLDivElement>()
 
 function onDrop(files: File[] | null) {
   // called when files are dropped on zone
