@@ -2,11 +2,6 @@ html.dark {
   color-scheme: dark;
 }
 
-.VPNav,
-.VPNav .content {
-  background: transparent !important;
-}
-
 .vp-doc h2 {
   border-top: 0px;
   margin-top: 10px;
