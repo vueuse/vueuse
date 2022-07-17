@@ -1,16 +1,18 @@
 ---
-category: Utilities
+category: Array
 ---
 
 # useArrayFind
 
-Reactively array find.
+Reactive `Array.find`.
 
 ## Usage
 
 ```js
 import { useArrayFind } from '@vueuse/core'
-const positive = useArrayFind([ref(1), ref(-1), ref(2)], val => val > 0)
+
+const list = [ref(1), ref(-1), ref(2)]
+const positive = useArrayFind(list, val => val > 0)
 // positive.value: 1
 ```
 
@@ -18,6 +20,7 @@ const positive = useArrayFind([ref(1), ref(-1), ref(2)], val => val > 0)
 
 ```js
 import { useArrayFind } from '@vueuse/core'
+
 const list = reactive([-1, -2])
 const positive = useArrayFind(list, val => val > 0)
 // positive.value: undefined
