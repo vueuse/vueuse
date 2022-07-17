@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useSpeechSynthesis } from '@vueuse/core'
 
 const voice = ref<SpeechSynthesisVoice>({ lang: 'en-US' } as SpeechSynthesisVoice)
@@ -17,14 +17,16 @@ watch(voice, (newVoice) => {
   speech.utterance.value.voice = newVoice
 })
 
-if (speech.isSupported) {
+onMounted(() => {
+  if (speech.isSupported.value) {
   // load at last
-  setTimeout(() => {
-    synth = window.speechSynthesis
-    voices.value = synth.getVoices()
-    voice.value = voices.value[0]
-  })
-}
+    setTimeout(() => {
+      synth = window.speechSynthesis
+      voices.value = synth.getVoices()
+      voice.value = voices.value[0]
+    })
+  }
+})
 
 const play = () => {
   if (speech.status.value === 'pause') {
