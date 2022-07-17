@@ -6,7 +6,7 @@ import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export type Status = 'init' | 'play' | 'pause' | 'end'
+export type UseSpeechSynthesisStatus = 'init' | 'play' | 'pause' | 'end'
 
 export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   /**
@@ -58,7 +58,7 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
   const isSupported = useSupported(() => synth)
 
   const isPlaying = ref(false)
-  const status = ref<Status>('init')
+  const status = ref<UseSpeechSynthesisStatus>('init')
 
   const spokenText = resolveRef(text || '')
   const lang = resolveRef(options.lang || 'en-US')
