@@ -6,7 +6,7 @@ import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
-export interface IntersectionObserverOptions extends ConfigurableWindow {
+export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
@@ -34,7 +34,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
 export function useIntersectionObserver(
   target: MaybeElementRef,
   callback: IntersectionObserverCallback,
-  options: IntersectionObserverOptions = {},
+  options: UseIntersectionObserverOptions = {},
 ) {
   const {
     root,

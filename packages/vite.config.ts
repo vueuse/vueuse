@@ -10,7 +10,6 @@ import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
 import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
-import { NavbarFix } from './.vitepress/plugins/navbar'
 
 export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
@@ -34,7 +33,6 @@ export default defineConfig(async () => {
       MarkdownTransform(),
       ChangeLog(changeLog),
       Contributors(contributions),
-      NavbarFix(),
 
       // plugins
       Components({
@@ -93,7 +91,6 @@ export default defineConfig(async () => {
     optimizeDeps: {
       exclude: [
         'vue-demi',
-        '@vue/theme',
         '@vueuse/shared',
         '@vueuse/core',
         'body-scroll-lock',

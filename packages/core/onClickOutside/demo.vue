@@ -65,19 +65,19 @@ onClickOutside(
   z-index: 10;
 }
 .inner {
-  background-color: var(--vt-c-bg);
+  background-color: var(--vp-c-bg);
   padding: 0.4em 2em;
   border-radius: 5px;
-  border: 1px solid var(--vt-c-divider-light);
+  border: 1px solid var(--vp-c-divider-light);
   box-shadow: 2px 2px 10px rgba(10, 10, 10, 0.1);
 }
 .dropdown-inner {
-  background-color: var(--vt-c-bg);
+  background-color: var(--vp-c-bg);
   padding: 0.5em;
   position: absolute;
   left: 0;
   border-radius: 5px;
-  border: 1px solid var(--vt-c-divider-light);
+  border: 1px solid var(--vp-c-divider-light);
   box-shadow: 2px 2px 5px rgba(10, 10, 10, 0.1);
 }
 .heading {

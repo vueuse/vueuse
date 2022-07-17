@@ -29,8 +29,8 @@ const { mode, color, size } = toRefs(brush)
       flex="~ col"
     >
       <div
-        bg="$vt-c-bg"
-        border="1 $vt-c-divider"
+        bg="$vp-c-bg"
+        border="1 $vp-c-divider"
         rounded-t
         flex="~ row"
         items="center"
@@ -67,8 +67,8 @@ const { mode, color, size } = toRefs(brush)
       </div>
       <div flex="~ row 1" h="72">
         <div
-          bg="$vt-c-bg"
-          border="t-0 1 $vt-c-divider"
+          bg="$vp-c-bg"
+          border="t-0 1 $vp-c-divider"
           rounded-b
           flex="~ col"
           space="y-2"

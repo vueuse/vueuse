@@ -3,7 +3,7 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 
-export interface RTDBOptions {
+export interface UseRTDBOptions {
   autoDispose?: boolean
 }
 
@@ -15,7 +15,7 @@ export interface RTDBOptions {
  */
 export function useRTDB<T = any>(
   docRef: firebase.database.Reference,
-  options: RTDBOptions = {},
+  options: UseRTDBOptions = {},
 ) {
   const {
     autoDispose = true,

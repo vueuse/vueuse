@@ -88,10 +88,11 @@ const coreTeamMembers: CoreTeam[] = [
     avatar: contributorsAvatars.scottbedard,
     name: 'Scott Bedard',
     github: 'scottbedard',
-    twitter: 'scottbedard',
     sponsors: false,
     functions: [
       'useTransition',
+      'useDocumentVisibility',
+      'useElementVisibility',
     ],
     description: '',
   },
@@ -115,7 +116,7 @@ const coreTeamMembers: CoreTeam[] = [
     sponsors: false,
     functions: [
       'useElementByPoint',
-      'useSafeArea',
+      'useScreenSafeArea',
     ],
     description: '',
   },

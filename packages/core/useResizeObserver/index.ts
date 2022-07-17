@@ -21,7 +21,7 @@ export interface ResizeObserverEntry {
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
 
-export interface ResizeObserverOptions extends ConfigurableWindow {
+export interface UseResizeObserverOptions extends ConfigurableWindow {
   /**
    * Sets which box model the observer will observe changes to. Possible values
    * are `content-box` (the default), and `border-box`.
@@ -34,7 +34,7 @@ export interface ResizeObserverOptions extends ConfigurableWindow {
 declare class ResizeObserver {
   constructor(callback: ResizeObserverCallback)
   disconnect(): void
-  observe(target: Element, options?: ResizeObserverOptions): void
+  observe(target: Element, options?: UseResizeObserverOptions): void
   unobserve(target: Element): void
 }
 
@@ -49,7 +49,7 @@ declare class ResizeObserver {
 export function useResizeObserver(
   target: MaybeComputedElementRef,
   callback: ResizeObserverCallback,
-  options: ResizeObserverOptions = {},
+  options: UseResizeObserverOptions = {},
 ) {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined

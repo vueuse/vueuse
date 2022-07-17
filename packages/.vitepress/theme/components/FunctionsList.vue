@@ -70,7 +70,7 @@ function toggleSort(method: string) {
 </script>
 
 <template>
-  <div class="grid grid-cols-[80px_auto] gap-y-2">
+  <div class="grid grid-cols-[80px_auto] gap-y-2 mt-10">
     <div opacity="80" text="sm">
       Core
     </div>
@@ -133,12 +133,12 @@ function toggleSort(method: string) {
       </label>
     </div>
   </div>
-  <div h="1px" bg="$vt-c-divider-light" m="t-4" />
+  <div h="1px" bg="$vp-c-divider-light" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
     <i i-carbon-search m="r-2" opacity="50" />
     <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
-  <div h="1px" bg="$vt-c-divider-light" m="b-4" />
+  <div h="1px" bg="$vp-c-divider-light" m="b-4" />
   <div flex="~ col" gap="2" class="relative" p="t-5">
     <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
       <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">

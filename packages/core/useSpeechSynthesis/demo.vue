@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useSpeechSynthesis } from '@vueuse/core'
 
-const lang = ref('en-US')
+const voice = ref<SpeechSynthesisVoice>({ lang: 'en-US' } as SpeechSynthesisVoice)
 const text = ref('Hello, everyone! Good morning!')
 
 const speech = useSpeechSynthesis(text, {
-  lang,
+  lang: voice.value.lang,
 })
 
 let synth: SpeechSynthesis
 
 const voices = ref<SpeechSynthesisVoice[]>([])
 
-if (speech.isSupported.value) {
+watch(voice, (newVoice) => {
+  speech.utterance.value.voice = newVoice
+})
+
+if (speech.isSupported) {
   // load at last
   setTimeout(() => {
     synth = window.speechSynthesis
     voices.value = synth.getVoices()
+    voice.value = voices.value[0]
   })
 }
 
@@ -42,7 +47,7 @@ const stop = () => {
 
 <template>
   <div>
-    <div v-if="!speech.isSupported.value">
+    <div v-if="!speech.isSupported">
       Your browser does not support SpeechSynthesis API,
       <a
         href="https://caniuse.com/mdn-api_speechsynthesis"
@@ -55,17 +60,17 @@ const stop = () => {
 
       <br>
       <label class="font-bold mr-2">Language</label>
-      <div bg="$vt-c-bg" border="$vt-c-divider-light 1" inline-flex items-center relative rounded>
+      <div bg="$vp-c-bg" border="$vp-c-divider-light 1" inline-flex items-center relative rounded>
         <i i-carbon-language absolute left-2 opacity-80 pointer-events-none />
-        <select v-model="lang" px-8 border-0 bg-transparent h-9 rounded appearance-none>
-          <option bg="$vt-c-bg" disabled>
+        <select v-model="voice" px-8 border-0 bg-transparent h-9 rounded appearance-none>
+          <option bg="$vp-c-bg" disabled>
             Select Language
           </option>
           <option
             v-for="(voice, i) in voices"
             :key="i"
-            bg="$vt-c-bg"
-            :value="voice.lang"
+            bg="$vp-c-bg"
+            :value="voice"
           >
             {{ `${voice.name} (${voice.lang})` }}
           </option>

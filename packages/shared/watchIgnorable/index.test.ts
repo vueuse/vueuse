@@ -1,5 +1,4 @@
 import { nextTick, ref } from 'vue-demi'
-import { useSetup } from '../../.test'
 import { watchIgnorable } from '.'
 
 describe('watchIgnorable', () => {
@@ -56,28 +55,26 @@ describe('watchIgnorable', () => {
   })
 
   test('ignore sync updates', () => {
-    useSetup(() => {
-      const source = ref(0)
-      const target = ref(0)
-      const { ignoreUpdates } = watchIgnorable(source, value => target.value = value, { flush: 'sync' })
+    const source = ref(0)
+    const target = ref(0)
+    const { ignoreUpdates } = watchIgnorable(source, value => target.value = value, { flush: 'sync' })
 
-      source.value = 1
+    source.value = 1
 
-      expect(target.value).toBe(1)
+    expect(target.value).toBe(1)
 
-      ignoreUpdates(() => {
-        source.value = 2
-        source.value = 3
-      })
-
-      expect(target.value).toBe(1)
-
-      ignoreUpdates(() => {
-        source.value = 4
-      })
-      source.value = 5
-
-      expect(target.value).toBe(5)
+    ignoreUpdates(() => {
+      source.value = 2
+      source.value = 3
     })
+
+    expect(target.value).toBe(1)
+
+    ignoreUpdates(() => {
+      source.value = 4
+    })
+    source.value = 5
+
+    expect(target.value).toBe(5)
   })
 })

@@ -53,7 +53,7 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   },
 }
 
-export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
    * Watch for deep changes
    *
@@ -95,11 +95,11 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   shallow?: boolean
 }
 
-export function useStorage(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -114,7 +114,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   key: string,
   initialValue: MaybeComputedRef<T>,
   storage: StorageLike | undefined,
-  options: StorageOptions<T> = {},
+  options: UseStorageOptions<T> = {},
 ): RemovableRef<T> {
   const {
     flush = 'pre',

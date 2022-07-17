@@ -9,7 +9,7 @@ export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | '
 
 const defaultEvents: WindowEventName[] = ['mousedown', 'mouseup', 'keydown', 'keyup']
 
-export interface ModifierOptions<Initial> extends ConfigurableDocument {
+export interface UseModifierOptions<Initial> extends ConfigurableDocument {
   /**
    * Event names that will prompt update to modifier states
    *
@@ -25,7 +25,9 @@ export interface ModifierOptions<Initial> extends ConfigurableDocument {
   initial?: Initial
 }
 
-export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModifier, options: ModifierOptions<Initial> = {}) {
+export type UseKeyModifierReturn<Initial> = Ref<Initial extends boolean ? boolean : boolean | null>
+
+export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModifier, options: UseModifierOptions<Initial> = {}): UseKeyModifierReturn<Initial> {
   const {
     events = defaultEvents,
     document = defaultDocument,
@@ -43,5 +45,5 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
     })
   }
 
-  return state as Ref<Initial extends boolean ? boolean : boolean | null>
+  return state
 }
