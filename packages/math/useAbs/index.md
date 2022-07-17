@@ -4,7 +4,7 @@ category: '@Math'
 
 # useAbs
 
-Reactively [Math.abs(value)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/abs).
+Reactive `Math.abs`.
 
 ## Usage
 
@@ -12,5 +12,5 @@ Reactively [Math.abs(value)](https://developer.mozilla.org/en-US/docs/Web/JavaSc
 import { useAbs } from '@vueuse/math'
 
 const value = ref(-23)
-const absValue = useAbs(value)
+const absValue = useAbs(value) // Ref<23>
 ```

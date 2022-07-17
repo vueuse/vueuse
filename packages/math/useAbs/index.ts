@@ -4,7 +4,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 
 /**
- * Reactively Math.abs(value).
+ * Reactive `Math.abs`.
  *
  * @see https://vueuse.org/useAbs
  */
