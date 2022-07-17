@@ -5,7 +5,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import type { Stoppable } from '../utils'
 import { isClient } from '../utils'
 
-export interface TimeoutFnOptions {
+export interface UseTimeoutFnOptions {
   /**
    * Start the timer immediate after calling this function
    *
@@ -24,7 +24,7 @@ export interface TimeoutFnOptions {
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
   interval: MaybeComputedRef<number>,
-  options: TimeoutFnOptions = {},
+  options: UseTimeoutFnOptions = {},
 ): Stoppable {
   const {
     immediate = true,
