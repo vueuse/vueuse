@@ -24,7 +24,12 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
     write: (v: any) => String(v),
   },
   object: {
-    read: (v: any) => JSON.parse(v),
+    read: (v: any) => JSON.parse(v, (_key, value) =>
+      (value instanceof Map
+        ? Array.from((value as Map<any, any>).entries())
+        : Array.isArray(value)
+          ? new Set(value)
+          : value)),
     write: (v: any) => JSON.stringify(v,
       (_key, value) =>
         (value instanceof Map
