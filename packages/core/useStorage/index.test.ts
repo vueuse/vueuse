@@ -143,24 +143,58 @@ describe('useStorage', () => {
     const store = useStorage(KEY, {
       name: 'a',
       data: 123,
+      cDate: new Date('2000-01-02T00:00:00.000Z'),
+      cLogic: true,
+      cSet: new Set([1, 2, 3]),
+      cMap: new Map<number, string | number>([
+        [1, 'a'],
+        [2, 2],
+      ]),
     }, storage)
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123,"cDate":"2000-01-02T00:00:00.000Z","cLogic":true,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
 
     expect(store.value).toEqual({
       name: 'a',
       data: 123,
+      cDate: new Date('2000-01-02T00:00:00.000Z'),
+      cLogic: true,
+      cSet: new Set([1, 2, 3]),
+      cMap: new Map<number, string | number>([
+        [1, 'a'],
+        [2, 2],
+      ]),
     })
 
     store.value.name = 'b'
     await nextTwoTick()
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123,"cDate":"2000-01-02T00:00:00.000Z","cLogic":true,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
 
     store.value.data = 321
     await nextTwoTick()
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2000-01-02T00:00:00.000Z","cLogic":true,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
+
+    store.value.cLogic = false
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2000-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
+
+    store.value.cDate = new Date('2001-01-02T00:00:00.000Z')
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
+
+    store.value.cSet.add(4)
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2]]}')
+
+    store.value.cMap.set(3, 'c')
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2],[3,"c"]]}')
 
     store.value = null
     await nextTwoTick()

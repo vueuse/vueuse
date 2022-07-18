@@ -25,7 +25,13 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   },
   object: {
     read: (v: any) => JSON.parse(v),
-    write: (v: any) => JSON.stringify(v),
+    write: (v: any) => JSON.stringify(v,
+      (_key, value) =>
+        (value instanceof Map
+          ? Array.from((value as Map<any, any>).entries())
+          : value instanceof Set
+            ? Array.from(value as Set<any>)
+            : value instanceof Date ? value.toISOString() : value)),
   },
   number: {
     read: (v: any) => Number.parseFloat(v),
