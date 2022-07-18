@@ -185,16 +185,17 @@ describe('useStorage', () => {
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3],"cMap":[[1,"a"],[2,2]]}')
+    if (isVue3) {
+      store.value.cSet.add(4)
+      await nextTwoTick()
 
-    store.value.cSet.add(4)
-    await nextTwoTick()
+      expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2]]}')
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2]]}')
+      store.value.cMap.set(3, 'c')
+      await nextTwoTick()
 
-    store.value.cMap.set(3, 'c')
-    await nextTwoTick()
-
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2],[3,"c"]]}')
+      expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321,"cDate":"2001-01-02T00:00:00.000Z","cLogic":false,"cSet":[1,2,3,4],"cMap":[[1,"a"],[2,2],[3,"c"]]}')
+    }
 
     store.value = null
     await nextTwoTick()
