@@ -12,13 +12,15 @@ export function refDebounced<T>(value: Ref<T>, ms = 200, options: DebounceFilter
   if (ms <= 0)
     return value
 
-  const debounced = ref(value.value as T) as Ref<T>
+  const debounced = ref(cloneDeep(value.value) as T) as Ref<T>
 
   const updater = useDebounceFn(() => {
-    debounced.value = value.value
+    debounced.value = cloneDeep(value.value)
   }, ms, options)
 
-  watch(value, () => updater())
+  watch(value, () => updater(), {
+    deep: true
+  })
 
   return debounced
 }
