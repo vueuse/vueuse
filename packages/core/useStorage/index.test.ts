@@ -333,6 +333,11 @@ describe('useStorage', () => {
   })
 
   it('mergeDefaults option', async () => {
+    // basic
+    storage.setItem(KEY, '0')
+    const basicRef = useStorage(KEY, 1, storage, { mergeDefaults: true })
+    expect(basicRef.value).toBe(1)
+
     // object
     storage.setItem(KEY, JSON.stringify({ a: 1 }))
     const objectRef = useStorage(KEY, { a: 2, b: 3 }, storage, { mergeDefaults: true })
