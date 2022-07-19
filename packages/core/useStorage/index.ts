@@ -76,6 +76,13 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   writeDefaults?: boolean
 
   /**
+   * Merge the default value to the storage (Only support object and array type)
+   *
+   * @default false
+   */
+  mergeDefaults?: boolean
+
+  /**
    * Custom data serialization
    */
   serializer?: Serializer<T>
@@ -121,6 +128,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     deep = true,
     listenToStorageChanges = true,
     writeDefaults = true,
+    mergeDefaults = false,
     shallow,
     window = defaultWindow,
     eventFilter,
@@ -185,6 +193,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         if (writeDefaults && rawInit !== null)
           storage!.setItem(key, serializer.write(rawInit))
         return rawInit
+      }
+      else if (!event && type === 'object' && mergeDefaults) {
+        const value = serializer.read(rawValue)
+        return Array.isArray(value) ? [...value, ...<[]>rawInit] : { ...value, ...<object>rawInit }
       }
       else if (typeof rawValue !== 'string') {
         return rawValue

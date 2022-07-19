@@ -331,4 +331,16 @@ describe('useStorage', () => {
 
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
+
+  it('mergeDefaults option', async () => {
+    // object
+    storage.setItem(KEY, JSON.stringify({ a: 1 }))
+    const objectRef = useStorage(KEY, { a: 2, b: 3 }, storage, { mergeDefaults: true })
+    expect(JSON.stringify(objectRef.value)).toBe(JSON.stringify({ a: 2, b: 3 }))
+
+    // array
+    storage.setItem(KEY, JSON.stringify([1]))
+    const arrayRef = useStorage(KEY, [2], storage, { mergeDefaults: true })
+    expect(JSON.stringify(arrayRef.value)).toBe(JSON.stringify([1, 2]))
+  })
 })
