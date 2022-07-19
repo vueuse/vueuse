@@ -331,4 +331,15 @@ describe('useStorage', () => {
 
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
+
+  it('works with options.writeInitialValue', () => {
+    const data = { a: 1, b: 2 }
+    const key = 'key'
+
+    storage.setItem(key, JSON.stringify({ a: data.a }))
+
+    const stored = useStorage(key, data, storage, { writeInitial: true })
+
+    expect(stored.value.b).toEqual(data.b)
+  })
 })

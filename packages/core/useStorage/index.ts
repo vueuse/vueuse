@@ -93,6 +93,10 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
    * @default false
    */
   shallow?: boolean
+  /**
+   * Write initial value to the storage at the start.
+   */
+  writeInitial?: boolean
 }
 
 export function useStorage(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
@@ -154,6 +158,9 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', update)
+
+  if (options.writeInitial)
+    write(initialValue)
 
   update()
 
