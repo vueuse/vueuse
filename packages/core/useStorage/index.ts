@@ -1,5 +1,5 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, resolveUnref } from '@vueuse/shared'
+import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
@@ -77,10 +77,12 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
 
   /**
    * Merge the default value to the storage
+   * Note: It'll be a shallow merge when set to true
+   * You can provide a custom function for deep merge
    *
    * @default false
    */
-  mergeDefaults?: boolean
+  mergeDefaults?: boolean | ((storage: StorageLike, defaults: T) => T)
 
   /**
    * Custom data serialization
@@ -195,10 +197,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         return rawInit
       }
       else if (!event && mergeDefaults) {
-        if (type === 'object') {
-          const value = serializer.read(rawValue)
+        const value = serializer.read(rawValue)
+        if (isFunction(mergeDefaults))
+          return mergeDefaults(storage!, value)
+        else if (type === 'object')
           return Array.isArray(value) ? [...value, ...<[]>rawInit] : { ...value, ...<object>rawInit }
-        }
         return rawInit
       }
       else if (typeof rawValue !== 'string') {
