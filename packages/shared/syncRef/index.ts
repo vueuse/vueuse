@@ -1,8 +1,9 @@
-import type { Ref } from 'vue-demi'
-import { watch } from 'vue-demi'
+import type { WatchPausableReturn } from '@vueuse/shared'
+import { pausableWatch } from '@vueuse/shared'
+import type { Ref, UnwrapRef } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 
-export interface SyncRefOptions extends ConfigurableFlushSync {
+export interface SyncRefOptions<T> extends ConfigurableFlushSync {
   /**
    * Watch deeply
    *
@@ -17,11 +18,18 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
   immediate?: boolean
 
   /**
-   * Direction of syncing
+   * Direction of syncing. Value will be redefined if you define syncConvertors
    *
    * @default 'both'
    */
   direction?: 'ltr' | 'rtl' | 'both'
+  /**
+   * Sync function which converts values before sync.
+   */
+  syncConvertors?: {
+    ltr?: (left: Ref<T>, right: Ref<T>) => T
+    rtl?: (left: Ref<T>, right: Ref<T>) => T
+  }
 }
 
 /**
@@ -30,34 +38,81 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
  * @param left
  * @param right
  */
-export function syncRef<R extends Ref<any>>(left: R, right: R, options: SyncRefOptions = {}) {
+export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOptions<UnwrapRef<R>> = {}) {
   const {
     flush = 'sync',
     deep = false,
     immediate = true,
-    direction = 'both',
+    syncConvertors = {},
   } = options
 
-  let stop1: Function, stop2: Function
+  let watchLeft: WatchPausableReturn, watchRight: WatchPausableReturn
+
+  let { direction = 'both' } = options
+
+  if (syncConvertors.ltr || syncConvertors.rtl) {
+    if (syncConvertors.ltr && syncConvertors.rtl)
+      direction = 'both'
+
+    else if (syncConvertors.ltr)
+      direction = 'ltr'
+
+    else
+      direction = 'rtl'
+  }
+
+  function sync() {
+    if (direction === 'ltr' || direction === 'both')
+      right.value = syncConvertors.ltr ? syncConvertors.ltr(left, right) : left.value
+    else
+      left.value = syncConvertors.rtl ? syncConvertors.rtl(left, right) : right.value
+  }
+
+  if (immediate)
+    sync()
 
   if (direction === 'both' || direction === 'ltr') {
-    stop1 = watch(
+    watchLeft = pausableWatch(
       left,
-      newValue => right.value = newValue,
-      { flush, deep, immediate },
+      (newValue) => {
+        if (!syncConvertors.ltr) {
+          right.value = newValue
+
+          return
+        }
+
+        watchRight?.pause()
+
+        right.value = syncConvertors.ltr(left, right)
+
+        watchRight?.resume()
+      },
+      { flush, deep },
     )
   }
 
   if (direction === 'both' || direction === 'rtl') {
-    stop2 = watch(
+    watchRight = pausableWatch(
       right,
-      newValue => left.value = newValue,
-      { flush, deep, immediate },
+      (newValue) => {
+        if (!syncConvertors.rtl) {
+          left.value = newValue
+
+          return
+        }
+
+        watchLeft?.pause()
+
+        left.value = syncConvertors.rtl(left, right)
+
+        watchLeft?.resume()
+      },
+      { flush, deep },
     )
   }
 
   return () => {
-    stop1?.()
-    stop2?.()
+    watchLeft?.stop()
+    watchRight?.stop()
   }
 }

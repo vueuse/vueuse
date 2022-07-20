@@ -38,3 +38,24 @@ const b = ref('b')
 
 const stop = syncRef(a, b, { direction: 'rtl' })
 ```
+
+Sync convertors
+```ts
+import { syncRef } from '@vueuse/core'
+
+const a = ref(10)
+const b = ref(2)
+
+const stop = syncRef(a, b, {
+  syncConvertors: {
+    ltr: left => left * 2,
+    rtl: (_, right) => right / 2
+  }
+})
+
+console.log(b.value) // 20
+
+b.value = 30
+
+console.log(a.value) // 15
+```
