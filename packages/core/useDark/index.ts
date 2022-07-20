@@ -26,6 +26,8 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
    * @default undefined
    */
   onChanged?: (isDark: boolean) => void
+
+  initialValue?: 'light' | 'dark'
 }
 
 /**
@@ -54,6 +56,9 @@ export function useDark(options: UseDarkOptions = {}) {
       light: valueLight,
     },
   })
+
+  if (options.initialValue)
+    mode.value = options.initialValue
 
   const preferredDark = usePreferredDark({ window })
 
