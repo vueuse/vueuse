@@ -82,7 +82,7 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'alex_kozack',
     sponsors: false,
     functions: ['useMediaControls'],
-    description: '',
+    description: 'Open Source Contributor from Ukraine',
   },
   {
     avatar: contributorsAvatars.scottbedard,
