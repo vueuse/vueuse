@@ -26,6 +26,10 @@ importers:
       '@vitest/ui': ^0.18.0
       '@vue/compiler-sfc': ^3.2.37
       '@vue/test-utils': ^2.0.2
+      '@vueuse/core': ./packages/core
+      '@vueuse/integrations': ./packages/integrations
+      '@vueuse/math': ./packages/math
+      '@vueuse/shared': ./packages/shared
       axios: ^0.27.2
       bumpp: ^8.2.1
       consola: ^2.15.3
@@ -89,6 +93,10 @@ importers:
       '@vitest/ui': 0.18.0
       '@vue/compiler-sfc': 3.2.37
       '@vue/test-utils': 2.0.2_vue@3.2.37
+      '@vueuse/core': link:packages/core
+      '@vueuse/integrations': link:packages/integrations
+      '@vueuse/math': link:packages/math
+      '@vueuse/shared': link:packages/shared
       axios: 0.27.2
       bumpp: 8.2.1
       consola: 2.15.3
@@ -230,6 +238,7 @@ importers:
       '@vueuse/core': workspace:*
       '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.1
+      unimport: ^0.4.5
       vue-demi: 0.13.2
     dependencies:
       '@nuxt/kit': 3.0.0-rc.4
@@ -239,6 +248,7 @@ importers:
       vue-demi: 0.13.2
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.4
+      unimport: 0.4.5
 
   packages/router:
     specifiers:
@@ -6267,6 +6277,11 @@ packages:
     resolution: {integrity: sha512-lL87ytIGP2FU5PWwNDo0w3WhIo2gopIAxPg9RxDYF7m4rr5ahuZxP22xnJHIvaLTe4Z9P6uKKY2UHiwyB4pcrw==}
     engines: {node: '>=14'}
 
+  /local-pkg/0.4.2:
+    resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
+    engines: {node: '>=14'}
+    dev: true
+
   /locate-path/2.0.0:
     resolution: {integrity: sha512-NCI2kiDkyR7VeEKm27Kda/iQHyKJe1Bu0FlTbYp3CqJu+9IFe9bLyAjMxf5ZDDbEg+iMPzB5zYyUTSm8wVTKmA==}
     engines: {node: '>=4'}
@@ -6560,6 +6575,13 @@ packages:
     dependencies:
       pathe: 0.2.0
       pkg-types: 0.3.2
+
+  /mlly/0.5.4:
+    resolution: {integrity: sha512-gFlsLWCjVwu/LM/ZfYUkmnbBoz7eyBIMUwVQYDqhd8IvtNFDeZ95uwAyxHE2Xx7tQwePQaCo4fECZ9MWFEUTgQ==}
+    dependencies:
+      pathe: 0.3.2
+      pkg-types: 0.3.3
+    dev: true
 
   /mrmime/1.0.0:
     resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}
@@ -7073,6 +7095,10 @@ packages:
   /pathe/0.3.0:
     resolution: {integrity: sha512-3vUjp552BJzCw9vqKsO5sttHkbYqqsZtH0x1PNtItgqx8BXEXzoY1SYRKcL6BTyVh4lGJGLj0tM42elUDMvcYA==}
 
+  /pathe/0.3.2:
+    resolution: {integrity: sha512-qhnmX0TOqlCvdWWTkoM83wh5J8fZ2yhbDEc9MlsnAEtEc+JCwxUKEwmd6pkY9hRe6JR1Uecbc14VcAKX2yFSTA==}
+    dev: true
+
   /pathval/1.1.1:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
     dev: true
@@ -7114,6 +7140,14 @@ packages:
       jsonc-parser: 3.0.0
       mlly: 0.3.19
       pathe: 0.2.0
+
+  /pkg-types/0.3.3:
+    resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
+    dependencies:
+      jsonc-parser: 3.0.0
+      mlly: 0.5.4
+      pathe: 0.3.2
+    dev: true
 
   /pluralize/8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
@@ -8438,6 +8472,26 @@ packages:
       - vite
       - webpack
 
+  /unimport/0.4.5:
+    resolution: {integrity: sha512-DnmiSt/HQIfhdcxOy4CGqwZDBh3WHg33euX1ge4X8hvquKBmw2PFvhoAJaBKxscOz0oYosoPoPT4tkDZWHhV0Q==}
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      escape-string-regexp: 5.0.0
+      fast-glob: 3.2.11
+      local-pkg: 0.4.2
+      magic-string: 0.26.2
+      mlly: 0.5.4
+      pathe: 0.3.2
+      scule: 0.2.1
+      strip-literal: 0.4.0
+      unplugin: 0.7.2
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: true
+
   /unique-string/2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
@@ -8624,6 +8678,29 @@ packages:
       chokidar: 3.5.3
       rollup: 2.76.0
       vite: 2.9.14
+      webpack-sources: 3.2.3
+      webpack-virtual-modules: 0.4.4
+    dev: true
+
+  /unplugin/0.7.2:
+    resolution: {integrity: sha512-m7thX4jP8l5sETpLdUASoDOGOcHaOVtgNyrYlToyQUvILUtEzEnngRBrHnAX3IKqooJVmXpoa/CwQ/QqzvGaHQ==}
+    peerDependencies:
+      esbuild: '>=0.13'
+      rollup: ^2.50.0
+      vite: ^2.3.0 || ^3.0.0-0
+      webpack: 4 || 5
+    peerDependenciesMeta:
+      esbuild:
+        optional: true
+      rollup:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+    dependencies:
+      acorn: 8.7.1
+      chokidar: 3.5.3
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.4
     dev: true

@@ -41,6 +41,7 @@
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.4"
+    "@nuxt/schema": "^3.0.0-rc.4",
+    "unimport": "^0.4.5"
   }
 }

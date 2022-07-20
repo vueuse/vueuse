@@ -1,11 +1,15 @@
 {
   "private": true,
+  "packageManager": "pnpm@7.5.0",
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.4"
+    "@vueuse/core": "../../packages/core",
+    "@vueuse/integrations": "../../packages/integrations",
+    "@vueuse/shared": "../../packages/shared",
+    "nuxt": "^3.0.0-rc.6"
   }
 }
