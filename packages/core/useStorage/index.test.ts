@@ -350,8 +350,7 @@ describe('useStorage', () => {
 
     // custom function
     storage.setItem(KEY, JSON.stringify([{ a: 1 }]))
-    const initial = [{ a: 3 }]
-    const customRef = useStorage(KEY, initial, storage, { mergeDefaults: (_, value) => ([...initial, ...value]) })
+    const customRef = useStorage(KEY, [{ a: 3 }], storage, { mergeDefaults: (value, initial) => ([...initial, ...value]) })
     expect(JSON.stringify(customRef.value)).toBe(JSON.stringify([{ a: 3 }, { a: 1 }]))
   })
 })

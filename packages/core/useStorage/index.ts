@@ -82,7 +82,7 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
    *
    * @default false
    */
-  mergeDefaults?: boolean | ((storage: StorageLike, defaults: T) => T)
+  mergeDefaults?: boolean | ((storageValue: T, defaults: T) => T)
 
   /**
    * Custom data serialization
@@ -199,7 +199,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       else if (!event && mergeDefaults) {
         const value = serializer.read(rawValue)
         if (isFunction(mergeDefaults))
-          return mergeDefaults(storage!, value)
+          return mergeDefaults(value, rawInit)
         else if (type === 'object')
           return Array.isArray(value) ? [...value, ...<[]>rawInit] : { ...value, ...<object>rawInit }
         return rawInit
