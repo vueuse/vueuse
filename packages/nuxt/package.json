@@ -34,14 +34,14 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.4",
+    "@nuxt/kit": "^3.0.0-rc.6",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
-    "local-pkg": "^0.4.1",
+    "local-pkg": "^0.4.2",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.4",
-    "unimport": "^0.4.5"
+    "@nuxt/schema": "^3.0.0-rc.6",
+    "unimport": "^0.6.1"
   }
 }
