@@ -63,7 +63,7 @@
     "esno": "^0.16.3",
     "export-size": "^0.5.2",
     "fast-glob": "^3.2.11",
-    "firebase": "^8.10.0",
+    "firebase": "^9.9.0",
     "fs-extra": "^10.1.0",
     "fuse.js": "^6.6.2",
     "google-font-installer": "^1.2.0",

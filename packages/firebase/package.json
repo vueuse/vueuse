@@ -51,7 +51,7 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
   "peerDependencies": {
-    "firebase": ">=4.0.0"
+    "firebase": ">=9.0.0"
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
