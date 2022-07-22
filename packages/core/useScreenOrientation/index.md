@@ -33,7 +33,7 @@ const {
   unlockOrientation,
 } = useScreenOrientation()
 
-lockOrientation('primary-portrait')
+lockOrientation('portrait-primary')
 ```
 
 and then unlock again, with the following:
