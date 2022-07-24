@@ -25,6 +25,13 @@ describe('logicAnd', () => {
 
     expect(unref(logicAnd(true, false))).toBe(false)
     expect(unref(logicAnd(0))).toBe(false)
-    expect(unref(logicAnd(0))).toBe(false)
+  })
+
+  it('works with getter functions', () => {
+    expect(unref(logicAnd(() => true))).toBe(true)
+    expect(unref(logicAnd(() => 'foo'))).toBe(true)
+
+    expect(unref(logicAnd(() => true, () => false))).toBe(false)
+    expect(unref(logicAnd(() => 0))).toBe(false)
   })
 })
