@@ -1,4 +1,3 @@
-import { resolveUnref } from '@vueuse/shared'
 import type { Ref, UnwrapRef, WatchStopHandle } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
@@ -44,21 +43,21 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
     flush = 'sync',
     deep = false,
     immediate = true,
+    direction = 'both',
     transform = {},
   } = options
 
   let watchLeft: WatchStopHandle
   let watchRight: WatchStopHandle
 
-  const { direction = 'both' } = options
   const transformLTR = transform.ltr ?? (v => v)
   const transformRTL = transform.rtl ?? (v => v)
 
   function sync() {
     if (direction === 'ltr' || direction === 'both')
-      right.value = transformLTR(resolveUnref(left))
+      right.value = transformLTR(left.value)
     else
-      left.value = transformRTL(resolveUnref(right))
+      left.value = transformRTL(right.value)
   }
 
   if (immediate)
@@ -67,9 +66,7 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
   if (direction === 'both' || direction === 'ltr') {
     watchLeft = watch(
       left,
-      (newValue) => {
-        right.value = transformLTR(newValue)
-      },
+      newValue => right.value = transformLTR(newValue),
       { flush, deep },
     )
   }
@@ -77,9 +74,7 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
   if (direction === 'both' || direction === 'rtl') {
     watchRight = watch(
       right,
-      (newValue) => {
-        left.value = transformRTL(newValue)
-      },
+      newValue => left.value = transformRTL(newValue),
       { flush, deep },
     )
   }
