@@ -1,8 +1,8 @@
-import type { Ref, UnwrapRef, WatchStopHandle } from 'vue-demi'
+import type { Ref, WatchStopHandle } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 
-export interface SyncRefOptions<T> extends ConfigurableFlushSync {
+export interface SyncRefOptions<L, R = L> extends ConfigurableFlushSync {
   /**
    * Watch deeply
    *
@@ -27,8 +27,8 @@ export interface SyncRefOptions<T> extends ConfigurableFlushSync {
    * Custom transform function
    */
   transform?: {
-    ltr?: (left: T) => T
-    rtl?: (right: T) => T
+    ltr?: (left: L) => R
+    rtl?: (right: R) => L
   }
 }
 
@@ -38,7 +38,7 @@ export interface SyncRefOptions<T> extends ConfigurableFlushSync {
  * @param left
  * @param right
  */
-export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOptions<UnwrapRef<R>> = {}) {
+export function syncRef<L, R = L>(left: Ref<L>, right: Ref<R>, options: SyncRefOptions<L, R> = {}) {
   const {
     flush = 'sync',
     deep = false,
@@ -56,7 +56,7 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
   if (direction === 'both' || direction === 'ltr') {
     watchLeft = watch(
       left,
-      newValue => right.value = transformLTR(newValue),
+      newValue => right.value = transformLTR(newValue) as R,
       { flush, deep, immediate },
     )
   }
@@ -64,7 +64,7 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
   if (direction === 'both' || direction === 'rtl') {
     watchRight = watch(
       right,
-      newValue => left.value = transformRTL(newValue),
+      newValue => left.value = transformRTL(newValue) as L,
       { flush, deep, immediate },
     )
   }
