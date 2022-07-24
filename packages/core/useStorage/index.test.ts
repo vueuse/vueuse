@@ -331,4 +331,31 @@ describe('useStorage', () => {
 
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
+
+  it('mergeDefaults option', async () => {
+    // basic
+    storage.setItem(KEY, '0')
+    const basicRef = useStorage(KEY, 1, storage, { mergeDefaults: true })
+    expect(basicRef.value).toBe(0)
+
+    // object
+    storage.setItem(KEY, JSON.stringify({ a: 1 }))
+    const objectRef = useStorage(KEY, { a: 2, b: 3 }, storage, { mergeDefaults: true })
+    expect(objectRef.value).toEqual({ a: 1, b: 3 })
+
+    // array
+    storage.setItem(KEY, JSON.stringify([1]))
+    const arrayRef = useStorage(KEY, [2], storage, { mergeDefaults: true })
+    expect(arrayRef.value).toEqual([1])
+
+    // custom function
+    storage.setItem(KEY, JSON.stringify([{ a: 1 }]))
+    const customRef = useStorage(KEY, [{ a: 3 }], storage, { mergeDefaults: (value, initial) => [...initial, ...value] })
+    expect(customRef.value).toEqual([{ a: 3 }, { a: 1 }])
+
+    // custom function 2
+    storage.setItem(KEY, '1')
+    const customRef2 = useStorage(KEY, 2, storage, { mergeDefaults: (value, initial) => value + initial })
+    expect(customRef2.value).toEqual(3)
+  })
 })
