@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useDrauu
 
-Reactive instance for [drauu](https://github.com/antfu/drauu)
+Reactive instance for [drauu](https://github.com/antfu/drauu).
 
 ## Install
 
