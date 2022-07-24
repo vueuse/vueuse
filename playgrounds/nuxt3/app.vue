@@ -6,6 +6,8 @@ const mounted = ref(false)
 const { width, height } = useWindowSize()
 const color = useColorMode()
 
+const data = useAxios('/api/data')
+
 onMounted(() => {
   mounted.value = true
 })

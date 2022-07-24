@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useChangeCase
 
-Reactive wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
+Reactive wrapper for [`change-case`](https://github.com/blakeembrey/change-case).
 
 ## Install
 

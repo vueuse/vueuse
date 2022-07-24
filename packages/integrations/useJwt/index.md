@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useJwt
 
-wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
+Wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode).
 
 ## Install
 

@@ -148,7 +148,7 @@ export function useWebSocket<Data = any>(
   } = options
 
   const data: Ref<Data | null> = ref(null)
-  const status = ref<WebSocketStatus>('CONNECTING')
+  const status = ref<WebSocketStatus>('CLOSED')
   const wsRef = ref<WebSocket | undefined>()
 
   let heartbeatPause: Fn | undefined

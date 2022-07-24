@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "9.0.0-beta.0",
+  "version": "9.0.0-beta.1",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -153,7 +153,7 @@
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
-    "qrcode": "^1.5.0",
+    "qrcode": "^1.5.1",
     "universal-cookie": "^4.0.4"
   }
 }

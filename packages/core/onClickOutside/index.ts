@@ -33,7 +33,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  */
 export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: <E = T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent>(evt: E) => void,
+  handler: (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void,
   options: T = {} as T,
 ) {
   const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
@@ -84,7 +84,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
         document.activeElement?.tagName === 'IFRAME'
         && !el?.contains(document.activeElement)
       )
-        handler(event)
+        handler(event as any)
     }),
   ].filter(Boolean) as Fn[]
 

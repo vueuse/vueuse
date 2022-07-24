@@ -1,4 +1,4 @@
-import { isVue2, reactive, ref, watch } from 'vue-demi'
+import { reactive, ref, watch } from 'vue-demi'
 import { set } from '.'
 
 describe('set', () => {
@@ -28,7 +28,6 @@ describe('set', () => {
     set(source, 'bar', 42)
 
     expect(source.bar).toBe(42)
-    // TODO: a bug of Vue 2.7
-    expect(changed).toBe(isVue2 ? 1 : 2)
+    expect(changed).toBe(2)
   })
 })

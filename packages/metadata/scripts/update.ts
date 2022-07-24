@@ -113,6 +113,9 @@ export async function readMetadata() {
       if (related?.length)
         fn.related = related
 
+      if (pkg.submodules)
+        fn.importPath = `${pkg.name}/${fn.name}`
+
       indexes.functions.push(fn)
     }))
   }
