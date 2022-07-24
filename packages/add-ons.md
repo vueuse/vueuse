@@ -63,9 +63,9 @@ Schema.org for Vue. Supports typed and automated Google Rich Results
 <!--ADDONS_LIST_STARTS-->
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
 Utilities for vue-router
-  - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for reactive route.hash
-  - [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for reactive route.params
-  - [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for reactive route.query
+  - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for a reactive `route.hash`
+  - [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for a reactive `route.params`
+  - [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for a reactive `route.query`
 
 
 ## Integrations - [`@vueuse/integrations`](https://vueuse.org/integrations/README.html)
@@ -85,10 +85,10 @@ Integration wrappers for utility libraries
 ## RxJS - [`@vueuse/rxjs`](https://vueuse.org/rxjs/README.html)
 Enables RxJS reactive functions in Vue
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
-  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
-  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind Subject to ref and propagate value changes both ways
-  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide/observer)
+  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an RxJS [`Observable`](https://rxjs.dev/guide/observable)
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind an RxJS [`Subject`](https://rxjs.dev/guide/subject) to a `ref` and propagate value changes both ways
+  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — use an RxJS [`Subscription`](https://rxjs.dev/guide/subscription) without worrying about unsubscribing from it or creating memory leaks
 
 
 ## Firebase - [`@vueuse/firebase`](https://vueuse.org/firebase/README.html)
@@ -100,7 +100,7 @@ Enables realtime bindings for Firebase
 
 ## Electron - [`@vueuse/electron`](https://vueuse.org/electron/README.html)
 Electron renderer process modules for VueUse
-  - [`useIpcRenderer`](https://vueuse.org/electron/useIpcRenderer/) — provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it's all APIs
+  - [`useIpcRenderer`](https://vueuse.org/electron/useIpcRenderer/) — provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and all of its APIs
   - [`useIpcRendererInvoke`](https://vueuse.org/electron/useIpcRendererInvoke/) — reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result
   - [`useIpcRendererOn`](https://vueuse.org/electron/useIpcRendererOn/) — use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted
   - [`useZoomFactor`](https://vueuse.org/electron/useZoomFactor/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor
