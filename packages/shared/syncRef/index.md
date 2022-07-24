@@ -28,7 +28,7 @@ a.value = 'bar'
 console.log(b.value) // bar
 ```
 
-One directional
+### One directional
 
 ```ts
 import { syncRef } from '@vueuse/core'
@@ -39,7 +39,8 @@ const b = ref('b')
 const stop = syncRef(a, b, { direction: 'rtl' })
 ```
 
-Sync convertors
+### Custom Transform
+
 ```ts
 import { syncRef } from '@vueuse/core'
 
@@ -49,7 +50,7 @@ const b = ref(2)
 const stop = syncRef(a, b, {
   syncConvertors: {
     ltr: left => left * 2,
-    rtl: (_, right) => right / 2
+    rtl: right => right / 2
   }
 })
 
