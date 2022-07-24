@@ -4,7 +4,7 @@ category: '@Router'
 
 # useRouteParams
 
-Shorthand for reactive route.params
+Shorthand for a reactive `route.params`.
 
 ## Usage
 

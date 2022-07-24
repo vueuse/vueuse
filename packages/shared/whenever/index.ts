@@ -4,7 +4,7 @@ import { watch } from 'vue-demi'
 /**
  * Shorthand for watching value to be truthy
  *
- * @see https://vueuse.js.org/whenever
+ * @see https://vueuse.org/whenever
  */
 export function whenever<T>(source: WatchSource<T | false | null | undefined>, cb: WatchCallback<T>, options?: WatchOptions) {
   return watch(

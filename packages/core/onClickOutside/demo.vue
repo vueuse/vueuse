@@ -76,6 +76,7 @@ onClickOutside(
   padding: 0.5em;
   position: absolute;
   left: 0;
+  z-index: 10;
   border-radius: 5px;
   border: 1px solid var(--vp-c-divider-light);
   box-shadow: 2px 2px 5px rgba(10, 10, 10, 0.1);

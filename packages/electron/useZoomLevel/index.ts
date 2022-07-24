@@ -13,9 +13,7 @@ export function useZoomLevel(): Ref<number>
  * Reactive WebFrame zoom level
  *
  * @see https://www.electronjs.org/docs/api/web-frame#webframesetzoomlevellevel
- * @export
- * @param {WebFrame} [webFrame]
- * @returns {Ref<number>}
+ * @see https://vueuse.org/useZoomLevel
  */
 export function useZoomLevel(...args: any[]): Ref<number> {
   let webFrame: WebFrame | undefined
