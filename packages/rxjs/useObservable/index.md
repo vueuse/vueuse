@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # useObservable
 
-Use an Observable, return a ref and automatically unsubscribe from it when the component is unmounted.
+Use an RxJS [`Observable`](https://rxjs.dev/guide/observable), return a `ref`, and automatically unsubscribe from it when the component is unmounted.
 
 ## Usage
 
@@ -24,7 +24,7 @@ const count = useObservable(
 )
 ```
 
-If you want to add custom error handling to an observable that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied observable as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in node).
+If you want to add custom error handling to an `Observable` that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied `Observable` as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in Node).
 
 ```ts
 import { ref } from 'vue'

@@ -118,7 +118,7 @@ import Demo from \'./demo.vue\'
 `
     : ''
   const packageNote = packages.find(p => p.name === pkg)!.addon
-    ? `available in add-on <a href="/${pkg}/README">@vueuse/${pkg}</a>\n`
+    ? `Available in the <a href="/${pkg}/README">@vueuse/${pkg}</a> add-on.\n`
     : ''
 
   const footer = `${typingSection}\n\n${sourceSection}\n${ContributorsSection}\n${changelogSection}\n`
