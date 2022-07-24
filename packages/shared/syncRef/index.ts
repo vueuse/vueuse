@@ -53,21 +53,11 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
   const transformLTR = transform.ltr ?? (v => v)
   const transformRTL = transform.rtl ?? (v => v)
 
-  function sync() {
-    if (direction === 'ltr' || direction === 'both')
-      right.value = transformLTR(left.value)
-    else
-      left.value = transformRTL(right.value)
-  }
-
-  if (immediate)
-    sync()
-
   if (direction === 'both' || direction === 'ltr') {
     watchLeft = watch(
       left,
       newValue => right.value = transformLTR(newValue),
-      { flush, deep },
+      { flush, deep, immediate },
     )
   }
 
@@ -75,7 +65,7 @@ export function syncRef<R extends Ref>(left: R, right: R, options: SyncRefOption
     watchRight = watch(
       right,
       newValue => left.value = transformRTL(newValue),
-      { flush, deep },
+      { flush, deep, immediate },
     )
   }
 
