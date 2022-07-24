@@ -53,9 +53,9 @@ describe('syncRef', () => {
     const right = ref(1)
 
     syncRef(left, right, {
-      syncConvertors: {
-        ltr: left => left.value * 2,
-        rtl: (_, right) => Math.round(right.value / 2),
+      transform: {
+        ltr: left => left * 2,
+        rtl: right => Math.round(right / 2),
       },
     })
 
@@ -77,8 +77,9 @@ describe('syncRef', () => {
     const right = ref(2)
 
     syncRef(left, right, {
-      syncConvertors: {
-        rtl: (_, right) => Math.round(right.value / 2),
+      direction: 'rtl',
+      transform: {
+        rtl: right => Math.round(right / 2),
       },
     })
 
@@ -94,28 +95,5 @@ describe('syncRef', () => {
 
     expect(right.value).toBe(10)
     expect(left.value).toBe(5)
-  })
-
-  it('works with only ltr convertor', () => {
-    const right = ref(10)
-    const left = ref(2)
-
-    syncRef(left, right, {
-      syncConvertors: {
-        ltr: left => Math.round(left.value / 2),
-      },
-    })
-
-    // check immediately sync
-    expect(left.value).toBe(2)
-    expect(right.value).toBe(1)
-
-    right.value = 10
-    expect(left.value).toBe(2)
-    expect(right.value).toBe(10)
-
-    left.value = 10
-    expect(left.value).toBe(10)
-    expect(right.value).toBe(5)
   })
 })

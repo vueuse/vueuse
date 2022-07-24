@@ -11,7 +11,7 @@ const x = ref(1)
 const y = ref(1)
 
 syncRef(x, y, {
-  syncConvertors: {
+  transform: {
     ltr: (left, _) => {
       return left.value + Math.random()
     },
