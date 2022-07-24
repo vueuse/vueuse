@@ -6,6 +6,7 @@ export default defineConfig({
     alias: {
       '@vueuse/shared': resolve(__dirname, 'packages/shared/index.ts'),
       '@vueuse/core': resolve(__dirname, 'packages/core/index.ts'),
+      '@vueuse/math': resolve(__dirname, 'packages/math/index.ts'),
       '@vueuse/components': resolve(__dirname, 'packages/components/index.ts'),
       '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
@@ -31,5 +32,10 @@ export default defineConfig({
         'vue-demi',
       ],
     },
+  },
+  ssr: {
+    noExternal: [
+      /@vueuse\/.*/,
+    ],
   },
 })

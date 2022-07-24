@@ -26,6 +26,13 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
   attribute?: string
 
   /**
+   * The initial color mode
+   *
+   * @default 'auto'
+   */
+  initialValue?: T | BasicColorSchema
+
+  /**
    * Prefix when adding value to the attribute
    */
   modes?: Partial<Record<T | BasicColorSchema, string>>
@@ -82,6 +89,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const {
     selector = 'html',
     attribute = 'class',
+    initialValue = 'auto',
     window = defaultWindow,
     storage,
     storageKey = 'vueuse-color-scheme',
@@ -101,8 +109,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const preferredMode = computed(() => preferredDark.value ? 'dark' : 'light')
 
   const store = storageRef || (storageKey == null
-    ? ref('auto') as Ref<T | BasicColorSchema>
-    : useStorage<T | BasicColorSchema>(storageKey, 'auto', storage, { window, listenToStorageChanges }))
+    ? ref(initialValue) as Ref<T | BasicColorSchema>
+    : useStorage<T | BasicColorSchema>(storageKey, initialValue as BasicColorSchema, storage, { window, listenToStorageChanges }))
 
   const state = computed<T | BasicColorSchema>({
     get() {

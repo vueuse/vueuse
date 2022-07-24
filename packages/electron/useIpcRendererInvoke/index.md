@@ -4,7 +4,7 @@ category: '@Electron'
 
 # useIpcRendererInvoke
 
-Reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result. Make asynchronous operations look like synchronous.
+Reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result. Make asynchronous operations look synchronous.
 
 ## Usage
 
