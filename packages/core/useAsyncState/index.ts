@@ -50,6 +50,13 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
    * @default true
    */
   shallow?: Shallow
+  /**
+   *
+   * An error is thrown when executing the execute function
+   *
+   * @default false
+   */
+  throwError?: boolean
 }
 
 /**
@@ -72,6 +79,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     onError = noop,
     resetOnExecute = true,
     shallow = true,
+    throwError,
   } = options ?? {}
 
   const state = shallow ? shallowRef(initialState) : ref(initialState)
@@ -101,6 +109,8 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     catch (e) {
       error.value = e
       onError(e)
+      if (throwError)
+        throw error
     }
     finally {
       isLoading.value = false
