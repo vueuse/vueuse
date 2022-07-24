@@ -6,15 +6,15 @@ category: Browser
 
 Reactive [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir) of the element's text.
 
-## Basic Usage
+## Usage
 
 ```ts
 import { useTextDirection } from '@vueuse/core'
 
 const dir = useTextDirection() // Ref<'ltr' | 'rtl' | 'auto'>
-
 ```
-By default, which enables `rlt` direction when dir `rtl` is applied to the `html` tag, for example:
+
+By default, it returns `rlt` direction when dir `rtl` is applied to the `html` tag, for example:
 
 ```html
 <!--ltr-->
@@ -24,7 +24,7 @@ By default, which enables `rlt` direction when dir `rtl` is applied to the `html
 <html dir="rtl"> ... </html>
 ```
 
-## Config
+## Options
 
 ```ts
 import { useTextDirection } from '@vueuse/core'

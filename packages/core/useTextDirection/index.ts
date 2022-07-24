@@ -1,9 +1,14 @@
-import { ref, watch } from 'vue-demi'
+import { tryOnMounted } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
 
 import type { MaybeElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
-export interface UseTextDirectionOptions {
+export type UseTextDirectionValue = 'ltr' | 'rtl' | 'auto'
+
+export interface UseTextDirectionOptions extends ConfigurableDocument {
   /**
    * CSS Selector for the target element applying to
    *
@@ -16,46 +21,55 @@ export interface UseTextDirectionOptions {
    * @default false
    */
   observe?: boolean
+  /**
+   * Initial value
+   *
+   * @default 'ltr'
+   */
+  initialValue?: UseTextDirectionValue
 }
 
 /**
  * Reactive dir of the element's text.
  *
  * @see https://vueuse.org/useTextDirection
- * @param options
  */
-export const useTextDirection = (
-  options: UseTextDirectionOptions = {},
-) => {
+export function useTextDirection(options: UseTextDirectionOptions = {}) {
   const {
+    document = defaultDocument,
     selector = 'html',
     observe = false,
+    initialValue = 'ltr',
   } = options
 
-  const defaultDir = 'ltr'
-  const dir = ref(document.querySelector(selector)?.getAttribute('dir') ?? defaultDir)
-
-  const isSupportedDir = (dir: string) => {
-    return ['ltr', 'rtl', 'auto'].includes(dir)
+  function getValue() {
+    return document?.querySelector(selector)?.getAttribute('dir') as UseTextDirectionValue ?? initialValue
   }
 
-  watch(dir, () => {
-    if (isSupportedDir(dir.value))
-      document.querySelector(selector)?.setAttribute('dir', dir.value)
-    else
-      document.querySelector(selector)?.removeAttribute('dir')
-  }, { immediate: true })
+  const dir = ref<UseTextDirectionValue>(getValue())
+
+  tryOnMounted(() => dir.value = getValue())
 
   if (observe && document) {
     useMutationObserver(
       document.querySelector(selector) as MaybeElement,
-      () => {
-        const crtDir = document.querySelector(selector)?.getAttribute('dir') ?? defaultDir
-        dir.value = isSupportedDir(crtDir) ? crtDir : defaultDir
-      },
+      () => dir.value = getValue(),
       { attributes: true },
     )
   }
 
-  return dir
+  return computed<UseTextDirectionValue>({
+    get() {
+      return dir.value
+    },
+    set(v) {
+      dir.value = v
+      if (!document)
+        return
+      if (dir.value)
+        document.querySelector(selector)?.setAttribute('dir', dir.value)
+      else
+        document.querySelector(selector)?.removeAttribute('dir')
+    },
+  })
 }
