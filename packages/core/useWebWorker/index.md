@@ -1,5 +1,5 @@
 ---
-category: Misc
+category: Browser
 related: useWebWorkerFn
 ---
 

@@ -11,8 +11,7 @@ export interface UseRTDBOptions {
 /**
  * Reactive Firebase Realtime Database binding.
  *
- * @param docRef
- * @param options
+ * @see https://vueuse.org/useRTDB
  */
 export function useRTDB<T = any>(
   docRef: DatabaseReference,

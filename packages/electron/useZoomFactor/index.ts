@@ -13,9 +13,7 @@ export function useZoomFactor(): Ref<number>
  * Reactive WebFrame zoom factor
  *
  * @see https://www.electronjs.org/docs/api/web-frame#webframesetzoomfactorfactor
- * @export
- * @param {WebFrame} [webFrame]
- * @returns {Ref<number>}
+ * @see https://vueuse.org/useZoomFactor
  */
 export function useZoomFactor(...args: any[]): Ref<number> {
   let webFrame: WebFrame | undefined

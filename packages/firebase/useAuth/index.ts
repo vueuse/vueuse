@@ -7,6 +7,11 @@ export interface UseFirebaseAuthOptions {
   user: Ref<User | null>
 }
 
+/**
+ * Reactive Firebase Auth binding
+ *
+ * @see https://vueuse.org/useAuth
+ */
 export function useAuth(auth: Auth) {
   const user = ref<User | null>(auth.currentUser)
   const isAuthenticated = computed(() => !!user.value)

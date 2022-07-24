@@ -60,9 +60,6 @@ export function useFirestore<T extends DocumentData>(
  * local data in sync with remotes databases.
  *
  * @see https://vueuse.org/useFirestore
- * @param docRef
- * @param initialValue
- * @param options
  */
 export function useFirestore<T extends DocumentData>(
   docRef: FirebaseDocRef<T>,
