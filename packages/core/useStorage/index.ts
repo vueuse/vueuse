@@ -78,8 +78,8 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   /**
    * Merge the default value with the value read from the storage.
    *
-   * When setting to true, it will perform a shallow merge for objects/arrays.
-   * You can pass a custom merge function or deep merge.
+   * When setting it to true, it will perform a **shallow merge** for objects.
+   * You can pass a function to perform custom merge (e.g. deep merge), for example:
    *
    * @default false
    */
@@ -198,9 +198,9 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         const value = serializer.read(rawValue)
         if (isFunction(mergeDefaults))
           return mergeDefaults(value, rawInit)
-        else if (type === 'object')
-          return Array.isArray(value) ? [...rawInit as any, ...value] : { ...rawInit as any, ...value }
-        return rawInit
+        else if (type === 'object' && !Array.isArray(value))
+          return { ...rawInit as any, ...value }
+        return value
       }
       else if (typeof rawValue !== 'string') {
         return rawValue

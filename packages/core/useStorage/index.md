@@ -60,7 +60,7 @@ console.log(state.hello) // 'nihao', from storage
 console.log(state.greeting) // 'hello', from merged default value
 ```
 
-When setting it to true, it will perform a **shallow merge** for objects/arrays. You can pass a custom merge function or deep merge, for example:
+When setting it to true, it will perform a **shallow merge** for objects. You can pass a function to perform custom merge (e.g. deep merge), for example:
 
 ```ts
 const state = useStorage(

@@ -336,21 +336,26 @@ describe('useStorage', () => {
     // basic
     storage.setItem(KEY, '0')
     const basicRef = useStorage(KEY, 1, storage, { mergeDefaults: true })
-    expect(basicRef.value).toBe(1)
+    expect(basicRef.value).toBe(0)
 
     // object
     storage.setItem(KEY, JSON.stringify({ a: 1 }))
     const objectRef = useStorage(KEY, { a: 2, b: 3 }, storage, { mergeDefaults: true })
-    expect(JSON.stringify(objectRef.value)).toBe(JSON.stringify({ a: 2, b: 3 }))
+    expect(objectRef.value).toEqual({ a: 1, b: 3 })
 
     // array
     storage.setItem(KEY, JSON.stringify([1]))
     const arrayRef = useStorage(KEY, [2], storage, { mergeDefaults: true })
-    expect(JSON.stringify(arrayRef.value)).toBe(JSON.stringify([1, 2]))
+    expect(arrayRef.value).toEqual([1])
 
     // custom function
     storage.setItem(KEY, JSON.stringify([{ a: 1 }]))
-    const customRef = useStorage(KEY, [{ a: 3 }], storage, { mergeDefaults: (value, initial) => ([...initial, ...value]) })
-    expect(JSON.stringify(customRef.value)).toBe(JSON.stringify([{ a: 3 }, { a: 1 }]))
+    const customRef = useStorage(KEY, [{ a: 3 }], storage, { mergeDefaults: (value, initial) => [...initial, ...value] })
+    expect(customRef.value).toEqual([{ a: 3 }, { a: 1 }])
+
+    // custom function 2
+    storage.setItem(KEY, '1')
+    const customRef2 = useStorage(KEY, 2, storage, { mergeDefaults: (value, initial) => value + initial })
+    expect(customRef2.value).toEqual(3)
   })
 })
