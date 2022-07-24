@@ -9,11 +9,7 @@ import type { IpcRendererListener } from '../_types'
  * You need to provide `ipcRenderer` to this function.
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener
- * @export
- * @param {IpcRenderer} ipcRenderer
- * @param {string} channel
- * @param {IpcRendererListener} listener
- * @returns {IpcRenderer}
+ * @see https://vueuse.org/useIpcRendererOn
  */
 export function useIpcRendererOn(ipcRenderer: IpcRenderer, channel: string, listener: IpcRendererListener): IpcRenderer
 
@@ -24,10 +20,7 @@ export function useIpcRendererOn(ipcRenderer: IpcRenderer, channel: string, list
  * `ipcRenderer` will be automatically gotten.
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener
- * @export
- * @param {string} channel
- * @param {IpcRendererListener} listener
- * @returns {IpcRenderer}
+ * @see https://vueuse.org/useIpcRendererOn
  */
 export function useIpcRendererOn(channel: string, listener: IpcRendererListener): IpcRenderer
 

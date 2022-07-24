@@ -1,11 +1,12 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { SwipeDirection } from '../useSwipe/index'
 import type { PointerType, Position } from '../types'
 
-export interface PointerSwipeOptions {
+export interface UsePointerSwipeOptions {
   /**
    * @default 50
    */
@@ -34,7 +35,7 @@ export interface PointerSwipeOptions {
   pointerTypes?: PointerType[]
 }
 
-export interface PointerSwipeReturn {
+export interface UsePointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
   direction: Readonly<Ref<SwipeDirection | null>>
   readonly posStart: Position
@@ -52,10 +53,10 @@ export interface PointerSwipeReturn {
  * @param options
  */
 export function usePointerSwipe(
-  target: MaybeRef<HTMLElement | null | undefined>,
-  options: PointerSwipeOptions = {},
-): PointerSwipeReturn {
-  const targetRef = ref(target)
+  target: MaybeComputedRef<HTMLElement | null | undefined>,
+  options: UsePointerSwipeOptions = {},
+): UsePointerSwipeReturn {
+  const targetRef = resolveRef(target)
   const {
     threshold = 50,
     onSwipe,

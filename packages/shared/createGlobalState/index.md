@@ -1,5 +1,6 @@
 ---
 category: State
+related: createSharedComposable
 ---
 
 # createGlobalState
@@ -28,7 +29,3 @@ export default defineComponent({
   },
 })
 ```
-
-## Related Functions
-
-- `createSharedComposable`

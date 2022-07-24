@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useAxios
 
-wrapper for [`axios`](https://github.com/axios/axios)
+Wrapper for [`axios`](https://github.com/axios/axios).
 
 ## Install
 
@@ -60,6 +60,14 @@ import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { execute } = useAxios(url1, {}, { immediate: false })
 execute(url2)
+```
+
+The `execute` function resolves with a result of network request.
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const { execute } = useAxios()
+const result = await execute(url)
 ```
 
 use an instance of axios with `immediate` options

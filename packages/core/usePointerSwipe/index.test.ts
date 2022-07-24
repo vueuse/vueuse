@@ -1,5 +1,5 @@
 import { SwipeDirection } from '../useSwipe'
-import type { PointerSwipeOptions } from './index'
+import type { UsePointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
 
 const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
@@ -34,7 +34,7 @@ describe('usePointerSwipe', () => {
   let onSwipe: any
   let onSwipeEnd: any
 
-  const options = (): PointerSwipeOptions => ({
+  const options = (): UsePointerSwipeOptions => ({
     threshold,
     onSwipeStart,
     onSwipe,

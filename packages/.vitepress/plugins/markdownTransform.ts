@@ -16,7 +16,7 @@ export function MarkdownTransform(): Plugin {
     name: 'vueuse-md-transform',
     enforce: 'pre',
     async transform(code, id) {
-      if (!id.endsWith('.md'))
+      if (!id.match(/\.md\b/))
         return null
 
       // linkify function names
@@ -75,7 +75,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 ## Type Declarations
 
 <details>
-<summary>Show Type Declarations</summary>
+<summary op50 italic>Show Type Declarations</summary>
 
 ${code}
 
@@ -112,13 +112,13 @@ import Demo from \'./demo.vue\'
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/demo.vue" targat="blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/demo.vue" target="_blank">source</a></p>
 <Demo/>
 </DemoContainer>
 `
     : ''
   const packageNote = packages.find(p => p.name === pkg)!.addon
-    ? `available in add-on <a href="/${pkg}/README">@vueuse/${pkg}</a>\n`
+    ? `Available in the <a href="/${pkg}/README">@vueuse/${pkg}</a> add-on.\n`
     : ''
 
   const footer = `${typingSection}\n\n${sourceSection}\n${ContributorsSection}\n${changelogSection}\n`

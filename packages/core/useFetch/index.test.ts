@@ -115,6 +115,72 @@ describe('useFetch', () => {
     })
   })
 
+  test('should chain beforeFetch function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, Global: 'foo' }
+          return { options }
+        },
+      },
+    })
+    useMyFetch('test', {
+      beforeFetch({ options }) {
+        options.headers = { ...options.headers, Local: 'foo' }
+        return { options }
+      },
+    })
+
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ Global: 'foo', Local: 'foo' })
+    })
+  })
+
+  test('should chain afterFetch function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      options: {
+        afterFetch(ctx) {
+          ctx.data.title = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch('test?json', {
+      afterFetch(ctx) {
+        ctx.data.title += ' Local'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+    })
+  })
+
+  test('should chain onFetchError function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      options: {
+        onFetchError(ctx) {
+          ctx.data.title = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch('test?status=400&json', {
+      onFetchError(ctx) {
+        ctx.data.title += ' Local'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+    })
+  })
+
   test('should run the beforeFetch function and add headers to the request', async () => {
     useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
       beforeFetch({ options }) {

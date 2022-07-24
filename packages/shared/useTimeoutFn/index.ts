@@ -1,9 +1,11 @@
-import { ref, unref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { MaybeRef, Stoppable } from '../utils'
+import type { Stoppable } from '../utils'
 import { isClient } from '../utils'
 
-export interface TimeoutFnOptions {
+export interface UseTimeoutFnOptions {
   /**
    * Start the timer immediate after calling this function
    *
@@ -21,8 +23,8 @@ export interface TimeoutFnOptions {
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval: MaybeRef<number>,
-  options: TimeoutFnOptions = {},
+  interval: MaybeComputedRef<number>,
+  options: UseTimeoutFnOptions = {},
 ): Stoppable {
   const {
     immediate = true,
@@ -50,9 +52,9 @@ export function useTimeoutFn(
     timer = setTimeout(() => {
       isPending.value = false
       timer = null
-      // eslint-disable-next-line n/no-callback-literal
+
       cb(...args)
-    }, unref(interval)) as unknown as number
+    }, resolveUnref(interval)) as unknown as number
   }
 
   if (immediate) {

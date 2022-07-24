@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
 import { getCurrentInstance, nextTick, onBeforeMount } from 'vue-demi'
 import type { Fn } from '../utils'
 

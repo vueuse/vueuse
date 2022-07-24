@@ -3,13 +3,14 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { onLongPress } from '.'
 
-const pointerdownEvent = new PointerEvent('pointerdown')
-
 describe('onLongPress', () => {
   let element: Ref<HTMLElement>
+  let pointerdownEvent: PointerEvent
 
   beforeEach(() => {
     element = ref(document.createElement('div'))
+
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
   })
 
   it('should be defined', () => {
@@ -38,6 +39,22 @@ describe('onLongPress', () => {
         await promiseTimeout(500)
         expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
+
+      it('should work with once and prevent modefiers', async () => {
+        const onLongPressCallback = vi.fn()
+        onLongPress(element, onLongPressCallback, { modifiers: { once: true, prevent: true } })
+
+        element.value.dispatchEvent(pointerdownEvent)
+
+        await promiseTimeout(500)
+
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+        expect(pointerdownEvent.defaultPrevented).toBe(true)
+
+        await promiseTimeout(500)
+
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+      })
     })
   })
 
@@ -61,6 +78,22 @@ describe('onLongPress', () => {
         await promiseTimeout(500)
         expect(onLongPressCallback).toHaveBeenCalledTimes(0)
         await promiseTimeout(500)
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+      })
+
+      it('should work with once and prevent modefiers', async () => {
+        const onLongPressCallback = vi.fn()
+        onLongPress(element.value, onLongPressCallback, { modifiers: { once: true, prevent: true } })
+
+        element.value.dispatchEvent(pointerdownEvent)
+
+        await promiseTimeout(500)
+
+        expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+        expect(pointerdownEvent.defaultPrevented).toBe(true)
+
+        await promiseTimeout(500)
+
         expect(onLongPressCallback).toHaveBeenCalledTimes(1)
       })
     })

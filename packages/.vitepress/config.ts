@@ -1,14 +1,6 @@
-// @ts-expect-error missing type
-import base from '@vue/theme/config'
+import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
-import highlight from './plugins/highlight'
-
-const themeConfig = async () => {
-  const config = await base()
-  config.markdown.highlight = await highlight()
-  return config
-}
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -50,32 +42,39 @@ const DefaultSideBar = [
 
 const FunctionsSideBar = getFunctionsSideBar()
 
-/**
- * @type {import('vitepress').UserConfig}
- */
-const config = {
-  extends: themeConfig,
-
+export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
 
+  markdown: {
+    theme: {
+      light: 'vitesse-light',
+      dark: 'vitesse-dark',
+    },
+  },
+
   themeConfig: {
     logo: '/favicon.svg',
-    repo: 'vueuse/vueuse',
-    docsDir: 'packages',
+    editLink: {
+      pattern: 'https://github.com/vueuse/vueuse/tree/main/packages/:path',
+      text: 'Suggest changes to this page',
+    },
 
-    editLinks: true,
-    editLinkText: 'Edit this page',
-    lastUpdated: 'Last Updated',
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2020-PRESENT Anthony Fu and VueUse contributors',
+    },
 
     algolia: {
+      appId: 'BH4D9OD16A',
       apiKey: 'a99ef8de1b2b27949975ce96642149c6',
       indexName: 'vueuse',
     },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vueuse/vueuse' },
+      { icon: 'discord', link: 'https://chat.antfu.me' },
       { icon: 'twitter', link: 'https://twitter.com/vueuse' },
     ],
 
@@ -127,7 +126,7 @@ const config = {
                 }
               : {
                   text: i.version,
-                  link: i.link,
+                  link: i.link!,
                 },
             ),
           },
@@ -171,7 +170,7 @@ const config = {
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap' }],
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap' }],
   ],
-}
+})
 
 function getFunctionsSideBar() {
   const links = []
@@ -197,4 +196,3 @@ function getFunctionsSideBar() {
   return links
 }
 
-export default config

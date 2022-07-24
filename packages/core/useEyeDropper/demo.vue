@@ -8,13 +8,14 @@ const { isSupported, open, sRGBHex } = useEyeDropper()
   <template v-if="isSupported">
     <div>isSupported: {{ isSupported }}</div>
     <div>sRGBHex: <span :style="{ color: sRGBHex }">{{ sRGBHex }}</span></div>
-  </template>
-  <div>
     <button
       :disabled="!isSupported"
       @click="() => open()"
     >
-      {{ isSupported ? 'Open Eye Dropper' : 'Not Supported by Your Browser' }}
+      Open Eye Dropper
     </button>
+  </template>
+  <div v-else>
+    <span>Not Supported by Your Browser</span>
   </div>
 </template>

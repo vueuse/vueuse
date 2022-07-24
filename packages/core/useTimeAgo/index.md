@@ -1,5 +1,5 @@
 ---
-category: Misc
+category: Time
 ---
 
 # useTimeAgo

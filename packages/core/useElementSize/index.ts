@@ -1,8 +1,9 @@
 import { ref, watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
-import type { ResizeObserverOptions } from '../useResizeObserver'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { useResizeObserver } from '../useResizeObserver'
 import { unrefElement } from '../unrefElement'
+
 export interface ElementSize {
   width: number
   height: number
@@ -17,9 +18,9 @@ export interface ElementSize {
  * @param options
  */
 export function useElementSize(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   initialSize: ElementSize = { width: 0, height: 0 },
-  options: ResizeObserverOptions = {},
+  options: UseResizeObserverOptions = {},
 ) {
   const width = ref(initialSize.width)
   const height = ref(initialSize.height)

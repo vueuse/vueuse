@@ -23,7 +23,7 @@ describe('useStorage', () => {
   })
 
   it('string', async () => {
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(KEY, 'a', storage)
 
       return {
@@ -31,13 +31,13 @@ describe('useStorage', () => {
       }
     })
 
-    expect(instance.ref).toBe('a')
+    expect(vm.ref).toBe('a')
     expect(storage.setItem).toBeCalledWith(KEY, 'a')
 
-    instance.ref = 'b'
+    vm.ref = 'b'
     await nextTwoTick()
 
-    expect(instance.ref).toBe('b')
+    expect(vm.ref).toBe('b')
     expect(storage.setItem).toBeCalledWith(KEY, 'b')
   })
 
@@ -247,7 +247,7 @@ describe('useStorage', () => {
   it('eventFilter', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(
         KEY,
         {
@@ -278,7 +278,7 @@ describe('useStorage', () => {
     // @ts-expect-error mock
     storage.setItem.mockClear()
 
-    instance.ref.name = 'b'
+    vm.ref.name = 'b'
     await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
@@ -288,7 +288,7 @@ describe('useStorage', () => {
     // @ts-expect-error mock
     storage.setItem.mockClear()
 
-    instance.ref.data = 321
+    vm.ref.data = 321
     await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
@@ -299,7 +299,7 @@ describe('useStorage', () => {
   it('custom serializer', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(KEY, 0, storage, { serializer: { read: JSON.parse, write: JSON.stringify } })
 
       expect(storage.setItem).toBeCalledWith(KEY, '0')
@@ -311,22 +311,22 @@ describe('useStorage', () => {
       }
     })
 
-    instance.ref = { name: 'a', data: 123 }
+    vm.ref = { name: 'a', data: 123 }
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    instance.ref.name = 'b'
+    vm.ref.name = 'b'
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    instance.ref.data = 321
+    vm.ref.data = 321
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-    instance.ref = null
+    vm.ref = null
     await nextTwoTick()
 
     expect(storage.removeItem).toBeCalledWith(KEY)

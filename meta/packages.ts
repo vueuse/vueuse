@@ -29,6 +29,14 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'math',
+    display: 'Math',
+    description: 'Math functions for VueUse',
+    external: [
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'nuxt',
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',
@@ -79,6 +87,7 @@ export const packages: PackageManifest[] = [
       '@vueuse/core',
       '@vueuse/shared',
       'fuse.js',
+      'async-validator',
     ],
     globals: {
       'axios': 'axios',
@@ -90,6 +99,7 @@ export const packages: PackageManifest[] = [
       'drauu': 'Drauu',
       'fuse.js': 'Fuse',
       'change-case': 'changeCase',
+      'async-validator': 'AsyncValidator',
     },
   },
   {

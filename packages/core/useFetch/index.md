@@ -7,6 +7,10 @@ category: Network
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
 they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
 
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useFetch()`](https://v3.nuxtjs.org/api/composables/use-fetch). Use explicit import if you want to use the function from VueUse.
+:::
+
 ## Usage
 
 ### Basic Usage
@@ -21,7 +25,7 @@ const { isFetching, error, data } = useFetch(url)
 
 ### Asynchronous Usage
 `useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
-it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Offical Vue 3 Docs](https://v3.vuejs.org/guide/migration/suspense.html)
+it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Offical Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
 
 ```ts
 import { useFetch } from '@vueuse/core'

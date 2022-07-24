@@ -1,5 +1,6 @@
 ---
 category: State
+related: useRefHistory
 ---
 
 # useManualRefHistory
@@ -52,7 +53,15 @@ commit()
 
 To use a full featured or custom clone function, you can set up via the `dump` options.
 
-For example, using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
+For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
+
+```ts
+import { cloneDeep } from 'lodash-es'
+
+const refHistory = useManualRefHistory(target, { clone: structuredClone })
+```
+
+Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
 
 ```ts
 import { cloneDeep } from 'lodash-es'
@@ -94,7 +103,3 @@ const refHistory = useManualRefHistory(target, {
 
 refHistory.clear() // explicitly clear all the history
 ```
-
-## Related Functions
-
-- `useRefHistory`

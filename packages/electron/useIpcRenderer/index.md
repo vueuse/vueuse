@@ -4,7 +4,7 @@ category: '@Electron'
 
 # useIpcRenderer
 
-Provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and it's all APIs.
+Provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and all of its APIs.
 
 ## Usage
 

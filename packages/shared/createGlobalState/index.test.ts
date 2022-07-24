@@ -16,7 +16,7 @@ describe('createGlobalState', () => {
 
     const { counter, doubled } = useGlobalState()
 
-    const vm1 = useSetup(() => {
+    const vm = useSetup(() => {
       const { counter, doubled } = useGlobalState()
 
       expect(counter.value).toBe(1)
@@ -33,7 +33,7 @@ describe('createGlobalState', () => {
     expect(counter.value).toBe(2)
     expect(doubled.value).toBe(4)
 
-    vm1.unmount()
+    vm.unmount()
 
     counter.value = 3
     expect(counter.value).toBe(3)

@@ -42,6 +42,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'patak-dev',
     twitter: 'patak_dev',
     sponsors: true,
+    functions: [
+      'useRefHistory',
+      'ignorableWatch',
+    ],
     description: 'A collaborative being<br>Core team member of Vite<br>Team member of Vue',
   },
   {
@@ -50,7 +54,7 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'wheatjs',
     twitter: 'wheatjs',
     sponsors: false,
-    description: '',
+    description: 'Software Developer<br>Open Source Contributor<br>Electrical Engineer.',
     functions: ['useFetch'],
     packages: ['components'],
   },
@@ -77,14 +81,19 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'cawa-93',
     twitter: 'alex_kozack',
     sponsors: false,
-    description: '',
+    functions: ['useMediaControls'],
+    description: 'Open Source Contributor from Ukraine',
   },
   {
     avatar: contributorsAvatars.scottbedard,
     name: 'Scott Bedard',
     github: 'scottbedard',
-    twitter: 'scottbedard',
     sponsors: false,
+    functions: [
+      'useTransition',
+      'useDocumentVisibility',
+      'useElementVisibility',
+    ],
     description: '',
   },
   {
@@ -94,6 +103,10 @@ const coreTeamMembers: CoreTeam[] = [
     twitter: 'sibbng',
     sponsors: false,
     description: '',
+    functions: [
+      'onClickOutside',
+      'useStyleTag',
+    ],
   },
   {
     avatar: contributorsAvatars.okxiaoliang4,
@@ -101,6 +114,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'okxiaoliang4',
     twitter: 'okxiaoliang4',
     sponsors: false,
+    functions: [
+      'useElementByPoint',
+      'useScreenSafeArea',
+    ],
     description: '',
   },
   {
@@ -109,6 +126,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'lstoeferle',
     twitter: '54ku1',
     sponsors: false,
+    functions: [
+      'useSwipe',
+      'useUrlSearchParams',
+    ],
     description: '',
   },
   {
@@ -117,6 +138,10 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'webfansplz',
     twitter: 'webfansplz',
     sponsors: false,
+    functions: [
+      'useDateFormat',
+      'useAsyncQueue',
+    ],
     description: 'FE Developer<br>Love open source',
   },
   {
@@ -134,7 +159,7 @@ const coreTeamMembers: CoreTeam[] = [
     github: 'harlan-zw',
     twitter: 'harlan_zw',
     sponsors: true,
-    description: '',
+    description: 'Building delightful open source<br>Nuxt freelance developer',
     packages: ['schema-org'],
   },
 ]

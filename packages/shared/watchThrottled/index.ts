@@ -1,16 +1,16 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import type { MapOldSources, MapSources, MaybeRef } from '../utils'
+import type { MapOldSources, MapSources, MaybeComputedRef } from '../utils'
 import { throttleFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchThrottledOptions<Immediate> extends WatchOptions<Immediate> {
-  throttle?: MaybeRef<number>
+  throttle?: MaybeComputedRef<number>
   trailing?: boolean
   leading?: boolean
 }
 
 // overloads
-export function watchThrottled<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
+export function watchThrottled<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
 export function watchThrottled<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
 export function watchThrottled<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
 

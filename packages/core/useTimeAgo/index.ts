@@ -1,4 +1,5 @@
-import type { MaybeRef, Pausable } from '@vueuse/shared'
+import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
 import { useNow } from '../useNow'
@@ -98,15 +99,17 @@ const DEFAULT_MESSAGES: UseTimeAgoMessages = {
 
 const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
 
+export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
+
 /**
  * Reactive time ago formatter.
  *
  * @see https://vueuse.org/useTimeAgo
  * @param options
  */
-export function useTimeAgo(time: MaybeRef<Date | number | string>, options?: UseTimeAgoOptions<false>): ComputedRef<string>
-export function useTimeAgo(time: MaybeRef<Date | number | string>, options: UseTimeAgoOptions<true>): { timeAgo: ComputedRef<string> } & Pausable
-export function useTimeAgo(time: MaybeRef<Date | number | string>, options: UseTimeAgoOptions<boolean> = {}) {
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options?: UseTimeAgoOptions<false>): UseTimeAgoReturn<false>
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<true>): UseTimeAgoReturn<true>
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     max,
@@ -156,7 +159,7 @@ export function useTimeAgo(time: MaybeRef<Date | number | string>, options: UseT
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  const timeAgo = computed(() => getTimeago(new Date(unref(time)), unref(now.value)))
+  const timeAgo = computed(() => getTimeago(new Date(resolveUnref(time)), unref(now.value)))
 
   if (exposeControls) {
     return {

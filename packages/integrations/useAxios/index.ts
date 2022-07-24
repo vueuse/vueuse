@@ -5,7 +5,6 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Canc
 import axios from 'axios'
 
 export interface UseAxiosReturn<T> {
-
   /**
    * Axios Response
    */
@@ -79,13 +78,13 @@ export interface StrictUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string, config?: AxiosRequestConfig) => void
+  execute: (url?: string, config?: AxiosRequestConfig) => PromiseLike<StrictUseAxiosReturn<T>>
 }
 export interface EasyUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
    * Manually call the axios request
    */
-  execute: (url: string, config?: AxiosRequestConfig) => void
+  execute: (url: string, config?: AxiosRequestConfig) => PromiseLike<EasyUseAxiosReturn<T>>
 }
 export interface UseAxiosOptions {
   /**
@@ -95,18 +94,18 @@ export interface UseAxiosOptions {
   immediate?: boolean
 }
 type OverallUseAxiosReturn<T> = StrictUseAxiosReturn<T> | EasyUseAxiosReturn<T>
+
 export function useAxios<T = any>(url: string, config?: AxiosRequestConfig, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
 export function useAxios<T = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
 export function useAxios<T = any>(url: string, config: AxiosRequestConfig, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T> & PromiseLike<StrictUseAxiosReturn<T>>
 export function useAxios<T = any>(config?: AxiosRequestConfig): EasyUseAxiosReturn<T> & PromiseLike<EasyUseAxiosReturn<T>>
 export function useAxios<T = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T> & PromiseLike<EasyUseAxiosReturn<T>>
 export function useAxios<T = any>(config?: AxiosRequestConfig, instance?: AxiosInstance): EasyUseAxiosReturn<T> & PromiseLike<EasyUseAxiosReturn<T>>
+
 /**
  * Wrapper for axios.
  *
  * @see https://vueuse.org/useAxios
- * @param url
- * @param config
  */
 export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & PromiseLike<OverallUseAxiosReturn<T>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
@@ -160,18 +159,21 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     isLoading.value = loading
     isFinished.value = !loading
   }
+  const waitUntilFinished = () =>
+    new Promise<OverallUseAxiosReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        .then(() => resolve(result))
+        .catch(reject)
+    })
+  const then: PromiseLike<OverallUseAxiosReturn<T>>['then'] = (onFulfilled, onRejected) =>
+    waitUntilFinished().then(onFulfilled, onRejected)
   const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
-    let _url = url ?? ''
-    let _config
-    if (typeof executeUrl === 'string') {
-      _url = executeUrl
-      _config = config
-    }
-    else {
-      _config = config
-    }
+    const _url = typeof executeUrl === 'string'
+      ? executeUrl
+      : url ?? ''
     loading(true)
-    instance(_url, { ...defaultConfig, ..._config, cancelToken: cancelToken.token })
+    instance(_url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
         data.value = r.data
@@ -179,9 +181,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
       .catch((e: any) => {
         error.value = e
       })
-      .finally(() => {
-        loading(false)
-      })
+      .finally(() => loading(false))
+    return { then }
   }
   if (options.immediate && url)
     (execute as StrictUseAxiosReturn<T>['execute'])()
@@ -202,19 +203,9 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
     abort,
     execute,
   } as OverallUseAxiosReturn<T>
-  function waitUntilFinished() {
-    return new Promise<OverallUseAxiosReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true)
-        .then(() => resolve(result))
-        .catch(error => reject(error))
-    })
-  }
 
   return {
     ...result,
-    then(onFulfilled, onRejected) {
-      return waitUntilFinished()
-        .then(onFulfilled, onRejected)
-    },
+    then,
   }
 }

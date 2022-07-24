@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # from / fromEvent
 
-> Two wrappers around of the original functions to allow use ref objects
+Wrappers around RxJS's [`from()`](https://rxjs.dev/api/index/function/from) and [`fromEvent()`](https://rxjs.dev/api/index/function/fromEvent) to allow them to accept `ref`s.
 
 ## Usage
 

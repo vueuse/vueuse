@@ -1,6 +1,6 @@
 import { readonly, ref, watch } from 'vue-demi'
 import type { Ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -101,7 +101,7 @@ export function useStyleTag(
   }
 
   if (immediate && !manual)
-    load()
+    tryOnMounted(load)
 
   if (!manual)
     tryOnScopeDispose(unload)

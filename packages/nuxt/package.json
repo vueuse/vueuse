@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "8.6.0",
+  "version": "9.0.0-beta.1",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -25,8 +25,8 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
     "./*": "./*"
   },
@@ -34,13 +34,14 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.3",
+    "@nuxt/kit": "^3.0.0-rc.6",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
-    "local-pkg": "^0.4.1",
+    "local-pkg": "^0.4.2",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.3"
+    "@nuxt/schema": "^3.0.0-rc.6",
+    "unimport": "^0.6.1"
   }
 }

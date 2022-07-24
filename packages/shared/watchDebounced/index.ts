@@ -1,14 +1,14 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeRef } from '../utils'
+import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeComputedRef } from '../utils'
 import { debounceFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchDebouncedOptions<Immediate> extends WatchOptions<Immediate>, DebounceFilterOptions {
-  debounce?: MaybeRef<number>
+  debounce?: MaybeComputedRef<number>
 }
 
 // overlads
-export function watchDebounced<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: T, cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchDebouncedOptions<Immediate>): WatchStopHandle
+export function watchDebounced<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchDebouncedOptions<Immediate>): WatchStopHandle
 export function watchDebounced<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchDebouncedOptions<Immediate>): WatchStopHandle
 export function watchDebounced<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchDebouncedOptions<Immediate>): WatchStopHandle
 

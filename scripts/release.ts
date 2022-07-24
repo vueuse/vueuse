@@ -1,9 +1,10 @@
 import { execSync } from 'child_process'
 import { readJSONSync } from 'fs-extra'
+import { updateContributors } from './utils'
 
 const { version: oldVersion } = readJSONSync('package.json')
 
-execSync('npx bumpp', { stdio: 'inherit' })
+execSync('bumpp --no-commit --no-tag --no-push', { stdio: 'inherit' })
 
 const { version } = readJSONSync('package.json')
 
@@ -11,6 +12,8 @@ if (oldVersion === version) {
   console.log('canceled')
   process.exit()
 }
+
+updateContributors()
 
 execSync('npm run build:types', { stdio: 'inherit' })
 execSync('npm run update', { stdio: 'inherit' })

@@ -1,25 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useSpeechSynthesis } from '@vueuse/core'
 
-const lang = ref('en-US')
+const voice = ref<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 const text = ref('Hello, everyone! Good morning!')
 
 const speech = useSpeechSynthesis(text, {
-  lang,
+  voice,
 })
 
 let synth: SpeechSynthesis
 
 const voices = ref<SpeechSynthesisVoice[]>([])
 
-if (speech.isSupported) {
+onMounted(() => {
+  if (speech.isSupported.value) {
   // load at last
-  setTimeout(() => {
-    synth = window.speechSynthesis
-    voices.value = synth.getVoices()
-  })
-}
+    setTimeout(() => {
+      synth = window.speechSynthesis
+      voices.value = synth.getVoices()
+      voice.value = voices.value[0]
+    })
+  }
+})
 
 const play = () => {
   if (speech.status.value === 'pause') {
@@ -55,17 +58,17 @@ const stop = () => {
 
       <br>
       <label class="font-bold mr-2">Language</label>
-      <div bg="$vt-c-bg" border="$vt-c-divider-light 1" inline-flex items-center relative rounded>
+      <div bg="$vp-c-bg" border="$vp-c-divider-light 1" inline-flex items-center relative rounded>
         <i i-carbon-language absolute left-2 opacity-80 pointer-events-none />
-        <select v-model="lang" px-8 border-0 bg-transparent h-9 rounded appearance-none>
-          <option bg="$vt-c-bg" disabled>
+        <select v-model="voice" px-8 border-0 bg-transparent h-9 rounded appearance-none>
+          <option bg="$vp-c-bg" disabled>
             Select Language
           </option>
           <option
             v-for="(voice, i) in voices"
             :key="i"
-            bg="$vt-c-bg"
-            :value="voice.lang"
+            bg="$vp-c-bg"
+            :value="voice"
           >
             {{ `${voice.name} (${voice.lang})` }}
           </option>

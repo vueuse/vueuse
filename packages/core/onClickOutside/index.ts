@@ -1,3 +1,4 @@
+import type { Fn } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -15,6 +16,11 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * @default true
    */
   capture?: boolean
+  /**
+   * Run handler function if focus moves to an iframe.
+   * @default false
+   */
+  detectIframe?: boolean
 }
 
 /**
@@ -25,12 +31,12 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: (evt: PointerEvent) => void,
-  options: OnClickOutsideOptions = {},
+  handler: (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void,
+  options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true } = options
+  const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
 
   if (!window)
     return
@@ -66,9 +72,21 @@ export function onClickOutside(
       shouldListen.value = !!el && !e.composedPath().includes(el)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
-      fallback = window.setTimeout(() => listener(e), 50)
+      if (e.button === 0) {
+        const path = e.composedPath()
+        e.composedPath = () => path
+        fallback = window.setTimeout(() => listener(e), 50)
+      }
     }, { passive: true }),
-  ]
+    detectIframe && useEventListener(window, 'blur', (event) => {
+      const el = unrefElement(target)
+      if (
+        document.activeElement?.tagName === 'IFRAME'
+        && !el?.contains(document.activeElement)
+      )
+        handler(event as any)
+    }),
+  ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
 

@@ -18,7 +18,6 @@ export function toRefs<T extends object>(
     ? new Array(objectRef.value.length)
     : {}
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const key in objectRef.value) {
     result[key] = customRef<T[typeof key]>(() => ({
       get() {

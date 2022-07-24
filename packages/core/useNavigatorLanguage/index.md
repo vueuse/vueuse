@@ -4,7 +4,7 @@ category: Sensors
 
 # useNavigatorLanguage
 
-Watch for changes being made to the navigator language preference by the user. [Navigator.language MDN](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language)
+Reactive [navigator.language](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language).
 
 ## Usage
 

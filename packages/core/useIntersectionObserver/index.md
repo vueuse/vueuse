@@ -49,7 +49,7 @@ const root = ref(null)
 
 const isVisible = ref(false)
 
-function onIntersectionObserer([{ isIntersecting }]) {
+function onIntersectionObserver([{ isIntersecting }]) {
   isVisible.value = isIntersecting
 }
 
@@ -60,7 +60,7 @@ function onIntersectionObserer([{ isIntersecting }]) {
     <p>
       Scroll me down!
     </p>
-    <div v-intersection-observer="onIntersectionObserer">
+    <div v-intersection-observer="onIntersectionObserver">
       <p>Hello world!</p>
     </div>
   </div>
@@ -70,7 +70,7 @@ function onIntersectionObserer([{ isIntersecting }]) {
     <p>
       Scroll me down!
     </p>
-    <div v-intersection-observer="[onIntersectionObserer, { root }]">
+    <div v-intersection-observer="[onIntersectionObserver, { root }]">
       <p>Hello world!</p>
     </div>
   </div>

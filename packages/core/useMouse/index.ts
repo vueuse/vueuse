@@ -5,7 +5,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export interface MouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
+export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Mouse position based by page or client
    *
@@ -40,7 +40,7 @@ export type MouseSourceType = 'mouse' | 'touch' | null
  * @see https://vueuse.org/useMouse
  * @param options
  */
-export function useMouse(options: MouseOptions = {}) {
+export function useMouse(options: UseMouseOptions = {}) {
   const {
     type = 'page',
     touch = true,
