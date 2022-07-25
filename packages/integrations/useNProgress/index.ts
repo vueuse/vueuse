@@ -1,7 +1,7 @@
 import type { NProgressOptions } from 'nprogress'
 import nprogress from 'nprogress'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isNumber, tryOnScopeDispose } from '@vueuse/shared'
+import { isClient, isNumber, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref, watchEffect } from 'vue-demi'
 
 export type UseNProgressOptions = Partial<NProgressOptions>
@@ -31,7 +31,7 @@ export function useNProgress(
   }
 
   watchEffect(() => {
-    if (isNumber(progress.value))
+    if (isNumber(progress.value) && isClient)
       setProgress.call(nprogress, progress.value)
   })
 
