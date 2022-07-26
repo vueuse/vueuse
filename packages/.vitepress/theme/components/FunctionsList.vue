@@ -177,12 +177,13 @@ input {
 }
 
 .checkbox {
-  @apply inline-flex items-center my-auto cursor-pointer select-none;
+  @apply inline-flex items-center my-auto cursor-pointer select-none rounded px-2;
 }
 
 .checkbox input {
   appearance: none;
   padding: 0;
+  margin: 0;
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
   display: inline-block;
