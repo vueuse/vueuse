@@ -1,4 +1,4 @@
-import type { Ref } from 'vue-demi'
+import type { ComputedRef, Ref, WritableComputedRef } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
@@ -8,7 +8,8 @@ import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 
-export type BasicColorSchema = 'light' | 'dark' | 'auto'
+export type BasicColorMode = 'light' | 'dark'
+export type BasicColorSchema = BasicColorMode | 'auto'
 
 export interface UseColorModeOptions<T extends string = BasicColorSchema> extends UseStorageOptions<T | BasicColorSchema> {
   /**
@@ -79,13 +80,22 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
   emitAuto?: boolean
 }
 
+export interface UseColorModeState<T extends string = BasicColorSchema> {
+  setting: Ref<T | BasicColorSchema>
+  currentMode: ComputedRef<T | BasicColorMode>
+}
+
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'setting'): Ref<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'state'): UseColorModeState<T>
+
 /**
  * Reactive color mode with auto data persistence.
  *
  * @see https://vueuse.org/useColorMode
  * @param options
  */
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T> = {}) {
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T> = {}, emit: 'mode' | 'setting' | 'state' = 'mode') {
   const {
     selector = 'html',
     attribute = 'class',
@@ -108,20 +118,12 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const preferredDark = usePreferredDark({ window })
   const preferredMode = computed(() => preferredDark.value ? 'dark' : 'light')
 
-  const store = storageRef || (storageKey == null
+  const setting = storageRef || (storageKey == null
     ? ref(initialValue) as Ref<T | BasicColorSchema>
     : useStorage<T | BasicColorSchema>(storageKey, initialValue as BasicColorSchema, storage, { window, listenToStorageChanges }))
 
-  const state = computed<T | BasicColorSchema>({
-    get() {
-      return store.value === 'auto' && !emitAuto
-        ? preferredMode.value
-        : store.value
-    },
-    set(v) {
-      store.value = v
-    },
-  })
+  const currentMode = computed<T | BasicColorMode>(() =>
+    setting.value === 'auto' ? preferredMode.value : setting.value)
 
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
@@ -148,8 +150,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     })
 
   function defaultOnChanged(mode: T | BasicColorSchema) {
-    const resolvedMode = mode === 'auto' ? preferredMode.value : mode
-    updateHTMLAttrs(selector, attribute, modes[resolvedMode] ?? resolvedMode)
+    updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)
   }
 
   function onChanged(mode: T | BasicColorSchema) {
@@ -159,11 +160,19 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       defaultOnChanged(mode)
   }
 
-  watch(state, onChanged, { flush: 'post', immediate: true })
-  if (emitAuto)
-    watch(preferredMode, () => onChanged(state.value), { flush: 'post' })
+  watch(currentMode, onChanged, { flush: 'post', immediate: true })
 
-  tryOnMounted(() => onChanged(state.value))
+  tryOnMounted(() => onChanged(currentMode.value))
 
-  return state
+  switch (emit) {
+    case 'setting':
+      return setting
+    case 'state':
+      return { setting, currentMode }
+    default:
+      return computed<T | BasicColorSchema>({
+        get() { return emitAuto ? setting.value : currentMode.value },
+        set(v) { setting.value = v },
+      })
+  }
 }
