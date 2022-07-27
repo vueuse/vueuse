@@ -13,7 +13,7 @@ const rootDir = path.resolve(__dirname, '..')
 const watch = process.argv.includes('--watch')
 
 const FILES_COPY_ROOT = [
-  'LICENSE',
+  'LICENSE_DOC',
 ]
 
 const FILES_COPY_LOCAL = [
