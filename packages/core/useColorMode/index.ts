@@ -160,12 +160,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   }
 
   watch(state, onChanged, { flush: 'post', immediate: true })
-  if (emitAuto) {
-    watch(preferredMode, () => {
-      if (store.value === 'auto')
-        onChanged(state.value)
-    }, { flush: 'post' })
-  }
+  if (emitAuto)
+    watch(preferredMode, () => onChanged(state.value), { flush: 'post' })
 
   tryOnMounted(() => onChanged(state.value))
 
