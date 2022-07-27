@@ -1,15 +1,34 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import type { ComputedRef } from 'vue-demi'
 import { resolveUnref } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
+/**
+ * Reactive `Array.reduce`
+ *
+ * @see https://vueuse.org/useArrayReduce
+ * @param {Array} list - the array was called upon.
+ * @param reducer - a "reducer" function.
+ *
+ * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ */
 export function useArrayReduce<T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
   reducer: UseArrayReducer<T, T, T>,
 ): ComputedRef<T>
 
+/**
+ * Reactive `Array.reduce`
+ *
+ * @see https://vueuse.org/useArrayReduce
+ * @param {Array} list - the array was called upon.
+ * @param reducer - a "reducer" function.
+ * @param initialValue - a value to be initialized the first time when the callback is called.
+ *
+ * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ */
 export function useArrayReduce<T, U>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
   reducer: UseArrayReducer<U, T, U>,
@@ -20,6 +39,11 @@ export function useArrayReduce<T, U>(
  * Reactive `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
+ * @param {Array} list - the array was called upon.
+ * @param reducer - a "reducer" function.
+ * @param args
+ *
+ * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
