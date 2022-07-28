@@ -28,6 +28,20 @@ mode.value = 'dark' // change to dark mode and persist
 mode.value = 'auto' // change to auto mode
 ```
 
+## State Usage
+
+You can pass `state` to the `useColorMode` function to get an object with the following properties:
+- `setting`: Read or set the mode setting
+- `currentMode`: Get the cureent parsed mode
+
+```js
+import { useColorMode } from '@vueuse/core'
+
+const state = useColorMode({}, 'state')
+state.setting.value // auto (by default)
+state.currentMode.value // 'dark' | 'light' (based on user preference)
+```
+
 ## Config
 
 ```js

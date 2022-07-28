@@ -1,10 +1,8 @@
 import type { ComputedRef, Ref, WritableComputedRef } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
-import type { StorageLike } from '../ssr-handlers'
-import { getSSRHandler } from '../ssr-handlers'
-import type { UseStorageOptions } from '../useStorage'
-import { useStorage } from '../useStorage'
+import { type StorageLike, getSSRHandler } from '../ssr-handlers'
+import { type UseStorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
 
