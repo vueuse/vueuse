@@ -2,7 +2,7 @@
 category: '@Math'
 ---
 
-# useFloor
+# useToFixed
 
 Reactive `toFixed`.
 
