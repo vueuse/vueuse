@@ -8,18 +8,24 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 
 ## Usage
 
-```js {7,9}
+```js {9,12,17}
+import { computed, ref } from 'vue'
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 const app = initializeApp({ projectId: 'MY PROJECT ID' })
 const db = getFirestore(app)
 
-const todos = useFirestore(db.collection('todos'))
+const todos = useFirestore(collection(db, 'todos'))
 
 // or for doc reference
-const user = useFirestore(db.collection('users').doc('my-user-id'))
+const user = useFirestore(doc(db, 'users', 'my-user-id'))
+
+// you can also use ref value for reactive query
+const postLimit = ref(10)
+const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postLimit.value)))
+const posts = useFirestore(postsQuery)
 ```
 
 ## Share across instances
@@ -27,7 +33,7 @@ const user = useFirestore(db.collection('users').doc('my-user-id'))
 You can reuse the db reference by passing `autoDispose: false`
 
 ```ts
-const todos = useFirestore(db.collection('todos'), undefined, { autoDispose: false })
+const todos = useFirestore(collection(db, 'todos'), undefined, { autoDispose: false })
 ```
 
 or use `createGlobalState` from the core package
@@ -38,7 +44,7 @@ import { createGlobalState } from '@vueuse/core'
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 export const useTodos = createGlobalState(
-  () => useFirestore(db.collection('todos')),
+  () => useFirestore(collection(db, 'todos')),
 )
 ```
 
