@@ -6,14 +6,14 @@ import { resolveUnref } from '@vueuse/shared'
 /**
  * Reactive `toFixed`
  *
- * @see https://vueuse.org/useFixed
+ * @see https://vueuse.org/useToFixed
  */
 export interface FixedTypes {
   type?: 'string' | 'number'
   math?: 'floor' | 'ceil' | 'round'
 }
 
-export function useFixed(
+export function useToFixed(
   value: MaybeComputedRef<number | string>,
   digits: MaybeComputedRef<number>,
   options?: MaybeComputedRef<FixedTypes>,

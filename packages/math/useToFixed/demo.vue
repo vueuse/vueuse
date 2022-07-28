@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useFixed } from '@vueuse/math'
+import { useToFixed } from '@vueuse/math'
 import type { FixedTypes } from '@vueuse/math'
 const num = ref(314.15926)
 const digits = ref(2)
@@ -8,7 +8,7 @@ const options = ref({
   type: 'number',
   math: 'round',
 } as FixedTypes)
-const value = useFixed(num, digits, options)
+const value = useToFixed(num, digits, options)
 </script>
 
 <template>
