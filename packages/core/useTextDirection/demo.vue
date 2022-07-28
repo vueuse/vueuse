@@ -26,7 +26,7 @@ const handleOnClick = () => {
     <button @click="handleOnClick">
       <span class="ml-2">{{ dir.toUpperCase() }}</span>
     </button>
-    <span class="p-4 opacity-50">Click to change the direaction</span>
+    <span class="p-4 opacity-50">Click to change the direction</span>
   </div>
 </template>
 
