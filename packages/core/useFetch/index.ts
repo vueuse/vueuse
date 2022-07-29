@@ -260,8 +260,15 @@ export function createFetch(config: CreateFetchOptions = {}) {
       }
     }
 
-    if (args.length > 1 && isFetchOptions(args[1]))
-      options = { ...options, ...args[1] }
+    if (args.length > 1 && isFetchOptions(args[1])) {
+      options = {
+        ...options,
+        ...args[1],
+        beforeFetch: chainCallbacks(_options.beforeFetch, args[1].beforeFetch),
+        afterFetch: chainCallbacks(_options.afterFetch, args[1].afterFetch),
+        onFetchError: chainCallbacks(_options.onFetchError, args[1].onFetchError),
+      }
+    }
 
     return useFetch(computedUrl, fetchOptions, options)
   }
