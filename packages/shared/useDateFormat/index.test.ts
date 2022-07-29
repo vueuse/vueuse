@@ -28,4 +28,13 @@ describe('useDateFormat', () => {
   it('should work with HH:mm:ss d', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'HH:mm:ss d').value).toBe('15:05:05 6')
   })
+  it('should work with YYYY/MM/DD dd', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'YYYY/MM/DD dd', { locales: 'en-US' }).value).toBe('2022/01/01 S')
+  })
+  it('should work with YYYY/MM/DD ddd', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'YYYY/MM/DD ddd', { locales: 'en-US' }).value).toBe('2022/01/01 Sat')
+  })
+  it('should work with YYYY/MM/DD dddd', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'YYYY/MM/DD dddd', { locales: 'en-US' }).value).toBe('2022/01/01 Saturday')
+  })
 })
