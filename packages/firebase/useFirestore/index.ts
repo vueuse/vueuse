@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { computed, isRef, ref, watch } from 'vue-demi'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
+import type { MaybeRef } from '@vueuse/shared'
 import { isDef, tryOnScopeDispose } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
 
@@ -33,24 +34,24 @@ function isDocumentReference<T>(docRef: any): docRef is DocumentReference<T> {
 }
 
 export function useFirestore<T extends DocumentData>(
-  docRef: DocumentReference<T>,
+  maybeDocRef: MaybeRef<DocumentReference<T>>,
   initialValue: T,
   options?: UseFirestoreOptions
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
-  docRef: Query<T>,
+  maybeDocRef: MaybeRef<Query<T>>,
   initialValue: T[],
   options?: UseFirestoreOptions
 ): Ref<T[]>
 
 // nullable initial values
 export function useFirestore<T extends DocumentData>(
-  docRef: DocumentReference<T>,
+  maybeDocRef: MaybeRef<DocumentReference<T>>,
   initialValue?: T | undefined,
   options?: UseFirestoreOptions,
 ): Ref<T | undefined | null>
 export function useFirestore<T extends DocumentData>(
-  docRef: Query<T>,
+  maybeDocRef: MaybeRef<Query<T>>,
   initialValue?: T[],
   options?: UseFirestoreOptions
 ): Ref<T[] | undefined>
@@ -62,22 +63,27 @@ export function useFirestore<T extends DocumentData>(
  * @see https://vueuse.org/useFirestore
  */
 export function useFirestore<T extends DocumentData>(
-  docRef: FirebaseDocRef<T>,
+  maybeDocRef: MaybeRef<FirebaseDocRef<T>>,
   initialValue: any = undefined,
   options: UseFirestoreOptions = {},
 ) {
   const {
-
     errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
   } = options
 
-  if (isDocumentReference<T>(docRef)) {
-    const data = ref(initialValue) as Ref<T | null | undefined>
+  const refOfDocRef = isRef(maybeDocRef) ? maybeDocRef : computed(() => maybeDocRef)
 
-    const close = onSnapshot(docRef, (snapshot) => {
-      data.value = getData(snapshot) || null
-    }, errorHandler)
+  if (isDocumentReference<T>(refOfDocRef.value)) {
+    const data = ref(initialValue) as Ref<T | null | undefined>
+    let close = () => { }
+
+    watch(refOfDocRef, (docRef) => {
+      close()
+      close = onSnapshot(docRef as DocumentReference<T>, (snapshot) => {
+        data.value = getData(snapshot) || null
+      }, errorHandler)
+    }, { immediate: true })
 
     tryOnScopeDispose(() => {
       close()
@@ -87,10 +93,14 @@ export function useFirestore<T extends DocumentData>(
   }
   else {
     const data = ref(initialValue) as Ref<T[] | undefined>
+    let close = () => { }
 
-    const close = onSnapshot(docRef, (snapshot) => {
-      data.value = snapshot.docs.map(getData).filter(isDef)
-    }, errorHandler)
+    watch(refOfDocRef, (docRef) => {
+      close()
+      close = onSnapshot(docRef as Query<T>, (snapshot) => {
+        data.value = snapshot.docs.map(getData).filter(isDef)
+      }, errorHandler)
+    }, { immediate: true })
 
     if (autoDispose) {
       tryOnScopeDispose(() => {
