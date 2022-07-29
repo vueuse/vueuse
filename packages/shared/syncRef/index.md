@@ -48,7 +48,7 @@ const a = ref(10)
 const b = ref(2)
 
 const stop = syncRef(a, b, {
-  syncConvertors: {
+  transform: {
     ltr: left => left * 2,
     rtl: right => right / 2
   }
