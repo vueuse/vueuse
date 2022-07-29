@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/rxjs",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "Enables RxJS reactive functions in Vue",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
