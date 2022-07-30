@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue'
-import { useScroll } from '@vueuse/core'
+import { useScrollValues } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
-const { left, right, top, bottom } = toRefs(arrivedState)
-const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
+const { x, y, isScrolling, distances, rates } = useScrollValues(el)
+const { left, right, top, bottom } = toRefs(distances)
+const { horizontal, vertical } = toRefs(rates)
 </script>
 
 <template>
@@ -38,37 +38,29 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
         <span text="right" opacity="75">isScrolling</span>
         <BooleanDisplay :value="isScrolling" />
         <div text="right" opacity="75">
-          Top Arrived
+          To Top
         </div>
-        <BooleanDisplay :value="top" />
+        <div>{{ top.toFixed(1) }}</div>
         <div text="right" opacity="75">
-          Right Arrived
+          To Right
         </div>
-        <BooleanDisplay :value="right" />
+        <div>{{ right.toFixed(1) }}</div>
         <div text="right" opacity="75">
-          Bottom Arrived
+          To Bottom
         </div>
-        <BooleanDisplay :value="bottom" />
+        <div>{{ bottom.toFixed(1) }}</div>
         <div text="right" opacity="75">
-          Left Arrived
+          To Left
         </div>
-        <BooleanDisplay :value="left" />
+        <div>{{ left.toFixed(1) }}</div>
         <div text="right" opacity="75">
-          Scrolling Up
+          Scrolling Vertical
         </div>
-        <BooleanDisplay :value="toTop" />
+        <div>{{ vertical.toFixed(1) }}</div>
         <div text="right" opacity="75">
-          Scrolling Right
+          Scrolling Horizontal
         </div>
-        <BooleanDisplay :value="toRight" />
-        <div text="right" opacity="75">
-          Scrolling Down
-        </div>
-        <BooleanDisplay :value="toBottom" />
-        <div text="right" opacity="75">
-          Scrolling Left
-        </div>
-        <BooleanDisplay :value="toLeft" />
+        <div>{{ horizontal.toFixed(1) }}</div>
       </div>
     </div>
   </div>

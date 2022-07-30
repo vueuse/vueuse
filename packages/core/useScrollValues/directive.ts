@@ -1,20 +1,20 @@
 import type { ObjectDirective } from 'vue-demi'
 import { directiveHooks } from '@vueuse/shared'
-import type { UseScrollOptions, UseScrollReturn } from '.'
-import { useScroll } from '.'
+import type { UseScrollValueOptions, UseScrollValuesReturn } from '.'
+import { useScrollValues } from '.'
 
-type BindingValueFunction = (state: UseScrollReturn) => void
+type BindingValueFunction = (state: UseScrollValuesReturn) => void
 
-type BindingValueArray = [BindingValueFunction, UseScrollOptions]
+type BindingValueArray = [BindingValueFunction, UseScrollValueOptions]
 
-export const vScroll: ObjectDirective<
+export const vScrollValue: ObjectDirective<
 HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
     if (typeof binding.value === 'function') {
       const handler = binding.value
-      const state = useScroll(el, {
+      const state = useScrollValues(el, {
         onScroll() {
           handler(state)
         },
@@ -25,7 +25,7 @@ BindingValueFunction | BindingValueArray
     }
     else {
       const [handler, options] = binding.value
-      const state = useScroll(el, {
+      const state = useScrollValues(el, {
         ...options,
         onScroll(e) {
           options.onScroll?.(e)

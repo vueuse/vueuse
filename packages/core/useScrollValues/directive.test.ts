@@ -2,8 +2,8 @@ import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 
-import { vScroll } from './directive'
-import type { UseScrollOptions } from '.'
+import { vScrollValue } from './directive'
+import type { UseScrollValueOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -24,7 +24,7 @@ const App = defineComponent({
   `,
 })
 
-describe('vScroll', () => {
+describe('vScrollValue', () => {
   let onScroll = vi.fn()
   let wrapper: VueWrapper<any>
 
@@ -37,7 +37,7 @@ describe('vScroll', () => {
         },
         global: {
           directives: {
-            scroll: vScroll,
+            scroll: vScrollValue,
           },
         },
       })
@@ -51,7 +51,7 @@ describe('vScroll', () => {
   describe('given options', () => {
     beforeEach(() => {
       onScroll = vi.fn()
-      const options: UseScrollOptions = {
+      const options: UseScrollValueOptions = {
         throttle: 10,
       }
       wrapper = mount(App, {
@@ -61,7 +61,7 @@ describe('vScroll', () => {
         },
         global: {
           directives: {
-            scroll: vScroll,
+            scroll: vScrollValue,
           },
         },
       })

@@ -2,7 +2,7 @@
 category: Sensors
 ---
 
-# useScroll
+# useScrollValues
 
 Reactive scroll position and state
 
@@ -11,10 +11,10 @@ Reactive scroll position and state
 
 ```html
 <script setup lang="ts">
-import { useScroll } from '@vueuse/core'
+import { useScrollValues } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
+const { x, y, isScrolling, distances, rates } = useScrollValues(el)
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 
 ```js
 // With offsets
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
+const { x, y, isScrolling, distances, rates } = useScrollValues(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
 })
 ```
@@ -33,13 +33,13 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
 
 ```html
 <script setup lang="ts">
-import type { UseScrollReturn } from '@vueuse/core'
-import { vScroll } from '@vueuse/components'
+import type { UseScrollValuesReturn } from '@vueuse/core'
+import { vScrollValue } from '@vueuse/components'
 
 const data = ref([1, 2, 3, 4, 5, 6])
 
-function onScroll(state: UseScrollReturn) {
-  console.log(state) // {x, y, isScrolling, arrivedState, directions}
+function onScroll(state: UseScrollValuesReturn) {
+  console.log(state) // {x, y, isScrolling, distances, rates}
 }
 </script>
 

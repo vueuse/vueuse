@@ -3,7 +3,7 @@ import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
-export interface UseScrollOptions {
+export interface UseScrollValueOptions {
   /**
    * Throttle time for scroll event, it’s disabled by default.
    *
@@ -53,14 +53,14 @@ export interface UseScrollOptions {
 /**
  * Reactive scroll.
  *
- * @see https://vueuse.org/useScroll
+ * @see https://vueuse.org/useScrollValues
  * @param element
  * @param options
  */
 
-export function useScroll(
+export function useScrollValues(
   element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
-  options: UseScrollOptions = {},
+  options: UseScrollValueOptions = {},
 ) {
   const {
     throttle = 0,
@@ -82,25 +82,21 @@ export function useScroll(
   const x = ref(0)
   const y = ref(0)
   const isScrolling = ref(false)
-  const arrivedState = reactive({
-    left: true,
-    right: false,
-    top: true,
-    bottom: false,
+  const distances = reactive({
+    left: Infinity,
+    right: Infinity,
+    top: Infinity,
+    bottom: Infinity,
   })
-  const directions = reactive({
-    left: false,
-    right: false,
-    top: false,
-    bottom: false,
+  const rates = reactive({
+    horizontal: 0,
+    vertical: 0,
   })
 
   const onScrollEnd = useDebounceFn((e: Event) => {
     isScrolling.value = false
-    directions.left = false
-    directions.right = false
-    directions.top = false
-    directions.bottom = false
+    rates.horizontal = 0
+    rates.vertical = 0
     onStop(e)
   }, throttle + idle)
 
@@ -110,11 +106,9 @@ export function useScroll(
     ) as HTMLElement
 
     const scrollLeft = eventTarget.scrollLeft
-    directions.left = scrollLeft < x.value
-    directions.right = scrollLeft > x.value
-    arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
-    arrivedState.right
-          = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
+    rates.horizontal = scrollLeft - x.value
+    distances.left = scrollLeft - (0 + (offset.left || 0))
+    distances.right = (eventTarget.scrollWidth - (offset.right || 0)) - (scrollLeft + eventTarget.clientWidth)
     x.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
@@ -123,11 +117,9 @@ export function useScroll(
     if (e.target === document && !scrollTop)
       scrollTop = document.body.scrollTop
 
-    directions.top = scrollTop < y.value
-    directions.bottom = scrollTop > y.value
-    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-    arrivedState.bottom
-          = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
+    rates.vertical = scrollTop - y.value
+    distances.top = scrollTop - (0 + (offset.top || 0))
+    distances.bottom = (eventTarget.scrollHeight - (offset.bottom || 0)) - (scrollTop + eventTarget.clientHeight)
     y.value = scrollTop
 
     isScrolling.value = true
@@ -146,9 +138,9 @@ export function useScroll(
     x,
     y,
     isScrolling,
-    arrivedState,
-    directions,
+    distances,
+    rates,
   }
 }
 
-export type UseScrollReturn = ReturnType<typeof useScroll>
+export type UseScrollValuesReturn = ReturnType<typeof useScrollValues>
