@@ -105,3 +105,21 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('is', () => {
+  it('isObject', () => {
+    expect(isObject({})).toBe(true)
+    expect(isObject(Object.create({}))).toBe(true)
+    expect(isObject([])).toBe(false)
+    expect(isObject(1)).toBe(false)
+    expect(isObject('1')).toBe(false)
+    expect(isObject(true)).toBe(false)
+    expect(isObject(null)).toBe(false)
+    expect(isObject(undefined)).toBe(false)
+    expect(isObject(() => {})).toBe(false)
+    expect(isObject(/a/)).toBe(false)
+    expect(isObject(new Date())).toBe(false)
+    expect(isObject(new Map())).toBe(false)
+    expect(isObject(new Set())).toBe(false)
+  })
+})

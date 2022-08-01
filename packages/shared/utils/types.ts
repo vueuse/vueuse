@@ -6,6 +6,11 @@ import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 export type Fn = () => void
 
 /**
+ * Any object
+ */
+export type AnyObj = Record<string | symbol, any>
+
+/**
  * A ref that allow to set null or undefined
  */
 export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
