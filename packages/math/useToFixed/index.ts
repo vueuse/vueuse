@@ -19,7 +19,7 @@ export function useToFixed(
   options?: MaybeComputedRef<FixedTypes>,
 ): ComputedRef<number | string> {
   return computed<number | string>(() => {
-    const floatValue = parseFloat(`${resolveUnref(value)}`)
+    const floatValue = parseFloat(`${resolveUnref(value)}`) || 0
     const outValue = Math[resolveUnref(options)?.math || 'round'](floatValue * 10 ** resolveUnref(digits)) / 10 ** resolveUnref(digits)
     return resolveUnref(options)?.type === 'string'
       ? resolveUnref(digits) >= 0

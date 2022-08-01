@@ -40,4 +40,18 @@ describe('useToFixed', () => {
     base.value = '-45.159'
     expect(result.value).toMatchInlineSnapshot('-45.16')
   })
+
+  it('should return 0 if value is not valid number', () => {
+    const empty = useToFixed(ref(''), 1, { math: 'ceil' })
+    expect(empty.value).toBe(0)
+
+    const word = useToFixed(ref('word'), 1, { math: 'floor' })
+    expect(word.value).toBe(0)
+
+    const emptyString = useToFixed(ref(''), 1, { type: 'string', math: 'floor' })
+    expect(emptyString.value).toBe('0.0')
+
+    const wordString = useToFixed(ref('word'), 1, { type: 'string', math: 'ceil' })
+    expect(wordString.value).toBe('0.0')
+  })
 })
