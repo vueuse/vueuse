@@ -56,6 +56,18 @@ export interface UseTransitionOptions {
  */
 export const TransitionPresets = {
   linear:linear as EasingFunction,
+
+  // A cubic animation curve that starts linearly and ends slowly.
+  slowOutLinearIn: [0.35, 0.91, 0.33, 0.97] as CubicBezierPoints,
+  // A curve that is very steep and linear at the beginning, but quickly flattens out and very slowly eases in
+  slowOutFastIn: [0.18, 1.0, 0.04, 1.0] as CubicBezierPoints,
+  // A cubic animation curve that starts quickly, slows down, and then ends quickly.
+  slowMiddle: [0.4, 0, 0.2, 1] as CubicBezierPoints,
+
+  fastOutSlowIn: [0.4, 0, 0.2, 1] as CubicBezierPoints,
+  fastOutLinearIn: [0.4, 0, 1, 1] as CubicBezierPoints,
+  linearOutSlowIn: [0, 0, 0.2, 1] as CubicBezierPoints,
+
   easeInSine: [0.12, 0, 0.39, 0] as CubicBezierPoints,
   easeOutSine: [0.61, 1, 0.88, 1] as CubicBezierPoints,
   easeInOutSine: [0.37, 0, 0.63, 1] as CubicBezierPoints,
