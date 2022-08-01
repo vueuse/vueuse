@@ -83,9 +83,10 @@ export interface UseColorModeState<T extends string = BasicColorSchema> {
   currentMode: ComputedRef<T | BasicColorMode>
 }
 
+export function useColorMode<T extends string = BasicColorSchema>(): WritableComputedRef<T | BasicColorSchema>
 export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'setting'): Ref<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'state'): UseColorModeState<T>
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit: 'setting'): Ref<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit: 'state'): UseColorModeState<T>
 
 /**
  * Reactive color mode with auto data persistence.
