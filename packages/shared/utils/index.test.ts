@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { createFilterWrapper, debounceFilter, increaseWithUnit, objectPick, throttleFilter } from '.'
+import { cloneDeep, createFilterWrapper, debounceFilter, increaseWithUnit, isObject, objectPick, throttleFilter } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,6 +16,20 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
+  })
+
+  it('cloneDeep', () => {
+    const obj = {
+      a: 1,
+      b: 2,
+      d: {
+        e: 3,
+        f: { g: 4 },
+      },
+    }
+
+    expect(cloneDeep(obj)).toEqual(obj)
+    expect(cloneDeep(obj)).not.toBe(obj)
   })
 })
 
