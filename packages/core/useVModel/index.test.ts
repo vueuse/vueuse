@@ -177,4 +177,29 @@ describe('useVModel', () => {
 
     expect(emitValue instanceof SomeClass).toBeTruthy()
   })
+
+  it('should be side effect free when using objects', async () => {
+    const emitMock = vitest.fn()
+
+    const props = {
+      person: {
+        age: 18,
+        child: { age: 2 },
+      },
+    }
+
+    const dataA = useVModel(props, 'person', emitMock, { passive: true })
+    const dataB = useVModel(props, 'person', emitMock, { passive: true, deep: true })
+
+    dataA.value.age = 20
+
+    await nextTick()
+    expect(props.person).toEqual(expect.objectContaining({ age: 18 }))
+
+    dataB.value.child.age = 3
+
+    expect(props.person).toEqual(expect.objectContaining({
+      child: { age: 2 },
+    }))
+  })
 })

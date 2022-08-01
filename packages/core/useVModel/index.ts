@@ -1,4 +1,5 @@
-import { isDef } from '@vueuse/shared'
+import type { AnyObj } from '@vueuse/shared'
+import { cloneDeep, isDef, isObject } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 
@@ -72,9 +73,11 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key!.toString()}`
 
   const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
+  const cloneObj = (obj: AnyObj) => deep ? cloneDeep(obj) : ({ ...obj })
 
   if (passive) {
-    const proxy = ref<P[K]>(getValue()!)
+    const initialValue = getValue()
+    const proxy = ref<P[K]>(isObject(initialValue) ? cloneObj(initialValue) : initialValue!)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
