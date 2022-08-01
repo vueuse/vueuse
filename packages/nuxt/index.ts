@@ -25,7 +25,6 @@ const packages = [
   'rxjs',
   'sound',
   'math',
-  'integrations',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
