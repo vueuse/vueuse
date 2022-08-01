@@ -3,7 +3,6 @@ import { computed, isRef, reactive, unref, watch } from 'vue-demi'
 import { noop, syncRef } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
 import { useClamp } from '../../math/useClamp'
-import { useMin } from '../../math/useMin'
 
 export interface UseOffsetPaginationOptions {
   /**
