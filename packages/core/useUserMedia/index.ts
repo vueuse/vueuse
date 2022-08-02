@@ -14,29 +14,17 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    */
   enabled?: MaybeRef<boolean>
   /**
-   * Recreate stream when the input devices id changed
+   * Recreate stream when the constraints changed
    *
    * @default true
    */
   autoSwitch?: MaybeRef<boolean>
   /**
-   * The device id of video input
+   * MediaStreamConstraints to be applied to the requested MediaStream
    *
-   * When passing with `undefined` the default device will be used.
-   * Pass `false` or "none" to disabled video input
-   *
-   * @default undefined
+   * @default {}
    */
-  videoDeviceId?: MaybeRef<string | undefined | false | 'none'>
-  /**
-   * The device id of audi input
-   *
-   * When passing with `undefined` the default device will be used.
-   * Pass `false` or "none" to disabled audi input
-   *
-   * @default undefined
-   */
-  audioDeviceId?: MaybeRef<string | undefined | false | 'none'>
+  constraints?: MaybeRef<MediaStreamConstraints>
 }
 
 /**
@@ -48,29 +36,18 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
 export function useUserMedia(options: UseUserMediaOptions = {}) {
   const enabled = ref(options.enabled ?? false)
   const autoSwitch = ref(options.autoSwitch ?? true)
-  const videoDeviceId = ref(options.videoDeviceId)
-  const audioDeviceId = ref(options.audioDeviceId)
+  const constraints = ref(options.constraints ?? { video: true, audio: true })
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
 
-  function getDeviceOptions(device: Ref<string | undefined | false | 'none'>) {
-    if (device.value === 'none' || device.value === false)
-      return false
-    if (device.value == null)
-      return true
-    return {
-      deviceId: device.value,
-    }
-  }
-
   async function _start() {
     if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getUserMedia({
-      video: getDeviceOptions(videoDeviceId),
-      audio: getDeviceOptions(audioDeviceId),
+      video: constraints.value.video || false,
+      audio: constraints.value.audio || false,
     })
     return stream.value
   }
@@ -109,7 +86,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   )
 
   watch(
-    [videoDeviceId, audioDeviceId],
+    constraints,
     () => {
       if (autoSwitch.value && stream.value)
         restart()
@@ -123,8 +100,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     start,
     stop,
     restart,
-    videoDeviceId,
-    audioDeviceId,
+    constraints,
     enabled,
     autoSwitch,
   }
