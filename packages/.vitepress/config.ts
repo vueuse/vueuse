@@ -151,6 +151,7 @@ export default defineConfig({
       '/rxjs/': FunctionsSideBar,
       '/integrations/': FunctionsSideBar,
       '/firebase/': FunctionsSideBar,
+      '/math/': FunctionsSideBar,
     },
   },
   head: [
