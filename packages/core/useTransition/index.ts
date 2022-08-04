@@ -7,12 +7,12 @@ import { useRafFn } from '../useRafFn'
 /**
  * Cubic bezier points
  */
-type CubicBezierPoints = [number, number, number, number]
+export type CubicBezierPoints = [number, number, number, number]
 
 /**
  * Easing function
  */
-type EasingFunction = (n: number) => number
+export type EasingFunction = (n: number) => number
 
 /**
  * Transition options
@@ -49,13 +49,7 @@ export interface UseTransitionOptions {
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
-/**
- * Common transitions
- *
- * @see https://easings.net
- */
-export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunction> = {
-  linear,
+export const _TransitionPresets = {
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
   easeInOutSine: [0.37, 0, 0.63, 1],
@@ -80,7 +74,17 @@ export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunctio
   easeInBack: [0.36, 0, 0.66, -0.56],
   easeOutBack: [0.34, 1.56, 0.64, 1],
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
-}
+} as const
+
+/**
+ * Common transitions
+ *
+ * @see https://easings.net
+ */
+export const TransitionPresets = {
+  linear,
+  ..._TransitionPresets,
+} as Record<keyof typeof _TransitionPresets, CubicBezierPoints> & { linear: EasingFunction }
 
 /**
  * Create an easing function from cubic bezier points.
