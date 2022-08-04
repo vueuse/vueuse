@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import { computed } from 'vue'
-import { functions } from '../../../../packages/metadata/metadata'
+import { functions } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
 
