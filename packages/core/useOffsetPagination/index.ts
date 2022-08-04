@@ -64,7 +64,10 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
 
   const currentPageSize = useClamp(pageSize, 1, Infinity)
 
-  const pageCount = computed(() => Math.ceil((unref(total)) / unref(currentPageSize)))
+  const pageCount = computed(() => Math.max(
+    1,
+    Math.ceil((unref(total)) / unref(currentPageSize)),
+  ))
 
   const currentPage = useClamp(page, 1, pageCount)
 
