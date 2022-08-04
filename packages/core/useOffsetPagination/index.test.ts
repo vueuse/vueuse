@@ -1,5 +1,5 @@
 import { isRef, nextTick, ref } from 'vue-demi'
-import type { UseOffsetPaginationReturn } from '.'
+import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from '.'
 import { useOffsetPagination } from '.'
 
 describe('useOffsetPagination', () => {
@@ -91,21 +91,48 @@ describe('useOffsetPagination', () => {
     })
   })
 
-  describe('when the page is outside of the range of possible pages', () => {
+  describe('when total is 0', () => {
     let currentPage: UseOffsetPaginationReturn['currentPage']
 
     beforeEach(() => {
       ({
         currentPage,
       } = useOffsetPagination({
+        total: 0,
+      }))
+    })
+
+    it('returns a currentPage of 1', () => {
+      expect(currentPage.value).toBe(1)
+    })
+  })
+
+  describe('when the page is outside of the range of possible pages', () => {
+    let currentPage: UseOffsetPaginationReturn['currentPage']
+    const page: UseOffsetPaginationOptions['page'] = ref(0)
+
+    beforeEach(() => {
+      ({
+        currentPage,
+      } = useOffsetPagination({
         total: 40,
-        page: 123456, // outside range
+        page,
         pageSize: 10,
       }))
     })
 
     it('returns the maximum page number possible', () => {
+      page.value = 123456 // outside maximum range
       expect(currentPage.value).toBe(4)
+    })
+
+    it('clamps the lower end of the range to 1', () => {
+      page.value = 1
+      expect(currentPage.value).toBe(1)
+      page.value = 0
+      expect(currentPage.value).toBe(1)
+      page.value = -1234
+      expect(currentPage.value).toBe(1)
     })
   })
 
