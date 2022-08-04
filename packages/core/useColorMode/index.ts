@@ -81,6 +81,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
 export interface UseColorModeState<T extends string = BasicColorSchema> {
   setting: Ref<T | BasicColorSchema>
   currentMode: ComputedRef<T | BasicColorMode>
+  isDark: ComputedRef<boolean>
 }
 
 export function useColorMode<T extends string = BasicColorSchema>(): WritableComputedRef<T | BasicColorSchema>
@@ -167,7 +168,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     case 'setting':
       return setting
     case 'state':
-      return { setting, currentMode }
+      return { setting, currentMode, isDark: computed(() => currentMode.value === 'dark') }
     default:
       return computed<T | BasicColorSchema>({
         get() { return emitAuto ? setting.value : currentMode.value },

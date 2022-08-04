@@ -18,5 +18,6 @@ describe('useColorMode', () => {
     const state = useColorMode({}, 'state')
     expect(state.setting.value).toBe('auto')
     expect(state.currentMode.value).toBe('light')
+    expect(state.isDark.value).toBe(false)
   })
 })
