@@ -1,4 +1,4 @@
-import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
  * Any function
@@ -34,9 +34,7 @@ export type MaybeRef<T> = T | Ref<T>
  * type MaybeComputedRef<T> = T | Ref<T> | (() => T)
  * ```
  */
-export type MaybeComputedRef<T> = T extends () => void
-  ? never
-  : (() => T) | MaybeRef<T>
+export type MaybeComputedRef<T> = (() => T) | T | Ref<T> | ComputedRef<T>
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
