@@ -1,11 +1,32 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { useScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
+const smooth = ref(false)
+const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
+const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { behavior })
 const { left, right, top, bottom } = toRefs(arrivedState)
 const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
+
+// Format the numbers with toFixed() to make them
+// nicer to displayœ
+const displayX = computed({
+  get() {
+    return x.value.toFixed(1)
+  },
+  set(val) {
+    x.value = parseFloat(val)
+  },
+})
+const displayY = computed({
+  get() {
+    return y.value.toFixed(1)
+  },
+  set(val) {
+    y.value = parseFloat(val)
+  },
+})
 </script>
 
 <template>
@@ -31,10 +52,20 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
     </div>
     <div class="m-auto w-280px pl-4">
       <div class="px-6 py-4 rounded grid grid-cols-[120px_auto] gap-2 bg-gray-500/5">
-        <span text="right" opacity="75">Position</span>
+        <span text="right" opacity="75" class="py-4">X Position</span>
         <div class="text-primary">
-          {{ x.toFixed(1) }}, {{ y.toFixed(1) }}
+          <div>
+            <input v-model="displayX" type="number" min="0" max="200" step="10" class="w-full !min-w-0">
+          </div>
         </div>
+        <span text="right" opacity="75" class="py-4">Y Position</span>
+        <div class="text-primary">
+          <div>
+            <input v-model="displayY" type="number" min="0" max="100" step="10" class="w-full !min-w-0">
+          </div>
+        </div>
+        <label for="smooth-scrolling-option" text="right" opacity="75">Smooth scrolling</label>
+        <span><input id="smooth-scrolling-option" v-model="smooth" type="checkbox"></span>
         <span text="right" opacity="75">isScrolling</span>
         <BooleanDisplay :value="isScrolling" />
         <div text="right" opacity="75">
