@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 
 export interface UseAsyncFunctionOptions {
   several: boolean
@@ -7,7 +7,7 @@ export interface UseAsyncFunctionOptions {
 
 interface UseAsyncFunctionBase {
   trigger: () => Promise<void>
-  isLoading: Ref<boolean>
+  isLoading: ComputedRef<boolean>
   calls: Ref<number>
   loadingCalls: Ref<number>
 }
@@ -32,7 +32,7 @@ export function useAsyncFunction<R = unknown, T = unknown>(
 export function useAsyncFunction<R = unknown, T = unknown>(
   fn: (...args: T[]) => Promise<R>, options?: UseAsyncFunctionOptions,
 ): UseAsyncFunctionSingle<R> | UseAsyncFunctionSeveral<R> {
-  const isLoading = ref(false)
+  const status = ref(false)
 
   const result = ref<R | R[] | undefined>(options?.several ? [] : undefined)
 
@@ -41,10 +41,10 @@ export function useAsyncFunction<R = unknown, T = unknown>(
   const loadingCalls = ref(0)
 
   async function trigger() {
-    if (!options?.several && isLoading.value)
+    if (!options?.several && status.value)
       return
 
-    isLoading.value = true
+    status.value = true
     loadingCalls.value += 1
 
     const res = await fn()
@@ -58,8 +58,8 @@ export function useAsyncFunction<R = unknown, T = unknown>(
     calls.value += 1
 
     if (!loadingCalls.value)
-      isLoading.value = false
+      status.value = false
   }
 
-  return { trigger, isLoading, result: (result as any), calls, loadingCalls }
+  return { trigger, isLoading: computed(() => status.value), result: (result as any), calls, loadingCalls }
 }
