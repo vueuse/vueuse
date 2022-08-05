@@ -33,7 +33,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000,
     immediateCallback = false,
   } = options
 
-  let timer: any = null
+  let timer: ReturnType<typeof setInterval> | null = null
   const isActive = ref(false)
 
   function clean() {

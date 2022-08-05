@@ -1,6 +1,11 @@
 ---
 category: '@Math'
+deprecated: true
 ---
+
+::: warning
+**Deprecated**. Please use `usePrecision` instead.
+:::
 
 # useToFixed
 

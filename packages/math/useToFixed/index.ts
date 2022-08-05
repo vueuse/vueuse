@@ -3,16 +3,14 @@ import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref } from '@vueuse/shared'
 
-/**
- * Reactive `toFixed`
- *
- * @see https://vueuse.org/useToFixed
- */
 export interface FixedTypes {
   type?: 'string' | 'number'
   math?: 'floor' | 'ceil' | 'round'
 }
 
+/**
+ * @deprecated use `usePrecision` instead
+ */
 export function useToFixed(
   value: MaybeComputedRef<number | string>,
   digits: MaybeComputedRef<number>,

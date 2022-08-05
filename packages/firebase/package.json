@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "9.0.2",
+  "version": "9.1.0",
   "description": "Enables realtime bindings for Firebase",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
