@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { cloneDeep, createFilterWrapper, debounceFilter, increaseWithUnit, isObject, objectPick, throttleFilter } from '.'
+import { createFilterWrapper, debounceFilter, increaseWithUnit, objectPick, throttleFilter } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,20 +16,6 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
-  })
-
-  it('cloneDeep', () => {
-    const obj = {
-      a: 1,
-      b: 2,
-      d: {
-        e: 3,
-        f: { g: 4 },
-      },
-    }
-
-    expect(cloneDeep(obj)).toEqual(obj)
-    expect(cloneDeep(obj)).not.toBe(obj)
   })
 })
 
@@ -117,23 +103,5 @@ describe('filters', () => {
     vitest.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
-  })
-})
-
-describe('is', () => {
-  it('isObject', () => {
-    expect(isObject({})).toBe(true)
-    expect(isObject(Object.create({}))).toBe(true)
-    expect(isObject([])).toBe(false)
-    expect(isObject(1)).toBe(false)
-    expect(isObject('1')).toBe(false)
-    expect(isObject(true)).toBe(false)
-    expect(isObject(null)).toBe(false)
-    expect(isObject(undefined)).toBe(false)
-    expect(isObject(() => {})).toBe(false)
-    expect(isObject(/a/)).toBe(false)
-    expect(isObject(new Date())).toBe(false)
-    expect(isObject(new Map())).toBe(false)
-    expect(isObject(new Set())).toBe(false)
   })
 })

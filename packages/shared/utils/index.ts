@@ -1,6 +1,3 @@
-import type { AnyObj } from './types'
-import { isObject } from './is'
-
 export * from './is'
 export * from './filters'
 export * from './types'
@@ -103,21 +100,4 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
     }
     return n
   }, {} as Pick<O, T>)
-}
-
-/**
- * Simple recursive deep clone
- *
- * @category Object
- */
-export const cloneDeep = (obj: any) => {
-  if (!isObject(obj))
-    return obj
-
-  const clone: AnyObj = {}
-
-  for (const key in obj)
-    clone[key] = cloneDeep((obj as AnyObj)[key])
-
-  return clone
 }

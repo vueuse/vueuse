@@ -1,7 +1,8 @@
-import type { AnyObj } from '@vueuse/shared'
-import { cloneDeep, isDef, isObject } from '@vueuse/shared'
+import { isDef, isFunction } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+
+export type CloneFn<F, T = F> = (x: F) => T
 
 export interface UseVModelOptions<T> {
   /**
@@ -30,7 +31,16 @@ export interface UseVModelOptions<T> {
    * @default undefined
    */
   defaultValue?: T
+  /**
+   * Clone when getting the value from props, shortcut for: JSON.parse(JSON.stringify(value)).
+   * Default to false
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<T>
 }
+
+const defaultCloneFn = <F, T = F>(v: F): T => JSON.parse(JSON.stringify(v))
 
 /**
  * Shorthand for v-model binding, props + emit -> ref
@@ -47,6 +57,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   options: UseVModelOptions<P[K]> = {},
 ) {
   const {
+    clone = false,
     passive = false,
     eventName,
     deep = false,
@@ -73,11 +84,11 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   event = eventName || event || `update:${key!.toString()}`
 
   const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
-  const cloneObj = (obj: AnyObj) => deep ? cloneDeep(obj) : ({ ...obj })
+  const cloneFn = (val: P[K]) => isFunction(clone) ? clone(val) : defaultCloneFn(val)
 
   if (passive) {
     const initialValue = getValue()
-    const proxy = ref<P[K]>(isObject(initialValue) ? cloneObj(initialValue) : initialValue!)
+    const proxy = ref<P[K]>(clone && initialValue ? cloneFn(initialValue) : initialValue!)
 
     watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
 
