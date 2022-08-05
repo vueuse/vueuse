@@ -37,7 +37,7 @@ data.key = 'manual'
 
 console.log(cloned.value.key) // 'value'
 
-sync();
+sync()
 
 console.log(cloned.value.key)// 'manual'
 ```
@@ -50,11 +50,11 @@ const data = ref({
   key: 'value'
 })
 
-const { cloned, sync } = useCloned(data, { 
-    cloneFunction: (source, cloned) => ({ ...source, isCloned: true })
+const { cloned, sync } = useCloned(data, {
+  cloneFunction: (source, cloned) => ({ ...source, isCloned: true })
 })
 
-data.value.key = 'clone it';
+data.value.key = 'clone it'
 
 console.log(cloned.value.isCloned) // true
 console.log(cloned.value.key) // 'clone it'
