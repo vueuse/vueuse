@@ -50,23 +50,29 @@ export function useTitle(
 
   const title: WritableComputedRef<string | null | undefined> = resolveRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && isFunction(newTitle)
+  const hasModifiedTitle = isFunction(titleTemplate) ? titleTemplate('') !== '' : titleTemplate !== '%s'
 
   function format(t: string) {
     return isFunction(titleTemplate)
       ? titleTemplate(t)
-      : unref(titleTemplate).replace('%s', t)
+      : unref(titleTemplate).replace(/%s/g, t)
   }
 
   watch(
     title,
     (t, o) => {
-      if (isString(t) && t !== o && document)
-        document.title = format(t)
+      if (t !== o && document)
+        document.title = format(isString(t) ? t : '')
     },
     { immediate: true },
   )
 
-  if (observe && document && !isReadonly) {
+  /*
+    `titleTemplate` that returns the modified input string will make
+    the `document.title` to be different from the `title.value`, causing the title to update infinitely.
+    therefore, `observe` should be ignored in this case.
+  */
+  if (observe && document && !isReadonly && !hasModifiedTitle) {
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {
