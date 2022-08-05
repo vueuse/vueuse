@@ -43,21 +43,6 @@ describe('useCloned', () => {
     expect(cloned.value).toEqual(data.value)
   })
 
-  it('works like partial cloning', async () => {
-    const data = ref({ test: 'test' })
-
-    const { cloned } = useCloned<Record<string, unknown>>(data)
-
-    cloned.value.check = 'value'
-
-    data.value.test = 'partial'
-
-    await nextTick()
-
-    expect(cloned.value.check).toBe('value')
-    expect(cloned.value.test).toBe('partial')
-  })
-
   it('works with custom clone function', async () => {
     const data = ref({ test: 'test' })
 
@@ -72,5 +57,29 @@ describe('useCloned', () => {
     expect(cloned.value.check).toBe('value')
     expect(cloned.value.test).toBe('partial')
     expect(cloned.value.proxyTest).toBe(true)
+  })
+
+  it('works with watch options', async () => {
+    const data = ref({ test: 'test' })
+
+    const { cloned } = useCloned(data, { watchOptions: { immediate: false, deep: false } })
+
+    await nextTick()
+
+    // test immediate: false
+    expect(cloned.value).toEqual({})
+
+    data.value.test = 'not valid'
+
+    await nextTick()
+
+    // test deep: false
+    expect(cloned.value).toEqual({})
+
+    data.value = { test: 'valid' }
+
+    await nextTick()
+
+    expect(cloned.value).toEqual(data.value)
   })
 })
