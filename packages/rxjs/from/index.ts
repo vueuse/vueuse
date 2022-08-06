@@ -26,5 +26,5 @@ export function fromEvent<T extends HTMLElement>(value: Ref<T> | T, event: strin
       mergeMap(value => fromEventRx(value, event)),
     )
   }
-  return fromEventRx(value, event);
+  return fromEventRx(value, event)
 }
