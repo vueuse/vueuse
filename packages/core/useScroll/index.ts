@@ -51,6 +51,14 @@ export interface UseScrollOptions {
 }
 
 /**
+ * We have to check if the scroll amount is close enough to some threshold in order to
+ * more accurately calculate arrivedState. This is because scrollTop/scrollLeft are non-rounded
+ * numbers, while scrollHeight/scrollWidth and clientHeight/clientWidth are rounded.
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#determine_if_an_element_has_been_totally_scrolled
+ */
+const ARRIVED_STATE_THRESHOLD_PIXELS = 1
+
+/**
  * Reactive scroll.
  *
  * @see https://vueuse.org/useScroll
@@ -114,7 +122,7 @@ export function useScroll(
     directions.right = scrollLeft > x.value
     arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
     arrivedState.right
-          = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
+      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
     x.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
@@ -127,7 +135,7 @@ export function useScroll(
     directions.bottom = scrollTop > y.value
     arrivedState.top = scrollTop <= 0 + (offset.top || 0)
     arrivedState.bottom
-          = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
+      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
     y.value = scrollTop
 
     isScrolling.value = true
