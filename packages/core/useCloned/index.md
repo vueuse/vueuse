@@ -14,13 +14,12 @@ const originData = ref({
   key: 'value'
 })
 
-const { cloned, stop } = useCloned(originData)
+const { cloned } = useCloned(originData)
 
 originData.key = 'some new value'
 
 console.log(cloned.value.key) // 'some new value'
 
-stop()
 ```
 
 ## Manual cloning
