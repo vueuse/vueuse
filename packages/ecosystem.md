@@ -21,7 +21,7 @@ Vue Chemistry utilizes the `reactify` function and applies it to common JavaScri
 ```js
 import { set } from 'vue-chemistry/core'
 import { sum } from 'vue-chemistry/math'
-import { log } from 'vue-chemistry/console'
+import * as console from 'vue-chemistry/console'
 
 const a = ref(1)
 const b = ref(2)
@@ -30,5 +30,5 @@ let c = sum(a, b) // c = a + b = 3
 
 set(a, 2) // shorthand for a.value = 2
 
-log(c) // it's 4 (2 + 2)!
+console.log(c) // it's 4 (2 + 2)!
 ```
