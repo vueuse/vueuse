@@ -30,7 +30,7 @@ const Links = [
   { text: 'Add-ons', link: '/add-ons' },
   { text: 'Ecosystem', link: '/ecosystem' },
   { text: 'Export Size', link: '/export-size' },
-  { text: 'Recent Updated', link: '/recent-updated' },
+  { text: 'Recent Updated', link: '/functions.html#sort=updated' },
 ]
 
 const DefaultSideBar = [
@@ -141,8 +141,6 @@ export default defineConfig({
       '/ecosystem': DefaultSideBar,
       '/guidelines': DefaultSideBar,
       '/export-size': DefaultSideBar,
-      '/recent-updated': DefaultSideBar,
-
       '/functions': FunctionsSideBar,
       '/core/': FunctionsSideBar,
       '/shared/': FunctionsSideBar,
