@@ -29,13 +29,11 @@ describe('watchPromise', async () => {
 
     source.value -= 1
     await nextTick()
-    expect(current.value).toBe(1)
 
     source.value -= 1
     await nextTick()
-    expect(current.value).toBe(2)
 
-    await wait(1300)
+    await wait(3000)
 
     expect(spy).toBeCalledTimes(2)
     expect(timeouts).toEqual([800, 400])
@@ -45,7 +43,7 @@ describe('watchPromise', async () => {
     const source = ref(0)
 
     const spy = vi.fn().mockImplementation(() => {
-      const time = source.value * 400
+      const time = source.value * 1000
 
       return new Promise(resolve => setTimeout(() => {
         resolve('v')
@@ -62,11 +60,9 @@ describe('watchPromise', async () => {
     source.value += 1
     await nextTick()
 
-    expect(current.value).toBe(2)
-
     cleanQueue()
 
-    await wait(1000)
+    await wait(2000)
 
     expect(current.value).toBe(0)
   })
