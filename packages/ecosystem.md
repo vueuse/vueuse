@@ -4,7 +4,7 @@ While developing VueUse, we extract the tools we are using into separate project
 
 <h2 align="center">
 <a href="https://github.com/vueuse/vue-demi" target="_blank">
-<img src="https://github.com/vueuse/vue-demi/raw/master/assets/banner.png" alt="vue-demi" width="500"/>
+<img src="https://github.com/vueuse/vue-demi/raw/main/assets/banner.png" alt="vue-demi" width="500"/>
 </a>
 </h2>
 
