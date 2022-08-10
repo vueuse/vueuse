@@ -46,6 +46,8 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   attrs?: Record<string, string>
 }
 
+const store = new Map<string, number>()
+
 /**
  * Async script tag loading.
  *
@@ -98,14 +100,18 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
+    const srcResolved = resolveUnref(src)
+
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${srcResolved}"]`)
+
+    store.set(resolveUnref(srcResolved), (store.get(srcResolved) || 0) + 1)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = resolveUnref(src)
+      el.src = srcResolved
 
       // Optional attributes
       if (defer)
@@ -171,9 +177,20 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
-    if (el)
-      document.head.removeChild(el)
+    const resolvedSrc = resolveUnref(src)
+
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolvedSrc}"]`)
+
+    const storeValue = store.get(resolvedSrc)
+    if (storeValue)
+      store.set(resolvedSrc, storeValue - 1)
+
+    if (!store.get(resolvedSrc)) {
+      store.delete(resolvedSrc)
+
+      if (el)
+        document.head.removeChild(el)
+    }
   }
 
   if (immediate && !manual)

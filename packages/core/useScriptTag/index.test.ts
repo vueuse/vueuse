@@ -1,6 +1,10 @@
 import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
 
+/**
+ * Since the composition uses a common store to keep track of concurrent uses operations
+ * must be performed removing the tag in the tests
+ */
 describe('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
@@ -14,7 +18,7 @@ describe('useScriptTag', () => {
 
     expect(scriptTagElement()).toBeNull()
 
-    useSetup(() => {
+    const vm = useSetup(() => {
       const { scriptTag } = useScriptTag(src, () => {}, { immediate: true })
 
       return {
@@ -25,6 +29,8 @@ describe('useScriptTag', () => {
     expect(appendChildListener).toBeCalled()
 
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
+
+    vm.unmount()
   })
 
   it('should re-use the same src for multiple loads', async () => {
@@ -52,6 +58,11 @@ describe('useScriptTag', () => {
 
     expect(addChildListener).toBeCalledTimes(1)
     expect(scriptTagElement()).toBeInstanceOf(HTMLScriptElement)
+
+    vm.script1.unload()
+    vm.script2.unload()
+
+    vm.unmount()
   })
 
   it('should support custom attributes', async () => {
@@ -61,7 +72,7 @@ describe('useScriptTag', () => {
 
     expect(scriptTagElement()).toBeNull()
 
-    useSetup(() => {
+    const vm = useSetup(() => {
       const { scriptTag } = useScriptTag(src, () => {}, {
         attrs: { 'id': 'id-value', 'data-test': 'data-test-value' },
         immediate: true,
@@ -78,6 +89,8 @@ describe('useScriptTag', () => {
     expect(element).toBeInstanceOf(HTMLScriptElement)
     expect(element?.getAttribute('id')).toBe('id-value')
     expect(element?.getAttribute('data-test')).toBe('data-test-value')
+
+    vm.unmount()
   })
 
   it('should remove script tag on unmount', async () => {
@@ -142,6 +155,8 @@ describe('useScriptTag', () => {
     expect(removeChildListener).toBeCalled()
 
     expect(vm.scriptTag).toBeNull()
+
+    vm.unmount()
   })
 
   it('should remove script tag on unload call after multiple loads', async () => {
@@ -174,5 +189,9 @@ describe('useScriptTag', () => {
     expect(vm.script2.scriptTag.value).toBeNull()
     expect(removeChildListener).toBeCalledTimes(1)
     expect(scriptTagElement()).toBeNull()
+
+    vm.script1.unload()
+    vm.script2.unload()
+    vm.unmount()
   })
 })
