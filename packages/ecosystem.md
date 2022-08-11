@@ -19,18 +19,16 @@ Vue Demi is a tool for library authors to create composable libraries that work 
 Vue Chemistry utilizes the `reactify` function and applies it to common JavaScript APIs, which enables a pure reactive programming experience. For example:
 
 ```js
-import { set } from 'vue-chemistry'
+import { set } from 'vue-chemistry/core'
+import { sum } from 'vue-chemistry/math'
 import * as console from 'vue-chemistry/console'
-import { pow, sqrt, sum } from 'vue-chemistry/math'
 
-//      _________
-// c = √ a² + b²
-const a = ref(3)
-const b = ref(4)
-const c = sqrt(sum(pow(a, 2), pow(b, 2)))
-console.log(c) // 5
+const a = ref(1)
+const b = ref(2)
 
-set(a, 5) // shorthand for a.value = 5
-set(b, 12)
-console.log(c) // 13
+let c = sum(a, b) // c = a + b = 3
+
+set(a, 2) // shorthand for a.value = 2
+
+console.log(c) // it's 4 (2 + 2)!
 ```
