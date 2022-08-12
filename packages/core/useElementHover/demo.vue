@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useElementHover } from '@vueuse/core'
 
-const el = ref()
+const el = ref<HTMLButtonElement>()
 const isHovered = useElementHover(el)
 </script>
 
