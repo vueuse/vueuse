@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import { computed, ref } from 'vue'
-import { functions } from '@vueuse/metadata'
-import axios from 'axios'
+import { computed } from 'vue'
+import { functions, getExportSize } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
-const exportSizeMD = ref('')
 const info = computed(() => functions.find(i => i.name === props.fn))
 const format = (ts: number) => ago(-1, 'day')
 const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
 
-axios.get('/export-size.md').then(({ data }) => exportSizeMD.value = data)
-const exportSize = computed(() => exportSizeMD.value.split('\n')?.find(line => line.indexOf(info.value.name) > 0)?.split('|')[2] || '')
-
+const exportSize = getExportSize(info.value.name)
 const getFunctionLink = (fn: string) => {
   const info = functions.find(i => i.name === fn)
   return info?.docs.replace(/https?:\/\/vueuse\.org\//g, '/')
