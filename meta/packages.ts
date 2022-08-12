@@ -125,10 +125,14 @@ export const packages: PackageManifest[] = [
     external: [
       'firebase',
       'firebase/app',
+      'firebase/database',
+      'firebase/firestore',
     ],
     globals: {
       'firebase': 'firebase',
       'firebase/app': 'firebase',
+      'firebase/database': 'firebase',
+      'firebase/firestore': 'firebase',
     },
   },
   {
