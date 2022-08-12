@@ -26,10 +26,10 @@ importers:
       '@vitest/ui': ^0.18.1
       '@vue/compiler-sfc': ^3.2.37
       '@vue/test-utils': ^2.0.2
-      '@vueuse/core': link:packages/core
-      '@vueuse/integrations': link:packages/integrations
-      '@vueuse/math': link:packages/math
-      '@vueuse/shared': link:packages/shared
+      '@vueuse/core': workspace:*
+      '@vueuse/integrations': workspace:*
+      '@vueuse/math': workspace:*
+      '@vueuse/shared': workspace:*
       axios: ^0.27.2
       bumpp: ^8.2.1
       consola: ^2.15.3
@@ -9172,7 +9172,7 @@ packages:
       webpack:
         optional: true
     dependencies:
-      acorn: 8.8.0
+      acorn: 8.7.1
       chokidar: 3.5.3
       rollup: 2.77.0
       vite: 3.0.2

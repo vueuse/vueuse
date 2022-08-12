@@ -1,8 +1,7 @@
 import { ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeComputedRef, Stoppable } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { Stoppable } from '../utils'
 import { isClient } from '../utils'
 
 export interface UseTimeoutFnOptions {
