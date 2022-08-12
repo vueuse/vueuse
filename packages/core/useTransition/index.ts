@@ -49,7 +49,7 @@ export interface UseTransitionOptions {
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
-export const _TransitionPresets = {
+const _TransitionPresets = {
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
   easeInOutSine: [0.37, 0, 0.63, 1],
