@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { functions } from '@vueuse/metadata'
+import axios from 'axios'
 
 const props = defineProps<{ fn: string }>()
-
+const exportSizeMD = ref('')
 const info = computed(() => functions.find(i => i.name === props.fn))
 const format = (ts: number) => ago(-1, 'day')
 const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
+
+axios.get('/export-size.md').then(({ data }) => exportSizeMD.value = data)
+const exportSize = computed(() => exportSizeMD.value.split('\n')?.find(line => line.indexOf(info.value.name) > 0)?.split('|')[2] || '')
 
 const getFunctionLink = (fn: string) => {
   const info = functions.find(i => i.name === fn)
@@ -22,6 +26,10 @@ const getFunctionLink = (fn: string) => {
       Category
     </div>
     <div><a :href="link">{{ info.category }}</a></div>
+    <div opacity="50">
+      Export Size
+    </div>
+    <div> {{ exportSize }}</div>
     <template v-if="info.package !== 'core' && info.package !== 'shared'">
       <div opacity="50">
         Package
