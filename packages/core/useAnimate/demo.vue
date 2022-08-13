@@ -11,11 +11,11 @@ const keyframes = [
   { transform: 'translateX(200%) rotate(-360deg)' },
 ]
 const options = {
-  duration: 3000,
-  iterations: Infinity,
+  duration: 5000,
+  iterations: 1, // Infinity,
 }
 
-const { play, pause } = useAnimate(el, keyframes, options)
+const { play, pause, reverse, cancel, finish, playbackRate } = useAnimate(el, keyframes, options)
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const { play, pause } = useAnimate(el, keyframes, options)
       ref="el"
       w="300px"
       h="300px"
-      src="https://raw.githubusercontent.com/vueuse/vueuse/main/packages/public/logo-vertical-dark.png#gh-dark-mode-only"
+      src="/favicon.svg"
       alt="vueuse"
     >
     <div pos="absolute top-0 left-0">
@@ -42,6 +42,16 @@ const { play, pause } = useAnimate(el, keyframes, options)
       <button @click="pause">
         pause
       </button>
+      <button @click="reverse">
+        reverse
+      </button>
+      <button @click="cancel">
+        cancel
+      </button>
+      <button @click="finish">
+        finish
+      </button>
+      <input v-model.number="playbackRate" type="number">
     </div>
   </div>
 </template>
