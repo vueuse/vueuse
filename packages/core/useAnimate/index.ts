@@ -1,5 +1,5 @@
 import { ref, unref, watch } from 'vue-demi'
-import { isObject, tryOnMounted } from '@vueuse/shared'
+import { isFunction, isObject, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
 import { unrefElement, useSupported } from '../index'
 import type { MaybeComputedElementRef } from '../index'
@@ -11,8 +11,22 @@ interface UseAnimateOptions extends KeyframeAnimationOptions {
    * @default true
    */
   immediate?: boolean
+  /**
+   * Whether to commits the end styling state of an animation to the element being animated
+   *
+   * @default false
+   */
   commitStyles?: boolean
+  /**
+   * Whether to persists the animation
+   *
+   * @default false
+   */
   persist?: boolean
+  /**
+   * Executed after animation initialization
+   */
+  onReady?: (animate: Animation) => void
 }
 
 export function useAnimate(
@@ -31,13 +45,13 @@ export function useAnimate(
     animateOptions = options
   }
 
-  const { immediate = true, commitStyles, persist } = config || {}
+  const { immediate = true, commitStyles, persist, onReady } = config || {}
 
   const isSupported = useSupported(() => {
     return HTMLElement && 'animate' in HTMLElement.prototype
   })
 
-  const animate = ref<Animation | null>()
+  const animate = ref<Animation | undefined>(undefined)
   const playbackRate = ref(1)
 
   const update = () => {
@@ -49,6 +63,7 @@ export function useAnimate(
 
     commitStyles && animate.value.commitStyles()
     persist && animate.value.persist()
+    isFunction(onReady) && onReady(animate.value)
   }
 
   const play = () => {
@@ -60,6 +75,7 @@ export function useAnimate(
   }
 
   const reverse = () => {
+    !animate.value && update()
     animate.value?.reverse()
   }
 
@@ -71,16 +87,32 @@ export function useAnimate(
     animate.value?.finish()
   }
 
-  immediate && tryOnMounted(update)
-
-  watch([() => target, () => keyframes], ([el]) => {
-    el && update()
+  watch(() => target, (el) => {
+    unref(el) && update()
   })
+
+  watch(() => keyframes, (value) => {
+    !animate.value && update()
+
+    if (animate.value) {
+      animate.value.effect = new KeyframeEffect(
+        unrefElement(target)!,
+        unref(value),
+        animateOptions,
+      )
+    }
+  }, { deep: true })
 
   watch(playbackRate, (value) => {
     !animate.value && update()
-    animate.value?.updatePlaybackRate(value)
+
+    if (animate.value)
+      animate.value.playbackRate = value
   })
+
+  immediate && tryOnMounted(update)
+
+  animate.value && tryOnScopeDispose(cancel)
 
   return {
     isSupported,
