@@ -4,18 +4,43 @@ import { useAnimate } from '@vueuse/core'
 import type { MaybeElement } from '../unrefElement'
 
 const el = ref<MaybeElement>()
-const keyframes = [
+const keyframes = ref([
   { transform: 'translateX(-200%)' },
   { transform: 'translateX(0)' },
   { transform: 'translateX(0) rotate(-360deg)' },
   { transform: 'translateX(200%) rotate(-360deg)' },
-]
+])
 const options = {
   duration: 5000,
+  delay: 1000,
   iterations: 1, // Infinity,
+  immediate: false,
+  onReady(animate: Animation) {
+    console.log('onReady', animate)
+  },
 }
 
-const { play, pause, reverse, cancel, finish, playbackRate } = useAnimate(el, keyframes, options)
+const {
+  play,
+  pause,
+  reverse,
+  cancel,
+  finish,
+  playbackRate,
+  animate,
+  // startTime,
+  // currentTime,
+  // pending,
+  // timeline,
+  // playState,
+  progress,
+} = useAnimate(el, keyframes, options)
+
+console.log(animate)
+
+function handleChange(e: Event) {
+  progress.value = Number((e.target as HTMLInputElement).value) / 100
+}
 </script>
 
 <template>
@@ -45,13 +70,14 @@ const { play, pause, reverse, cancel, finish, playbackRate } = useAnimate(el, ke
       <button @click="reverse">
         reverse
       </button>
-      <button @click="cancel">
-        cancel
-      </button>
       <button @click="finish">
         finish
       </button>
+      <button @click="cancel">
+        cancel
+      </button>
       <input v-model.number="playbackRate" type="number">
+      <input :value="progress * 100" type="range" min="0" max="100" @change="handleChange">
     </div>
   </div>
 </template>
