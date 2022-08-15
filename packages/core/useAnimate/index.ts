@@ -1,6 +1,6 @@
 import { computed, reactive, ref, unref, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
-import { isFunction, isNumber, isObject, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, isNumber, isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow, MaybeComputedElementRef } from '../index'
 import { defaultWindow, unrefElement, useEventListener, useRafFn, useSupported } from '../index'
 
@@ -43,7 +43,7 @@ export function useAnimate(
 
   if (isObject(options)) {
     config = options
-    animateOptions = options // objectOmit TODO:
+    animateOptions = objectOmit(options, ['window', 'immediate', 'commitStyles', 'persist', 'onReady'])
   }
   else {
     animateOptions = options

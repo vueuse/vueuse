@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { createFilterWrapper, debounceFilter, increaseWithUnit, objectPick, throttleFilter } from '.'
+import { createFilterWrapper, debounceFilter, increaseWithUnit, objectOmit, objectPick, throttleFilter } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,6 +16,15 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
+  })
+
+  it('objectOmit', () => {
+    const obj = { a: 1, b: 2, c: 3 }
+
+    expect(objectOmit(obj, ['a', 'b'])).toEqual({ c: 3 })
+    expect(obj).toEqual({ a: 1, b: 2, c: 3 })
+    expect(objectOmit({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({})
+    expect(objectOmit({ a: 1, b: 2, c: undefined }, ['b', 'c'], true)).toEqual({ a: 1 })
   })
 })
 

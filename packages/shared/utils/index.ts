@@ -101,3 +101,14 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
     return n
   }, {} as Pick<O, T>)
 }
+
+/**
+ * Create a new subset object by omit giving keys
+ *
+ * @category Object
+ */
+export function objectOmit<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return Object.fromEntries(Object.entries(obj).filter(([key, value]) => {
+    return (!omitUndefined || value !== undefined) && !keys.includes(key as T)
+  })) as Omit<O, T>
+}
