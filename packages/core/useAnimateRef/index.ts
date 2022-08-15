@@ -1,5 +1,5 @@
 import type { ComputedRef, WritableComputedRef } from 'vue-demi'
-import { computed, reactive } from 'vue-demi'
+import { computed, shallowReactive } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
 import { isFunction, isObject, objectOmit, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow, MaybeComputedElementRef, UseAnimateOptions, UseAnimateReturn } from '../index'
@@ -67,7 +67,7 @@ export function useAnimateRef(
     cancel: _cancel,
   } = useAnimate(target, keyframes, animateOptions)
 
-  const store = reactive<AnimateSrote>({
+  const store = shallowReactive<AnimateSrote>({
     startTime: null,
     currentTime: null,
     timeline: null,

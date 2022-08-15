@@ -119,7 +119,9 @@ export function useAnimate(
     }
   }, { deep: true })
 
-  tryOnMounted(update)
+  tryOnMounted(() => {
+    update(true)
+  })
 
   tryOnScopeDispose(cancel)
 
