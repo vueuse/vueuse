@@ -76,11 +76,9 @@ export function useAnimate(
 
     animate.value = el.animate(unref(keyframes), animateOptions)
 
-    if (init && !immediate)
-      animate.value.pause()
-
     commitStyles && animate.value.commitStyles()
     persist && animate.value.persist()
+    init && !immediate && animate.value.pause()
     isFunction(onReady) && onReady(animate.value)
   }
 
