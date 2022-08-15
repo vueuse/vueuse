@@ -26,21 +26,7 @@ const {
   reverse,
   cancel,
   finish,
-  playbackRate,
-  animate,
-  // startTime,
-  // currentTime,
-  // pending,
-  // timeline,
-  // playState,
-  progress,
 } = useAnimate(el, keyframes, options)
-
-console.log(animate)
-
-function handleChange(e: Event) {
-  progress.value = Number((e.target as HTMLInputElement).value) / 100
-}
 </script>
 
 <template>
@@ -76,8 +62,6 @@ function handleChange(e: Event) {
       <button @click="cancel">
         cancel
       </button>
-      <input v-model.number="playbackRate" type="number">
-      <input :value="progress * 100" type="range" min="0" max="100" @change="handleChange">
     </div>
   </div>
 </template>
