@@ -30,7 +30,9 @@ export function useCloned<T extends Record<any, any> = Record<any, any>>(source:
     sync()
 
   function defaultCloning() {
-    return JSON.parse(JSON.stringify(unref(source)))
+    const structuredClone = window?.structuredClone as any
+
+    return structuredClone ? structuredClone(unref(source)) : JSON.parse(JSON.stringify(unref(source)))
   }
 
   function sync() {
