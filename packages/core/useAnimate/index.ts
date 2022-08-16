@@ -28,6 +28,10 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions {
    * Executed after animation initialization
    */
   onReady?: (animate: Animation) => void
+  /**
+   * Callback when error is caught.
+   */
+  onError?: (e: unknown) => void
 }
 
 export interface UseAnimateReturn {
@@ -50,7 +54,7 @@ export function useAnimate(
 
   if (isObject(options)) {
     config = options
-    animateOptions = objectOmit(options, ['immediate', 'commitStyles', 'persist', 'onReady'])
+    animateOptions = objectOmit(options, ['immediate', 'commitStyles', 'persist', 'onReady', 'onError'])
   }
   else {
     animateOptions = options
@@ -61,6 +65,9 @@ export function useAnimate(
     commitStyles,
     persist,
     onReady,
+    onError = (e: unknown) => {
+      console.error(e)
+    },
   } = config || {}
 
   const isSupported = useSupported(() => {
@@ -83,24 +90,54 @@ export function useAnimate(
   }
 
   const play = () => {
-    animate.value ? animate.value.play() : update()
+    if (animate.value) {
+      try {
+        animate.value.play()
+      }
+      catch (e) {
+        onError(e)
+      }
+    }
+    else {
+      update()
+    }
   }
 
   const pause = () => {
-    animate.value?.pause()
+    try {
+      animate.value?.pause()
+    }
+    catch (e) {
+      onError(e)
+    }
   }
 
   const reverse = () => {
     !animate.value && update()
-    animate.value?.reverse()
+    try {
+      animate.value?.reverse()
+    }
+    catch (e) {
+      onError(e)
+    }
   }
 
   const finish = () => {
-    animate.value?.playbackRate && animate.value?.finish()
+    try {
+      animate.value?.finish()
+    }
+    catch (e) {
+      onError(e)
+    }
   }
 
   const cancel = () => {
-    animate.value?.cancel()
+    try {
+      animate.value?.cancel()
+    }
+    catch (e) {
+      onError(e)
+    }
   }
 
   watch(() => target, (el) => {

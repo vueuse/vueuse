@@ -1,53 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
+import { shallowRef } from 'vue-demi'
 import { useAnimate } from '@vueuse/core'
-import type { MaybeElement } from '../unrefElement'
+import type { MaybeElement } from '@vueuse/core'
 
-const el = ref<MaybeElement>()
-const keyframes = ref([
-  { transform: 'translateX(-200%)' },
-  { transform: 'translateX(0)' },
-  { transform: 'translateX(0) rotate(-360deg)' },
-  { transform: 'translateX(200%) rotate(-360deg)' },
-])
-const options = {
-  duration: 5000,
-  delay: 1000,
-  iterations: 1, // Infinity,
-  immediate: false,
-  onReady(animate: Animation) {
-    console.log('onReady', animate)
+const el = shallowRef<MaybeElement>()
+const { play, pause, reverse, cancel } = useAnimate(
+  el,
+  [
+    { clipPath: 'circle(20% at 0% 30%)' },
+    { clipPath: 'circle(20% at 50% 80%)' },
+    { clipPath: 'circle(20% at 100% 30%)' },
+  ],
+  {
+    duration: 4000,
+    iterations: Infinity,
+    direction: 'alternate',
+    easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
   },
-}
-
-const {
-  play,
-  pause,
-  reverse,
-  cancel,
-  finish,
-} = useAnimate(el, keyframes, options)
+)
 </script>
 
 <template>
-  <div
-    pos="relative"
-    flex="~"
-    justify="center"
-    align="items-center"
-    w="100%"
-    h="400px"
-    overflow="hidden"
-  >
-    <img
-      ref="el"
-      w="300px"
-      h="300px"
-      src="/favicon.svg"
-      alt="vueuse"
-    >
-    <div pos="absolute top-0 left-0">
-      <button m="r-2" @click="play">
+  <div class="relative flex items-center justify-center w-full h-60 overflow-hidden">
+    <p ref="el" class="mb-12! text-5xl! text-$vp-c-brand font-800">
+      VueUse useAnimate
+    </p>
+    <div class="absolute bottom-0 left-0">
+      <button @click="play">
         play
       </button>
       <button @click="pause">
@@ -55,9 +34,6 @@ const {
       </button>
       <button @click="reverse">
         reverse
-      </button>
-      <button @click="finish">
-        finish
       </button>
       <button @click="cancel">
         cancel
