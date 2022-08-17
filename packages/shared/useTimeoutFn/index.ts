@@ -18,7 +18,7 @@ export interface UseTimeoutFnOptions {
  *
  * @param cb
  * @param interval
- * @param immediate
+ * @param options
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,

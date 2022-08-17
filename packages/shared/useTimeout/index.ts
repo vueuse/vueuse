@@ -12,13 +12,6 @@ export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutF
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Execute the update immediately on calling
-   *
-   * @default true
-   */
-  immediate?: boolean
 }
 
 /**
