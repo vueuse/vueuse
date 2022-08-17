@@ -12,6 +12,13 @@ export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutF
    * @default false
    */
   controls?: Controls
+
+  /**
+   * Execute the update immediately on calling
+   *
+   * @default true
+   */
+  immediate?: boolean
 }
 
 /**
@@ -19,7 +26,7 @@ export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutF
  *
  * @see   {@link https://vueuse.org/useTimeout}
  * @param interval
- * @param immediate
+ * @param options
  */
 export function useTimeout(interval?: number, options?: UseTimeoutOptions<false>): ComputedRef<boolean>
 export function useTimeout(interval: number, options: UseTimeoutOptions<true>): { ready: ComputedRef<boolean> } & Stoppable
