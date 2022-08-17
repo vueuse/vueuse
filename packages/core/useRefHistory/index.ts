@@ -58,12 +58,12 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
   history: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
-  * Last history point, source can be different if paused
-  */
+   * Last history point, source can be different if paused
+   */
   last: Ref<UseRefHistoryRecord<Serialized>>
 
   /**
-   * Same as 'history'
+   * Same as {@link UseRefHistoryReturn.history|history}
    */
   undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
 
@@ -120,7 +120,7 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
   commit(): void
 
   /**
-   * Reset ref's value with lastest history
+   * Reset ref's value with latest history
    */
   reset(): void
 
