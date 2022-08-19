@@ -29,3 +29,14 @@ useEventListener(element, 'keydown', (e) => { console.log(e.key) })
   <div v-else ref="element">Div2</div>
 </template>
 ```
+
+useEventListener will also return a function that you can call to remove the listener on demand.
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+const cleanup = useEventListener(document, 'keydown', (e) => { console.log(e.key) })
+
+cleanup(); // This will unregister the listener.
+```
+
