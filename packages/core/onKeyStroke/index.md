@@ -4,7 +4,7 @@ category: Sensors
 
 # onKeyStroke
 
-Listen for keyboard key being stroked.
+Listen for keyboard key being stroked. This package is using useEventListener to register the key events. The listener will be automatically removed but the composable returns a cleanup function that you can call at any time to manually remove the listener.
 
 ## Usage
 
@@ -34,6 +34,17 @@ onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
 onKeyStroke('A', (e) => {
   console.log('Key A pressed on document')
 }, { target: document })
+```
+
+
+### Manually removing listener
+
+```js
+const cleanup = onKeyStroke('A', (e) => {
+  console.log('Key A pressed on document')
+}, { target: document })
+
+cleanup();
 ```
 
 ## Directive Usage
