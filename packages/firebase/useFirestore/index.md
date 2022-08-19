@@ -8,7 +8,7 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 
 ## Usage
 
-```js {9,12,17}
+```js {9,12,17,22}
 import { computed, ref } from 'vue'
 import { initializeApp } from 'firebase/app'
 import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
@@ -26,6 +26,11 @@ const user = useFirestore(doc(db, 'users', 'my-user-id'))
 const postLimit = ref(10)
 const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postLimit.value)))
 const posts = useFirestore(postsQuery)
+
+// you can use the boolean value to tell a query when it is ready to run
+// when it gets falsy value, return the initial value
+const userId = ref('')
+const userData = useFirestore(() => !!userId.value && doc(db, 'users', userId.value), [])
 ```
 
 ## Share across instances
