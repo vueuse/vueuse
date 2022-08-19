@@ -23,14 +23,14 @@ const todos = useFirestore(collection(db, 'todos'))
 const user = useFirestore(doc(db, 'users', 'my-user-id'))
 
 // you can also use ref value for reactive query
-const postLimit = ref(10)
-const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postLimit.value)))
+const postsLimit = ref(10)
+const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postsLimit.value)))
 const posts = useFirestore(postsQuery)
 
 // you can use the boolean value to tell a query when it is ready to run
 // when it gets falsy value, return the initial value
 const userId = ref('')
-const userData = useFirestore(() => !!userId.value && doc(db, 'users', userId.value), [])
+const userData = useFirestore(() => !!userId.value && doc(db, 'users', userId.value), null)
 ```
 
 ## Share across instances
