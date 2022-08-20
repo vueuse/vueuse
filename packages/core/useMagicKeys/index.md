@@ -55,6 +55,24 @@ watch(Ctrl_A_B, (v) => {
 })
 ```
 
+### Sequences
+
+You can magically use sequences of keys by connecting keys with `>`.
+
+```ts
+import { useMagicKeys } from '@vueuse/core'
+
+const keys = useMagicKeys()
+const sequence = keys['A>B>C']
+
+watch(sequence, (v) => {
+  if (v)
+    console.log('Sequence A then B then C has been pressed')
+})
+```
+
+### `whenever`
+
 You can also use `whenever` function to make it shorter
 
 ```ts
@@ -64,6 +82,14 @@ const keys = useMagicKeys()
 
 whenever(keys.shift_space, () => {
   console.log('Shift+Space have been pressed')
+})
+
+whenever(keys['Meta+S'], () => {
+  console.log('Meta+S have been pressed')
+})
+
+whenever(keys['Q>P'], () => {
+  console.log('Q then P sequence has been pressed')
 })
 ```
 

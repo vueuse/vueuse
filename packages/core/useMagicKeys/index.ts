@@ -1,9 +1,10 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, reactive, ref, unref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
+import { noop, useTimeoutFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
+import { useManualRefHistory } from '../useManualRefHistory'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
 export interface UseMagicKeysOptions<Reactive extends Boolean> {
@@ -36,6 +37,20 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    * @default true
    */
   passive?: boolean
+
+  /**
+   * Length of pressed keys history
+   *
+   * @default 5
+   */
+  historyLength?: number
+
+  /**
+   * Clear history after timeout
+   *
+   * @default 5000
+   */
+  historyClearTimeout?: number
 
   /**
    * Custom event handler for keydown/keyup event.
@@ -78,6 +93,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     target = defaultWindow,
     aliasMap = DefaultMagicKeysAliasMap,
     passive = true,
+    historyLength = 5,
+    historyClearTimeout = 5000,
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
@@ -85,6 +102,20 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
   const usedKeys = new Set<string>()
+  const lastKey: Ref<string[]> = ref([])
+  const {
+    history,
+    commit: saveHistory,
+    clear: clearHistory,
+    last: lastHistoryValue,
+  } = useManualRefHistory(lastKey, { capacity: historyLength, clone: true })
+  const {
+    start: startHistoryTimeout,
+    stop: stopHistoryTimeout,
+  } = useTimeoutFn(() => {
+    clearHistory()
+    lastHistoryValue.value = { snapshot: [], timestamp: Date.now() }
+  }, historyClearTimeout, { immediate: false })
 
   function setRefs(key: string, value: boolean) {
     if (key in refs) {
@@ -100,10 +131,18 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       setRefs(key, false)
   }
 
+  function addHistoryRecord(values: string[]) {
+    stopHistoryTimeout()
+    lastKey.value = values
+    saveHistory()
+    startHistoryTimeout()
+  }
+
   function updateRefs(e: KeyboardEvent, value: boolean) {
     const key = e.key?.toLowerCase()
     const code = e.code?.toLowerCase()
     const values = [code, key].filter(Boolean)
+    value && addHistoryRecord(values)
 
     // current set
     if (key) {
@@ -163,6 +202,11 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
           if (/[+_-]/.test(prop)) {
             const keys = prop.split(/[+_-]/g).map(i => i.trim())
             refs[prop] = computed(() => keys.every(key => unref(proxy[key])))
+          }
+          else if (/>/.test(prop)) {
+            const sequence = prop.split(/>/g).map(i => i.trim()).reverse()
+            const snapshots = computed(() => unref(history).map(entry => entry.snapshot))
+            refs[prop] = computed(() => sequence.every((key, i) => unref(snapshots)[i].includes(key)))
           }
           else {
             refs[prop] = ref(false)
