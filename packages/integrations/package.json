@@ -67,6 +67,11 @@
       "require": "./useJwt.cjs",
       "import": "./useJwt.mjs"
     },
+    "./useMark": {
+      "types": "./useMark.d.ts",
+      "require": "./useMark.cjs",
+      "import": "./useMark.mjs"
+    },
     "./useNProgress": {
       "types": "./useNProgress.d.ts",
       "require": "./useNProgress.cjs",
@@ -101,6 +106,7 @@
     "focus-trap": "*",
     "fuse.js": "*",
     "jwt-decode": "*",
+    "mark.js": "*",
     "nprogress": "*",
     "qrcode": "*",
     "universal-cookie": "*"
@@ -127,6 +133,9 @@
     "jwt-decode": {
       "optional": true
     },
+    "mark.js": {
+      "optional": true
+    },
     "nprogress": {
       "optional": true
     },
@@ -143,6 +152,7 @@
     "vue-demi": "*"
   },
   "devDependencies": {
+    "@types/mark.js": "^8.11.8",
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.2",
     "async-validator": "^4.2.5",
@@ -152,6 +162,7 @@
     "focus-trap": "^6.9.4",
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
+    "mark.js": "^8.11.1",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.1",
     "universal-cookie": "^4.0.4"

@@ -187,6 +187,7 @@ importers:
 
   packages/integrations:
     specifiers:
+      '@types/mark.js': ^8.11.8
       '@types/nprogress': ^0.2.0
       '@types/qrcode': ^1.4.2
       '@vueuse/core': workspace:*
@@ -198,6 +199,7 @@ importers:
       focus-trap: ^6.9.4
       fuse.js: ^6.6.2
       jwt-decode: ^3.1.2
+      mark.js: ^8.11.1
       nprogress: ^0.2.0
       qrcode: ^1.5.1
       universal-cookie: ^4.0.4
@@ -207,6 +209,7 @@ importers:
       '@vueuse/shared': link:../shared
       vue-demi: 0.13.2
     devDependencies:
+      '@types/mark.js': 8.11.8
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.4.2
       async-validator: 4.2.5
@@ -216,6 +219,7 @@ importers:
       focus-trap: 6.9.4
       fuse.js: 6.6.2
       jwt-decode: 3.1.2
+      mark.js: 8.11.1
       nprogress: 0.2.0
       qrcode: 1.5.1
       universal-cookie: 4.0.4
@@ -2861,6 +2865,12 @@ packages:
       '@types/node': 18.0.6
     dev: true
 
+  /@types/jquery/3.5.14:
+    resolution: {integrity: sha512-X1gtMRMbziVQkErhTQmSe2jFwwENA/Zr+PprCkF63vFq+Yt5PZ4AlKqgmeNlwgn7dhsXEK888eIW2520EpC+xg==}
+    dependencies:
+      '@types/sizzle': 2.3.3
+    dev: true
+
   /@types/js-levenshtein/1.1.1:
     resolution: {integrity: sha512-qC4bCqYGy1y/NP7dDVr7KJarn+PbX1nSpwA7JXdu0HxT3QYjO8MJ+cntENtHFVy2dRAyBV23OZ6MxsW1AM1L8g==}
     dev: true
@@ -2885,6 +2895,12 @@ packages:
 
   /@types/long/4.0.2:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
+    dev: true
+
+  /@types/mark.js/8.11.8:
+    resolution: {integrity: sha512-BoWCd9ydi1hZxDfu/lF0v1hHMsNUjuxZEDJsdHlmm6GlKk4qxlLya7D3FS81QmabwFbYPpoDOh9603JESUkHbA==}
+    dependencies:
+      '@types/jquery': 3.5.14
     dev: true
 
   /@types/md5/2.3.2:
@@ -2961,6 +2977,10 @@ packages:
     resolution: {integrity: sha512-6oJEzKt7wZeS7e+6x9QFEOWGs0T/6of00+0onZGN1zSmcSjcTDZKgIGZ6YWJnHowpaKUCFBPH52mYljWqU32Eg==}
     dependencies:
       '@types/node': 18.0.6
+    dev: true
+
+  /@types/sizzle/2.3.3:
+    resolution: {integrity: sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==}
     dev: true
 
   /@types/trusted-types/2.0.2:
@@ -6638,7 +6658,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.10
     dev: true
 
   /jsonfile/6.1.0:
@@ -6917,6 +6937,10 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       sourcemap-codec: 1.4.8
+
+  /mark.js/8.11.1:
+    resolution: {integrity: sha512-1I+1qpDt4idfgLQG+BNWmrqku+7/2bi5nLf4YwF8y8zXvmfiTBY3PV3ZibfrjBueCByROpuBjLLFCajqkgYoLQ==}
+    dev: true
 
   /markdown-table/3.0.2:
     resolution: {integrity: sha512-y8j3a5/DkJCmS5x4dMCQL+OR0+2EAq3DOtio1COSHsmW2BGXnNCK3v12hJt1LrUz5iZH5g0LmuYOjDdI+czghA==}
