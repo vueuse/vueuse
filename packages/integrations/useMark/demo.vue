@@ -38,13 +38,4 @@ useMark(tbody, search)
       </tr>
     </tbody>
   </table>
-
-  <pre>{{ search }}</pre>
 </template>
-
-<style>
-/* td {
-  border: 1px solid gray;
-  padding: 0.5em;
-} */
-</style>
