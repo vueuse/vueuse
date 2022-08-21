@@ -34,13 +34,14 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
 ) {
   const targetElement = computed(() => unrefElement(target))
   const searchValue = computed(() => resolveUnref(search))
+  const computedOptions = computed(() => resolveUnref(options))
 
   let markInstance: MarkType
 
   const update = () => {
     if (targetElement.value && markInstance) {
       markInstance.unmark({
-        done: () => markInstance.mark(searchValue.value, resolveUnref(options)),
+        done: () => markInstance.mark(searchValue.value, computedOptions.value),
       })
     }
   }
@@ -50,5 +51,5 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
     update()
   })
 
-  watchDebounced(searchValue, update, resolveUnref(options))
+  watchDebounced([searchValue, computedOptions], update, computedOptions.value)
 }
