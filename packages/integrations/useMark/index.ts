@@ -1,54 +1,49 @@
-import { computed, ref } from 'vue-demi'
-import {
-  defaultWindow,
-  resolveUnref,
-  tryOnMounted,
-  unrefElement,
-  watchThrottled,
-} from '@vueuse/core'
+import { computed } from 'vue-demi'
+import { resolveUnref, tryOnMounted, unrefElement, watchThrottled } from '@vueuse/core'
 import type { MaybeComputedRef, MaybeElementRef } from '@vueuse/core'
 
 import Mark from 'mark.js'
 import type { MarkOptions } from 'mark.js'
 
-// initializing an instance of mark to extract the type
-// because it isn't exported in the typescript definition
-const blankMark = new Mark('')
-type MarkType = typeof blankMark
+// I couldn't find the actual type so I mocked my own.
+// Still wondering if there was a better way to do this
+interface MarkType {
+  unmark: (options: { done: () => void }) => void
+  mark: (text: string, options?: MarkOptions) => void
+}
 
-export interface UseMarkOptions {
-  markOptions?: MarkOptions
+// https://markjs.io/#parameters
+export interface UseMarkOptions extends MarkOptions {
   throttle?: number
 }
 
 export function useMark(
   target: MaybeElementRef,
   search: MaybeComputedRef<string>,
-  options: MaybeComputedRef<UseMarkOptions> = {},
+  options: UseMarkOptions = {
+    acrossElements: true,
+    separateWordSearch: false,
+  },
 ) {
   const targetElement = computed(() => unrefElement(target))
   const searchValue = computed(() => resolveUnref(search))
 
-  const window = defaultWindow
-
-  const markInstance = ref<MarkType>()
+  let markInstance: MarkType
 
   const update = () => {
-    if (window && targetElement.value && markInstance.value) {
-      markInstance.value.unmark()
-      markInstance.value.mark(searchValue.value, resolveUnref(options).markOptions)
+    if (targetElement.value && markInstance) {
+      markInstance.unmark({
+        done: () => markInstance.mark(searchValue.value, options),
+      })
     }
   }
 
   tryOnMounted(() => {
-    markInstance.value = new Mark(targetElement.value as HTMLElement)
-
+    markInstance = new Mark(targetElement.value as HTMLElement)
     update()
   })
 
-  watchThrottled([targetElement, searchValue, () => resolveUnref(options)], update, {
-    immediate: true,
-    deep: true,
-    throttle: resolveUnref(options).throttle,
+  watchThrottled(searchValue, update, {
+    throttle: options.throttle,
   })
 }

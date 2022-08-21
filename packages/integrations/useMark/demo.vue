@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useMark } from '.'
 
 const tbody = ref()
-const search = ref('')
+const search = ref('col2')
 
 useMark(tbody, search)
 </script>
