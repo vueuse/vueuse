@@ -3,9 +3,13 @@ import {
   resolveUnref,
   tryOnMounted,
   unrefElement,
-  watchThrottled,
+  watchDebounced,
 } from '@vueuse/core'
-import type { MaybeComputedRef, MaybeElementRef } from '@vueuse/core'
+import type {
+  MaybeComputedRef,
+  MaybeElementRef,
+  WatchDebouncedOptions,
+} from '@vueuse/core'
 
 import Mark from 'mark.js'
 import type { MarkOptions } from 'mark.js'
@@ -18,14 +22,12 @@ interface MarkType {
 }
 
 // https://markjs.io/#parameters
-export interface UseMarkOptions extends MarkOptions {
-  throttle?: number
-}
+export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOptions<Immediate> { }
 
-export function useMark(
+export function useMark<Immediate extends Readonly<boolean> = false>(
   target: MaybeElementRef,
   search: MaybeComputedRef<string | string[]>,
-  options: UseMarkOptions = {
+  options: UseMarkOptions<Immediate> = {
     acrossElements: true,
     separateWordSearch: false,
   },
@@ -48,7 +50,5 @@ export function useMark(
     update()
   })
 
-  watchThrottled(searchValue, update, {
-    throttle: options.throttle,
-  })
+  watchDebounced(searchValue, update, options)
 }
