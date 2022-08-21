@@ -1,5 +1,10 @@
 import { computed } from 'vue-demi'
-import { resolveUnref, tryOnMounted, unrefElement, watchThrottled } from '@vueuse/core'
+import {
+  resolveUnref,
+  tryOnMounted,
+  unrefElement,
+  watchThrottled,
+} from '@vueuse/core'
 import type { MaybeComputedRef, MaybeElementRef } from '@vueuse/core'
 
 import Mark from 'mark.js'
@@ -9,7 +14,7 @@ import type { MarkOptions } from 'mark.js'
 // Still wondering if there was a better way to do this
 interface MarkType {
   unmark: (options: { done: () => void }) => void
-  mark: (text: string, options?: MarkOptions) => void
+  mark: (text: string | string[], options?: MarkOptions) => void
 }
 
 // https://markjs.io/#parameters
@@ -19,7 +24,7 @@ export interface UseMarkOptions extends MarkOptions {
 
 export function useMark(
   target: MaybeElementRef,
-  search: MaybeComputedRef<string>,
+  search: MaybeComputedRef<string | string[]>,
   options: UseMarkOptions = {
     acrossElements: true,
     separateWordSearch: false,

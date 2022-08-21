@@ -22,7 +22,7 @@ npm i <b>@vueuse/integrations</b>
   - [`useFocusTrap`](https://vueuse.org/integrations/useFocusTrap/) — reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)
   - [`useFuse`](https://vueuse.org/integrations/useFuse/) — easily implement fuzzy search using a composable with [Fuse.js](https://github.com/krisk/fuse)
   - [`useJwt`](https://vueuse.org/integrations/useJwt/) — wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode)
-  - [`useMark`](https://vueuse.org/integrations/useMark/) — easily implement search highlighting using a composable with [Mark.js](https://markjs.io/)
+  - [`useMark`](https://vueuse.org/integrations/useMark/) — wrapper for [`mark.js`](https://markjs.io/)
   - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
   - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 
