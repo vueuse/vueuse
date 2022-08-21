@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMark } from '.'
+import type { UseMarkOptions } from '.'
 
 const tbody = ref()
 const search = ref('col2')
-const options = ref({
+const options = ref<UseMarkOptions<false>>({
   acrossElements: true,
   separateWordSearch: false,
 })

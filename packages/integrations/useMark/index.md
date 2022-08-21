@@ -18,11 +18,16 @@ npm install mark.js
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMark } from '@vueuse/integrations/useMark'
+import type { UseMarkOptions } from '@vueuse/integrations/useMark'
 
 const el = ref<HTMLElement | null>(null)
 const search = ref('ipsum')
+const options = ref<UseMarkOptions<false>>({
+  acrossElements: true,
+  separateWordSearch: false,
+})
 
-useMark(el, search)
+useMark(tbody, search, options)
 </script>
 
 <template>
