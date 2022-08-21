@@ -20,20 +20,26 @@ interface MarkType {
 }
 
 // https://markjs.io/#parameters
-export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOptions<Immediate> { }
+export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOptions<Immediate> {
+  manual?: boolean | undefined
+}
+
+export interface UseMarkReturn {
+  execute: () => void
+}
 
 export function useMark<Immediate extends Readonly<boolean> = false>(
   target: MaybeElementRef,
   search: MaybeComputedRef<string | string[]>,
   options: MaybeComputedRef<UseMarkOptions<Immediate>> = {},
-) {
+): UseMarkReturn {
   const targetElement = computed(() => unrefElement(target))
   const searchValue = computed(() => resolveUnref(search))
   const computedOptions = computed(() => resolveUnref(options))
 
   let markInstance: MarkType
 
-  const update = () => {
+  const execute = () => {
     if (targetElement.value && markInstance) {
       markInstance.unmark({
         done: () => markInstance.mark(searchValue.value, computedOptions.value),
@@ -43,8 +49,16 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
 
   tryOnMounted(() => {
     markInstance = new Mark(targetElement.value as HTMLElement)
-    update()
+    !computedOptions.value.manual && execute()
   })
 
-  watchDebounced([searchValue, computedOptions], update, computedOptions.value)
+  watchDebounced(
+    [searchValue, computedOptions],
+    () => !computedOptions.value.manual && execute(),
+    computedOptions.value,
+  )
+
+  return {
+    execute,
+  }
 }

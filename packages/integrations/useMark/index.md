@@ -36,3 +36,33 @@ useMark(tbody, search, options)
   </div>
 </template>
 ```
+
+Manual Mode
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useMark } from '@vueuse/integrations/useMark'
+import type { UseMarkOptions } from '@vueuse/integrations/useMark'
+
+const el = ref<HTMLElement | null>(null)
+const search = ref('ipsum')
+const options = ref<UseMarkOptions<false>>({
+  acrossElements: true,
+  separateWordSearch: false,
+  manual: true
+})
+
+const { execute } = useMark(tbody, search, options)
+</script>
+
+<template>
+  <button @click="execute()">
+    mark
+  </button>
+
+  <div ref="el">
+    lorem ipsum dolor sit amet
+  </div>
+</template>
+```
