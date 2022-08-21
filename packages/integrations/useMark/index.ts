@@ -14,8 +14,6 @@ import type {
 import Mark from 'mark.js'
 import type { MarkOptions } from 'mark.js'
 
-// I couldn't find the actual type so I mocked my own.
-// Still wondering if there was a better way to do this
 interface MarkType {
   unmark: (options: { done: () => void }) => void
   mark: (text: string | string[], options?: MarkOptions) => void
