@@ -27,7 +27,7 @@ export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOp
 export function useMark<Immediate extends Readonly<boolean> = false>(
   target: MaybeElementRef,
   search: MaybeComputedRef<string | string[]>,
-  options: UseMarkOptions<Immediate> = {
+  options: MaybeComputedRef<UseMarkOptions<Immediate>> = {
     acrossElements: true,
     separateWordSearch: false,
   },
@@ -40,7 +40,7 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
   const update = () => {
     if (targetElement.value && markInstance) {
       markInstance.unmark({
-        done: () => markInstance.mark(searchValue.value, options),
+        done: () => markInstance.mark(searchValue.value, resolveUnref(options)),
       })
     }
   }
@@ -50,5 +50,5 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
     update()
   })
 
-  watchDebounced(searchValue, update, options)
+  watchDebounced(searchValue, update, resolveUnref(options))
 }
