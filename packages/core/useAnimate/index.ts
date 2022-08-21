@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
 import { computed, shallowReactive, shallowRef, unref, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
-import { isFunction, isNumber, isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow, MaybeComputedElementRef } from '../index'
 import { unrefElement, useEventListener, useRafFn, useSupported } from '../index'
 
@@ -60,14 +60,20 @@ export interface UseAnimateRefReturn extends UseAnimateReturn {
   currentTime: WritableComputedRef<CSSNumberish | null>
   timeline: WritableComputedRef<AnimationTimeline | null>
   playbackRate: WritableComputedRef<number>
-  isReverse: ComputedRef<boolean | null>
-  progress: WritableComputedRef<number>
 }
 
 type AnimateStoreKeys = Extract<keyof Animation, 'startTime' | 'currentTime' | 'timeline' | 'playbackRate' | 'pending' | 'playState' | 'replaceState'>
 
 type AnimateSrote = Mutable<Pick<Animation, AnimateStoreKeys>>
 
+/**
+ * Reactive Web Animations API
+ *
+ * @see https://vueuse.org/useAnimate
+ * @param target
+ * @param keyframes
+ * @param options
+ */
 export function useAnimate(
   target: MaybeComputedElementRef,
   keyframes: UseAnimateKeyframes,
@@ -83,7 +89,7 @@ export function useAnimate(
   keyframes: UseAnimateKeyframes,
   options?: number | UseAnimateOptions<boolean>,
 ) {
-  let config: undefined | UseAnimateOptions<boolean>
+  let config: UseAnimateOptions<boolean>
   let animateOptions: undefined | number | KeyframeAnimationOptions
 
   if (isObject(options)) {
@@ -91,6 +97,7 @@ export function useAnimate(
     animateOptions = objectOmit(options, ['window', 'immediate', 'commitStyles', 'persist', 'reactive', 'onReady', 'onError'])
   }
   else {
+    config = { duration: options }
     animateOptions = options
   }
 
@@ -99,42 +106,23 @@ export function useAnimate(
     commitStyles,
     persist,
     reactive,
-    duration: _duration,
-    delay,
+    playbackRate: _playbackRate = 1,
     onReady,
     onError = (e: unknown) => {
       console.error(e)
     },
-  } = config || {}
-  const duration = _duration ?? (isNumber(animateOptions) ? animateOptions as number : undefined)
+  } = config
 
   const isSupported = useSupported(() => {
     return HTMLElement && 'animate' in HTMLElement.prototype
   })
 
   const animate = shallowRef<Animation | undefined>(undefined)
-
-  const update = (init?: boolean) => {
-    const el = unrefElement(target)
-    if (!isSupported.value || !el)
-      return
-
-    animate.value = el.animate(unref(keyframes), animateOptions)
-
-    isFunction(onReady) && onReady(animate.value)
-    commitStyles && animate.value.commitStyles()
-    persist && animate.value.persist()
-    init && !immediate ? animate.value.pause() : syncResume()
-    useEventListener(animate, 'cancel', syncPause)
-    useEventListener(animate, 'finish', syncPause)
-    useEventListener(animate, 'remove', syncPause)
-  }
-
   const store = shallowReactive<AnimateSrote>({
     startTime: null,
     currentTime: null,
     timeline: null,
-    playbackRate: 1,
+    playbackRate: _playbackRate,
     pending: false,
     playState: immediate ? 'idle' : 'paused',
     replaceState: 'active',
@@ -187,39 +175,6 @@ export function useAnimate(
       store.playbackRate = value
       if (animate.value)
         animate.value.playbackRate = value
-    },
-  })
-
-  const isReverse = computed(() => {
-    if (store.playbackRate > 0)
-      return true
-    else if (store.playbackRate < 0)
-      return false
-    else
-      return null
-  })
-
-  const progress = computed({
-    get() {
-      if (duration && isReverse.value !== null) {
-        const progress = (store.currentTime || 0) / (+duration + (delay || 0))
-
-        return isReverse.value ? progress : 1 - progress
-      }
-      else {
-        return 0
-      }
-    },
-    set(value) {
-      if (duration && isReverse.value !== null) {
-        const total = +duration + (delay || 0)
-        const progress = +value * total
-
-        currentTime.value = isReverse.value ? progress : (total - progress)
-      }
-      else {
-        currentTime.value = 0
-      }
     },
   })
 
@@ -303,6 +258,25 @@ export function useAnimate(
 
   tryOnScopeDispose(cancel)
 
+  function update(init?: boolean) {
+    const el = unrefElement(target)
+    if (!isSupported.value || !el)
+      return
+
+    animate.value = el.animate(unref(keyframes), animateOptions)
+
+    commitStyles && animate.value.commitStyles()
+    persist && animate.value.persist()
+    _playbackRate !== 1 && (animate.value.playbackRate = _playbackRate)
+    init && !immediate ? animate.value.pause() : syncResume()
+
+    isFunction(onReady) && onReady(animate.value)
+
+    useEventListener(animate, 'cancel', syncPause)
+    useEventListener(animate, 'finish', syncPause)
+    useEventListener(animate, 'remove', syncPause)
+  }
+
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)
       return
@@ -340,8 +314,6 @@ export function useAnimate(
       currentTime,
       timeline,
       playbackRate,
-      isReverse,
-      progress,
     }
   }
   else {

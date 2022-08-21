@@ -1,10 +1,25 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue-demi'
+import { reactive, shallowRef } from 'vue'
 import { useAnimate } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
 import type { MaybeElement } from '@vueuse/core'
 
 const el = shallowRef<MaybeElement>()
-const { play, pause, reverse, cancel } = useAnimate(
+const reverseRef = shallowRef<MaybeElement>()
+
+const {
+  play,
+  pause,
+  reverse,
+  finish,
+  cancel,
+  startTime,
+  currentTime,
+  playbackRate,
+  playState,
+  replaceState,
+  pending,
+} = useAnimate(
   el,
   [
     { clipPath: 'circle(20% at 0% 30%)' },
@@ -12,32 +27,48 @@ const { play, pause, reverse, cancel } = useAnimate(
     { clipPath: 'circle(20% at 100% 30%)' },
   ],
   {
-    duration: 4000,
-    iterations: Infinity,
+    duration: 3000,
+    iterations: 5,
+    reactive: true,
     direction: 'alternate',
     easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
   },
 )
+
+const text = stringify(reactive({
+  startTime,
+  currentTime,
+  playbackRate,
+  playState,
+  replaceState,
+  pending,
+}))
 </script>
 
 <template>
-  <div class="relative flex items-center justify-center w-full h-60 overflow-hidden">
-    <p ref="el" class="mb-12! text-5xl! text-$vp-c-brand font-800">
-      VueUse useAnimate
-    </p>
-    <div class="absolute bottom-0 left-0">
-      <button @click="play">
-        play
-      </button>
-      <button @click="pause">
+  <div>
+    <div class="flex items-center justify-center w-full h-60">
+      <p ref="el" class="text-5xl! text-$vp-c-brand font-800">
+        VueUse useAnimate
+      </p>
+    </div>
+    <div>
+      <button v-if="playState === 'running'" @click="pause">
         pause
       </button>
-      <button @click="reverse">
+      <button v-else @click="play">
+        play
+      </button>
+      <button ref="reverseRef" @click="reverse">
         reverse
+      </button>
+      <button @click="finish">
+        finish
       </button>
       <button @click="cancel">
         cancel
       </button>
     </div>
+    <pre class="code-block">{{ text }}</pre>
   </div>
 </template>
