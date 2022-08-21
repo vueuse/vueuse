@@ -4,8 +4,12 @@ import { useMark } from '.'
 
 const tbody = ref()
 const search = ref('col2')
+const options = ref({
+  acrossElements: true,
+  separateWordSearch: false,
+})
 
-useMark(tbody, search)
+useMark(tbody, search, options)
 </script>
 
 <template>

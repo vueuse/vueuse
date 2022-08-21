@@ -27,10 +27,7 @@ export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOp
 export function useMark<Immediate extends Readonly<boolean> = false>(
   target: MaybeElementRef,
   search: MaybeComputedRef<string | string[]>,
-  options: MaybeComputedRef<UseMarkOptions<Immediate>> = {
-    acrossElements: true,
-    separateWordSearch: false,
-  },
+  options: MaybeComputedRef<UseMarkOptions<Immediate>> = {},
 ) {
   const targetElement = computed(() => unrefElement(target))
   const searchValue = computed(() => resolveUnref(search))
