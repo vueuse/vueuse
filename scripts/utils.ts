@@ -97,6 +97,9 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     }
 
     await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
+
+    // temporary file for export-size
+    await fs.remove(join(dir, 'index.mjs'))
   }
 }
 

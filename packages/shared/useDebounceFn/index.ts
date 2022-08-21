@@ -1,5 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import type { DebounceFilterOptions, FunctionArgs } from '../utils'
+import type { DebounceFilterOptions, FunctionArgs, MaybeComputedRef } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
 
 /**

@@ -1,5 +1,19 @@
 const { resolve } = require('path')
 
+const restricted = [
+  'vue',
+  '@vue/composition-api',
+  '..',
+  '../..',
+  resolve(__dirname, 'packages/core/index.ts'),
+  resolve(__dirname, 'packages/shared/index.ts'),
+  {
+    name: 'vue-demi',
+    importNames: ['onMounted', 'onUnmounted'],
+    message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+  },
+]
+
 module.exports = {
   root: true,
   env: {
@@ -19,18 +33,7 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
-        paths: [
-          'vue',
-          '@vue/composition-api',
-          '..',
-          '../..',
-          resolve(__dirname, 'packages/core/index.ts'),
-          {
-            name: 'vue-demi',
-            importNames: ['onMounted', 'onUnmounted'],
-            message: 'Use tryOnMounted and tryOnScopeDispose instead.',
-          },
-        ],
+        paths: restricted,
       },
     ],
     'node/no-callback-literal': 'off',
@@ -40,6 +43,19 @@ module.exports = {
     'import/no-named-as-default-member': 'off',
   },
   overrides: [
+    {
+      files: ['packages/shared/**/*.ts'],
+      rules: {
+        'no-restricted-imports': ['error',
+          {
+            paths: [
+              ...restricted,
+              '@vueuse/shared',
+            ],
+          },
+        ],
+      },
+    },
     {
       files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {

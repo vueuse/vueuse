@@ -64,9 +64,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     const stringified = params.toString()
 
     if (mode === 'history')
-      return `${stringified ? `?${stringified}` : ''}${location.hash || ''}`
+      return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
     if (mode === 'hash-params')
-      return `${location.search || ''}${stringified ? `#${stringified}` : ''}`
+      return `${window.location.search || ''}${stringified ? `#${stringified}` : ''}`
     const hash = window.location.hash || '#'
     const index = hash.indexOf('?')
     if (index > 0)

@@ -1,6 +1,6 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
 import { computed } from 'vue-demi'
+import type { MaybeComputedRef } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 
 export type DateLike = Date | number | string | undefined
 
