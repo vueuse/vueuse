@@ -20,7 +20,26 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    */
   autoSwitch?: MaybeRef<boolean>
   /**
+   * The device id of video input
+   *
+   * When passing with `undefined` the default device will be used.
+   * Pass `false` or "none" to disabled video input
+   *
+   * @default undefined
+   */
+  videoDeviceId?: MaybeRef<string | undefined | false | 'none'>
+  /**
+   * The device id of audi input
+   *
+   * When passing with `undefined` the default device will be used.
+   * Pass `false` or "none" to disabled audi input
+   *
+   * @default undefined
+   */
+  audioDeviceId?: MaybeRef<string | undefined | false | 'none'>
+  /**
    * MediaStreamConstraints to be applied to the requested MediaStream
+   * If provided, the constraints will override videoDeviceId and audioDeviceId
    *
    * @default {}
    */
@@ -36,23 +55,40 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
 export function useUserMedia(options: UseUserMediaOptions = {}) {
   const enabled = ref(options.enabled ?? false)
   const autoSwitch = ref(options.autoSwitch ?? true)
-  const constraints = ref(options.constraints ?? { video: true, audio: true })
+  const videoDeviceId = ref(options.videoDeviceId)
+  const audioDeviceId = ref(options.audioDeviceId)
+  const constraints = ref(
+    options.constraints ?? {
+      video: videoDeviceId.value ? { deviceId: videoDeviceId.value } : true,
+      audio: audioDeviceId.value ? { deviceId: audioDeviceId.value } : true,
+    },
+  )
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
 
+  function getDeviceOptions(device: Ref<string | undefined | false | 'none'>) {
+    if (device.value === 'none' || device.value === false)
+      return false
+    if (device.value == null)
+      return true
+    return {
+      deviceId: device.value,
+    }
+  }
+
   async function _start() {
     if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getUserMedia({
-      video: constraints.value.video || false,
-      audio: constraints.value.audio || false,
+      video: constraints.value.video || getDeviceOptions(videoDeviceId),
+      audio: constraints.value.audio || getDeviceOptions(audioDeviceId),
     })
     return stream.value
   }
 
-  async function _stop() {
+  function _stop() {
     stream.value?.getTracks().forEach(t => t.stop())
     stream.value = undefined
   }
@@ -79,14 +115,13 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     (v) => {
       if (v)
         _start()
-      else
-        _stop()
+      else _stop()
     },
     { immediate: true },
   )
 
   watch(
-    constraints,
+    [videoDeviceId, audioDeviceId, constraints],
     () => {
       if (autoSwitch.value && stream.value)
         restart()
@@ -100,6 +135,8 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     start,
     stop,
     restart,
+    videoDeviceId,
+    audioDeviceId,
     constraints,
     enabled,
     autoSwitch,
