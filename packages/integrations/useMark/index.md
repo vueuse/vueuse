@@ -47,13 +47,8 @@ import type { UseMarkOptions } from '@vueuse/integrations/useMark'
 
 const el = ref<HTMLElement | null>(null)
 const search = ref('ipsum')
-const options = ref<UseMarkOptions<false>>({
-  acrossElements: true,
-  separateWordSearch: false,
-  manual: true
-})
 
-const { mark, unmark } = useMark(tbody, search, options)
+const { mark, unmark } = useMark(p, search, { manual: true })
 </script>
 
 <template>
