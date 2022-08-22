@@ -15,7 +15,7 @@ import Mark from 'mark.js'
 import type { MarkOptions } from 'mark.js'
 
 interface MarkType {
-  unmark: (options: { done: () => void }) => void
+  unmark: (options?: { done?: () => void }) => void
   mark: (text: string | string[], options?: MarkOptions) => void
 }
 
@@ -25,7 +25,8 @@ export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOp
 }
 
 export interface UseMarkReturn {
-  execute: () => void
+  mark: () => void
+  unmark: () => void
 }
 
 export function useMark<Immediate extends Readonly<boolean> = false>(
@@ -39,7 +40,7 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
 
   let markInstance: MarkType
 
-  const execute = () => {
+  const mark = () => {
     if (targetElement.value && markInstance) {
       markInstance.unmark({
         done: () => markInstance.mark(searchValue.value, computedOptions.value),
@@ -47,18 +48,24 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
     }
   }
 
+  const unmark = () => {
+    if (targetElement.value && markInstance)
+      markInstance.unmark()
+  }
+
   tryOnMounted(() => {
     markInstance = new Mark(targetElement.value as HTMLElement)
-    !computedOptions.value.manual && execute()
+    !computedOptions.value.manual && mark()
   })
 
   watchDebounced(
     [searchValue, computedOptions],
-    () => !computedOptions.value.manual && execute(),
+    () => !computedOptions.value.manual && mark(),
     computedOptions.value,
   )
 
   return {
-    execute,
+    mark,
+    unmark,
   }
 }

@@ -13,7 +13,7 @@ useMark(tbody, search, options)
 
 const p = ref<HTMLElement | null>()
 const manualSearch = ref('ipsum')
-const { execute } = useMark(p, manualSearch, { manual: true })
+const { mark, unmark } = useMark(p, manualSearch, { manual: true })
 </script>
 
 <template>
@@ -49,13 +49,15 @@ const { execute } = useMark(p, manualSearch, { manual: true })
 
   <hr>
 
-  <form class="flex gap-2" @submit.prevent="execute()">
-    <input v-model="manualSearch" type="text" placeholder="Search">
+  <input v-model="manualSearch" type="text" placeholder="Search">
 
-    <button>
-      mark
-    </button>
-  </form>
+  <button @click="mark()">
+    mark
+  </button>
+
+  <button @click="unmark()">
+    unmark
+  </button>
 
   <p ref="p">
     Lorem ipsum dolor sit amet.

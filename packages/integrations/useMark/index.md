@@ -53,12 +53,16 @@ const options = ref<UseMarkOptions<false>>({
   manual: true
 })
 
-const { execute } = useMark(tbody, search, options)
+const { mark, unmark } = useMark(tbody, search, options)
 </script>
 
 <template>
-  <button @click="execute()">
+  <button @click="mark()">
     mark
+  </button>
+
+  <button @click="unmark()">
+    unmark
   </button>
 
   <div ref="el">
