@@ -14,7 +14,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    */
   enabled?: MaybeRef<boolean>
   /**
-   * Recreate stream when the constraints changed
+   * Recreate stream when deviceIds or constraints changed
    *
    * @default true
    */
@@ -26,6 +26,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    * Pass `false` or "none" to disabled video input
    *
    * @default undefined
+   * @deprecated in favor of constraints
    */
   videoDeviceId?: MaybeRef<string | undefined | false | 'none'>
   /**
@@ -35,6 +36,7 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    * Pass `false` or "none" to disabled audi input
    *
    * @default undefined
+   * @deprecated in favor of constraints
    */
   audioDeviceId?: MaybeRef<string | undefined | false | 'none'>
   /**
@@ -57,24 +59,32 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   const autoSwitch = ref(options.autoSwitch ?? true)
   const videoDeviceId = ref(options.videoDeviceId)
   const audioDeviceId = ref(options.audioDeviceId)
-  const constraints = ref(
-    options.constraints ?? {
-      video: videoDeviceId.value ? { deviceId: videoDeviceId.value } : true,
-      audio: audioDeviceId.value ? { deviceId: audioDeviceId.value } : true,
-    },
-  )
+  const constraints = ref(options.constraints)
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
 
-  function getDeviceOptions(device: Ref<string | undefined | false | 'none'>) {
-    if (device.value === 'none' || device.value === false)
-      return false
-    if (device.value == null)
-      return true
-    return {
-      deviceId: device.value,
+  function getDeviceOptions(type: 'video' | 'audio') {
+    switch (type) {
+      case 'video': {
+        if (constraints.value)
+          return constraints.value.video || false
+        if (videoDeviceId.value === 'none' || videoDeviceId.value === false)
+          return false
+        if (videoDeviceId.value == null)
+          return true
+        return { deviceId: videoDeviceId.value }
+      }
+      case 'audio': {
+        if (constraints.value)
+          return constraints.value.audio || false
+        if (audioDeviceId.value === 'none' || audioDeviceId.value === false)
+          return false
+        if (audioDeviceId.value == null)
+          return true
+        return { deviceId: audioDeviceId.value }
+      }
     }
   }
 
@@ -82,8 +92,8 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getUserMedia({
-      video: constraints.value.video || getDeviceOptions(videoDeviceId),
-      audio: constraints.value.audio || getDeviceOptions(audioDeviceId),
+      video: getDeviceOptions('video'),
+      audio: getDeviceOptions('audio'),
     })
     return stream.value
   }
