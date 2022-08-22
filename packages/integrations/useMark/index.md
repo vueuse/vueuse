@@ -27,7 +27,7 @@ const options = ref<UseMarkOptions<false>>({
   separateWordSearch: false,
 })
 
-useMark(tbody, search, options)
+useMark(el, search, options)
 </script>
 
 <template>
