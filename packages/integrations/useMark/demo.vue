@@ -9,7 +9,7 @@ const options = ref<UseMarkOptions<false>>({
   acrossElements: true,
   separateWordSearch: false,
 })
-useMark(tbody, search, options)
+const { totalMarks } = useMark(tbody, search, options)
 
 const p = ref<HTMLElement | null>()
 const manualSearch = ref('ipsum')
@@ -18,6 +18,8 @@ const { mark, unmark } = useMark(p, manualSearch, { manual: true })
 
 <template>
   <input v-model="search" type="text" placeholder="Search">
+
+  <p>Total Marks: {{ totalMarks }}</p>
 
   <table>
     <thead>

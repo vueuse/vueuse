@@ -1,4 +1,5 @@
-import { computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import {
   resolveUnref,
   tryOnMounted,
@@ -27,6 +28,7 @@ export interface UseMarkOptions<Immediate> extends MarkOptions, WatchDebouncedOp
 export interface UseMarkReturn {
   mark: () => void
   unmark: () => void
+  totalMarks: Ref<number>
 }
 
 export function useMark<Immediate extends Readonly<boolean> = false>(
@@ -38,12 +40,19 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
   const searchValue = computed(() => resolveUnref(search))
   const computedOptions = computed(() => resolveUnref(options))
 
+  const totalMarks = ref(0)
+
   let markInstance: MarkType
 
   const mark = () => {
     if (targetElement.value && markInstance) {
       markInstance.unmark({
-        done: () => markInstance.mark(searchValue.value, computedOptions.value),
+        done: () => markInstance.mark(searchValue.value, {
+          ...computedOptions.value,
+          done: (marks) => {
+            totalMarks.value = marks
+          },
+        }),
       })
     }
   }
@@ -67,5 +76,6 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
   return {
     mark,
     unmark,
+    totalMarks,
   }
 }
