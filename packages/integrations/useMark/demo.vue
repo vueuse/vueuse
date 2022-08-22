@@ -49,13 +49,13 @@ const { execute } = useMark(p, manualSearch, { manual: true })
 
   <hr>
 
-  <div class="flex gap-2">
+  <form class="flex gap-2" @submit.prevent="execute()">
     <input v-model="manualSearch" type="text" placeholder="Search">
 
-    <button @click="execute()">
+    <button>
       mark
     </button>
-  </div>
+  </form>
 
   <p ref="p">
     Lorem ipsum dolor sit amet.
