@@ -3,14 +3,17 @@ import { ref } from 'vue'
 import { useMark } from '.'
 import type { UseMarkOptions } from '.'
 
-const tbody = ref()
+const tbody = ref<HTMLElement | null>()
 const search = ref('col2')
 const options = ref<UseMarkOptions<false>>({
   acrossElements: true,
   separateWordSearch: false,
 })
-
 useMark(tbody, search, options)
+
+const p = ref<HTMLElement | null>()
+const manualSearch = ref('ipsum')
+const { execute } = useMark(p, manualSearch, { manual: true })
 </script>
 
 <template>
@@ -43,4 +46,18 @@ useMark(tbody, search, options)
       </tr>
     </tbody>
   </table>
+
+  <hr>
+
+  <div class="flex gap-2">
+    <input v-model="manualSearch" type="text" placeholder="Search">
+
+    <button @click="execute()">
+      mark
+    </button>
+  </div>
+
+  <p ref="p">
+    Lorem ipsum dolor sit amet.
+  </p>
 </template>
