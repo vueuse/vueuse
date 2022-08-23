@@ -63,7 +63,9 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     }
     input.multiple = _options.multiple!
     input.accept = _options.accept!
-    input.capture = _options.capture!
+
+    if (_options?.capture)
+      input.capture = _options.capture
 
     input.click()
   }
