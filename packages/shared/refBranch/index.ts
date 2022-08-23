@@ -19,9 +19,10 @@ interface RefBranchOptions<T> {
 export function refBranch<T>(source: MaybeComputedRef<T>, defaults: MaybeComputedRef<T>, options?: RefBranchOptions<T>): Ref<T> {
   const branchRef = ref<T>(resolveUnref(source)) as Ref<T>
   const { watchOptions, updateControl } = options || {}
+
   const update: WatchCallback = (v, ov, onCleanup) => {
     if (updateControl && typeof updateControl === 'function')
-      branchRef.value = updateControl(v, ov, onCleanup) ?? resolveUnref(defaults)
+      branchRef.value = resolveUnref(updateControl(v, ov, onCleanup)) ?? resolveUnref(defaults)
     else
       branchRef.value = v ?? resolveUnref(defaults)
   }
