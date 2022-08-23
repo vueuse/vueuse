@@ -159,7 +159,7 @@ describe('useMemoize', () => {
 
         resolver.mockClear()
         expect(memo(3)).toBe('result-1')
-        expect(memo(4)).toBe('result-2')
+        expect(memo('4')).toBe('result-2')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
