@@ -13,15 +13,19 @@ import type { MaybeComputedRef } from '../utils'
 
 interface RefBranchOptions<T> {
   watchOptions?: WatchOptions
-  cb?: WatchCallback<T>
+  updateControl?: (v: T, ov: T, onCleanup: any) => T
 }
-export function refBranch<T>(source: MaybeComputedRef<T>, options?: RefBranchOptions<T>): Ref<T> {
+
+export function refBranch<T>(source: MaybeComputedRef<T>, defaults: MaybeComputedRef<T>, options?: RefBranchOptions<T>): Ref<T> {
   const branchRef = ref<T>(resolveUnref(source)) as Ref<T>
-  const update = (value: T) => {
-    branchRef.value = value
+  const { watchOptions, updateControl } = options || {}
+  const update: WatchCallback = (v, ov, onCleanup) => {
+    if (updateControl && typeof updateControl === 'function')
+      branchRef.value = updateControl(v, ov, onCleanup) ?? resolveUnref(defaults)
+    else
+      branchRef.value = v ?? resolveUnref(defaults)
   }
-  const { watchOptions, cb = update } = options || {}
-  watch(resolveRef(source), cb, watchOptions)
+  watch(resolveRef(source), update, watchOptions)
   return branchRef
 }
 
