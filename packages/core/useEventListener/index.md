@@ -30,7 +30,7 @@ useEventListener(element, 'keydown', (e) => { console.log(e.key) })
 </template>
 ```
 
-useEventListener will also return a function that you can call to remove the listener on demand.
+You can also call the returned to unregister the listener.
 
 ```ts
 import { useEventListener } from '@vueuse/core'
