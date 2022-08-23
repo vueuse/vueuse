@@ -76,27 +76,27 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * Undo changes
    */
-  undo(): void
+  undo: () => void
 
   /**
    * Redo changes
    */
-  redo(): void
+  redo: () => void
 
   /**
    * Clear all the history
    */
-  clear(): void
+  clear: () => void
 
   /**
    * Create new a new history record
    */
-  commit(): void
+  commit: () => void
 
   /**
    * Reset ref's value with latest history
    */
-  reset(): void
+  reset: () => void
 }
 
 const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
