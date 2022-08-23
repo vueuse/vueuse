@@ -37,6 +37,6 @@ import { useEventListener } from '@vueuse/core'
 
 const cleanup = useEventListener(document, 'keydown', (e) => { console.log(e.key) })
 
-cleanup(); // This will unregister the listener.
+cleanup() // This will unregister the listener.
 ```
 
