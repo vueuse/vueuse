@@ -9,12 +9,14 @@ import { defaultDocument } from '../_configurable'
 export interface UseTitleOptions extends ConfigurableDocument {
   /**
    * Observe `document.title` changes using MutationObserve
+   * Cannot be used together with `titleTemplate` option.
    *
    * @default false
    */
   observe?: boolean
   /**
    * The template string to parse the title (e.g., '%s | My Website')
+   * Cannot be used together with `observe` option.
    *
    * @default '%s'
    */
@@ -22,7 +24,7 @@ export interface UseTitleOptions extends ConfigurableDocument {
 }
 
 export function useTitle(
-  newTitle?: MaybeReadonlyRef<string | null | undefined>,
+  newTitle: MaybeReadonlyRef<string | null | undefined>,
   options?: UseTitleOptions,
 ): ComputedRef<string | null | undefined>
 
@@ -42,6 +44,14 @@ export function useTitle(
   newTitle: MaybeComputedRef<string | null | undefined> = null,
   options: UseTitleOptions = {},
 ) {
+  /*
+    `titleTemplate` that returns the modified input string will make
+    the `document.title` to be different from the `title.value`,
+    causing the title to update infinitely if `observe` is set to `true`.
+  */
+  if (options.observe && options.titleTemplate)
+    throw new Error('Cannot use `observe` and `titleTemplate` together.')
+
   const {
     document = defaultDocument,
     observe = false,
@@ -50,7 +60,6 @@ export function useTitle(
 
   const title: WritableComputedRef<string | null | undefined> = resolveRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && isFunction(newTitle)
-  const hasModifiedTitle = isFunction(titleTemplate) ? titleTemplate('') !== '' : titleTemplate !== '%s'
 
   function format(t: string) {
     return isFunction(titleTemplate)
@@ -67,12 +76,7 @@ export function useTitle(
     { immediate: true },
   )
 
-  /*
-    `titleTemplate` that returns the modified input string will make
-    the `document.title` to be different from the `title.value`, causing the title to update infinitely.
-    therefore, `observe` should be ignored in this case.
-  */
-  if (observe && document && !isReadonly && !hasModifiedTitle) {
+  if (observe && document && !isReadonly) {
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {

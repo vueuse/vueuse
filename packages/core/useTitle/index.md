@@ -48,18 +48,16 @@ const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' }
 ```
 
 ::: warning
-When setting `observe` to `true`, the `titleTemplate` must return the exact same value as the input title.
-Otherwise, the document title will not be updated.
+`observe` is incompatible with `titleTemplate`.
 :::
 
 ```js
-// this will work
-const title = useTitle('New Title', { observe: true, titleTemplate: '%s' }) // default value
-// this will work
-const title = useTitle('New Title', { observe: true, titleTemplate: title => title })
+/* ✅ Will work */
+const title = useTitle('New Title', { observe: true })
 
-// this won't work
+/* ✅ Will work */
+const title = useTitle('New Title', { titleTemplate: '%s - %s' })
+
+/* ❌ Will throw an error */
 const title = useTitle('New Title', { observe: true, titleTemplate: '%s - %s' })
-// this won't work
-const title = useTitle('New Title', { observe: true, titleTemplate: title => `${title} - modified` })
 ```
