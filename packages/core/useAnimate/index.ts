@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
-import { computed, shallowReactive, shallowRef, unref, watch } from 'vue-demi'
+import { computed, nextTick, shallowReactive, shallowRef, unref, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
 import { isFunction, isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow, MaybeComputedElementRef } from '../index'
@@ -236,8 +236,8 @@ export function useAnimate(
     }
   }
 
-  watch(() => target, (el) => {
-    unref(el) && update()
+  watch(() => unrefElement(target), (el) => {
+    el && update()
   })
 
   watch(() => keyframes, (value) => {
@@ -253,7 +253,7 @@ export function useAnimate(
   }, { deep: true })
 
   tryOnMounted(() => {
-    update(true)
+    nextTick(() => update(true))
   })
 
   tryOnScopeDispose(cancel)
