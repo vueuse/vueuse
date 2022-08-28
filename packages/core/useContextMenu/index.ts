@@ -56,11 +56,12 @@ interface UseContextMenuReturn {
 }
 
 export function useContextMenu(MenuElement: MaybeComputedElementRef, options: UseContextMenuOptions = {}): UseContextMenuReturn {
-  const { hideOnClick = false, onVisibleChange = noop, target } = options
+  const { hideOnClick = true, onVisibleChange = noop, target } = options
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
   const { isOutside } = useMouseInElement(unrefElement(target))
+
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
     const el = unrefElement(MenuElement)
     if (el)
