@@ -1,7 +1,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveRef, resolveUnref } from '@vueuse/shared'
+import { noop, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, unref, watch, watchEffect } from 'vue-demi'
+import { ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -60,7 +60,7 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
-  const { isOutside } = useMouseInElement(resolveRef(target))
+  const { isOutside } = useMouseInElement(target)
 
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
     const el = unrefElement(MenuElement)
@@ -68,20 +68,8 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
       fn(el)
   }
 
-  const show = () => {
-    accessMenuElementIfExists((el) => {
-      el.style.display = 'block'
-      el.style.position = 'fixed'
-      visible.value = true
-    })
-  }
-
-  const hide = () => {
-    accessMenuElementIfExists((el) => {
-      el.style.display = 'none'
-      visible.value = false
-    })
-  }
+  const show = () => visible.value = true
+  const hide = () => visible.value = false
 
   useEventListener('scroll', hide)
   useEventListener('click', hide)
@@ -103,7 +91,10 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
     () => unrefElement(MenuElement),
     (element) => {
       // initialize
-      hide()
+      accessMenuElementIfExists((el) => {
+        el.style.position = 'fixed'
+        el.style.display = 'none'
+      })
 
       useEventListener(element, 'click', (e) => {
         if (!resolveUnref(hideOnClick)) {
@@ -114,7 +105,14 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
       })
     })
 
-  // automatically update the position of `MenuElement`
+  // automatically show/hide the `MenuElement`
+  watch(visible, (visible) => {
+    accessMenuElementIfExists((el) => {
+      el.style.display = visible ? 'block' : 'none'
+    })
+  }, { immediate: true })
+
+  // automatically update the position of the `MenuElement`
   watchEffect(() => {
     accessMenuElementIfExists((el) => {
       el.style.left = `${position.value.x}px`
@@ -125,6 +123,7 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
   return {
     visible,
     position,
+
     hide,
     show,
   }

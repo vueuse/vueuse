@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useContextMenu } from '@vueuse/core'
+import { useToggle } from '@vueuse/shared'
 import { ref } from 'vue'
 import Area from './area.vue'
 const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
-const hideOnClick = ref(true)
+const [hideOnClick, toggle] = useToggle(true)
 const { visible, position } = useContextMenu(menuRef, {
   hideOnClick,
   target: targetRef,
@@ -30,7 +31,7 @@ const { visible, position } = useContextMenu(menuRef, {
         <p>hideOnClick: <BooleanDisplay :value="hideOnClick" /></p>
         <p>visible: <BooleanDisplay :value="visible" /></p>
         <p>position: {{ position }}</p>
-        <button @click="hideOnClick = !hideOnClick">
+        <button @click="toggle()">
           toggle => hideOnClick
         </button>
       </div>
