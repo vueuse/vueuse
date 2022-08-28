@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import Area from './area.vue'
 const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
-const hideOnClick = ref(false)
+const hideOnClick = ref(true)
 const { visible, position } = useContextMenu(menuRef, {
   hideOnClick,
   target: targetRef,

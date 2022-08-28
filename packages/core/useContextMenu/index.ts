@@ -1,7 +1,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref } from '@vueuse/shared'
+import { noop, resolveRef, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, watch, watchEffect } from 'vue-demi'
+import { ref, unref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -60,7 +60,7 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
-  const { isOutside } = useMouseInElement(unrefElement(target))
+  const { isOutside } = useMouseInElement(resolveRef(target))
 
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
     const el = unrefElement(MenuElement)
