@@ -6,9 +6,8 @@ import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { useMouseInElement } from '../useMouseInElement'
 
-interface UseContextMenuOptions {
+export interface UseContextMenuOptions {
   /**
    * Whether to prevent the context menu from hiding when clicking on it.
    *
@@ -31,7 +30,7 @@ interface UseContextMenuOptions {
   onVisibleChange?: (visible: boolean) => void
 }
 
-interface UseContextMenuReturn {
+export interface UseContextMenuReturn {
   /**
    * Whether the context menu is visible.
    */
@@ -60,7 +59,6 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
-  const { isOutside } = useMouseInElement(target)
 
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
     const el = unrefElement(MenuElement)
@@ -73,18 +71,29 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   useEventListener('scroll', hide)
   useEventListener('click', hide)
+  useEventListener('contextmenu', hide, { capture: true })
 
-  useEventListener('contextmenu', (e) => {
-    if (!isOutside.value) {
-      e.preventDefault()
-
-      position.value = {
-        x: e.clientX,
-        y: e.clientY,
-      }
-      show()
+  const contextMenuHandler = (e: MouseEvent) => {
+    e.preventDefault()
+    position.value = {
+      x: e.clientX,
+      y: e.clientY,
     }
-  })
+    show()
+    // prevent other(parent) context menu from showing
+    e.stopPropagation()
+  }
+
+  if (target) {
+    // register on the target element
+    watch(
+      () => unrefElement(target),
+      el => useEventListener(el, 'contextmenu', contextMenuHandler))
+  }
+  else {
+    // or register on the entire page
+    useEventListener('contextmenu', contextMenuHandler)
+  }
 
   watch(visible, onVisibleChange)
   watch(

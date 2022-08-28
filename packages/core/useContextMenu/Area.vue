@@ -8,9 +8,10 @@
     flex="~"
     place="content-center"
     select="none"
+    text-center
   >
     <div m="auto">
-      Right click on me!
+      <slot />
     </div>
   </div>
 </template>
