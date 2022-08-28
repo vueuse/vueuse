@@ -3,7 +3,7 @@ import { noop, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
-import type { MaybeComputedElementRef, MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useMouseInElement } from '../useMouseInElement'
@@ -22,7 +22,7 @@ interface UseContextMenuOptions {
    *
    * @default document
    */
-  target?: MaybeElementRef
+  target?: MaybeComputedElementRef
 
   /**
    * Fires when the visibility of the context menu changes.
@@ -60,7 +60,7 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
-  const { isOutside } = useMouseInElement(target)
+  const { isOutside } = useMouseInElement(unrefElement(target))
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
     const el = unrefElement(MenuElement)
     if (el)

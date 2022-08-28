@@ -4,7 +4,7 @@ category: Elements
 
 # useContextMenu
 
-customize your right click [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
+add [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event) to your vue app with ease.
 
 ## Usage
 
