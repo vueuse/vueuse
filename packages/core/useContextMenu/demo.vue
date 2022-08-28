@@ -41,9 +41,9 @@ const { visible, position } = useContextMenu(menuRef, {
 
 <style lang="postcss" scoped>
 .menu {
-    @apply bg-white b-rd-2 shadow-xl b b-[#ddd] overflow-hidden p-2;
+    @apply bg-$vp-c-bg overflow-hidden p-2 shadow-xl rounded-md b-1 b-color-gray-400/30;
     > div {
-        @apply hover-bg-[#eee] hover-color-[var(--vp-c-brand)] cursor-pointer px-2 b-rd-1 capitalize;
+        @apply hover-bg-$vp-c-bg-mute hover-color-$vp-c-brand cursor-pointer px-2 rounded capitalize;
     }
 }
 </style>
