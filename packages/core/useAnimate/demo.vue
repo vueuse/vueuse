@@ -5,7 +5,6 @@ import { stringify } from '@vueuse/docs-utils'
 import type { MaybeElement } from '@vueuse/core'
 
 const el = shallowRef<MaybeElement>()
-const reverseRef = shallowRef<MaybeElement>()
 
 const {
   play,
@@ -59,7 +58,7 @@ const text = stringify(reactive({
       <button v-else @click="play">
         play
       </button>
-      <button ref="reverseRef" @click="reverse">
+      <button @click="reverse">
         reverse
       </button>
       <button @click="finish">
