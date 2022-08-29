@@ -7,6 +7,7 @@ export interface useContextMenuProps extends UseContextMenuOptions, RenderableCo
 
 export const UseContextMenu = defineComponent<useContextMenuProps>({
   name: 'UseContextMenu',
+  props: ['hideOnClick', 'onVisibleChange', 'target', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const menuElementRef = ref()
     const targetRef = ref()

@@ -41,7 +41,7 @@ const { visible, position } = useContextMenu(menuRef, {
     </div>
   </div>
 
-  <UseContextMenu>
+  <UseContextMenu :hide-on-click="true">
     <!-- menu -->
     <template #menu>
       <div class="menu">
