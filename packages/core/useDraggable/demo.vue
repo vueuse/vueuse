@@ -5,6 +5,7 @@ import { useDraggable } from '@vueuse/core'
 import { UseDraggable as Draggable } from './component'
 
 const el = ref<HTMLElement | null>(null)
+const handle = ref<HTMLElement | null>(null)
 
 const innerWidth = isClient ? window.innerWidth : 200
 
@@ -51,6 +52,27 @@ const { x, y, style } = useDraggable(el, {
       </div>
       <div class="text-sm opacity-50">
         {{ Math.round(x) }}, {{ Math.round(y) }}
+      </div>
+    </Draggable>
+
+    <Draggable
+      v-slot="{ x, y }"
+      p="x-4 y-2"
+      border="~ gray-400/30 rounded"
+      shadow="~ hover:lg"
+      class="fixed bg-$vp-c-bg select-none z-10"
+      :initial-value="{ x: innerWidth / 3.6, y: 240 }"
+      :prevent-default="true"
+      :handle="handle"
+    >
+      <div ref="handle" class="cursor-move">
+        👋 Drag here!
+      </div>
+      <div class="text-xs opacity-50">
+        Handle that triggers the drag event
+      </div>
+      <div class="text-sm opacity-50">
+        I am at {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
     </Draggable>
   </div>
