@@ -1,18 +1,18 @@
 import { computed, ref } from 'vue-demi'
-import type { Ref } from 'vue-demi'
 import {
   resolveUnref,
   tryOnMounted,
   unrefElement,
   watchDebounced,
 } from '@vueuse/core'
+import Mark from 'mark.js'
+
 import type {
   MaybeComputedRef,
   MaybeElementRef,
   WatchDebouncedOptions,
 } from '@vueuse/core'
-
-import Mark from 'mark.js'
+import type { Ref } from 'vue-demi'
 import type { MarkOptions } from 'mark.js'
 
 interface MarkType {
