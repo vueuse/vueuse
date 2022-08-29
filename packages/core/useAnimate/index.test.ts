@@ -17,15 +17,18 @@ describe('useBluetooth', () => {
         return { ...animate, el }
       },
     })
+    const vm = wrapper.vm
 
-    expect(wrapper.vm.isSupported).toBe(false)
-    expect(wrapper.vm).not.toHaveProperty('pending')
-    expect(wrapper.vm).not.toHaveProperty('playState')
-    expect(wrapper.vm).not.toHaveProperty('replaceState')
-    expect(wrapper.vm).not.toHaveProperty('startTime')
-    expect(wrapper.vm).not.toHaveProperty('currentTime')
-    expect(wrapper.vm).not.toHaveProperty('timeline')
-    expect(wrapper.vm).not.toHaveProperty('playbackRate')
+    expect(vm.isSupported).toBe(false)
+    expect(vm).not.toHaveProperty('pending')
+    expect(vm).not.toHaveProperty('playState')
+    expect(vm).not.toHaveProperty('replaceState')
+    expect(vm).not.toHaveProperty('startTime')
+    expect(vm).not.toHaveProperty('currentTime')
+    expect(vm).not.toHaveProperty('timeline')
+    expect(vm).not.toHaveProperty('playbackRate')
+
+    wrapper.unmount()
   })
 
   it('set reactive option', () => {
@@ -38,14 +41,17 @@ describe('useBluetooth', () => {
         return { ...animate, el }
       },
     })
+    const vm = wrapper.vm
 
-    expect(wrapper.vm.isSupported).toBe(false)
-    expect(wrapper.vm.pending).toBeDefined()
-    expect(wrapper.vm.playState).toBeDefined()
-    expect(wrapper.vm.replaceState).toBeDefined()
-    expect(wrapper.vm.startTime).toBeDefined()
-    expect(wrapper.vm.currentTime).toBeDefined()
-    expect(wrapper.vm.timeline).toBeDefined()
-    expect(wrapper.vm.playbackRate).toBeDefined()
+    expect(vm.isSupported).toBe(false)
+    expect(vm.pending).toBeDefined()
+    expect(vm.playState).toBeDefined()
+    expect(vm.replaceState).toBeDefined()
+    expect(vm.startTime).toBeDefined()
+    expect(vm.currentTime).toBeDefined()
+    expect(vm.timeline).toBeDefined()
+    expect(vm.playbackRate).toBeDefined()
+
+    wrapper.unmount()
   })
 })
