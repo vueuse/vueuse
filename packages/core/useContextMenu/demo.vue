@@ -69,6 +69,19 @@ const { visible, position } = useContextMenu(menuRef, {
       </Area>
     </template>
   </UseContextMenu>
+
+  <!-- global menu -->
+  <UseContextMenu class="menu" z-20>
+    <div class="menu-item">
+      ✅Global 1
+    </div>
+    <div class="menu-item">
+      ✅Global 2
+    </div>
+    <div class="menu-item">
+      ✅Global 3
+    </div>
+  </UseContextMenu>
 </template>
 
 <style lang="postcss" scoped>

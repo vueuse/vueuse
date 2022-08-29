@@ -35,50 +35,42 @@ const { visible } = useContextMenu(menuRef, {
 
 ## Component Usage
 
-### Specify target with named slots
+### Specify the `menu` & `target` with named slots
 
 The `menu` slot specifies the menu element, the `target` slot specifies the element that `menu` applies to. 
 
 ```html
 <UseContextMenu>
-<template #menu>
-  <div class="menu">
-  <div class="menu-item">
-    🚀 menu 1
-  </div>
-  <div class="menu-item">
-    🎁 menu 2
-  </div>
-  <div class="menu-item">
-    💖 menu 3
-  </div>
-  </div>
-</template>
-<template #target="{ visible }">
-  <Area wa>
-  <p>Renderless component</p>
-  <p>visible: <BooleanDisplay :value="visible" /></p>
-  </Area>
-</template>
+  <template #menu>
+    <div class="menu">
+    <div class="menu-item">
+      🚀 menu 1
+    </div>
+    <div class="menu-item">
+      🎁 menu 2
+    </div>
+    <div class="menu-item">
+      💖 menu 3
+    </div>
+    </div>
+  </template>
+  <template #target="{ visible }">
+    <Area wa>
+      <p>Renderless component</p>
+      <p>visible: <BooleanDisplay :value="visible" /></p>
+    </Area>
+  </template>
 </UseContextMenu>
 ```
 
 ### Global menu
 
-Without specifying the `target`, it will be defaulted to `document.body`.
+Without specifying the `target`, the menu will be applied to `window`.
 
 ```html
 <UseContextMenu>
-  <div class="menu">
-  <div class="menu-item">
-    🚀 menu 1
-  </div>
-  <div class="menu-item">
-    🎁 menu 2
-  </div>
-  <div class="menu-item">
-    💖 menu 3
-  </div>
-  </div>
+    <div>🚀 menu 1</div>
+    <div>🎁 menu 2</div>
+    <div>💖 menu 3</div>
 </UseContextMenu>
 ```

@@ -115,11 +115,11 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
     })
 
   // automatically show/hide the `MenuElement`
-  watch(visible, (visible) => {
+  watchEffect(() => {
     accessMenuElementIfExists((el) => {
-      el.style.display = visible ? 'block' : 'none'
+      el.style.display = visible.value ? 'block' : 'none'
     })
-  }, { immediate: true })
+  })
 
   // automatically update the position of the `MenuElement`
   watchEffect(() => {

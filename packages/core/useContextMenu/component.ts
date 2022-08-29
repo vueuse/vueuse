@@ -23,7 +23,7 @@ export const UseContextMenu = defineComponent<useContextMenuProps>({
           h(tag, { ref: menuElementRef }, slots.menu(data)),
         ])
       }
-      return h(props.as || 'div', { ref: menuElementRef }, (slots.default || slots.menu)?.(data))
+      return h(props.as || 'div', { ref: menuElementRef }, (slots.menu || slots.default)?.(data))
     }
   },
 })
