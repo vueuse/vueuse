@@ -27,11 +27,13 @@ export interface UseCycleListOptions<T> {
 export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>): UseCycleListReturn<T> {
   const state = shallowRef(options?.initialValue ?? list[0]) as Ref<T>
 
+  const stateIndex = shallowRef(0)
+
   const index = computed<number>({
     get() {
       let index = options?.getIndexOf
         ? options.getIndexOf(state.value, list)
-        : list.indexOf(state.value)
+        : stateIndex.value
 
       if (index < 0)
         index = options?.fallbackIndex ?? 0
@@ -48,6 +50,7 @@ export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>): Us
     const index = (i % length + length) % length
     const value = list[index]
     state.value = value
+    stateIndex.value = index
     return value
   }
 
