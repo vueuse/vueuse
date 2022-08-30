@@ -75,13 +75,17 @@ export function useContextMenu(
     target,
   } = options
 
-  const menuElementSize = useElementSize(menuElement, { width: 0, height: 0 }, { box: 'border-box' })
+  const menuElementRef = computed(() => unrefElement(menuElement))
+  const targetRef = computed(() => unrefElement(target))
+
+  const menuElementSize = useElementSize(menuElementRef, { width: 0, height: 0 }, { box: 'border-box' })
   const windowSize = useWindowSize({
     includeScrollbar: false,
   })
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
+
   // see: https://github.com/vueuse/vueuse/pull/2136#issuecomment-1230525648
   const menuPositionOffset = computed(() => {
     let left = position.value.x
@@ -101,18 +105,24 @@ export function useContextMenu(
     }
   })
 
-  const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
-    const el = unrefElement(menuElement)
-    if (el)
-      fn(el)
-  }
-
   const show = () => visible.value = true
   const hide = () => visible.value = false
 
-  useEventListener('scroll', hide)
-  useEventListener('click', hide)
-  useEventListener('contextmenu', hide, { capture: true })
+  watch(visible, onVisibleChange)
+
+  // automatically show/hide and update the position of the `MenuElement`
+  watchEffect(
+    () => {
+      const element = menuElementRef.value
+
+      if (!element)
+        return
+
+      element.style.position = 'fixed'
+      element.style.visibility = visible.value ? 'visible' : 'hidden'
+      element.style.left = `${menuPositionOffset.value.left}px`
+      element.style.top = `${menuPositionOffset.value.top}px`
+    })
 
   const contextMenuHandler = (e: MouseEvent) => {
     e.preventDefault()
@@ -125,49 +135,22 @@ export function useContextMenu(
     e.stopPropagation()
   }
 
-  if (target) {
-    // register on the target element
-    watch(
-      () => unrefElement(target),
-      el => useEventListener(el, 'contextmenu', contextMenuHandler))
-  }
-  else {
-    // or register on the entire page
+  // with `target` specified, apply on it.
+  // otherwise, apply on the entire page.
+  if (target)
+    useEventListener(targetRef, 'contextmenu', contextMenuHandler)
+  else
     useEventListener('contextmenu', contextMenuHandler)
-  }
 
-  watch(visible, onVisibleChange)
-  watch(
-    () => unrefElement(menuElement),
-    (element) => {
-      // initialize
-      accessMenuElementIfExists((el) => {
-        el.style.position = 'fixed'
-        el.style.visibility = 'hidden'
-      })
-
-      useEventListener(element, 'click', (e) => {
-        if (!resolveUnref(hideOnClick)) {
-          // hide it only when clicking outside of the menu,
-          // so stopPropagation when clicking on itself.
-          e.stopPropagation()
-        }
-      })
-    })
-
-  // automatically show/hide the `MenuElement`
-  watchEffect(() => {
-    accessMenuElementIfExists((el) => {
-      el.style.visibility = visible.value ? 'initial' : 'hidden'
-    })
-  })
-
-  // automatically update the position of the `MenuElement`
-  watchEffect(() => {
-    accessMenuElementIfExists((el) => {
-      el.style.left = `${menuPositionOffset.value.left}px`
-      el.style.top = `${menuPositionOffset.value.top}px`
-    })
+  useEventListener('scroll', hide)
+  useEventListener('click', hide)
+  useEventListener('contextmenu', hide, { capture: true })
+  useEventListener(menuElementRef, 'click', (e) => {
+    if (!resolveUnref(hideOnClick)) {
+      // hide it only when clicking outside of the menu,
+      // so stopPropagation when clicking on itself.
+      e.stopPropagation()
+    }
   })
 
   return {
