@@ -33,15 +33,17 @@ export function useElementSize(
   initialSize: ElementSize = { width: 0, height: 0 },
   options: UseElementSizeOptions = {},
 ) {
-  const { boxSizing = 'borderBox' } = options
-
+  const { box = 'content-box' } = options
   const width = ref(initialSize.width)
   const height = ref(initialSize.height)
 
   useResizeObserver(
     target,
     ([entry]) => {
-      const boxSize = boxSizing === 'borderBox' ? entry.borderBoxSize : entry.contentBoxSize
+      const boxSize = box === 'border-box'
+        ? entry.borderBoxSize
+        : (box === 'content-box' ? entry.contentBoxSize : entry.devicePixelContentBoxSize)
+
       if (boxSize) {
         width.value = boxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
         height.value = boxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
