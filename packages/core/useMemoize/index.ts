@@ -77,7 +77,7 @@ export interface UseMemoizeReturn <Result, Args extends unknown[]> {
 }
 
 export interface UseMemoizeOptions<Result, Args extends unknown[]> {
-  getKey?: (...args: Args) => string
+  getKey?: (...args: Args) => string | number
   cache?: UseMemoizeCache<CacheKey, Result>
 }
 
@@ -109,7 +109,7 @@ export function useMemoize<Result, Args extends unknown[]>(
   /**
    * Load data and save in cache
    */
-  const _loadData = (key: string, ...args: Args): Result => {
+  const _loadData = (key: string | number, ...args: Args): Result => {
     cache.set(key, resolver(...args))
     return cache.get(key) as Result
   }

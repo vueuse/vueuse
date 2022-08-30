@@ -49,12 +49,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   history: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
-  * Last history point, source can be different if paused
-  */
+   * Last history point, source can be different if paused
+   */
   last: Ref<UseRefHistoryRecord<Serialized>>
 
   /**
-   * Same as 'history'
+   * Same as {@link UseManualRefHistoryReturn.history | history}
    */
   undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
 
@@ -76,27 +76,27 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * Undo changes
    */
-  undo(): void
+  undo: () => void
 
   /**
    * Redo changes
    */
-  redo(): void
+  redo: () => void
 
   /**
    * Clear all the history
    */
-  clear(): void
+  clear: () => void
 
   /**
    * Create new a new history record
    */
-  commit(): void
+  commit: () => void
 
   /**
-   * Reset ref's value with lastest history
+   * Reset ref's value with latest history
    */
-  reset(): void
+  reset: () => void
 }
 
 const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
