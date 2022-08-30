@@ -71,21 +71,12 @@ export function useContextMenu(
 ): UseContextMenuReturn {
   const { hideOnClick = true, onVisibleChange = noop, target } = options
 
-  const visible = ref(false)
-  const position = ref<Position>({ x: 0, y: 0 })
-
   const menuElementSize = useElementSize(menuElement, { width: 0, height: 0 }, { box: 'border-box' })
   const windowSize = useWindowSize()
 
-  const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
-    const el = unrefElement(menuElement)
-    if (el)
-      fn(el)
-  }
-
-  const show = () => visible.value = true
-  const hide = () => visible.value = false
-
+  const visible = ref(false)
+  const position = ref<Position>({ x: 0, y: 0 })
+  // see: https://github.com/vueuse/vueuse/pull/2136#issuecomment-1230525648
   const menuPositionOffset = computed(() => {
     let left = position.value.x
     let top = position.value.y
@@ -97,11 +88,21 @@ export function useContextMenu(
       left = position.value.x - menuElementSize.width.value
     if (overflowY)
       top = position.value.y - menuElementSize.height.value
+
     return {
       left,
       top,
     }
   })
+
+  const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
+    const el = unrefElement(menuElement)
+    if (el)
+      fn(el)
+  }
+
+  const show = () => visible.value = true
+  const hide = () => visible.value = false
 
   useEventListener('scroll', hide)
   useEventListener('click', hide)
@@ -151,7 +152,7 @@ export function useContextMenu(
   // automatically show/hide the `MenuElement`
   watchEffect(() => {
     accessMenuElementIfExists((el) => {
-      el.style.display = visible.value ? 'block' : 'none'
+      el.style.display = visible.value ? 'block' : 'hidden'
     })
   })
 
