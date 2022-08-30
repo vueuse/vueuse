@@ -4,7 +4,7 @@ category: Utilities
 
 # useCloned
 
-Reactive partial clone.
+Reactive clone of a ref.
 
 ## Usage
 ```ts
