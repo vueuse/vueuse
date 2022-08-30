@@ -137,7 +137,7 @@ export function useContextMenu(
       // initialize
       accessMenuElementIfExists((el) => {
         el.style.position = 'fixed'
-        el.style.display = 'hidden'
+        el.style.display = 'none'
       })
 
       useEventListener(element, 'click', (e) => {
@@ -152,7 +152,7 @@ export function useContextMenu(
   // automatically show/hide the `MenuElement`
   watchEffect(() => {
     accessMenuElementIfExists((el) => {
-      el.style.display = visible.value ? 'block' : 'hidden'
+      el.style.display = visible.value ? 'block' : 'none'
     })
   })
 
