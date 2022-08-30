@@ -69,10 +69,16 @@ export function useContextMenu(
   menuElement: MaybeComputedElementRef,
   options: UseContextMenuOptions = {},
 ): UseContextMenuReturn {
-  const { hideOnClick = true, onVisibleChange = noop, target } = options
+  const {
+    hideOnClick = true,
+    onVisibleChange = noop,
+    target,
+  } = options
 
   const menuElementSize = useElementSize(menuElement, { width: 0, height: 0 }, { box: 'border-box' })
-  const windowSize = useWindowSize()
+  const windowSize = useWindowSize({
+    includeScrollbar: false,
+  })
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
@@ -137,7 +143,7 @@ export function useContextMenu(
       // initialize
       accessMenuElementIfExists((el) => {
         el.style.position = 'fixed'
-        el.style.display = 'none'
+        el.style.visibility = 'hidden'
       })
 
       useEventListener(element, 'click', (e) => {
@@ -152,7 +158,7 @@ export function useContextMenu(
   // automatically show/hide the `MenuElement`
   watchEffect(() => {
     accessMenuElementIfExists((el) => {
-      el.style.display = visible.value ? 'block' : 'none'
+      el.style.visibility = visible.value ? 'initial' : 'hidden'
     })
   })
 
