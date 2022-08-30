@@ -1,11 +1,13 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, watch, watchEffect } from 'vue-demi'
+import { computed, ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useElementSize } from '../useElementSize'
+import { useWindowSize } from '../useWindowSize'
 
 export interface UseContextMenuOptions {
   /**
@@ -54,20 +56,52 @@ export interface UseContextMenuReturn {
   show: (position?: Position) => void
 }
 
-export function useContextMenu(MenuElement: MaybeComputedElementRef, options: UseContextMenuOptions = {}): UseContextMenuReturn {
+/**
+ *
+ * Customize `contextMenu`.
+ *
+ * @see https://vueuse.org/useContextMenu
+ * @param menuElement
+ * @param options
+ * @returns
+ */
+export function useContextMenu(
+  menuElement: MaybeComputedElementRef,
+  options: UseContextMenuOptions = {},
+): UseContextMenuReturn {
   const { hideOnClick = true, onVisibleChange = noop, target } = options
 
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
 
+  const menuElementSize = useElementSize(menuElement, { width: 0, height: 0 }, { box: 'border-box' })
+  const windowSize = useWindowSize()
+
   const accessMenuElementIfExists = (fn: (el: HTMLElement | SVGElement) => void) => {
-    const el = unrefElement(MenuElement)
+    const el = unrefElement(menuElement)
     if (el)
       fn(el)
   }
 
   const show = () => visible.value = true
   const hide = () => visible.value = false
+
+  const menuPositionOffset = computed(() => {
+    let left = position.value.x
+    let top = position.value.y
+
+    const overflowX = position.value.x + menuElementSize.width.value > windowSize.width.value
+    const overflowY = position.value.y + menuElementSize.height.value > windowSize.height.value
+
+    if (overflowX)
+      left = position.value.x - menuElementSize.width.value
+    if (overflowY)
+      top = position.value.y - menuElementSize.height.value
+    return {
+      left,
+      top,
+    }
+  })
 
   useEventListener('scroll', hide)
   useEventListener('click', hide)
@@ -97,12 +131,12 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
 
   watch(visible, onVisibleChange)
   watch(
-    () => unrefElement(MenuElement),
+    () => unrefElement(menuElement),
     (element) => {
       // initialize
       accessMenuElementIfExists((el) => {
         el.style.position = 'fixed'
-        el.style.display = 'none'
+        el.style.display = 'hidden'
       })
 
       useEventListener(element, 'click', (e) => {
@@ -124,8 +158,8 @@ export function useContextMenu(MenuElement: MaybeComputedElementRef, options: Us
   // automatically update the position of the `MenuElement`
   watchEffect(() => {
     accessMenuElementIfExists((el) => {
-      el.style.left = `${position.value.x}px`
-      el.style.top = `${position.value.y}px`
+      el.style.left = `${menuPositionOffset.value.left}px`
+      el.style.top = `${menuPositionOffset.value.top}px`
     })
   })
 
