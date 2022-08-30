@@ -1,8 +1,8 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import type { WatchOptions } from 'vue-demi'
 import { isRef, ref, unref, watch } from 'vue-demi'
 
-export interface UseClonedOptions<T extends Record<any, any> = Record<any, any>> {
+export interface UseClonedOptions<T = any> {
   /**
    * sync source only by function
    */
@@ -11,18 +11,12 @@ export interface UseClonedOptions<T extends Record<any, any> = Record<any, any>>
    * Custom clone function should return new value for cloned data
    */
   cloneFunction?: (source: T, cloned: T) => T
-  /**
-   * Options for watcher
-   *
-   * @default { immediate: true, deep: true }
-   */
-  watchOptions?: WatchOptions
 }
 
-export function useCloned<T extends Record<any, any> = Record<any, any>>(source: MaybeRef<T>, options: UseClonedOptions = {}) {
+export function useCloned<T>(source: MaybeComputedRef<T>, options: UseClonedOptions = {}, watchOptions: WatchOptions = { deep: true, immediate: true }) {
   const cloned = ref<T>({} as T)
 
-  const { manual, cloneFunction, watchOptions = { immediate: true, deep: true } } = options
+  const { manual, cloneFunction } = options
 
   if (!manual && isRef(source))
     watch(source, sync, watchOptions)
@@ -30,9 +24,7 @@ export function useCloned<T extends Record<any, any> = Record<any, any>>(source:
     sync()
 
   function defaultCloning() {
-    const structuredClone = window?.structuredClone as any
-
-    return structuredClone ? structuredClone(unref(source)) : JSON.parse(JSON.stringify(unref(source)))
+    return JSON.parse(JSON.stringify(unref(source)))
   }
 
   function sync() {

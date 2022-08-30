@@ -62,7 +62,7 @@ describe('useCloned', () => {
   it('works with watch options', async () => {
     const data = ref({ test: 'test' })
 
-    const { cloned } = useCloned(data, { watchOptions: { immediate: false, deep: false } })
+    const { cloned } = useCloned(data, {}, { immediate: false, deep: false })
 
     await nextTick()
 

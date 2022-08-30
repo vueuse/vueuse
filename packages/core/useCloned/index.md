@@ -40,21 +40,3 @@ sync()
 
 console.log(cloned.value.key)// 'manual'
 ```
-
-## Custom clone function usage
-```ts
-import { useCloned } from '@vueuse/core/useCloned'
-
-const data = ref({
-  key: 'value'
-})
-
-const { cloned, sync } = useCloned(data, {
-  cloneFunction: (source, cloned) => ({ ...source, isCloned: true })
-})
-
-data.value.key = 'clone it'
-
-console.log(cloned.value.isCloned) // true
-console.log(cloned.value.key) // 'clone it'
-```
