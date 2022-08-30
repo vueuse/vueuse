@@ -4,17 +4,6 @@ import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { useResizeObserver } from '../useResizeObserver'
 import { unrefElement } from '../unrefElement'
 
-export interface UseElementSizeOptions extends UseResizeObserverOptions {
-  /**
-   *
-   * Indicates how the total width and height of an element is calculated.
-   *
-   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
-   * @default 'borderBox'
-   */
-  boxSizing?: 'borderBox' | 'contentBox'
-}
-
 export interface ElementSize {
   width: number
   height: number
@@ -31,7 +20,7 @@ export interface ElementSize {
 export function useElementSize(
   target: MaybeComputedElementRef,
   initialSize: ElementSize = { width: 0, height: 0 },
-  options: UseElementSizeOptions = {},
+  options: UseResizeObserverOptions = {},
 ) {
   const { box = 'content-box' } = options
   const width = ref(initialSize.width)
