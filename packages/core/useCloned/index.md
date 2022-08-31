@@ -8,7 +8,7 @@ Reactive clone of a ref.
 
 ## Usage
 ```ts
-import { useCloned } from '@vueuse/core/useCloned'
+import { useCloned } from '@vueuse/core'
 
 const originData = ref({
   key: 'value'
