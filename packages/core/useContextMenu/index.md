@@ -33,7 +33,6 @@ const { visible, enabled, stop, enabled, stop } = useContextMenu(menuRef, {
 <template>
   <div>
     <!-- menu element -->
-    <!-- menu element -->
     <div ref="menuRef">
       <div>copy</div>
       <div>paste</div>
