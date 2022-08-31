@@ -6,6 +6,10 @@ category: Elements
 
 add [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event) to your vue app with ease.
 
+::: tip
+After calling `stop()`, all event listeners related to the `contextMenu` will be irreversibly removed, later changes on the `enabled` ref will **NOT** have any effect.\
+If you want to temporarily `disable` / `enable` it, use `enabled.value = false` / `enabled.value = true` instead.
+:::
 ## Usage
 
 ```html
@@ -14,19 +18,30 @@ import { useContextMenu } from '@vueuse/core'
 import { ref } from 'vue'
 
 const menuRef = ref<HTMLElement | null>(null)
+const targetRef = ref<HTMLElement | null>(null)
 const hideOnClick = ref(false)
 
-const { visible } = useContextMenu(menuRef, {
+const { visible, enabled, stop } = useContextMenu(menuRef, {
   hideOnClick,
 })
 </script>
 
 <template>
   <div>
+    <!-- menu element -->
     <div ref="menuRef">
       <div>copy</div>
       <div>paste</div>
       <div>cut</div>
+    </div>
+    <!-- the element that the menu applies to -->
+    <div ref="targetRef" w-40 h-40>Right click on me!</div>
+    <!-- other element -->
+    <div>
+      <button @click="enabled = !enabled">
+       {{ enabled ? 'disable' : 'enable' }}
+      </button>
+      <button @click="stop()">stop</button>
     </div>
   </div>
 </template>
