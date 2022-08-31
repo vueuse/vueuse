@@ -4,10 +4,12 @@ import { useToggle } from '@vueuse/shared'
 import { ref } from 'vue'
 import Area from './area.vue'
 import { UseContextMenu } from './component'
+
 const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 const [hideOnClick, toggle] = useToggle(true)
-const { visible, position } = useContextMenu(menuRef, {
+
+const { visible, position, stop, enabled } = useContextMenu(menuRef, {
   hideOnClick,
   target: targetRef,
 })
@@ -31,19 +33,28 @@ const { visible, position } = useContextMenu(menuRef, {
         Right click on me!
       </Area>
       <div>
-        <p>hideOnClick: <BooleanDisplay :value="hideOnClick" /></p>
+        <div>
+          <span mr-2>hideOnClick: <BooleanDisplay :value="hideOnClick" /> </span>
+          <button @click="toggle()">
+            toggle
+          </button>
+        </div>
         <p>visible: <BooleanDisplay :value="visible" /></p>
+        <p>enabled: <BooleanDisplay :value="enabled" /></p>
         <p>position: {{ position }}</p>
-        <button @click="toggle()">
-          toggle => hideOnClick
+        <button :class="{ red: enabled }" @click="enabled = !enabled">
+          {{ enabled ? 'disable' : 'enable' }}
+        </button>
+        <button @click="stop()">
+          stop
         </button>
       </div>
     </div>
   </div>
-
+  <div h="1px" bg="$vp-c-divider-light" m="block-4" />
   <UseContextMenu :hide-on-click="true">
     <!-- menu -->
-    <template #menu>
+    <template #menu="{ stop }">
       <div class="menu">
         <div class="menu-item">
           🚀 menu 1
@@ -54,32 +65,47 @@ const { visible, position } = useContextMenu(menuRef, {
         <div class="menu-item">
           💖 menu 3
         </div>
+        <div class="menu-item" @click="stop()">
+          🚫 Stop Me
+        </div>
       </div>
     </template>
     <!-- target -->
-    <template #target="{ visible }">
-      <Area wa>
-        <p text-red>
-          This is a Renderless component
-        </p>
-        <p>
-          Right click on me as well!
-        </p>
-        <p>visible: <BooleanDisplay :value="visible" /></p>
-      </Area>
+    <template #target="{ visible, stop, position }">
+      <div flex gap-2>
+        <Area>
+          <p text-red>
+            Renderless component
+          </p>
+          <p>
+            Right click on me!
+          </p>
+        </Area>
+        <div>
+          <p>hideOnClick: <BooleanDisplay :value="true" /></p>
+          <p>visible: <BooleanDisplay :value="visible" /></p>
+          <p>position: {{ position }}</p>
+          <button @click="stop()">
+            stop
+          </button>
+        </div>
+      </div>
     </template>
   </UseContextMenu>
 
   <!-- global menu -->
-  <UseContextMenu class="menu" z-20>
+  <UseContextMenu v-slot="{ stop }" class="menu" z-20>
     <div class="menu-item">
-      ✅Global 1
+      ✅ Global 1
     </div>
     <div class="menu-item">
-      ✅Global 2
+      ✅ Global 2
     </div>
     <div class="menu-item">
-      ✅Global 3
+      ✅ Global 3
+    </div>
+    <div class="menu-item" @click="stop()">
+      🚫 stop me
     </div>
   </UseContextMenu>
 </template>

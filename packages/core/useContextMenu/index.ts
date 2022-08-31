@@ -1,7 +1,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, ref, watch, watchEffect } from 'vue-demi'
+import { computed, nextTick, ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -44,6 +44,12 @@ export interface UseContextMenuReturn {
   position: Ref<Position>
 
   /**
+   * Indicates whether the context menu is enabled,
+   * mutate to disable/enable it.
+   */
+  enabled: Ref<boolean>
+
+  /**
    * Hide the context menu.
    */
   hide: () => void
@@ -54,6 +60,11 @@ export interface UseContextMenuReturn {
    * @param [position] absolute position to the viewport, default to the previous position.
    */
   show: (position?: Position) => void
+
+  /**
+   * Stop the context menu permanently.
+   */
+  stop: () => void
 }
 
 /**
@@ -83,35 +94,45 @@ export function useContextMenu(
     includeScrollbar: false,
   })
 
+  const enabled = ref(true)
   const visible = ref(false)
   const position = ref<Position>({ x: 0, y: 0 })
 
   // see: https://github.com/vueuse/vueuse/pull/2136#issuecomment-1230525648
   const menuPositionOffset = computed(() => {
-    let left = position.value.x
-    let top = position.value.y
+    let [left, top, right, bottom]: Array<`${number}px` | null> = [
+        `${position.value.x}px`,
+        `${position.value.y}px`,
+        null,
+        null,
+    ]
 
     const overflowX = position.value.x + menuElementSize.width.value > windowSize.width.value
     const overflowY = position.value.y + menuElementSize.height.value > windowSize.height.value
 
     if (overflowX)
-      left = position.value.x - menuElementSize.width.value
+      [left, right] = [null, `${windowSize.width.value - position.value.x}px`]
+
     if (overflowY)
-      top = position.value.y - menuElementSize.height.value
+      [top, bottom] = [null, `${windowSize.height.value - position.value.y}px`]
 
     return {
       left,
       top,
+      right,
+      bottom,
     }
   })
 
   const show = () => visible.value = true
   const hide = () => visible.value = false
 
+  // hide first when it changes
+  watch(enabled, hide)
   watch(visible, onVisibleChange)
 
   // automatically show/hide and update the position of the `MenuElement`
-  watchEffect(
+  const stopUpdate = watchEffect(
     () => {
       const element = menuElementRef.value
 
@@ -120,11 +141,23 @@ export function useContextMenu(
 
       element.style.position = 'fixed'
       element.style.visibility = visible.value ? 'visible' : 'hidden'
-      element.style.left = `${menuPositionOffset.value.left}px`
-      element.style.top = `${menuPositionOffset.value.top}px`
+
+      for (const [property, offset] of Object.entries(menuPositionOffset.value))
+        element.style.setProperty(property, offset)
     })
 
+  const cleanups = [stopUpdate]
+  const stop = () => {
+    enabled.value = false
+    // wait till the `hide` effect is done.
+    nextTick(() => {
+      cleanups.forEach(fn => fn())
+    })
+  }
   const contextMenuHandler = (e: MouseEvent) => {
+    if (!enabled.value)
+      return
+
     e.preventDefault()
     position.value = {
       x: e.clientX,
@@ -138,26 +171,30 @@ export function useContextMenu(
   // with `target` specified, apply on it.
   // otherwise, apply on the entire page.
   if (target)
-    useEventListener(targetRef, 'contextmenu', contextMenuHandler)
+    cleanups.push(useEventListener(targetRef, 'contextmenu', contextMenuHandler))
   else
-    useEventListener('contextmenu', contextMenuHandler)
+    cleanups.push(useEventListener('contextmenu', contextMenuHandler))
 
-  useEventListener('scroll', hide)
-  useEventListener('click', hide)
-  useEventListener('contextmenu', hide, { capture: true })
-  useEventListener(menuElementRef, 'click', (e) => {
-    if (!resolveUnref(hideOnClick)) {
-      // hide it only when clicking outside of the menu,
-      // so stopPropagation when clicking on itself.
-      e.stopPropagation()
-    }
-  })
+  cleanups.push(
+    useEventListener('scroll', hide),
+    useEventListener('click', hide),
+    useEventListener('contextmenu', hide, { capture: true }),
+    useEventListener(menuElementRef, 'click', (e) => {
+      if (!resolveUnref(hideOnClick)) {
+        // hide it only when clicking outside of the menu,
+        // so stopPropagation when clicking on itself.
+        e.stopPropagation()
+      }
+    }),
+  )
 
   return {
     visible,
     position,
+    enabled,
 
     hide,
     show,
+    stop,
   }
 }
