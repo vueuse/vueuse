@@ -10,6 +10,10 @@ add [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/con
 After calling `stop()`, all event listeners related to the `contextMenu` will be irreversibly removed, later changes on the `enabled` ref will **NOT** have any effect.\
 If you want to temporarily `disable` / `enable` it, use `enabled.value = false` / `enabled.value = true` instead.
 :::
+::: tip
+After calling `stop()`, all event listeners related to the `contextMenu` will be irreversibly removed, later changes on the `enabled` ref will **NOT** have any effect.\
+If you want to temporarily `disable` / `enable` it, use `enabled.value = false` / `enabled.value = true` instead.
+:::
 ## Usage
 
 ```html
@@ -21,13 +25,14 @@ const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 const hideOnClick = ref(false)
 
-const { visible, enabled, stop } = useContextMenu(menuRef, {
+const { visible, enabled, stop, enabled, stop } = useContextMenu(menuRef, {
   hideOnClick,
 })
 </script>
 
 <template>
   <div>
+    <!-- menu element -->
     <!-- menu element -->
     <div ref="menuRef">
       <div>copy</div>
