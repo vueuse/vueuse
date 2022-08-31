@@ -22,8 +22,9 @@ const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 const hideOnClick = ref(false)
 
-const { visible, enabled, stop, enabled, stop } = useContextMenu(menuRef, {
+const { visible, position, enabled, stop } = useContextMenu(menuRef, {
   hideOnClick,
+  target: targetRef,
 })
 </script>
 
@@ -36,17 +37,20 @@ const { visible, enabled, stop, enabled, stop } = useContextMenu(menuRef, {
       <div>cut</div>
     </div>
     <!-- the element that the menu applies to -->
-    <div ref="targetRef" w-40 h-40>Right click on me!</div>
+    <div ref="targetRef" w-40 h-40>
+      Right click on me!
+    </div>
     <!-- other element -->
     <div>
       <button @click="enabled = !enabled">
-       {{ enabled ? 'disable' : 'enable' }}
+        {{ enabled ? 'disable' : 'enable' }}
       </button>
-      <button @click="stop()">stop</button>
+      <button @click="stop()">
+        stop
+      </button>
     </div>
   </div>
 </template>
-
 ```
 
 ## Component Usage
