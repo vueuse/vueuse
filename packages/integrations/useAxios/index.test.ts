@@ -185,4 +185,29 @@ describe('useAxios', () => {
       expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
   })
+
+  test('calling axios with config change(param/data etc.) only', async () => {
+    const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
+    expect(isLoading.value).toBeFalsy()
+    const paramConfig: AxiosRequestConfig = { params: { postId: 1 } }
+    execute(paramConfig)
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    await then((result) => {
+      expect(result.data.value[0].postId).toBe(1)
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+    }, onRejected)
+
+    paramConfig.params = { postId: 2 }
+    execute(paramConfig)
+    expect(isLoading.value).toBeTruthy()
+
+    await then((result) => {
+      expect(result.data.value[0].postId).toBe(2)
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+    }, onRejected)
+  })
 })
