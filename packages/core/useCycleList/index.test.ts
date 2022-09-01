@@ -26,4 +26,19 @@ describe('useCycleList', () => {
       next()
     })
   })
+
+  it('should cycle list objects with `initialValue` and `getIndexOf` orderly', () => {
+    const listItems = [{ name: 'Dog' }, { name: 'Cat' }, { name: 'Lizard' }]
+    const expectedListItems = [{ name: 'Cat' }, { name: 'Lizard' }, { name: 'Dog' }]
+
+    const { state, next } = useCycleList(listItems, {
+      initialValue: { name: 'Cat' },
+      getIndexOf: (cur, list) => list.findIndex(item => item.name === cur.name),
+    })
+
+    expectedListItems.forEach((item) => {
+      expect(state.value).toMatchObject(item)
+      next()
+    })
+  })
 })
