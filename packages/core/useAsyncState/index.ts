@@ -50,6 +50,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
    * @default true
    */
   shallow?: Shallow
+
   /**
    *
    * An error is thrown when executing the execute function
@@ -57,6 +58,14 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
    * @default false
    */
   throwError?: boolean
+
+  /**
+   * The number of milliseconds to delay until isLoading
+   * is set to true
+   *
+   * @default 0
+   */
+  isLoadingDelay?: number
 }
 
 /**
@@ -79,6 +88,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     onError = noop,
     resetOnExecute = true,
     shallow = true,
+    isLoadingDelay = 0,
     throwError,
   } = options ?? {}
 
@@ -92,7 +102,11 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
       state.value = initialState
     error.value = undefined
     isReady.value = false
-    isLoading.value = true
+
+    setTimeout(() => {
+      if (!isReady.value && !error.value)
+        isLoading.value = true
+    }, isLoadingDelay)
 
     if (delay > 0)
       await promiseTimeout(delay)
