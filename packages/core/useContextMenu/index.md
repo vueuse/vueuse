@@ -75,11 +75,9 @@ The `menu` slot specifies the menu element, the `target` slot specifies the elem
     </div>
   </template>
   <template #target="{ visible, stop }">
-    <Area wa>
-      <p>Renderless component</p>
-      <p>visible: <BooleanDisplay :value="visible" /></p>
-      <button @click="stop()">stop</button>
-    </Area>
+    <p>Renderless component</p>
+    <p>visible: {{ visible }}</p>
+    <button @click="stop()">stop</button>
   </template>
 </UseContextMenu>
 ```
@@ -90,11 +88,11 @@ Without specifying the `target`, the menu will be applied to `window`.
 
 ```html
 <UseContextMenu v-slot="{ stop }">
-    <div>✅ Global 1</div>
-    <div>✅ Global 2</div>
-    <div>✅ Global 3</div>
-    <div @click="stop()">
-      🤚 Stop me
-    </div>
+  <div>✅ Global 1</div>
+  <div>✅ Global 2</div>
+  <div>✅ Global 3</div>
+  <div @click="stop()">
+    🤚 Stop me
+  </div>
 </UseContextMenu>
 ```
