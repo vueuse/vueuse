@@ -69,7 +69,7 @@ export interface UseContextMenuReturn {
 
 /**
  *
- * Customize `contextMenu`.
+ * Add custom `contextMenu` to an Element.
  *
  * @see https://vueuse.org/useContextMenu
  * @param menuElement

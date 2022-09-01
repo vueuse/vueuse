@@ -4,7 +4,7 @@ category: Elements
 
 # useContextMenu
 
-add [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event) to your vue app with ease.
+Add custom `contextMenu` [`contextMenu`](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event) to an Element.
 
 ::: tip
 After calling `stop()`, all event listeners related to the `contextMenu` will be irreversibly removed, later changes on the `enabled` ref will **NOT** have any effect.\
