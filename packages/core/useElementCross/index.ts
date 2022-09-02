@@ -1,6 +1,6 @@
 import { computed } from 'vue-demi'
-import type { MaybeComputedElementRef } from '../unrefElement'
 import { useElementBounding } from '../useElementBounding'
+import type { MaybeComputedElementRef } from '../unrefElement'
 
 export function useElementCross(...targets: [MaybeComputedElementRef, MaybeComputedElementRef]) {
   const { top: t0, left: l0, width: w0, height: h0 } = useElementBounding(targets[0])
