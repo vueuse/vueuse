@@ -1,7 +1,7 @@
 import type { ConfigurableEventFilter, Fn } from '@vueuse/shared'
 import { pausableFilter, watchIgnorable } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import type { CloneFn, UseRefHistoryRecord } from '../useManualRefHistory'
+import type { CloneFn, UseManualRefHistoryReturn } from '../useManualRefHistory'
 import { useManualRefHistory } from '../useManualRefHistory'
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter {
@@ -46,61 +46,11 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
   parse?: (v: Serialized) => Raw
 }
 
-export interface UseRefHistoryReturn<Raw, Serialized> {
-  /**
-   * Bypassed tracking ref from the argument
-   */
-  source: Ref<Raw>
-
-  /**
-   * An array of history records for undo, newest comes to first
-   */
-  history: Ref<UseRefHistoryRecord<Serialized>[]>
-
-  /**
-  * Last history point, source can be different if paused
-  */
-  last: Ref<UseRefHistoryRecord<Serialized>>
-
-  /**
-   * Same as 'history'
-   */
-  undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
-
-  /**
-   * Records array for redo
-   */
-  redoStack: Ref<UseRefHistoryRecord<Serialized>[]>
-
+export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * A ref representing if the tracking is enabled
    */
   isTracking: Ref<boolean>
-
-  /**
-   * A ref representing if undo is possible (non empty undoStack)
-   */
-  canUndo: Ref<boolean>
-
-  /**
-   * A ref representing if redo is possible (non empty redoStack)
-   */
-  canRedo: Ref<boolean>
-
-  /**
-   * Undo changes
-   */
-  undo(): void
-
-  /**
-   * Redo changes
-   */
-  redo(): void
-
-  /**
-   * Clear all the history
-   */
-  clear(): void
 
   /**
    * Pause change tracking
@@ -113,16 +63,6 @@ export interface UseRefHistoryReturn<Raw, Serialized> {
    * @param [commit] if true, a history record will be create after resuming
    */
   resume(commit?: boolean): void
-
-  /**
-   * Create new a new history record
-   */
-  commit(): void
-
-  /**
-   * Reset ref's value with lastest history
-   */
-  reset(): void
 
   /**
    * A sugar for auto pause and auto resuming within a function scope
@@ -223,7 +163,6 @@ export function useRefHistory<Raw, Serialized = Raw>(
     stop()
     clear()
   }
-
   return {
     ...manualHistory,
     isTracking,

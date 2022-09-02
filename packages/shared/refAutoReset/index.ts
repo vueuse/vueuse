@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { customRef } from 'vue-demi'
-import { resolveUnref } from '@vueuse/shared'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeComputedRef } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 /**

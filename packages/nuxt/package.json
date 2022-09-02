@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "9.1.0",
+  "version": "9.1.1",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",

@@ -1,7 +1,7 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
+import type { MaybeComputedRef } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
