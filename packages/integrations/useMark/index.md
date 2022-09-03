@@ -14,6 +14,7 @@ npm install mark.js
 
 ## Usage
 
+### Basic Usage
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -37,7 +38,27 @@ useMark(el, search, options)
 </template>
 ```
 
-Manual Mode
+### Get Element By Id
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useMark } from '@vueuse/integrations/useMark'
+import type { UseMarkOptions } from '@vueuse/integrations/useMark'
+
+const search = ref('ipsum')
+
+useMark('#el', search)
+</script>
+
+<template>
+  <div id="el">
+    lorem ipsum dolor sit amet
+  </div>
+</template>
+```
+
+### Manual Mode
 
 ```vue
 <script setup lang="ts">
@@ -65,3 +86,4 @@ const { mark, unmark } = useMark(p, search, { manual: true })
   </div>
 </template>
 ```
+

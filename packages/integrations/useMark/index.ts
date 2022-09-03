@@ -2,7 +2,6 @@ import { computed, ref } from 'vue-demi'
 import {
   resolveUnref,
   tryOnMounted,
-  unrefElement,
   watchDebounced,
 } from '@vueuse/core'
 import Mark from 'mark.js'
@@ -32,11 +31,11 @@ export interface UseMarkReturn {
 }
 
 export function useMark<Immediate extends Readonly<boolean> = false>(
-  target: MaybeElementRef,
+  target: MaybeElementRef | MaybeComputedRef<string>,
   search: MaybeComputedRef<string | string[]>,
   options: MaybeComputedRef<UseMarkOptions<Immediate>> = {},
 ): UseMarkReturn {
-  const targetElement = computed(() => unrefElement(target))
+  const targetElement = computed(() => resolveUnref(target))
   const searchValue = computed(() => resolveUnref(search))
   const computedOptions = computed(() => resolveUnref(options))
 

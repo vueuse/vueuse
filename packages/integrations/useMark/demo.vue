@@ -14,6 +14,8 @@ const { totalMarks } = useMark(tbody, search, options)
 const p = ref<HTMLElement | null>()
 const manualSearch = ref('ipsum')
 const { mark, unmark } = useMark(p, manualSearch, { manual: true })
+
+useMark('#el', 'dolor')
 </script>
 
 <template>
@@ -62,6 +64,12 @@ const { mark, unmark } = useMark(p, manualSearch, { manual: true })
   </button>
 
   <p ref="p">
+    Lorem ipsum dolor sit amet.
+  </p>
+
+  <hr>
+
+  <p id="el">
     Lorem ipsum dolor sit amet.
   </p>
 </template>
