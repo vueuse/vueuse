@@ -21,6 +21,11 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default {}
    */
   initialValue?: T
+
+  /**
+   * @default false
+   */
+   onlyRead?: boolean
 }
 
 /**
@@ -38,6 +43,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     initialValue = {},
     removeNullishValues = true,
     removeFalsyValues = false,
+    onlyRead = false,
     window = defaultWindow!,
   } = options
 
@@ -126,6 +132,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function onChanged() {
+    if (onlyRead) {
+      return
+    }
     write(read(), true)
   }
 
