@@ -108,7 +108,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const preferredDark = usePreferredDark({ window })
   const preferredMode = computed(() => preferredDark.value ? 'dark' : 'light')
 
-  const store = storageRef || (storageKey == null
+  const store = storageRef || (storageKey === null
     ? ref(initialValue) as Ref<T | BasicColorSchema>
     : useStorage<T | BasicColorSchema>(storageKey, initialValue as BasicColorSchema, storage, { window, listenToStorageChanges }))
 
