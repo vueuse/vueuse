@@ -23,6 +23,13 @@ describe('useWindowSize', () => {
     expect(height.value).toBe(window.innerHeight)
   })
 
+  it('should exclude scrollbar', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, includeScrollbar: false })
+
+    expect(width.value).toBe(window.document.documentElement.clientWidth)
+    expect(height.value).toBe(window.document.documentElement.clientHeight)
+  })
+
   it('sets handler for window "resize" event', async () => {
     useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
 
