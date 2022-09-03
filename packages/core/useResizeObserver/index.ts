@@ -24,11 +24,11 @@ export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry
 export interface UseResizeObserverOptions extends ConfigurableWindow {
   /**
    * Sets which box model the observer will observe changes to. Possible values
-   * are `content-box` (the default), `border-box` and `device-pixel-content-box`.
+   * are `content-box` (the default), and `border-box`.
    *
    * @default 'content-box'
    */
-  box?: ResizeObserverBoxOptions
+  box?: 'content-box' | 'border-box'
 }
 
 declare class ResizeObserver {
