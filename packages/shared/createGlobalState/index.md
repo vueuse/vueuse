@@ -44,7 +44,7 @@ export const useGlobalState = createGlobalState(
       count.value++
     }
 
-    return { count, doubleCount, increase }
+    return { count, doubleCount, increment }
   }
 )
 ```
