@@ -1,7 +1,8 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, tryOnMounted } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -28,7 +29,7 @@ export function useElementVisibility(
       return
 
     const document = window.document
-    const el = resolveUnref(element)
+    const el = unrefElement(element)
     if (!el) {
       elementIsVisible.value = false
     }
@@ -43,12 +44,16 @@ export function useElementVisibility(
     }
   }
 
-  tryOnMounted(testBounding)
+  const stop = watch(
+    () => unrefElement(element),
+    () => testBounding(),
+    { immediate: true, flush: 'post' },
+  )
 
-  if (window) {
-    tryOnMounted(() => useEventListener(
-      () => resolveUnref(scrollTarget) || window, 'scroll', testBounding, { capture: false, passive: true }))
-  }
+  if (window)
+    useEventListener(scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true })
+
+  tryOnScopeDispose(() => stop())
 
   return elementIsVisible
 }
