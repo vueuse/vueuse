@@ -1,11 +1,10 @@
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useContextMenu } from '.'
 
 describe('useContextMenu', () => {
   let menuRef = ref<HTMLElement>()
   let targetRef = ref<HTMLElement>()
 
-  const untilDOMUpdates = null
   const contextMenuEvent = new MouseEvent('contextmenu', { clientX: 100, clientY: 200 })
   const clickOutside = () => dispatchEvent(new MouseEvent('click', { clientX: 9999, clientY: 9999 }))
 
@@ -22,7 +21,7 @@ describe('useContextMenu', () => {
     document.body.innerHTML = ''
   })
 
-  describe('basic functionally', () => {
+  describe('basic functionality', () => {
     it('should effect "visible" state', () => {
       const { visible, hide, show } = useContextMenu(menuRef)
       expect(visible.value).toBe(false)
@@ -36,11 +35,11 @@ describe('useContextMenu', () => {
       const { visible } = useContextMenu(menuRef)
 
       visible.value = true
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       visible.value = false
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
 
@@ -50,15 +49,15 @@ describe('useContextMenu', () => {
       expect(enabled.value).toBe(true)
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       enabled.value = false
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
 
@@ -66,11 +65,11 @@ describe('useContextMenu', () => {
       useContextMenu(menuRef)
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       clickOutside()
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
 
@@ -78,22 +77,22 @@ describe('useContextMenu', () => {
       useContextMenu(menuRef)
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       window.dispatchEvent(new MouseEvent('scroll'))
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
 
     it('should be hidden when clicking on menu ', async () => {
       useContextMenu(menuRef)
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       menuRef.value!.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
 
@@ -101,11 +100,11 @@ describe('useContextMenu', () => {
       useContextMenu(menuRef, { hideOnClick: false })
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       menuRef.value!.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
     })
 
@@ -113,15 +112,15 @@ describe('useContextMenu', () => {
       const { stop, show } = useContextMenu(menuRef)
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuRef.value!)
 
       stop()
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
 
       show()
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menuRef.value!)
     })
   })
@@ -131,7 +130,7 @@ describe('useContextMenu', () => {
       const menuELement = document.createElement('div')
       useContextMenu(menuELement)
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menuELement)
     })
 
@@ -141,11 +140,11 @@ describe('useContextMenu', () => {
       useContextMenu(menu, { target })
 
       dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeHidden(menu)
 
       target.dispatchEvent(contextMenuEvent)
-      await untilDOMUpdates
+      await nextTick()
       expectToBeVisible(menu)
     })
   })
@@ -156,7 +155,7 @@ describe('useContextMenu', () => {
         useContextMenu(menuRef)
 
         dispatchEvent(contextMenuEvent)
-        await untilDOMUpdates
+        await nextTick()
         expectToBeVisible(menuRef.value!)
       })
     })
@@ -168,11 +167,11 @@ describe('useContextMenu', () => {
         })
 
         dispatchEvent(contextMenuEvent)
-        await untilDOMUpdates
+        await nextTick()
         expectToBeHidden(menuRef.value!)
 
         targetRef.value!.dispatchEvent(contextMenuEvent)
-        await untilDOMUpdates
+        await nextTick()
         expectToBeVisible(menuRef.value!)
       })
     })
@@ -189,17 +188,17 @@ describe('useContextMenu', () => {
         })
 
         targetRef.value!.dispatchEvent(contextMenuEvent)
-        await untilDOMUpdates
+        await nextTick()
         expectToBeVisible(menuRef.value!)
         expectToBeHidden(globalMenuRef.value!)
 
         dispatchEvent(contextMenuEvent)
-        await untilDOMUpdates
+        await nextTick()
         expectToBeVisible(globalMenuRef.value!)
         expectToBeHidden(menuRef.value!)
 
         clickOutside()
-        await untilDOMUpdates
+        await nextTick()
         expectToBeHidden(globalMenuRef.value!)
         expectToBeHidden(menuRef.value!)
       })
