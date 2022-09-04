@@ -41,6 +41,7 @@ jobs:
     strategy:
       matrix:
         node: [14.x, 16.x]
+        mode: ['vue3', 'vue2', 'functional-ref']
       fail-fast: false
 
     steps:
@@ -69,6 +70,12 @@ jobs:
 
       - name: Test Vue 3
         run: pnpm run test:3
+        if: ${{ matrix.mode == 'vue3' }}
 
       - name: Test Vue 2
         run: pnpm run test:2
+        if: ${{ matrix.mode == 'vue2' }}
+
+      - name: Test Vue Functional Ref
+        run: pnpm run test:functional-ref
+        if: ${{ matrix.mode == 'functional-ref' }}

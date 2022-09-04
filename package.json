@@ -26,6 +26,7 @@
     "test": "vitest",
     "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
     "test:3": "vue-demi-switch 3 && vitest run",
+    "test:functional-ref": "vue-demi-switch 3 && cross-env FUNCTIONAL_REF=1 vitest run",
     "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "typecheck": "tsc --noEmit",
     "types:fix": "esno scripts/fix-types.ts",
@@ -47,7 +48,7 @@
     "@types/prettier": "^2.6.3",
     "@types/semver": "^7.3.10",
     "@types/sharp": "^0.30.4",
-    "@vitest/ui": "^0.18.1",
+    "@vitest/ui": "^0.22.1",
     "@vue/compiler-sfc": "^3.2.37",
     "@vue/test-utils": "^2.0.2",
     "@vueuse/core": "workspace:*",
@@ -97,8 +98,9 @@
     "vite-plugin-inspect": "^0.6.0",
     "vite-plugin-pwa": "^0.12.3",
     "vitepress": "^1.0.0-alpha.4",
-    "vitest": "^0.18.1",
+    "vitest": "^0.22.1",
     "vue": "^3.2.37",
+    "vue-functional-ref": "^0.2.3",
     "vue2": "npm:vue@^2.7.7"
   },
   "pnpm": {

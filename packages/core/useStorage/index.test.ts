@@ -1,6 +1,6 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { isVue3, ref } from 'vue-demi'
-import { nextTwoTick, useSetup } from '../../.test'
+import { getRawRef, nextTwoTick, useSetup } from '../../.test'
 import { useStorage } from '.'
 
 const KEY = 'custom-key'
@@ -236,7 +236,7 @@ describe('useStorage', () => {
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    expect(state).toBe(init)
+    expect(getRawRef(state)).toBe(getRawRef(init))
 
     init.value.name = 'b'
     await nextTwoTick()

@@ -1,7 +1,17 @@
 import { Vue2, install, isVue2 } from 'vue-demi'
 import './polyfillFetch'
 import './polyfillPointerEvents'
-import { beforeAll, beforeEach } from 'vitest'
+import { beforeAll, beforeEach, vi } from 'vitest'
+
+vi.mock('vue-demi', async () => {
+  const vue = await vi.importActual<any>('vue-demi')
+  if (!process.env.FUNCTIONAL_REF)
+    return vue
+  return {
+    ...vue,
+    ...await vi.importActual<any>('vue-functional-ref'),
+  }
+})
 
 const setupVueSwitch = () => {
   if (isVue2) {
