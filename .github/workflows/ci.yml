@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         node: [14.x, 16.x]
-        mode: ['vue3', 'vue2', 'functional-ref']
+        mode: [vue3, vue2, functional-ref]
       fail-fast: false
 
     steps:

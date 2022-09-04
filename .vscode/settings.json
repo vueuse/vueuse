@@ -26,7 +26,8 @@
     "json",
     "jsonc",
     "json5",
-    "markdown"
+    "markdown",
+    "yaml"
   ],
   "vite.vitepress": true,
   "vite.vitepressBase": "packages",
