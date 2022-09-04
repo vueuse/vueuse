@@ -27,7 +27,7 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    *
    * @default true
    */
- autoWrite?: boolean
+  autoWrite?: boolean
 }
 
 /**
