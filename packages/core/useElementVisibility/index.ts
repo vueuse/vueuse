@@ -50,8 +50,11 @@ export function useElementVisibility(
     { immediate: true, flush: 'post' },
   )
 
-  if (window)
-    useEventListener(scrollTarget || window, 'scroll', testBounding, { capture: false, passive: true })
+  if (window) {
+    useEventListener(scrollTarget || window, 'scroll', testBounding, {
+      capture: false, passive: true,
+    })
+  }
 
   tryOnScopeDispose(() => stop())
 
