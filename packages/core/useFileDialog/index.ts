@@ -1,3 +1,4 @@
+import { hasOwn } from '@vueuse/shared'
 import { type Ref, readonly, ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -63,7 +64,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     }
     input.multiple = _options.multiple!
     input.accept = _options.accept!
-    if (Object.prototype.hasOwnProperty.call(_options, 'capture'))
+    if (hasOwn(_options, 'capture'))
       input.capture = _options.capture!
 
     input.click()
