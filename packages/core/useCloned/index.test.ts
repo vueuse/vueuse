@@ -44,17 +44,16 @@ describe('useCloned', () => {
   })
 
   it('works with custom clone function', async () => {
-    const data = ref({ test: 'test' })
+    const data = ref<Record<string, any>>({ test: 'test' })
 
-    const { cloned } = useCloned<Record<string, any>>(data, { cloneFunction: (source, cloned) => ({ ...cloned, ...source, proxyTest: true }) })
-
-    cloned.value.check = 'value'
+    const { cloned } = useCloned(data, {
+      clone: source => ({ ...source, proxyTest: true }),
+    })
 
     data.value.test = 'partial'
 
     await nextTick()
 
-    expect(cloned.value.check).toBe('value')
     expect(cloned.value.test).toBe('partial')
     expect(cloned.value.proxyTest).toBe(true)
   })
@@ -62,7 +61,7 @@ describe('useCloned', () => {
   it('works with watch options', async () => {
     const data = ref({ test: 'test' })
 
-    const { cloned } = useCloned(data, {}, { immediate: false, deep: false })
+    const { cloned } = useCloned(data, { immediate: false, deep: false })
 
     await nextTick()
 

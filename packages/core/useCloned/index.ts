@@ -1,34 +1,64 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import type { WatchOptions } from 'vue-demi'
+import type { ComputedRef, WatchOptions } from 'vue-demi'
 import { isRef, ref, unref, watch } from 'vue-demi'
 
-export interface UseClonedOptions<T = any> {
+export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
-   * sync source only by function
+   * Custom clone function.
+   *
+   * By default, it use `JSON.parse(JSON.stringify(value))` to clone.
+   */
+  clone?: (source: T) => T
+
+  /**
+   * Manually sync the ref
+   *
+   * @default false
    */
   manual?: boolean
-  /**
-   * Custom clone function should return new value for cloned data
-   */
-  cloneFunction?: (source: T, cloned: T) => T
 }
 
-export function useCloned<T>(source: MaybeComputedRef<T>, options: UseClonedOptions = {}, watchOptions: WatchOptions = { deep: true, immediate: true }) {
+export interface UseClonedReturn<T> {
+  /**
+   * Cloned ref
+   */
+  cloned: ComputedRef<T>
+  /**
+   * Sync cloned data with source manually
+   */
+  sync: () => void
+}
+
+function cloneFnJSON<T>(source: T): T {
+  return JSON.parse(JSON.stringify(source))
+}
+
+export function useCloned<T>(
+  source: MaybeComputedRef<T>,
+  options: UseClonedOptions = {},
+) {
   const cloned = ref<T>({} as T)
-
-  const { manual, cloneFunction } = options
-
-  if (!manual && isRef(source))
-    watch(source, sync, watchOptions)
-  else
-    sync()
-
-  function defaultCloning() {
-    return JSON.parse(JSON.stringify(unref(source)))
-  }
+  const {
+    manual,
+    clone = cloneFnJSON,
+    // watch options
+    deep = true,
+    immediate = true,
+  } = options
 
   function sync() {
-    cloned.value = cloneFunction ? cloneFunction(unref(source), cloned.value) : defaultCloning()
+    cloned.value = clone(unref(source))
+  }
+
+  if (!manual && isRef(source)) {
+    watch(source, sync, {
+      ...options,
+      deep,
+      immediate,
+    })
+  }
+  else {
+    sync()
   }
 
   return { cloned, sync }
