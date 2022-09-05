@@ -19,7 +19,6 @@ export function useDevicePixelRatio({
 
   const pixelRatio = ref(1)
 
-  let mqResolution: MediaQueryList
   const cleanups: Fn[] = []
 
   const cleanup = () => {
@@ -30,10 +29,10 @@ export function useDevicePixelRatio({
   const observe = () => {
     pixelRatio.value = window.devicePixelRatio
     cleanup()
-    mqResolution = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
-    mqResolution.addEventListener('change', observe, { once: true })
+    const media = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
+    media.addEventListener('change', observe, { once: true })
     cleanups.push(() => {
-      mqResolution.removeEventListener('change', observe)
+      media.removeEventListener('change', observe)
     })
   }
 
