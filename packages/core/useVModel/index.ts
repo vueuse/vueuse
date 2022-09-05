@@ -1,8 +1,8 @@
 import { isDef, isFunction } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
-
-export type CloneFn<F, T = F> = (x: F) => T
+import type { CloneFn } from '../useCloned'
+import { cloneFnJSON } from '../useCloned'
 
 export interface UseVModelOptions<T> {
   /**
@@ -32,15 +32,14 @@ export interface UseVModelOptions<T> {
    */
   defaultValue?: T
   /**
-   * Clone when getting the value from props, shortcut for: JSON.parse(JSON.stringify(value)).
-   * Default to false
+   * Clone the props.
+   * Accepts a custom clone function.
+   * When setting to `true`, it will use `JSON.parse(JSON.stringify(value))` to clone.
    *
    * @default false
    */
   clone?: boolean | CloneFn<T>
 }
-
-const defaultCloneFn = <F, T = F>(v: F): T => JSON.parse(JSON.stringify(v))
 
 /**
  * Shorthand for v-model binding, props + emit -> ref
@@ -83,21 +82,33 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = eventName || event || `update:${key!.toString()}`
 
-  const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
-  const cloneFn = (val: P[K]) => isFunction(clone) ? clone(val) : defaultCloneFn(val)
+  const cloneFn = (val: P[K]) => !clone
+    ? val
+    : isFunction(clone)
+      ? clone(val)
+      : cloneFnJSON(val)
+
+  const getValue = () => isDef(props[key!])
+    ? cloneFn(props[key!])
+    : defaultValue
 
   if (passive) {
     const initialValue = getValue()
-    const proxy = ref<P[K]>(clone && initialValue ? cloneFn(initialValue) : initialValue!)
+    const proxy = ref<P[K]>(initialValue!)
 
-    watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
+    watch(
+      () => props[key!],
+      v => proxy.value = cloneFn(v) as UnwrapRef<P[K]>,
+    )
 
-    watch(proxy, (v) => {
-      if (v !== props[key!] || deep)
-        _emit(event, v)
-    }, {
-      deep,
-    })
+    watch(
+      proxy,
+      (v) => {
+        if (v !== props[key!] || deep)
+          _emit(event, v)
+      },
+      { deep },
+    )
 
     return proxy
   }
