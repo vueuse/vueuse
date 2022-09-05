@@ -50,4 +50,3 @@ const original = ref({ key: 'value' })
 
 const { cloned, sync } = useCloned(original, { clone: klona })
 ```
-
