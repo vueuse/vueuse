@@ -33,6 +33,9 @@
   "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
+  "peerDependencies": {
+    "nuxt": "^3.0.0-rc.9"
+  },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.9",
     "@vueuse/core": "workspace:*",
@@ -42,6 +45,6 @@
   },
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.9",
-    "unimport": "^0.6.1"
+    "unimport": "^0.6.7"
   }
 }

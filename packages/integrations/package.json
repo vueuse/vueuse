@@ -144,11 +144,11 @@
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
-    "@types/qrcode": "^1.4.2",
+    "@types/qrcode": "^1.5.0",
     "async-validator": "^4.2.5",
     "axios": "^0.27.2",
     "change-case": "^4.1.2",
-    "drauu": "^0.3.0",
+    "drauu": "^0.3.1",
     "focus-trap": "^6.9.4",
     "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
