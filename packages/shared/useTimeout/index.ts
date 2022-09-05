@@ -19,7 +19,7 @@ export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutF
  *
  * @see   {@link https://vueuse.org/useTimeout}
  * @param interval
- * @param immediate
+ * @param options
  */
 export function useTimeout(interval?: number, options?: UseTimeoutOptions<false>): ComputedRef<boolean>
 export function useTimeout(interval: number, options: UseTimeoutOptions<true>): { ready: ComputedRef<boolean> } & Stoppable

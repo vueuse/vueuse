@@ -36,7 +36,7 @@ export interface VueUseNuxtOptions {
   autoImports?: boolean
 
   /**
-   * @expiremental
+   * @experimental
    * @default false
    */
   ssrHandlers?: boolean
@@ -72,7 +72,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       config.optimizeDeps.exclude.push(...fullPackages)
     })
 
-    // add pacages to transpile target for alias resolution
+    // add packages to transpile target for alias resolution
     nuxt.options.build = nuxt.options.build || {}
     nuxt.options.build.transpile = nuxt.options.build.transpile || []
     nuxt.options.build.transpile.push(...fullPackages)
@@ -85,8 +85,8 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     }
 
     if (options.autoImports) {
-      // auto Import
-      nuxt.hook('autoImports:sources', (sources: any[]) => {
+      // auto import
+      nuxt.hook('imports:sources', (sources: any[]) => {
         if (sources.find(i => fullPackages.includes(i.from)))
           return
 
