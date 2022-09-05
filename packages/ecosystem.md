@@ -26,7 +26,7 @@ import * as console from 'vue-chemistry/console'
 const a = ref(1)
 const b = ref(2)
 
-let c = sum(a, b) // c = a + b = 3
+const c = sum(a, b) // c = a + b = 3
 
 set(a, 2) // shorthand for a.value = 2
 

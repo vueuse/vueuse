@@ -12,7 +12,7 @@ export interface UseIntervalOptions<Controls extends boolean> {
   controls?: Controls
 
   /**
-   * Exccute the update immediately on calling
+   * Execute the update immediately on calling
    *
    * @default true
    */
@@ -23,6 +23,8 @@ export interface UseIntervalOptions<Controls extends boolean> {
  * Reactive counter increases on every interval
  *
  * @see https://vueuse.org/useInterval
+ * @param interval
+ * @param options
  */
 export function useInterval(interval?: MaybeComputedRef<number>, options?: UseIntervalOptions<false>): Ref<number>
 export function useInterval(interval: MaybeComputedRef<number>, options: UseIntervalOptions<true>): { counter: Ref<number> } & Pausable

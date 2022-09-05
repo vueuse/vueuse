@@ -51,7 +51,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  *
  * @param ms
- * @param [maxWait=null]
+ * @param options
  */
 export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
