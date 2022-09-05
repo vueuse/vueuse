@@ -1,7 +1,8 @@
-import { reactive, ref } from 'vue-demi'
+import { reactive, ref, watch } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import { useElementSize } from '../useElementSize'
 
 export interface UseScrollOptions {
   /**
@@ -103,6 +104,8 @@ export function useScroll(
     bottom: false,
   })
 
+  const size = useElementSize(element)
+
   const onScrollEnd = useDebounceFn((e: Event) => {
     isScrolling.value = false
     directions.left = false
@@ -112,31 +115,37 @@ export function useScroll(
     onStop(e)
   }, throttle + idle)
 
-  const onScrollHandler = (e: Event) => {
-    const eventTarget = (
-      e.target === document ? (e.target as Document).documentElement : e.target
-    ) as HTMLElement
+  const getEventTarget = (e: Event) => {
+    const target = e.target === document ? (e.target as Document).documentElement : e.target as HTMLElement
+    target.scrollTop = e.target !== document || target.scrollTop
+      ? target.scrollTop
+      : document.body.scrollTop // patch for mobile compatible
+    return target
+  }
 
-    const scrollLeft = eventTarget.scrollLeft
-    directions.left = scrollLeft < x.value
-    directions.right = scrollLeft > x.value
+  const setArrivedState = ({ scrollLeft, scrollTop, clientWidth, scrollWidth, clientHeight, scrollHeight }: HTMLElement) => {
     arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
     arrivedState.right
-      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+      = scrollLeft + clientWidth >= scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
+    arrivedState.bottom
+      = scrollTop + clientHeight >= scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+  }
+
+  const onScrollHandler = (e: Event) => {
+    const eventTarget = getEventTarget(e)
+    const { scrollLeft, scrollTop } = eventTarget
+
+    directions.left = scrollLeft < x.value
+    directions.right = scrollLeft > x.value
     x.value = scrollLeft
-
-    let scrollTop = eventTarget.scrollTop
-
-    // patch for mobile compatible
-    if (e.target === document && !scrollTop)
-      scrollTop = document.body.scrollTop
 
     directions.top = scrollTop < y.value
     directions.bottom = scrollTop > y.value
-    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-    arrivedState.bottom
-      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
     y.value = scrollTop
+
+    setArrivedState(eventTarget)
 
     isScrolling.value = true
     onScrollEnd(e)
@@ -149,6 +158,12 @@ export function useScroll(
     throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
     eventListenerOptions,
   )
+
+  watch([size.width, size.height], (e: Event) => {
+    const eventTarget = getEventTarget(e)
+    const fn = () => setArrivedState(eventTarget)
+    throttle ? useThrottleFn(fn, throttle) : fn()
+  })
 
   return {
     x,
