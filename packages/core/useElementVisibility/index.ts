@@ -1,5 +1,4 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -44,7 +43,7 @@ export function useElementVisibility(
     }
   }
 
-  const stop = watch(
+  watch(
     () => unrefElement(element),
     () => testBounding(),
     { immediate: true, flush: 'post' },
@@ -55,8 +54,6 @@ export function useElementVisibility(
       capture: false, passive: true,
     })
   }
-
-  tryOnScopeDispose(() => stop())
 
   return elementIsVisible
 }
