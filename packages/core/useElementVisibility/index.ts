@@ -1,10 +1,10 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { computed } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import { useElementBounding } from '../useElementBounding'
 import { useEventListener } from '../useEventListener'
+import { useWindowSize } from '../useWindowSize'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow {
   scrollTarget?: MaybeComputedRef<HTMLElement | undefined | null>
@@ -19,40 +19,41 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow {
  */
 export function useElementVisibility(
   element: MaybeComputedElementRef,
-  { window = defaultWindow, scrollTarget }: UseElementVisibilityOptions = {},
+  options: UseElementVisibilityOptions = {},
 ) {
-  const elementIsVisible = ref(false)
+  const { scrollTarget } = options
 
-  const testBounding = () => {
-    if (!window)
-      return
+  const elementBounding = useElementBounding(element)
+  const targetBounding = useElementBounding(scrollTarget)
+  const viewportSize = useWindowSize({
+    // pass down the `configurableWindow`
+    ...options,
+    includeScrollbar: false,
+  })
 
-    const document = window.document
-    const el = unrefElement(element)
-    if (!el) {
-      elementIsVisible.value = false
+  const elementIsVisible = computed<boolean>(() => {
+    if (scrollTarget) {
+      // relative to the `scrollTarget`
+      return elementBounding.top.value <= targetBounding.bottom.value
+      && elementBounding.left.value <= targetBounding.right.value
+      && elementBounding.bottom.value >= targetBounding.top.value
+      && elementBounding.right.value >= targetBounding.left.value
     }
-    else {
-      const rect = el.getBoundingClientRect()
-      elementIsVisible.value = (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight)
-          && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-          && rect.bottom >= 0
-          && rect.right >= 0
-      )
-    }
-  }
+    return (
+      // relative to the viewport/window
+      elementBounding.top.value <= viewportSize.height.value
+        && elementBounding.left.value <= viewportSize.width.value
+        && elementBounding.bottom.value >= 0
+        && elementBounding.right.value >= 0
+    )
+  })
 
-  watch(
-    () => unrefElement(element),
-    () => testBounding(),
-    { immediate: true, flush: 'post' },
-  )
-
-  if (window) {
-    useEventListener(scrollTarget || window, 'scroll', testBounding, {
-      capture: false, passive: true,
-    })
+  if (scrollTarget) {
+    useEventListener(
+      scrollTarget,
+      'scroll',
+      elementBounding.update,
+      { passive: true })
   }
 
   return elementIsVisible
