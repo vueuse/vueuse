@@ -31,7 +31,9 @@ export function useElementSize(
     ([entry]) => {
       const boxSize = box === 'border-box'
         ? entry.borderBoxSize
-        : (box === 'content-box' ? entry.contentBoxSize : entry.devicePixelContentBoxSize)
+        : box === 'content-box'
+          ? entry.contentBoxSize
+          : entry.devicePixelContentBoxSize
 
       if (boxSize) {
         width.value = boxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
@@ -45,10 +47,15 @@ export function useElementSize(
     },
     options,
   )
-  watch(() => unrefElement(target), (ele) => {
-    width.value = ele ? initialSize.width : 0
-    height.value = ele ? initialSize.height : 0
-  })
+
+  watch(
+    () => unrefElement(target),
+    (ele) => {
+      width.value = ele ? initialSize.width : 0
+      height.value = ele ? initialSize.height : 0
+    },
+  )
+
   return {
     width,
     height,
