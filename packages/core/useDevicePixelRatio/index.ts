@@ -20,14 +20,25 @@ export function useDevicePixelRatio({
   const pixelRatio = ref(1)
 
   let mqResolution: MediaQueryList
-  tryOnScopeDispose((function MqResolutionObserve(): Fn {
+  const cleanups: Fn[] = []
+
+  const cleanup = () => {
+    cleanups.map(i => i())
+    cleanups.length = 0
+  }
+
+  const observe = () => {
     pixelRatio.value = window.devicePixelRatio
+    cleanup()
     mqResolution = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
-    mqResolution.addEventListener('change', MqResolutionObserve, { once: true })
-    return () => {
-      mqResolution.removeEventListener('change', MqResolutionObserve)
-    }
-  })())
+    mqResolution.addEventListener('change', observe, { once: true })
+    cleanups.push(() => {
+      mqResolution.removeEventListener('change', observe)
+    })
+  }
+
+  observe()
+  tryOnScopeDispose(cleanup)
 
   return { pixelRatio }
 }
