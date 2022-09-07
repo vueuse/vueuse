@@ -12,9 +12,9 @@ import { resolveUnref } from '../resolveUnref'
  *
  * @returns {Array} a new array with each element being the result of the callback function.
  */
-export function useArrayMap<T>(
+export function useArrayMap<T, U = T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
-  fn: (element: T, index: number, array: T[]) => T,
-): ComputedRef<T[]> {
+  fn: (element: T, index: number, array: T[]) => U,
+): ComputedRef<U[]> {
   return computed(() => resolveUnref(list).map(i => resolveUnref(i)).map(fn))
 }
