@@ -22,10 +22,15 @@ const menuRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 const hideOnClick = ref(false)
 
-const { visible, position, enabled, stop } = useContextMenu(menuRef, {
-  hideOnClick,
-  target: targetRef,
-})
+const {
+  visible,
+  position,
+  enabled,
+  stop,
+} = useContextMenu(
+  menuRef,
+  { hideOnClick, target: targetRef },
+)
 </script>
 
 <template>

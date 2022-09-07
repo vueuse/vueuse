@@ -1,7 +1,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, resolveUnref } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, nextTick, ref, watch, watchEffect } from 'vue-demi'
+import { computed, nextTick, reactive, ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -89,10 +89,18 @@ export function useContextMenu(
   const menuElementRef = computed(() => unrefElement(menuElement))
   const targetRef = computed(() => unrefElement(target))
 
-  const menuElementSize = useElementSize(menuElementRef, { width: 0, height: 0 }, { box: 'border-box' })
-  const windowSize = useWindowSize({
-    includeScrollbar: false,
-  })
+  const menuElementSize = reactive(
+    useElementSize(
+      menuElementRef,
+      { width: 0, height: 0 },
+      { box: 'border-box' },
+    ),
+  )
+  const windowSize = reactive(
+    useWindowSize({
+      includeScrollbar: false,
+    }),
+  )
 
   const enabled = ref(true)
   const visible = ref(false)
@@ -100,21 +108,22 @@ export function useContextMenu(
 
   // see: https://github.com/vueuse/vueuse/pull/2136#issuecomment-1230525648
   const menuPositionOffset = computed(() => {
+    const { x, y } = position.value
     let [left, top, right, bottom]: Array<`${number}px` | null> = [
-        `${position.value.x}px`,
-        `${position.value.y}px`,
+        `${x}px`,
+        `${y}px`,
         null,
         null,
     ]
 
-    const overflowX = position.value.x + menuElementSize.width.value > windowSize.width.value
-    const overflowY = position.value.y + menuElementSize.height.value > windowSize.height.value
+    const overflowX = x + menuElementSize.width > windowSize.width
+    const overflowY = y + menuElementSize.height > windowSize.height
 
     if (overflowX)
-      [left, right] = [null, `${windowSize.width.value - position.value.x}px`]
+      [left, right] = [null, `${windowSize.width - x}px`]
 
     if (overflowY)
-      [top, bottom] = [null, `${windowSize.height.value - position.value.y}px`]
+      [top, bottom] = [null, `${windowSize.height - y}px`]
 
     return {
       left,
@@ -142,8 +151,11 @@ export function useContextMenu(
       element.style.position = 'fixed'
       element.style.visibility = visible.value ? 'visible' : 'hidden'
 
-      for (const [property, offset] of Object.entries(menuPositionOffset.value))
-        element.style.setProperty(property, offset)
+      // performance
+      if (visible.value) {
+        for (const [property, offset] of Object.entries(menuPositionOffset.value))
+          element.style.setProperty(property, offset)
+      }
     })
 
   const cleanups = [stopUpdate]
@@ -178,6 +190,8 @@ export function useContextMenu(
   cleanups.push(
     useEventListener('scroll', hide),
     useEventListener('click', hide),
+    useEventListener('resize', hide),
+    useEventListener('blur', hide),
     useEventListener('contextmenu', hide, { capture: true }),
     useEventListener(menuElementRef, 'click', (e) => {
       if (!resolveUnref(hideOnClick)) {
