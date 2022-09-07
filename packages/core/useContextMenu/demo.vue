@@ -18,6 +18,8 @@ const {
   menuRef,
   { hideOnClick, target: targetRef },
 )
+
+const log = console.log
 </script>
 
 <template>
@@ -99,7 +101,12 @@ const {
   </UseContextMenu>
 
   <!-- global menu -->
-  <UseContextMenu v-slot="{ stop }" class="menu" z-20>
+  <UseContextMenu
+    v-slot="{ stop }"
+    class="menu"
+    z-20
+    @context-menu="log('global menu clicked on:\n', $event.target)"
+  >
     <div class="menu-item">
       ✅ Global 1
     </div>
