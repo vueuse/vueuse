@@ -6,12 +6,11 @@ import {
 } from '@vueuse/core'
 import Mark from 'mark.js'
 
+import type { Ref } from 'vue-demi'
 import type {
   MaybeComputedRef,
-  MaybeElementRef,
   WatchDebouncedOptions,
 } from '@vueuse/core'
-import type { Ref } from 'vue-demi'
 import type { MarkOptions } from 'mark.js'
 
 interface MarkType {
@@ -31,7 +30,7 @@ export interface UseMarkReturn {
 }
 
 export function useMark<Immediate extends Readonly<boolean> = false>(
-  target: MaybeElementRef | MaybeComputedRef<string>,
+  target: MaybeComputedRef<string | HTMLElement | readonly HTMLElement[] | NodeList | null | undefined>,
   search: MaybeComputedRef<string | string[]>,
   options: MaybeComputedRef<UseMarkOptions<Immediate>> = {},
 ): UseMarkReturn {
