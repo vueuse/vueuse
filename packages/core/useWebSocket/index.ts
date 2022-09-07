@@ -6,7 +6,9 @@ import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 
-export interface WebSocketOptions {
+const DEFAULT_PING_MESSAGE = 'ping'
+
+export interface UseWebSocketOptions {
   onConnected?: (ws: WebSocket) => void
   onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
   onError?: (ws: WebSocket, event: Event) => void
@@ -31,6 +33,13 @@ export interface WebSocketOptions {
      * @default 1000
      */
     interval?: number
+
+    /**
+     * Heartbeat response timeout, in milliseconds
+     *
+     * @default 1000
+     */
+    pongTimeout?: number
   }
 
   /**
@@ -83,7 +92,7 @@ export interface WebSocketOptions {
   protocols?: string[]
 }
 
-export interface WebSocketResult<T> {
+export interface UseWebSocketReturn<T> {
   /**
    * Reference to the latest data received via the websocket,
    * can be watched to respond to incoming messages
@@ -135,8 +144,8 @@ function resolveNestedOptions<T>(options: T | true): T {
  */
 export function useWebSocket<Data = any>(
   url: string,
-  options: WebSocketOptions = {},
-): WebSocketResult<Data> {
+  options: UseWebSocketOptions = {},
+): UseWebSocketReturn<Data> {
   const {
     onConnected,
     onDisconnected,
@@ -148,7 +157,7 @@ export function useWebSocket<Data = any>(
   } = options
 
   const data: Ref<Data | null> = ref(null)
-  const status = ref<WebSocketStatus>('CONNECTING')
+  const status = ref<WebSocketStatus>('CLOSED')
   const wsRef = ref<WebSocket | undefined>()
 
   let heartbeatPause: Fn | undefined
@@ -158,6 +167,8 @@ export function useWebSocket<Data = any>(
   let retried = 0
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
+
+  let pongTimeoutWait: ReturnType<typeof setTimeout>
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
@@ -174,6 +185,10 @@ export function useWebSocket<Data = any>(
         wsRef.value.send(buffer)
       bufferedData = []
     }
+  }
+
+  const resetHeartbeat = () => {
+    clearTimeout(pongTimeoutWait)
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -227,6 +242,16 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      resetHeartbeat()
+      // Heartbeat response will be skipped
+      if (options.heartbeat) {
+        const {
+          message = DEFAULT_PING_MESSAGE,
+        } = resolveNestedOptions(options.heartbeat)
+        if (e.data === message)
+          return
+      }
+
       data.value = e.data
       onMessage?.(ws!, e)
     }
@@ -234,12 +259,19 @@ export function useWebSocket<Data = any>(
 
   if (options.heartbeat) {
     const {
-      message = 'ping',
+      message = DEFAULT_PING_MESSAGE,
       interval = 1000,
+      pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
-      () => send(message, false),
+      () => {
+        send(message, false)
+        pongTimeoutWait = setTimeout(() => {
+          // auto-reconnect will be trigger with ws.onclose()
+          close()
+        }, pongTimeout)
+      },
       interval,
       { immediate: false },
     )

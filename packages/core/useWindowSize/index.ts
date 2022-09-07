@@ -4,7 +4,7 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface WindowSizeOptions extends ConfigurableWindow {
+export interface UseWindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number
   initialHeight?: number
   /**
@@ -13,6 +13,12 @@ export interface WindowSizeOptions extends ConfigurableWindow {
    * @default true
    */
   listenOrientation?: boolean
+
+  /**
+   * Whether the scrollbar should be included in the width and height
+   * @default true
+   */
+  includeScrollbar?: boolean
 }
 
 /**
@@ -21,12 +27,13 @@ export interface WindowSizeOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useWindowSize
  * @param options
  */
-export function useWindowSize(options: WindowSizeOptions = {}) {
+export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
     window = defaultWindow,
     initialWidth = Infinity,
     initialHeight = Infinity,
     listenOrientation = true,
+    includeScrollbar = true,
   } = options
 
   const width = ref(initialWidth)
@@ -34,8 +41,14 @@ export function useWindowSize(options: WindowSizeOptions = {}) {
 
   const update = () => {
     if (window) {
-      width.value = window.innerWidth
-      height.value = window.innerHeight
+      if (includeScrollbar) {
+        width.value = window.innerWidth
+        height.value = window.innerHeight
+      }
+      else {
+        width.value = window.document.documentElement.clientWidth
+        height.value = window.document.documentElement.clientHeight
+      }
     }
   }
 

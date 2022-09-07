@@ -38,3 +38,5 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
     triggerResize,
   }
 }
+
+export type UseTextareaAutosizeReturn = ReturnType<typeof useTextareaAutosize>

@@ -1,11 +1,11 @@
 import { ref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
-import type { MouseOptions } from '../useMouse'
+import type { UseMouseOptions } from '../useMouse'
 import { useMouse } from '../useMouse'
 import { defaultWindow } from '../_configurable'
 
-export interface MouseInElementOptions extends MouseOptions {
+export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
 }
 

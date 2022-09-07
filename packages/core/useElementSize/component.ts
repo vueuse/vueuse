@@ -2,9 +2,9 @@ import { defineComponent, h, reactive, ref } from 'vue-demi'
 import type { ElementSize } from '@vueuse/core'
 import { useElementSize } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
-import type { ResizeObserverOptions } from '../useResizeObserver'
+import type { UseResizeObserverOptions } from '../useResizeObserver'
 
-export const UseElementSize = defineComponent<ElementSize & ResizeObserverOptions & RenderableComponent>({
+export const UseElementSize = defineComponent<ElementSize & UseResizeObserverOptions & RenderableComponent>({
   name: 'UseElementSize',
   props: ['width', 'height', 'box'] as unknown as undefined,
   setup(props, { slots }) {

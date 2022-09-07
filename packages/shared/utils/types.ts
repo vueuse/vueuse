@@ -1,4 +1,4 @@
-import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
  * Any function
@@ -28,15 +28,22 @@ export type RemoveableRef<T> = RemovableRef<T>
 export type MaybeRef<T> = T | Ref<T>
 
 /**
- * Maybe it's a ref, or a getter function
+ * Maybe it's a ref, or a plain value, or a getter function
  *
  * ```ts
- * type MaybeRef<T> = T | Ref<T>
+ * type MaybeComputedRef<T> = (() => T) | T | Ref<T> | ComputedRef<T>
  * ```
  */
-export type MaybeComputedRef<T> = T extends Function
-  ? never
-  : (() => T) | MaybeRef<T>
+export type MaybeComputedRef<T> = MaybeReadonlyRef<T> | MaybeRef<T>
+
+/**
+ * Maybe it's a computed ref, or a getter function
+ *
+ * ```ts
+ * type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
+ * ```
+ */
+export type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
@@ -61,6 +68,8 @@ export type ElementOf<T> = T extends (infer E)[] ? E : never
 export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
+
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
 
 export interface Pausable {
   /**

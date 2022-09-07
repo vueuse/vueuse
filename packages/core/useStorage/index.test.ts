@@ -23,7 +23,7 @@ describe('useStorage', () => {
   })
 
   it('string', async () => {
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(KEY, 'a', storage)
 
       return {
@@ -31,13 +31,13 @@ describe('useStorage', () => {
       }
     })
 
-    expect(instance.ref).toBe('a')
+    expect(vm.ref).toBe('a')
     expect(storage.setItem).toBeCalledWith(KEY, 'a')
 
-    instance.ref = 'b'
+    vm.ref = 'b'
     await nextTwoTick()
 
-    expect(instance.ref).toBe('b')
+    expect(vm.ref).toBe('b')
     expect(storage.setItem).toBeCalledWith(KEY, 'b')
   })
 
@@ -247,7 +247,7 @@ describe('useStorage', () => {
   it('eventFilter', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(
         KEY,
         {
@@ -278,7 +278,7 @@ describe('useStorage', () => {
     // @ts-expect-error mock
     storage.setItem.mockClear()
 
-    instance.ref.name = 'b'
+    vm.ref.name = 'b'
     await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
@@ -288,7 +288,7 @@ describe('useStorage', () => {
     // @ts-expect-error mock
     storage.setItem.mockClear()
 
-    instance.ref.data = 321
+    vm.ref.data = 321
     await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
     await promiseTimeout(300)
@@ -299,7 +299,7 @@ describe('useStorage', () => {
   it('custom serializer', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
-    const instance = useSetup(() => {
+    const vm = useSetup(() => {
       const ref = useStorage(KEY, 0, storage, { serializer: { read: JSON.parse, write: JSON.stringify } })
 
       expect(storage.setItem).toBeCalledWith(KEY, '0')
@@ -311,24 +311,51 @@ describe('useStorage', () => {
       }
     })
 
-    instance.ref = { name: 'a', data: 123 }
+    vm.ref = { name: 'a', data: 123 }
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    instance.ref.name = 'b'
+    vm.ref.name = 'b'
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
 
-    instance.ref.data = 321
+    vm.ref.data = 321
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
 
-    instance.ref = null
+    vm.ref = null
     await nextTwoTick()
 
     expect(storage.removeItem).toBeCalledWith(KEY)
+  })
+
+  it('mergeDefaults option', async () => {
+    // basic
+    storage.setItem(KEY, '0')
+    const basicRef = useStorage(KEY, 1, storage, { mergeDefaults: true })
+    expect(basicRef.value).toBe(0)
+
+    // object
+    storage.setItem(KEY, JSON.stringify({ a: 1 }))
+    const objectRef = useStorage(KEY, { a: 2, b: 3 }, storage, { mergeDefaults: true })
+    expect(objectRef.value).toEqual({ a: 1, b: 3 })
+
+    // array
+    storage.setItem(KEY, JSON.stringify([1]))
+    const arrayRef = useStorage(KEY, [2], storage, { mergeDefaults: true })
+    expect(arrayRef.value).toEqual([1])
+
+    // custom function
+    storage.setItem(KEY, JSON.stringify([{ a: 1 }]))
+    const customRef = useStorage(KEY, [{ a: 3 }], storage, { mergeDefaults: (value, initial) => [...initial, ...value] })
+    expect(customRef.value).toEqual([{ a: 3 }, { a: 1 }])
+
+    // custom function 2
+    storage.setItem(KEY, '1')
+    const customRef2 = useStorage(KEY, 2, storage, { mergeDefaults: (value, initial) => value + initial })
+    expect(customRef2.value).toEqual(3)
   })
 })

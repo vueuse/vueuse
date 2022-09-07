@@ -2,16 +2,18 @@ import type { PackageIndexes } from './types'
 import _metadata, { categories as _categories, functions as _functions, packages as _packages } from './index.json'
 
 const categoriesOrder = [
-  'Browser',
-  'Sensors',
-  'Animation',
   'State',
   'Elements',
+  'Browser',
+  'Sensors',
+  'Network',
+  'Animation',
   'Component',
   'Watch',
-  'Network',
+  'Reactivity',
+  'Array',
+  'Time',
   'Utilities',
-  'Misc',
 ]
 
 export const metadata = _metadata as PackageIndexes

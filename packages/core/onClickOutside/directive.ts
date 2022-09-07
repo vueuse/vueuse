@@ -1,7 +1,7 @@
 import type { FunctionDirective } from 'vue-demi'
 import { onClickOutside } from '.'
 
-const handler = (): FunctionDirective<any, (evt: PointerEvent) => void> => {
+const handler = (): FunctionDirective<any, <E = PointerEvent>(evt: E) => void> => {
   let stop = null as unknown as ReturnType<typeof onClickOutside>
   return (el, binding) => {
     if (stop) {

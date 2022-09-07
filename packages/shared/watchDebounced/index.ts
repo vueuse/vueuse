@@ -1,10 +1,10 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeRef } from '../utils'
+import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeComputedRef } from '../utils'
 import { debounceFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchDebouncedOptions<Immediate> extends WatchOptions<Immediate>, DebounceFilterOptions {
-  debounce?: MaybeRef<number>
+  debounce?: MaybeComputedRef<number>
 }
 
 // overlads

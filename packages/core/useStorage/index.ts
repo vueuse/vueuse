@@ -1,6 +1,6 @@
-import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRef, RemovableRef } from '@vueuse/shared'
-import { pausableWatch } from '@vueuse/shared'
-import { ref, shallowRef, unref } from 'vue-demi'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
+import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -53,7 +53,7 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   },
 }
 
-export interface StorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
    * Watch for deep changes
    *
@@ -76,6 +76,16 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   writeDefaults?: boolean
 
   /**
+   * Merge the default value with the value read from the storage.
+   *
+   * When setting it to true, it will perform a **shallow merge** for objects.
+   * You can pass a function to perform custom merge (e.g. deep merge), for example:
+   *
+   * @default false
+   */
+  mergeDefaults?: boolean | ((storageValue: T, defaults: T) => T)
+
+  /**
    * Custom data serialization
    */
   serializer?: Serializer<T>
@@ -95,32 +105,29 @@ export interface StorageOptions<T> extends ConfigurableEventFilter, Configurable
   shallow?: boolean
 }
 
-export function useStorage(key: string, initialValue: MaybeRef<string>, storage?: StorageLike, options?: StorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, initialValue: MaybeRef<boolean>, storage?: StorageLike, options?: StorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, initialValue: MaybeRef<number>, storage?: StorageLike, options?: StorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, initialValue: MaybeRef<T>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, initialValue: MaybeRef<null>, storage?: StorageLike, options?: StorageOptions<T>): RemovableRef<T>
+export function useStorage(key: string, defaults: MaybeComputedRef<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, defaults: MaybeComputedRef<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, defaults: MaybeComputedRef<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: string, defaults: MaybeComputedRef<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, defaults: MaybeComputedRef<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
  *
  * @see https://vueuse.org/useStorage
- * @param key
- * @param initialValue
- * @param storage
- * @param options
  */
 export function useStorage<T extends(string | number | boolean | object | null)>(
   key: string,
-  initialValue: MaybeRef<T>,
+  defaults: MaybeComputedRef<T>,
   storage: StorageLike | undefined,
-  options: StorageOptions<T> = {},
+  options: UseStorageOptions<T> = {},
 ): RemovableRef<T> {
   const {
     flush = 'pre',
     deep = true,
     listenToStorageChanges = true,
     writeDefaults = true,
+    mergeDefaults = false,
     shallow,
     window = defaultWindow,
     eventFilter,
@@ -128,7 +135,8 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       console.error(e)
     },
   } = options
-  const data = (shallow ? shallowRef : ref)(initialValue) as RemovableRef<T>
+
+  const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
 
   if (!storage) {
     try {
@@ -142,7 +150,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (!storage)
     return data
 
-  const rawInit: T = unref(initialValue)
+  const rawInit: T = resolveUnref(defaults)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
@@ -185,6 +193,14 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         if (writeDefaults && rawInit !== null)
           storage!.setItem(key, serializer.write(rawInit))
         return rawInit
+      }
+      else if (!event && mergeDefaults) {
+        const value = serializer.read(rawValue)
+        if (isFunction(mergeDefaults))
+          return mergeDefaults(value, rawInit)
+        else if (type === 'object' && !Array.isArray(value))
+          return { ...rawInit as any, ...value }
+        return value
       }
       else if (typeof rawValue !== 'string') {
         return rawValue

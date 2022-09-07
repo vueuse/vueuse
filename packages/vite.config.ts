@@ -10,11 +10,10 @@ import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
 import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
-import { NavbarFix } from './.vitepress/plugins/navbar'
 
 export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
-    getChangeLog(800),
+    getChangeLog(process.env.CI ? 1000 : 100),
     getFunctionContributors(),
   ])
 
@@ -34,7 +33,6 @@ export default defineConfig(async () => {
       MarkdownTransform(),
       ChangeLog(changeLog),
       Contributors(contributions),
-      NavbarFix(),
 
       // plugins
       Components({
@@ -79,8 +77,10 @@ export default defineConfig(async () => {
       alias: {
         '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
         '@vueuse/core': resolve(__dirname, 'core/index.ts'),
+        '@vueuse/math': resolve(__dirname, 'math/index.ts'),
         '@vueuse/integrations': resolve(__dirname, 'integrations/index.ts'),
         '@vueuse/components': resolve(__dirname, 'components/index.ts'),
+        '@vueuse/metadata': resolve(__dirname, 'metadata/index.ts'),
         '@vueuse/docs-utils': resolve(__dirname, '.vitepress/plugins/utils.ts'),
       },
       dedupe: [
@@ -92,7 +92,6 @@ export default defineConfig(async () => {
     optimizeDeps: {
       exclude: [
         'vue-demi',
-        '@vue/theme',
         '@vueuse/shared',
         '@vueuse/core',
         'body-scroll-lock',

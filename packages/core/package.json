@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/core",
-  "version": "8.9.1",
+  "version": "9.2.0",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -38,20 +38,8 @@
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
-  "peerDependencies": {
-    "@vue/composition-api": "^1.1.0",
-    "vue": "^2.6.0 || ^3.2.0"
-  },
-  "peerDependenciesMeta": {
-    "vue": {
-      "optional": true
-    },
-    "@vue/composition-api": {
-      "optional": true
-    }
-  },
   "dependencies": {
-    "@types/web-bluetooth": "^0.0.14",
+    "@types/web-bluetooth": "^0.0.15",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "vue-demi": "*"

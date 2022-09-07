@@ -1,5 +1,4 @@
-import type { Ref } from 'vue-demi'
-import { defineComponent, reactive, toRef } from 'vue-demi'
+import { defineComponent, reactive } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import type { UseTimeAgoOptions } from '@vueuse/core'
 import { useTimeAgo } from '@vueuse/core'
@@ -12,8 +11,7 @@ export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({
   name: 'UseTimeAgo',
   props: ['time', 'updateInterval', 'max', 'fullDateFormatter', 'messages'] as unknown as undefined,
   setup(props, { slots }) {
-    const time = toRef(props, 'time') as Ref<Date | number | string>
-    const data = reactive(useTimeAgo(time, { ...props, controls: true }))
+    const data = reactive(useTimeAgo(() => props.time as number, { ...props, controls: true }))
 
     return () => {
       if (slots.default)

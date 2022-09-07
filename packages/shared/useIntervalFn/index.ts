@@ -1,9 +1,10 @@
 import { isRef, ref, unref, watch } from 'vue-demi'
+import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { Fn, MaybeRef, Pausable } from '../utils'
+import type { Fn, MaybeComputedRef, Pausable } from '../utils'
 import { isClient } from '../utils'
 
-export interface IntervalFnOptions {
+export interface UseIntervalFnOptions {
   /**
    * Start the timer immediately
    *
@@ -26,13 +27,13 @@ export interface IntervalFnOptions {
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeRef<number> = 1000, options: IntervalFnOptions = {}): Pausable {
+export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000, options: UseIntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
     immediateCallback = false,
   } = options
 
-  let timer: any = null
+  let timer: ReturnType<typeof setInterval> | null = null
   const isActive = ref(false)
 
   function clean() {
@@ -54,7 +55,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRef<number> = 1000, options
     if (immediateCallback)
       cb()
     clean()
-    timer = setInterval(cb, unref(interval))
+    timer = setInterval(cb, resolveUnref(interval))
   }
 
   if (immediate && isClient)

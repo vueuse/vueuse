@@ -5,8 +5,9 @@ import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
-export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
+export interface UseGeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
 
 /**
  * Reactive Geolocation API.
@@ -14,7 +15,7 @@ export interface GeolocationOptions extends Partial<PositionOptions>, Configurab
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export function useGeolocation(options: GeolocationOptions = {}) {
+export function useGeolocation(options: UseGeolocationOptions = {}) {
   const {
     enableHighAccuracy = true,
     maximumAge = 30000,
@@ -22,7 +23,7 @@ export function useGeolocation(options: GeolocationOptions = {}) {
     navigator = defaultNavigator,
   } = options
 
-  const isSupported = navigator && 'geolocation' in navigator
+  const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
   const locatedAt: Ref<number | null> = ref(null)
   const error = ref<GeolocationPositionError | null>(null)
@@ -44,7 +45,7 @@ export function useGeolocation(options: GeolocationOptions = {}) {
 
   let watcher: number
 
-  if (isSupported) {
+  if (isSupported.value) {
     watcher = navigator!.geolocation.watchPosition(
       updatePosition,
       err => error.value = err,

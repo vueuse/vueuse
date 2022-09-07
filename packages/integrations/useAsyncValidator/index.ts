@@ -1,9 +1,9 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { until } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
-import { computed, ref, unref, watchEffect } from 'vue-demi'
+import { computed, ref, watchEffect } from 'vue-demi'
 
 export type AsyncValidatorError = Error & {
   errors: ValidateError[]
@@ -31,7 +31,11 @@ export interface UseAsyncValidatorOptions {
  * @see https://vueuse.org/useAsyncValidator
  * @see https://github.com/yiminghe/async-validator
  */
-export function useAsyncValidator(value: MaybeRef<Record<string, any>>, rules: MaybeRef<Rules>, options: UseAsyncValidatorOptions = {}): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
+export function useAsyncValidator(
+  value: MaybeComputedRef<Record<string, any>>,
+  rules: MaybeComputedRef<Rules>,
+  options: UseAsyncValidatorOptions = {},
+): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
   const errorInfo = ref<AsyncValidatorError | null>()
   const isFinished = ref(false)
   const pass = ref(false)
@@ -43,9 +47,9 @@ export function useAsyncValidator(value: MaybeRef<Record<string, any>>, rules: M
   watchEffect(async () => {
     isFinished.value = false
     pass.value = false
-    const validator = new Schema(unref(rules))
+    const validator = new Schema(resolveUnref(rules))
     try {
-      await validator.validate(unref(value), validateOption)
+      await validator.validate(resolveUnref(value), validateOption)
       pass.value = true
       errorInfo.value = null
     }

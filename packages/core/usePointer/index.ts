@@ -85,3 +85,5 @@ export function usePointer(options: UsePointerOptions = {}) {
     isInside,
   }
 }
+
+export type UsePointerReturn = ReturnType<typeof usePointer>

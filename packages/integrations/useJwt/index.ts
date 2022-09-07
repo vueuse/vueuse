@@ -1,10 +1,11 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { computed } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 import jwt_decode from 'jwt-decode'
 import type { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
 
-export interface JwtOptions<Fallback> {
+export interface UseJwtOptions<Fallback> {
   /**
    * Value returned when encounter error on decoding
    *
@@ -18,7 +19,7 @@ export interface JwtOptions<Fallback> {
   onError?: (error: unknown) => void
 }
 
-export interface JwtResult<Payload, Header, Fallback> {
+export interface UseJwtReturn<Payload, Header, Fallback> {
   header: ComputedRef<Header | Fallback>
   payload: ComputedRef<Payload | Fallback>
 }
@@ -34,11 +35,9 @@ export function useJwt<
   Header extends object = JwtHeader,
   Fallback = null,
 >(
-  encodedJwt: MaybeRef<string>,
-  options: JwtOptions<Fallback> = {},
-): JwtResult<Payload, Header, Fallback> {
-  const encodedJwtRef = ref(encodedJwt)
-
+  encodedJwt: MaybeComputedRef<string>,
+  options: UseJwtOptions<Fallback> = {},
+): UseJwtReturn<Payload, Header, Fallback> {
   const {
     onError,
     fallbackValue = null,
@@ -54,9 +53,8 @@ export function useJwt<
     }
   }
 
-  const header = computed(() => decodeWithFallback<Header>(encodedJwtRef.value, { header: true }))
-
-  const payload = computed(() => decodeWithFallback<Payload>(encodedJwtRef.value))
+  const header = computed(() => decodeWithFallback<Header>(resolveUnref(encodedJwt), { header: true }))
+  const payload = computed(() => decodeWithFallback<Payload>(resolveUnref(encodedJwt)))
 
   return {
     header,

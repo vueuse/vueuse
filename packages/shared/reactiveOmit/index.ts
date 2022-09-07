@@ -4,7 +4,7 @@ import { reactiveComputed } from '../reactiveComputed'
 /**
  * Reactively omit fields from a reactive object
  *
- * @see https://vueuse.js.org/reactiveOmit
+ * @see https://vueuse.org/reactiveOmit
  */
 export function reactiveOmit<T extends object, K extends keyof T>(
   obj: T,

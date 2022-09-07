@@ -1,0 +1,88 @@
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
+
+ :root {
+  --vp-c-accent: #35495e;
+  --vp-c-brand: #44bd87;
+  --vp-c-text-code: #5d6f5d;
+  --vp-code-block-bg: rgba(125,125,125,0.04);
+  --vp-c-disabled-bg: rgba(125,125,125,0.2);
+  /* fix contrast on gray cards: used by --vp-c-text-2 */
+  --vp-c-text-light-2: rgba(56 56 56 / 70%);
+}
+
+.dark {
+  --vp-code-block-bg: rgba(0,0,0,0.2);
+  --vp-c-text-code: #c0cec0;
+  /* fix contrast on gray cards: check the same above (this is the default) */
+  --vp-c-text-dark-2: rgba(235, 235, 235, 0.60);
+}
+
+/**
+ * Component: Code
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-code-line-highlight-color: rgba(125, 125, 125, 0.2);
+}
+
+.dark {
+  --vp-code-line-highlight-color: rgba(0, 0, 0, 0.5);
+}
+
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-button-brand-border: var(--vp-c-brand-light);
+  --vp-button-brand-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-bg: var(--vp-c-brand);
+  --vp-button-brand-hover-border: var(--vp-c-brand-light);
+  --vp-button-brand-hover-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-light);
+  --vp-button-brand-active-border: var(--vp-c-brand-light);
+  --vp-button-brand-active-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+
+ :root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    #35495e -80%,
+    #41b883
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    #41b88380 30%,
+    #35495e80
+  );
+  --vp-home-hero-image-filter: blur(30px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(72px);
+  }
+}
+
+
+/**
+ * Component: Algolia
+ * -------------------------------------------------------------------------- */
+
+.DocSearch {
+  --docsearch-primary-color: var(--vp-c-brand) !important;
+}

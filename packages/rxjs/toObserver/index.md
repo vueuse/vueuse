@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # toObserver
 
-Sugar function to convert a ref in an observer
+Sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide/observer).
 
 ## Usage
 

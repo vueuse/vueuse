@@ -1,4 +1,5 @@
-import { readonly, ref } from 'vue-demi'
+import { hasOwn } from '@vueuse/shared'
+import { type Ref, readonly, ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
@@ -23,13 +24,19 @@ const DEFAULT_OPTIONS: UseFileDialogOptions = {
   accept: '*',
 }
 
+export interface UseFileDialogReturn {
+  files: Ref<FileList | null>
+  open: (localOptions?: Partial<UseFileDialogOptions>) => void
+  reset: () => void
+}
+
 /**
  * Open file dialog with ease.
  *
  * @see https://vueuse.org/useFileDialog
  * @param options
  */
-export function useFileDialog(options: UseFileDialogOptions = {}) {
+export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialogReturn {
   const {
     document = defaultDocument,
   } = options
@@ -57,7 +64,8 @@ export function useFileDialog(options: UseFileDialogOptions = {}) {
     }
     input.multiple = _options.multiple!
     input.accept = _options.accept!
-    input.capture = _options.capture!
+    if (hasOwn(_options, 'capture'))
+      input.capture = _options.capture!
 
     input.click()
   }
@@ -74,5 +82,3 @@ export function useFileDialog(options: UseFileDialogOptions = {}) {
     reset,
   }
 }
-
-export type UseFileDialogReturn = ReturnType<typeof useFileDialog>

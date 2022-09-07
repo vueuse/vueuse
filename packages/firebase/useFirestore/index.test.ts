@@ -1,25 +1,27 @@
-import type firebase from 'firebase'
+import { ref } from 'vue-demi'
+import { onSnapshot } from 'firebase/firestore'
+import type { Mock } from 'vitest'
 import { useFirestore } from './index'
 
+vi.mock('firebase/firestore', () => ({
+  onSnapshot: vi.fn(),
+}))
+
 describe('useFirestore', () => {
-  const expectArrayRef = (path: string, initialValue: any, result: boolean) => {
-    // @ts-expect-error cast
-    const docRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = {
-      path,
-      onSnapshot: vitest.fn() as any,
-    }
-
-    const ref = useFirestore(docRef, initialValue)
-
-    expect(Array.isArray(ref.value)).toBe(result)
-  }
-
-  it('should return an array ref when applied on a (sub-)collection', () => {
-    expectArrayRef('users', [], true)
-    expectArrayRef('users/foo/todos', [], true)
+  beforeEach(() => {
+    (onSnapshot as Mock).mockClear()
   })
 
-  it('should not return an array ref object when applied on a document', () => {
-    expectArrayRef('users/foo', {}, false)
+  it('should call onSnapshot with document reference', () => {
+    const docRef = { path: 'users' } as any
+    useFirestore(docRef)
+    expect((onSnapshot as Mock).mock.calls[0][0]).toStrictEqual(docRef)
+  })
+
+  it('should call onSnapshot with ref value of document reference', () => {
+    const docRef = { path: 'posts' } as any
+    const refOfDocRef = ref(docRef)
+    useFirestore(refOfDocRef)
+    expect((onSnapshot as Mock).mock.calls[0][0]).toStrictEqual(docRef)
   })
 })

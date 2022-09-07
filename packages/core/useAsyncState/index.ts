@@ -10,7 +10,7 @@ export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
   execute: (delay?: number, ...args: any[]) => Promise<Data>
 }
 
-export interface AsyncStateOptions<Shallow extends boolean> {
+export interface UseAsyncStateOptions<Shallow extends boolean> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -50,6 +50,13 @@ export interface AsyncStateOptions<Shallow extends boolean> {
    * @default true
    */
   shallow?: Shallow
+  /**
+   *
+   * An error is thrown when executing the execute function
+   *
+   * @default false
+   */
+  throwError?: boolean
 }
 
 /**
@@ -64,7 +71,7 @@ export interface AsyncStateOptions<Shallow extends boolean> {
 export function useAsyncState<Data, Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
   initialState: Data,
-  options?: AsyncStateOptions<Shallow>,
+  options?: UseAsyncStateOptions<Shallow>,
 ): UseAsyncStateReturn<Data, Shallow> {
   const {
     immediate = true,
@@ -72,6 +79,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     onError = noop,
     resetOnExecute = true,
     shallow = true,
+    throwError,
   } = options ?? {}
 
   const state = shallow ? shallowRef(initialState) : ref(initialState)
@@ -101,6 +109,8 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     catch (e) {
       error.value = e
       onError(e)
+      if (throwError)
+        throw error
     }
     finally {
       isLoading.value = false

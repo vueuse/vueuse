@@ -11,12 +11,7 @@ import { shallowRef } from 'vue-demi'
  * You need to provide `ipcRenderer` to this function.
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
- * @export
- * @template T
- * @param {IpcRenderer} ipcRenderer
- * @param {string} channel
- * @param {...any[]} args
- * @returns {(Ref<T | null>)}
+ * @see https://vueuse.org/useIpcRendererInvoke
  */
 export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: string, ...args: any[]): Ref<T | null>
 
@@ -28,11 +23,7 @@ export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: strin
  * `ipcRenderer` will be automatically gotten.
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
- * @export
- * @template T
- * @param {string} channel
- * @param {...any[]} args
- * @returns {(Ref<T | null>)}
+ * @see https://vueuse.org/useIpcRendererInvoke
  */
 export function useIpcRendererInvoke<T>(channel: string, ...args: any[]): Ref<T | null>
 

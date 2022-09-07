@@ -4,9 +4,9 @@ category: '@Integrations'
 
 # useFocusTrap
 
-Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap)
+Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap).
 
-For more info on what options can be passed see [`createOptions`](https://github.com/focus-trap/focus-trap#createfocustrapelement-createoptions) in the `focus-trap` docs.
+For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createfocustrapelement-createoptions) in the `focus-trap` documentation.
 
 ## Usage
 

@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: useThrottleFn
 ---
 
 # useDebounceFn
@@ -34,12 +35,6 @@ const debouncedFn = useDebounceFn(() => {
 document.addEventListener('resize', debouncedFn)
 ```
 
-## Related Functions
-
-- `useThrottle`
-- `useThrottleFn`
-- `useDebounce`
-- `useDebounceFn`
 
 ## Recommended Reading
 

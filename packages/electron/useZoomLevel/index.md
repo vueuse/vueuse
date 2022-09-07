@@ -6,7 +6,7 @@ category: '@Electron'
 
 Reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level.
 
-## Usagef
+## Usage
 
 ```ts
 import { useZoomLevel } from '@vueuse/electron'
