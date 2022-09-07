@@ -5,8 +5,8 @@ describe('useContextMenu', () => {
   let menuRef = ref<HTMLElement>()
   let targetRef = ref<HTMLElement>()
 
-  const contextMenuEvent = new MouseEvent('contextmenu', { clientX: 100, clientY: 200 })
-  const clickOutside = () => dispatchEvent(new MouseEvent('click', { clientX: 9999, clientY: 9999 }))
+  const contextMenuEvent = new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true })
+  const clickOutside = () => dispatchEvent(new MouseEvent('click', { clientX: 9999, clientY: 9999, bubbles: true }))
 
   const expectToBeVisible = (element: HTMLElement) => expect(element.style.visibility).toBe('visible')
   const expectToBeHidden = (element: HTMLElement) => expect(element.style.visibility).toBe('hidden')
@@ -120,6 +120,48 @@ describe('useContextMenu', () => {
       expectToBeHidden(menuRef.value!)
 
       show()
+      await nextTick()
+      expectToBeHidden(menuRef.value!)
+    })
+
+    it('should trigger `onContextMenu` with exact Event', async () => {
+      const receiveDOM = vi.fn()
+      const onContextMenu = vi.fn((e: any) => {
+        receiveDOM(e.target)
+      })
+
+      const subDiv = document.createElement('div')
+      targetRef.value!.appendChild(subDiv)
+
+      useContextMenu(menuRef, {
+        target: targetRef,
+        onContextMenu,
+      })
+
+      expect(onContextMenu).not.toBeCalled()
+
+      targetRef.value!.dispatchEvent(contextMenuEvent)
+      expect(receiveDOM).toBeCalledWith(targetRef.value)
+
+      // exact DOM
+      subDiv.dispatchEvent(contextMenuEvent)
+      expect(receiveDOM).toBeCalledWith(subDiv)
+    })
+
+    it('should be prevented from showing', async () => {
+      let prevent = false
+      useContextMenu(menuRef, {
+        onContextMenu: () => !prevent,
+      })
+
+      // not prevent
+      dispatchEvent(contextMenuEvent)
+      await nextTick()
+      expectToBeVisible(menuRef.value!)
+
+      // prevent
+      prevent = true
+      dispatchEvent(contextMenuEvent)
       await nextTick()
       expectToBeHidden(menuRef.value!)
     })

@@ -27,9 +27,22 @@ export interface UseContextMenuOptions {
 
   /**
    * Fires when the visibility of the context menu changes.
+   *
    * @param visible
    */
   onVisibleChange?: (visible: boolean) => void
+
+  /**
+   * Fires when the `contextmenu` event triggers.
+   *
+   * Could be useful to know
+   * the exact DOM your're clicking on,
+   * or control whether this `menu` should be shown or not.
+   *
+   * @param event
+   * @returns `false` to prevent the `menu` from showing
+   */
+  onContextMenu?: (event: MouseEvent) => boolean | void
 }
 
 export interface UseContextMenuReturn {
@@ -83,6 +96,7 @@ export function useContextMenu(
   const {
     hideOnClick = true,
     onVisibleChange = noop,
+    onContextMenu = noop,
     target,
   } = options
 
@@ -168,6 +182,9 @@ export function useContextMenu(
   }
   const contextMenuHandler = (e: MouseEvent) => {
     if (!enabled.value)
+      return
+
+    if (onContextMenu(e) === false)
       return
 
     e.preventDefault()
