@@ -1,20 +1,34 @@
 import type { Fn } from '@vueuse/shared'
-import type { Mock, SpyInstance } from 'vitest'
+import type { SpyInstance } from 'vitest'
 import { useEventListener } from '.'
 
 describe('useEventListener', () => {
+  let target: HTMLDivElement
+  let removeSpy: SpyInstance
+  let addSpy: SpyInstance
+
+  beforeEach(() => {
+    target = document.createElement('div')
+    removeSpy = vitest.spyOn(target, 'removeEventListener')
+    addSpy = vitest.spyOn(target, 'addEventListener')
+  })
+
+  it('should be defined', () => {
+    expect(useEventListener).toBeDefined()
+  })
+
   describe('given both none array', () => {
-    let target: HTMLDivElement
     let stop: Fn
-    let listener: Mock
-    let remove: SpyInstance
+    const listener = vitest.fn()
     const event = 'click'
 
     beforeEach(() => {
-      target = document.createElement('div')
-      listener = vi.fn()
+      listener.mockReset()
       stop = useEventListener(target, event, listener)
-      remove = vitest.spyOn(target, 'removeEventListener')
+    })
+
+    it('should add listener', () => {
+      expect(addSpy).toBeCalledTimes(1)
     })
 
     it('should trigger listener', () => {
@@ -24,25 +38,25 @@ describe('useEventListener', () => {
     })
 
     it('should remove listener', () => {
-      expect(remove).not.toBeCalled()
+      expect(removeSpy).not.toBeCalled()
       stop()
-      expect(remove).toBeCalledTimes(1)
+      expect(removeSpy).toBeCalledTimes(1)
     })
   })
 
   describe('given array of events but single listener', () => {
-    let target: HTMLDivElement
     let stop: Fn
-    let listener: Mock
-    let remove: SpyInstance
+    const listener = vitest.fn()
     const events = ['click', 'scroll', 'blur', 'resize']
     const options = { capture: false }
 
     beforeEach(() => {
-      target = document.createElement('div')
-      listener = vi.fn()
+      listener.mockReset()
       stop = useEventListener(target, events, listener, options)
-      remove = vitest.spyOn(target, 'removeEventListener')
+    })
+
+    it('should add listener for all events', () => {
+      events.forEach(event => expect(addSpy).toBeCalledWith(event, listener, options))
     })
 
     it('should trigger listener with all events', () => {
@@ -54,28 +68,28 @@ describe('useEventListener', () => {
     })
 
     it('should remove listener with all events', () => {
-      expect(remove).not.toBeCalled()
+      expect(removeSpy).not.toBeCalled()
 
       stop()
 
-      expect(remove).toBeCalledTimes(events.length)
-      events.forEach(event => expect(remove).toBeCalledWith(event, listener, options))
+      expect(removeSpy).toBeCalledTimes(events.length)
+      events.forEach(event => expect(removeSpy).toBeCalledWith(event, listener, options))
     })
   })
 
   describe('given single event but array of listeners', () => {
-    let target: HTMLDivElement
     let stop: Fn
-    let listeners: Mock[]
-    let remove: SpyInstance
+    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
     const event = 'click'
     const options = { capture: true }
 
     beforeEach(() => {
-      target = document.createElement('div')
-      listeners = [vi.fn(), vi.fn(), vi.fn()]
+      listeners.forEach(listener => listener.mockReset())
       stop = useEventListener(target, event, listeners, options)
-      remove = vitest.spyOn(target, 'removeEventListener')
+    })
+
+    it('should add all listeners', () => {
+      listeners.forEach(listener => expect(addSpy).toBeCalledWith(event, listener, options))
     })
 
     it('should call all listeners with single click event', () => {
@@ -87,28 +101,32 @@ describe('useEventListener', () => {
     })
 
     it('should remove listeners', () => {
-      expect(remove).not.toBeCalled()
+      expect(removeSpy).not.toBeCalled()
 
       stop()
 
-      expect(remove).toBeCalledTimes(listeners.length)
-      listeners.forEach(listener => expect(remove).toHaveBeenCalledWith(event, listener, options))
+      expect(removeSpy).toBeCalledTimes(listeners.length)
+      listeners.forEach(listener => expect(removeSpy).toHaveBeenCalledWith(event, listener, options))
     })
   })
 
   describe('given both array of events and listeners', () => {
-    let target: HTMLDivElement
     let stop: Fn
-    let listeners: Mock[]
-    let remove: SpyInstance
+    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
     const events = ['click', 'scroll', 'blur', 'resize']
     const options = { capture: true }
 
     beforeEach(() => {
-      target = document.createElement('div')
-      listeners = [vi.fn(), vi.fn(), vi.fn()]
+      listeners.forEach(listener => listener.mockReset())
       stop = useEventListener(target, events, listeners, options)
-      remove = vitest.spyOn(target, 'removeEventListener')
+    })
+
+    it('should add all listeners for all events', () => {
+      listeners.forEach((listener) => {
+        events.forEach((event) => {
+          expect(addSpy).toBeCalledWith(event, listener, options)
+        })
+      })
     })
 
     it('should call all listeners with all events', () => {
@@ -123,7 +141,7 @@ describe('useEventListener', () => {
 
       listeners.forEach((listener) => {
         events.forEach((event) => {
-          expect(remove).toBeCalledWith(event, listener, options)
+          expect(removeSpy).toBeCalledWith(event, listener, options)
         })
       })
     })
