@@ -33,7 +33,7 @@ export function useSorted<T = any>(source: MaybeRef<T[]>, compareFn: UseSortedCo
   const { sortFn = defaultSortFn, dirty = false } = options
 
   if (!dirty)
-    return computed(() => sortFn(unref(source), compareFn as UseSortedCompareFn<T>))
+    return computed(() => sortFn([...unref(source)], compareFn as UseSortedCompareFn<T>))
 
   // dirty
   watchEffect(() => {
