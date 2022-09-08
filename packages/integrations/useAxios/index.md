@@ -62,6 +62,15 @@ const { execute } = useAxios(url1, {}, { immediate: false })
 execute(url2)
 ```
 
+The `execute` function can accept `config` only. 
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const { execute } = useAxios(url1, { method: 'GET' }, { immediate: false })
+execute({ params: { key: 1 } })
+execute({ params: { key: 2 } })
+```
+
 The `execute` function resolves with a result of network request.
 ```ts
 import { useAxios } from '@vueuse/integrations/useAxios'

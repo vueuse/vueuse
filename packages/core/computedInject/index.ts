@@ -43,7 +43,7 @@ export function computedInject<T, K = any>(
 ) {
   let source = inject(key) as T | undefined
   if (defaultSource)
-    source = inject(key, defaultSource) as T
+    source = inject(key, defaultSource as T) as T
   if (treatDefaultAsFactory)
     source = inject(key, defaultSource, treatDefaultAsFactory) as T
 

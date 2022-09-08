@@ -78,7 +78,7 @@ export interface StrictUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string, config?: AxiosRequestConfig) => PromiseLike<StrictUseAxiosReturn<T>>
+  execute: (url?: string | AxiosRequestConfig, config?: AxiosRequestConfig) => PromiseLike<StrictUseAxiosReturn<T>>
 }
 export interface EasyUseAxiosReturn<T> extends UseAxiosReturn<T> {
   /**
@@ -169,11 +169,12 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
   const then: PromiseLike<OverallUseAxiosReturn<T>>['then'] = (onFulfilled, onRejected) =>
     waitUntilFinished().then(onFulfilled, onRejected)
   const execute: OverallUseAxiosReturn<T>['execute'] = (executeUrl: string | AxiosRequestConfig | undefined = url, config: AxiosRequestConfig = {}) => {
+    error.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
       : url ?? ''
     loading(true)
-    instance(_url, { ...defaultConfig, ...config, cancelToken: cancelToken.token })
+    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
         data.value = r.data
