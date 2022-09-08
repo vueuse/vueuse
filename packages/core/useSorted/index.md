@@ -1,5 +1,5 @@
 ---
-category: Sort
+category: Array
 ---
 
 # useSorted
@@ -12,7 +12,10 @@ reactive sort array
 import { quickSort, useSorted } from '@vueuse/core'
 
 // general sort
-const sorted = useSorted([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
+const source = [10, 3, 5, 7, 2, 1, 8, 6, 9, 4]
+const sorted = useSorted(source)
+console.log(sorted.value) // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+console.log(source) // [10, 3, 5, 7, 2, 1, 8, 6, 9, 4]
 
 // object sort
 const objArr = [{
@@ -28,22 +31,15 @@ const objArr = [{
   name: 'Jenny',
   age: 22,
 }]
-const objSorted = useSorted(objArr, quickSort, {
-  compareFn: (a, b) => a.age - b.age,
-})
+const objSorted = useSorted(objArr, (a, b) => a.age - b.age)
 ```
+### dirty mode
 
-### useSortedWrapFn
-
+dirty mode will change the source array.
 ```ts
-const wrapFn = useSortedWrapFn<User>(quickSort, {
-  compareFn: (a, b) => a.age - b.age,
+const source = ref([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
+const sorted = useSorted(source, (a, b) => a - b, {
+  dirty: true,
 })
-const sorted = wrapFn(objArr)
-
-// or
-const wrapFn = useSortedWrapFn<User>(quickSort)
-const sorted = wrapFn(objArr, {
-  compareFn: (a, b) => a.age - b.age,
-})
+console.log(source)// output: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ```
