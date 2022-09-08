@@ -16,9 +16,7 @@ const objArr = [{
   name: 'Jenny',
   age: 22,
 }]
-const result2 = useSorted(objArr, {
-  compareFn: (a, b) => a.age - b.age,
-})
+const result2 = useSorted(objArr, (a, b) => a.age - b.age)
 
 const arrText = ref('')
 const inputArr = computed(() => arrText.value.split(','))

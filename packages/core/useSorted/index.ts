@@ -12,10 +12,6 @@ export interface UseSortedOptions<T> {
    */
   sortFn?: UseSortedFn<T>
   /**
-   * compare function
-   */
-  compareFn?: UseSortedCompareFn<T>
-  /**
    * change the value of the source array
    * @default false
    */
@@ -32,8 +28,9 @@ const defaultCompare: UseSortedCompareFn<number> = (a, b) => a - b
  * @param source source array
  * @param options
  */
-export function useSorted<T>(source: MaybeRef<T[]>, options: UseSortedOptions<T> = {}) {
-  const { sortFn = defaultSortFn, compareFn = defaultCompare, dirty = false } = options
+// @ts-expect-error default compareFn
+export function useSorted<T = any>(source: MaybeRef<T[]>, compareFn: UseSortedCompareFn<T> = defaultCompare, options: UseSortedOptions<T> = {}) {
+  const { sortFn = defaultSortFn, dirty = false } = options
 
   if (!dirty)
     return computed(() => sortFn(unref(source), compareFn as UseSortedCompareFn<T>))
