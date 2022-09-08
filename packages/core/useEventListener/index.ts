@@ -131,9 +131,7 @@ export function useEventListener(...args: any[]) {
 
   const register = (el: any, event: string, listener: any) => {
     el.addEventListener(event, listener, options)
-    return () => {
-      el.removeEventListener(event, listener, options)
-    }
+    return () => el.removeEventListener(event, listener, options)
   }
 
   const stopWatch = watch(
