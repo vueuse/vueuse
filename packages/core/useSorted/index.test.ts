@@ -75,11 +75,19 @@ describe('useSorted', () => {
     const sorted = useSorted(dirtyArr, (a, b) => a - b, { dirty: true })
 
     expect(unref(sorted)).toMatchObject(arrSorted)
-    expect(unref(dirtyArr)).toMatchObject(arrSorted)
+    expect(unref(dirtyArr)).toMatchObject(unref(sorted))
   })
 
   it('should sort object', () => {
     const sorted = useSorted(objArr, (a, b) => a.age - b.age)
+
+    expect(unref(sorted)).toMatchObject(objectSorted)
+  })
+
+  it('should sort object by options.compareFn', () => {
+    const sorted = useSorted(objArr, {
+      compareFn: (a, b) => a.age - b.age,
+    })
 
     expect(unref(sorted)).toMatchObject(objectSorted)
   })
