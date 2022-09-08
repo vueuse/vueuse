@@ -35,6 +35,13 @@ export interface UseDraggableOptions {
   draggingElement?: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
+   * Handle that triggers the drag event
+   *
+   * @default target
+   */
+  handle?: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>
+
+  /**
    * Pointer types that listen to.
    *
    * @default ['mouse', 'touch', 'pen']
@@ -44,7 +51,7 @@ export interface UseDraggableOptions {
   /**
    * Initial position of the element.
    *
-   * @default { x: 0, y: 0}
+   * @default { x: 0, y: 0 }
    */
   initialValue?: MaybeComputedRef<Position>
 
@@ -73,6 +80,7 @@ export interface UseDraggableOptions {
  */
 export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
   const draggingElement = options.draggingElement ?? defaultWindow
+  const draggingHandle = options.handle ?? target
   const position = ref<Position>(resolveUnref(options.initialValue) ?? { x: 0, y: 0 })
   const pressedDelta = ref<Position>()
 
@@ -127,7 +135,7 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    useEventListener(target, 'pointerdown', start, true)
+    useEventListener(draggingHandle, 'pointerdown', start, true)
     useEventListener(draggingElement, 'pointermove', move, true)
     useEventListener(draggingElement, 'pointerup', end, true)
   }
