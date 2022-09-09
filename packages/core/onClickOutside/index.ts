@@ -23,6 +23,8 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   detectIframe?: boolean
 }
 
+export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
+
 /**
  * Listen for clicks outside of an element.
  *
@@ -33,7 +35,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  */
 export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void,
+  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
   const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options

@@ -1,11 +1,25 @@
-import type { FunctionDirective } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
+import type { ObjectDirective } from 'vue-demi'
 import { onClickOutside } from '.'
+import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
 
-export const vOnClickOutside: FunctionDirective<any, (evt: PointerEvent) => void> = (el, binding) => {
-  const stop = onClickOutside(el, (...args) => {
-    binding.value(...args)
-    stop && stop()
-  }, { capture: !binding.modifiers.bubble })
+export const vOnClickOutside: ObjectDirective<
+HTMLElement,
+OnClickOutsideHandler | [OnClickOutsideHandler<{ detectIframe: true }>, OnClickOutsideOptions]
+> = {
+  [directiveHooks.mounted](el, binding) {
+    const capture = !binding.modifiers.bubble
+    if (typeof binding.value === 'function') {
+      (el as any).__onClickOutside_stop = onClickOutside(el, binding.value, { capture })
+    }
+    else {
+      const [handler, options] = binding.value
+      ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({}, { capture }, options))
+    }
+  },
+  [directiveHooks.unmounted](el) {
+    (el as any).__onClickOutside_stop()
+  },
 }
 
 // alias
