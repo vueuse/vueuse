@@ -57,7 +57,7 @@ export function useMark<Immediate extends Readonly<boolean> = false>(
 
   const unmark = () => {
     if (targetElement.value && markInstance)
-      markInstance.unmark()
+      markInstance.unmark({ done: () => totalMarks.value = 0 })
   }
 
   tryOnMounted(() => {
