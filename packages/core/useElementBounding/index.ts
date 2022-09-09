@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import { toReadonly, tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -102,7 +102,7 @@ export function useElementBounding(
       update()
   })
 
-  return {
+  return toReadonly({
     height,
     bottom,
     left,
@@ -112,7 +112,7 @@ export function useElementBounding(
     x,
     y,
     update,
-  }
+  })
 }
 
 export type UseElementBoundingReturn = ReturnType<typeof useElementBounding>

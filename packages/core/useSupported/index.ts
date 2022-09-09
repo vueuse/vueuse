@@ -1,4 +1,4 @@
-import { tryOnMounted } from '@vueuse/shared'
+import { toReadonly, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 
@@ -10,5 +10,5 @@ export function useSupported(callback: () => unknown, sync = false) {
   update()
 
   tryOnMounted(update, sync)
-  return isSupported
+  return toReadonly(isSupported)
 }
