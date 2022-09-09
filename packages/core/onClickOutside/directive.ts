@@ -14,7 +14,7 @@ OnClickOutsideHandler | [OnClickOutsideHandler<{ detectIframe: true }>, OnClickO
     }
     else {
       const [handler, options] = binding.value
-      ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({}, { capture }, options))
+      ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({ capture }, options))
     }
   },
   [directiveHooks.unmounted](el) {
