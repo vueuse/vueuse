@@ -4,13 +4,14 @@ import { computedWithControl } from '@vueuse/shared'
 
 export function useCurrentElement<T extends Element = Element>() {
   const vm = getCurrentInstance()!
-  const currentElement = computedWithControl(
+  const [currentElement, update] = computedWithControl(
     () => null,
     () => vm.proxy!.$el as T,
+    true,
   )
 
-  onUpdated(currentElement.trigger)
-  onMounted(currentElement.trigger)
+  onUpdated(update)
+  onMounted(update)
 
   return currentElement
 }

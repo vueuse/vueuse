@@ -61,4 +61,17 @@ describe('computedWithControl', () => {
 
     expect(data.value).toBe('BAZ')
   })
+
+  it('separate mode', () => {
+    let count = 0
+    const [computed, trigger] = computedWithControl(() => {}, () => count, true)
+
+    expect(computed.value).toBe(0)
+
+    count += 1
+
+    trigger()
+
+    expect(computed.value).toBe(1)
+  })
 })

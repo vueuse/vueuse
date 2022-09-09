@@ -37,7 +37,7 @@ export function computedWithControl<T, S, U extends boolean = false>(
  *
  * @param source
  * @param fn
- * @param separate `true` is both compatible vue2/vue3.
+ * @param separate `true` if you want to trigger update manually that compatible with vue2/vue3.
  * `false` by default for backward usage compatibility.
  */
 export function computedWithControl<T, S>(

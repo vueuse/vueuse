@@ -11,14 +11,15 @@ import { defaultWindow } from '../_configurable'
  */
 export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const activeElement = computedWithControl(
+  const [activeElement, update] = computedWithControl(
     () => null,
     () => window?.document.activeElement as T | null | undefined,
+    true,
   )
 
   if (window) {
-    useEventListener(window, 'blur', activeElement.trigger, true)
-    useEventListener(window, 'focus', activeElement.trigger, true)
+    useEventListener(window, 'blur', update, true)
+    useEventListener(window, 'focus', update, true)
   }
 
   return activeElement

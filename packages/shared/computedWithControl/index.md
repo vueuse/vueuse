@@ -49,3 +49,17 @@ const computedRef = computedWithControl(
 
 computedRef.trigger()
 ```
+
+> Works in both Vue2 & Vue3
+
+To be compatible in both Vue2 & Vue3, specify the third parameter as `true` and use them separately:
+
+```ts
+const [computedRef, trigger] = computedWithControl(
+  () => source.value,
+  () => counter.value,
+  true,
+)
+
+trigger()
+```
