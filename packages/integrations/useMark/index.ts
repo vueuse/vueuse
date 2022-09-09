@@ -11,11 +11,11 @@ import type {
   MaybeComputedRef,
   WatchDebouncedOptions,
 } from '@vueuse/core'
-import type { MarkOptions } from 'mark.js'
+import type { MarkOptions, UnmarkOptions } from 'mark.js'
 
 interface MarkType {
-  unmark: (options?: { done?: () => void }) => void
   mark: (text: string | string[], options?: MarkOptions) => void
+  unmark: (options?: UnmarkOptions) => void
 }
 
 // https://markjs.io/#parameters
