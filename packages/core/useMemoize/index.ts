@@ -1,3 +1,4 @@
+import { hasOwn } from '@vueuse/shared'
 import { del, isVue2, reactive, set } from 'vue-demi'
 
 type CacheKey = any
@@ -36,7 +37,7 @@ const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
   return {
     get: key => data[key],
     set: (key, value) => set(data, key, value),
-    has: key => Object.prototype.hasOwnProperty.call(data, key),
+    has: key => hasOwn(data, key),
     delete: key => del(data, key),
     clear: () => {
       Object.keys(data).forEach((key) => {

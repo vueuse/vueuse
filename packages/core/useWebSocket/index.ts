@@ -6,6 +6,8 @@ import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 
+const DEFAULT_PING_MESSAGE = 'ping'
+
 export interface UseWebSocketOptions {
   onConnected?: (ws: WebSocket) => void
   onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
@@ -31,6 +33,13 @@ export interface UseWebSocketOptions {
      * @default 1000
      */
     interval?: number
+
+    /**
+     * Heartbeat response timeout, in milliseconds
+     *
+     * @default 1000
+     */
+    pongTimeout?: number
   }
 
   /**
@@ -159,6 +168,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
+  let pongTimeoutWait: ReturnType<typeof setTimeout>
+
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
     if (!wsRef.value)
@@ -174,6 +185,10 @@ export function useWebSocket<Data = any>(
         wsRef.value.send(buffer)
       bufferedData = []
     }
+  }
+
+  const resetHeartbeat = () => {
+    clearTimeout(pongTimeoutWait)
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -227,6 +242,16 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      resetHeartbeat()
+      // Heartbeat response will be skipped
+      if (options.heartbeat) {
+        const {
+          message = DEFAULT_PING_MESSAGE,
+        } = resolveNestedOptions(options.heartbeat)
+        if (e.data === message)
+          return
+      }
+
       data.value = e.data
       onMessage?.(ws!, e)
     }
@@ -234,12 +259,19 @@ export function useWebSocket<Data = any>(
 
   if (options.heartbeat) {
     const {
-      message = 'ping',
+      message = DEFAULT_PING_MESSAGE,
       interval = 1000,
+      pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
-      () => send(message, false),
+      () => {
+        send(message, false)
+        pongTimeoutWait = setTimeout(() => {
+          // auto-reconnect will be trigger with ws.onclose()
+          close()
+        }, pongTimeout)
+      },
       interval,
       { immediate: false },
     )
