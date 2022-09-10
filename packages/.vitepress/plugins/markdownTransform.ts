@@ -32,7 +32,9 @@ export function MarkdownTransform(): Plugin {
       // convert links to relative
       code = code.replace(/https?:\/\/vueuse\.org\//g, '/')
 
-      const [pkg, name, i] = id.split('/').slice(-3)
+      const [pkg, _name, i] = id.split('/').slice(-3)
+
+      const name = functionNames.find(n => n.toLowerCase() === _name.toLowerCase()) || _name
 
       if (functionNames.includes(name) && i === 'index.md') {
         const frontmatterEnds = code.indexOf('---\n\n') + 4
