@@ -7,7 +7,7 @@ describe('useArrayFind', () => {
     expect(useArrayFind).toBeDefined()
   })
 
-  it('should find postive', () => {
+  it('should find positive', () => {
     useSetup(() => {
       const item1 = ref(1)
       const item2 = ref(2)

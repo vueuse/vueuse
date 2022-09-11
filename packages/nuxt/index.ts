@@ -48,7 +48,7 @@ export interface VueUseNuxtOptions {
  *
  * ```ts
  * // nuxt.config.js
- * export deafult {
+ * export default {
  *   buildModules: [
  *     '@vueuse/nuxt'
  *   ]

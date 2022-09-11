@@ -39,7 +39,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
 
   /**
    * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridded.
+   * When specified, the default behavior will be overridden.
    *
    * @default undefined
    */

@@ -73,7 +73,7 @@ export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
 
 export interface Pausable {
   /**
-   * A ref indicate whether a pusable instance is active
+   * A ref indicate whether a pausable instance is active
    */
   isActive: Ref<boolean>
 
