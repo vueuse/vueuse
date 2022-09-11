@@ -10,8 +10,7 @@ export type ToReadonlyReturn<T extends object> = T extends Ref
     }
 
 /**
- * Converts a `ref` or `ref(s)` in an object to readonly ref,
- * and keep it reactive.
+ * Converts a ref or ref(s) in an object to readonly ref.
  *
  * @param target
  * @returns
