@@ -1,10 +1,15 @@
 import type { Ref } from 'vue-demi'
 import { computed, nextTick, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
-import type { ReactiveRouteOptions } from '../_types'
+import type { DefaultTransformFn, ReactiveRouteOptionsWithTransform } from '../_types'
 
 export function useRouteParams(name: string): Ref<null | string | string[]>
-export function useRouteParams<T extends null | undefined | string | string[] = null | string | string[]>(name: string, defaultValue?: T, options?: ReactiveRouteOptions): Ref<T>
+
+export function useRouteParams<
+  T extends null | undefined | string | string[] = null | string | string[],
+  K extends DefaultTransformFn<any> = DefaultTransformFn<T>,
+>(name: string, defaultValue?: T, options?: ReactiveRouteOptionsWithTransform<K>): Ref<ReturnType<K>>
+
 export function useRouteParams<T extends string | string[]>(
   name: string,
   defaultValue?: T,
@@ -12,16 +17,17 @@ export function useRouteParams<T extends string | string[]>(
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-  }: ReactiveRouteOptions = {},
+    transform = value => value,
+  }: ReactiveRouteOptionsWithTransform = {},
 ) {
   return computed<any>({
     get() {
       const data = route.params[name]
       if (data == null)
-        return defaultValue ?? null
+        return transform(defaultValue ?? null)
       if (Array.isArray(data))
-        return data.filter(Boolean)
-      return data
+        return transform(data.filter(Boolean))
+      return transform(data)
     },
     set(v) {
       nextTick(() => {
