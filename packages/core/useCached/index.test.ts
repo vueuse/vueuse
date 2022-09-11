@@ -23,12 +23,12 @@ describe('useCached', () => {
 
     const cachedBooleanRef = useCached(booleanRef)
     await nextTwoTick()
-    
+
     expect(cachedBooleanRef.value).toBe(booleanRef.value)
 
     booleanRef.value = false
     await nextTwoTick()
-    
+
     expect(cachedBooleanRef.value).toBe(booleanRef.value)
   })
 
