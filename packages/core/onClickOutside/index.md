@@ -34,6 +34,15 @@ export default {
 </script>
 ```
 
+You can also call the returned to unregister the listener.
+```ts
+import { onClickOutside } from '@vueuse/core'
+
+const cleanup = onClickOutside(target, event => console.log(event))
+
+cleanup() // This will unregister the listener.
+```
+
 > This function uses [Event.composedPath()](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath) which is NOT supported by IE 11, Edge 18 and below. If you are targeting these browsers, we recommend you to include [this code snippet](https://gist.github.com/sibbng/13e83b1dd1b733317ce0130ef07d4efd) on your project.
 
 ## Component Usage
