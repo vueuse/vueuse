@@ -43,7 +43,7 @@ export function computedWithControl<T, S, U extends boolean = false>(
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
   fn: ComputedGetter<T> | WritableComputedOptions<T>,
-  separate: false,
+  separate = false,
 ) {
   let v: T = undefined!
   let track: Fn
