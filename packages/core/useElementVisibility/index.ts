@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { computed } from 'vue-demi'
+import { computed, reactive } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { useElementBounding } from '../useElementBounding'
 import { useEventListener } from '../useEventListener'
@@ -23,28 +23,30 @@ export function useElementVisibility(
 ) {
   const { scrollTarget } = options
 
-  const elementBounding = useElementBounding(element)
-  const targetBounding = useElementBounding(scrollTarget)
-  const viewportSize = useWindowSize({
-    // pass down the `configurableWindow`
-    ...options,
-    includeScrollbar: false,
-  })
+  const elementBounding = reactive(useElementBounding(element))
+  const targetBounding = reactive(useElementBounding(scrollTarget))
+  const viewportSize = reactive(
+    useWindowSize({
+      // pass down the `configurableWindow`
+      ...options,
+      includeScrollbar: false,
+    }),
+  )
 
   const elementIsVisible = computed<boolean>(() => {
     if (scrollTarget) {
       // relative to the `scrollTarget`
-      return elementBounding.top.value <= targetBounding.bottom.value
-      && elementBounding.left.value <= targetBounding.right.value
-      && elementBounding.bottom.value >= targetBounding.top.value
-      && elementBounding.right.value >= targetBounding.left.value
+      return elementBounding.top <= targetBounding.bottom
+      && elementBounding.left <= targetBounding.right
+      && elementBounding.bottom >= targetBounding.top
+      && elementBounding.right >= targetBounding.left
     }
     return (
       // relative to the viewport/window
-      elementBounding.top.value <= viewportSize.height.value
-        && elementBounding.left.value <= viewportSize.width.value
-        && elementBounding.bottom.value >= 0
-        && elementBounding.right.value >= 0
+      elementBounding.top <= viewportSize.height
+        && elementBounding.left <= viewportSize.width
+        && elementBounding.bottom >= 0
+        && elementBounding.right >= 0
     )
   })
 
