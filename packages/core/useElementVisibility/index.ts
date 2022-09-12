@@ -53,7 +53,8 @@ export function useElementVisibility(
       scrollTarget,
       'scroll',
       elementBounding.update,
-      { passive: true })
+      { passive: true },
+    )
   }
 
   return elementIsVisible
