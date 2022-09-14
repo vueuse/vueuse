@@ -204,7 +204,7 @@ export interface CreateFetchOptions {
  * If you update the UseFetchOptions interface, be sure to update this object
  * to include the new options
  */
-function isFetchOptions(obj: object): obj is UseFetchOptions {
+function notFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
@@ -239,7 +239,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
 
     // Merge properties into a single object
     if (args.length > 0) {
-      if (isFetchOptions(args[0])) {
+      if (notFetchOptions(args[0])) {
         options = {
           ...options,
           ...args[0],
@@ -260,7 +260,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
       }
     }
 
-    if (args.length > 1 && isFetchOptions(args[1])) {
+    if (args.length > 1 && notFetchOptions(args[1])) {
       options = {
         ...options,
         ...args[1],
@@ -293,14 +293,14 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   }
 
   if (args.length > 0) {
-    if (isFetchOptions(args[0]))
+    if (notFetchOptions(args[0]))
       options = { ...options, ...args[0] }
     else
       fetchOptions = args[0]
   }
 
   if (args.length > 1) {
-    if (isFetchOptions(args[1]))
+    if (notFetchOptions(args[1]))
       options = { ...options, ...args[1] }
   }
 
