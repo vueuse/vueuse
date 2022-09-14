@@ -87,3 +87,14 @@ const { status, data, send, open, close } = useWebSocket('ws://websocketurl', {
   protocols: ['soap'], // ['soap', 'wamp']
 })
 ```
+
+### Adjusting url
+It is possible to adjust the url, e.g. for parametrizing the websocket:
+```js
+import { useWebSocket } from '@vueuse/core'
+
+const ws = useWebSocket('ws://websocketurl?jwt=123', {
+  immediate: false
+})
+ws.open('ws://websocketurl?jwt=456')
+```

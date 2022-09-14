@@ -202,7 +202,10 @@ export function useWebSocket<Data = any>(
     return true
   }
 
-  const _init = () => {
+  const _init = (newUrl?: string) => {
+    if (newUrl && newUrl !== url)
+      url = newUrl
+
     const ws = new WebSocket(url, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
@@ -288,10 +291,10 @@ export function useWebSocket<Data = any>(
     tryOnScopeDispose(close)
   }
 
-  const open = () => {
+  const open = (newUrl?: string) => {
     close()
     retried = 0
-    _init()
+    _init(newUrl)
   }
 
   return {
