@@ -54,22 +54,28 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
       return
 
-    if (ignore && ignore.length > 0) {
-      if (ignore.some((target) => {
-        const el = unrefElement(target)
-        return el && (event.target === el || composedPath.includes(el))
-      }))
-        return
-    }
-
     handler(event)
+  }
+
+  const shouldIgnore = (event: PointerEvent): boolean => {
+    if (!ignore || !ignore.length)
+      return false
+
+    const composedPath = event.composedPath()
+    if (ignore.some((target) => {
+      const el = unrefElement(target)
+      return el && (event.target === el || composedPath.includes(el))
+    }))
+      return true
+
+    return false
   }
 
   const cleanup = [
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el)
+      shouldListen.value = !!el && !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
       if (e.button === 0) {
