@@ -49,26 +49,18 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     window.clearTimeout(fallback)
 
     const el = unrefElement(target)
-    const composedPath = event.composedPath()
 
-    if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el) || !shouldListen.value)
       return
 
     handler(event)
   }
 
-  const shouldIgnore = (event: PointerEvent): boolean => {
-    if (!ignore || !ignore.length)
-      return false
-
-    const composedPath = event.composedPath()
-    if (ignore.some((target) => {
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore && ignore.some((target) => {
       const el = unrefElement(target)
-      return el && (event.target === el || composedPath.includes(el))
-    }))
-      return true
-
-    return false
+      return el && (event.target === el || event.composedPath().includes(el))
+    })
   }
 
   const cleanup = [
