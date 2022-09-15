@@ -29,7 +29,7 @@ const throttled = refThrottled(input, 1000, false)
 
 ### Leading
 
-Allows the callback to be invoked immediately (on the leading edge of the `ms` timeout). If you don't want this begavior, set 4rd param `false` (it's `true` by default):
+Allows the callback to be invoked immediately (on the leading edge of the `ms` timeout). If you don't want this behavior, set the 4th param `false` (it's `true` by default):
 
 ```js
 import { refThrottled } from '@vueuse/core'
