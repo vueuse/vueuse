@@ -188,10 +188,8 @@ export function useWebSocket<Data = any>(
   }
 
   const resetHeartbeat = () => {
-    if (pongTimeoutWait > 0) {
-      clearTimeout(pongTimeoutWait)
-      pongTimeoutWait = 0
-    }
+    clearTimeout(pongTimeoutWait)
+    pongTimeoutWait = 0
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
