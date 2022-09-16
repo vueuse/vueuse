@@ -359,7 +359,7 @@ describe('useStorage', () => {
     expect(customRef2.value).toEqual(3)
   })
 
-  it.only('sync several refs', async () => {
+  it('sync several refs', async () => {
     storage.setItem(KEY, '0')
 
     const first = useStorage(KEY, 0, storage)
