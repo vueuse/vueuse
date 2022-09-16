@@ -168,7 +168,7 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  let pongTimeoutWait: ReturnType<typeof setTimeout> = 0
+  let pongTimeoutWait: ReturnType<typeof setTimeout>
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
@@ -189,7 +189,7 @@ export function useWebSocket<Data = any>(
 
   const resetHeartbeat = () => {
     clearTimeout(pongTimeoutWait)
-    pongTimeoutWait = 0
+    pongTimeoutWait = undefined
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -268,7 +268,7 @@ export function useWebSocket<Data = any>(
     const { pause, resume } = useIntervalFn(
       () => {
         send(message, false)
-        if (pongTimeoutWait > 0) {
+        if (typeof(pongTimeoutWait) !== 'undefined') {
           return
         }
         pongTimeoutWait = setTimeout(() => {
