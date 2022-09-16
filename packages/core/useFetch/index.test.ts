@@ -127,20 +127,25 @@ describe('useFetch', () => {
   })
 
   test('should create an instance of useFetch with baseUrls', async () => {
+    const baseUrl = 'https://example.com'
+    const targetUrl = `${baseUrl}/test`
     const fetchHeaders = { Authorization: 'test' }
     const requestHeaders = { 'Accept-Language': 'en-US' }
     const allHeaders = { ...fetchHeaders, ...requestHeaders }
-    const useMyFetchWithBaseUrl = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: fetchHeaders } })
+    const requestOptions = { headers: requestHeaders }
+    const useMyFetchWithBaseUrl = createFetch({ baseUrl, fetchOptions: { headers: fetchHeaders } })
     const useMyFetchWithoutBaseUrl = createFetch({ fetchOptions: { headers: fetchHeaders } })
-    useMyFetchWithBaseUrl('test', { headers: requestHeaders })
-    useMyFetchWithBaseUrl('/test', { headers: requestHeaders })
-    useMyFetchWithoutBaseUrl('https://example.com/test', { headers: requestHeaders })
+
+    useMyFetchWithBaseUrl('test', requestOptions)
+    useMyFetchWithBaseUrl('/test', requestOptions)
+    useMyFetchWithBaseUrl(targetUrl, requestOptions)
+    useMyFetchWithoutBaseUrl(targetUrl, requestOptions)
 
     await retry(() => {
-      expect(fetchSpy).toHaveBeenCalledTimes(3)
-      expect(fetchSpy).toHaveBeenNthCalledWith(1, 'https://example.com/test', expect.anything())
-      expect(fetchSpy).toHaveBeenNthCalledWith(2, 'https://example.com/test', expect.anything())
-      expect(fetchSpy).toHaveBeenNthCalledWith(3, 'https://example.com/test', expect.anything())
+      expect(fetchSpy).toHaveBeenCalledTimes(4)
+      new Array(4).fill(0).forEach((x, i) => {
+        expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
+      })
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)
     })
   })
