@@ -10,6 +10,6 @@
     "@vueuse/core": "../../packages/core",
     "@vueuse/integrations": "../../packages/integrations",
     "@vueuse/shared": "../../packages/shared",
-    "nuxt": "^3.0.0-rc.6"
+    "nuxt": "^3.0.0-rc.9"
   }
 }

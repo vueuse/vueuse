@@ -10,4 +10,5 @@ const code = stringify(pixelRatio)
 <template>
   <div>Device Pixel Ratio:</div>
   <pre>{{ code }}</pre>
+  <span class="opacity-50">Zoom in and out (or move the window to a screen with a different scaling factor) to see the value changes</span>
 </template>

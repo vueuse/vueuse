@@ -21,6 +21,13 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default {}
    */
   initialValue?: T
+
+  /**
+   * Write back to `window.history` automatically
+   *
+   * @default true
+   */
+  write?: boolean
 }
 
 /**
@@ -38,6 +45,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     initialValue = {},
     removeNullishValues = true,
     removeFalsyValues = false,
+    write: enableWrite = true,
     window = defaultWindow!,
   } = options
 
@@ -126,6 +134,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function onChanged() {
+    if (!enableWrite)
+      return
+
     write(read(), true)
   }
 
