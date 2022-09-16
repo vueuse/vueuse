@@ -1,5 +1,5 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { isVue3, ref } from 'vue-demi'
+import { isVue3, nextTick, ref } from 'vue-demi'
 import { nextTwoTick, useSetup } from '../../.test'
 import { useStorage } from '.'
 
@@ -357,5 +357,24 @@ describe('useStorage', () => {
     storage.setItem(KEY, '1')
     const customRef2 = useStorage(KEY, 2, storage, { mergeDefaults: (value, initial) => value + initial })
     expect(customRef2.value).toEqual(3)
+  })
+
+  it.only('sync several refs', async () => {
+    storage.setItem(KEY, '0')
+
+    const first = useStorage(KEY, 0, storage)
+    const second = useStorage(KEY, 1, storage)
+
+    expect(first.value).toBe(0)
+    expect(second.value).toBe(0)
+
+    await nextTick()
+
+    first.value = 5
+
+    await nextTick()
+
+    expect(first.value).toBe(5)
+    expect(second.value).toBe(5)
   })
 })

@@ -160,19 +160,34 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     { flush, deep, eventFilter },
   )
 
-  if (window && listenToStorageChanges)
+  const CUSTOM_EVENT = '_vueuse_storage'
+
+  if (window && listenToStorageChanges) {
+    // The storage event is not working with the same document.
     useEventListener(window, 'storage', update)
+    useEventListener(window, CUSTOM_EVENT, update)
+  }
 
   update()
 
   return data
 
   function write(v: unknown) {
+    let newValue: null | string = null
+
     try {
-      if (v == null)
-        storage!.removeItem(key)
-      else
-        storage!.setItem(key, serializer.write(v))
+      if (v == null) { storage!.removeItem(key) }
+      else {
+        newValue = serializer.write(v)
+
+        storage!.setItem(key, newValue)
+      }
+
+      if (window && listenToStorageChanges) {
+        const event = new StorageEvent(CUSTOM_EVENT, { key, newValue })
+
+        window.dispatchEvent(event)
+      }
     }
     catch (e) {
       onError(e)
