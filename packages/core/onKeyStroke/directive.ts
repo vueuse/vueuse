@@ -12,7 +12,7 @@ HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
-    const keys = binding.arg?.split(',') ?? []
+    const keys = binding.arg?.split(',') ?? true
     if (typeof binding.value === 'function') {
       onKeyStroke(keys, binding.value, {
         target: el,
