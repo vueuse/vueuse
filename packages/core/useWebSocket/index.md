@@ -89,7 +89,7 @@ const { status, data, send, open, close } = useWebSocket('ws://websocketurl', {
 ```
 
 ### Adjusting url
-It is possible to adjust the url, e.g. for parametrizing the websocket:
+You can update the WebSocket URL during open, e.g. to parameterize the URL:
 ```js
 import { useWebSocket } from '@vueuse/core'
 
