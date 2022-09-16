@@ -3,6 +3,7 @@
     "eslint-plugin-markdown",
     "rxjs",
     "electron",
-    "vue-demi"
+    "vue-demi",
+    "vitepress"
   ]
 }

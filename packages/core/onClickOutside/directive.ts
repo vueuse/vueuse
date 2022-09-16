@@ -1,19 +1,26 @@
-import type { FunctionDirective } from 'vue-demi'
+import { directiveHooks } from '@vueuse/shared'
+import type { ObjectDirective } from 'vue-demi'
 import { onClickOutside } from '.'
+import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
 
-const handler = (): FunctionDirective<any, <E = PointerEvent>(evt: E) => void> => {
-  let stop = null as unknown as ReturnType<typeof onClickOutside>
-  return (el, binding) => {
-    if (stop) {
-      stop()
-      stop = onClickOutside(el, binding.value)
-      return
+export const vOnClickOutside: ObjectDirective<
+HTMLElement,
+OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
+> = {
+  [directiveHooks.mounted](el, binding) {
+    const capture = !binding.modifiers.bubble
+    if (typeof binding.value === 'function') {
+      (el as any).__onClickOutside_stop = onClickOutside(el, binding.value, { capture })
     }
-    stop = onClickOutside(el, binding.value)
-  }
+    else {
+      const [handler, options] = binding.value
+      ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({ capture }, options))
+    }
+  },
+  [directiveHooks.unmounted](el) {
+    (el as any).__onClickOutside_stop()
+  },
 }
-
-export const vOnClickOutside = handler()
 
 // alias
 export { vOnClickOutside as VOnClickOutside }
