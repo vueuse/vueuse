@@ -268,9 +268,8 @@ export function useWebSocket<Data = any>(
     const { pause, resume } = useIntervalFn(
       () => {
         send(message, false)
-        if (typeof(pongTimeoutWait) !== 'undefined') {
+        if (typeof(pongTimeoutWait) !== 'undefined')
           return
-        }
         pongTimeoutWait = setTimeout(() => {
           // auto-reconnect will be trigger with ws.onclose()
           close()
