@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref, StyleValue } from 'vue-demi'
 import { computed, ref, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { useElementSize } from '../useElementSize'
@@ -29,7 +29,7 @@ export interface UseVirtualListReturn<T> {
   containerProps: {
     ref: Ref<HTMLElement | null>
     onScroll: () => void
-    style: Partial<CSSStyleDeclaration>
+    style: StyleValue
   }
   wrapperProps: ComputedRef<{
     style: {
@@ -147,7 +147,7 @@ export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtua
     }
   })
 
-  const containerStyle: Partial<CSSStyleDeclaration> = { overflowY: 'auto' }
+  const containerStyle: StyleValue = { overflowY: 'auto' }
 
   return {
     list: currentList,
