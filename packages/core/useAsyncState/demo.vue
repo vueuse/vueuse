@@ -4,8 +4,8 @@ import YAML from 'js-yaml'
 import { useAsyncState } from '@vueuse/core'
 
 const { isLoading, state, isReady, execute } = useAsyncState(
-  (args) => {
-    const id = args?.id || 1
+  (args: { id: number }) => {
+    const id = args.id || 1
     return axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(t => t.data)
   },
   {},
