@@ -222,7 +222,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       return
 
     if (event && event.key === null) {
-      data.value = null
+      data.value = rawInit
       return
     }
 
