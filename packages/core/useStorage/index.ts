@@ -180,9 +180,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function read(event?: StorageEvent) {
-    if (event && event.key !== key)
-      return
-
     pauseWatch()
     try {
       const rawValue = event
