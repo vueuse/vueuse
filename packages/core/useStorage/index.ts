@@ -218,15 +218,15 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function update(event?: StorageEvent) {
-    if (event?.storageArea !== storage)
+    if (event && event.storageArea !== storage)
       return
 
-    if (event?.key === null) {
+    if (event && event.key === null) {
       data.value = null
       return
     }
 
-    if (event?.key !== key)
+    if (event && event.key !== key)
       return
 
     data.value = read(event)
