@@ -66,22 +66,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   toContains(value: MaybeComputedRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
 }
 
-/**
- * Promised one-time watch for changes
- *
- * @see https://vueuse.org/until
- * @example
- * ```
- * const { count } = useCounter()
- *
- * await until(count).toMatch(v => v > 7)
- *
- * alert('Counter is now larger than 7!')
- * ```
- */
-export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
-export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
-export function until<T>(r: any): any {
+export function _until<T>(r: any): any {
   let isNot = false
 
   function toMatch(
@@ -224,5 +209,29 @@ export function until<T>(r: any): any {
     }
 
     return instance
+  }
+}
+
+/**
+ * Promised one-time watch for changes
+ *
+ * @see https://vueuse.org/until
+ * @example
+ * ```
+ * const { count } = useCounter()
+ *
+ * await until(count).toMatch(v => v > 7)
+ *
+ * alert('Counter is now larger than 7!')
+ * ```
+ */
+export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
+export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
+export function until(r: any): any {
+  return {
+    ..._until(r),
+    get not() {
+      return _until(r).not
+    },
   }
 }
