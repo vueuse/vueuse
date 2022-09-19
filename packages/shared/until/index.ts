@@ -66,9 +66,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   toContains(value: MaybeComputedRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
 }
 
-export function _until<T>(r: any): any {
-  let isNot = false
-
+export function _until<T>(r: any, isNot = false): any {
   function toMatch(
     condition: (v: any) => boolean,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
@@ -186,8 +184,7 @@ export function _until<T>(r: any): any {
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return _until(r, !isNot)
       },
     }
     return instance
@@ -203,8 +200,7 @@ export function _until<T>(r: any): any {
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return _until(r, !isNot)
       },
     }
 
@@ -230,8 +226,5 @@ export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueIns
 export function until(r: any): any {
   return {
     ..._until(r),
-    get not() {
-      return _until(r).not
-    },
   }
 }
