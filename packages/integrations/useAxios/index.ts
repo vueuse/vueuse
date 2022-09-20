@@ -118,8 +118,8 @@ export function useAxios<T = any>(...args: any[]): OverallUseAxiosReturn<T> & Pr
 
   if (args.length > 0 + argsPlaceholder) {
     /**
-     * Unable to use `instanceof` here becuase of (https://github.com/axios/axios/issues/737)
-     * so instead we are checking if there is a `requset` on the object to see if it is an
+     * Unable to use `instanceof` here because of (https://github.com/axios/axios/issues/737)
+     * so instead we are checking if there is a `request` on the object to see if it is an
      * axios instance
      */
     if (isAxiosInstance(args[0 + argsPlaceholder]))

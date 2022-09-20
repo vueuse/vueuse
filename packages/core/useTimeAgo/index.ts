@@ -47,7 +47,7 @@ export interface UseTimeAgoOptions<Controls extends boolean> {
   fullDateFormatter?: (date: Date) => string
 
   /**
-   * Messages for formating the string
+   * Messages for formatting the string
    */
   messages?: UseTimeAgoMessages
 }

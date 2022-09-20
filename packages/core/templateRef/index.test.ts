@@ -72,4 +72,31 @@ describe('templateRef', () => {
 
     expect(vm.targetEl).toBe(null)
   })
+
+  it('support vue component as ref', async () => {
+    const ChildComponent = defineComponent({
+      name: 'ChildComponent',
+      render() {
+        return null
+      },
+    })
+
+    const vm = mount(defineComponent({
+      components: {
+        ChildComponent,
+      },
+      setup() {
+        const targetEl = templateRef<typeof ChildComponent>('target')
+        return {
+          targetEl,
+        }
+      },
+      render() {
+        return h(ChildComponent, { ref: 'target' })
+      },
+    }))
+
+    expect(vm.targetEl).toBeDefined()
+    expect(vm.targetEl.$options.name).toBe('ChildComponent')
+  })
 })
