@@ -107,7 +107,7 @@ export function useAxios<T = any, D = any>(config?: AxiosRequestConfig<D>, insta
  *
  * @see https://vueuse.org/useAxios
  */
-export function useAxios<T = any, D=any>(...args: any[]): OverallUseAxiosReturn<T, D> & PromiseLike<OverallUseAxiosReturn<T, D>> {
+export function useAxios<T = any, D = any>(...args: any[]): OverallUseAxiosReturn<T, D> & PromiseLike<OverallUseAxiosReturn<T, D>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
   const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: AxiosRequestConfig<D> = {}
