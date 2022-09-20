@@ -37,4 +37,10 @@ describe('useDateFormat', () => {
   it('should work with YYYY/MM/DD dddd', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'YYYY/MM/DD dddd', { locales: 'en-US' }).value).toBe('2022/01/01 Saturday')
   })
+  it('should work with MMM DD YYYY', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMM DD YYYY', { locales: 'en-US' }).value).toBe('Jan 01 2022')
+  })
+  it('should work with MMMM DD YYYY', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMMM DD YYYY', { locales: 'en-US' }).value).toBe('January 01 2022')
+  })
 })
