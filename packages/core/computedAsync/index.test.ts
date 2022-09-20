@@ -1,6 +1,6 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { computedAsync, asyncComputed } from '.'
+import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
