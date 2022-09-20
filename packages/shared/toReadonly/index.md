@@ -4,7 +4,7 @@ category: Reactivity
 
 # toReactive
 
-Converts ref or refs in an object to readonly.
+Converts ref or refs in an object/array to readonly.
 
 ## Usage
 
@@ -23,6 +23,15 @@ const { x: privateX, y: privateY } = toReadonly({ x, y })
 
 privateX.value = -999 // error
 privateY.value = -999 // error
+
+// refs in an array
+const count = ref(0)
+const [privateCount] = toReadonly([count])
+
+privateCount.value = -999 // error
+
+count.value = 10
+console.log(privateCount.value) // 10
 ```
 
 ## Use-cases

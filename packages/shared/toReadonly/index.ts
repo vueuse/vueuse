@@ -19,7 +19,7 @@ export function toReadonly<T extends object>(
   if (isRef(target))
     return shallowReadonly(target)
 
-  const result: Record<string, any> = {}
+  const result: Record<string, any> = Array.isArray(target) ? [] : {}
 
   for (const [key, value] of Object.entries(target))
     result[key] = isRef(value) ? shallowReadonly(value) : value

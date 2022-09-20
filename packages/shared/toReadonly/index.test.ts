@@ -67,6 +67,19 @@ describe('toReadonly', () => {
     expect(obj.fn).toBe(fn)
   })
 
+  it('refs in array', () => {
+    const count = ref(0)
+    const foo = {}
+    const [bar, readonlyCount] = toReadonly([foo, count])
+
+    expect(bar).toBe(foo)
+
+    // @ts-expect-error
+    readonlyCount.value = 123
+
+    expect(readonlyCount.value).toBe(0)
+  })
+
   it('destructure', () => {
     const count = ref(0)
     const { countReadonly } = toReadonly({
