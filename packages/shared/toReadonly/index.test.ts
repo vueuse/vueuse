@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ref } from 'vue-demi'
+import { isVue3, ref } from 'vue-demi'
 import { toReadonly } from '.'
 
 describe('toReadonly', () => {
@@ -27,7 +27,7 @@ describe('toReadonly', () => {
     // @ts-expect-error
     readonlyCount.value = 123
 
-    expect(warnSpy).toBeCalledTimes(1)
+    isVue3 && expect(warnSpy).toBeCalledTimes(1)
     expect(readonlyCount.value).toBe(1)
   })
 
@@ -47,7 +47,7 @@ describe('toReadonly', () => {
     // @ts-expect-error
     obj.msg.value = 'bar'
 
-    expect(warnSpy).toBeCalledTimes(2)
+    isVue3 && expect(warnSpy).toBeCalledTimes(2)
     expect(obj.count.value).toBe(0)
     expect(obj.msg.value).toBe('foo')
   })
