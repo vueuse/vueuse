@@ -95,12 +95,12 @@ export interface UseAxiosOptions {
 }
 type OverallUseAxiosReturn<T, D> = StrictUseAxiosReturn<T, D> | EasyUseAxiosReturn<T, D>
 
-export function useAxios<T = any, D=any>(url: string, config?: AxiosRequestConfig<D>, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D=any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D=any>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D=any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
-export function useAxios<T = any, D=any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
-export function useAxios<T = any, D=any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(url: string, config?: AxiosRequestConfig<D>, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
+export function useAxios<T = any, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
 
 /**
  * Wrapper for axios.
