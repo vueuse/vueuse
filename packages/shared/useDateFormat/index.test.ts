@@ -1,6 +1,24 @@
-import { useDateFormat } from '../useDateFormat'
+import { formatDate, normalizeDate, useDateFormat } from '../useDateFormat'
 
 describe('useDateFormat', () => {
+  it('should export module', () => {
+    expect(normalizeDate).toBeDefined()
+    expect(formatDate).toBeDefined()
+    expect(useDateFormat).toBeDefined()
+  })
+  it('should normalize date', () => {
+    const date = new Date(2022, 0, 1, 0, 0, 0)
+    const currentDate = new Date().toDateString()
+    expect(normalizeDate(undefined).toDateString()).toBe(currentDate)
+    // @ts-expect-error test null
+    expect(normalizeDate(null).toString()).toBe('Invalid Date')
+    expect(normalizeDate(new Date()).toDateString()).toBe(currentDate)
+    expect(normalizeDate(new Date().toString()).toDateString()).toBe(currentDate)
+    expect(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+    expect(normalizeDate('2022-01')).toEqual(date)
+    expect(normalizeDate('2022-01-01')).toEqual(date)
+    expect(normalizeDate('2022-01-01T00:00:00.000')).toEqual(date)
+  })
   it('should work with default', () => {
     expect(useDateFormat(new Date('2022-01-01 10:24:00')).value).toBe('10:24:00')
   })
@@ -13,10 +31,15 @@ describe('useDateFormat', () => {
   it('should work with YY-M-D', () => {
     expect(useDateFormat(new Date('2022-01-01 10:24:00'), 'YY-M-D').value).toBe('22-1-1')
   })
+  it('should work with H:m:ss', () => {
+    expect(useDateFormat(new Date('2022-01-01 10:24:00'), 'H:m:s').value).toBe('10:24:0')
+  })
   it('should work with h:m:s', () => {
+    expect(useDateFormat(new Date('2022-01-01 00:05:00'), 'h:m:s').value).toBe('12:5:0')
     expect(useDateFormat(new Date('2022-01-01 08:05:00'), 'h:m:s').value).toBe('8:5:0')
   })
   it('should work with hh:mm:ss', () => {
+    expect(useDateFormat(new Date('2022-01-01 00:05:05'), 'hh:mm:ss').value).toBe('12:05:05')
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'hh:mm:ss').value).toBe('03:05:05')
   })
   it('should work with HH:mm:ss', () => {
