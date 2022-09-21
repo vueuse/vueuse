@@ -37,7 +37,7 @@ By default, it uses [Tailwind CSS favored dark mode](https://tailwindcss.com/doc
 <html class="dark"> ... </html>
 ```
 
-Stillm you can also customize it to make it work with most CSS frameworks.
+Still, you can also customize it to make it work with most CSS frameworks.
 
 For example:
 
