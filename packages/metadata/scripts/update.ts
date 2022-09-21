@@ -104,7 +104,7 @@ export async function readMetadata() {
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
 
-      if (description.includes('DEPRECATED'))
+      if (description.includes('DEPRECATED') || frontmatter.deprecated)
         fn.deprecated = true
 
       if (alias?.length)

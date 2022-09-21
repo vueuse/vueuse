@@ -1,6 +1,6 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
 import { computed } from 'vue-demi'
+import type { MaybeComputedRef } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 
 export type DateLike = Date | number | string | undefined
 
@@ -44,6 +44,8 @@ export const formatDate = (date: Date, formatStr: string, options: UseDateFormat
     YYYY: () => years,
     M: () => month + 1,
     MM: () => `${month + 1}`.padStart(2, '0'),
+    MMM: () => date.toLocaleDateString(locales, { month: 'short' }),
+    MMMM: () => date.toLocaleDateString(locales, { month: 'long' }),
     D: () => String(days),
     DD: () => `${days}`.padStart(2, '0'),
     H: () => String(hours),

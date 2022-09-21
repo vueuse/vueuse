@@ -177,4 +177,56 @@ describe('useVModel', () => {
 
     expect(emitValue instanceof SomeClass).toBeTruthy()
   })
+
+  it('should clone object', async () => {
+    const emitMock = vitest.fn()
+
+    const props = {
+      person: {
+        age: 18,
+        child: { age: 2 },
+      },
+    }
+
+    const data = useVModel(props, 'person', emitMock, { passive: true, clone: true })
+    const dataDeep = useVModel(props, 'person', emitMock, { passive: true, clone: true, deep: true })
+
+    data.value.age = 20
+
+    await nextTick()
+    expect(props.person).not.toBe(data.value)
+    expect(props.person).toEqual(expect.objectContaining({ age: 18 }))
+
+    dataDeep.value.child.age = 3
+
+    expect(props.person).not.toBe(dataDeep.value)
+    expect(props.person).toEqual(expect.objectContaining({
+      child: { age: 2 },
+    }))
+  })
+
+  it('should deep clone object with clone function', async () => {
+    const emitMock = vitest.fn()
+    const clone = vitest.fn(x => JSON.parse(JSON.stringify(x)))
+
+    const props = {
+      person: {
+        age: 18,
+        child: { age: 2 },
+      },
+    }
+
+    const data = useVModel(props, 'person', emitMock, { passive: true, clone, deep: true })
+
+    data.value.age = 20
+    data.value.child.age = 3
+
+    await nextTick()
+    expect(clone).toHaveBeenCalled()
+    expect(props.person).not.toBe(data.value)
+    expect(props.person).toEqual({
+      age: 18,
+      child: { age: 2 },
+    })
+  })
 })

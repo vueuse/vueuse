@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue-demi'
+import { computedWithControl } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -11,16 +11,15 @@ import { defaultWindow } from '../_configurable'
  */
 export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const counter = ref(0)
+  const activeElement = computedWithControl(
+    () => null,
+    () => window?.document.activeElement as T | null | undefined,
+  )
 
   if (window) {
-    useEventListener(window, 'blur', () => counter.value += 1, true)
-    useEventListener(window, 'focus', () => counter.value += 1, true)
+    useEventListener(window, 'blur', activeElement.trigger, true)
+    useEventListener(window, 'focus', activeElement.trigger, true)
   }
 
-  return computed(() => {
-    // eslint-disable-next-line no-unused-expressions
-    counter.value
-    return window?.document.activeElement as T | null | undefined
-  })
+  return activeElement
 }

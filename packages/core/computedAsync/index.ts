@@ -16,7 +16,7 @@ export interface AsyncComputedOptions {
    *
    * @default false
    */
-  lazy?: Boolean
+  lazy?: boolean
 
   /**
    * Ref passed to receive the updated of async evaluation

@@ -64,6 +64,21 @@ describe('useFetch', () => {
     expect(count).toEqual(1)
   })
 
+  it('should use custom payloadType', async () => {
+    let options: any
+    useFetch('https://example.com', {
+      beforeFetch: (ctx) => {
+        options = ctx.options
+      },
+    }).post({ x: 1 }, 'unknown')
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(options.body).toEqual({ x: 1 })
+      expect(options.headers['Content-Type']).toBe('unknown')
+    })
+  })
+
   test('should have an error on 400', async () => {
     const { error, statusCode } = useFetch('https://example.com?status=400')
 
@@ -71,6 +86,16 @@ describe('useFetch', () => {
       expect(statusCode.value).toBe(400)
       expect(error.value).toBe('Bad Request')
     })
+  })
+
+  test('should throw error', async () => {
+    const error1 = await useFetch('https://example.com?status=400').execute(true).catch(err => err)
+    const error2 = await useFetch('https://example.com?status=600').execute(true).catch(err => err)
+
+    expect(error1.name).toBe('Error')
+    expect(error1.message).toBe('Bad Request')
+    expect(error2.name).toBe('Error')
+    expect(error2.message).toBe('')
   })
 
   test('should abort request and set aborted to true', async () => {
@@ -101,16 +126,21 @@ describe('useFetch', () => {
     await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
-  test('should create an instance of useFetch with a base url', async () => {
+  test('should create an instance of useFetch with baseUrls', async () => {
     const fetchHeaders = { Authorization: 'test' }
     const requestHeaders = { 'Accept-Language': 'en-US' }
     const allHeaders = { ...fetchHeaders, ...requestHeaders }
-    const useMyFetch = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: fetchHeaders } })
-    useMyFetch('test', { headers: requestHeaders })
+    const useMyFetchWithBaseUrl = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: fetchHeaders } })
+    const useMyFetchWithoutBaseUrl = createFetch({ fetchOptions: { headers: fetchHeaders } })
+    useMyFetchWithBaseUrl('test', { headers: requestHeaders })
+    useMyFetchWithBaseUrl('/test', { headers: requestHeaders })
+    useMyFetchWithoutBaseUrl('https://example.com/test', { headers: requestHeaders })
 
     await retry(() => {
-      expect(fetchSpy).toHaveBeenCalledOnce()
-      expect(fetchSpy).toHaveBeenCalledWith('https://example.com/test', expect.anything())
+      expect(fetchSpy).toHaveBeenCalledTimes(3)
+      expect(fetchSpy).toHaveBeenNthCalledWith(1, 'https://example.com/test', expect.anything())
+      expect(fetchSpy).toHaveBeenNthCalledWith(2, 'https://example.com/test', expect.anything())
+      expect(fetchSpy).toHaveBeenNthCalledWith(3, 'https://example.com/test', expect.anything())
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)
     })
   })
@@ -392,12 +422,16 @@ describe('useFetch', () => {
     await retry(() => expect(shell.data.value).toEqual(jsonMessage))
   })
 
-  test('not allowed setting response type while doing request', async () => {
+  test('not allowed setting request method and response type while doing request', async () => {
     const shell = useFetch(jsonUrl).get().text()
     const { isFetching, data } = shell
     await until(isFetching).toBe(true)
+    shell.post()
     shell.json()
-    await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toEqual(JSON.stringify(jsonMessage))
+    })
   })
 
   test('should abort request when timeout reached', async () => {
@@ -414,8 +448,8 @@ describe('useFetch', () => {
   })
 
   test('should await request', async () => {
-    const { data } = await useFetch(jsonUrl).json()
-    expect(data.value).toEqual(jsonMessage)
+    const { data } = await useFetch(jsonUrl).get()
+    expect(data.value).toEqual(JSON.stringify(jsonMessage))
     expect(fetchSpy).toBeCalledTimes(1)
   })
 

@@ -1,4 +1,4 @@
-import type { Ref } from 'vue-demi'
+import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -8,7 +8,7 @@ export interface UseFocusWithinReturn {
   /**
    * True if the element or any of its descendants are focused
    */
-  focused: Ref<boolean>
+  focused: ComputedRef<boolean>
 }
 
 /**

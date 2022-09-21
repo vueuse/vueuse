@@ -9,11 +9,13 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 **List of all available formats (HH:mm:ss by default):**
 
 | Format | Output           | Description                           |
-| ------ | ---------------- | ------------------------------------- |
+|--------| ---------------- |---------------------------------------|
 | `YY`   | 18               | Two-digit year                        |
 | `YYYY` | 2018             | Four-digit year                       |
 | `M`    | 1-12             | The month, beginning at 1             |
 | `MM`   | 01-12            | The month, 2-digits                   |
+| `MMM`  | Jan-Dec          | The abbreviated month name            |
+| `MMMM` | January-December | The full month name                   |
 | `D`    | 1-31             | The day of the month                  |
 | `DD`   | 01-31            | The day of the month, 2-digits        |
 | `H`    | 0-23             | The hour                              |
