@@ -43,7 +43,7 @@ describe('useDateFormat', () => {
   it('should work with MMMM DD YYYY', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMMM DD YYYY', { locales: 'en-US' }).value).toBe('January 01 2022')
   })
-  
+
   describe('meridiem', () => {
     it.each([
       // AM
