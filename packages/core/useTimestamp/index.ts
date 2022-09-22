@@ -32,6 +32,10 @@ export interface UseTimestampOptions<Controls extends boolean> {
    * @default requestAnimationFrame
    */
   interval?: 'requestAnimationFrame' | number
+  /**
+   * Callback on each update
+   */
+  callback?: (timestamp: number) => void
 }
 
 /**
@@ -48,15 +52,22 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
     offset = 0,
     immediate = true,
     interval = 'requestAnimationFrame',
+    callback,
   } = options
 
   const ts = ref(timestamp() + offset)
 
   const update = () => ts.value = timestamp() + offset
+  const cb = callback
+    ? () => {
+        update()
+        callback(ts.value)
+      }
+    : update
 
   const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(update, { immediate })
-    : useIntervalFn(update, interval, { immediate })
+    ? useRafFn(cb, { immediate })
+    : useIntervalFn(cb, interval, { immediate })
 
   if (exposeControls) {
     return {
