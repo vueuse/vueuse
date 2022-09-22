@@ -35,7 +35,7 @@ describe('useTimestamp', () => {
     const { resume, timestamp } = useTimestamp({
       controls: true,
       immediate: false,
-      interval: 50
+      interval: 50,
     })
 
     const initial = timestamp.value
