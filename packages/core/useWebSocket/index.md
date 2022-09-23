@@ -86,7 +86,7 @@ export interface WebSocketOptions {
          *
          * @default 'ping'
          */
-        message?: string
+        message?: string | ArrayBuffer | Blob
         /**
          * Interval, in mileseconds
          *
