@@ -43,4 +43,41 @@ describe('useDateFormat', () => {
   it('should work with MMMM DD YYYY', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMMM DD YYYY', { locales: 'en-US' }).value).toBe('January 01 2022')
   })
+
+  describe('meridiem', () => {
+    it.each([
+      // AM
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss A', expected: '03:05:05 AM' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss AA', expected: '03:05:05 A.M.' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss a', expected: '03:05:05 am' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss aa', expected: '03:05:05 a.m.' },
+      // PM
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss A', expected: '03:05:05 PM' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss AA', expected: '03:05:05 P.M.' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss a', expected: '03:05:05 pm' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss aa', expected: '03:05:05 p.m.' },
+    ])('should work with $formatStr', ({ dateStr, formatStr, expected }) => {
+      expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
+    })
+
+    const customMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
+      const m = hours > 11 ? (isLowercase ? 'μμ' : 'ΜΜ') : (isLowercase ? 'πμ' : 'ΠΜ')
+      return hasPeriod ? m.split('').reduce((acc, curr) => acc += `${curr}.`, '') : m
+    }
+
+    it.each([
+      // AM
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss A', expected: '03:05:05 ΠΜ' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss AA', expected: '03:05:05 Π.Μ.' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss a', expected: '03:05:05 πμ' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss aa', expected: '03:05:05 π.μ.' },
+      // PM
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss A', expected: '03:05:05 ΜΜ' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss AA', expected: '03:05:05 Μ.Μ.' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss a', expected: '03:05:05 μμ' },
+      { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss aa', expected: '03:05:05 μ.μ.' },
+    ])('should work with custom meridiem with $formatStr', ({ dateStr, formatStr, expected }) => {
+      expect(useDateFormat(new Date(dateStr), formatStr, { customMeridiem }).value).toBe(expected)
+    })
+  })
 })

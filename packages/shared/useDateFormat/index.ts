@@ -11,12 +11,25 @@ export interface UseDateFormatOptions {
    * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument).
    */
   locales?: Intl.LocalesArgument
+
+  /**
+   * A custom function to re-modify the way to display meridiem
+   *
+   */
+  customMeridiem?: (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => string
 }
 
 const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
-const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
-export const formatDate = (date: Date, formatStr: string, locales?: Intl.LocalesArgument) => {
+const defaultMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
+  let m = (hours < 12 ? 'AM' : 'PM')
+  if (hasPeriod)
+    m = m.split('').reduce((acc, curr) => acc += `${curr}.`, '')
+  return isLowercase ? m.toLowerCase() : m
+}
+
+export const formatDate = (date: Date, formatStr: string, options: UseDateFormatOptions) => {
   const years = date.getFullYear()
   const month = date.getMonth()
   const days = date.getDate()
@@ -25,13 +38,14 @@ export const formatDate = (date: Date, formatStr: string, locales?: Intl.Locales
   const seconds = date.getSeconds()
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
+  const meridiem = options.customMeridiem ?? defaultMeridiem
   const matches: Record<string, () => string | number> = {
     YY: () => String(years).slice(-2),
     YYYY: () => years,
     M: () => month + 1,
     MM: () => `${month + 1}`.padStart(2, '0'),
-    MMM: () => date.toLocaleDateString(locales, { month: 'short' }),
-    MMMM: () => date.toLocaleDateString(locales, { month: 'long' }),
+    MMM: () => date.toLocaleDateString(options.locales, { month: 'short' }),
+    MMMM: () => date.toLocaleDateString(options.locales, { month: 'long' }),
     D: () => String(days),
     DD: () => `${days}`.padStart(2, '0'),
     H: () => String(hours),
@@ -44,9 +58,13 @@ export const formatDate = (date: Date, formatStr: string, locales?: Intl.Locales
     ss: () => `${seconds}`.padStart(2, '0'),
     SSS: () => `${milliseconds}`.padStart(3, '0'),
     d: () => day,
-    dd: () => date.toLocaleDateString(locales, { weekday: 'narrow' }),
-    ddd: () => date.toLocaleDateString(locales, { weekday: 'short' }),
-    dddd: () => date.toLocaleDateString(locales, { weekday: 'long' }),
+    dd: () => date.toLocaleDateString(options.locales, { weekday: 'narrow' }),
+    ddd: () => date.toLocaleDateString(options.locales, { weekday: 'short' }),
+    dddd: () => date.toLocaleDateString(options.locales, { weekday: 'long' }),
+    A: () => meridiem(hours, minutes),
+    AA: () => meridiem(hours, minutes, false, true),
+    a: () => meridiem(hours, minutes, true),
+    aa: () => meridiem(hours, minutes, true, true),
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match]())
 }
@@ -68,20 +86,20 @@ export const normalizeDate = (date: DateLike) => {
     }
   }
 
-  return new Date(date!)
+  return new Date(date)
 }
 
 /**
  * Get the formatted date according to the string of tokens passed in.
  *
  * @see https://vueuse.org/useDateFormat
- * @param date
- * @param formatStr
- * @param options
+ * @param date - The date to format, can either be a `Date` object, a timestamp, or a string
+ * @param formatStr - The combination of tokens to format the date
+ * @param options - UseDateFormatOptions
  */
 
 export function useDateFormat(date: MaybeComputedRef<DateLike>, formatStr: MaybeComputedRef<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}) {
-  return computed(() => formatDate(normalizeDate(resolveUnref(date)), resolveUnref(formatStr), options?.locales))
+  return computed(() => formatDate(normalizeDate(resolveUnref(date)), resolveUnref(formatStr), options))
 }
 
 export type UseDateFormatReturn = ReturnType<typeof useDateFormat>
