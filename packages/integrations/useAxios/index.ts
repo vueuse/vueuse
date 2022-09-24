@@ -13,7 +13,7 @@ export interface UseAxiosReturn<T, D> {
   /**
    * Axios response data
    */
-  data: Ref<T | undefined>
+  data: ShallowRef<T | undefined>
 
   /**
    * Indicates if the request has finished
