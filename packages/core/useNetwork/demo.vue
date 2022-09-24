@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { reactive } from 'vue-demi'
-import { useNetwork } from '.'
+import { reactive } from 'vue'
+import { useNetwork } from '@vueuse/core'
 
 const network = reactive(useNetwork())
 const text = stringify(network)

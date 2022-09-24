@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
  * Any function
@@ -6,13 +6,44 @@ import { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 export type Fn = () => void
 
 /**
- * Maybe it's a ref, or not.
+ * A ref that allow to set null or undefined
+ */
+export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
+  get value(): T
+  set value(value: T | null | undefined)
+}
+
+/**
+ * @deprecated Use `RemovableRef`
+ */
+export type RemoveableRef<T> = RemovableRef<T>
+
+/**
+ * Maybe it's a ref, or a plain value
  *
  * ```ts
  * type MaybeRef<T> = T | Ref<T>
  * ```
  */
-export type MaybeRef<T> = T | Ref<T> | ComputedRef<T>
+export type MaybeRef<T> = T | Ref<T>
+
+/**
+ * Maybe it's a ref, or a plain value, or a getter function
+ *
+ * ```ts
+ * type MaybeComputedRef<T> = (() => T) | T | Ref<T> | ComputedRef<T>
+ * ```
+ */
+export type MaybeComputedRef<T> = MaybeReadonlyRef<T> | MaybeRef<T>
+
+/**
+ * Maybe it's a computed ref, or a getter function
+ *
+ * ```ts
+ * type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
+ * ```
+ */
+export type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
@@ -36,9 +67,13 @@ export type ElementOf<T> = T extends (infer E)[] ? E : never
 
 export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
+export type Awaitable<T> = Promise<T> | T
+
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
+
 export interface Pausable {
   /**
-   * A ref indicate whether a pusable instance is active
+   * A ref indicate whether a pausable instance is active
    */
   isActive: Ref<boolean>
 
@@ -52,6 +87,28 @@ export interface Pausable {
    */
   resume: Fn
 }
+
+export interface Stoppable {
+  /**
+   * A ref indicate whether a stoppable instance is executing
+   */
+  isPending: Ref<boolean>
+
+  /**
+   * Stop the effect from executing
+   */
+  stop: Fn
+
+  /**
+   * Start the effects
+   */
+  start: Fn
+}
+
+/**
+ * @deprecated Use `Stoppable`
+ */
+export type Stopable = Stoppable
 
 export interface ConfigurableFlush {
   /**

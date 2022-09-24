@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { rand } from '@vueuse/shared'
+import { ref } from 'vue'
+import { TransitionPresets, useTransition } from '@vueuse/core'
+
+const duration = 1500
 
 const baseNumber = ref(0)
+
+const baseVector = ref([0, 0])
 
 const easeOutElastic = (n: number) => {
   return n === 0
@@ -13,17 +18,23 @@ const easeOutElastic = (n: number) => {
 }
 
 const cubicBezierNumber = useTransition(baseNumber, {
-  duration: 1500,
+  duration,
   transition: [0.75, 0, 0.25, 1],
 })
 
 const customFnNumber = useTransition(baseNumber, {
-  duration: 1500,
+  duration,
   transition: easeOutElastic,
+})
+
+const vector = useTransition(baseVector, {
+  duration,
+  transition: TransitionPresets.easeOutExpo,
 })
 
 const toggle = () => {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
+  baseVector.value = [rand(0, 100), rand(0, 100)]
 }
 </script>
 
@@ -34,16 +45,12 @@ const toggle = () => {
     </button>
 
     <p class="mt-2">
-      Base number: <b>{{ baseNumber }}</b>
-    </p>
-
-    <p class="mt-2">
       Cubic bezier curve: <b>{{ cubicBezierNumber.toFixed(2) }}</b>
     </p>
 
-    <div class="track">
+    <div class="track number">
       <div class="relative">
-        <div class="sled" :style="{ left: cubicBezierNumber + '%' }" />
+        <div class="sled" :style="{ left: `${cubicBezierNumber}%` }" />
       </div>
     </div>
 
@@ -51,9 +58,19 @@ const toggle = () => {
       Custom function: <b>{{ customFnNumber.toFixed(2) }}</b>
     </p>
 
-    <div class="track">
+    <div class="track number">
       <div class="relative">
-        <div class="sled" :style="{ left: customFnNumber + '%' }" />
+        <div class="sled" :style="{ left: `${customFnNumber}%` }" />
+      </div>
+    </div>
+
+    <p class="mt-2">
+      Vector: <b>[{{ vector[0].toFixed(2) }}, {{ vector[1].toFixed(2) }}]</b>
+    </p>
+
+    <div class="track vector">
+      <div class="relative">
+        <div class="sled" :style="{ left: `${vector[0]}%`, top: `${vector[1]}%` }" />
       </div>
     </div>
   </div>
@@ -62,20 +79,38 @@ const toggle = () => {
 <style scoped>
 .track {
   background: rgba(125, 125, 125, 0.3);
-  border-radius: 1rem;
-  height: 1rem;
-  margin: 0.5rem 0;
+  border-radius: 0.5rem;
   max-width: 20rem;
-  padding: 0 0.5rem;
   width: 100%;
 }
 
 .sled {
-  background: var(--c-brand);
+  background: var(--vp-c-brand);
   border-radius: 50%;
   height: 1rem;
   position: absolute;
-  transform: translateX(-50%);
   width: 1rem;
+}
+
+.number.track {
+  height: 1rem;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+}
+
+.number.track .sled {
+  transform: translateX(-50%);
+}
+
+.vector.track {
+  padding: 0.5rem;
+}
+
+.vector.track .relative {
+  padding-bottom: 30%;
+}
+
+.vector.track .sled {
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

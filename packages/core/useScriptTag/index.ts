@@ -1,6 +1,8 @@
-import { MaybeRef, noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref, unref } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { noop, resolveUnref, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   /**
@@ -34,17 +36,26 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   crossOrigin?: 'anonymous' | 'use-credentials'
   referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
   noModule?: boolean
+
   defer?: boolean
+
+  /**
+   * Add custom attribute to the script tag
+   *
+   */
+  attrs?: Record<string, string>
 }
 
 /**
  * Async script tag loading.
  *
- * @see   {@link https://vueuse.org/useScriptTag}
+ * @see https://vueuse.org/useScriptTag
  * @param src
+ * @param onLoaded
+ * @param options
  */
 export function useScriptTag(
-  src: MaybeRef<string>,
+  src: MaybeComputedRef<string>,
   onLoaded: (el: HTMLScriptElement) => void = noop,
   options: UseScriptTagOptions = {},
 ) {
@@ -58,6 +69,7 @@ export function useScriptTag(
     noModule,
     defer,
     document = defaultDocument,
+    attrs = {},
   } = options
   const scriptTag = ref<HTMLScriptElement | null>(null)
 
@@ -86,14 +98,14 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = unref(src)
+      el.src = resolveUnref(src)
 
       // Optional attributes
       if (defer)
@@ -104,6 +116,8 @@ export function useScriptTag(
         el.noModule = noModule
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
+
+      Object.entries(attrs).forEach(([name, value]) => el?.setAttribute(name, value))
 
       // Enables shouldAppend
       shouldAppend = true
@@ -117,10 +131,10 @@ export function useScriptTag(
     el.addEventListener('error', event => reject(event))
     el.addEventListener('abort', event => reject(event))
     el.addEventListener('load', () => {
-      el.setAttribute('data-loaded', 'true')
+      el!.setAttribute('data-loaded', 'true')
 
-      onLoaded(el)
-      resolveWithElement(el)
+      onLoaded(el!)
+      resolveWithElement(el!)
     })
 
     // Append the <script> tag to head.
@@ -138,7 +152,7 @@ export function useScriptTag(
    * @param waitForScriptLoad Whether if the Promise should resolve once the "load" event is emitted by the <script> attribute, or right after appending it to the DOM.
    * @returns Promise<HTMLScriptElement>
    */
-  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement|boolean> => {
+  const load = (waitForScriptLoad = true): Promise<HTMLScriptElement | boolean> => {
     if (!_promise)
       _promise = loadScript(waitForScriptLoad)
 
@@ -154,10 +168,12 @@ export function useScriptTag(
 
     _promise = null
 
-    if (scriptTag.value) {
-      document.head.removeChild(scriptTag.value)
+    if (scriptTag.value)
       scriptTag.value = null
-    }
+
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
+    if (el)
+      document.head.removeChild(el)
   }
 
   if (immediate && !manual)
@@ -168,3 +184,5 @@ export function useScriptTag(
 
   return { scriptTag, load, unload }
 }
+
+export type UseScriptTagReturn = ReturnType<typeof useScriptTag>

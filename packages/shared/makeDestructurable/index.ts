@@ -1,6 +1,6 @@
 export function makeDestructurable<
   T extends Record<string, unknown>,
-  A extends readonly any[]
+  A extends readonly any[],
 >(obj: T, arr: A): T & A {
   if (typeof Symbol !== 'undefined') {
     const clone = { ...obj }
@@ -21,6 +21,6 @@ export function makeDestructurable<
     return clone as T & A
   }
   else {
-    return Object.assign([...arr], obj) as T & A
+    return Object.assign([...arr], obj) as unknown as T & A
   }
 }

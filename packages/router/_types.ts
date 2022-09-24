@@ -1,5 +1,5 @@
-import { MaybeRef } from '@vueuse/shared'
-import { useRoute, useRouter } from 'vue-router'
+import type { MaybeRef } from '@vueuse/shared'
+import type { useRoute, useRouter } from 'vue-router'
 
 export interface ReactiveRouteOptions {
   /**

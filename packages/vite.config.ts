@@ -1,122 +1,111 @@
 import { resolve } from 'path'
-import { UserConfig } from 'vite'
-import Icons, { ViteIconsResolver } from 'vite-plugin-icons'
-import Components from 'vite-plugin-components'
-import { VitePWA } from 'vite-plugin-pwa'
-import { functionNames, getFunction } from '../meta/function-indexes'
-import { getFunctionHead, hasDemo } from '../scripts/utils'
-import WindiCSS from 'vite-plugin-windicss'
+import { defineConfig } from 'vite'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import Components from 'unplugin-vue-components/vite'
+import { VitePWA as PWA } from 'vite-plugin-pwa'
+import UnoCSS from 'unocss/vite'
+import Inspect from 'vite-plugin-inspect'
+import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
+import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+import { ChangeLog } from './.vitepress/plugins/changelog'
+import { Contributors } from './.vitepress/plugins/contributors'
 
-const config: UserConfig = {
-  resolve: {
-    alias: [
-      { find: '@vueuse/shared', replacement: resolve(__dirname, 'shared/index.ts') },
-      { find: '@vueuse/core', replacement: resolve(__dirname, 'core/index.ts') },
-      { find: '@vueuse/docs-utils', replacement: resolve(__dirname, '.vitepress/utils.ts') },
-    ],
-  },
-  optimizeDeps: {
-    exclude: [
-      'vue-demi',
-      '@vueuse/shared',
-      '@vueuse/core',
-    ],
-    include: [
-      'axios',
-      'dayjs',
-      'js-yaml',
-      'nprogress',
-      'qrcode',
-      'rxjs',
-      'tslib',
-      'universal-cookie',
-      'vue-chemistry',
-      'vue-chemistry/boolean',
-    ],
-  },
-  server: {
-    hmr: {
-      overlay: false,
-    },
-  },
-  plugins: [
-    Components({
-      dirs: [
-        '.vitepress/theme/components',
-      ],
-      customLoaderMatcher: id => id.endsWith('.md'),
-      customComponentResolvers: [
-        ViteIconsResolver({
-          componentPrefix: '',
-        }),
-      ],
-    }),
-    Icons(),
-    {
-      name: 'vueuse-md-transform',
-      enforce: 'pre',
-      transform(code, id) {
-        if (!id.endsWith('.md'))
-          return null
+export default defineConfig(async () => {
+  const [changeLog, contributions] = await Promise.all([
+    getChangeLog(process.env.CI ? 1000 : 100),
+    getFunctionContributors(),
+  ])
 
-        // linkify function names
-        code = code.replace(
-          new RegExp(`\`({${functionNames.join('|')}})\`(.)`, 'g'),
-          (_, name, ending) => {
-            if (ending === ']') // already a link
-              return _
-            const fn = getFunction(name)!
-            return `[\`${fn.name}\`](${fn.docs})`
-          },
-        )
-        // convert links to relative
-        code = code.replace(/https?:\/\/vueuse\.org\//g, '/')
-
-        const [pkg, name, i] = id.split('/').slice(-3)
-
-        if (functionNames.includes(name) && i === 'index.md') {
-          const frontmatterEnds = code.indexOf('---\n\n') + 4
-          let header = ''
-          if (hasDemo(pkg, name))
-            header = '\n<script setup>\nimport Demo from \'./demo.vue\'\n</script>\n<DemoContainer><Demo/></DemoContainer>\n'
-
-          header += getFunctionHead(pkg, name)
-
-          if (header)
-            code = code.slice(0, frontmatterEnds) + header + code.slice(frontmatterEnds)
-        }
-
-        return code
+  return {
+    server: {
+      hmr: {
+        overlay: false,
       },
-    },
-    VitePWA({
-      outDir: '.vitepress/dist',
-      manifest: {
-        name: 'VueUse',
-        short_name: 'VueUse',
-        theme_color: '#ffffff',
-        icons: [
-          {
-            src: '/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
+      fs: {
+        allow: [
+          resolve(__dirname, '..'),
         ],
       },
-    }),
-    WindiCSS({
-      scan: {
-        dirs: ['.'],
-        exclude: ['dist'],
-      },
-      preflight: false,
-    }),
-  ],
-}
+    },
+    plugins: [
+      // custom
+      MarkdownTransform(),
+      ChangeLog(changeLog),
+      Contributors(contributions),
 
-export default config
+      // plugins
+      Components({
+        dirs: resolve(__dirname, '.vitepress/theme/components'),
+        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+        resolvers: [
+          IconsResolver({
+            componentPrefix: '',
+          }),
+        ],
+        dts: './.vitepress/components.d.ts',
+        transformer: 'vue3',
+      }),
+      Icons({
+        compiler: 'vue3',
+        defaultStyle: 'display: inline-block',
+      }),
+      PWA({
+        outDir: '.vitepress/dist',
+        manifest: {
+          name: 'VueUse',
+          short_name: 'VueUse',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: '/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        },
+      }),
+      UnoCSS(),
+      Inspect(),
+    ],
+    resolve: {
+      alias: {
+        '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
+        '@vueuse/core': resolve(__dirname, 'core/index.ts'),
+        '@vueuse/math': resolve(__dirname, 'math/index.ts'),
+        '@vueuse/integrations': resolve(__dirname, 'integrations/index.ts'),
+        '@vueuse/components': resolve(__dirname, 'components/index.ts'),
+        '@vueuse/metadata': resolve(__dirname, 'metadata/index.ts'),
+        '@vueuse/docs-utils': resolve(__dirname, '.vitepress/plugins/utils.ts'),
+      },
+      dedupe: [
+        'vue',
+        'vue-demi',
+        '@vue/runtime-core',
+      ],
+    },
+    optimizeDeps: {
+      exclude: [
+        'vue-demi',
+        '@vueuse/shared',
+        '@vueuse/core',
+        'body-scroll-lock',
+      ],
+      include: [
+        'axios',
+        'js-yaml',
+        'nprogress',
+        'qrcode',
+        'rxjs',
+        'tslib',
+        'fuse.js',
+        'universal-cookie',
+      ],
+    },
+  }
+})

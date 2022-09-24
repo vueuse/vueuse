@@ -1,53 +1,62 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, Ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+
+export interface UseWebWorkerReturn<Data = any> {
+  data: Ref<Data>
+  post: typeof Worker.prototype['postMessage']
+  terminate: () => void
+  worker: Ref<Worker | undefined>
+}
 
 /**
  * Simple Web Workers registration and communication.
  *
- * @see   {@link https://vueuse.org/useWebWorker}
+ * @see https://vueuse.org/useWebWorker
  * @param url
  * @param workerOptions
  * @param options
  */
-export function useWebWorker(
+export function useWebWorker<Data = any>(
   url: string,
   workerOptions?: WorkerOptions,
   options: ConfigurableWindow = {},
-) {
+): UseWebWorkerReturn<Data> {
   const {
     window = defaultWindow,
   } = options
 
   const data: Ref<any> = ref(null)
-  let worker: Worker
+  const worker = shallowRef<Worker>()
 
-  const post: typeof worker.postMessage = function post(val: any) {
-    if (!worker)
+  const post: typeof Worker.prototype['postMessage'] = function post(val: any) {
+    if (!worker.value)
       return
 
-    worker.postMessage(val)
+    worker.value.postMessage(val)
   }
 
-  const terminate: typeof worker.terminate = function terminate() {
-    if (!worker)
+  const terminate: typeof Worker.prototype['terminate'] = function terminate() {
+    if (!worker.value)
       return
 
-    worker.terminate()
+    worker.value.terminate()
   }
 
   if (window) {
-    // @ts-expect-error untyped
-    worker = new window.Worker(url, workerOptions)
+    worker.value = new Worker(url, workerOptions)
 
-    worker.onmessage = (e: MessageEvent) => {
+    worker.value!.onmessage = (e: MessageEvent) => {
       data.value = e.data
     }
 
-    tryOnUnmounted(() => {
-      worker.terminate()
+    tryOnScopeDispose(() => {
+      if (worker.value)
+        worker.value.terminate()
     })
   }
 
@@ -55,5 +64,6 @@ export function useWebWorker(
     data,
     post,
     terminate,
+    worker,
   }
 }

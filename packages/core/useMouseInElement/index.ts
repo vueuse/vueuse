@@ -1,16 +1,18 @@
 import { ref, watch } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
-import { MouseOptions, useMouse } from '../useMouse'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import type { UseMouseOptions } from '../useMouse'
+import { useMouse } from '../useMouse'
 import { defaultWindow } from '../_configurable'
 
-export interface MouseInElementOptions extends MouseOptions {
+export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
 }
 
 /**
  * Reactive mouse position related to an element.
  *
- * @see   {@link https://vueuse.org/useMouseInElement}
+ * @see https://vueuse.org/useMouseInElement
  * @param target
  * @param options
  */
@@ -31,7 +33,7 @@ export function useMouseInElement(
   const elementPositionY = ref(0)
   const elementHeight = ref(0)
   const elementWidth = ref(0)
-  const isOutside = ref(false)
+  const isOutside = ref(true)
 
   let stop = () => {}
 
@@ -57,7 +59,9 @@ export function useMouseInElement(
 
         const elX = x.value - elementPositionX.value
         const elY = y.value - elementPositionY.value
-        isOutside.value = elX < 0 || elY < 0 || elX > elementWidth.value || elY > elementHeight.value
+        isOutside.value = width === 0 || height === 0
+          || elX < 0 || elY < 0
+          || elX > width || elY > height
 
         if (handleOutside || !isOutside.value) {
           elementX.value = elX
@@ -82,3 +86,5 @@ export function useMouseInElement(
     stop,
   }
 }
+
+export type UseMouseInElementReturn = ReturnType<typeof useMouseInElement>

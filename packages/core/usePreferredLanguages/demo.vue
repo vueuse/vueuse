@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePreferredLanguages } from '.'
+import { usePreferredLanguages } from '@vueuse/core'
 
 const languages = usePreferredLanguages()
 </script>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { ternary } from 'vue-chemistry'
-import { useIntersectionObserver } from '.'
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const root = ref(null)
 const target = ref(null)
@@ -14,8 +13,6 @@ useIntersectionObserver(
   },
   { root },
 )
-
-const text = ternary(isVisible, 'inside', 'outside')
 </script>
 
 <template>
@@ -28,7 +25,14 @@ const text = ternary(isVisible, 'inside', 'outside')
     </div>
   </div>
   <div class="text-center">
-    Element <b>{{ text }}</b> the viewport
+    Element
+    <BooleanDisplay
+      :value="isVisible"
+      true="inside"
+      false="outside"
+      class="font-bold"
+    />
+    the viewport
   </div>
 </template>
 

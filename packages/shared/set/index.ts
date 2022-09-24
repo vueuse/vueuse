@@ -1,4 +1,5 @@
-import { isVue2, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { set as _set, isVue2 } from 'vue-demi'
 
 export function set<T>(ref: Ref<T>, value: T): void
 export function set<O extends object, K extends keyof O>(target: O, key: K, value: O[K]): void
@@ -13,8 +14,8 @@ export function set(...args: any[]) {
   }
   if (args.length === 3) {
     if (isVue2) {
-      // use @vue/composition-api's set API
-      require('vue-demi').set(...args)
+      // @ts-expect-error case
+      _set(...args)
     }
     else {
       const [target, key, value] = args

@@ -25,38 +25,11 @@ const { coords, locatedAt, error } = useGeolocation()
 `useGeolocation` function takes [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) object as an optional parameter.
 
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+## Component Usage
 
-```typescript
-export interface GeolocationOptions
-  extends Partial<PositionOptions>,
-    ConfigurableNavigator {}
-/**
- * Reactive Geolocation API.
- *
- * @see   {@link https://vueuse.org/useGeolocation}
- * @param options
- */
-export declare function useGeolocation(
-  options?: GeolocationOptions
-): {
-  isSupported: boolean | undefined
-  coords: Ref<GeolocationCoordinates>
-  locatedAt: Ref<number | null>
-  error: Ref<{
-    readonly code: number
-    readonly message: string
-    readonly PERMISSION_DENIED: number
-    readonly POSITION_UNAVAILABLE: number
-    readonly TIMEOUT: number
-  } | null>
-}
+```html
+<UseGeolocation v-slot="{ coords: { latitude, longitude } }">
+  Latitude: {{ latitude }}
+  Longitude: {{ longitude }}
+</UseGeolocation>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useGeolocation/index.md)
-
-
-<!--FOOTER_ENDS-->

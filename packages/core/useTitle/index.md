@@ -6,6 +6,10 @@ category: Browser
 
 Reactive document title.
 
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in `useTitle()`. Use explicit import if you want to use the function from VueUse.
+:::
+
 ## Usage
 
 ```js
@@ -36,27 +40,9 @@ const title = computed(() => {
 useTitle(title) // document title will match with the ref "title"
 ```
 
+Pass an optional template tag [Vue Meta Title Template](https://vue-meta.nuxtjs.org/guide/metainfo.html) 
+to update the title to be injected into this template:
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive document title.
- *
- * @see   {@link https://vueuse.org/useTitle}
- * @param newTitle
- * @param options
- */
-export declare function useTitle(
-  newTitle?: MaybeRef<string | null | undefined>,
-  { document }?: ConfigurableDocument
-): Ref<string | null | undefined>
+```js
+const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' })
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useTitle/index.md)
-
-
-<!--FOOTER_ENDS-->

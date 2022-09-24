@@ -23,7 +23,7 @@ describe('templateRef', () => {
     expect(vm.targetEl).toBe(vm.$el)
   })
 
-  it('string ref update', async() => {
+  it('string ref update', async () => {
     const vm = mount(defineComponent({
       setup() {
         const refKey = ref('foo')
@@ -50,7 +50,7 @@ describe('templateRef', () => {
     expect(vm.barEl).toBe(vm.$el)
   })
 
-  it('string ref unmount', async() => {
+  it('string ref unmount', async () => {
     const vm = mount(defineComponent({
       setup() {
         const toggle = ref(true)
@@ -71,5 +71,32 @@ describe('templateRef', () => {
     await nextTick()
 
     expect(vm.targetEl).toBe(null)
+  })
+
+  it('support vue component as ref', async () => {
+    const ChildComponent = defineComponent({
+      name: 'ChildComponent',
+      render() {
+        return null
+      },
+    })
+
+    const vm = mount(defineComponent({
+      components: {
+        ChildComponent,
+      },
+      setup() {
+        const targetEl = templateRef<typeof ChildComponent>('target')
+        return {
+          targetEl,
+        }
+      },
+      render() {
+        return h(ChildComponent, { ref: 'target' })
+      },
+    }))
+
+    expect(vm.targetEl).toBeDefined()
+    expect(vm.targetEl.$options.name).toBe('ChildComponent')
   })
 })

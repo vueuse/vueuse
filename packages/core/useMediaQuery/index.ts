@@ -1,45 +1,56 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from 'vue-demi'
-import { tryOnUnmounted } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import { ref, watchEffect } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * Reactive Media Query.
  *
- * @see   {@link https://vueuse.org/useMediaQuery}
+ * @see https://vueuse.org/useMediaQuery
  * @param query
  * @param options
  */
-export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
+export function useMediaQuery(query: MaybeComputedRef<string>, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  if (!window)
-    return ref(false)
+  const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const mediaQuery = window.matchMedia(query)
-  const matches = ref(mediaQuery.matches)
+  let mediaQuery: MediaQueryList | undefined
+  const matches = ref(false)
 
-  const handler = (event: MediaQueryListEvent) => {
-    matches.value = event.matches
+  const cleanup = () => {
+    if (!mediaQuery)
+      return
+    if ('removeEventListener' in mediaQuery)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      mediaQuery.removeEventListener('change', update)
+    else
+      // @ts-expect-error deprecated API
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      mediaQuery.removeListener(update)
   }
 
-  if ('addEventListener' in mediaQuery) {
-    mediaQuery.addEventListener('change', handler)
-  }
-  else {
-    // @ts-expect-error - fallback for Safari < 14 and older browsers
-    mediaQuery.addListener(handler)
-  }
+  const update = () => {
+    if (!isSupported.value)
+      return
 
-  tryOnUnmounted(() => {
-    if ('removeEventListener' in mediaQuery) {
-      mediaQuery.removeEventListener('change', handler)
-    }
-    else {
-      // @ts-expect-error - fallback for Safari < 14 and older browsers
-      mediaQuery.removeListener(handler)
-    }
-  })
+    cleanup()
+
+    mediaQuery = window!.matchMedia(resolveRef(query).value)
+    matches.value = mediaQuery.matches
+
+    if ('addEventListener' in mediaQuery)
+      mediaQuery.addEventListener('change', update)
+    else
+      // @ts-expect-error deprecated API
+      mediaQuery.addListener(update)
+  }
+  watchEffect(update)
+
+  tryOnScopeDispose(() => cleanup())
 
   return matches
 }

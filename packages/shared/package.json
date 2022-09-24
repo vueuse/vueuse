@@ -1,39 +1,38 @@
 {
   "name": "@vueuse/shared",
-  "version": "4.6.3",
-  "main": "./dist/index.cjs.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.esm.js",
-  "unpkg": "./dist/index.iife.min.js",
-  "jsdelivr": "./dist/index.iife.min.js",
-  "sideEffects": false,
-  "files": [
-    "dist"
-  ],
+  "version": "9.2.0",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/shared#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/shared"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
   },
   "keywords": [
     "vue",
     "vue-use",
     "utils"
   ],
-  "author": "Anthony Fu<https://github.com/antfu>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/shared#readme",
-  "dependencies": {
-    "vue-demi": "latest"
-  },
-  "funding": "https://github.com/sponsors/antfu",
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
-    "./": "./"
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "vue-demi": "*"
   }
 }

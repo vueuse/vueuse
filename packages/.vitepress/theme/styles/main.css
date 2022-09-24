@@ -1,0 +1,22 @@
+html.dark {
+  color-scheme: dark;
+}
+
+.vp-doc h2 {
+  border-top: 0px;
+  margin-top: 10px;
+}
+
+.VPMenuLink .link {
+  line-height: 28px !important;
+}
+
+.VPSidebarGroup .link {
+  padding: 3px 0 !important;
+}
+
+#app a:focus-visible,
+#app button:focus-visible,
+#app input[type="checkbox"]:focus-visible {
+  @apply outline-1 outline-primary ring-2 ring-primary;
+}

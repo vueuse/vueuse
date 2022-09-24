@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue-demi'
 import { useCookies } from '.'
 
 const cookies = useCookies(['locale'])

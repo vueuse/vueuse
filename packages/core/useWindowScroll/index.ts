@@ -1,11 +1,12 @@
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Reactive window scroll.
  *
- * @see   {@link https://vueuse.org/useWindowScroll}
+ * @see https://vueuse.org/useWindowScroll
  * @param options
  */
 export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {
@@ -33,3 +34,5 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
 
   return { x, y }
 }
+
+export type UseWindowScrollReturn = ReturnType<typeof useWindowScroll>

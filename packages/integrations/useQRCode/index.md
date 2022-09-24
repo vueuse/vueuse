@@ -4,7 +4,7 @@ category: '@Integrations'
 
 # useQRCode
 
-wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
+Wrapper for [`qrcode`](https://github.com/soldair/node-qrcode).
 
 ## Install 
 
@@ -15,7 +15,7 @@ npm i qrcode
 ## Usage
 
 ```ts
-import { useQRCode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 
 // `qrcode` will be a ref of data URL
 const qrcode = useQRCode('text-to-encode')
@@ -25,7 +25,7 @@ or passing a `ref` to it, the returned data URL ref will change along with the s
 
 ```ts
 import { ref } from 'vue'
-import { useQRCode } from '@vueuse/integrations'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 
 const text = ref('text-to-encode')
 const qrcode = useQRCode(text)
@@ -33,30 +33,5 @@ const qrcode = useQRCode(text)
 
 ```html
 <input v-model="text" type="text">
-<img :src="qrcode" />
+<img :src="qrcode" alt="QR Code" />
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Wrapper for qrcode.
- *
- * @see   {@link https://vueuse.org/useQRCode}
- * @param text
- * @param options
- */
-export declare function useQRCode(
-  text: MaybeRef<string>,
-  options?: QRCode.QRCodeToDataURLOptions
-): Ref<string>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useQRCode/index.md)
-
-
-<!--FOOTER_ENDS-->

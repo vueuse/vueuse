@@ -6,3 +6,5 @@ types/
 !packages/.vitepress
 !/.eslintrc.js
 !/rollup.config.js
+!.test
+.temp

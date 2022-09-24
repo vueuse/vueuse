@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useMutationObserver } from '.'
+import { ref } from 'vue'
+import { useMutationObserver } from '@vueuse/core'
 
 const el = ref(null)
 const messages = ref<string[]>([])

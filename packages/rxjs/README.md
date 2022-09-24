@@ -15,9 +15,10 @@ npm i <b>@vueuse/rxjs</b> rxjs
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
-  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
-  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide/observer)
+  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an RxJS [`Observable`](https://rxjs.dev/guide/observable)
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind an RxJS [`Subject`](https://rxjs.dev/guide/subject) to a `ref` and propagate value changes both ways
+  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — use an RxJS [`Subscription`](https://rxjs.dev/guide/subscription) without worrying about unsubscribing from it or creating memory leaks
 
 
 <!--FUNCTIONS_LIST_ENDS-->
@@ -25,11 +26,11 @@ npm i <b>@vueuse/rxjs</b> rxjs
 ## Example
 
 ```ts
-import { fromEvent, from, useObservable } from '@vueuse/rxjs'
+import { from, fromEvent, useObservable } from '@vueuse/rxjs'
 import { ref } from 'vue'
-import { of, forkJoin } from 'rxjs'
+import { forkJoin, of } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
-import { take, mergeMap, concatAll, pluck, map, scan } from 'rxjs/operators'
+import { concatAll, map, mergeMap, pluck, scan, take } from 'rxjs/operators'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
 const button = ref<HTMLButtonElement>(null)
@@ -42,15 +43,15 @@ const posts = useObservable(
       mergeMap(({ id, userId, title }) => forkJoin({
         id: of(id),
         comments: ajax.getJSON(`${BASE_URL}/posts/${id}/comments`).pipe(
-          map(comments => comments.length)
+          map(comments => comments.length),
         ),
         username: ajax.getJSON(`${BASE_URL}/users/${userId}`).pipe(
-          pluck('username')
-        )
+          pluck('username'),
+        ),
       }), 2),
-      scan((acc, curr) => [...acc, curr], [])
-    ))
-  )
+      scan((acc, curr) => [...acc, curr], []),
+    )),
+  ),
 )
 ```
 

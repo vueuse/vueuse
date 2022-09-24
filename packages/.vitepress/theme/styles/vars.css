@@ -1,100 +1,88 @@
-/** Base Styles */
-:root {
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
 
-  /**
-   * Colors
-   * --------------------------------------------------------------------- */
-  --c-bg: #fff;
-  --c-bg-semi: rgba(255,255,255,0.8);
-  --c-bg-secondary: #f3f5f7;
-
-  --c-white: #ffffff;
-  --c-black: #000000;
-
-  --c-divider-light: rgba(60, 60, 67, .12);
-  --c-divider-dark: rgba(84, 84, 88, .48);
-
-  --c-text-light-1: #2c3e50;
-  --c-text-light-2: #476582;
-  --c-text-light-3: #90a4b7;
-
-  --c-brand: #3eaf7c;
-  --c-brand-active: #37a372;
-  --c-brand-dark: #30855e;
-  --c-brand-light: #4abf8a;
-
-  --c-disabled-bg: #e5e5e5;
-  --c-disabled-fg: #666;
-
-  --code-bg-color: #f8f8f8;
-  --code-inline-bg-color: rgba(27, 31, 35, .04);
-  --code-highlight: rgba(0, 0, 0, .04);
-
-  /**
-   * Typography
-   * --------------------------------------------------------------------- */
-
-  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  --font-family-mono: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-
-  /**
-   * Z Indexes
-   *
-   * Algolia SearchBox has a z-index of 200, so make sure not to go above
-   * that value.
-   * --------------------------------------------------------------------- */
-
-  --z-index-navbar: 10;
-  --z-index-sidebar: 6;
-
-  /**
-   * Shadows
-   * --------------------------------------------------------------------- */
-
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, .04), 0 1px 2px rgba(0, 0, 0, .06);
-  --shadow-2: 0 3px 12px rgba(0, 0, 0, .07), 0 1px 4px rgba(0, 0, 0, .07);
-  --shadow-3: 0 12px 32px rgba(0, 0, 0, .1), 0 2px 6px rgba(0, 0, 0, .08);
-  --shadow-4: 0 14px 44px rgba(0, 0, 0, .12), 0 3px 9px rgba(0, 0, 0, .12);
-  --shadow-5: 0 18px 56px rgba(0, 0, 0, .16), 0 4px 12px rgba(0, 0, 0, .16);
-
-  /**
-   * Sizes
-   * --------------------------------------------------------------------- */
-
-  --header-height: 3.6rem;
-  --sidebar-width: 17.5rem;
-  --scrollbar-width: 6px;
+ :root {
+  --vp-c-accent: #35495e;
+  --vp-c-brand: #44bd87;
+  --vp-c-text-code: #5d6f5d;
+  --vp-code-block-bg: rgba(125,125,125,0.04);
+  --vp-c-disabled-bg: rgba(125,125,125,0.2);
+  /* fix contrast on gray cards: used by --vp-c-text-2 */
+  --vp-c-text-light-2: rgba(56 56 56 / 70%);
 }
 
-html.dark {
-  --c-bg: #111;
-  --c-bg-semi: rgba(17,17,17,0.8);
-  --c-bg-secondary: #222;
-  --c-text: #f5f7fa;
-  --c-text-light: #f9f9f9;
-  --c-text-lighter: #ffffff;
-
-  --c-divider-light: rgba(200, 200, 200, .12);
-  --c-divider-dark: rgba(200, 200, 200, .48);
-  --code-bg-color: #191919;
-  --code-inline-bg-color: rgba(255, 255, 255, .04);
-  --code-highlight: rgba(0, 0, 0, .66);
-
-  --c-disabled-bg: #333;
-  --c-disabled-fg: #aaa;
+.dark {
+  --vp-code-block-bg: rgba(0,0,0,0.2);
+  --vp-c-text-code: #c0cec0;
+  /* fix contrast on gray cards: check the same above (this is the default) */
+  --vp-c-text-dark-2: rgba(235, 235, 235, 0.60);
 }
 
-/** Fallback Styles */
+/**
+ * Component: Code
+ * -------------------------------------------------------------------------- */
+
 :root {
-  --c-divider: var(--c-divider-light);
+  --vp-code-line-highlight-color: rgba(125, 125, 125, 0.2);
+}
 
-  --c-text: var(--c-text-light-1);
-  --c-text-light: var(--c-text-light-2);
-  --c-text-lighter: var(--c-text-light-3);
+.dark {
+  --vp-code-line-highlight-color: rgba(0, 0, 0, 0.5);
+}
 
-  --c-bg: var(--c-white);
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
 
-  --code-line-height: 24px;
-  --code-font-family: var(--font-family-mono);
-  --code-font-size: 14px;
+:root {
+  --vp-button-brand-border: var(--vp-c-brand-light);
+  --vp-button-brand-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-bg: var(--vp-c-brand);
+  --vp-button-brand-hover-border: var(--vp-c-brand-light);
+  --vp-button-brand-hover-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-light);
+  --vp-button-brand-active-border: var(--vp-c-brand-light);
+  --vp-button-brand-active-text: var(--vp-c-text-dark-1);
+  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+
+ :root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    #35495e -80%,
+    #41b883
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    #41b88380 30%,
+    #35495e80
+  );
+  --vp-home-hero-image-filter: blur(30px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(72px);
+  }
+}
+
+
+/**
+ * Component: Algolia
+ * -------------------------------------------------------------------------- */
+
+.DocSearch {
+  --docsearch-primary-color: var(--vp-c-brand) !important;
 }

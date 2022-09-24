@@ -4,9 +4,9 @@ category: '@Integrations'
 
 # useAxios
 
-wrapper for [`axios`](https://github.com/axios/axios)
+Wrapper for [`axios`](https://github.com/axios/axios).
 
-## Install 
+## Install
 
 ```bash
 npm i axios
@@ -15,67 +15,81 @@ npm i axios
 ## Usage
 
 ```ts
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
-const { data, finished } = useAxios('/api/posts')
+const { data, isFinished } = useAxios('/api/posts')
 ```
 
 or use an instance of axios
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
-  baseUrl: '/api'
+  baseURL: '/api',
 })
 
-const { data, finished } = useAxios('/posts', instance)
+const { data, isFinished } = useAxios('/posts', instance)
 ```
 
 use an instance of axios with config options
 
 ```ts
 import axios from 'axios'
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 const instance = axios.create({
-  baseUrl: '/api'
+  baseURL: '/api',
 })
 
-const { data, finished } = useAxios('/posts', { method: 'POST' }, instance)
+const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance)
 ```
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+When you don't pass the `url`. The default value is `{immediate: false}`
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
 
-```typescript
-export interface UseAxiosReturn<T> {
-  response: Ref<AxiosResponse<T> | undefined>
-  data: Ref<T | undefined>
-  finished: Ref<boolean>
-  loading: Ref<boolean>
-  canceled: Ref<boolean>
-  error: Ref<AxiosError<T> | undefined>
-}
-export declare function useAxios<T = any>(
-  url: string,
-  config?: AxiosRequestConfig
-): UseAxiosReturn<T>
-export declare function useAxios<T = any>(
-  url: string,
-  instance?: AxiosInstance
-): UseAxiosReturn<T>
-export declare function useAxios<T = any>(
-  url: string,
-  config: AxiosRequestConfig,
-  instance: AxiosInstance
-): UseAxiosReturn<T>
+const { execute } = useAxios()
+execute(url)
 ```
 
-## Source
+The `execute` function `url` here is optional, and `url2` will replace the `url1`. 
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useAxios/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useAxios/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/integrations/useAxios/index.md)
+const { execute } = useAxios(url1, {}, { immediate: false })
+execute(url2)
+```
 
+The `execute` function can accept `config` only. 
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
 
-<!--FOOTER_ENDS-->
+const { execute } = useAxios(url1, { method: 'GET' }, { immediate: false })
+execute({ params: { key: 1 } })
+execute({ params: { key: 2 } })
+```
+
+The `execute` function resolves with a result of network request.
+```ts
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const { execute } = useAxios()
+const result = await execute(url)
+```
+
+use an instance of axios with `immediate` options
+
+```ts
+import axios from 'axios'
+import { useAxios } from '@vueuse/integrations/useAxios'
+
+const instance = axios.create({
+  baseURL: '/api',
+})
+
+const { data, isFinished } = useAxios('/posts', { method: 'POST' }, instance, {
+  immediate: false,
+})
+```

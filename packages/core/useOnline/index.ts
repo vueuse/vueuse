@@ -1,10 +1,10 @@
 import { useNetwork } from '../useNetwork'
-import { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
 
 /**
  * Reactive online state.
  *
- * @see   {@link https://vueuse.org/useOnline}
+ * @see https://vueuse.org/useOnline
  * @param options
  */
 export function useOnline(options: ConfigurableWindow = {}) {

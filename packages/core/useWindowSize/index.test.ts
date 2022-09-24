@@ -1,33 +1,56 @@
-import { useSetup } from '../../.test'
+import { nextTick } from 'vue'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
+  const addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
+
+  beforeEach(() => {
+    addEventListenerSpy.mockReset()
+  })
+
+  afterAll(() => {
+    addEventListenerSpy.mockRestore()
+  })
+
   it('should be defined', () => {
     expect(useWindowSize).toBeDefined()
   })
 
   it('should work', () => {
-    const wrapper = useSetup(() => {
-      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-      expect(width.value).toBe(window.innerWidth)
-      expect(height.value).toBe(window.innerHeight)
-
-      return { width, height }
-    })
-
-    expect(wrapper.width).toBe(window.innerWidth)
-    expect(wrapper.height).toBe(window.innerHeight)
+    expect(width.value).toBe(window.innerWidth)
+    expect(height.value).toBe(window.innerHeight)
   })
 
-  it('sets handler for window "resize" event', () => {
-    const windowAddEventListener = jest.spyOn(window, 'addEventListener')
+  it('should exclude scrollbar', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, includeScrollbar: false })
 
-    useSetup(() => {
-      const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
-      return { width, height }
-    })
+    expect(width.value).toBe(window.document.documentElement.clientWidth)
+    expect(height.value).toBe(window.document.documentElement.clientHeight)
+  })
 
-    expect(windowAddEventListener).toHaveBeenCalledWith('resize', expect.anything(), { passive: true })
+  it('sets handler for window "resize" event', async () => {
+    useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
+
+    await nextTick()
+
+    expect(addEventListenerSpy).toHaveBeenCalledOnce()
+
+    const call = addEventListenerSpy.mock.calls[0] as any
+    expect(call[0]).toEqual('resize')
+    expect(call[2]).toEqual({ passive: true })
+  })
+
+  it('sets handler for window "orientationchange" event', async () => {
+    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+
+    await nextTick()
+
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
+
+    const call = addEventListenerSpy.mock.calls[1] as any
+    expect(call[0]).toEqual('orientationchange')
+    expect(call[2]).toEqual({ passive: true })
   })
 })

@@ -49,46 +49,10 @@ export default {
 </script>
 ```
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface MousePressedOptions extends ConfigurableWindow {
-  /**
-   * Listen to `touchstart` `touchend` events
-   *
-   * @default true
-   */
-  touch?: boolean
-  /**
-   * Initial values
-   *
-   * @default false
-   */
-  initialValue?: boolean
-  /**
-   * Element target to be capture the click
-   */
-  target?: MaybeElementRef
-}
-/**
- * Reactive mouse position.
- *
- * @see   {@link https://vueuse.org/useMousePressed}
- * @param options
- */
-export declare function useMousePressed(
-  options?: MousePressedOptions
-): {
-  pressed: Ref<boolean>
-  sourceType: Ref<MouseSourceType>
-}
+```html
+<UseMousePressed v-slot="{ pressed }">
+  Is Pressed: {{ pressed }}
+</UseMousePressed>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useMousePressed/index.md)
-
-
-<!--FOOTER_ENDS-->

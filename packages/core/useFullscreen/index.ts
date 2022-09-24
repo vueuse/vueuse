@@ -1,9 +1,13 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref } from 'vue-demi'
-import { MaybeElementRef } from '../unrefElement'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 type FunctionMap = [
   'requestFullscreen',
@@ -60,41 +64,50 @@ const functionsMap: FunctionMap[] = [
   ],
 ] as any
 
+export interface UseFullscreenOptions extends ConfigurableDocument {
+  /**
+   * Automatically exit fullscreen when component is unmounted
+   *
+   * @default false
+   */
+  autoExit?: boolean
+}
+
 /**
  * Reactive Fullscreen API.
  *
- * @see   {@link https://vueuse.org/useFullscreen}
+ * @see https://vueuse.org/useFullscreen
  * @param target
  * @param options
  */
 export function useFullscreen(
   target?: MaybeElementRef,
-  options: ConfigurableDocument = {},
+  options: UseFullscreenOptions = {},
 ) {
-  const { document = defaultDocument } = options
-  const targetRef = ref(target || document?.querySelector('html'))
+  const { document = defaultDocument, autoExit = false } = options
+  const targetRef = target || document?.querySelector('html')
   const isFullscreen = ref(false)
-  let isSupported = false
-
   let map: FunctionMap = functionsMap[0]
 
-  if (!document) {
-    isSupported = false
-  }
-  else {
-    for (const m of functionsMap) {
-      if (m[1] in document) {
-        map = m
-        isSupported = true
-        break
+  const isSupported = useSupported(() => {
+    if (!document) {
+      return false
+    }
+    else {
+      for (const m of functionsMap) {
+        if (m[1] in document) {
+          map = m
+          return true
+        }
       }
     }
-  }
+    return false
+  })
 
   const [REQUEST, EXIT, ELEMENT,, EVENT] = map
 
   async function exit() {
-    if (!isSupported)
+    if (!isSupported.value)
       return
     if (document?.[ELEMENT])
       await document[EXIT]()
@@ -103,13 +116,14 @@ export function useFullscreen(
   }
 
   async function enter() {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     await exit()
 
-    if (targetRef.value) {
-      await targetRef.value[REQUEST]()
+    const target = unrefElement(targetRef)
+    if (target) {
+      await target[REQUEST]()
       isFullscreen.value = true
     }
   }
@@ -127,6 +141,9 @@ export function useFullscreen(
     }, false)
   }
 
+  if (autoExit)
+    tryOnScopeDispose(exit)
+
   return {
     isSupported,
     isFullscreen,
@@ -135,3 +152,5 @@ export function useFullscreen(
     toggle,
   }
 }
+
+export type UseFullscreenReturn = ReturnType<typeof useFullscreen>

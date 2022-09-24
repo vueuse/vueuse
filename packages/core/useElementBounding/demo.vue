@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue-demi'
+import { reactive, ref } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
-import { useElementBounding } from '.'
+import { useElementBounding } from '@vueuse/core'
 
 const el = ref(null)
 const rect = reactive(useElementBounding(el))

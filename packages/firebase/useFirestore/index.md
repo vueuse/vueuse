@@ -8,17 +8,24 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 
 ## Usage
 
-```js {7,9}
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import { useFirestore } from '@vueuse/firebase'
+```js {9,12,17}
+import { computed, ref } from 'vue'
+import { initializeApp } from 'firebase/app'
+import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
 
-const db = firebase.initializeApp({ projectId: 'MY PROJECT ID' }).firestore()
+const app = initializeApp({ projectId: 'MY PROJECT ID' })
+const db = getFirestore(app)
 
-const todos = useFirestore(db.collection('todos'))
+const todos = useFirestore(collection(db, 'todos'))
 
 // or for doc reference
-const user = useFirestore(db.collection('users').doc('my-user-id'))
+const user = useFirestore(doc(db, 'users', 'my-user-id'))
+
+// you can also use ref value for reactive query
+const postLimit = ref(10)
+const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postLimit.value)))
+const posts = useFirestore(postsQuery)
 ```
 
 ## Share across instances
@@ -26,7 +33,7 @@ const user = useFirestore(db.collection('users').doc('my-user-id'))
 You can reuse the db reference by passing `autoDispose: false`
 
 ```ts
-const todos = useFirestore(db.collection('todos'), undefined, { autoDispose: false })
+const todos = useFirestore(collection(db, 'todos'), undefined, { autoDispose: false })
 ```
 
 or use `createGlobalState` from the core package
@@ -34,10 +41,10 @@ or use `createGlobalState` from the core package
 ```js
 // store.js
 import { createGlobalState } from '@vueuse/core'
-import { useFirestore } from '@vueuse/firebase'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
 
 export const useTodos = createGlobalState(
-  () => useFirestore(db.collection('todos')),
+  () => useFirestore(collection(db, 'todos')),
 )
 ```
 
@@ -52,44 +59,3 @@ export default {
   },
 }
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface FirestoreOptions {
-  errorHandler?: (err: Error) => void
-  autoDispose?: boolean
-}
-export declare type FirebaseDocRef<T> =
-  | firebase.firestore.Query<T>
-  | firebase.firestore.DocumentReference<T>
-export declare function useFirestore<T extends firebase.firestore.DocumentData>(
-  docRef: firebase.firestore.DocumentReference<T>,
-  initialValue: T,
-  options?: FirestoreOptions
-): Ref<T | null>
-export declare function useFirestore<T extends firebase.firestore.DocumentData>(
-  docRef: firebase.firestore.Query<T>,
-  initialValue: T[],
-  options?: FirestoreOptions
-): Ref<T[]>
-export declare function useFirestore<T extends firebase.firestore.DocumentData>(
-  docRef: firebase.firestore.DocumentReference<T>,
-  initialValue?: T | undefined,
-  options?: FirestoreOptions
-): Ref<T | undefined | null>
-export declare function useFirestore<T extends firebase.firestore.DocumentData>(
-  docRef: firebase.firestore.Query<T>,
-  initialValue?: T[],
-  options?: FirestoreOptions
-): Ref<T[] | undefined>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useFirestore/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useFirestore/index.md)
-
-
-<!--FOOTER_ENDS-->

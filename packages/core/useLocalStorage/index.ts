@@ -1,22 +1,27 @@
-import { StorageOptions, useStorage } from '../useStorage'
-import { Ref } from 'vue-demi'
+import type { MaybeComputedRef, RemovableRef } from '@vueuse/shared'
+import type { UseStorageOptions } from '../useStorage'
+import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 
-export function useLocalStorage (key: string, defaultValue: string, options?: StorageOptions): Ref<string>
-export function useLocalStorage (key: string, defaultValue: boolean, options?: StorageOptions): Ref<boolean>
-export function useLocalStorage(key: string, defaultValue: number, options?: StorageOptions): Ref<number>
-export function useLocalStorage<T> (key: string, defaultValue: T, options?: StorageOptions): Ref<T>
-export function useLocalStorage<T = unknown> (key: string, defaultValue: null, options?: StorageOptions): Ref<T>
+export function useLocalStorage(key: string, initialValue: MaybeComputedRef<string>, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useLocalStorage(key: string, initialValue: MaybeComputedRef<boolean>, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useLocalStorage(key: string, initialValue: MaybeComputedRef<number>, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useLocalStorage<T>(key: string, initialValue: MaybeComputedRef<T>, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useLocalStorage<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage.
  *
- * @see   {@link https://vueuse.org/useLocalStorage}
+ * @see https://vueuse.org/useLocalStorage
  * @param key
- * @param defaultValue
+ * @param initialValue
  * @param options
  */
-export function useLocalStorage<T extends(string|number|boolean|object|null)> (key: string, defaultValue: T, options: StorageOptions = {}): Ref<any> {
+export function useLocalStorage<T extends(string | number | boolean | object | null)>(
+  key: string,
+  initialValue: MaybeComputedRef<T>,
+  options: UseStorageOptions<T> = {},
+): RemovableRef<any> {
   const { window = defaultWindow } = options
-  return useStorage(key, defaultValue, window?.localStorage, options)
+  return useStorage(key, initialValue, window?.localStorage, options)
 }

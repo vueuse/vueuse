@@ -2,7 +2,8 @@
 
 import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface BrowserLocationState {
   trigger: string
@@ -22,7 +23,7 @@ export interface BrowserLocationState {
 /**
  * Reactive browser location.
  *
- * @see   {@link https://vueuse.org/useBrowserLocation}
+ * @see https://vueuse.org/useBrowserLocation
  * @param options
  */
 export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
@@ -55,3 +56,5 @@ export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindo
 
   return state
 }
+
+export type UseBrowserLocationReturn = ReturnType<typeof useBrowserLocation>

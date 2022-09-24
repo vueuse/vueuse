@@ -10,39 +10,27 @@ Make isomorphic destructurable for object and array at the same time. See [this 
 
 TypeScript Example:
 
+<!-- eslint-disable array-bracket-spacing -->
+<!-- eslint-disable @typescript-eslint/no-redeclare -->
+
 ```ts
 import { makeDestructurable } from '@vueuse/core'
 
 const foo = { name: 'foo' }
-const bar: number = 1024
+const bar = 1024
 
 const obj = makeDestructurable(
   { foo, bar } as const,
-  [ foo, bar ] as const
+  [ foo, bar ] as const,
 )
 ```
 
 Usage:
 
+<!-- eslint-disable array-bracket-spacing -->
+<!-- eslint-disable @typescript-eslint/no-redeclare -->
+
 ```ts
 let { foo, bar } = obj
 let [ foo, bar ] = obj
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function makeDestructurable<
-  T extends Record<string, unknown>,
-  A extends readonly any[]
->(obj: T, arr: A): T & A
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/makeDestructurable/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/makeDestructurable/index.md)
-
-
-<!--FOOTER_ENDS-->

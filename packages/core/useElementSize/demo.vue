@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue-demi'
+import { reactive, ref } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
-import { useElementSize } from '.'
+import { useElementSize } from '@vueuse/core'
 
 const el = ref(null)
-const size = reactive(useElementSize(el))
+const size = reactive(
+  useElementSize(
+    el,
+    { width: 0, height: 0 },
+    { box: 'border-box' },
+  ),
+)
 const text = stringify(size)
 </script>
 

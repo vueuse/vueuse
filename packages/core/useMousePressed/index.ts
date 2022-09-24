@@ -1,8 +1,10 @@
-import { ref, computed } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { computed, ref } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { MouseSourceType } from '../useMouse'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { MouseSourceType } from '../useMouse'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface MousePressedOptions extends ConfigurableWindow {
   /**
@@ -11,6 +13,13 @@ export interface MousePressedOptions extends ConfigurableWindow {
    * @default true
    */
   touch?: boolean
+
+  /**
+   * Listen to `dragstart` `drop` and `dragend` events
+   *
+   * @default true
+   */
+  drag?: boolean
 
   /**
    * Initial values
@@ -28,12 +37,13 @@ export interface MousePressedOptions extends ConfigurableWindow {
 /**
  * Reactive mouse position.
  *
- * @see   {@link https://vueuse.org/useMousePressed}
+ * @see https://vueuse.org/useMousePressed
  * @param options
  */
 export function useMousePressed(options: MousePressedOptions = {}) {
   const {
     touch = true,
+    drag = true,
     initialValue = false,
     window = defaultWindow,
   } = options
@@ -48,6 +58,10 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     }
   }
 
+  const onPressed = (srcType: MouseSourceType) => () => {
+    pressed.value = true
+    sourceType.value = srcType
+  }
   const onReleased = () => {
     pressed.value = false
     sourceType.value = null
@@ -55,26 +69,23 @@ export function useMousePressed(options: MousePressedOptions = {}) {
 
   const target = computed(() => unrefElement(options.target) || window)
 
+  useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true })
+
   useEventListener(window, 'mouseleave', onReleased, { passive: true })
   useEventListener(window, 'mouseup', onReleased, { passive: true })
-  useEventListener(target, 'mousedown',
-    () => {
-      pressed.value = true
-      sourceType.value = 'mouse'
-    },
-    { passive: true },
-  )
+
+  if (drag) {
+    useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true })
+
+    useEventListener(window, 'drop', onReleased, { passive: true })
+    useEventListener(window, 'dragend', onReleased, { passive: true })
+  }
 
   if (touch) {
+    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true })
+
     useEventListener(window, 'touchend', onReleased, { passive: true })
     useEventListener(window, 'touchcancel', onReleased, { passive: true })
-    useEventListener(target, 'touchstart',
-      () => {
-        pressed.value = true
-        sourceType.value = 'touch'
-      },
-      { passive: true },
-    )
   }
 
   return {
@@ -82,3 +93,5 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     sourceType,
   }
 }
+
+export type UseMousePressedReturn = ReturnType<typeof useMousePressed>

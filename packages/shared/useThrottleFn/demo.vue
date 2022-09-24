@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { useThrottleFn } from '.'
+import { ref } from 'vue'
+import { useThrottleFn } from '@vueuse/core'
 
 const updated = ref(0)
 const clicked = ref(0)

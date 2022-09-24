@@ -6,7 +6,7 @@ category: Sensors
 
 Reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/ru/docs/Web/API/Window/devicePixelRatio)
 >
-> NOTE: there is no event listener for `window.devicePixelRatio` change. So this function uses [`Testing media queries programmatically (window.matchMedia)`](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) as described in [this example](https://stackoverflow.com/questions/28905420/window-devicepixelratio-change-listener/29653772#29653772), but unlike the example this function subscribes to **several** pixelRatio scales (taken from [mydevice.io](https://www.mydevice.io/)) to detect any `window.devicePixelRatio` change.
+> NOTE: there is no event listener for `window.devicePixelRatio` change. So this function uses [`Testing media queries programmatically (window.matchMedia)`](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) applying the same mechanism as described in [this example](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes).
 
 ## Usage
 
@@ -22,27 +22,10 @@ export default {
 }
 ```
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactively track `window.devicePixelRatio`.
- *
- * @see   {@link https://vueuse.org/useDevicePixelRatio}
- * @param options
- */
-export declare function useDevicePixelRatio({
-  window,
-}?: ConfigurableWindow): {
-  pixelRatio: Ref<number>
-}
+```html
+<UseDevicePixelRatio v-slot="{ pixelRatio }">
+  Pixel Ratio: {{ pixelRatio }}
+</UseDevicePixelRatio>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDevicePixelRatio/index.md)
-
-
-<!--FOOTER_ENDS-->

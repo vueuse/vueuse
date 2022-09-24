@@ -29,33 +29,10 @@ const {
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#Properties).
 
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+## Component Usage
 
-```typescript
-interface DeviceMotionOptions
-  extends ConfigurableWindow,
-    ConfigurableEventFilter {}
-/**
- * Reactive DeviceMotionEvent.
- *
- * @see   {@link https://vueuse.org/useDeviceMotion}
- * @param options
- */
-export declare function useDeviceMotion(
-  options?: DeviceMotionOptions
-): {
-  acceleration: Ref<DeviceMotionEventAcceleration | null>
-  accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
-  rotationRate: Ref<DeviceMotionEventRotationRate | null>
-  interval: Ref<number>
-}
-export {}
+```html
+<UseDeviceMotion v-slot="{ acceleration }">
+  Acceleration: {{ acceleration }}
+</UseDeviceMotion>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceMotion/index.md)
-
-
-<!--FOOTER_ENDS-->

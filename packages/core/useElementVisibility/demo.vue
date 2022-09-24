@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import { ternary } from 'vue-chemistry/boolean'
-import { useElementVisibility } from '.'
+import { ref } from 'vue'
+import { useElementVisibility } from '@vueuse/core'
 
 const el = ref(null)
 const isVisible = useElementVisibility(el)
-const text = ternary(isVisible, 'inside', 'outside')
-const className = ternary(isVisible, 'text-primary', 'text-orange')
 </script>
 
 <template>
-  <div ref="el" style="height: 200px">
+  <div>
     <note class="mb-2">
       Info on the right bottom corner
     </note>
-    <div class="area">
+    <div ref="el" class="max-w-100 relative area bg-white dark:bg-gray-800 shadow-lg z-60">
       Target Element (scroll down)
     </div>
   </div>
-  <div class="float">
-    Element <b :class="className">{{ text }}</b> the viewport
+  <div class="float m-3 area shadow-lg">
+    Element
+    <BooleanDisplay
+      :value="isVisible"
+      true="inside"
+      false="outside"
+      class="font-bold"
+    />
+    the viewport
   </div>
 </template>

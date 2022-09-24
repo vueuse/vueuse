@@ -6,6 +6,8 @@ category: Browser
 
 Reactive browser location
 
+> NOTE: If you're using Vue Router, use [`useRoute`](https://router.vuejs.org/guide/advanced/composition-api.html) provided by Vue Router instead.
+
 ## Usage
 
 ```js
@@ -14,52 +16,10 @@ import { useBrowserLocation } from '@vueuse/core'
 const location = useBrowserLocation()
 ```
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface BrowserLocationState {
-  trigger: string
-  state?: any
-  length?: number
-  hash?: string
-  host?: string
-  hostname?: string
-  href?: string
-  origin?: string
-  pathname?: string
-  port?: string
-  protocol?: string
-  search?: string
-}
-/**
- * Reactive browser location.
- *
- * @see   {@link https://vueuse.org/useBrowserLocation}
- * @param options
- */
-export declare function useBrowserLocation({
-  window,
-}?: ConfigurableWindow): Ref<{
-  trigger: string
-  state?: any
-  length?: number | undefined
-  hash?: string | undefined
-  host?: string | undefined
-  hostname?: string | undefined
-  href?: string | undefined
-  origin?: string | undefined
-  pathname?: string | undefined
-  port?: string | undefined
-  protocol?: string | undefined
-  search?: string | undefined
-}>
+```html
+<UseBrowserLocation v-slot="{ location }">
+  Browser Location: {{ location }}
+</UseBrowserLocation>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useBrowserLocation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useBrowserLocation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useBrowserLocation/index.md)
-
-
-<!--FOOTER_ENDS-->

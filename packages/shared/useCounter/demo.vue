@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCounter } from '.'
+import { useCounter } from '@vueuse/core'
 
 const { count, inc, dec, set, reset } = useCounter()
 </script>

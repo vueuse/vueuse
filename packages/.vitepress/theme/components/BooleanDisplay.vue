@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   value: {
@@ -12,10 +12,10 @@ const props = defineProps({
     default: 'false',
   },
   trueClass: {
-    default: 'text-$c-brand',
+    default: 'text-primary',
   },
   falseClass: {
-    default: 'text-orange-400',
+    default: 'text-orange-400 dark:text-orange-300',
   },
 })
 </script>

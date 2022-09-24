@@ -1,8 +1,10 @@
 import { ref } from 'vue-demi'
-import { Pausable, tryOnUnmounted, Fn } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { Fn, Pausable } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface RafFnOptions extends ConfigurableWindow {
+export interface UseRafFnOptions extends ConfigurableWindow {
   /**
    * Start the requestAnimationFrame loop immediately on creation
    *
@@ -11,43 +13,32 @@ export interface RafFnOptions extends ConfigurableWindow {
   immediate?: boolean
 }
 
-export interface RafFnReturn extends Pausable {
-  /**
-   * @deprecated use pause() instead
-   */
-  stop: Fn
-
-  /**
-   * @deprecated use resume() instead
-   */
-  start: Fn
-}
-
 /**
  * Call function on every `requestAnimationFrame`. With controls of pausing and resuming.
  *
- * @see   {@link https://vueuse.org/useRafFn}
+ * @see https://vueuse.org/useRafFn
  * @param fn
  * @param options
  */
-export function useRafFn(fn: Fn, options: RafFnOptions = {}): RafFnReturn {
+export function useRafFn(fn: Fn, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
     window = defaultWindow,
   } = options
 
   const isActive = ref(false)
+  let rafId: null | number = null
 
   function loop() {
-    if (!isActive.value)
+    if (!isActive.value || !window)
       return
+
     fn()
-    if (window)
-      window.requestAnimationFrame(loop)
+    rafId = window.requestAnimationFrame(loop)
   }
 
   function resume() {
-    if (!isActive.value) {
+    if (!isActive.value && window) {
       isActive.value = true
       loop()
     }
@@ -55,18 +46,20 @@ export function useRafFn(fn: Fn, options: RafFnOptions = {}): RafFnReturn {
 
   function pause() {
     isActive.value = false
+    if (rafId != null && window) {
+      window.cancelAnimationFrame(rafId)
+      rafId = null
+    }
   }
 
   if (immediate)
     resume()
 
-  tryOnUnmounted(pause)
+  tryOnScopeDispose(pause)
 
   return {
     isActive,
     pause,
     resume,
-    stop: pause,
-    start: resume,
   }
 }

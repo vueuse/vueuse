@@ -1,8 +1,11 @@
-import { isString, MaybeRef } from '@vueuse/shared'
-import { ref, watch, isRef } from 'vue-demi'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { MaybeComputedRef, MaybeReadonlyRef, MaybeRef } from '@vueuse/shared'
+import { isString, resolveRef } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { watch } from 'vue-demi'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
-export interface FaviconOptions extends ConfigurableDocument {
+export interface UseFaviconOptions extends ConfigurableDocument {
   baseUrl?: string
   rel?: string
 }
@@ -10,13 +13,21 @@ export interface FaviconOptions extends ConfigurableDocument {
 /**
  * Reactive favicon.
  *
- * @see   {@link https://vueuse.org/useFavicon}
+ * @see https://vueuse.org/useFavicon
  * @param newIcon
  * @param options
  */
 export function useFavicon(
-  newIcon: MaybeRef<string | null | undefined> = null,
-  options: FaviconOptions = {},
+  newIcon: MaybeReadonlyRef<string | null | undefined>,
+  options?: UseFaviconOptions
+): ComputedRef<string | null | undefined>
+export function useFavicon(
+  newIcon?: MaybeRef<string | null | undefined>,
+  options?: UseFaviconOptions
+): Ref<string | null | undefined>
+export function useFavicon(
+  newIcon: MaybeComputedRef<string | null | undefined> = null,
+  options: UseFaviconOptions = {},
 ) {
   const {
     baseUrl = '',
@@ -24,9 +35,7 @@ export function useFavicon(
     document = defaultDocument,
   } = options
 
-  const favicon = isRef(newIcon)
-    ? newIcon
-    : ref<string | null>(newIcon)
+  const favicon = resolveRef(newIcon)
 
   const applyIcon = (icon: string) => {
     document?.head
@@ -45,3 +54,5 @@ export function useFavicon(
 
   return favicon
 }
+
+export type UseFaviconReturn = ReturnType<typeof useFavicon>

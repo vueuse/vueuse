@@ -19,7 +19,7 @@ const close = () => isOpen.value = false
   <div class="relative">
     <slot :open="open" />
     <div ref="menu" :class="{ 'pointer-events-none opacity-0': !isOpen }">
-      <slot name="menu" :isOpen="isOpen" :close="close" />
+      <slot name="menu" :is-open="isOpen" :close="close" />
     </div>
   </div>
 </template>

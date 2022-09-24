@@ -1,17 +1,19 @@
-import { computed, ComputedRef, reactive } from 'vue-demi'
-import { MaybeElementRef } from '../unrefElement'
+import type { ComputedRef } from 'vue-demi'
+import { computed, reactive } from 'vue-demi'
+import type { MaybeElementRef } from '../unrefElement'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface ParallaxOptions extends ConfigurableWindow {
+export interface UseParallaxOptions extends ConfigurableWindow {
   deviceOrientationTiltAdjust?: (i: number) => number
   deviceOrientationRollAdjust?: (i: number) => number
   mouseTiltAdjust?: (i: number) => number
   mouseRollAdjust?: (i: number) => number
 }
 
-export interface ParallaxReturn {
+export interface UseParallaxReturn {
   /**
    * Roll value. Scaled to `-0.5 ~ 0.5`
    */
@@ -35,8 +37,8 @@ export interface ParallaxReturn {
  */
 export function useParallax(
   target: MaybeElementRef,
-  options: ParallaxOptions = {},
-): ParallaxReturn {
+  options: UseParallaxOptions = {},
+): UseParallaxReturn {
   const {
     deviceOrientationTiltAdjust = i => i,
     deviceOrientationRollAdjust = i => i,

@@ -1,19 +1,19 @@
-import { timestamp, isFunction } from '@vueuse/shared'
-import { ref, computed, Ref, markRaw } from 'vue-demi'
+import { isFunction, timestamp } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { computed, markRaw, ref } from 'vue-demi'
+import type { CloneFn } from '../useCloned'
+import { cloneFnJSON } from '../useCloned'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T
   timestamp: number
 }
 
-export type CloneFn<F, T=F> = (x: F) => T
-
 export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
-
   /**
    * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
    * Default to false
@@ -48,12 +48,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   history: Ref<UseRefHistoryRecord<Serialized>[]>
 
   /**
-  * Last history point, source can be different if paused
-  */
+   * Last history point, source can be different if paused
+   */
   last: Ref<UseRefHistoryRecord<Serialized>>
 
   /**
-   * Same as 'history'
+   * Same as {@link UseManualRefHistoryReturn.history | history}
    */
   undoStack: Ref<UseRefHistoryRecord<Serialized>[]>
 
@@ -75,47 +75,46 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * Undo changes
    */
-  undo(): void
+  undo: () => void
 
   /**
    * Redo changes
    */
-  redo(): void
+  redo: () => void
 
   /**
    * Clear all the history
    */
-  clear(): void
+  clear: () => void
 
   /**
    * Create new a new history record
    */
-  commit(): void
+  commit: () => void
 
   /**
-   * Reset ref's value with lastest history
+   * Reset ref's value with latest history
    */
-  reset(): void
+  reset: () => void
 }
 
-const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
 const fnBypass = <F, T>(v: F) => v as unknown as T
 const fnSetSource = <F>(source: Ref<F>, value: F) => source.value = value
 
 type FnCloneOrBypass<F, T> = (v: F) => T
 
 function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<R, S>
+  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<R, S>
 }
 
 function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<S, R>
+  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<S, R>
 }
 
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
- * @see   {@link https://vueuse.org/useManualRefHistory}
+ * @see https://vueuse.org/useManualRefHistory
  * @param source
  * @param options
  */

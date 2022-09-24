@@ -28,31 +28,12 @@ const {
 
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#Properties).
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive DeviceOrientationEvent.
- *
- * @see   {@link https://vueuse.org/useDeviceOrientation}
- * @param options
- */
-export declare function useDeviceOrientation(
-  options?: ConfigurableWindow
-): {
-  isSupported: boolean
-  isAbsolute: Ref<boolean>
-  alpha: Ref<number | null>
-  beta: Ref<number | null>
-  gamma: Ref<number | null>
-}
+```html
+<UseDeviceOrientation v-slot="{ alpha, beta, gamma }">
+  Alpha: {{ alpha }}
+  Beta: {{ beta }}
+  Gamma: {{ gamma }}
+</UseDeviceOrientation>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useDeviceOrientation/index.md)
-
-
-<!--FOOTER_ENDS-->

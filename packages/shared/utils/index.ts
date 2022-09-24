@@ -1,6 +1,7 @@
 export * from './is'
 export * from './filters'
 export * from './types'
+export * from './compatibility'
 
 export function promiseTimeout(
   ms: number,
@@ -13,6 +14,49 @@ export function promiseTimeout(
     else
       setTimeout(resolve, ms)
   })
+}
+
+export function identity<T>(arg: T): T {
+  return arg
+}
+
+export interface SingletonPromiseReturn<T> {
+  (): Promise<T>
+  /**
+   * Reset current staled promise.
+   * await it to have proper shutdown.
+   */
+  reset: () => Promise<void>
+}
+
+/**
+ * Create singleton promise function
+ *
+ * @example
+ * ```
+ * const promise = createSingletonPromise(async () => { ... })
+ *
+ * await promise()
+ * await promise() // all of them will be bind to a single promise instance
+ * await promise() // and be resolved together
+ * ```
+ */
+export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromiseReturn<T> {
+  let _promise: Promise<T> | undefined
+
+  function wrapper() {
+    if (!_promise)
+      _promise = fn()
+    return _promise
+  }
+  wrapper.reset = async () => {
+    const _prev = _promise
+    _promise = undefined
+    if (_prev)
+      await _prev
+  }
+
+  return wrapper
 }
 
 export function invoke<T>(fn: () => T): T {
@@ -41,4 +85,19 @@ export function increaseWithUnit(target: string | number, delta: number): string
   if (Number.isNaN(result))
     return target
   return result + unit
+}
+
+/**
+ * Create a new subset object by giving keys
+ *
+ * @category Object
+ */
+export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return keys.reduce((n, k) => {
+    if (k in obj) {
+      if (!omitUndefined || obj[k] !== undefined)
+        n[k] = obj[k]
+    }
+    return n
+  }, {} as Pick<O, T>)
 }

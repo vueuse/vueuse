@@ -1,0 +1,40 @@
+{
+  "name": "@vueuse/components",
+  "version": "9.2.0",
+  "description": "Renderless components for VueUse",
+  "author": "Jacob Clevenger<https://github.com/wheatjs>",
+  "license": "MIT",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
+  }
+}

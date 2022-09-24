@@ -13,31 +13,11 @@ import { useCssVar } from '@vueuse/core'
 
 const el = ref(null)
 const color = useCssVar('--color', el)
+
+const elv = ref(null)
+const key = ref('--color')
+const colorVal = useCssVar(key, elv)
+
+const someEl = ref(null)
+const color = useCssVar('--color', someEl, { initialValue: '#eee' })
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Manipulate CSS variables.
- *
- * @see   {@link https://vueuse.org/useCssVar}
- * @param prop
- * @param el
- * @param options
- */
-export declare function useCssVar(
-  prop: string,
-  target?: MaybeElementRef,
-  { window }?: ConfigurableWindow
-): Ref<string>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useCssVar/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useCssVar/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useCssVar/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -1,9 +1,12 @@
 import { watch } from 'vue-demi'
-import { noop, tryOnUnmounted } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 
-export interface IntersectionObserverOptions extends ConfigurableWindow {
+export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
@@ -23,7 +26,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
 /**
  * Detects that a target element's visibility.
  *
- * @see   {@link https://vueuse.org/useIntersectionObserver}
+ * @see https://vueuse.org/useIntersectionObserver
  * @param target
  * @param callback
  * @param options
@@ -31,7 +34,7 @@ export interface IntersectionObserverOptions extends ConfigurableWindow {
 export function useIntersectionObserver(
   target: MaybeElementRef,
   callback: IntersectionObserverCallback,
-  options: IntersectionObserverOptions = {},
+  options: UseIntersectionObserverOptions = {},
 ) {
   const {
     root,
@@ -40,11 +43,11 @@ export function useIntersectionObserver(
     window = defaultWindow,
   } = options
 
-  const isSupported = window && 'IntersectionObserver' in window
+  const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
 
   let cleanup = noop
 
-  const stopWatch = isSupported
+  const stopWatch = isSupported.value
     ? watch(
       () => ({
         el: unrefElement(target),
@@ -56,8 +59,7 @@ export function useIntersectionObserver(
         if (!el)
           return
 
-        // @ts-expect-error missing type
-        const observer = new window.IntersectionObserver(
+        const observer = new IntersectionObserver(
           callback,
           {
             root,
@@ -81,10 +83,12 @@ export function useIntersectionObserver(
     stopWatch()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isSupported,
     stop,
   }
 }
+
+export type UseIntersectionObserverReturn = ReturnType<typeof useIntersectionObserver>

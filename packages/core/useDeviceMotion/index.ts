@@ -1,16 +1,19 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { bypassFilter, ConfigurableEventFilter, createFilterWrapper } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import type { ConfigurableEventFilter } from '@vueuse/shared'
+import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {}
+export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {}
 
 /**
  * Reactive DeviceMotionEvent.
  *
- * @see   {@link https://vueuse.org/useDeviceMotion}
+ * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {
@@ -49,3 +52,5 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     interval,
   }
 }
+
+export type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>

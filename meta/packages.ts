@@ -1,6 +1,14 @@
-import { PackageManifest } from './types'
+import type { PackageManifest } from '@vueuse/metadata'
 
 export const packages: PackageManifest[] = [
+  {
+    name: 'metadata',
+    display: 'Metadata for VueUse functions',
+    manualImport: true,
+    iife: false,
+    utils: true,
+    target: 'node14',
+  },
   {
     name: 'shared',
     display: 'Shared utilities',
@@ -9,6 +17,44 @@ export const packages: PackageManifest[] = [
     name: 'core',
     display: 'VueUse',
     description: 'Collection of essential Vue Composition Utilities',
+  },
+  {
+    name: 'components',
+    display: 'Components',
+    description: 'Renderless components for VueUse',
+    author: 'Jacob Clevenger<https://github.com/wheatjs>',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
+  {
+    name: 'math',
+    display: 'Math',
+    description: 'Math functions for VueUse',
+    external: [
+      '@vueuse/shared',
+    ],
+  },
+  {
+    name: 'nuxt',
+    display: 'Nuxt',
+    description: 'VueUse Nuxt Module',
+    manualImport: true,
+    addon: true,
+    iife: false,
+    cjs: false,
+    utils: true,
+    target: 'node14',
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+      '@nuxt/kit',
+      'local-pkg',
+      'fs',
+      'path',
+      'url',
+    ],
   },
   {
     name: 'router',
@@ -27,6 +73,7 @@ export const packages: PackageManifest[] = [
     display: 'Integrations',
     description: 'Integration wrappers for utility libraries',
     addon: true,
+    submodules: true,
     external: [
       'axios',
       'universal-cookie',
@@ -34,6 +81,13 @@ export const packages: PackageManifest[] = [
       'http',
       'nprogress',
       'jwt-decode',
+      'focus-trap',
+      'change-case',
+      'drauu',
+      '@vueuse/core',
+      '@vueuse/shared',
+      'fuse.js',
+      'async-validator',
     ],
     globals: {
       'axios': 'axios',
@@ -41,6 +95,11 @@ export const packages: PackageManifest[] = [
       'qrcode': 'QRCode',
       'nprogress': 'nprogress',
       'jwt-decode': 'jwt_decode',
+      'focus-trap': 'focusTrap',
+      'drauu': 'Drauu',
+      'fuse.js': 'Fuse',
+      'change-case': 'changeCase',
+      'async-validator': 'AsyncValidator',
     },
   },
   {
@@ -62,15 +121,29 @@ export const packages: PackageManifest[] = [
     display: 'Firebase',
     description: 'Enables realtime bindings for Firebase',
     addon: true,
+    submodules: true,
     external: [
       'firebase',
       'firebase/app',
+      'firebase/database',
+      'firebase/firestore',
     ],
     globals: {
       'firebase': 'firebase',
       'firebase/app': 'firebase',
+      'firebase/database': 'firebase',
+      'firebase/firestore': 'firebase',
     },
   },
+  {
+    name: 'electron',
+    display: 'Electron',
+    description: 'Electron renderer process modules for VueUse',
+    author: 'Archer Gu<https://github.com/ArcherGu>',
+    addon: true,
+    external: [
+      'electron',
+    ],
+    iife: false,
+  },
 ]
-
-export const activePackages = packages.filter(i => !i.deprecated)

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import './style.css'
-import { defineComponent } from 'vue-demi'
 import { useNProgress } from '.'
 
 const { isLoading, progress } = useNProgress()
@@ -13,5 +12,5 @@ const { isLoading, progress } = useNProgress()
   <button @click="isLoading = !isLoading">
     {{ !isLoading ? 'Start' : 'Stop' }}
   </button>
-  <b v-if="isLoading" class="ml-2">{{ (progress * 100).toFixed(0) }}%</b>
+  <b v-if="isLoading" class="ml-2">{{ ((progress || 0) * 100).toFixed(0) }}%</b>
 </template>

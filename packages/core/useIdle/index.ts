@@ -1,12 +1,16 @@
+import type { ConfigurableEventFilter } from '@vueuse/shared'
+import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import { ConfigurableEventFilter, createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { useEventListener, WindowEventName } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { WindowEventName } from '../useEventListener'
+import { useEventListener } from '../useEventListener'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000
 
-export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
+export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Event names that listen to for detected user activity
    *
@@ -27,17 +31,22 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
   initialState?: boolean
 }
 
+export interface UseIdleReturn {
+  idle: Ref<boolean>
+  lastActive: Ref<number>
+}
+
 /**
  * Tracks whether the user is being inactive.
  *
- * @see   {@link https://vueuse.org/useIdle}
+ * @see https://vueuse.org/useIdle
  * @param timeout default to 1 minute
  * @param options IdleOptions
  */
 export function useIdle(
   timeout: number = oneMinute,
-  options: IdleOptions = {},
-) {
+  options: UseIdleOptions = {},
+): UseIdleReturn {
   const {
     initialState = false,
     listenForVisibilityChange = true,

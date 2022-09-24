@@ -1,8 +1,11 @@
-import { noop, MaybeRef } from '@vueuse/shared'
-import { computed, reactive, ref, ComputedRef } from 'vue-demi'
-
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { Position } from '../types'
 
 export enum SwipeDirection {
   UP = 'UP',
@@ -12,7 +15,7 @@ export enum SwipeDirection {
   NONE = 'NONE',
 }
 
-export interface SwipeOptions extends ConfigurableWindow {
+export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Register events as passive
    *
@@ -41,18 +44,12 @@ export interface SwipeOptions extends ConfigurableWindow {
   onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
 }
 
-export interface SwipeReturn {
+export interface UseSwipeReturn {
   isPassiveEventSupported: boolean
-  isSwiping: ComputedRef<boolean>
+  isSwiping: Ref<boolean>
   direction: ComputedRef<SwipeDirection | null>
-  coordsStart: {
-    readonly x: number
-    readonly y: number
-  }
-  coordsEnd: {
-    readonly x: number
-    readonly y: number
-  }
+  coordsStart: Readonly<Position>
+  coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
   lengthY: ComputedRef<number>
   stop: () => void
@@ -61,14 +58,14 @@ export interface SwipeReturn {
 /**
  * Reactive swipe detection.
  *
- * @see {@link https://vueuse.org/useSwipe}
+ * @see https://vueuse.org/useSwipe
  * @param target
  * @param options
  */
 export function useSwipe(
-  target: MaybeRef<EventTarget | null | undefined>,
-  options: SwipeOptions = {},
-) {
+  target: MaybeComputedRef<EventTarget | null | undefined>,
+  options: UseSwipeOptions = {},
+): UseSwipeReturn {
   const {
     threshold = 50,
     onSwipe,
@@ -78,8 +75,8 @@ export function useSwipe(
     window = defaultWindow,
   } = options
 
-  const coordsStart = reactive({ x: 0, y: 0 })
-  const coordsEnd = reactive({ x: 0, y: 0 })
+  const coordsStart = reactive<Position>({ x: 0, y: 0 })
+  const coordsEnd = reactive<Position>({ x: 0, y: 0 })
 
   const diffX = computed(() => coordsStart.x - coordsEnd.x)
   const diffY = computed(() => coordsStart.y - coordsEnd.y)
@@ -126,6 +123,13 @@ export function useSwipe(
   else
     listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
 
+  const onTouchEnd = (e: TouchEvent) => {
+    if (isSwiping.value)
+      onSwipeEnd?.(e, direction.value)
+
+    isSwiping.value = false
+  }
+
   const stops = [
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
       if (listenerOptions.capture && !listenerOptions.passive)
@@ -145,12 +149,8 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', (e: TouchEvent) => {
-      if (isSwiping.value)
-        onSwipeEnd?.(e, direction.value)
-
-      isSwiping.value = false
-    }, listenerOptions),
+    useEventListener(target, 'touchend', onTouchEnd, listenerOptions),
+    useEventListener(target, 'touchcancel', onTouchEnd, listenerOptions),
   ]
 
   const stop = () => stops.forEach(s => s())
@@ -169,7 +169,7 @@ export function useSwipe(
 
 /**
  * This is a polyfill for passive event support detection
- * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md}
+ * @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
  */
 function checkPassiveEventSupport(document?: Document) {
   if (!document)

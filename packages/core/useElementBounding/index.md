@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementBounding
@@ -27,41 +27,15 @@ export default {
       /* ... */
     }
   }
-})
+}
 </script>
 ```
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive size of an HTML element.
- *
- * @see   {@link https://vueuse.org/useElementSize}
- * @param target
- * @param callback
- * @param options
- */
-export declare function useElementBounding(
-  target: MaybeElementRef,
-  options?: ResizeObserverOptions
-): {
-  x: Ref<number>
-  y: Ref<number>
-  top: Ref<number>
-  right: Ref<number>
-  bottom: Ref<number>
-  left: Ref<number>
-  width: Ref<number>
-  height: Ref<number>
-}
+```html
+<UseElementBounding v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseElementBounding>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementBounding/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementBounding/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementBounding/index.md)
-
-
-<!--FOOTER_ENDS-->

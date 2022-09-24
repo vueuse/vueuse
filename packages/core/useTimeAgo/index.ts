@@ -1,23 +1,32 @@
-import { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
 import { useNow } from '../useNow'
 
-export type MessageFormatter<T = number> = (value: T, isPast: boolean) => string
+export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
 
-export interface TimeAgoMessages {
+export interface UseTimeAgoMessages {
   justNow: string
-  past: string | MessageFormatter<string>
-  future: string | MessageFormatter<string>
-  year: string | MessageFormatter<number>
-  month: string | MessageFormatter<number>
-  day: string | MessageFormatter<number>
-  week: string | MessageFormatter<number>
-  hour: string | MessageFormatter<number>
-  minute: string | MessageFormatter<number>
-  second: string | MessageFormatter<number>
+  past: string | UseTimeAgoFormatter<string>
+  future: string | UseTimeAgoFormatter<string>
+  year: string | UseTimeAgoFormatter<number>
+  month: string | UseTimeAgoFormatter<number>
+  day: string | UseTimeAgoFormatter<number>
+  week: string | UseTimeAgoFormatter<number>
+  hour: string | UseTimeAgoFormatter<number>
+  minute: string | UseTimeAgoFormatter<number>
+  second: string | UseTimeAgoFormatter<number>
 }
 
-export interface TimeAgoOptions {
+export interface UseTimeAgoOptions<Controls extends boolean> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+
   /**
    * Intervals to update, set 0 to disable auto update
    *
@@ -38,18 +47,18 @@ export interface TimeAgoOptions {
   fullDateFormatter?: (date: Date) => string
 
   /**
-   * Messages for formating the string
+   * Messages for formatting the string
    */
-  messages?: TimeAgoMessages
+  messages?: UseTimeAgoMessages
 }
 
-interface Unit {
+interface UseTimeAgoUnit {
   max: number
   value: number
-  name: keyof TimeAgoMessages
+  name: keyof UseTimeAgoMessages
 }
 
-const UNITS: Unit[] = [
+const UNITS: UseTimeAgoUnit[] = [
   { max: 60000, value: 1000, name: 'second' },
   { max: 2760000, value: 60000, name: 'minute' },
   { max: 72000000, value: 3600000, name: 'hour' },
@@ -59,7 +68,7 @@ const UNITS: Unit[] = [
   { max: Infinity, value: 31536000000, name: 'year' },
 ]
 
-const DEFAULT_MESSAGES: TimeAgoMessages = {
+const DEFAULT_MESSAGES: UseTimeAgoMessages = {
   justNow: 'just now',
   past: n => n.match(/\d/) ? `${n} ago` : n,
   future: n => n.match(/\d/) ? `in ${n}` : n,
@@ -90,17 +99,19 @@ const DEFAULT_MESSAGES: TimeAgoMessages = {
 
 const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
 
+export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
+
 /**
  * Reactive time ago formatter.
  *
- * @see   {@link https://vueuse.org/useTimeAgo}
+ * @see https://vueuse.org/useTimeAgo
  * @param options
  */
-export function useTimeAgo(
-  time: MaybeRef<Date | number | string>,
-  options: TimeAgoOptions = {},
-) {
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options?: UseTimeAgoOptions<false>): UseTimeAgoReturn<false>
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<true>): UseTimeAgoReturn<true>
+export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<boolean> = {}) {
   const {
+    controls: exposeControls = false,
     max,
     updateInterval = 30_000,
     messages = DEFAULT_MESSAGES,
@@ -108,7 +119,7 @@ export function useTimeAgo(
   } = options
 
   const { abs, round } = Math
-  const { now } = useNow({ interval: updateInterval })
+  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
 
   function getTimeago(from: Date, now: Date) {
     const diff = +now - +from
@@ -133,14 +144,14 @@ export function useTimeAgo(
     }
   }
 
-  function applyFormat(name: keyof TimeAgoMessages, val: number | string, isPast: boolean) {
+  function applyFormat(name: keyof UseTimeAgoMessages, val: number | string, isPast: boolean) {
     const formatter = messages[name]
     if (typeof formatter === 'function')
       return formatter(val as never, isPast)
     return formatter.replace('{0}', val.toString())
   }
 
-  function format(diff: number, unit: Unit) {
+  function format(diff: number, unit: UseTimeAgoUnit) {
     const val = round(abs(diff) / unit.value)
     const past = diff > 0
 
@@ -148,5 +159,15 @@ export function useTimeAgo(
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  return computed(() => getTimeago(new Date(unref(time)), unref(now.value)))
+  const timeAgo = computed(() => getTimeago(new Date(resolveUnref(time)), unref(now.value)))
+
+  if (exposeControls) {
+    return {
+      timeAgo,
+      ...controls,
+    }
+  }
+  else {
+    return timeAgo
+  }
 }

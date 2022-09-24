@@ -14,23 +14,9 @@ import { usePageLeave } from '@vueuse/core'
 const isLeft = usePageLeave()
 ```
 
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-/**
- * Reactive state to show whether mouse leaves the page.
- *
- * @see   {@link https://vueuse.org/usePageLeave}
- * @param options
- */
-export declare function usePageLeave(options?: ConfigurableWindow): Ref<boolean>
+## Component Usage
+```html
+<UsePageLeave v-slot="{ isLeft }">
+  Has Left Page: {{ isLeft }}
+</UsePageLeave>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/usePageLeave/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/usePageLeave/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/usePageLeave/index.md)
-
-
-<!--FOOTER_ENDS-->

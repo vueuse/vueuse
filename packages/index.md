@@ -1,30 +1,56 @@
 ---
-home: true
-actionText: All Functions
-actionLink: /functions
+layout: home
+sidebar: false
 
-altActionText: Get Started
-altActionLink: /guide
+hero:
+  name: VueUse
+  text: Collection of Vue Composition Utilities
+  tagline: Collection of Essential Vue Composition Utilities
+  image:
+    src: /favicon.svg
+    alt: VueUse
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/
+    - theme: alt
+      text: Functions
+      link: /functions
+    - theme: alt
+      text: Add-ons
+      link: /add-ons
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/vueuse/vueuse
 
 features:
-  - title: 🕶 Seamless migration
+  - title: Feature Rich
+    details: 200+ functions for you to choose from
+    icon: 🎛
+  - title: Seamless migration
     details: Works for both Vue 3 and 2
-  - title: ⚡ Fully tree shakable
+    icon: 🚀
+  - title: Fully tree shakeable
     details: Only take what you want
-  - title: 🦾 Type Strong
-    details: Written in TypeScript, with TS Docs
-  - title: 🛠 Flexible
-    details: Configurable event filters and targets
-  - title: ☁️ No bundler required
-    details: Usable via CDN
-  - title: 🎛 Feature Rich
-    details: 90+ functions for you to choose from
-  - title: 🔋 SSR Friendly
-    details: Works perfectly with Serve-side rendering / generation
-  - title: 🎪 Interactive demos
+    icon: ⚡
+  - title: Type Strong
+    details: Written in TypeScript, with full TS docs
+    icon: 🦾
+  - title: Flexible
+    details: Passing refs as arguments, fully customizable, configurable event filters and targets
+    icon: 🛠
+  - title: No bundler required
+    details: Usable via CDN, without any bundlers
+    icon: ☁️
+  - title: SSR Friendly
+    details: Works perfectly with server-side rendering/generation
+    icon: 🔋
+  - title: Interactive demos
     details: Documentation of functions also come with interactive demos!
-  - title: 🔌 Add-ons
+    icon: 🎪
+  - title: Add-ons
     details: Support various add-ons like Router, Firebase, RxJS, etc.
-
-footer: MIT Licensed | Copyright © 2020-PRESENT Anthony Fu and @VueUse contributors
+    icon: 🔌
 ---
+
+<Home />

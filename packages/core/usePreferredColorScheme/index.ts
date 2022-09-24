@@ -1,13 +1,13 @@
 import { computed } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
-import { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
 
 export type ColorSchemeType = 'dark' | 'light' | 'no-preference'
 
 /**
  * Reactive prefers-color-scheme media query.
  *
- * @see   {@link https://vueuse.org/usePreferredColorScheme}
+ * @see https://vueuse.org/usePreferredColorScheme
  * @param [options]
  */
 export function usePreferredColorScheme(options?: ConfigurableWindow) {

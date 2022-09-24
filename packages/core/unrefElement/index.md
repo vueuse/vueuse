@@ -27,29 +27,3 @@ onMounted(() => {
 })
 </script>
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare type VueInstance = InstanceType<
-  ReturnType<typeof defineComponent>
->
-export declare type MaybeElementRef = MaybeRef<
-  Element | VueInstance | undefined | null
->
-/**
- * Get the dom element of a ref of element or Vue component instance
- *
- * @param elRef
- */
-export declare function unrefElement(elRef: MaybeElementRef): any
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/unrefElement/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/unrefElement/index.md)
-
-
-<!--FOOTER_ENDS-->

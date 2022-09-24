@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import { useManualRefHistory } from '.'
-import { useCounter } from '..'
+import { useCounter } from '@vueuse/shared'
+import { formatDate, useManualRefHistory } from '@vueuse/core'
 
-const format = (ts: number) => dayjs(ts).format()
+const format = (ts: number) => formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 
 const { inc, dec, count } = useCounter()
 const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(count, { capacity: 10 })

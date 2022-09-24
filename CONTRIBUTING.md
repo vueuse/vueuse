@@ -1,7 +1,3 @@
----
-sidebar: auto
----
-
 # Contributing
 
 Thanks for being interested in contributing to this project!
@@ -13,13 +9,13 @@ Thanks for being interested in contributing to this project!
 Clone this repo to your local machine and install the dependencies.
 
 ```bash
-yarn install
+pnpm install
 ```
 
-We use Vitepress for rapid development and documenting. You can start it locally by
+We use VitePress for rapid development and documenting. You can start it locally by
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ## Contributing
@@ -39,7 +35,7 @@ There are some notes for adding new functions
 - You can find the function template under `packages/core/_template/`, details explained in the [Function Folder](#function-folder) section.
 - When writing documentation for your function, the `<!--FOOTER_STARTS-->` and `<!--FOOTER_ENDS-->` will be automatically updated at build time, so don't feel the need to update them.
 
-> Please note you don't need to update the `indexes.json` or packages' `index.ts`. They are auto generated.
+> Please note you don't need to update packages' `index.ts`. They are auto-generated.
 
 ### New add-ons
 
@@ -67,14 +63,14 @@ packages
 
 ### Function Folder
 
-A function folder typicality contains these 4 files:
+A function folder typically contains these 4 files:
 
-> You can found the template under `packages/core/_template/`
+> You can find the template under `packages/core/_template/`
 
 ```bash
 index.ts            # function source code itself
 demo.vue            # documentation demo
-index.test.ts       # jest unit testing
+index.test.ts       # vitest unit testing
 index.md            # documentation
 ```
 
@@ -95,6 +91,8 @@ for `index.md` the first sentence will be displayed as the short intro in the fu
 
 This will be the intro. The detail descriptions...
 ```
+
+Read more about the [guidelines](https://vueuse.org/guidelines).
 
 ## Code Style
 

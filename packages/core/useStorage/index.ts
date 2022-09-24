@@ -1,34 +1,59 @@
-import { ConfigurableFlush, watchWithFilter, ConfigurableEventFilter } from '@vueuse/shared'
-import { ref, Ref } from 'vue-demi'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
+import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue-demi'
+import type { StorageLike } from '../ssr-handlers'
+import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import { guessSerializerType } from './guess'
 
-const Serializers = {
+export interface Serializer<T> {
+  read(raw: string): T
+  write(value: T): string
+}
+
+export interface SerializerAsync<T> {
+  read(raw: string): Awaitable<T>
+  write(value: T): Awaitable<string>
+}
+
+export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
   boolean: {
-    read: (v: any, d: any) => v != null ? v === 'true' : d,
+    read: (v: any) => v === 'true',
     write: (v: any) => String(v),
   },
   object: {
-    read: (v: any, d: any) => v ? JSON.parse(v) : d,
+    read: (v: any) => JSON.parse(v),
     write: (v: any) => JSON.stringify(v),
   },
   number: {
-    read: (v: any, d: any) => v != null ? Number.parseFloat(v) : d,
+    read: (v: any) => Number.parseFloat(v),
     write: (v: any) => String(v),
   },
   any: {
-    read: (v: any, d: any) => v != null ? v : d,
+    read: (v: any) => v,
     write: (v: any) => String(v),
   },
   string: {
-    read: (v: any, d: any) => v != null ? v : d,
+    read: (v: any) => v,
     write: (v: any) => String(v),
+  },
+  map: {
+    read: (v: any) => new Map(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from((v as Map<any, any>).entries())),
+  },
+  set: {
+    read: (v: any) => new Set(JSON.parse(v)),
+    write: (v: any) => JSON.stringify(Array.from(v as Set<any>)),
+  },
+  date: {
+    read: (v: any) => new Date(v),
+    write: (v: any) => v.toISOString(),
   },
 }
 
-export type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
-
-export interface StorageOptions extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
    * Watch for deep changes
    *
@@ -42,99 +67,160 @@ export interface StorageOptions extends ConfigurableEventFilter, ConfigurableWin
    * @default true
    */
   listenToStorageChanges?: boolean
+
+  /**
+   * Write the default value to the storage when it does not exist
+   *
+   * @default true
+   */
+  writeDefaults?: boolean
+
+  /**
+   * Merge the default value with the value read from the storage.
+   *
+   * When setting it to true, it will perform a **shallow merge** for objects.
+   * You can pass a function to perform custom merge (e.g. deep merge), for example:
+   *
+   * @default false
+   */
+  mergeDefaults?: boolean | ((storageValue: T, defaults: T) => T)
+
+  /**
+   * Custom data serialization
+   */
+  serializer?: Serializer<T>
+
+  /**
+   * On error callback
+   *
+   * Default log error to `console.error`
+   */
+  onError?: (error: unknown) => void
+
+  /**
+   * Use shallow ref as reference
+   *
+   * @default false
+   */
+  shallow?: boolean
 }
 
-export function useStorage(key: string, defaultValue: string, storage?: StorageLike, options?: StorageOptions): Ref<string>
-export function useStorage(key: string, defaultValue: boolean, storage?: StorageLike, options?: StorageOptions): Ref<boolean>
-export function useStorage(key: string, defaultValue: number, storage?: StorageLike, options?: StorageOptions): Ref<number>
-export function useStorage<T> (key: string, defaultValue: T, storage?: StorageLike, options?: StorageOptions): Ref<T>
-export function useStorage<T = unknown> (key: string, defaultValue: null, storage?: StorageLike, options?: StorageOptions): Ref<T>
+export function useStorage(key: string, defaults: MaybeComputedRef<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, defaults: MaybeComputedRef<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, defaults: MaybeComputedRef<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: string, defaults: MaybeComputedRef<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, defaults: MaybeComputedRef<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
  *
- * @see   {@link https://vueuse.org/useStorage}
- * @param key
- * @param defaultValue
- * @param storage
- * @param options
+ * @see https://vueuse.org/useStorage
  */
-export function useStorage<T extends(string|number|boolean|object|null)> (
+export function useStorage<T extends(string | number | boolean | object | null)>(
   key: string,
-  defaultValue: T,
-  storage: StorageLike | undefined = defaultWindow?.localStorage,
-  options: StorageOptions = {},
-) {
+  defaults: MaybeComputedRef<T>,
+  storage: StorageLike | undefined,
+  options: UseStorageOptions<T> = {},
+): RemovableRef<T> {
   const {
     flush = 'pre',
     deep = true,
     listenToStorageChanges = true,
+    writeDefaults = true,
+    mergeDefaults = false,
+    shallow,
     window = defaultWindow,
     eventFilter,
+    onError = (e) => {
+      console.error(e)
+    },
   } = options
 
-  const data = ref<T>(defaultValue)
+  const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
 
-  const type = defaultValue == null
-    ? 'any'
-    : typeof defaultValue === 'boolean'
-      ? 'boolean'
-      : typeof defaultValue === 'string'
-        ? 'string'
-        : typeof defaultValue === 'object'
-          ? 'object'
-          : Array.isArray(defaultValue)
-            ? 'object'
-            : !Number.isNaN(defaultValue)
-              ? 'number'
-              : 'any'
-
-  function read() {
-    if (!storage)
-      return
-
+  if (!storage) {
     try {
-      let rawValue = storage.getItem(key)
-      if (rawValue == null && defaultValue) {
-        rawValue = Serializers[type].write(defaultValue)
-        storage.setItem(key, rawValue)
-      }
-      else {
-        data.value = Serializers[type].read(rawValue, defaultValue)
-      }
+      storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
     }
     catch (e) {
-      console.warn(e)
+      onError(e)
     }
   }
 
-  read()
+  if (!storage)
+    return data
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', read)
+  const rawInit: T = resolveUnref(defaults)
+  const type = guessSerializerType<T>(rawInit)
+  const serializer = options.serializer ?? StorageSerializers[type]
 
-  watchWithFilter(
+  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
     data,
-    () => {
-      if (!storage) // SSR
-        return
-
-      try {
-        if (data.value == null)
-          storage.removeItem(key)
-        else
-          storage.setItem(key, Serializers[type].write(data.value))
-      }
-      catch (e) {
-        console.warn(e)
-      }
-    },
-    {
-      flush,
-      deep,
-      eventFilter,
-    },
+    () => write(data.value),
+    { flush, deep, eventFilter },
   )
 
+  if (window && listenToStorageChanges)
+    useEventListener(window, 'storage', update)
+
+  update()
+
   return data
+
+  function write(v: unknown) {
+    try {
+      if (v == null)
+        storage!.removeItem(key)
+      else
+        storage!.setItem(key, serializer.write(v))
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
+
+  function read(event?: StorageEvent) {
+    if (event && event.key !== key)
+      return
+
+    pauseWatch()
+    try {
+      const rawValue = event
+        ? event.newValue
+        : storage!.getItem(key)
+
+      if (rawValue == null) {
+        if (writeDefaults && rawInit !== null)
+          storage!.setItem(key, serializer.write(rawInit))
+        return rawInit
+      }
+      else if (!event && mergeDefaults) {
+        const value = serializer.read(rawValue)
+        if (isFunction(mergeDefaults))
+          return mergeDefaults(value, rawInit)
+        else if (type === 'object' && !Array.isArray(value))
+          return { ...rawInit as any, ...value }
+        return value
+      }
+      else if (typeof rawValue !== 'string') {
+        return rawValue
+      }
+      else {
+        return serializer.read(rawValue)
+      }
+    }
+    catch (e) {
+      onError(e)
+    }
+    finally {
+      resumeWatch()
+    }
+  }
+
+  function update(event?: StorageEvent) {
+    if (event && event.key !== key)
+      return
+
+    data.value = read(event)
+  }
 }

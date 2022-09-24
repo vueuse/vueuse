@@ -1,5 +1,5 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementVisibility
@@ -33,30 +33,39 @@ export default {
 </script>
 ```
 
+## Component Usage
 
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: Ref<Element | null | undefined>
-}
-/**
- * Tracks the visibility of an element within the viewport.
- *
- * @see   {@link https://vueuse.org/useElementVisibility}
- * @param element
- * @param options
- */
-export declare function useElementVisibility(
-  element: Ref<Element | null | undefined>,
-  { window, scrollTarget }?: VisibilityScrollTargetOptions
-): Ref<boolean>
+```html
+<UseElementVisibility v-slot="{ isVisible }">
+  Is Visible: {{ isVisible }}
+</UseElementVisibility>
 ```
 
-## Source
+## Directive Usage
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementVisibility/index.md)
+```html
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vElementVisibility } from '@vueuse/components'
 
+const target = ref(null)
+const isVisible = ref(false)
 
-<!--FOOTER_ENDS-->
+function onElementVisibility(state) {
+  isVisible.value = state
+}
+</script>
+
+<template>
+  <div v-element-visibility="onElementVisibility">
+    {{ isVisible ? 'inside' : 'outside' }}
+  </div>
+
+  <!-- with options -->
+  <div ref="target">
+    <div v-element-visibility="[onElementVisibility, { scrollTarget: target }]">
+      {{ isVisible ? 'inside' : 'outside' }}
+    </div>
+  </div>
+</template>
+```

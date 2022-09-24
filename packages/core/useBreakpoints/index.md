@@ -9,11 +9,14 @@ Reactive viewport breakpoints
 ## Usage
 
 ```js
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const smAndLarger = breakpoints.larger('sm')
+const smAndLarger = breakpoints.greaterOrEqual('sm') // sm and larger
+const largerThanSm = breakpoints.greater('sm') // only larger than sm
+const lgAndSmaller = breakpoints.smallerOrEqual('lg') // lg and smaller
+const smallerThanLg = breakpoints.smaller('lg') // only smaller than lg
 ```
 
 ```js
@@ -27,39 +30,3 @@ const breakpoints = useBreakpoints({
 
 const laptop = breakpoints.between('laptop', 'desktop')
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export * from "./breakpoints"
-export declare type Breakpoints<K extends string = string> = Record<
-  K,
-  number | string
->
-/**
- * Reactively viewport breakpoints
- *
- * @see   {@link https://vueuse.org/useBreakpoints}
- * @param options
- */
-export declare function useBreakpoints<K extends string>(
-  breakpoints: Breakpoints<K>,
-  options?: ConfigurableWindow
-): {
-  greater(k: K): Ref<boolean>
-  smaller(k: K): Ref<boolean>
-  between(a: K, b: K): Ref<boolean>
-  isGreater(k: K): boolean
-  isSmaller(k: K): boolean
-  isInBetween(a: K, b: K): boolean
-}
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useBreakpoints/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useBreakpoints/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useBreakpoints/index.md)
-
-
-<!--FOOTER_ENDS-->

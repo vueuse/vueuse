@@ -1,21 +1,29 @@
-import { ref, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+
+export type UseEventSourceOptions = EventSourceInit
 
 /**
  * Reactive wrapper for EventSource.
  *
- * @see   {@link https://vueuse.org/useEventSource}
- * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource|EventSource}
+ * @see https://vueuse.org/useEventSource
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource EventSource
  * @param url
  * @param events
+ * @param options
  */
-export function useEventSource(url: string, events: Array<string> = []) {
+export function useEventSource(url: string, events: Array<string> = [], options: UseEventSourceOptions = {}) {
   const event: Ref<string | null> = ref(null)
   const data: Ref<string | null> = ref(null)
   const status = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
   const eventSource = ref(null) as Ref<EventSource | null>
   const error = ref(null) as Ref<Event | null>
+
+  const {
+    withCredentials = false,
+  } = options
 
   const close = () => {
     if (eventSource.value) {
@@ -25,35 +33,33 @@ export function useEventSource(url: string, events: Array<string> = []) {
     }
   }
 
-  tryOnMounted(() => {
-    const es = new EventSource(url)
+  const es = new EventSource(url, { withCredentials })
 
-    eventSource.value = es
+  eventSource.value = es
 
-    es.onopen = () => {
-      status.value = 'OPEN'
-      error.value = null
-    }
+  es.onopen = () => {
+    status.value = 'OPEN'
+    error.value = null
+  }
 
-    es.onerror = (e) => {
-      status.value = 'CLOSED'
-      error.value = e
-    }
+  es.onerror = (e) => {
+    status.value = 'CLOSED'
+    error.value = e
+  }
 
-    es.onmessage = (e: MessageEvent) => {
-      event.value = null
-      data.value = e.data
-    }
+  es.onmessage = (e: MessageEvent) => {
+    event.value = null
+    data.value = e.data
+  }
 
-    for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: string }) => {
-        event.value = event_name
-        data.value = e.data || null
-      })
-    }
-  })
+  for (const event_name of events) {
+    useEventListener(es, event_name, (e: Event & { data?: string }) => {
+      event.value = event_name
+      data.value = e.data || null
+    })
+  }
 
-  tryOnUnmounted(() => {
+  tryOnScopeDispose(() => {
     close()
   })
 
@@ -66,3 +72,5 @@ export function useEventSource(url: string, events: Array<string> = []) {
     close,
   }
 }
+
+export type UseEventSourceReturn = ReturnType<typeof useEventSource>

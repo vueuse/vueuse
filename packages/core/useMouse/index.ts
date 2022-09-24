@@ -1,8 +1,17 @@
 import { ref } from 'vue-demi'
+import type { ConfigurableEventFilter } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import type { Position } from '../types'
 
-export interface MouseOptions extends ConfigurableWindow {
+export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
+  /**
+   * Mouse position based by page or client
+   *
+   * @default 'page'
+   */
+  type?: 'page' | 'client'
   /**
    * Listen to `touchmove` events
    *
@@ -20,7 +29,7 @@ export interface MouseOptions extends ConfigurableWindow {
   /**
    * Initial values
    */
-  initialValue?: {x: number; y: number}
+  initialValue?: Position
 }
 
 export type MouseSourceType = 'mouse' | 'touch' | null
@@ -28,15 +37,17 @@ export type MouseSourceType = 'mouse' | 'touch' | null
 /**
  * Reactive mouse position.
  *
- * @see   {@link https://vueuse.org/useMouse}
+ * @see https://vueuse.org/useMouse
  * @param options
  */
-export function useMouse(options: MouseOptions = {}) {
+export function useMouse(options: UseMouseOptions = {}) {
   const {
+    type = 'page',
     touch = true,
     resetOnTouchEnds = false,
     initialValue = { x: 0, y: 0 },
     window = defaultWindow,
+    eventFilter,
   } = options
 
   const x = ref(initialValue.x)
@@ -44,8 +55,14 @@ export function useMouse(options: MouseOptions = {}) {
   const sourceType = ref<MouseSourceType>(null)
 
   const mouseHandler = (event: MouseEvent) => {
-    x.value = event.pageX
-    y.value = event.pageY
+    if (type === 'page') {
+      x.value = event.pageX
+      y.value = event.pageY
+    }
+    else if (type === 'client') {
+      x.value = event.clientX
+      y.value = event.clientY
+    }
     sourceType.value = 'mouse'
   }
   const reset = () => {
@@ -54,17 +71,33 @@ export function useMouse(options: MouseOptions = {}) {
   }
   const touchHandler = (event: TouchEvent) => {
     if (event.touches.length > 0) {
-      x.value = event.touches[0].clientX
-      y.value = event.touches[0].clientY
+      const touch = event.touches[0]
+      if (type === 'page') {
+        x.value = touch.pageX
+        y.value = touch.pageY
+      }
+      else if (type === 'client') {
+        x.value = touch.clientX
+        y.value = touch.clientY
+      }
       sourceType.value = 'touch'
     }
   }
 
+  const mouseHandlerWrapper = (event: MouseEvent) => {
+    return eventFilter === undefined ? mouseHandler(event) : eventFilter(() => mouseHandler(event), {} as any)
+  }
+
+  const touchHandlerWrapper = (event: TouchEvent) => {
+    return eventFilter === undefined ? touchHandler(event) : eventFilter(() => touchHandler(event), {} as any)
+  }
+
   if (window) {
-    useEventListener(window, 'mousemove', mouseHandler, { passive: true })
+    useEventListener(window, 'mousemove', mouseHandlerWrapper, { passive: true })
+    useEventListener(window, 'dragover', mouseHandlerWrapper, { passive: true })
     if (touch) {
-      useEventListener(window, 'touchstart', touchHandler, { passive: true })
-      useEventListener(window, 'touchmove', touchHandler, { passive: true })
+      useEventListener(window, 'touchstart', touchHandlerWrapper, { passive: true })
+      useEventListener(window, 'touchmove', touchHandlerWrapper, { passive: true })
       if (resetOnTouchEnds)
         useEventListener(window, 'touchend', reset, { passive: true })
     }
@@ -76,3 +109,5 @@ export function useMouse(options: MouseOptions = {}) {
     sourceType,
   }
 }
+
+export type UseMouseReturn = ReturnType<typeof useMouse>

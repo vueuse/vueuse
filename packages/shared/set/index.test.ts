@@ -1,4 +1,4 @@
-import { ref, reactive, watch } from 'vue-demi'
+import { reactive, ref, watch } from 'vue-demi'
 import { set } from '.'
 
 describe('set', () => {
@@ -14,7 +14,7 @@ describe('set', () => {
 
   it('set reactive', () => {
     let changed = 0
-    const source = reactive<{foo: string; bar?: number}>({ foo: 'bar' })
+    const source = reactive<{ foo: string; bar?: number }>({ foo: 'bar' })
 
     watch(source, () => changed += 1, { deep: true, flush: 'sync' })
 

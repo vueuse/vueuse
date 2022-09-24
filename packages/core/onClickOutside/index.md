@@ -34,32 +34,37 @@ export default {
 </script>
 ```
 
+> This function uses [Event.composedPath()](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath) which is NOT supported by IE 11, Edge 18 and below. If you are targeting these browsers, we recommend you to include [this code snippet](https://gist.github.com/sibbng/13e83b1dd1b733317ce0130ef07d4efd) on your project.
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+## Component Usage
 
-```typescript
-declare const events: readonly ["mousedown", "touchstart", "pointerdown"]
-declare type EventType = WindowEventMap[typeof events[number]]
-/**
- * Listen for clicks outside of an element.
- *
- * @see   {@link https://vueuse.org/onClickOutside}
- * @param target
- * @param handler
- * @param options
- */
-export declare function onClickOutside(
-  target: MaybeElementRef,
-  handler: (evt: EventType) => void,
-  options?: ConfigurableWindow
-): (() => void) | undefined
-export {}
+```html
+<OnClickOutside @trigger="count++">
+  <div>
+    Click Outside of Me
+  </div>
+</OnClickOutside>
 ```
+## Directive Usage
 
-## Source
+```html
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vOnClickOutside } from '@vueuse/components'
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/onClickOutside/index.md)
+const modal = ref(false)
+function closeModal() {
+  modal.value = false
+}
 
+</script>
 
-<!--FOOTER_ENDS-->
+<template>
+  <button @click="modal = true">
+    Open Modal
+  </button>
+  <div v-if="modal" v-on-click-outside="closeModal">
+    Hello World
+  </div>
+</template>
+```

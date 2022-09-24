@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
 import { useEventListener } from '../useEventListener'
-import { ConfigurableDocument, defaultDocument } from '../_configurable'
+import type { ConfigurableDocument } from '../_configurable'
+import { defaultDocument } from '../_configurable'
 
 const isFocusedElementEditable = () => {
   const { activeElement, body } = document
@@ -47,7 +48,7 @@ const isTypedCharValid = ({
 /**
  * Fires when users start typing on non-editable elements.
  *
- * @see   {@link https://vueuse.org/onStartTyping}
+ * @see https://vueuse.org/onStartTyping
  * @param callback
  * @param options
  */

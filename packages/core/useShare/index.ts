@@ -1,8 +1,10 @@
-import { MaybeRef } from '@vueuse/shared'
-import { unref } from 'vue-demi'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
+import { useSupported } from '../useSupported'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
-export interface ShareOptions {
+export interface UseShareOptions {
   title?: string
   files?: File[]
   text?: string
@@ -10,28 +12,28 @@ export interface ShareOptions {
 }
 
 interface NavigatorWithShare {
-  share?: (data: ShareOptions) => Promise<void>
-  canShare?: (data: ShareOptions) => boolean
+  share?: (data: UseShareOptions) => Promise<void>
+  canShare?: (data: UseShareOptions) => boolean
 }
 
 /**
  * Reactive Web Share API.
  *
- * @use   {@link https://vueuse.org/useShare}
+ * @see https://vueuse.org/useShare
  * @param shareOptions
  * @param options
  */
-export function useShare(shareOptions: MaybeRef<ShareOptions> = {}, options: ConfigurableNavigator = {}) {
+export function useShare(shareOptions: MaybeComputedRef<UseShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
 
   const _navigator = (navigator as NavigatorWithShare)
-  const isSupported = _navigator && 'canShare' in _navigator
+  const isSupported = useSupported(() => _navigator && 'canShare' in _navigator)
 
-  const share = async(overrideOptions: MaybeRef<ShareOptions> = {}) => {
-    if (isSupported) {
+  const share = async (overrideOptions: MaybeComputedRef<UseShareOptions> = {}) => {
+    if (isSupported.value) {
       const data = {
-        ...unref(shareOptions),
-        ...unref(overrideOptions),
+        ...resolveUnref(shareOptions),
+        ...resolveUnref(overrideOptions),
       }
       let granted = true
 
@@ -48,3 +50,5 @@ export function useShare(shareOptions: MaybeRef<ShareOptions> = {}, options: Con
     share,
   }
 }
+
+export type UseShareReturn = ReturnType<typeof useShare>

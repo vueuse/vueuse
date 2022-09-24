@@ -1,9 +1,10 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
 import { ref } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
-import { tryOnUnmounted } from '@vueuse/shared'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
 
 export type WebWorkerStatus =
   | 'PENDING'
@@ -12,7 +13,7 @@ export type WebWorkerStatus =
   | 'ERROR'
   | 'TIMEOUT_EXPIRED'
 
-export interface WebWorkerOptions extends ConfigurableWindow {
+export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
    * Number of milliseconds before killing the worker
    *
@@ -28,13 +29,13 @@ export interface WebWorkerOptions extends ConfigurableWindow {
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
  *
- * @see   {@link https://vueuse.org/useWebWorkerFn}
+ * @see https://vueuse.org/useWebWorkerFn
  * @param fn
  * @param options
  */
 export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
   fn: T,
-  options: WebWorkerOptions = {},
+  options: UseWebWorkerOptions = {},
 ) => {
   const {
     dependencies = [],
@@ -60,7 +61,7 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   workerTerminate()
 
-  tryOnUnmounted(workerTerminate)
+  tryOnScopeDispose(workerTerminate)
 
   const generateWorker = () => {
     const blobUrl = createWorkerBlobUrl(fn, dependencies)
@@ -112,7 +113,6 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {
-      /* eslint-disable-next-line no-console */
       console.error(
         '[useWebWorkerFn] You can only run one instance of the worker at a time.',
       )
@@ -130,3 +130,5 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
     workerTerminate,
   }
 }
+
+export type UseWebWorkerFnReturn = ReturnType<typeof useWebWorkerFn>

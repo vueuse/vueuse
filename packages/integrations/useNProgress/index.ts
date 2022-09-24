@@ -1,21 +1,21 @@
-import nprogress, { NProgressOptions } from 'nprogress'
-import { MaybeRef, tryOnUnmounted, isNumber } from '@vueuse/shared'
-import { ref, isRef, watchEffect, computed } from 'vue-demi'
+import type { NProgressOptions } from 'nprogress'
+import nprogress from 'nprogress'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { isClient, isNumber, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, watchEffect } from 'vue-demi'
+
+export type UseNProgressOptions = Partial<NProgressOptions>
 
 /**
  * Reactive progress bar.
  *
- * @see   {@link https://vueuse.org/useNProgress}
- * @param currentProgress
- * @param options
+ * @see https://vueuse.org/useNProgress
  */
 export function useNProgress(
-  currentProgress: MaybeRef<number | null | undefined> = null,
-  options?: NProgressOptions | undefined,
+  currentProgress: MaybeComputedRef<number | null | undefined> = null,
+  options?: UseNProgressOptions,
 ) {
-  const progress = isRef(currentProgress)
-    ? currentProgress
-    : ref<number|null>(currentProgress)
+  const progress = ref(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
     get: () => isNumber(progress.value) && progress.value < 1,
@@ -31,11 +31,11 @@ export function useNProgress(
   }
 
   watchEffect(() => {
-    if (isNumber(progress.value))
+    if (isNumber(progress.value) && isClient)
       setProgress.call(nprogress, progress.value)
   })
 
-  tryOnUnmounted(nprogress.remove)
+  tryOnScopeDispose(nprogress.remove)
 
   return {
     isLoading,
@@ -48,3 +48,5 @@ export function useNProgress(
     },
   }
 }
+
+export type UseNProgressReturn = ReturnType<typeof useNProgress>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePreferredDark } from '.'
+import { usePreferredDark } from '@vueuse/core'
 
 const prefersDark = usePreferredDark()
 </script>
@@ -8,5 +8,5 @@ const prefersDark = usePreferredDark()
   <note class="mb-2">
     Prefers Dark:
   </note>
-  <code>{{ prefersDark }}</code>
+  <BooleanDisplay :value="prefersDark" />
 </template>

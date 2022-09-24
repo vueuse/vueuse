@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
-import { Fn, Pausable } from './types'
+import { resolveUnref } from '../resolveUnref'
+import type { Fn, MaybeComputedRef, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -15,7 +16,20 @@ export type EventFilter<Args extends any[] = any[], This = any> = (
 ) => void
 
 export interface ConfigurableEventFilter {
+  /**
+   * Filter for if events should to be received.
+   *
+   * @see https://vueuse.org/guide/config.html#event-filters
+   */
   eventFilter?: EventFilter
+}
+
+export interface DebounceFilterOptions {
+  /**
+   * The maximum time allowed to be delayed before it's invoked.
+   * In milliseconds.
+   */
+  maxWait?: MaybeComputedRef<number>
 }
 
 /**
@@ -37,18 +51,44 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  *
  * @param ms
+ * @param options
  */
-export function debounceFilter(ms: number) {
-  if (ms <= 0)
-    return bypassFilter
-
+export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
+  let maxTimer: ReturnType<typeof setTimeout> | undefined | null
 
   const filter: EventFilter = (invoke) => {
+    const duration = resolveUnref(ms)
+    const maxDuration = resolveUnref(options.maxWait)
+
     if (timer)
       clearTimeout(timer)
 
-    timer = setTimeout(invoke, ms)
+    if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
+      if (maxTimer) {
+        clearTimeout(maxTimer)
+        maxTimer = null
+      }
+      return invoke()
+    }
+
+    // Create the maxTimer. Clears the regular timer on invoke
+    if (maxDuration && !maxTimer) {
+      maxTimer = setTimeout(() => {
+        if (timer)
+          clearTimeout(timer)
+        maxTimer = null
+        invoke()
+      }, maxDuration)
+    }
+
+    // Create the regular timer. Clears the max timer on invoke
+    timer = setTimeout(() => {
+      if (maxTimer)
+        clearTimeout(maxTimer)
+      maxTimer = null
+      invoke()
+    }, duration)
   }
 
   return filter
@@ -59,13 +99,12 @@ export function debounceFilter(ms: number) {
  *
  * @param ms
  * @param [trailing=true]
+ * @param [leading=true]
  */
-export function throttleFilter(ms: number, trailing = true) {
-  if (ms <= 0)
-    return bypassFilter
-
+export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, leading = true) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
+  let isLeading = true
 
   const clear = () => {
     if (timer) {
@@ -75,20 +114,33 @@ export function throttleFilter(ms: number, trailing = true) {
   }
 
   const filter: EventFilter = (invoke) => {
+    const duration = resolveUnref(ms)
     const elapsed = Date.now() - lastExec
 
     clear()
 
-    if (elapsed > ms) {
+    if (duration <= 0) {
+      lastExec = Date.now()
+      return invoke()
+    }
+
+    if (elapsed > duration && (leading || !isLeading)) {
       lastExec = Date.now()
       invoke()
     }
     else if (trailing) {
       timer = setTimeout(() => {
+        lastExec = Date.now()
+        isLeading = true
         clear()
         invoke()
-      }, ms)
+      }, duration)
     }
+
+    if (!leading && !timer)
+      timer = setTimeout(() => isLeading = true, duration)
+
+    isLeading = false
   }
 
   return filter
@@ -97,7 +149,7 @@ export function throttleFilter(ms: number, trailing = true) {
 /**
  * EventFilter that gives extra controls to pause and resume the filter
  *
- * @param extendFilter  Extra filter to apply when the PauseableFilter is active, default to none
+ * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
  *
  */
 export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {

@@ -1,15 +1,20 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { MaybeRef, useTimeoutFn } from '@vueuse/shared'
-import { ComputedRef, ref, unref } from 'vue-demi'
-import { useEventListener, WindowEventName } from '../useEventListener'
-import { ConfigurableNavigator, defaultNavigator } from '../_configurable'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import type { WindowEventName } from '../useEventListener'
+import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
+import type { ConfigurableNavigator } from '../_configurable'
+import { defaultNavigator } from '../_configurable'
 
-export interface ClipboardOptions<Source> extends ConfigurableNavigator {
+export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
-   * @default true
+   * @default false
    */
   read?: boolean
 
@@ -19,15 +24,15 @@ export interface ClipboardOptions<Source> extends ConfigurableNavigator {
   source?: Source
 
   /**
-   * Mileseconds to reset state of `copied` ref
+   * Milliseconds to reset state of `copied` ref
    *
    * @default 1500
    */
   copiedDuring?: number
 }
 
-export interface ClipboardReturn<Optional> {
-  isSupported: boolean
+export interface UseClipboardReturn<Optional> {
+  isSupported: Ref<boolean>
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
@@ -36,42 +41,40 @@ export interface ClipboardReturn<Optional> {
 /**
  * Reactive Clipboard API.
  *
- * @see   {@link https://vueuse.org/useClipboard}
+ * @see https://vueuse.org/useClipboard
  * @param options
  */
-export function useClipboard(options?: ClipboardOptions<undefined>): ClipboardReturn<false>
-export function useClipboard(options: ClipboardOptions<MaybeRef<string>>): ClipboardReturn<true>
-export function useClipboard(options: ClipboardOptions<MaybeRef<string> | undefined> = {}): ClipboardReturn<boolean> {
+export function useClipboard(options?: UseClipboardOptions<undefined>): UseClipboardReturn<false>
+export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string>>): UseClipboardReturn<true>
+export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string> | undefined> = {}): UseClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
-    read = true,
+    read = false,
     source,
     copiedDuring = 1500,
   } = options
 
   const events = ['copy', 'cut']
-  const isSupported = Boolean(navigator && 'clipboard' in navigator)
+  const isSupported = useSupported(() => navigator && 'clipboard' in navigator)
   const text = ref('')
   const copied = ref(false)
 
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    // @ts-expect-error untyped API
-    navigator.clipboard.readText().then((value) => {
+    navigator!.clipboard.readText().then((value) => {
       text.value = value
     })
   }
 
-  if (isSupported && read) {
+  if (isSupported.value && read) {
     for (const event of events)
       useEventListener(event as WindowEventName, updateText)
   }
 
-  async function copy(value = unref(source)) {
-    if (isSupported && value != null) {
-      // @ts-expect-error untyped API
-      await navigator.clipboard.writeText(value)
+  async function copy(value = resolveUnref(source)) {
+    if (isSupported.value && value != null) {
+      await navigator!.clipboard.writeText(value)
       text.value = value
       copied.value = true
       timeout.start()

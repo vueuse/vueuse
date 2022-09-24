@@ -1,15 +1,18 @@
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
-import { MaybeElementRef, unrefElement } from '../unrefElement'
-import { ConfigurableWindow, defaultWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface MutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
+export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 
 /**
  * Watch for changes being made to the DOM tree.
  *
- * @see   {@link https://vueuse.org/useMutationObserver}
- * @see   {@link https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver|MutationObserver MDN}
+ * @see https://vueuse.org/useMutationObserver
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver MutationObserver MDN
  * @param target
  * @param callback
  * @param options
@@ -17,11 +20,11 @@ export interface MutationObserverOptions extends MutationObserverInit, Configura
 export function useMutationObserver(
   target: MaybeElementRef,
   callback: MutationCallback,
-  options: MutationObserverOptions = {},
+  options: UseMutationObserverOptions = {},
 ) {
   const { window = defaultWindow, ...mutationOptions } = options
   let observer: MutationObserver | undefined
-  const isSupported = window && 'IntersectionObserver' in window
+  const isSupported = useSupported(() => window && 'MutationObserver' in window)
 
   const cleanup = () => {
     if (observer) {
@@ -35,9 +38,8 @@ export function useMutationObserver(
     (el) => {
       cleanup()
 
-      if (isSupported && window && el) {
-        // @ts-expect-error missing type
-        observer = new window.MutationObserver(callback)
+      if (isSupported.value && window && el) {
+        observer = new MutationObserver(callback)
         observer!.observe(el, mutationOptions)
       }
     },
@@ -49,10 +51,12 @@ export function useMutationObserver(
     stopWatch()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isSupported,
     stop,
   }
 }
+
+export type UseMutationObserverReturn = ReturnType<typeof useMutationObserver>

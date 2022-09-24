@@ -1,10 +1,11 @@
 ---
-category: Utilities
+category: Reactivity
+alias: createReactiveFn
 ---
 
 # reactify
 
-Converts plain functions into reactive functions. The converted function accepts refs as it's arguments and returns a ComputedRef, with proper typing.
+Converts plain functions into reactive functions. The converted function accepts refs as its arguments and returns a ComputedRef, with proper typing.
 
 ::: tip
 Interested to see some application or looking for some pre-reactified functions? 
@@ -65,7 +66,7 @@ You can also do it this way:
 import { reactify } from '@vueuse/core'
 
 function pythagorean(a: number, b: number) {
-  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+  return Math.sqrt(a ** 2 + b ** 2)
 }
 
 const a = ref(3)
@@ -87,35 +88,7 @@ const dumped = stringify(obj)
 
 console.log(dumped.value) // '42'
 
-obj.value = { foo: "bar" }
+obj.value = { foo: 'bar' }
 
 console.log(dumped.value) // '{"foo":"bar"}'
 ```
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare type Reactify<T> = T extends (...args: infer A) => infer R
-  ? (
-      ...args: {
-        [K in keyof A]: MaybeRef<A[K]>
-      }
-    ) => ComputedRef<R>
-  : never
-/**
- * Converts plain function into a reactive function.
- * The converted function accepts refs as it's arguments
- * and returns a ComputedRef, with proper typing.
- *
- * @param fn - Source function
- */
-export declare function reactify<T extends Function>(fn: T): Reactify<T>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactify/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/shared/reactify/index.md)
-
-
-<!--FOOTER_ENDS-->

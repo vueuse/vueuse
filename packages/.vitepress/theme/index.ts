@@ -1,25 +1,16 @@
-import Layout from './Layout.vue'
-import NotFound from './NotFound.vue'
+import DefaultTheme from 'vitepress/theme'
 import { handleRedirects } from './redirects'
 
-import './styles/vars.css'
-import './styles/layout.css'
-import './styles/code.css'
+import './styles/main.css'
 import './styles/demo.css'
-import './styles/custom-blocks.css'
-import './styles/sidebar-links.css'
 import './styles/utils.css'
-import 'windi.css'
+import './styles/vars.css'
+import 'uno.css'
 
-const theme = {
-  Layout,
-  NotFound,
-  enhanceApp({ app, router }) {
+export default {
+  ...DefaultTheme,
+  enhanceApp(ctx: any) {
     if (typeof window !== 'undefined')
-      handleRedirects(router)
-    // @ts-ignore: TODO: bring it back
-    // import('vite-plugin-editor-nav/client').then(i => i.default(router))
+      handleRedirects(ctx.router)
   },
 }
-
-export default theme

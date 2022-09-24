@@ -1,20 +1,18 @@
 {
   "name": "@vueuse/firebase",
+  "version": "9.2.0",
   "description": "Enables realtime bindings for Firebase",
-  "version": "4.6.3",
-  "main": "./dist/index.cjs.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.esm.js",
-  "unpkg": "./dist/index.iife.min.js",
-  "jsdelivr": "./dist/index.iife.min.js",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
-  "files": [
-    "dist"
-  ],
-  "sideEffects": false,
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/firebase#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/firebase"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
   },
   "keywords": [
     "vue",
@@ -23,24 +21,40 @@
     "firebase",
     "vuefire"
   ],
-  "author": "Anthony Fu<https://github.com/antfu>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/firebase#readme",
-  "dependencies": {
-    "vue-demi": "latest",
-    "@vueuse/shared": "4.6.3"
-  },
-  "peerDependencies": {
-    "firebase": ">=4.0.0"
-  },
+  "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
     },
-    "./": "./"
+    "./*": "./*",
+    "./useAuth": {
+      "types": "./useAuth.d.ts",
+      "require": "./useAuth.cjs",
+      "import": "./useAuth.mjs"
+    },
+    "./useFirestore": {
+      "types": "./useFirestore.d.ts",
+      "require": "./useFirestore.cjs",
+      "import": "./useFirestore.mjs"
+    },
+    "./useRTDB": {
+      "types": "./useRTDB.d.ts",
+      "require": "./useRTDB.cjs",
+      "import": "./useRTDB.mjs"
+    }
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+    "firebase": ">=9.0.0"
+  },
+  "dependencies": {
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
   }
 }

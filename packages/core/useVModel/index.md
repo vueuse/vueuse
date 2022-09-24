@@ -21,43 +21,17 @@ export default {
 }
 ```
 
+### `<script setup>`
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+```vue
+<script lang="ts" setup>
+import { useVModel } from '@vueuse/core'
 
-```typescript
-export interface VModelOptions {
-  /**
-   * When passive is set to `true`, it will use `watch` to sync with props and ref.
-   * Instead of relying on the `v-model` or `.sync` to work.
-   *
-   * @default false
-   */
-  passive?: boolean
-}
-/**
- * Shorthand for v-model binding, props + emit -> ref
- *
- * @see   {@link https://vueuse.org/useVModel}
- * @param props
- * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
- * @param emit
- */
-export declare function useVModel<
-  P extends object,
-  K extends keyof P,
-  Name extends string
->(
-  props: P,
-  key?: K,
-  emit?: (name: Name, ...args: any[]) => void,
-  options?: VModelOptions
-): Ref<UnwrapRef<P[K]>> | WritableComputedRef<P[K]>
+const props = defineProps<{
+  modelValue: string
+}>()
+const emit = defineEmits(['update:modelValue'])
+
+const data = useVModel(props, 'modelValue', emit)
+</script>
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useVModel/index.md)
-
-
-<!--FOOTER_ENDS-->

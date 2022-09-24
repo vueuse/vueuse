@@ -1,24 +1,10 @@
-import { computed, ref, watch } from 'vue-demi'
-import { StorageLike, StorageOptions, useStorage } from '../useStorage'
+import { computed } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
-import { tryOnMounted } from '@vueuse/shared'
+import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
+import { useColorMode } from '../useColorMode'
 
-export interface UseDarkOptions extends StorageOptions {
-  /**
-   * CSS Selector for the target element applying to
-   *
-   * @default 'html'
-   */
-  selector?: string
-
-  /**
-   * HTML attribute applying the target element
-   *
-   * @default 'class'
-   */
-  attribute?: string
-
+export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchema>, 'modes' | 'onChanged'> {
   /**
    * Value applying to the target element when isDark=true
    *
@@ -35,81 +21,53 @@ export interface UseDarkOptions extends StorageOptions {
 
   /**
    * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridded.
+   * When specified, the default behavior will be overridden.
    *
    * @default undefined
    */
   onChanged?: (isDark: boolean) => void
-
-  /**
-   * Key to persist the data into localStorage/sessionStorage.
-   *
-   * Pass `null` to disable persistence
-   *
-   * @default 'vueuse-color-scheme'
-   */
-  storageKey?: string | null
-
-  /**
-   * Storage object, can be localStorage or sessionStorage
-   *
-   * @default localStorage
-   */
-  storage?: StorageLike
 }
-
-export type ColorSchemes = 'light' | 'dark' | 'auto'
 
 /**
  * Reactive dark mode with auto data persistence.
  *
- * @see   {@link https://vueuse.org/useDark}
+ * @see https://vueuse.org/useDark
  * @param options
  */
 export function useDark(options: UseDarkOptions = {}) {
   const {
-    selector = 'html',
-    attribute = 'class',
     valueDark = 'dark',
     valueLight = '',
     window = defaultWindow,
-    storage = defaultWindow?.localStorage,
-    storageKey = 'vueuse-color-scheme',
-    listenToStorageChanges = true,
   } = options
 
+  const mode = useColorMode({
+    ...options,
+    onChanged: (mode, defaultHandler) => {
+      if (options.onChanged)
+        options.onChanged?.(mode === 'dark')
+      else
+        defaultHandler(mode)
+    },
+    modes: {
+      dark: valueDark,
+      light: valueLight,
+    },
+  })
+
   const preferredDark = usePreferredDark({ window })
-  const store = storageKey == null
-    ? ref<ColorSchemes>('auto')
-    : useStorage<ColorSchemes>(storageKey, 'auto', storage, { window, listenToStorageChanges })
 
   const isDark = computed<boolean>({
     get() {
-      return store.value === 'auto'
-        ? preferredDark.value
-        : store.value === 'dark'
+      return mode.value === 'dark'
     },
     set(v) {
       if (v === preferredDark.value)
-        store.value = 'auto'
+        mode.value = 'auto'
       else
-        store.value = v ? 'dark' : 'light'
+        mode.value = v ? 'dark' : 'light'
     },
   })
-
-  const onChanged = options.onChanged || ((v: boolean) => {
-    const el = window?.document.querySelector(selector)
-    if (attribute === 'class') {
-      el?.classList.toggle(valueDark, v)
-      if (valueLight)
-        el?.classList.toggle(valueLight, !v)
-    }
-    else { el?.setAttribute(attribute, v ? valueDark : valueLight) }
-  })
-
-  watch(isDark, onChanged, { flush: 'post' })
-
-  tryOnMounted(() => onChanged(isDark.value))
 
   return isDark
 }

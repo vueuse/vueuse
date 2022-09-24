@@ -1,8 +1,10 @@
-import { Ref, ref, unref, watch, computed, ComputedRef, shallowRef } from 'vue-demi'
-import { Fn, MaybeRef, containsProp } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
+import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
-interface UseFetchReturnBase<T> {
+export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
@@ -50,28 +52,49 @@ interface UseFetchReturnBase<T> {
 
   /**
    * Manually call the fetch
+   * (default not throwing error)
    */
-  execute: () => Promise<any>
+  execute: (throwOnFailed?: boolean) => Promise<any>
+
+  /**
+   * Fires after the fetch request has finished
+   */
+  onFetchResponse: EventHookOn<Response>
+
+  /**
+   * Fires after a fetch request error
+   */
+  onFetchError: EventHookOn
+
+  /**
+   * Fires after a fetch has completed
+   */
+  onFetchFinally: EventHookOn
+
+  // methods
+  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+
+  // type
+  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type PayloadType = 'text' | 'json' | 'formData'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
-  // type
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
-}
-
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
-  // methods
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
+const payloadMapping: Record<string, string> = {
+  json: 'application/json',
+  text: 'text/plain',
+  formData: 'multipart/form-data',
 }
 
 export interface BeforeFetchContext {
@@ -91,6 +114,18 @@ export interface BeforeFetchContext {
   cancel: Fn
 }
 
+export interface AfterFetchContext<T = any> {
+  response: Response
+
+  data: T | null
+}
+
+export interface OnFetchErrorContext<T = any, E = any> {
+  error: E
+
+  data: T | null
+}
+
 export interface UseFetchOptions {
   /**
    * Fetch function
@@ -105,23 +140,52 @@ export interface UseFetchOptions {
   immediate?: boolean
 
   /**
-   * Will automatically refetch when the URL is changed if the url is a ref
+   * Will automatically refetch when:
+   * - the URL is changed if the URL is a ref
+   * - the payload is changed if the payload is a ref
    *
    * @default false
    */
-  refetch?: MaybeRef<boolean>
+  refetch?: MaybeComputedRef<boolean>
+
+  /**
+   * Initial data before the request finished
+   *
+   * @default null
+   */
+  initialData?: any
+
+  /**
+   * Timeout for abort request after number of millisecond
+   * `0` means use browser default
+   *
+   * @default 0
+   */
+  timeout?: number
 
   /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
+
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 2xx response
+   */
+  afterFetch?: (ctx: AfterFetchContext) => Promise<Partial<AfterFetchContext>> | Partial<AfterFetchContext>
+
+  /**
+   * Will run immediately after the fetch request is returned.
+   * Runs after any 4xx and 5xx response
+   */
+  onFetchError?: (ctx: { data: any; response: Response | null; error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
   /**
    * The base URL that will be prefixed to all urls
    */
-  baseUrl?: MaybeRef<string>
+  baseUrl?: MaybeComputedRef<string>
 
   /**
    * Default Options for the useFetch function
@@ -141,38 +205,70 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'beforeFetch')
+  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+}
+
+function headersToObject(headers: HeadersInit | undefined) {
+  if (typeof Headers !== 'undefined' && headers instanceof Headers)
+    return Object.fromEntries([...headers.entries()])
+  return headers
+}
+
+function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
+  return (ctx: T) => {
+    callbacks.forEach(async (callback) => {
+      if (callback)
+        ctx = { ...ctx, ...(await callback(ctx)) }
+    })
+    return ctx
+  }
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
-  let options = config.options || {}
-  let fetchOptions = config.fetchOptions || {}
+  const _options = config.options || {}
+  const _fetchOptions = config.fetchOptions || {}
 
-  function useFactoryFetch(url: MaybeRef<string>, ...args: any[]) {
+  function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
     const computedUrl = computed(() => config.baseUrl
-      ? joinPaths(unref(config.baseUrl), unref(url))
-      : unref(url),
+      ? joinPaths(resolveUnref(config.baseUrl), resolveUnref(url))
+      : resolveUnref(url),
     )
+
+    let options = _options
+    let fetchOptions = _fetchOptions
 
     // Merge properties into a single object
     if (args.length > 0) {
       if (isFetchOptions(args[0])) {
-        options = { ...options, ...args[0] }
+        options = {
+          ...options,
+          ...args[0],
+          beforeFetch: chainCallbacks(_options.beforeFetch, args[0].beforeFetch),
+          afterFetch: chainCallbacks(_options.afterFetch, args[0].afterFetch),
+          onFetchError: chainCallbacks(_options.onFetchError, args[0].onFetchError),
+        }
       }
       else {
         fetchOptions = {
           ...fetchOptions,
           ...args[0],
           headers: {
-            ...(fetchOptions.headers || {}),
-            ...(args[0].headers || {}),
+            ...(headersToObject(fetchOptions.headers) || {}),
+            ...(headersToObject(args[0].headers) || {}),
           },
         }
       }
     }
 
-    if (args.length > 1 && isFetchOptions(args[1]))
-      options = { ...options, ...args[1] }
+    if (args.length > 1 && isFetchOptions(args[1])) {
+      options = {
+        ...options,
+        ...args[1],
+        beforeFetch: chainCallbacks(_options.beforeFetch, args[1].beforeFetch),
+        afterFetch: chainCallbacks(_options.afterFetch, args[1].afterFetch),
+        onFetchError: chainCallbacks(_options.onFetchError, args[1].onFetchError),
+      }
+    }
 
     return useFetch(computedUrl, fetchOptions, options)
   }
@@ -180,22 +276,21 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T>
-export function useFetch<T>(url: MaybeRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T>
+export function useFetch<T>(url: MaybeComputedRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeComputedRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeComputedRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
-export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchReturn<T> {
+export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false }
-  const config = {
-    method: 'get',
+  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
+  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
+  const config: InternalConfig = {
+    method: 'GET',
     type: 'text' as DataType,
     payload: undefined as unknown,
-    payloadType: 'json' as PayloadType,
   }
-  let initialized = false
 
   if (args.length > 0) {
     if (isFetchOptions(args[0]))
@@ -211,29 +306,43 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
 
   const {
     fetch = defaultWindow?.fetch,
+    initialData,
+    timeout,
   } = options
+
+  // Event Hooks
+  const responseEvent = createEventHook<Response>()
+  const errorEvent = createEventHook<any>()
+  const finallyEvent = createEventHook<any>()
 
   const isFinished = ref(false)
   const isFetching = ref(false)
   const aborted = ref(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
-  const error = ref<any>(null)
-  const data = shallowRef<T | null>(null)
+  const error = shallowRef<any>(null)
+  const data = shallowRef<T | null>(initialData)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
   let controller: AbortController | undefined
+  let timer: Stoppable | undefined
 
   const abort = () => {
     if (supportsAbort && controller)
       controller.abort()
   }
 
-  const execute = async() => {
-    initialized = true
-    isFetching.value = true
-    isFinished.value = false
+  const loading = (isLoading: boolean) => {
+    isFetching.value = isLoading
+    isFinished.value = !isLoading
+  }
+
+  if (timeout)
+    timer = useTimeoutFn(abort, timeout, { immediate: false })
+
+  const execute = async (throwOnFailed = false) => {
+    loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
@@ -254,72 +363,96 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     }
 
     if (config.payload) {
-      const headers = defaultFetchOptions.headers as Record<string, string>
-      if (config.payloadType === 'json') {
-        defaultFetchOptions.body = JSON.stringify(config.payload)
-        headers['Content-Type'] = 'application/json'
-      }
-      else {
-        defaultFetchOptions.body = config.payload as any
-        headers['Content-Type'] = config.payloadType === 'formData'
-          ? 'multipart/form-data'
-          : 'text/plain'
-      }
+      const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
+      if (config.payloadType)
+        headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
+
+      const payload = resolveUnref(config.payload)
+      defaultFetchOptions.body = config.payloadType === 'json'
+        ? JSON.stringify(payload)
+        : payload as BodyInit
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: unref(url), options: fetchOptions, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = { url: resolveUnref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
 
-    if (isCanceled || !fetch)
-      return Promise.resolve()
+    if (isCanceled || !fetch) {
+      loading(false)
+      return Promise.resolve(null)
+    }
 
-    return new Promise((resolve) => {
+    let responseData: any = null
+
+    if (timer)
+      timer.start()
+
+    return new Promise<Response | null>((resolve, reject) => {
       fetch(
         context.url,
         {
           ...defaultFetchOptions,
           ...context.options,
           headers: {
-            ...defaultFetchOptions.headers,
-            ...context.options?.headers,
+            ...headersToObject(defaultFetchOptions.headers),
+            ...headersToObject(context.options?.headers),
           },
         },
       )
-        .then(async(fetchResponse) => {
+        .then(async (fetchResponse) => {
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
-          await fetchResponse[config.type]().then(text => data.value = text as any)
+          responseData = await fetchResponse[config.type]()
+
+          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
+            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+
+          data.value = responseData
 
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok)
             throw new Error(fetchResponse.statusText)
 
-          resolve(fetchResponse)
+          responseEvent.trigger(fetchResponse)
+          return resolve(fetchResponse)
         })
-        .catch((fetchError) => {
-          error.value = fetchError.message || fetchError.name
+        .catch(async (fetchError) => {
+          let errorData = fetchError.message || fetchError.name
+
+          if (options.onFetchError)
+            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
+          data.value = responseData
+          error.value = errorData
+
+          errorEvent.trigger(fetchError)
+          if (throwOnFailed)
+            return reject(fetchError)
+
+          return resolve(null)
         })
         .finally(() => {
-          isFinished.value = true
-          isFetching.value = false
+          loading(false)
+          if (timer)
+            timer.stop()
+          finallyEvent.trigger(null)
         })
     })
   }
 
+  const refetch = resolveRef(options.refetch)
   watch(
-    () => [
-      unref(url),
-      unref(options.refetch),
+    [
+      refetch,
+      resolveRef(url),
     ],
-    () => unref(options.refetch) && execute(),
+    ([refetch]) => refetch && execute(),
     { deep: true },
   )
 
-  const base: UseFetchReturnBase<T> = {
+  const shell: UseFetchReturn<T> = {
     isFinished,
     statusCode,
     response,
@@ -330,16 +463,19 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     aborted,
     abort,
     execute,
-  }
 
-  const shell: UseFetchReturn<T> = {
-    ...base,
-
-    get: setMethod('get'),
-    put: setMethod('put'),
-    post: setMethod('post'),
-    delete: setMethod('delete'),
-
+    onFetchResponse: responseEvent.on,
+    onFetchError: errorEvent.on,
+    onFetchFinally: finallyEvent.on,
+    // method
+    get: setMethod('GET'),
+    put: setMethod('PUT'),
+    post: setMethod('POST'),
+    delete: setMethod('DELETE'),
+    patch: setMethod('PATCH'),
+    head: setMethod('HEAD'),
+    options: setMethod('OPTIONS'),
+    // type
     json: setType('json'),
     text: setType('text'),
     blob: setType('blob'),
@@ -347,23 +483,62 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
     formData: setType('formData'),
   }
 
-  function setMethod(method: string) {
-    return (payload?: unknown, payloadType?: PayloadType) => {
-      if (!initialized) {
+  function setMethod(method: HttpMethod) {
+    return (payload?: unknown, payloadType?: string) => {
+      if (!isFetching.value) {
         config.method = method
         config.payload = payload
-        config.payloadType = payloadType || typeof payload === 'string' ? 'text' : 'json'
-        return shell as any
+        config.payloadType = payloadType
+
+        // watch for payload changes
+        if (isRef(config.payload)) {
+          watch(
+            [
+              refetch,
+              resolveRef(config.payload),
+            ],
+            ([refetch]) => refetch && execute(),
+            { deep: true },
+          )
+        }
+
+        const rawPayload = resolveUnref(config.payload)
+        // Set the payload to json type only if it's not provided and a literal object is provided
+        // The only case we can deduce the content type and `fetch` can't
+        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype)
+          config.payloadType = 'json'
+
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }
   }
 
+  function waitUntilFinished() {
+    return new Promise<UseFetchReturn<T>>((resolve, reject) => {
+      until(isFinished).toBe(true)
+        .then(() => resolve(shell))
+        .catch(error => reject(error))
+    })
+  }
+
   function setType(type: DataType) {
     return () => {
-      if (!initialized) {
+      if (!isFetching.value) {
         config.type = type
-        return base as any
+        return {
+          ...shell,
+          then(onFulfilled: any, onRejected: any) {
+            return waitUntilFinished()
+              .then(onFulfilled, onRejected)
+          },
+        } as any
       }
       return undefined
     }
@@ -372,7 +547,13 @@ export function useFetch<T>(url: MaybeRef<string>, ...args: any[]): UseFetchRetu
   if (options.immediate)
     setTimeout(execute, 0)
 
-  return shell
+  return {
+    ...shell,
+    then(onFulfilled, onRejected) {
+      return waitUntilFinished()
+        .then(onFulfilled, onRejected)
+    },
+  }
 }
 
 function joinPaths(start: string, end: string): string {

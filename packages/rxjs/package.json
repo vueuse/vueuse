@@ -1,16 +1,18 @@
 {
   "name": "@vueuse/rxjs",
+  "version": "9.2.0",
   "description": "Enables RxJS reactive functions in Vue",
-  "version": "4.6.3",
-  "main": "./dist/index.cjs.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.esm.js",
-  "unpkg": "./dist/index.iife.min.js",
-  "jsdelivr": "./dist/index.iife.min.js",
-  "sideEffects": false,
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git"
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/rxjs"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
   },
   "keywords": [
     "vue",
@@ -19,28 +21,28 @@
     "rxjs",
     "reactive"
   ],
-  "author": "Anthony Fu<https://github.com/antfu>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*"
   },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/rxjs#readme",
-  "dependencies": {
-    "@vueuse/shared": "4.6.3",
-    "vue-demi": "latest"
-  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "rxjs": ">=6.0.0"
   },
-  "devDependencies": {
-    "rxjs": "^6.6.6"
+  "dependencies": {
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
   },
-  "funding": "https://github.com/sponsors/antfu",
-  "exports": {
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
-    },
-    "./": "./"
+  "devDependencies": {
+    "rxjs": "^6.6.7"
   }
 }

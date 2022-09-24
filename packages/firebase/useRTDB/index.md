@@ -9,13 +9,12 @@ Reactive [Firebase Realtime Database](https://firebase.google.com/docs/database)
 ## Usage
 
 ```js
-import firebase from 'firebase/app'
-import 'firebase/database'
-import { useRTDB } from '@vueuse/firebase'
+import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
+import { useRTDB } from '@vueuse/firebase/useRTDB'
 
-const db = firebase
-  .initializeApp({ databaseURL: 'https://MY-DATABASE.firebaseio.com' })
-  .database()
+const app = initializeApp({ /* config */ })
+const db = getDatabase(app)
 
 // in setup()
 const todos = useRTDB(db.ref('todos'))
@@ -24,7 +23,7 @@ const todos = useRTDB(db.ref('todos'))
 You can reuse the db reference by passing `autoDispose: false`
 
 ```ts
-const todos = useRTDB(db.collection('todos'), { autoDispose: false })
+const todos = useRTDB(db.ref('todos'), { autoDispose: false })
 ```
 
 or use `createGlobalState` from the core package
@@ -32,7 +31,7 @@ or use `createGlobalState` from the core package
 ```js
 // store.js
 import { createGlobalState } from '@vueuse/core'
-import { useRTDB } from '@vueuse/firebase'
+import { useRTDB } from '@vueuse/firebase/useRTDB'
 
 export const useTodos = createGlobalState(
   () => useRTDB(db.ref('todos')),
@@ -43,37 +42,5 @@ export const useTodos = createGlobalState(
 // app.js
 import { useTodos } from './store'
 
-new Vue({
-  setup() {
-    const todos = useTodos()
-    return { todos }
-  },
-})
+const todos = useTodos()
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface RTDBOptions {
-  autoDispose?: boolean
-}
-/**
- * Reactive Firebase Realtime Database binding.
- *
- * @param docRef
- * @param options
- */
-export declare function useRTDB<T = any>(
-  docRef: firebase.database.Reference,
-  options?: RTDBOptions
-): Ref<T | undefined>
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/firebase/useRTDB/index.md)
-
-
-<!--FOOTER_ENDS-->

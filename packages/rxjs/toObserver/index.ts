@@ -1,5 +1,5 @@
-import { NextObserver } from 'rxjs'
-import { Ref } from 'vue-demi'
+import type { NextObserver } from 'rxjs'
+import type { Ref } from 'vue-demi'
 
 export function toObserver<T>(value: Ref<T>): NextObserver<T> {
   return {

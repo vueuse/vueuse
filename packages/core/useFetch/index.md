@@ -1,5 +1,5 @@
 ---
-category: Browser
+category: Network
 ---
 
 # useFetch
@@ -7,25 +7,38 @@ category: Browser
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
 they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
 
-[[toc]]
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useFetch()`](https://v3.nuxtjs.org/api/composables/use-fetch). Use explicit import if you want to use the function from VueUse.
+:::
 
 ## Usage
 
 ### Basic Usage
-The `useFetch` function can be used by simply providing a url. The url can be either a string or a `ref`. The `data`
-object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will
-indicate if the request is loading.
+
+The `useFetch` function can be used by simply providing a url. The url can be either a string or a `ref`. The `data` object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will indicate if the request is loading.
+
 ```ts
 import { useFetch } from '@vueuse/core'
 
 const { isFetching, error, data } = useFetch(url)
 ```
 
-### Refetching on URL change
-Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another
-request when the url is changed.
+### Asynchronous Usage
+`useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
+it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Offical Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
+
 ```ts
-const url = ref('https://my-api.com/user/1') 
+import { useFetch } from '@vueuse/core'
+
+const { isFetching, error, data } = await useFetch(url)
+```
+
+### Refetching on URL change
+
+Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
+
+```ts
+const url = ref('https://my-api.com/user/1')
 
 const { data } = useFetch(url, { refetch: true })
 
@@ -33,8 +46,9 @@ url.value = 'https://my-api.com/user/2' // Will trigger another request
 ```
 
 ### Prevent request from firing immediately
-Setting the `immediate` option to false will prevent the request from firing until the `execute`
-function is called.
+
+Setting the `immediate` option to false will prevent the request from firing until the `execute` function is called.
+
 ```ts
 const { execute } = useFetch(url, { immediate: false })
 
@@ -42,8 +56,9 @@ execute()
 ```
 
 ### Aborting a request
-A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates
-if the request can be aborted
+
+A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
+
 ```ts
 const { abort, canAbort } = useFetch(url)
 
@@ -53,8 +68,16 @@ setTimeout(() => {
 }, 100)
 ```
 
+A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given timeout is reached.
+
+```ts
+const { data } = useFetch(url, { timeout: 100 })
+```
+
 ### Intercepting a request
+
 The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
+
 ```ts
 const { data } = useFetch(url, {
   async beforeFetch({ url, options, cancel }) {
@@ -63,16 +86,48 @@ const { data } = useFetch(url, {
     if (!myToken)
       cancel()
 
-    options.headers.Authorization = `Bearer ${myToken}`
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
 
     return {
-      options
+      options,
     }
-  }
+  },
+})
+```
+
+The `afterFetch` option can intercept the response data before it is updated.
+
+```ts
+const { data } = useFetch(url, {
+  afterFetch(ctx) {
+    if (ctx.data.title === 'HxH')
+      ctx.data.title = 'Hunter x Hunter' // Modifies the response data
+
+    return ctx
+  },
+})
+```
+
+The `onFetchError` option can intercept the response data and error before it is updated.
+```ts
+const { data } = useFetch(url, {
+  onFetchError(ctx) {
+    // ctx.data can be null when 5xx response
+    if (ctx.data === null)
+      ctx.data = { title: 'Hunter x Hunter' } // Modifies the response data
+
+    ctx.error = new Error('Custom Error') // Modifies the error
+
+    return ctx
+  },
 })
 ```
 
 ### Setting the request method and return type
+
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
 ```ts
@@ -88,12 +143,13 @@ const { data } = useFetch(url).post().text()
 const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
 ```
 
-### Creating a custom instance
-The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it.
-This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
+### Creating a Custom Instance
+
+The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it. This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
+
 ```ts
-const useMyFetch = createFetch({ 
-  baseUrl: 'https://my-api.com', 
+const useMyFetch = createFetch({
+  baseUrl: 'https://my-api.com',
   options: {
     async beforeFetch({ options }) {
       const myToken = await getMyToken()
@@ -101,7 +157,7 @@ const useMyFetch = createFetch({
 
       return { options }
     },
-  }, 
+  },
   fetchOptions: {
     mode: 'cors',
   },
@@ -110,143 +166,18 @@ const useMyFetch = createFetch({
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
-<!--FOOTER_STARTS-->
-## Type Declarations
+### Events
 
-```typescript
-interface UseFetchReturnBase<T> {
-  /**
-   * Indicates if the fetch request has finished
-   */
-  isFinished: Ref<boolean>
-  /**
-   * The statusCode of the HTTP fetch response
-   */
-  statusCode: Ref<number | null>
-  /**
-   * The raw response of the fetch response
-   */
-  response: Ref<Response | null>
-  /**
-   * Any fetch errors that may have occurred
-   */
-  error: Ref<any>
-  /**
-   * The fetch response body, may either be JSON or text
-   */
-  data: Ref<T | null>
-  /**
-   * Indicates if the request is currently being fetched.
-   */
-  isFetching: Ref<boolean>
-  /**
-   * Indicates if the fetch request is able to be aborted
-   */
-  canAbort: ComputedRef<boolean>
-  /**
-   * Indicates if the fetch request was aborted
-   */
-  aborted: Ref<boolean>
-  /**
-   * Abort the fetch request
-   */
-  abort: Fn
-  /**
-   * Manually call the fetch
-   */
-  execute: () => Promise<any>
-}
-declare type PayloadType = "text" | "json" | "formData"
-interface UseFetchReturnMethodConfigured<T> extends UseFetchReturnBase<T> {
-  json<JSON = any>(): UseFetchReturnBase<JSON>
-  text(): UseFetchReturnBase<string>
-  blob(): UseFetchReturnBase<Blob>
-  arrayBuffer(): UseFetchReturnBase<ArrayBuffer>
-  formData(): UseFetchReturnBase<FormData>
-}
-export interface UseFetchReturn<T> extends UseFetchReturnMethodConfigured<T> {
-  get(): UseFetchReturnMethodConfigured<T>
-  post(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  put(payload?: unknown, type?: PayloadType): UseFetchReturnMethodConfigured<T>
-  delete(
-    payload?: unknown,
-    type?: PayloadType
-  ): UseFetchReturnMethodConfigured<T>
-}
-export interface BeforeFetchContext {
-  /**
-   * The computed url of the current request
-   */
-  url: string
-  /**
-   * The request options of the current request
-   */
-  options: RequestInit
-  /**
-   * Cancels the current request
-   */
-  cancel: Fn
-}
-export interface UseFetchOptions {
-  /**
-   * Fetch function
-   */
-  fetch?: typeof window.fetch
-  /**
-   * Will automatically run fetch when `useFetch` is used
-   *
-   * @default true
-   */
-  immediate?: boolean
-  /**
-   * Will automatically refetch when the URL is changed if the url is a ref
-   *
-   * @default false
-   */
-  refetch?: MaybeRef<boolean>
-  /**
-   * Will run immediately before the fetch request is dispatched
-   */
-  beforeFetch?: (
-    ctx: BeforeFetchContext
-  ) =>
-    | Promise<Partial<BeforeFetchContext> | void>
-    | Partial<BeforeFetchContext>
-    | void
-}
-export interface CreateFetchOptions {
-  /**
-   * The base URL that will be prefixed to all urls
-   */
-  baseUrl?: MaybeRef<string>
-  /**
-   * Default Options for the useFetch function
-   */
-  options?: UseFetchOptions
-  /**
-   * Options for the fetch request
-   */
-  fetchOptions?: RequestInit
-}
-export declare function createFetch(
-  config?: CreateFetchOptions
-): typeof useFetch
-export declare function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T>
-export declare function useFetch<T>(
-  url: MaybeRef<string>,
-  useFetchOptions: UseFetchOptions
-): UseFetchReturn<T>
-export declare function useFetch<T>(
-  url: MaybeRef<string>,
-  options: RequestInit,
-  useFetchOptions?: UseFetchOptions
-): UseFetchReturn<T>
-export {}
+The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
+
+```ts
+const { onFetchResponse, onFetchError } = useFetch(url)
+
+onFetchResponse((response) => {
+  console.log(response.status)
+})
+
+onFetchError((error) => {
+  console.error(error.message)
+})
 ```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useFetch/index.md)
-
-
-<!--FOOTER_ENDS-->

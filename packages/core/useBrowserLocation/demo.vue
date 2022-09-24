@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
-import { useBrowserLocation } from '.'
 import { stringify } from '@vueuse/docs-utils'
+import { useBrowserLocation } from '@vueuse/core'
 
 const location = useBrowserLocation()
 const text = stringify(location)

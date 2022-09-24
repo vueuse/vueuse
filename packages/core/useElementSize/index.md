@@ -1,10 +1,10 @@
 ---
-category: Sensors
+category: Elements
 ---
 
 # useElementSize
 
-Reactive size of an HTML element.
+Reactive size of an HTML element. [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
 
 ## Usage
 
@@ -12,7 +12,7 @@ Reactive size of an HTML element.
 <template>
   <div ref="el">
     Height: {{ height }}
-    Width: {{ Width }}
+    Width: {{ width }}
   </div>
 </template>
 
@@ -35,38 +35,27 @@ export default {
 </script>
 ```
 
-[ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+## Component Usage
 
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export interface ElementSize {
-  width: number
-  height: number
-}
-/**
- * Reactive size of an HTML element.
- *
- * @see   {@link https://vueuse.org/useElementSize}
- * @param target
- * @param callback
- * @param options
- */
-export declare function useElementSize(
-  target: MaybeElementRef,
-  initialSize?: ElementSize,
-  options?: ResizeObserverOptions
-): {
-  width: Ref<number>
-  height: Ref<number>
-}
+```html
+<UseElementSize v-slot="{ width, height }">
+  Width: {{ width }}
+  Height: {{ height }}
+</UseElementSize>
 ```
+## Directive Usage
 
-## Source
+```html
+<script setup lang="ts">
+import { vElementSize } from '@vueuse/components'
+function onResize({ width, height }: { width: number; height: number }) {
+  console.log(width, height)
+}
+</script>
 
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/index.ts) • [Demo](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/demo.vue) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/core/useElementSize/index.md)
-
-
-<!--FOOTER_ENDS-->
+<template>
+  <textarea v-element-size="onResize" />
+  <!-- with options -->
+  <textarea v-element-size="[onResize, {width:100,height:100}, {'box':'content-box'} ]" />
+</template>
+```

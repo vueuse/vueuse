@@ -4,7 +4,7 @@ category: '@RxJS'
 
 # useSubscription
 
-Uses subscriptions without worry about unsubscribing to it or memory leaks.
+Use an RxJS [`Subscription`](https://rxjs.dev/guide/subscription) without worrying about unsubscribing from it or creating memory leaks.
 
 ## Usage
 
@@ -20,21 +20,6 @@ useSubscription(
     .subscribe(() => {
       count.value++
       console.log(count)
-    })
+    }),
 )
 ```
-
-
-<!--FOOTER_STARTS-->
-## Type Declarations
-
-```typescript
-export declare function useSubscription(subscription: Unsubscribable): void
-```
-
-## Source
-
-[Source](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useSubscription/index.ts) • [Docs](https://github.com/vueuse/vueuse/blob/main/packages/rxjs/useSubscription/index.md)
-
-
-<!--FOOTER_ENDS-->

@@ -1,16 +1,16 @@
-import { Fn } from '@vueuse/shared'
-import { Ref, ref } from 'vue-demi'
-import { tryOnUnmounted } from '../tryOnUnmounted'
+import { ref } from 'vue-demi'
+import type { MaybeComputedRef, Stoppable } from '../utils'
+import { resolveUnref } from '../resolveUnref'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
-export interface TimeoutFnResult {
-  start: Fn
-  stop: Fn
-  isPending: Ref<boolean>
+export interface UseTimeoutFnOptions {
   /**
-   * @deprecated use `isPending` instead
+   * Start the timer immediate after calling this function
+   *
+   * @default true
    */
-  isActive: Ref<boolean>
+  immediate?: boolean
 }
 
 /**
@@ -18,13 +18,17 @@ export interface TimeoutFnResult {
  *
  * @param cb
  * @param interval
- * @param immediate
+ * @param options
  */
 export function useTimeoutFn(
   cb: (...args: unknown[]) => any,
-  interval?: number,
-  immediate = true,
-): TimeoutFnResult {
+  interval: MaybeComputedRef<number>,
+  options: UseTimeoutFnOptions = {},
+): Stoppable {
+  const {
+    immediate = true,
+  } = options
+
   const isPending = ref(false)
 
   let timer: number | null = null
@@ -47,9 +51,9 @@ export function useTimeoutFn(
     timer = setTimeout(() => {
       isPending.value = false
       timer = null
-      // eslint-disable-next-line node/no-callback-literal
+
       cb(...args)
-    }, interval) as unknown as number
+    }, resolveUnref(interval)) as unknown as number
   }
 
   if (immediate) {
@@ -58,12 +62,11 @@ export function useTimeoutFn(
       start()
   }
 
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isPending,
     start,
     stop,
-    isActive: isPending,
   }
 }

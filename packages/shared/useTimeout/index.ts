@@ -1,35 +1,48 @@
-import { ref } from 'vue-demi'
+import type { ComputedRef } from 'vue-demi'
+import { computed } from 'vue-demi'
+import type { UseTimeoutFnOptions } from '../useTimeoutFn'
 import { useTimeoutFn } from '../useTimeoutFn'
+import type { Stoppable } from '../utils'
+import { noop } from '../utils'
+
+export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutFnOptions {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
 
 /**
  * Update value after a given time with controls.
  *
+ * @see   {@link https://vueuse.org/useTimeout}
  * @param interval
- * @param immediate
+ * @param options
  */
-export function useTimeout(interval = 1000, immediate = true) {
-  const ready = ref(false)
+export function useTimeout(interval?: number, options?: UseTimeoutOptions<false>): ComputedRef<boolean>
+export function useTimeout(interval: number, options: UseTimeoutOptions<true>): { ready: ComputedRef<boolean> } & Stoppable
+export function useTimeout(interval = 1000, options: UseTimeoutOptions<boolean> = {}) {
+  const {
+    controls: exposeControls = false,
+  } = options
 
   const controls = useTimeoutFn(
-    () => ready.value = true,
+    noop,
     interval,
-    immediate,
+    options,
   )
 
-  function stop() {
-    ready.value = false
-    controls.stop()
-  }
+  const ready = computed(() => !controls.isPending.value)
 
-  function start() {
-    ready.value = false
-    controls.start()
+  if (exposeControls) {
+    return {
+      ready,
+      ...controls,
+    }
   }
-
-  return {
-    ready,
-    isActive: controls.isActive,
-    start,
-    stop,
+  else {
+    return ready
   }
 }
