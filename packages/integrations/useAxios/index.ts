@@ -33,7 +33,7 @@ export interface UseAxiosReturn<T, D> {
   /**
    * Any errors that may have occurred
    */
-  error: ShallowRef<AxiosError<T> | undefined>
+  error: ShallowRef<AxiosError<T, D> | undefined>
 
   /**
    * Aborts the current request
