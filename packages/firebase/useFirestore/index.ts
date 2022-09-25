@@ -34,24 +34,24 @@ function isDocumentReference<T>(docRef: any): docRef is DocumentReference<T> {
 }
 
 export function useFirestore<T extends DocumentData>(
-  maybeDocRefOrFunc: (() => DocumentReference<T>) | MaybeRef<DocumentReference<T>>,
+  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
   initialValue: T,
   options?: UseFirestoreOptions
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRefOrFunc: (() => Query<T>) | MaybeRef<Query<T>>,
+  maybeDocRef: MaybeRef<Query<T> | false>,
   initialValue: T[],
   options?: UseFirestoreOptions
 ): Ref<T[]>
 
 // nullable initial values
 export function useFirestore<T extends DocumentData>(
-  maybeDocRefOrFunc: (() => DocumentReference<T>) | MaybeRef<DocumentReference<T>>,
+  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
   initialValue?: T | undefined,
   options?: UseFirestoreOptions,
 ): Ref<T | undefined | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRefOrFunc: (() => Query<T>) | MaybeRef<Query<T>>,
+  maybeDocRef: MaybeRef<Query<T> | false>,
   initialValue?: T[],
   options?: UseFirestoreOptions
 ): Ref<T[] | undefined>
@@ -63,7 +63,7 @@ export function useFirestore<T extends DocumentData>(
  * @see https://vueuse.org/useFirestore
  */
 export function useFirestore<T extends DocumentData>(
-  maybeDocRefOrFunc: (() => FirebaseDocRef<T>) | MaybeRef<FirebaseDocRef<T>>,
+  maybeDocRef: MaybeRef<FirebaseDocRef<T> | false>,
   initialValue: any = undefined,
   options: UseFirestoreOptions = {},
 ) {
@@ -72,11 +72,9 @@ export function useFirestore<T extends DocumentData>(
     autoDispose = true,
   } = options
 
-  const refOfDocRef = typeof maybeDocRefOrFunc === 'function'
-    ? computed(() => maybeDocRefOrFunc())
-    : isRef(maybeDocRefOrFunc)
-      ? maybeDocRefOrFunc
-      : computed(() => maybeDocRefOrFunc)
+  const refOfDocRef = isRef(maybeDocRef)
+    ? maybeDocRef
+    : computed(() => maybeDocRef)
 
   let close = () => { }
   const data = ref(initialValue) as Ref<T | T[] | null | undefined>
