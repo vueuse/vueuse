@@ -92,12 +92,12 @@ export interface UseAxiosOptions {
    *
    */
   immediate?: boolean
-    /**
+  /**
    * Use shallowRef.
    *
    * @default true
    */
-   shallow?: boolean
+  shallow?: boolean
 }
 type OverallUseAxiosReturn<T, D> = StrictUseAxiosReturn<T, D> | EasyUseAxiosReturn<T, D>
 
@@ -118,7 +118,7 @@ export function useAxios<T = any, D = any>(...args: any[]): OverallUseAxiosRetur
   const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
-  let options: UseAxiosOptions = { immediate: !!argsPlaceholder,shallow:true }
+  let options: UseAxiosOptions = { immediate: !!argsPlaceholder, shallow: true }
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -145,7 +145,7 @@ export function useAxios<T = any, D = any>(...args: any[]): OverallUseAxiosRetur
     options = args[args.length - 1]
 
   const response = shallowRef<AxiosResponse<T>>()
-  const data = options.shallow ? shallowRef<T>() : ref<T>();
+  const data = options.shallow ? shallowRef<T>() : ref<T>()
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
