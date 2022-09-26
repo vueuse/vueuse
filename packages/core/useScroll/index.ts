@@ -1,6 +1,6 @@
-import { reactive, ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -48,6 +48,14 @@ export interface UseScrollOptions {
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
+
+  /**
+   * Optionally specify a scroll behavior of `auto` (default, not smooth scrolling) or
+   * `smooth` (for smooth scrolling) which takes effect when changing the `x` or `y` refs.
+   *
+   * @default 'auto'
+   */
+  behavior?: MaybeComputedRef<ScrollBehavior>
 }
 
 /**
@@ -85,10 +93,45 @@ export function useScroll(
       capture: false,
       passive: true,
     },
+    behavior = 'auto',
   } = options
 
-  const x = ref(0)
-  const y = ref(0)
+  const internalX = ref(0)
+  const internalY = ref(0)
+
+  // Use a computed for x and y because we want to write the value to the refs
+  // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
+  const x = computed({
+    get() {
+      return internalX.value
+    },
+    set(x) {
+      scrollTo(x, undefined)
+    },
+  })
+
+  const y = computed({
+    get() {
+      return internalY.value
+    },
+    set(y) {
+      scrollTo(undefined, y)
+    },
+  })
+
+  function scrollTo(_x: number | undefined, _y: number | undefined) {
+    const _element = resolveUnref(element)
+
+    if (!_element)
+      return
+
+    (_element instanceof Document ? document.body : _element)?.scrollTo({
+      top: resolveUnref(_y) ?? y.value,
+      left: resolveUnref(_x) ?? x.value,
+      behavior: resolveUnref(behavior),
+    })
+  }
+
   const isScrolling = ref(false)
   const arrivedState = reactive({
     left: true,
@@ -118,12 +161,12 @@ export function useScroll(
     ) as HTMLElement
 
     const scrollLeft = eventTarget.scrollLeft
-    directions.left = scrollLeft < x.value
-    directions.right = scrollLeft > x.value
+    directions.left = scrollLeft < internalX.value
+    directions.right = scrollLeft > internalY.value
     arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
     arrivedState.right
       = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
-    x.value = scrollLeft
+    internalX.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
 
@@ -131,12 +174,12 @@ export function useScroll(
     if (e.target === document && !scrollTop)
       scrollTop = document.body.scrollTop
 
-    directions.top = scrollTop < y.value
-    directions.bottom = scrollTop > y.value
+    directions.top = scrollTop < internalY.value
+    directions.bottom = scrollTop > internalY.value
     arrivedState.top = scrollTop <= 0 + (offset.top || 0)
     arrivedState.bottom
       = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
-    y.value = scrollTop
+    internalY.value = scrollTop
 
     isScrolling.value = true
     onScrollEnd(e)
