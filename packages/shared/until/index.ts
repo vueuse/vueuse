@@ -66,7 +66,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   toContains(value: MaybeComputedRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
 }
 
-function _until<T>(r: any, isNot = false): any {
+function createUntil<T>(r: any, isNot = false) {
   function toMatch(
     condition: (v: any) => boolean,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
@@ -184,7 +184,7 @@ function _until<T>(r: any, isNot = false): any {
       changed,
       changedTimes,
       get not() {
-        return _until(r, !isNot)
+        return createUntil(r, !isNot) as UntilArrayInstance<T>
       },
     }
     return instance
@@ -200,7 +200,7 @@ function _until<T>(r: any, isNot = false): any {
       changed,
       changedTimes,
       get not() {
-        return _until(r, !isNot)
+        return createUntil(r, !isNot) as UntilValueInstance<T, boolean>
       },
     }
 
@@ -223,6 +223,6 @@ function _until<T>(r: any, isNot = false): any {
  */
 export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
 export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
-export function until(r: any): any {
-  return _until(r)
+export function until<T>(r: any): UntilValueInstance<T> | UntilArrayInstance<T> {
+  return createUntil(r)
 }
