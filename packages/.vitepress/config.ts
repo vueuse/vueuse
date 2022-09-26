@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
 
 const Guide = [

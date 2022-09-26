@@ -5,7 +5,7 @@ import YAML from 'js-yaml'
 import Git from 'simple-git'
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { $fetch } from 'ohmyfetch'
-import { getCategories } from '../packages/metadata'
+import { getCategories } from '../packages/metadata/utils'
 import { packages } from '../meta/packages'
 
 export const git = Git()

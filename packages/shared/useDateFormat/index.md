@@ -84,12 +84,12 @@ import { useNow, useDateFormat } from '@vueuse/core'
 
 const customMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
   const m = hours > 11 ? (isLowercase ? 'μμ' : 'ΜΜ') : (isLowercase ? 'πμ' : 'ΠΜ')
-  return hasPeriod ? m.split('').reduce((acc, curr) => acc += `${curr}.`, '') : m
+  return hasPeriod ? m.split('').reduce((acc, current) => acc += `${current}.`, '') : m
 }
 
 const am = useDateFormat('2022-01-01 05:05:05', 'hh:mm:ss A', { customMeridiem })
 // am.value = '05:05:05 ΠΜ'
 const pm = useDateFormat('2022-01-01 17:05:05', 'hh:mm:ss AA', { customMeridiem })
 // pm.value = '05:05:05 Μ.Μ.'
-
 </script>
+```
