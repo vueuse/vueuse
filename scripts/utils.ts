@@ -1,14 +1,12 @@
 import { join, resolve } from 'path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
-import parser from 'prettier/parser-typescript'
-import prettier from 'prettier'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { $fetch } from 'ohmyfetch'
+import { getCategories } from '../packages/metadata'
 import { packages } from '../meta/packages'
-import { getCategories } from '../packages/metadata/utils'
 
 export const git = Git()
 
@@ -35,13 +33,13 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
     .replace(/export {}/g, '')
 
+  const prettier = await import('prettier')
   return prettier
     .format(
       types,
       {
         semi: false,
         parser: 'typescript',
-        plugins: [parser],
       },
     )
     .trim()
