@@ -203,7 +203,7 @@ importers:
       async-validator: ^4.2.5
       axios: ^0.27.2
       change-case: ^4.1.2
-      drauu: ^0.3.1
+      drauu: ^0.3.2
       focus-trap: ^7.0.0
       fuse.js: ^6.6.2
       jwt-decode: ^3.1.2
@@ -221,7 +221,7 @@ importers:
       async-validator: 4.2.5
       axios: 0.27.2
       change-case: 4.1.2
-      drauu: 0.3.1
+      drauu: 0.3.2
       focus-trap: 7.0.0
       fuse.js: 6.6.2
       jwt-decode: 3.1.2
@@ -1752,10 +1752,10 @@ packages:
       - '@algolia/client-search'
     dev: true
 
-  /@drauu/core/0.3.1:
-    resolution: {integrity: sha512-woxjFf1rQ/Z7sfqvfpjClvCkUqhH5bb1dmXs5DZtDE7+zr6qLAZIj0jlqbI2eiBl61Q2zXzsG/oez1E8B+zXpQ==}
+  /@drauu/core/0.3.2:
+    resolution: {integrity: sha512-7G3qIuMBkDkrzvZOs6Rm/7rKWuhZOe8iimHooTmy4vpKGsPimaNC1jGCSPSM8ys/johhcIvx+1ZvnMJ5+UAXJA==}
     dependencies:
-      perfect-freehand: 1.1.0
+      perfect-freehand: 1.2.0
     dev: true
 
   /@electron/get/1.14.1:
@@ -4357,10 +4357,10 @@ packages:
     resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
     engines: {node: '>=12'}
 
-  /drauu/0.3.1:
-    resolution: {integrity: sha512-eqjboIt++w9Sc3U8X8X1F0Lkw+L2VpiVSx1Sy732urAyMc/aqucvEC8L29P0IoaSHhCLOcrgleVW9ZYqQrrZ8Q==}
+  /drauu/0.3.2:
+    resolution: {integrity: sha512-NnRQU6uM9uk1zAd33nFZ6FqZGGmT3jiYS/ERdDIDuTUgDsweSgpf1D3X7vYZwRSxCZayOnnt1sKWj9swbR8q4Q==}
     dependencies:
-      '@drauu/core': 0.3.1
+      '@drauu/core': 0.3.2
     dev: true
 
   /duplexer/0.1.1:
@@ -7685,8 +7685,8 @@ packages:
     resolution: {integrity: sha512-NOT9AcKiDGpnV/HBhI22Str++XWcErO/bALvHCuhv33owZW/CjH8KAFLZDCmu3727sihe0wTxpDhyGc6M8qacQ==}
     dev: true
 
-  /perfect-freehand/1.1.0:
-    resolution: {integrity: sha512-nVWukMN9qlii1dQsQHVvfaNpeOAWVLgTZP6e/tFcU6cWlLo+6YdvfRGBL2u5pU11APlPbHeB0SpMcGA8ZjPgcQ==}
+  /perfect-freehand/1.2.0:
+    resolution: {integrity: sha512-h/0ikF1M3phW7CwpZ5MMvKnfpHficWoOEyr//KVNTxV4F6deRK1eYMtHyBKEAKFK0aXIEUK9oBvlF6PNXMDsAw==}
     dev: true
 
   /picocolors/1.0.0:

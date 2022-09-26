@@ -57,7 +57,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
+      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'demo.client.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {
         'no-alert': 'off',
         'no-console': 'off',
