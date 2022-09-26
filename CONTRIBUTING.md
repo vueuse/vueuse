@@ -12,6 +12,12 @@ Clone this repo to your local machine and install the dependencies.
 pnpm install
 ```
 
+Setup `pre-commit` hooks for `lint`.
+
+```bash
+pnpm simple-git-hooks
+```
+
 We use VitePress for rapid development and documenting. You can start it locally by
 
 ```bash
