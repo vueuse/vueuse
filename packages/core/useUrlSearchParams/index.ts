@@ -28,6 +28,13 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default true
    */
   write?: boolean
+
+  /**
+   * Custom params delimiter
+   *
+   * @default "&"
+   */
+  delimiter?: string
 }
 
 /**
@@ -47,6 +54,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeFalsyValues = false,
     write: enableWrite = true,
     window = defaultWindow!,
+    delimiter = '&',
   } = options
 
   if (!window)
@@ -69,7 +77,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function constructQuery(params: URLSearchParams) {
-    const stringified = params.toString()
+    const stringified = params.toString().split('&').join(delimiter)
 
     if (mode === 'history')
       return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
@@ -83,7 +91,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function read() {
-    return new URLSearchParams(getRawParams())
+    return new URLSearchParams(getRawParams().split(delimiter).join('&'))
   }
 
   function updateState(params: URLSearchParams) {

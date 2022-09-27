@@ -98,6 +98,34 @@ describe('useUrlSearchParams', () => {
 
         expect(params.customFoo).toEqual(42)
       })
+
+      test('custom delimiter', () => {
+        const delimiter = ':'
+
+        const params = useUrlSearchParams(mode, {
+          delimiter,
+        })
+
+        expect(params).toEqual({})
+
+        if (mode === 'hash')
+          mockPopstate('', '#/test/?foo=bar')
+        else if (mode === 'hash-params')
+          mockPopstate('', '#foo=bar')
+        else
+          mockPopstate('?foo=bar', '')
+
+        expect(params).toEqual({ foo: 'bar' })
+
+        if (mode === 'hash')
+          mockPopstate('', `#/test/?foo=bar${delimiter}baz=qux`)
+        else if (mode === 'hash-params')
+          mockPopstate('', `#foo=bar${delimiter}baz=qux`)
+        else
+          mockPopstate(`?foo=bar${delimiter}baz=qux`, '')
+
+        expect(params).toEqual({ foo: 'bar', baz: 'qux' })
+      })
     })
   })
 
