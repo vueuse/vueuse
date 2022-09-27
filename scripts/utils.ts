@@ -45,10 +45,6 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .trim()
 }
 
-export function hasDemo(pkg: string, name: string) {
-  return fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
-}
-
 export async function updateImport({ packages, functions }: PackageIndexes) {
   for (const { name, dir, manualImport } of Object.values(packages)) {
     if (manualImport)
