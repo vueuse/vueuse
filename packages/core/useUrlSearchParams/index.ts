@@ -62,6 +62,11 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
 
   const state: Record<string, any> = reactive({})
 
+  /**
+   * Whether the history state should be pushed/replaced.
+   */
+  let shouldUpdateHistory = false
+
   function getRawParams() {
     if (mode === 'history') {
       return window.location.search || ''
@@ -122,6 +127,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
           params.set(key, mapEntry)
       })
       write(params)
+      shouldUpdateHistory = true
     },
     { deep: true },
   )
@@ -132,13 +138,15 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (shouldUpdate)
       updateState(params)
 
-    const method = action === 'push' ? 'pushState' : 'replaceState'
+    if (shouldUpdateHistory) {
+      const method = action === 'push' ? 'pushState' : 'replaceState'
 
-    window.history[method](
-      window.history.state,
-      window.document.title,
-      window.location.pathname + constructQuery(params),
-    )
+      window.history[method](
+        window.history.state,
+        window.document.title,
+        window.location.pathname + constructQuery(params),
+      )
+    }
 
     resume()
   }
@@ -146,7 +154,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   function onChanged() {
     if (!enableWrite)
       return
-
+    shouldUpdateHistory = false
     write(read(), true)
   }
 
