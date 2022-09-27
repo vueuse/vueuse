@@ -17,15 +17,12 @@ describe('useUrlSearchParams', () => {
   const mockPopstate = (search: string, hash: string) => {
     window.location.search = search
     window.location.hash = hash
-
-    const state = {
-      ...window.location,
-      search,
-      hash,
-    }
-
     window.dispatchEvent(new PopStateEvent('popstate', {
-      state,
+      state: {
+        ...window.location,
+        search,
+        hash,
+      },
     }))
   }
 
