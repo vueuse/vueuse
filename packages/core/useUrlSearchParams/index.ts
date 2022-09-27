@@ -28,6 +28,13 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default true
    */
   write?: boolean
+
+  /**
+   * Action performed on state change
+   *
+   * @default "replace"
+   */
+  action?: 'replace' | 'push'
 }
 
 /**
@@ -47,6 +54,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeFalsyValues = false,
     write: enableWrite = true,
     window = defaultWindow!,
+    action = 'replace',
   } = options
 
   if (!window)
@@ -124,7 +132,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (shouldUpdate)
       updateState(params)
 
-    window.history.replaceState(
+    const method = action === 'push' ? 'pushState' : 'replaceState'
+
+    window.history[method](
       window.history.state,
       window.document.title,
       window.location.pathname + constructQuery(params),

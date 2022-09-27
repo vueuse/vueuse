@@ -47,3 +47,25 @@ params.foo = 'bar'
 params.vueuse = 'awesome'
 // url updated to `/your/route#foo=bar&vueuse=awesome`
 ```
+
+
+### Hash Params
+
+When using with history mode route, but want to use hash as params, specify the `mode` to `hash-params`
+
+```js
+import { useUrlSearchParams } from '@vueuse/core'
+
+const params = useUrlSearchParams('hash-params', {
+  action: 'push'
+})
+
+params.foo = 'bar'
+params.foo = 'foo'
+
+window.history.back()
+console.log(params.foo) // "bar"
+
+window.history.forward()
+console.log(params.foo) // "foo"
+```
