@@ -9,14 +9,9 @@ describe('useUrlSearchParams', () => {
     writable: true,
   })
 
-  const states: Location[] = []
-  let stateIndex = 0
-
   beforeEach(() => {
     window.location.search = ''
     window.location.hash = ''
-    states.splice(0, states.length)
-    stateIndex = 0
   })
 
   const mockPopstate = (search: string, hash: string) => {
@@ -28,36 +23,6 @@ describe('useUrlSearchParams', () => {
       search,
       hash,
     }
-
-    window.dispatchEvent(new PopStateEvent('popstate', {
-      state,
-    }))
-
-    states.push(state)
-
-    stateIndex++
-  }
-
-  const mockBack = () => {
-    const state = states[stateIndex - 1]
-    console.log('back', stateIndex, states)
-    if (!state)
-      return
-
-    stateIndex--
-
-    window.dispatchEvent(new PopStateEvent('popstate', {
-      state,
-    }))
-  }
-
-  const mockForward = () => {
-    const state = states[stateIndex + 1]
-    console.log('forward', stateIndex, states)
-    if (!state)
-      return
-
-    stateIndex++
 
     window.dispatchEvent(new PopStateEvent('popstate', {
       state,
