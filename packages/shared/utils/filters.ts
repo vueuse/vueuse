@@ -134,7 +134,7 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
         isLeading = true
         clear()
         invoke()
-      }, duration)
+      }, duration - elapsed)
     }
 
     if (!leading && !timer)
