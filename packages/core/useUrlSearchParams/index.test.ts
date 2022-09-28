@@ -1,4 +1,4 @@
-import { nextTick } from 'vue-demi'
+import { isVue3, nextTick } from 'vue-demi'
 import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {
@@ -122,59 +122,61 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBeUndefined()
       })
 
-      test('update browser location on params change', async () => {
-        const params = useUrlSearchParams(mode)
+      if (isVue3) {
+        test('update browser location on params change', async () => {
+          const params = useUrlSearchParams(mode)
 
-        params.foo = 'bar'
-        await nextTick()
-        switch (mode) {
-          case 'history':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo=bar')
-            break
-          case 'hash':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo=bar')
-            break
-          case 'hash-params':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo=bar')
-            break
-        }
+          params.foo = 'bar'
+          await nextTick()
+          switch (mode) {
+            case 'history':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo=bar')
+              break
+            case 'hash':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo=bar')
+              break
+            case 'hash-params':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo=bar')
+              break
+          }
 
-        if (mode === 'hash')
-          window.location.hash = '#?foo=bar'
+          if (mode === 'hash')
+            window.location.hash = '#?foo=bar'
 
-        delete params.foo
-        await nextTick()
-        switch (mode) {
-          case 'history':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/')
-            break
-          case 'hash':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/#')
-            break
-          case 'hash-params':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/')
-            break
-        }
-      })
+          delete params.foo
+          await nextTick()
+          switch (mode) {
+            case 'history':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/')
+              break
+            case 'hash':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/#')
+              break
+            case 'hash-params':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/')
+              break
+          }
+        })
 
-      test('array url search param', async () => {
-        const params = useUrlSearchParams(mode)
-        expect(params.foo).toBeUndefined()
-        params.foo = ['bar1', 'bar2']
+        test('array url search param', async () => {
+          const params = useUrlSearchParams(mode)
+          expect(params.foo).toBeUndefined()
+          params.foo = ['bar1', 'bar2']
 
-        await nextTick()
-        switch (mode) {
-          case 'history':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo=bar1&foo=bar2')
-            break
-          case 'hash':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo=bar1&foo=bar2')
-            break
-          case 'hash-params':
-            expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo=bar1&foo=bar2')
-            break
-        }
-      })
+          await nextTick()
+          switch (mode) {
+            case 'history':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo=bar1&foo=bar2')
+              break
+            case 'hash':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo=bar1&foo=bar2')
+              break
+            case 'hash-params':
+              expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo=bar1&foo=bar2')
+              break
+          }
+        })
+      }
 
       test('generic url search params', () => {
         interface CustomUrlParams extends Record<string, any> {
