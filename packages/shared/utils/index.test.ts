@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { createFilterWrapper, debounceFilter, increaseWithUnit, objectPick, throttleFilter } from '.'
+import { createFilterWrapper, createSingletonPromise, debounceFilter, increaseWithUnit, objectPick, promiseTimeout, throttleFilter } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,6 +16,49 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
+  })
+})
+
+describe('promise', () => {
+  it('should promiseTimeout work', async () => {
+    const num = ref(0)
+    setTimeout(() => {
+      num.value = 1
+    }, 100)
+
+    await promiseTimeout(100)
+
+    expect(num.value).toBe(1)
+  })
+
+  it('should promiseTimeout throw timeout', async () => {
+    await promiseTimeout(100, true).catch((error) => {
+      expect(error).toBe('Timeout')
+    })
+  })
+
+  it('should createSingletonPromise work', async () => {
+    const createPromise = () => Promise.resolve(0)
+    const wrapper = createSingletonPromise(createPromise)
+    const promise1 = wrapper()
+    const promise2 = wrapper()
+
+    expect(promise1).toBe(promise2)
+    const value = await promise1
+    expect(value).toBe(0)
+  })
+
+  it('should createSingletonPromise reset', async () => {
+    const cb = vi.fn()
+    const createPromise = () => Promise.resolve(0).then(cb)
+    const wrapper = createSingletonPromise(createPromise)
+    const promise1 = wrapper()
+
+    await wrapper.reset()
+    expect(cb).toHaveBeenCalled()
+
+    const promise2 = wrapper()
+    expect(promise1).not.toBe(promise2)
   })
 })
 
