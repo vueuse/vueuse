@@ -28,6 +28,13 @@ export interface UseDraggableOptions {
   stopPropagation?: MaybeComputedRef<boolean>
 
   /**
+   * Use event capture instead of event bubbling
+   *
+   * @default true
+   */
+  useCapture?: MaybeComputedRef<boolean>
+
+  /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
@@ -135,9 +142,10 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    useEventListener(draggingHandle, 'pointerdown', start, true)
-    useEventListener(draggingElement, 'pointermove', move, true)
-    useEventListener(draggingElement, 'pointerup', end, true)
+    const useCapture = options.useCapture || options.useCapture === null
+    useEventListener(draggingHandle, 'pointerdown', start, useCapture)
+    useEventListener(draggingElement, 'pointermove', move, useCapture)
+    useEventListener(draggingElement, 'pointerup', end, useCapture)
   }
 
   return {

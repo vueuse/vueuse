@@ -27,6 +27,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
     'exact',
     'preventDefault',
     'stopPropagation',
+    'useCapture',
     'pointerTypes',
     'as',
     'handle',

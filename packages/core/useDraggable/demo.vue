@@ -26,7 +26,7 @@ const { x, y, style } = useDraggable(el, {
       border="~ gray-400/30 rounded"
       shadow="~ hover:lg"
       class="fixed bg-$vp-c-bg select-none cursor-move z-10"
-      style="touch-action:none;"
+      style="touch-action: none"
       :style="style"
     >
       👋 Drag me!
@@ -73,6 +73,45 @@ const { x, y, style } = useDraggable(el, {
       </div>
       <div class="text-sm opacity-50">
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
+      </div>
+    </Draggable>
+
+    <Draggable
+      v-slot="{ x, y }"
+      p="x-4 y-2"
+      border="~ gray-400/30 rounded"
+      shadow="~ hover:lg"
+      class="fixed bg-$vp-c-bg select-none cursor-move z-10"
+      :initial-value="{ x: innerWidth / 3.3, y: 330 }"
+      :use-capture="false"
+      :prevent-default="true"
+    >
+      Renderless component with nested child
+
+      <Draggable
+        v-slot="{ x, y }"
+        p="x-4 y-2"
+        border="~ gray-400/30 rounded"
+        shadow="~ hover:lg"
+        class="fixed bg-$vp-c-bg select-none z-10"
+        :initial-value="{ x: innerWidth / 3.0, y: 420 }"
+        :prevent-default="true"
+        :stop-propagation="true"
+        :use-capture="false"
+      >
+        <div class="cursor-move">
+          👋 Drag me (I'm a nested component)!
+        </div>
+        <div class="text-sm opacity-50">
+          I am at {{ Math.round(x) }}, {{ Math.round(y) }}
+        </div>
+      </Draggable>
+
+      <div class="text-xs opacity-50">
+        Child element can move independently
+      </div>
+      <div class="text-sm opacity-50">
+        {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
     </Draggable>
   </div>
