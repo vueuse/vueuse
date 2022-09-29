@@ -1,13 +1,13 @@
-import type { Ref } from 'vue-demi'
-import { computed, isRef, ref, watch } from 'vue-demi'
+import type { Ref, WatchStopHandle } from 'vue-demi'
+import { computed, isRef, nextTick, ref, watch } from 'vue-demi'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
 import type { MaybeRef } from '@vueuse/shared'
-import { isDef, tryOnScopeDispose } from '@vueuse/shared'
+import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
 
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void
-  autoDispose?: boolean
+  autoDispose?: boolean | number
 }
 
 export type FirebaseDocRef<T> =
@@ -96,9 +96,30 @@ export function useFirestore<T extends DocumentData>(
     }
   }, { immediate: true })
 
-  if (autoDispose && !isDocumentReference<T>(refOfDocRef.value)) {
+  if (autoDispose === true) {
+    // Dispose the request now.
     tryOnScopeDispose(() => {
       close()
+    })
+  }
+  else if (typeof autoDispose === 'number') {
+    tryOnScopeDispose(() => {
+      let stopWatch: WatchStopHandle = () => {}
+
+      // Dispose the request after timeout.
+      const { isPending, stop } = useTimeoutFn(() => {
+        stopWatch()
+        close()
+      }, autoDispose)
+
+      // Dispose the request after the next read while waiting for timeout.
+      stopWatch = watch(data, () => {
+        if (!isPending.value) {
+          stop()
+          close()
+        }
+        nextTick(() => stopWatch())
+      })
     })
   }
 
