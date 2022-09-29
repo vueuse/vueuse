@@ -13,10 +13,9 @@
     "build:types": "tsc --emitDeclarationOnly && nr types:fix",
     "clean": "rimraf dist types packages/*/dist",
     "dev": "nr update && nr docs",
-    "vitepress": "esno node_modules/vitepress/dist/node/cli.js",
-    "docs": "vue-demi-switch 3 && nr vitepress dev packages --open",
-    "docs:build": "nr update:full && nr vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
-    "docs:serve": "nr vitepress serve packages",
+    "docs": "vue-demi-switch 3 && vitepress dev packages --open",
+    "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
+    "docs:serve": "vitepress serve packages",
     "lint": "eslint .",
     "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
@@ -111,6 +110,9 @@
     ],
     "overrides": {
       "vue-demi": "0.13.11"
+    },
+    "patchedDependencies": {
+      "vite@3.1.3": "patches/vite@3.1.3.patch"
     }
   },
   "simple-git-hooks": {
