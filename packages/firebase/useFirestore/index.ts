@@ -47,7 +47,7 @@ export function useFirestore<T extends DocumentData>(
 // nullable initial values
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<DocumentReference<T> | false>,
-  initialValue?: T | undefined,
+  initialValue?: T,
   options?: UseFirestoreOptions,
 ): Ref<T | undefined | null>
 export function useFirestore<T extends DocumentData>(
