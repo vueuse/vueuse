@@ -32,7 +32,7 @@ export interface UseDraggableOptions {
    *
    * @default true
    */
-  useCapture?: MaybeComputedRef<boolean>
+  useCapture?: boolean
 
   /**
    * Element to attach `pointermove` and `pointerup` events to.
@@ -142,7 +142,7 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    const useCapture = resolveUnref(options.useCapture) ?? true
+    const useCapture = options.useCapture ?? true
     useEventListener(draggingHandle, 'pointerdown', start, useCapture)
     useEventListener(draggingElement, 'pointermove', move, useCapture)
     useEventListener(draggingElement, 'pointerup', end, useCapture)
