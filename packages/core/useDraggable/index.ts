@@ -142,7 +142,7 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    const useCapture = options.useCapture || options.useCapture === null
+    const useCapture = options.useCapture ?? true
     useEventListener(draggingHandle, 'pointerdown', start, useCapture)
     useEventListener(draggingElement, 'pointermove', move, useCapture)
     useEventListener(draggingElement, 'pointerup', end, useCapture)
