@@ -44,7 +44,7 @@ When the device has paired and is connected, you can then work with the server o
 
 This sample illustrates the use of the Web Bluetooth API to read battery level and be notified of changes from a nearby Bluetooth Device advertising Battery information with Bluetooth Low Energy.
 
-Here, we use the characteristicvaluechanged event listener to handle reading battery level characteristic value. This event listener will optionally handle upcoming notifications as well.
+Here, we use the characteristic value changed event listener to handle reading battery level characteristic value. This event listener will optionally handle upcoming notifications as well.
 
 ```ts
 import { pausableWatch, useBluetooth } from '@vueuse/core'
