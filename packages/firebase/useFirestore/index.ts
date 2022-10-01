@@ -107,17 +107,15 @@ export function useFirestore<T extends DocumentData>(
       let stopWatch: WatchStopHandle = () => {}
 
       // Dispose the request after timeout.
-      const { isPending, stop } = useTimeoutFn(() => {
+      const { stop } = useTimeoutFn(() => {
         stopWatch()
         close()
       }, autoDispose)
 
       // Dispose the request after the next read while waiting for timeout.
       stopWatch = watch(data, () => {
-        if (!isPending.value) {
-          stop()
-          close()
-        }
+        stop()
+        close()
         nextTick(() => stopWatch())
       })
     })
