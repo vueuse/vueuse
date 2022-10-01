@@ -1,6 +1,6 @@
 import { collection, doc } from 'firebase/firestore'
 import type { Firestore } from 'firebase/firestore'
-import { computed, nextTick, ref } from 'vue-demi'
+import { computed, effectScope, nextTick, ref } from 'vue-demi'
 import { useFirestore } from './index'
 
 const dummyFirestore = {} as Firestore
@@ -20,6 +20,7 @@ const getData = (docRef: any) => {
 }
 
 const unsubscribe = vi.fn()
+let triggerSnapshot = () => nextTick()
 
 vi.mock('firebase/firestore', () => {
   const doc = vi.fn((_: Firestore, path: string) => {
@@ -35,10 +36,14 @@ vi.mock('firebase/firestore', () => {
   })
 
   const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}) => {
-    callbackFn({
-      ...getMockSnapFromRef(docRef),
-      docs: [getMockSnapFromRef(docRef)],
-    })
+    triggerSnapshot = () => {
+      callbackFn({
+        ...getMockSnapFromRef(docRef),
+        docs: [getMockSnapFromRef(docRef)],
+      })
+      return nextTick()
+    }
+    triggerSnapshot()
     return unsubscribe
   })
   return { onSnapshot, collection, doc }
@@ -47,6 +52,11 @@ vi.mock('firebase/firestore', () => {
 describe('useFirestore', () => {
   beforeEach(() => {
     unsubscribe.mockClear()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.clearAllTimers()
   })
 
   it('should get `users` collection data', () => {
@@ -97,5 +107,54 @@ describe('useFirestore', () => {
     await nextTick()
     expect(unsubscribe).toHaveBeenCalled()
     expect(data.value).toEqual([{ id: 'default' }])
+  })
+
+  it('should get disposed without autoDispose option', async () => {
+    const scope = effectScope()
+    await scope.run(async () => {
+      const collectionRef = collection(dummyFirestore, 'users')
+      useFirestore(collectionRef)
+      await nextTick()
+    })
+    scope.stop()
+    expect(unsubscribe).toBeCalledTimes(1)
+  })
+
+  it('should not get disposed with explicit autoDispose option', async () => {
+    const scope = effectScope()
+    await scope.run(async () => {
+      const collectionRef = collection(dummyFirestore, 'users')
+      useFirestore(collectionRef, undefined, { autoDispose: false })
+      await nextTick()
+    })
+    scope.stop()
+    expect(unsubscribe).toBeCalledTimes(0)
+  })
+
+  it('should get disposed after autoDispose timeout', async () => {
+    const scope = effectScope()
+    await scope.run(async () => {
+      const collectionRef = collection(dummyFirestore, 'users')
+      useFirestore(collectionRef, undefined, { autoDispose: 1000 })
+    })
+    scope.stop()
+    expect(unsubscribe).toBeCalledTimes(0)
+    vi.advanceTimersByTime(2000)
+    expect(unsubscribe).toBeCalledTimes(1)
+  })
+
+  it('should get disposed early once on new read during autoDispose timeout', async () => {
+    const scope = effectScope()
+    await scope.run(async () => {
+      const collectionRef = collection(dummyFirestore, 'users')
+      useFirestore(collectionRef, undefined, { autoDispose: 5000 })
+    })
+    scope.stop()
+    expect(unsubscribe).toBeCalledTimes(0)
+    vi.advanceTimersByTime(1000)
+    await triggerSnapshot()
+    expect(unsubscribe).toBeCalledTimes(1)
+    vi.advanceTimersByTime(5000)
+    expect(unsubscribe).toBeCalledTimes(1)
   })
 })
