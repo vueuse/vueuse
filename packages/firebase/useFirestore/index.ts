@@ -114,7 +114,7 @@ export function useFirestore<T extends DocumentData>(
         close()
       }, autoDispose)
 
-      // Dispose the request after the next read while waiting for timeout.
+      // Dispose the request if the disposing read limit is reached while waiting for timeout.
       if (autoDisposingReadLimit > 0 && autoDisposingReadLimit !== Infinity) {
         let readCount = 0
         stopWatch = watch(data, () => {
