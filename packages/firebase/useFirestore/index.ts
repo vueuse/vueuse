@@ -8,6 +8,7 @@ import { onSnapshot } from 'firebase/firestore'
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void
   autoDispose?: boolean | number
+  autoDisposingReadLimit?: number
 }
 
 export type FirebaseDocRef<T> =
@@ -70,6 +71,7 @@ export function useFirestore<T extends DocumentData>(
   const {
     errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
+    autoDisposingReadLimit = Infinity,
   } = options
 
   const refOfDocRef = isRef(maybeDocRef)
@@ -113,11 +115,17 @@ export function useFirestore<T extends DocumentData>(
       }, autoDispose)
 
       // Dispose the request after the next read while waiting for timeout.
-      stopWatch = watch(data, () => {
-        stop()
-        close()
-        nextTick(() => stopWatch())
-      })
+      if (autoDisposingReadLimit > 0 && autoDisposingReadLimit !== Infinity) {
+        let readCount = 0
+        stopWatch = watch(data, () => {
+          readCount++
+          if (readCount >= autoDisposingReadLimit) {
+            stop()
+            close()
+            nextTick(() => stopWatch())
+          }
+        })
+      }
     })
   }
 
