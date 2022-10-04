@@ -11,6 +11,18 @@ Reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/
 When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/introduction/storage). Use explicit import if you want to use the function from VueUse.
 :::
 
+::: tip
+If use in SSR, the component is being rendered server-side, which has no Storage, so `useStorage()` defaults to the given initial value. One workaround is to render the component on the client only, using the `<client-only>` component
+
+```
+<client-only>
+  <component-that-uses-local-storage />
+</client-only>
+```
+
+https://stackoverflow.com/a/72849213
+:::
+
 ## Usage
 
 ```js
