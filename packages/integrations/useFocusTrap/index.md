@@ -8,6 +8,12 @@ Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap).
 
 For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createfocustrapelement-createoptions) in the `focus-trap` documentation.
 
+## Install 
+
+```bash
+npm i focus-trap
+```
+
 ## Usage
 
 **Basic Usage**
