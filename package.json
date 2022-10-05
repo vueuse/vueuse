@@ -16,7 +16,7 @@
     "docs": "vue-demi-switch 3 && vitepress dev packages --open",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects && esno scripts/post-docs.ts",
     "docs:serve": "vitepress serve packages",
-    "lint": "eslint .",
+    "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",
     "publish:ci": "esno scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
@@ -120,7 +120,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx,vue,md}": [
-      "eslint --fix"
+      "eslint --cache --fix"
     ]
   }
 }
