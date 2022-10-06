@@ -9,7 +9,7 @@ Thanks for being interested in contributing to this project!
 Clone this repo to your local machine and install the dependencies.
 
 ```bash
-pnpm install`
+pnpm install
 ```
 
 We use VitePress for rapid development and documenting. You can start it locally by
