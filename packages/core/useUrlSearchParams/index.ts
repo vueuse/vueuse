@@ -54,7 +54,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeFalsyValues = false,
     write: enableWrite = true,
     window = defaultWindow!,
-    action = 'replace',
+    mode: routerMode = 'replace',
   } = options
 
   if (!window)
@@ -139,7 +139,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
       updateState(params)
 
     if (shouldUpdateHistory) {
-      const method = action === 'push' ? 'pushState' : 'replaceState'
+      const method = unref(routerMode) === 'push' ? 'pushState' : 'replaceState'
 
       window.history[method](
         window.history.state,
