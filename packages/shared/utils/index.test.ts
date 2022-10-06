@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { createFilterWrapper, debounceFilter, increaseWithUnit, objectPick, throttleFilter } from '.'
+import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, hasOwn, increaseWithUnit, isBoolean, isClient, isDef, isFunction, isIOS, isNumber, isObject, isString, isWindow, noop, now, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,6 +16,49 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
+  })
+})
+
+describe('promise', () => {
+  it('should promiseTimeout work', async () => {
+    const num = ref(0)
+    setTimeout(() => {
+      num.value = 1
+    }, 100)
+
+    await promiseTimeout(100)
+
+    expect(num.value).toBe(1)
+  })
+
+  it('should promiseTimeout throw timeout', async () => {
+    await promiseTimeout(100, true).catch((error) => {
+      expect(error).toBe('Timeout')
+    })
+  })
+
+  it('should createSingletonPromise work', async () => {
+    const createPromise = () => Promise.resolve(0)
+    const wrapper = createSingletonPromise(createPromise)
+    const promise1 = wrapper()
+    const promise2 = wrapper()
+
+    expect(promise1).toBe(promise2)
+    const value = await promise1
+    expect(value).toBe(0)
+  })
+
+  it('should createSingletonPromise reset', async () => {
+    const cb = vi.fn()
+    const createPromise = () => Promise.resolve(0).then(cb)
+    const wrapper = createSingletonPromise(createPromise)
+    const promise1 = wrapper()
+
+    await wrapper.reset()
+    expect(cb).toHaveBeenCalled()
+
+    const promise2 = wrapper()
+    expect(promise1).not.toBe(promise2)
   })
 })
 
@@ -103,5 +146,104 @@ describe('filters', () => {
     vitest.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('is', () => {
+  beforeEach(() => {
+    console.warn = vi.fn()
+  })
+
+  it('should be boolean', () => {
+    expect(isBoolean(true)).toBeTruthy()
+    expect(isBoolean(false)).toBeTruthy()
+    expect(0).toBeFalsy()
+    expect('').toBeFalsy()
+  })
+
+  it('should be client', () => {
+    expect(isClient).toBeTruthy()
+  })
+
+  it('should be IOS', () => {
+    expect(isIOS).toBeFalsy()
+  })
+
+  it('should assert', () => {
+    assert(true)
+    expect(console.warn).not.toBeCalled()
+    assert(false, 'error')
+    expect(console.warn).toHaveBeenCalledWith('error')
+  })
+
+  it('should be defined', () => {
+    expect(isDef(null)).toBeTruthy()
+    expect(isDef(0)).toBeTruthy()
+    expect(isDef('')).toBeTruthy()
+    expect(isDef(undefined)).toBeFalsy()
+  })
+
+  it('should be function', () => {
+    expect(isFunction(() => {})).toBeTruthy()
+    expect(isFunction(() => {})).toBeTruthy()
+  })
+
+  it('should be number', () => {
+    expect(isNumber(1)).toBeTruthy()
+    expect(isNumber('1')).toBeFalsy()
+  })
+
+  it('should be string', () => {
+    expect(isString('')).toBeTruthy()
+    expect(isString(0)).toBeFalsy()
+  })
+
+  it('should be object', () => {
+    expect(isObject({})).toBeTruthy()
+    expect(isObject(null)).toBeFalsy()
+    expect(isObject([])).toBeFalsy()
+  })
+
+  it('should be window', () => {
+    // Object.prototype.toString.call(window) is '[object global]'
+    expect(isWindow(window)).toBeFalsy()
+    expect(isWindow({})).toBeFalsy()
+  })
+
+  it('should be now', () => {
+    expect(now()).toEqual(Date.now())
+    expect(timestamp()).toEqual(Date.now())
+  })
+
+  it('should clamp', () => {
+    expect(clamp(1, 2, 3)).toBe(2)
+    expect(clamp(2, 1, 3)).toBe(2)
+  })
+
+  it('should noop', () => {
+    expect(noop()).toBeUndefined()
+  })
+
+  it('should be rand', () => {
+    expect(rand(1, 2)).not.toBe(rand(1, 2))
+  }, { retry: 20 })
+
+  it('should be rand', () => {
+    class Parent {a = 1}
+    class Child extends Parent {}
+    function F() {}
+    F.prototype.a = 1
+    const obj1 = { a: 1 } as any
+    const obj2 = new Child() as any
+    // @ts-expect-error ES5 new
+    const obj3 = new F() as any
+    expect(hasOwn(obj1, 'a')).toBeTruthy()
+    expect(hasOwn(obj1, 'b')).toBeFalsy()
+    expect(hasOwn(obj2, 'a')).toBeTruthy()
+    expect(hasOwn(obj2, 'b')).toBeFalsy()
+    expect(hasOwn(obj3, 'a')).toBeFalsy()
+
+    obj3.a = 2
+    expect(hasOwn(obj3, 'a')).toBeTruthy()
   })
 })

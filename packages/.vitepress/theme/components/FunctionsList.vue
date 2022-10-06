@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
+import type { Ref } from 'vue'
+import { computed, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useEventListener, useUrlSearchParams } from '@vueuse/core'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
@@ -9,16 +10,17 @@ const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
 
 useEventListener('click', (e) => {
+  // @ts-expect-error cast
   if (e.target.tagName === 'A')
     window.dispatchEvent(new Event('hashchange'))
 })
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
-const search = toRef(query, 'search')
-const category = toRef(query, 'category')
-const hasComponent = toRef(query, 'component')
-const hasDirective = toRef(query, 'directive')
-const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated'>
+const search = toRef(query, 'search') as Ref<string | null>
+const category = toRef(query, 'category') as Ref<string | null>
+const hasComponent = toRef(query, 'component') as any as Ref<boolean>
+const hasDirective = toRef(query, 'directive') as any as Ref<boolean>
+const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated' | null>
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
 
@@ -46,7 +48,7 @@ const result = computed(() => {
     else if (sortMethod.value === 'name')
       fns.sort((a, b) => a.name.localeCompare(b.name))
     else
-      fns.sort((a, b) => categoryNames.indexOf(a.category) - categoryNames.indexOf(b.category))
+      fns.sort((a, b) => categoryNames.indexOf(a.category || '') - categoryNames.indexOf(b.category || ''))
     return fns
   }
 })
@@ -56,7 +58,7 @@ const hasFilters = computed(() => Boolean(search.value || category.value || hasC
 function resetFilters() {
   sortMethod.value = null
   category.value = null
-  hasComponent.value = null
+  hasComponent.value = false
   search.value = null
 }
 
@@ -65,7 +67,7 @@ function toggleCategory(cate: string) {
 }
 
 function toggleSort(method: string) {
-  sortMethod.value = method
+  sortMethod.value = method as any
 }
 </script>
 
