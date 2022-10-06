@@ -3,6 +3,7 @@ import { pausableWatch } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import type { MaybeRef } from '@vueuse/shared'
 
 export type UrlParams = Record<string, string[] | string>
 
