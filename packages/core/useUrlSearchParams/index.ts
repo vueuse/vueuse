@@ -30,11 +30,11 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
   write?: boolean
 
   /**
-   * Action performed on state change
+   * Mode to change search params
    *
    * @default "replace"
    */
-  action?: 'replace' | 'push'
+  mode?: MaybeRef<'replace' | 'push'>
 }
 
 /**
