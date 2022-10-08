@@ -215,11 +215,11 @@ function headersToObject(headers: HeadersInit | undefined) {
 }
 
 function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
-  return (ctx: T) => {
-    callbacks.forEach(async (callback) => {
+  return async (ctx: T) => {
+    await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {
       if (callback)
         ctx = { ...ctx, ...(await callback(ctx)) }
-    })
+    }), Promise.resolve())
     return ctx
   }
 }

@@ -23,7 +23,7 @@ watch(focused, (focused) => {
 
 ## Setting initial focus
 
-To focus the element on it's first render one can provide the `initialValue` option as `true`. This will trigger a `focus` event on the target element.
+To focus the element on its first render one can provide the `initialValue` option as `true`. This will trigger a `focus` event on the target element.
 
 ```ts
 import { useFocus } from '@vueuse/core'

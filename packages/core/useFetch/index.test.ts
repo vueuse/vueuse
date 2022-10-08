@@ -337,6 +337,48 @@ describe('useFetch', () => {
     })
   })
 
+  test('async chained beforeFetch and afterFetch should be executed in order', async () => {
+    const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
+
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      options: {
+        async beforeFetch({ options }) {
+          await sleep(50)
+          options.headers = { ...options.headers, title: 'Hunter X Hunter' }
+          return { options }
+        },
+        async afterFetch(ctx) {
+          await sleep(50)
+          ctx.data.message = 'Hunter X Hunter'
+          return ctx
+        },
+      },
+    })
+
+    const { data } = await useMyFetch(
+      'test?json',
+      { method: 'GET' },
+      {
+        async beforeFetch({ options }) {
+          await Promise.resolve()
+          options.headers = { ...options.headers, title: 'Hello, VueUse' }
+          return { options }
+        },
+        async afterFetch(ctx) {
+          await Promise.resolve()
+          ctx.data.message = 'Hello, VueUse'
+          return ctx
+        },
+      },
+    ).json()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ title: 'Hello, VueUse' })
+      expect(data.value).toEqual(expect.objectContaining({ message: 'Hello, VueUse' }))
+    })
+  })
+
   test('should run the onFetchError function', async () => {
     const { data, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {

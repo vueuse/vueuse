@@ -29,7 +29,7 @@ const defaultMeridiem = (hours: number, minutes: number, isLowercase?: boolean, 
   return isLowercase ? m.toLowerCase() : m
 }
 
-export const formatDate = (date: Date, formatStr: string, options: UseDateFormatOptions) => {
+export const formatDate = (date: Date, formatStr: string, options: UseDateFormatOptions = {}) => {
   const years = date.getFullYear()
   const month = date.getMonth()
   const days = date.getDate()

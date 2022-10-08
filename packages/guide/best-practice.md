@@ -2,7 +2,7 @@
 
 ### Destructuring
 
-Most of the functions in VueUse returns an **object of refs** that you can use [ES6's object destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax to take what you need. For example:
+Most of the functions in VueUse return an **object of refs** that you can use [ES6's object destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax on to take what you need. For example:
 
 ```ts
 import { useMouse } from '@vueuse/core'
@@ -76,7 +76,7 @@ You can learn more about effect scope in [this RFC](https://github.com/vuejs/rfc
 
 ### Passing Ref as Argument
 
-In Vue, we use the `setup()` function to constrcut the "connections" between the data and logics. To make it flexible, most of the VueUse function also accpets ref version of the arguments.
+In Vue, we use the `setup()` function to construct the "connections" between the data and logics. To make it flexible, most of the VueUse function also accpets ref version of the arguments.
 
 Taking `useTitle` as an example:
 
