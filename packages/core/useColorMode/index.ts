@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref, WritableComputedRef } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import { type MaybeRef, tryOnMounted } from '@vueuse/shared'
 import { type StorageLike, getSSRHandler } from '../ssr-handlers'
 import { type UseStorageOptions, useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
@@ -29,7 +29,7 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    *
    * @default 'auto'
    */
-  initialValue?: T | BasicColorSchema
+  initialValue?: MaybeRef<T | BasicColorSchema>
 
   /**
    * Prefix when adding value to the attribute
@@ -119,7 +119,7 @@ export function useColorMode<T extends string = BasicColorMode>(options: UseColo
 
   const mode = storageRef || (storageKey == null
     ? ref(initialValue) as Ref<T | BasicColorSchema>
-    : useStorage<T | BasicColorSchema>(storageKey, initialValue as BasicColorSchema, storage, { window, listenToStorageChanges }))
+    : useStorage<T | BasicColorSchema>(storageKey, initialValue, storage, { window, listenToStorageChanges }))
 
   const preference = computed<T | BasicColorMode>(() =>
     mode.value === 'auto' ? preferredMode.value : mode.value)
