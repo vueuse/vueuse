@@ -6,10 +6,7 @@ export const UseColorMode = defineComponent<UseColorModeOptions>({
   name: 'UseColorMode',
   props: ['selector', 'attribute', 'modes', 'onChanged', 'storageKey', 'storage', 'emitAuto'] as unknown as undefined,
   setup(props, { slots }) {
-    const mode = useColorMode(props)
-    const data = reactive({
-      mode,
-    })
+    const data = reactive(useColorMode(props, 'state'))
 
     return () => {
       if (slots.default)
