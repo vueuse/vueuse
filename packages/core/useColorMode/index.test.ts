@@ -93,6 +93,13 @@ describe('useColorMode', () => {
     expect(htmlEl?.className).toBe('')
   })
 
+  it('should use state to access mode & preference', () => {
+    const state = useColorMode({}, 'state')
+    expect(state.mode.value).toBe('auto')
+    expect(state.preference.value).toBe('light')
+    expect(state.isDark.value).toBe(false)
+  })
+
   it('should call onChanged when mode changed', () => {
     let nextMode = null
     const onChanged = (mode: any, defaultOnChanged: any) => {
@@ -115,12 +122,5 @@ describe('useColorMode', () => {
     expect(mode.value).toBe('auto')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
-  })
-
-  it('should use state to access mode & preference', () => {
-    const state = useColorMode({}, 'state')
-    expect(state.mode.value).toBe('auto')
-    expect(state.preference.value).toBe('light')
-    expect(state.isDark.value).toBe(false)
   })
 })
