@@ -58,6 +58,26 @@ describe('until', () => {
     })
   })
 
+  it('should support `not` as separate instances', () => {
+    return new Promise<void>((resolve, reject) => {
+      const r = ref(0)
+
+      invoke(async () => {
+        expect(r.value).toBe(0)
+        const instance = until(r)
+        const x = await instance.not.toBe(0)
+        const y = await instance.not.toBe(2)
+        expect(x).toBe(1)
+        expect(y).toBe(1)
+        resolve()
+      }).catch(reject)
+
+      setTimeout(() => {
+        r.value = 1
+      }, 100)
+    })
+  })
+
   it('should support toBeNull()', () => {
     return new Promise<void>((resolve, reject) => {
       const r = ref<number | null>(null)

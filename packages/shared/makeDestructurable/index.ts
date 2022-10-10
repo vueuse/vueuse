@@ -21,6 +21,6 @@ export function makeDestructurable<
     return clone as T & A
   }
   else {
-    return Object.assign([...arr], obj) as T & A
+    return Object.assign([...arr], obj) as unknown as T & A
   }
 }
