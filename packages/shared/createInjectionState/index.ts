@@ -11,7 +11,9 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
 ): readonly [useProvidingState: (...args: Arguments) => void, useInjectedState: () => Return | undefined] {
   const key: string | InjectionKey<Return> = Symbol('InjectionState')
   const useProvidingState = (...args: Arguments) => {
-    provide(key, composable(...args))
+    const state = composable(...args)
+    provide(key, state)
+    return state
   }
   const useInjectedState = () => inject(key)
   return [useProvidingState, useInjectedState]
