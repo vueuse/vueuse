@@ -95,6 +95,60 @@ describe('usePointerSwipe', () => {
     expect(distanceY.value).toBe(-threshold / 2)
 
     target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(distanceX.value).toBe(-threshold)
+    expect(distanceY.value).toBe(-threshold / 2)
+  })
+
+  it('not reactivity when pointer types not matched', () => {
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, { ...options(), pointerTypes: ['touch'] })
+
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+  })
+
+  it('not reactivity when pointer not down', () => {
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+  })
+
+  it('stop', () => {
+    const { isSwiping, direction, distanceX, distanceY, stop } = usePointerSwipe(target, { ...options(), pointerTypes: ['touch'] })
+
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    stop()
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
   })
 
   const directionTests = [
