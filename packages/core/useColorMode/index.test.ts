@@ -14,10 +14,10 @@ describe('useColorMode', () => {
     expect(mode.value).toBe('auto')
   })
 
-  it('should use state to access setting & currentMode', () => {
+  it('should use state to access mode & preference', () => {
     const state = useColorMode({}, 'state')
-    expect(state.setting.value).toBe('auto')
-    expect(state.currentMode.value).toBe('light')
+    expect(state.mode.value).toBe('auto')
+    expect(state.preference.value).toBe('light')
     expect(state.isDark.value).toBe(false)
   })
 })

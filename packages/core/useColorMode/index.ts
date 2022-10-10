@@ -9,7 +9,7 @@ import { usePreferredDark } from '../usePreferredDark'
 export type BasicColorMode = 'light' | 'dark'
 export type BasicColorSchema = BasicColorMode | 'auto'
 
-export interface UseColorModeOptions<T extends string = BasicColorSchema> extends UseStorageOptions<T | BasicColorSchema> {
+export interface UseColorModeOptions<T extends string = BasicColorMode> extends UseStorageOptions<T | BasicColorSchema> {
   /**
    * CSS Selector for the target element applying to
    *
@@ -42,7 +42,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default undefined
    */
-  onChanged?: (mode: T | BasicColorSchema, defaultHandler:((mode: T | BasicColorSchema) => void)) => void
+  onChanged?: (mode: T | BasicColorMode, defaultHandler:((mode: T | BasicColorMode) => void)) => void
 
   /**
    * Custom storage ref
@@ -78,16 +78,15 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
   emitAuto?: boolean
 }
 
-export interface UseColorModeState<T extends string = BasicColorSchema> {
-  setting: Ref<T | BasicColorSchema>
-  currentMode: ComputedRef<T | BasicColorMode>
+export interface UseColorModeState<T extends string = BasicColorMode> {
+  mode: Ref<T | BasicColorSchema>
+  preference: ComputedRef<T | BasicColorMode>
   isDark: ComputedRef<boolean>
 }
 
-export function useColorMode<T extends string = BasicColorSchema>(): WritableComputedRef<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit: 'setting'): Ref<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T>, emit: 'state'): UseColorModeState<T>
+export function useColorMode<T extends string = BasicColorMode>(): WritableComputedRef<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorMode>(options: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorMode>(options: UseColorModeOptions<T>, emit: 'state'): UseColorModeState<T>
 
 /**
  * Reactive color mode with auto data persistence.
@@ -95,7 +94,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
  * @see https://vueuse.org/useColorMode
  * @param options
  */
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T> = {}, emit: 'mode' | 'setting' | 'state' = 'mode') {
+export function useColorMode<T extends string = BasicColorMode>(options: UseColorModeOptions<T> = {}, emit: 'mode' | 'state' = 'mode') {
   const {
     selector = 'html',
     attribute = 'class',
@@ -118,12 +117,12 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const preferredDark = usePreferredDark({ window })
   const preferredMode = computed(() => preferredDark.value ? 'dark' : 'light')
 
-  const setting = storageRef || (storageKey == null
+  const mode = storageRef || (storageKey == null
     ? ref(initialValue) as Ref<T | BasicColorSchema>
     : useStorage<T | BasicColorSchema>(storageKey, initialValue as BasicColorSchema, storage, { window, listenToStorageChanges }))
 
-  const currentMode = computed<T | BasicColorMode>(() =>
-    setting.value === 'auto' ? preferredMode.value : setting.value)
+  const preference = computed<T | BasicColorMode>(() =>
+    mode.value === 'auto' ? preferredMode.value : mode.value)
 
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
@@ -149,30 +148,26 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       }
     })
 
-  function defaultOnChanged(mode: T | BasicColorSchema) {
+  function defaultOnChanged(mode: T | BasicColorMode) {
     updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)
   }
 
-  function onChanged(mode: T | BasicColorSchema) {
+  function onChanged(mode: T | BasicColorMode) {
     if (options.onChanged)
       options.onChanged(mode, defaultOnChanged)
     else
       defaultOnChanged(mode)
   }
 
-  watch(currentMode, onChanged, { flush: 'post', immediate: true })
+  watch(preference, onChanged, { flush: 'post', immediate: true })
 
-  tryOnMounted(() => onChanged(currentMode.value))
+  tryOnMounted(() => onChanged(preference.value))
 
-  switch (emit) {
-    case 'setting':
-      return setting
-    case 'state':
-      return { setting, currentMode, isDark: computed(() => currentMode.value === 'dark') }
-    default:
-      return computed<T | BasicColorSchema>({
-        get() { return emitAuto ? setting.value : currentMode.value },
-        set(v) { setting.value = v },
-      })
-  }
+  if (emit === 'state')
+    return { mode, preference, isDark: computed(() => preference.value === 'dark') }
+
+  return computed<T | BasicColorSchema>({
+    get() { return emitAuto ? mode.value : preference.value },
+    set(v) { mode.value = v },
+  })
 }
