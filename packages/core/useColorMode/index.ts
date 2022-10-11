@@ -84,8 +84,7 @@ export interface UseColorModeState<T extends string = BasicColorMode> {
   isDark: ComputedRef<boolean>
 }
 
-export function useColorMode<T extends string = BasicColorMode>(): WritableComputedRef<T | BasicColorSchema>
-export function useColorMode<T extends string = BasicColorMode>(options: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
+export function useColorMode<T extends string = BasicColorMode>(options?: UseColorModeOptions<T>, emit?: 'mode'): WritableComputedRef<T | BasicColorSchema>
 export function useColorMode<T extends string = BasicColorMode>(options: UseColorModeOptions<T>, emit: 'state'): UseColorModeState<T>
 
 /**
