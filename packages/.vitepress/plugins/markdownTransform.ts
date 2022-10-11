@@ -65,7 +65,8 @@ const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 export async function getFunctionMarkdown(pkg: string, name: string) {
   const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
 
-  const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
+  const dirname = join(DIR_SRC, pkg, name)
+  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
   const types = await getTypeDefinition(pkg, name)
 
   let typingSection = ''
@@ -88,7 +89,7 @@ ${code}
 
   const links = ([
     ['Source', `${URL}/index.ts`],
-    hasDemo ? ['Demo', `${URL}/demo.vue`] : undefined,
+    demoPath ? ['Demo', `${URL}/${demoPath}`] : undefined,
     ['Docs', `${URL}/index.md`],
   ])
     .filter(i => i)
@@ -105,16 +106,38 @@ ${code}
 
 <Changelog fn="${name}" />
 `
-  const demoSection = hasDemo
-    ? `
+
+  const demoSection = demoPath
+    ? demoPath.endsWith('.client.vue')
+      ? `
 <script setup>
-import Demo from \'./demo.vue\'
+import { defineAsyncComponent } from 'vue'
+const Demo = defineAsyncComponent(() => import('./${demoPath}'))
 </script>
 
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/demo.vue" target="_blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
+<ClientOnly>
+  <Suspense>
+    <Demo/>
+    <template #fallback>
+      Loading demo...
+    </template>
+  </Suspense>
+</ClientOnly>
+</DemoContainer>
+`
+      : `
+<script setup>
+import Demo from \'./${demoPath}\'
+</script>
+
+## Demo
+
+<DemoContainer>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
 <Demo/>
 </DemoContainer>
 `

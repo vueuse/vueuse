@@ -34,24 +34,24 @@ function isDocumentReference<T>(docRef: any): docRef is DocumentReference<T> {
 }
 
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<DocumentReference<T>>,
+  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
   initialValue: T,
   options?: UseFirestoreOptions
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<Query<T>>,
+  maybeDocRef: MaybeRef<Query<T> | false>,
   initialValue: T[],
   options?: UseFirestoreOptions
 ): Ref<T[]>
 
 // nullable initial values
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<DocumentReference<T>>,
+  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
   initialValue?: T | undefined,
   options?: UseFirestoreOptions,
 ): Ref<T | undefined | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<Query<T>>,
+  maybeDocRef: MaybeRef<Query<T> | false>,
   initialValue?: T[],
   options?: UseFirestoreOptions
 ): Ref<T[] | undefined>
@@ -63,7 +63,7 @@ export function useFirestore<T extends DocumentData>(
  * @see https://vueuse.org/useFirestore
  */
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<FirebaseDocRef<T>>,
+  maybeDocRef: MaybeRef<FirebaseDocRef<T> | false>,
   initialValue: any = undefined,
   options: UseFirestoreOptions = {},
 ) {
@@ -72,41 +72,35 @@ export function useFirestore<T extends DocumentData>(
     autoDispose = true,
   } = options
 
-  const refOfDocRef = isRef(maybeDocRef) ? maybeDocRef : computed(() => maybeDocRef)
+  const refOfDocRef = isRef(maybeDocRef)
+    ? maybeDocRef
+    : computed(() => maybeDocRef)
 
-  if (isDocumentReference<T>(refOfDocRef.value)) {
-    const data = ref(initialValue) as Ref<T | null | undefined>
-    let close = () => { }
+  let close = () => { }
+  const data = ref(initialValue) as Ref<T | T[] | null | undefined>
 
-    watch(refOfDocRef, (docRef) => {
-      close()
+  watch(refOfDocRef, (docRef) => {
+    close()
+    if (!refOfDocRef.value) {
+      data.value = initialValue
+    }
+    else if (isDocumentReference<T>(refOfDocRef.value)) {
       close = onSnapshot(docRef as DocumentReference<T>, (snapshot) => {
         data.value = getData(snapshot) || null
       }, errorHandler)
-    }, { immediate: true })
-
-    tryOnScopeDispose(() => {
-      close()
-    })
-
-    return data
-  }
-  else {
-    const data = ref(initialValue) as Ref<T[] | undefined>
-    let close = () => { }
-
-    watch(refOfDocRef, (docRef) => {
-      close()
+    }
+    else {
       close = onSnapshot(docRef as Query<T>, (snapshot) => {
         data.value = snapshot.docs.map(getData).filter(isDef)
       }, errorHandler)
-    }, { immediate: true })
-
-    if (autoDispose) {
-      tryOnScopeDispose(() => {
-        close()
-      })
     }
-    return data
+  }, { immediate: true })
+
+  if (autoDispose && !isDocumentReference<T>(refOfDocRef.value)) {
+    tryOnScopeDispose(() => {
+      close()
+    })
   }
+
+  return data
 }
