@@ -14,3 +14,9 @@ html.dark {
 .VPSidebarGroup .link {
   padding: 3px 0 !important;
 }
+
+#app a:focus-visible,
+#app button:focus-visible,
+#app input[type="checkbox"]:focus-visible {
+  @apply outline-1 outline-primary ring-2 ring-primary;
+}

@@ -45,7 +45,7 @@ export const useNavigatorLanguage = (options: ConfigurableWindow = {}): Readonly
 
   const language = ref<string | undefined>(navigator?.language)
 
-  // Listen to when to user changes langauge:
+  // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language

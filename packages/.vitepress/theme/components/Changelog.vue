@@ -2,16 +2,21 @@
 // @ts-expect-error virtual
 import changelog from '/virtual-changelog'
 import { computed } from 'vue'
-import type { CommitInfo } from '../@vueuse/metadata'
+import type { CommitInfo } from '@vueuse/metadata'
 import { renderCommitMessage } from '../utils'
+import { functions } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
+const info = computed(() => functions.find(i => i.name === props.fn))
 
 const allCommits = changelog as CommitInfo[]
+
+const names = computed(() => [props.fn, ...info.value.alias || []])
 const commits = computed(() => {
-  const commits = allCommits.filter(c => c.version || c.functions?.includes(props.fn))
-  return commits.filter((i, idx) => {
-    if (i.version && (!commits[idx + 1] || commits[idx + 1]?.version))
+  const related = allCommits
+    .filter(c => c.version || c.functions?.some(i => names.value.includes(i)))
+  return related.filter((i, idx) => {
+    if (i.version && (!related[idx + 1] || related[idx + 1]?.version))
       return false
     return true
   })

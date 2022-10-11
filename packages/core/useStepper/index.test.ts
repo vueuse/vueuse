@@ -63,17 +63,21 @@ describe('useStepper', () => {
       stepper.goToNext()
       expect(stepper.current.value).toBe('Last')
 
-      // Checks that we can go back to a previous step
-      stepper.goBackTo('second')
+      // Checks that when this is not the first step, we can go back
+      stepper.goToPrevious()
       expect(stepper.current.value).toBe('Second')
+
+      // Checks that we can go back to a previous step
+      stepper.goBackTo('first')
+      expect(stepper.current.value).toBe('First')
 
       // Checks that we CANNOT go back to a future step
       stepper.goBackTo('last')
-      expect(stepper.current.value).toBe('Second')
+      expect(stepper.current.value).toBe('First')
 
       // Checks that we can go to a any step
-      stepper.goTo('first')
-      expect(stepper.current.value).toBe('First')
+      stepper.goTo('last')
+      expect(stepper.current.value).toBe('Last')
     })
 
     it('can tell the step position', () => {
@@ -206,6 +210,7 @@ describe('useStepper', () => {
       expect(stepper.get('First step')).toBe('First step')
       expect(stepper.get('Second step')).toBe('Second step')
       expect(stepper.get('Last step')).toBe('Last step')
+      expect(stepper.get('unknown' as any)).toBeUndefined()
     })
   })
 

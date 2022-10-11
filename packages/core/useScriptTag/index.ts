@@ -98,7 +98,7 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
@@ -171,7 +171,7 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
     if (el)
       document.head.removeChild(el)
   }

@@ -39,7 +39,7 @@ export interface UseDevicesListReturn {
 }
 
 /**
- * Reactive `enumerateDevices` listing avaliable input/output devices
+ * Reactive `enumerateDevices` listing available input/output devices
  *
  * @see https://vueuse.org/useDevicesList
  * @param options

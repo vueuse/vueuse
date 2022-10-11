@@ -39,7 +39,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
 
   /**
    * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridded.
+   * When specified, the default behavior will be overridden.
    *
    * @default undefined
    */
@@ -160,6 +160,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   }
 
   watch(state, onChanged, { flush: 'post', immediate: true })
+  if (emitAuto)
+    watch(preferredMode, () => onChanged(state.value), { flush: 'post' })
 
   tryOnMounted(() => onChanged(state.value))
 

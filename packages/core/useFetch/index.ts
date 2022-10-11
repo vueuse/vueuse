@@ -215,11 +215,11 @@ function headersToObject(headers: HeadersInit | undefined) {
 }
 
 function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
-  return (ctx: T) => {
-    callbacks.forEach(async (callback) => {
+  return async (ctx: T) => {
+    await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {
       if (callback)
         ctx = { ...ctx, ...(await callback(ctx)) }
-    })
+    }), Promise.resolve())
     return ctx
   }
 }
@@ -260,8 +260,15 @@ export function createFetch(config: CreateFetchOptions = {}) {
       }
     }
 
-    if (args.length > 1 && isFetchOptions(args[1]))
-      options = { ...options, ...args[1] }
+    if (args.length > 1 && isFetchOptions(args[1])) {
+      options = {
+        ...options,
+        ...args[1],
+        beforeFetch: chainCallbacks(_options.beforeFetch, args[1].beforeFetch),
+        afterFetch: chainCallbacks(_options.afterFetch, args[1].afterFetch),
+        onFetchError: chainCallbacks(_options.onFetchError, args[1].onFetchError),
+      }
+    }
 
     return useFetch(computedUrl, fetchOptions, options)
   }
