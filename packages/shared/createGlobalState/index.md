@@ -9,7 +9,7 @@ Keep states in the global scope to be reusable across Vue instances.
 
 ## Usage
 
-### Without Persistence (Sotre in Memory)
+### Without Persistence (Store in Memory)
 
 ```js
 // store.js
@@ -44,7 +44,7 @@ export const useGlobalState = createGlobalState(
       count.value++
     }
 
-    return { count, doubleCount, increase }
+    return { count, doubleCount, increment }
   }
 )
 ```

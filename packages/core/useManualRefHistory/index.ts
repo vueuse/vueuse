@@ -1,20 +1,19 @@
 import { isFunction, timestamp } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, markRaw, ref } from 'vue-demi'
+import type { CloneFn } from '../useCloned'
+import { cloneFnJSON } from '../useCloned'
 
 export interface UseRefHistoryRecord<T> {
   snapshot: T
   timestamp: number
 }
 
-export type CloneFn<F, T = F> = (x: F) => T
-
 export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   /**
    * Maximum number of history to be kept. Default to unlimited.
    */
   capacity?: number
-
   /**
    * Clone when taking a snapshot, shortcut for dump: JSON.parse(JSON.stringify(value)).
    * Default to false
@@ -99,18 +98,17 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   reset: () => void
 }
 
-const fnClone = <F, T>(v: F): T => JSON.parse(JSON.stringify(v))
 const fnBypass = <F, T>(v: F) => v as unknown as T
 const fnSetSource = <F>(source: Ref<F>, value: F) => source.value = value
 
 type FnCloneOrBypass<F, T> = (v: F) => T
 
 function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<R, S>
+  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<R, S>
 }
 
 function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : fnClone : fnBypass) as unknown as FnCloneOrBypass<S, R>
+  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<S, R>
 }
 
 /**

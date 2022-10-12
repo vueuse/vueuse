@@ -12,7 +12,7 @@ Reactive size of an HTML element. [ResizeObserver MDN](https://developer.mozilla
 <template>
   <div ref="el">
     Height: {{ height }}
-    Width: {{ Width }}
+    Width: {{ width }}
   </div>
 </template>
 

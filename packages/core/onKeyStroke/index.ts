@@ -3,7 +3,7 @@ import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
 export type KeyPredicate = (event: KeyboardEvent) => boolean
-export type KeyFilter = null | undefined | string | string[] | KeyPredicate
+export type KeyFilter = true | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
 export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
@@ -21,22 +21,45 @@ const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
   else if (Array.isArray(keyFilter))
     return (event: KeyboardEvent) => keyFilter.includes(event.key)
 
-  else if (keyFilter)
-    return () => true
-
-  else
-    return () => false
+  return () => true
 }
+
+export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
+export function onKeyStroke(handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
 
 /**
  * Listen for keyboard keys being stroked.
  *
  * @see https://vueuse.org/onKeyStroke
- * @param key
- * @param handler
- * @param options
  */
-export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: OnKeyStrokeOptions = {}) {
+export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
+export function onKeyStroke(handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
+export function onKeyStroke(...args: any[]) {
+  let key: KeyFilter
+  let handler: (event: KeyboardEvent) => void
+  let options: OnKeyStrokeOptions = {}
+
+  if (args.length === 3) {
+    key = args[0]
+    handler = args[1]
+    options = args[2]
+  }
+  else if (args.length === 2) {
+    if (typeof args[1] === 'object') {
+      key = true
+      handler = args[0]
+      options = args[1]
+    }
+    else {
+      key = args[0]
+      handler = args[1]
+    }
+  }
+  else {
+    key = true
+    handler = args[0]
+  }
+
   const { target = defaultWindow, eventName = 'keydown', passive = false } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {

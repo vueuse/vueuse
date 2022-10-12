@@ -13,7 +13,7 @@ export interface StorageLike {
 }
 
 /**
- * @expiremental The API is not finalized yet. It might not follow semver.
+ * @experimental The API is not finalized yet. It might not follow semver.
  */
 export interface SSRHandlersMap {
   getDefaultStorage: () => StorageLike | undefined

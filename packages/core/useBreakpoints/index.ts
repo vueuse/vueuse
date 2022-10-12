@@ -34,14 +34,14 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return window.matchMedia(query).matches
   }
 
-  const greater = (k: K) => {
+  const greaterOrEqual = (k: K) => {
     return useMediaQuery(`(min-width: ${getValue(k)})`, options)
   }
 
   const shortcutMethods = Object.keys(breakpoints)
     .reduce((shortcuts, k) => {
       Object.defineProperty(shortcuts, k, {
-        get: () => greater(k as K),
+        get: () => greaterOrEqual(k as K),
         enumerable: true,
         configurable: true,
       })
@@ -49,18 +49,30 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     }, {} as Record<K, Ref<boolean>>)
 
   return {
-    greater,
+    greater(k: K) {
+      return useMediaQuery(`(min-width: ${getValue(k, 0.1)})`, options)
+    },
+    greaterOrEqual,
     smaller(k: K) {
       return useMediaQuery(`(max-width: ${getValue(k, -0.1)})`, options)
+    },
+    smallerOrEqual(k: K) {
+      return useMediaQuery(`(max-width: ${getValue(k)})`, options)
     },
     between(a: K, b: K) {
       return useMediaQuery(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
     isGreater(k: K) {
+      return match(`(min-width: ${getValue(k, 0.1)})`)
+    },
+    isGreaterOrEqual(k: K) {
       return match(`(min-width: ${getValue(k)})`)
     },
     isSmaller(k: K) {
       return match(`(max-width: ${getValue(k, -0.1)})`)
+    },
+    isSmallerOrEqual(k: K) {
+      return match(`(max-width: ${getValue(k)})`)
     },
     isInBetween(a: K, b: K) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
@@ -71,9 +83,13 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
 
 export type UseBreakpointsReturn<K extends string = string> = {
   greater: (k: K) => Ref<boolean>
+  greaterOrEqual: (k: K) => Ref<boolean>
   smaller(k: K): Ref<boolean>
+  smallerOrEqual: (k: K) => Ref<boolean>
   between(a: K, b: K): Ref<boolean>
   isGreater(k: K): boolean
+  isGreaterOrEqual(k: K): boolean
   isSmaller(k: K): boolean
+  isSmallerOrEqual(k: K): boolean
   isInBetween(a: K, b: K): boolean
 } & Record<K, Ref<boolean>>

@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, ref } from 'vue-demi'
+import { computed, defineComponent, h, reactive, ref } from 'vue-demi'
 import type { UseDraggableOptions } from '@vueuse/core'
 import { isClient, useDraggable, useStorage } from '@vueuse/core'
 import { resolveUnref } from '@vueuse/shared'
@@ -29,9 +29,11 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
     'stopPropagation',
     'pointerTypes',
     'as',
+    'handle',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
+    const handle = computed(() => props.handle ?? target.value)
     const initialValue = props.storageKey
       ? useStorage(
         props.storageKey,
@@ -46,6 +48,7 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
 
     const data = reactive(useDraggable(target, {
       ...props,
+      handle,
       initialValue,
     }))
 
