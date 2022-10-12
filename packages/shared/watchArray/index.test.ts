@@ -91,4 +91,15 @@ describe('watchArray', () => {
     await nextTick()
     expect(spy).toBeCalledTimes(1)
   })
+
+  it('should work when immediate is true', async () => {
+    const spy = vitest.fn()
+
+    const num = ref([1, 2, 3])
+    watchArray(() => num.value, spy, { immediate: true })
+    expect(spy).toHaveBeenCalledWith([1, 2, 3], [], [1, 2, 3], [], expect.anything())
+    num.value = [1, 2, 3, 4]
+    await nextTick()
+    expect(spy).toHaveBeenCalledWith([1, 2, 3, 4], [1, 2, 3], [4], [], expect.anything())
+  })
 })
