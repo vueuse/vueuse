@@ -17,6 +17,10 @@ export interface UseIntervalOptions<Controls extends boolean> {
    * @default true
    */
   immediate?: boolean
+  /**
+   * Callback on every interval
+   */
+  callback?: (count: number) => void
 }
 
 /**
@@ -32,10 +36,17 @@ export function useInterval(interval: MaybeComputedRef<number> = 1000, options: 
   const {
     controls: exposeControls = false,
     immediate = true,
+    callback,
   } = options
 
   const counter = ref(0)
-  const controls = useIntervalFn(() => counter.value += 1, interval, { immediate })
+  const update = () => counter.value += 1
+  const controls = useIntervalFn(callback
+    ? () => {
+        update()
+        callback(counter.value)
+      }
+    : update, interval, { immediate })
 
   if (exposeControls) {
     return {

@@ -26,6 +26,15 @@ import { onKeyStroke } from '@vueuse/core'
 onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
   e.preventDefault()
 })
+
+// listen to all keys by [true / skip the keyDefine]
+onKeyStroke(true, (e) => {
+  e.preventDefault()
+})
+onKeyStroke((e) => {
+  e.preventDefault()
+})
+
 ```
 
 ### Custom Event Target
