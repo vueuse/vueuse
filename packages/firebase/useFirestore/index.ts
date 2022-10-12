@@ -96,7 +96,7 @@ export function useFirestore<T extends DocumentData>(
     }
   }, { immediate: true })
 
-  if (autoDispose && !isDocumentReference<T>(refOfDocRef.value)) {
+  if (autoDispose) {
     tryOnScopeDispose(() => {
       close()
     })
