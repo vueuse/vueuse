@@ -40,5 +40,10 @@ function onHover(state: boolean) {
   <button v-element-hover="onHover">
     {{ isHovered ? 'Thank you!' : 'Hover me' }}
   </button>
+
+  <!-- with options -->
+  <button v-element-hover="[onHover, { delay: 500 }]">
+    {{ isHovered ? 'Thank you! (500ms)' : 'Hover me (500ms)' }}
+  </button>
 </template>
 ```
