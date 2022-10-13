@@ -6,8 +6,8 @@ import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
+import { functions } from '@vueuse/metadata'
 import { packages } from '../meta/packages'
-import { functions } from '../packages/metadata/metadata'
 
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []

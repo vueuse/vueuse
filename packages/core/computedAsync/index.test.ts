@@ -1,6 +1,6 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { computedAsync } from '.'
+import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
@@ -17,6 +17,11 @@ describe('computed', () => {
 })
 
 describe('computedAsync', () => {
+  it('export module', () => {
+    expect(computedAsync).toBeDefined()
+    expect(asyncComputed).toBeDefined()
+  })
+
   it('is not lazy by default', async () => {
     const func = vitest.fn(() => Promise.resolve('data'))
 
@@ -196,19 +201,20 @@ describe('computedAsync', () => {
 
   test('cancel is called', async () => {
     const onCancel = vitest.fn()
+    const evaluating = ref(false)
 
     const data = ref('initial')
     const uppercase = computedAsync((cancel) => {
-      cancel(() => onCancel())
+      cancel(onCancel)
 
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 0)
+        setTimeout(resolve.bind(null, uppercased), 5)
       })
-    })
+    }, '', evaluating)
 
-    expect(uppercase.value).toBeUndefined()
+    expect(uppercase.value).toBe('')
 
     await promiseTimeout(10)
 
@@ -239,7 +245,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 0)
+        setTimeout(resolve.bind(null, uppercased), 5)
       })
     }, '', { lazy: true })
 
