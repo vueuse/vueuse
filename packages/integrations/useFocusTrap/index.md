@@ -64,7 +64,7 @@ const show = ref(false)
 </script>
 
 <template>
-  <UseFocusTrap v-if="show">
+  <UseFocusTrap v-if="show" :options="{ immediate: true }">
     <div class="modal">...</div>
   </UseFocusTrap>
 </template>
