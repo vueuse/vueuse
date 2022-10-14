@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { type Fn, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { type ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**
@@ -19,25 +19,17 @@ export function useDevicePixelRatio({
 
   const pixelRatio = ref(1)
 
-  const cleanups: Fn[] = []
-
-  const cleanup = () => {
-    cleanups.map(i => i())
-    cleanups.length = 0
-  }
-
+  let media: MediaQueryList
   const observe = () => {
     pixelRatio.value = window.devicePixelRatio
-    cleanup()
-    const media = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
+    media = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
     media.addEventListener('change', observe, { once: true })
-    cleanups.push(() => {
-      media.removeEventListener('change', observe)
-    })
   }
 
   observe()
-  tryOnScopeDispose(cleanup)
+  tryOnScopeDispose(() => {
+    media.removeEventListener('change', observe)
+  })
 
   return { pixelRatio }
 }
