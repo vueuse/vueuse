@@ -1,5 +1,5 @@
 import { setSSRHandler } from '@vueuse/core'
-import { useCookie, useMeta } from '#imports'
+import { defineNuxtPlugin, useCookie, useMeta } from '#imports'
 
 setSSRHandler('getDefaultStorage', () => {
   const cookieMap = new Map()
@@ -37,4 +37,4 @@ if (process.server) {
   })
 }
 
-export default () => { }
+export default defineNuxtPlugin(() => { })
