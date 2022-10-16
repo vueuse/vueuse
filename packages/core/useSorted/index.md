@@ -9,7 +9,7 @@ reactive sort array
 ## Usage
 
 ```ts
-import { quickSort, useSorted } from '@vueuse/core'
+import { useSorted } from '@vueuse/core'
 
 // general sort
 const source = [10, 3, 5, 7, 2, 1, 8, 6, 9, 4]
