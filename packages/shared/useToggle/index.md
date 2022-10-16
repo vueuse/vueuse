@@ -23,7 +23,11 @@ const isDark = useDark()
 const toggleDark = useToggle(isDark)
 ```
 
-Note: do not directly bind the toggle method as a button's click handler.
-Make sure to use a dynamic expression instead as shown in the demo, as the
-browser will pass the click handler a click event as an argument to your
-toggle method. This will cause the value of the toggle to always be truthy.
+Note: be aware that the toggle function accepts the first argument as the override value. You might want to avoid directly passing the function to events in the template, as the event object will pass in.
+
+```html
+<!-- caution: $event will be pass in -->
+<button @click="toggleDark" />
+<!-- recommended to do this -->
+<button @click="toggleDark()" />
+```
