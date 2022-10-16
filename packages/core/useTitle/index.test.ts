@@ -2,12 +2,6 @@ import { computed, ref } from 'vue-demi'
 import { useTitle } from '.'
 
 describe('useTitle', () => {
-  it('throws error when using both `observe` and `titleTemplate`', () => {
-    expect(() => {
-      useTitle(null, { observe: true, titleTemplate: '%s' })
-    }).toThrowErrorMatchingInlineSnapshot('"Cannot use `observe` and `titleTemplate` together."')
-  })
-
   it('without param', () => {
     const title = useTitle()
     expect(title.value).toEqual('')
@@ -78,14 +72,16 @@ describe('useTitle', () => {
       expect(title.value).toEqual('old title')
       condition.value = true
       expect(title.value).toEqual('new title')
-      // title.value = '' // typed error
+      // @ts-expect-error readonly
+      title.value = ''
     })
 
     it('function', () => {
       const target = () => 'new title'
       const title = useTitle(target)
       expect(title.value).toEqual('new title')
-      // title.value = '' // typed error
+      // @ts-expect-error readonly
+      title.value = ''
     })
   })
 })
