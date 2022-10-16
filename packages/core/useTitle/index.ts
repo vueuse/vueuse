@@ -6,7 +6,8 @@ import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-export interface UseTitleOptions extends ConfigurableDocument {
+export type UseTitleOptionsBase =
+{
   /**
    * Observe `document.title` changes using MutationObserve
    * Cannot be used together with `titleTemplate` option.
@@ -14,6 +15,8 @@ export interface UseTitleOptions extends ConfigurableDocument {
    * @default false
    */
   observe?: boolean
+}
+| {
   /**
    * The template string to parse the title (e.g., '%s | My Website')
    * Cannot be used together with `observe` option.
@@ -22,6 +25,8 @@ export interface UseTitleOptions extends ConfigurableDocument {
    */
   titleTemplate?: MaybeRef<string> | ((title: string) => string)
 }
+
+export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
 export function useTitle(
   newTitle: MaybeReadonlyRef<string | null | undefined>,
@@ -49,22 +54,20 @@ export function useTitle(
     the `document.title` to be different from the `title.value`,
     causing the title to update infinitely if `observe` is set to `true`.
   */
-  if (options.observe && options.titleTemplate)
-    throw new Error('Cannot use `observe` and `titleTemplate` together.')
-
   const {
     document = defaultDocument,
-    observe = false,
-    titleTemplate = '%s',
   } = options
 
   const title: WritableComputedRef<string | null | undefined> = resolveRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && isFunction(newTitle)
 
   function format(t: string) {
-    return isFunction(titleTemplate)
-      ? titleTemplate(t)
-      : unref(titleTemplate).replace(/%s/g, t)
+    if (!('titleTemplate' in options))
+      return t
+    const template = options.titleTemplate || '%s'
+    return isFunction(template)
+      ? template(t)
+      : unref(template).replace(/%s/g, t)
   }
 
   watch(
@@ -76,7 +79,7 @@ export function useTitle(
     { immediate: true },
   )
 
-  if (observe && document && !isReadonly) {
+  if ((options as any).observe && !(options as any).titleTemplate && document && !isReadonly) {
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {
