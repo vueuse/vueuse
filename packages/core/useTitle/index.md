@@ -51,13 +51,3 @@ const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' }
 `observe` is incompatible with `titleTemplate`.
 :::
 
-```js
-/* ✅ Will work */
-const title = useTitle('New Title', { observe: true })
-
-/* ✅ Will work */
-const title = useTitle('New Title', { titleTemplate: '%s - %s' })
-
-/* ❌ Will throw an error */
-const title = useTitle('New Title', { observe: true, titleTemplate: '%s - %s' })
-```
