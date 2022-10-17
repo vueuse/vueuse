@@ -180,9 +180,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function read(event?: StorageEvent) {
-    if (event && event.key !== key)
-      return
-
     pauseWatch()
     try {
       const rawValue = event
@@ -218,6 +215,14 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function update(event?: StorageEvent) {
+    if (event && event.storageArea !== storage)
+      return
+
+    if (event && event.key === null) {
+      data.value = rawInit
+      return
+    }
+
     if (event && event.key !== key)
       return
 
