@@ -50,4 +50,3 @@ const title = useTitle('New Title', { titleTemplate: '%s | My Awesome Website' }
 ::: warning
 `observe` is incompatible with `titleTemplate`.
 :::
-
