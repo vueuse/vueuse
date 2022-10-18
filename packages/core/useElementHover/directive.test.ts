@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue-demi'
+import { defineComponent, isVue3 } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
@@ -72,7 +72,7 @@ describe('vElementHover', () => {
       expect(wrapper).toBeDefined()
     })
 
-    it('should trigger hover after 500ms', async () => {
+    it.runIf(isVue3)('should trigger hover after 500ms', async () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('mouseenter')
       await promiseTimeout(200)
