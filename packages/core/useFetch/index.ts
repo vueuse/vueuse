@@ -242,7 +242,7 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
-  const _combination = config.combination || 'chain'
+  const _combination = config.combination || 'chain' as Combination
   const _options = config.options || {}
   const _fetchOptions = config.fetchOptions || {}
 
