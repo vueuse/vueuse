@@ -1,4 +1,5 @@
 import { noop } from '@vueuse/shared'
+import { isVue2 } from 'vue-demi'
 import type { Ref } from 'vue'
 import { effectScope, nextTick, ref } from 'vue'
 import { useEventListener } from '.'
@@ -20,7 +21,7 @@ describe('useEventListener', () => {
     el?.dispatchEvent(new MouseEvent('click'))
     await nextTick()
 
-    expect(listener).toHaveBeenCalledTimes(0)
+    expect(listener).toHaveBeenCalledTimes(isVue2 ? 1 : 0)
     expect(useEventListener(null, 'click', listener)).toBe(noop)
   })
 
@@ -74,7 +75,7 @@ describe('useEventListener', () => {
 
       await nextTick()
 
-      expect(listener).toHaveBeenCalledTimes(0)
+      expect(listener).toHaveBeenCalledTimes(isVue2 ? 1 : 0)
     })
   }
 
