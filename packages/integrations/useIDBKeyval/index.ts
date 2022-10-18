@@ -74,7 +74,7 @@ export function useIDBKeyval<T>(
       if (data.value == null)
         await del(key)
       else
-        await update(key, () => data.value)
+        await update(key, () => ({ ...data.value }))
     }
     catch (e) {
       onError(e)
