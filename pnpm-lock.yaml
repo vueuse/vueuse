@@ -202,6 +202,7 @@ importers:
       drauu: ^0.3.2
       focus-trap: ^7.0.0
       fuse.js: ^6.6.2
+      idb-keyval: ^6.2.0
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.5.1
@@ -220,6 +221,7 @@ importers:
       drauu: 0.3.2
       focus-trap: 7.0.0
       fuse.js: 6.6.2
+      idb-keyval: 6.2.0
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.5.1
@@ -6212,6 +6214,12 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
+  /idb-keyval/6.2.0:
+    resolution: {integrity: sha512-uw+MIyQn2jl3+hroD7hF8J7PUviBU7BPKWw4f/ISf32D4LoGu98yHjrzWWJDASu9QNrX10tCJqk9YY0ClWm8Ng==}
+    dependencies:
+      safari-14-idb-fix: 3.0.0
+    dev: true
+
   /idb/7.0.1:
     resolution: {integrity: sha512-UUxlE7vGWK5RfB/fDwEGgRf84DY/ieqNha6msMV99UsEMQhJ1RwbCd8AYBj3QMgnE3VZnfQvm4oKVCJTYlqIgg==}
     dev: true
@@ -8164,6 +8172,10 @@ packages:
     resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
     dependencies:
       tslib: 2.4.0
+    dev: true
+
+  /safari-14-idb-fix/3.0.0:
+    resolution: {integrity: sha512-eBNFLob4PMq8JA1dGyFn6G97q3/WzNtFK4RnzT1fnLq+9RyrGknzYiM/9B12MnKAxuj1IXr7UKYtTNtjyKMBog==}
     dev: true
 
   /safe-buffer/5.1.2:
