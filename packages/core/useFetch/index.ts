@@ -222,14 +222,16 @@ function headersToObject(headers: HeadersInit | undefined) {
 }
 
 function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
-  if(combination === 'overwrite') {
+  if (combination === 'overwrite') {
     // use last callback
     return async (ctx: T) => {
       const callback = callbacks.at(callbacks.length - 1)
-      if(callback !== undefined) await callback(ctx)
+      if (callback !== undefined)
+        await callback(ctx)
       return ctx
     }
-  } else {
+  }
+  else {
     // chaining and combine result
     return async (ctx: T) => {
       await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {

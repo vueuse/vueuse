@@ -1,7 +1,7 @@
 import { until } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { createFetch, useFetch } from '.'
 import { retry } from '../../.test'
+import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
