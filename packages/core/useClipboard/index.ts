@@ -2,8 +2,8 @@
 
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
-import { computed, ComputedRef, Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
