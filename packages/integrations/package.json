@@ -105,6 +105,7 @@
     "drauu": "*",
     "focus-trap": "*",
     "fuse.js": "*",
+    "idb-keyval": "*",
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
@@ -127,6 +128,9 @@
       "optional": true
     },
     "fuse.js": {
+      "optional": true
+    },
+    "idb-keyval": {
       "optional": true
     },
     "jwt-decode": {
