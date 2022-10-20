@@ -63,7 +63,7 @@ packages
 
 ### Function Folder
 
-A function folder typicality contains these 4 files:
+A function folder typically contains these 4 files:
 
 > You can find the template under `packages/core/_template/`
 

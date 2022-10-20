@@ -101,7 +101,6 @@ export default defineConfig(async () => {
         'js-yaml',
         'nprogress',
         'qrcode',
-        'rxjs',
         'tslib',
         'fuse.js',
         'universal-cookie',

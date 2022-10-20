@@ -31,12 +31,12 @@ export function onLongPress(
 ) {
   const elementRef = computed(() => unrefElement(target))
 
-  let timeout: number | null = null
+  let timeout: ReturnType<typeof setTimeout> | undefined
 
   function clear() {
-    if (timeout != null) {
+    if (timeout) {
       clearTimeout(timeout)
-      timeout = null
+      timeout = undefined
     }
   }
 
@@ -55,7 +55,7 @@ export function onLongPress(
     timeout = setTimeout(
       () => handler(ev),
       options?.delay ?? DEFAULT_DELAY,
-    ) as unknown as number
+    )
   }
 
   const listenerOptions: AddEventListenerOptions = {
