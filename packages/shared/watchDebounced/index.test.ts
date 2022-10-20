@@ -8,7 +8,17 @@ describe('watchDebounced', () => {
     expect(debouncedWatch).toBeDefined()
   })
 
-  it('should work', async () => {
+  it('should work by default', async () => {
+    const num = ref(0)
+    const cb = vi.fn()
+    watchDebounced(num, cb)
+
+    num.value = 1
+    await nextTick()
+    expect(cb).toHaveBeenCalledWith(1, 0, expect.anything())
+  })
+
+  it('should work when set debounce and maxWait', async () => {
     const num = ref(0)
     const cb = vi.fn()
     watchDebounced(num, cb, { debounce: 100, maxWait: 150 })
