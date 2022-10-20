@@ -9,9 +9,6 @@ import type { DebounceFilterOptions, MaybeComputedRef } from '../utils'
  * @return A new debounced ref.
  */
 export function refDebounced<T>(value: Ref<T>, ms: MaybeComputedRef<number> = 200, options: DebounceFilterOptions = {}): Readonly<Ref<T>> {
-  if (ms <= 0)
-    return value
-
   const debounced = ref(value.value as T) as Ref<T>
 
   const updater = useDebounceFn(() => {
