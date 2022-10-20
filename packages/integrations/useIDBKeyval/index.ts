@@ -47,7 +47,7 @@ export function useIDBKeyval<T>(
     },
   } = options
 
-  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
+  const data = (shallow ? shallowRef : ref)({ ...initialValue }) as Ref<T>
 
   const rawInit: T = resolveUnref(initialValue)
 
