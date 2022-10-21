@@ -25,7 +25,7 @@ export function useRouteQuery<T extends string | string[]>(
     },
     set(v) {
       nextTick(() => {
-        router[unref(mode)]({ query: { ...route.query, [name]: v === defaultValue || v === null ? undefined : v } })
+        router[unref(mode)]({ ...route, query: { ...route.query, [name]: v === defaultValue || v === null ? undefined : v } })
       })
     },
   })
