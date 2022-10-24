@@ -75,8 +75,9 @@ export function useIDBKeyval<T>(
         await del(key)
       }
       else {
+        // IndexedDB does not support saving proxies, convert from proxy before saving
         if (Array.isArray(data.value))
-          await update(key, () => ([...data.value]))
+          await update(key, () => (JSON.parse(JSON.stringify(data.value))))
         else if (typeof data.value === 'object')
           await update(key, () => ({ ...data.value }))
         else
