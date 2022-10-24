@@ -1,4 +1,4 @@
-import { defineComponent, nextTick } from 'vue-demi'
+import { defineComponent, isVue3, nextTick } from 'vue-demi'
 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
@@ -53,7 +53,7 @@ describe('vVisible', () => {
     beforeEach(() => {
       wrapper = createWrapper(true)
     })
-    it('should set visibility', async () => {
+    it.runIf(isVue3)('should set visibility', async () => {
       const element = wrapper.get<HTMLElement>('[data-test=element]')
       expect(element.element.style.visibility).toEqual('visible')
       await wrapper.setProps({ visible: false })
@@ -66,7 +66,7 @@ describe('vVisible', () => {
     beforeEach(() => {
       wrapper = createWrapper(false)
     })
-    it('should set visibility', async () => {
+    it.runIf(isVue3)('should set visibility', async () => {
       const element = wrapper.get<HTMLElement>('[data-test=element]')
       expect(element.element.style.visibility).toEqual('hidden')
       await wrapper.setProps({ visible: true })
