@@ -4,7 +4,10 @@ category: Elements
 
 # useVisible
 
-Listen for a long press on an element.
+Sets the visibility of an element.
+
+Sometimes v-if and v-show are not enough. The v-if directive removes an element from the DOM and the v-show directive sets the display value to none. Both of them come with the caveat that the element does not take any space in the DOM anymore.
+useVisible adds the flexibility to hide an element, but keep their space in the DOM.
 
 
 ## Usage
