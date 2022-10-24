@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe('useIDBKeyval', () => {
   it('set/get', async () => {
-    const state = useIDBKeyval(KEY, defaultState)
+    const state = useIDBKeyval(KEY, { ...defaultState })
     await nextTick()
     expect(get).toHaveBeenCalled()
     expect(set).toHaveBeenCalled()
@@ -26,7 +26,7 @@ describe('useIDBKeyval', () => {
   })
 
   it('update', async () => {
-    const state = useIDBKeyval(KEY, defaultState)
+    const state = useIDBKeyval(KEY, { ...defaultState })
     state.value.name = 'Apple'
     state.value.color = 'Red'
     state.value.size = 'Giant'
@@ -34,15 +34,14 @@ describe('useIDBKeyval', () => {
 
     await nextTick()
     expect(update).toHaveBeenCalled()
-
     expect(state.value.name).toBe('Apple')
     expect(state.value.color).toBe('Red')
     expect(state.value.size).toBe('Giant')
-    expect(state.value.count).toBe(1)
+    expect(state.value.count).toBe(defaultState.count + 1)
   })
 
   it('del', async () => {
-    const state = useIDBKeyval(KEY, defaultState)
+    const state = useIDBKeyval(KEY, { ...defaultState })
     state.value = null
     await nextTick()
     expect(del).toHaveBeenCalled()
@@ -50,11 +49,26 @@ describe('useIDBKeyval', () => {
 
   it('string', async () => {
     const state = useIDBKeyval(KEY, 'foo')
+    await nextTick()
     expect(get).toHaveBeenCalled()
     expect(set).toHaveBeenCalled()
     expect(state.value).toEqual('foo')
     state.value = 'bar'
+    await nextTick()
     expect(state.value).toEqual('bar')
+    expect(update).toHaveBeenCalled()
+  })
+
+  it('array', async () => {
+    const defaultArray = ['foo', 'bar', 'baz']
+    const state = useIDBKeyval(KEY, [...defaultArray])
+    await nextTick()
+    expect(get).toHaveBeenCalled()
+    expect(set).toHaveBeenCalled()
+    expect(state.value).toEqual(defaultArray)
+    state.value[1] = 'boop'
+    await nextTick()
+    expect(state.value[1]).toEqual('boop')
     expect(update).toHaveBeenCalled()
   })
 })

@@ -71,10 +71,17 @@ export function useIDBKeyval<T>(
 
   async function write() {
     try {
-      if (data.value == null)
+      if (data.value == null) {
         await del(key)
-      else
-        await update(key, () => ({ ...data.value }))
+      }
+      else {
+        if (Array.isArray(data.value))
+          await update(key, () => ([...data.value]))
+        else if (typeof data.value === 'object')
+          await update(key, () => ({ ...data.value }))
+        else
+          await update(key, () => (data.value))
+      }
     }
     catch (e) {
       onError(e)
