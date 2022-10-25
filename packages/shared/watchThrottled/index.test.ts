@@ -23,12 +23,12 @@ describe('watchThrottled', () => {
 
     num.value = 3
     await promiseTimeout(50)
-    expect(cb).toHaveBeenCalledTimes(1)
-    expect(cb).toHaveBeenCalledWith(1, 0, expect.anything())
+    expect(cb).toHaveBeenCalledTimes(2)
+    expect(cb).toHaveBeenCalledWith(3, 2, expect.anything())
 
     num.value = 4
     await promiseTimeout(100)
-    expect(cb).toHaveBeenCalledTimes(2)
+    expect(cb).toHaveBeenCalledTimes(3)
     expect(cb).toHaveBeenCalledWith(4, 3, expect.anything())
   })
 })
