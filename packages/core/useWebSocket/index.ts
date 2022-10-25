@@ -203,10 +203,12 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
+    if (explicitlyClosed)
+      return
+
     const ws = new WebSocket(url, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
-    explicitlyClosed = false
 
     ws.onopen = () => {
       status.value = 'OPEN'
@@ -289,6 +291,7 @@ export function useWebSocket<Data = any>(
 
   const open = () => {
     close()
+    explicitlyClosed = false
     retried = 0
     _init()
   }
