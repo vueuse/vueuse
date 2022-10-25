@@ -3,7 +3,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -29,6 +29,13 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
    * @default 1500
    */
   copiedDuring?: number
+
+  /**
+   * Whether fallback to document.execCommand('copy') if clipboard is undefined.
+   *
+   * @default false
+   */
+  legacy?: boolean
 }
 
 export interface UseClipboardReturn<Optional> {
@@ -52,19 +59,25 @@ export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<strin
     read = false,
     source,
     copiedDuring = 1500,
+    legacy = false,
   } = options
 
   const events = ['copy', 'cut']
-  const isSupported = useSupported(() => navigator && 'clipboard' in navigator)
+  const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
+  const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
-
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    navigator!.clipboard.readText().then((value) => {
-      text.value = value
-    })
+    if (isClipboardApiSupported.value) {
+      navigator!.clipboard.readText().then((value) => {
+        text.value = value
+      })
+    }
+    else {
+      text.value = legacyRead()
+    }
   }
 
   if (isSupported.value && read) {
@@ -74,11 +87,30 @@ export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<strin
 
   async function copy(value = resolveUnref(source)) {
     if (isSupported.value && value != null) {
-      await navigator!.clipboard.writeText(value)
+      if (isClipboardApiSupported.value)
+        await navigator!.clipboard.writeText(value)
+      else
+        legacyCopy(value)
+
       text.value = value
       copied.value = true
       timeout.start()
     }
+  }
+
+  function legacyCopy(value: string) {
+    const ta = document.createElement('textarea')
+    ta.value = value ?? ''
+    ta.style.position = 'absolute'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    document.execCommand('copy')
+    ta.remove()
+  }
+
+  function legacyRead() {
+    return document?.getSelection?.()?.toString() ?? ''
   }
 
   return {

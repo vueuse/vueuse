@@ -16,3 +16,4 @@ packages/*/index.mjs
 playgrounds/*/pnpm-lock.yaml
 types
 coverage
+.eslintcache

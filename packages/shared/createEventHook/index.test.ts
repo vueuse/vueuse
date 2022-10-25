@@ -25,4 +25,33 @@ describe('createEventHook', () => {
 
     expect(message).toBe('Hello World')
   })
+
+  it('should add and remove event listener', () => {
+    const listener = vi.fn()
+    const { on, off, trigger } = createEventHook<string>()
+
+    on(listener)
+
+    trigger('xxx')
+
+    expect(listener).toHaveBeenCalledTimes(1)
+
+    off(listener)
+
+    trigger('xxx')
+
+    expect(listener).toHaveBeenCalledTimes(1)
+
+    const { off: remove } = on(listener)
+
+    trigger('xxx')
+
+    expect(listener).toHaveBeenCalledTimes(2)
+
+    remove()
+
+    trigger('xxx')
+
+    expect(listener).toHaveBeenCalledTimes(2)
+  })
 })

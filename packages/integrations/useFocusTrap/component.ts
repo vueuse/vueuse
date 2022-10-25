@@ -3,10 +3,15 @@ import { createFocusTrap } from 'focus-trap'
 import type { FocusTrap } from 'focus-trap'
 import type { RenderableComponent } from '@vueuse/core'
 import { unrefElement } from '@vueuse/core'
+import type { UseFocusTrapOptions } from '.'
 
-export const UseFocusTrap = defineComponent<RenderableComponent>({
+export interface ComponentUseFocusTrapOptions extends RenderableComponent {
+  options?: UseFocusTrapOptions
+}
+
+export const UseFocusTrap = defineComponent <ComponentUseFocusTrapOptions> ({
   name: 'UseFocusTrap',
-  props: ['as'] as unknown as undefined,
+  props: ['as', 'options'] as unknown as undefined,
   setup(props, { slots }) {
     let trap: undefined | FocusTrap
     const target = ref()
@@ -18,7 +23,7 @@ export const UseFocusTrap = defineComponent<RenderableComponent>({
       (el) => {
         if (!el)
           return
-        trap = createFocusTrap(el, {})
+        trap = createFocusTrap(el, props.options || {})
         activate()
       }, { flush: 'post' })
 
