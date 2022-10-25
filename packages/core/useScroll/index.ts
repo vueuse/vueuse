@@ -146,6 +146,51 @@ export function useScroll(
     bottom: false,
   })
 
+  const elementDiffWidth = computed(() => {
+    const _el = resolveUnref(element)
+    if (!_el)
+      return NaN
+
+    if (_el instanceof Document)
+      return _el.body.scrollWidth - _el.body.clientWidth
+    else if (_el instanceof Window)
+      return _el.scrollX - _el.innerWidth
+    else
+      return _el.scrollWidth - _el.clientWidth
+  })
+
+  const elementDiffHeight = computed(() => {
+    const _el = resolveUnref(element)
+    if (!_el)
+      return NaN
+
+    if (_el instanceof Document)
+      return _el.body.scrollHeight - _el.body.clientHeight
+    else if (_el instanceof Window)
+      return _el.scrollY - _el.innerHeight
+    else
+      return _el.scrollHeight - _el.clientHeight
+  })
+
+  const progress = {
+    progressX: computed({
+      get() {
+        return x.value / elementDiffWidth.value
+      },
+      set(x) {
+        scrollTo(x * elementDiffWidth.value, undefined)
+      },
+    }),
+    progressY: computed({
+      get() {
+        return y.value / elementDiffHeight.value
+      },
+      set(y) {
+        scrollTo(y * elementDiffHeight.value, undefined)
+      },
+    }),
+  }
+
   const onScrollEnd = useDebounceFn((e: Event) => {
     isScrolling.value = false
     directions.left = false
@@ -199,6 +244,7 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    progress,
   }
 }
 

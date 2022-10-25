@@ -5,7 +5,7 @@ import { useScroll } from '@vueuse/core'
 const el = ref<HTMLElement | null>(null)
 const smooth = ref(false)
 const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { behavior })
+const { x, y, isScrolling, arrivedState, directions, progress: { progressX, progressY } } = useScroll(el, { behavior })
 const { left, right, top, bottom } = toRefs(arrivedState)
 const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
 
@@ -25,6 +25,23 @@ const displayY = computed({
   },
   set(val) {
     y.value = parseFloat(val)
+  },
+})
+
+const displayProgressX = computed({
+  get() {
+    return progressX.value.toFixed(2)
+  },
+  set(val) {
+    progressX.value = parseFloat(val)
+  },
+})
+const displayProgressY = computed({
+  get() {
+    return progressY.value.toFixed(2)
+  },
+  set(val) {
+    progressY.value = parseFloat(val)
   },
 })
 </script>
@@ -58,10 +75,22 @@ const displayY = computed({
             <input v-model="displayX" type="number" min="0" max="200" step="10" class="w-full !min-w-0">
           </div>
         </div>
+        <span text="right" opacity="75" class="py-4">X Progress</span>
+        <div class="text-primary">
+          <div>
+            <input v-model="displayProgressX" type="number" min="0" max="200" step="10" class="w-full !min-w-0">
+          </div>
+        </div>
         <span text="right" opacity="75" class="py-4">Y Position</span>
         <div class="text-primary">
           <div>
             <input v-model="displayY" type="number" min="0" max="100" step="10" class="w-full !min-w-0">
+          </div>
+        </div>
+        <span text="right" opacity="75" class="py-4">Y Progress</span>
+        <div class="text-primary">
+          <div>
+            <input v-model="displayProgressY" type="number" min="0" max="100" step="10" class="w-full !min-w-0">
           </div>
         </div>
         <label for="smooth-scrolling-option" text="right" opacity="75">Smooth scrolling</label>
