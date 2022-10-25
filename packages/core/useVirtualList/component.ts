@@ -35,7 +35,8 @@ export const UseVirtualList = defineComponent<UseVirtualListProps>({
 
     const { list, containerProps, wrapperProps } = useVirtualList(listRef, props.options)
 
-    containerProps.style.height = props.height || '300px'
+    typeof containerProps.style === 'object' && !Array.isArray(containerProps.style) && (containerProps.style.height = props.height || '300px')
+
     return () => h('div',
       { ...containerProps },
       [
