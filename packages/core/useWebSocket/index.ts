@@ -168,7 +168,7 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  let pongTimeoutWait: ReturnType<typeof setTimeout>
+  let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
@@ -203,10 +203,12 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
+    if (explicitlyClosed)
+      return
+
     const ws = new WebSocket(url, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
-    explicitlyClosed = false
 
     ws.onopen = () => {
       status.value = 'OPEN'
@@ -242,9 +244,8 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
-      resetHeartbeat()
-      // Heartbeat response will be skipped
       if (options.heartbeat) {
+        resetHeartbeat()
         const {
           message = DEFAULT_PING_MESSAGE,
         } = resolveNestedOptions(options.heartbeat)
@@ -290,6 +291,7 @@ export function useWebSocket<Data = any>(
 
   const open = () => {
     close()
+    explicitlyClosed = false
     retried = 0
     _init()
   }
