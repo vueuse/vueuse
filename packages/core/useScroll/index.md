@@ -14,7 +14,7 @@ Reactive scroll position and state.
 import { useScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
+const { x, y, isScrolling, arrivedState, directions, progress } = useScroll(el)
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 
 ### With offsets
 ```js
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
+const { x, y, isScrolling, arrivedState, directions, progress } = useScroll(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
 })
 ```
@@ -47,6 +47,26 @@ const { x, y } = useScroll(el)
   </button>
   <button @click="y += 10">
     Scroll down 10px
+  </button>
+</template>
+```
+
+Setting `progressX` and `progressY` values is also acceptable.
+```vue
+<script setup lang="ts">
+import { useScroll } from '@vueuse/core'
+
+const el = ref<HTMLElement | null>(null)
+const { progress: { progressX, progressY } } = useScroll(el)
+</script>
+
+<template>
+  <div ref="el" />
+  <button @click="progressX += 0.1">
+    Scroll right 10%
+  </button>
+  <button @click="progressY += 0.1">
+    Scroll down 10%
   </button>
 </template>
 ```
