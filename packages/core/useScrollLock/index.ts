@@ -4,8 +4,13 @@ import { isIOS, resolveRef, resolveUnref, tryOnScopeDispose } from '@vueuse/shar
 
 import { useEventListener } from '../useEventListener'
 
-function preventDefault(rawEvent: TouchEvent): boolean {
+function preventDefault(rawEvent: TouchEvent, ele: Element): boolean {
   const e = rawEvent || window.event
+
+  // Do not prevent if the event is fired from a child (otherwise iOS implementation will not work)
+  if (ele !== e.target)
+    return false
+
   // Do not prevent if the event has more than one touch (usually meaning this is a multi touch gesture like pinch to zoom).
   if (e.touches.length > 1)
     return true
@@ -49,7 +54,7 @@ export function useScrollLock(
       stopTouchMoveListener = useEventListener(
         ele,
         'touchmove',
-        preventDefault,
+        (e) => { preventDefault(e as TouchEvent, ele) },
         { passive: false },
       )
     }
