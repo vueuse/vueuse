@@ -39,7 +39,7 @@ describe('watchDebounced', () => {
     expect(cb).toHaveBeenCalledTimes(1)
 
     num.value = 5
-    await promiseTimeout(70)
+    await promiseTimeout(75)
     expect(cb).toHaveBeenCalledTimes(2)
     expect(cb).toHaveBeenCalledWith(4, 2, expect.anything())
   })
