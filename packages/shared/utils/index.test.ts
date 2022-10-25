@@ -120,6 +120,23 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('should throttle evenly', () => {
+    const debouncedFilterSpy = vitest.fn()
+
+    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+
+    setTimeout(() => filter(1), 500)
+    setTimeout(() => filter(2), 1000)
+    setTimeout(() => filter(3), 2000)
+
+    vitest.runAllTimers()
+
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(1)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(3)
+  })
+
   it('should throttle with ref', () => {
     const debouncedFilterSpy = vitest.fn()
     const throttle = ref(0)

@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "9.3.1",
+  "version": "9.4.0",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
