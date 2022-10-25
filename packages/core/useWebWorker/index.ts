@@ -69,7 +69,7 @@ export function useWebWorker<Data = any>(
     if (isString(arg0))
       worker.value = new Worker(arg0, workerOptions)
     else if (isFunction(arg0))
-      worker.value = arg0()
+      worker.value = (arg0 as any)()
     else
       worker.value = arg0
 
