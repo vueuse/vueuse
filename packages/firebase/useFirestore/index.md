@@ -31,7 +31,7 @@ const posts = useFirestore(postsQuery)
 // when it gets falsy value, return the initial value
 const userId = ref('')
 const userQuery = computed(() => !!userId.value && doc(db, 'users', userId.value))
-const userData = useFirestore(userQuery, null)
+const userData = useFirestore(userQuery, [])
 ```
 
 ## Share across instances

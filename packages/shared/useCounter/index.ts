@@ -23,7 +23,7 @@ export function useCounter(initialValue = 0, options: UseCounterOptions = {}) {
   const inc = (delta = 1) => count.value = Math.min(max, count.value + delta)
   const dec = (delta = 1) => count.value = Math.max(min, count.value - delta)
   const get = () => count.value
-  const set = (val: number) => (count.value = val)
+  const set = (val: number) => (count.value = Math.max(min, Math.min(max, val)))
   const reset = (val = initialValue) => {
     initialValue = val
     return set(val)
