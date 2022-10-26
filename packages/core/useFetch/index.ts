@@ -90,7 +90,7 @@ export interface UseFetchReturn<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
-type Combination = 'overwrite' | 'combineCallbacksin'
+type Combination = 'overwrite' | 'chain'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -142,8 +142,8 @@ export interface UseFetchOptions {
 
   /**
    * Will automatically refetch when:
-   * - the URL is combineCallbacksnged if the URL is a ref
-   * - the payload is combineCallbacksnged if the payload is a ref
+   * - the URL is changed if the URL is a ref
+   * - the payload is changed if the payload is a ref
    *
    * @default false
    */
@@ -190,7 +190,7 @@ export interface CreateFetchOptions {
 
   /**
    * Determine the inherit behavior for beforeFetch, afterFetch, onFetchError
-   * @default 'combineCallbacksin'
+   * @default 'chain'
    */
   combination?: Combination
 
