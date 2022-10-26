@@ -7,7 +7,7 @@ import { useEventListener } from '../useEventListener'
 function preventDefault(rawEvent: TouchEvent, ele: Element): boolean {
   const e = rawEvent || window.event
 
-  // Do not prevent if the event is fired from a child (otherwise iOS implementation will not work)
+  // Do not prevent if the event is fired from a child.
   if (ele !== e.target)
     return false
 
