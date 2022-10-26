@@ -21,24 +21,24 @@ export interface UseWebSocketOptions {
    */
   heartbeat?: boolean | {
     /**
-         * Message for the heartbeat
-         *
-         * @default 'ping'
-         */
+     * Message for the heartbeat
+     *
+     * @default 'ping'
+     */
     message?: string | ArrayBuffer | Blob
 
     /**
-         * Interval, in milliseconds
-         *
-         * @default 1000
-         */
+     * Interval, in milliseconds
+     *
+     * @default 1000
+     */
     interval?: number
 
     /**
-         * Heartbeat response timeout, in milliseconds
-         *
-         * @default 1000
-         */
+     * Heartbeat response timeout, in milliseconds
+     *
+     * @default 1000
+     */
     pongTimeout?: number
   }
 
@@ -49,24 +49,24 @@ export interface UseWebSocketOptions {
    */
   autoReconnect?: boolean | {
     /**
-         * Maximum retry times.
-         *
-         * Or you can pass a predicate function (which returns true if you want to retry).
-         *
-         * @default -1
-         */
+     * Maximum retry times.
+     *
+     * Or you can pass a predicate function (which returns true if you want to retry).
+     *
+     * @default -1
+     */
     retries?: number | (() => boolean)
 
     /**
-         * Delay for reconnect, in milliseconds
-         *
-         * @default 1000
-         */
+     * Delay for reconnect, in milliseconds
+     *
+     * @default 1000
+     */
     delay?: number
 
     /**
-         * On maximum retry times reached.
-         */
+     * On maximum retry times reached.
+     */
     onFailed?: Fn
   }
 
