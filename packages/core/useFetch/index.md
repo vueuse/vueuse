@@ -166,6 +166,46 @@ const useMyFetch = createFetch({
 const { isFetching, error, data } = useMyFetch('users')
 ```
 
+If you want to control the behavior of `beforeFetch`, `afterFetch`, `onFetchError` between the pre-configured instance and newly spawned instance. You can provide a `combination` option to toggle between `overwrite` or `chaining`.
+
+```ts
+const useMyFetch = createFetch({
+  baseUrl: 'https://my-api.com',
+  combination: 'overwrite',
+  options: {
+    // beforeFetch in pre-configured instance will only run when the newly spawned instance do not pass beforeFetch
+    async beforeFetch({ options }) {
+      const myToken = await getMyToken()
+      options.headers.Authorization = `Bearer ${myToken}`
+
+      return { options }
+    },
+  },
+})
+
+// use useMyFetch beforeFetch
+const { isFetching, error, data } = useMyFetch('users')
+
+// use custom beforeFetch
+const { isFetching, error, data } = useMyFetch('users', {
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = await getMyToken()
+
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  },
+})
+```
+
 ### Events
 
 The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
