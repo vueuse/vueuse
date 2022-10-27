@@ -186,7 +186,7 @@ export function useScroll(
         return y.value / elementDiffHeight.value
       },
       set(y) {
-        scrollTo(y * elementDiffHeight.value, undefined)
+        scrollTo(undefined, y * elementDiffHeight.value)
       },
     }),
   }
