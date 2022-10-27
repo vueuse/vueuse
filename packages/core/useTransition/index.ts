@@ -172,7 +172,9 @@ export function useTransition(
   // transition loop
   const { resume, pause } = useRafFn(() => {
     const now = Date.now()
-    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
+    const progress = currentDuration > 0
+      ? clamp(1 - ((endAt - now) / currentDuration), 0, 1)
+      : 1
 
     outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
 
