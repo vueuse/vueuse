@@ -510,7 +510,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
         config.payload = payload
         config.payloadType = payloadType
 
-        // watch for payload combineCallbacksnges
+        // watch for payload changes
         if (isRef(config.payload)) {
           watch(
             [
