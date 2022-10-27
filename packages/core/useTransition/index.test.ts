@@ -1,5 +1,5 @@
 import { promiseTimeout } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useTransition } from '.'
 
 const expectBetween = (val: number, floor: number, ceiling: number) => {
@@ -155,18 +155,6 @@ describe('useTransition', () => {
 
     await promiseTimeout(100)
     expect(transition.value).toBe(2)
-  })
-
-  it('when duration is 0', async () => {
-    const source = ref(0)
-    const transition = useTransition(source, { duration: 0 })
-
-    expect(transition.value).toBe(0)
-
-    source.value = 1
-
-    await nextTick()
-    expect(transition.value).toBe(1)
   })
 
   it('fires onStarted and onFinished callbacks', async () => {
