@@ -4,11 +4,30 @@ import { isIOS, resolveRef, resolveUnref, tryOnScopeDispose } from '@vueuse/shar
 
 import { useEventListener } from '../useEventListener'
 
-function preventDefault(rawEvent: TouchEvent, ele: Element): boolean {
+function checkOverflowScroll(ele: Element): boolean {
+  const _style = window.getComputedStyle(ele)
+  if (_style.overflowX === 'scroll' || _style.overflowY === 'scroll') {
+    return true
+  }
+  else {
+    const _parent = ele.parentNode as Element
+
+    if (_parent.tagName === 'BODY')
+      return false
+
+    if (checkOverflowScroll(_parent))
+      return true
+    else return false
+  }
+}
+
+function preventDefault(rawEvent: TouchEvent): boolean {
   const e = rawEvent || window.event
 
-  // Do not prevent if the event is fired from a child.
-  if (ele !== e.target)
+  const _target = e.target as Element
+
+  // Do not prevent if element or parentNodes have overflow: scroll set.
+  if (checkOverflowScroll(_target))
     return false
 
   // Do not prevent if the event has more than one touch (usually meaning this is a multi touch gesture like pinch to zoom).
@@ -54,7 +73,7 @@ export function useScrollLock(
       stopTouchMoveListener = useEventListener(
         ele,
         'touchmove',
-        (e) => { preventDefault(e as TouchEvent, ele) },
+        (e) => { preventDefault(e as TouchEvent) },
         { passive: false },
       )
     }
