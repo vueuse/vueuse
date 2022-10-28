@@ -2,15 +2,15 @@ import { noop, promiseTimeout } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
+export interface UseAsyncStateReturn<Data, Shallow extends boolean, Args extends unknown[]> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay?: number, ...args: any[]) => Promise<Data>
+  execute: (delay?: number, ...args: Args) => Promise<Data>
 }
 
-export interface UseAsyncStateOptions<Shallow extends boolean> {
+export interface UseAsyncStateOptions<Shallow extends boolean, Args extends unknown[]> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -24,9 +24,19 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
    *
    * When set to false, you will need to execute it manually.
    *
+   * Use {@link immediateArgs} to provide initial arguments.
+   *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Arguments that are passed when the promise is executed immediately.
+   * Only relevant for the immediate execution, when {@link immediate} is not set to `false`.
+   *
+   * @default []
+   */
+  immediateArgs?: Args
 
   /**
    * Callback when error is caught.
@@ -68,13 +78,14 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<Data, Shallow extends boolean = true>(
-  promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
+export function useAsyncState<Data, Args extends unknown[], Shallow extends boolean = true>(
+  promise: Promise<Data> | ((...args: Args) => Promise<Data>),
   initialState: Data,
-  options?: UseAsyncStateOptions<Shallow>,
-): UseAsyncStateReturn<Data, Shallow> {
+  options?: UseAsyncStateOptions<Shallow, Args>,
+): UseAsyncStateReturn<Data, Shallow, Args> {
   const {
     immediate = true,
+    immediateArgs = [],
     delay = 0,
     onError = noop,
     resetOnExecute = true,
@@ -87,7 +98,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
   const isLoading = ref(false)
   const error = ref<unknown | undefined>(undefined)
 
-  async function execute(delay = 0, ...args: any[]) {
+  async function execute(delay = 0, ...args: Args) {
     if (resetOnExecute)
       state.value = initialState
     error.value = undefined
@@ -120,7 +131,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
   }
 
   if (immediate)
-    execute(delay)
+    execute(delay, ...(immediateArgs as Args))
 
   return {
     state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
