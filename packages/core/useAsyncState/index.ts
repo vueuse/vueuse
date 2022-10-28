@@ -78,7 +78,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean, Args extends unkn
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<Data, Args extends unknown[], Shallow extends boolean = true>(
+export function useAsyncState<Data, Args extends unknown[] = never[], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Args) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Args>,
