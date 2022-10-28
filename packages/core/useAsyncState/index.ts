@@ -2,7 +2,7 @@ import { noop, promiseTimeout } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<Data, Shallow extends boolean, Args extends unknown[]> {
+export interface UseAsyncStateReturn<Data, Shallow extends boolean, Args extends unknown[] = any> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
@@ -10,7 +10,7 @@ export interface UseAsyncStateReturn<Data, Shallow extends boolean, Args extends
   execute: (delay?: number, ...args: Args) => Promise<Data>
 }
 
-export interface UseAsyncStateOptions<Shallow extends boolean, Args extends unknown[]> {
+export interface UseAsyncStateOptions<Shallow extends boolean, Args extends unknown[] = any> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
