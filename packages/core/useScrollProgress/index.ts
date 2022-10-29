@@ -1,9 +1,28 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { noop, resolveUnref } from '@vueuse/shared'
 import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollProgressOptions {
+  /**
+   * Trigger it when scrolling.
+   *
+   */
+  onScroll?: (e: Event) => void
+
+  /**
+    * Trigger it when scrolling ends.
+    *
+    */
+  onStop?: (e: Event) => void
+
+  /**
+    * Listener options for scroll event.
+    *
+    * @default {capture: false, passive: true}
+    */
+  eventListenerOptions?: boolean | AddEventListenerOptions
+
   /**
    * Optionally specify a scroll behavior of `auto` (default, not smooth scrolling) or
    * `smooth` (for smooth scrolling) which takes effect when changing the `x` or `y` refs.
@@ -26,6 +45,9 @@ export function useScrollProgress(
 ) {
   const {
     behavior,
+    eventListenerOptions,
+    onScroll = noop,
+    onStop = noop,
   } = options
 
   const x = ref(0)
@@ -85,12 +107,16 @@ export function useScrollProgress(
       scrollTop = document.body.scrollTop
 
     y.value = eventTarget.scrollTop
+
+    onStop(e)
+    onScroll(e)
   }
 
   useEventListener(
     element,
     'scroll',
     onScrollHandler,
+    eventListenerOptions,
   )
 
   const progressX = computed({

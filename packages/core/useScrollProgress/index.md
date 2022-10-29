@@ -62,3 +62,33 @@ const { progressX, progressY } = useScrollProgress(el, { behavior: 'smooth' })
   <div ref="el" />
 </template>
 ```
+
+## Directive Usage
+
+```vue
+<script setup lang="ts">
+import type { UseScrollProgressReturn } from '@vueuse/core'
+import { vScrollProgress } from '@vueuse/components'
+
+const data = ref([1, 2, 3, 4, 5, 6])
+
+function onScroll(state: UseScrollProgressReturn) {
+  console.log(state) // { progressX, progressY }
+}
+</script>
+
+<template>
+  <div v-scroll-progress="onScroll">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+  </div>
+
+  <!-- with options -->
+  <div v-scroll="[onScroll, { behavior: 'smooth' }]">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+  </div>
+</template>
+```
