@@ -1,6 +1,5 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -162,8 +161,6 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   watch(state, onChanged, { flush: 'post', immediate: true })
   if (emitAuto)
     watch(preferredMode, () => onChanged(state.value), { flush: 'post' })
-
-  tryOnMounted(() => onChanged(state.value))
 
   return state
 }
