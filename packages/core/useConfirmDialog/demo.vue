@@ -2,12 +2,16 @@
 import { ref } from 'vue'
 import { useConfirmDialog } from '@vueuse/core'
 
-const message = ref('')
-const revaled1 = ref(false)
-const revaled2 = ref(false)
+import ChildModal from './ChildModal.vue'
 
-const dialog1 = useConfirmDialog(revaled1)
-const dialog2 = useConfirmDialog(revaled2)
+const message = ref('')
+const revealed1 = ref(false)
+const revealed2 = ref(false)
+const revealed3 = ref(false)
+
+const dialog1 = useConfirmDialog(revealed1)
+const dialog2 = useConfirmDialog(revealed2)
+const dialog3 = useConfirmDialog(revealed3)
 
 dialog1.onReveal(() => {
   message.value = 'Modal is shown!'
@@ -42,14 +46,14 @@ dialog2.onCancel(() => {
     <span class="text-orange-400">{{ message }}</span>
   </h2>
   <button
-    :disabled="revaled1 || revaled2"
+    :disabled="revealed1 || revealed2"
     @click="dialog1.reveal"
   >
     Click to Show Modal Dialog
   </button>
 
   <!-- First Dialog -->
-  <div v-if="revaled1">
+  <div v-if="revealed1">
     <div>
       <div>
         <p>Show Second Dialog?</p>
@@ -66,7 +70,7 @@ dialog2.onCancel(() => {
   </div>
 
   <!-- Second Dialog -->
-  <div v-if="revaled2">
+  <div v-if="revealed2">
     <div>
       <div>
         <p>Confirm or Reject</p>
@@ -83,6 +87,18 @@ dialog2.onCancel(() => {
         </button>
       </footer>
     </div>
+  </div>
+  <div>
+    <div>
+      Open or cancel child dialog from parent:
+      <button v-if="!revealed3" @click="dialog3.reveal">
+        Open
+      </button>
+      <button v-else @click="dialog3.cancel">
+        Cancel
+      </button>
+    </div>
+    <ChildModal :token="dialog3.token" />
   </div>
 </template>
 

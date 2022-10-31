@@ -1,5 +1,5 @@
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { ComputedRef, InjectionKey, Ref } from 'vue-demi'
+import { computed, provide, ref } from 'vue-demi'
 import type { EventHook, EventHookOn } from '@vueuse/shared'
 import { createEventHook, noop } from '@vueuse/shared'
 
@@ -17,6 +17,8 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
    * Revealing state
    */
   isRevealed: ComputedRef<boolean>
+
+  token: InjectionKey<Omit<UseConfirmDialogReturn<RevealData, ConfirmData, CancelData>, 'token' | 'reveal'>>
 
   /**
    * Opens the dialog.
@@ -95,8 +97,22 @@ export function useConfirmDialog<
     _resolve({ data, isCanceled: true })
   }
 
+  const isRevealed = computed(() => revealed.value)
+  const provided = {
+    isRevealed,
+    confirm,
+    cancel,
+    onReveal: revealHook.on,
+    onConfirm: confirmHook.on,
+    onCancel: cancelHook.on,
+  }
+
+  const token: InjectionKey<typeof provided> = Symbol('confirmDialog')
+
+  provide(token, provided)
   return {
-    isRevealed: computed(() => revealed.value),
+    isRevealed,
+    token,
     reveal,
     confirm,
     cancel,
