@@ -2,6 +2,11 @@
 import { useWindowScroll } from '@vueuse/core'
 
 const { x, y } = useWindowScroll()
+
+function scrollToTop() {
+  x.value = 0
+  y.value = 0
+}
 </script>
 
 <template>
@@ -15,7 +20,11 @@ const { x, y } = useWindowScroll()
         Scroll value
       </note>
       x: {{ x }}<br>
-      y: {{ y }}
+      y: {{ y }}<br>
+
+      <button @click="scrollToTop">
+        Scroll Up
+      </button>
     </div>
   </div>
 </template>

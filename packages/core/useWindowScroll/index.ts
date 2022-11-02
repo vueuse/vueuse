@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -19,6 +19,11 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
 
   const x = ref(window.pageXOffset)
   const y = ref(window.pageYOffset)
+
+  watch([x, y], ([newX, newY]) => {
+    if (window)
+      window.scrollTo(newX, newY)
+  })
 
   useEventListener(
     'scroll',
