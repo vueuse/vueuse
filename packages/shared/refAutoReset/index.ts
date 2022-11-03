@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { customRef } from 'vue-demi'
+import { customRef, isRef, watch } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
@@ -16,11 +16,22 @@ export function refAutoReset<T>(defaultValue: T, afterMs: MaybeComputedRef<numbe
     let value: T = defaultValue
     let timer: any
 
-    const resetAfter = () =>
-      setTimeout(() => {
+    const setUpResetTimer = () => {
+      if (resolveUnref(afterMs) === Number.POSITIVE_INFINITY)
+        return
+
+      timer = setTimeout(() => {
         value = defaultValue
         trigger()
       }, resolveUnref(afterMs))
+    }
+
+    if (isRef(afterMs)) {
+      watch(afterMs, () => {
+        clearTimeout(timer)
+        setUpResetTimer()
+      })
+    }
 
     tryOnScopeDispose(() => {
       clearTimeout(timer)
@@ -36,7 +47,7 @@ export function refAutoReset<T>(defaultValue: T, afterMs: MaybeComputedRef<numbe
         trigger()
 
         clearTimeout(timer)
-        timer = resetAfter()
+        setUpResetTimer()
       },
     }
   })

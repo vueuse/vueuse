@@ -35,7 +35,7 @@ describe('refAutoReset', () => {
     val.value = 'update'
     afterMs.value = 100
 
-    await new Promise(resolve => setTimeout(resolve, 100 + 1))
+    await new Promise(resolve => setTimeout(resolve, 100 - 1))
     expect(val.value).toBe('update')
 
     await new Promise(resolve => setTimeout(resolve, 50))
@@ -59,5 +59,44 @@ describe('refAutoReset', () => {
     scope.stop()
     await promiseTimeout(100)
     expect(val.value).toBe('update')
+  })
+
+  it('should not reset value when Infinity timer is passed', async () => {
+    const val = refAutoReset('default', Infinity)
+    val.value = 'update'
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('update')
+
+    val.value = 'update2'
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('update2')
+  })
+
+  it('should restart timer on afterMs ref update', async () => {
+    const afterMs = ref(150)
+    const val = refAutoReset('default', afterMs)
+    val.value = 'update'
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('update')
+
+    afterMs.value = 151 // values can't be the same in order for update to trigger
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('update')
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('default')
+
+    val.value = 'update2'
+    afterMs.value = 50
+
+    await new Promise(resolve => setTimeout(resolve, 25))
+    afterMs.value = Infinity
+
+    await new Promise(resolve => setTimeout(resolve, 100))
+    expect(val.value).toBe('update2')
   })
 })
