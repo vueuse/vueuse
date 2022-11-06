@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import { ref, unref, watch } from 'vue-demi'
 
 export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
@@ -24,14 +24,14 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
     if (!textarea.value)
       return
 
-    let height = null
+    let height = ''
 
     textarea.value!.style.height = '1px'
     textareaScrollHeight.value = textarea.value?.scrollHeight
 
     // If style target is provided update its height
     if (options?.styleTarget)
-      options.styleTarget.value.style.height = `${textareaScrollHeight.value}px`
+      unref(options.styleTarget).style.height = `${textareaScrollHeight.value}px`
 
     // else update textarea's height by updating height variable
     else height = `${textareaScrollHeight.value}px`
