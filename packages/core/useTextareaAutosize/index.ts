@@ -48,7 +48,6 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
 
   return {
     textarea,
-    textareaScrollHeight,
     input,
     triggerResize,
   }
