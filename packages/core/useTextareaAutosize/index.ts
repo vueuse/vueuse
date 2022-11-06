@@ -11,28 +11,30 @@ export interface UseTextareaAutosizeOptions {
   watch?: WatchSource | Array<WatchSource>
   /** Function called when the textarea size changes. */
   onResize?: () => void
-  /** Prevent attaching styles directly to textarea. Useful for adding styles to wrapper or some other custom element. */
-  detachStyles?: MaybeRef<boolean>
+  /** Specify style target to apply the height based on textarea content. If not provided it will use textarea it self.  */
+  styleTarget?: MaybeRef<HTMLElement>
 }
 
 export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   const textarea = ref<HTMLTextAreaElement>(options?.element as any)
   const input = ref<string>(options?.input as any)
   const textareaScrollHeight = ref(1)
-  const detachStyles = ref(options?.detachStyles || false)
 
   function triggerResize() {
     if (!textarea.value)
       return
 
-    let height = 'unset'
+    let height = null
 
     textarea.value!.style.height = '1px'
     textareaScrollHeight.value = textarea.value?.scrollHeight
 
-    // If we don't want to detach style apply scrollHeight to textarea by updating height
-    if (!detachStyles.value)
-      height = `${textareaScrollHeight.value}px`
+    // If style target is provided update its height
+    if (options?.styleTarget)
+      options.styleTarget.value.style.height = `${textareaScrollHeight.value}px`
+
+    // else update textarea's height by updating height variable
+    else height = `${textareaScrollHeight.value}px`
 
     textarea.value!.style.height = height
 
