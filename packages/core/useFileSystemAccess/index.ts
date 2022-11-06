@@ -101,7 +101,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const {
     window: _window = defaultWindow,
     dataType = 'Text',
-  } = unref(options)
+  } = options
   const window = _window as FileSystemAccessWindow
   const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
