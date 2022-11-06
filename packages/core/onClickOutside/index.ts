@@ -45,11 +45,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
 
   const shouldListen = ref(true)
 
-  let fallback: number
-
   const listener = (event: PointerEvent) => {
-    window.clearTimeout(fallback)
-
     const el = unrefElement(target)
 
     if (!el || el === event.target || event.composedPath().includes(el) || !shouldListen.value)
@@ -66,17 +62,12 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   const cleanup = [
+    [].slice.call(window.document.body.children)
+      .map(el => useEventListener(el, 'click', () => {})),
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen.value = !!el && !e.composedPath().includes(el) && !shouldIgnore(e)
-    }, { passive: true }),
-    useEventListener(window, 'pointerup', (e) => {
-      if (e.button === 0) {
-        const path = e.composedPath()
-        e.composedPath = () => path
-        fallback = window.setTimeout(() => listener(e), 50)
-      }
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       const el = unrefElement(target)
@@ -86,7 +77,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       )
         handler(event as any)
     }),
-  ].filter(Boolean) as Fn[]
+  ].flat().filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
 
