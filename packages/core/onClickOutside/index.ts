@@ -7,7 +7,6 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 let IOSWorkaroundInitialized = false
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
@@ -47,7 +46,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  if (isIOS && !IOSWorkaroundInitialized) {
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !IOSWorkaroundInitialized) {
     IOSWorkaroundInitialized = true
     Array.from(window.document.body.children)
       .filter(el => !/IFRAME|OBJECT|EMBED|LINK|SCRIPT|STYLE|TEMPLATE/.test(el.tagName))
