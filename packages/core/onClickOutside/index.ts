@@ -85,7 +85,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       )
         handler(event as any)
     }),
-  ].flat().filter(Boolean) as Fn[]
+  ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
 
