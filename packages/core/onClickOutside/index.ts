@@ -81,8 +81,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     detectIframe && useEventListener(window, 'blur', (event) => {
       const el = unrefElement(target)
       if (
-        document.activeElement?.tagName === 'IFRAME'
-        && !el?.contains(document.activeElement)
+        window.document.activeElement?.tagName === 'IFRAME'
+        && !el?.contains(window.document.activeElement)
       )
         handler(event as any)
     }),
