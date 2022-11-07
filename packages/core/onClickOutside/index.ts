@@ -1,10 +1,14 @@
 import type { Fn } from '@vueuse/shared'
+import { noop } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+let IOSWorkaroundInitialized = false
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
@@ -43,6 +47,13 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
+  if (isIOS && !IOSWorkaroundInitialized) {
+    IOSWorkaroundInitialized = true
+    Array.from(window.document.body.children)
+      .filter(el => !/IFRAME|OBJECT|EMBED|LINK|SCRIPT|STYLE|TEMPLATE/.test(el.tagName))
+      .forEach(el => el.addEventListener('click', noop))
+  }
+
   const shouldListen = ref(true)
 
   const listener = (event: PointerEvent) => {
@@ -62,8 +73,6 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   const cleanup = [
-    [].slice.call(window.document.body.children)
-      .map(el => useEventListener(el, 'click', () => {})),
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
