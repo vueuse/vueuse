@@ -65,6 +65,7 @@
     "eslint": "^8.25.0",
     "esno": "^0.16.3",
     "export-size": "^0.5.2",
+    "fake-indexeddb": "^4.0.0",
     "fast-glob": "^3.2.12",
     "firebase": "^9.12.1",
     "fs-extra": "^10.1.0",
