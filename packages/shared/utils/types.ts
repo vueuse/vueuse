@@ -60,7 +60,7 @@ export type DeepMaybeRef<T> = T extends Ref<infer V>
     ? { [K in keyof T]: DeepMaybeRef<T[K]> }
     : MaybeRef<T>
 
-export type MaybeArray<T> = T[] | T
+export type Arrayable<T> = T[] | T
 
 /**
  * Infers the element type of an array
