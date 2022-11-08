@@ -1,7 +1,12 @@
 import { isVue3, ref } from 'vue-demi'
-import { computedWithControl } from '.'
+import { computedWithControl, controlledComputed } from '.'
 
 describe('computedWithControl', () => {
+  it('should export', () => {
+    expect(computedWithControl).toBeDefined()
+    expect(controlledComputed).toBeDefined()
+  })
+
   it('should work', () => {
     const trigger = ref(0)
     const data = ref('foo')

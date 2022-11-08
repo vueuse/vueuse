@@ -66,24 +66,7 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   toContains(value: MaybeComputedRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
 }
 
-/**
- * Promised one-time watch for changes
- *
- * @see https://vueuse.org/until
- * @example
- * ```
- * const { count } = useCounter()
- *
- * await until(count).toMatch(v => v > 7)
- *
- * alert('Counter is now larger than 7!')
- * ```
- */
-export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
-export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
-export function until<T>(r: any): any {
-  let isNot = false
-
+function createUntil<T>(r: any, isNot = false) {
   function toMatch(
     condition: (v: any) => boolean,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
@@ -201,8 +184,7 @@ export function until<T>(r: any): any {
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return createUntil(r, !isNot) as UntilArrayInstance<T>
       },
     }
     return instance
@@ -218,11 +200,29 @@ export function until<T>(r: any): any {
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return createUntil(r, !isNot) as UntilValueInstance<T, boolean>
       },
     }
 
     return instance
   }
+}
+
+/**
+ * Promised one-time watch for changes
+ *
+ * @see https://vueuse.org/until
+ * @example
+ * ```
+ * const { count } = useCounter()
+ *
+ * await until(count).toMatch(v => v > 7)
+ *
+ * alert('Counter is now larger than 7!')
+ * ```
+ */
+export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
+export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
+export function until<T>(r: any): UntilValueInstance<T> | UntilArrayInstance<T> {
+  return createUntil(r)
 }

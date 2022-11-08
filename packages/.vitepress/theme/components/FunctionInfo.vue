@@ -6,7 +6,6 @@ import exportSizes from '../../../export-size.json'
 
 const props = defineProps<{ fn: string }>()
 const info = computed(() => functions.find(i => i.name === props.fn))
-const format = (ts: number) => ago(-1, 'day')
 const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
 

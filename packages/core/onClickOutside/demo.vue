@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { OnClickOutsideHandler } from '@vueuse/core'
 import { onClickOutside } from '@vueuse/core'
+import { vOnClickOutside } from './directive'
 
 const modal = ref(false)
 const modalRef = ref(null)
@@ -14,15 +16,10 @@ onClickOutside(
 )
 
 const dropdown = ref(false)
-const dropdownRef = ref(null)
-
-onClickOutside(
-  dropdownRef,
-  (event) => {
-    console.log(event)
-    dropdown.value = false
-  },
-)
+const dropdownHandler: OnClickOutsideHandler = (event) => {
+  console.log(event)
+  dropdown.value = false
+}
 </script>
 
 <template>
@@ -30,12 +27,12 @@ onClickOutside(
     Open Modal
   </button>
   <div class="ml-2 relative inline-block">
-    <button @click="dropdown = true">
-      Open Dropdown
+    <button @click.stop="dropdown = !dropdown">
+      Toggle Dropdown
     </button>
     <div
       v-if="dropdown"
-      ref="dropdownRef"
+      v-on-click-outside.bubble="dropdownHandler"
       class="dropdown-inner"
     >
       Click outside of the dropdown to close it.

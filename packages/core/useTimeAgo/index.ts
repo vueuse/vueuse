@@ -47,9 +47,16 @@ export interface UseTimeAgoOptions<Controls extends boolean> {
   fullDateFormatter?: (date: Date) => string
 
   /**
-   * Messages for formating the string
+   * Messages for formatting the string
    */
   messages?: UseTimeAgoMessages
+
+  /**
+   * Minimum display time unit (default is minute)
+   *
+   * @default false
+   */
+  showSecond?: boolean
 }
 
 interface UseTimeAgoUnit {
@@ -116,6 +123,7 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
     updateInterval = 30_000,
     messages = DEFAULT_MESSAGES,
     fullDateFormatter = DEFAULT_FORMATTER,
+    showSecond = false,
   } = options
 
   const { abs, round } = Math
@@ -126,7 +134,7 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
     const absDiff = abs(diff)
 
     // less than a minute
-    if (absDiff < 60000)
+    if (absDiff < 60000 && !showSecond)
       return messages.justNow
 
     if (typeof max === 'number' && absDiff > max)

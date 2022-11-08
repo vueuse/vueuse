@@ -18,7 +18,7 @@ const debouncedFn = useDebounceFn(() => {
   // do something
 }, 1000)
 
-document.addEventListener('resize', debouncedFn)
+window.addEventListener('resize', debouncedFn)
 ```
 
 You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
@@ -32,7 +32,7 @@ const debouncedFn = useDebounceFn(() => {
   // do something
 }, 1000, { maxWait: 5000 })
 
-document.addEventListener('resize', debouncedFn)
+window.addEventListener('resize', debouncedFn)
 ```
 
 

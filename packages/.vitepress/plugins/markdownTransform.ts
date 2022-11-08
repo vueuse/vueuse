@@ -32,7 +32,9 @@ export function MarkdownTransform(): Plugin {
       // convert links to relative
       code = code.replace(/https?:\/\/vueuse\.org\//g, '/')
 
-      const [pkg, name, i] = id.split('/').slice(-3)
+      const [pkg, _name, i] = id.split('/').slice(-3)
+
+      const name = functionNames.find(n => n.toLowerCase() === _name.toLowerCase()) || _name
 
       if (functionNames.includes(name) && i === 'index.md') {
         const frontmatterEnds = code.indexOf('---\n\n') + 4
@@ -63,7 +65,8 @@ const GITHUB_BLOB_URL = 'https://github.com/vueuse/vueuse/blob/main/packages'
 export async function getFunctionMarkdown(pkg: string, name: string) {
   const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
 
-  const hasDemo = fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
+  const dirname = join(DIR_SRC, pkg, name)
+  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
   const types = await getTypeDefinition(pkg, name)
 
   let typingSection = ''
@@ -75,7 +78,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 ## Type Declarations
 
 <details>
-<summary op50 italic>Show Type Declarations</summary>
+<summary op50 italic cursor-pointer select-none>Show Type Declarations</summary>
 
 ${code}
 
@@ -86,7 +89,7 @@ ${code}
 
   const links = ([
     ['Source', `${URL}/index.ts`],
-    hasDemo ? ['Demo', `${URL}/demo.vue`] : undefined,
+    demoPath ? ['Demo', `${URL}/${demoPath}`] : undefined,
     ['Docs', `${URL}/index.md`],
   ])
     .filter(i => i)
@@ -103,16 +106,38 @@ ${code}
 
 <Changelog fn="${name}" />
 `
-  const demoSection = hasDemo
-    ? `
+
+  const demoSection = demoPath
+    ? demoPath.endsWith('.client.vue')
+      ? `
 <script setup>
-import Demo from \'./demo.vue\'
+import { defineAsyncComponent } from 'vue'
+const Demo = defineAsyncComponent(() => import('./${demoPath}'))
 </script>
 
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/demo.vue" target="_blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
+<ClientOnly>
+  <Suspense>
+    <Demo/>
+    <template #fallback>
+      Loading demo...
+    </template>
+  </Suspense>
+</ClientOnly>
+</DemoContainer>
+`
+      : `
+<script setup>
+import Demo from \'./${demoPath}\'
+</script>
+
+## Demo
+
+<DemoContainer>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
 <Demo/>
 </DemoContainer>
 `
