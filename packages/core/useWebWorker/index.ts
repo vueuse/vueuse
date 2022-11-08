@@ -46,7 +46,7 @@ export function useWebWorker<Data = any>(
 ): UseWebWorkerReturn<Data> {
   const {
     window = defaultWindow,
-  } = options ?? {}
+  } = options || {}
 
   const data: Ref<any> = ref(null)
   const worker = shallowRef<Worker>()
