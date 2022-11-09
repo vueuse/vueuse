@@ -2,6 +2,32 @@ import { promiseTimeout } from '@vueuse/shared'
 import { get, set } from 'idb-keyval'
 import { useIDBKeyval } from '.'
 
+const cache = {} as any
+
+vi.mock('idb-keyval', () => ({
+  get: (key: string) => Promise.resolve(cache[key]),
+  set: (key: string, value: any) => new Promise((resolve) => {
+    if (value === 'error')
+      throw new Error('set error')
+
+    cache[key] = value
+
+    resolve(undefined)
+  }),
+  update: (key: string, updater: () => any) => new Promise((resolve) => {
+    const value = updater()
+    if (value === 'error')
+      throw new Error('update error')
+
+    cache[key] = value
+
+    resolve(undefined)
+  }),
+  del: (key: string) => {
+    delete cache[key]
+  },
+}))
+
 const KEY1 = 'vue-use-idb-keyval-1'
 const KEY2 = 'vue-use-idb-keyval-2'
 const KEY3 = 'vue-use-idb-keyval-3'
@@ -19,7 +45,7 @@ describe('useIDBKeyval', () => {
   it('get/set', async () => {
     expect(data1.value).toEqual({ count: 0 })
     expect(data2.value).toEqual(['foo', 'bar'])
-    expect(data3.value).toEqual('world')
+    expect(data3.value).toEqual('hello')
 
     await promiseTimeout(50)
 
@@ -52,11 +78,10 @@ describe('useIDBKeyval', () => {
     expect(await get(KEY3)).toBeUndefined()
   })
 
-  it('throw error on update proxy object', async () => {
-    // @ts-expect-error mock update proxy
-    data1.value = { count: new Proxy({}, {}) }
+  it('catch error on update error', async () => {
+    data3.value = 'error'
 
-    await promiseTimeout(100)
+    await promiseTimeout(50)
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
