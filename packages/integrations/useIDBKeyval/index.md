@@ -16,7 +16,7 @@ npm install idb-keyval
 ## Usage
 
 ```ts
-import { useIDBKeyval } from '@vueuse/integrations'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 // bind object
 const storedObject = useIDBKeyval('my-idb-keyval-store', { hello: 'hi', greeting: 'Hello' })
