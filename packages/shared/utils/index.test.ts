@@ -1,5 +1,5 @@
-import { ref } from 'vue-demi'
-import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, hasOwn, increaseWithUnit, isBoolean, isClient, isDef, isFunction, isIOS, isNumber, isObject, isString, isWindow, noop, now, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { isVue3, ref } from 'vue-demi'
+import { __onlyVue3, assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isBoolean, isClient, isDef, isFunction, isIOS, isNumber, isObject, isString, isWindow, noop, now, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -262,5 +262,39 @@ describe('is', () => {
 
     obj3.a = 2
     expect(hasOwn(obj3, 'a')).toBeTruthy()
+  })
+})
+
+describe('compatibility', () => {
+  it('should export module', () => {
+    expect(__onlyVue3).toBeDefined()
+    expect(directiveHooks).toBeDefined()
+  })
+
+  it('__onlyVues', () => {
+    if (isVue3) {
+      expect(__onlyVue3()).toBeUndefined()
+    }
+    else {
+      expect(() => __onlyVue3()).toThrowError('[VueUse] this function is only works on Vue 3.')
+      expect(() => __onlyVue3('func')).toThrowError('[VueUse] func is only works on Vue 3.')
+    }
+  })
+
+  it('directiveHooks', () => {
+    if (isVue3) {
+      expect(directiveHooks).toEqual({
+        mounted: 'mounted',
+        updated: 'updated',
+        unmounted: 'unmounted',
+      })
+    }
+    else {
+      expect(directiveHooks).toEqual({
+        mounted: 'inserted',
+        updated: 'componentUpdated',
+        unmounted: 'unbind',
+      })
+    }
   })
 })
