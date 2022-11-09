@@ -24,7 +24,7 @@ useSubscription(
         immediate: true,
         deep: false,
       })),
-      map(([total, curr]) => curr + total),
+      map(([curr, total]) => curr + total),
     )
     .subscribe(toObserver(count)),
 )
