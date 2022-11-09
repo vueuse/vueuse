@@ -86,6 +86,11 @@
       "types": "./useAsyncValidator/component.d.ts",
       "require": "./useAsyncValidator/component.cjs",
       "import": "./useAsyncValidator/component.mjs"
+    },
+    "./useIDBKeyval": {
+      "types": "./useIDBKeyval.d.ts",
+      "require": "./useIDBKeyval.cjs",
+      "import": "./useIDBKeyval.mjs"
     }
   },
   "main": "./index.cjs",
@@ -100,6 +105,7 @@
     "drauu": "*",
     "focus-trap": "*",
     "fuse.js": "*",
+    "idb-keyval": "*",
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
@@ -122,6 +128,9 @@
       "optional": true
     },
     "fuse.js": {
+      "optional": true
+    },
+    "idb-keyval": {
       "optional": true
     },
     "jwt-decode": {
@@ -151,6 +160,7 @@
     "drauu": "^0.3.2",
     "focus-trap": "^7.0.0",
     "fuse.js": "^6.6.2",
+    "idb-keyval": "^6.2.0",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.1",

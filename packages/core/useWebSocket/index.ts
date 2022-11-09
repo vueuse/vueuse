@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { Fn } from '@vueuse/shared'
-import { tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
+import type { Fn, MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -143,7 +143,7 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param url
  */
 export function useWebSocket<Data = any>(
-  url: string,
+  url: MaybeComputedRef<string | URL>,
   options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {
@@ -159,6 +159,7 @@ export function useWebSocket<Data = any>(
   const data: Ref<Data | null> = ref(null)
   const status = ref<WebSocketStatus>('CLOSED')
   const wsRef = ref<WebSocket | undefined>()
+  const urlRef = resolveRef(url)
 
   let heartbeatPause: Fn | undefined
   let heartbeatResume: Fn | undefined
@@ -206,7 +207,7 @@ export function useWebSocket<Data = any>(
     if (explicitlyClosed)
       return
 
-    const ws = new WebSocket(url, protocols)
+    const ws = new WebSocket(urlRef.value, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
 
@@ -281,9 +282,6 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (immediate)
-    _init()
-
   if (autoClose) {
     useEventListener(window, 'beforeunload', () => close())
     tryOnScopeDispose(close)
@@ -295,6 +293,9 @@ export function useWebSocket<Data = any>(
     retried = 0
     _init()
   }
+
+  if (immediate)
+    watch(urlRef, open, { immediate: true })
 
   return {
     data,

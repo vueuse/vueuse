@@ -189,7 +189,7 @@ export function useScroll(
   useEventListener(
     element,
     'scroll',
-    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
+    throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
     eventListenerOptions,
   )
 
