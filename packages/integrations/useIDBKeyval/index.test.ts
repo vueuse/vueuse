@@ -56,7 +56,7 @@ describe('useIDBKeyval', () => {
     // @ts-expect-error mock update proxy
     data1.value = { count: new Proxy({}, {}) }
 
-    await promiseTimeout(50)
+    await promiseTimeout(100)
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
