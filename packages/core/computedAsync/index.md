@@ -25,7 +25,7 @@ const userInfo = computedAsync(
 
 ### Evaluation State
 
-You will need to pass a ref to track if the async function is evaluating,
+You will need to pass a ref to track if the async function is evaluating.
 
 ```js
 import { ref } from 'vue'
