@@ -11,7 +11,7 @@ Reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geol
 ```js
 import { useGeolocation } from '@vueuse/core'
 
-const { coords, locatedAt, error } = useGeolocation()
+const { coords, locatedAt, error, resume, pause } = useGeolocation()
 ```
 
 | State     | Type                                                                          | Description                                                              |
@@ -19,6 +19,8 @@ const { coords, locatedAt, error } = useGeolocation()
 | coords    | [`Coordinates`](https://developer.mozilla.org/en-US/docs/Web/API/Coordinates) | information about the position retrieved like the latitude and longitude |
 | locatedAt | `Date`                                                                        | The time of the last geolocation call                                    |
 | error     | `string`                                                                      | An error message in case geolocation API fails.                          |
+| resume     | `function`                                                                      | Control function to resume updating geolocation |
+| pause      | `function`                                                                        | Control function to pause updating geolocation |
 
 ## Config
 

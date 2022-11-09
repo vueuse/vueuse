@@ -78,7 +78,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 ## Type Declarations
 
 <details>
-<summary op50 italic>Show Type Declarations</summary>
+<summary op50 italic cursor-pointer select-none>Show Type Declarations</summary>
 
 ${code}
 

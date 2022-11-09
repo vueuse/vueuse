@@ -184,7 +184,7 @@ export interface UseFetchOptions {
 
 export interface CreateFetchOptions {
   /**
-   * The base URL that will be prefixed to all urls
+   * The base URL that will be prefixed to all urls unless urls are absolute
    */
   baseUrl?: MaybeComputedRef<string>
 
@@ -213,6 +213,11 @@ export interface CreateFetchOptions {
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+}
+
+// A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+function isAbsoluteURL(url: string) {
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -249,10 +254,14 @@ export function createFetch(config: CreateFetchOptions = {}) {
   const _fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl
-      ? joinPaths(resolveUnref(config.baseUrl), resolveUnref(url))
-      : resolveUnref(url),
-    )
+    const computedUrl = computed(() => {
+      const baseUrl = resolveUnref(config.baseUrl)
+      const targetUrl = resolveUnref(url)
+
+      return baseUrl && !isAbsoluteURL(targetUrl)
+        ? joinPaths(baseUrl, targetUrl)
+        : targetUrl
+    })
 
     let options = _options
     let fetchOptions = _fetchOptions

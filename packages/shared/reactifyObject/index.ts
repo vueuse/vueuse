@@ -1,7 +1,7 @@
 import type { Reactified, ReactifyOptions } from '../reactify'
 import { reactify } from '../reactify'
 
-export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean= true> = { [K in Keys]: T[K] extends (...args: any[]) => any ? Reactified<T[K], S> : T[K] }
+export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends (...args: any[]) => any ? Reactified<T[K], S> : T[K] }
 
 export interface ReactifyObjectOptions<T extends boolean> extends ReactifyOptions<T> {
   /**

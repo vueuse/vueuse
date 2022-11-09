@@ -88,6 +88,7 @@ export const packages: PackageManifest[] = [
       '@vueuse/shared',
       'fuse.js',
       'async-validator',
+      'idb-keyval',
     ],
     globals: {
       'axios': 'axios',
@@ -100,6 +101,7 @@ export const packages: PackageManifest[] = [
       'fuse.js': 'Fuse',
       'change-case': 'changeCase',
       'async-validator': 'AsyncValidator',
+      'idb-keyval': 'idbKeyval',
     },
   },
   {
