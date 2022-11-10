@@ -14,6 +14,12 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [16.x, 18.x]
+      fail-fast: false
+
     steps:
       - uses: actions/checkout@v3
 
@@ -23,7 +29,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node }}
           cache: pnpm
 
       - name: Setup
@@ -40,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [14.x, 16.x]
+        node: [14.x, 16.x, 18.x]
       fail-fast: false
 
     steps:
