@@ -37,9 +37,11 @@ export function MarkdownTransform(): Plugin {
       const name = functionNames.find(n => n.toLowerCase() === _name.toLowerCase()) || _name
 
       if (functionNames.includes(name) && i === 'index.md') {
-        const frontmatterEnds = code.indexOf('---\n\n') + 4
+        const frontmatterEnds = code.indexOf('---\n\n')
         const firstSubheader = code.search(/\n## \w/)
-        const sliceIndex = firstSubheader < 0 ? frontmatterEnds : firstSubheader
+        const sliceIndex = firstSubheader < 0
+          ? (frontmatterEnds < 0 ? 0 : frontmatterEnds + 5)
+          : firstSubheader
 
         const { footer, header } = await getFunctionMarkdown(pkg, name)
 
