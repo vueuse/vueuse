@@ -1,6 +1,6 @@
-import { noop, promiseTimeout } from '@vueuse/shared'
-import type { Ref, UnwrapRef } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
+import {noop, promiseTimeout} from '@vueuse/shared'
+import type {Ref, UnwrapRef} from 'vue-demi'
+import {ref, shallowRef} from 'vue-demi'
 
 export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -97,22 +97,18 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
     if (delay > 0)
       await promiseTimeout(delay)
 
-    const _promise = typeof promise === 'function'
-      ? promise(...args)
-      : promise
-
     try {
-      const data = await _promise
-      state.value = data
+      const _promise = typeof promise === 'function'
+        ? promise(...args)
+        : promise
+      state.value = await _promise
       isReady.value = true
-    }
-    catch (e) {
+    } catch (e) {
       error.value = e
       onError(e)
       if (throwError)
-        throw error
-    }
-    finally {
+        throw e
+    } finally {
       isLoading.value = false
     }
 
