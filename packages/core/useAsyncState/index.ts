@@ -88,19 +88,20 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
   const error = ref<unknown | undefined>(undefined)
 
   async function execute(delay = 0, ...args: any[]) {
-    if (resetOnExecute)
-      state.value = initialState
-    error.value = undefined
-    isReady.value = false
-    isLoading.value = true
-
-    if (delay > 0)
-      await promiseTimeout(delay)
-
     try {
+      if (resetOnExecute)
+        state.value = initialState
+      error.value = undefined
+      isReady.value = false
+      isLoading.value = true
+
+      if (delay > 0)
+        await promiseTimeout(delay)
+
       const _promise = typeof promise === 'function'
         ? promise(...args)
         : promise
+
       state.value = await _promise
       isReady.value = true
     } catch (e) {
