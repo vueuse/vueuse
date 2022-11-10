@@ -1,6 +1,6 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
 import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
+import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -116,7 +116,7 @@ export function useStorage<T = unknown>(key: string, defaults: MaybeComputedRef<
  *
  * @see https://vueuse.org/useStorage
  */
-export function useStorage<T extends(string | number | boolean | object | null)>(
+export function useStorage<T extends (string | number | boolean | object | null)>(
   key: string,
   defaults: MaybeComputedRef<T>,
   storage: StorageLike | undefined,
@@ -180,7 +180,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function read(event?: StorageEvent) {
-    pauseWatch()
     try {
       const rawValue = event
         ? event.newValue
@@ -209,9 +208,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     catch (e) {
       onError(e)
     }
-    finally {
-      resumeWatch()
-    }
   }
 
   function update(event?: StorageEvent) {
@@ -226,6 +222,18 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     if (event && event.key !== key)
       return
 
-    data.value = read(event)
+    try {
+      if (event)
+        pauseWatch()
+
+      data.value = read(event)
+    }
+    finally {
+      if (event) {
+        nextTick(() => {
+          resumeWatch()
+        })
+      }
+    }
   }
 }
