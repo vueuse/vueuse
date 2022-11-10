@@ -7,8 +7,6 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-let IOSWorkaroundInitialized = false
-
 export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
@@ -46,10 +44,9 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !IOSWorkaroundInitialized) {
-    IOSWorkaroundInitialized = true
+  if (!(window as any).__VUEUSE_ONCLICKOUTSIDE__ && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    (window as any).__VUEUSE_ONCLICKOUTSIDE__ = true
     Array.from(window.document.body.children)
-      .filter(el => !/IFRAME|OBJECT|EMBED|LINK|SCRIPT|STYLE|TEMPLATE/.test(el.tagName))
       .forEach(el => el.addEventListener('click', noop))
   }
 
