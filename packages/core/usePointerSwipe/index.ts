@@ -13,22 +13,22 @@ export interface UsePointerSwipeOptions {
   threshold?: number
 
   /**
-   * Callback on swipe start
+   * Callback on swipe start.
    */
   onSwipeStart?: (e: PointerEvent) => void
 
   /**
-   * Callback on swipe move
+   * Callback on swipe move.
    */
   onSwipe?: (e: PointerEvent) => void
 
   /**
-   * Callback on swipe end
+   * Callback on swipe end.
    */
   onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
 
   /**
-   * Pointer types that listen to.
+   * Pointer types to listen to.
    *
    * @default ['mouse', 'touch', 'pen']
    */
@@ -100,15 +100,15 @@ export function usePointerSwipe(
     }
   })
 
-  const filterEvent = (e: PointerEvent) => {
-    if (options.pointerTypes)
-      return options.pointerTypes.includes(e.pointerType as PointerType)
-    return true
+  const eventIsAllowed = (e: PointerEvent): boolean => {
+    const isReleasingButton = e.buttons === 0
+    const isPrimaryButton = e.buttons === 1
+    return options.pointerTypes?.includes(e.pointerType as PointerType) ?? (isReleasingButton || isPrimaryButton) ?? true
   }
 
   const stops = [
     useEventListener(target, 'pointerdown', (e: PointerEvent) => {
-      if (!filterEvent(e))
+      if (!eventIsAllowed(e))
         return
       isPointerDown.value = true
       // Disable scroll on for TouchEvents
@@ -123,7 +123,7 @@ export function usePointerSwipe(
     }),
 
     useEventListener(target, 'pointermove', (e: PointerEvent) => {
-      if (!filterEvent(e))
+      if (!eventIsAllowed(e))
         return
       if (!isPointerDown.value)
         return
@@ -137,7 +137,7 @@ export function usePointerSwipe(
     }),
 
     useEventListener(target, 'pointerup', (e: PointerEvent) => {
-      if (!filterEvent(e))
+      if (!eventIsAllowed(e))
         return
       if (isSwiping.value)
         onSwipeEnd?.(e, direction.value)

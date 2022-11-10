@@ -64,7 +64,7 @@ export interface UseVirtualListReturn<T> {
   }>
 }
 
-export function useVirtualList <T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
+export function useVirtualList<T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
   const { containerStyle, wrapperProps, scrollTo, calculateRange, currentList, containerRef } = 'itemHeight' in options
     ? useVerticalVirtualList(options, list)
     : useHorizontalVirtualList(options, list)

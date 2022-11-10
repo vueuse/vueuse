@@ -50,7 +50,7 @@ const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
 /**
  * Memoized function
  */
-export interface UseMemoizeReturn <Result, Args extends unknown[]> {
+export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   /**
    * Get result from cache or call memoized function
    */
