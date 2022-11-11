@@ -1,6 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
+import useResizeObserver from '../useResizeObserver'
 
 export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
@@ -28,6 +29,8 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   }
 
   watch([input, textarea], triggerResize, { immediate: true })
+
+  useResizeObserver(textarea, () => triggerResize())
 
   if (options?.watch)
     watch(options.watch, triggerResize, { immediate: true, deep: true })
