@@ -71,7 +71,9 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
     if (!specialEvents.get(key))
       specialEvents.set(key, {})
 
-    specialEvents.get(key)![event as any] ??= []
+    if (!specialEvents.get(key)![event as any])
+      specialEvents.get(key)![event as any] = []
+
     specialEvents.get(key)![event as any].push(listener)
 
     return _off
