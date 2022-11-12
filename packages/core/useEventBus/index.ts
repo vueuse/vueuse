@@ -1,9 +1,11 @@
 import type { Fn } from '@vueuse/shared'
 import { getCurrentScope } from 'vue-demi'
-import { events } from './internal'
+import { events, specialEvents } from './internal'
 
 export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void
 export type EventBusEvents<T, P = any> = EventBusListener<T, P>[]
+
+export type EventBusSpecialEvents<T = unknown> = Map<EventBusIdentifier<T>, Record<string | number | symbol, EventBusListener<any, any>[]>>
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
@@ -17,6 +19,10 @@ export interface UseEventBusReturn<T, P> {
    * @returns a stop function to remove the current callback.
    */
   on: (listener: EventBusListener<T, P>) => Fn
+  /**
+   * Subscribe to a special event.
+   */
+  onSpecial: (event: T, listener: EventBusListener<T, P>) => Fn
   /**
    * Similar to `on`, but only fires once
    * @param listener watch listener.
@@ -33,6 +39,11 @@ export interface UseEventBusReturn<T, P> {
    * @param listener watch listener.
    */
   off: (listener: EventBusListener<T>) => void
+  /**
+   * Remove the special event listener
+   *
+   */
+  offSpecial: (event: T, listener: EventBusListener<T, P>) => void
   /**
    * Clear all events
    */
@@ -51,6 +62,18 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
     // auto unsubscribe when scope get disposed
     // @ts-expect-error vue3 and vue2 mis-align
     scope?.cleanups?.push(_off)
+    return _off
+  }
+
+  function onSpecial(event: T, listener: EventBusListener<T, P>) {
+    const _off = () => offSpecial(event, listener)
+
+    if (!specialEvents.get(key))
+      specialEvents.set(key, {})
+
+    specialEvents.get(key)![event as any] ??= []
+    specialEvents.get(key)![event as any].push(listener)
+
     return _off
   }
 
@@ -75,13 +98,31 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
       events.delete(key)
   }
 
+  function offSpecial(event: T, listener: EventBusListener<T, P>) {
+    const listeners = (specialEvents.get(key) || {} as any)[event]
+
+    if (!listeners)
+      return
+
+    const index = listeners.indexOf(listener)
+
+    if (index > -1)
+      listeners.splice(index, 1)
+  }
+
   function reset() {
     events.delete(key)
+    specialEvents.delete(key)
   }
 
   function emit(event?: T, payload?: P) {
+    const special = event ? specialEvents.get(key) : undefined
+
+    if (special)
+      special[event as any]?.forEach(cb => cb(event, payload))
+
     events.get(key)?.forEach(v => v(event, payload))
   }
 
-  return { on, once, off, emit, reset }
+  return { on, once, off, emit, reset, onSpecial, offSpecial }
 }

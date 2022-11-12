@@ -140,4 +140,65 @@ describe('useEventBus', () => {
     emit('dec', 1)
     expect(counter.count.value).toBe(2)
   })
+
+  it('should work with special events listeners', () => {
+    const bus = useEventBus<'inc' | 'dec'>('special_bus_general')
+
+    const { inc, dec, count } = useCounter(0)
+
+    bus.onSpecial('inc', () => inc())
+    bus.onSpecial('dec', () => dec())
+
+    bus.emit('inc')
+    bus.emit('inc')
+    bus.emit()
+
+    expect(count.value).toBe(2)
+
+    bus.emit('dec')
+    bus.emit('dec')
+    bus.emit()
+
+    expect(count.value).toBe(0)
+  })
+
+  it('should work with special event listener removing', () => {
+    const bus = useEventBus('special_bus_removing')
+
+    const { inc, count, dec } = useCounter(0)
+
+    const listener = () => inc()
+
+    bus.onSpecial('inc', listener)
+    bus.offSpecial('inc', listener)
+
+    bus.emit('inc')
+    bus.emit('inc')
+
+    const stop = bus.onSpecial('dec', () => dec())
+    stop()
+
+    bus.emit('dec')
+    bus.emit('dec')
+
+    expect(count.value).toBe(0)
+  })
+
+  it('works with reset and special events listeners', () => {
+    const bus = useEventBus('special_bus_reset')
+
+    const { inc, count } = useCounter(0)
+
+    bus.onSpecial('inc', () => inc())
+
+    bus.emit('inc')
+
+    expect(count.value).toBe(1)
+
+    bus.reset()
+
+    bus.emit('inc')
+
+    expect(count.value).toBe(1)
+  })
 })
