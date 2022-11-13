@@ -18,7 +18,7 @@ const injectVueDemi: Plugin = {
     return `${VUE_DEMI_IIFE};\n;${code}`
   },
 }
-const injectShare: Plugin = {
+const injectShared: Plugin = {
   name: 'inject-shared',
   renderChunk(code) {
     const SHARED_IIFE = fs.readFileSync(resolve(__dirname, '../packages/shared/dist/index.iife.js'), 'utf-8')
@@ -97,8 +97,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            name === 'shared' ? injectVueDemi : null,
-            name === 'shared' ? null : injectShare,
+            name === 'shared' ? injectVueDemi : injectShared,
           ],
         },
         {
@@ -108,8 +107,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            name === 'shared' ? injectVueDemi : null,
-            name === 'shared' ? null : injectShare,
+            name === 'shared' ? injectVueDemi : injectShared,
             esbuildMinifer({
               minify: true,
             }),
