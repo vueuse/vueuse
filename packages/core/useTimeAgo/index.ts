@@ -129,7 +129,7 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
   const { abs, round } = Math
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
 
-  function getTimeago(from: Date, now: Date) {
+  function getTimeAgo(from: Date, now: Date) {
     const diff = +now - +from
     const absDiff = abs(diff)
 
@@ -167,7 +167,7 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  const timeAgo = computed(() => getTimeago(new Date(resolveUnref(time)), unref(now.value)))
+  const timeAgo = computed(() => getTimeAgo(new Date(resolveUnref(time)), unref(now.value)))
 
   if (exposeControls) {
     return {

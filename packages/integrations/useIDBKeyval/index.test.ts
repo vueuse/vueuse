@@ -6,18 +6,22 @@ const cache = {} as any
 
 vi.mock('idb-keyval', () => ({
   get: (key: string) => Promise.resolve(cache[key]),
-  set: (key: string, value: any) => new Promise((resolve) => {
-    if (value === 'error')
-      throw new Error('set error')
+  set: (key: string, value: any) => new Promise((resolve, reject) => {
+    if (value === 'error') {
+      reject(new Error('set error'))
+      return
+    }
 
     cache[key] = value
 
     resolve(undefined)
   }),
-  update: (key: string, updater: () => any) => new Promise((resolve) => {
+  update: (key: string, updater: () => any) => new Promise((resolve, reject) => {
     const value = updater()
-    if (value === 'error')
-      throw new Error('update error')
+    if (value === 'error') {
+      reject(new Error('update error'))
+      return
+    }
 
     cache[key] = value
 
@@ -80,6 +84,14 @@ describe('useIDBKeyval', () => {
 
   it('catch error on update error', async () => {
     data3.value = 'error'
+
+    await promiseTimeout(50)
+
+    expect(console.error).toHaveBeenCalledTimes(1)
+  })
+
+  it('catch error on init error', async () => {
+    useIDBKeyval('ERROR_KEY', 'error')
 
     await promiseTimeout(50)
 
