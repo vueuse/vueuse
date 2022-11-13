@@ -30,8 +30,8 @@ const posts = useFirestore(postsQuery)
 // you can use the boolean value to tell a query when it is ready to run
 // when it gets falsy value, return the initial value
 const userId = ref('')
-const userQuery = computed(() => !!userId.value && doc(db, 'users', userId.value))
-const userData = useFirestore(userQuery, [])
+const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
+const userData = useFirestore(userQuery, null)
 ```
 
 ## Share across instances
