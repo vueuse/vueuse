@@ -24,8 +24,8 @@ const specialEventListener = (event: string) => {
 // listen to an event
 const unsubscribe = bus.on(listener)
 
-// listen defined event
-const unsubscribeSpecial = bus.onSpecial('The special event', specialEventListener)
+// Or listen defined event
+const unsubscribeSpecial = bus.on('The special event', specialEventListener)
 
 // fire an event
 bus.emit('The Tokyo Olympics has begun')
@@ -35,7 +35,7 @@ unsubscribe()
 unsubscribeSpecial()
 // or
 bus.off(listener)
-bus.offSpecial('The special event', specialEventListener)
+bus.off('The special event', specialEventListener)
 
 // clearing all listeners
 bus.reset()

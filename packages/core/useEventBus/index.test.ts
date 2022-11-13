@@ -146,8 +146,8 @@ describe('useEventBus', () => {
 
     const { inc, dec, count } = useCounter(0)
 
-    bus.onSpecial('inc', () => inc())
-    bus.onSpecial('dec', () => dec())
+    bus.on('inc', () => inc())
+    bus.on('dec', () => dec())
 
     bus.emit('inc')
     bus.emit('inc')
@@ -169,13 +169,13 @@ describe('useEventBus', () => {
 
     const listener = () => inc()
 
-    bus.onSpecial('inc', listener)
-    bus.offSpecial('inc', listener)
+    bus.on('inc', listener)
+    bus.off('inc', listener)
 
     bus.emit('inc')
     bus.emit('inc')
 
-    const stop = bus.onSpecial('dec', () => dec())
+    const stop = bus.on('dec', () => dec())
     stop()
 
     bus.emit('dec')
@@ -189,7 +189,7 @@ describe('useEventBus', () => {
 
     const { inc, count } = useCounter(0)
 
-    bus.onSpecial('inc', () => inc())
+    bus.on('inc', () => inc())
 
     bus.emit('inc')
 
