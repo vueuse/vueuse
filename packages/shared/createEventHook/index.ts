@@ -2,7 +2,7 @@
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
-import { tryOnBeforeUnmount } from '@vueuse/shared/tryOnBeforeUnmount'
+import { tryOnBeforeUnmount } from '../tryOnBeforeUnmount'
 
 export type EventHookOn<T = any> = (fn: (param: T) => void, detached?: boolean) => { off: () => void }
 export type EventHookOff<T = any> = (fn: (param: T) => void) => void
