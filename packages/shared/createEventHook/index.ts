@@ -2,8 +2,9 @@
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
+import { tryOnBeforeUnmount } from '@vueuse/shared/tryOnBeforeUnmount'
 
-export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
+export type EventHookOn<T = any> = (fn: (param: T) => void, detached?: boolean) => { off: () => void }
 export type EventHookOff<T = any> = (fn: (param: T) => void) => void
 export type EventHookTrigger<T = any> = (param: T) => void
 
@@ -27,8 +28,11 @@ export function createEventHook<T = any>(): EventHook<T> {
       fns.splice(index, 1)
   }
 
-  const on = (fn: (param: T) => void) => {
+  const on = (fn: (param: T) => void, detached = true) => {
     fns.push(fn)
+
+    if (!detached)
+      tryOnBeforeUnmount(() => off(fn))
 
     return {
       off: () => off(fn),

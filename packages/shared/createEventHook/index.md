@@ -44,3 +44,16 @@ onError((error) => {
 })
 </script>
 ```
+
+The function won't be offed in default, to automatically off it, pass `false` to second param of `on` function
+```html
+<script setup lang="ts">
+import { useMyFetch } from './my-fetch-function'
+
+const { onResult } = useMyFetch('my api url')
+
+onResult((result) => {
+  console.log(result)
+}, false)
+</script>
+```
