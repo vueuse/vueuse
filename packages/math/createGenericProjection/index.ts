@@ -7,7 +7,7 @@ export type ProjectorFunction<F, T> = (input: F, from: readonly [F, F], to: read
 
 export type UseProjection<F, T> = (input: MaybeComputedRef<F>) => ComputedRef<T>
 
-export function createGenericProjection<F=number, T=number>(
+export function createGenericProjection<F = number, T = number>(
   fromDomain: MaybeComputedRef<readonly [F, F]>,
   toDomain: MaybeComputedRef<readonly [T, T]>,
   projector: ProjectorFunction<F, T>,
