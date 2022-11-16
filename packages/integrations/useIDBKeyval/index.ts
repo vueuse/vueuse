@@ -55,8 +55,8 @@ export function useIDBKeyval<T>(
     try {
       const rawValue = await get<T>(key)
       if (rawValue === undefined) {
-        if (rawInit)
-          set(key, rawInit)
+        if (rawInit !== undefined && rawInit !== null)
+          await set(key, rawInit)
       }
       else {
         data.value = rawValue

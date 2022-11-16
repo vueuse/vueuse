@@ -56,7 +56,7 @@ To use a full featured or custom clone function, you can set up via the `dump` o
 For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
 
 ```ts
-import { cloneDeep } from 'lodash-es'
+import { useManualRefHistory } from '@vueuse/core'
 
 const refHistory = useManualRefHistory(target, { clone: structuredClone })
 ```
