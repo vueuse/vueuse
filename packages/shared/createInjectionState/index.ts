@@ -8,7 +8,7 @@ import { type InjectionKey, inject, provide } from 'vue-demi'
  */
 export function createInjectionState<Arguments extends Array<any>, Return>(
   composable: (...args: Arguments) => Return,
-): readonly [useProvidingState: (...args: Arguments) => void, useInjectedState: () => Return | undefined] {
+): readonly [useProvidingState: (...args: Arguments) => Return, useInjectedState: () => Return | undefined] {
   const key: string | InjectionKey<Return> = Symbol('InjectionState')
   const useProvidingState = (...args: Arguments) => {
     const state = composable(...args)
