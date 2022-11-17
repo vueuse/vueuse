@@ -63,9 +63,7 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
  * @param revealed `boolean` `ref` that handles a modal window
  */
 export function useConfirmDialog<
-  RevealData = any,
-  ConfirmData = any,
-  CancelData = any,
+  RevealData = any, ConfirmData = any, CancelData = any,
 >(revealed: Ref<boolean> = ref(false)): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   const confirmHook: EventHook = createEventHook<ConfirmData>()
   const cancelHook: EventHook = createEventHook<CancelData>()

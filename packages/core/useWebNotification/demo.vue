@@ -13,7 +13,13 @@ const options: UseWebNotificationOptions = {
 const {
   isSupported,
   show,
+  onShow,
 } = useWebNotification(options)
+
+onShow(() => {
+  // Do something with the notification on:show event...
+  console.log('notification was shown')
+})
 </script>
 
 <template>

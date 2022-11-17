@@ -31,9 +31,7 @@ export interface UseJwtReturn<Payload, Header, Fallback> {
  * @param jwt
  */
 export function useJwt<
-  Payload extends object = JwtPayload,
-  Header extends object = JwtHeader,
-  Fallback = null,
+  Payload extends object = JwtPayload, Header extends object = JwtHeader, Fallback = null,
 >(
   encodedJwt: MaybeComputedRef<string>,
   options: UseJwtOptions<Fallback> = {},

@@ -171,10 +171,10 @@ export const useWebNotification = (
     notification,
     show,
     close,
-    onClick,
-    onShow,
-    onError,
-    onClose,
+    onClick: onClick.on,
+    onShow: onShow.on,
+    onError: onError.on,
+    onClose: onClose.on,
   }
 }
 

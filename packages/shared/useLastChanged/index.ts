@@ -3,8 +3,7 @@ import { ref, watch } from 'vue-demi'
 import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<
-  Immediate extends boolean,
-  InitialValue extends number | null | undefined = undefined,
+  Immediate extends boolean, InitialValue extends number | null | undefined = undefined,
 > extends WatchOptions<Immediate> {
   initialValue?: InitialValue
 }
