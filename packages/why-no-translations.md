@@ -16,7 +16,7 @@ There are a lot of functions in VueUse. Maintaining the code and reviewing PRs a
 
 ## Maintenance Focus
 
-VueUse is a non-profit open source project, with the limited resources, we want to focus more on the logic and code of VueUse. We are trying out best to make the functions as intuitive and self-explainable as possible. We also want to focus more on improving the existing English documentation and demo.
+VueUse is a non-profit open source project, with the limited resources, we want to focus more on the logic and code of VueUse. We are trying our best to make the functions as intuitive and self-explainable as possible. We also want to focus more on improving the existing English documentation and demo.
 
 We are also counting on the better and improved machine translation as time goes, where users can use the translation tools to read the documentation in their own language easily if needed.
 
