@@ -1,6 +1,5 @@
 import type { Fn } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
-import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -50,13 +49,18 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       .forEach(el => el.addEventListener('click', noop))
   }
 
-  const shouldListen = ref(true)
+  let shouldListen = true
 
   const listener = (event: PointerEvent) => {
     const el = unrefElement(target)
 
-    if (!el || el === event.target || event.composedPath().includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el))
       return
+
+    if (!shouldListen) {
+      shouldListen = true
+      return
+    }
 
     handler(event)
   }
@@ -72,7 +76,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el) && !shouldIgnore(e)
+      if (el)
+        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       const el = unrefElement(target)

@@ -1,74 +1,100 @@
-import { nextTick } from 'vue-demi'
-import { del, get, set, update } from 'idb-keyval'
+import { promiseTimeout } from '@vueuse/shared'
+import { get, set } from 'idb-keyval'
 import { useIDBKeyval } from '.'
 
-const KEY = 'vue-use-idb-keyval'
+const cache = {} as any
 
-const defaultState = {
-  name: 'Banana',
-  color: 'Yellow',
-  size: 'Medium',
-  count: 0,
-}
+vi.mock('idb-keyval', () => ({
+  get: (key: string) => Promise.resolve(cache[key]),
+  set: (key: string, value: any) => new Promise((resolve, reject) => {
+    if (value === 'error') {
+      reject(new Error('set error'))
+      return
+    }
 
-beforeEach(() => {
-  vi.unmock('idb-keyval')
-  vi.mock('idb-keyval')
-})
+    cache[key] = value
 
+    resolve(undefined)
+  }),
+  update: (key: string, updater: () => any) => new Promise((resolve, reject) => {
+    const value = updater()
+    if (value === 'error') {
+      reject(new Error('update error'))
+      return
+    }
+
+    cache[key] = value
+
+    resolve(undefined)
+  }),
+  del: (key: string) => {
+    delete cache[key]
+  },
+}))
+
+const KEY1 = 'vue-use-idb-keyval-1'
+const KEY2 = 'vue-use-idb-keyval-2'
+const KEY3 = 'vue-use-idb-keyval-3'
 describe('useIDBKeyval', () => {
-  it('set/get', async () => {
-    const state = useIDBKeyval(KEY, { ...defaultState })
-    await nextTick()
-    expect(get).toHaveBeenCalled()
-    expect(set).toHaveBeenCalled()
-    expect(state.value).toEqual(defaultState)
+  beforeEach(() => {
+    console.error = vi.fn()
+  })
+
+  set(KEY3, 'hello')
+
+  const data1 = useIDBKeyval(KEY1, { count: 0 })
+  const data2 = useIDBKeyval(KEY2, ['foo', 'bar'])
+  const data3 = useIDBKeyval(KEY3, 'world', { shallow: true })
+
+  it('get/set', async () => {
+    expect(data1.value).toEqual({ count: 0 })
+    expect(data2.value).toEqual(['foo', 'bar'])
+    expect(data3.value).toEqual('hello')
+
+    await promiseTimeout(50)
+
+    expect(await get(KEY1)).toEqual(data1.value)
+    expect(await get(KEY2)).toEqual(data2.value)
+    expect(await get(KEY3)).toEqual(data3.value)
   })
 
   it('update', async () => {
-    const state = useIDBKeyval(KEY, { ...defaultState })
-    state.value.name = 'Apple'
-    state.value.color = 'Red'
-    state.value.size = 'Giant'
-    state.value.count += 1
+    data1.value.count++
+    data2.value.push('woo')
+    data3.value = 'world'
 
-    await nextTick()
-    expect(update).toHaveBeenCalled()
-    expect(state.value.name).toBe('Apple')
-    expect(state.value.color).toBe('Red')
-    expect(state.value.size).toBe('Giant')
-    expect(state.value.count).toBe(defaultState.count + 1)
+    await promiseTimeout(50)
+
+    expect(await get(KEY1)).toEqual(data1.value)
+    expect(await get(KEY2)).toEqual(data2.value)
+    expect(await get(KEY3)).toEqual(data3.value)
   })
 
   it('del', async () => {
-    const state = useIDBKeyval(KEY, { ...defaultState })
-    state.value = null
-    await nextTick()
-    expect(del).toHaveBeenCalled()
+    data1.value = null
+    data2.value = null
+    data3.value = null
+
+    await promiseTimeout(50)
+
+    expect(await get(KEY1)).toBeUndefined()
+    expect(await get(KEY2)).toBeUndefined()
+    expect(await get(KEY3)).toBeUndefined()
   })
 
-  it('string', async () => {
-    const state = useIDBKeyval(KEY, 'foo')
-    await nextTick()
-    expect(get).toHaveBeenCalled()
-    expect(set).toHaveBeenCalled()
-    expect(state.value).toEqual('foo')
-    state.value = 'bar'
-    await nextTick()
-    expect(state.value).toEqual('bar')
-    expect(update).toHaveBeenCalled()
+  it('catch error on update error', async () => {
+    data3.value = 'error'
+
+    await promiseTimeout(50)
+
+    expect(console.error).toHaveBeenCalledTimes(1)
   })
 
-  it('array', async () => {
-    const defaultArray = ['foo', 'bar', 'baz']
-    const state = useIDBKeyval(KEY, [...defaultArray])
-    await nextTick()
-    expect(get).toHaveBeenCalled()
-    expect(set).toHaveBeenCalled()
-    expect(state.value).toEqual(defaultArray)
-    state.value[1] = 'boop'
-    await nextTick()
-    expect(state.value[1]).toEqual('boop')
-    expect(update).toHaveBeenCalled()
+  it('catch error on init error', async () => {
+    useIDBKeyval('ERROR_KEY', 'error')
+
+    await promiseTimeout(50)
+
+    expect(console.error).toHaveBeenCalledTimes(1)
   })
 })
