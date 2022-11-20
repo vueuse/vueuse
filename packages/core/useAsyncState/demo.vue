@@ -5,7 +5,6 @@ import { useAsyncState } from '@vueuse/core'
 
 const { isLoading, state, isReady, execute } = useAsyncState(
   (args) => {
-    console.log(args)
     const id = args?.id || 200
     return axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`).then(t => t.data)
   },
