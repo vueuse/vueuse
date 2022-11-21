@@ -1,5 +1,16 @@
+import type { MaybeRef } from '@vueuse/shared'
 import { computed, ref, unref, watchEffect } from 'vue-demi'
-import type { MaybeRef } from '../../shared/utils/types'
+
+/**
+ * Timer statuses
+*/
+export type TimerStatus = 'RUNNING' | 'PAUSED' | 'FINISHED' | 'STOPPED'
+
+/**
+ * Supported timer formats
+ * @see https://www.w3.org/TR/NOTE-datetime
+ */
+export type TimerFormat = 'DD:hh:mm:ss' | 'hh:mm:ss' | 'mm:ss' | 'ss'
 
 export interface UseTimerOptions {
   /**
@@ -8,20 +19,28 @@ export interface UseTimerOptions {
    * @default false
    */
   immediate?: boolean
+  /**
+   * Defines the timer format
+   *
+   * @default mm:ss
+   */
+  format?: TimerFormat
+  /**
+   * Callback function called on timer end
+   *
+   * @default mm:ss
+   */
+  onTimerEnd?: (...args: unknown[]) => any
 }
 
-export type TimerStatus = 'RUNNING' | 'PAUSED' | 'FINISHED' | 'STOPPED'
-
 /**
- * Timer with callback option
+ * Reactive timer composable
  *
  * @param startSeconds
- * @param callback
  * @param options
  */
 export function useTimer(
   startSeconds: MaybeRef<number>,
-  callback?: (...args: unknown[]) => any,
   options?: UseTimerOptions,
 ) {
   const intervalId = ref<number>()
@@ -31,18 +50,28 @@ export function useTimer(
   const hours = ref(0)
   const days = ref(0)
   const status = ref<TimerStatus>('STOPPED')
-
-  const padValue = (timeframe: number) => String(timeframe).padStart(2, '0')
-
-  const timer = computed(() => [
-    hours.value, minutes.value, seconds.value,
-  ].map((padValue)).join(':'))
+  const { onTimerEnd, immediate = false, format = 'mm:ss' } = options ?? {}
 
   watchEffect(() => {
     seconds.value = secondsLeft.value % 60
     minutes.value = Math.floor((secondsLeft.value % (60 * 60)) / 60)
     hours.value = Math.floor((secondsLeft.value % (60 * 60 * 24)) / (60 * 60))
     days.value = Math.floor(secondsLeft.value / (60 * 60 * 24))
+  })
+
+  function padValue(timeframe: number) {
+    return String(timeframe).padStart(2, '0')
+  }
+
+  const timer = computed(() => {
+    const timerFormats = {
+      'DD:hh:mm:ss': [days.value, hours.value, minutes.value, seconds.value],
+      'hh:mm:ss': [hours.value, minutes.value, seconds.value],
+      'mm:ss': [minutes.value, seconds.value],
+      'ss': [seconds.value],
+    }
+    const timeframes = timerFormats[format] || []
+    return timeframes.map(padValue).join(':')
   })
 
   function handleTimerStart() {
@@ -60,8 +89,8 @@ export function useTimer(
   function handleTimeover() {
     handleTimerStop()
     status.value = 'FINISHED'
-    if (callback)
-      callback()
+    if (onTimerEnd)
+      onTimerEnd()
   }
 
   function handleTimerReset() {
@@ -88,7 +117,7 @@ export function useTimer(
     handleTimerReset()
   }
 
-  if (options?.immediate)
+  if (immediate)
     start()
 
   return { start, pause, reset, status, timer, seconds, minutes, hours, days }
