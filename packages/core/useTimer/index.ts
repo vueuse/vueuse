@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { ConfigurableFlush, MaybeRef } from '@vueuse/shared'
 import { computed, ref, unref, watchEffect } from 'vue-demi'
 
 /**
@@ -12,7 +12,7 @@ export type TimerStatus = 'RUNNING' | 'PAUSED' | 'FINISHED' | 'STOPPED'
  */
 export type TimerFormat = 'DD:hh:mm:ss' | 'hh:mm:ss' | 'mm:ss' | 'ss'
 
-export interface UseTimerOptions {
+export interface UseTimerOptions extends ConfigurableFlush {
   /**
    * Start the timer immediate after calling this function
    *
@@ -50,14 +50,14 @@ export function useTimer(
   const hours = ref(0)
   const days = ref(0)
   const status = ref<TimerStatus>('STOPPED')
-  const { onTimerEnd, immediate = false, format = 'mm:ss' } = options ?? {}
+  const { onTimerEnd, immediate = false, format = 'mm:ss', flush = 'pre' } = options ?? {}
 
   watchEffect(() => {
     seconds.value = secondsLeft.value % 60
     minutes.value = Math.floor((secondsLeft.value % (60 * 60)) / 60)
     hours.value = Math.floor((secondsLeft.value % (60 * 60 * 24)) / (60 * 60))
     days.value = Math.floor(secondsLeft.value / (60 * 60 * 24))
-  })
+  }, { flush })
 
   function padValue(timeframe: number) {
     return String(timeframe).padStart(2, '0')
