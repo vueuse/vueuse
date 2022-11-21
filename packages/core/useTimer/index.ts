@@ -43,7 +43,7 @@ export function useTimer(
   startSeconds: MaybeRef<number>,
   options?: UseTimerOptions,
 ) {
-  const intervalId = ref<number>()
+  let intervalId: ReturnType<typeof setInterval> | null = null
   const secondsLeft = ref(unref(startSeconds))
   const seconds = ref(0)
   const minutes = ref(0)
@@ -75,7 +75,7 @@ export function useTimer(
   })
 
   function handleTimerStart() {
-    intervalId.value = window.setInterval(() => {
+    intervalId = setInterval(() => {
       secondsLeft.value -= 1
       if (secondsLeft.value <= 0)
         handleTimeover()
@@ -83,7 +83,7 @@ export function useTimer(
   }
 
   function handleTimerStop() {
-    clearInterval(intervalId.value)
+    clearInterval(intervalId)
   }
 
   function handleTimeover() {
