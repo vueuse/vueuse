@@ -83,7 +83,8 @@ export function useTimer(
   }
 
   function handleTimerStop() {
-    clearInterval(intervalId)
+    if (intervalId)
+      clearInterval(intervalId)
   }
 
   function handleTimeover() {
@@ -107,6 +108,8 @@ export function useTimer(
   }
 
   function pause() {
+    if (status.value !== 'RUNNING')
+      return
     handleTimerStop()
     status.value = 'PAUSED'
   }
