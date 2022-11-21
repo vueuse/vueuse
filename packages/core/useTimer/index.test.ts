@@ -15,7 +15,7 @@ describe('useTimer', () => {
   })
 
   it('should initiate timer', async () => {
-    const { start, status, seconds } = useTimer(5, undefined)
+    const { start, status, seconds } = useTimer(5)
     expect(status.value).toBe('STOPPED')
     start()
     vi.advanceTimersToNextTimer()
@@ -25,12 +25,12 @@ describe('useTimer', () => {
   })
 
   it('should initiate timer with immediate option', () => {
-    const { status } = useTimer(5, undefined, { immediate: true })
+    const { status } = useTimer(5, { immediate: true })
     expect(status.value).toBe('RUNNING')
   })
 
   it('should have finished status on time over', async () => {
-    const { seconds, status } = useTimer(5, undefined, { immediate: true })
+    const { seconds, status } = useTimer(5, { immediate: true })
     vi.runAllTimers()
     await nextTick()
     expect(seconds.value).toBe(0)
@@ -39,7 +39,7 @@ describe('useTimer', () => {
 
   it('should execute callback on timer end', () => {
     const mockFn = vi.fn()
-    const { start } = useTimer(2, mockFn)
+    const { start } = useTimer(2, { onTimerEnd: mockFn })
     start()
     vi.runAllTimers()
     expect(mockFn).toHaveBeenCalledOnce()
@@ -47,7 +47,7 @@ describe('useTimer', () => {
 
   it('should pause timer', async () => {
     const mockFn = vi.fn()
-    const { pause, status, seconds } = useTimer(5, mockFn, { immediate: true })
+    const { pause, status, seconds } = useTimer(5, { immediate: true, onTimerEnd: mockFn })
     pause()
     vi.runAllTimers()
     await nextTick()
@@ -57,7 +57,7 @@ describe('useTimer', () => {
   })
 
   it('should unpause timer when start is called', async () => {
-    const { start, pause, status, seconds } = useTimer(5, undefined, { immediate: true })
+    const { start, pause, status, seconds } = useTimer(5, { immediate: true })
     pause()
     vi.advanceTimersByTime(2000)
     start()
@@ -68,7 +68,7 @@ describe('useTimer', () => {
   })
 
   it('should restart timer after it is finished', async () => {
-    const { start, seconds, status } = useTimer(5, undefined, { immediate: true })
+    const { start, seconds, status } = useTimer(5, { immediate: true })
     vi.runAllTimers()
     start()
     await nextTick()
@@ -77,7 +77,7 @@ describe('useTimer', () => {
   })
 
   it('should reset timer', async () => {
-    const { reset, seconds, status } = useTimer(5, undefined, { immediate: true })
+    const { reset, seconds, status } = useTimer(5, { immediate: true })
     vi.advanceTimersByTime(2000)
     reset()
     await nextTick()
@@ -87,7 +87,7 @@ describe('useTimer', () => {
 
   it('should return correct timer value', async () => {
     const dayInSeconds = 86400
-    const { timer } = useTimer(dayInSeconds, undefined, { immediate: true })
+    const { timer } = useTimer(dayInSeconds, { immediate: true, format: 'hh:mm:ss' })
     vi.advanceTimersByTime(1000)
     await nextTick()
     expect(timer.value).toBe('23:59:59')
@@ -95,8 +95,8 @@ describe('useTimer', () => {
 
   it('should return correct days value', async () => {
     const dayInSeconds = 86400
-    const { days } = useTimer(dayInSeconds)
+    const { timer } = useTimer(dayInSeconds, { format: 'DD:hh:mm:ss' })
     await nextTick()
-    expect(days.value).toBe(1)
+    expect(timer.value).toBe('01:00:00:00')
   })
 })
