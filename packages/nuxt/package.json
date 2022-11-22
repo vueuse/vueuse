@@ -34,10 +34,10 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "peerDependencies": {
-    "nuxt": "^3.0.0-rc.9"
+    "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.13",
+    "@nuxt/kit": "^3.0.0",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.2",
