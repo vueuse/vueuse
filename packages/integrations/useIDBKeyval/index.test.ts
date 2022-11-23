@@ -100,7 +100,7 @@ describe('useIDBKeyval', () => {
     expect(console.error).toHaveBeenCalledTimes(1)
   })
   it ('isFinished', async () => {
-    const { isFinished } = useIDBKeyval(KEY4, 'test', { writeDefaults: false })
+    const { isFinished } = useIDBKeyval(KEY4, 'test')
     expect(isFinished.value).toBe(false)
 
     await promiseTimeout(50)
