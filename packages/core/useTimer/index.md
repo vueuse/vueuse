@@ -14,11 +14,17 @@ import { useTimer } from '@vueuse/core'
 const initialTime = ref(30)
 
 // Default format mm:ss
-const { start, pause, reset, status, timer } = useTimer(initialTime)
+const timer = useTimer(initialTime)
 ```
 
+## With controls
 ```ts
 const {
+  start,
+  pause,
+  reset,
+  status,
+  timer,
   days,
   hours,
   minutes,
@@ -50,6 +56,6 @@ days, hours, minutes, seconds
 ## Statuses
 
 - RUNNING -> The timer is active
-- STOPPED -> The timer is not started 
+- STOPPED -> The timer has not started
 - PAUSED -> The timer is paused
 - FINISHED -> The timer is finished

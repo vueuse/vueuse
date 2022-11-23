@@ -4,7 +4,7 @@ import { ref } from 'vue-demi'
 
 const initialTime = ref(30)
 
-const { start, pause, reset, status, timer } = useTimer(initialTime)
+const { start, pause, reset, status, timer } = useTimer(initialTime, { controls: true })
 </script>
 
 <template>
