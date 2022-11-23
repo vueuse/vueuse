@@ -59,3 +59,16 @@ days, hours, minutes, seconds
 - STOPPED -> The timer has not started
 - PAUSED -> The timer is paused
 - FINISHED -> The timer is finished
+
+## Component Usage
+
+```html
+  <UseTimer
+    v-slot="{ timer }"
+    :start-seconds="5"
+    :immediate="true"
+    @timer-end="handleTimerFinish"
+  > 
+    Timer {{ timer }}
+  </UseTimer>
+```
