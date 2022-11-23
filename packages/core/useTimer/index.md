@@ -45,6 +45,7 @@ const { timer } = useTimer(10, {
 - immediate -> Start the timer immediately
 - onTimerEnd -> Function called when the timer ends
 - format -> timer format
+- flush -> configures flush for the timeframes watchEffect
 
 ## Formats
 days, hours, minutes, seconds
