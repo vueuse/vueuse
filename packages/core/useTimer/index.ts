@@ -1,4 +1,5 @@
 import type { ConfigurableFlush, MaybeRef } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, unref, watchEffect } from 'vue-demi'
 
 /**
@@ -12,7 +13,13 @@ export type TimerStatus = 'RUNNING' | 'PAUSED' | 'FINISHED' | 'STOPPED'
  */
 export type TimerFormat = 'DD:hh:mm:ss' | 'hh:mm:ss' | 'mm:ss' | 'ss'
 
-export interface UseTimerOptions extends ConfigurableFlush {
+export interface UseTimerOptions<Controls extends boolean> extends ConfigurableFlush {
+  /**
+   * Expose controls
+   *
+   * @default false
+   */
+  controls?: Controls
   /**
    * Start the timer immediate after calling this function
    *
@@ -34,15 +41,29 @@ export interface UseTimerOptions extends ConfigurableFlush {
 }
 
 /**
+ * Return with controls
+*/
+interface UseTimerReturnWithControls {
+  start: () => void
+  pause: () => void
+  reset: () => void
+  status: Ref<TimerStatus>
+  timer: ComputedRef<string>
+  seconds: Ref<number>
+  minutes: Ref<number>
+  hours: Ref<number>
+  days: Ref<number>
+}
+
+/**
  * Reactive timer composable
  *
  * @param startSeconds
  * @param options
  */
-export function useTimer(
-  startSeconds: MaybeRef<number>,
-  options?: UseTimerOptions,
-) {
+export function useTimer(startSeconds: MaybeRef<number>, options?: UseTimerOptions<false>): ComputedRef<string>
+export function useTimer(startSeconds: MaybeRef<number>, options: UseTimerOptions<true>): UseTimerReturnWithControls
+export function useTimer(startSeconds: MaybeRef<number>, options: UseTimerOptions<boolean> = {}) {
   let intervalId: ReturnType<typeof setInterval> | null = null
   const secondsLeft = ref(unref(startSeconds))
   const seconds = ref(0)
@@ -50,7 +71,7 @@ export function useTimer(
   const hours = ref(0)
   const days = ref(0)
   const status = ref<TimerStatus>('STOPPED')
-  const { onTimerEnd, immediate = false, format = 'mm:ss', flush = 'pre' } = options ?? {}
+  const { onTimerEnd, immediate = false, format = 'mm:ss', flush = 'pre', controls = false } = options
 
   watchEffect(() => {
     seconds.value = secondsLeft.value % 60
@@ -123,5 +144,10 @@ export function useTimer(
   if (immediate)
     start()
 
-  return { start, pause, reset, status, timer, seconds, minutes, hours, days }
+  if (controls)
+    return { start, pause, reset, status, timer, seconds, minutes, hours, days }
+  else
+    return timer
 }
+
+export type UseTimerReturn = ReturnType<typeof useTimer>
