@@ -37,10 +37,10 @@ const REGEX_OPT_FORMAT = new RegExp(`\\[${REGEX_LITERAL.source}?(${REGEX_SYMBOLS
 const matches: Record<string, (ts: TimeSpan, pad: number, opt?: boolean) => string> = {
   '+': ({ totalMilliseconds: ms }) => (ms.value >= 0) ? '+' : '-',
   '-': ({ totalMilliseconds: ms }) => (ms.value < 0) ? '-' : '',
-  'd': (ts, pad, opt) => (!opt || Math.abs(ts.totalDays.value) > 1) ? String(Math.abs(ts.days.value)).padStart(pad, '0') : '',
-  'h': (ts, pad, opt) => (!opt || Math.abs(ts.totalHours.value) > 1) ? String(Math.abs(ts.hours.value)).padStart(pad, '0') : '',
-  'm': (ts, pad, opt) => (!opt || Math.abs(ts.totalMinutes.value) > 1) ? String(Math.abs(ts.minutes.value)).padStart(pad, '0') : '',
-  's': (ts, pad, opt) => (!opt || Math.abs(ts.totalSeconds.value) > 1) ? String(Math.abs(ts.seconds.value)).padStart(pad, '0') : '',
+  'd': (ts, pad, opt) => (!opt || Math.abs(ts.totalDays.value) >= 1) ? String(Math.abs(ts.days.value)).padStart(pad, '0') : '',
+  'h': (ts, pad, opt) => (!opt || Math.abs(ts.totalHours.value) >= 1) ? String(Math.abs(ts.hours.value)).padStart(pad, '0') : '',
+  'm': (ts, pad, opt) => (!opt || Math.abs(ts.totalMinutes.value) >= 1) ? String(Math.abs(ts.minutes.value)).padStart(pad, '0') : '',
+  's': (ts, pad, opt) => (!opt || Math.abs(ts.totalSeconds.value) >= 1) ? String(Math.abs(ts.seconds.value)).padStart(pad, '0') : '',
   'f': (ts, pad, opt) => {
     const ms = String(Math.abs(ts.milliseconds.value)).padStart(3, '0').slice(0, pad)
     return (!opt || !/^0+$/.test(ms)) ? ms : ''
