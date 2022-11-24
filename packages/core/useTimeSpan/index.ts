@@ -21,6 +21,7 @@ export interface TimeSpan {
   hours: ComputedRef<number>
   days: ComputedRef<number>
   formatted: ComputedRef<string>
+  toString(format?: string): string
 }
 
 // This regex will generate 2 groups and only one is defined with literal
@@ -83,7 +84,10 @@ export function useTimeSpan(milliseconds: MaybeComputedRef<number>): TimeSpan {
     minutes: computed(() => Math.trunc(totalMinutes.value) % minHour),
     hours: computed(() => Math.trunc(totalHours.value) % hrDay),
     days: computed(() => Math.trunc(totalDays.value)),
-    formatted: computed(() => formatTimeSpan(ts, '-[d\\.]hh:mm:ss[\\.ff]')),
+    formatted: computed(() => ts.toString()),
+    toString(format = '-[d\\.][hh\\:]mm:ss[\\.ff]') {
+      return formatTimeSpan(ts, format)
+    },
   }
 
   return ts
