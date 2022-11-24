@@ -30,7 +30,7 @@ export interface TimeSpan {
 // Branch Reset exp => (?|'([^']+)'|\\(.))
 // Lookbehind exp => ((?<=')[^']+(?=')|(?<=\\).)
 const REGEX_LITERAL = /(?:'([^']+)'|\\(.))/
-const REGEX_SYMBOLS = /[+-]|d+|h{1,2}|m{1,2}|s{1,2}|f{1,3}/
+const REGEX_SYMBOLS = /[+-]|d+|h{1,2}|m{1,2}|s{1,2}|S+|f{1,3}/
 const REGEX_FORMAT = new RegExp(`${REGEX_LITERAL.source}|${REGEX_SYMBOLS.source}`, 'g')
 const REGEX_OPT_FORMAT = new RegExp(`\\[${REGEX_LITERAL.source}?(${REGEX_SYMBOLS.source})${REGEX_LITERAL.source}?]`, 'g')
 
@@ -41,6 +41,10 @@ const matches: Record<string, (ts: TimeSpan, pad: number, opt?: boolean) => stri
   'h': (ts, pad, opt) => (!opt || Math.abs(ts.totalHours.value) >= 1) ? String(Math.abs(ts.hours.value)).padStart(pad, '0') : '',
   'm': (ts, pad, opt) => (!opt || Math.abs(ts.totalMinutes.value) >= 1) ? String(Math.abs(ts.minutes.value)).padStart(pad, '0') : '',
   's': (ts, pad, opt) => (!opt || Math.abs(ts.totalSeconds.value) >= 1) ? String(Math.abs(ts.seconds.value)).padStart(pad, '0') : '',
+  'S': (ts, pad, opt) => {
+    const s = Math.trunc(Math.abs(ts.totalSeconds.value))
+    return (!opt || s >= 1) ? String(s).padStart(pad, '0') : ''
+  },
   'f': (ts, pad, opt) => {
     const ms = String(Math.abs(ts.milliseconds.value)).padStart(3, '0').slice(0, pad)
     return (!opt || !/^0+$/.test(ms)) ? ms : ''
