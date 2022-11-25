@@ -43,10 +43,16 @@ describe('useVirtualList, vertical', () => {
     expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(1)
-    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(2)
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd'])
+
+    scrollTo(3)
     expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e'])
+
+    scrollTo(4)
+    expect(list.value.map(i => i.data)).toEqual(['d', 'e'])
   })
 
   it('returns window with overscan', () => {
@@ -63,13 +69,13 @@ describe('useVirtualList, vertical', () => {
     expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(1)
-    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(2)
-    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
 
     scrollTo(3)
-    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
   })
 })
 
@@ -112,10 +118,16 @@ describe('useVirtualList, horizontal', () => {
     expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(1)
-    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(2)
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd'])
+
+    scrollTo(3)
     expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e'])
+
+    scrollTo(4)
+    expect(list.value.map(i => i.data)).toEqual(['d', 'e'])
   })
 
   it('returns window with overscan', () => {
@@ -132,12 +144,15 @@ describe('useVirtualList, horizontal', () => {
     expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(1)
-    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c'])
 
     scrollTo(2)
-    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
 
     scrollTo(3)
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+
+    scrollTo(4)
     expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
   })
 })

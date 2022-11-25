@@ -198,7 +198,7 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
     }
 
     const size = source.value
-      .slice(0, index + 1)
+      .slice(0, index)
       .reduce((sum, _, i) => sum + itemSize(i), 0)
 
     return size
