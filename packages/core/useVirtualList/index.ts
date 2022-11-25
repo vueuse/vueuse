@@ -119,21 +119,24 @@ function useVirtualListResourses<T>(list: MaybeRef<T[]>): UseVirtualListResource
   return { state, source, currentList, size, containerRef }
 }
 
-function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
-  return (containerHeight: number) => {
+function createGetViewCapacity<T>(
+  state: UseVirtualListResources<T>['state'],
+  source: UseVirtualListResources<T>['source'],
+  itemSize: UseVirtualListItemSize,
+) {
+  return (containerSize: number) => {
     if (typeof itemSize === 'number')
-      return Math.ceil(containerHeight / itemSize)
+      return Math.ceil(containerSize / itemSize)
 
     const { start = 0 } = state.value
     let sum = 0
     let capacity = 0
-    for (let i = start; i < source.value.length; i++) {
-      const height = itemSize(i)
-      sum += height
-      if (sum >= containerHeight) {
-        capacity = i
+    for (let i = start; i < source.value.length + 1; i++) {
+      const size = itemSize(i)
+      sum += size
+      capacity = i
+      if (sum > containerSize)
         break
-      }
     }
     return capacity - start
   }
@@ -155,7 +158,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
         break
       }
     }
-    return offset + 1
+    return offset
   }
 }
 
@@ -176,6 +179,7 @@ function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: numb
           ? source.value.length
           : to,
       }
+
       currentList.value = source.value
         .slice(state.value.start, state.value.end)
         .map((ele, index) => ({
@@ -194,7 +198,7 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
     }
 
     const size = source.value
-      .slice(0, index)
+      .slice(0, index + 1)
       .reduce((sum, _, i) => sum + itemSize(i), 0)
 
     return size
