@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref } from 'vue-demi'
 import { useVirtualList } from '.'
 
 describe('useVirtualList', () => {
