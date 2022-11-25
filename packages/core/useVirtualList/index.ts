@@ -131,7 +131,7 @@ function createGetViewCapacity<T>(
     const { start = 0 } = state.value
     let sum = 0
     let capacity = 0
-    for (let i = start; i < source.value.length + 1; i++) {
+    for (let i = start; i < source.value.length; i++) {
       const size = itemSize(i)
       sum += size
       capacity = i
@@ -158,7 +158,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
         break
       }
     }
-    return offset
+    return offset + 1
   }
 }
 
