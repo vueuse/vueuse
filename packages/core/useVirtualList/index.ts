@@ -179,7 +179,6 @@ function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: numb
           ? source.value.length
           : to,
       }
-
       currentList.value = source.value
         .slice(state.value.start, state.value.end)
         .map((ele, index) => ({
