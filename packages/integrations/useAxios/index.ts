@@ -1,8 +1,8 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import { isString, until } from '@vueuse/shared'
-import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
-import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
   /**
@@ -176,9 +176,15 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     waitUntilFinished().then(onFulfilled, onRejected)
   const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
-    const _url = typeof executeUrl === 'string'
+    let _url = typeof executeUrl === 'string'
       ? executeUrl
-      : url ?? ''
+      : url ?? config.url
+
+    if (_url === undefined) {
+      error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
+      _url = ''
+    }
+
     loading(true)
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
