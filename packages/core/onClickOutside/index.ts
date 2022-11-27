@@ -42,7 +42,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  let shouldListen = true
+  let shouldListen = false
 
   let fallback: number
 
