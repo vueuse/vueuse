@@ -66,24 +66,31 @@ export const formatTimeSpan = (ts: TimeSpan, formatStr: string) => {
  * @param milliseconds A time period expressed in milliseconds
  * @returns TimeSpan object
  */
-export function useTimeSpan(milliseconds: MaybeComputedRef<number>): TimeSpan {
-  const ms = resolveRef(milliseconds)
-  const totalSeconds = computed(() => ms.value / msSecond)
-  const totalMinutes = computed(() => ms.value / msMinute)
-  const totalHours = computed(() => ms.value / msHour)
-  const totalDays = computed(() => ms.value / msDay)
+export function useTimeSpan(milliseconds: MaybeComputedRef<number>): TimeSpan
+export function useTimeSpan(minutes: number, seconds: number): TimeSpan
+export function useTimeSpan(hours: number, minutes: number, seconds: number): TimeSpan
+export function useTimeSpan(days: number, hours: number, minutes: number, seconds: number): TimeSpan
+export function useTimeSpan(days: number, hours: number, minutes: number, seconds: number, milliseconds: number): TimeSpan
+export function useTimeSpan(value: MaybeComputedRef<number>, ...args: number[]): TimeSpan {
+  const ms = resolveRef((!args.length)
+    ? value
+    : (args.length === 1)
+        ? ((value as number) * msMinute + args[0] * msSecond)
+        : (args.length === 2)
+            ? ((value as number) * msHour + args[0] * msMinute + args[1] * msSecond)
+            : ((value as number) * msDay + args[0] * msHour + args[1] * msMinute + args[2] * msSecond + (args[3] ?? 0)))
 
   const ts: TimeSpan = {
     totalMilliseconds: ms,
-    totalSeconds,
-    totalMinutes,
-    totalHours,
-    totalDays,
+    totalSeconds: computed(() => ms.value / msSecond),
+    totalMinutes: computed(() => ms.value / msMinute),
+    totalHours: computed(() => ms.value / msHour),
+    totalDays: computed(() => ms.value / msDay),
     milliseconds: computed(() => ms.value % msSecond),
-    seconds: computed(() => Math.trunc(totalSeconds.value) % secMinute),
-    minutes: computed(() => Math.trunc(totalMinutes.value) % minHour),
-    hours: computed(() => Math.trunc(totalHours.value) % hrDay),
-    days: computed(() => Math.trunc(totalDays.value)),
+    seconds: computed(() => Math.trunc(ts.totalSeconds.value) % secMinute),
+    minutes: computed(() => Math.trunc(ts.totalMinutes.value) % minHour),
+    hours: computed(() => Math.trunc(ts.totalHours.value) % hrDay),
+    days: computed(() => Math.trunc(ts.totalDays.value)),
     formatted: computed(() => ts.toString()),
     toString(format = '-[d\\.][hh\\:]mm:ss[\\.ff]') {
       return formatTimeSpan(ts, format)
