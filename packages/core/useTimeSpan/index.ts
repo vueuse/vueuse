@@ -92,3 +92,13 @@ export function useTimeSpan(milliseconds: MaybeComputedRef<number>): TimeSpan {
 
   return ts
 }
+
+function fromNum(value: MaybeComputedRef<number>, scale: number) {
+  const val = resolveRef(value)
+  return useTimeSpan(() => val.value * scale)
+}
+
+useTimeSpan.fromSeconds = (value: MaybeComputedRef<number>) => fromNum(value, msSecond)
+useTimeSpan.fromMinutes = (value: MaybeComputedRef<number>) => fromNum(value, msMinute)
+useTimeSpan.fromHours = (value: MaybeComputedRef<number>) => fromNum(value, msHour)
+useTimeSpan.fromDays = (value: MaybeComputedRef<number>) => fromNum(value, msDay)
