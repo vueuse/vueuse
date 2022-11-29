@@ -10,17 +10,55 @@ const msHour = msMinute * minHour // 3,600,000
 const msDay = msHour * hrDay // 86,400,000
 
 export interface TimeSpan {
+  /**
+   * Gets the value of the TimeSpan expressed in whole milliseconds.
+   */
   totalMilliseconds: ComputedRef<number>
+  /**
+   * Gets the value of the TimeSpan expressed in whole and fractional seconds.
+   */
   totalSeconds: ComputedRef<number>
+  /**
+   * Gets the value of the TimeSpan expressed in whole and fractional minutes.
+   */
   totalMinutes: ComputedRef<number>
+  /**
+   * Gets the value of the TimeSpan expressed in whole and fractional hours.
+   */
   totalHours: ComputedRef<number>
+  /**
+   * Gets the value of the TimeSpan expressed in whole and fractional days.
+   */
   totalDays: ComputedRef<number>
+  /**
+   * Gets the milliseconds component of the time interval.
+   */
   milliseconds: ComputedRef<number>
+  /**
+   * Gets the seconds component of the time interval.
+   */
   seconds: ComputedRef<number>
+  /**
+   * Gets the minutes component of the time interval.
+   */
   minutes: ComputedRef<number>
+  /**
+   * Gets the hours component of the time interval.
+   */
   hours: ComputedRef<number>
+  /**
+   * Gets the days component of the time interval.
+   */
   days: ComputedRef<number>
+  /**
+   * Get string representation of the TimeSpan value in the default format.
+   */
   formatted: ComputedRef<string>
+  /**
+   * Converts the value of the TimeSpan object to its equivalent string representation by using the specified format.
+   *
+   * @param format A format string.
+   */
   toString(format?: string): string
 }
 
@@ -63,16 +101,49 @@ const REGEX_SPARSE = /^(?:(\d+(?:\.\d+)?)d)?(?:(\d+(?:\.\d+)?)h)?(?:(\d+(?:\.\d+
 const REGEX_TPARSE = /^(?:(?:(\d+)(?:\.|:))?(\d{1,2}):)?(\d{1,2}):(\d{1,2})(?:(?:\.|:)(\d+))?$/
 
 /**
- * Get reactive TimeSpan object that represents a time interval value
- * in days, hours, minutes, seconds, and fractions of a second.
+ * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
  *
  * @param milliseconds A time period expressed in milliseconds
  * @returns TimeSpan object
  */
 export function useTimeSpan(milliseconds: MaybeComputedRef<number>): TimeSpan
+/**
+ * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
+ *
+ * @param minutes Number of minutes.
+ * @param seconds Number of seconds.
+ * @returns TimeSpan object
+ */
 export function useTimeSpan(minutes: number, seconds: number): TimeSpan
+/**
+ * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
+ *
+ * @param hours Number of hours.
+ * @param minutes Number of minutes.
+ * @param seconds Number of seconds.
+ * @returns TimeSpan object
+ */
 export function useTimeSpan(hours: number, minutes: number, seconds: number): TimeSpan
+/**
+ * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
+ *
+ * @param days Number of days.
+ * @param hours Number of hours.
+ * @param minutes Number of minutes.
+ * @param seconds Number of seconds.
+ * @returns TimeSpan object
+ */
 export function useTimeSpan(days: number, hours: number, minutes: number, seconds: number): TimeSpan
+/**
+ * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
+ *
+ * @param days Number of days.
+ * @param hours Number of hours.
+ * @param minutes Number of minutes.
+ * @param seconds Number of seconds.
+ * @param milliseconds Number of milliseconds.
+ * @returns TimeSpan object
+ */
 export function useTimeSpan(days: number, hours: number, minutes: number, seconds: number, milliseconds: number): TimeSpan
 export function useTimeSpan(value: MaybeComputedRef<number>, ...args: number[]): TimeSpan {
   const ms = resolveRef((!args.length)
@@ -95,7 +166,7 @@ export function useTimeSpan(value: MaybeComputedRef<number>, ...args: number[]):
     hours: computed(() => Math.trunc(ts.totalHours.value) % hrDay),
     days: computed(() => Math.trunc(ts.totalDays.value)),
     formatted: computed(() => ts.toString()),
-    toString(format = '-[d\\.][hh\\:]mm:ss[\\.ff]') {
+    toString(format = '-[d\\.]hh:mm:ss[\\.ff]') {
       return formatTimeSpan(ts, format)
     },
   }
@@ -108,11 +179,44 @@ function fromNum(value: MaybeComputedRef<number>, scale: number) {
   return useTimeSpan(() => val.value * scale)
 }
 
+/**
+ * Get reactive TimeSpan object that represents a specified number of seconds.
+ *
+ * @param value A number of seconds
+ * @returns TimeSpan object
+ */
 useTimeSpan.fromSeconds = (value: MaybeComputedRef<number>) => fromNum(value, msSecond)
+
+/**
+ * Get reactive TimeSpan object that represents a specified number of minutes.
+ *
+ * @param value A number of minutes
+ * @returns TimeSpan object
+ */
 useTimeSpan.fromMinutes = (value: MaybeComputedRef<number>) => fromNum(value, msMinute)
+
+/**
+ * Get reactive TimeSpan object that represents a specified number of hours.
+ *
+ * @param value A number of hours
+ * @returns TimeSpan object
+ */
 useTimeSpan.fromHours = (value: MaybeComputedRef<number>) => fromNum(value, msHour)
+
+/**
+ * Get reactive TimeSpan object that represents a specified number of days.
+ *
+ * @param value A number of days
+ * @returns TimeSpan object
+ */
 useTimeSpan.fromDays = (value: MaybeComputedRef<number>) => fromNum(value, msDay)
 
+/**
+ * Converts a string representation of a time interval to its TimeSpan equivalent.
+ *
+ * @param str A string that specifies the time interval to convert.
+ * @returns TimeSpan object
+ */
 useTimeSpan.parse = (str: string) => {
   const num = Number(str)
   if (Number.isNaN(num)) {
