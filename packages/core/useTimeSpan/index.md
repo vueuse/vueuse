@@ -29,10 +29,10 @@ console.log(useTimeSpan(2, 99, 18).toString()) // 03:39:18
 ```ts
 import { useTimeSpan } from '@vueuse/core'
 
-console.log(useTimeSpan.fromDays(1.23456).toString()) // 1.05:37:45.98
-console.log(useTimeSpan.fromHours(0.2539).toString()) // 00:15:14.04
+console.log(useTimeSpan.fromDays(1.23456).toString()) // 1.05:37:45.984
+console.log(useTimeSpan.fromHours(0.2539).toString()) // 00:15:14.040
 console.log(useTimeSpan.fromMinutes(60).toString()) // 01:00:00
-console.log(useTimeSpan.fromSeconds(32.15).toString()) // 00:00:32.15
+console.log(useTimeSpan.fromSeconds(32.157).toString()) // 00:00:32.157
 ```
 
 ### Parse
@@ -41,10 +41,10 @@ console.log(useTimeSpan.fromSeconds(32.15).toString()) // 00:00:32.15
 import { useTimeSpan } from '@vueuse/core'
 
 console.log(useTimeSpan.parse('54864').toString('s.ff')) // 54.86
-console.log(useTimeSpan.parse('77:88:99.100').toString()) // 3.06:29:39.10
-console.log(useTimeSpan.parse('498.57s').toString()) // 00:08:18.57
+console.log(useTimeSpan.parse('77:88:99.100').toString()) // 3.06:29:39.100
+console.log(useTimeSpan.parse('498.57s').toString()) // 00:08:18.570
 console.log(useTimeSpan.parse('1:1').toString()) // 00:01:01
-console.log(useTimeSpan.parse('24.3d').toString()) // 24.07:12:00
+console.log(useTimeSpan.parse('-24.3d').toString()) // -24.07:12:00
 ```
 
 ### Reactive
@@ -67,7 +67,7 @@ const { formatted } = useTimeSpan(() => now.value.getTime() - initTime)
 
 ## Format
 
-You can use the `formatted` property or `toString` function to get the formatted time interval according to the string of tokens passed in (`-[d\.]hh:mm:ss[\.ff]` by default).
+You can use the `formatted` reactive property or `toString` function to get formatted time interval according to the string of tokens passed in (`-[d\.]hh:mm:ss[\.fff]` by default).
 
 ```ts
 const time = useTimeSpan(251000)
@@ -81,7 +81,7 @@ You can use the `[]` token in the format string to conditionaly print only when 
 
 ```ts
 const time = useTimeSpan(518651005)
-console.log(time.toString('[d\\:][hh\\:]mm:ss[\\.ff]')) // 6:00:04:11
+console.log(time.toString('[d\\:][hh\\:]mm:ss[\\.fff]')) // 6:00:04:11
 ```
 :::
 

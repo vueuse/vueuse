@@ -85,7 +85,7 @@ const matches: Record<string, (ts: TimeSpan, pad: number, opt?: boolean) => stri
     return (!opt || s >= 1) ? String(s).padStart(pad, '0') : ''
   },
   'f': (ts, pad, opt) => {
-    const ms = String(Math.abs(ts.milliseconds.value)).padStart(3, '0').slice(0, pad)
+    const ms = String(Math.trunc(Math.abs(ts.milliseconds.value))).padStart(3, '0').slice(0, pad)
     return (!opt || !/^0+$/.test(ms)) ? ms : ''
   },
 }
@@ -97,8 +97,8 @@ export const formatTimeSpan = (ts: TimeSpan, formatStr: string) => {
   }).replace(REGEX_FORMAT, (match, $1, $2) => $1 || $2 || matches[match[0]](ts, match.length))
 }
 
-const REGEX_SPARSE = /^(?:(\d+(?:\.\d+)?)d)?(?:(\d+(?:\.\d+)?)h)?(?:(\d+(?:\.\d+)?)m)?(?:(\d+(?:\.\d+)?)s)?(?:(\d+(?:\.\d+)?)ms)?$/i
-const REGEX_TPARSE = /^(?:(?:(\d+)(?:\.|:))?(\d{1,2}):)?(\d{1,2}):(\d{1,2})(?:(?:\.|:)(\d+))?$/
+const REGEX_SPARSE = /^([+-])?(?:(\d+(?:\.\d+)?)d)?(?:(\d+(?:\.\d+)?)h)?(?:(\d+(?:\.\d+)?)m)?(?:(\d+(?:\.\d+)?)s)?(?:(\d+(?:\.\d+)?)ms)?$/i
+const REGEX_TPARSE = /^([+-])?(?:(?:(\d+)(?:\.|:))?(\d{1,2}):)?(\d{1,2}):(\d{1,2})(?:(?:\.|:)(\d+))?$/
 
 /**
  * Get reactive TimeSpan object that represents a time interval value in days, hours, minutes, seconds, and fractions of a second.
@@ -166,7 +166,7 @@ export function useTimeSpan(value: MaybeComputedRef<number>, ...args: number[]):
     hours: computed(() => Math.trunc(ts.totalHours.value) % hrDay),
     days: computed(() => Math.trunc(ts.totalDays.value)),
     formatted: computed(() => ts.toString()),
-    toString(format = '-[d\\.]hh:mm:ss[\\.ff]') {
+    toString(format = '-[d\\.]hh:mm:ss[\\.fff]') {
       return formatTimeSpan(ts, format)
     },
   }
@@ -221,8 +221,15 @@ useTimeSpan.parse = (str: string) => {
   const num = Number(str)
   if (Number.isNaN(num)) {
     const match = str.match(REGEX_SPARSE) ?? str.match(REGEX_TPARSE)
-    if (match)
-      return useTimeSpan(Number(match[1] ?? 0), Number(match[2] ?? 0), Number(match[3] ?? 0), Number(match[4] ?? 0), Number(match[5] ?? 0))
+    if (match) {
+      const sign = (match[1] === '-') ? -1 : 1
+      return useTimeSpan(
+        Number(match[2] ?? 0) * sign,
+        Number(match[3] ?? 0) * sign,
+        Number(match[4] ?? 0) * sign,
+        Number(match[5] ?? 0) * sign,
+        Number(match[6] ?? 0) * sign)
+    }
   }
 
   return useTimeSpan(num)
