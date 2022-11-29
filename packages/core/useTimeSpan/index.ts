@@ -59,6 +59,9 @@ export const formatTimeSpan = (ts: TimeSpan, formatStr: string) => {
   }).replace(REGEX_FORMAT, (match, $1, $2) => $1 || $2 || matches[match[0]](ts, match.length))
 }
 
+const REGEX_SPARSE = /^(?:(\d+(?:\.\d+)?)d)?(?:(\d+(?:\.\d+)?)h)?(?:(\d+(?:\.\d+)?)m)?(?:(\d+(?:\.\d+)?)s)?(?:(\d+(?:\.\d+)?)ms)?$/i
+const REGEX_TPARSE = /^(?:(?:(\d+)(?:\.|:))?(\d{1,2}):)?(\d{1,2}):(\d{1,2})(?:(?:\.|:)(\d+))?$/
+
 /**
  * Get reactive TimeSpan object that represents a time interval value
  * in days, hours, minutes, seconds, and fractions of a second.
@@ -109,3 +112,14 @@ useTimeSpan.fromSeconds = (value: MaybeComputedRef<number>) => fromNum(value, ms
 useTimeSpan.fromMinutes = (value: MaybeComputedRef<number>) => fromNum(value, msMinute)
 useTimeSpan.fromHours = (value: MaybeComputedRef<number>) => fromNum(value, msHour)
 useTimeSpan.fromDays = (value: MaybeComputedRef<number>) => fromNum(value, msDay)
+
+useTimeSpan.parse = (str: string) => {
+  const num = Number(str)
+  if (Number.isNaN(num)) {
+    const match = str.match(REGEX_SPARSE) ?? str.match(REGEX_TPARSE)
+    if (match)
+      return useTimeSpan(Number(match[1] ?? 0), Number(match[2] ?? 0), Number(match[3] ?? 0), Number(match[4] ?? 0), Number(match[5] ?? 0))
+  }
+
+  return useTimeSpan(num)
+}
