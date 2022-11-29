@@ -181,9 +181,24 @@ describe('useAxios', () => {
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
-      expect(isLoading.value).toBeFalsy()
-      expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
+    expect(isLoading.value).toBeFalsy()
+
+    expect(onRejected).toBeCalledTimes(0)
+  })
+
+  test('execute rejects on error', async () => {
+    const { isLoading, then, execute } = useAxios(config, instance)
+    expect(isLoading.value).toBeFalsy()
+    execute(`${path}/wrong-url`)
+    expect(isLoading.value).toBeTruthy()
+    const onResolved = vitest.fn()
+    const onRejected = vitest.fn()
+
+    await then(onResolved, onRejected)
+    expect(isLoading.value).toBeFalsy()
+    expect(onResolved).toBeCalledTimes(0)
+    expect(onRejected).toBeCalledTimes(1)
   })
 
   test('calling axios with config change(param/data etc.) only', async () => {
@@ -277,7 +292,7 @@ describe('useAxios', () => {
     console.error = vi.fn()
     // @ts-expect-error mock undefined url
     const { execute } = useAxios(undefined, config, options)
-    const { error } = await execute()
+    const { error } = await execute().then(undefined, res => res)
     expect(error.value).toBeDefined()
   })
 })

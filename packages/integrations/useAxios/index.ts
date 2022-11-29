@@ -168,9 +168,13 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const waitUntilFinished = () =>
     new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
       until(isFinished).toBe(true)
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        .then(() => resolve(result))
-        .catch(reject)
+        .then(() => {
+          /* eslint-disable @typescript-eslint/no-use-before-define */
+          if (error.value)
+            return reject(result)
+          resolve(result)
+          /* eslint-enable @typescript-eslint/no-use-before-define */
+        })
     })
   const then: PromiseLike<OverallUseAxiosReturn<T, R, D>>['then'] = (onFulfilled, onRejected) =>
     waitUntilFinished().then(onFulfilled, onRejected)
