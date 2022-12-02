@@ -4,7 +4,7 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-interface RafFnCallbackArguments {
+export interface UseRafFnCallbackArguments {
   /**
    * Time elapsed between this and the last frame.
    */
@@ -32,7 +32,7 @@ export interface UseRafFnOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useRafFn(fn: (args: RafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
+export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
     window = defaultWindow,
