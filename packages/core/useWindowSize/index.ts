@@ -19,6 +19,13 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
    * @default true
    */
   includeScrollbar?: boolean
+
+  /**
+   * Whether rounded integers or double values should be returned
+   * @default true
+   * @description Takes effects only when `includeScrollbar` is `false`
+   */
+  roundedValue?: boolean
 }
 
 /**
@@ -34,6 +41,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     initialHeight = Infinity,
     listenOrientation = true,
     includeScrollbar = true,
+    roundedValue = true,
   } = options
 
   const width = ref(initialWidth)
@@ -45,9 +53,15 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
         width.value = window.innerWidth
         height.value = window.innerHeight
       }
-      else {
+      else if (roundedValue) {
         width.value = window.document.documentElement.clientWidth
         height.value = window.document.documentElement.clientHeight
+      }
+      else {
+        // For certain cases that users want accurate double values instead of rounded integers (see #2486)
+        // https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport
+        width.value = window.visualViewport?.width ?? window.document.documentElement.clientWidth
+        height.value = window.visualViewport?.height ?? window.document.documentElement.clientHeight
       }
     }
   }
