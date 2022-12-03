@@ -53,4 +53,15 @@ describe('useWindowSize', () => {
     expect(call[0]).toEqual('orientationchange')
     expect(call[2]).toEqual({ passive: true })
   })
+
+  it('should return double values with `includeScrollbar` and `roundedValue` both set false', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100.5, initialHeight: 200.5, includeScrollbar: false, roundedValue: false })
+
+    const viewport = window.visualViewport
+
+    if (viewport) {
+      expect(width.value).toEqual(viewport.width)
+      expect(height.value).toEqual(viewport.height)
+    }
+  })
 })
