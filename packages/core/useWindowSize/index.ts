@@ -60,8 +60,11 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
       else {
         // For certain cases that users want accurate double values instead of rounded integers (see #2486)
         // https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport
-        width.value = window.visualViewport?.width ?? window.document.documentElement.clientWidth
-        height.value = window.visualViewport?.height ?? window.document.documentElement.clientHeight
+        const viewport = window.visualViewport
+        if (viewport) {
+          width.value = window.visualViewport.width
+          height.value = window.visualViewport.height
+        }
       }
     }
   }
