@@ -40,6 +40,21 @@ export interface UseWebSocketOptions {
      * @default 1000
      */
     pongTimeout?: number
+
+    /**
+     * Close code when no heartbeat response is received within the timeout.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
+     * @default 3001
+     */
+    pongTimeoutCloseCode?: number
+
+    /**
+     * Close reason when no heartbeat response is received within the timeout.
+     *
+     * @default 'Did not receive pong to previous ping'
+     */
+    pongTimeoutCloseReason?: string
   }
 
   /**
@@ -265,6 +280,8 @@ export function useWebSocket<Data = any>(
       message = DEFAULT_PING_MESSAGE,
       interval = 1000,
       pongTimeout = 1000,
+      pongTimeoutCloseCode = 3001,
+      pongTimeoutCloseReason = 'Did not receive pong to previous ping',
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
@@ -273,9 +290,10 @@ export function useWebSocket<Data = any>(
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
+          heartbeatPause?.()
+          resetHeartbeat()
           wsRef.value?.dispatchEvent(new Event('error'))
-          // auto-reconnect will be trigger with ws.onclose()
-          close()
+          wsRef.value?.close(pongTimeoutCloseCode, pongTimeoutCloseReason)
         }, pongTimeout)
       },
       interval,
