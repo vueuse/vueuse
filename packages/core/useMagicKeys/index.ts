@@ -2,6 +2,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed, reactive, ref, unref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
+import { useReactiveSet } from '@vueuse/shared/utils/set'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -80,8 +81,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     passive = true,
     onEventFired = noop,
   } = options
-  const current = reactive(new Set<string>())
-  const obj = { toJSON() { return {} }, current }
+  const current = useReactiveSet(new Set<string>())
+  const obj = { toJSON() { return {} }, current: current.value }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
   const usedKeys = new Set<string>()
@@ -108,9 +109,9 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     // current set
     if (key) {
       if (value)
-        current.add(key)
+        current.value.add(key)
       else
-        current.delete(key)
+        current.value.delete(key)
     }
 
     for (const key of values) {
@@ -124,13 +125,13 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     if (key === 'meta' && !value) {
       // Meta key released
       metaDeps.forEach((key) => {
-        current.delete(key)
+        current.value.delete(key)
         setRefs(key, false)
       })
       metaDeps.clear()
     }
     else if (typeof e.getModifierState === 'function' && e.getModifierState('Meta') && value) {
-      [...current, ...values].forEach(key => metaDeps.add(key))
+      [...current.value, ...values].forEach(key => metaDeps.add(key))
     }
   }
 
