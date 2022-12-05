@@ -273,6 +273,7 @@ export function useWebSocket<Data = any>(
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
+          wsRef.value?.dispatchEvent(new Event('error'))
           // auto-reconnect will be trigger with ws.onclose()
           close()
         }, pongTimeout)
