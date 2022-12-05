@@ -23,6 +23,7 @@ function getData<T>(
     Object.defineProperty(data, 'id', {
       value: docRef.id.toString(),
       writable: false,
+      enumerable: true
     })
   }
 
