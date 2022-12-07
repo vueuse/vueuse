@@ -29,6 +29,10 @@ export function createEventHook<T = any>(): EventHook<T> {
 
   const on = (fn: (param: T) => void) => {
     fns.push(fn)
+    
+    onScopeDispose(() => {
+      off(fn)
+    })
 
     return {
       off: () => off(fn),
