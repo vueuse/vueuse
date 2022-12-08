@@ -16,9 +16,9 @@ import { until, useAsyncState } from '@vueuse/core'
 const { state, isReady } = useAsyncState(
   fetch('https://jsonplaceholder.typicode.com/todos/1').then(t => t.json()),
   {},
-)
+);
 
-;(async () => {
+(async () => {
   await until(isReady).toBe(true)
 
   console.log(state) // state is now ready!
