@@ -61,7 +61,8 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     }
   }
 
-  resume()
+  if (immediate)
+      resume()
 
   function pause() {
     if (watcher && navigator)
