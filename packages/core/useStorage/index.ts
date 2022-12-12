@@ -1,6 +1,6 @@
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
-import { nextTick, ref, shallowRef } from 'vue-demi'
+import { isFunction, resolveUnref, watchIgnorable } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -154,7 +154,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
+  const { ignoreUpdates } = watchIgnorable(
     data,
     () => write(data.value),
     { flush, deep, eventFilter },
@@ -222,18 +222,10 @@ export function useStorage<T extends (string | number | boolean | object | null)
     if (event && event.key !== key)
       return
 
-    try {
-      if (event)
-        pauseWatch()
-
-      data.value = read(event)
-    }
-    finally {
-      if (event) {
-        nextTick(() => {
-          resumeWatch()
-        })
-      }
+    if (event) {
+      ignoreUpdates(() => {
+        data.value = read(event)
+      })
     }
   }
 }
