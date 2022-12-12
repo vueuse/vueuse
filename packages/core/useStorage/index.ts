@@ -137,6 +137,8 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   } = options
 
   const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
+  let _old_data = null;
+  let _is_circular = 0;
 
   if (!storage) {
     try {
@@ -224,6 +226,16 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     }
 
     if (event && event.key !== key)
+      return
+
+    if (event && _old_data === event.newValue && event.newValue != null) {
+      if (++_is_circular > 7)
+        return console.warn('useStorage: update: circular stopped')
+    }
+    else if (_is_circular > 0)
+      --_is_circular
+
+    if (event && event.oldValue !== (_old_data = serializer.write(data.value)))
       return
 
     data.value = read(event)
