@@ -87,7 +87,7 @@ export function useStyleTag(
     stop = watch(
       cssRef,
       (value) => {
-        el.innerText = value
+        el.textContent = value
       },
       { immediate: true },
     )
