@@ -1,5 +1,4 @@
 import type { Fn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -43,7 +42,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  const shouldListen = ref(true)
+  let shouldListen = true
 
   let fallback: number
 
@@ -52,8 +51,13 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
 
     const el = unrefElement(target)
 
-    if (!el || el === event.target || event.composedPath().includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el))
       return
+
+    if (!shouldListen) {
+      shouldListen = true
+      return
+    }
 
     handler(event)
   }
@@ -69,7 +73,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el) && !shouldIgnore(e)
+      if (el)
+        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
       if (e.button === 0) {
