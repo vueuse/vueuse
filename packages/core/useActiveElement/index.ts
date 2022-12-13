@@ -17,7 +17,12 @@ export function useActiveElement<T extends HTMLElement>(options: ConfigurableWin
   )
 
   if (window) {
-    useEventListener(window, 'blur', activeElement.trigger, true)
+    useEventListener(window, 'blur', (event) => {
+      if (event.relatedTarget === null)
+        return
+
+      activeElement.trigger()
+    }, true)
     useEventListener(window, 'focus', activeElement.trigger, true)
   }
 
