@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import useResizeObserver from '../useResizeObserver'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
