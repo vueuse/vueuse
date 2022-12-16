@@ -29,6 +29,9 @@ export default class ReactiveSet<T> extends Set<T> {
   }
 }
 
+/**
+ * Create a ref of a reactive Set. To be compatible with Vue 2.
+ */
 export function useReactiveSet<T>(values?: SetConstructorArgument<T>) {
   const inner = ref(new ReactiveSet<T>(onMutate, values))
 
