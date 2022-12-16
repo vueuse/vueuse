@@ -239,4 +239,28 @@ describe('useTimeAgo', () => {
       expect(useTimeAgo(changeTime).value).toBe('3 years ago')
     })
   })
+
+  test('rounding', () => {
+    changeValue.value = getNeededTimeChange('day', 5.49)
+    expect(useTimeAgo(changeTime).value).toBe('in 5 days')
+    expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('in 6 days')
+    expect(useTimeAgo(changeTime, { rounding: 'floor' }).value).toBe('in 5 days')
+    expect(useTimeAgo(changeTime, { rounding: 1 }).value).toBe('in 5.5 days')
+    expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 5.49 days')
+  })
+
+  test('custom units', () => {
+    changeValue.value = getNeededTimeChange('day', 14)
+    expect(useTimeAgo(changeTime).value).toBe('in 2 weeks')
+    expect(useTimeAgo(changeTime, {
+      units: [
+        { max: 60000, value: 1000, name: 'second' },
+        { max: 2760000, value: 60000, name: 'minute' },
+        { max: 72000000, value: 3600000, name: 'hour' },
+        { max: 518400000 * 30, value: 86400000, name: 'day' },
+        { max: 28512000000, value: 2592000000, name: 'month' },
+        { max: Infinity, value: 31536000000, name: 'year' },
+      ],
+    }).value).toBe('in 14 days')
+  })
 })
