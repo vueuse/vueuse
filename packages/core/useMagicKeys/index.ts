@@ -96,7 +96,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   function reset() {
-    current.clear()
+    current.value.clear()
     for (const key of usedKeys)
       setRefs(key, false)
   }
