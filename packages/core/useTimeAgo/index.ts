@@ -59,11 +59,11 @@ export interface UseTimeAgoOptions<Controls extends boolean> {
   showSecond?: boolean
 
   /**
-   * Function to apply to the diff to computed the time ago.
+   * Rounding method to apply.
    *
    * @default 'round'
    */
-  diffEval?: 'round' | 'ceil' | 'floor'
+  rounding?: 'round' | 'ceil' | 'floor'
 }
 
 interface UseTimeAgoUnit {
@@ -131,11 +131,11 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
     messages = DEFAULT_MESSAGES,
     fullDateFormatter = DEFAULT_FORMATTER,
     showSecond = false,
-    diffEval = 'round',
+    rounding = 'round',
   } = options
 
   const { abs } = Math
-  const evalDiff = Math[diffEval]
+  const roundFn = Math[rounding]
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
 
   function getTimeAgo(from: Date, now: Date) {
@@ -169,7 +169,7 @@ export function useTimeAgo(time: MaybeComputedRef<Date | number | string>, optio
   }
 
   function format(diff: number, unit: UseTimeAgoUnit) {
-    const val = evalDiff(abs(diff) / unit.value)
+    const val = roundFn(abs(diff) / unit.value)
     const past = diff > 0
 
     const str = applyFormat(unit.name, val, past)
