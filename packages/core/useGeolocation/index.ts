@@ -23,6 +23,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     maximumAge = 30000,
     timeout = 27000,
     navigator = defaultNavigator,
+    immediate = true,
   } = options
 
   const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
@@ -61,7 +62,8 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     }
   }
 
-  resume()
+  if (immediate)
+    resume()
 
   function pause() {
     if (watcher && navigator)

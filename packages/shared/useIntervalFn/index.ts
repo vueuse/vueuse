@@ -2,7 +2,7 @@ import { isRef, ref, unref, watch } from 'vue-demi'
 import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import type { Fn, MaybeComputedRef, Pausable } from '../utils'
-import { isClient } from '../utils'
+import { isClient, isFunction } from '../utils'
 
 export interface UseIntervalFnOptions {
   /**
@@ -61,7 +61,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000,
   if (immediate && isClient)
     resume()
 
-  if (isRef(interval)) {
+  if (isRef(interval) || isFunction(interval)) {
     const stopWatch = watch(interval, () => {
       if (isActive.value && isClient)
         resume()
