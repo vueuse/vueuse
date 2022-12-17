@@ -1,4 +1,6 @@
-import { computed, ref, set } from 'vue-demi'
+import { ref, set } from 'vue-demi'
+import { syncRef } from '../syncRef'
+import { tryOnUnmounted } from '../tryOnUnmounted'
 
 export type SetConstructorArgument<T> = readonly T[] | null | Set<T>
 
@@ -35,18 +37,16 @@ export default class ReactiveSet<T> extends Set<T> {
 export function useReactiveSet<T>(values?: SetConstructorArgument<T>) {
   const inner = ref(new ReactiveSet<T>(onMutate, values))
 
-  const reactiveSet = computed<Set<T>>({
-    get: () => {
-      return inner.value
-    },
-    set: (set: Set<T>) => {
-      inner.value = new ReactiveSet(onMutate, set)
-    },
-  })
+  // FIXME Use ref instead of computed, I don't know why, but it works now.
+  const reactiveSet = ref(inner.value)
+
+  const stop = syncRef(inner, reactiveSet)
 
   function onMutate() {
     set(reactiveSet, 'value', reactiveSet.value)
   }
+
+  tryOnUnmounted(stop)
 
   return reactiveSet
 }
