@@ -179,6 +179,16 @@ describe('useRefHistory - sync', () => {
     expect(history.value.length).toBe(2)
     expect(history.value[0].snapshot).toEqual({ foo: 2, bar: 'two' })
     expect(history.value[1].snapshot).toEqual({ foo: 1, bar: 'one' })
+
+    batch((cancel) => {
+      v.value.foo = 3
+      v.value.bar = 'three'
+      cancel()
+    })
+
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toEqual({ foo: 2, bar: 'two' })
+    expect(history.value[1].snapshot).toEqual({ foo: 1, bar: 'one' })
   })
 
   test('sync: pause and resume', () => {
@@ -204,6 +214,17 @@ describe('useRefHistory - sync', () => {
     expect(history.value.length).toBe(2)
     expect(history.value[0].snapshot).toBe(3)
     expect(last.value.snapshot).toBe(3)
+
+    pause()
+    v.value = 4
+
+    expect(history.value.length).toBe(2)
+    expect(last.value.snapshot).toBe(3)
+
+    resume(true)
+
+    expect(history.value.length).toBe(3)
+    expect(last.value.snapshot).toBe(4)
   })
 
   test('sync: reset', () => {
@@ -259,6 +280,22 @@ describe('useRefHistory - sync', () => {
 
     expect(redoStack.value.length).toBe(1)
     expect(redoStack.value[0].snapshot).toBe(3)
+  })
+
+  test('sync: dispose', () => {
+    const v = ref(0)
+    const { history, dispose, last } = useRefHistory(v, { flush: 'sync' })
+
+    v.value = 1
+    v.value = 2
+
+    dispose()
+
+    v.value = 3
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(last.value.snapshot).toBe(2)
   })
 })
 
@@ -419,6 +456,19 @@ describe('useRefHistory - pre', () => {
     expect(history.value.length).toBe(2)
     expect(history.value[0].snapshot).toBe(3)
     expect(last.value.snapshot).toBe(3)
+
+    pause()
+    v.value = 4
+    await nextTick()
+
+    expect(history.value.length).toBe(2)
+    expect(last.value.snapshot).toBe(3)
+
+    resume(true)
+    await nextTick()
+
+    expect(history.value.length).toBe(3)
+    expect(last.value.snapshot).toBe(4)
   })
 
   test('pre: reset', async () => {
@@ -505,5 +555,24 @@ describe('useRefHistory - pre', () => {
 
     await nextTick()
     expect(history.value.length).toBe(3)
+  })
+
+  test('pre: dispose', async () => {
+    const v = ref(0)
+    const { history, dispose, last } = useRefHistory(v)
+
+    v.value = 1
+    await nextTick()
+    v.value = 2
+    await nextTick()
+
+    dispose()
+
+    v.value = 3
+    await nextTick()
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(2)
+    expect(last.value.snapshot).toBe(2)
   })
 })

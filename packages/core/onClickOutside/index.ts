@@ -1,5 +1,4 @@
 import type { Fn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -23,6 +22,8 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   detectIframe?: boolean
 }
 
+export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
+
 /**
  * Listen for clicks outside of an element.
  *
@@ -33,7 +34,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  */
 export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void,
+  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
   const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
@@ -41,7 +42,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  const shouldListen = ref(true)
+  let shouldListen = true
 
   let fallback: number
 
@@ -49,27 +50,31 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     window.clearTimeout(fallback)
 
     const el = unrefElement(target)
-    const composedPath = event.composedPath()
 
-    if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el))
       return
 
-    if (ignore && ignore.length > 0) {
-      if (ignore.some((target) => {
-        const el = unrefElement(target)
-        return el && (event.target === el || composedPath.includes(el))
-      }))
-        return
+    if (!shouldListen) {
+      shouldListen = true
+      return
     }
 
     handler(event)
+  }
+
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore && ignore.some((target) => {
+      const el = unrefElement(target)
+      return el && (event.target === el || event.composedPath().includes(el))
+    })
   }
 
   const cleanup = [
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el)
+      if (el)
+        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
       if (e.button === 0) {
@@ -81,8 +86,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     detectIframe && useEventListener(window, 'blur', (event) => {
       const el = unrefElement(target)
       if (
-        document.activeElement?.tagName === 'IFRAME'
-        && !el?.contains(document.activeElement)
+        window.document.activeElement?.tagName === 'IFRAME'
+        && !el?.contains(window.document.activeElement)
       )
         handler(event as any)
     }),

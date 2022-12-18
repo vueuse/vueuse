@@ -1,6 +1,6 @@
-import type { ComputedRef, Ref } from 'vue-demi'
 import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -90,6 +90,7 @@ export interface UseFetchReturn<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
+type Combination = 'overwrite' | 'chain'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
@@ -183,9 +184,15 @@ export interface UseFetchOptions {
 
 export interface CreateFetchOptions {
   /**
-   * The base URL that will be prefixed to all urls
+   * The base URL that will be prefixed to all urls unless urls are absolute
    */
   baseUrl?: MaybeComputedRef<string>
+
+  /**
+   * Determine the inherit behavior for beforeFetch, afterFetch, onFetchError
+   * @default 'chain'
+   */
+  combination?: Combination
 
   /**
    * Default Options for the useFetch function
@@ -208,31 +215,53 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
+// A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+function isAbsoluteURL(url: string) {
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
+}
+
 function headersToObject(headers: HeadersInit | undefined) {
   if (typeof Headers !== 'undefined' && headers instanceof Headers)
     return Object.fromEntries([...headers.entries()])
   return headers
 }
 
-function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
-  return (ctx: T) => {
-    callbacks.forEach(async (callback) => {
-      if (callback)
-        ctx = { ...ctx, ...(await callback(ctx)) }
-    })
-    return ctx
+function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
+  if (combination === 'overwrite') {
+    // use last callback
+    return async (ctx: T) => {
+      const callback = callbacks[callbacks.length - 1]
+      if (callback !== undefined)
+        await callback(ctx)
+      return ctx
+    }
+  }
+  else {
+    // chaining and combine result
+    return async (ctx: T) => {
+      await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {
+        if (callback)
+          ctx = { ...ctx, ...(await callback(ctx)) }
+      }), Promise.resolve())
+      return ctx
+    }
   }
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
+  const _combination = config.combination || 'chain' as Combination
   const _options = config.options || {}
   const _fetchOptions = config.fetchOptions || {}
 
   function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl
-      ? joinPaths(resolveUnref(config.baseUrl), resolveUnref(url))
-      : resolveUnref(url),
-    )
+    const computedUrl = computed(() => {
+      const baseUrl = resolveUnref(config.baseUrl)
+      const targetUrl = resolveUnref(url)
+
+      return baseUrl && !isAbsoluteURL(targetUrl)
+        ? joinPaths(baseUrl, targetUrl)
+        : targetUrl
+    })
 
     let options = _options
     let fetchOptions = _fetchOptions
@@ -243,9 +272,9 @@ export function createFetch(config: CreateFetchOptions = {}) {
         options = {
           ...options,
           ...args[0],
-          beforeFetch: chainCallbacks(_options.beforeFetch, args[0].beforeFetch),
-          afterFetch: chainCallbacks(_options.afterFetch, args[0].afterFetch),
-          onFetchError: chainCallbacks(_options.onFetchError, args[0].onFetchError),
+          beforeFetch: combineCallbacks(_combination, _options.beforeFetch, args[0].beforeFetch),
+          afterFetch: combineCallbacks(_combination, _options.afterFetch, args[0].afterFetch),
+          onFetchError: combineCallbacks(_combination, _options.onFetchError, args[0].onFetchError),
         }
       }
       else {
@@ -264,9 +293,9 @@ export function createFetch(config: CreateFetchOptions = {}) {
       options = {
         ...options,
         ...args[1],
-        beforeFetch: chainCallbacks(_options.beforeFetch, args[1].beforeFetch),
-        afterFetch: chainCallbacks(_options.afterFetch, args[1].afterFetch),
-        onFetchError: chainCallbacks(_options.onFetchError, args[1].onFetchError),
+        beforeFetch: combineCallbacks(_combination, _options.beforeFetch, args[1].beforeFetch),
+        afterFetch: combineCallbacks(_combination, _options.afterFetch, args[1].afterFetch),
+        onFetchError: combineCallbacks(_combination, _options.onFetchError, args[1].onFetchError),
       }
     }
 

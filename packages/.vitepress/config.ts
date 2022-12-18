@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
-import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -31,6 +31,8 @@ const Links = [
   { text: 'Ecosystem', link: '/ecosystem' },
   { text: 'Export Size', link: '/export-size' },
   { text: 'Recent Updated', link: '/functions.html#sort=updated' },
+  { text: 'Why no translations?', link: '/why-no-translations' },
+  { text: 'Premium Video Course', link: 'https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse' },
 ]
 
 const DefaultSideBar = [
