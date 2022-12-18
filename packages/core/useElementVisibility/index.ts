@@ -1,4 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
+import { hasOwn } from '@vueuse/shared'
 import { computed, reactive } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { useElementBounding } from '../useElementBounding'
@@ -34,19 +35,26 @@ export function useElementVisibility(
   )
 
   const elementIsVisible = computed<boolean>(() => {
+    // window or element is nullish
+    if ((hasOwn(options, 'window') && !options.window) || !element)
+      return false
+
     if (scrollTarget) {
-      // relative to the `scrollTarget`
-      return elementBounding.top <= targetBounding.bottom
-      && elementBounding.left <= targetBounding.right
-      && elementBounding.bottom >= targetBounding.top
-      && elementBounding.right >= targetBounding.left
+      return (
+        // relative to the `scrollTarget`
+        elementBounding.top <= targetBounding.bottom
+        && elementBounding.left <= targetBounding.right
+        && elementBounding.bottom >= targetBounding.top
+        && elementBounding.right >= targetBounding.left
+      )
     }
+
     return (
       // relative to the viewport/window
       elementBounding.top <= viewportSize.height
-        && elementBounding.left <= viewportSize.width
-        && elementBounding.bottom >= 0
-        && elementBounding.right >= 0
+      && elementBounding.left <= viewportSize.width
+      && elementBounding.bottom >= 0
+      && elementBounding.right >= 0
     )
   })
 
