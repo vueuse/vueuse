@@ -104,8 +104,8 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
       return
     const rect = resolveUnref(target)!.getBoundingClientRect()
     const pos = {
-      x: e.pageX - rect.left,
-      y: e.pageY - rect.top,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
     }
     if (options.onStart?.(pos, e) === false)
       return
@@ -118,8 +118,8 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
     if (!pressedDelta.value)
       return
     position.value = {
-      x: e.pageX - pressedDelta.value.x,
-      y: e.pageY - pressedDelta.value.y,
+      x: e.clientX - pressedDelta.value.x,
+      y: e.clientY - pressedDelta.value.y,
     }
     options.onMove?.(position.value, e)
     handleEvent(e)
