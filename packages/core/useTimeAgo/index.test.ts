@@ -58,7 +58,7 @@ describe('useTimeAgo', () => {
   })
 
   test('get undefined when time is invalid', () => {
-    expect(useTimeAgo('invalid date').value).toBeUndefined()
+    expect(useTimeAgo('invalid date').value).toBe('')
   })
 
   describe('just now', () => {

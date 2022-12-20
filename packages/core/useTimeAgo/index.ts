@@ -12,27 +12,14 @@ export interface UseTimeAgoMessagesBuiltIn {
   justNow: string
   past: string | UseTimeAgoFormatter<string>
   future: string | UseTimeAgoFormatter<string>
+  invalid: string
 }
 
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
   & Record<UnitNames, string | UseTimeAgoFormatter<number>>
 
-export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> {
-  /**
-   * Expose more controls
-   *
-   * @default false
-   */
-  controls?: Controls
-
-  /**
-   * Intervals to update, set 0 to disable auto update
-   *
-   * @default 30_000
-   */
-  updateInterval?: number
-
+export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitNamesDefault> {
   /**
    * Maximum unit (of diff in milliseconds) to display the full date instead of relative
    *
@@ -70,7 +57,23 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   units?: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[]
 }
 
-interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
+export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames> {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+
+  /**
+   * Intervals to update, set 0 to disable auto update
+   *
+   * @default 30_000
+   */
+  updateInterval?: number
+}
+
+export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
   max: number
   value: number
   name: Unit
@@ -113,6 +116,7 @@ const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   hour: n => `${n} hour${n > 1 ? 's' : ''}`,
   minute: n => `${n} minute${n > 1 ? 's' : ''}`,
   second: n => `${n} second${n > 1 ? 's' : ''}`,
+  invalid: '',
 }
 
 const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
@@ -130,60 +134,11 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,
-    max,
     updateInterval = 30_000,
-    messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
-    fullDateFormatter = DEFAULT_FORMATTER,
-    units = DEFAULT_UNITS,
-    showSecond = false,
-    rounding = 'round',
   } = options
 
-  const { abs } = Math
-  const roundFn = typeof rounding === 'number'
-    ? (n: number) => +n.toFixed(rounding)
-    : Math[rounding]
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-
-  function getTimeAgo(from: Date, now: Date) {
-    const diff = +now - +from
-    const absDiff = abs(diff)
-
-    // less than a minute
-    if (absDiff < 60000 && !showSecond)
-      return messages.justNow
-
-    if (typeof max === 'number' && absDiff > max)
-      return fullDateFormatter(new Date(from))
-
-    if (typeof max === 'string') {
-      const unitMax = units.find(i => i.name === max)?.max
-      if (unitMax && absDiff > unitMax)
-        return fullDateFormatter(new Date(from))
-    }
-
-    for (const unit of units) {
-      if (absDiff < unit.max)
-        return format(diff, unit)
-    }
-  }
-
-  function applyFormat(name: UnitNames | keyof UseTimeAgoMessagesBuiltIn, val: number | string, isPast: boolean) {
-    const formatter = messages[name]
-    if (typeof formatter === 'function')
-      return formatter(val as never, isPast)
-    return formatter.replace('{0}', val.toString())
-  }
-
-  function format(diff: number, unit: UseTimeAgoUnit) {
-    const val = roundFn(abs(diff) / unit.value)
-    const past = diff > 0
-
-    const str = applyFormat(unit.name as UnitNames, val, past)
-    return applyFormat(past ? 'past' : 'future', str, past)
-  }
-
-  const timeAgo = computed(() => getTimeAgo(new Date(resolveUnref(time)), unref(now.value)))
+  const timeAgo = computed(() => foramtTimeAgo(new Date(resolveUnref(time)), options, unref(now.value)))
 
   if (exposeControls) {
     return {
@@ -194,4 +149,57 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   else {
     return timeAgo
   }
+}
+
+export function foramtTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
+  const {
+    max,
+    messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
+    fullDateFormatter = DEFAULT_FORMATTER,
+    units = DEFAULT_UNITS,
+    showSecond = false,
+    rounding = 'round',
+  } = options
+
+  const roundFn = typeof rounding === 'number'
+    ? (n: number) => +n.toFixed(rounding)
+    : Math[rounding]
+
+  const diff = +now - +from
+  const absDiff = Math.abs(diff)
+
+  function format(diff: number, unit: UseTimeAgoUnit) {
+    const val = roundFn(Math.abs(diff) / unit.value)
+    const past = diff > 0
+
+    const str = applyFormat(unit.name as UnitNames, val, past)
+    return applyFormat(past ? 'past' : 'future', str, past)
+  }
+
+  function applyFormat(name: UnitNames | keyof UseTimeAgoMessagesBuiltIn, val: number | string, isPast: boolean) {
+    const formatter = messages[name]
+    if (typeof formatter === 'function')
+      return formatter(val as never, isPast)
+    return formatter.replace('{0}', val.toString())
+  }
+
+  // less than a minute
+  if (absDiff < 60000 && !showSecond)
+    return messages.justNow
+
+  if (typeof max === 'number' && absDiff > max)
+    return fullDateFormatter(new Date(from))
+
+  if (typeof max === 'string') {
+    const unitMax = units.find(i => i.name === max)?.max
+    if (unitMax && absDiff > unitMax)
+      return fullDateFormatter(new Date(from))
+  }
+
+  for (const unit of units) {
+    if (absDiff < unit.max)
+      return format(diff, unit)
+  }
+
+  return messages.invalid
 }
