@@ -113,7 +113,7 @@ describe('useStorage', () => {
   })
 
   it('remove value', async () => {
-    storage.setItem(KEY, 'null')
+    storage.setItem(KEY, 'random')
 
     const store = useStorage(KEY, null, storage)
     store.value = null

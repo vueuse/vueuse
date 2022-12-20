@@ -1,4 +1,4 @@
-import { ref, shallowRef } from 'vue-demi'
+import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
 import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
@@ -169,10 +169,26 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function write(v: unknown) {
     try {
-      if (v == null)
+      if (v == null) {
         storage!.removeItem(key)
-      else
-        storage!.setItem(key, serializer.write(v))
+      }
+      else {
+        const serialized = serializer.write(v)
+        const oldValue = storage!.getItem(key)
+        if (oldValue !== serialized) {
+          storage!.setItem(key, serialized)
+
+          // send custom event to communicate within same page
+          if (window) {
+            window?.dispatchEvent(new StorageEvent('storage', {
+              key,
+              oldValue,
+              newValue: serialized,
+              storageArea: storage as any,
+            }))
+          }
+        }
+      }
     }
     catch (e) {
       onError(e)
@@ -209,7 +225,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     if (event && event.storageArea !== storage)
       return
 
-    if (event && event.key === null) {
+    if (event && event.key == null) {
       data.value = rawInit
       return
     }
@@ -225,7 +241,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       onError(e)
     }
     finally {
-      resumeWatch()
+      // use nextTick to avoid infinite loop
+      if (event)
+        nextTick(resumeWatch)
+      else
+        resumeWatch()
     }
   }
 }
