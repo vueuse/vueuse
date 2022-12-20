@@ -37,7 +37,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
     return
@@ -45,6 +45,13 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   let shouldListen = true
 
   let fallback: number
+
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore.some((target) => {
+      const el = unrefElement(target)
+      return el && (event.target === el || event.composedPath().includes(el))
+    })
+  }
 
   const listener = (event: PointerEvent) => {
     window.clearTimeout(fallback)
@@ -54,19 +61,15 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     if (!el || el === event.target || event.composedPath().includes(el))
       return
 
+    if (event.detail === 0)
+      shouldListen = !shouldIgnore(event)
+
     if (!shouldListen) {
       shouldListen = true
       return
     }
 
     handler(event)
-  }
-
-  const shouldIgnore = (event: PointerEvent) => {
-    return ignore && ignore.some((target) => {
-      const el = unrefElement(target)
-      return el && (event.target === el || event.composedPath().includes(el))
-    })
   }
 
   const cleanup = [
