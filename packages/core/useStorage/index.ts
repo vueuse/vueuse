@@ -1,6 +1,6 @@
+import { ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
 import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -180,37 +180,28 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function read(event?: StorageEvent) {
-    pauseWatch()
-    try {
-      const rawValue = event
-        ? event.newValue
-        : storage!.getItem(key)
+    const rawValue = event
+      ? event.newValue
+      : storage!.getItem(key)
 
-      if (rawValue == null) {
-        if (writeDefaults && rawInit !== null)
-          storage!.setItem(key, serializer.write(rawInit))
-        return rawInit
-      }
-      else if (!event && mergeDefaults) {
-        const value = serializer.read(rawValue)
-        if (isFunction(mergeDefaults))
-          return mergeDefaults(value, rawInit)
-        else if (type === 'object' && !Array.isArray(value))
-          return { ...rawInit as any, ...value }
-        return value
-      }
-      else if (typeof rawValue !== 'string') {
-        return rawValue
-      }
-      else {
-        return serializer.read(rawValue)
-      }
+    if (rawValue == null) {
+      if (writeDefaults && rawInit !== null)
+        storage!.setItem(key, serializer.write(rawInit))
+      return rawInit
     }
-    catch (e) {
-      onError(e)
+    else if (!event && mergeDefaults) {
+      const value = serializer.read(rawValue)
+      if (isFunction(mergeDefaults))
+        return mergeDefaults(value, rawInit)
+      else if (type === 'object' && !Array.isArray(value))
+        return { ...rawInit as any, ...value }
+      return value
     }
-    finally {
-      resumeWatch()
+    else if (typeof rawValue !== 'string') {
+      return rawValue
+    }
+    else {
+      return serializer.read(rawValue)
     }
   }
 
@@ -226,6 +217,15 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     if (event && event.key !== key)
       return
 
-    data.value = read(event)
+    pauseWatch()
+    try {
+      data.value = read(event)
+    }
+    catch (e) {
+      onError(e)
+    }
+    finally {
+      resumeWatch()
+    }
   }
 }

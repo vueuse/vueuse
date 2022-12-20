@@ -433,10 +433,12 @@ describe('useStorage', () => {
     expect(useStorage(KEY, 0).value).toBe(0)
     expect(console.error).toHaveBeenCalledWith(new Error('getDefaultStorage error'))
 
-    expect(useStorage(KEY, 0, {
+    const ref = useStorage(KEY, 0, {
       getItem: () => null,
       setItem: () => { throw new Error('write item error') },
-    } as any).value).toBeUndefined()
+    } as any)
+    expect(ref.value).toBe(0)
+    ref.value = 1
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
   })
 })
