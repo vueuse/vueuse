@@ -168,8 +168,12 @@ export function foramtTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
   const diff = +now - +from
   const absDiff = Math.abs(diff)
 
+  function getValue(diff: number, unit: UseTimeAgoUnit) {
+    return roundFn(Math.abs(diff) / unit.value)
+  }
+
   function format(diff: number, unit: UseTimeAgoUnit) {
-    const val = roundFn(Math.abs(diff) / unit.value)
+    const val = getValue(diff, unit)
     const past = diff > 0
 
     const str = applyFormat(unit.name as UnitNames, val, past)
@@ -196,7 +200,10 @@ export function foramtTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
       return fullDateFormatter(new Date(from))
   }
 
-  for (const unit of units) {
+  for (const [idx, unit] of units.entries()) {
+    const val = getValue(diff, unit)
+    if (val <= 0 && units[idx - 1])
+      return format(diff, units[idx - 1])
     if (absDiff < unit.max)
       return format(diff, unit)
   }
