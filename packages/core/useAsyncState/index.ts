@@ -111,7 +111,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
       const data = await _promise
       state.value = data
       isReady.value = true
-      onSuccess({ ...data })
+      onSuccess(data)
     }
     catch (e) {
       error.value = e
