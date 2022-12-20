@@ -1,3 +1,4 @@
+import { tryOnUnmounted } from '@vueuse/shared'
 import type { WritableComputedRef } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 
@@ -7,6 +8,7 @@ export function useExpiringRef<T>(initialMs?: number): [ExpiringRef<T>, (ms?: nu
   const valueRef = ref<T>()
   let ms = initialMs
   let timeout: ReturnType<typeof setTimeout> | undefined
+  tryOnUnmounted(() => clearTimeout(timeout))
 
   const setValTimeout = (newMs?: number) => {
     if (newMs !== undefined)
