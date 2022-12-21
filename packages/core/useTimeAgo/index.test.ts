@@ -58,7 +58,7 @@ describe('useTimeAgo', () => {
   })
 
   test('get undefined when time is invalid', () => {
-    expect(useTimeAgo('invalid date').value).toBeUndefined()
+    expect(useTimeAgo('invalid date').value).toBe('')
   })
 
   describe('just now', () => {
@@ -238,5 +238,38 @@ describe('useTimeAgo', () => {
       changeValue.value = -getNeededTimeChange('year', 3)
       expect(useTimeAgo(changeTime).value).toBe('3 years ago')
     })
+  })
+
+  test('rounding', () => {
+    changeValue.value = getNeededTimeChange('day', 5.49)
+    expect(useTimeAgo(changeTime).value).toBe('in 5 days')
+    expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('in 6 days')
+    expect(useTimeAgo(changeTime, { rounding: 'floor' }).value).toBe('in 5 days')
+    expect(useTimeAgo(changeTime, { rounding: 1 }).value).toBe('in 5.5 days')
+    expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 5.49 days')
+  })
+
+  test('rounding unit fallback', () => {
+    changeValue.value = getNeededTimeChange('month', 11.5)
+    expect(useTimeAgo(changeTime).value).toBe('next year')
+    expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('next year')
+    expect(useTimeAgo(changeTime, { rounding: 'floor' }).value).toBe('in 11 months')
+    expect(useTimeAgo(changeTime, { rounding: 1 }).value).toBe('in 0.9 year')
+    expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 0.945 year')
+  })
+
+  test('custom units', () => {
+    changeValue.value = getNeededTimeChange('day', 14)
+    expect(useTimeAgo(changeTime).value).toBe('in 2 weeks')
+    expect(useTimeAgo(changeTime, {
+      units: [
+        { max: 60000, value: 1000, name: 'second' },
+        { max: 2760000, value: 60000, name: 'minute' },
+        { max: 72000000, value: 3600000, name: 'hour' },
+        { max: 518400000 * 30, value: 86400000, name: 'day' },
+        { max: 28512000000, value: 2592000000, name: 'month' },
+        { max: Infinity, value: 31536000000, name: 'year' },
+      ],
+    }).value).toBe('in 14 days')
   })
 })

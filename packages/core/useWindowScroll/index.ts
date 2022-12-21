@@ -21,6 +21,7 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
   const y = ref(window.pageYOffset)
 
   useEventListener(
+    window,
     'scroll',
     () => {
       x.value = window.pageXOffset
