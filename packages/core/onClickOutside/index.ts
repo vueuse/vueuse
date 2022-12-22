@@ -9,7 +9,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: MaybeElementRef[]
+  ignore?: (MaybeElementRef | string)[]
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -48,8 +48,14 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
 
   const shouldIgnore = (event: PointerEvent) => {
     return ignore.some((target) => {
-      const el = unrefElement(target)
-      return el && (event.target === el || event.composedPath().includes(el))
+      if (typeof target === 'string') {
+        return Array.from(window.document.querySelectorAll(target))
+          .some(el => el === event.target || event.composedPath().includes(el))
+      }
+      else {
+        const el = unrefElement(target)
+        return el && (event.target === el || event.composedPath().includes(el))
+      }
     })
   }
 

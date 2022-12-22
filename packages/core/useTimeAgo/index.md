@@ -31,4 +31,3 @@ import { formatTimeAgo } from '@vueuse/core'
 
 const timeAgo = formatTimeAgo(new Date(2021, 0, 1)) // string
 ```
-
