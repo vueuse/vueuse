@@ -138,7 +138,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-  const timeAgo = computed(() => foramtTimeAgo(new Date(resolveUnref(time)), options, unref(now.value)))
+  const timeAgo = computed(() => formatTimeAgo(new Date(resolveUnref(time)), options, unref(now.value)))
 
   if (exposeControls) {
     return {
@@ -151,7 +151,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   }
 }
 
-export function foramtTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
+export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
   const {
     max,
     messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
