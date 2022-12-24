@@ -33,7 +33,7 @@ export interface UseFocusReturn {
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
   const { initialValue = false } = options
 
-  const activeElement = useActiveElement(options)
+  const activeElement = computed(() => unrefElement(useActiveElement(options)))
   const targetElement = computed(() => unrefElement(target))
   const focused = computed({
     get() {
