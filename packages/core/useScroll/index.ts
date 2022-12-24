@@ -160,12 +160,19 @@ export function useScroll(
       e.target === document ? (e.target as Document).documentElement : e.target
     ) as HTMLElement
 
+    const { display, flexDirection } = getComputedStyle(eventTarget)
+
     const scrollLeft = eventTarget.scrollLeft
     directions.left = scrollLeft < internalX.value
-    directions.right = scrollLeft > internalY.value
-    arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
+    directions.right = scrollLeft > internalX.value
+    arrivedState.left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
     arrivedState.right
-      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+      = Math.abs(scrollLeft) + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+    if (display === 'flex' && flexDirection === 'row-reverse') {
+      const temp = arrivedState.left
+      arrivedState.left = arrivedState.right
+      arrivedState.right = temp
+    }
     internalX.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
@@ -176,9 +183,18 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
+    arrivedState.top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
     arrivedState.bottom
-      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+      = Math.abs(scrollTop) + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+    /**
+     * reverse columns and rows behave exactly the other way around,
+     * bottom is treated as top and top is treated as the negative version of bottom
+     */
+    if (display === 'flex' && flexDirection === 'column-reverse') {
+      const temp = arrivedState.top
+      arrivedState.top = arrivedState.bottom
+      arrivedState.bottom = temp
+    }
     internalY.value = scrollTop
 
     isScrolling.value = true
