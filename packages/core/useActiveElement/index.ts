@@ -17,11 +17,9 @@ export function useActiveElement<T extends HTMLElement>(options: ConfigurableWin
   )
 
   if (window) {
-    useEventListener(window, 'blur', (event) => {
-      if (event.relatedTarget === null)
-        return
-
-      activeElement.trigger()
+    useEventListener(window, 'blur', () => {
+      const schedular = window.requestAnimationFrame || window.setTimeout
+      schedular(() => activeElement.trigger())
     }, true)
     useEventListener(window, 'focus', activeElement.trigger, true)
   }
