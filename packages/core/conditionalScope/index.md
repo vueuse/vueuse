@@ -4,7 +4,7 @@ category: Reactivity
 
 # conditionalScope
 
-Creates a conditional scope that is disposed when the conditions are not met.
+Creates a conditional [scope](https://vuejs.org/api/reactivity-advanced.html#effectscope) that is disposed when the conditions are not met.
 
 ## Usage
 
