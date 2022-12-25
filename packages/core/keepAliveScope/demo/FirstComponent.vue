@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
-import { ref } from 'vue-demi'
+import { useNow } from '@vueuse/core'
+import { ref, watch } from 'vue-demi'
 
-const pointerX = ref(0)
+const time = ref(0)
 
-useEventListener('pointermove', (e) => {
-  pointerX.value = e.clientX
+const now = useNow()
+watch(now, (now) => {
+  time.value = +now
 })
 </script>
 
@@ -13,7 +14,7 @@ useEventListener('pointermove', (e) => {
   <div>
     <Teleport to="body">
       <div fixed right-5 bottom-5>
-        First Component: {{ pointerX }}
+        First Component: {{ time }}
       </div>
     </Teleport>
     First component is actived!

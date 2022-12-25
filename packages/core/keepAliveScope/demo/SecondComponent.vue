@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { keepAliveScope, useEventListener } from '@vueuse/core'
-import { ref } from 'vue-demi'
+import { keepAliveScope, useNow } from '@vueuse/core'
+import { ref, watch } from 'vue-demi'
 
-const pointerX = ref(0)
+const time = ref(0)
 
 keepAliveScope(() => {
-  useEventListener('pointermove', (e) => {
-    pointerX.value = e.clientX
+  const now = useNow()
+  watch(now, (now) => {
+    time.value = +now
   })
 })
 </script>
@@ -15,7 +16,7 @@ keepAliveScope(() => {
   <div>
     <Teleport to="body">
       <div fixed right-5 bottom-12>
-        Second Component: {{ pointerX }}
+        Second Component: {{ time }}
       </div>
     </Teleport>
     Second component is actived!
