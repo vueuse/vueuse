@@ -91,6 +91,24 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('should resolve & reject debounced fn', async () => {
+    const debouncedSum = createFilterWrapper(
+      debounceFilter(500, { rejectOnCancel: true }),
+      (a: number, b: number) => a + b,
+    )
+
+    const five = debouncedSum(2, 3)
+    let nine
+    setTimeout(() => {
+      nine = debouncedSum(4, 5)
+    }, 200)
+
+    vitest.runAllTimers()
+
+    await expect(five).rejects.toBeUndefined()
+    await expect(nine).resolves.toBe(9)
+  })
+
   it('should debounce with ref', () => {
     const debouncedFilterSpy = vitest.fn()
     const debounceTime = ref(0)

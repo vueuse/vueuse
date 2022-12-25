@@ -35,7 +35,34 @@ const debouncedFn = useDebounceFn(() => {
 window.addEventListener('resize', debouncedFn)
 ```
 
+Optionally, you can get the return value of the function using promise operations.
 
+```js
+import { useDebounceFn } from '@vueuse/core'
+const debouncedRequest = useDebounceFn(() => 'value', 1000)
+
+debouncedRequest().then((value) => {
+  console.log(value) // 'value'
+})
+```
+
+Since unhandled rejection error is quite annoying when developer doesn't need the return value, the promise will **NOT** be rejected if the function is canceled **by default**. You need to specify the option `rejectOnCancel: true` to capture the rejection.
+
+```js
+import { useDebounceFn } from '@vueuse/core'
+const debouncedRequest = useDebounceFn(() => 'value', 1000, { rejectOnCancel: true })
+
+debouncedRequest()
+  .then((value) => {
+    // do something
+  })
+  .catch(() => {
+    // do something when canceled
+  })
+
+// calling it again will cancel the previous request and gets rejected
+setTimeout(debouncedRequest, 500)
+```
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
