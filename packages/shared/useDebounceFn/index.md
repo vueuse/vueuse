@@ -39,18 +39,24 @@ Optionally, you can get the return value of the function using promise operation
 
 ```js
 import { useDebounceFn } from '@vueuse/core'
-const debouncedRequest = useDebounceFn(() => 'value', 1000)
+const debouncedRequest = useDebounceFn(() => 'response', 1000)
 
 debouncedRequest().then((value) => {
-  console.log(value) // 'value'
+  console.log(value) // 'response'
 })
+
+// or use async/await
+async function doRequest() {
+  const value = await debouncedRequest()
+  console.log(value) // 'response'
+}
 ```
 
 Since unhandled rejection error is quite annoying when developer doesn't need the return value, the promise will **NOT** be rejected if the function is canceled **by default**. You need to specify the option `rejectOnCancel: true` to capture the rejection.
 
 ```js
 import { useDebounceFn } from '@vueuse/core'
-const debouncedRequest = useDebounceFn(() => 'value', 1000, { rejectOnCancel: true })
+const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
 
 debouncedRequest()
   .then((value) => {
