@@ -123,22 +123,30 @@ export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFi
  * @param ms
  * @param [trailing=true]
  * @param [leading=true]
+ * @param [rejectOnCancel=false]
  */
-export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, leading = true) {
+export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, leading = true, rejectOnCancel = false) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   let isLeading = true
+  let lastRejector: AnyFn = noop
+  let lastValue: any
 
   const clear = () => {
     if (timer) {
       clearTimeout(timer)
       timer = undefined
+      lastRejector()
+      lastRejector = noop
     }
   }
 
-  const filter: EventFilter = (invoke) => {
+  const filter: EventFilter = (_invoke) => {
     const duration = resolveUnref(ms)
     const elapsed = Date.now() - lastExec
+    const invoke = () => {
+      return lastValue = _invoke()
+    }
 
     clear()
 
@@ -152,18 +160,22 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
       invoke()
     }
     else if (trailing) {
-      timer = setTimeout(() => {
-        lastExec = Date.now()
-        isLeading = true
-        clear()
-        invoke()
-      }, duration - elapsed)
+      return new Promise((resolve, reject) => {
+        lastRejector = rejectOnCancel ? reject : resolve
+        timer = setTimeout(() => {
+          lastExec = Date.now()
+          isLeading = true
+          resolve(invoke())
+          clear()
+        }, duration - elapsed)
+      })
     }
 
     if (!leading && !timer)
       timer = setTimeout(() => isLeading = true, duration)
 
     isLeading = false
+    return lastValue
   }
 
   return filter
