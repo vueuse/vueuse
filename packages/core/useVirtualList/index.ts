@@ -107,7 +107,7 @@ interface UseVirtualListResources<T> {
   containerRef: UseVirtualListContainerRef
 }
 
-function useVirtualListResourses<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
+function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
   const containerRef = ref<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
@@ -231,7 +231,7 @@ function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () =
 }
 
 function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, list: MaybeRef<T[]>) {
-  const resources = useVirtualListResourses(list)
+  const resources = useVirtualListResources(list)
   const { state, source, currentList, size, containerRef } = resources
   const containerStyle: StyleValue = { overflowX: 'auto' }
 
@@ -275,7 +275,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 }
 
 function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list: MaybeRef<T[]>) {
-  const resources = useVirtualListResourses(list)
+  const resources = useVirtualListResources(list)
 
   const { state, source, currentList, size, containerRef } = resources
 
