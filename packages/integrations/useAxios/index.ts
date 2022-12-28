@@ -3,7 +3,7 @@ import { ref, shallowRef } from 'vue-demi'
 import { isString, until } from '@vueuse/shared'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios from 'axios'
-
+const DEFAULT_DELAY = 0
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
   /**
    * Axios Response
@@ -98,6 +98,11 @@ export interface UseAxiosOptions {
    * @default true
    */
   shallow?: boolean
+
+  /**
+   * delay time
+   */
+  delay?: number
 }
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
@@ -146,6 +151,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
   const response = shallowRef<AxiosResponse<T>>()
   const data = options.shallow ? shallowRef<T>() : ref<T>()
+  const delay = options.delay ?? DEFAULT_DELAY
+  const timeoutId = ref<number>()
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
@@ -180,15 +187,28 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       ? executeUrl
       : url ?? ''
     loading(true)
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
-      .then((r: any) => {
-        response.value = r
-        data.value = r.data
-      })
-      .catch((e: any) => {
-        error.value = e
-      })
-      .finally(() => loading(false))
+
+    const request = () => {
+      instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
+        .then((r: any) => {
+          response.value = r
+          data.value = r.data
+        })
+        .catch((e: any) => {
+          error.value = e
+        })
+        .finally(() => loading(false))
+      if (timeoutId.value)
+        clearTimeout(timeoutId.value)
+    }
+
+    const delayFn = () => {
+      if (delay > 0)
+        timeoutId.value = setTimeout(request, delay) as any
+      else
+        request()
+    }
+    delayFn()
     return { then }
   }
   if (options.immediate && url)
