@@ -4,7 +4,7 @@ import { useMouse, usePointerLock, useRafFn } from '@vueuse/core'
 
 const { lock, unlock, element } = usePointerLock()
 const { x, y } = useMouse({ type: 'movement' })
-const totalX = ref(0)
+const totalX = ref(-90)
 const totalY = ref(0)
 
 watch([x, y], ([x, y]) => {
@@ -40,8 +40,8 @@ useRafFn(() => {
 
 <style scoped>
 :root {
-  --x: 0; /*v-bind('totalX');*/
-  --y: 0; /*v-bind('totalY');*/
+  --x: 0; /*v-bind(totalX);*/
+  --y: 0; /*v-bind(totalY);*/
 }
 
 .scene {
@@ -58,10 +58,11 @@ useRafFn(() => {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  transform: rotateY(calc(var(--x) * .5deg - 45deg)) rotateX(calc(var(--y) * -.5deg));
+  transform: rotateY(calc(var(--x) * .5deg)) rotateX(calc(var(--y) * -.5deg));
 }
 
 .cube div, .cube span {
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
