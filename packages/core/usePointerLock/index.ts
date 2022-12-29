@@ -38,7 +38,7 @@ export function usePointerLock(target?: MaybeElementRef, options: ConfigurableDo
     if (!isSupported.value)
       throw new Error('Pointer Lock API is not supported by your browser.')
 
-    const targetElement = e instanceof Event ? unrefElement(target) ?? <Element>e.target : unrefElement(e)
+    const targetElement = e instanceof Event ? unrefElement(target) ?? <Element>e.currentTarget : unrefElement(e)
     if (!targetElement)
       throw new Error('Target element undefined.')
     targetElement.requestPointerLock()
