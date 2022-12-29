@@ -31,12 +31,10 @@ A bigger example:
 import { computed, ref } from 'vue'
 import { createGlobalState } from '@vueuse/core'
 
-const initialValue = 0
-
 export const useGlobalState = createGlobalState(
   () => {
     // state
-    const count = ref(initialValue)
+    const count = ref(0)
 
     // getters
     const doubleCount = computed(() => count.value * 2)
