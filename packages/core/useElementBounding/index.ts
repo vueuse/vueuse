@@ -93,7 +93,7 @@ export function useElementBounding(
   watch(() => unrefElement(target), ele => !ele && update())
 
   if (windowScroll)
-    useEventListener('scroll', update, { passive: true })
+    useEventListener('scroll', update, true, { passive: true })
   if (windowResize)
     useEventListener('resize', update, { passive: true })
 
