@@ -11,7 +11,7 @@ watch([x, y], ([x, y]) => {
   if (!element.value)
     return
   rotY.value += x / 2
-  rotX.value += y / 2
+  rotX.value += -y / 2
 })
 
 useRafFn(() => {
@@ -58,7 +58,7 @@ useRafFn(() => {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  transform: rotateY(calc(var(--rotY) * 1deg)) rotateX(calc(var(--rotX) * -1deg));
+  transform: rotateY(calc(var(--rotY) * 1deg)) rotateX(calc(var(--rotX) * 1deg));
 }
 
 .cube div, .cube span {
