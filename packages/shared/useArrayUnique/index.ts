@@ -2,6 +2,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
+
 /**
  * reactive unique array
  * @see https://vueuse.org/useArrayUnique
@@ -12,5 +13,3 @@ export function useArrayUnique<T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>): ComputedRef<T[]> {
   return computed<T[]>(() => [...new Set<T>(resolveUnref(list).map(element => resolveUnref(element)))])
 }
-
-//
