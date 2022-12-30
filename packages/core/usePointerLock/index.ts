@@ -1,13 +1,13 @@
 import { ref } from 'vue-demi'
-import { createSharedComposable, until } from '@vueuse/shared'
+import { until } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import { unrefElement } from '../unrefElement'
-import type { MaybeElement, MaybeElementRef } from '../unrefElement'
+import type { MaybeElementRef } from '../unrefElement'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-const useSharedEventListener = createSharedComposable(useEventListener)
+type MaybeHTMLElement = HTMLElement | undefined | null
 
 /**
  * Reactive pointer lock.
@@ -16,29 +16,36 @@ const useSharedEventListener = createSharedComposable(useEventListener)
  * @param target
  * @param options
  */
-export function usePointerLock(target?: MaybeElementRef, options: ConfigurableDocument = {}) {
+export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, options: ConfigurableDocument = {}) {
   const { document = defaultDocument } = options
 
   const isSupported = useSupported(() => document && 'pointerLockElement' in document)
 
-  const element = ref<MaybeElement>()
+  const element = ref<MaybeHTMLElement>()
+
+  let targetElement: MaybeHTMLElement
 
   if (isSupported.value) {
-    useSharedEventListener(document, 'pointerlockchange', () => {
-      element.value = document!.pointerLockElement as MaybeElement
+    useEventListener(document, 'pointerlockchange', () => {
+      const currentElement = document!.pointerLockElement ?? element.value
+      if (targetElement && currentElement === targetElement)
+        element.value = document!.pointerLockElement as MaybeHTMLElement
     })
 
-    useSharedEventListener(document, 'pointerlockerror', () => {
-      const action = document!.pointerLockElement ? 'release' : 'acquire'
-      throw new Error(`Failed to ${action} pointer lock.`)
+    useEventListener(document, 'pointerlockerror', () => {
+      const currentElement = document!.pointerLockElement ?? element.value
+      if (targetElement && currentElement === targetElement) {
+        const action = document!.pointerLockElement ? 'release' : 'acquire'
+        throw new Error(`Failed to ${action} pointer lock.`)
+      }
     })
   }
 
-  async function lock(e: MaybeElementRef | Event) {
+  async function lock(e: MaybeElementRef<MaybeHTMLElement> | Event) {
     if (!isSupported.value)
       throw new Error('Pointer Lock API is not supported by your browser.')
 
-    const targetElement = e instanceof Event ? unrefElement(target) ?? <Element>e.currentTarget : unrefElement(e)
+    targetElement = e instanceof Event ? unrefElement(target) ?? <HTMLElement>e.currentTarget : unrefElement(e)
     if (!targetElement)
       throw new Error('Target element undefined.')
     targetElement.requestPointerLock()
@@ -49,7 +56,8 @@ export function usePointerLock(target?: MaybeElementRef, options: ConfigurableDo
   async function unlock() {
     element.value && document!.exitPointerLock()
 
-    return await until(element).toBe(null)
+    await until(element).toBe(null)
+    targetElement = null
   }
 
   return {
