@@ -11,7 +11,7 @@ watch([x, y], ([x, y]) => {
   if (!element.value)
     return
   rotY.value += x / 2
-  rotX.value += -y / 2
+  rotX.value -= y / 2
 })
 
 useRafFn(() => {

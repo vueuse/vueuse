@@ -54,10 +54,13 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
   }
 
   async function unlock() {
-    element.value && document!.exitPointerLock()
+    if (!element.value)
+      return false
 
-    await until(element).toBe(null)
-    targetElement = null
+    document!.exitPointerLock()
+
+    targetElement = await until(element).toBeNull()
+    return true
   }
 
   return {
