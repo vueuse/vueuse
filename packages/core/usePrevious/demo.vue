@@ -13,7 +13,7 @@ const prevCount = usePrevious(count)
     <button @click="inc()">
       increase
     </button>
-    <button style="margin-left: 8px;" @click="dec()">
+    <button class="ml-2" @click="dec()">
       decrease
     </button>
   </div>
