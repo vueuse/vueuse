@@ -20,13 +20,13 @@ export function usePrevious<T>(
   shouldUpdate: ShouldUpdateFunc<T> = defaultShouldUpdate,
 ) {
   const prevRef = ref<T>()
-  const curRef = ref<T>()
+  let cur: T | undefined
   watchEffect(() => {
-    if (shouldUpdate(curRef.value, state.value)) {
-      prevRef.value = curRef.value
-      curRef.value = state.value
+    if (shouldUpdate(cur, state.value)) {
+      prevRef.value = cur
+      cur = state.value
     }
-  })
+  }, { flush: 'sync' })
   return prevRef
 }
 
