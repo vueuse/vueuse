@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue-demi'
-import { useMouse, usePointerLock, useRafFn } from '@vueuse/core'
+import { useMouse, usePointerLock } from '@vueuse/core'
 
 const { lock, unlock, element } = usePointerLock()
 const { x, y } = useMouse({ type: 'movement' })
@@ -13,17 +13,11 @@ watch([x, y], ([x, y]) => {
   rotY.value += x / 2
   rotX.value -= y / 2
 })
-
-useRafFn(() => {
-  // v-bind doesn't work with custom CSS properties for some reason
-  document.documentElement.style.setProperty('--rotY', rotY.value.toString())
-  document.documentElement.style.setProperty('--rotX', rotX.value.toString())
-})
 </script>
 
 <template>
   <div class="scene">
-    <div class="cube" @mousedown.capture="lock" @mouseup="unlock">
+    <div id="demo-cube" class="cube" @mousedown.capture="lock" @mouseup="unlock">
       <div class="bases">
         <span style="--i: 1" />
         <span style="--i: -1" />
@@ -39,9 +33,10 @@ useRafFn(() => {
 </template>
 
 <style scoped>
-:root {
-  --rotY: 0; /*v-bind(rotY);*/
-  --rotX: 0; /*v-bind(rotX);*/
+#demo-cube {
+  --rotY: v-bind(rotY);
+  --rotX: v-bind(rotX);
+  transform: rotateY(calc(var(--rotY) * 1deg)) rotateX(calc(var(--rotX) * 1deg));
 }
 
 .scene {
@@ -58,7 +53,6 @@ useRafFn(() => {
   width: 100px;
   height: 100px;
   transform-style: preserve-3d;
-  transform: rotateY(calc(var(--rotY) * 1deg)) rotateX(calc(var(--rotX) * 1deg));
 }
 
 .cube div, .cube span {
