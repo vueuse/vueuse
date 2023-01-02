@@ -58,7 +58,7 @@ describe('useTimeAgo', () => {
   })
 
   test('get undefined when time is invalid', () => {
-    expect(useTimeAgo('invalid date').value).toBeUndefined()
+    expect(useTimeAgo('invalid date').value).toBe('')
   })
 
   describe('just now', () => {
@@ -247,6 +247,15 @@ describe('useTimeAgo', () => {
     expect(useTimeAgo(changeTime, { rounding: 'floor' }).value).toBe('in 5 days')
     expect(useTimeAgo(changeTime, { rounding: 1 }).value).toBe('in 5.5 days')
     expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 5.49 days')
+  })
+
+  test('rounding unit fallback', () => {
+    changeValue.value = getNeededTimeChange('month', 11.5)
+    expect(useTimeAgo(changeTime).value).toBe('next year')
+    expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('next year')
+    expect(useTimeAgo(changeTime, { rounding: 'floor' }).value).toBe('in 11 months')
+    expect(useTimeAgo(changeTime, { rounding: 1 }).value).toBe('in 0.9 year')
+    expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 0.945 year')
   })
 
   test('custom units', () => {
