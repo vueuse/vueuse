@@ -15,7 +15,7 @@ Unref for dom element.
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { unrefElement } from '@vueuse/core'
 
 const div = ref() // will be bind to the <div> element
