@@ -5,19 +5,17 @@ import { isIOS, resolveRef, resolveUnref, tryOnScopeDispose } from '@vueuse/shar
 import { useEventListener } from '../useEventListener'
 
 function checkOverflowScroll(ele: Element): boolean {
-  const _style = window.getComputedStyle(ele)
-  if (_style.overflowX === 'scroll' || _style.overflowY === 'scroll') {
+  const style = window.getComputedStyle(ele)
+  if (style.overflowX === 'scroll' || style.overflowY === 'scroll') {
     return true
   }
   else {
-    const _parent = ele.parentNode as Element
+    const parent = ele.parentNode as Element
 
-    if (_parent.tagName === 'BODY')
+    if (!parent || parent.tagName === 'BODY')
       return false
 
-    if (checkOverflowScroll(_parent))
-      return true
-    else return false
+    return checkOverflowScroll(parent)
   }
 }
 
