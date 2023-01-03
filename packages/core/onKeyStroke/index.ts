@@ -7,7 +7,7 @@ export type KeyFilter = true | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
 export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
-  target?: MaybeComputedRef<EventTarget>
+  target?: MaybeComputedRef<EventTarget | null | undefined>
   passive?: boolean
 }
 
