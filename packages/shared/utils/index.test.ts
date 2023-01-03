@@ -191,16 +191,24 @@ describe('filters', () => {
     )
 
     let result = throttledSum(2, 3)
-    setTimeout(() => { result = throttledSum(4, 5) }, 600)
-    setTimeout(() => { result = throttledSum(6, 7) }, 900)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
 
     vitest.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
     expect(result).resolves.toBe(6 + 7)
 
-    setTimeout(() => { result = throttledSum(8, 9) }, 1200)
-    setTimeout(() => { result = throttledSum(10, 11) }, 1800)
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
 
     vitest.runAllTimers()
 
@@ -216,16 +224,24 @@ describe('filters', () => {
     )
 
     let result = throttledSum(2, 3)
-    setTimeout(() => { result = throttledSum(4, 5) }, 600)
-    setTimeout(() => { result = throttledSum(6, 7) }, 900)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
 
     vitest.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(1)
     expect(result).resolves.toBe(2 + 3)
 
-    setTimeout(() => { result = throttledSum(8, 9) }, 1200)
-    setTimeout(() => { result = throttledSum(10, 11) }, 1800)
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
 
     vitest.runAllTimers()
 
