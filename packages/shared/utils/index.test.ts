@@ -91,6 +91,24 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('should resolve & reject debounced fn', async () => {
+    const debouncedSum = createFilterWrapper(
+      debounceFilter(500, { rejectOnCancel: true }),
+      (a: number, b: number) => a + b,
+    )
+
+    const five = debouncedSum(2, 3)
+    let nine
+    setTimeout(() => {
+      nine = debouncedSum(4, 5)
+    }, 200)
+
+    vitest.runAllTimers()
+
+    await expect(five).rejects.toBeUndefined()
+    await expect(nine).resolves.toBe(9)
+  })
+
   it('should debounce with ref', () => {
     const debouncedFilterSpy = vitest.fn()
     const debounceTime = ref(0)
@@ -107,8 +125,8 @@ describe('filters', () => {
   })
 
   it('should throttle', () => {
-    const debouncedFilterSpy = vitest.fn()
-    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+    const throttledFilterSpy = vitest.fn()
+    const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)
 
     setTimeout(filter, 500)
     setTimeout(filter, 500)
@@ -117,7 +135,7 @@ describe('filters', () => {
 
     vitest.runAllTimers()
 
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should throttle evenly', () => {
@@ -163,6 +181,56 @@ describe('filters', () => {
     vitest.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should get trailing value', () => {
+    const sumSpy = vitest.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter(1000, true),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => { result = throttledSum(4, 5) }, 600)
+    setTimeout(() => { result = throttledSum(6, 7) }, 900)
+
+    vitest.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(6 + 7)
+
+    setTimeout(() => { result = throttledSum(8, 9) }, 1200)
+    setTimeout(() => { result = throttledSum(10, 11) }, 1800)
+
+    vitest.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(4)
+    expect(result).resolves.toBe(10 + 11)
+  })
+
+  it('should get leading value', () => {
+    const sumSpy = vitest.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter(1000, false),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => { result = throttledSum(4, 5) }, 600)
+    setTimeout(() => { result = throttledSum(6, 7) }, 900)
+
+    vitest.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(1)
+    expect(result).resolves.toBe(2 + 3)
+
+    setTimeout(() => { result = throttledSum(8, 9) }, 1200)
+    setTimeout(() => { result = throttledSum(10, 11) }, 1800)
+
+    vitest.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(8 + 9)
   })
 })
 
