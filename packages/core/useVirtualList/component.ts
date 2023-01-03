@@ -35,7 +35,7 @@ export const UseVirtualList = defineComponent<UseVirtualListProps>({
 
     const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(listRef, props.options)
     expose({ scrollTo })
-    
+
     typeof containerProps.style === 'object' && !Array.isArray(containerProps.style) && (containerProps.style.height = props.height || '300px')
 
     return () => h('div',

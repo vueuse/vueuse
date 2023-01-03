@@ -196,4 +196,3 @@ function getFunctionsSideBar() {
 
   return links
 }
-
