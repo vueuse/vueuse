@@ -1,7 +1,9 @@
 import { computedWithControl } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
+export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {}
 
 /**
  * Reactive `document.activeElement`
@@ -9,11 +11,12 @@ import { defaultWindow } from '../_configurable'
  * @see https://vueuse.org/useActiveElement
  * @param options
  */
-export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {
+export function useActiveElement<T extends HTMLElement>(options: UseActiveElementOptions = {}) {
   const { window = defaultWindow } = options
+  const document = options.document ?? window?.document
   const activeElement = computedWithControl(
     () => null,
-    () => window?.document.activeElement as T | null | undefined,
+    () => document?.activeElement as T | null | undefined,
   )
 
   if (window) {
