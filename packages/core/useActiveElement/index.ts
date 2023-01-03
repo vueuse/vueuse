@@ -1,9 +1,9 @@
 import { computedWithControl } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableDocument, ConfigurableWindow } from '../_configurable'
+import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export type UseActiveElementOptions = ConfigurableWindow & ConfigurableDocument
+export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {}
 
 /**
  * Reactive `document.activeElement`
