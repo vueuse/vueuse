@@ -1,6 +1,5 @@
 export * from './computedAsync'
 export * from './computedInject'
-export * from './conditionalScope'
 export * from './createUnrefFn'
 export * from './keepAliveScope'
 export * from './onClickOutside'
