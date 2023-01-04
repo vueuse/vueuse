@@ -101,3 +101,5 @@ const { list, containerProps, wrapperProps } = useVirtualList(
   </template>
 </UseVirtualList>
 ```
+
+To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.
