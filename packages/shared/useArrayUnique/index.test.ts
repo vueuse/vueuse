@@ -1,7 +1,7 @@
 import { ref } from 'vue-demi'
-import { useArrayUnique } from '../useArrayUnique'
+import { useArrayUnique } from '.'
 
-describe('useArraySome', () => {
+describe('useArrayUnique', () => {
   it('should be defined', () => {
     expect(useArrayUnique).toBeDefined()
   })
@@ -25,5 +25,54 @@ describe('useArraySome', () => {
     expect(result.value.length).toBe(3)
     list.value.push(1)
     expect(result.value.length).toBe(3)
+  })
+
+  it('is able to deduplicate objects based on a specific property', () => {
+    const list = ref([
+      {
+        id: 1,
+        value: 'foo',
+      },
+      {
+        id: 2,
+        value: 'bar',
+      },
+      {
+        id: 3,
+        value: 'foo',
+      },
+      {
+        id: 1,
+        value: 'bar',
+      },
+    ])
+    let result = useArrayUnique(list, { property: 'id' })
+    expect(result.value).toStrictEqual([
+      {
+        id: 1,
+        value: 'foo',
+      },
+      {
+        id: 2,
+        value: 'bar',
+      },
+      {
+        id: 3,
+        value: 'foo',
+      },
+    ])
+
+    // Try with property shortcut
+    result = useArrayUnique(list, 'value')
+    expect(result.value).toStrictEqual([
+      {
+        id: 1,
+        value: 'foo',
+      },
+      {
+        id: 2,
+        value: 'bar',
+      },
+    ])
   })
 })

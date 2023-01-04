@@ -36,3 +36,13 @@ const result = useArrayUnique(list)
 result.value.push(1)
 // result.value: [1, 2, 3]
 ```
+
+### Custom deduplication
+
+```js
+import { useArrayUnique } from '@vueuse/core'
+
+const list = reactive([{ id: 1, name: 'foo' }, { id: 2, name: 'bar' }, { id: 3, name: 'foo' }])
+const result = useArrayUnique(list, 'name')
+// result.value: [{id: 1, name: 'foo'}, {id: 2, name: 'bar'}]
+```
