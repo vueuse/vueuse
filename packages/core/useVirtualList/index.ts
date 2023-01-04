@@ -120,20 +120,19 @@ function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResource
 }
 
 function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
-  return (containerHeight: number) => {
+  return (containerSize: number) => {
     if (typeof itemSize === 'number')
-      return Math.ceil(containerHeight / itemSize)
+      return Math.ceil(containerSize / itemSize)
 
     const { start = 0 } = state.value
     let sum = 0
     let capacity = 0
     for (let i = start; i < source.value.length; i++) {
-      const height = itemSize(i)
-      sum += height
-      if (sum >= containerHeight) {
-        capacity = i
+      const size = itemSize(i)
+      sum += size
+      capacity = i
+      if (sum > containerSize)
         break
-      }
     }
     return capacity - start
   }
