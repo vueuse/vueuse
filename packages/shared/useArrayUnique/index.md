@@ -33,6 +33,24 @@ const list = reactive([1, 2, 2, 3])
 const result = useArrayUnique(list)
 // result.value: [1, 2, 3]
 
-result.value.push(1)
+result.push(1)
 // result.value: [1, 2, 3]
+```
+
+### Use with custom function
+
+```js
+import { useArrayUnique } from '@vueuse/core'
+
+const list = reactive([
+  { id: 1, name: 'foo' },
+  { id: 2, name: 'bar' },
+  { id: 1, name: 'baz' },
+])
+
+const result = useArrayUnique(list, (a, b) => a.id === b.id)
+// result.value: [{ id: 1, name: 'foo' }, { id: 2, name: 'bar' }]
+
+list.push({ id: 1, name: 'qux' })
+// result.value: [{ id: 1, name: 'foo' }, { id: 2, name: 'bar' }]
 ```
