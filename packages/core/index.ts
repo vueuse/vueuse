@@ -1,5 +1,6 @@
 export * from './computedAsync'
 export * from './computedInject'
+export * from './conditionalScope'
 export * from './createUnrefFn'
 export * from './onClickOutside'
 export * from './onKeyStroke'
