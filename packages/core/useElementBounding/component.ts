@@ -3,7 +3,7 @@ import { useElementBounding } from '@vueuse/core'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import type { RenderableComponent } from '../types'
 
-export const UseElementBounding = defineComponent<UseResizeObserverOptions & RenderableComponent>({
+export const UseElementBounding = /* #__PURE__ */ defineComponent<UseResizeObserverOptions & RenderableComponent>({
   name: 'UseElementBounding',
   props: ['box', 'as'] as unknown as undefined,
   setup(props, { slots }) {

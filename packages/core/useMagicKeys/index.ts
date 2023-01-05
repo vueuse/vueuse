@@ -81,7 +81,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
-  const obj = { toJSON() { return {} }, current }
+  const obj = {
+    toJSON() { return {} },
+    current,
+  }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
   const usedKeys = new Set<string>()

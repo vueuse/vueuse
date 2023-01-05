@@ -14,6 +14,7 @@ const disabledFunctions = [
   'useHead',
   'useTitle',
   'useStorage',
+  'useImage',
 ]
 
 const packages = [

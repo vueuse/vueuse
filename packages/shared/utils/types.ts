@@ -1,9 +1,14 @@
 import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
- * Any function
+ * Void function
  */
 export type Fn = () => void
+
+/**
+ * Any function
+ */
+export type AnyFn = (...args: any[]) => any
 
 /**
  * A ref that allow to set null or undefined
@@ -72,6 +77,8 @@ export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 export type Awaitable<T> = Promise<T> | T
 
 export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
+
+export type PromisifyFn<T extends AnyFn> = (...args: ArgumentsType<T>) => Promise<ReturnType<T>>
 
 export interface Pausable {
   /**
