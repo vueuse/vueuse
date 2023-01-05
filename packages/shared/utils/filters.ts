@@ -157,9 +157,10 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
 
     if (elapsed > duration && (leading || !isLeading)) {
       lastExec = Date.now()
-      invoke()
+      return invoke()
     }
     else if (trailing) {
+      const remaining = duration - elapsed
       return new Promise((resolve, reject) => {
         lastRejector = rejectOnCancel ? reject : resolve
         timer = setTimeout(() => {
@@ -167,7 +168,7 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
           isLeading = true
           resolve(invoke())
           clear()
-        }, duration - elapsed)
+        }, remaining > 0 ? remaining : 0)
       })
     }
 
