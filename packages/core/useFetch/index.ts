@@ -402,7 +402,14 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: resolveUnref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = {
+      url: resolveUnref(url),
+      options: {
+        ...defaultFetchOptions,
+        ...fetchOptions,
+      },
+      cancel: () => { isCanceled = true },
+    }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))

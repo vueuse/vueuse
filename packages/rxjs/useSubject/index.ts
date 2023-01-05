@@ -22,7 +22,9 @@ export function useSubject<H>(subject: Subject<H>, options?: UseSubjectOptions) 
     error: options?.onError,
   })
 
-  watch(value, (nextValue) => { subject.next(nextValue) })
+  watch(value, (nextValue) => {
+    subject.next(nextValue)
+  })
 
   tryOnScopeDispose(() => {
     subscription.unsubscribe()

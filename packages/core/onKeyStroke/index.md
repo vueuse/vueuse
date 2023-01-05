@@ -34,7 +34,6 @@ onKeyStroke(true, (e) => {
 onKeyStroke((e) => {
   e.preventDefault()
 })
-
 ```
 
 ### Custom Event Target
