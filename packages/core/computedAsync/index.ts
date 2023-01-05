@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { computed, isRef, ref, watchEffect } from 'vue-demi'
+import type { Ref, ShallowRef } from 'vue-demi'
+import { computed, isRef, ref, shallowReadonly, shallowRef, watchEffect } from 'vue-demi'
 
 /**
  * Handle overlapping async evaluations.
@@ -41,7 +41,7 @@ export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
-): Ref<T> {
+): Readonly<ShallowRef<T>> {
   let options: AsyncComputedOptions
 
   if (isRef(optionsOrRef)) {
@@ -60,7 +60,7 @@ export function computedAsync<T>(
   } = options
 
   const started = ref(!lazy)
-  const current = ref(initialState) as Ref<T>
+  const current = shallowRef(initialState) as ShallowRef<T>
   let counter = 0
 
   watchEffect(async (onInvalidate) => {
@@ -111,7 +111,7 @@ export function computedAsync<T>(
     })
   }
   else {
-    return current
+    return shallowReadonly(current)
   }
 }
 
