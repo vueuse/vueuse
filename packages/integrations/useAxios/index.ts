@@ -176,13 +176,14 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     waitUntilFinished().then(onFulfilled, onRejected)
   const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
-    let _url = typeof executeUrl === 'string'
+    const _url = typeof executeUrl === 'string'
       ? executeUrl
       : url ?? config.url
 
     if (_url === undefined) {
       error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
-      _url = ''
+      isFinished.value = true
+      return { then }
     }
 
     loading(true)
