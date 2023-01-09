@@ -28,8 +28,11 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
   if (isSupported.value) {
     useEventListener(document, 'pointerlockchange', () => {
       const currentElement = document!.pointerLockElement ?? element.value
-      if (targetElement && currentElement === targetElement)
+      if (targetElement && currentElement === targetElement) {
         element.value = document!.pointerLockElement as MaybeHTMLElement
+        if (!element.value)
+          targetElement = null
+      }
     })
 
     useEventListener(document, 'pointerlockerror', () => {
@@ -59,7 +62,7 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
 
     document!.exitPointerLock()
 
-    targetElement = await until(element).toBeNull()
+    await until(element).toBeNull()
     return true
   }
 
