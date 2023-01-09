@@ -43,7 +43,7 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
     set(value: boolean) {
       if (!value && focused.value)
         targetElement.value?.blur()
-      if (value && !focused.value)
+      else if (value && !focused.value)
         targetElement.value?.focus()
     },
   })
