@@ -1,4 +1,4 @@
-import type { DebounceFilterOptions, FunctionArgs, MaybeComputedRef } from '../utils'
+import type { DebounceFilterOptions, FunctionArgs, MaybeComputedRef, PromisifyFn } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
 
 /**
@@ -11,7 +11,11 @@ import { createFilterWrapper, debounceFilter } from '../utils'
  *
  * @return A new, debounce, function.
  */
-export function useDebounceFn<T extends FunctionArgs>(fn: T, ms: MaybeComputedRef<number> = 200, options: DebounceFilterOptions = {}): T {
+export function useDebounceFn<T extends FunctionArgs>(
+  fn: T,
+  ms: MaybeComputedRef<number> = 200,
+  options: DebounceFilterOptions = {},
+): PromisifyFn<T> {
   return createFilterWrapper(
     debounceFilter(ms, options),
     fn,

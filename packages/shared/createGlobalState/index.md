@@ -34,7 +34,7 @@ import { createGlobalState } from '@vueuse/core'
 export const useGlobalState = createGlobalState(
   () => {
     // state
-    const count = ref(initialValue)
+    const count = ref(0)
 
     // getters
     const doubleCount = computed(() => count.value * 2)
