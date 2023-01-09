@@ -23,6 +23,8 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
 
   const element = ref<MaybeHTMLElement>()
 
+  const triggerElement = ref<MaybeHTMLElement>()
+
   let targetElement: MaybeHTMLElement
 
   if (isSupported.value) {
@@ -31,7 +33,7 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
       if (targetElement && currentElement === targetElement) {
         element.value = document!.pointerLockElement as MaybeHTMLElement
         if (!element.value)
-          targetElement = null
+          targetElement = triggerElement.value = null
       }
     })
 
@@ -48,7 +50,8 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
     if (!isSupported.value)
       throw new Error('Pointer Lock API is not supported by your browser.')
 
-    targetElement = e instanceof Event ? unrefElement(target) ?? <HTMLElement>e.currentTarget : unrefElement(e)
+    triggerElement.value = e instanceof Event ? <HTMLElement>e.currentTarget : null
+    targetElement = e instanceof Event ? unrefElement(target) ?? triggerElement.value : unrefElement(e)
     if (!targetElement)
       throw new Error('Target element undefined.')
     targetElement.requestPointerLock()
@@ -69,6 +72,7 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
   return {
     isSupported,
     element,
+    triggerElement,
     lock,
     unlock,
   }

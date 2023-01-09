@@ -11,7 +11,7 @@ Reactive [pointer lock](https://developer.mozilla.org/en-US/docs/Web/API/Pointer
 ```js
 import { usePointerLock } from '@vueuse/core'
 
-const { isSupported, lock, unlock, element } = usePointerLock()
+const { isSupported, lock, unlock, element, triggerElement } = usePointerLock()
 ```
 
 ## Component Usage
