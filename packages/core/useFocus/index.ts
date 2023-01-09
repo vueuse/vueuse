@@ -41,9 +41,9 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
   const focused = computed({
     get: () => innerFocused.value,
     set(value: boolean) {
-      if (!value && focused.value)
+      if (!value && innerFocused.value)
         targetElement.value?.blur()
-      else if (value && !focused.value)
+      else if (value && !innerFocused.value)
         targetElement.value?.focus()
     },
   })
