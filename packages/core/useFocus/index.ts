@@ -32,7 +32,7 @@ export interface UseFocusReturn {
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
   const { initialValue = false } = options
 
-  const innerFocused = ref(initialValue)
+  const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
 
   useEventListener(targetElement, 'focus', () => innerFocused.value = true)
