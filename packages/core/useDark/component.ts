@@ -3,7 +3,7 @@ import type { UseDarkOptions } from '@vueuse/core'
 import { useDark } from '@vueuse/core'
 import { useToggle } from '@vueuse/shared'
 
-export const UseDark = defineComponent<UseDarkOptions>({
+export const UseDark = /* #__PURE__ */ defineComponent<UseDarkOptions>({
   name: 'UseDark',
   props: ['selector', 'attribute', 'valueDark', 'valueLight', 'onChanged', 'storageKey', 'storage'] as unknown as undefined,
   setup(props, { slots }) {
