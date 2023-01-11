@@ -13,7 +13,7 @@ const idledFor = computed(() =>
 
 <template>
   <note class="mb-2">
-    For demonstraction purpose, the idle timeout is set to <b>5s</b> in this
+    For demonstration purpose, the idle timeout is set to <b>5s</b> in this
     demo (default 1min).
   </note>
   <div class="mb-2">
