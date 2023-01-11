@@ -5,7 +5,7 @@ import { onStartTyping } from '@vueuse/core'
 const input = ref<HTMLInputElement | null>(null)
 
 onStartTyping(() => {
-  if (!input.value?.active)
+  if (input.value !== document.activeElement)
     input.value!.focus()
 })
 </script>

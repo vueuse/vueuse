@@ -35,7 +35,7 @@ const workerSort = async () => {
 <template>
   <p>Current Time: <b>{{ computedTime }}</b></p>
   <note class="mb-2">
-    This is a demo showing sort for large array (5 milion numbers) with or w/o WebWorker.<br>Clock stops when UI blocking happens.
+    This is a demo showing sort for large array (5 million numbers) with or w/o WebWorker.<br>Clock stops when UI blocking happens.
   </note>
   <button @click="baseSort">
     Sort in Main Thread
@@ -43,7 +43,7 @@ const workerSort = async () => {
   <button v-if="!running" @click="workerSort">
     Sort in Worker
   </button>
-  <button v-else class="orange" @click="workerTerminate">
+  <button v-else class="orange" @click="workerTerminate('PENDING')">
     Terminate Worker
   </button>
   <p v-if="data">
