@@ -11,6 +11,7 @@ export interface OnKeyStrokeOptions {
   passive?: boolean
   /**
    * Set to `false` to ignore repeated strokes.
+   *
    * @default true
    */
   repeat?: boolean
