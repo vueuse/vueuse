@@ -29,7 +29,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
     </div>
     <div class="text-center mt-4">
       <p>Use the arrow keys or w a s d keys to control the movement of the ball.</p>
-      <p>Repeated stroke is ignore on the key `d` or `->`.</p>
+      <p>Repeated stroke is ignored on the key `d` or `->`.</p>
     </div>
   </div>
 </template>
