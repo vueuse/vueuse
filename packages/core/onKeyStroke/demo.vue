@@ -19,7 +19,7 @@ onKeyStroke(['a', 'A', 'ArrowLeft'], (e: KeyboardEvent) => {
 
 onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
   translateX.value += 10
-})
+}, { repeat: false })
 </script>
 
 <template>
@@ -28,7 +28,8 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
       <div class="ball" :style="{ transform: `translate(${translateX}px, ${translateY}px)` }" />
     </div>
     <div class="text-center mt-4">
-      Use the arrow keys or w a s d keys to control the movement of the ball.
+      <p>Use the arrow keys or w a s d keys to control the movement of the ball.</p>
+      <p>Repeated stroke is ignore on the key `d` or `->`.</p>
     </div>
   </div>
 </template>

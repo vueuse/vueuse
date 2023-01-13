@@ -9,6 +9,11 @@ export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
   target?: MaybeComputedRef<EventTarget | null | undefined>
   passive?: boolean
+  /**
+   * Set to `false` to ignore repeated strokes.
+   * @default true
+   */
+  repeat?: boolean
 }
 
 const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
@@ -60,10 +65,15 @@ export function onKeyStroke(...args: any[]) {
     handler = args[0]
   }
 
-  const { target = defaultWindow, eventName = 'keydown', passive = false } = options
+  const {
+    target = defaultWindow,
+    eventName = 'keydown',
+    passive = false,
+    repeat = true,
+  } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
-    if (predicate(e))
+    if ((repeat || !e.repeat) && predicate(e))
       handler(e)
   }
 
