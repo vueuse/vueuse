@@ -5,19 +5,19 @@ import { onKeyStroke } from '@vueuse/core'
 const translateX = ref(0)
 const translateY = ref(0)
 
-onKeyStroke(['w', 'W', 'ArrowUp'], (e) => {
+onKeyStroke(['w', 'W', 'ArrowUp'], () => {
   translateY.value -= 10
 })
 
-onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
+onKeyStroke(['s', 'S', 'ArrowDown'], () => {
   translateY.value += 10
 })
 
-onKeyStroke(['a', 'A', 'ArrowLeft'], (e) => {
+onKeyStroke(['a', 'A', 'ArrowLeft'], () => {
   translateX.value -= 10
 })
 
-onKeyStroke(['d', 'D', 'ArrowRight'], (e) => {
+onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   translateX.value += 10
 }, { repeat: false })
 </script>
