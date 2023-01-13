@@ -16,76 +16,48 @@ watch([x, y], ([x, y]) => {
 </script>
 
 <template>
-  <div class="scene">
-    <div id="demo-cube" class="cube" @mousedown.capture="lock" @mouseup="unlock">
-      <div class="bases">
-        <span style="--i: 1" />
-        <span style="--i: -1" />
-      </div>
-      <div class="sides">
-        <span style="--i: 0" />
-        <span style="--i: 1" />
-        <span style="--i: 2" />
-        <span style="--i: 3" />
-      </div>
+  <div scene>
+    <div cube @mousedown.capture="lock" @mouseup="unlock">
+      <span face base style="--i: 1" logo-vue />
+      <span face base style="--i: -1" logo-vueuse />
+      <span face side style="--i: 0" logo-vue />
+      <span face side style="--i: 1" logo-vueuse />
+      <span face side style="--i: 2" logo-vue />
+      <span face side style="--i: 3" logo-vueuse />
     </div>
   </div>
 </template>
 
-<style scoped>
-#demo-cube {
+<style scoped lang="postcss">
+[scene] {
+  @apply flex justify-center items-center box-border perspective-300;
+}
+
+[cube] {
+  @apply cursor-all-scroll relative w-100px h-100px preserve-3d;
   --rotY: v-bind(rotY);
   --rotX: v-bind(rotX);
   transform: rotateY(calc(var(--rotY) * 1deg)) rotateX(calc(var(--rotX) * 1deg));
 }
 
-.scene {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  perspective: 300px;
+[face] {
+  @apply absolute top-0 left-0 w-full h-full b-1 b-solid backface-hidden
+    bg-emerald-4 bg-opacity-20 bg-center bg-[length:75%] bg-no-repeat;
 }
 
-.cube {
-  cursor: all-scroll;
-  position: relative;
-  width: 100px;
-  height: 100px;
-  transform-style: preserve-3d;
-}
-
-.cube div, .cube span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.cube div {
-  transform-style: preserve-3d;
-}
-
-.cube span {
-  border: 1px solid;
-  backface-visibility: hidden;
-  background: rgba(77, 186, 135, .2) center / 75% no-repeat;
-}
-
-.cube .bases span {
+[base] {
   transform: rotateX(calc(90deg * var(--i))) translateZ(50px);
 }
 
-.cube .sides span {
+[side] {
   transform: rotateY(calc(90deg * var(--i))) translateZ(50px);
 }
 
-.cube span:nth-child(odd) {
-  background-image: url(/vue.svg);
+[logo-vue] {
+  @apply bg-[url(/vue.svg)];
 }
 
-.cube span:nth-child(even) {
-  background-image: url(/favicon.svg);
+[logo-vueuse] {
+  @apply bg-[url(/favicon.svg)];
 }
 </style>
