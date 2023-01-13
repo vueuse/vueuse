@@ -10,7 +10,7 @@ export interface UseAsyncStateReturn<Data, Shallow extends boolean> {
   execute: (delay?: number, ...args: any[]) => Promise<Data>
 }
 
-export interface UseAsyncStateOptions<Shallow extends boolean> {
+export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -32,6 +32,12 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
    * Callback when error is caught.
    */
   onError?: (e: unknown) => void
+
+  /**
+   * Callback when success is caught.
+   * @param {D} data
+   */
+  onSuccess?: (data: D) => void
 
   /**
    * Sets the state to initialState before executing the promise.
@@ -71,17 +77,17 @@ export interface UseAsyncStateOptions<Shallow extends boolean> {
 export function useAsyncState<Data, Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: any[]) => Promise<Data>),
   initialState: Data,
-  options?: UseAsyncStateOptions<Shallow>,
+  options?: UseAsyncStateOptions<Shallow, Data>,
 ): UseAsyncStateReturn<Data, Shallow> {
   const {
     immediate = true,
     delay = 0,
     onError = noop,
+    onSuccess = noop,
     resetOnExecute = true,
     shallow = true,
     throwError,
   } = options ?? {}
-
   const state = shallow ? shallowRef(initialState) : ref(initialState)
   const isReady = ref(false)
   const isLoading = ref(false)
@@ -105,6 +111,7 @@ export function useAsyncState<Data, Shallow extends boolean = true>(
       const data = await _promise
       state.value = data
       isReady.value = true
+      onSuccess(data)
     }
     catch (e) {
       error.value = e

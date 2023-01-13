@@ -1,7 +1,7 @@
 import { defineComponent, reactive } from 'vue-demi'
 import { useEyeDropper } from '@vueuse/core'
 
-export const UseEyeDropper = defineComponent({
+export const UseEyeDropper = /* #__PURE__ */ defineComponent({
   name: 'UseEyeDropper',
   props: {
     sRGBHex: String,

@@ -26,7 +26,7 @@ export function MarkdownTransform(): Plugin {
           if (ending === ']') // already a link
             return _
           const fn = getFunction(name)!
-          return `[\`${fn.name}\`](${fn.docs})`
+          return `[\`${fn.name}\`](${fn.docs}) `
         },
       )
       // convert links to relative

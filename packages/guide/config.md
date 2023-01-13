@@ -69,7 +69,7 @@ const parentMousePos = useMouse({ window: window.parent })
 const iframe = document.querySelect('#my-iframe')
 
 // accessing child context
-const childMousePos = useMouse({ window: iframe.contextWindow })
+const childMousePos = useMouse({ window: iframe.contentWindow })
 ```
 
 ```ts

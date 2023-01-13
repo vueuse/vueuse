@@ -3,7 +3,7 @@ import type { MousePressedOptions } from '@vueuse/core'
 import { useMousePressed } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 
-export const UseMousePressed = defineComponent<Omit<MousePressedOptions, 'target'> & RenderableComponent>({
+export const UseMousePressed = /* #__PURE__ */ defineComponent<Omit<MousePressedOptions, 'target'> & RenderableComponent>({
   name: 'UseMousePressed',
   props: ['touch', 'initialValue', 'as'] as unknown as undefined,
   setup(props, { slots }) {

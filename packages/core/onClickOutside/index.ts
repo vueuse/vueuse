@@ -10,7 +10,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: MaybeElementRef[]
+  ignore?: (MaybeElementRef | string)[]
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -38,7 +38,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
     return
@@ -51,11 +51,27 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
 
   let shouldListen = true
 
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore.some((target) => {
+      if (typeof target === 'string') {
+        return Array.from(window.document.querySelectorAll(target))
+          .some(el => el === event.target || event.composedPath().includes(el))
+      }
+      else {
+        const el = unrefElement(target)
+        return el && (event.target === el || event.composedPath().includes(el))
+      }
+    })
+  }
+
   const listener = (event: PointerEvent) => {
     const el = unrefElement(target)
 
     if (!el || el === event.target || event.composedPath().includes(el))
       return
+
+    if (event.detail === 0)
+      shouldListen = !shouldIgnore(event)
 
     if (!shouldListen) {
       shouldListen = true
@@ -63,13 +79,6 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     }
 
     handler(event)
-  }
-
-  const shouldIgnore = (event: PointerEvent) => {
-    return ignore && ignore.some((target) => {
-      const el = unrefElement(target)
-      return el && (event.target === el || event.composedPath().includes(el))
-    })
   }
 
   const cleanup = [
