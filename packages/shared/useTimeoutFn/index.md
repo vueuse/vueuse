@@ -6,6 +6,8 @@ category: Animation
 
 Wrapper for `setTimeout` with controls.
 
+## Usage
+
 ```js
 import { useTimeoutFn } from '@vueuse/core'
 

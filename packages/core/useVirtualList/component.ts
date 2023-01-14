@@ -23,7 +23,7 @@ export interface UseVirtualListProps {
   height: string
 }
 
-export const UseVirtualList = defineComponent<UseVirtualListProps>({
+export const UseVirtualList = /* #__PURE__ */ defineComponent<UseVirtualListProps>({
   name: 'UseVirtualList',
   props: [
     'list',
