@@ -160,8 +160,6 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
       invoke()
     }
     else if (trailing) {
-      const timeout = duration - elapsed
-
       lastValue = new Promise((resolve, reject) => {
         lastRejector = rejectOnCancel ? reject : resolve
         timer = setTimeout(() => {
@@ -169,7 +167,7 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
           isLeading = true
           resolve(invoke())
           clear()
-        }, timeout > 0 ? timeout : 0)
+        }, Math.max(0, duration - elapsed))
       })
     }
 
