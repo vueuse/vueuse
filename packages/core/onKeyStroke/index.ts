@@ -116,3 +116,15 @@ export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => 
 export function onKeyUp(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<OnKeyStrokeOptions, 'eventName'> = {}) {
   return onKeyStroke(key, handler, { ...options, eventName: 'keyup' })
 }
+
+/**
+ * Listen for keyboard keys being stroked while ignoring [repeated strokes](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat).
+ *
+ * @see https://vueuse.org/onKeyStroke
+ * @param key
+ * @param handler
+ * @param options
+ */
+export function onKeyStrokeOnce(key: KeyFilter, handler: (event: KeyboardEvent) => void, options: Omit<OnKeyStrokeOptions, 'repeat'> = {}) {
+  return onKeyStroke(key, handler, { ...options, repeat: false })
+}
