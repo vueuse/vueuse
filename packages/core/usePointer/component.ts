@@ -3,7 +3,7 @@ import type { UsePointerOptions } from '@vueuse/core'
 import { usePointer } from '@vueuse/core'
 import { defaultWindow } from '../_configurable'
 
-export const UsePointer = defineComponent<Omit<UsePointerOptions, 'target'> & { target: 'window' | 'self' }>({
+export const UsePointer = /* #__PURE__ */ defineComponent<Omit<UsePointerOptions, 'target'> & { target: 'window' | 'self' }>({
   name: 'UsePointer',
   props: [
     'pointerTypes',

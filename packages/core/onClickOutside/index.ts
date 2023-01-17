@@ -1,5 +1,4 @@
 import type { Fn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -10,7 +9,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: MaybeElementRef[]
+  ignore?: (MaybeElementRef | string)[]
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -38,38 +37,53 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true, detectIframe = false } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
     return
 
-  const shouldListen = ref(true)
+  let shouldListen = true
 
   let fallback: number
+
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore.some((target) => {
+      if (typeof target === 'string') {
+        return Array.from(window.document.querySelectorAll(target))
+          .some(el => el === event.target || event.composedPath().includes(el))
+      }
+      else {
+        const el = unrefElement(target)
+        return el && (event.target === el || event.composedPath().includes(el))
+      }
+    })
+  }
 
   const listener = (event: PointerEvent) => {
     window.clearTimeout(fallback)
 
     const el = unrefElement(target)
 
-    if (!el || el === event.target || event.composedPath().includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el))
       return
 
-    handler(event)
-  }
+    if (event.detail === 0)
+      shouldListen = !shouldIgnore(event)
 
-  const shouldIgnore = (event: PointerEvent) => {
-    return ignore && ignore.some((target) => {
-      const el = unrefElement(target)
-      return el && (event.target === el || event.composedPath().includes(el))
-    })
+    if (!shouldListen) {
+      shouldListen = true
+      return
+    }
+
+    handler(event)
   }
 
   const cleanup = [
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el) && !shouldIgnore(e)
+      if (el)
+        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     useEventListener(window, 'pointerup', (e) => {
       if (e.button === 0) {

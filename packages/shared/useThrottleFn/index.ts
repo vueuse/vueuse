@@ -1,4 +1,4 @@
-import type { FunctionArgs, MaybeComputedRef } from '../utils'
+import type { FunctionArgs, MaybeComputedRef, PromisifyFn } from '../utils'
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**
@@ -13,11 +13,19 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  *
  * @param [leading=true] if true, call fn on the leading edge of the ms timeout
  *
+ * @param [rejectOnCancel=false] if true, reject the last call if it's been cancel
+ *
  * @return  A new, throttled, function.
  */
-export function useThrottleFn<T extends FunctionArgs>(fn: T, ms: MaybeComputedRef<number> = 200, trailing = false, leading = true): T {
+export function useThrottleFn<T extends FunctionArgs>(
+  fn: T,
+  ms: MaybeComputedRef<number> = 200,
+  trailing = false,
+  leading = true,
+  rejectOnCancel = false,
+): PromisifyFn<T> {
   return createFilterWrapper(
-    throttleFilter(ms, trailing, leading),
+    throttleFilter(ms, trailing, leading, rejectOnCancel),
     fn,
   )
 }

@@ -32,3 +32,5 @@ const { text, copy, copied, isSupported } = useClipboard({ source })
     Your browser does not support Clipboard API
   </p>
 ```
+
+Set `legacy: true` to keep the ability to copy if [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is not available. It will handle copy with [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) as fallback.

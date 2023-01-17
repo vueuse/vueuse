@@ -1,6 +1,12 @@
 ---
 category: Component
+deprecated: true
 ---
+
+::: warning
+**Deprecated**. Please use [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead.
+:::
+
 
 # useVirtualList
 
@@ -101,3 +107,5 @@ const { list, containerProps, wrapperProps } = useVirtualList(
   </template>
 </UseVirtualList>
 ```
+
+To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.

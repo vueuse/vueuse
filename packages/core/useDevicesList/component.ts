@@ -2,7 +2,7 @@ import { defineComponent, reactive } from 'vue-demi'
 import type { UseDevicesListOptions } from '@vueuse/core'
 import { useDevicesList } from '@vueuse/core'
 
-export const UseDevicesList = defineComponent<UseDevicesListOptions>({
+export const UseDevicesList = /* #__PURE__ */ defineComponent<UseDevicesListOptions>({
   name: 'UseDevicesList',
   props: ['onUpdated', 'requestPermissions', 'constraints'] as unknown as undefined,
   setup(props, { slots }) {

@@ -2,7 +2,7 @@ import { defineComponent, h, reactive, ref } from 'vue-demi'
 import { useFullscreen } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 
-export const UseFullscreen = defineComponent<RenderableComponent>({
+export const UseFullscreen = /* #__PURE__ */ defineComponent<RenderableComponent>({
   name: 'UseFullscreen',
   props: ['as'] as unknown as undefined,
   setup(props, { slots }) {
