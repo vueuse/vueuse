@@ -32,6 +32,9 @@ const Links = [
   { text: 'Export Size', link: '/export-size' },
   { text: 'Recent Updated', link: '/functions.html#sort=updated' },
   { text: 'Why no translations?', link: '/why-no-translations' },
+]
+
+const Learn = [
   { text: 'Premium Video Course', link: 'https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse' },
 ]
 
@@ -39,6 +42,7 @@ const DefaultSideBar = [
   { text: 'Guide', items: Guide },
   { text: 'Core Functions', items: CoreCategories },
   { text: 'Add-ons', items: AddonCategories },
+  { text: 'Learn', items: Learn },
   { text: 'Links', items: Links },
 ]
 
@@ -85,6 +89,7 @@ export default defineConfig({
         text: 'Guide',
         items: [
           { text: 'Guide', items: Guide },
+          { text: 'Learn', items: Learn },
           { text: 'Links', items: Links },
         ],
       },
