@@ -64,6 +64,9 @@ export interface UseVirtualListReturn<T> {
   }>
 }
 
+/**
+ * @deprecated Please use [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead.
+ */
 export function useVirtualList<T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
   const { containerStyle, wrapperProps, scrollTo, calculateRange, currentList, containerRef } = 'itemHeight' in options
     ? useVerticalVirtualList(options, list)
