@@ -1,8 +1,15 @@
 {
   "cSpell.words": [
+    "Axios",
+    "consola",
     "Demi",
-    "Unsubscribable",
+    "esno",
     "iframes",
+    "iife",
+    "Pausable",
+    "Unref",
+    "Unsubscribable",
+    "vitepress",
     "vueuse"
   ],
   "prettier.enable": false,
