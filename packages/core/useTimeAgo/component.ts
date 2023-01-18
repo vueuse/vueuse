@@ -7,7 +7,7 @@ interface UseTimeAgoComponentOptions extends Omit<UseTimeAgoOptions<true>, 'cont
   time: MaybeRef<Date | number | string>
 }
 
-export const UseTimeAgo = defineComponent<UseTimeAgoComponentOptions>({
+export const UseTimeAgo = /* #__PURE__ */ defineComponent<UseTimeAgoComponentOptions>({
   name: 'UseTimeAgo',
   props: ['time', 'updateInterval', 'max', 'fullDateFormatter', 'messages', 'showSecond'] as unknown as undefined,
   setup(props, { slots }) {

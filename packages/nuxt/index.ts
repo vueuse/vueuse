@@ -14,6 +14,7 @@ const disabledFunctions = [
   'useHead',
   'useTitle',
   'useStorage',
+  'useImage',
 ]
 
 const packages = [
@@ -83,6 +84,19 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       nuxt.options.plugins.push(pluginPath)
       nuxt.options.build.transpile.push(pluginPath)
     }
+
+    // @ts-expect-error - private API
+    nuxt.hook('devtools:customTabs', (iframeTabs) => {
+      iframeTabs.push({
+        name: 'vueuse',
+        title: 'VueUse',
+        icon: 'i-logos-vueuse',
+        view: {
+          type: 'iframe',
+          src: 'https://vueuse.org/functions.html',
+        },
+      })
+    })
 
     if (options.autoImports) {
       // auto import
