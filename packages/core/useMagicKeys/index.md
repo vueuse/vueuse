@@ -154,3 +154,16 @@ const keys = useMagicKeys({ reactive: true })
   </div>
 </template>
 ```
+
+### Repeated Key Events
+
+You can also register repeated `KeyboardEvent`s.
+
+```ts
+import { useMagicKeys, whenever } from '@vueuse/core'
+
+const { current } = useMagicKeys({ repeat: true })
+const keys = computed(() => Array.from(current))
+
+whenever(keys, () => console.log('keys', keys.value))
+```

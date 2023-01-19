@@ -3,8 +3,11 @@ import { computed, reactive, ref, unref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import type { KeyModifier } from '../useKeyModifier'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
+
+const defaultModifierKeys: KeyModifier[] = ['Alt', 'AltGraph', 'CapsLock', 'Control', 'Fn', 'FnLock', 'Meta', 'NumLock', 'ScrollLock', 'Shift', 'Symbol', 'SymbolLock']
 
 export interface UseMagicKeysOptions<Reactive extends Boolean> {
   /**
@@ -36,6 +39,13 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    * @default true
    */
   passive?: boolean
+
+  /**
+   * Register repeated keyboard events
+   *
+   * @default false
+   */
+  repeat?: boolean
 
   /**
    * Custom event handler for keydown/keyup event.
@@ -78,6 +88,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     target = defaultWindow,
     aliasMap = DefaultMagicKeysAliasMap,
     passive = true,
+    repeat = false,
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
@@ -108,6 +119,20 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     const key = e.key?.toLowerCase()
     const code = e.code?.toLowerCase()
     const values = [code, key].filter(Boolean)
+
+    if (repeat && e.repeat) {
+      reset()
+
+      // modifier keys don't fire separate events for repeated key presses
+      // so we have to check for them and add them back separately
+      defaultModifierKeys.forEach((key) => {
+        if (typeof e.getModifierState === 'function' && e.getModifierState(key)) {
+          current.add(key.toLowerCase())
+          usedKeys.add(key.toLowerCase())
+          setRefs(key.toLowerCase(), true)
+        }
+      })
+    }
 
     // current set
     if (key) {
