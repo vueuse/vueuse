@@ -49,6 +49,8 @@ onKeyStroke('A', (e) => {
 The callback will trigger only once when pressing `A` and **hold down**.
 
 ```js
+import { onKeyStroke, onKeyStrokeOnce } from '@vueuse/core'
+
 // use `repeat` option
 onKeyStroke('A', (e) => {
   console.log('Key A pressed')
