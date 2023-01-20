@@ -74,8 +74,8 @@ describe('onKeyStroke', () => {
     expect(callBackFn).toBeCalledTimes(1)
   })
 
-  it('ignore repeated strokes', () => {
-    onKeyStroke('A', callBackFn, { target: element, repeat: false })
+  it('ignore repeated events', () => {
+    onKeyStroke('A', callBackFn, { target: element, autoRepeat: false })
     createKeyEvent('A', 'keydown', false)
     createKeyEvent('A', 'keydown', true)
     createKeyEvent('A', 'keydown', true)

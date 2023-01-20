@@ -19,7 +19,7 @@ onKeyStroke(['a', 'A', 'ArrowLeft'], () => {
 
 onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   translateX.value += 10
-}, { repeat: false })
+}, { autoRepeat: false })
 </script>
 
 <template>
@@ -29,7 +29,7 @@ onKeyStroke(['d', 'D', 'ArrowRight'], () => {
     </div>
     <div class="text-center mt-4">
       <p>Use the arrow keys or w a s d keys to control the movement of the ball.</p>
-      <p>Repeated stroke is ignored on the key `d` or `->`.</p>
+      <p>Repeated events are ignored on the key `d` or `->`.</p>
     </div>
   </div>
 </template>
