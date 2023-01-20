@@ -246,7 +246,7 @@ importers:
       '@vueuse/core': workspace:*
       '@vueuse/metadata': workspace:*
       local-pkg: ^0.4.2
-      unimport: ^1.1.0
+      unimport: ^1.3.0
       vue-demi: 0.13.11
     dependencies:
       '@nuxt/kit': 3.0.0
@@ -256,7 +256,7 @@ importers:
       vue-demi: 0.13.11
     devDependencies:
       '@nuxt/schema': 3.0.0
-      unimport: 1.1.0
+      unimport: 1.3.0
 
   packages/router:
     specifiers:
@@ -2669,7 +2669,7 @@ packages:
       scule: 1.0.0
       semver: 7.3.8
       unctx: 2.1.0
-      unimport: 1.1.0
+      unimport: 1.3.0
       untyped: 1.0.0
     transitivePeerDependencies:
       - rollup
@@ -2690,7 +2690,7 @@ packages:
       scule: 1.0.0
       std-env: 3.3.1
       ufo: 1.0.0
-      unimport: 1.1.0
+      unimport: 1.3.0
       untyped: 1.0.0
     transitivePeerDependencies:
       - rollup
@@ -6928,6 +6928,10 @@ packages:
     resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
     engines: {node: '>=14'}
 
+  /local-pkg/0.4.3:
+    resolution: {integrity: sha512-SFppqq5p42fe2qcZQqqEOiVRXl+WCP1MdT6k7BDEW1j++sp5fIY+/fdRQitvKgB5BrBcmrs5m/L0v2FrU5MY1g==}
+    engines: {node: '>=14'}
+
   /locate-path/2.0.0:
     resolution: {integrity: sha512-NCI2kiDkyR7VeEKm27Kda/iQHyKJe1Bu0FlTbYp3CqJu+9IFe9bLyAjMxf5ZDDbEg+iMPzB5zYyUTSm8wVTKmA==}
     engines: {node: '>=4'}
@@ -7224,6 +7228,14 @@ packages:
 
   /mlly/1.0.0:
     resolution: {integrity: sha512-QL108Hwt+u9bXdWgOI0dhzZfACovn5Aen4Xvc8Jasd9ouRH4NjnrXEiyP3nVvJo91zPlYjVRckta0Nt2zfoR6g==}
+    dependencies:
+      acorn: 8.8.1
+      pathe: 1.0.0
+      pkg-types: 1.0.1
+      ufo: 1.0.1
+
+  /mlly/1.1.0:
+    resolution: {integrity: sha512-cwzBrBfwGC1gYJyfcy8TcZU1f+dbH/T+TuOhtYP2wLv/Fb51/uV7HJQfBPtEupZ2ORLRU1EKFS/QfS3eo9+kBQ==}
     dependencies:
       acorn: 8.8.1
       pathe: 1.0.0
@@ -7752,7 +7764,7 @@ packages:
     resolution: {integrity: sha512-jHv9HB+Ho7dj6ItwppRDDl0iZRYBD0jsakHXtFgoLr+cHSF6xC+QL54sJmWxyGxOLYSHm0afhXhXcQDQqH9z8g==}
     dependencies:
       jsonc-parser: 3.2.0
-      mlly: 1.0.0
+      mlly: 1.1.0
       pathe: 1.0.0
 
   /pluralize/8.0.0:
@@ -9127,15 +9139,15 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /unimport/1.1.0:
-    resolution: {integrity: sha512-dSufi3POQWUVAMU6DxXu39U0cWzz5m3FtQBUbgDJTkCpeRfyiYhDg+BOz6UPKfDPtEhkbshV8JoMV3I8i/mQ+A==}
+  /unimport/1.3.0:
+    resolution: {integrity: sha512-fOkrdxglsHd428yegH0wPH/6IfaSdDeMXtdRGn6en/ccyzc2aaoxiUTMrJyc6Bu+xoa18RJRPMfLUHEzjz8atw==}
     dependencies:
       '@rollup/pluginutils': 5.0.2
       escape-string-regexp: 5.0.0
       fast-glob: 3.2.12
-      local-pkg: 0.4.2
+      local-pkg: 0.4.3
       magic-string: 0.27.0
-      mlly: 1.0.0
+      mlly: 1.1.0
       pathe: 1.0.0
       pkg-types: 1.0.1
       scule: 1.0.0
