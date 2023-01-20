@@ -32,7 +32,7 @@ importers:
       '@vueuse/math': workspace:*
       '@vueuse/rxjs': workspace:*
       '@vueuse/shared': workspace:*
-      axios: ^1.2.2
+      axios: ^1.2.3
       bumpp: ^8.2.1
       consola: ^2.15.3
       cross-env: ^7.0.3
@@ -102,7 +102,7 @@ importers:
       '@vueuse/math': link:packages/math
       '@vueuse/rxjs': link:packages/rxjs
       '@vueuse/shared': link:packages/shared
-      axios: 1.2.2
+      axios: 1.2.3
       bumpp: 8.2.1
       consola: 2.15.3
       cross-env: 7.0.3
@@ -198,7 +198,7 @@ importers:
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
       async-validator: ^4.2.5
-      axios: ^1.2.2
+      axios: ^1.2.3
       change-case: ^4.1.2
       drauu: ^0.3.2
       focus-trap: ^7.2.0
@@ -217,7 +217,7 @@ importers:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.5.0
       async-validator: 4.2.5
-      axios: 1.2.2
+      axios: 1.2.3
       change-case: 4.1.2
       drauu: 0.3.2
       focus-trap: 7.2.0
@@ -3714,8 +3714,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /axios/1.2.2:
-    resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
+  /axios/1.2.3:
+    resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
     dependencies:
       follow-redirects: 1.15.1
       form-data: 4.0.0

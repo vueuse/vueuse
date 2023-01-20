@@ -57,7 +57,7 @@
     "@vueuse/math": "workspace:*",
     "@vueuse/rxjs": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "axios": "^1.2.2",
+    "axios": "^1.2.3",
     "bumpp": "^8.2.1",
     "consola": "^2.15.3",
     "cross-env": "^7.0.3",
