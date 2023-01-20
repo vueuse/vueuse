@@ -1,6 +1,12 @@
 ---
 category: Component
+deprecated: true
 ---
+
+::: warning
+**Deprecated**. Please use [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead.
+:::
+
 
 # useVirtualList
 
