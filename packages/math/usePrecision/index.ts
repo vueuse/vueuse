@@ -21,8 +21,8 @@ export function usePrecision(
   value: MaybeComputedRef<number>,
   digits: MaybeComputedRef<number>,
   options?: MaybeComputedRef<UsePrecisionOptions>,
-): ComputedRef<number | string> {
-  return computed<number | string>(() => {
+): ComputedRef<number> {
+  return computed<number>(() => {
     const _value = resolveUnref(value)
     const _digits = resolveUnref(digits)
     const power = 10 ** _digits
