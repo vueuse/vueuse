@@ -36,8 +36,9 @@ export function useElementSize(
           : entry.devicePixelContentBoxSize
 
       if (boxSize) {
-        width.value = boxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
-        height.value = boxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
+        const formatBoxSize = Array.isArray(boxSize) ? boxSize : [boxSize]
+        width.value = formatBoxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
+        height.value = formatBoxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
       }
       else {
         // fallback
