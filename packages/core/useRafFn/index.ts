@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
@@ -74,7 +74,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   tryOnScopeDispose(pause)
 
   return {
-    isActive,
+    isActive: readonly(isActive),
     pause,
     resume,
   }
