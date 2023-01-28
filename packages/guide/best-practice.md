@@ -76,7 +76,7 @@ You can learn more about effect scope in [this RFC](https://github.com/vuejs/rfc
 
 ### Passing Ref as Argument
 
-In Vue, we use the `setup()` function to construct the "connections" between the data and logics. To make it flexible, most of the VueUse function also accpets ref version of the arguments.
+In Vue, we use the `setup()` function to construct the "connections" between the data and logics. To make it flexible, most of the VueUse function also accepts ref version of the arguments.
 
 Taking `useTitle` as an example:
 
