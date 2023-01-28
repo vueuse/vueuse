@@ -23,7 +23,6 @@ const getData = (docRef: any) => {
 
 const unsubscribe = vi.fn()
 console.error = vi.fn()
-let triggerSnapshot = () => nextTick()
 
 vi.mock('firebase/firestore', () => {
   const doc = vi.fn((_: Firestore, path: string) => {
@@ -43,14 +42,10 @@ vi.mock('firebase/firestore', () => {
       errorHandler(new Error('not found'))
       return
     }
-    triggerSnapshot = () => {
-      callbackFn({
-        ...getMockSnapFromRef(docRef),
-        docs: [getMockSnapFromRef(docRef)],
-      })
-      return nextTick()
-    }
-    triggerSnapshot()
+    callbackFn({
+      ...getMockSnapFromRef(docRef),
+      docs: [getMockSnapFromRef(docRef)],
+    })
     return unsubscribe
   })
   return { onSnapshot, collection, doc }
@@ -58,9 +53,8 @@ vi.mock('firebase/firestore', () => {
 
 describe('useFirestore', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
-    unsubscribe.mockClear()
     vi.clearAllMocks()
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
@@ -168,7 +162,7 @@ describe('useFirestore', () => {
     expect(unsubscribe).toBeCalledTimes(0)
   })
 
-  it('should get disposed after autoDispose timeout not affected by reads during timeout', async () => {
+  it('should get disposed after autoDispose timeout', async () => {
     const scope = effectScope()
     await scope.run(async () => {
       const collectionRef = collection(dummyFirestore, 'users')
@@ -176,31 +170,7 @@ describe('useFirestore', () => {
     })
     scope.stop()
     expect(unsubscribe).toBeCalledTimes(0)
-    await triggerSnapshot()
-    await triggerSnapshot()
-    expect(unsubscribe).toBeCalledTimes(0)
     vi.advanceTimersByTime(2000)
-    expect(unsubscribe).toBeCalledTimes(1)
-  })
-
-  it('should get disposed early once on read limit reached during autoDispose timeout', async () => {
-    const scope = effectScope()
-    await scope.run(async () => {
-      const collectionRef = collection(dummyFirestore, 'users')
-      useFirestore(collectionRef, undefined, {
-        autoDispose: 5000,
-        autoDisposingReadLimit: 3,
-      })
-    })
-    scope.stop()
-    expect(unsubscribe).toBeCalledTimes(0)
-    vi.advanceTimersByTime(1000)
-    await triggerSnapshot()
-    await triggerSnapshot()
-    expect(unsubscribe).toBeCalledTimes(0)
-    await triggerSnapshot()
-    expect(unsubscribe).toBeCalledTimes(1)
-    vi.advanceTimersByTime(5000)
     expect(unsubscribe).toBeCalledTimes(1)
   })
 })

@@ -1,5 +1,5 @@
-import type { Ref, WatchStopHandle } from 'vue-demi'
-import { computed, isRef, nextTick, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { computed, isRef, ref, watch } from 'vue-demi'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
 import type { MaybeRef } from '@vueuse/shared'
 import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
@@ -8,7 +8,6 @@ import { onSnapshot } from 'firebase/firestore'
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void
   autoDispose?: boolean | number
-  autoDisposingReadLimit?: number
 }
 
 export type FirebaseDocRef<T> =
@@ -73,7 +72,6 @@ export function useFirestore<T extends DocumentData>(
   const {
     errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
-    autoDisposingReadLimit = Infinity,
   } = options
 
   const refOfDocRef = isRef(maybeDocRef)
@@ -100,33 +98,18 @@ export function useFirestore<T extends DocumentData>(
     }
   }, { immediate: true })
 
-  if (autoDispose) {
+  if (autoDispose === true) {
+    // Dispose the request now.
     tryOnScopeDispose(() => {
       close()
     })
   }
   else if (typeof autoDispose === 'number') {
+    // Dispose the request after timeout.
     tryOnScopeDispose(() => {
-      let stopWatch: WatchStopHandle = () => {}
-
-      // Dispose the request after timeout.
-      const { stop } = useTimeoutFn(() => {
-        stopWatch()
+      useTimeoutFn(() => {
         close()
       }, autoDispose)
-
-      // Dispose the request if the disposing read limit is reached while waiting for timeout.
-      if (autoDisposingReadLimit > 0 && autoDisposingReadLimit !== Infinity) {
-        let readCount = 0
-        stopWatch = watch(data, () => {
-          readCount++
-          if (readCount >= autoDisposingReadLimit) {
-            stop()
-            close()
-            nextTick(() => stopWatch())
-          }
-        })
-      }
     })
   }
 
