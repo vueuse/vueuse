@@ -1,7 +1,7 @@
 import { defineComponent, reactive } from 'vue-demi'
 import { usePreferredReducedMotion } from '@vueuse/core'
 
-export const UsePreferredReducedMotion = defineComponent({
+export const UsePreferredReducedMotion = /* #__PURE__ */ defineComponent({
   name: 'UsePreferredReducedMotion',
   setup(props, { slots }) {
     const data = reactive({

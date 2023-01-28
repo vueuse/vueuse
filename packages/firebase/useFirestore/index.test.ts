@@ -7,19 +7,22 @@ const dummyFirestore = {} as Firestore
 
 const getMockSnapFromRef = (docRef: any) => ({
   id: `${docRef.path}-id`,
-  data: () => (docRef),
+  data: () => docRef.path === 'users/invalid' ? null : docRef,
 })
 
 const getData = (docRef: any) => {
   const data = docRef.data()
-  Object.defineProperty(data, 'id', {
-    value: docRef.id.toString(),
-    writable: false,
-  })
+  if (data) {
+    Object.defineProperty(data, 'id', {
+      value: docRef.id.toString(),
+      writable: false,
+    })
+  }
   return data
 }
 
 const unsubscribe = vi.fn()
+console.error = vi.fn()
 let triggerSnapshot = () => nextTick()
 
 vi.mock('firebase/firestore', () => {
@@ -35,7 +38,11 @@ vi.mock('firebase/firestore', () => {
     return { path }
   })
 
-  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}) => {
+  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}, errorHandler: (err: Error) => void) => {
+    if (docRef.path === 'users/error') {
+      errorHandler(new Error('not found'))
+      return
+    }
     triggerSnapshot = () => {
       callbackFn({
         ...getMockSnapFromRef(docRef),
@@ -51,8 +58,9 @@ vi.mock('firebase/firestore', () => {
 
 describe('useFirestore', () => {
   beforeEach(() => {
-    unsubscribe.mockClear()
     vi.useFakeTimers()
+    unsubscribe.mockClear()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
@@ -66,8 +74,12 @@ describe('useFirestore', () => {
   })
 
   it('should get `users/userId` document data', () => {
-    const docRef = doc(dummyFirestore, 'users/userId')
-    const data = useFirestore(docRef)
+    let docRef = doc(dummyFirestore, 'users/userId')
+    let data = useFirestore(docRef)
+    expect(data.value).toEqual(getData(getMockSnapFromRef(docRef)))
+
+    docRef = doc(dummyFirestore, 'users/invalid')
+    data = useFirestore(docRef)
     expect(data.value).toEqual(getData(getMockSnapFromRef(docRef)))
   })
 
@@ -106,6 +118,31 @@ describe('useFirestore', () => {
     userId.value = ''
     await nextTick()
     expect(unsubscribe).toHaveBeenCalled()
+    expect(data.value).toEqual([{ id: 'default' }])
+  })
+
+  it('should call error handler', () => {
+    const docRef = doc(dummyFirestore, 'users/error')
+    useFirestore(docRef)
+
+    expect(console.error).toHaveBeenCalledWith(new Error('not found'))
+  })
+
+  it('should close when scope dispose', async () => {
+    const scope = effectScope()
+    let data: any
+    const userId = ref('')
+    const queryRef = computed(() => !!userId.value && collection(dummyFirestore, `users/${userId.value}/posts`))
+
+    scope.run(() => {
+      data = useFirestore(queryRef, [{ id: 'default' }])
+      expect(data.value).toEqual([{ id: 'default' }])
+    })
+    scope.stop()
+
+    userId.value = 'userId'
+    await nextTick()
+
     expect(data.value).toEqual([{ id: 'default' }])
   })
 

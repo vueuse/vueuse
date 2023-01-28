@@ -6,8 +6,7 @@ category: Sensors
 
 Reactive [SpeechRecognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition).
 
-> [Can I use?](https://caniuse.com/mdn-api_speechrecognition)
-
+> [Can I use?](https://caniuse.com/mdn-api_speechrecognitionevent)
 ## Usage
 
 ```ts

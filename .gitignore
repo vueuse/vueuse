@@ -8,6 +8,7 @@ dist
 index.json
 indexes.json
 node_modules
+cache
 packages/*/LICENSE
 packages/contributing.md
 packages/core/README.md
@@ -17,3 +18,4 @@ playgrounds/*/pnpm-lock.yaml
 types
 coverage
 .eslintcache
+.vitepress/cache

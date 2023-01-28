@@ -34,25 +34,27 @@ function isDocumentReference<T>(docRef: any): docRef is DocumentReference<T> {
   return (docRef.path?.match(/\//g) || []).length % 2 !== 0
 }
 
+type Falsy = false | 0 | '' | null | undefined
+
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
+  maybeDocRef: MaybeRef<DocumentReference<T> | Falsy>,
   initialValue: T,
   options?: UseFirestoreOptions
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<Query<T> | false>,
+  maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue: T[],
   options?: UseFirestoreOptions
 ): Ref<T[]>
 
 // nullable initial values
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<DocumentReference<T> | false>,
-  initialValue?: T,
+  maybeDocRef: MaybeRef<DocumentReference<T> | Falsy>,
+  initialValue?: T | undefined | null,
   options?: UseFirestoreOptions,
 ): Ref<T | undefined | null>
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<Query<T> | false>,
+  maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue?: T[],
   options?: UseFirestoreOptions
 ): Ref<T[] | undefined>
@@ -64,7 +66,7 @@ export function useFirestore<T extends DocumentData>(
  * @see https://vueuse.org/useFirestore
  */
 export function useFirestore<T extends DocumentData>(
-  maybeDocRef: MaybeRef<FirebaseDocRef<T> | false>,
+  maybeDocRef: MaybeRef<FirebaseDocRef<T> | Falsy>,
   initialValue: any = undefined,
   options: UseFirestoreOptions = {},
 ) {
@@ -98,8 +100,7 @@ export function useFirestore<T extends DocumentData>(
     }
   }, { immediate: true })
 
-  if (autoDispose === true) {
-    // Dispose the request now.
+  if (autoDispose) {
     tryOnScopeDispose(() => {
       close()
     })

@@ -1,6 +1,6 @@
+import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
 import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -169,10 +169,26 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function write(v: unknown) {
     try {
-      if (v == null)
+      if (v == null) {
         storage!.removeItem(key)
-      else
-        storage!.setItem(key, serializer.write(v))
+      }
+      else {
+        const serialized = serializer.write(v)
+        const oldValue = storage!.getItem(key)
+        if (oldValue !== serialized) {
+          storage!.setItem(key, serialized)
+
+          // send custom event to communicate within same page
+          if (window) {
+            window?.dispatchEvent(new StorageEvent('storage', {
+              key,
+              oldValue,
+              newValue: serialized,
+              storageArea: storage as any,
+            }))
+          }
+        }
+      }
     }
     catch (e) {
       onError(e)
@@ -180,47 +196,56 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   }
 
   function read(event?: StorageEvent) {
+    const rawValue = event
+      ? event.newValue
+      : storage!.getItem(key)
+
+    if (rawValue == null) {
+      if (writeDefaults && rawInit !== null)
+        storage!.setItem(key, serializer.write(rawInit))
+      return rawInit
+    }
+    else if (!event && mergeDefaults) {
+      const value = serializer.read(rawValue)
+      if (isFunction(mergeDefaults))
+        return mergeDefaults(value, rawInit)
+      else if (type === 'object' && !Array.isArray(value))
+        return { ...rawInit as any, ...value }
+      return value
+    }
+    else if (typeof rawValue !== 'string') {
+      return rawValue
+    }
+    else {
+      return serializer.read(rawValue)
+    }
+  }
+
+  function update(event?: StorageEvent) {
+    if (event && event.storageArea !== storage)
+      return
+
+    if (event && event.key == null) {
+      data.value = rawInit
+      return
+    }
+
     if (event && event.key !== key)
       return
 
     pauseWatch()
     try {
-      const rawValue = event
-        ? event.newValue
-        : storage!.getItem(key)
-
-      if (rawValue == null) {
-        if (writeDefaults && rawInit !== null)
-          storage!.setItem(key, serializer.write(rawInit))
-        return rawInit
-      }
-      else if (!event && mergeDefaults) {
-        const value = serializer.read(rawValue)
-        if (isFunction(mergeDefaults))
-          return mergeDefaults(value, rawInit)
-        else if (type === 'object' && !Array.isArray(value))
-          return { ...rawInit as any, ...value }
-        return value
-      }
-      else if (typeof rawValue !== 'string') {
-        return rawValue
-      }
-      else {
-        return serializer.read(rawValue)
-      }
+      data.value = read(event)
     }
     catch (e) {
       onError(e)
     }
     finally {
-      resumeWatch()
+      // use nextTick to avoid infinite loop
+      if (event)
+        nextTick(resumeWatch)
+      else
+        resumeWatch()
     }
-  }
-
-  function update(event?: StorageEvent) {
-    if (event && event.key !== key)
-      return
-
-    data.value = read(event)
   }
 }

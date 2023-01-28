@@ -1,8 +1,8 @@
-import { ref } from 'vue-demi'
 import { until } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { retry } from '../../.test'
-import '../../.test/mockServer'
 import { createFetch, useFetch } from '.'
+import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
@@ -127,20 +127,25 @@ describe('useFetch', () => {
   })
 
   test('should create an instance of useFetch with baseUrls', async () => {
+    const baseUrl = 'https://example.com'
+    const targetUrl = `${baseUrl}/test`
     const fetchHeaders = { Authorization: 'test' }
     const requestHeaders = { 'Accept-Language': 'en-US' }
     const allHeaders = { ...fetchHeaders, ...requestHeaders }
-    const useMyFetchWithBaseUrl = createFetch({ baseUrl: 'https://example.com', fetchOptions: { headers: fetchHeaders } })
+    const requestOptions = { headers: requestHeaders }
+    const useMyFetchWithBaseUrl = createFetch({ baseUrl, fetchOptions: { headers: fetchHeaders } })
     const useMyFetchWithoutBaseUrl = createFetch({ fetchOptions: { headers: fetchHeaders } })
-    useMyFetchWithBaseUrl('test', { headers: requestHeaders })
-    useMyFetchWithBaseUrl('/test', { headers: requestHeaders })
-    useMyFetchWithoutBaseUrl('https://example.com/test', { headers: requestHeaders })
+
+    useMyFetchWithBaseUrl('test', requestOptions)
+    useMyFetchWithBaseUrl('/test', requestOptions)
+    useMyFetchWithBaseUrl(targetUrl, requestOptions)
+    useMyFetchWithoutBaseUrl(targetUrl, requestOptions)
 
     await retry(() => {
-      expect(fetchSpy).toHaveBeenCalledTimes(3)
-      expect(fetchSpy).toHaveBeenNthCalledWith(1, 'https://example.com/test', expect.anything())
-      expect(fetchSpy).toHaveBeenNthCalledWith(2, 'https://example.com/test', expect.anything())
-      expect(fetchSpy).toHaveBeenNthCalledWith(3, 'https://example.com/test', expect.anything())
+      expect(fetchSpy).toHaveBeenCalledTimes(4)
+      new Array(4).fill(0).forEach((x, i) => {
+        expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
+      })
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)
     })
   })
@@ -283,6 +288,157 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+    })
+  })
+
+  test('should overwrite beforeFetch function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, Global: 'foo' }
+          return { options }
+        },
+      },
+    })
+    useMyFetch('test', {
+      beforeFetch({ options }) {
+        options.headers = { ...options.headers, Local: 'foo' }
+        return { options }
+      },
+    })
+
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
+    })
+  })
+
+  test('should overwrite afterFetch function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        afterFetch(ctx) {
+          ctx.data.global = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch('test?json', {
+      afterFetch(ctx) {
+        ctx.data.local = 'Local'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
+      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+    })
+  })
+
+  test('should overwrite onFetchError function when using a factory instance', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        onFetchError(ctx) {
+          ctx.data.global = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch('test?status=400&json', {
+      onFetchError(ctx) {
+        ctx.data.local = 'Local'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
+      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+    })
+  })
+
+  test('should overwrite beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, Global: 'foo' }
+          return { options }
+        },
+      },
+    })
+    useMyFetch(
+      'test',
+      { method: 'GET' },
+      {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, Local: 'foo' }
+          return { options }
+        },
+      })
+
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
+    })
+  })
+
+  test('should overwrite afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        afterFetch(ctx) {
+          ctx.data.global = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch(
+      'test?json',
+      { method: 'GET' },
+      {
+        afterFetch(ctx) {
+          ctx.data.local = 'Local'
+          return ctx
+        },
+      }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
+      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+    })
+  })
+
+  test('should overwrite onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        onFetchError(ctx) {
+          ctx.data.global = 'Global'
+          return ctx
+        },
+      },
+    })
+    const { data } = useMyFetch(
+      'test?status=400&json',
+      { method: 'GET' },
+      {
+        onFetchError(ctx) {
+          ctx.data.local = 'Local'
+          return ctx
+        },
+      }).json()
+
+    await retry(() => {
+      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
+      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
     })
   })
 
