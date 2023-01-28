@@ -13,6 +13,8 @@ jobs:
       CI_JOB_NUMBER: 1
     steps:
       - uses: actions/checkout@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
       - uses: antfu/export-size-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

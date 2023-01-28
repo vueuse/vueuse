@@ -63,7 +63,7 @@ export function useEventListener<E extends keyof WindowEventMap>(
  * @param options
  */
 export function useEventListener<E extends keyof DocumentEventMap>(
-  target: Document,
+  target: DocumentOrShadowRoot,
   event: Arrayable<E>,
   listener: Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>,
   options?: boolean | AddEventListenerOptions

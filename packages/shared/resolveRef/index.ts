@@ -13,4 +13,3 @@ export function resolveRef<T>(r: MaybeComputedRef<T>) {
     ? computed<T>(r as any)
     : ref(r)
 }
-

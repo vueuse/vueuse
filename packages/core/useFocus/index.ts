@@ -47,7 +47,13 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
     },
   })
 
-  watch(targetElement, () => { focused.value = initialValue }, { immediate: true, flush: 'post' })
+  watch(
+    targetElement,
+    () => {
+      focused.value = initialValue
+    },
+    { immediate: true, flush: 'post' },
+  )
 
   return { focused }
 }

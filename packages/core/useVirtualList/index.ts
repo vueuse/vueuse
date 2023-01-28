@@ -64,6 +64,9 @@ export interface UseVirtualListReturn<T> {
   }>
 }
 
+/**
+ * @deprecated Please use [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead.
+ */
 export function useVirtualList<T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
   const { containerStyle, wrapperProps, scrollTo, calculateRange, currentList, containerRef } = 'itemHeight' in options
     ? useVerticalVirtualList(options, list)
@@ -107,7 +110,7 @@ interface UseVirtualListResources<T> {
   containerRef: UseVirtualListContainerRef
 }
 
-function useVirtualListResourses<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
+function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
   const containerRef = ref<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
@@ -120,20 +123,19 @@ function useVirtualListResourses<T>(list: MaybeRef<T[]>): UseVirtualListResource
 }
 
 function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
-  return (containerHeight: number) => {
+  return (containerSize: number) => {
     if (typeof itemSize === 'number')
-      return Math.ceil(containerHeight / itemSize)
+      return Math.ceil(containerSize / itemSize)
 
     const { start = 0 } = state.value
     let sum = 0
     let capacity = 0
     for (let i = start; i < source.value.length; i++) {
-      const height = itemSize(i)
-      sum += height
-      if (sum >= containerHeight) {
-        capacity = i
+      const size = itemSize(i)
+      sum += size
+      capacity = i
+      if (sum > containerSize)
         break
-      }
     }
     return capacity - start
   }
@@ -231,7 +233,7 @@ function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () =
 }
 
 function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, list: MaybeRef<T[]>) {
-  const resources = useVirtualListResourses(list)
+  const resources = useVirtualListResources(list)
   const { state, source, currentList, size, containerRef } = resources
   const containerStyle: StyleValue = { overflowX: 'auto' }
 
@@ -275,7 +277,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 }
 
 function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list: MaybeRef<T[]>) {
-  const resources = useVirtualListResourses(list)
+  const resources = useVirtualListResources(list)
 
   const { state, source, currentList, size, containerRef } = resources
 
