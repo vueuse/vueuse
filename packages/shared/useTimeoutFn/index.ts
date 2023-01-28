@@ -20,11 +20,11 @@ export interface UseTimeoutFnOptions {
  * @param interval
  * @param options
  */
-export function useTimeoutFn(
-  cb: (...args: unknown[]) => any,
+export function useTimeoutFn<CallbackFn extends(...args: any[]) => any>(
+  cb: CallbackFn,
   interval: MaybeComputedRef<number>,
   options: UseTimeoutFnOptions = {},
-): Stoppable {
+): Stoppable<Parameters<CallbackFn> | []> {
   const {
     immediate = true,
   } = options
@@ -45,7 +45,7 @@ export function useTimeoutFn(
     clear()
   }
 
-  function start(...args: unknown[]) {
+  function start(...args: Parameters<CallbackFn> | []) {
     clear()
     isPending.value = true
     timer = setTimeout(() => {
