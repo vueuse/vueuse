@@ -50,6 +50,25 @@ describe('useClamp', () => {
     expect(v.value).toBe(-10)
   })
 
+  it('should work with computed', () => {
+    const baseRef = ref(10)
+    const value = computed(() => baseRef.value)
+    const min = ref(0)
+    const max = ref(100)
+
+    const v = useClamp(value, min, max)
+
+    expect(v.value).toBe(10)
+
+    baseRef.value = -10
+    expect(v.value).toBe(0)
+
+    baseRef.value = 110
+    expect(v.value).toBe(100)
+
+    expect(isReadonly(v)).toBeTruthy()
+  })
+
   it('should work with function', () => {
     const baseRef = ref(10)
     const value = () => baseRef.value
