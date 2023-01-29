@@ -31,7 +31,7 @@ export default {
       height,
     }
   }
-})
+}
 </script>
 ```
 
