@@ -26,7 +26,7 @@ export function useRouteQuery<T extends string | string[]>(
       return data
     },
     set(v) {
-      queue[name] = v === defaultValue || v === null ? undefined : v
+      queue[name] = (v === defaultValue || v === null) ? undefined : v
 
       nextTick(() => {
         router[unref(mode)]({ ...route, query: { ...route.query, ...queue } })
