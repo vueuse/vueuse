@@ -11,5 +11,8 @@ export default defineConfig({
       '@vueuse/core': resolve(__dirname, '../../packages/core/index.ts'),
       '@vueuse/shared': resolve(__dirname, '../../packages/shared/index.ts'),
     },
+    dedupe: [
+      '@vue/runtime-core',
+    ],
   },
 })
