@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import type { MaybeComputedRef, Stoppable } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
@@ -20,18 +20,18 @@ export interface UseTimeoutFnOptions {
  * @param interval
  * @param options
  */
-export function useTimeoutFn(
-  cb: (...args: unknown[]) => any,
+export function useTimeoutFn<CallbackFn extends(...args: any[]) => any>(
+  cb: CallbackFn,
   interval: MaybeComputedRef<number>,
   options: UseTimeoutFnOptions = {},
-): Stoppable {
+): Stoppable<Parameters<CallbackFn> | []> {
   const {
     immediate = true,
   } = options
 
   const isPending = ref(false)
 
-  let timer: number | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
 
   function clear() {
     if (timer) {
@@ -45,7 +45,7 @@ export function useTimeoutFn(
     clear()
   }
 
-  function start(...args: unknown[]) {
+  function start(...args: Parameters<CallbackFn> | []) {
     clear()
     isPending.value = true
     timer = setTimeout(() => {
@@ -53,7 +53,7 @@ export function useTimeoutFn(
       timer = null
 
       cb(...args)
-    }, resolveUnref(interval)) as unknown as number
+    }, resolveUnref(interval))
   }
 
   if (immediate) {
@@ -65,7 +65,7 @@ export function useTimeoutFn(
   tryOnScopeDispose(stop)
 
   return {
-    isPending,
+    isPending: readonly(isPending),
     start,
     stop,
   }

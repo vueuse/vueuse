@@ -257,7 +257,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
       const baseUrl = resolveUnref(config.baseUrl)
       const targetUrl = resolveUnref(url)
 
-      return baseUrl && !isAbsoluteURL(targetUrl)
+      return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
         : targetUrl
     })
