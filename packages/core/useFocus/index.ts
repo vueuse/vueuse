@@ -1,10 +1,9 @@
 import type { Ref } from 'vue-demi'
-import { computed, watch } from 'vue-demi'
-import { isDef } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
-import { useActiveElement } from '../useActiveElement'
 import type { ConfigurableWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UseFocusOptions extends ConfigurableWindow {
   /**
@@ -33,16 +32,18 @@ export interface UseFocusReturn {
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
   const { initialValue = false } = options
 
-  const activeElement = useActiveElement(options)
+  const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
+
+  useEventListener(targetElement, 'focus', () => innerFocused.value = true)
+  useEventListener(targetElement, 'blur', () => innerFocused.value = false)
+
   const focused = computed({
-    get() {
-      return isDef(activeElement.value) && isDef(targetElement.value) && activeElement.value === targetElement.value
-    },
+    get: () => innerFocused.value,
     set(value: boolean) {
-      if (!value && focused.value)
+      if (!value && innerFocused.value)
         targetElement.value?.blur()
-      if (value && !focused.value)
+      else if (value && !innerFocused.value)
         targetElement.value?.focus()
     },
   })
