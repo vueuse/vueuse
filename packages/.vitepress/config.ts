@@ -194,7 +194,7 @@ function getFunctionsSideBar() {
         link: i.external || `/${i.package}/${i.name}/`,
       })),
       link: name.startsWith('@')
-        ? functions[0].external || `/${functions[0].package}/README`
+        ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })
   }

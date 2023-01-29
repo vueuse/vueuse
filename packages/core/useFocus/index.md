@@ -58,6 +58,6 @@ export default {
       focused,
     }
   }
-})
+}
 </script>
 ```

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { contributors, coreTeamMembers } from '../../../contributors'
+import { coreTeamMembers } from '../../../contributors'
 </script>
 
 <template>
