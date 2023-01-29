@@ -84,7 +84,7 @@ export interface Pausable {
   /**
    * A ref indicate whether a pausable instance is active
    */
-  isActive: Ref<boolean>
+  isActive: Readonly<Ref<boolean>>
 
   /**
    * Temporary pause the effect from executing
@@ -101,7 +101,7 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  isPending: Ref<boolean>
+  isPending: Readonly<Ref<boolean>>
 
   /**
    * Stop the effect from executing
