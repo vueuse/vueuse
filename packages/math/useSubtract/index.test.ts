@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref } from 'vue-demi'
 import { useSubtract } from '../useSubtract'
 
 describe('useSubtract', () => {
