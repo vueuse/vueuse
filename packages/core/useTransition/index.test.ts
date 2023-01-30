@@ -39,6 +39,25 @@ describe('transition', () => {
     expect(source.value[1]).toBe(2)
     expect(source.value[2]).toBe(3)
   })
+
+  it('transitions can be aborted', async () => {
+    let abort = false
+
+    const source = ref(0)
+
+    const trans = transition(source, 0, 1, {
+      abort: () => abort,
+      duration: 50,
+    })
+
+    await promiseTimeout(25)
+
+    abort = true
+
+    await trans
+
+    expectBetween(source.value, 0, 1)
+  })
 })
 
 describe('useTransition', () => {

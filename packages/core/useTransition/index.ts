@@ -1,8 +1,7 @@
-import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
+import { isFunction, isNumber, identity as linear, promiseTimeout } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { clamp, isFunction, isNumber, identity as linear, noop, useTimeoutFn } from '@vueuse/shared'
-import { useRafFn } from '../useRafFn'
 
 /**
  * Cubic bezier points
@@ -18,6 +17,11 @@ export type EasingFunction = (n: number) => number
  * Transition options
  */
 export interface TransitionOptions {
+
+  /**
+   * Manually abort a transition
+   */
+  abort?: () => any
 
   /**
    * Transition duration in milliseconds
@@ -120,7 +124,7 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
 
 const lerp = (a: number, b: number, alpha: number) => a + alpha * (b - a)
 
-const toVec = (t: number | number[]) => isNumber(t) ? [t] : t
+const toVec = (t: number | number[] | undefined) => (isNumber(t) ? [t] : t) || []
 
 export function transition<T extends number | number[]>(
   source: Ref<T>,
@@ -144,6 +148,12 @@ export function transition<T extends number | number[]>(
     source.value = fromVal
 
     const tick = () => {
+      if (opts.abort?.()) {
+        resolve()
+
+        return
+      }
+
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
       const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
@@ -186,87 +196,50 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: UseT
 export function useTransition(
   source: Ref<number | number[]> | MaybeRef<number>[],
   options: UseTransitionOptions = {},
-): ComputedRef<any> {
-  const {
-    delay = 0,
-    disabled = false,
-    duration = 1000,
-    onFinished = noop,
-    onStarted = noop,
-    transition = linear,
-  } = options
+): Ref<any> {
+  let currentId = 0
 
-  // current easing function
-  const currentTransition = computed(() => {
-    const t = unref(transition)
-    return isFunction(t) ? t : createEasingFunction(t)
-  })
+  const sourceVal = () => {
+    const v = unref<number | MaybeRef<number>[]>(source)
 
-  // raw source value
-  const sourceValue = computed(() => {
-    const s = unref<number | MaybeRef<number>[]>(source)
-    return isNumber(s) ? s : s.map(unref) as number[]
-  })
-
-  // normalized source vector
-  const sourceVector = computed(() => isNumber(sourceValue.value) ? [sourceValue.value] : sourceValue.value)
-
-  // transitioned output vector
-  const outputVector = ref(sourceVector.value.slice(0))
-
-  // current transition values
-  let currentDuration: number
-  let diffVector: number[]
-  let endAt: number
-  let startAt: number
-  let startVector: number[]
-
-  // transition loop
-  const { resume, pause } = useRafFn(() => {
-    const now = Date.now()
-    const progress = clamp(1 - ((endAt - now) / currentDuration), 0, 1)
-
-    outputVector.value = startVector.map((val, i) => val + ((diffVector[i] ?? 0) * currentTransition.value(progress)))
-
-    if (progress >= 1) {
-      pause()
-      onFinished()
-    }
-  }, { immediate: false })
-
-  // start the animation loop when source vector changes
-  const start = () => {
-    pause()
-
-    currentDuration = unref(duration)
-    diffVector = outputVector.value.map((n, i) => (sourceVector.value[i] ?? 0) - (outputVector.value[i] ?? 0))
-    startVector = outputVector.value.slice(0)
-    startAt = Date.now()
-    endAt = startAt + currentDuration
-
-    resume()
-    onStarted()
+    return isNumber(v) ? v : v.map(unref)
   }
 
-  const timeout = useTimeoutFn(start, delay, { immediate: false })
+  const outputRef = ref(sourceVal())
 
-  watch(sourceVector, () => {
-    if (unref(disabled))
+  watch(source, async (to, from) => {
+    if (unref(options.disabled))
       return
-    if (unref(delay) <= 0)
-      start()
-    else timeout.start()
+
+    const id = ++currentId
+
+    if (options.delay)
+      await promiseTimeout(unref(options.delay))
+
+    if (id !== currentId)
+      return
+
+    const fromVal = Array.isArray(from) ? from.map(unref) : unref(from)
+
+    const toVal = Array.isArray(to) ? to.map(unref) : unref(to)
+
+    options.onStarted?.()
+
+    await transition(outputRef, fromVal, toVal, {
+      ...options,
+      abort: () => id !== currentId || options.abort?.(),
+    })
+
+    options.onFinished?.()
   }, { deep: true })
 
-  watch(() => unref(disabled), (v) => {
-    if (v) {
-      outputVector.value = sourceVector.value.slice(0)
-      pause()
+  watch(() => unref(options.disabled), (disabled) => {
+    if (disabled) {
+      currentId++
+
+      outputRef.value = sourceVal()
     }
   })
 
-  return computed(() => {
-    const targetVector = unref(disabled) ? sourceVector : outputVector
-    return isNumber(sourceValue.value) ? targetVector.value[0] : targetVector.value
-  })
+  return computed(() => unref(options.disabled) ? sourceVal() : outputRef.value)
 }
