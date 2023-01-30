@@ -17,7 +17,20 @@ export type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export interface UseTransitionOptions {
+export interface TransitionOptions {
+
+  /**
+   * Transition duration in milliseconds
+   */
+  duration?: MaybeRef<number>
+
+  /**
+   * Easing function or cubic bezier points for calculating transition values
+   */
+  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
+}
+
+export interface UseTransitionOptions extends TransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */
@@ -29,11 +42,6 @@ export interface UseTransitionOptions {
   disabled?: MaybeRef<boolean>
 
   /**
-   * Transition duration in milliseconds
-   */
-  duration?: MaybeRef<number>
-
-  /**
    * Callback to execute after transition finishes
    */
   onFinished?: () => void
@@ -42,11 +50,6 @@ export interface UseTransitionOptions {
    * Callback to execute after transition starts
    */
   onStarted?: () => void
-
-  /**
-   * Easing function or cubic bezier points for calculating transition values
-   */
-  transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
 const _TransitionPresets = {
@@ -113,6 +116,55 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
   }
 
   return (x: number) => (p0 === p1 && p2 === p3) ? x : calcBezier(getTforX(x), p1, p3)
+}
+
+const lerp = (a: number, b: number, alpha: number) => a + alpha * (b - a)
+
+const toVec = (t: number | number[]) => isNumber(t) ? [t] : t
+
+export function transition<T extends number | number[]>(
+  source: Ref<T>,
+  from: MaybeRef<T>,
+  to: MaybeRef<T>,
+  opts: TransitionOptions = {},
+) {
+  const fromVal = unref(from)
+  const toVal = unref(to)
+  const v1 = toVec(fromVal)
+  const v2 = toVec(toVal)
+  const duration = unref(opts.duration) ?? 1000
+  const startedAt = Date.now()
+  const endAt = Date.now() + duration
+
+  const trans = unref(opts.transition) ?? linear
+
+  const ease = isFunction(trans) ? trans : createEasingFunction(trans)
+
+  return new Promise<void>((resolve) => {
+    source.value = fromVal
+
+    const tick = () => {
+      const now = Date.now()
+      const alpha = ease((now - startedAt) / duration)
+      const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
+
+      if (Array.isArray(source.value))
+        (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
+      else if (isNumber(source.value))
+        (source.value as number) = arr[0]
+
+      if (now < endAt) {
+        requestAnimationFrame(tick)
+      }
+      else {
+        source.value = toVal
+
+        resolve()
+      }
+    }
+
+    tick()
+  })
 }
 
 // option 1: reactive number

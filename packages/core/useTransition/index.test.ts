@@ -1,11 +1,45 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { transition, useTransition } from '.'
 
 const expectBetween = (val: number, floor: number, ceiling: number) => {
   expect(val).to.be.greaterThan(floor)
   expect(val).to.be.lessThan(ceiling)
 }
+
+describe('transition', () => {
+  it('transitions between numbers', async () => {
+    const source = ref(0)
+
+    const trans = transition(source, 0, 1, { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value, 0, 1)
+
+    await trans
+
+    expect(source.value).toBe(1)
+  })
+
+  it('transitions between vectors', async () => {
+    const source = ref([0, 0, 0])
+
+    const trans = transition(source, [0, 1, 2], [1, 2, 3], { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value[0], 0, 1)
+    expectBetween(source.value[1], 1, 2)
+    expectBetween(source.value[2], 2, 3)
+
+    await trans
+
+    expect(source.value[0]).toBe(1)
+    expect(source.value[1]).toBe(2)
+    expect(source.value[2]).toBe(3)
+  })
+})
 
 describe('useTransition', () => {
   it('transitions between numbers', async () => {
