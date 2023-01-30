@@ -1,5 +1,6 @@
 import { until } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import type { SpyInstance } from 'vitest'
 import { retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
@@ -9,7 +10,7 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vitest.spyOn(window, 'fetch')
+let fetchSpy = vitest.spyOn(window, 'fetch') as SpyInstance<any>
 let onFetchErrorSpy = vitest.fn()
 let onFetchResponseSpy = vitest.fn()
 let onFetchFinallySpy = vitest.fn()
@@ -55,10 +56,10 @@ describe('useFetch', () => {
   test('should use custom fetch', async () => {
     let count = 0
     await useFetch('https://example.com/', {
-      fetch(input, init) {
+      fetch: <typeof window.fetch>((input, init) => {
         count = 1
         return window.fetch(input, init)
-      },
+      }),
     })
 
     expect(count).toEqual(1)

@@ -1,9 +1,14 @@
 import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
- * Any function
+ * Void function
  */
 export type Fn = () => void
+
+/**
+ * Any function
+ */
+export type AnyFn = (...args: any[]) => any
 
 /**
  * A ref that allow to set null or undefined
@@ -73,11 +78,13 @@ export type Awaitable<T> = Promise<T> | T
 
 export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
 
+export type PromisifyFn<T extends AnyFn> = (...args: ArgumentsType<T>) => Promise<ReturnType<T>>
+
 export interface Pausable {
   /**
    * A ref indicate whether a pausable instance is active
    */
-  isActive: Ref<boolean>
+  isActive: Readonly<Ref<boolean>>
 
   /**
    * Temporary pause the effect from executing
@@ -90,11 +97,11 @@ export interface Pausable {
   resume: Fn
 }
 
-export interface Stoppable {
+export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  isPending: Ref<boolean>
+  isPending: Readonly<Ref<boolean>>
 
   /**
    * Stop the effect from executing
@@ -104,7 +111,7 @@ export interface Stoppable {
   /**
    * Start the effects
    */
-  start: Fn
+  start: (...args: StartFnArgs) => void
 }
 
 /**

@@ -95,7 +95,6 @@ type Combination = 'overwrite' | 'chain'
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
   text: 'text/plain',
-  formData: 'multipart/form-data',
 }
 
 export interface BeforeFetchContext {
@@ -258,7 +257,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
       const baseUrl = resolveUnref(config.baseUrl)
       const targetUrl = resolveUnref(url)
 
-      return baseUrl && !isAbsoluteURL(targetUrl)
+      return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
         : targetUrl
     })
@@ -403,7 +402,14 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: resolveUnref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = {
+      url: resolveUnref(url),
+      options: {
+        ...defaultFetchOptions,
+        ...fetchOptions,
+      },
+      cancel: () => { isCanceled = true },
+    }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
@@ -532,9 +538,9 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
         }
 
         const rawPayload = resolveUnref(config.payload)
-        // Set the payload to json type only if it's not provided and a literal object is provided
+        // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
         // The only case we can deduce the content type and `fetch` can't
-        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype)
+        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))
           config.payloadType = 'json'
 
         return {
