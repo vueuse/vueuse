@@ -114,7 +114,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
 
   const state = computed<T | BasicColorSchema>({
     get() {
-      return store.value === 'auto' && !emitAuto
+      return (store.value === 'auto' && !emitAuto)
         ? preferredMode.value
         : store.value
     },
