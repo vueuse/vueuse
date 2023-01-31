@@ -26,7 +26,7 @@ export interface UseFetchReturn<T> {
   error: Ref<any>
 
   /**
-   * The fetch response body, may either be JSON or text
+   * The fetch response body on success, may either be JSON or text
    */
   data: Ref<T | null>
 
