@@ -349,7 +349,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
-  const data = shallowRef<T | null>(initialData)
+  const data = shallowRef<T | null>(initialData || null)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
@@ -444,7 +444,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
           if (!fetchResponse.ok) {
-            data.value = initialData
+            data.value = initialData || null
             throw new Error(fetchResponse.statusText)
           }
 
