@@ -59,7 +59,7 @@ export interface UseScrollOptions {
 
   /**
    * trigger `onStop` on browser native `scrollend` event
-   * 
+   *
    * @default false
    */
   useNativeScrollEnd?: boolean
