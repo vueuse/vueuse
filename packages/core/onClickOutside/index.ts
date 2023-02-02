@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
+import { isIOS, noop } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -25,6 +25,8 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
 
 export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
 
+let _iOSWorkaround = false
+
 /**
  * Listen for clicks outside of an element.
  *
@@ -43,8 +45,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  if (!(window as any).__VUEUSE_ONCLICKOUTSIDE__ && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
-    (window as any).__VUEUSE_ONCLICKOUTSIDE__ = true
+  if (!_iOSWorkaround && isIOS) {
+    _iOSWorkaround = true
     Array.from(window.document.body.children)
       .forEach(el => el.addEventListener('click', noop))
   }
