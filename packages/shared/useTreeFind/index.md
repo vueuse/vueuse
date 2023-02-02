@@ -4,7 +4,7 @@ category: Array
 
 # useTreeFind
 
-reactive unique array
+Reactively find elements in a tree structure
 
 ## Usage
 
