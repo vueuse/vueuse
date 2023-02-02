@@ -12,6 +12,7 @@ reactive unique array
 
 ```js
 import { useTreeFind } from '@vueuse/core'
+import { ref } from 'vue'
 
 const item1 = ref({ id: '1', children: [{ id: '1-1' }] })
 const item2 = ref({ id: '2', children: [{ id: '2-1' }] })
@@ -25,11 +26,13 @@ item3.value = { id: '3', children: [{ id: '3-1-1' }] }
 // result.value: undefined
 ```
 
-### Use with reactive array
+### Use with ref array
 
 ```js
 import { useTreeFind } from '@vueuse/core'
-const tree = reactive([
+import { ref } from 'vue'
+
+const tree = ref([
   {
     id: '1',
     children: [
@@ -56,10 +59,10 @@ const tree = reactive([
 const result = useTreeFind(tree, item => item.id === '2-1-1')
 // result.value.id: '2-1-1'
 
-tree.pop()
+tree.value.pop()
 // result.value: undefined
 
-tree.push({
+tree.value.push({
   id: '2-1',
   children: [
     {
