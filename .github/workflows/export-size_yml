@@ -1,10 +1,10 @@
 name: Export Size
 
-# on:
-#   pull_request:
-#     branches:
-#       - main
-#       - dev
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   size:
