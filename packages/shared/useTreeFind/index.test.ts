@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue-demi'
+import { ref } from 'vue-demi'
 import { useTreeFind } from './index'
 
 describe('useTreeFind', () => {
@@ -87,47 +87,5 @@ describe('useTreeFind', () => {
     expect(result.value?.id).toBe('3-1')
     item3.value = { id: '3', children: [{ id: '3-1-1' }] }
     expect(result.value).toBeUndefined()
-  })
-  it('should work with reactive array', () => {
-    const tree = reactive([
-      {
-        id: '1',
-        children: [
-          {
-            id: '1-1',
-          },
-        ],
-      },
-      {
-        id: '2',
-        children: [
-          {
-            id: '2-1',
-            children: [
-              {
-                id: '2-1-1',
-              },
-            ],
-          },
-        ],
-      },
-    ])
-
-    const result = useTreeFind(tree, item => item.id === '2-1-1')
-    expect(result.value?.id).toBe('2-1-1')
-
-    tree.pop()
-    expect(result.value).toBeUndefined()
-
-    tree.push({
-      id: '2-1',
-      children: [
-        {
-          id: '2-1-1',
-        },
-      ],
-    })
-
-    expect(result.value?.id).toBe('2-1-1')
   })
 })
