@@ -151,12 +151,15 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const isAborted = ref(false)
   const error = shallowRef<AxiosError<T>>()
 
-  const cancelToken: CancelTokenSource = axios.CancelToken.source()
+  const cancelTokenSource = axios.CancelToken.source
+  let cancelToken: CancelTokenSource = cancelTokenSource()
+
   const abort = (message?: string) => {
     if (isFinished.value || !isLoading.value)
       return
 
     cancelToken.cancel(message)
+    cancelToken = cancelTokenSource()
     isAborted.value = true
     isLoading.value = false
     isFinished.value = false
