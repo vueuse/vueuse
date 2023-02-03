@@ -45,6 +45,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
+  // Fixes: https://github.com/vueuse/vueuse/issues/1520
+  // How it works: https://stackoverflow.com/a/39712411
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     Array.from(window.document.body.children)
