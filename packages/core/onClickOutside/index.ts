@@ -45,7 +45,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (!window)
     return
 
-  if (!_iOSWorkaround && isIOS) {
+  if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     Array.from(window.document.body.children)
       .forEach(el => el.addEventListener('click', noop))
