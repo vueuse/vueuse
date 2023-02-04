@@ -56,13 +56,6 @@ export interface UseScrollOptions {
    * @default 'auto'
    */
   behavior?: MaybeComputedRef<ScrollBehavior>
-
-  /**
-   * trigger `onStop` on browser native `scrollend` event
-   *
-   * @default false
-   */
-  useNativeScrollEnd?: boolean
 }
 
 /**
@@ -101,7 +94,6 @@ export function useScroll(
       passive: true,
     },
     behavior = 'auto',
-    useNativeScrollEnd = false,
   } = options
 
   const internalX = ref(0)
@@ -155,6 +147,10 @@ export function useScroll(
   })
 
   const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
+
     isScrolling.value = false
     directions.left = false
     directions.right = false
@@ -191,7 +187,7 @@ export function useScroll(
     internalY.value = scrollTop
 
     isScrolling.value = true
-    !useNativeScrollEnd && onScrollEndDebounced(e)
+    onScrollEndDebounced(e)
     onScroll(e)
   }
 
@@ -202,7 +198,7 @@ export function useScroll(
     eventListenerOptions,
   )
 
-  useNativeScrollEnd && useEventListener(
+  useEventListener(
     element,
     'scrollend',
     onScrollEnd,
