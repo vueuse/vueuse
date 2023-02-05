@@ -24,7 +24,7 @@ export const editorRef = <T extends object, K extends keyof T>(
   name: K,
   defaultValue?: T[K],
 ) => {
-  const data = ref()
+  const data = ref<T[K]>()
 
   watchEffect(() => {
     data.value = clone(unref(get(obj, name)) ?? unref(defaultValue))
