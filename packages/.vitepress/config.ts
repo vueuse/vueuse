@@ -52,6 +52,7 @@ export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+  ignoreDeadLinks: true,
 
   markdown: {
     theme: {
