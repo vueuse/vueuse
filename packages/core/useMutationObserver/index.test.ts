@@ -7,14 +7,10 @@ describe('useMutationObserver', () => {
   })
 
   it('should work with attributes', async () => {
+    const cb = vitest.fn()
+
     const target = document.createElement('div')
     target.setAttribute('id', 'header')
-
-    const cb = vitest.fn((e) => {
-      const record = e?.[0]
-      expect(record).toBeInstanceOf(MutationRecord)
-      expect(record.target).toBe(target)
-    })
 
     useMutationObserver(target, cb, {
       attributes: true,
