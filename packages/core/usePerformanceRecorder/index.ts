@@ -17,15 +17,17 @@ interface recordInfoType {
   appcache?: number | undefined
   unloadEvent?: number | undefined
   connect?: number | undefined
+  clear?: () => void
   [key: string]: any
 }
+
 /**
  * Reactive state to show whether mouse leaves the page.
  *
  * @see https://vueuse.org/usePerformanceRecorder
  * @param options
  */
-window.__vueuse__observer = null
+window._vueuse__performance__observer = null
 
 export function usePerformanceRecorder() {
   const detail = reactive<recordInfoType>({
@@ -60,6 +62,7 @@ export function usePerformanceRecorder() {
     for (const entry of list.getEntries())
       computPerformanceInfo(entry)
   })
-  window._vueuse__performance__observer.observe({ entryTypes: ['longtask', 'frame', 'navigation', 'measure', 'paint', 'largest-contentful-paint', 'layout-shift'] })
+  window._vueuse__performance__observer.observe({ entryTypes: ['longtask', 'frame', 'navigation', 'measure', 'paint', 'largest-contentful-paint', 'layout-shift'], buffer: true })
+  detail.clear = () => window._vueuse__performance__observer = null
   return detail
 }
