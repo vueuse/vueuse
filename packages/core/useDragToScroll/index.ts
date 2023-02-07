@@ -52,7 +52,7 @@ export function useDragToScroll(target: MaybeComputedRef<HTMLElement | SVGElemen
   } = options
 
   const pressed = ref(false)
-  const { x, y } = useMouse()
+  const { x, y } = useMouse({ touch: false })
   const { x: scrollX, y: scrollY, isScrolling } = useScroll(target)
 
   let lastX = 0
