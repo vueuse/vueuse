@@ -25,5 +25,5 @@ console.log(localBitSet.has(8) === true) // true
 console.log(localBitSet.has(22) === false) // false
 console.log(localBitSet.has(15) === true) // true
 localBitSet.reset()
-console.log(localBitSet.isEmpty().toEqual(true)) // true
+console.log(localBitSet.isEmpty()) // true
 ```
