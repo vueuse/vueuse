@@ -30,6 +30,7 @@ export default defineConfig({
         'vue2',
         '@vue/composition-api',
         'vue-demi',
+        'msw',
       ],
     },
   },

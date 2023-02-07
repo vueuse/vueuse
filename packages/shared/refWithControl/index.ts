@@ -13,7 +13,7 @@ export interface ControlledRefOptions<T> {
   /**
    * Callback function after the ref changed
    *
-   * This happends synchronously, with less overhead compare to `watch`
+   * This happens synchronously, with less overhead compare to `watch`
    */
   onChanged?: (value: T, oldValue: T) => void
 }

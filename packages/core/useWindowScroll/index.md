@@ -1,6 +1,12 @@
 ---
 category: Elements
+deprecated: true
 ---
+
+::: warning
+**Deprecated**. Please use `usescroll` instead.
+:::
+
 
 # useWindowScroll
 

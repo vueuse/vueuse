@@ -31,7 +31,7 @@ describe('toRefs', () => {
     expect(refs[1].value).toBe(1)
   })
 
-  it('should return refs when a object ref was passed', () => {
+  it('should return refs when an object ref was passed', () => {
     const obj = ref({ a: 'a', b: 0 })
     const refs = toRefs(obj)
     expect(refs.a.value).toBe('a')
@@ -43,7 +43,7 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(1)
   })
 
-  it('should return refs when a array ref was passed', () => {
+  it('should return refs when an array ref was passed', () => {
     const arr = ref(['a', 0])
     const refs = toRefs(arr)
     expect(refs[0].value).toBe('a')

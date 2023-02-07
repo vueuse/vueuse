@@ -4,7 +4,7 @@ category: Component
 
 # tryOnScopeDispose
 
-Safe `onScopeDispose`. Call `onScopeDispose()` if it's inside a effect scope lifecycle, if not, do nothing
+Safe `onScopeDispose`. Call `onScopeDispose()` if it's inside an effect scope lifecycle, if not, do nothing
 
 ## Usage
 

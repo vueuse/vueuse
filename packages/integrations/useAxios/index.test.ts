@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig } from 'axios'
+import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
-  const config: AxiosRequestConfig = {
+  const config: RawAxiosRequestConfig = {
     method: 'GET',
   }
   const instance = axios.create({
@@ -189,7 +189,7 @@ describe('useAxios', () => {
   test('calling axios with config change(param/data etc.) only', async () => {
     const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
     expect(isLoading.value).toBeFalsy()
-    const paramConfig: AxiosRequestConfig = { params: { postId: 1 } }
+    const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
@@ -209,5 +209,75 @@ describe('useAxios', () => {
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
+  })
+
+  test('use generic type', async () => {
+    interface ReqType {
+      title: string
+      body: string
+      userId: number
+    }
+
+    interface ResType {
+      id: number
+      title: string
+      body: string
+      userId: number
+    }
+    const typeConfig: RawAxiosRequestConfig<ReqType> = {
+      method: 'POST',
+    }
+    const { isLoading, then, execute } = useAxios<ResType, ReqType>('/posts', typeConfig, instance, options)
+    expect(isLoading.value).toBeFalsy()
+    const requestData: ReqType = {
+      title: 'title',
+      body: 'body',
+      userId: 123,
+    }
+    execute({ data: requestData })
+    expect(isLoading.value).toBeTruthy()
+    const onRejected = vitest.fn()
+
+    await then((result) => {
+      expect(result.data).toBeDefined()
+      expect(result.data.value?.title).toBe('title')
+      expect(result.data.value?.body).toBe('body')
+      expect(result.data.value?.userId).toBe(123)
+      expect(result.data.value?.id).toBeDefined()
+      expect(isLoading.value).toBeFalsy()
+      expect(onRejected).toBeCalledTimes(0)
+    }, onRejected)
+  })
+
+  test('should not abort when finished', async () => {
+    const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
+    expect(isLoading.value).toBeFalsy()
+    await execute('https://jsonplaceholder.typicode.com/todos/2')
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+    abort()
+    expect(isAborted.value).toBeFalsy()
+  })
+
+  test('should abort when loading', async () => {
+    const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
+    expect(isLoading.value).toBeFalsy()
+    execute('https://jsonplaceholder.typicode.com/todos/2').then((result) => {
+      expect(result.error.value?.message).toBe('aborted')
+      expect(isFinished.value).toBeTruthy()
+      expect(isLoading.value).toBeFalsy()
+      expect(isAborted.value).toBeTruthy()
+    })
+    abort('aborted')
+    expect(isAborted.value).toBeTruthy()
+  })
+
+  test('missing url', async () => {
+    // prevent stderr in jsdom xhr
+    console.error = vi.fn()
+    // @ts-expect-error mock undefined url
+    const { execute } = useAxios(undefined, config, options)
+    const { error } = await execute()
+    expect(error.value).toBeDefined()
   })
 })

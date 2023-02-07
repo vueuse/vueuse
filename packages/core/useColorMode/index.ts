@@ -39,7 +39,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
 
   /**
    * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridded.
+   * When specified, the default behavior will be overridden.
    *
    * @default undefined
    */
@@ -114,7 +114,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
 
   const state = computed<T | BasicColorSchema>({
     get() {
-      return store.value === 'auto' && !emitAuto
+      return (store.value === 'auto' && !emitAuto)
         ? preferredMode.value
         : store.value
     },

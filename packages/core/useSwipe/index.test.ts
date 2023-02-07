@@ -42,8 +42,8 @@ describe('useSwipe', () => {
   let onSwipeEnd: any
 
   beforeEach(() => {
-    onSwipe = vitest.fn((e: TouchEvent) => {})
-    onSwipeEnd = vitest.fn((e: TouchEvent, direction: SwipeDirection) => {})
+    onSwipe = vitest.fn((_e: TouchEvent) => {})
+    onSwipeEnd = vitest.fn((_e: TouchEvent, _direction: SwipeDirection) => {})
     vitest.resetAllMocks()
   })
 

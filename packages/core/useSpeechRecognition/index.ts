@@ -24,7 +24,7 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
    */
   interimResults?: boolean
   /**
-   * Langauge for SpeechRecognition
+   * Language for SpeechRecognition
    *
    * @default 'en-US'
    */

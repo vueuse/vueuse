@@ -7,7 +7,9 @@ import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
-export interface UseGeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
+export interface UseGeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {
+  immediate?: boolean
+}
 
 /**
  * Reactive Geolocation API.
@@ -21,6 +23,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     maximumAge = 30000,
     timeout = 27000,
     navigator = defaultNavigator,
+    immediate = true,
   } = options
 
   const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
@@ -45,21 +48,30 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
 
   let watcher: number
 
-  if (isSupported.value) {
-    watcher = navigator!.geolocation.watchPosition(
-      updatePosition,
-      err => error.value = err,
-      {
-        enableHighAccuracy,
-        maximumAge,
-        timeout,
-      },
-    )
+  function resume() {
+    if (isSupported.value) {
+      watcher = navigator!.geolocation.watchPosition(
+        updatePosition,
+        err => error.value = err,
+        {
+          enableHighAccuracy,
+          maximumAge,
+          timeout,
+        },
+      )
+    }
+  }
+
+  if (immediate)
+    resume()
+
+  function pause() {
+    if (watcher && navigator)
+      navigator.geolocation.clearWatch(watcher)
   }
 
   tryOnScopeDispose(() => {
-    if (watcher && navigator)
-      navigator.geolocation.clearWatch(watcher)
+    pause()
   })
 
   return {
@@ -67,6 +79,8 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     coords,
     locatedAt,
     error,
+    resume,
+    pause,
   }
 }
 

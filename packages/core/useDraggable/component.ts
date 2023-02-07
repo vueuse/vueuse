@@ -1,8 +1,8 @@
-import { defineComponent, h, reactive, ref } from 'vue-demi'
+import { computed, defineComponent, h, reactive, ref } from 'vue-demi'
 import type { UseDraggableOptions } from '@vueuse/core'
 import { isClient, useDraggable, useStorage } from '@vueuse/core'
 import { resolveUnref } from '@vueuse/shared'
-import type { RenderableComponent } from '../types'
+import type { Position, RenderableComponent } from '../types'
 
 export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
   /**
@@ -18,7 +18,7 @@ export interface UseDraggableProps extends UseDraggableOptions, RenderableCompon
   storageType?: 'local' | 'session'
 }
 
-export const UseDraggable = defineComponent<UseDraggableProps>({
+export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
   name: 'UseDraggable',
   props: [
     'storageKey',
@@ -29,24 +29,33 @@ export const UseDraggable = defineComponent<UseDraggableProps>({
     'stopPropagation',
     'pointerTypes',
     'as',
+    'handle',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
-    const initialValue = props.storageKey
-      ? useStorage(
-        props.storageKey,
-        resolveUnref(props.initialValue) || { x: 0, y: 0 },
-        isClient
-          ? props.storageType === 'session'
-            ? sessionStorage
-            : localStorage
-          : undefined,
-      )
-      : props.initialValue || { x: 0, y: 0 }
+    const handle = computed(() => props.handle ?? target.value)
+    const storageValue = props.storageKey && useStorage(
+      props.storageKey,
+      resolveUnref(props.initialValue) || { x: 0, y: 0 },
+      isClient
+        ? props.storageType === 'session'
+          ? sessionStorage
+          : localStorage
+        : undefined,
+    )
+    const initialValue = storageValue || props.initialValue || { x: 0, y: 0 }
+    const onEnd = (position: Position) => {
+      if (!storageValue)
+        return
+      storageValue.value.x = position.x
+      storageValue.value.y = position.y
+    }
 
     const data = reactive(useDraggable(target, {
       ...props,
+      handle,
       initialValue,
+      onEnd,
     }))
 
     return () => {
