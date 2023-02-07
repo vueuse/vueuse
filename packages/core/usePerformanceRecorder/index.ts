@@ -63,6 +63,9 @@ export function usePerformanceRecorder() {
       computPerformanceInfo(entry)
   })
   window._vueuse__performance__observer.observe({ entryTypes: ['longtask', 'frame', 'navigation', 'measure', 'paint', 'largest-contentful-paint', 'layout-shift'], buffer: true })
-  detail.clear = () => window._vueuse__performance__observer = null
+  detail.clear = () => {
+    window._vueuse__performance__observer?.disconnect()
+    window._vueuse__performance__observer = null
+  }
   return detail
 }
