@@ -20,6 +20,11 @@ Record Window Load Page
 | appcache   | DNS 缓存时间 |
 | unloadEvent  | 卸载页面的时间 |
 | connect   | TCP 建立连接完成握手的时间    |
+| FP  | 首屏绘制   |
+| FCP  | 首屏内容绘制   |
+| CLS | 累计位移偏移     |
+| TTI   | 首次可交互时间    |
+| LCP | 最大内容绘制    |
 
 ## Usage
 
