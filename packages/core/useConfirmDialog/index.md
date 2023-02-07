@@ -54,7 +54,7 @@ If you prefer working with promises:
 
 ```html
 <script setup>
-import { useConfirmDialog, onClickOutside } from '@vueuse/core'
+import { useConfirmDialog } from '@vueuse/core'
 
 const {
   isRevealed,
