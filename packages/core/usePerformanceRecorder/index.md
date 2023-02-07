@@ -4,7 +4,9 @@ category: Browser
 
 # usePerformanceRecorder
 
-Record Window Load Page
+Record page performance indicators
+
+* 使用clear清除全局的监听
 
 ## Parameter meaning
 
