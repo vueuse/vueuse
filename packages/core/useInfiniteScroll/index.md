@@ -10,7 +10,7 @@ Infinite scrolling of the element.
 
 ```html
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement>(null)
