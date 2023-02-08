@@ -45,7 +45,6 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 ```html
 <script setup lang="ts">
 
-import { ref, computed } from 'vue-demi'
 import { useNow, useDateFormat } from '@vueuse/core'
 
 const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
@@ -62,7 +61,6 @@ const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 ```html
 <script setup lang="ts">
 
-import { ref, computed } from 'vue-demi'
 import { useNow, useDateFormat } from '@vueuse/core'
 
 const formatted = useDateFormat(useNow(), 'YYYY-MM-DD (ddd)', { locales: 'en-US' })
@@ -79,8 +77,7 @@ const formatted = useDateFormat(useNow(), 'YYYY-MM-DD (ddd)', { locales: 'en-US'
 ```html
 <script setup lang="ts">
 
-import { ref, computed } from 'vue-demi'
-import { useNow, useDateFormat } from '@vueuse/core'
+import { useDateFormat } from '@vueuse/core'
 
 const customMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
   const m = hours > 11 ? (isLowercase ? 'μμ' : 'ΜΜ') : (isLowercase ? 'πμ' : 'ΠΜ')

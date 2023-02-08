@@ -174,7 +174,7 @@ export interface WebSocketResult<T> {
  * @param url
  */
 export declare function useWebSocket<Data = any>(
-  url: string,
+  url: MaybeComputedRef<string | URL | undefined>,
   options?: WebSocketOptions
 ): WebSocketResult<Data>
 ```

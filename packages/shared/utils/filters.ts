@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import { resolveUnref } from '../resolveUnref'
 import { noop } from './is'
 import type { AnyFn, ArgumentsType, MaybeComputedRef, Pausable } from './types'
@@ -202,5 +202,5 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausab
       extendFilter(...args)
   }
 
-  return { isActive, pause, resume, eventFilter }
+  return { isActive: readonly(isActive), pause, resume, eventFilter }
 }

@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig } from 'axios'
+import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
-  const config: AxiosRequestConfig = {
+  const config: RawAxiosRequestConfig = {
     method: 'GET',
   }
   const instance = axios.create({
@@ -189,7 +189,7 @@ describe('useAxios', () => {
   test('calling axios with config change(param/data etc.) only', async () => {
     const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
     expect(isLoading.value).toBeFalsy()
-    const paramConfig: AxiosRequestConfig = { params: { postId: 1 } }
+    const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
@@ -224,7 +224,7 @@ describe('useAxios', () => {
       body: string
       userId: number
     }
-    const typeConfig: AxiosRequestConfig<ReqType> = {
+    const typeConfig: RawAxiosRequestConfig<ReqType> = {
       method: 'POST',
     }
     const { isLoading, then, execute } = useAxios<ResType, ReqType>('/posts', typeConfig, instance, options)
