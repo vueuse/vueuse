@@ -126,21 +126,28 @@ const lerp = (a: number, b: number, alpha: number) => a + alpha * (b - a)
 
 const toVec = (t: number | number[] | undefined) => (isNumber(t) ? [t] : t) || []
 
+/**
+ * Transition from one value to another.
+ *
+ * @param source
+ * @param from
+ * @param to
+ * @param options
+ */
 export function transition<T extends number | number[]>(
   source: Ref<T>,
   from: MaybeRef<T>,
   to: MaybeRef<T>,
-  opts: TransitionOptions = {},
+  options: TransitionOptions = {},
 ) {
   const fromVal = unref(from)
   const toVal = unref(to)
   const v1 = toVec(fromVal)
   const v2 = toVec(toVal)
-  const duration = unref(opts.duration) ?? 1000
+  const duration = unref(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-
-  const trans = unref(opts.transition) ?? linear
+  const trans = unref(options.transition) ?? linear
 
   const ease = isFunction(trans) ? trans : createEasingFunction(trans)
 
@@ -148,7 +155,7 @@ export function transition<T extends number | number[]>(
     source.value = fromVal
 
     const tick = () => {
-      if (opts.abort?.()) {
+      if (options.abort?.()) {
         resolve()
 
         return
@@ -187,7 +194,7 @@ export function useTransition<T extends MaybeRef<number>[]>(source: [...T], opti
 export function useTransition<T extends Ref<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
- * Transition between values.
+ * Follow value with a transition.
  *
  * @see https://vueuse.org/useTransition
  * @param source
