@@ -67,7 +67,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   align-items: center;
   justify-content: center;
   border: 2px dashed #ccc;
-  height: 100;
   overflow: hidden;
 }
 

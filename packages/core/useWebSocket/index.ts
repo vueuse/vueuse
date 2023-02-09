@@ -143,7 +143,7 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param url
  */
 export function useWebSocket<Data = any>(
-  url: MaybeComputedRef<string | URL>,
+  url: MaybeComputedRef<string | URL | undefined>,
   options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {
@@ -205,7 +205,7 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
-    if (explicitlyClosed)
+    if (explicitlyClosed || typeof urlRef.value === 'undefined')
       return
 
     const ws = new WebSocket(urlRef.value, protocols)

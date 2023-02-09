@@ -52,6 +52,7 @@ export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+  ignoreDeadLinks: true,
 
   markdown: {
     theme: {
@@ -194,7 +195,7 @@ function getFunctionsSideBar() {
         link: i.external || `/${i.package}/${i.name}/`,
       })),
       link: name.startsWith('@')
-        ? functions[0].external || `/${functions[0].package}/README`
+        ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })
   }

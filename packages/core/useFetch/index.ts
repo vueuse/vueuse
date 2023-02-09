@@ -211,7 +211,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -257,7 +257,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
       const baseUrl = resolveUnref(config.baseUrl)
       const targetUrl = resolveUnref(url)
 
-      return baseUrl && !isAbsoluteURL(targetUrl)
+      return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
         : targetUrl
     })
