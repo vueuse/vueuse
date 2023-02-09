@@ -15,7 +15,7 @@ describe('transition', () => {
 
     await promiseTimeout(25)
 
-    expectBetween(source.value, 0, 1)
+    expectBetween(source.value, 0.25, 0.75)
 
     await trans
 
