@@ -46,6 +46,7 @@
     "@types/md5": "^2.3.2",
     "@types/node": "^18.11.19",
     "@types/prettier": "^2.7.2",
+    "@types/remove-markdown": "^0.3.1",
     "@types/semver": "^7.3.13",
     "@types/sharp": "^0.31.1",
     "@vitest/coverage-c8": "^0.28.4",
