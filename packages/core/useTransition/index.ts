@@ -139,7 +139,7 @@ export function transition<T extends number | number[]>(
   from: MaybeRef<T>,
   to: MaybeRef<T>,
   options: TransitionOptions = {},
-) {
+): PromiseLike<void> {
   const fromVal = unref(from)
   const toVal = unref(to)
   const v1 = toVec(fromVal)
