@@ -2,8 +2,10 @@ import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface UseScrollOptions {
+export interface UseScrollOptions extends ConfigurableWindow {
   /**
    * Throttle time for scroll event, it’s disabled by default.
    *
@@ -94,7 +96,28 @@ export function useScroll(
       passive: true,
     },
     behavior = 'auto',
+    window = defaultWindow,
   } = options
+
+  if (!window) {
+    return {
+      x: ref(0),
+      y: ref(0),
+      isScrolling: ref(false),
+      arrivedState: reactive({
+        left: true,
+        right: false,
+        top: true,
+        bottom: false,
+      }),
+      directions: reactive({
+        left: false,
+        right: false,
+        top: false,
+        bottom: false,
+      }),
+    }
+  }
 
   const internalX = ref(0)
   const internalY = ref(0)
