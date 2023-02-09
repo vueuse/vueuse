@@ -214,7 +214,7 @@ export function useTransition(
 
   const outputRef = ref(sourceVal())
 
-  watch(source, async (to, from) => {
+  watch(source, async (to) => {
     if (unref(options.disabled))
       return
 
@@ -226,13 +226,11 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const fromVal = Array.isArray(from) ? from.map(unref) : unref(from)
-
     const toVal = Array.isArray(to) ? to.map(unref) : unref(to)
 
     options.onStarted?.()
 
-    await transition(outputRef, fromVal, toVal, {
+    await transition(outputRef, outputRef.value, toVal, {
       ...options,
       abort: () => id !== currentId || options.abort?.(),
     })

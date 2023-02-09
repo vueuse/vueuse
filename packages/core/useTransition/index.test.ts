@@ -280,4 +280,22 @@ describe('useTransition', () => {
     disabled.value = false
     expect(transition.value).toBe(1)
   })
+
+  it('begins transition from where previous transition was interrupted', async () => {
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      duration: 100,
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+
+    source.value = 0
+
+    await promiseTimeout(25)
+
+    expectBetween(transition.value, 0, 0.5)
+  })
 })
