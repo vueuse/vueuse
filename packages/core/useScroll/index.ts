@@ -160,12 +160,19 @@ export function useScroll(
       e.target === document ? (e.target as Document).documentElement : e.target
     ) as HTMLElement
 
+    const { flexDirection } = window.getComputedStyle(eventTarget)
+    const reverseY = flexDirection === 'column-reverse'
+    const reverseX = flexDirection === 'row-reverse'
+
     const scrollLeft = eventTarget.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalY.value
-    arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
-    arrivedState.right
-      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    const isLeft = (negative = false) => (negative ? -1 : 1) * scrollLeft <= 0 + (offset.left || 0)
+    const isRight = (negative = false) => (negative ? -1 : 1) * scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    arrivedState.left = reverseX ? isRight(true) : isLeft()
+    arrivedState.right = reverseX ? isLeft(true) : isRight()
     internalX.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
@@ -176,9 +183,12 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-    arrivedState.bottom
-      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    const isTop = (negative = false) => (negative ? -1 : 1) * scrollTop <= 0 + (offset.top || 0)
+    const isBottom = (negative = false) => (negative ? -1 : 1) * scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    arrivedState.top = reverseY ? isBottom(true) : isTop()
+    arrivedState.bottom = reverseY ? isTop(true) : isBottom()
     internalY.value = scrollTop
 
     isScrolling.value = true
