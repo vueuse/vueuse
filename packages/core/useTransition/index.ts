@@ -1,5 +1,5 @@
 import { computed, ref, unref, watch } from 'vue-demi'
-import { isFunction, isNumber, identity as linear, promiseTimeout } from '@vueuse/shared'
+import { isFunction, isNumber, identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 
@@ -244,6 +244,10 @@ export function useTransition(
 
       outputRef.value = sourceVal()
     }
+  })
+
+  tryOnScopeDispose(() => {
+    currentId++
   })
 
   return computed(() => unref(options.disabled) ? sourceVal() : outputRef.value)
