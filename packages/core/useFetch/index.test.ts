@@ -688,9 +688,6 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
-    }, {
-      interval: 1,
-      timeout: 2000,
     })
   })
 })
