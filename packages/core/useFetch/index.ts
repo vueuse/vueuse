@@ -459,7 +459,6 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
           if (options.onFetchError)
             ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
-          data.value = responseData
           error.value = errorData
 
           errorEvent.trigger(fetchError)
