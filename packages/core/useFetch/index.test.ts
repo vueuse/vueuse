@@ -552,11 +552,7 @@ describe('useFetch', () => {
 
   test('should run the onFetchError function when network error', async () => {
     const { data, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
-      onFetchError(ctx) {
-        ctx.data = { title: 'Hunter x Hunter' }
-
-        return ctx
-      },
+      initialData: { title: 'Hunter x Hunter' },
     }).json()
 
     await retry(() => {
