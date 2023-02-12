@@ -1,10 +1,9 @@
 ---
 category: Component
-deprecated: true
 ---
 
-::: warning
-**Deprecated**. Please use [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead.
+::: info
+Please consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) if you are looking for more features.
 :::
 
 
