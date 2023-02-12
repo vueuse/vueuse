@@ -165,11 +165,13 @@ importers:
       '@types/web-bluetooth': ^0.0.16
       '@vueuse/metadata': workspace:*
       '@vueuse/shared': workspace:*
+      bowser: ^2.11.0
       vue-demi: 0.13.11
     dependencies:
       '@types/web-bluetooth': 0.0.16
       '@vueuse/metadata': link:../metadata
       '@vueuse/shared': link:../shared
+      bowser: 2.11.0
       vue-demi: 0.13.11
 
   packages/electron:
@@ -3878,6 +3880,10 @@ packages:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
     dev: true
     optional: true
+
+  /bowser/2.11.0:
+    resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
+    dev: false
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}

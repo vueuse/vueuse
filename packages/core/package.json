@@ -42,6 +42,7 @@
     "@types/web-bluetooth": "^0.0.16",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
+    "bowser": "^2.11.0",
     "vue-demi": "*"
   }
 }
