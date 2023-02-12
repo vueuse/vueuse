@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import { isString, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -16,7 +16,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default 'html'
    */
-  selector?: string
+  selector?: string | Ref<null>
 
   /**
    * HTML attribute applying the target element
@@ -126,7 +126,9 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
     (selector, attribute, value) => {
-      const el = window?.document.querySelector(selector)
+      const el = isString(selector)
+        ? window?.document.querySelector(selector)
+        : selector.value
       if (!el)
         return
 
