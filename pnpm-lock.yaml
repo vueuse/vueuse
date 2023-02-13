@@ -195,6 +195,7 @@ importers:
     specifiers:
       '@types/nprogress': ^0.2.0
       '@types/qrcode': ^1.5.0
+      '@types/sortablejs': ^1.15.0
       '@vueuse/core': workspace:*
       '@vueuse/shared': workspace:*
       async-validator: ^4.2.5
@@ -207,6 +208,7 @@ importers:
       jwt-decode: ^3.1.2
       nprogress: ^0.2.0
       qrcode: ^1.5.1
+      sortablejs: ^1.15.0
       universal-cookie: ^4.0.4
       vue-demi: 0.13.11
     dependencies:
@@ -216,6 +218,7 @@ importers:
     devDependencies:
       '@types/nprogress': 0.2.0
       '@types/qrcode': 1.5.0
+      '@types/sortablejs': 1.15.0
       async-validator: 4.2.5
       axios: 1.3.2
       change-case: 4.1.2
@@ -226,6 +229,7 @@ importers:
       jwt-decode: 3.1.2
       nprogress: 0.2.0
       qrcode: 1.5.1
+      sortablejs: 1.15.0
       universal-cookie: 4.0.4
 
   packages/math:
@@ -3052,6 +3056,10 @@ packages:
     resolution: {integrity: sha512-5nWwamN9ZFHXaYEincMSuza8nNfOof8nmO+mcI+Agx1uMUk4/pQnNIcix+9rLPXzKrm1pS34+6WRDbDV0Jn7ag==}
     dependencies:
       '@types/node': 18.11.19
+    dev: true
+
+  /@types/sortablejs/1.15.0:
+    resolution: {integrity: sha512-qrhtM7M41EhH4tZQTNw2/RJkxllBx3reiJpTbgWCM2Dx0U1sZ6LwKp9lfNln9uqE26ZMKUaPEYaD4rzvOWYtZw==}
     dev: true
 
   /@types/trusted-types/2.0.2:
@@ -8753,6 +8761,10 @@ packages:
     dependencies:
       dot-case: 3.0.4
       tslib: 2.4.0
+    dev: true
+
+  /sortablejs/1.15.0:
+    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
     dev: true
 
   /source-map-js/1.0.2:
