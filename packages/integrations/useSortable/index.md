@@ -58,5 +58,3 @@ useSortable(el, list, {
   </div>
 </template>
 ```
-
-

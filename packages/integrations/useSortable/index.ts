@@ -18,7 +18,7 @@ export function useSortable<T>(
   let sortable: Sortable
 
   const defaultOptions: Options = {
-    onEnd: (e) => {
+    onUpdate: (e) => {
       moveArrayElement(e.oldIndex!, e.newIndex!)
       options?.onEnd?.(e)
     },
