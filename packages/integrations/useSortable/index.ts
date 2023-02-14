@@ -12,7 +12,7 @@ export interface UseSortableReturn {
   /**
    * destroy sortable instance
    */
-  destroy: () => void
+  stop: () => void
 }
 
 type UseSortableOptions = Options & ConfigurableDocument
@@ -57,15 +57,17 @@ export function useSortable<T>(
     sortable = new Sortable(target as HTMLElement, { ...resetOptions, ...defaultOptions })
   }
 
+  const stop = () => {
+    sortable?.destroy()
+  }
+
   onMounted(() => {
     start()
   })
 
   onUnmounted(() => {
-    sortable?.destroy()
+    stop()
   })
 
-  const destroy = () => sortable?.destroy()
-
-  return { destroy, start }
+  return { stop, start }
 }
