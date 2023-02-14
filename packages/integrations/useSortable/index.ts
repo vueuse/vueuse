@@ -13,14 +13,14 @@ import Sortable, { type Options } from 'sortablejs'
 export function useSortable<T>(
   el: MaybeComputedRef<HTMLElement | null | undefined>,
   list: MaybeComputedRef<T[]>,
-  options?: Options,
+  options: Options = {},
 ) {
   let sortable: Sortable
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
       moveArrayElement(e.oldIndex!, e.newIndex!)
-      options?.onEnd?.(e)
+      options?.onUpdate?.(e)
     },
   }
 
