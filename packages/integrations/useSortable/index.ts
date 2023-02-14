@@ -5,6 +5,13 @@ import type { ConfigurableDocument, MaybeComputedRef } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
 
 export interface UseSortableReturn {
+  /**
+   * start sortable instance
+   */
+  start: () => void
+  /**
+   * destroy sortable instance
+   */
   destroy: () => void
 }
 
@@ -45,13 +52,13 @@ export function useSortable<T>(
       array.splice(to, 0, array.splice(from, 1)[0])
   }
 
-  const init = () => {
+  const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
     sortable = new Sortable(target as HTMLElement, { ...resetOptions, ...defaultOptions })
   }
 
   onMounted(() => {
-    init()
+    start()
   })
 
   onUnmounted(() => {
@@ -60,5 +67,5 @@ export function useSortable<T>(
 
   const destroy = () => sortable?.destroy()
 
-  return { destroy }
+  return { destroy, start }
 }
