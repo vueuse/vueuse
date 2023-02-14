@@ -58,3 +58,26 @@ useSortable(el, list, {
   </div>
 </template>
 ```
+
+sor use a selector to get the root element
+
+```vue
+<script setup lang="ts">
+import { useSortable } from '@vueuse/integrations'
+import { ref } from 'vue'
+
+const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+
+useSortable('#dv', list, {
+  handle: '.handle'
+})
+</script>
+
+<template>
+  <div id="dv">
+    <div v-for="item in list" :key="item.id">
+      <span>{{ item.name }}</span>
+    </div>
+  </div>
+</template>
+```

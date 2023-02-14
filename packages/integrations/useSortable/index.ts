@@ -1,9 +1,19 @@
 // eslint-disable-next-line no-restricted-imports
 import { onMounted, onUnmounted } from 'vue-demi'
-import { resolveUnref, unrefElement } from '@vueuse/core'
-import type { MaybeComputedRef } from '@vueuse/core'
+import { defaultDocument, resolveUnref, unrefElement } from '@vueuse/core'
+import type { ConfigurableDocument, MaybeComputedRef } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
 
+export interface UseSortableReturn {
+  destroy: () => void
+}
+
+type UseSortableOptions = Options & ConfigurableDocument
+
+export function useSortable<T>(selector: string, list: MaybeComputedRef<T[]>,
+  options?: UseSortableOptions): UseSortableReturn
+export function useSortable<T>(el: MaybeComputedRef<HTMLElement | null | undefined>, list: MaybeComputedRef<T[]>,
+  options?: UseSortableOptions): UseSortableReturn
 /**
  * Wrapper for sortablejs.
  * @param el
@@ -11,16 +21,18 @@ import Sortable, { type Options } from 'sortablejs'
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeComputedRef<HTMLElement | null | undefined>,
+  el: MaybeComputedRef<HTMLElement | null | undefined> | string,
   list: MaybeComputedRef<T[]>,
-  options: Options = {},
-) {
+  options: UseSortableOptions = {},
+): UseSortableReturn {
   let sortable: Sortable
+
+  const { document = defaultDocument, ...resetOptions } = options
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
       moveArrayElement(e.oldIndex!, e.newIndex!)
-      options?.onUpdate?.(e)
+      resetOptions?.onUpdate?.(e)
     },
   }
 
@@ -33,9 +45,13 @@ export function useSortable<T>(
       array.splice(to, 0, array.splice(from, 1)[0])
   }
 
+  const init = () => {
+    const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
+    sortable = new Sortable(target as HTMLElement, { ...resetOptions, ...defaultOptions })
+  }
+
   onMounted(() => {
-    sortable
-      = new Sortable(unrefElement(el)!, { ...options, ...defaultOptions })
+    init()
   })
 
   onUnmounted(() => {
@@ -46,5 +62,3 @@ export function useSortable<T>(
 
   return { destroy }
 }
-
-export type UseSortableReturn = ReturnType<typeof useSortable>
