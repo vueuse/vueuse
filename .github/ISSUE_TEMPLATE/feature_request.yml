@@ -1,5 +1,11 @@
 name: 🚀 New feature proposal
-description: Propose a new feature to be added to VueUse
+description: |
+  Propose a new feature to be added to VueUse
+
+  > **Warning**: **⚠️ Slowing down**
+  >
+  > Due to the growing audience of VueUse, we received a huge amount of feature requests and pull requests. It's become harder and harder and recently a bit beyond our capacity to maintain the project. In the near future, we could like slowing down on accepting new features and prioritize the stability and quality of existing functions. **That means new functions to VueUse will be hardly accepted**. If you come up some new ideas, we advice you to have them in your codebase first instead of proposing to VueUse. You may iterate them a few time and see how them suite your needs and how them can be generalized. If you **really** believe they are useful to the community, you can create PR with your usercases, we are still happy to hear and discuss. Thank you for your understanding. 
+
 labels: [enhancement]
 body:
   - type: markdown
