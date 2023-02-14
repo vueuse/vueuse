@@ -2,12 +2,12 @@ import { noop, promiseTimeout } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<Data,Params extends any[] ,Shallow extends boolean> {
+export interface UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay?:number,...args: Params) => Promise<Data>
+  execute: (delay?: number, ...args: Params) => Promise<Data>
 }
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
@@ -74,11 +74,11 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<Data,Params extends any[], Shallow extends boolean = true>(
+export function useAsyncState<Data, Params extends any[], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data,Params, Shallow> {
+): UseAsyncStateReturn<Data, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
