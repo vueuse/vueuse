@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 
 const el = ref(null)
-const { toggle, isFullscreen } = useFullscreen(el)
+const { toggle } = useFullscreen(el)
 </script>
 
 <template>
