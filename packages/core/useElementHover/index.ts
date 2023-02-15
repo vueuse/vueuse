@@ -1,13 +1,38 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
 
-export function useElementHover(el: MaybeComputedRef<EventTarget | null | undefined>): Ref<boolean> {
+export interface UseElementHoverOptions extends ConfigurableWindow {
+  delayEnter?: number
+  delayLeave?: number
+}
+
+export function useElementHover(el: MaybeElementRef, options: UseElementHoverOptions = {}): Ref<boolean> {
+  const delayEnter = options ? options.delayEnter : 0
+  const delayLeave = options ? options.delayLeave : 0
   const isHovered = ref(false)
+  let timer: ReturnType<typeof setTimeout> | undefined
 
-  useEventListener(el, 'mouseenter', () => isHovered.value = true)
-  useEventListener(el, 'mouseleave', () => isHovered.value = false)
+  const toggle = (entering: boolean) => {
+    const delay = entering ? delayEnter : delayLeave
+    clearTimeout(timer)
+
+    if (delay)
+      timer = setTimeout(() => isHovered.value = entering, delay)
+    else
+      isHovered.value = entering
+  }
+
+  if (!window)
+    return isHovered
+
+  const target = computed(() => unrefElement(el))
+
+  useEventListener(target, 'mouseenter', () => toggle(true), { passive: true })
+  useEventListener(target, 'mouseleave', () => toggle(false), { passive: true })
 
   return isHovered
 }
