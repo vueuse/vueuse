@@ -198,7 +198,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       isFinished.value = true
       return { then }
     }
-
+    abort()
     loading(true)
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
