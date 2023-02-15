@@ -91,6 +91,11 @@
       "types": "./useIDBKeyval.d.ts",
       "require": "./useIDBKeyval.cjs",
       "import": "./useIDBKeyval.mjs"
+    },
+    "./useLottiePlayer": {
+      "types": "./useLottiePlayer.d.ts",
+      "require": "./useLottiePlayer.cjs",
+      "import": "./useLottiePlayer.mjs"
     }
   },
   "main": "./index.cjs",
@@ -162,6 +167,7 @@
     "fuse.js": "^6.6.2",
     "idb-keyval": "^6.2.0",
     "jwt-decode": "^3.1.2",
+    "lottie-web": "^5.10.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.1",
     "universal-cookie": "^4.0.4"
