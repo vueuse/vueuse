@@ -1,7 +1,7 @@
 import { defineComponent, h } from 'vue-demi'
 import { useScreenSafeArea } from '.'
 
-export const UseScreenSafeArea = defineComponent({
+export const UseScreenSafeArea = /* #__PURE__ */ defineComponent({
   name: 'UseScreenSafeArea',
   props: {
     top: Boolean,

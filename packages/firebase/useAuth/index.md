@@ -16,9 +16,10 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { useAuth } from '@vueuse/firebase/useAuth'
 
 const app = initializeApp({ /* config */ })
-const { isAuthenticated, user } = useAuth(getAuth(app))
+const auth = getAuth(app);
+const { isAuthenticated, user } = useAuth(auth)
 
-const signIn = () => signInWithPopup(new GoogleAuthProvider())
+const signIn = () => signInWithPopup(auth, new GoogleAuthProvider())
 </script>
 
 <template>

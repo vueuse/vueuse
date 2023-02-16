@@ -16,7 +16,7 @@ export function useRouteHash(
     },
     set(v) {
       nextTick(() => {
-        router[unref(mode)]({ hash: v })
+        router[unref(mode)]({ ...route, hash: v })
       })
     },
   })

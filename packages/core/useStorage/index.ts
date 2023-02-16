@@ -1,6 +1,6 @@
+import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
 import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -51,6 +51,15 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
     read: (v: any) => new Date(v),
     write: (v: any) => v.toISOString(),
   },
+}
+
+export const customStorageEventName = 'vueuse-storage'
+
+export interface StorageEventLike {
+  storageArea: StorageLike | null
+  key: StorageEvent['key']
+  oldValue: StorageEvent['oldValue']
+  newValue: StorageEvent['newValue']
 }
 
 export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
@@ -160,8 +169,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     { flush, deep, eventFilter },
   )
 
-  if (window && listenToStorageChanges)
+  if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', update)
+    useEventListener(window, customStorageEventName, updateFromCustomEvent)
+  }
 
   update()
 
@@ -169,58 +180,91 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function write(v: unknown) {
     try {
-      if (v == null)
+      if (v == null) {
         storage!.removeItem(key)
-      else
-        storage!.setItem(key, serializer.write(v))
+      }
+      else {
+        const serialized = serializer.write(v)
+        const oldValue = storage!.getItem(key)
+        if (oldValue !== serialized) {
+          storage!.setItem(key, serialized)
+
+          // send custom event to communicate within same page
+          // importantly this should _not_ be a StorageEvent since those cannot
+          // be constructed with a non-built-in storage area
+          if (window) {
+            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+              detail: {
+                key,
+                oldValue,
+                newValue: serialized,
+                storageArea: storage!,
+              },
+            }))
+          }
+        }
+      }
     }
     catch (e) {
       onError(e)
     }
   }
 
-  function read(event?: StorageEvent) {
+  function read(event?: StorageEventLike) {
+    const rawValue = event
+      ? event.newValue
+      : storage!.getItem(key)
+
+    if (rawValue == null) {
+      if (writeDefaults && rawInit !== null)
+        storage!.setItem(key, serializer.write(rawInit))
+      return rawInit
+    }
+    else if (!event && mergeDefaults) {
+      const value = serializer.read(rawValue)
+      if (isFunction(mergeDefaults))
+        return mergeDefaults(value, rawInit)
+      else if (type === 'object' && !Array.isArray(value))
+        return { ...rawInit as any, ...value }
+      return value
+    }
+    else if (typeof rawValue !== 'string') {
+      return rawValue
+    }
+    else {
+      return serializer.read(rawValue)
+    }
+  }
+
+  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
+    update(event.detail)
+  }
+
+  function update(event?: StorageEventLike) {
+    if (event && event.storageArea !== storage)
+      return
+
+    if (event && event.key == null) {
+      data.value = rawInit
+      return
+    }
+
     if (event && event.key !== key)
       return
 
     pauseWatch()
     try {
-      const rawValue = event
-        ? event.newValue
-        : storage!.getItem(key)
-
-      if (rawValue == null) {
-        if (writeDefaults && rawInit !== null)
-          storage!.setItem(key, serializer.write(rawInit))
-        return rawInit
-      }
-      else if (!event && mergeDefaults) {
-        const value = serializer.read(rawValue)
-        if (isFunction(mergeDefaults))
-          return mergeDefaults(value, rawInit)
-        else if (type === 'object' && !Array.isArray(value))
-          return { ...rawInit as any, ...value }
-        return value
-      }
-      else if (typeof rawValue !== 'string') {
-        return rawValue
-      }
-      else {
-        return serializer.read(rawValue)
-      }
+      data.value = read(event)
     }
     catch (e) {
       onError(e)
     }
     finally {
-      resumeWatch()
+      // use nextTick to avoid infinite loop
+      if (event)
+        nextTick(resumeWatch)
+      else
+        resumeWatch()
     }
-  }
-
-  function update(event?: StorageEvent) {
-    if (event && event.key !== key)
-      return
-
-    data.value = read(event)
   }
 }

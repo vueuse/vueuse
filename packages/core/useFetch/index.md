@@ -7,6 +7,8 @@ category: Network
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
 they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
 
+<CourseLink href="https://vueschool.io/lessons/vueuse-utilities-usefetch-and-reactify?friend=vueuse">Learn useFetch with this FREE video lesson from Vue School!</CourseLink>
+
 ::: tip
 When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useFetch()`](https://v3.nuxtjs.org/api/composables/use-fetch). Use explicit import if you want to use the function from VueUse.
 :::
@@ -164,6 +166,46 @@ const useMyFetch = createFetch({
 })
 
 const { isFetching, error, data } = useMyFetch('users')
+```
+
+If you want to control the behavior of `beforeFetch`, `afterFetch`, `onFetchError` between the pre-configured instance and newly spawned instance. You can provide a `combination` option to toggle between `overwrite` or `chaining`.
+
+```ts
+const useMyFetch = createFetch({
+  baseUrl: 'https://my-api.com',
+  combination: 'overwrite',
+  options: {
+    // beforeFetch in pre-configured instance will only run when the newly spawned instance do not pass beforeFetch
+    async beforeFetch({ options }) {
+      const myToken = await getMyToken()
+      options.headers.Authorization = `Bearer ${myToken}`
+
+      return { options }
+    },
+  },
+})
+
+// use useMyFetch beforeFetch
+const { isFetching, error, data } = useMyFetch('users')
+
+// use custom beforeFetch
+const { isFetching, error, data } = useMyFetch('users', {
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = await getMyToken()
+
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  },
+})
 ```
 
 ### Events

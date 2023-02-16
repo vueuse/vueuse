@@ -8,7 +8,7 @@ const url = useObjectUrl(file)
 const onFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   const files = target.files
-  file.value = files && files.length > 0 ? files[0] : undefined
+  file.value = (files && files.length > 0) ? files[0] : undefined
 }
 </script>
 
