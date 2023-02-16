@@ -4,12 +4,10 @@ import type { AnimationConfigWithData, AnimationItem } from 'lottie-web'
 import lottie from 'lottie-web'
 
 /**
- * Wrapper for qrcode.
+ * Wrapper for lottie.
  *
  * @see https://vueuse.org/useLottiePlayer
- * @param text
- * @param options
- *
+ * @param  lottieData
  *
  */
 // https://assets9.lottiefiles.com/datafiles/MUp3wlMDGtoK5FK/data.json

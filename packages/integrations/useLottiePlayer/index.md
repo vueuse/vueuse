@@ -4,8 +4,7 @@ category: '@Integrations'
 
 # useLottiePlayer
 
-Wrapper for [`qrcode`](https://github.com/soldair/node-qrcode).
-
+Wrapper for lottie-web
 ## Install 
 
 ```bash
