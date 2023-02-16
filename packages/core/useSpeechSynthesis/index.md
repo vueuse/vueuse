@@ -20,6 +20,7 @@ const {
   voiceInfo,
   utterance,
   error,
+  isStop,
 
   toggle,
   speak,
