@@ -45,7 +45,7 @@ export default {
       pressed,
     }
   }
-})
+}
 </script>
 ```
 

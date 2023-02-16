@@ -7,6 +7,8 @@ related: useManualRefHistory
 
 Track the change history of a ref, also provides undo and redo functionality
 
+<CourseLink href="https://vueschool.io/lessons/ref-history-with-vueuse?friend=vueuse">Learn useRefHistory with this FREE video lesson from Vue School!</CourseLink>
+
 ## Usage
 
 ```ts {5}

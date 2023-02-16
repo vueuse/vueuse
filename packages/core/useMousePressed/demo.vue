@@ -4,13 +4,11 @@ import { useToggle } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue'
 import { useMousePressed } from '@vueuse/core'
 
-const el = ref<Element | null>()
+const el = ref<HTMLElement | null>()
 const [withTarget, toggle] = useToggle()
-const target = computed<Element | null>(() => {
-  if (withTarget.value)
-    return el.value
-  return window as any as Element
-})
+const target = computed<HTMLElement | null>(() =>
+  (withTarget.value ? el.value : window) as HTMLElement,
+)
 
 const mouse = reactive(useMousePressed({ target }))
 const text = stringify(mouse)
@@ -25,11 +23,5 @@ const text = stringify(mouse)
         {{ withTarget ? 'Demo section' : 'Entire page' }}
       </button>
     </div>
-    <!-- <div
-      class="h-40 w-40 bg-green-200 text-green-900 p-3 flex flex-row items-center text-center"
-      @drop.prevent="() => {}"
-    >
-      Drop something here to try drag and drop.
-    </div> -->
   </div>
 </template>

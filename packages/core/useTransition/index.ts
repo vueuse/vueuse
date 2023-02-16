@@ -112,7 +112,7 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
     return aGuessT
   }
 
-  return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
+  return (x: number) => (p0 === p1 && p2 === p3) ? x : calcBezier(getTforX(x), p1, p3)
 }
 
 // option 1: reactive number
@@ -199,15 +199,19 @@ export function useTransition(
   const timeout = useTimeoutFn(start, delay, { immediate: false })
 
   watch(sourceVector, () => {
-    if (unref(disabled)) {
-      outputVector.value = sourceVector.value.slice(0)
-    }
-    else {
-      if (unref(delay) <= 0)
-        start()
-      else timeout.start()
-    }
+    if (unref(disabled))
+      return
+    if (unref(delay) <= 0)
+      start()
+    else timeout.start()
   }, { deep: true })
+
+  watch(() => unref(disabled), (v) => {
+    if (v) {
+      outputVector.value = sourceVector.value.slice(0)
+      pause()
+    }
+  })
 
   return computed(() => {
     const targetVector = unref(disabled) ? sourceVector : outputVector

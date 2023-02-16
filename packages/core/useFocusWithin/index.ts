@@ -21,7 +21,7 @@ export interface UseFocusWithinReturn {
 export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWindow = {}): UseFocusWithinReturn {
   const activeElement = useActiveElement(options)
   const targetElement = computed(() => unrefElement(target))
-  const focused = computed(() => targetElement.value && activeElement.value ? targetElement.value.contains(activeElement.value) : false)
+  const focused = computed(() => (targetElement.value && activeElement.value) ? targetElement.value.contains(activeElement.value) : false)
 
   return { focused }
 }
