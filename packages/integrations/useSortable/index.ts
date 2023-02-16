@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
-import { onMounted, onUnmounted } from 'vue-demi'
-import { defaultDocument, resolveUnref, unrefElement } from '@vueuse/core'
+import { defaultDocument, resolveUnref, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { ConfigurableDocument, MaybeComputedRef } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
 
@@ -38,36 +36,32 @@ export function useSortable<T>(
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
-      moveArrayElement(e.oldIndex!, e.newIndex!)
-      resetOptions?.onUpdate?.(e)
+      moveArrayElement(list, e.oldIndex!, e.newIndex!)
     },
-  }
-
-  function moveArrayElement(
-    from: number,
-    to: number,
-  ): void {
-    const array = resolveUnref(list)
-    if (to >= 0 && to < array.length)
-      array.splice(to, 0, array.splice(from, 1)[0])
   }
 
   const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    sortable = new Sortable(target as HTMLElement, { ...resetOptions, ...defaultOptions })
+    if (!target)
+      return
+    sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
 
-  const stop = () => {
-    sortable?.destroy()
-  }
+  const stop = () => sortable?.destroy()
 
-  onMounted(() => {
-    start()
-  })
+  tryOnMounted(start)
 
-  onUnmounted(() => {
-    stop()
-  })
+  tryOnScopeDispose(stop)
 
   return { stop, start }
+}
+
+export function moveArrayElement<T>(
+  list: MaybeComputedRef<T[]>,
+  from: number,
+  to: number,
+): void {
+  const array = resolveUnref(list)
+  if (to >= 0 && to < array.length)
+    array.splice(to, 0, array.splice(from, 1)[0])
 }
