@@ -4,7 +4,10 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 /**
- * @deprecated Please use [`usescroll`](https://vueuse.org/core/usescroll/#usescroll) instead.
+ * Reactive window scroll.
+ *
+ * @see https://vueuse.org/useWindowScroll
+ * @param options
  */
 export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {
   if (!window) {
