@@ -171,6 +171,7 @@ export default defineConfig({
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
     ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
 
     ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
