@@ -66,6 +66,7 @@ importers:
       rollup: ^3.15.0
       rollup-plugin-dts: ^5.2.0
       rollup-plugin-esbuild: ^5.0.0
+      rollup-plugin-pure: ^0.0.2
       sharp: ^0.31.3
       simple-git: ^3.16.0
       simple-git-hooks: ^2.8.1
@@ -137,6 +138,7 @@ importers:
       rollup: 3.15.0
       rollup-plugin-dts: 5.2.0_xswiuafr57fmdlvfpvse52fe3e
       rollup-plugin-esbuild: 5.0.0_rollup@3.15.0
+      rollup-plugin-pure: 0.0.2_rollup@3.15.0
       sharp: 0.31.3
       simple-git: 3.16.0
       simple-git-hooks: 2.8.1
@@ -3610,6 +3612,12 @@ packages:
     resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  /acorn/8.8.2:
+    resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+    dev: true
 
   /agent-base/6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -8456,6 +8464,17 @@ packages:
       - supports-color
     dev: true
 
+  /rollup-plugin-pure/0.0.2_rollup@3.15.0:
+    resolution: {integrity: sha512-tWFiV+fqoG+kHJYjItLnjxJNadcc9+qwJOqCiHpqv/QNfByyIxvf6oeKEbwIT5SWPt79tkU5ngwZ1b+oZ7X81g==}
+    peerDependencies:
+      rollup: ^3.0.0
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.15.0
+      magic-string: 0.29.0
+      rollup: 3.15.0
+      strip-literal: 1.0.1
+    dev: true
+
   /rollup-plugin-terser/7.0.2_rollup@2.79.1:
     resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==}
     deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
@@ -8982,6 +9001,12 @@ packages:
     resolution: {integrity: sha512-5o4LsH1lzBzO9UFH63AJ2ad2/S2AVx6NtjOcaz+VTT2h1RiRvbipW72z8M/lxEhcPHDBQwpDrnTF7sXy/7OwCQ==}
     dependencies:
       acorn: 8.8.1
+
+  /strip-literal/1.0.1:
+    resolution: {integrity: sha512-QZTsipNpa2Ppr6v1AmJHESqJ3Uz247MUS0OjrnnZjFAvEoWqxuyFuXn2xLgMtRnijJShAa1HL0gtJyUs7u7n3Q==}
+    dependencies:
+      acorn: 8.8.2
+    dev: true
 
   /sumchecker/3.0.1:
     resolution: {integrity: sha512-MvjXzkz/BOfyVDkG0oFOtBxHX2u3gKbMHIF/dXblZsgD3BWOFLmHovIpZY7BykJdAjcqRCBi1WYBNdEC9yI7vg==}
