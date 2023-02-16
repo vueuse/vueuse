@@ -52,6 +52,7 @@ export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+  ignoreDeadLinks: true,
 
   markdown: {
     theme: {
@@ -73,8 +74,8 @@ export default defineConfig({
     },
 
     algolia: {
-      appId: 'BH4D9OD16A',
-      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      appId: 'NBQWY48OOR',
+      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
       indexName: 'vueuse',
     },
 
@@ -194,7 +195,7 @@ function getFunctionsSideBar() {
         link: i.external || `/${i.package}/${i.name}/`,
       })),
       link: name.startsWith('@')
-        ? functions[0].external || `/${functions[0].package}/README`
+        ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })
   }
