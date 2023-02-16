@@ -55,7 +55,6 @@ useIntersectionObserver(
   border: 2px dashed var(--c-brand);
   padding: 10px;
   max-height: 150px;
-  margin: 0 2rem 1rem;
-  margin-bottom: 400px;
+  margin: 0 2rem 400px;
 }
 </style>
