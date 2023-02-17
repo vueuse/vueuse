@@ -280,4 +280,24 @@ describe('useAxios', () => {
     const { error } = await execute()
     expect(error.value).toBeDefined()
   })
+
+  test('should call onSuccess when success', async () => {
+    const onSuccess = vitest.fn()
+    const { execute, isLoading, isFinished, data } = useAxios(url, config, { ...options, onSuccess })
+    expect(isLoading.value).toBeFalsy()
+    await execute()
+    expect(onSuccess).toHaveBeenCalledWith(data.value)
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+  })
+
+  test('should call onError when error', async () => {
+    const onError = vitest.fn()
+    const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
+    expect(isLoading.value).toBeFalsy()
+    await execute('https://jsonplaceholder.typicode.com/todos/2/3')
+    expect(onError).toHaveBeenCalledWith(error.value)
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+  })
 })
