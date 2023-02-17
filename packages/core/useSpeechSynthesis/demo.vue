@@ -39,7 +39,7 @@ const pause = () => {
 }
 
 const stop = () => {
-  speech.isStop()
+  speech.stop()
 }
 </script>
 
