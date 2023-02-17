@@ -2,17 +2,17 @@
 category: Browser
 ---
 
-# usePerformanceRecorder
+# usePerformanceObserver
 
-Records performance metrics.
+Observe performance metrics.
 
 ## Usage
 
 ```ts
-import { usePerformanceRecorder } from '@vueuse/core'
+import { usePerformanceObserver } from '@vueuse/core'
 
 const entrys = ref<PerformanceEntry[]>([])
-usePerformanceRecorder({
+usePerformanceObserver({
   entryTypes: ['paint'],
 }, (list) => {
   entrys.value = list.getEntries()

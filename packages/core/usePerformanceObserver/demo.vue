@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { usePerformanceRecorder } from '@vueuse/core'
+import { usePerformanceObserver } from '@vueuse/core'
 import { ref } from 'vue'
 
 const entrys = ref<PerformanceEntry[]>([])
-usePerformanceRecorder({
+usePerformanceObserver({
   entryTypes: ['paint'],
 }, (list) => {
   entrys.value = list.getEntries()

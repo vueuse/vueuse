@@ -3,15 +3,15 @@ import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export type UsePerformanceRecorderOptions = PerformanceObserverInit & ConfigurableWindow
+export type UsePerformanceObserverOptions = PerformanceObserverInit & ConfigurableWindow
 
 /**
- * Records performance metrics.
+ * Observe performance metrics.
  *
- * @see https://vueuse.org/usePerformanceRecorder
+ * @see https://vueuse.org/usePerformanceObserver
  * @param options
  */
-export function usePerformanceRecorder(options: UsePerformanceRecorderOptions, callback: PerformanceObserverCallback) {
+export function usePerformanceObserver(options: UsePerformanceObserverOptions, callback: PerformanceObserverCallback) {
   const {
     window = defaultWindow,
     ...performanceOptions
