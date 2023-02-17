@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import { usePerformanceRecorder } from '@vueuse/core'
-const recorderInfo = usePerformanceRecorder()
+import { ref } from 'vue'
+
+const entrys = ref<PerformanceEntry[]>([])
+usePerformanceRecorder({
+  entryTypes: ['paint'],
+}, (list) => {
+  entrys.value = list.getEntries()
+})
+const refresh = () => window.location.reload()
 </script>
 
 <template>
-  <pre lang="json">{{ recorderInfo }}</pre>
+  <button @click="refresh">
+    refresh
+  </button>
+
+  <pre lang="json">{{ entrys }}</pre>
 </template>
