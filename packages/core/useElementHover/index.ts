@@ -17,7 +17,10 @@ export function useElementHover(el: MaybeComputedRef<EventTarget | null | undefi
 
   const toggle = (entering: boolean) => {
     const delay = entering ? delayEnter : delayLeave
-    clearTimeout(timer)
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
+    }
 
     if (delay)
       timer = setTimeout(() => isHovered.value = entering, delay)
