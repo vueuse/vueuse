@@ -389,7 +389,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'seeking', () => seeking.value = true)
   useEventListener(target, 'seeked', () => seeking.value = false)
   useEventListener(target, 'waiting', () => waiting.value = true)
-  useEventListener(target, 'playing', () => waiting.value = false)
+  useEventListener(target, 'playing', () => {
+    waiting.value = false
+    ended.value = false
+  })
   useEventListener(target, 'ratechange', () => rate.value = (resolveUnref(target))!.playbackRate)
   useEventListener(target, 'stalled', () => stalled.value = true)
   useEventListener(target, 'ended', () => ended.value = true)

@@ -211,7 +211,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -257,7 +257,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
       const baseUrl = resolveUnref(config.baseUrl)
       const targetUrl = resolveUnref(url)
 
-      return baseUrl && !isAbsoluteURL(targetUrl)
+      return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
         : targetUrl
     })
@@ -357,8 +357,10 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   let timer: Stoppable | undefined
 
   const abort = () => {
-    if (supportsAbort && controller)
+    if (supportsAbort && controller) {
       controller.abort()
+      controller = undefined
+    }
   }
 
   const loading = (isLoading: boolean) => {
@@ -374,9 +376,9 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     error.value = null
     statusCode.value = null
     aborted.value = false
-    controller = undefined
 
     if (supportsAbort) {
+      abort()
       controller = new AbortController()
       controller.signal.onabort = () => aborted.value = true
       fetchOptions = {
