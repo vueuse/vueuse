@@ -41,6 +41,7 @@ export function useInterval(interval: MaybeComputedRef<number> = 1000, options: 
 
   const counter = ref(0)
   const update = () => counter.value += 1
+  const reset = () => counter.value = 0
   const controls = useIntervalFn(callback
     ? () => {
         update()
@@ -51,6 +52,7 @@ export function useInterval(interval: MaybeComputedRef<number> = 1000, options: 
   if (exposeControls) {
     return {
       counter,
+      reset,
       ...controls,
     }
   }
