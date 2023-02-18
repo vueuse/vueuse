@@ -17,10 +17,16 @@ export interface UseIntervalOptions<Controls extends boolean> {
    * @default true
    */
   immediate?: boolean
+
   /**
    * Callback on every interval
    */
   callback?: (count: number) => void
+}
+
+export interface UseIntervalControls {
+  counter: Ref<number>
+  reset: () => void
 }
 
 /**
@@ -31,7 +37,7 @@ export interface UseIntervalOptions<Controls extends boolean> {
  * @param options
  */
 export function useInterval(interval?: MaybeComputedRef<number>, options?: UseIntervalOptions<false>): Ref<number>
-export function useInterval(interval: MaybeComputedRef<number>, options: UseIntervalOptions<true>): { counter: Ref<number> } & Pausable
+export function useInterval(interval: MaybeComputedRef<number>, options: UseIntervalOptions<true>): UseIntervalControls & Pausable
 export function useInterval(interval: MaybeComputedRef<number> = 1000, options: UseIntervalOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
@@ -41,16 +47,24 @@ export function useInterval(interval: MaybeComputedRef<number> = 1000, options: 
 
   const counter = ref(0)
   const update = () => counter.value += 1
-  const controls = useIntervalFn(callback
-    ? () => {
-        update()
-        callback(counter.value)
-      }
-    : update, interval, { immediate })
+  const reset = () => {
+    counter.value = 0
+  }
+  const controls = useIntervalFn(
+    callback
+      ? () => {
+          update()
+          callback(counter.value)
+        }
+      : update,
+    interval,
+    { immediate },
+  )
 
   if (exposeControls) {
     return {
       counter,
+      reset,
       ...controls,
     }
   }

@@ -16,5 +16,5 @@ const counter = useInterval(200)
 ```
 
 ```ts
-const { counter, pause, resume } = useInterval(200, { controls: true })
+const { counter, reset, pause, resume } = useInterval(200, { controls: true })
 ```
