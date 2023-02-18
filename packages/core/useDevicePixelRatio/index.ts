@@ -11,25 +11,23 @@ import { type ConfigurableWindow, defaultWindow } from '../_configurable'
 export function useDevicePixelRatio({
   window = defaultWindow,
 }: ConfigurableWindow = {}) {
-  if (!window) {
-    return {
-      pixelRatio: ref(1),
-    }
-  }
-
   const pixelRatio = ref(1)
 
-  let media: MediaQueryList
-  const observe = () => {
-    pixelRatio.value = window.devicePixelRatio
-    media = window.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
-    media.addEventListener('change', observe, { once: true })
-  }
+  if (window) {
+    let media: MediaQueryList
+    function observe() {
+      pixelRatio.value = window!.devicePixelRatio
+      cleanup()
+      media = window!.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
+      media.addEventListener('change', observe, { once: true })
+    }
+    function cleanup() {
+      media?.removeEventListener('change', observe)
+    }
 
-  observe()
-  tryOnScopeDispose(() => {
-    media.removeEventListener('change', observe)
-  })
+    observe()
+    tryOnScopeDispose(cleanup)
+  }
 
   return { pixelRatio }
 }
