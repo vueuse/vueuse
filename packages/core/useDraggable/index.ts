@@ -1,5 +1,5 @@
-import { computed, ref, watch } from 'vue-demi'
-import type { Fn, MaybeComputedRef } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { isClient, resolveUnref, toRefs } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
@@ -141,16 +141,10 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    let cleanups: Fn[] = []
-    const useCapture = computed(() => resolveUnref(options?.useCapture ?? true))
-    watch(useCapture, (useCapture = true) => {
-      cleanups.forEach(cleanup => cleanup())
-      cleanups = [
-        useEventListener(draggingHandle, 'pointerdown', start, useCapture),
-        useEventListener(draggingElement, 'pointermove', move, useCapture),
-        useEventListener(draggingElement, 'pointerup', end, useCapture),
-      ]
-    }, { immediate: true })
+    const { useCapture } = options
+    useEventListener(draggingHandle, 'pointerdown', start, useCapture)
+    useEventListener(draggingElement, 'pointermove', move, useCapture)
+    useEventListener(draggingElement, 'pointerup', end, useCapture)
   }
 
   return {
