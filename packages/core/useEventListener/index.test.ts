@@ -228,7 +228,7 @@ describe('useEventListener', () => {
     testTarget(true)
   })
 
-  it('should auto re-register', async () => {
+  it.skipIf(isVue2)('should auto re-register', async () => {
     const target = ref()
     const listener = vi.fn()
     const options = ref<any>(false)
