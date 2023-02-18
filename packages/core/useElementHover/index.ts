@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared/utils/types'
+import type { MaybeComputedRef } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 
