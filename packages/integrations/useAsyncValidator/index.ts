@@ -6,7 +6,7 @@ import type { Ref } from 'vue-demi'
 import { computed, ref, watchEffect } from 'vue-demi'
 
 // @ts-expect-error Schema.default is exist in ssr mode
-const AsyncValidatorSchema = Schema || Schema.default
+const AsyncValidatorSchema = Schema.default || Schema
 
 export type AsyncValidatorError = Error & {
   errors: ValidateError[]
