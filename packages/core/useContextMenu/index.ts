@@ -205,10 +205,7 @@ export function useContextMenu(
     cleanups.push(useEventListener('contextmenu', contextMenuHandler))
 
   cleanups.push(
-    useEventListener('scroll', hide),
-    useEventListener('click', hide),
-    useEventListener('resize', hide),
-    useEventListener('blur', hide),
+    useEventListener(['scroll', 'click', 'resize', 'blur'], hide),
     useEventListener('contextmenu', hide, { capture: true }),
     useEventListener(menuElementRef, 'click', (e) => {
       if (!resolveUnref(hideOnClick)) {
