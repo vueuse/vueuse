@@ -57,9 +57,39 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
 </template>
 ```
 
+**Conditional Rendering**
+
+This function can't properly activate focus on elements with conditional rendering using `v-if`. This is because they do not exist in the DOM at the time of the focus activation. To solve this you need to activate on the next tick.
+
+```html
+<script setup>
+import { nextTick, ref } from 'vue'
+
+const target = ref()
+const { activate, deactivate } = useFocusTrap(target, { immediate: true })
+
+const show = ref(false)  
+
+const reveal = async () => {
+  show.value = true
+  
+  await nextTick()
+  activate()
+}
+</script>
+
+<template>
+  <div>
+    <div ref="target" v-if="show">...</div>
+    
+    <button @click="reveal">Reveal and Focus</button>
+  </div>
+</template>
+```
+
 ## Using Component
 
-This function can't properly activate focus on elements with conditional rendering. In this case, you can use the `UseFocusTrap` component. Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
+With the `UseFocusTrap` component, Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
 
 ```html
 <script setup>

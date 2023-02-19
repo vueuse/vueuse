@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "9.12.0",
+  "version": "9.13.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -37,14 +37,14 @@
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.1.2",
+    "@nuxt/kit": "^3.2.0",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.3",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.1.2",
-    "unimport": "^2.1.0"
+    "@nuxt/schema": "^3.2.0",
+    "unimport": "^2.2.4"
   }
 }

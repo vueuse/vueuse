@@ -4,7 +4,10 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 /**
- * @deprecated Please use [`usescroll`](https://vueuse.org/core/usescroll/#usescroll) instead.
+ * Reactive window scroll.
+ *
+ * @see https://vueuse.org/useWindowScroll
+ * @param options
  */
 export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {
   if (!window) {
@@ -14,15 +17,15 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
     }
   }
 
-  const x = ref(window.pageXOffset)
-  const y = ref(window.pageYOffset)
+  const x = ref(window.scrollX)
+  const y = ref(window.scrollY)
 
   useEventListener(
     window,
     'scroll',
     () => {
-      x.value = window.pageXOffset
-      y.value = window.pageYOffset
+      x.value = window.scrollX
+      y.value = window.scrollY
     },
     {
       capture: false,

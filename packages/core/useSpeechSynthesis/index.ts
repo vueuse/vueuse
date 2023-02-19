@@ -113,6 +113,11 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
     utterance && synth!.speak(utterance.value)
   }
 
+  const stop = () => {
+    synth!.cancel()
+    isPlaying.value = false
+  }
+
   if (isSupported.value) {
     bindEventsForUtterance(utterance.value)
 
@@ -146,6 +151,7 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
     utterance,
     error,
 
+    stop,
     toggle,
     speak,
   }
