@@ -357,8 +357,10 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   let timer: Stoppable | undefined
 
   const abort = () => {
-    if (supportsAbort && controller)
+    if (supportsAbort && controller) {
       controller.abort()
+      controller = undefined
+    }
   }
 
   const loading = (isLoading: boolean) => {
@@ -374,9 +376,9 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     error.value = null
     statusCode.value = null
     aborted.value = false
-    controller = undefined
 
     if (supportsAbort) {
+      abort()
       controller = new AbortController()
       controller.signal.onabort = () => aborted.value = true
       fetchOptions = {

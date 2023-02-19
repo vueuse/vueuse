@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "9.12.0",
+  "version": "9.13.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -155,7 +155,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.5.0",
     "async-validator": "^4.2.5",
-    "axios": "^1.3.2",
+    "axios": "^1.3.3",
     "change-case": "^4.1.2",
     "drauu": "^0.3.2",
     "focus-trap": "^7.2.0",
