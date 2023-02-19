@@ -19,7 +19,7 @@ onKeyStroke(['a', 'A', 'ArrowLeft'], () => {
 
 onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   translateX.value += 10
-}, { autoRepeat: false })
+}, { dedupe: true })
 </script>
 
 <template>

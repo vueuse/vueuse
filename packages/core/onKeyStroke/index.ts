@@ -11,11 +11,11 @@ export interface OnKeyStrokeOptions {
   target?: MaybeComputedRef<EventTarget | null | undefined>
   passive?: boolean
   /**
-   * Set to `false` to ignore repeated events when the key is being held down.
+   * Set to `true` to ignore repeated events when the key is being held down.
    *
-   * @default true
+   * @default false
    */
-  autoRepeat?: MaybeComputedRef<boolean>
+  dedupe?: MaybeComputedRef<boolean>
 }
 
 const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
@@ -71,11 +71,14 @@ export function onKeyStroke(...args: any[]) {
     target = defaultWindow,
     eventName = 'keydown',
     passive = false,
-    autoRepeat = true,
+    dedupe = false,
   } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
-    if ((resolveUnref(autoRepeat) || !e.repeat) && predicate(e))
+    if (e.repeat && resolveUnref(dedupe))
+      return
+
+    if (predicate(e))
       handler(e)
   }
 

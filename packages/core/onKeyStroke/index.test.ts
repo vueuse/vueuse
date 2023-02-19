@@ -75,7 +75,7 @@ describe('onKeyStroke', () => {
   })
 
   it('ignore repeated events', () => {
-    onKeyStroke('A', callBackFn, { target: element, autoRepeat: false })
+    onKeyStroke('A', callBackFn, { target: element, dedupe: true })
     createKeyEvent('A', 'keydown', false)
     createKeyEvent('A', 'keydown', true)
     createKeyEvent('A', 'keydown', true)
