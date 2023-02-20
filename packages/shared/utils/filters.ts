@@ -160,14 +160,14 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
       invoke()
     }
     else if (trailing) {
-      return new Promise((resolve, reject) => {
+      lastValue = new Promise((resolve, reject) => {
         lastRejector = rejectOnCancel ? reject : resolve
         timer = setTimeout(() => {
           lastExec = Date.now()
           isLeading = true
           resolve(invoke())
           clear()
-        }, duration - elapsed)
+        }, Math.max(0, duration - elapsed))
       })
     }
 

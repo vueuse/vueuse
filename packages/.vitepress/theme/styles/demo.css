@@ -16,7 +16,6 @@
   z-index: 2;
   font-size: 12px;
   font-weight: 500;
-  color: var(--vp-c-text-dark-3);
   transition: color 0.5s;
 }
 
@@ -102,7 +101,7 @@
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
     border-radius: 4px;
-    box-shadow: var(--vp-c-divider) 0px 0px 0px 1px;
+    box-shadow: var(--vp-c-divider) 0 0 0 1px;
     margin: 0.5rem 0;
     outline: none;
     background: var(--vp-c-bg);
@@ -165,7 +164,6 @@
     white-space: pre;
     overflow-wrap: normal;
     overflow: hidden;
-    overflow-x: hidden;
   }
 
   .float {

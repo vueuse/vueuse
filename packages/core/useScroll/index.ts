@@ -146,14 +146,19 @@ export function useScroll(
     bottom: false,
   })
 
-  const onScrollEnd = useDebounceFn((e: Event) => {
+  const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
+
     isScrolling.value = false
     directions.left = false
     directions.right = false
     directions.top = false
     directions.bottom = false
     onStop(e)
-  }, throttle + idle)
+  }
+  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
   const onScrollHandler = (e: Event) => {
     const eventTarget = (
@@ -182,7 +187,7 @@ export function useScroll(
     internalY.value = scrollTop
 
     isScrolling.value = true
-    onScrollEnd(e)
+    onScrollEndDebounced(e)
     onScroll(e)
   }
 
@@ -190,6 +195,13 @@ export function useScroll(
     element,
     'scroll',
     throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
+    eventListenerOptions,
+  )
+
+  useEventListener(
+    element,
+    'scrollend',
+    onScrollEnd,
     eventListenerOptions,
   )
 
