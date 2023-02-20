@@ -1,26 +1,29 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
+import { isString } from '../utils'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 
-function differenceBy<T>(
-  array: T[],
-  other: T[],
-  fn: (value: T) => unknown,
-) {
-  return array.filter(c => !other.map(fn).includes(fn(c)))
-}
+const defaultComparator = <T>(value: T, othVal: T) =>
+  value === othVal
+
+export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, key?: keyof T): ComputedRef<T[]>
+export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, compareFn?: (value: T, othVal: T) => boolean): ComputedRef<T[]>
 
 /**
  * Reactive get array difference of two array
  * @see https://vueuse.org/useArrayDifference
- * @param {Array} list - the array was called upon.
- * @param {Array} values - the array was called upon.
- * @param {Function} [fn] - the iteratee invoked per element.
  * @returns {Array} - the difference of two array
+ * @param args
  */
-export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, fn?: (value: T) => unknown): ComputedRef<T[]> {
-  if (fn)
-    return computed(() => differenceBy(resolveUnref(list), resolveUnref(values), fn))
-  return computed(() => resolveUnref(list).filter(x => !resolveUnref(values).includes(x)))
+export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
+  const list: MaybeComputedRef<T[]> = args[0]
+  const values: MaybeComputedRef<T[]> = args[1]
+  let compareFn = args[2] ?? defaultComparator
+
+  if (isString(compareFn)) {
+    const key = compareFn as keyof T
+    compareFn = (value: T, othVal: T) => value[key] === othVal[key]
+  }
+  return computed(() => resolveUnref(list).filter(x => !resolveUnref(values).find(y => compareFn(x, y))))
 }

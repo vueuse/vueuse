@@ -23,13 +23,28 @@ describe('useArrayDifference', () => {
     const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
     const list2 = ref([{ id: 4 }, { id: 5 }])
 
-    const result = useArrayDifference(list1, list2, x => x.id)
+    const result = useArrayDifference(list1, list2, (value, othVal) => value.id === othVal.id)
     expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }])
 
     list2.value = [{ id: 1 }, { id: 2 }, { id: 3 }]
     expect(result.value).toEqual([{ id: 4 }, { id: 5 }])
 
     list1.value = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    expect(result.value).toEqual([])
+  })
+
+  // key
+  it('should return the difference of two array with key', () => {
+    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }])
+
+    const result = useArrayDifference(list1, list2, 'id')
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }])
+
+    list2.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([{ id: 3 }, { id: 4 }, { id: 5 }])
+
+    list1.value = [{ id: 1 }, { id: 2 }]
     expect(result.value).toEqual([])
   })
 })
