@@ -26,7 +26,7 @@ describe('useArraySome', () => {
     list.value.push(1)
     expect(result.value.length).toBe(3)
   })
- 
+
   it('should work with array of reactive and custom compare function', () => {
     const list = reactive([
       {
