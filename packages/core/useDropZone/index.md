@@ -4,7 +4,7 @@ category: Elements
 
 # useDropZone
 
-Create an zone where files can be dropped.
+Create a zone where files can be dropped.
 
 ## Usage
 
