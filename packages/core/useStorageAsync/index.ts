@@ -1,5 +1,5 @@
 import type { MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { resolveUnref, watchWithFilter } from '@vueuse/shared'
+import { isFunction, resolveUnref, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
@@ -43,6 +43,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     deep = true,
     listenToStorageChanges = true,
     writeDefaults = true,
+    mergeDefaults = false,
     shallow,
     window = defaultWindow,
     eventFilter,
@@ -76,6 +77,14 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
         data.value = rawInit
         if (writeDefaults && rawInit !== null)
           await storage.setItem(key, await serializer.write(rawInit))
+      }
+      else if (mergeDefaults) {
+        const value = await serializer.read(rawValue)
+        if (isFunction(mergeDefaults))
+          data.value = mergeDefaults(value, rawInit)
+        else if (type === 'object' && !Array.isArray(value))
+          data.value = { ...(rawInit as any), ...value }
+        else data.value = value
       }
       else {
         data.value = await serializer.read(rawValue)

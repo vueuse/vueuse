@@ -39,7 +39,7 @@ const pause = () => {
 }
 
 const stop = () => {
-  window.speechSynthesis.cancel()
+  speech.stop()
 }
 </script>
 
