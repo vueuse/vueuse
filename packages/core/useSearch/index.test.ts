@@ -156,15 +156,15 @@ describe('useSearch', () => {
     const list = ref(['Jane1', 'Jane2', 'Yang1', 'Yang2'])
     const keyword = ref('')
 
-    const { data } = useSearch(list, keyword, { delay: 500 })
+    const { data } = useSearch(list, keyword, { delay: 60 })
     expect(data.value).toEqual(['Jane1', 'Jane2', 'Yang1', 'Yang2'])
 
     keyword.value = 'Ja'
     keyword.value = 'Jane'
-    await promiseTimeout(300)
+    await promiseTimeout(40)
     expect(data.value).toEqual(['Jane1', 'Jane2', 'Yang1', 'Yang2'])
 
-    await promiseTimeout(600)
+    await promiseTimeout(70)
     expect(data.value).toEqual(['Jane1', 'Jane2'])
   })
 })
