@@ -15,4 +15,26 @@ describe('useArrayIncludes', () => {
     array.value.pop()
     expect(result.value).toBeFalsy()
   })
+
+  it('should work with array of refs and comparator', () => {
+    const array = ref([{ id: 1 }, { id: 2 }, { id: 3 }])
+    const result = useArrayIncludes(array, 3, 'id')
+    expect(result.value).toBeTruthy()
+    array.value.pop()
+    expect(result.value).toBeFalsy()
+  })
+
+  it('should work with array of refs and comparatorFn', () => {
+    const array = ref([{ id: 1 }, { id: 2 }, { id: 3 }])
+    const result = useArrayIncludes(array, { id: 3 }, (element, value) => element.id === value.id)
+    expect(result.value).toBeTruthy()
+    array.value.pop()
+    expect(result.value).toBeFalsy()
+  })
+
+  it('should work with array of refs and fromIndex', () => {
+    const array = ref([{ id: 1 }, { id: 2 }, { id: 3 }])
+    const result = useArrayIncludes(array, { id: 1 }, { fromIndex: 1, comparator: (element, value) => element.id === value.id })
+    expect(result.value).toBeFalsy()
+  })
 })
