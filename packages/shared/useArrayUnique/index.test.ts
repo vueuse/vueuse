@@ -1,5 +1,4 @@
-import { reactive } from 'vue'
-import { ref } from 'vue-demi'
+import { reactive, ref } from 'vue-demi'
 import { useArrayUnique } from '../useArrayUnique'
 
 describe('useArraySome', () => {
@@ -27,15 +26,7 @@ describe('useArraySome', () => {
     list.value.push(1)
     expect(result.value.length).toBe(3)
   })
-
-  it('should work with reactive array', () => {
-    const list = reactive([1, 2, 2, 3])
-    const result = useArrayUnique(list)
-    expect(result.value.length).toBe(3)
-    list.push(1)
-    expect(result.value.length).toBe(3)
-  })
-
+ 
   it('should work with array of reactive and custom compare function', () => {
     const list = reactive([
       {

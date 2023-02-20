@@ -4,6 +4,7 @@ import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
+import { PluginPure as pure } from 'rollup-plugin-pure'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { functions } from '@vueuse/metadata'
@@ -19,11 +20,11 @@ const injectVueDemi: Plugin = {
   },
 }
 
-const esbuildPlugin = esbuild()
-
-const dtsPlugin = [
-  dts(),
-]
+const pluginEsbuild = esbuild()
+const pluginDts = dts()
+const pluginPure = pure({
+  functions: ['defineComponent'],
+})
 
 const externals = [
   'vue-demi',
@@ -115,8 +116,9 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
       plugins: [
         target
           ? esbuild({ target })
-          : esbuildPlugin,
+          : pluginEsbuild,
         json(),
+        pluginPure,
       ],
       external: [
         ...externals,
@@ -131,7 +133,9 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           file: `packages/${name}/dist/${fn}.d.ts`,
           format: 'es',
         },
-        plugins: dtsPlugin,
+        plugins: [
+          pluginDts,
+        ],
         external: [
           ...externals,
           ...(external || []),
@@ -153,7 +157,8 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           },
         ],
         plugins: [
-          esbuildPlugin,
+          pluginEsbuild,
+          pluginPure,
         ],
         external: [
           ...externals,
@@ -167,7 +172,9 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           file: `packages/${name}/dist/${fn}/component.d.ts`,
           format: 'es',
         },
-        plugins: dtsPlugin,
+        plugins: [
+          pluginDts,
+        ],
         external: [
           ...externals,
           ...(external || []),

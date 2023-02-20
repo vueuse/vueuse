@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import { resolveUnref } from '../resolveUnref'
 import { noop } from './is'
 import type { AnyFn, ArgumentsType, MaybeComputedRef, Pausable } from './types'
@@ -160,14 +160,14 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
       invoke()
     }
     else if (trailing) {
-      return new Promise((resolve, reject) => {
+      lastValue = new Promise((resolve, reject) => {
         lastRejector = rejectOnCancel ? reject : resolve
         timer = setTimeout(() => {
           lastExec = Date.now()
           isLeading = true
           resolve(invoke())
           clear()
-        }, duration - elapsed)
+        }, Math.max(0, duration - elapsed))
       })
     }
 
@@ -202,5 +202,5 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausab
       extendFilter(...args)
   }
 
-  return { isActive, pause, resume, eventFilter }
+  return { isActive: readonly(isActive), pause, resume, eventFilter }
 }
