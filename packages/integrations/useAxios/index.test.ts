@@ -300,4 +300,51 @@ describe('useAxios', () => {
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
   })
+
+  test('should use initialData', async () => {
+    const { data } = useAxios(url, config, { ...options, initialData: { value: 1 } })
+    expect(data.value).toEqual({ value: 1 })
+  })
+
+  test('should reset data when execute', async () => {
+    interface ResType {
+      id: number
+      title: string
+      body: string
+      userId: number
+    }
+    const initialData: ResType = {
+      id: 2,
+      title: 'title',
+      body: 'body',
+      userId: 2,
+    }
+    const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData, resetOnExecute: true })
+    expect(data.value).toEqual(initialData)
+    await execute()
+    expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
+    await execute('/todos/312')
+    expect(data.value).toEqual(initialData)
+  })
+
+  test('should not reset data when execute', async () => {
+    interface ResType {
+      id: number
+      title: string
+      body: string
+      userId: number
+    }
+    const initialData: ResType = {
+      id: 2,
+      title: 'title',
+      body: 'body',
+      userId: 2,
+    }
+    const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
+    expect(data.value).toEqual(initialData)
+    await execute()
+    expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
+    await execute('/todos/312')
+    expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
+  })
 })
