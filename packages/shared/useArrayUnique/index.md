@@ -33,7 +33,7 @@ const list = reactive([1, 2, 2, 3])
 const result = useArrayUnique(list)
 // result.value: [1, 2, 3]
 
-result.push(1)
+list.push(1)
 // result.value: [1, 2, 3]
 ```
 
