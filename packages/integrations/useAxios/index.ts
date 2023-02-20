@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { isString, until } from '@vueuse/shared'
+import { isString, noop, until } from '@vueuse/shared'
 import type { AxiosInstance, AxiosResponse, CancelTokenSource, RawAxiosRequestConfig } from 'axios'
 import axios, { AxiosError } from 'axios'
 
@@ -108,6 +108,16 @@ export interface UseAxiosOptions<T = any> {
    * Callback when success is caught.
    */
   onSuccess?: (data: T) => void
+
+  /**
+   * Initial data to use
+   */
+  initialData?: T
+
+  /**
+   * Sets the state to initialState before executing the promise.
+   */
+  resetOnExecute?: boolean
 }
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
@@ -154,8 +164,9 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   )
     options = args[args.length - 1]
 
+  const { initialData, shallow, onSuccess = noop, onError = noop, immediate, resetOnExecute = false } = options
   const response = shallowRef<AxiosResponse<T>>()
-  const data = options.shallow ? shallowRef<T>() : ref<T>()
+  const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
@@ -178,6 +189,14 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     isLoading.value = loading
     isFinished.value = !loading
   }
+
+  /**
+   * Reset data to initialData
+   */
+  const resetData = () => {
+    if (resetOnExecute)
+      data.value = initialData!
+  }
   const waitUntilFinished = () =>
     new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
       until(isFinished).toBe(true)
@@ -198,6 +217,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       isFinished.value = true
       return { then }
     }
+    resetData()
     abort()
     loading(true)
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
@@ -205,16 +225,16 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
         response.value = r
         const result = r.data
         data.value = result
-        options.onSuccess?.(result)
+        onSuccess(result)
       })
       .catch((e: any) => {
         error.value = e
-        options.onError?.(e)
+        onError(e)
       })
       .finally(() => loading(false))
     return { then }
   }
-  if (options.immediate && url)
+  if (immediate && url)
     (execute as StrictUseAxiosReturn<T, R, D>['execute'])()
 
   const result = {
