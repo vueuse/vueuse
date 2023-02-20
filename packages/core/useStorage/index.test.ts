@@ -1,7 +1,7 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { isVue3, ref } from 'vue-demi'
 import { nextTwoTick, useSetup } from '../../.test'
-import { StorageSerializers, useStorage } from '.'
+import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
 
@@ -427,6 +427,29 @@ describe('useStorage', () => {
     window.dispatchEvent(new StorageEvent('storage', { storageArea: localStorage, key: KEY, newValue: '1' }))
     await nextTwoTick()
     expect(data.value).toBe(1)
+  })
+
+  it('emits custom storage events on change', async () => {
+    const eventFn = vi.fn()
+    const data0 = useStorage(KEY, 0, storage)
+    const data1 = useStorage(KEY, 0, storage)
+    expect(data0.value).toBe(0)
+    expect(data1.value).toBe(0)
+
+    window.addEventListener(customStorageEventName, eventFn, { once: true })
+
+    data0.value = 1
+    await nextTwoTick()
+
+    expect(data0.value).toBe(1)
+    expect(data1.value).toBe(1)
+    expect(eventFn).toHaveBeenCalled()
+    const call = eventFn.mock.calls[0] as [CustomEvent]
+
+    expect(call[0].detail.storageArea).toEqual(storage)
+    expect(call[0].detail.key).toEqual(KEY)
+    expect(call[0].detail.oldValue).toEqual('0')
+    expect(call[0].detail.newValue).toEqual('1')
   })
 
   it('handle error', () => {
