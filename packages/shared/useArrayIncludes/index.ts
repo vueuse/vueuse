@@ -52,7 +52,8 @@ export function useArrayIncludes<T, V = any>(
     comparator = (element: T, value: V) => element[key] === resolveUnref(value)
   }
 
-  comparator ??= (element: any, value: any) => element === resolveUnref(value)
+  comparator = comparator ?? ((element: T, value: T) => element === resolveUnref(value))
 
   return computed(() => resolveUnref(list).slice(formIndex).some((element, index, array) => comparator(resolveUnref(element), resolveUnref(value), index, resolveUnref(array))))
 }
+// Fix syntax errors
