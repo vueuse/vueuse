@@ -53,6 +53,15 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
   },
 }
 
+export const customStorageEventName = 'vueuse-storage'
+
+export interface StorageEventLike {
+  storageArea: StorageLike | null
+  key: StorageEvent['key']
+  oldValue: StorageEvent['oldValue']
+  newValue: StorageEvent['newValue']
+}
+
 export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
   /**
    * Watch for deep changes
@@ -160,8 +169,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     { flush, deep, eventFilter },
   )
 
-  if (window && listenToStorageChanges)
+  if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', update)
+    useEventListener(window, customStorageEventName, updateFromCustomEvent)
+  }
 
   update()
 
@@ -179,12 +190,16 @@ export function useStorage<T extends(string | number | boolean | object | null)>
           storage!.setItem(key, serialized)
 
           // send custom event to communicate within same page
+          // importantly this should _not_ be a StorageEvent since those cannot
+          // be constructed with a non-built-in storage area
           if (window) {
-            window?.dispatchEvent(new StorageEvent('storage', {
-              key,
-              oldValue,
-              newValue: serialized,
-              storageArea: storage as any,
+            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+              detail: {
+                key,
+                oldValue,
+                newValue: serialized,
+                storageArea: storage!,
+              },
             }))
           }
         }
@@ -195,7 +210,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     }
   }
 
-  function read(event?: StorageEvent) {
+  function read(event?: StorageEventLike) {
     const rawValue = event
       ? event.newValue
       : storage!.getItem(key)
@@ -221,7 +236,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     }
   }
 
-  function update(event?: StorageEvent) {
+  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
+    update(event.detail)
+  }
+
+  function update(event?: StorageEventLike) {
     if (event && event.storageArea !== storage)
       return
 
