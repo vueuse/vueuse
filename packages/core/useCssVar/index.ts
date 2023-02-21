@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { resolveUnref, tryOnMounted } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
@@ -27,16 +27,17 @@ export function useCssVar(
   const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
-  if (elRef.value) {
-    const oldSetProperty = elRef.value?.style?.setProperty
-    elRef.value.style.setProperty = function (...args) {
-      const [key, value] = args
-      if (key === resolveUnref(prop))
-        variable.value = value!
-      return oldSetProperty.apply(this, args)
+  tryOnMounted(() => {
+    if (elRef.value) {
+      const oldSetProperty = elRef.value?.style?.setProperty
+      elRef.value.style.setProperty = function (...args) {
+        const [key, value] = args
+        if (key === resolveUnref(prop))
+          variable.value = value!
+        return oldSetProperty.apply(this, args)
+      }
     }
-  }
-
+  })
   watch(
     [elRef, () => resolveUnref(prop)],
     ([el, prop]) => {
