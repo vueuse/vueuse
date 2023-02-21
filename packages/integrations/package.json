@@ -96,6 +96,11 @@
       "types": "./useSortable.d.ts",
       "require": "./useSortable.cjs",
       "import": "./useSortable.mjs"
+    },
+    "./useSortable/component": {
+      "types": "./useSortable/component.d.ts",
+      "require": "./useSortable/component.cjs",
+      "import": "./useSortable/component.mjs"
     }
   },
   "main": "./index.cjs",

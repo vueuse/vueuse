@@ -13,7 +13,7 @@ export interface UseSortableReturn {
   stop: () => void
 }
 
-type UseSortableOptions = Options & ConfigurableDocument
+export type UseSortableOptions = Options & ConfigurableDocument
 
 export function useSortable<T>(selector: string, list: MaybeComputedRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
