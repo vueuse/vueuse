@@ -27,6 +27,16 @@ export function useCssVar(
   const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
+  if (elRef.value) {
+    const oldSetProperty = elRef.value?.style?.setProperty
+    elRef.value.style.setProperty = function (...args) {
+      const [key, value] = args
+      if (key === resolveUnref(prop))
+        variable.value = value!
+      return oldSetProperty.apply(this, args)
+    }
+  }
+
   watch(
     [elRef, () => resolveUnref(prop)],
     ([el, prop]) => {
