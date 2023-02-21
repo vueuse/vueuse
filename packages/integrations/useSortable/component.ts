@@ -1,12 +1,11 @@
+import { type PropType, defineComponent, h, reactive, ref } from 'vue-demi'
 import { useVModel } from '@vueuse/core'
-import { type PropType, defineComponent, h, ref } from 'vue-demi'
-import { useSortable } from '@vueuse/integrations'
-import type { UseSortableOptions } from '@vueuse/integrations'
+import { type UseSortableOptions, useSortable } from '.'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<any[]>,
       required: true,
     },
@@ -20,12 +19,12 @@ export const UseSortable = /* #__PURE__ */ defineComponent({
     },
   },
   setup(props, { slots }) {
-    const list = useVModel(props, 'value')
+    const list = useVModel(props, 'modelValue')
     const target = ref()
-    useSortable(target, list, props.options)
+    const data = reactive(useSortable(target, list, props.options))
     return () => {
       if (slots.default)
-        return h(props.tag, { ref: target }, slots.default())
+        return h(props.tag, { ref: target }, slots.default(data))
     }
   },
 })
