@@ -6,6 +6,8 @@ category: '@Integrations'
 
 Wrapper for [`sortable`](https://github.com/SortableJS/Sortable).
 
+For more information on what options can be passed, see [`Sortable.options`](https://github.com/SortableJS/Sortable#options) in the `Sortable` documentation.
+
 ## Install 
 
 ```bash
@@ -13,6 +15,8 @@ npm i sortablejs
 ```
 
 ## Usage
+
+### Use template ref
 
 ```vue
 <script setup lang="ts">
@@ -34,7 +38,7 @@ useSortable(el, list)
 </template>
 ```
 
-or specifies the selector to operate on
+### Use specifies the selector to operate on
 
 ```vue
 <script setup lang="ts">
@@ -59,7 +63,7 @@ useSortable(el, list, {
 </template>
 ```
 
-sor use a selector to get the root element
+### Use a selector to get the root element
 
 ```vue
 <script setup lang="ts">
@@ -68,9 +72,7 @@ import { ref } from 'vue'
 
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
-useSortable('#dv', list, {
-  handle: '.handle'
-})
+useSortable('#dv', list)
 </script>
 
 <template>
