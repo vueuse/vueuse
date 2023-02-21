@@ -32,12 +32,13 @@ export function useCssVar(
       const oldSetProperty = elRef.value?.style?.setProperty
       elRef.value.style.setProperty = function (...args) {
         const [key, value] = args
-        if (key === resolveUnref(prop))
+        if (key === resolveUnref(prop) && value !== variable.value)
           variable.value = value!
         return oldSetProperty.apply(this, args)
       }
     }
   })
+
   watch(
     [elRef, () => resolveUnref(prop)],
     ([el, prop]) => {
