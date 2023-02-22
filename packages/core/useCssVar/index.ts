@@ -29,7 +29,7 @@ export function useCssVar(
 
   tryOnMounted(() => {
     if (elRef.value) {
-      const oldSetProperty = elRef.value?.style?.setProperty
+      const oldSetProperty = elRef.value.style.setProperty
       elRef.value.style.setProperty = function (...args) {
         const [key, value] = args
         if (key === resolveUnref(prop) && value !== variable.value)
