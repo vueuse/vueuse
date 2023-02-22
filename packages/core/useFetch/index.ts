@@ -342,7 +342,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   const responseEvent = createEventHook<Response>()
   const errorEvent = createEventHook<any>()
   const finallyEvent = createEventHook<any>()
-
+  const afterAbort = createEventHook()
   const isFinished = ref(false)
   const isFetching = ref(false)
   const aborted = ref(false)
@@ -353,14 +353,39 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
-  let controller: AbortController | undefined
+  let controller: AbortController = new AbortController()
   let timer: Stoppable | undefined
 
-  const abort = () => {
-    if (supportsAbort && controller) {
-      controller.abort()
-      controller = undefined
+  const abort = async () => {
+    if (!supportsAbort)
+      return
+    const resetController = () => {
+      controller = new AbortController()
+      controller.signal.onabort = () => aborted.value = true
+      fetchOptions = {
+        ...fetchOptions,
+        signal: controller.signal,
+      }
     }
+
+    const abortFetch = async () => {
+      return new Promise((resolve) => {
+        controller.abort()
+        if (!controller)
+          resolve(false)
+        if (isFetching.value) {
+          const onAfterAbort = () => {
+            resolve(true)
+            afterAbort.off(onAfterAbort)
+          }
+          afterAbort.on(onAfterAbort)
+        }
+        else { resolve(true) }
+      })
+    }
+    await abortFetch()
+
+    resetController()
   }
 
   const loading = (isLoading: boolean) => {
@@ -372,20 +397,12 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   const execute = async (throwOnFailed = false) => {
+    if (supportsAbort)
+      await abort()
     loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
-
-    if (supportsAbort) {
-      abort()
-      controller = new AbortController()
-      controller.signal.onabort = () => aborted.value = true
-      fetchOptions = {
-        ...fetchOptions,
-        signal: controller.signal,
-      }
-    }
 
     const defaultFetchOptions: RequestInit = {
       method: config.method,
@@ -439,6 +456,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
         },
       )
         .then(async (fetchResponse) => {
+          loading(false)
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
 
@@ -457,6 +475,9 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           return resolve(fetchResponse)
         })
         .catch(async (fetchError) => {
+          if (fetchError.name === 'AbortError')
+            afterAbort.trigger(null)
+          loading(false)
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
@@ -471,7 +492,6 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           return resolve(null)
         })
         .finally(() => {
-          loading(false)
           if (timer)
             timer.stop()
           finallyEvent.trigger(null)
