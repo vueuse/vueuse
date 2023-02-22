@@ -1,4 +1,4 @@
-import { readonly, ref } from 'vue-demi'
+import { readonly, computed, ref } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
@@ -22,7 +22,13 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    *
    * @default true
    */
-  immediate?: boolean
+  immediate?: boolean,
+  /**
+   * two function works at intervals of the certain frames that you set
+   *
+   * @default 1
+   */
+  intervalFrame?: number
 }
 
 /**
@@ -38,9 +44,29 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     window = defaultWindow,
   } = options
 
+  const intervalFrame = computed(() => {
+    if (typeof options.intervalFrame === 'number') {
+      return Number(options.intervalFrame) >= 1 ? Number(options.intervalFrame) : 1
+    } else {
+      return 1
+    }
+  })
   const isActive = ref(false)
   let previousFrameTimestamp = 0
   let rafId: null | number = null
+
+  function requestAnimationFrame(fn: (timestamp: DOMHighResTimeStamp) => void) {
+    let i = 0
+    function loop() {
+      i++
+      if (i >= intervalFrame.value) {
+        rafId = window!.requestAnimationFrame(fn)
+        return
+      }
+      window!.requestAnimationFrame(loop)
+    }
+    loop()
+  }
 
   function loop(timestamp: DOMHighResTimeStamp) {
     if (!isActive.value || !window)
@@ -50,7 +76,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     fn({ delta, timestamp })
 
     previousFrameTimestamp = timestamp
-    rafId = window.requestAnimationFrame(loop)
+    requestAnimationFrame(loop)
   }
 
   function resume() {
