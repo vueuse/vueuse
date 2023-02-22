@@ -4,14 +4,14 @@ import { useRafFn } from '@vueuse/core'
 
 const count = ref(0)
 const options = ref({
-  intervalFrame: 1
+  intervalFrame: 1,
 })
 const { pause, resume } = useRafFn(() => count.value += 1, options.value)
 </script>
 
 <template>
   <div>Count: {{ count }}</div>
-  <div class='grid grid-cols-[120px_auto] gap-2'>
+  <div class="grid grid-cols-[120px_auto] gap-2">
     <span text="left" opacity="75" class="py-4">intervalFrame</span>
     <div class="text-primary">
       <div>

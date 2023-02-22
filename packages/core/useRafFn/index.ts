@@ -1,4 +1,4 @@
-import { readonly, computed, ref } from 'vue-demi'
+import { computed, readonly, ref } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
@@ -22,9 +22,9 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    *
    * @default true
    */
-  immediate?: boolean,
+  immediate?: boolean
   /**
-   * two function works at intervals of the certain frames that you set
+   * it works at intervals of the  certain frames that you set
    *
    * @default 1
    */
@@ -45,11 +45,10 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   } = options
 
   const intervalFrame = computed(() => {
-    if (typeof options.intervalFrame === 'number') {
+    if (typeof options.intervalFrame === 'number')
       return Number(options.intervalFrame) >= 1 ? Number(options.intervalFrame) : 1
-    } else {
+    else
       return 1
-    }
   })
   const isActive = ref(false)
   let previousFrameTimestamp = 0
