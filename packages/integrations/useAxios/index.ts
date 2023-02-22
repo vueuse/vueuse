@@ -102,7 +102,7 @@ export interface UseAxiosOptions<T = any> {
   /**
    * Callback when error is caught.
    */
-  onError?: (e: unknown) => void
+  onError?: (e: AxiosError) => void
 
   /**
    * Callback when success is caught.
