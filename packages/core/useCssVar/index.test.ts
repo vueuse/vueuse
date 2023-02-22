@@ -1,3 +1,5 @@
+import { defaultWindow } from '@vueuse/core'
+import { nextTick } from 'vue-demi'
 import { useCssVar } from '.'
 
 describe('useCssVar', () => {
@@ -8,12 +10,23 @@ describe('useCssVar', () => {
   it('should work', () => {
     const el = document.createElement('div')
     const color = '--color'
-    el.style.setProperty(color, 'red')
-    const variable = useCssVar(color, el)
+    const variable = useCssVar(color, el, { initialValue: 'red' })
+
+    expect(variable.value).toBe('red')
+  })
+
+  it('should work with sync', async () => {
+    const window = defaultWindow
+    const el = document.createElement('div')
+    window?.document.body.appendChild(el)
+
+    const color = '--color'
+    const variable = useCssVar(color, el, { initialValue: 'red', sync: true })
 
     expect(variable.value).toBe('red')
 
     el.style.setProperty(color, 'blue')
+    await nextTick()
     expect(variable.value).toBe('blue')
   })
 })
