@@ -46,7 +46,7 @@ describe('useTimeAgo', () => {
   test('control now', async () => {
     vi.useRealTimers()
     const { resume, pause, timeAgo } = useTimeAgo(baseTime, { controls: true, showSecond: true, updateInterval: 500 })
-    await promiseTimeout(10)
+    await promiseTimeout(100)
     expect(timeAgo.value).toBe('0 second ago')
 
     pause()
