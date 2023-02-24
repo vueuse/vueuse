@@ -77,6 +77,14 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    * @default undefined
    */
   emitAuto?: boolean
+
+  /**
+   * Disable transition on switch
+   *
+   * @see https://paco.me/writing/disable-theme-transitions
+   * @default false
+   */
+  disableTransition?: boolean
 }
 
 /**
@@ -96,6 +104,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     listenToStorageChanges = true,
     storageRef,
     emitAuto,
+    // TODO: switch to true in v10
+    disableTransition = false,
   } = options
 
   const modes = {
@@ -130,6 +140,14 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       if (!el)
         return
 
+      let style: HTMLStyleElement | undefined
+      if (disableTransition) {
+        style = window!.document.createElement('style')
+        style.type = 'text/css'
+        style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
+        window!.document.head.appendChild(style)
+      }
+
       if (attribute === 'class') {
         const current = value.split(/\s/g)
         Object.values(modes)
@@ -144,6 +162,13 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       }
       else {
         el.setAttribute(attribute, value)
+      }
+
+      if (disableTransition) {
+        // Calling getComputedStyle forces the browser to redraw
+        // @ts-expect-error unused variable
+        const _ = window!.getComputedStyle(style!).opacity
+        document.head.removeChild(style!)
       }
     })
 

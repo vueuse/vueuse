@@ -5,7 +5,7 @@ import { events } from './internal'
 export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void
 export type EventBusEvents<T, P = any> = EventBusListener<T, P>[]
 
-// eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
 
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
@@ -49,7 +49,8 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
 
     const _off = () => off(listener)
     // auto unsubscribe when scope get disposed
-    // @ts-expect-error vue3 and vue2 mis-align
+    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+    // @ts-ignore vue3 and vue2 mis-align
     scope?.cleanups?.push(_off)
     return _off
   }

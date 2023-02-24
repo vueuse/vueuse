@@ -6,7 +6,12 @@ import { useEventListener } from '../useEventListener'
 
 function checkOverflowScroll(ele: Element): boolean {
   const style = window.getComputedStyle(ele)
-  if (style.overflowX === 'scroll' || style.overflowY === 'scroll') {
+  if (
+    style.overflowX === 'scroll'
+    || style.overflowY === 'scroll'
+    || (style.overflowX === 'auto' && ele.clientHeight < ele.scrollHeight)
+    || (style.overflowY === 'auto' && ele.clientWidth < ele.scrollWidth)
+  ) {
     return true
   }
   else {

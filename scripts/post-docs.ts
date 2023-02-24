@@ -9,7 +9,7 @@ import type { VueUseFunction } from '../packages/metadata/types'
 const ogSVg = fs.readFileSync('./scripts/og-template.svg', 'utf-8')
 
 async function generateSVG(fn: VueUseFunction, output: string) {
-  let desc = removeMD(fn.description)
+  let desc = removeMD(fn.description!)
   desc = desc[0].toUpperCase() + desc.slice(1)
   const lines = desc.replace(/(?![^\n]{1,45}$)([^\n]{1,45})\s/g, '$1\n')
     .split('\n')
@@ -20,7 +20,7 @@ async function generateSVG(fn: VueUseFunction, output: string) {
     line2: lines[1] || '',
     line3: lines[2] || '',
   }
-  const svg = ogSVg.replace(/\{\{([^}]+)}}/g, (_, name) => data[name])
+  const svg = ogSVg.replace(/\{\{([^}]+)}}/g, (_, name: keyof typeof data) => data[name])
 
   console.log(`Generating ${output}`)
   await sharp(Buffer.from(svg))

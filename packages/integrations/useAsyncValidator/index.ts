@@ -5,6 +5,9 @@ import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
 import { computed, ref, watchEffect } from 'vue-demi'
 
+// @ts-expect-error Schema.default is exist in ssr mode
+const AsyncValidatorSchema = Schema.default || Schema
+
 export type AsyncValidatorError = Error & {
   errors: ValidateError[]
   fields: Record<string, ValidateError[]>
@@ -47,7 +50,7 @@ export function useAsyncValidator(
   watchEffect(async () => {
     isFinished.value = false
     pass.value = false
-    const validator = new Schema(resolveUnref(rules))
+    const validator = new AsyncValidatorSchema(resolveUnref(rules))
     try {
       await validator.validate(resolveUnref(value), validateOption)
       pass.value = true
