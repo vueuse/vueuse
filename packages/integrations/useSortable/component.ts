@@ -4,6 +4,10 @@ import { type UseSortableOptions, useSortable } from '.'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',
+  model: { // Compatible with vue2
+    prop: 'modelValue',
+    event: 'update:modelValue',
+  },
   props: {
     modelValue: {
       type: Array as PropType<any[]>,
