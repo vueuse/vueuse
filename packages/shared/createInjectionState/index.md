@@ -11,7 +11,7 @@ Create global state that can be injected into components.
 
 ```ts
 // useCounterStore.ts
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { createInjectionState } from '@vueuse/shared'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
