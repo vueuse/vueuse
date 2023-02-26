@@ -31,3 +31,12 @@ import { formatTimeAgo } from '@vueuse/core'
 
 const timeAgo = formatTimeAgo(new Date(2021, 0, 1)) // string
 ```
+
+### Editing message(s)
+```js
+ formatTimeAgo(new Date(2021, 0, 1), {
+    messages: {
+      second: (n) => `${n}s`
+    },
+  })
+```
