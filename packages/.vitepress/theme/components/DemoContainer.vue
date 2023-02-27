@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onErrorCaptured, ref } from 'vue'
 
-const error = ref(null)
+const error = ref<Error | null>(null)
 
 onErrorCaptured((err) => {
   error.value = err

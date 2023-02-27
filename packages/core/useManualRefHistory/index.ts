@@ -31,7 +31,7 @@ export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   parse?: (v: Serialized) => Raw
 
   /**
-   * Deserialize data from the history
+   * set data source
    */
   setSource?: (source: Ref<Raw>, v: Raw) => void
 }
