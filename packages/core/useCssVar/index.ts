@@ -10,10 +10,10 @@ import { unrefElement } from '../unrefElement'
 export interface UseCssVarOptions extends ConfigurableWindow {
   initialValue?: string
   /**
-   * Whether to update synchronously when CSS variables are modified by other means
+   * Use MutationObserver to monitor variable changes
    * @default false
    */
-  sync?: boolean
+  observe?: boolean
 }
 
 /**
@@ -29,7 +29,7 @@ export function useCssVar(
   target?: MaybeElementRef,
   options: UseCssVarOptions = {},
 ) {
-  const { window = defaultWindow, initialValue = '', sync = false } = options
+  const { window = defaultWindow, initialValue = '', observe = false } = options
   const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
@@ -42,7 +42,13 @@ export function useCssVar(
     }
   }
 
-  sync && useMutationObserver(elRef, updateCssVar, { attributes: true, window: defaultWindow })
+  if (observe) {
+    useMutationObserver(elRef, updateCssVar, {
+      attributes:
+      true,
+      window,
+    })
+  }
 
   watch(
     [elRef, () => resolveUnref(prop)],
