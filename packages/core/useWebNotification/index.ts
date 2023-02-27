@@ -114,10 +114,10 @@ export const useWebNotification = (
       await Notification.requestPermission()
   }
 
-  const onClick: EventHook = createEventHook<Event>()
-  const onShow: EventHook = createEventHook<Event>()
-  const onError: EventHook = createEventHook<Event>()
-  const onClose: EventHook = createEventHook<Event>()
+  const clickEvent: EventHook = createEventHook<Event>()
+  const showEvent: EventHook = createEventHook<Event>()
+  const errorEvent: EventHook = createEventHook<Event>()
+  const closeEvent: EventHook = createEventHook<Event>()
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
@@ -128,10 +128,11 @@ export const useWebNotification = (
     const options = Object.assign({}, defaultOptions, overrides)
     notification.value = new Notification(options.title || '', options)
 
-    notification.value.onclick = (event: Event) => onClick.trigger(event)
-    notification.value.onshow = (event: Event) => onShow.trigger(event)
-    notification.value.onerror = (event: Event) => onError.trigger(event)
-    notification.value.onclose = (event: Event) => onClose.trigger(event)
+    notification.value.onclick = clickEvent.trigger
+    notification.value.onshow = showEvent.trigger
+    notification.value.onerror = errorEvent.trigger
+    notification.value.onclose = closeEvent.trigger
+
     return notification.value
   }
 
@@ -171,10 +172,10 @@ export const useWebNotification = (
     notification,
     show,
     close,
-    onClick,
-    onShow,
-    onError,
-    onClose,
+    onClick: clickEvent.on,
+    onShow: showEvent.on,
+    onError: errorEvent.on,
+    onClose: closeEvent.on,
   }
 }
 
