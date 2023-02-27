@@ -15,13 +15,13 @@ describe('useCssVar', () => {
     expect(variable.value).toBe('red')
   })
 
-  it('should work with sync', async () => {
+  it('should work observe', async () => {
     const window = defaultWindow
     const el = document.createElement('div')
     window?.document.body.appendChild(el)
 
     const color = '--color'
-    const variable = useCssVar(color, el, { initialValue: 'red', sync: true })
+    const variable = useCssVar(color, el, { initialValue: 'red', observe: true })
 
     expect(variable.value).toBe('red')
 
