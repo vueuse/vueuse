@@ -7,17 +7,17 @@ import { useRafFn } from '../useRafFn'
 /**
  * Cubic bezier points
  */
-type CubicBezierPoints = [number, number, number, number]
+export type CubicBezierPoints = [number, number, number, number]
 
 /**
  * Easing function
  */
-type EasingFunction = (n: number) => number
+export type EasingFunction = (n: number) => number
 
 /**
  * Transition options
  */
-export interface TransitionOptions {
+export interface UseTransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */
@@ -49,13 +49,7 @@ export interface TransitionOptions {
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
-/**
- * Common transitions
- *
- * @see https://easings.net
- */
-export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunction> = {
-  linear,
+const _TransitionPresets = {
   easeInSine: [0.12, 0, 0.39, 0],
   easeOutSine: [0.61, 1, 0.88, 1],
   easeInOutSine: [0.37, 0, 0.63, 1],
@@ -80,7 +74,17 @@ export const TransitionPresets: Record<string, CubicBezierPoints | EasingFunctio
   easeInBack: [0.36, 0, 0.66, -0.56],
   easeOutBack: [0.34, 1.56, 0.64, 1],
   easeInOutBack: [0.68, -0.6, 0.32, 1.6],
-}
+} as const
+
+/**
+ * Common transitions
+ *
+ * @see https://easings.net
+ */
+export const TransitionPresets = {
+  linear,
+  ..._TransitionPresets,
+} as Record<keyof typeof _TransitionPresets, CubicBezierPoints> & { linear: EasingFunction }
 
 /**
  * Create an easing function from cubic bezier points.
@@ -108,17 +112,17 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
     return aGuessT
   }
 
-  return (x: number) => p0 === p1 && p2 === p3 ? x : calcBezier(getTforX(x), p1, p3)
+  return (x: number) => (p0 === p1 && p2 === p3) ? x : calcBezier(getTforX(x), p1, p3)
 }
 
 // option 1: reactive number
-export function useTransition(source: Ref<number>, options?: TransitionOptions): ComputedRef<number>
+export function useTransition(source: Ref<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: TransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
-export function useTransition<T extends Ref<number[]>>(source: T, options?: TransitionOptions): ComputedRef<number[]>
+export function useTransition<T extends Ref<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
  * Transition between values.
@@ -129,7 +133,7 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: Tran
  */
 export function useTransition(
   source: Ref<number | number[]> | MaybeRef<number>[],
-  options: TransitionOptions = {},
+  options: UseTransitionOptions = {},
 ): ComputedRef<any> {
   const {
     delay = 0,
@@ -195,15 +199,19 @@ export function useTransition(
   const timeout = useTimeoutFn(start, delay, { immediate: false })
 
   watch(sourceVector, () => {
-    if (unref(disabled)) {
-      outputVector.value = sourceVector.value.slice(0)
-    }
-    else {
-      if (unref(delay) <= 0)
-        start()
-      else timeout.start()
-    }
+    if (unref(disabled))
+      return
+    if (unref(delay) <= 0)
+      start()
+    else timeout.start()
   }, { deep: true })
+
+  watch(() => unref(disabled), (v) => {
+    if (v) {
+      outputVector.value = sourceVector.value.slice(0)
+      pause()
+    }
+  })
 
   return computed(() => {
     const targetVector = unref(disabled) ? sourceVector : outputVector

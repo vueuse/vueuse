@@ -13,15 +13,15 @@ const selectedStyle = computed(() => text.value ? 'text-primary' : 'text-gray-40
       You can select any text on the page.
     </p>
     <p>
-      <strong class="w-140px inline-block">Selected Text:</strong>
+      <strong>Selected Text:</strong>
       <em
         :class="selectedStyle"
-        class="whitespace-pre h-72 overflow-y-auto inline-block"
+        class="whitespace-pre h-44 overflow-y-auto block"
       >{{ text || 'No selected' }}</em>
     </p>
     <p>
-      <strong class="w-140px inline-block">Selected rects:</strong>
-      {{ JSON.stringify(rects) }}
+      <strong>Selected rects:</strong>
+      <pre class="h-72" lang="json">{{ rects }}</pre>
     </p>
   </div>
 </template>

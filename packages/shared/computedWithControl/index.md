@@ -1,11 +1,11 @@
 ---
-category: Utilities
+category: Reactivity
 alias: controlledComputed
 ---
 
 # computedWithControl
 
-Explicitly define the deps of computed.
+Explicitly define the dependencies of computed.
 
 ## Usage
 
@@ -33,4 +33,19 @@ console.log(computedRef.value) // 0
 source.value = 'bar'
 
 console.log(computedRef.value) // 1
+```
+
+### Manual Triggering
+
+> This only works in Vue 3
+
+You can also manually trigger the update of the computed by:
+
+```ts
+const computedRef = computedWithControl(
+  () => source.value,
+  () => counter.value,
+)
+
+computedRef.trigger()
 ```

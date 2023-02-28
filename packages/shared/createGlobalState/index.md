@@ -1,5 +1,6 @@
 ---
 category: State
+related: createSharedComposable
 ---
 
 # createGlobalState
@@ -7,6 +8,51 @@ category: State
 Keep states in the global scope to be reusable across Vue instances.
 
 ## Usage
+
+### Without Persistence (Store in Memory)
+
+```js
+// store.js
+import { ref } from 'vue'
+import { createGlobalState } from '@vueuse/core'
+
+export const useGlobalState = createGlobalState(
+  () => {
+    const count = ref(0)
+    return { count }
+  }
+)
+```
+
+A bigger example:
+
+```js
+// store.js
+import { computed, ref } from 'vue'
+import { createGlobalState } from '@vueuse/core'
+
+export const useGlobalState = createGlobalState(
+  () => {
+    // state
+    const count = ref(0)
+
+    // getters
+    const doubleCount = computed(() => count.value * 2)
+
+    // actions
+    function increment() {
+      count.value++
+    }
+
+    return { count, doubleCount, increment }
+  }
+)
+```
+
+
+### With Persistence
+
+Store in `localStorage` with `useStorage()`:
 
 ```js
 // store.js
@@ -28,7 +74,3 @@ export default defineComponent({
   },
 })
 ```
-
-## Related Functions
-
-- `createSharedComposable`

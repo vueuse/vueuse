@@ -26,7 +26,7 @@ jobs:
 
       - run: pnpm install
 
-      - run: npx changelogithub
+      - run: npx changelogithub --no-group
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -35,4 +35,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NODE_OPTIONS: --max-old-space-size=6144
-

@@ -28,7 +28,7 @@ const {
   tag: 'test',
 })
 
-if (isSupported)
+if (isSupported.value)
   show()
 ```
 

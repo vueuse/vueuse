@@ -1,8 +1,10 @@
-import { computed, ref, watch } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface UseBluetoothRequestDeviceOptions {
   /**
@@ -40,7 +42,7 @@ export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, C
   acceptAllDevices?: boolean
 }
 
-export function useBluetooth(options?: UseBluetoothOptions) {
+export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn {
   let {
     acceptAllDevices = false,
   } = options || {}
@@ -51,11 +53,11 @@ export function useBluetooth(options?: UseBluetoothOptions) {
     navigator = defaultNavigator,
   } = options || {}
 
-  const isSupported = navigator && 'bluetooth' in navigator
+  const isSupported = useSupported(() => navigator && 'bluetooth' in navigator)
 
-  const device = ref<undefined | BluetoothDevice>(undefined)
+  const device = shallowRef<undefined | BluetoothDevice>(undefined)
 
-  const error = ref<unknown | null>(null)
+  const error = shallowRef<unknown | null>(null)
 
   watch(device, () => {
     connectToBluetoothGATTServer()
@@ -63,7 +65,7 @@ export function useBluetooth(options?: UseBluetoothOptions) {
 
   async function requestDevice(): Promise<void> {
     // This is the function can only be called if Bluetooth API is supported:
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     // Reset any errors we currently have:
@@ -130,4 +132,13 @@ export function useBluetooth(options?: UseBluetoothOptions) {
     // Errors:
     error,
   }
+}
+
+export interface UseBluetoothReturn {
+  isSupported: Ref<boolean>
+  isConnected: ComputedRef<boolean>
+  device: Ref<BluetoothDevice | undefined>
+  requestDevice: () => Promise<void>
+  server: Ref<BluetoothRemoteGATTServer | undefined>
+  error: Ref<unknown | null>
 }

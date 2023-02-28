@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
 
@@ -41,7 +41,7 @@ export interface UseElementBoundingOptions {
  * @param target
  */
 export function useElementBounding(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   options: UseElementBoundingOptions = {},
 ) {
   const {
@@ -93,7 +93,7 @@ export function useElementBounding(
   watch(() => unrefElement(target), ele => !ele && update())
 
   if (windowScroll)
-    useEventListener('scroll', update, { passive: true })
+    useEventListener('scroll', update, { capture: true, passive: true })
   if (windowResize)
     useEventListener('resize', update, { passive: true })
 

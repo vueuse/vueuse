@@ -1,9 +1,10 @@
-import { ref, unref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
+import type { MaybeComputedRef, Stoppable } from '../utils'
+import { resolveUnref } from '../resolveUnref'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { MaybeRef, Stoppable } from '../utils'
 import { isClient } from '../utils'
 
-export interface TimeoutFnOptions {
+export interface UseTimeoutFnOptions {
   /**
    * Start the timer immediate after calling this function
    *
@@ -17,20 +18,20 @@ export interface TimeoutFnOptions {
  *
  * @param cb
  * @param interval
- * @param immediate
+ * @param options
  */
-export function useTimeoutFn(
-  cb: (...args: unknown[]) => any,
-  interval: MaybeRef<number>,
-  options: TimeoutFnOptions = {},
-): Stoppable {
+export function useTimeoutFn<CallbackFn extends(...args: any[]) => any>(
+  cb: CallbackFn,
+  interval: MaybeComputedRef<number>,
+  options: UseTimeoutFnOptions = {},
+): Stoppable<Parameters<CallbackFn> | []> {
   const {
     immediate = true,
   } = options
 
   const isPending = ref(false)
 
-  let timer: number | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
 
   function clear() {
     if (timer) {
@@ -44,7 +45,7 @@ export function useTimeoutFn(
     clear()
   }
 
-  function start(...args: unknown[]) {
+  function start(...args: Parameters<CallbackFn> | []) {
     clear()
     isPending.value = true
     timer = setTimeout(() => {
@@ -52,7 +53,7 @@ export function useTimeoutFn(
       timer = null
 
       cb(...args)
-    }, unref(interval)) as unknown as number
+    }, resolveUnref(interval))
   }
 
   if (immediate) {
@@ -64,7 +65,7 @@ export function useTimeoutFn(
   tryOnScopeDispose(stop)
 
   return {
-    isPending,
+    isPending: readonly(isPending),
     start,
     stop,
   }

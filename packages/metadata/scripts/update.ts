@@ -90,6 +90,8 @@ export async function readMetadata() {
       let related = frontmatter.related
       if (typeof related === 'string')
         related = related.split(',').map(s => s.trim()).filter(Boolean)
+      else if (Array.isArray(related))
+        related = related.map(s => s.trim()).filter(Boolean)
 
       let description = (md
         .replace(/\r\n/g, '\n')
@@ -102,7 +104,7 @@ export async function readMetadata() {
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
 
-      if (description.includes('DEPRECATED'))
+      if (description.includes('DEPRECATED') || frontmatter.deprecated)
         fn.deprecated = true
 
       if (alias?.length)
@@ -110,6 +112,9 @@ export async function readMetadata() {
 
       if (related?.length)
         fn.related = related
+
+      if (pkg.submodules)
+        fn.importPath = `${pkg.name}/${fn.name}`
 
       indexes.functions.push(fn)
     }))

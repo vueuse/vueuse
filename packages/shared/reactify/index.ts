@@ -1,10 +1,20 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
-import type { MaybeRef } from '../utils'
+import { resolveUnref } from '../resolveUnref'
+import type { MaybeComputedRef, MaybeRef } from '../utils'
 
-export type Reactify<T> = T extends (...args: infer A) => infer R
-  ? (...args: { [K in keyof A]: MaybeRef<A[K]> }) => ComputedRef<R>
+export type Reactified<T, Computed extends boolean> = T extends (...args: infer A) => infer R
+  ? (...args: { [K in keyof A]: Computed extends true ? MaybeComputedRef<A[K]> : MaybeRef<A[K]> }) => ComputedRef<R>
   : never
+
+export interface ReactifyOptions<T extends boolean> {
+  /**
+   * Accept passing a function as a reactive getter
+   *
+   * @default true
+   */
+  computedGetter?: T
+}
 
 /**
  * Converts plain function into a reactive function.
@@ -13,10 +23,11 @@ export type Reactify<T> = T extends (...args: infer A) => infer R
  *
  * @param fn - Source function
  */
-export function reactify<T extends Function>(fn: T): Reactify<T> {
+export function reactify<T extends Function, K extends boolean = true>(fn: T, options?: ReactifyOptions<K>): Reactified<T, K> {
+  const unrefFn = options?.computedGetter === false ? unref : resolveUnref
   return function (this: any, ...args: any[]) {
-    return computed(() => fn.apply(this, args.map(i => unref(i))))
-  } as Reactify<T>
+    return computed(() => fn.apply(this, args.map(i => unrefFn(i))))
+  } as any
 }
 
 // alias

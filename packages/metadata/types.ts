@@ -22,6 +22,7 @@ export interface PackageManifest {
 export interface VueUseFunction {
   name: string
   package: string
+  importPath?: string
   lastUpdated?: number
   category?: string
   description?: string

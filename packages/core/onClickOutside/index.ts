@@ -1,4 +1,5 @@
-import { ref } from 'vue-demi'
+import type { Fn } from '@vueuse/shared'
+import { isIOS, noop } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -9,13 +10,22 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: MaybeElementRef[]
+  ignore?: (MaybeElementRef | string)[]
   /**
    * Use capturing phase for internal event listener.
    * @default true
    */
   capture?: boolean
+  /**
+   * Run handler function if focus moves to an iframe.
+   * @default false
+   */
+  detectIframe?: boolean
 }
+
+export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
+
+let _iOSWorkaround = false
 
 /**
  * Listen for clicks outside of an element.
@@ -25,35 +35,51 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<T extends OnClickOutsideOptions>(
   target: MaybeElementRef,
-  handler: (evt: PointerEvent) => void,
-  options: OnClickOutsideOptions = {},
+  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
+  options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore, capture = true } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
     return
 
-  const shouldListen = ref(true)
+  // Fixes: https://github.com/vueuse/vueuse/issues/1520
+  // How it works: https://stackoverflow.com/a/39712411
+  if (isIOS && !_iOSWorkaround) {
+    _iOSWorkaround = true
+    Array.from(window.document.body.children)
+      .forEach(el => el.addEventListener('click', noop))
+  }
 
-  let fallback: number
+  let shouldListen = true
+
+  const shouldIgnore = (event: PointerEvent) => {
+    return ignore.some((target) => {
+      if (typeof target === 'string') {
+        return Array.from(window.document.querySelectorAll(target))
+          .some(el => el === event.target || event.composedPath().includes(el))
+      }
+      else {
+        const el = unrefElement(target)
+        return el && (event.target === el || event.composedPath().includes(el))
+      }
+    })
+  }
 
   const listener = (event: PointerEvent) => {
-    window.clearTimeout(fallback)
-
     const el = unrefElement(target)
-    const composedPath = event.composedPath()
 
-    if (!el || el === event.target || composedPath.includes(el) || !shouldListen.value)
+    if (!el || el === event.target || event.composedPath().includes(el))
       return
 
-    if (ignore && ignore.length > 0) {
-      if (ignore.some((target) => {
-        const el = unrefElement(target)
-        return el && (event.target === el || composedPath.includes(el))
-      }))
-        return
+    if (event.detail === 0)
+      shouldListen = !shouldIgnore(event)
+
+    if (!shouldListen) {
+      shouldListen = true
+      return
     }
 
     handler(event)
@@ -63,16 +89,18 @@ export function onClickOutside(
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen.value = !!el && !e.composedPath().includes(el)
+      if (el)
+        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
-    useEventListener(window, 'pointerup', (e) => {
-      if (e.button === 0) {
-        const path = e.composedPath()
-        e.composedPath = () => path
-        fallback = window.setTimeout(() => listener(e), 50)
-      }
-    }, { passive: true }),
-  ]
+    detectIframe && useEventListener(window, 'blur', (event) => {
+      const el = unrefElement(target)
+      if (
+        window.document.activeElement?.tagName === 'IFRAME'
+        && !el?.contains(window.document.activeElement)
+      )
+        handler(event as any)
+    }),
+  ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
 

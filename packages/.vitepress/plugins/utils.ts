@@ -6,6 +6,7 @@ export const stringify = reactify(
     skipInvalid: true,
     forceQuotes: true,
     condenseFlow: true,
+    noCompatMode: true,
     quotingType: '\'',
   }),
 )

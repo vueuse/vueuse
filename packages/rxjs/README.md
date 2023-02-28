@@ -15,10 +15,10 @@ npm i <b>@vueuse/rxjs</b> rxjs
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
   - [`from`](https://vueuse.org/rxjs/from/) — / fromEvent
-  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a ref in an observer
-  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an Observable
-  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind Subject to ref and propagate value changes both ways
-  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — uses subscriptions without worry about unsubscribing to it or memory leaks
+  - [`toObserver`](https://vueuse.org/rxjs/toObserver/) — sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide/observer)
+  - [`useObservable`](https://vueuse.org/rxjs/useObservable/) — use an RxJS [`Observable`](https://rxjs.dev/guide/observable)
+  - [`useSubject`](https://vueuse.org/rxjs/useSubject/) — bind an RxJS [`Subject`](https://rxjs.dev/guide/subject) to a `ref` and propagate value changes both ways
+  - [`useSubscription`](https://vueuse.org/rxjs/useSubscription/) — use an RxJS [`Subscription`](https://rxjs.dev/guide/subscription) without worrying about unsubscribing from it or creating memory leaks
 
 
 <!--FUNCTIONS_LIST_ENDS-->

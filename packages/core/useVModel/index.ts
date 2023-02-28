@@ -1,8 +1,10 @@
-import { isDef } from '@vueuse/shared'
+import { isDef, isFunction } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import type { CloneFn } from '../useCloned'
+import { cloneFnJSON } from '../useCloned'
 
-export interface VModelOptions<T> {
+export interface UseVModelOptions<T> {
   /**
    * When passive is set to `true`, it will use `watch` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
@@ -29,6 +31,14 @@ export interface VModelOptions<T> {
    * @default undefined
    */
   defaultValue?: T
+  /**
+   * Clone the props.
+   * Accepts a custom clone function.
+   * When setting to `true`, it will use `JSON.parse(JSON.stringify(value))` to clone.
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<T>
 }
 
 /**
@@ -43,9 +53,10 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   props: P,
   key?: K,
   emit?: (name: Name, ...args: any[]) => void,
-  options: VModelOptions<P[K]> = {},
+  options: UseVModelOptions<P[K]> = {},
 ) {
   const {
+    clone = false,
     passive = false,
     eventName,
     deep = false,
@@ -54,7 +65,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   const vm = getCurrentInstance()
   // @ts-expect-error mis-alignment with @vue/composition-api
-  const _emit = emit || vm?.emit || vm?.$emit?.bind(vm)
+  const _emit = emit || vm?.emit || vm?.$emit?.bind(vm) || vm?.proxy?.$emit?.bind(vm?.proxy)
   let event: string | undefined = eventName
 
   if (!key) {
@@ -71,19 +82,33 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = eventName || event || `update:${key!.toString()}`
 
-  const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
+  const cloneFn = (val: P[K]) => !clone
+    ? val
+    : isFunction(clone)
+      ? clone(val)
+      : cloneFnJSON(val)
+
+  const getValue = () => isDef(props[key!])
+    ? cloneFn(props[key!])
+    : defaultValue
 
   if (passive) {
-    const proxy = ref<P[K]>(getValue()!)
+    const initialValue = getValue()
+    const proxy = ref<P[K]>(initialValue!)
 
-    watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
+    watch(
+      () => props[key!],
+      v => proxy.value = cloneFn(v) as UnwrapRef<P[K]>,
+    )
 
-    watch(proxy, (v) => {
-      if (v !== props[key!] || deep)
-        _emit(event, v)
-    }, {
-      deep,
-    })
+    watch(
+      proxy,
+      (v) => {
+        if (v !== props[key!] || deep)
+          _emit(event, v)
+      },
+      { deep },
+    )
 
     return proxy
   }

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 import { rand } from '@vueuse/shared'
 
-const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好']
+const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好', 'Привет']
 const word = ref('Hello')
 const interval = ref(500)
 

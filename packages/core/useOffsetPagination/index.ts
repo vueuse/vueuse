@@ -2,7 +2,7 @@ import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
 import { computed, isRef, reactive, unref, watch } from 'vue-demi'
 import { noop, syncRef } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
-import { useClamp } from '../useClamp'
+import { useClamp } from '../../math/useClamp'
 
 export interface UseOffsetPaginationOptions {
   /**
@@ -64,7 +64,10 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
 
   const currentPageSize = useClamp(pageSize, 1, Infinity)
 
-  const pageCount = computed(() => Math.ceil((unref(total)) / unref(currentPageSize)))
+  const pageCount = computed(() => Math.max(
+    1,
+    Math.ceil((unref(total)) / unref(currentPageSize)),
+  ))
 
   const currentPage = useClamp(page, 1, pageCount)
 

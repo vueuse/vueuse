@@ -1,4 +1,4 @@
-import type { SpyInstanceFn } from 'vitest'
+import type { Mock } from 'vitest'
 import { computed } from 'vue-demi'
 import type { UseMemoizeCache } from '.'
 import { useMemoize } from '.'
@@ -159,7 +159,7 @@ describe('useMemoize', () => {
 
         resolver.mockClear()
         expect(memo(3)).toBe('result-1')
-        expect(memo(4)).toBe('result-2')
+        expect(memo('4')).toBe('result-2')
         expect(resolver).not.toHaveBeenCalled()
       })
     })
@@ -192,7 +192,7 @@ describe('useMemoize', () => {
 
       it('should use given cache on get without cache', () => {
         const memo = useMemoize(resolver, { cache });
-        (cache.has as SpyInstanceFn<any>).mockReturnValue(false)
+        (cache.has as Mock<any>).mockReturnValue(false)
 
         expect(memo(1)).toBe(serializedKey)
         expect(cache.has).toHaveBeenCalledTimes(1)

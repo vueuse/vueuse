@@ -1,6 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { computed, shallowRef } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { type Ref, computed, shallowRef } from 'vue-demi'
+import { type MaybeRef } from '@vueuse/shared'
 
 export interface UseCycleListOptions<T> {
   /**
@@ -25,7 +24,7 @@ export interface UseCycleListOptions<T> {
  *
  * @see https://vueuse.org/useCycleList
  */
-export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
+export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>): UseCycleListReturn<T> {
   const state = shallowRef(options?.initialValue ?? list[0]) as Ref<T>
 
   const index = computed<number>({
@@ -70,4 +69,11 @@ export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
     next,
     prev,
   }
+}
+
+export interface UseCycleListReturn<T> {
+  state: Ref<T>
+  index: Ref<number>
+  next: (n?: number) => T
+  prev: (n?: number) => T
 }

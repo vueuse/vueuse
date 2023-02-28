@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: Reactivity
 ---
 
 # toRefs
@@ -30,7 +30,7 @@ const [ a, b ] = toRefs(arr)
 
 ## Use-cases
 
-### Destructing a props object
+### Destructuring a props object
 
 ```html
 <template>

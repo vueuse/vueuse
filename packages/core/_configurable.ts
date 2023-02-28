@@ -14,6 +14,13 @@ export interface ConfigurableDocument {
   document?: Document
 }
 
+export interface ConfigurableDocumentOrShadowRoot {
+  /*
+   * Specify a custom `document` instance or a shadow root, e.g. working with iframes or in testing environments.
+   */
+  document?: DocumentOrShadowRoot
+}
+
 export interface ConfigurableNavigator {
   /*
    * Specify a custom `navigator` instance, e.g. working with iframes or in testing environments.

@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
+import type { Ref, WatchStopHandle } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 
-export interface SyncRefOptions extends ConfigurableFlushSync {
+export interface SyncRefOptions<L, R = L> extends ConfigurableFlushSync {
   /**
    * Watch deeply
    *
@@ -17,11 +17,19 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
   immediate?: boolean
 
   /**
-   * Direction of syncing
+   * Direction of syncing. Value will be redefined if you define syncConvertors
    *
    * @default 'both'
    */
   direction?: 'ltr' | 'rtl' | 'both'
+
+  /**
+   * Custom transform function
+   */
+  transform?: {
+    ltr?: (left: L) => R
+    rtl?: (right: R) => L
+  }
 }
 
 /**
@@ -30,34 +38,39 @@ export interface SyncRefOptions extends ConfigurableFlushSync {
  * @param left
  * @param right
  */
-export function syncRef<R extends Ref<any>>(left: R, right: R, options: SyncRefOptions = {}) {
+export function syncRef<L, R = L>(left: Ref<L>, right: Ref<R>, options: SyncRefOptions<L, R> = {}) {
   const {
     flush = 'sync',
     deep = false,
     immediate = true,
     direction = 'both',
+    transform = {},
   } = options
 
-  let stop1: Function, stop2: Function
+  let watchLeft: WatchStopHandle
+  let watchRight: WatchStopHandle
+
+  const transformLTR = transform.ltr ?? (v => v)
+  const transformRTL = transform.rtl ?? (v => v)
 
   if (direction === 'both' || direction === 'ltr') {
-    stop1 = watch(
+    watchLeft = watch(
       left,
-      newValue => right.value = newValue,
+      newValue => right.value = transformLTR(newValue) as R,
       { flush, deep, immediate },
     )
   }
 
   if (direction === 'both' || direction === 'rtl') {
-    stop2 = watch(
+    watchRight = watch(
       right,
-      newValue => left.value = newValue,
+      newValue => left.value = transformRTL(newValue) as L,
       { flush, deep, immediate },
     )
   }
 
   return () => {
-    stop1?.()
-    stop2?.()
+    watchLeft?.()
+    watchRight?.()
   }
 }

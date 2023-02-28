@@ -1,6 +1,6 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref, unref } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { noop, resolveUnref, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
@@ -55,7 +55,7 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  * @param options
  */
 export function useScriptTag(
-  src: MaybeRef<string>,
+  src: MaybeComputedRef<string>,
   onLoaded: (el: HTMLScriptElement) => void = noop,
   options: UseScriptTagOptions = {},
 ) {
@@ -98,14 +98,14 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = unref(src)
+      el.src = resolveUnref(src)
 
       // Optional attributes
       if (defer)
@@ -171,7 +171,7 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
     if (el)
       document.head.removeChild(el)
   }

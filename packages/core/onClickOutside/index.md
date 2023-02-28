@@ -39,7 +39,7 @@ export default {
 ## Component Usage
 
 ```html
-<OnClickOutside @trigger="count++">
+<OnClickOutside @trigger="count++" :options="{ ignore: [/* ... */] }">
   <div>
     Click Outside of Me
   </div>

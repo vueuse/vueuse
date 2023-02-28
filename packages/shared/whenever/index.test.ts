@@ -8,7 +8,7 @@ describe('whenever', () => {
 
   it('ignore falsy state change', async () => {
     // use a component to simulate normal use case
-    const wrapper = useSetup(() => {
+    const vm = useSetup(() => {
       const number = ref<number | null | undefined>(1)
       const changeNumber = (v: number) => number.value = v
       const watchCount = ref(0)
@@ -36,23 +36,23 @@ describe('whenever', () => {
       }
     })
 
-    expect(unref(wrapper.watchCount)).toEqual(0)
+    expect(unref(vm.watchCount)).toEqual(0)
 
-    wrapper.changeNumber(2)
+    vm.changeNumber(2)
     await nextTick()
-    expect(unref(wrapper.watchCount)).toEqual(1)
-    expect(unref(wrapper.watchValue)).toEqual(2)
+    expect(unref(vm.watchCount)).toEqual(1)
+    expect(unref(vm.watchValue)).toEqual(2)
 
-    wrapper.changeNumber(0)
+    vm.changeNumber(0)
     await nextTick()
-    expect(unref(wrapper.watchCount)).toEqual(1)
-    expect(unref(wrapper.watchValue)).toEqual(2)
+    expect(unref(vm.watchCount)).toEqual(1)
+    expect(unref(vm.watchValue)).toEqual(2)
 
-    wrapper.changeNumber(3)
+    vm.changeNumber(3)
     await nextTick()
-    expect(unref(wrapper.watchCount)).toEqual(2)
-    expect(unref(wrapper.watchValue)).toEqual(3)
+    expect(unref(vm.watchCount)).toEqual(2)
+    expect(unref(vm.watchValue)).toEqual(3)
 
-    wrapper.unmount()
+    vm.unmount()
   })
 })

@@ -8,4 +8,4 @@ Reactive [SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Windo
 
 ## Usage
 
-Please refer to `useStorage`
+Please refer to `useStorage`.

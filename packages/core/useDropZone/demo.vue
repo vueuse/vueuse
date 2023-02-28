@@ -15,7 +15,7 @@ function onDrop(files: File[] | null) {
   }
 }
 
-const dropZoneRef = ref<HTMLElement | null>(null)
+const dropZoneRef = ref<HTMLElement>()
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 </script>

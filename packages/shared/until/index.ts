@@ -1,6 +1,7 @@
 import type { WatchOptions, WatchSource } from 'vue-demi'
-import { isRef, unref, watch } from 'vue-demi'
-import type { ElementOf, MaybeRef, ShallowUnwrapRef } from '../utils'
+import { isRef, watch } from 'vue-demi'
+import { resolveUnref } from '../resolveUnref'
+import type { ElementOf, MaybeComputedRef, ShallowUnwrapRef } from '../utils'
 import { promiseTimeout } from '../utils'
 
 export interface UntilToMatchOptions {
@@ -52,7 +53,7 @@ type Falsy = false | void | null | undefined | 0 | 0n | ''
 export interface UntilValueInstance<T, Not extends boolean = false> extends UntilBaseInstance<T, Not> {
   readonly not: UntilValueInstance<T, Not extends true ? false : true>
 
-  toBe<P = T>(value: MaybeRef<P>, options?: UntilToMatchOptions): Not extends true ? Promise<T> : Promise<P>
+  toBe<P = T>(value: MaybeComputedRef<P>, options?: UntilToMatchOptions): Not extends true ? Promise<T> : Promise<P>
   toBeTruthy(options?: UntilToMatchOptions): Not extends true ? Promise<T & Falsy> : Promise<Exclude<T, Falsy>>
   toBeNull(options?: UntilToMatchOptions): Not extends true ? Promise<Exclude<T, null>> : Promise<null>
   toBeUndefined(options?: UntilToMatchOptions): Not extends true ? Promise<Exclude<T, undefined>> : Promise<undefined>
@@ -62,27 +63,10 @@ export interface UntilValueInstance<T, Not extends boolean = false> extends Unti
 export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   readonly not: UntilArrayInstance<T>
 
-  toContains(value: MaybeRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
+  toContains(value: MaybeComputedRef<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
 }
 
-/**
- * Promised one-time watch for changes
- *
- * @see https://vueuse.org/until
- * @example
- * ```
- * const { count } = useCounter()
- *
- * await until(count).toMatch(v => v > 7)
- *
- * alert('Counter is now larger than 7!')
- * ```
- */
-export function until<T extends unknown[]>(r: WatchSource<T> | MaybeRef<T>): UntilArrayInstance<T>
-export function until<T>(r: WatchSource<T> | MaybeRef<T>): UntilValueInstance<T>
-export function until<T>(r: any): any {
-  let isNot = false
-
+function createUntil<T>(r: any, isNot = false) {
   function toMatch(
     condition: (v: any) => boolean,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
@@ -109,7 +93,7 @@ export function until<T>(r: any): any {
     if (timeout != null) {
       promises.push(
         promiseTimeout(timeout, throwOnTimeout)
-          .then(() => unref(r))
+          .then(() => resolveUnref(r))
           .finally(() => stop?.()),
       )
     }
@@ -117,7 +101,7 @@ export function until<T>(r: any): any {
     return Promise.race(promises)
   }
 
-  function toBe<P>(value: MaybeRef<P | T>, options?: UntilToMatchOptions) {
+  function toBe<P>(value: MaybeComputedRef<P | T>, options?: UntilToMatchOptions) {
     if (!isRef(value))
       return toMatch(v => v === value, options)
 
@@ -144,10 +128,10 @@ export function until<T>(r: any): any {
     if (timeout != null) {
       promises.push(
         promiseTimeout(timeout, throwOnTimeout)
-          .then(() => unref(r))
+          .then(() => resolveUnref(r))
           .finally(() => {
             stop?.()
-            return unref(r)
+            return resolveUnref(r)
           }),
       )
     }
@@ -177,7 +161,7 @@ export function until<T>(r: any): any {
   ) {
     return toMatch((v) => {
       const array = Array.from(v as any)
-      return array.includes(value) || array.includes(unref(value))
+      return array.includes(value) || array.includes(resolveUnref(value))
     }, options)
   }
 
@@ -193,15 +177,14 @@ export function until<T>(r: any): any {
     }, options)
   }
 
-  if (Array.isArray(unref(r))) {
+  if (Array.isArray(resolveUnref(r))) {
     const instance: UntilArrayInstance<T> = {
       toMatch,
       toContains,
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return createUntil(r, !isNot) as UntilArrayInstance<T>
       },
     }
     return instance
@@ -217,11 +200,29 @@ export function until<T>(r: any): any {
       changed,
       changedTimes,
       get not() {
-        isNot = !isNot
-        return this
+        return createUntil(r, !isNot) as UntilValueInstance<T, boolean>
       },
     }
 
     return instance
   }
+}
+
+/**
+ * Promised one-time watch for changes
+ *
+ * @see https://vueuse.org/until
+ * @example
+ * ```
+ * const { count } = useCounter()
+ *
+ * await until(count).toMatch(v => v > 7)
+ *
+ * alert('Counter is now larger than 7!')
+ * ```
+ */
+export function until<T extends unknown[]>(r: WatchSource<T> | MaybeComputedRef<T>): UntilArrayInstance<T>
+export function until<T>(r: WatchSource<T> | MaybeComputedRef<T>): UntilValueInstance<T>
+export function until<T>(r: any): UntilValueInstance<T> | UntilArrayInstance<T> {
+  return createUntil(r)
 }

@@ -47,4 +47,53 @@ describe('syncRef', () => {
     expect(left.value).toBe('foobar')
     expect(right.value).toBe('foobar')
   })
+
+  it('works with mutual convertors', () => {
+    const left = ref(10)
+    const right = ref(1)
+
+    syncRef(left, right, {
+      transform: {
+        ltr: left => left * 2,
+        rtl: right => Math.round(right / 2),
+      },
+    })
+
+    // check immediately sync
+    expect(right.value).toBe(20)
+    expect(left.value).toBe(10)
+
+    left.value = 30
+    expect(right.value).toBe(60)
+    expect(left.value).toBe(30)
+
+    right.value = 10
+    expect(right.value).toBe(10)
+    expect(left.value).toBe(5)
+  })
+
+  it('works with only rtl convertor', () => {
+    const left = ref(10)
+    const right = ref(2)
+
+    syncRef(left, right, {
+      direction: 'rtl',
+      transform: {
+        rtl: right => Math.round(right / 2),
+      },
+    })
+
+    // check immediately sync
+    expect(right.value).toBe(2)
+    expect(left.value).toBe(1)
+
+    left.value = 10
+    expect(right.value).toBe(2)
+    expect(left.value).toBe(10)
+
+    right.value = 10
+
+    expect(right.value).toBe(10)
+    expect(left.value).toBe(5)
+  })
 })

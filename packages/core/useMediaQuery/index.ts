@@ -1,9 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from 'vue-demi'
-import { tryOnBeforeMount, tryOnScopeDispose } from '@vueuse/shared'
+import { ref, watchEffect } from 'vue-demi'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * Reactive Media Query.
@@ -12,40 +14,43 @@ import { defaultWindow } from '../_configurable'
  * @param query
  * @param options
  */
-export function useMediaQuery(query: string, options: ConfigurableWindow = {}) {
+export function useMediaQuery(query: MaybeComputedRef<string>, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const isSupported = Boolean(window && 'matchMedia' in window)
+  const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
 
-  const update = () => {
-    if (!isSupported)
-      return
+  const cleanup = () => {
     if (!mediaQuery)
-      mediaQuery = window!.matchMedia(query)
-    matches.value = mediaQuery.matches
+      return
+    if ('removeEventListener' in mediaQuery)
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      mediaQuery.removeEventListener('change', update)
+    else
+      // @ts-expect-error deprecated API
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      mediaQuery.removeListener(update)
   }
 
-  tryOnBeforeMount(() => {
-    update()
-
-    if (!mediaQuery)
+  const update = () => {
+    if (!isSupported.value)
       return
+
+    cleanup()
+
+    mediaQuery = window!.matchMedia(resolveRef(query).value)
+    matches.value = mediaQuery.matches
 
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', update)
     else
       // @ts-expect-error deprecated API
       mediaQuery.addListener(update)
+  }
+  watchEffect(update)
 
-    tryOnScopeDispose(() => {
-      if ('removeEventListener' in mediaQuery!)
-        mediaQuery!.removeEventListener('change', update)
-      else
-        mediaQuery!.removeListener(update)
-    })
-  })
+  tryOnScopeDispose(() => cleanup())
 
   return matches
 }

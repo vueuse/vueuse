@@ -1,9 +1,9 @@
 import type { PropType } from 'vue-demi'
 import { defineComponent, reactive } from 'vue-demi'
-import { useAsyncValidator } from '@vueuse/integrations'
 import type { Rules } from 'async-validator'
+import { useAsyncValidator } from '.'
 
-export const UseAsyncValidator = defineComponent({
+export const UseAsyncValidator = /* #__PURE__ */ defineComponent({
   name: 'UseAsyncValidator',
   props: {
     form: {
