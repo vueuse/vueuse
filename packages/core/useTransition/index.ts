@@ -134,7 +134,7 @@ const toVec = (t: number | number[] | undefined) => (isNumber(t) ? [t] : t) || [
  * @param to
  * @param options
  */
-export function transition<T extends number | number[]>(
+export function executeTransition<T extends number | number[]>(
   source: Ref<T>,
   from: MaybeRef<T>,
   to: MaybeRef<T>,
@@ -230,7 +230,7 @@ export function useTransition(
 
     options.onStarted?.()
 
-    await transition(outputRef, outputRef.value, toVal, {
+    await executeTransition(outputRef, outputRef.value, toVal, {
       ...options,
       abort: () => id !== currentId || options.abort?.(),
     })

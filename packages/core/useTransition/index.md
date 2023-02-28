@@ -103,12 +103,12 @@ useTransition(source, {
 
 To temporarily stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
 
-For more control, transitions can be executed manually via the `transition` utility. This function returns a promise that resolves upon completion. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
+For more control, transitions can be executed manually by using `executeTransition`. This function returns a promise that resolves upon completion. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
 
 ```js
-import { transition } from '@vueuse/core'
+import { executeTransition } from '@vueuse/core'
 
-await transition(source, from, to, {
+await executeTransition(source, from, to, {
   duration: 1000,
 })
 ```
