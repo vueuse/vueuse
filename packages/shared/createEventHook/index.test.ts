@@ -54,8 +54,7 @@ describe('createEventHook', () => {
 
     expect(listener).toHaveBeenCalledTimes(2)
   })
-  
-  
+
   it('should await trigger', async () => {
     let message = ''
 
