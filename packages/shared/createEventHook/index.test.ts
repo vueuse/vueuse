@@ -73,7 +73,7 @@ describe('createEventHook', () => {
         message = result
         resolve()
       }, 100)
-    })
+    }))
     await exec()
 
     expect(message).toBe('Hello World')
