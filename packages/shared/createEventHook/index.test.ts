@@ -68,14 +68,15 @@ describe('createEventHook', () => {
     }
 
     const { exec, onResult } = myFunction()
-    onResult(result => new Promise((resolve) => {
+    onResult(result => new Promise<number>((resolve) => {
       setTimeout(() => {
         message = result
-        resolve()
+        resolve(2)
       }, 100)
     }))
-    await exec()
+    const result = await exec()
 
     expect(message).toBe('Hello World')
+    expect(result).toEqual([2])
   })
 })
