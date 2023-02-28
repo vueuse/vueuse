@@ -54,4 +54,29 @@ describe('createEventHook', () => {
 
     expect(listener).toHaveBeenCalledTimes(2)
   })
+  
+  
+  it('should await trigger', async () => {
+    let message = ''
+
+    const myFunction = () => {
+      const resultEvent = createEventHook<string>()
+      const exec = () => resultEvent.trigger('Hello World')
+      return {
+        exec,
+        onResult: resultEvent.on,
+      }
+    }
+
+    const { exec, onResult } = myFunction()
+    onResult(result => new Promise(resolve => {
+      setTimeout(() => {
+        message = result
+        resolve()
+      }, 100)
+    })
+    await exec()
+
+    expect(message).toBe('Hello World')
+  })
 })
