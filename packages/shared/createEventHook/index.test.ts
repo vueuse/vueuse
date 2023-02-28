@@ -68,7 +68,7 @@ describe('createEventHook', () => {
     }
 
     const { exec, onResult } = myFunction()
-    onResult(result => new Promise(resolve => {
+    onResult(result => new Promise((resolve) => {
       setTimeout(() => {
         message = result
         resolve()
