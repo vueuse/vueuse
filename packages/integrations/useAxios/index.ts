@@ -108,6 +108,10 @@ export interface UseAxiosOptions<T = any> {
    * Callback when success is caught.
    */
   onSuccess?: (data: T) => void
+  /**
+   * Callback when request is finished.
+   */
+  onFinish?: () => void
 }
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
@@ -211,7 +215,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
         error.value = e
         options.onError?.(e)
       })
-      .finally(() => loading(false))
+      .finally(() => {
+        options.onFinish?.()
+        loading(false)
+      })
     return { then }
   }
   if (options.immediate && url)
