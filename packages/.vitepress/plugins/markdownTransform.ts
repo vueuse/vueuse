@@ -1,4 +1,4 @@
-import { join, resolve } from 'path'
+import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { packages } from '../../../meta/packages'
