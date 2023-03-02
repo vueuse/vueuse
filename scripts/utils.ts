@@ -1,4 +1,4 @@
-import { join, resolve } from 'path'
+import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'

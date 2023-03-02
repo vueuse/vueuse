@@ -1,4 +1,4 @@
-import { basename, dirname } from 'path'
+import { basename, dirname } from 'node:path'
 import fg from 'fast-glob'
 import fs from 'fs-extra'
 import sharp from 'sharp'
