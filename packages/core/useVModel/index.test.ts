@@ -229,4 +229,39 @@ describe('useVModel', () => {
       child: { age: 2 },
     })
   })
+
+  it('should trigger beforeEmit', async () => {
+    const emitMock = vitest.fn()
+    const beforeEmitMock = vitest.fn()
+    let res = ''
+    const beforeEmit = (value: string) => {
+      res = value
+      beforeEmitMock()
+      return true
+    }
+    const data = useVModel(defaultProps(), undefined, emitMock, { beforeEmit })
+    data.value = 'changed'
+
+    expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
+    expect(beforeEmitMock).toHaveBeenCalled()
+    expect(res).toBe(data.value)
+  })
+
+  it('should not  trigger beforeEmit (return false)', async () => {
+    const emitMock = vitest.fn()
+    const beforeEmitMock = vitest.fn()
+    let res = ''
+    const beforeEmit = (value: string) => {
+      res = value
+      beforeEmitMock()
+      return false
+    }
+    const data = useVModel(defaultProps(), undefined, emitMock, { beforeEmit })
+    data.value = 'changed'
+
+    expect(emitMock).not.toHaveBeenCalled()
+    expect(beforeEmitMock).toHaveBeenCalled()
+    expect(res).toBe(data.value)
+  })
+
 })
