@@ -119,6 +119,14 @@ export const useWebNotification = (
   const errorEvent: EventHook = createEventHook<Event>()
   const closeEvent: EventHook = createEventHook<Event>()
 
+  const assign = <T extends object, S>(target: T, source: S) => Object.assign(target, source)
+
+  // In order to be compatible with the original onClick.on listening event, here is a layer of conversion
+  const onClick = assign(clickEvent.on, clickEvent)
+  const onShow = assign(showEvent.on, showEvent)
+  const onError = assign(errorEvent.on, errorEvent)
+  const onClose = assign(closeEvent.on, closeEvent)
+
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
     if (!isSupported.value)
@@ -172,10 +180,10 @@ export const useWebNotification = (
     notification,
     show,
     close,
-    onClick: clickEvent.on,
-    onShow: showEvent.on,
-    onError: errorEvent.on,
-    onClose: closeEvent.on,
+    onClick,
+    onShow,
+    onError,
+    onClose,
   }
 }
 
