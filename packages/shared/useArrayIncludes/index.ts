@@ -7,7 +7,7 @@ import { resolveUnref } from '../resolveUnref'
 type ComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeComputedRef<T>[]) => boolean)
 const isArrayIncludesOptions = <T, V>(obj: any): obj is UseArrayIncludesOptions<T, V> => isObject(obj)
   && containsProp(obj, 'formIndex', 'comparator')
-interface UseArrayIncludesOptions<T, V> {
+export interface UseArrayIncludesOptions<T, V> {
   fromIndex?: number
   comparator?: ComparatorFn<T, V> | keyof T
 }
