@@ -4,17 +4,21 @@ import { containsProp, isObject } from '../utils'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 
-type ComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeComputedRef<T>[]) => boolean)
-const isArrayIncludesOptions = <T, V>(obj: any): obj is UseArrayIncludesOptions<T, V> => isObject(obj)
-  && containsProp(obj, 'formIndex', 'comparator')
+export type UseArrayIncludesComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeComputedRef<T>[]) => boolean)
+
+function isArrayIncludesOptions<T, V>(obj: any): obj is UseArrayIncludesOptions<T, V> {
+  return isObject(obj) && containsProp(obj, 'formIndex', 'comparator')
+}
+
 export interface UseArrayIncludesOptions<T, V> {
   fromIndex?: number
-  comparator?: ComparatorFn<T, V> | keyof T
+  comparator?: UseArrayIncludesComparatorFn<T, V> | keyof T
 }
+
 export function useArrayIncludes<T, V = any>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
   value: MaybeComputedRef<V>,
-  comparator?: ComparatorFn<T, V>,
+  comparator?: UseArrayIncludesComparatorFn<T, V>,
 ): ComputedRef<boolean>
 export function useArrayIncludes<T, V = any>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
@@ -40,8 +44,9 @@ export function useArrayIncludes<T, V = any>(
   const list: MaybeComputedRef<MaybeComputedRef<T>[]> = args[0]
   const value: MaybeComputedRef<V> = args[1]
 
-  let comparator: ComparatorFn<T, V> = args[2]
+  let comparator: UseArrayIncludesComparatorFn<T, V> = args[2]
   let formIndex = 0
+
   if (isArrayIncludesOptions(comparator)) {
     formIndex = comparator.fromIndex ?? 0
     comparator = comparator.comparator!
@@ -54,6 +59,11 @@ export function useArrayIncludes<T, V = any>(
 
   comparator = comparator ?? ((element: T, value: T) => element === resolveUnref(value))
 
-  return computed(() => resolveUnref(list).slice(formIndex).some((element, index, array) => comparator(resolveUnref(element), resolveUnref(value), index, resolveUnref(array))))
+  return computed(() =>
+    resolveUnref(list)
+      .slice(formIndex)
+      .some((element, index, array) =>
+        comparator(resolveUnref(element), resolveUnref(value), index, resolveUnref(array)),
+      ),
+  )
 }
-// Fix syntax errors
