@@ -244,7 +244,8 @@ describe('useVModel', () => {
 
     expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
     expect(beforeEmitMock).toHaveBeenCalled()
-    expect(res).toBe(data.value)
+    await nextTick()
+    expect(res).toBe('changed')
   })
 
   it('should not  trigger beforeEmit (return false)', async () => {
@@ -261,7 +262,8 @@ describe('useVModel', () => {
 
     expect(emitMock).not.toHaveBeenCalled()
     expect(beforeEmitMock).toHaveBeenCalled()
-    expect(res).toBe(data.value)
+    await nextTick()
+    expect(res).toBe('changed')
   })
 
 })
