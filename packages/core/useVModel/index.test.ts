@@ -265,5 +265,4 @@ describe('useVModel', () => {
     await nextTick()
     expect(res).toBe('changed')
   })
-
 })
