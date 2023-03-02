@@ -23,6 +23,13 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Execute the callback immediate after calling this function
+   *
+   * @default false
+   */
+  immediateCallback?: boolean
 }
 
 /**
@@ -35,6 +42,7 @@ export interface UseRafFnOptions extends ConfigurableWindow {
 export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
+    immediateCallback = false,
     window = defaultWindow,
   } = options
 
@@ -56,7 +64,10 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   function resume() {
     if (!isActive.value && window) {
       isActive.value = true
-      rafId = window.requestAnimationFrame(loop)
+      if (immediateCallback)
+        loop(performance.now())
+      else
+        rafId = window.requestAnimationFrame(loop)
     }
   }
 
@@ -70,6 +81,8 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
 
   if (immediate)
     resume()
+  else if (immediateCallback)
+    loop(performance.now())
 
   tryOnScopeDispose(pause)
 

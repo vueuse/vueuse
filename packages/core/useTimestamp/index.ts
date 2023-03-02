@@ -27,6 +27,13 @@ export interface UseTimestampOptions<Controls extends boolean> {
   immediate?: boolean
 
   /**
+   * Execute the callback immediate after calling this function
+   *
+   * @default false
+   */
+  immediateCallback?: boolean
+
+  /**
    * Update interval, or use requestAnimationFrame
    *
    * @default requestAnimationFrame
@@ -51,6 +58,7 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
     controls: exposeControls = false,
     offset = 0,
     immediate = true,
+    immediateCallback = false,
     interval = 'requestAnimationFrame',
     callback,
   } = options
@@ -66,8 +74,8 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
     : update
 
   const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(cb, { immediate })
-    : useIntervalFn(cb, interval, { immediate })
+    ? useRafFn(cb, { immediate, immediateCallback })
+    : useIntervalFn(cb, interval, { immediate, immediateCallback })
 
   if (exposeControls) {
     return {

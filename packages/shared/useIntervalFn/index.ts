@@ -61,6 +61,8 @@ export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000,
 
   if (immediate && isClient)
     resume()
+  else if (immediateCallback)
+    cb()
 
   if (isRef(interval) || isFunction(interval)) {
     const stopWatch = watch(interval, () => {
