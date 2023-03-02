@@ -119,7 +119,7 @@ export const useWebNotification = (
   const errorEvent: EventHook = createEventHook<Event>()
   const closeEvent: EventHook = createEventHook<Event>()
 
-  const assign = <T extends object, S>(target: T, source: S) => Object.assign(target, source)
+  const assign = Object.assign
 
   // In order to be compatible with the original onClick.on listening event, here is a layer of conversion
   const onClick = assign(clickEvent.on, clickEvent)
