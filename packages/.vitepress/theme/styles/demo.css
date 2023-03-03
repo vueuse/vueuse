@@ -66,9 +66,9 @@
   }
 
   button.red {
-    --c-brand: #f56c6c;
-    --c-brand-dark: #e41c1c;
-    --c-brand-active: #e94c4c;
+    --vp-c-brand: #f56c6c;
+    --vp-c-brand-dark: #e41c1c;
+    --vp-c-brand-active: #e94c4c;
   }
 
   button:hover {

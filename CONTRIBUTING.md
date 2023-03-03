@@ -4,7 +4,7 @@ Thanks for being interested in contributing to this project!
 
 > **Warning**: **⚠️ Slowing down new functions**
 >
-> Due to the growing audience of VueUse, we received a huge amount of feature requests and pull requests. It's become harder and harder and recently a bit beyond our capacity to maintain the project. In the near future, **we could like slowing down on accepting new features and prioritize the stability and quality of existing functions. New functions to VueUse may not be accpected**. If you come up some new ideas, we advice you to have them in your codebase first instead of proposing to VueUse. You may iterate them a few time and see how them suite your needs and how them can be generalized. If you **really** believe they are useful to the community, you can create PR with your usercases, we are still happy to hear and discuss. Thank you for your understanding.
+> Due to the growing audience of VueUse, we received a huge amount of feature requests and pull requests. It's become harder and harder and recently a bit beyond our capacity to maintain the project. In the near future, **we could like slowing down on accepting new features and prioritize the stability and quality of existing functions. New functions to VueUse may not be accepted**. If you come up some new ideas, we advice you to have them in your codebase first instead of proposing to VueUse. You may iterate them a few time and see how them suite your needs and how them can be generalized. If you **really** believe they are useful to the community, you can create PR with your usercases, we are still happy to hear and discuss. Thank you for your understanding.
 
 ## Development 
 
