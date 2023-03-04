@@ -19,11 +19,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
 }
 
 /**
- * @deprecated Use `RemovableRef`
- */
-export type RemoveableRef<T> = RemovableRef<T>
-
-/**
  * Maybe it's a ref, or a plain value
  *
  * ```ts
@@ -84,7 +79,7 @@ export interface Pausable {
   /**
    * A ref indicate whether a pausable instance is active
    */
-  isActive: Ref<boolean>
+  isActive: Readonly<Ref<boolean>>
 
   /**
    * Temporary pause the effect from executing
@@ -97,11 +92,11 @@ export interface Pausable {
   resume: Fn
 }
 
-export interface Stoppable {
+export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  isPending: Ref<boolean>
+  isPending: Readonly<Ref<boolean>>
 
   /**
    * Stop the effect from executing
@@ -111,13 +106,8 @@ export interface Stoppable {
   /**
    * Start the effects
    */
-  start: Fn
+  start: (...args: StartFnArgs) => void
 }
-
-/**
- * @deprecated Use `Stoppable`
- */
-export type Stopable = Stoppable
 
 export interface ConfigurableFlush {
   /**

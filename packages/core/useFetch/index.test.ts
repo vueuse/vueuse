@@ -1,5 +1,6 @@
 import { until } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
+import type { SpyInstance } from 'vitest'
 import { retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
@@ -9,7 +10,7 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vitest.spyOn(window, 'fetch')
+let fetchSpy = vitest.spyOn(window, 'fetch') as SpyInstance<any>
 let onFetchErrorSpy = vitest.fn()
 let onFetchResponseSpy = vitest.fn()
 let onFetchFinallySpy = vitest.fn()
@@ -55,10 +56,10 @@ describe('useFetch', () => {
   test('should use custom fetch', async () => {
     let count = 0
     await useFetch('https://example.com/', {
-      fetch(input, init) {
+      fetch: <typeof window.fetch>((input, init) => {
         count = 1
         return window.fetch(input, init)
-      },
+      }),
     })
 
     expect(count).toEqual(1)
@@ -656,5 +657,37 @@ describe('useFetch', () => {
 
     expect(data.value).toEqual(jsonMessage)
     expect(fetchSpy).toBeCalledTimes(1)
+  })
+
+  test('should abort previous request', async () => {
+    const { onFetchResponse, execute } = useFetch('https://example.com', { immediate: false })
+
+    onFetchResponse(onFetchResponseSpy)
+
+    execute()
+    execute()
+    execute()
+    execute()
+
+    await retry(() => {
+      expect(onFetchResponseSpy).toBeCalledTimes(1)
+    })
+  })
+
+  it('should listen url ref change abort previous request', async () => {
+    const url = ref('https://example.com')
+    const { onFetchResponse } = useFetch(url, { refetch: true, immediate: false })
+
+    onFetchResponse(onFetchResponseSpy)
+
+    url.value = 'https://example.com?t=1'
+    await nextTick()
+    url.value = 'https://example.com?t=2'
+    await nextTick()
+    url.value = 'https://example.com?t=3'
+
+    await retry(() => {
+      expect(onFetchResponseSpy).toBeCalledTimes(1)
+    })
   })
 })

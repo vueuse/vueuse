@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig } from 'axios'
+import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
-  const config: AxiosRequestConfig = {
+  const config: RawAxiosRequestConfig = {
     method: 'GET',
   }
   const instance = axios.create({
@@ -189,7 +189,7 @@ describe('useAxios', () => {
   test('calling axios with config change(param/data etc.) only', async () => {
     const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
     expect(isLoading.value).toBeFalsy()
-    const paramConfig: AxiosRequestConfig = { params: { postId: 1 } }
+    const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vitest.fn()
@@ -224,7 +224,7 @@ describe('useAxios', () => {
       body: string
       userId: number
     }
-    const typeConfig: AxiosRequestConfig<ReqType> = {
+    const typeConfig: RawAxiosRequestConfig<ReqType> = {
       method: 'POST',
     }
     const { isLoading, then, execute } = useAxios<ResType, ReqType>('/posts', typeConfig, instance, options)
@@ -263,7 +263,7 @@ describe('useAxios', () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     execute('https://jsonplaceholder.typicode.com/todos/2').then((result) => {
-      expect(result.error.value?.message).toBe('aborted')
+      expect((result.error.value as Error)?.message).toBe('aborted')
       expect(isFinished.value).toBeTruthy()
       expect(isLoading.value).toBeFalsy()
       expect(isAborted.value).toBeTruthy()
@@ -279,5 +279,25 @@ describe('useAxios', () => {
     const { execute } = useAxios(undefined, config, options)
     const { error } = await execute()
     expect(error.value).toBeDefined()
+  })
+
+  test('should call onSuccess when success', async () => {
+    const onSuccess = vitest.fn()
+    const { execute, isLoading, isFinished, data } = useAxios(url, config, { ...options, onSuccess })
+    expect(isLoading.value).toBeFalsy()
+    await execute()
+    expect(onSuccess).toHaveBeenCalledWith(data.value)
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+  })
+
+  test('should call onError when error', async () => {
+    const onError = vitest.fn()
+    const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
+    expect(isLoading.value).toBeFalsy()
+    await execute('https://jsonplaceholder.typicode.com/todos/2/3')
+    expect(onError).toHaveBeenCalledWith(error.value)
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
   })
 })

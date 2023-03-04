@@ -10,6 +10,8 @@ related:
 
 Reactive dark mode with auto data persistence.
 
+<CourseLink href="https://vueschool.io/lessons/theming-with-vueuse-usedark-and-usecolormode?friend=vueuse">Learn useDark with this FREE video lesson from Vue School!</CourseLink>
+
 ## Basic Usage
 
 ```js

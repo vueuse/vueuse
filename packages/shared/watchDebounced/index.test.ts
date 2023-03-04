@@ -42,5 +42,5 @@ describe('watchDebounced', () => {
     await promiseTimeout(75)
     expect(cb).toHaveBeenCalledTimes(2)
     expect(cb).toHaveBeenCalledWith(4, 2, expect.anything())
-  })
+  }, { retry: 5 })
 })

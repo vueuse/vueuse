@@ -17,15 +17,15 @@ export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow =
     }
   }
 
-  const x = ref(window.pageXOffset)
-  const y = ref(window.pageYOffset)
+  const x = ref(window.scrollX)
+  const y = ref(window.scrollY)
 
   useEventListener(
     window,
     'scroll',
     () => {
-      x.value = window.pageXOffset
-      y.value = window.pageYOffset
+      x.value = window.scrollX
+      y.value = window.scrollY
     },
     {
       capture: false,
