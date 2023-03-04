@@ -84,4 +84,3 @@ const userInfo = computedAsync(
 
 - As opposed to Vue's built-in `computed` function, re-evaluation of the async computed value is triggered whenever dependencies are changing, regardless of whether its result is currently being tracked or not.
 
-- The default value of the `shallow` already changed to `true` in > 9.10.x.
