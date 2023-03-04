@@ -54,4 +54,14 @@ describe('createEventHook', () => {
 
     expect(listener).toHaveBeenCalledTimes(2)
   })
+
+  it('the same listener should fire only once', () => {
+    const listener = vitest.fn()
+    const { on, trigger, off } = createEventHook<string>()
+    on(listener)
+    on(listener)
+    trigger('xxx')
+    off(listener)
+    expect(listener).toBeCalledTimes(1)
+  })
 })
