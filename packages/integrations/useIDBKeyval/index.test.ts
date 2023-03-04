@@ -6,7 +6,7 @@ const cache = {} as any
 
 vi.mock('idb-keyval', () => ({
   get: (key: string) => Promise.resolve(cache[key]),
-  set: (key: string, value: any) => new Promise((resolve, reject) => {
+  set: vi.fn((key: string, value: any) => new Promise((resolve, reject) => {
     if (value === 'error') {
       reject(new Error('set error'))
       return
@@ -15,7 +15,7 @@ vi.mock('idb-keyval', () => ({
     cache[key] = value
 
     resolve(undefined)
-  }),
+  })),
   update: (key: string, updater: () => any) => new Promise((resolve, reject) => {
     const value = updater()
     if (value === 'error') {
@@ -35,16 +35,18 @@ vi.mock('idb-keyval', () => ({
 const KEY1 = 'vue-use-idb-keyval-1'
 const KEY2 = 'vue-use-idb-keyval-2'
 const KEY3 = 'vue-use-idb-keyval-3'
+const KEY4 = 'vue-use-idb-keyval-4'
 describe('useIDBKeyval', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     console.error = vi.fn()
   })
 
   set(KEY3, 'hello')
 
-  const data1 = useIDBKeyval(KEY1, { count: 0 })
-  const data2 = useIDBKeyval(KEY2, ['foo', 'bar'])
-  const data3 = useIDBKeyval(KEY3, 'world', { shallow: true })
+  const { data: data1 } = useIDBKeyval(KEY1, { count: 0 })
+  const { data: data2 } = useIDBKeyval(KEY2, ['foo', 'bar'])
+  const { data: data3 } = useIDBKeyval(KEY3, 'world', { shallow: true })
 
   it('get/set', async () => {
     expect(data1.value).toEqual({ count: 0 })
@@ -96,5 +98,20 @@ describe('useIDBKeyval', () => {
     await promiseTimeout(50)
 
     expect(console.error).toHaveBeenCalledTimes(1)
+  })
+  it ('isFinished', async () => {
+    const { isFinished } = useIDBKeyval(KEY4, 'test')
+    expect(isFinished.value).toBe(false)
+
+    await promiseTimeout(50)
+
+    expect(isFinished.value).toBe(true)
+  })
+  it('writeDefaults false', async () => {
+    useIDBKeyval(KEY4, 'test', { writeDefaults: false })
+
+    await promiseTimeout(50)
+
+    expect(set).toHaveBeenCalledTimes(0)
   })
 })
