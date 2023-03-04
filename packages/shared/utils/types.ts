@@ -19,11 +19,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
 }
 
 /**
- * @deprecated Use `RemovableRef`
- */
-export type RemoveableRef<T> = RemovableRef<T>
-
-/**
  * Maybe it's a ref, or a plain value
  *
  * ```ts
@@ -113,11 +108,6 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
    */
   start: (...args: StartFnArgs) => void
 }
-
-/**
- * @deprecated Use `Stoppable`
- */
-export type Stopable = Stoppable
 
 export interface ConfigurableFlush {
   /**
