@@ -25,6 +25,13 @@ export interface UseIDBOptions extends ConfigurableFlush {
    * @default false
    */
   shallow?: boolean
+  /**
+   * Write the default value to the storage when it does not exist
+   *
+   * @default true
+   */
+  writeDefaults?: boolean
+
 }
 
 /**
@@ -37,16 +44,18 @@ export function useIDBKeyval<T>(
   key: IDBValidKey,
   initialValue: MaybeComputedRef<T>,
   options: UseIDBOptions = {},
-): RemovableRef<T> {
+): { data: RemovableRef<T>; isFinished: Ref<boolean> } {
   const {
     flush = 'pre',
     deep = true,
-    shallow,
+    shallow = false,
     onError = (e) => {
       console.error(e)
     },
+    writeDefaults = true,
   } = options
 
+  const isFinished = ref(false)
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
 
   const rawInit: T = resolveUnref(initialValue)
@@ -55,7 +64,7 @@ export function useIDBKeyval<T>(
     try {
       const rawValue = await get<T>(key)
       if (rawValue === undefined) {
-        if (rawInit !== undefined && rawInit !== null)
+        if (rawInit !== undefined && rawInit !== null && writeDefaults)
           await set(key, rawInit)
       }
       else {
@@ -65,6 +74,7 @@ export function useIDBKeyval<T>(
     catch (e) {
       onError(e)
     }
+    isFinished.value = true
   }
 
   read()
@@ -91,5 +101,5 @@ export function useIDBKeyval<T>(
 
   watch(data, () => write(), { flush, deep })
 
-  return data as RemovableRef<T>
+  return { isFinished, data: data as RemovableRef<T> }
 }

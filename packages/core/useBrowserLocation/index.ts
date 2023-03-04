@@ -1,19 +1,25 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref } from 'vue-demi'
+import { objectEntries } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { reactive, ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
+const WRITABLE_PROPERTIES = [
+  'hash', 'host', 'hostname', 'href', 'pathname', 'port', 'protocol', 'search',
+] as const
+
 export interface BrowserLocationState {
-  trigger: string
-  state?: any
-  length?: number
+  readonly trigger: string
+  readonly state?: any
+  readonly length?: number
+  readonly origin?: string
   hash?: string
   host?: string
   hostname?: string
   href?: string
-  origin?: string
   pathname?: string
   port?: string
   protocol?: string
@@ -27,24 +33,32 @@ export interface BrowserLocationState {
  * @param options
  */
 export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
+  const refs = Object.fromEntries(
+    WRITABLE_PROPERTIES.map(key => [key, ref()]),
+  ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
+
+  for (const [key, ref] of objectEntries(refs)) {
+    watch(ref, (value) => {
+      if (!window?.location || window.location[key] === value)
+        return
+      window.location[key] = value!
+    })
+  }
+
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
-    const { hash, host, hostname, href, origin, pathname, port, protocol, search } = window?.location || {}
+    const { origin } = window?.location || {}
 
-    return {
+    for (const key of WRITABLE_PROPERTIES)
+      refs[key].value = window?.location?.[key]
+
+    return reactive({
       trigger,
       state,
       length,
-      hash,
-      host,
-      hostname,
-      href,
       origin,
-      pathname,
-      port,
-      protocol,
-      search,
-    }
+      ...refs,
+    })
   }
 
   const state = ref(buildState('load'))
