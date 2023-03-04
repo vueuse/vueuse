@@ -6,7 +6,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
 export type EventHookOff<T = any> = (fn: (param: T) => void) => void
-export type EventHookTrigger<T = any> = (param: T) => void
+export type EventHookTrigger<T = any> = (param: T) => Promise<unknown[]>
 
 export interface EventHook<T = any> {
   on: EventHookOn<T>
@@ -38,7 +38,7 @@ export function createEventHook<T = any>(): EventHook<T> {
   }
 
   const trigger = (param: T) => {
-    fns.forEach(fn => fn(param))
+    return Promise.all(fns.map(fn => fn(param)))
   }
 
   return {
