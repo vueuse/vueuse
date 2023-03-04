@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import assert from 'assert'
 import { execSync as exec } from 'child_process'
 import fs from 'fs-extra'
