@@ -82,7 +82,6 @@ export interface WebNotificationOptions {
 }
 
 export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
-
 }
 
 /**
@@ -114,18 +113,10 @@ export const useWebNotification = (
       await Notification.requestPermission()
   }
 
-  const clickEvent: EventHook = createEventHook<Event>()
-  const showEvent: EventHook = createEventHook<Event>()
-  const errorEvent: EventHook = createEventHook<Event>()
-  const closeEvent: EventHook = createEventHook<Event>()
-
-  const assign = Object.assign
-
-  // In order to be compatible with the original onClick.on listening event, here is a layer of conversion
-  const onClick = assign(clickEvent.on, clickEvent)
-  const onShow = assign(showEvent.on, showEvent)
-  const onError = assign(errorEvent.on, errorEvent)
-  const onClose = assign(closeEvent.on, closeEvent)
+  const { on: onClick, trigger: clickTrigger }: EventHook = createEventHook<Event>()
+  const { on: onShow, trigger: showTrigger }: EventHook = createEventHook<Event>()
+  const { on: onError, trigger: errorTrigger }: EventHook = createEventHook<Event>()
+  const { on: onClose, trigger: closeTrigger }: EventHook = createEventHook<Event>()
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
@@ -136,10 +127,10 @@ export const useWebNotification = (
     const options = Object.assign({}, defaultOptions, overrides)
     notification.value = new Notification(options.title || '', options)
 
-    notification.value.onclick = clickEvent.trigger
-    notification.value.onshow = showEvent.trigger
-    notification.value.onerror = errorEvent.trigger
-    notification.value.onclose = closeEvent.trigger
+    notification.value.onclick = clickTrigger
+    notification.value.onshow = showTrigger
+    notification.value.onerror = errorTrigger
+    notification.value.onclose = closeTrigger
 
     return notification.value
   }
