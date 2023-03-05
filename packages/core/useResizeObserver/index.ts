@@ -47,7 +47,7 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef,
+  target: MaybeComputedElementRef | MaybeComputedElementRef[],
   callback: ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ) {
@@ -63,13 +63,19 @@ export function useResizeObserver(
   }
 
   const stopWatch = watch(
-    () => unrefElement(target),
+    () => Array.isArray(target) ? target.map(el => unrefElement(el)) : unrefElement(target),
     (el) => {
       cleanup()
 
       if (isSupported.value && window && el) {
         observer = new ResizeObserver(callback)
-        observer!.observe(el, observerOptions)
+        if (Array.isArray(el)) {
+          for (const _el of el)
+            _el && observer!.observe(_el, observerOptions)
+        }
+        else {
+          observer!.observe(el, observerOptions)
+        }
       }
     },
     { immediate: true, flush: 'post' },
