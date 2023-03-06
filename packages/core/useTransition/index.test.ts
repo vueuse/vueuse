@@ -1,11 +1,64 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { executeTransition, useTransition } from '.'
 
 const expectBetween = (val: number, floor: number, ceiling: number) => {
   expect(val).to.be.greaterThan(floor)
   expect(val).to.be.lessThan(ceiling)
 }
+
+describe('executeTransition', () => {
+  it('transitions between numbers', async () => {
+    const source = ref(0)
+
+    const trans = executeTransition(source, 0, 1, { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value, 0.25, 0.75)
+
+    await trans
+
+    expect(source.value).toBe(1)
+  })
+
+  it('transitions between vectors', async () => {
+    const source = ref([0, 0, 0])
+
+    const trans = executeTransition(source, [0, 1, 2], [1, 2, 3], { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value[0], 0, 1)
+    expectBetween(source.value[1], 1, 2)
+    expectBetween(source.value[2], 2, 3)
+
+    await trans
+
+    expect(source.value[0]).toBe(1)
+    expect(source.value[1]).toBe(2)
+    expect(source.value[2]).toBe(3)
+  })
+
+  it('transitions can be aborted', async () => {
+    let abort = false
+
+    const source = ref(0)
+
+    const trans = executeTransition(source, 0, 1, {
+      abort: () => abort,
+      duration: 50,
+    })
+
+    await promiseTimeout(25)
+
+    abort = true
+
+    await trans
+
+    expectBetween(source.value, 0, 1)
+  })
+})
 
 describe('useTransition', () => {
   it('transitions between numbers', async () => {
@@ -226,5 +279,23 @@ describe('useTransition', () => {
     expect(onStarted).not.toBeCalled()
     disabled.value = false
     expect(transition.value).toBe(1)
+  })
+
+  it('begins transition from where previous transition was interrupted', async () => {
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      duration: 100,
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+
+    source.value = 0
+
+    await promiseTimeout(25)
+
+    expectBetween(transition.value, 0, 0.5)
   })
 })

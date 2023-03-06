@@ -33,7 +33,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
   /**
    * Any errors that may have occurred
    */
-  error: ShallowRef<AxiosError<T, D> | undefined>
+  error: ShallowRef<unknown | undefined>
 
   /**
    * Aborts the current request
@@ -92,6 +92,7 @@ export interface UseAxiosOptions<T = any> {
    *
    */
   immediate?: boolean
+
   /**
    * Use shallowRef.
    *
@@ -128,7 +129,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: RawAxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
-  let options: UseAxiosOptions<T> = { immediate: !!argsPlaceholder, shallow: true }
+  let options: UseAxiosOptions<T> = {
+    immediate: !!argsPlaceholder,
+    shallow: true,
+  }
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -159,14 +163,17 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
-  const error = shallowRef<AxiosError<T>>()
+  const error = shallowRef<unknown>()
 
-  const cancelToken: CancelTokenSource = axios.CancelToken.source()
+  const cancelTokenSource = axios.CancelToken.source
+  let cancelToken: CancelTokenSource = cancelTokenSource()
+
   const abort = (message?: string) => {
     if (isFinished.value || !isLoading.value)
       return
 
     cancelToken.cancel(message)
+    cancelToken = cancelTokenSource()
     isAborted.value = true
     isLoading.value = false
     isFinished.value = false
@@ -195,7 +202,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       isFinished.value = true
       return { then }
     }
-
+    abort()
     loading(true)
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {

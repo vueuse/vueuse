@@ -52,7 +52,7 @@ useIntersectionObserver(
   opacity: 0.8;
 }
 .target {
-  border: 2px dashed var(--c-brand);
+  border: 2px dashed var(--vp-c-brand);
   padding: 10px;
   max-height: 150px;
   margin: 0 2rem 400px;

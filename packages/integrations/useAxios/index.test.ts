@@ -263,7 +263,7 @@ describe('useAxios', () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     execute('https://jsonplaceholder.typicode.com/todos/2').then((result) => {
-      expect(result.error.value?.message).toBe('aborted')
+      expect((result.error.value as Error)?.message).toBe('aborted')
       expect(isFinished.value).toBeTruthy()
       expect(isLoading.value).toBeFalsy()
       expect(isAborted.value).toBeTruthy()

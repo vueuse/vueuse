@@ -1,5 +1,5 @@
 import type { Arrayable, Fn, MaybeComputedRef } from '@vueuse/shared'
-import { isString, noop, tryOnScopeDispose } from '@vueuse/shared'
+import { isString, noop, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -30,7 +30,7 @@ export interface GeneralEventListener<E = Event> {
 export function useEventListener<E extends keyof WindowEventMap>(
   event: Arrayable<E>,
   listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
-  options?: boolean | AddEventListenerOptions
+  options?: MaybeComputedRef<boolean | AddEventListenerOptions>
 ): Fn
 
 /**
@@ -48,7 +48,7 @@ export function useEventListener<E extends keyof WindowEventMap>(
   target: Window,
   event: Arrayable<E>,
   listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
-  options?: boolean | AddEventListenerOptions
+  options?: MaybeComputedRef<boolean | AddEventListenerOptions>
 ): Fn
 
 /**
@@ -66,7 +66,7 @@ export function useEventListener<E extends keyof DocumentEventMap>(
   target: DocumentOrShadowRoot,
   event: Arrayable<E>,
   listener: Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>,
-  options?: boolean | AddEventListenerOptions
+  options?: MaybeComputedRef<boolean | AddEventListenerOptions>
 ): Fn
 
 /**
@@ -84,7 +84,7 @@ export function useEventListener<Names extends string, EventType = Event>(
   target: InferEventTarget<Names>,
   event: Arrayable<Names>,
   listener: Arrayable<GeneralEventListener<EventType>>,
-  options?: boolean | AddEventListenerOptions
+  options?: MaybeComputedRef<boolean | AddEventListenerOptions>
 ): Fn
 
 /**
@@ -102,14 +102,14 @@ export function useEventListener<EventType = Event>(
   target: MaybeComputedRef<EventTarget | null | undefined>,
   event: Arrayable<string>,
   listener: Arrayable<GeneralEventListener<EventType>>,
-  options?: boolean | AddEventListenerOptions
+  options?: MaybeComputedRef<boolean | AddEventListenerOptions>
 ): Fn
 
 export function useEventListener(...args: any[]) {
   let target: MaybeComputedRef<EventTarget> | undefined
   let events: Arrayable<string>
   let listeners: Arrayable<Function>
-  let options: any
+  let options: MaybeComputedRef<boolean | AddEventListenerOptions> | undefined
 
   if (isString(args[0]) || Array.isArray(args[0])) {
     [events, listeners, options] = args
@@ -133,21 +133,21 @@ export function useEventListener(...args: any[]) {
     cleanups.length = 0
   }
 
-  const register = (el: any, event: string, listener: any) => {
+  const register = (el: any, event: string, listener: any, options: any) => {
     el.addEventListener(event, listener, options)
     return () => el.removeEventListener(event, listener, options)
   }
 
   const stopWatch = watch(
-    () => unrefElement(target as unknown as MaybeElementRef),
-    (el) => {
+    () => [unrefElement(target as unknown as MaybeElementRef), resolveUnref(options)],
+    ([el, options]) => {
       cleanup()
       if (!el)
         return
 
       cleanups.push(
         ...(events as string[]).flatMap((event) => {
-          return (listeners as Function[]).map(listener => register(el, event, listener))
+          return (listeners as Function[]).map(listener => register(el, event, listener, options))
         }),
       )
     },

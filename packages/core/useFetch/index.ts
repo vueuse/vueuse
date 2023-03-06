@@ -357,9 +357,14 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   let timer: Stoppable | undefined
 
   const abort = () => {
-    if (supportsAbort && controller) {
-      controller.abort()
-      controller = undefined
+    if (supportsAbort) {
+      controller?.abort()
+      controller = new AbortController()
+      controller.signal.onabort = () => aborted.value = true
+      fetchOptions = {
+        ...fetchOptions,
+        signal: controller.signal,
+      }
     }
   }
 
@@ -372,20 +377,12 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   const execute = async (throwOnFailed = false) => {
+    abort()
+
     loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
-
-    if (supportsAbort) {
-      abort()
-      controller = new AbortController()
-      controller.signal.onabort = () => aborted.value = true
-      fetchOptions = {
-        ...fetchOptions,
-        signal: controller.signal,
-      }
-    }
 
     const defaultFetchOptions: RequestInit = {
       method: config.method,

@@ -19,7 +19,7 @@ const text = stringify(mouse)
     <pre lang="yaml">{{ text }}</pre>
     <div>
       Tracking on
-      <button class="ml-2 button small" @click="toggle">
+      <button class="ml-2 button small" @click="toggle()">
         {{ withTarget ? 'Demo section' : 'Entire page' }}
       </button>
     </div>
