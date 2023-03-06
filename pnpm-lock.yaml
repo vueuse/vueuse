@@ -53,7 +53,7 @@ importers:
       lint-staged: ^13.1.2
       markdown-table: ^3.0.3
       md5: ^2.3.0
-      msw: ^1.1.0
+      msw: 1.0.1
       node-fetch: ^3.3.0
       ohmyfetch: ^0.4.21
       pnpm: ^7.28.0
@@ -125,7 +125,7 @@ importers:
       lint-staged: 13.1.2
       markdown-table: 3.0.3
       md5: 2.3.0
-      msw: 1.1.0_typescript@4.9.5
+      msw: 1.0.1_typescript@4.9.5
       node-fetch: 3.3.0
       ohmyfetch: 0.4.21
       pnpm: 7.28.0
@@ -7515,8 +7515,8 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
 
-  /msw/1.1.0_typescript@4.9.5:
-    resolution: {integrity: sha512-oqMvUXm1bMbwvGpoXAQVz8vXXQyQyx52HBDg3EDOK+dFXkQHssgkXEG4LfMwwZyr2Qt18I/w04XPaY4BkFTkzA==}
+  /msw/1.0.1_typescript@4.9.5:
+    resolution: {integrity: sha512-fBwQRCmf+jh0zlGlasBfpCaxLqb4QLMsY1Q+nkXkO0nnUYopl50NcNRvP4V+TAiqOwJSd0LrQ5NcJqwbrnTBqw==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
