@@ -13,7 +13,7 @@ Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also acc
 
 ```ts
 import { toRefs } from '@vueuse/core'
-import { reactive, ref } from 'vue-demi'
+import { reactive, ref } from 'vue'
 
 const objRef = ref({ a: 'a', b: 0 })
 const arrRef = ref(['a', 0])

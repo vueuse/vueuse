@@ -82,7 +82,6 @@ export interface WebNotificationOptions {
 }
 
 export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
-
 }
 
 /**
@@ -114,10 +113,10 @@ export const useWebNotification = (
       await Notification.requestPermission()
   }
 
-  const onClick: EventHook = createEventHook<Event>()
-  const onShow: EventHook = createEventHook<Event>()
-  const onError: EventHook = createEventHook<Event>()
-  const onClose: EventHook = createEventHook<Event>()
+  const { on: onClick, trigger: clickTrigger }: EventHook = createEventHook<Event>()
+  const { on: onShow, trigger: showTrigger }: EventHook = createEventHook<Event>()
+  const { on: onError, trigger: errorTrigger }: EventHook = createEventHook<Event>()
+  const { on: onClose, trigger: closeTrigger }: EventHook = createEventHook<Event>()
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
@@ -128,10 +127,11 @@ export const useWebNotification = (
     const options = Object.assign({}, defaultOptions, overrides)
     notification.value = new Notification(options.title || '', options)
 
-    notification.value.onclick = (event: Event) => onClick.trigger(event)
-    notification.value.onshow = (event: Event) => onShow.trigger(event)
-    notification.value.onerror = (event: Event) => onError.trigger(event)
-    notification.value.onclose = (event: Event) => onClose.trigger(event)
+    notification.value.onclick = clickTrigger
+    notification.value.onshow = showTrigger
+    notification.value.onerror = errorTrigger
+    notification.value.onclose = closeTrigger
+
     return notification.value
   }
 
