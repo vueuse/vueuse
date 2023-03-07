@@ -22,6 +22,7 @@ export const UseSortable = /* #__PURE__ */ defineComponent({
       required: true,
     },
   },
+
   setup(props, { slots }) {
     const list = useVModel(props, 'modelValue')
     const target = ref()
