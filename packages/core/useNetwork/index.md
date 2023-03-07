@@ -32,5 +32,5 @@ console.log(network.isOnline)
 <UseNetwork v-slot="{ isOnline, type }">
   Is Online: {{ isOnline }}
   Type: {{ type }}
-<UseNetwork>
+</UseNetwork>
 ```
