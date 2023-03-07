@@ -84,3 +84,6 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
 
   return { on, once, off, emit, reset }
 }
+
+// alias
+export { useEventBus as useEventEmitter }

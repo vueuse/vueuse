@@ -1,5 +1,6 @@
 ---
 category: Utilities
+alias: useEventEmitter
 ---
 
 # useEventBus

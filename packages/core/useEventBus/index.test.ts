@@ -2,13 +2,19 @@ import { nextTick } from 'vue-demi'
 import { useCounter } from '../../shared/useCounter'
 import { useSetup } from '../../.test'
 import { events } from './internal'
-import { useEventBus } from '.'
+import { useEventBus, useEventEmitter } from '.'
 
 describe('useEventBus', () => {
   const emptyMap = new Map()
   beforeEach(() => {
     events.clear()
   })
+
+  it('export module', () => {
+    expect(useEventBus).toBeDefined()
+    expect(useEventEmitter).toBeDefined()
+  })
+
   it('on event and off listener', () => {
     const { on, off } = useEventBus<number>('foo')
     const { inc } = useCounter(0)
