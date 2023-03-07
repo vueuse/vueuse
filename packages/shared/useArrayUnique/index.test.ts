@@ -1,7 +1,7 @@
 import { reactive, ref } from 'vue-demi'
 import { useArrayUnique } from '../useArrayUnique'
 
-describe('useArraySome', () => {
+describe('useArrayUnique', () => {
   it('should be defined', () => {
     expect(useArrayUnique).toBeDefined()
   })
