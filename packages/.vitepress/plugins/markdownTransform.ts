@@ -38,7 +38,7 @@ export function MarkdownTransform(): Plugin {
 
       if (functionNames.includes(name) && i === 'index.md') {
         const frontmatterEnds = code.indexOf('---\n\n')
-        const firstHeader = code.search(/\n#{1,6}\s.+/)
+        const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
         const { footer, header } = await getFunctionMarkdown(pkg, name)
