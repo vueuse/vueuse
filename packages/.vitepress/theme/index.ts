@@ -14,3 +14,8 @@ export default {
       handleRedirects(ctx.router)
   },
 }
+
+const script = document.createElement('script')
+script.async = true
+script.src = 'https://vueschool.io/banner.js?affiliate=vueuse&type=bottom'
+document.head.appendChild(script)
