@@ -37,7 +37,7 @@ const { isFetching, error, data } = await useFetch(url)
 
 ### Refetching on URL change
 
-Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed. However, `url` must be callable.
+Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed. However, `url` must be passed to `useFetch` as a callable.
 
 ```ts
 const url = ref('https://my-api.com/user/1')
