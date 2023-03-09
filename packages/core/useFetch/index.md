@@ -57,6 +57,34 @@ const { execute } = useFetch(url, { immediate: false })
 execute()
 ```
 
+### Requests that depend on a previous request
+
+Combining the `immediate` & `refetch` options allows you to chain requests that depend on each other:
+
+```ts
+// Get firstId from the route/url parameter
+const firstId = computed(() => {
+  return route.query.first_id
+})
+
+// Fetch the data for the first thing, using the id from the url
+const { isFetching: firstIsFetching, data: firstData } = myFetch(`https://my-api.com/first/${firstId.value}`).get().json()
+
+// Compute the url for fetching the second thing, based on the results of the first request
+const secondUrl = computed(() => {
+  return firstData.value?.second_id ? `https://my-api.com/second/${firstData.value.second_id}` : ''
+})
+
+// Fetch the data for the second thing, using the id from the first request in the URL
+const { isFetching: secondIsFetching, data: secondData } = myFetch(secondUrl, { immediate: false, refetch: true }).get().json()
+
+// Returns true when both requests have completed
+const isFetching = computed(() => {
+  return firstIsFetching.value || secondIsFetching.value
+})
+```
+
+
 ### Aborting a request
 
 A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
