@@ -41,7 +41,7 @@ localStorage.setItem('my-store', '{"hello": "hello"}')
 
 const state = useStorage('my-store', { hello: 'hi', greeting: 'hello' }, localStorage)
 
-console.log(state.greeting) // undefined, since the value is not presented in storage
+console.log(state.value.greeting) // undefined, since the value is not presented in storage
 ```
 
 To solve that, you can enable `mergeDefaults` option.
