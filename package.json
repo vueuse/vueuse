@@ -78,7 +78,7 @@
     "lint-staged": "^13.1.2",
     "markdown-table": "^3.0.3",
     "md5": "^2.3.0",
-    "msw": "^1.1.0",
+    "msw": "1.0.1",
     "node-fetch": "^3.3.0",
     "ohmyfetch": "^0.4.21",
     "pnpm": "^7.28.0",

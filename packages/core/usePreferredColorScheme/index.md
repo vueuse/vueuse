@@ -19,5 +19,5 @@ const preferredColor = usePreferredColorScheme()
 ```html
 <UsePreferredColorScheme v-slot="{ colorScheme }">
   Preferred Color Scheme: {{ colorScheme }}
-<UsePreferredColorScheme>
+</UsePreferredColorScheme>
 ```
