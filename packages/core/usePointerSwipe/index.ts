@@ -25,7 +25,7 @@ export interface UsePointerSwipeOptions {
   /**
    * Callback on swipe end.
    */
-  onSwipeEnd?: (e: PointerEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: PointerEvent, direction: keyof typeof SwipeDirection) => void
 
   /**
    * Pointer types to listen to.
@@ -37,7 +37,7 @@ export interface UsePointerSwipeOptions {
 
 export interface UsePointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
-  direction: Readonly<Ref<SwipeDirection | null>>
+  direction: Readonly<Ref<keyof typeof SwipeDirection | null>>
   readonly posStart: Position
   readonly posEnd: Position
   distanceX: Readonly<Ref<number>>
