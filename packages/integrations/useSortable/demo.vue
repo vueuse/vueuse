@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useSortable } from '@vueuse/integrations/useSortable'
 import { ref } from 'vue'
+import { useSortable } from '.'
 
 const el = ref<HTMLElement | null>(null)
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
