@@ -45,7 +45,7 @@ export function useDark(options: UseDarkOptions = {}) {
     ...options,
     onChanged: (mode, defaultHandler) => {
       if (options.onChanged)
-        options.onChanged?.(mode === 'dark')
+        options.onChanged?.(mode === 'dark', defaultHandler, mode)
       else
         defaultHandler(mode)
     },
