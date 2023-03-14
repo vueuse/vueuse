@@ -4,7 +4,7 @@ import { isString, until } from '@vueuse/shared'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios, { AxiosError } from 'axios'
 
-export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
+export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   /**
    * Axios Response
    */
