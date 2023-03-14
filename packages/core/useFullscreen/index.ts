@@ -106,7 +106,7 @@ export function useFullscreen(
       const target = unrefElement(targetRef)
 
       for (const m of functionsMap) {
-        if (m[1] in document || (target && m[1] in target)) {
+        if (m[1] in document || (target && m[0] in target)) {
           map = m
           return true
         }
