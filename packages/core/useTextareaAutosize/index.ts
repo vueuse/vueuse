@@ -33,9 +33,9 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
     // If style target is provided update its height
     if (options?.styleTarget)
       unref(options.styleTarget).style.height = `${textareaScrollHeight.value}px`
-
     // else update textarea's height by updating height variable
-    else height = `${textareaScrollHeight.value}px`
+    else
+      height = `${textareaScrollHeight.value}px`
 
     textarea.value!.style.height = height
 
