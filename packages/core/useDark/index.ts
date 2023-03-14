@@ -25,7 +25,7 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
    *
    * @default undefined
    */
-  onChanged?: (isDark: boolean) => void
+  onChanged?: (isDark: boolean, defaultHandler: ((mode: T | BasicColorSchema) => void), mode: T | BasicColorSchema) => void
 }
 
 /**
