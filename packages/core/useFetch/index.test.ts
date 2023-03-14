@@ -200,20 +200,20 @@ describe('useFetch', () => {
       baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
-          ctx.data.title = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.title += ' Local'
+        ctx.error += ' Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+      expect(error.value).toEqual('Global Local')
     })
   })
 
@@ -272,23 +272,23 @@ describe('useFetch', () => {
       baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
-          ctx.data.title = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
-          ctx.data.title += ' Local'
+          ctx.error += ' Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+      expect(error.value).toEqual('Global Local')
     })
   })
 
@@ -345,21 +345,20 @@ describe('useFetch', () => {
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
-          ctx.data.global = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.local = 'Local'
+        ctx.error = 'Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
-      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+      expect(error.value).toEqual('Local')
     })
   })
 
@@ -422,24 +421,23 @@ describe('useFetch', () => {
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
-          ctx.data.global = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
-          ctx.data.local = 'Local'
+          ctx.error = 'Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
-      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+      expect(error.value).toEqual('Local')
     })
   })
 
@@ -537,23 +535,24 @@ describe('useFetch', () => {
   })
 
   test('should run the onFetchError function', async () => {
-    const { data, statusCode } = useFetch('https://example.com?status=400&json', {
+    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.title = 'Hunter x Hunter'
+        ctx.error = 'Internal Server Error'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(statusCode.value).toEqual(400)
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Hunter x Hunter' }))
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toBeNull()
     })
   })
 
   test('should run the onFetchError function when network error', async () => {
-    const { data, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
+    const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
       onFetchError(ctx) {
-        ctx.data = { title: 'Hunter x Hunter' }
+        ctx.error = 'Internal Server Error'
 
         return ctx
       },
@@ -561,7 +560,8 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(statusCode.value).toStrictEqual(500)
-      expect(data.value).toEqual({ title: 'Hunter x Hunter' })
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toBeNull()
     })
   })
 
