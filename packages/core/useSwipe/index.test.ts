@@ -1,4 +1,4 @@
-import { SwipeDirection, useSwipe } from './index'
+import { useSwipe } from './index'
 
 describe('useSwipe', () => {
   const target = document.createElement('div')
@@ -72,7 +72,7 @@ describe('useSwipe', () => {
 
     expect(onSwipe).toBeCalledTimes(2)
     expect(onSwipeEnd).toHaveBeenCalledOnce()
-    expect(onSwipeEnd.mock.calls[0][1]).toBe(SwipeDirection.NONE)
+    expect(onSwipeEnd.mock.calls[0][1]).toBe('none')
   })
 
   it('reactivity', () => {
@@ -80,13 +80,13 @@ describe('useSwipe', () => {
 
     target.dispatchEvent(mockTouchStart(0, 0))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(lengthX.value).toBe(0)
     expect(lengthY.value).toBe(0)
 
     target.dispatchEvent(mockTouchMove(threshold, 5))
     expect(isSwiping.value).toBeTruthy()
-    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(direction.value).toBe('right')
     expect(lengthX.value).toBe(-threshold)
     expect(lengthY.value).toBe(-5)
 
@@ -94,10 +94,10 @@ describe('useSwipe', () => {
   })
 
   ;([
-    [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
-    [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
-    [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
-    [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
+    ['up', [[0, 2 * threshold], [0, threshold], [0, threshold]]],
+    ['down', [[0, 0], [0, threshold], [0, threshold]]],
+    ['left', [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
+    ['right', [[0, 0], [threshold, 0], [threshold, 0]]],
   ] as [string, number[][]][])
     .forEach(([expected, coords]) => {
       it(`swipe ${expected}`, () => {

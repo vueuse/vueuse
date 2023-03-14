@@ -1,4 +1,3 @@
-import { SwipeDirection } from '../useSwipe'
 import type { UsePointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
 
@@ -65,7 +64,7 @@ describe('usePointerSwipe', () => {
     expect(onSwipeStart).toHaveBeenCalledOnce()
     expect(onSwipe).toHaveBeenCalledOnce()
     expect(onSwipeEnd).toHaveBeenCalledOnce()
-    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), 'right')
   })
 
   it('threshold is exceeded in between', () => {
@@ -76,7 +75,7 @@ describe('usePointerSwipe', () => {
     expect(onSwipeStart).toHaveBeenCalledOnce()
     expect(onSwipe).toHaveBeenCalledTimes(2)
     expect(onSwipeEnd).toHaveBeenCalledOnce()
-    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), 'none')
   })
 
   it('reactivity', () => {
@@ -84,19 +83,19 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerDown(0, 0))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
 
     target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
     expect(isSwiping.value).toBeTruthy()
-    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(direction.value).toBe('right')
     expect(distanceX.value).toBe(-threshold)
     expect(distanceY.value).toBe(-threshold / 2)
 
     target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(direction.value).toBe('right')
     expect(distanceX.value).toBe(-threshold)
     expect(distanceY.value).toBe(-threshold / 2)
   })
@@ -106,19 +105,19 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerDown(0, 0))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
 
     target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
 
     target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
   })
@@ -128,7 +127,7 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
   })
@@ -138,7 +137,7 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerDown(0, 0))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
 
@@ -146,16 +145,16 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
   })
 
   const directionTests = [
-    [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
-    [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
-    [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
-    [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
+    ['up', [[0, 2 * threshold], [0, threshold], [0, threshold]]],
+    ['down', [[0, 0], [0, threshold], [0, threshold]]],
+    ['left', [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
+    ['right', [[0, 0], [threshold, 0], [threshold, 0]]],
   ]
 
   directionTests.forEach((config) => {

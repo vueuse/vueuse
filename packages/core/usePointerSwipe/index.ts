@@ -3,8 +3,8 @@ import { resolveRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
-import { SwipeDirection } from '../useSwipe/index'
 import type { PointerType, Position } from '../types'
+import type { UseSwipeDirection } from '../useSwipe'
 
 export interface UsePointerSwipeOptions {
   /**
@@ -25,7 +25,7 @@ export interface UsePointerSwipeOptions {
   /**
    * Callback on swipe end.
    */
-  onSwipeEnd?: (e: PointerEvent, direction: keyof typeof SwipeDirection) => void
+  onSwipeEnd?: (e: PointerEvent, direction: UseSwipeDirection) => void
 
   /**
    * Pointer types to listen to.
@@ -37,7 +37,7 @@ export interface UsePointerSwipeOptions {
 
 export interface UsePointerSwipeReturn {
   readonly isSwiping: Ref<boolean>
-  direction: Readonly<Ref<keyof typeof SwipeDirection | null>>
+  direction: Readonly<Ref<UseSwipeDirection>>
   readonly posStart: Position
   readonly posEnd: Position
   distanceX: Readonly<Ref<number>>
@@ -86,17 +86,17 @@ export function usePointerSwipe(
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)
-      return SwipeDirection.NONE
+      return 'none'
 
     if (abs(distanceX.value) > abs(distanceY.value)) {
       return distanceX.value > 0
-        ? SwipeDirection.LEFT
-        : SwipeDirection.RIGHT
+        ? 'left'
+        : 'right'
     }
     else {
       return distanceY.value > 0
-        ? SwipeDirection.UP
-        : SwipeDirection.DOWN
+        ? 'up'
+        : 'down'
     }
   })
 
