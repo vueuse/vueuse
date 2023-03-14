@@ -20,7 +20,7 @@ npm i sortablejs
 
 ```vue
 <script setup lang="ts">
-import { useSortable } from '@vueuse/integrations'
+import { useSortable } from '@vueuse/integrations/useSortable'
 import { ref } from 'vue'
 
 const el = ref<HTMLElement | null>(null)
@@ -42,7 +42,7 @@ useSortable(el, list)
 
 ```vue
 <script setup lang="ts">
-import { useSortable } from '@vueuse/integrations'
+import { useSortable } from '@vueuse/integrations/useSortable'
 import { ref } from 'vue'
 
 const el = ref<HTMLElement | null>(null)
@@ -67,7 +67,7 @@ useSortable(el, list, {
 
 ```vue
 <script setup lang="ts">
-import { useSortable } from '@vueuse/integrations'
+import { useSortable } from '@vueuse/integrations/useSortable'
 import { ref } from 'vue'
 
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
