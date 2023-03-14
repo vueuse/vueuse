@@ -43,7 +43,7 @@ describe('useSwipe', () => {
 
   beforeEach(() => {
     onSwipe = vitest.fn((_e: TouchEvent) => {})
-    onSwipeEnd = vitest.fn((_e: TouchEvent, _direction: SwipeDirection) => {})
+    onSwipeEnd = vitest.fn((_e: TouchEvent, _direction: string) => {})
     vitest.resetAllMocks()
   })
 
@@ -98,7 +98,7 @@ describe('useSwipe', () => {
     [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
     [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
     [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
-  ] as [SwipeDirection, number[][]][])
+  ] as [string, number[][]][])
     .forEach(([expected, coords]) => {
       it(`swipe ${expected}`, () => {
         const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })

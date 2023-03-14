@@ -15,6 +15,8 @@ export const SwipeDirection = {
   NONE: 'NONE',
 } as const
 
+export type SwipeDirectionType = typeof SwipeDirection
+
 export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Register events as passive

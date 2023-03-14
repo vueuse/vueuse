@@ -44,7 +44,7 @@ describe('usePointerSwipe', () => {
   beforeEach(() => {
     onSwipeStart = vitest.fn((e: PointerEvent) => {})
     onSwipe = vitest.fn((e: PointerEvent) => {})
-    onSwipeEnd = vitest.fn((e: PointerEvent, direction: SwipeDirection) => {})
+    onSwipeEnd = vitest.fn((e: PointerEvent, direction: any) => {})
   })
 
   it('threshold is not exceeded', () => {
@@ -159,7 +159,7 @@ describe('usePointerSwipe', () => {
   ]
 
   directionTests.forEach((config) => {
-    const _direction = config[0] as unknown as SwipeDirection
+    const _direction = config[0]
     const coords = config[1] as unknown as number[][]
 
     it(`detects swipes to the ${_direction}`, () => {
