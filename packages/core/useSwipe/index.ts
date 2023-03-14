@@ -7,13 +7,15 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export enum SwipeDirection {
-  UP = 'UP',
-  RIGHT = 'RIGHT',
-  DOWN = 'DOWN',
-  LEFT = 'LEFT',
-  NONE = 'NONE',
-}
+export const SwipeDirection = {
+  UP: 'UP',
+  DOWN: 'DOWN',
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+  NONE: 'NONE',
+} as const
+
+export type SwipeDirectionType = typeof SwipeDirection
 
 export interface UseSwipeOptions extends ConfigurableWindow {
   /**
@@ -41,13 +43,13 @@ export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Callback on swipe ends
    */
-  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: TouchEvent, direction: keyof typeof SwipeDirection) => void
 }
 
 export interface UseSwipeReturn {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection | null>
+  direction: ComputedRef<keyof typeof SwipeDirection | null>
   coordsStart: Readonly<Position>
   coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
