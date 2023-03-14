@@ -91,6 +91,16 @@
       "types": "./useIDBKeyval.d.ts",
       "require": "./useIDBKeyval.cjs",
       "import": "./useIDBKeyval.mjs"
+    },
+    "./useSortable": {
+      "types": "./useSortable.d.ts",
+      "require": "./useSortable.cjs",
+      "import": "./useSortable.mjs"
+    },
+    "./useSortable/component": {
+      "types": "./useSortable/component.d.ts",
+      "require": "./useSortable/component.cjs",
+      "import": "./useSortable/component.mjs"
     }
   },
   "main": "./index.cjs",
@@ -109,6 +119,7 @@
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
+    "sortablejs": "*",
     "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
@@ -144,6 +155,9 @@
     },
     "universal-cookie": {
       "optional": true
+    },
+    "sortablejs": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -154,6 +168,7 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.5.0",
+    "@types/sortablejs": "^1.15.0",
     "async-validator": "^4.2.5",
     "axios": "^1.3.4",
     "change-case": "^4.1.2",
@@ -164,6 +179,7 @@
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.1",
+    "sortablejs": "^1.15.0",
     "universal-cookie": "^4.0.4"
   }
 }
