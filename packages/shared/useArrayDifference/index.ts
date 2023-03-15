@@ -25,5 +25,5 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
     const key = compareFn as keyof T
     compareFn = (value: T, othVal: T) => value[key] === othVal[key]
   }
-  return computed(() => resolveUnref(list).filter(x => !resolveUnref(values).find(y => compareFn(x, y))))
+  return computed(() => resolveUnref(list).filter(x => resolveUnref(values).findIndex(y => compareFn(x, y)) === -1))
 }
