@@ -1,6 +1,6 @@
 import path from 'node:path'
 import assert from 'node:assert'
-import { execSync as exec } from 'child_process'
+import { execSync as exec } from 'node:child_process'
 import fs from 'fs-extra'
 import fg from 'fast-glob'
 import consola from 'consola'

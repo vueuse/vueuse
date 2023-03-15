@@ -26,7 +26,7 @@ export interface UseFetchReturn<T> {
   error: Ref<any>
 
   /**
-   * The fetch response body, may either be JSON or text
+   * The fetch response body on success, may either be JSON or text
    */
   data: Ref<T | null>
 
@@ -349,7 +349,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
-  const data = shallowRef<T | null>(initialData)
+  const data = shallowRef<T | null>(initialData || null)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
@@ -441,14 +441,15 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
           responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-
-          data.value = responseData
-
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok)
+          if (!fetchResponse.ok) {
+            data.value = initialData || null
             throw new Error(fetchResponse.statusText)
+          }
+
+          if (options.afterFetch)
+            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+          data.value = responseData
 
           responseEvent.trigger(fetchResponse)
           return resolve(fetchResponse)
@@ -457,8 +458,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
-            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
-          data.value = responseData
+            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
           error.value = errorData
 
           errorEvent.trigger(fetchError)

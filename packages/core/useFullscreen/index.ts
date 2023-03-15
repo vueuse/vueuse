@@ -37,6 +37,15 @@ const functionsMap: FunctionMap[] = [
     'webkitfullscreenchange',
     'webkitfullscreenerror',
   ],
+  // Safari iOS WebKit
+  [
+    'webkitEnterFullscreen',
+    'webkitExitFullscreen',
+    'webkitFullscreenElement',
+    'webkitFullscreenEnabled',
+    'webkitfullscreenchange',
+    'webkitfullscreenerror',
+  ],
   // Old WebKit
   [
     'webkitRequestFullScreen',
@@ -94,8 +103,10 @@ export function useFullscreen(
       return false
     }
     else {
+      const target = unrefElement(targetRef)
+
       for (const m of functionsMap) {
-        if (m[1] in document) {
+        if (m[1] in document || (target && m[0] in target)) {
           map = m
           return true
         }
