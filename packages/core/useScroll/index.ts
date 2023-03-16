@@ -164,31 +164,35 @@ export function useScroll(
     const eventTarget = (
       e.target === document ? (e.target as Document).documentElement : e.target
     ) as HTMLElement
+    
+    calculateScrollData(eventTarget);
 
-    const scrollLeft = eventTarget.scrollLeft
+    isScrolling.value = true
+    onScrollEndDebounced(e)
+    onScroll(e)
+  }
+  
+  const calculateScrollData = (el: HTMLElement) => {
+    const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalY.value
     arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
     arrivedState.right
-      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+      = scrollLeft + el.clientWidth >= el.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
     internalX.value = scrollLeft
 
-    let scrollTop = eventTarget.scrollTop
+    let scrollTop = el.scrollTop
 
     // patch for mobile compatible
-    if (e.target === document && !scrollTop)
+    if (el === document.documentElement && !scrollTop)
       scrollTop = document.body.scrollTop
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
     arrivedState.top = scrollTop <= 0 + (offset.top || 0)
     arrivedState.bottom
-      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+      = scrollTop + el.clientHeight >= el.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
     internalY.value = scrollTop
-
-    isScrolling.value = true
-    onScrollEndDebounced(e)
-    onScroll(e)
   }
 
   useEventListener(
@@ -211,6 +215,7 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    calculateScrollData,
   }
 }
 
