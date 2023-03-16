@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { isString } from '../utils'
+import { isDef, isString } from '../utils'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 
@@ -25,5 +25,5 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
     const key = compareFn as keyof T
     compareFn = (value: T, othVal: T) => value[key] === othVal[key]
   }
-  return computed(() => resolveUnref(list).filter(x => !resolveUnref(values).find(y => compareFn(x, y))))
+  return computed(() => resolveUnref(list).filter(x => !isDef(resolveUnref(values).find(y => compareFn(x, y)))))
 }

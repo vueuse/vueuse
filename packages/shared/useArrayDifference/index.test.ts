@@ -17,6 +17,10 @@ describe('useArrayDifference', () => {
 
     list1.value = [1, 2, 3]
     expect(result.value).toEqual([])
+
+    list1.value = [0, 1, 2, 3, 4, 5]
+    list2.value = [0, 1, 2]
+    expect(result.value).toEqual([3, 4, 5])
   })
 
   it('should return the difference of two array with iteratee', () => {
