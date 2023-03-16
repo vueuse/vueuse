@@ -198,15 +198,15 @@ export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, o
  * @param options
  */
 export function useTransition(
-  source: MaybeComputedRef<number | number[]>,
+  source: MaybeComputedRef<number | number[]> | MaybeComputedRef<number>[],
   options: UseTransitionOptions = {},
 ): Ref<any> {
   let currentId = 0
 
   const sourceVal = () => {
-    const v = resolveUnref<number | number[]>(source)
+    const v = resolveUnref(source)
 
-    return isNumber(v) ? v : v.map(unref)
+    return isNumber(v) ? v : v.map(i => resolveUnref(i))
   }
 
   const outputRef = ref(sourceVal())
@@ -223,7 +223,7 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(unref) : unref(to)
+    const toVal = Array.isArray(to) ? to.map(i => resolveUnref(i)) : resolveUnref(to)
 
     options.onStarted?.()
 
