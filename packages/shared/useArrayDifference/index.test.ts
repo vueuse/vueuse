@@ -6,14 +6,14 @@ describe('useArrayDifference', () => {
     expect(useArrayDifference).toBeDefined()
   })
   it('should return the difference of two array', () => {
-    const list1 = ref([1, 2, 3, 4, 5])
-    const list2 = ref([4, 5, 6])
+    const list1 = ref([0, 1, 2, 3, 4, 5])
+    const list2 = ref([0, 4, 5, 6])
 
     const result = useArrayDifference(list1, list2)
     expect(result.value).toEqual([1, 2, 3])
 
     list2.value = [1, 2, 3]
-    expect(result.value).toEqual([4, 5])
+    expect(result.value).toEqual([0, 4, 5])
 
     list1.value = [1, 2, 3]
     expect(result.value).toEqual([])
