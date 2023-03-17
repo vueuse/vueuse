@@ -206,12 +206,12 @@ export function useTransition(
   const sourceVal = () => {
     const v = resolveUnref(source)
 
-    return isNumber(v) ? v : v.map(i => resolveUnref(i))
+    return isNumber(v) ? v : v.map(resolveUnref<number>)
   }
 
   const outputRef = ref(sourceVal())
 
-  watch(() => resolveUnref(source), async (to) => {
+  watch(sourceVal, async (to) => {
     if (unref(options.disabled))
       return
 
@@ -223,7 +223,7 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(i => resolveUnref(i)) : resolveUnref(to)
+    const toVal = Array.isArray(to) ? to.map(resolveUnref<number>) : resolveUnref(to)
 
     options.onStarted?.()
 
