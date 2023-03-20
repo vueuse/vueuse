@@ -1,5 +1,6 @@
-import { watch } from 'vue-demi'
-import { noop, tryOnScopeDispose } from '@vueuse/shared'
+import { unref, watch } from 'vue-demi'
+import { isBoolean, noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
@@ -7,6 +8,12 @@ import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
 export interface UseIntersectionObserverOptions extends ConfigurableWindow {
+  /**
+   * Set to `false` if you want to enable only when needed.
+   * @default undefined
+   */
+  enabled?: MaybeRef<boolean>
+
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
@@ -37,6 +44,7 @@ export function useIntersectionObserver(
   options: UseIntersectionObserverOptions = {},
 ) {
   const {
+    enabled,
     root,
     rootMargin = '0px',
     threshold = 0.1,
@@ -49,12 +57,12 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => ({
-        el: unrefElement(target),
-        root: unrefElement(root),
-      }),
-      ({ el, root }) => {
+      () => [unrefElement(target), unrefElement(root), unref(enabled)] as const,
+      ([el, root, enabled]) => {
         cleanup()
+
+        if (isBoolean(enabled) && !enabled)
+          return
 
         if (!el)
           return
