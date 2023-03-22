@@ -8,9 +8,9 @@
 
 <!-- Please insert your description here and provide especially info about the "what" this PR is solving -->
 
-### Additional context
+### Copilot Summary
 
-<!-- e.g. is there anything you'd like reviewers to focus on? -->
+copilot:all
 
 ---
 
