@@ -11,7 +11,7 @@ A basic event bus.
 ```ts
 import { useEventBus } from '@vueuse/core'
 
-const bus = useEventBus<string>('news')
+const bus = useEventBus<[string]>('news')
 
 const listener = (event: string) => {
   console.log(`news: ${event}`)
@@ -42,7 +42,7 @@ Using `EventBusKey` is the key to bind the event type to the key, similar to Vue
 // fooKey.ts
 import type { EventBusKey } from '@vueuse/core'
 
-export const fooKey: EventBusKey<{ name: foo }> = Symbol('symbol-key')
+export const fooKey: EventBusIdentifier = Symbol('symbol-key')
 ```
 
 ```ts

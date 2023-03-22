@@ -10,15 +10,15 @@ describe('useEventBus', () => {
     events.clear()
   })
   it('on event and off listener', () => {
-    const { on, off } = useEventBus<number>('foo')
     const { inc } = useCounter(0)
+    const { on, off } = useEventBus<typeof inc>('foo')
     on(inc)
     off(inc)
     expect(events).toEqual(emptyMap)
   })
   it('on event', () => {
     let event = false
-    const { emit, on, reset } = useEventBus<boolean>('on-event')
+    const { emit, on, reset } = useEventBus<[boolean]>('on-event')
     on((_event) => {
       event = _event
     })
@@ -28,8 +28,8 @@ describe('useEventBus', () => {
     expect(events).toEqual(emptyMap)
   })
   it('once event', () => {
-    const { once, emit, reset } = useEventBus<number>('foo')
     const { inc, count } = useCounter(0)
+    const { once, emit, reset } = useEventBus<typeof inc>('foo')
     once(inc)
     emit()
     emit()
@@ -40,8 +40,8 @@ describe('useEventBus', () => {
   })
 
   it('not off non-exist listener', () => {
-    const bus1 = useEventBus<number>('foo')
-    const bus2 = useEventBus<number>('bar')
+    const bus1 = useEventBus<[number]>('foo')
+    const bus2 = useEventBus<[number]>('bar')
     const listener = vi.fn()
 
     bus1.on(listener)
@@ -51,8 +51,8 @@ describe('useEventBus', () => {
     expect(events.get('bar')).toBeUndefined()
   })
   it('not off other events listener', () => {
-    const bus1 = useEventBus<number>('foo')
-    const bus2 = useEventBus<number>('bar')
+    const bus1 = useEventBus('foo')
+    const bus2 = useEventBus('bar')
     const listener1 = vi.fn()
     const listener2 = vi.fn()
 
@@ -65,7 +65,7 @@ describe('useEventBus', () => {
     expect(events.get('bar')).toBeDefined()
   })
   it('useEventBus off event', () => {
-    const { emit, on, reset } = useEventBus<number>('useEventBus-off')
+    const { emit, on, reset } = useEventBus('useEventBus-off')
     const { count, inc } = useCounter(0)
     on(inc)
 
@@ -81,8 +81,8 @@ describe('useEventBus', () => {
     expect(events).toEqual(emptyMap)
   })
   it('event off event', () => {
-    const event1 = useEventBus<number>('event-off-1')
-    const event2 = useEventBus<number>('event-off-2')
+    const event1 = useEventBus('event-off-1')
+    const event2 = useEventBus('event-off-2')
     const { count, inc } = useCounter(0)
     event2.on(inc)
     event1.emit() // 1
@@ -117,8 +117,8 @@ describe('useEventBus', () => {
   })
 
   it('should work with payload', async () => {
-    const { on, emit } = useEventBus<'inc' | 'dec', number>('counter')
     const counter = useCounter(0)
+    const { on, emit } = useEventBus<['inc' | 'dec', number]>('counter')
     on((event, payload) => counter[event](payload))
     emit('inc', 3)
     expect(counter.count.value).toBe(3)
@@ -128,7 +128,7 @@ describe('useEventBus', () => {
 
   it('the same key, the same listener, will only be triggered once', () => {
     const listener = vitest.fn()
-    const { on, emit, off } = useEventBus<'inc' | 'dec', number>('counter')
+    const { on, emit, off } = useEventBus('counter')
     on(listener)
     on(listener)
     emit()

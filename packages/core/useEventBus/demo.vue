@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { useEventBus } from '@vueuse/core'
 
-const { on, emit } = useEventBus<string>('vue-use-event-bus')
+const { on, emit } = useEventBus<typeof listener>('vue-use-event-bus')
+
 const message = ref('')
 const news = [
   'Su Bingtian broke the Asian record and entered the Olympic 100-meter race finals as the first person in China-RTHK',
@@ -11,7 +12,10 @@ const news = [
   'China adds two gold medals in Olympic diving and weightlifting',
   'Tokyo Olympic service provokes athletes sleeping in cardboard suitcases and eating canned food, reviewing the Beijing Olympics god-level arrangements',
 ]
-on(_message => message.value = news[Math.floor(Math.random() * news.length)])
+function listener() {
+  return message.value = news[Math.floor(Math.random() * news.length)]
+}
+on(listener)
 </script>
 
 <template>
