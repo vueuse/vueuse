@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, until } from '@vueuse/shared'
+import { resolveRef, resolveUnref, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
@@ -53,19 +53,22 @@ export function useAsyncValidator(
     immediate = true,
   } = options
 
+  const valueRef = resolveRef(value)
+
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
-  const isFinished = ref(false)
+  const isFinished = ref(true)
   const pass = ref(!immediate)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
+  const validator = computed(() => new AsyncValidatorSchema(resolveUnref(rules)))
+
   const execute = async (): Promise<UseAsyncValidatorExecuteReturn> => {
     isFinished.value = false
     pass.value = false
-    const validator = new AsyncValidatorSchema(resolveUnref(rules))
 
     try {
-      await validator.validate(resolveUnref(value), validateOption)
+      await validator.value.validate(valueRef.value, validateOption)
       pass.value = true
       errorInfo.value = null
     }
@@ -85,15 +88,9 @@ export function useAsyncValidator(
   }
 
   watch(
-    [
-      () => resolveUnref(value),
-      () => resolveUnref(rules),
-    ],
-    () => {
-      if (!isFinished.value)
-        execute()
-    },
-    { immediate },
+    [valueRef, validator],
+    () => execute(),
+    { immediate, deep: true },
   )
 
   const shell = {
