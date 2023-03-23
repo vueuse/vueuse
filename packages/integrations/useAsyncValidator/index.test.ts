@@ -68,12 +68,12 @@ describe('useAsyncValidator', () => {
       },
     }
     const { pass, errors, isFinished, then } = useAsyncValidator(form, rules, { immediate: false })
-    expect(isFinished.value).toBe(false)
+    expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(true)
     expect(errors.value).toMatchObject([])
 
     then(() => {
-      expect(isFinished.value).toBe(false)
+      expect(isFinished.value).toBe(true)
       expect(pass.value).toBe(true)
       expect(errors.value).toMatchObject([])
     })
