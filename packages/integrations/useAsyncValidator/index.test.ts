@@ -58,6 +58,44 @@ describe('useAsyncValidator', () => {
     })
   })
 
+  it('immediate should can be work', async () => {
+    const rules: Rules = {
+      name: {
+        type: 'string',
+      },
+      age: {
+        type: 'number',
+      },
+    }
+    const { pass, errors, isFinished, then } = useAsyncValidator(form, rules, { immediate: false })
+    expect(isFinished.value).toBe(false)
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+
+    then(() => {
+      expect(isFinished.value).toBe(false)
+      expect(pass.value).toBe(true)
+      expect(errors.value).toMatchObject([])
+    })
+  })
+
+  it('execute should can be work', async () => {
+    const rules: Rules = {
+      name: {
+        type: 'string',
+      },
+      age: {
+        type: 'number',
+      },
+    }
+    const { isFinished, execute } = useAsyncValidator(form, rules, { immediate: false })
+    const { pass, errors } = await execute()
+
+    expect(isFinished.value).toBe(true)
+    expect(pass).toBe(true)
+    expect(errors).toMatchObject([])
+  })
+
   it('should can be await', async () => {
     const rules: Rules = {
       name: {
@@ -93,6 +131,40 @@ describe('useAsyncValidator', () => {
     expect(isFinished.value).toBe(true)
     expect(pass.value).toBe(false)
     expect(errors.value).toMatchInlineSnapshot(`
+      [
+        {
+          "field": "name",
+          "fieldValue": "jelf",
+          "message": "name length must be 5-20",
+        },
+      ]
+    `)
+  })
+
+  it('should fail to validate when use execute', async () => {
+    const rules: Rules = {
+      name: {
+        type: 'string',
+        min: 5,
+        max: 20,
+        message: 'name length must be 5-20',
+      },
+      age: {
+        type: 'number',
+      },
+    }
+
+    const { execute } = useAsyncValidator(form, rules, {
+      validateOption: {
+        suppressWarning: true,
+      },
+      immediate: false,
+    })
+
+    const { pass, errors } = await execute()
+
+    expect(pass).toBe(false)
+    expect(errors).toMatchInlineSnapshot(`
       [
         {
           "field": "name",

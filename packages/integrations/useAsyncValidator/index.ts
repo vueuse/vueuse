@@ -1,9 +1,9 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, until } from '@vueuse/shared'
+import { resolveRef, resolveUnref, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
-import { computed, ref, watchEffect } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 
 // @ts-expect-error Schema.default is exist in ssr mode
 const AsyncValidatorSchema = Schema.default || Schema
@@ -13,12 +13,20 @@ export type AsyncValidatorError = Error & {
   fields: Record<string, ValidateError[]>
 }
 
+export interface UseAsyncValidatorExecuteReturn {
+  pass: boolean
+  errors: AsyncValidatorError['errors'] | undefined
+  errorInfo: AsyncValidatorError | null
+  errorFields: AsyncValidatorError['fields'] | undefined
+}
+
 export interface UseAsyncValidatorReturn {
   pass: Ref<boolean>
-  errorInfo: Ref<AsyncValidatorError | null>
   isFinished: Ref<boolean>
   errors: Ref<AsyncValidatorError['errors'] | undefined>
+  errorInfo: Ref<AsyncValidatorError | null>
   errorFields: Ref<AsyncValidatorError['fields'] | undefined>
+  execute: () => Promise<UseAsyncValidatorExecuteReturn>
 }
 
 export interface UseAsyncValidatorOptions {
@@ -26,6 +34,7 @@ export interface UseAsyncValidatorOptions {
    * @see https://github.com/yiminghe/async-validator#options
    */
   validateOption?: ValidateOption
+  immediate?: boolean
 }
 
 /**
@@ -39,20 +48,27 @@ export function useAsyncValidator(
   rules: MaybeComputedRef<Rules>,
   options: UseAsyncValidatorOptions = {},
 ): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
-  const errorInfo = ref<AsyncValidatorError | null>()
-  const isFinished = ref(false)
-  const pass = ref(false)
+  const {
+    validateOption = {},
+    immediate = true,
+  } = options
+
+  const valueRef = resolveRef(value)
+
+  const errorInfo = shallowRef<AsyncValidatorError | null>(null)
+  const isFinished = ref(true)
+  const pass = ref(!immediate)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
-  const { validateOption = {} } = options
+  const validator = computed(() => new AsyncValidatorSchema(resolveUnref(rules)))
 
-  watchEffect(async () => {
+  const execute = async (): Promise<UseAsyncValidatorExecuteReturn> => {
     isFinished.value = false
     pass.value = false
-    const validator = new AsyncValidatorSchema(resolveUnref(rules))
+
     try {
-      await validator.validate(resolveUnref(value), validateOption)
+      await validator.value.validate(valueRef.value, validateOption)
       pass.value = true
       errorInfo.value = null
     }
@@ -62,14 +78,28 @@ export function useAsyncValidator(
     finally {
       isFinished.value = true
     }
-  })
+
+    return {
+      pass: pass.value,
+      errorInfo: errorInfo.value,
+      errors: errors.value,
+      errorFields: errorFields.value,
+    }
+  }
+
+  watch(
+    [valueRef, validator],
+    () => execute(),
+    { immediate, deep: true },
+  )
 
   const shell = {
-    pass,
     isFinished,
-    errorInfo,
+    pass,
     errors,
+    errorInfo,
     errorFields,
+    execute,
   } as UseAsyncValidatorReturn
 
   function waitUntilFinished() {
