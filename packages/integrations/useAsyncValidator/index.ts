@@ -58,12 +58,14 @@ export function useAsyncValidator(
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
   const isFinished = ref(true)
   const pass = ref(!immediate)
+  const disableWatchRun = ref(!immediate)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
   const validator = computed(() => new AsyncValidatorSchema(resolveUnref(rules)))
 
   const execute = async (): Promise<UseAsyncValidatorExecuteReturn> => {
+    disableWatchRun.value = false
     isFinished.value = false
     pass.value = false
 
@@ -89,7 +91,10 @@ export function useAsyncValidator(
 
   watch(
     [valueRef, validator],
-    () => execute(),
+    () => {
+      if (!disableWatchRun.value)
+        execute()
+    },
     { immediate, deep: true },
   )
 
