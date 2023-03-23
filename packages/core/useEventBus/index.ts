@@ -3,7 +3,7 @@ import { getCurrentScope } from 'vue-demi'
 import { events } from './internal'
 
 export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void
-export type EventBusEvents<T, P = any> = EventBusListener<T, P>[]
+export type EventBusEvents<T, P = any> = Set<EventBusListener<T, P>>
 
 // eslint-disable-next-line unused-imports/no-unused-vars
 export interface EventBusKey<T> extends Symbol { }
@@ -41,10 +41,9 @@ export interface UseEventBusReturn<T, P> {
 
 export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
   const scope = getCurrentScope()
-
   function on(listener: EventBusListener<T, P>) {
-    const listeners = events.get(key) || []
-    listeners.push(listener)
+    const listeners = (events.get(key) || new Set())
+    listeners.add(listener)
     events.set(key, listeners)
 
     const _off = () => off(listener)
@@ -69,11 +68,10 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
     if (!listeners)
       return
 
-    const index = listeners.indexOf(listener)
-    if (index > -1)
-      listeners.splice(index, 1)
-    if (!listeners.length)
-      events.delete(key)
+    listeners.delete(listener)
+
+    if (!listeners.size)
+      reset()
   }
 
   function reset() {

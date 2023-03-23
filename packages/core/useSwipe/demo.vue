@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { SwipeDirection } from '@vueuse/core'
+import type { UseSwipeDirection } from '@vueuse/core'
 import { useSwipe } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
@@ -30,7 +30,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         }
       }
     },
-    onSwipeEnd(e: TouchEvent, direction: SwipeDirection) {
+    onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
       if (lengthX.value < 0 && containerWidth.value && (Math.abs(lengthX.value) / containerWidth.value) >= 0.5) {
         left.value = '100%'
         opacity.value = 0

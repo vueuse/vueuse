@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { usePointerSwipe } from '@vueuse/core'
-import type { SwipeDirection } from '@vueuse/core'
+import type { UseSwipeDirection } from '@vueuse/core'
 
 const target = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)
@@ -30,7 +30,7 @@ const { distanceX, isSwiping } = usePointerSwipe(target, {
       }
     }
   },
-  onSwipeEnd(e: PointerEvent, direction: SwipeDirection) {
+  onSwipeEnd(e: PointerEvent, direction: UseSwipeDirection) {
     if (distanceX.value < 0 && containerWidth.value && (Math.abs(distanceX.value) / containerWidth.value) >= 0.5) {
       left.value = '100%'
       opacity.value = 0
