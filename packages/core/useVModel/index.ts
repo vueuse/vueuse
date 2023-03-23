@@ -42,9 +42,10 @@ export interface UseVModelOptions<T> {
   /**
    * The hook before triggering the emit event can be used for form validation.
    * if false is returned, the emit event will not be triggered.
+   *
    * @default undefined
    */
-  beforeEmit?: (v: T) => boolean
+  shouldEmit?: (v: T) => boolean
 }
 
 /**
@@ -67,7 +68,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     eventName,
     deep = false,
     defaultValue,
-    beforeEmit,
+    shouldEmit,
   } = options
 
   const vm = getCurrentInstance()
@@ -99,13 +100,16 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     ? cloneFn(props[key!])
     : defaultValue
 
-  const emitTrigger = (value: P[K]) => {
-    if (beforeEmit && isFunction(beforeEmit)) {
-      beforeEmit(value) && _emit(event, value)
-      return
+  const triggerEmit = (value: P[K]) => {
+    if (shouldEmit) {
+      if (shouldEmit(value))
+        _emit(event, value)
     }
-    _emit(event, value)
+    else {
+      _emit(event, value)
+    }
   }
+
   if (passive) {
     const initialValue = getValue()
     const proxy = ref<P[K]>(initialValue!)
@@ -119,7 +123,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
       proxy,
       (v) => {
         if (v !== props[key!] || deep)
-          emitTrigger(v as P[K])
+          triggerEmit(v as P[K])
       },
       { deep },
     )
@@ -132,7 +136,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
         return getValue()!
       },
       set(value) {
-        emitTrigger(value)
+        triggerEmit(value)
       },
     })
   }

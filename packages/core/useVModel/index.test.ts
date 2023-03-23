@@ -239,7 +239,7 @@ describe('useVModel', () => {
       beforeEmitMock()
       return true
     }
-    const data = useVModel(defaultProps(), undefined, emitMock, { beforeEmit })
+    const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
     data.value = 'changed'
 
     expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
@@ -257,7 +257,7 @@ describe('useVModel', () => {
       beforeEmitMock()
       return false
     }
-    const data = useVModel(defaultProps(), undefined, emitMock, { beforeEmit })
+    const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
     data.value = 'changed'
 
     expect(emitMock).not.toHaveBeenCalled()
