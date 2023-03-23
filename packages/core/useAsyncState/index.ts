@@ -117,7 +117,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
       error.value = e
       onError(e)
       if (throwError)
-        throw error
+        throw e
     }
     finally {
       isLoading.value = false
