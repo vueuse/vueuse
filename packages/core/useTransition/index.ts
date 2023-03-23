@@ -1,7 +1,7 @@
 import { computed, ref, unref, watch } from 'vue-demi'
-import { isFunction, isNumber, identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, isNumber, identity as linear, promiseTimeout, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
 
 /**
  * Cubic bezier points
@@ -182,13 +182,13 @@ export function executeTransition<T extends number | number[]>(
 }
 
 // option 1: reactive number
-export function useTransition(source: Ref<number>, options?: UseTransitionOptions): ComputedRef<number>
+export function useTransition(source: MaybeComputedRef<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeComputedRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
-export function useTransition<T extends Ref<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
+export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
  * Follow value with a transition.
@@ -198,20 +198,20 @@ export function useTransition<T extends Ref<number[]>>(source: T, options?: UseT
  * @param options
  */
 export function useTransition(
-  source: Ref<number | number[]> | MaybeRef<number>[],
+  source: MaybeComputedRef<number | number[]> | MaybeComputedRef<number>[],
   options: UseTransitionOptions = {},
 ): Ref<any> {
   let currentId = 0
 
   const sourceVal = () => {
-    const v = unref<number | MaybeRef<number>[]>(source)
+    const v = resolveUnref(source)
 
-    return isNumber(v) ? v : v.map(unref)
+    return isNumber(v) ? v : v.map(resolveUnref<number>)
   }
 
   const outputRef = ref(sourceVal())
 
-  watch(source, async (to) => {
+  watch(sourceVal, async (to) => {
     if (unref(options.disabled))
       return
 
@@ -223,7 +223,7 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(unref) : unref(to)
+    const toVal = Array.isArray(to) ? to.map(resolveUnref<number>) : resolveUnref(to)
 
     options.onStarted?.()
 

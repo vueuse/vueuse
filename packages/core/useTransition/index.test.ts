@@ -93,6 +93,25 @@ describe('useTransition', () => {
     expect(transition.value[1]).toBe(1)
   })
 
+  it('transitions between refs', async () => {
+    const source1 = ref(0)
+    const source2 = ref(0)
+    const transition = useTransition([source1, source2], { duration: 100 })
+
+    expect(transition.value).toEqual([0, 0])
+
+    source1.value = 1
+    source2.value = 1
+
+    await promiseTimeout(50)
+    expectBetween(transition.value[0], 0, 1)
+    expectBetween(transition.value[1], 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value[0]).toBe(1)
+    expect(transition.value[1]).toBe(1)
+  })
+
   it('supports cubic bezier curves', async () => {
     const source = ref(0)
 
