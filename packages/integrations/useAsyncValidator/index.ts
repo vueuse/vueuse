@@ -35,6 +35,7 @@ export interface UseAsyncValidatorOptions {
    */
   validateOption?: ValidateOption
   immediate?: boolean
+  manual?: boolean
 }
 
 /**
@@ -51,21 +52,22 @@ export function useAsyncValidator(
   const {
     validateOption = {},
     immediate = true,
+    manual = false,
   } = options
 
   const valueRef = resolveRef(value)
 
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
   const isFinished = ref(true)
-  const pass = ref(!immediate)
-  const disableWatchRun = ref(!immediate)
+  const pass = ref(!immediate || manual)
+  const manualRef = ref(manual)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
   const validator = computed(() => new AsyncValidatorSchema(resolveUnref(rules)))
 
   const execute = async (): Promise<UseAsyncValidatorExecuteReturn> => {
-    disableWatchRun.value = false
+    manualRef.value = false
     isFinished.value = false
     pass.value = false
 
@@ -92,7 +94,7 @@ export function useAsyncValidator(
   watch(
     [valueRef, validator],
     () => {
-      if (!disableWatchRun.value)
+      if (!manualRef.value)
         execute()
     },
     { immediate, deep: true },
