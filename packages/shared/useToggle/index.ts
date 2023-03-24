@@ -22,8 +22,8 @@ export function useToggle(
   options: UseToggleOptions<true, false> = {},
 ) {
   const {
-    truthyValue = true,
-    falsyValue = false,
+    truthyValue = false,
+    falsyValue = true,
   } = options
 
   const valueIsRef = isRef(initialValue)
