@@ -77,6 +77,9 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     isInBetween(a: K, b: K) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
+    getCurrent() {
+      return ((Object.entries(shortcutMethods) as [string, Ref<boolean>][]).find(([_k, isActive]) => isActive.value) || [undefined])[0]
+    },
     ...shortcutMethods,
   }
 }
@@ -92,4 +95,5 @@ export type UseBreakpointsReturn<K extends string = string> = {
   isSmaller(k: K): boolean
   isSmallerOrEqual(k: K): boolean
   isInBetween(a: K, b: K): boolean
+  getCurrent: () => string | undefined
 } & Record<K, Ref<boolean>>

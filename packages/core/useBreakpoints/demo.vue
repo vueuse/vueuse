@@ -5,6 +5,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const smWidth = breakpointsTailwind.sm
 
+const activeBreakpoint = breakpoints.getCurrent()
 const sm = breakpoints.smaller('sm')
 const sme = breakpoints.smallerOrEqual('sm')
 const md = breakpoints.between('sm', 'md')
@@ -16,6 +17,7 @@ const xxxl = breakpoints['2xl']
 
 <template>
   <div class="font-mono">
+    <div> Current breakpoint: {{ activeBreakpoint }} </div>
     <div> sm(&lt;{{ smWidth }}px): <BooleanDisplay :value="sm" /></div>
     <div> sm(&lt;={{ smWidth }}px): <BooleanDisplay :value="sme" /></div>
     <div> md: <BooleanDisplay :value="md" /></div>
