@@ -10,8 +10,8 @@ Combine computed and inject
 
 In Provider Component
 ```ts
-import type { InjectionKey, Ref } from 'vue-demi'
-import { provide, ref } from 'vue-demi'
+import type { InjectionKey, Ref } from 'vue'
+import { provide, ref } from 'vue'
 
 interface Item {
   key: number

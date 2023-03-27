@@ -101,3 +101,7 @@ export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[
     return n
   }, {} as Pick<O, T>)
 }
+
+export function objectEntries<T extends object>(obj: T) {
+  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
+}

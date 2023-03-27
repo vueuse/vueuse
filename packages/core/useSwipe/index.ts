@@ -7,13 +7,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export enum SwipeDirection {
-  UP = 'UP',
-  RIGHT = 'RIGHT',
-  DOWN = 'DOWN',
-  LEFT = 'LEFT',
-  NONE = 'NONE',
-}
+export type UseSwipeDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 
 export interface UseSwipeOptions extends ConfigurableWindow {
   /**
@@ -41,13 +35,13 @@ export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Callback on swipe ends
    */
-  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: TouchEvent, direction: UseSwipeDirection) => void
 }
 
 export interface UseSwipeReturn {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection | null>
+  direction: ComputedRef<UseSwipeDirection>
   coordsStart: Readonly<Position>
   coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
@@ -86,19 +80,19 @@ export function useSwipe(
 
   const isSwiping = ref(false)
 
-  const direction = computed(() => {
+  const direction = computed((): UseSwipeDirection => {
     if (!isThresholdExceeded.value)
-      return SwipeDirection.NONE
+      return 'none'
 
     if (abs(diffX.value) > abs(diffY.value)) {
       return diffX.value > 0
-        ? SwipeDirection.LEFT
-        : SwipeDirection.RIGHT
+        ? 'left'
+        : 'right'
     }
     else {
       return diffY.value > 0
-        ? SwipeDirection.UP
-        : SwipeDirection.DOWN
+        ? 'up'
+        : 'down'
     }
   })
 
