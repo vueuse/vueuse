@@ -273,32 +273,6 @@ describe('set manual true', () => {
   })
 
   it('manual trigger validator', async () => {
-    const rules: Rules = {
-      name: {
-        type: 'string',
-        min: 5,
-        max: 20,
-        message: 'name length must be 5-20',
-      },
-      age: {
-        type: 'number',
-      },
-    }
-    const { execute } = useAsyncValidator(form, rules, { manual: true })
-    const { pass, errors } = await execute()
-    expect(pass).toBe(false)
-    expect(errors).toMatchInlineSnapshot(`
-    [
-      {
-        "field": "name",
-        "fieldValue": "jelf",
-        "message": "name length must be 5-20",
-      },
-    ]
-  `)
-  })
-
-  it('should reactive after manual trigger', async () => {
     const form = ref({
       name: 'jelf',
       age: 24,
@@ -317,9 +291,26 @@ describe('set manual true', () => {
     }) as Ref<Rules>
 
     const { execute, pass, errors } = useAsyncValidator(form, rules, { manual: true })
+
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+
+    // first trigger
     await execute()
+    expect(pass.value).toBe(false)
+    expect(errors.value).toMatchInlineSnapshot(`
+      [
+        {
+          "field": "name",
+          "fieldValue": "jelf",
+          "message": "name length must be 5-20",
+        },
+      ]
+    `)
+
+    // second trigger
     form.value.name = 'okxiaoliang4'
-    await nextTick()
+    await execute()
     expect(pass.value).toBe(true)
     expect(errors.value).toMatchObject([])
   })
