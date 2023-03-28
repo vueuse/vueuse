@@ -1,8 +1,8 @@
-import { defineComponent, h, nextTick, ref } from 'vue-demi'
+import { defineComponent, h, isVue2, nextTick, ref } from 'vue-demi'
 import { mount } from '../../.test'
 import { useParentElement } from '.'
 
-describe('useParentElement', () => {
+describe.skipIf(isVue2)('useParentElement', () => {
   it('should be defined', () => {
     expect(useParentElement).toBeDefined()
   })
