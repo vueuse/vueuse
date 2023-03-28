@@ -1,4 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveUnref } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -9,6 +10,12 @@ export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
   target?: MaybeComputedRef<EventTarget | null | undefined>
   passive?: boolean
+  /**
+   * Set to `true` to ignore repeated events when the key is being held down.
+   *
+   * @default false
+   */
+  dedupe?: MaybeComputedRef<boolean>
 }
 
 const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
@@ -60,9 +67,17 @@ export function onKeyStroke(...args: any[]) {
     handler = args[0]
   }
 
-  const { target = defaultWindow, eventName = 'keydown', passive = false } = options
+  const {
+    target = defaultWindow,
+    eventName = 'keydown',
+    passive = false,
+    dedupe = false,
+  } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
+    if (e.repeat && resolveUnref(dedupe))
+      return
+
     if (predicate(e))
       handler(e)
   }
