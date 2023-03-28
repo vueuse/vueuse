@@ -1,77 +1,12 @@
-/* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
-
-import { ref } from 'vue-demi'
+import { computed, ref, watchEffect } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
+import type { Fn } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 import { useSupported } from '../useSupported'
-
-type FunctionMap = [
-  'requestFullscreen',
-  'exitFullscreen',
-  'fullscreenElement',
-  'fullscreenEnabled',
-  'fullscreenchange',
-  'fullscreenerror',
-]
-
-// from: https://github.com/sindresorhus/screenfull.js/blob/master/src/screenfull.js
-const functionsMap: FunctionMap[] = [
-  [
-    'requestFullscreen',
-    'exitFullscreen',
-    'fullscreenElement',
-    'fullscreenEnabled',
-    'fullscreenchange',
-    'fullscreenerror',
-  ],
-  // New WebKit
-  [
-    'webkitRequestFullscreen',
-    'webkitExitFullscreen',
-    'webkitFullscreenElement',
-    'webkitFullscreenEnabled',
-    'webkitfullscreenchange',
-    'webkitfullscreenerror',
-  ],
-  // Safari iOS WebKit
-  [
-    'webkitEnterFullscreen',
-    'webkitExitFullscreen',
-    'webkitFullscreenElement',
-    'webkitFullscreenEnabled',
-    'webkitfullscreenchange',
-    'webkitfullscreenerror',
-  ],
-  // Old WebKit
-  [
-    'webkitRequestFullScreen',
-    'webkitCancelFullScreen',
-    'webkitCurrentFullScreenElement',
-    'webkitCancelFullScreen',
-    'webkitfullscreenchange',
-    'webkitfullscreenerror',
-  ],
-  [
-    'mozRequestFullScreen',
-    'mozCancelFullScreen',
-    'mozFullScreenElement',
-    'mozFullScreenEnabled',
-    'mozfullscreenchange',
-    'mozfullscreenerror',
-  ],
-  [
-    'msRequestFullscreen',
-    'msExitFullscreen',
-    'msFullscreenElement',
-    'msFullscreenEnabled',
-    'MSFullscreenChange',
-    'MSFullscreenError',
-  ],
-] as any
 
 export interface UseFullscreenOptions extends ConfigurableDocument {
   /**
@@ -81,6 +16,13 @@ export interface UseFullscreenOptions extends ConfigurableDocument {
    */
   autoExit?: boolean
 }
+
+const eventHandlers = [
+  'fullscreenchange',
+  'webkitfullscreenchange',
+  'webkitendfullscreen',
+  'mozfullscreenchange',
+  'MSFullscreenChange'] as any as 'fullscreenchange'
 
 /**
  * Reactive Fullscreen API.
@@ -94,34 +36,84 @@ export function useFullscreen(
   options: UseFullscreenOptions = {},
 ) {
   const { document = defaultDocument, autoExit = false } = options
-  const targetRef = target || document?.querySelector('html')
+  const targetRef = target ?? document?.querySelector('html')
   const isFullscreen = ref(false)
-  let map: FunctionMap = functionsMap[0]
+  let targetHandlerCleanup: Fn
 
-  const isSupported = useSupported(() => {
-    if (!document) {
-      return false
-    }
-    else {
-      const target = unrefElement(targetRef)
+  const requestMethod = computed<'requestFullscreen' | undefined>(() => {
+    const target = unrefElement(targetRef)
+    return [
+      'requestFullscreen',
+      'webkitRequestFullscreen',
+      'webkitEnterFullscreen',
+      'webkitEnterFullScreen',
+      'webkitRequestFullScreen',
+      'mozRequestFullScreen',
+      'msRequestFullscreen',
+    ].find(m => (document && m in document) || (target && m in target)) as any
+  })
+  const exitMethod = computed<'exitFullscreen' | undefined>(() => {
+    const target = unrefElement(targetRef)
+    return [
+      'exitFullscreen',
+      'webkitExitFullscreen',
+      'webkitExitFullScreen',
+      'webkitCancelFullScreen',
+      'mozCancelFullScreen',
+      'msExitFullscreen',
+    ].find(m => (document && m in document) || (target && m in target)) as any
+  })
+  const fullscreenEnabled = computed<'fullscreenEnabled' | undefined>(() => {
+    const target = unrefElement(targetRef)
+    return [
+      'fullScreen',
+      'webkitIsFullScreen',
+      'webkitDisplayingFullscreen',
+      'mozFullScreen',
+      'msFullscreenElement',
+    ].find(m => (document && m in document) || (target && m in target)) as any
+  })
 
-      for (const m of functionsMap) {
-        if (m[1] in document || (target && m[0] in target)) {
-          map = m
-          return true
+  const isSupported = useSupported(() =>
+    unrefElement(targetRef)
+    && document
+    && requestMethod.value !== undefined
+    && exitMethod.value !== undefined
+    && fullscreenEnabled.value !== undefined,
+  )
+
+  const isElementFullScreen = (): boolean => {
+    if (fullscreenEnabled.value) {
+      if (document && document[fullscreenEnabled.value] !== undefined && document[fullscreenEnabled.value] !== null) {
+        return document[fullscreenEnabled.value]
+      }
+      else {
+        const target = unrefElement(targetRef)
+        // @ts-expect-error - Fallback for WebKit and iOS Safari browsers
+        if (target[fullscreenEnabled.value] !== undefined && target[fullscreenEnabled.value] !== null) {
+          // @ts-expect-error - Fallback for WebKit and iOS Safari browsers
+          return Boolean(target[fullscreenEnabled.value])
         }
       }
     }
     return false
-  })
-
-  const [REQUEST, EXIT, ELEMENT,, EVENT] = map
+  }
 
   async function exit() {
     if (!isSupported.value)
       return
-    if (document?.[ELEMENT])
-      await document[EXIT]()
+    if (exitMethod.value) {
+      if (document?.[exitMethod.value] !== undefined) {
+        await document[exitMethod.value]()
+      }
+      else {
+        const target = unrefElement(targetRef)
+        // @ts-expect-error - Fallback for Safari iOS
+        if (target[exitMethod.value] !== undefined)
+        // @ts-expect-error - Fallback for Safari iOS
+          await target[exitMethod.value]()
+      }
+    }
 
     isFullscreen.value = false
   }
@@ -130,27 +122,33 @@ export function useFullscreen(
     if (!isSupported.value)
       return
 
-    await exit()
+    if (isElementFullScreen())
+      await exit()
 
     const target = unrefElement(targetRef)
-    if (target) {
-      await target[REQUEST]()
+    if (target && requestMethod.value && target[requestMethod.value] !== undefined) {
+      await target[requestMethod.value]()
       isFullscreen.value = true
     }
   }
 
   async function toggle() {
-    if (isFullscreen.value)
-      await exit()
-    else
-      await enter()
+    await (isFullscreen.value ? exit() : enter())
   }
 
-  if (document) {
-    useEventListener(document, EVENT, () => {
-      isFullscreen.value = !!document?.[ELEMENT]
-    }, false)
+  const handlerCallback = () => {
+    isFullscreen.value = isElementFullScreen()
   }
+
+  useEventListener(document, eventHandlers, handlerCallback, false)
+  watchEffect(() => {
+    const target = unrefElement(targetRef)
+
+    if (targetHandlerCleanup)
+      targetHandlerCleanup()
+
+    targetHandlerCleanup = useEventListener(target, eventHandlers, handlerCallback, false)
+  })
 
   if (autoExit)
     tryOnScopeDispose(exit)
