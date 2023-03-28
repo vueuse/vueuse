@@ -8,23 +8,29 @@ Get parent element of the given element
 
 ## Usage
 
+When no argument is passed, it will return the parent element of the current component.
+
 ```js
 import { useParentElement } from '@vueuse/core'
 
-const { parentEl } = useParentElement()
+const parentEl = useParentElement()
 
-console.log('parentEl :>>', parentEl.value)
+onMounted(() => {
+  console.log(parentEl.value)
+})
 ```
 
 It can also accept a `ref` as the first argument.
 
-```js
+```ts
 import { useParentElement } from '@vueuse/core'
 
 // Don't forget to bind the ref to the element
-const tooltip = ref()
+const tooltip = ref<HTMLElement | undefined>()
 
-const { parentEl: tooltipWrapper } = useParentElement(tooltip)
+const tooltipWrapper = useParentElement(tooltip)
 
-console.log('tooltipWrapper :>>', tooltipWrapper.value)
+onMounted(() => {
+  console.log(tooltipWrapper.value)
+})
 ```

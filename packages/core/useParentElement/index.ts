@@ -1,18 +1,22 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
 import { resolveUnref, tryOnMounted } from '@vueuse/shared'
-import { getCurrentInstance, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { getCurrentInstance, shallowRef, watch } from 'vue-demi'
 import { unrefElement } from '../unrefElement'
 
-export const useParentElement = (element?: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>) => {
-  const parentElement = ref()
+export function useParentElement(
+  element?: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
+): Readonly<Ref<HTMLElement | SVGElement | null | undefined>> {
+  const parentElement = shallowRef<HTMLElement | SVGElement | null | undefined>()
 
-  tryOnMounted(() => {
-    const el = unrefElement(resolveUnref(element) || getCurrentInstance()?.proxy)
+  const update = () => {
+    const el = unrefElement(element ? resolveUnref(element) : getCurrentInstance()?.proxy)
     if (el)
       parentElement.value = el.parentElement
-  })
-
-  return {
-    parentElement,
   }
+
+  tryOnMounted(update)
+  watch(() => resolveUnref(element), update)
+
+  return parentElement
 }
