@@ -89,6 +89,7 @@ export const packages: PackageManifest[] = [
       'fuse.js',
       'async-validator',
       'idb-keyval',
+      'sortablejs',
     ],
     globals: {
       'axios': 'axios',
@@ -102,6 +103,7 @@ export const packages: PackageManifest[] = [
       'change-case': 'changeCase',
       'async-validator': 'AsyncValidator',
       'idb-keyval': 'idbKeyval',
+      'sortablejs': 'Sortable',
     },
   },
   {
