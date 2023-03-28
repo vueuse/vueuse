@@ -34,7 +34,17 @@ export interface UseAsyncValidatorOptions {
    * @see https://github.com/yiminghe/async-validator#options
    */
   validateOption?: ValidateOption
+  /**
+   * The validation will be triggered right away for the first time.
+   * Only works when `manual` is not set to true.
+   *
+   * @default true
+   */
   immediate?: boolean
+  /**
+   * If set to true, the validation will not be triggered automatically.
+   */
+  manual?: boolean
 }
 
 /**
@@ -51,13 +61,14 @@ export function useAsyncValidator(
   const {
     validateOption = {},
     immediate = true,
+    manual = false,
   } = options
 
   const valueRef = resolveRef(value)
 
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
   const isFinished = ref(true)
-  const pass = ref(!immediate)
+  const pass = ref(!immediate || manual)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
@@ -87,11 +98,13 @@ export function useAsyncValidator(
     }
   }
 
-  watch(
-    [valueRef, validator],
-    () => execute(),
-    { immediate, deep: true },
-  )
+  if (!manual) {
+    watch(
+      [valueRef, validator],
+      () => execute(),
+      { immediate, deep: true },
+    )
+  }
 
   const shell = {
     isFinished,

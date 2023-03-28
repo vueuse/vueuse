@@ -1,6 +1,6 @@
 import type { Rules } from 'async-validator'
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { useAsyncValidator } from '.'
 
 describe('useAsyncValidator', () => {
@@ -211,5 +211,107 @@ describe('useAsyncValidator', () => {
     `)
 
     form.value.name = 'okxiaoliang4'
+    await nextTick()
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+  })
+})
+
+describe('set manual true', () => {
+  let form: {
+    name: string
+    age: number
+  }
+
+  beforeEach(() => {
+    form = {
+      name: 'jelf',
+      age: 24,
+    }
+  })
+
+  it('set immediate and manual at the same time', async () => {
+    const rules: Rules = {
+      name: {
+        type: 'string',
+        min: 5,
+        max: 20,
+        message: 'name length must be 5-20',
+      },
+      age: {
+        type: 'number',
+      },
+    }
+    const { pass, errors, then } = useAsyncValidator(form, rules, { immediate: false, manual: true })
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+    then(() => {
+      expect(pass.value).toBe(true)
+      expect(errors.value).toMatchObject([])
+    })
+  })
+
+  it('set manual, do not run validator automatically', async () => {
+    const rules: Rules = {
+      name: {
+        type: 'string',
+        min: 5,
+        max: 20,
+        message: 'name length must be 5-20',
+      },
+      age: {
+        type: 'number',
+      },
+    }
+    const { pass, errors, then } = useAsyncValidator(form, rules, { manual: true })
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+    then(() => {
+      expect(pass.value).toBe(true)
+      expect(errors.value).toMatchObject([])
+    })
+  })
+
+  it('manual trigger validator', async () => {
+    const form = ref({
+      name: 'jelf',
+      age: 24,
+    })
+
+    const rules = ref({
+      name: {
+        type: 'string',
+        min: 5,
+        max: 20,
+        message: 'name length must be 5-20',
+      },
+      age: {
+        type: 'number',
+      },
+    }) as Ref<Rules>
+
+    const { execute, pass, errors } = useAsyncValidator(form, rules, { manual: true })
+
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
+
+    // first trigger
+    await execute()
+    expect(pass.value).toBe(false)
+    expect(errors.value).toMatchInlineSnapshot(`
+      [
+        {
+          "field": "name",
+          "fieldValue": "jelf",
+          "message": "name length must be 5-20",
+        },
+      ]
+    `)
+
+    // second trigger
+    form.value.name = 'okxiaoliang4'
+    await execute()
+    expect(pass.value).toBe(true)
+    expect(errors.value).toMatchObject([])
   })
 })
