@@ -579,7 +579,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   }
 
   if (options.immediate)
-    setTimeout(execute, 0)
+    Promise.resolve().then(() => execute())
 
   return {
     ...shell,
