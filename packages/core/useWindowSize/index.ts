@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -56,8 +56,19 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  if (listenOrientation)
-    useEventListener('orientationchange', update, { passive: true })
+  // 1. Deprecated: orientationchange  https://developer.mozilla.org/en-US/docs/Web/API/Window/orientationchange_event
+  // 2. window.innerWidth incorrect in browser after orientation change event
+  let mediaOrientation: MediaQueryList
+  if (listenOrientation) {
+    if (window) {
+      mediaOrientation = window.matchMedia('(orientation: portrait)')
+      mediaOrientation && mediaOrientation.addEventListener('change', update)
+    }
+  }
+  tryOnUnmounted(() => {
+    mediaOrientation && mediaOrientation.removeEventListener('change', update)
+  })
+  // useEventListener('orientationchange', update, { passive: true })
 
   return { width, height }
 }

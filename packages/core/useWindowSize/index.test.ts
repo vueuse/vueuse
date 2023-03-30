@@ -3,13 +3,15 @@ import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
   const addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
-
+  const matchMediaSpy = vitest.spyOn(window, 'matchMedia')
   beforeEach(() => {
     addEventListenerSpy.mockReset()
+    matchMediaSpy.mockReset()
   })
 
   afterAll(() => {
     addEventListenerSpy.mockRestore()
+    matchMediaSpy.mockRestore()
   })
 
   it('should be defined', () => {
@@ -42,15 +44,15 @@ describe('useWindowSize', () => {
     expect(call[2]).toEqual({ passive: true })
   })
 
-  it('sets handler for window "orientationchange" event', async () => {
+  it('sets handler for window.matchMedia("(orientation: portrait)") change event', async () => {
     useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
     await nextTick()
 
-    expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1)
 
-    const call = addEventListenerSpy.mock.calls[1] as any
-    expect(call[0]).toEqual('orientationchange')
-    expect(call[2]).toEqual({ passive: true })
+    expect(matchMediaSpy).toHaveBeenCalledTimes(1)
+    const call = matchMediaSpy.mock.calls[0] as any
+    expect(call[0]).toEqual('(orientation: portrait)')
   })
 })
