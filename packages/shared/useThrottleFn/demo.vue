@@ -8,7 +8,7 @@ const throttledFn = useThrottleFn(() => {
   updated.value += 1
 }, 1000)
 
-const clickedFn = () => {
+function clickedFn() {
   clicked.value += 1
   throttledFn()
 }

@@ -10,7 +10,7 @@ const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
 const link = computed(() => `/functions\#category=${encodeURIComponent(info.value!.category!)}`)
 
 const exportSize = exportSizes[info.value!.name as keyof typeof exportSizes]
-const getFunctionLink = (fn: string) => {
+function getFunctionLink(fn: string) {
   const info = functions.find(i => i.name === fn)
   return info?.docs?.replace(/https?:\/\/vueuse\.org\//g, '/')
 }

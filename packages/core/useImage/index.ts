@@ -36,10 +36,8 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
  * @param options Image attributes, as used in the <img> tag
  * @param asyncStateOptions
  */
-export const useImage = <Shallow extends true>(
-  options: MaybeComputedRef<UseImageOptions>,
-  asyncStateOptions: UseAsyncStateOptions<Shallow> = {},
-) => {
+export function useImage<Shallow extends true>(options: MaybeComputedRef<UseImageOptions>,
+  asyncStateOptions: UseAsyncStateOptions<Shallow> = {}) {
   const state = useAsyncState<HTMLImageElement | undefined>(
     () => loadImage(resolveUnref(options)),
     undefined,

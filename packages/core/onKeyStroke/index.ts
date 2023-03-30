@@ -18,7 +18,7 @@ export interface OnKeyStrokeOptions {
   dedupe?: MaybeComputedRef<boolean>
 }
 
-const createKeyPredicate = (keyFilter: KeyFilter): KeyPredicate => {
+function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
   if (typeof keyFilter === 'function')
     return keyFilter
 

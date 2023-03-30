@@ -28,12 +28,9 @@ export function useArrayFindLast<T>(
 ): ComputedRef<T | undefined> {
   return computed(() =>
     resolveUnref<T | undefined>(
-      // @ts-expect-error - missing in types
-      // https://github.com/microsoft/TypeScript/issues/48829
       !Array.prototype.findLast
         ? findLast(resolveUnref(list), (element, index, array) => fn(resolveUnref(element), index, array))
         : resolveUnref(list)
-          // @ts-expect-error - missing in types
           .findLast((element, index, array) => fn(resolveUnref(element), index, array)),
     ),
   )

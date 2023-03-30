@@ -3,7 +3,7 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-const isFocusedElementEditable = () => {
+function isFocusedElementEditable() {
   const { activeElement, body } = document
 
   if (!activeElement)
@@ -24,12 +24,12 @@ const isFocusedElementEditable = () => {
   return activeElement.hasAttribute('contenteditable')
 }
 
-const isTypedCharValid = ({
+function isTypedCharValid({
   keyCode,
   metaKey,
   ctrlKey,
   altKey,
-}: KeyboardEvent) => {
+}: KeyboardEvent) {
   if (metaKey || ctrlKey || altKey)
     return false
 

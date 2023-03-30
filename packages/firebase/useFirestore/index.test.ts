@@ -5,12 +5,14 @@ import { useFirestore } from './index'
 
 const dummyFirestore = {} as Firestore
 
-const getMockSnapFromRef = (docRef: any) => ({
-  id: `${docRef.path}-id`,
-  data: () => docRef.path === 'users/invalid' ? null : docRef,
-})
+function getMockSnapFromRef(docRef: any) {
+  return {
+    id: `${docRef.path}-id`,
+    data: () => docRef.path === 'users/invalid' ? null : docRef,
+  }
+}
 
-const getData = (docRef: any) => {
+function getData(docRef: any) {
   const data = docRef.data()
   if (data) {
     Object.defineProperty(data, 'id', {

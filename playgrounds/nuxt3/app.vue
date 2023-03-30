@@ -11,7 +11,7 @@ onMounted(() => {
 })
 
 const state = reactive({ width, height, color })
-const toggleMode = () => {
+function toggleMode() {
   state.color = state.color === 'light' ? 'dark' : 'light'
 }
 </script>

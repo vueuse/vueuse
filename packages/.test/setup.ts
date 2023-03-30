@@ -4,7 +4,7 @@ import './polyfillPointerEvents'
 import './polyfillIndexedDb'
 import { beforeAll, beforeEach } from 'vitest'
 
-const setupVueSwitch = () => {
+function setupVueSwitch() {
   if (isVue2) {
     Vue2.config.productionTip = false
     Vue2.config.devtools = false

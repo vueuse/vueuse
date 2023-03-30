@@ -24,7 +24,7 @@ onMounted(() => {
   }
 })
 
-const play = () => {
+function play() {
   if (speech.status.value === 'pause') {
     console.log('resume')
     window.speechSynthesis.resume()
@@ -34,11 +34,11 @@ const play = () => {
   }
 }
 
-const pause = () => {
+function pause() {
   window.speechSynthesis.pause()
 }
 
-const stop = () => {
+function stop() {
   speech.stop()
 }
 </script>

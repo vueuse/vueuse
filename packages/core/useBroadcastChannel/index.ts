@@ -20,7 +20,7 @@ export interface UseBroadcastChannelOptions extends ConfigurableWindow {
  * @param options
  *
  */
-export const useBroadcastChannel = <D, P>(options: UseBroadcastChannelOptions): UseBroadcastChannelReturn<D, P> => {
+export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): UseBroadcastChannelReturn<D, P> {
   const {
     name,
     window = defaultWindow,

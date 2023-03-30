@@ -119,9 +119,13 @@ function createEasingFunction([p0, p1, p2, p3]: CubicBezierPoints): EasingFuncti
   return (x: number) => (p0 === p1 && p2 === p3) ? x : calcBezier(getTforX(x), p1, p3)
 }
 
-const lerp = (a: number, b: number, alpha: number) => a + alpha * (b - a)
+function lerp(a: number, b: number, alpha: number) {
+  return a + alpha * (b - a)
+}
 
-const toVec = (t: number | number[] | undefined) => (isNumber(t) ? [t] : t) || []
+function toVec(t: number | number[] | undefined) {
+  return (isNumber(t) ? [t] : t) || []
+}
 
 /**
  * Transition from one value to another.

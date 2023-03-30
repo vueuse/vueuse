@@ -66,7 +66,7 @@ onDisconnected((index) => {
 ```ts
 import { computed } from 'vue'
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
-const vibrate = () => {
+function vibrate() {
   if (supportsVibration.value) {
     const actuator = gamepad.hapticActuators[0]
     actuator.playEffect('dual-rumble', {

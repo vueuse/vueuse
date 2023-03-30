@@ -5,7 +5,7 @@ import { useCssVar } from '@vueuse/core'
 const el = ref(null)
 const color = useCssVar('--color', el)
 
-const switchColor = () => {
+function switchColor() {
   if (color.value === '#df8543')
     color.value = '#7fa998'
   else
@@ -15,7 +15,7 @@ const switchColor = () => {
 const elv = ref(null)
 const key = ref('--color')
 const colorVal = useCssVar(key, elv)
-const changeVar = () => {
+function changeVar() {
   if (key.value === '--color')
     key.value = '--color-one'
   else

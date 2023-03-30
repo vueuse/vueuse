@@ -9,7 +9,7 @@ const containerWidth = computed(() => container.value?.offsetWidth)
 const left = ref('0')
 const opacity = ref(1)
 
-const reset = () => {
+function reset() {
   left.value = '0'
   opacity.value = 1
 }
