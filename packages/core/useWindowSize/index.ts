@@ -1,5 +1,6 @@
 import { tryOnMounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -54,7 +55,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   update()
   tryOnMounted(update)
-  // useEventListener('resize', update, { passive: true })
+  useEventListener('resize', update, { passive: true })
 
   // 1. Deprecated: orientationchange  https://developer.mozilla.org/en-US/docs/Web/API/Window/orientationchange_event
   // 2. window.innerWidth incorrect in browser after orientation change event
