@@ -11,17 +11,19 @@
  * @returns {Function} returns a function that accepts the parameters
  * to be passed to the "userFunc" function
  */
-const jobRunner = (userFunc: Function) => (e: MessageEvent) => {
-  const userFuncArgs = e.data[0]
+function jobRunner(userFunc: Function) {
+  return (e: MessageEvent) => {
+    const userFuncArgs = e.data[0]
 
-  // eslint-disable-next-line prefer-spread
-  return Promise.resolve(userFunc.apply(undefined, userFuncArgs))
-    .then((result) => {
-      postMessage(['SUCCESS', result])
-    })
-    .catch((error) => {
-      postMessage(['ERROR', error])
-    })
+    // eslint-disable-next-line prefer-spread
+    return Promise.resolve(userFunc.apply(undefined, userFuncArgs))
+      .then((result) => {
+        postMessage(['SUCCESS', result])
+      })
+      .catch((error) => {
+        postMessage(['ERROR', error])
+      })
+  }
 }
 
 export default jobRunner

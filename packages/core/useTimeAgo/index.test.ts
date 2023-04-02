@@ -15,7 +15,9 @@ const UNITS = [
   { max: Infinity, value: 31536000000, name: 'year' },
 ]
 
-const fullDateFormatter = (value: any) => new Date(value).toISOString().slice(0, 10)
+function fullDateFormatter(value: any) {
+  return new Date(value).toISOString().slice(0, 10)
+}
 
 function getNeededTimeChange(type: TimeUnit, count: number, adjustSecond?: number) {
   const unit = UNITS.find(i => i.name === type)

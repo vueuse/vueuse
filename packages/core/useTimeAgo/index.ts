@@ -119,7 +119,9 @@ const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   invalid: '',
 }
 
-const DEFAULT_FORMATTER = (date: Date) => date.toISOString().slice(0, 10)
+function DEFAULT_FORMATTER(date: Date) {
+  return date.toISOString().slice(0, 10)
+}
 
 export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
 

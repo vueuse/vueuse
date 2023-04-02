@@ -33,7 +33,7 @@ const externals = [
   '@vueuse/metadata',
 ]
 
-const esbuildMinifer = (options: ESBuildOptions) => {
+function esbuildMinifer(options: ESBuildOptions) {
   const { renderChunk } = esbuild(options)
 
   return {

@@ -4,8 +4,9 @@ import { isString } from '../utils'
 import type { MaybeComputedRef } from '../utils'
 import { resolveUnref } from '../resolveUnref'
 
-const defaultComparator = <T>(value: T, othVal: T) =>
-  value === othVal
+function defaultComparator<T>(value: T, othVal: T) {
+  return value === othVal
+}
 
 export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, key?: keyof T): ComputedRef<T[]>
 export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, compareFn?: (value: T, othVal: T) => boolean): ComputedRef<T[]>

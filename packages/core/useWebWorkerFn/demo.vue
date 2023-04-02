@@ -2,7 +2,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
 
-const heavyTask = () => {
+function heavyTask() {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
   const numbers: number[] = Array(5_000_000).fill(undefined).map(randomNumber)
   numbers.sort()
@@ -17,14 +17,14 @@ const running = computed(() => workerStatus.value === 'RUNNING')
 const data = ref<number[] | null>(null)
 const runner = ref('')
 
-const baseSort = async () => {
+async function baseSort() {
   data.value = null
   await nextTick()
   data.value = heavyTask()
   runner.value = 'Main'
 }
 
-const workerSort = async () => {
+async function workerSort() {
   data.value = null
   await nextTick()
   data.value = await workerFn()

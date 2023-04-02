@@ -7,7 +7,7 @@ const {
   updateServiceWorker,
 } = useRegisterSW()
 
-const close = async () => {
+async function close() {
   offlineReady.value = false
   needRefresh.value = false
 }

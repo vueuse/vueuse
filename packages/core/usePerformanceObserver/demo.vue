@@ -8,7 +8,9 @@ usePerformanceObserver({
 }, (list) => {
   entrys.value = list.getEntries()
 })
-const refresh = () => window.location.reload()
+function refresh() {
+  return window.location.reload()
+}
 </script>
 
 <template>

@@ -2,7 +2,7 @@ import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { executeTransition, useTransition } from '.'
 
-const expectBetween = (val: number, floor: number, ceiling: number) => {
+function expectBetween(val: number, floor: number, ceiling: number) {
   expect(val).to.be.greaterThan(floor)
   expect(val).to.be.lessThan(ceiling)
 }
