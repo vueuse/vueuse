@@ -62,6 +62,10 @@ export function moveArrayElement<T>(
   to: number,
 ): void {
   const array = resolveUnref(list)
-  if (to >= 0 && to < array.length)
-    array.splice(to, 0, array.splice(from, 1)[0])
+  if (to >= 0 && to < array.length) {
+    const element = array.splice(from, 1)[0]
+    Promise.resolve().then(() => {
+      array.splice(to, 0, element)
+    })
+  }
 }
