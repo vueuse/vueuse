@@ -28,7 +28,7 @@ assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
   for (const { name } of packages) {
-    const packageRoot = path.resolve(__dirname, '..', 'packages', name)
+    const packageRoot = path.resolve(rootDir, 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
     if (name === 'core')
