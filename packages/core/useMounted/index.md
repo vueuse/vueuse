@@ -11,7 +11,7 @@ Mounted state in ref.
 ```js
 import { useMounted } from '@vueuse/core'
 
-const isMounted = useMounted()
+const { isMounted, mounted } = useMounted()
 ```
 
 Which is essentially a shorthand of:
@@ -22,4 +22,13 @@ const isMounted = ref(false)
 onMounted(() => {
   isMounted.value = true
 })
+
+function mounted() {
+  return new Promise((resolve) => {
+    if (isMounted.value)
+      resolve()
+    else
+      onMounted(resolve)
+  })
+}
 ```

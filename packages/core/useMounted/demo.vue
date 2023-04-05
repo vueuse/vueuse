@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMounted } from '@vueuse/core'
 
-const isMounted = useMounted()
+const { isMounted } = useMounted()
 </script>
 
 <template>

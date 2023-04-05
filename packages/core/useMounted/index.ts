@@ -16,5 +16,17 @@ export function useMounted() {
     })
   }
 
-  return isMounted
+  function mounted() {
+    return new Promise<void>((resolve) => {
+      if (isMounted.value)
+        resolve()
+      else if (getCurrentInstance())
+        onMounted(resolve)
+    })
+  }
+
+  return {
+    isMounted,
+    mounted,
+  }
 }
