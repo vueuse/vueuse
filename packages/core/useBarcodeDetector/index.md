@@ -9,7 +9,9 @@ Reactive [Barcode Detection API](https://developer.mozilla.org/en-US/docs/Web/AP
 ## Usage
 
 ```ts
+import { ref } from 'vue'
 import { useBarcodeDetector } from '@vueuse/core'
 
-const { isSupported, supportedFormats, barcodes, error } = useBarcodeDetector()
+const image = ref()
+const { isSupported, supportedFormats, barcodes, error } = useBarcodeDetector(image)
 ```
