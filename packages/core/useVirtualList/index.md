@@ -96,6 +96,67 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 </template>
 ```
 
+### Sticky Header
+
+
+Puts the value returned from the `findStickyItem` method at the beginning of the `list`.
+
+#### Param
+
+
+- `items`:  `source.value.slice(0, state.value.start)`
+
+- items between the source list and the visible list start
+
+```html
+  <div v-bind="containerProps" class="h-[500px] overflow-auto p-2 bg-gray-500/5 rounded">
+      <template v-if="stickyItem">
+        <div class="border border-$c-divider mb-2 sticky top-0 z-50 bg-red-300 text-white" :style="{
+          height: `${stickyItem.data.height}px`,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }">
+          Row {{ stickyItem.index }} <span opacity="70" m="l-1">({{ stickyItem.data.size }})</span>
+        </div>
+      </template>
+      <div v-bind="wrapperProps">
+        <div v-for="{ index, data } in showedItems" :key="index" class="border border-$c-divider mb-2" :style="{
+          height: `${data.height}px`,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }">
+          Row {{ index }} <span opacity="70" m="l-1">({{ data.size }})</span>
+        </div>
+      </div>
+    </div>
+```
+
+```typescript
+
+const showedItems = computed(() => {
+  return list.value.filter(i => i.data.id != stickyItem.value.data.id);
+})
+
+const stickyItem = computed(() => {
+  return list.value[0];
+});
+
+const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
+  filteredItems,
+  {
+    findStickyItem: (items: any[]) => {
+      return items.find((i: any) => i.index % 2 == 0)
+    },
+    itemHeight: i => (filteredItems.value[i].height + 8),
+    overscan: 10,
+  },
+)
+
+```
+
+
 ## Component Usage
 
 ```html

@@ -39,5 +39,11 @@
   "vite.vitepressBase": "packages",
   "vite.vitepressAutoRouting": true,
   "vite.buildCommand": "npm run docs:build",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "nuxt.isNuxtApp": false,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#0C332E",
+    "titleBar.activeBackground": "#114741",
+    "titleBar.activeForeground": "#F2FCFB"
+  }
 }
