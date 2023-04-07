@@ -1,8 +1,7 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
-import { useEventListener } from '../useEventListener'
+import { useIntersectionObserver } from '../useIntersectionObserver'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -23,37 +22,16 @@ export function useElementVisibility(
 ) {
   const elementIsVisible = ref(false)
 
-  const testBounding = () => {
-    if (!window)
-      return
-
-    const document = window.document
-    const el = unrefElement(element)
-    if (!el) {
-      elementIsVisible.value = false
-    }
-    else {
-      const rect = el.getBoundingClientRect()
-      elementIsVisible.value = (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight)
-          && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-          && rect.bottom >= 0
-          && rect.right >= 0
-      )
-    }
-  }
-
-  watch(
-    () => unrefElement(element),
-    () => testBounding(),
-    { immediate: true, flush: 'post' },
+  useIntersectionObserver(
+    element,
+    ([{ isIntersecting }]) => {
+      elementIsVisible.value = isIntersecting
+    },
+    {
+      root: scrollTarget,
+      window,
+    },
   )
-
-  if (window) {
-    useEventListener(scrollTarget || window, 'scroll', testBounding, {
-      capture: false, passive: true,
-    })
-  }
 
   return elementIsVisible
 }

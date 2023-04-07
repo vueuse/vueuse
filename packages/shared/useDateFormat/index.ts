@@ -22,14 +22,14 @@ export interface UseDateFormatOptions {
 const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
 const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
-const defaultMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
+function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
   if (hasPeriod)
     m = m.split('').reduce((acc, curr) => acc += `${curr}.`, '')
   return isLowercase ? m.toLowerCase() : m
 }
 
-export const formatDate = (date: Date, formatStr: string, options: UseDateFormatOptions = {}) => {
+export function formatDate(date: Date, formatStr: string, options: UseDateFormatOptions = {}) {
   const years = date.getFullYear()
   const month = date.getMonth()
   const days = date.getDate()
@@ -69,7 +69,7 @@ export const formatDate = (date: Date, formatStr: string, options: UseDateFormat
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match]())
 }
 
-export const normalizeDate = (date: DateLike) => {
+export function normalizeDate(date: DateLike) {
   if (date === null)
     return new Date(NaN) // null is invalid
   if (date === undefined)

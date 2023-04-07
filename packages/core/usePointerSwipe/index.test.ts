@@ -1,16 +1,24 @@
 import type { UsePointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
 
-const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
-  clientX: x,
-  clientY: y,
-})
+function mockPointerEventInit(x: number, y: number): PointerEventInit {
+  return {
+    clientX: x,
+    clientY: y,
+  }
+}
 
-const mockPointerDown = (x: number, y: number) => new PointerEvent('pointerdown', mockPointerEventInit(x, y))
-const mockPointerMove = (x: number, y: number) => new PointerEvent('pointermove', mockPointerEventInit(x, y))
-const mockPointerUp = (x: number, y: number) => new PointerEvent('pointerup', mockPointerEventInit(x, y))
+function mockPointerDown(x: number, y: number) {
+  return new PointerEvent('pointerdown', mockPointerEventInit(x, y))
+}
+function mockPointerMove(x: number, y: number) {
+  return new PointerEvent('pointermove', mockPointerEventInit(x, y))
+}
+function mockPointerUp(x: number, y: number) {
+  return new PointerEvent('pointerup', mockPointerEventInit(x, y))
+}
 
-const mockPointerEvents = (target: Element, coords: Array<number[]>) => {
+function mockPointerEvents(target: Element, coords: Array<number[]>) {
   coords.forEach(([x, y], i) => {
     if (i === 0)
       target.dispatchEvent(mockPointerDown(x, y))

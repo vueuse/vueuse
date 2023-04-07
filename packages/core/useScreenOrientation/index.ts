@@ -9,7 +9,7 @@ import { defaultWindow } from '../_configurable'
  *
  * @see https://vueuse.org/useScreenOrientation
  */
-export const useScreenOrientation = (options: ConfigurableWindow = {}) => {
+export function useScreenOrientation(options: ConfigurableWindow = {}) {
   const {
     window = defaultWindow,
   } = options

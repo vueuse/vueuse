@@ -300,4 +300,15 @@ describe('useAxios', () => {
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
   })
+
+  test('should call onFinish', async () => {
+    const onFinish = vitest.fn()
+    const { execute, isLoading, isFinished } = useAxios(url, config, { ...options, onFinish })
+    expect(isLoading.value).toBeFalsy()
+
+    await execute()
+    expect(onFinish).toHaveBeenCalled()
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+  })
 })

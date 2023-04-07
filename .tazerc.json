@@ -3,7 +3,6 @@
     "eslint-plugin-markdown",
     "rxjs",
     "electron",
-    "vue-demi",
     "msw"
   ]
 }

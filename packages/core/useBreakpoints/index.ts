@@ -1,5 +1,6 @@
-import type { Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { increaseWithUnit } from '@vueuse/shared'
+import { computed } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -48,7 +49,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
       return shortcuts
     }, {} as Record<K, Ref<boolean>>)
 
-  return {
+  return Object.assign(shortcutMethods, {
     greater(k: K) {
       return useMediaQuery(`(min-width: ${getValue(k, 0.1)})`, options)
     },
@@ -77,19 +78,23 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     isInBetween(a: K, b: K) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
-    ...shortcutMethods,
-  }
+    current() {
+      const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
+      return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
+    },
+  })
 }
 
 export type UseBreakpointsReturn<K extends string = string> = {
-  greater: (k: K) => Ref<boolean>
-  greaterOrEqual: (k: K) => Ref<boolean>
-  smaller(k: K): Ref<boolean>
-  smallerOrEqual: (k: K) => Ref<boolean>
-  between(a: K, b: K): Ref<boolean>
+  greater: (k: K) => ComputedRef<boolean>
+  greaterOrEqual: (k: K) => ComputedRef<boolean>
+  smaller(k: K): ComputedRef<boolean>
+  smallerOrEqual: (k: K) => ComputedRef<boolean>
+  between(a: K, b: K): ComputedRef<boolean>
   isGreater(k: K): boolean
   isGreaterOrEqual(k: K): boolean
   isSmaller(k: K): boolean
   isSmallerOrEqual(k: K): boolean
   isInBetween(a: K, b: K): boolean
-} & Record<K, Ref<boolean>>
+  current(): ComputedRef<string[]>
+} & Record<K, ComputedRef<boolean>>

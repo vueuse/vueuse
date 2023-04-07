@@ -93,9 +93,7 @@ export interface UseWebNotificationOptions extends WebNotificationOptions, Confi
  * @param defaultOptions of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
  */
-export const useWebNotification = (
-  defaultOptions: UseWebNotificationOptions = {},
-) => {
+export function useWebNotification(defaultOptions: UseWebNotificationOptions = {}) {
   const {
     window = defaultWindow,
   } = defaultOptions

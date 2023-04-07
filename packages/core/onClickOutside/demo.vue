@@ -65,7 +65,7 @@ const dropdownHandler: OnClickOutsideHandler = (event) => {
   background-color: var(--vp-c-bg);
   padding: 0.4em 2em;
   border-radius: 5px;
-  border: 1px solid var(--vp-c-divider-light);
+  border: 1px solid var(--vp-c-divider);
   box-shadow: 2px 2px 10px rgba(10, 10, 10, 0.1);
 }
 .dropdown-inner {
@@ -75,7 +75,7 @@ const dropdownHandler: OnClickOutsideHandler = (event) => {
   left: 0;
   z-index: 10;
   border-radius: 5px;
-  border: 1px solid var(--vp-c-divider-light);
+  border: 1px solid var(--vp-c-divider);
   box-shadow: 2px 2px 5px rgba(10, 10, 10, 0.1);
 }
 .heading {

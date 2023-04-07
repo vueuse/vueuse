@@ -109,7 +109,7 @@ dialog2.onCancel(() => {
   background-color: var(--vp-c-bg);
   padding: 0.4em 2em;
   border-radius: 5px;
-  border: 1px solid var(--vp-c-divider-light);
+  border: 1px solid var(--vp-c-divider);
   box-shadow: 2px 2px 10px rgba(10, 10, 10, 0.1);
 }
 .small {

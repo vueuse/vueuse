@@ -56,4 +56,28 @@ describe('reactiveOmit', () => {
       }
     `)
   })
+
+  it('should work with predicate', () => {
+    const source = reactive<TargetObject>({
+      foo: 'foo',
+      bar: 'bar',
+      baz: 'baz',
+      qux: true,
+    })
+
+    const state = reactiveOmit(source, (value, key) =>
+      key === 'bar' || key === 'baz' || value === true,
+    )
+
+    expect(state).toEqual({
+      foo: 'foo',
+    })
+
+    source.qux = false
+
+    expect(state).toEqual({
+      foo: 'foo',
+      qux: false,
+    })
+  })
 })

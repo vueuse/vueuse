@@ -23,7 +23,7 @@ const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
     overscan: 10,
   },
 )
-const handleScrollTo = () => {
+function handleScrollTo() {
   scrollTo(index.value)
 }
 </script>
