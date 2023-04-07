@@ -1,8 +1,7 @@
 import { ref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { tryOnMounted } from '@vueuse/shared'
+import type { MaybeComputedRef } from '@vueuse/shared'
+import { resolveRef, tryOnMounted, whenever } from '@vueuse/shared'
 import { useSupported } from '../useSupported'
-import { useAsyncState } from '../useAsyncState'
 import { defaultWindow } from '../_configurable'
 import type { ConfigurableWindow } from '../_configurable'
 
@@ -34,11 +33,12 @@ export interface BarcodeDetectorOptions {
 }
 
 export interface BarcodeDetector {
-  // eslint-disable-next-line @typescript-eslint/no-misused-new
-  new(options?: BarcodeDetectorOptions): BarcodeDetector
+  new(options?: BarcodeDetectorOptions): BarcodeDetectorInstance
   getSupportedFormats: () => Promise<BarcodeFormat[]>
+}
+
+export interface BarcodeDetectorInstance {
   detect: (imageBitmapSource: ImageBitmapSource) => Promise<DetectedBarcode[]>
-  [Symbol.toStringTag]: 'BarcodeDetector'
 }
 
 export type UseBarcodeDetectorOptions = {
@@ -53,41 +53,35 @@ export type UseBarcodeDetectorOptions = {
  *
  * @see https://vueuse.org/useBarcodeDetector
  */
-export function useBarcodeDetector(image: MaybeRef<ImageBitmapSource | null | undefined>, options: UseBarcodeDetectorOptions = {}) {
+export function useBarcodeDetector(source: MaybeComputedRef<ImageBitmapSource | null | undefined>, options: UseBarcodeDetectorOptions = {}) {
   const { window = defaultWindow, formats } = options
+  const image = resolveRef(source)
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'BarcodeDetector' in window)
   const supportedFormats = ref<BarcodeFormat[]>([])
-  const _image = ref(image)
-
-  let detector: BarcodeDetector | null = null
+  const barcodes = ref<DetectedBarcode[]>([])
+  const error = ref<unknown | undefined>(undefined)
 
   tryOnMounted(async () => {
     if (!isSupported.value)
       return
 
     const BD = (window as any).BarcodeDetector as BarcodeDetector
-
-    detector = new BD({ formats })
+    const detector = new BD({ formats })
     supportedFormats.value = await BD.getSupportedFormats()
+
+    whenever(image, async (val) => {
+      try {
+        error.value = undefined
+        barcodes.value = await detector.detect(val)
+      }
+      catch (err) {
+        error.value = err
+      }
+    },
+    { immediate: true })
   })
 
-  const baseDetect = async (source: ImageBitmapSource) => {
-    if (!isSupported.value || !window || !detector)
-      return []
-
-    return detector.detect(source)
-  }
-
-  const { state: barcodes, error, execute } = useAsyncState(baseDetect, [])
-
-  const detect = async () => {
-    if (!_image.value)
-      return
-
-    return execute(0, _image.value)
-  }
-
-  return { isSupported, supportedFormats, error, barcodes, detect }
+  return { isSupported, supportedFormats, barcodes, error }
 }
 
 export type UseBarcodeDetectorReturn = ReturnType<typeof useBarcodeDetector>

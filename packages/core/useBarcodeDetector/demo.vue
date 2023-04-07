@@ -10,26 +10,16 @@ const qrcode = useQRCode(text, {
 })
 
 const image = ref<HTMLImageElement>()
-const { isSupported, barcodes, detect } = useBarcodeDetector(image)
+const { isSupported, barcodes } = useBarcodeDetector(image)
 </script>
 
 <template>
   <template v-if="isSupported">
-    <note>
-      Text content for QRCode
-    </note>
     <input v-model="text" type="text">
-    <img v-if="text" ref="image" class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code">
+    <img v-if="text" ref="image" :key="text" :src="qrcode" class="mt-4 rounded border" alt="QR Code">
 
-    <button
-      :disabled="!isSupported"
-      @click="detect()"
-    >
-      Detect
-    </button>
-
-    <note class="mt06">
-      Result
+    <note class="mt-6">
+      Detected:
     </note>
     <pre><code>{{ JSON.stringify(barcodes, null, 2) }}</code></pre>
   </template>
