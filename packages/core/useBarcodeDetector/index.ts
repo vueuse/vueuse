@@ -70,8 +70,10 @@ export function useBarcodeDetector(source: MaybeComputedRef<ImageBitmapSource | 
     supportedFormats.value = await BD.getSupportedFormats()
 
     whenever(image, async (val) => {
+      barcodes.value = []
+      error.value = undefined
+
       try {
-        error.value = undefined
         barcodes.value = await detector.detect(val)
       }
       catch (err) {
