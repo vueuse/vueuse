@@ -30,6 +30,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'pointerTypes',
     'as',
     'handle',
+    'axis',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()

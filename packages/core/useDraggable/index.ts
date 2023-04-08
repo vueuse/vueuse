@@ -69,6 +69,11 @@ export interface UseDraggableOptions {
    * Callback when dragging end.
    */
   onEnd?: (position: Position, event: PointerEvent) => void
+
+  /**
+   * Axis to drag on.
+   */
+  axis?: 'x' | 'y' | 'both'
 }
 
 /**
@@ -78,36 +83,54 @@ export interface UseDraggableOptions {
  * @param target
  * @param options
  */
-export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>, options: UseDraggableOptions = {}) {
-  const draggingElement = options.draggingElement ?? defaultWindow
-  const draggingHandle = options.handle ?? target
-  const position = ref<Position>(resolveUnref(options.initialValue) ?? { x: 0, y: 0 })
+export function useDraggable(
+  target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
+  options: UseDraggableOptions = {},
+) {
+  const {
+    pointerTypes,
+    preventDefault,
+    stopPropagation,
+    exact,
+    onMove,
+    onEnd,
+    onStart,
+    initialValue,
+    axis = 'both',
+    draggingElement = defaultWindow,
+    handle: draggingHandle = target,
+  } = options
+
+  const position = ref<Position>(
+    resolveUnref(initialValue) ?? { x: 0, y: 0 },
+  )
+
   const pressedDelta = ref<Position>()
 
   const filterEvent = (e: PointerEvent) => {
-    if (options.pointerTypes)
-      return options.pointerTypes.includes(e.pointerType as PointerType)
+    if (pointerTypes)
+      return pointerTypes.includes(e.pointerType as PointerType)
     return true
   }
 
   const handleEvent = (e: PointerEvent) => {
-    if (resolveUnref(options.preventDefault))
+    if (resolveUnref(preventDefault))
       e.preventDefault()
-    if (resolveUnref(options.stopPropagation))
+    if (resolveUnref(stopPropagation))
       e.stopPropagation()
   }
 
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
-    if (resolveUnref(options.exact) && e.target !== resolveUnref(target))
+    if (resolveUnref(exact) && e.target !== resolveUnref(target))
       return
     const rect = resolveUnref(target)!.getBoundingClientRect()
     const pos = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     }
-    if (options.onStart?.(pos, e) === false)
+    if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
     handleEvent(e)
@@ -117,11 +140,17 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
       return
     if (!pressedDelta.value)
       return
+
+    let { x, y } = position.value
+    if (axis === 'x' || axis === 'both')
+      x = e.clientX - pressedDelta.value.x
+    if (axis === 'y' || axis === 'both')
+      y = e.clientY - pressedDelta.value.y
     position.value = {
-      x: e.clientX - pressedDelta.value.x,
-      y: e.clientY - pressedDelta.value.y,
+      x,
+      y,
     }
-    options.onMove?.(position.value, e)
+    onMove?.(position.value, e)
     handleEvent(e)
   }
   const end = (e: PointerEvent) => {
@@ -130,7 +159,7 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
     if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
-    options.onEnd?.(position.value, e)
+    onEnd?.(position.value, e)
     handleEvent(e)
   }
 
@@ -144,7 +173,9 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
     ...toRefs(position),
     position,
     isDragging: computed(() => !!pressedDelta.value),
-    style: computed(() => `left:${position.value.x}px;top:${position.value.y}px;`),
+    style: computed(
+      () => `left:${position.value.x}px;top:${position.value.y}px;`,
+    ),
   }
 }
 
