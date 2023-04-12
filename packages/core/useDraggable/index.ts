@@ -72,6 +72,8 @@ export interface UseDraggableOptions {
 
   /**
    * Axis to drag on.
+   *
+   * @default 'both'
    */
   axis?: 'x' | 'y' | 'both'
 }
