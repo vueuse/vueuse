@@ -1,6 +1,5 @@
-import { computed, ref, watchEffect } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import type { Fn } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -22,7 +21,8 @@ const eventHandlers = [
   'webkitfullscreenchange',
   'webkitendfullscreen',
   'mozfullscreenchange',
-  'MSFullscreenChange'] as any as 'fullscreenchange'
+  'MSFullscreenChange',
+] as any as 'fullscreenchange'[]
 
 /**
  * Reactive Fullscreen API.
@@ -35,13 +35,15 @@ export function useFullscreen(
   target?: MaybeElementRef,
   options: UseFullscreenOptions = {},
 ) {
-  const { document = defaultDocument, autoExit = false } = options
-  const targetRef = target ?? document?.querySelector('html')
+  const {
+    document = defaultDocument,
+    autoExit = false,
+  } = options
+
+  const targetRef = computed(() => unrefElement(target) ?? document?.querySelector('html'))
   const isFullscreen = ref(false)
-  let targetHandlerCleanup: Fn
 
   const requestMethod = computed<'requestFullscreen' | undefined>(() => {
-    const target = unrefElement(targetRef)
     return [
       'requestFullscreen',
       'webkitRequestFullscreen',
@@ -50,10 +52,10 @@ export function useFullscreen(
       'webkitRequestFullScreen',
       'mozRequestFullScreen',
       'msRequestFullscreen',
-    ].find(m => (document && m in document) || (target && m in target)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
   })
+
   const exitMethod = computed<'exitFullscreen' | undefined>(() => {
-    const target = unrefElement(targetRef)
     return [
       'exitFullscreen',
       'webkitExitFullscreen',
@@ -61,21 +63,21 @@ export function useFullscreen(
       'webkitCancelFullScreen',
       'mozCancelFullScreen',
       'msExitFullscreen',
-    ].find(m => (document && m in document) || (target && m in target)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
   })
+
   const fullscreenEnabled = computed<'fullscreenEnabled' | undefined>(() => {
-    const target = unrefElement(targetRef)
     return [
       'fullScreen',
       'webkitIsFullScreen',
       'webkitDisplayingFullscreen',
       'mozFullScreen',
       'msFullscreenElement',
-    ].find(m => (document && m in document) || (target && m in target)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
   })
 
   const isSupported = useSupported(() =>
-    unrefElement(targetRef)
+    targetRef.value
     && document
     && requestMethod.value !== undefined
     && exitMethod.value !== undefined
@@ -84,13 +86,13 @@ export function useFullscreen(
 
   const isElementFullScreen = (): boolean => {
     if (fullscreenEnabled.value) {
-      if (document && document[fullscreenEnabled.value] !== undefined && document[fullscreenEnabled.value] !== null) {
+      if (document && document[fullscreenEnabled.value] != null) {
         return document[fullscreenEnabled.value]
       }
       else {
-        const target = unrefElement(targetRef)
+        const target = targetRef.value
         // @ts-expect-error - Fallback for WebKit and iOS Safari browsers
-        if (target[fullscreenEnabled.value] !== undefined && target[fullscreenEnabled.value] !== null) {
+        if (target?.[fullscreenEnabled.value] != null) {
           // @ts-expect-error - Fallback for WebKit and iOS Safari browsers
           return Boolean(target[fullscreenEnabled.value])
         }
@@ -103,14 +105,14 @@ export function useFullscreen(
     if (!isSupported.value)
       return
     if (exitMethod.value) {
-      if (document?.[exitMethod.value] !== undefined) {
+      if (document?.[exitMethod.value] != null) {
         await document[exitMethod.value]()
       }
       else {
-        const target = unrefElement(targetRef)
+        const target = targetRef.value
         // @ts-expect-error - Fallback for Safari iOS
-        if (target[exitMethod.value] !== undefined)
-        // @ts-expect-error - Fallback for Safari iOS
+        if (target?.[exitMethod.value] != null)
+          // @ts-expect-error - Fallback for Safari iOS
           await target[exitMethod.value]()
       }
     }
@@ -125,8 +127,8 @@ export function useFullscreen(
     if (isElementFullScreen())
       await exit()
 
-    const target = unrefElement(targetRef)
-    if (target && requestMethod.value && target[requestMethod.value] !== undefined) {
+    const target = targetRef.value
+    if (requestMethod.value && target?.[requestMethod.value] != null) {
       await target[requestMethod.value]()
       isFullscreen.value = true
     }
@@ -141,14 +143,7 @@ export function useFullscreen(
   }
 
   useEventListener(document, eventHandlers, handlerCallback, false)
-  watchEffect(() => {
-    const target = unrefElement(targetRef)
-
-    if (targetHandlerCleanup)
-      targetHandlerCleanup()
-
-    targetHandlerCleanup = useEventListener(target, eventHandlers, handlerCallback, false)
-  })
+  useEventListener(() => unrefElement(targetRef), eventHandlers, handlerCallback, false)
 
   if (autoExit)
     tryOnScopeDispose(exit)
