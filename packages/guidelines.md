@@ -10,7 +10,7 @@ You can also find some reasons for those design decisions and also some tips for
 ## General
 
 - Import all Vue APIs from `"vue-demi"`
-- Use `ref` instead `reactive` whenever possible
+- Use `ref` instead of `reactive` whenever possible
 - Use options object as arguments whenever possible to be more flexible for future extensions.
 - Use `shallowRef` instead of `ref` when wrapping large amounts of data.
 - Use `configurableWindow` (etc.) when using global variables like `window` to be flexible when working with multi-windows, testing mocks, and SSR.
