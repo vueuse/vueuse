@@ -57,10 +57,10 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  // 1. Deprecated: orientationchange  https://developer.mozilla.org/en-US/docs/Web/API/Window/orientationchange_event
-  // 2. window.innerWidth incorrect in browser after orientation change event
-  const matches = useMediaQuery('(orientation: portrait)')
-  watch(matches, () => listenOrientation && update())
+  if (listenOrientation) {
+    const matches = useMediaQuery('(orientation: portrait)')
+    watch(matches, () => update())
+  }
 
   return { width, height }
 }
