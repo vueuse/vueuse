@@ -81,7 +81,7 @@ describe('createEventHook', () => {
   })
 
   it('the same listener should fire only once', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const { on, trigger, off } = createEventHook<string>()
     on(listener)
     on(listener)

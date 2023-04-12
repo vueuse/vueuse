@@ -14,7 +14,7 @@ export function retry(assertion: Function, { interval = 1, timeout = 100 } = {})
       }, interval)
       try {
         // If useFakeTimers hasn't been called, this will throw
-        vitest.advanceTimersByTime(interval)
+        vi.advanceTimersByTime(interval)
       }
       catch (e) { /* Expected to throw */ }
     }

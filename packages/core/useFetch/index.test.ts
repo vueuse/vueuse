@@ -10,10 +10,10 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vitest.spyOn(window, 'fetch') as SpyInstance<any>
-let onFetchErrorSpy = vitest.fn()
-let onFetchResponseSpy = vitest.fn()
-let onFetchFinallySpy = vitest.fn()
+let fetchSpy = vi.spyOn(window, 'fetch') as SpyInstance<any>
+let onFetchErrorSpy = vi.fn()
+let onFetchResponseSpy = vi.fn()
+let onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return fetchSpy.mock.calls[idx][1]!.headers
@@ -21,10 +21,10 @@ function fetchSpyHeaders(idx = 0) {
 
 describe('useFetch', () => {
   beforeEach(() => {
-    fetchSpy = vitest.spyOn(window, 'fetch')
-    onFetchErrorSpy = vitest.fn()
-    onFetchResponseSpy = vitest.fn()
-    onFetchFinallySpy = vitest.fn()
+    fetchSpy = vi.spyOn(window, 'fetch')
+    onFetchErrorSpy = vi.fn()
+    onFetchResponseSpy = vi.fn()
+    onFetchFinallySpy = vi.fn()
   })
 
   test('should have status code of 200 and message of Hello World', async () => {
@@ -569,7 +569,7 @@ describe('useFetch', () => {
   })
 
   test('should emit onFetchResponse event', async () => {
-    const onResponseSpy = vitest.fn()
+    const onResponseSpy = vi.fn()
     const { onFetchResponse } = useFetch('https://example.com')
 
     onFetchResponse(onResponseSpy)

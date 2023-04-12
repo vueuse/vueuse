@@ -17,8 +17,8 @@ describe('computedEager', () => {
       return foo.value + 1
     })
 
-    const plusOneComputedSpy = vitest.fn()
-    const plusOneComputedRefSpy = vitest.fn()
+    const plusOneComputedSpy = vi.fn()
+    const plusOneComputedRefSpy = vi.fn()
     watch(() => plusOneComputed.value, plusOneComputedSpy)
     watch(() => plusOneEagerComputed.value, plusOneComputedRefSpy)
 
@@ -54,10 +54,10 @@ describe('computedEager', () => {
       return foo.value % 2 === 0
     })
 
-    const isOddComputedSpy = vitest.fn()
-    const isOddComputedRefSpy = vitest.fn()
-    const isOddComputedCollectSpy = vitest.fn()
-    const isOddComputedRefCollectSpy = vitest.fn()
+    const isOddComputedSpy = vi.fn()
+    const isOddComputedRefSpy = vi.fn()
+    const isOddComputedCollectSpy = vi.fn()
+    const isOddComputedRefCollectSpy = vi.fn()
 
     watch(() => {
       isOddComputedCollectSpy()

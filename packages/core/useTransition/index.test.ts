@@ -140,7 +140,7 @@ describe('useTransition', () => {
 
   it('supports custom easing functions', async () => {
     const source = ref(0)
-    const linear = vitest.fn(n => n)
+    const linear = vi.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
       transition: linear,
@@ -177,8 +177,8 @@ describe('useTransition', () => {
 
   it('supports dynamic transitions', async () => {
     const source = ref(0)
-    const first = vitest.fn(n => n)
-    const second = vitest.fn(n => n)
+    const first = vi.fn(n => n)
+    const second = vi.fn(n => n)
     const easingFn = ref(first)
 
     useTransition(source, {
@@ -231,8 +231,8 @@ describe('useTransition', () => {
 
   it('fires onStarted and onFinished callbacks', async () => {
     const source = ref(0)
-    const onStarted = vitest.fn()
-    const onFinished = vitest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       duration: 100,
@@ -259,8 +259,8 @@ describe('useTransition', () => {
 
   it('clears pending transitions before starting a new one', async () => {
     const source = ref(0)
-    const onStarted = vitest.fn()
-    const onFinished = vitest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       delay: 100,
@@ -280,7 +280,7 @@ describe('useTransition', () => {
   })
 
   it('can be disabled for sychronous changes', async () => {
-    const onStarted = vitest.fn()
+    const onStarted = vi.fn()
     const disabled = ref(false)
     const source = ref(0)
 

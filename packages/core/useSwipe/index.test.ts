@@ -42,9 +42,9 @@ describe('useSwipe', () => {
   let onSwipeEnd: any
 
   beforeEach(() => {
-    onSwipe = vitest.fn((_e: TouchEvent) => {})
-    onSwipeEnd = vitest.fn((_e: TouchEvent, _direction: string) => {})
-    vitest.resetAllMocks()
+    onSwipe = vi.fn((_e: TouchEvent) => {})
+    onSwipeEnd = vi.fn((_e: TouchEvent, _direction: string) => {})
+    vi.resetAllMocks()
   })
 
   it('threshold not exceeded', () => {
