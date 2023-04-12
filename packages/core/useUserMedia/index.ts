@@ -20,26 +20,6 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    */
   autoSwitch?: MaybeRef<boolean>
   /**
-   * The device id of video input
-   *
-   * When passing with `undefined` the default device will be used.
-   * Pass `false` or "none" to disabled video input
-   *
-   * @default undefined
-   * @deprecated in favor of constraints
-   */
-  videoDeviceId?: MaybeRef<string | undefined | false | 'none'>
-  /**
-   * The device id of audi input
-   *
-   * When passing with `undefined` the default device will be used.
-   * Pass `false` or "none" to disabled audi input
-   *
-   * @default undefined
-   * @deprecated in favor of constraints
-   */
-  audioDeviceId?: MaybeRef<string | undefined | false | 'none'>
-  /**
    * MediaStreamConstraints to be applied to the requested MediaStream
    * If provided, the constraints will override videoDeviceId and audioDeviceId
    *
@@ -57,8 +37,6 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
 export function useUserMedia(options: UseUserMediaOptions = {}) {
   const enabled = ref(options.enabled ?? false)
   const autoSwitch = ref(options.autoSwitch ?? true)
-  const videoDeviceId = ref(options.videoDeviceId)
-  const audioDeviceId = ref(options.audioDeviceId)
   const constraints = ref(options.constraints)
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
@@ -70,20 +48,12 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
       case 'video': {
         if (constraints.value)
           return constraints.value.video || false
-        if (videoDeviceId.value === 'none' || videoDeviceId.value === false)
-          return false
-        if (videoDeviceId.value == null)
-          return true
-        return { deviceId: videoDeviceId.value }
+        break
       }
       case 'audio': {
         if (constraints.value)
           return constraints.value.audio || false
-        if (audioDeviceId.value === 'none' || audioDeviceId.value === false)
-          return false
-        if (audioDeviceId.value == null)
-          return true
-        return { deviceId: audioDeviceId.value }
+        break
       }
     }
   }
@@ -131,7 +101,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
   )
 
   watch(
-    [videoDeviceId, audioDeviceId, constraints],
+    constraints,
     () => {
       if (autoSwitch.value && stream.value)
         restart()
@@ -145,8 +115,6 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     start,
     stop,
     restart,
-    videoDeviceId,
-    audioDeviceId,
     constraints,
     enabled,
     autoSwitch,
