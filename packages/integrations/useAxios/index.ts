@@ -41,36 +41,12 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   abort: (message?: string | undefined) => void
 
   /**
-   * isFinished alias
-   * @deprecated use `isFinished` instead
-   */
-  finished: Ref<boolean>
-
-  /**
-   * isLoading alias
-   * @deprecated use `isLoading` instead
-   */
-  loading: Ref<boolean>
-
-  /**
-   * isAborted alias
-   * @deprecated use `isAborted` instead
-   */
-  aborted: Ref<boolean>
-
-  /**
-   * abort alias
+   * Alias to `abort`
    */
   cancel: (message?: string | undefined) => void
 
   /**
-   * isAborted alias
-   * @deprecated use `isCanceled` instead
-   */
-  canceled: Ref<boolean>
-
-  /**
-   * isAborted alias
+   * Alice to `isAborted`
    */
   isCanceled: Ref<boolean>
 }
@@ -232,14 +208,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     response,
     data,
     error,
-    finished: isFinished,
-    loading: isLoading,
     isFinished,
     isLoading,
     cancel: abort,
     isAborted,
-    canceled: isAborted,
-    aborted: isAborted,
     isCanceled: isAborted,
     abort,
     execute,
