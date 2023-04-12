@@ -40,7 +40,10 @@ export function useMediaQuery(query: MaybeComputedRef<string>, options: Configur
     cleanup()
 
     mediaQuery = window!.matchMedia(resolveRef(query).value)
-    matches.value = mediaQuery.matches
+    matches.value = !!mediaQuery?.matches
+
+    if (!mediaQuery)
+      return
 
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', update)
