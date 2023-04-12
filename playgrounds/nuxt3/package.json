@@ -1,6 +1,6 @@
 {
   "private": true,
-  "packageManager": "pnpm@8.1.0",
+  "packageManager": "pnpm@8.2.0",
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
@@ -10,6 +10,6 @@
     "@vueuse/core": "../../packages/core",
     "@vueuse/integrations": "../../packages/integrations",
     "@vueuse/shared": "../../packages/shared",
-    "nuxt": "^3.3.2"
+    "nuxt": "^3.4.0"
   }
 }

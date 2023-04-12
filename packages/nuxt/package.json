@@ -37,14 +37,14 @@
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.3.2",
+    "@nuxt/kit": "^3.4.0",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.3",
     "vue-demi": "*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.3.2",
-    "unimport": "^3.0.4"
+    "@nuxt/schema": "^3.4.0",
+    "unimport": "^3.0.6"
   }
 }

@@ -32,6 +32,7 @@ Currently the Gamepad API does not have event support to update the state of the
 
 ```ts
 import { useGamepad } from '@vueuse/core'
+
 const { pause, resume, gamepads } = useGamepad()
 
 pause()
@@ -65,6 +66,7 @@ onDisconnected((index) => {
 
 ```ts
 import { computed } from 'vue'
+
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
 function vibrate() {
   if (supportsVibration.value) {

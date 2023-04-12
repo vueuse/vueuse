@@ -12,6 +12,7 @@ Reactive `Array.join`
 
 ```js
 import { useArrayJoin } from '@vueuse/core'
+
 const item1 = ref('foo')
 const item2 = ref(0)
 const item3 = ref({ prop: 'val' })
@@ -26,6 +27,7 @@ item1.value = 'bar'
 
 ```js
 import { useArrayJoin } from '@vueuse/core'
+
 const list = ref(['string', 0, { prop: 'val' }, false, [1], [[2]], null, undefined, []])
 const result = useArrayJoin(list)
 // result.value: string,0,[object Object],false,1,2,,,
@@ -39,6 +41,7 @@ list.value = [null, 'string', undefined]
 
 ```js
 import { useArrayJoin } from '@vueuse/core'
+
 const list = ref(['string', 0, { prop: 'val' }])
 const separator = ref()
 const result = useArrayJoin(list, separator)

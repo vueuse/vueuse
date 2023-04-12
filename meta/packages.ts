@@ -90,6 +90,7 @@ export const packages: PackageManifest[] = [
       'async-validator',
       'idb-keyval',
       'sortablejs',
+      'node:http',
     ],
     globals: {
       'axios': 'axios',

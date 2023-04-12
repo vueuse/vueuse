@@ -2,6 +2,7 @@ import type { Options } from 'change-case'
 import { ref } from 'vue-demi'
 import type { ChangeCaseType } from '.'
 import { useChangeCase } from '.'
+
 describe('useChangeCase', () => {
   interface objectValue {
     helloWorld: string

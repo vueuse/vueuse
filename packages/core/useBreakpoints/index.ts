@@ -4,6 +4,7 @@ import { computed } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
 export * from './breakpoints'
 
 export type Breakpoints<K extends string = string> = Record<K, number | string>
