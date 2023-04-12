@@ -36,6 +36,8 @@
 }
 
 .demo {
+  z-index: 1;
+  
   p {
     margin: 0.5rem 0 ;
   }
@@ -181,6 +183,11 @@
     border-width: 2px;
     border-style: dashed;
     padding: 1rem;
+  }
+
+  dialog {
+    z-index: 1000000;
+    background: var(--vp-c-bg);
   }
 }
 
