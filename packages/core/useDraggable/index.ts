@@ -28,10 +28,11 @@ export interface UseDraggableOptions {
   stopPropagation?: MaybeComputedRef<boolean>
 
   /**
-   * Weather dispatch events in capturing phase
+   * Whether dispatch events in capturing phase
+   *
    * @default true
    */
-  useCapture?: MaybeComputedRef<boolean>
+  capture?: boolean
 
   /**
    * Element to attach `pointermove` and `pointerup` events to.
@@ -141,10 +142,10 @@ export function useDraggable(target: MaybeComputedRef<HTMLElement | SVGElement |
   }
 
   if (isClient) {
-    const { useCapture } = options
-    useEventListener(draggingHandle, 'pointerdown', start, useCapture)
-    useEventListener(draggingElement, 'pointermove', move, useCapture)
-    useEventListener(draggingElement, 'pointerup', end, useCapture)
+    const config = { capture: options.capture ?? true }
+    useEventListener(draggingHandle, 'pointerdown', start, config)
+    useEventListener(draggingElement, 'pointermove', move, config)
+    useEventListener(draggingElement, 'pointerup', end, config)
   }
 
   return {
