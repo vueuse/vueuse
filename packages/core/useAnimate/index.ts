@@ -1,11 +1,11 @@
 import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
-import { computed, nextTick, shallowReactive, shallowRef, unref, watch } from 'vue-demi'
+import { computed, nextTick, shallowReactive, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
-import { isFunction, isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { isObject, objectOmit, toValue, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow, MaybeComputedElementRef } from '../index'
-import { unrefElement, useEventListener, useRafFn, useSupported } from '../index'
+import { defaultWindow, unrefElement, useEventListener, useRafFn, useSupported } from '../index'
 
-export interface UseAnimateOptions<Reactive extends boolean> extends KeyframeAnimationOptions, ConfigurableWindow {
+export interface UseAnimateOptions extends KeyframeAnimationOptions, ConfigurableWindow {
   /**
    * Will automatically run play when `useAnimate` is used
    *
@@ -24,12 +24,6 @@ export interface UseAnimateOptions<Reactive extends boolean> extends KeyframeAni
    * @default false
    */
   persist?: boolean
-  /**
-   * Expose more reactive attribute
-   *
-   * @default false
-   */
-  reactive?: Reactive
   /**
    * Executed after animation initialization
    */
@@ -50,12 +44,10 @@ export interface UseAnimateReturn {
   reverse: () => void
   finish: () => void
   cancel: () => void
-}
 
-export interface UseAnimateRefReturn extends UseAnimateReturn {
-  readonly pending: ComputedRef<boolean>
-  readonly playState: ComputedRef<AnimationPlayState>
-  readonly replaceState: ComputedRef<AnimationReplaceState>
+  pending: ComputedRef<boolean>
+  playState: ComputedRef<AnimationPlayState>
+  replaceState: ComputedRef<AnimationReplaceState>
   startTime: WritableComputedRef<number | null>
   currentTime: WritableComputedRef<CSSNumberish | null>
   timeline: WritableComputedRef<AnimationTimeline | null>
@@ -77,24 +69,14 @@ type AnimateSrote = Mutable<Pick<Animation, AnimateStoreKeys>>
 export function useAnimate(
   target: MaybeComputedElementRef,
   keyframes: UseAnimateKeyframes,
-  options?: number | UseAnimateOptions<false>,
-): UseAnimateReturn
-export function useAnimate(
-  target: MaybeComputedElementRef,
-  keyframes: UseAnimateKeyframes,
-  options: UseAnimateOptions<true>,
-): UseAnimateRefReturn
-export function useAnimate(
-  target: MaybeComputedElementRef,
-  keyframes: UseAnimateKeyframes,
-  options?: number | UseAnimateOptions<boolean>,
-) {
-  let config: UseAnimateOptions<boolean>
+  options?: number | UseAnimateOptions,
+): UseAnimateReturn {
+  let config: UseAnimateOptions
   let animateOptions: undefined | number | KeyframeAnimationOptions
 
   if (isObject(options)) {
     config = options
-    animateOptions = objectOmit(options, ['window', 'immediate', 'commitStyles', 'persist', 'reactive', 'onReady', 'onError'])
+    animateOptions = objectOmit(options, ['window', 'immediate', 'commitStyles', 'persist', 'onReady', 'onError'])
   }
   else {
     config = { duration: options }
@@ -102,10 +84,10 @@ export function useAnimate(
   }
 
   const {
+    window = defaultWindow,
     immediate = true,
     commitStyles,
     persist,
-    reactive,
     playbackRate: _playbackRate = 1,
     onReady,
     onError = (e: unknown) => {
@@ -113,9 +95,7 @@ export function useAnimate(
     },
   } = config
 
-  const isSupported = useSupported(() => {
-    return HTMLElement && 'animate' in HTMLElement.prototype
-  })
+  const isSupported = useSupported(() => window && HTMLElement && 'animate' in HTMLElement.prototype)
 
   const animate = shallowRef<Animation | undefined>(undefined)
   const store = shallowReactive<AnimateSrote>({
@@ -246,7 +226,7 @@ export function useAnimate(
     if (!unrefElement(target) && animate.value) {
       animate.value.effect = new KeyframeEffect(
         unrefElement(target)!,
-        unref(value),
+        toValue(value),
         animateOptions,
       )
     }
@@ -263,24 +243,30 @@ export function useAnimate(
     if (!isSupported.value || !el)
       return
 
-    animate.value = el.animate(unref(keyframes), animateOptions)
+    animate.value = el.animate(toValue(keyframes), animateOptions)
 
-    commitStyles && animate.value.commitStyles()
-    persist && animate.value.persist()
-    _playbackRate !== 1 && (animate.value.playbackRate = _playbackRate)
-    init && !immediate ? animate.value.pause() : syncResume()
+    if (commitStyles)
+      animate.value.commitStyles()
+    if (persist)
+      animate.value.persist()
+    if (_playbackRate !== 1)
+      animate.value.playbackRate = _playbackRate
 
-    isFunction(onReady) && onReady(animate.value)
+    if (init && !immediate)
+      animate.value.pause()
+    else
+      syncResume()
 
-    useEventListener(animate, 'cancel', syncPause)
-    useEventListener(animate, 'finish', syncPause)
-    useEventListener(animate, 'remove', syncPause)
+    onReady?.(animate.value)
   }
+
+  useEventListener(animate, 'cancel', syncPause)
+  useEventListener(animate, 'finish', syncPause)
+  useEventListener(animate, 'remove', syncPause)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)
       return
-
     store.pending = animate.value.pending
     store.playState = animate.value.playState
     store.replaceState = animate.value.replaceState
@@ -291,40 +277,33 @@ export function useAnimate(
   }, { immediate: false })
 
   function syncResume() {
-    reactive && isSupported.value && resumeRef()
+    if (isSupported.value)
+      resumeRef()
   }
 
   function syncPause() {
-    reactive && isSupported.value && window && window.requestAnimationFrame(pauseRef)
+    if (isSupported.value && window)
+      window.requestAnimationFrame(pauseRef)
   }
 
-  if (reactive) {
-    return {
-      isSupported,
-      animate,
-      play,
-      pause,
-      reverse,
-      finish,
-      cancel,
-      pending,
-      playState,
-      replaceState,
-      startTime,
-      currentTime,
-      timeline,
-      playbackRate,
-    }
-  }
-  else {
-    return {
-      isSupported,
-      animate,
-      play,
-      pause,
-      reverse,
-      finish,
-      cancel,
-    }
+  return {
+    isSupported,
+    animate,
+
+    // actions
+    play,
+    pause,
+    reverse,
+    finish,
+    cancel,
+
+    // state
+    pending,
+    playState,
+    replaceState,
+    startTime,
+    currentTime,
+    timeline,
+    playbackRate,
   }
 }

@@ -28,7 +28,6 @@ const {
   {
     duration: 3000,
     iterations: 5,
-    reactive: true,
     direction: 'alternate',
     easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
   },

@@ -25,28 +25,15 @@ const el = ref()
 const {
   isSupported,
   animate,
+
+  // actions
   play,
   pause,
   reverse,
   finish,
   cancel,
-} = useAnimate(el, { transform: 'rotate(360deg)' }, 1000)
-</script>
-```
 
-### With Reactive Attribute
-
-If configure `reactive` option to true, the `useAnimate` function will return the animate state attribute with reactive along with the animate and its control function. If not configure `reactive` option, you can still get relevant animate state from the `animate`, but please note that these attribute are not with reactive and can only be accessed when needed.
-
-```ts
-const {
-  isSupported,
-  animate,
-  play,
-  pause,
-  reverse,
-  finish,
-  cancel,
+  // states
   pending,
   playState,
   replaceState,
@@ -54,11 +41,8 @@ const {
   currentTime,
   timeline,
   playbackRate,
-} = useAnimate(
-  el,
-  { transform: 'rotate(360deg)' },
-  { reactive: true, duration: 100 }
-)
+} = useAnimate(el, { transform: 'rotate(360deg)' }, 1000)
+</script>
 ```
 
 ### Custom Keyframes
