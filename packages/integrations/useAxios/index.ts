@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { isString, noop, until } from '@vueuse/shared'
+import { noop, until } from '@vueuse/shared'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
 import axios, { AxiosError } from 'axios'
 
@@ -117,7 +117,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosR
  */
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
-  const argsPlaceholder = isString(url) ? 1 : 0
+  const argsPlaceholder = typeof url === 'string' ? 1 : 0
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions<T> = {

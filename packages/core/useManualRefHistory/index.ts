@@ -1,4 +1,4 @@
-import { isFunction, timestamp } from '@vueuse/shared'
+import { timestamp } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, markRaw, ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
@@ -108,11 +108,21 @@ function fnSetSource<F>(source: Ref<F>, value: F) {
 type FnCloneOrBypass<F, T> = (v: F) => T
 
 function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<R, S>
+  return (clone
+    ? typeof clone === 'function'
+      ? clone
+      : cloneFnJSON
+    : fnBypass
+  ) as unknown as FnCloneOrBypass<R, S>
 }
 
 function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<S, R>
+  return (clone
+    ? typeof clone === 'function'
+      ? clone
+      : cloneFnJSON
+    : fnBypass
+  ) as unknown as FnCloneOrBypass<S, R>
 }
 
 /**

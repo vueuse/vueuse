@@ -1,5 +1,5 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import { isFunction, isString, toRef, toValue } from '@vueuse/shared'
+import { toRef, toValue } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
 import { useMutationObserver } from '../useMutationObserver'
@@ -59,13 +59,13 @@ export function useTitle(
   } = options
 
   const title: Ref<string | null | undefined> = toRef(newTitle ?? document?.title ?? null)
-  const isReadonly = newTitle && isFunction(newTitle)
+  const isReadonly = newTitle && typeof newTitle === 'function'
 
   function format(t: string) {
     if (!('titleTemplate' in options))
       return t
     const template = options.titleTemplate || '%s'
-    return isFunction(template)
+    return typeof template === 'function'
       ? template(t)
       : toValue(template).replace(/%s/g, t)
   }
@@ -74,7 +74,7 @@ export function useTitle(
     title,
     (t, o) => {
       if (t !== o && document)
-        document.title = format(isString(t) ? t : '')
+        document.title = format(typeof t === 'string' ? t : '')
     },
     { immediate: true },
   )

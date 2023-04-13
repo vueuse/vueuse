@@ -1,5 +1,5 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import { isString, toRef } from '@vueuse/shared'
+import { toRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
@@ -46,7 +46,7 @@ export function useFavicon(
   watch(
     favicon,
     (i, o) => {
-      if (isString(i) && i !== o)
+      if (typeof i === 'string' && i !== o)
         applyIcon(i)
     },
     { immediate: true },

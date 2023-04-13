@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue-demi'
-import { isFunction, isNumber, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
@@ -124,7 +124,7 @@ function lerp(a: number, b: number, alpha: number) {
 }
 
 function toVec(t: number | number[] | undefined) {
-  return (isNumber(t) ? [t] : t) || []
+  return (typeof t === 'number' ? [t] : t) || []
 }
 
 /**
@@ -150,7 +150,9 @@ export function executeTransition<T extends number | number[]>(
   const endAt = Date.now() + duration
   const trans = toValue(options.transition) ?? linear
 
-  const ease = isFunction(trans) ? trans : createEasingFunction(trans)
+  const ease = typeof trans === 'function'
+    ? trans
+    : createEasingFunction(trans)
 
   return new Promise<void>((resolve) => {
     source.value = fromVal
@@ -168,7 +170,7 @@ export function executeTransition<T extends number | number[]>(
 
       if (Array.isArray(source.value))
         (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
-      else if (isNumber(source.value))
+      else if (typeof source.value === 'number')
         (source.value as number) = arr[0]
 
       if (now < endAt) {
@@ -210,7 +212,9 @@ export function useTransition(
   const sourceVal = () => {
     const v = toValue(source)
 
-    return isNumber(v) ? v : v.map(toValue<number>)
+    return typeof v === 'number'
+      ? v
+      : v.map(toValue<number>)
   }
 
   const outputRef = ref(sourceVal())
