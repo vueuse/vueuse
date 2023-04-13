@@ -3,12 +3,18 @@ import { computed, nextTick, unref } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import type { DefaultTransformFn, ReactiveRouteOptionsWithTransform } from '../_types'
 
-export function useRouteQuery(name: string): Ref<null | string | string[]>
+export function useRouteQuery(
+  name: string
+): Ref<null | string | string[]>
 
 export function useRouteQuery<
   T extends null | undefined | string | string[] = null | string | string[],
   K extends DefaultTransformFn<any> = DefaultTransformFn<T>,
->(name: string, defaultValue?: T, options?: ReactiveRouteOptionsWithTransform<K>): Ref<ReturnType<K>>
+>(
+  name: string,
+  defaultValue?: T,
+  options?: ReactiveRouteOptionsWithTransform<K>
+): Ref<ReturnType<K>>
 
 export function useRouteQuery<T extends string | string[]>(
   name: string,

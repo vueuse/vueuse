@@ -2,8 +2,8 @@ import type { MaybeRef } from '@vueuse/shared'
 import type { useRoute, useRouter } from 'vue-router'
 
 type QueryValue = null | undefined | string | string[]
-type NonUndefined<T> = Exclude<T, undefined>
-export type DefaultTransformFn<T = NonUndefined<QueryValue>> = (val: NonUndefined<QueryValue>) => T
+
+export type DefaultTransformFn<T = Required<QueryValue>> = (val: Required<QueryValue>) => T
 
 export interface ReactiveRouteOptions {
   /**
