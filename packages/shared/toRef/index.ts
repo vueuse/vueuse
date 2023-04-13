@@ -14,9 +14,7 @@ export function toRef<T>(r: MaybeComputedRef<T>) {
     : ref(r)
 }
 
-export {
-  /**
-   * @deprecated use `toRef` instead
-   */
-  toRef as resolveRef,
-}
+/**
+ * @deprecated use `toRef` instead
+ */
+export const resolveRef = toRef

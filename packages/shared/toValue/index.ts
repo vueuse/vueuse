@@ -10,9 +10,7 @@ export function toValue<T>(r: MaybeComputedRef<T>): T {
     : unref(r)
 }
 
-export {
-  /**
-   * @deprecated use `toValue` instead
-   */
-  toValue as resolveUnref,
-}
+/**
+ * @deprecated use `toValue` instead
+ */
+export const resolveUnref = toValue
