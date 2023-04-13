@@ -1,5 +1,5 @@
 import { isVue3, ref } from 'vue-demi'
-import { __onlyVue3, assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -332,18 +332,7 @@ describe('is', () => {
 
 describe('compatibility', () => {
   it('should export module', () => {
-    expect(__onlyVue3).toBeDefined()
     expect(directiveHooks).toBeDefined()
-  })
-
-  it('__onlyVues', () => {
-    if (isVue3) {
-      expect(__onlyVue3()).toBeUndefined()
-    }
-    else {
-      expect(() => __onlyVue3()).toThrowError('[VueUse] this function is only works on Vue 3.')
-      expect(() => __onlyVue3('func')).toThrowError('[VueUse] func is only works on Vue 3.')
-    }
   })
 
   it('directiveHooks', () => {
