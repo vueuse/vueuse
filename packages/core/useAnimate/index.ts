@@ -2,8 +2,13 @@ import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi
 import { computed, nextTick, shallowReactive, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
 import { isObject, objectOmit, toValue, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import type { ConfigurableWindow, MaybeComputedElementRef } from '../index'
-import { defaultWindow, unrefElement, useEventListener, useRafFn, useSupported } from '../index'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
+import { useEventListener } from '../useEventListener'
+import { useRafFn } from '../useRafFn'
 
 export interface UseAnimateOptions extends KeyframeAnimationOptions, ConfigurableWindow {
   /**

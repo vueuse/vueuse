@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "packageManager": "pnpm@8.2.0",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "@vueuse/core": "file:../../packages/core/dist",
+    "@vueuse/integrations": "file:../../packages/integrations/dist",
+    "@vueuse/metadata": "file:../../packages/metadata/dist",
+    "@vueuse/nuxt": "file:../../packages/nuxt/dist",
+    "@vueuse/shared": "file:../../packages/shared/dist",
+    "nuxt": "^3.4.1"
+  }
+}
