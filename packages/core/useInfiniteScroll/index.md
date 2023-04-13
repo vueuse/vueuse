@@ -4,18 +4,17 @@ category: Sensors
 
 # useInfiniteScroll
 
-Infinite scrolling of the element. 
+Infinite scrolling of the element.
 
 ## Usage
 
-
 ```html
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement>(null)
-const data = ref([1,2,3,4,5,6])
+const data = ref([1, 2, 3, 4, 5, 6])
 
 useInfiniteScroll(
   el,

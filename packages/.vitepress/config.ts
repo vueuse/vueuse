@@ -32,6 +32,9 @@ const Links = [
   { text: 'Export Size', link: '/export-size' },
   { text: 'Recent Updated', link: '/functions.html#sort=updated' },
   { text: 'Why no translations?', link: '/why-no-translations' },
+]
+
+const Learn = [
   { text: 'Premium Video Course', link: 'https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse' },
 ]
 
@@ -39,6 +42,7 @@ const DefaultSideBar = [
   { text: 'Guide', items: Guide },
   { text: 'Core Functions', items: CoreCategories },
   { text: 'Add-ons', items: AddonCategories },
+  { text: 'Learn', items: Learn },
   { text: 'Links', items: Links },
 ]
 
@@ -48,6 +52,7 @@ export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+  ignoreDeadLinks: true,
 
   markdown: {
     theme: {
@@ -69,8 +74,8 @@ export default defineConfig({
     },
 
     algolia: {
-      appId: 'BH4D9OD16A',
-      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      appId: 'NBQWY48OOR',
+      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
       indexName: 'vueuse',
     },
 
@@ -85,6 +90,7 @@ export default defineConfig({
         text: 'Guide',
         items: [
           { text: 'Guide', items: Guide },
+          { text: 'Learn', items: Learn },
           { text: 'Links', items: Links },
         ],
       },
@@ -165,6 +171,7 @@ export default defineConfig({
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
     ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
 
     ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
@@ -189,11 +196,10 @@ function getFunctionsSideBar() {
         link: i.external || `/${i.package}/${i.name}/`,
       })),
       link: name.startsWith('@')
-        ? functions[0].external || `/${functions[0].package}/README`
+        ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })
   }
 
   return links
 }
-

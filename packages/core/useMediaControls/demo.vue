@@ -51,7 +51,9 @@ const {
 } = controls
 const text = stringify(reactive(controls))
 const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
-const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString().slice(14, 19)
+function formatDuration(seconds: number) {
+  return new Date(1000 * seconds).toISOString().slice(14, 19)
+}
 </script>
 
 <template>

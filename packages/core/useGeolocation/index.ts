@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
@@ -23,12 +23,13 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     maximumAge = 30000,
     timeout = 27000,
     navigator = defaultNavigator,
+    immediate = true,
   } = options
 
   const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
   const locatedAt: Ref<number | null> = ref(null)
-  const error = ref<GeolocationPositionError | null>(null)
+  const error = shallowRef<GeolocationPositionError | null>(null)
   const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
     latitude: Infinity,
@@ -61,7 +62,8 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     }
   }
 
-  resume()
+  if (immediate)
+    resume()
 
   function pause() {
     if (watcher && navigator)

@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer'
 import { useBase64 } from '@vueuse/core'
 import { describe, expect } from 'vitest'
 

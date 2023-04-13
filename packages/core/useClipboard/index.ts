@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
@@ -52,8 +52,8 @@ export interface UseClipboardReturn<Optional> {
  * @param options
  */
 export function useClipboard(options?: UseClipboardOptions<undefined>): UseClipboardReturn<false>
-export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string>>): UseClipboardReturn<true>
-export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<string> | undefined> = {}): UseClipboardReturn<boolean> {
+export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<string>>): UseClipboardReturn<true>
+export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<string> | undefined> = {}): UseClipboardReturn<boolean> {
   const {
     navigator = defaultNavigator,
     read = false,
@@ -85,7 +85,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<strin
       useEventListener(event as WindowEventName, updateText)
   }
 
-  async function copy(value = resolveUnref(source)) {
+  async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
       if (isClipboardApiSupported.value)
         await navigator!.clipboard.writeText(value)

@@ -1,14 +1,14 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 
-export type MaybeComputedRefArgs<T> = MaybeComputedRef<T>[] | [MaybeComputedRef<MaybeComputedRef<T>[]>]
+export type MaybeComputedRefArgs<T> = MaybeRefOrGetter<T>[] | [MaybeRefOrGetter<MaybeRefOrGetter<T>[]>]
 
-export function resolveUnrefArgsFlat<T>(args: MaybeComputedRefArgs<T>): T[] {
+export function toValueArgsFlat<T>(args: MaybeComputedRefArgs<T>): T[] {
   return args
     .flatMap((i: any) => {
-      const v = resolveUnref(i)
+      const v = toValue(i)
       if (Array.isArray(v))
-        return v.map(i => resolveUnref(i))
+        return v.map(i => toValue(i))
       return [v]
     })
 }

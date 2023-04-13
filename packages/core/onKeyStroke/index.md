@@ -34,7 +34,6 @@ onKeyStroke(true, (e) => {
 onKeyStroke((e) => {
   e.preventDefault()
 })
-
 ```
 
 ### Custom Event Target
@@ -44,6 +43,21 @@ onKeyStroke('A', (e) => {
   console.log('Key A pressed on document')
 }, { target: document })
 ```
+
+### Ignore Repeated Events
+
+The callback will trigger only once when pressing `A` and **hold down**.
+
+```js
+import { onKeyStroke, onKeyStrokeOnce } from '@vueuse/core'
+
+// use `autoRepeat` option
+onKeyStroke('A', (e) => {
+  console.log('Key A pressed')
+}, { autoRepeat: false })
+```
+
+Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)
 
 ## Directive Usage
 

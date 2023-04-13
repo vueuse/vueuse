@@ -8,6 +8,8 @@ Shorthand for binding ref to template element.
 
 ## Usage
 
+<!-- eslint-skip -->
+
 ```vue
 <script lang="ts">
 import { templateRef } from '@vueuse/core'

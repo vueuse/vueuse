@@ -11,7 +11,7 @@ const keys = computed(() => Array.from(current))
   <div class="flex flex-col md:flex-row">
     <img
       src="/vue.svg"
-      class="h-38 py-8 m-auto transform transistion duration-500"
+      class="h-38 py-8 m-auto transform transition duration-500"
       :class="{ 'opacity-0': !v_u_e, 'rotate-180': shift }"
     >
 
@@ -69,7 +69,7 @@ const keys = computed(() => Array.from(current))
 
     <img
       src="/favicon.svg"
-      class="h-38 py-8 m-auto transform transistion duration-500"
+      class="h-38 py-8 m-auto transform transition duration-500"
       :class="{ 'opacity-0': !u_s_e, 'rotate-180': shift }"
     >
   </div>

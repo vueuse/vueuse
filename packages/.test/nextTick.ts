@@ -1,5 +1,7 @@
-export const nextTwoTick = () => new Promise<void>((resolve) => {
-  setTimeout(() => {
-    setTimeout(resolve)
+export function nextTwoTick() {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      setTimeout(resolve)
+    })
   })
-})
+}

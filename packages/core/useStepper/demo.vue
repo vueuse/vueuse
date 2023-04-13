@@ -93,10 +93,10 @@ function allStepsBeforeAreValid(index: number): boolean {
         </div>
 
         <div>
-          <button v-if="!stepper.isLast" :disabled="!stepper.current.value.isValid()">
+          <button v-if="!stepper.isLast.value" :disabled="!stepper.current.value.isValid()">
             Next
           </button>
-          <button v-if="stepper.isLast" :disabled="!stepper.current.value.isValid()">
+          <button v-if="stepper.isLast.value" :disabled="!stepper.current.value.isValid()">
             Submit
           </button>
         </div>

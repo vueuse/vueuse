@@ -1,11 +1,12 @@
-import { defineComponent, toRef } from 'vue-demi'
+import { defineComponent } from 'vue-demi'
 import { useObjectUrl } from '@vueuse/core'
+import { toRef } from '@vueuse/shared'
 
 export interface UseObjectUrlProps {
   object: Blob | MediaSource | undefined
 }
 
-export const UseObjectUrl = defineComponent<UseObjectUrlProps>({
+export const UseObjectUrl = /* #__PURE__ */ defineComponent<UseObjectUrlProps>({
   name: 'UseObjectUrl',
   props: [
     'object',

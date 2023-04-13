@@ -55,7 +55,7 @@ const { x, y } = useScroll(el)
 
 Set `behavior: smooth` to enable smooth scrolling. The `behavior` option defaults to `auto`, which means no smooth scrolling. See the `behavior` option on [`window.scrollTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo) for more information.
 ```ts
-import { useWindowScroll } from '@vueuse/core'
+import { useScroll } from '@vueuse/core'
 
 const el = ref<HTMLElement | null>(null)
 const { x, y } = useScroll(el, { behavior: 'smooth' })

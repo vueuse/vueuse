@@ -1,6 +1,6 @@
 import { computed, reactive, ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -55,7 +55,7 @@ export interface UseScrollOptions {
    *
    * @default 'auto'
    */
-  behavior?: MaybeComputedRef<ScrollBehavior>
+  behavior?: MaybeRefOrGetter<ScrollBehavior>
 }
 
 /**
@@ -75,7 +75,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  */
 
 export function useScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -120,15 +120,15 @@ export function useScroll(
   })
 
   function scrollTo(_x: number | undefined, _y: number | undefined) {
-    const _element = resolveUnref(element)
+    const _element = toValue(element)
 
     if (!_element)
       return
 
     (_element instanceof Document ? document.body : _element)?.scrollTo({
-      top: resolveUnref(_y) ?? y.value,
-      left: resolveUnref(_x) ?? x.value,
-      behavior: resolveUnref(behavior),
+      top: toValue(_y) ?? y.value,
+      left: toValue(_x) ?? x.value,
+      behavior: toValue(behavior),
     })
   }
 
@@ -146,14 +146,19 @@ export function useScroll(
     bottom: false,
   })
 
-  const onScrollEnd = useDebounceFn((e: Event) => {
+  const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
+
     isScrolling.value = false
     directions.left = false
     directions.right = false
     directions.top = false
     directions.bottom = false
     onStop(e)
-  }, throttle + idle)
+  }
+  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
   const onScrollHandler = (e: Event) => {
     const eventTarget = (
@@ -182,7 +187,7 @@ export function useScroll(
     internalY.value = scrollTop
 
     isScrolling.value = true
-    onScrollEnd(e)
+    onScrollEndDebounced(e)
     onScroll(e)
   }
 
@@ -190,6 +195,13 @@ export function useScroll(
     element,
     'scroll',
     throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
+    eventListenerOptions,
+  )
+
+  useEventListener(
+    element,
+    'scrollend',
+    onScrollEnd,
     eventListenerOptions,
   )
 

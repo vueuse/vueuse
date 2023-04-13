@@ -33,10 +33,8 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
-  fn: T,
-  options: UseWebWorkerOptions = {},
-) => {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
+  options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
     timeout,

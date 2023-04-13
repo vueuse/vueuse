@@ -11,7 +11,9 @@ onMounted(() => {
   watch(count, value => console.info('from watcher:', value))
 
   const subscription = countSubject.subscribe(value => console.info('from subscriber: ', value))
-  tryOnScopeDispose(() => { subscription.unsubscribe() })
+  tryOnScopeDispose(() => {
+    subscription.unsubscribe()
+  })
 })
 </script>
 

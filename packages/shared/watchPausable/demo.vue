@@ -14,14 +14,14 @@ const watcher = watchPausable(
 
 onStartTyping(() => input.value?.focus())
 
-const clear = () => {
+function clear() {
   log.value = ''
 }
-const pause = () => {
+function pause() {
   log.value += 'Paused\n'
   watcher.pause()
 }
-const resume = () => {
+function resume() {
   log.value += 'Resumed\n'
   watcher.resume()
 }

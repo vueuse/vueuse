@@ -1,7 +1,7 @@
 import type { UnwrapNestedRefs } from 'vue-demi'
 import { nextTick, reactive, watch } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
 
@@ -34,7 +34,7 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
  * @see https://vueuse.org/useInfiniteScroll
  */
 export function useInfiniteScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => void | Promise<void>,
   options: UseInfiniteScrollOptions = {},
 ) {
@@ -54,7 +54,7 @@ export function useInfiniteScroll(
     () => state.arrivedState[direction],
     async (v) => {
       if (v) {
-        const elem = resolveUnref(element) as Element
+        const elem = toValue(element) as Element
         const previous = {
           height: elem?.scrollHeight ?? 0,
           width: elem?.scrollWidth ?? 0,

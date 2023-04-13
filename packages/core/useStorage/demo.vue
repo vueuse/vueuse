@@ -2,14 +2,16 @@
 import { stringify } from '@vueuse/docs-utils'
 import { useStorage } from '@vueuse/core'
 
-const state = useStorage('vue-use-local-storage', {
+const theDefault = {
   name: 'Banana',
   color: 'Yellow',
   size: 'Medium',
   count: 0,
-})
+}
+const state = useStorage('vue-use-local-storage', theDefault)
+const state2 = useStorage('vue-use-local-storage', theDefault)
 
-const text = stringify(state)
+const text = stringify(state2)
 </script>
 
 <template>
