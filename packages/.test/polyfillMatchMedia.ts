@@ -1,15 +1,13 @@
-import { vitest } from 'vitest'
-
-window.matchMedia = window.matchMedia || vitest.fn().mockImplementation((query) => {
+window.matchMedia = window.matchMedia || vi.fn().mockImplementation((query) => {
   return {
     matches: false,
     media: query,
     onchange: null,
-    addListener: vitest.fn(), // deprecated
-    removeListener: vitest.fn(), // deprecated
-    addEventListener: vitest.fn(),
-    removeEventListener: vitest.fn(),
-    dispatchEvent: vitest.fn(),
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   }
 })
 

@@ -1,6 +1,6 @@
 import type { NProgressOptions } from 'nprogress'
 import nprogress from 'nprogress'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, isNumber, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref, watchEffect } from 'vue-demi'
 
@@ -12,7 +12,7 @@ export type UseNProgressOptions = Partial<NProgressOptions>
  * @see https://vueuse.org/useNProgress
  */
 export function useNProgress(
-  currentProgress: MaybeComputedRef<number | null | undefined> = null,
+  currentProgress: MaybeRefOrGetter<number | null | undefined> = null,
   options?: UseNProgressOptions,
 ) {
   const progress = ref(currentProgress)

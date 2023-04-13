@@ -127,7 +127,7 @@ describe('useEventBus', () => {
   })
 
   it('the same key, the same listener, will only be triggered once', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const { on, emit, off } = useEventBus<'inc' | 'dec', number>('counter')
     on(listener)
     on(listener)

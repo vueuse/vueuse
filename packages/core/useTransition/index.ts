@@ -1,7 +1,7 @@
-import { computed, ref, unref, watch } from 'vue-demi'
-import { isFunction, isNumber, identity as linear, promiseTimeout, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
+import { isFunction, isNumber, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
 /**
  * Cubic bezier points
@@ -137,18 +137,18 @@ function toVec(t: number | number[] | undefined) {
  */
 export function executeTransition<T extends number | number[]>(
   source: Ref<T>,
-  from: MaybeRef<T>,
-  to: MaybeRef<T>,
+  from: MaybeRefOrGetter<T>,
+  to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {},
 ): PromiseLike<void> {
-  const fromVal = unref(from)
-  const toVal = unref(to)
+  const fromVal = toValue(from)
+  const toVal = toValue(to)
   const v1 = toVec(fromVal)
   const v2 = toVec(toVal)
-  const duration = unref(options.duration) ?? 1000
+  const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-  const trans = unref(options.transition) ?? linear
+  const trans = toValue(options.transition) ?? linear
 
   const ease = isFunction(trans) ? trans : createEasingFunction(trans)
 
@@ -186,13 +186,13 @@ export function executeTransition<T extends number | number[]>(
 }
 
 // option 1: reactive number
-export function useTransition(source: MaybeComputedRef<number>, options?: UseTransitionOptions): ComputedRef<number>
+export function useTransition(source: MaybeRefOrGetter<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeComputedRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
-export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
+export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
  * Follow value with a transition.
@@ -202,32 +202,32 @@ export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, o
  * @param options
  */
 export function useTransition(
-  source: MaybeComputedRef<number | number[]> | MaybeComputedRef<number>[],
+  source: MaybeRefOrGetter<number | number[]> | MaybeRefOrGetter<number>[],
   options: UseTransitionOptions = {},
 ): Ref<any> {
   let currentId = 0
 
   const sourceVal = () => {
-    const v = resolveUnref(source)
+    const v = toValue(source)
 
-    return isNumber(v) ? v : v.map(resolveUnref<number>)
+    return isNumber(v) ? v : v.map(toValue<number>)
   }
 
   const outputRef = ref(sourceVal())
 
   watch(sourceVal, async (to) => {
-    if (unref(options.disabled))
+    if (toValue(options.disabled))
       return
 
     const id = ++currentId
 
     if (options.delay)
-      await promiseTimeout(unref(options.delay))
+      await promiseTimeout(toValue(options.delay))
 
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(resolveUnref<number>) : resolveUnref(to)
+    const toVal = Array.isArray(to) ? to.map(toValue<number>) : toValue(to)
 
     options.onStarted?.()
 
@@ -239,7 +239,7 @@ export function useTransition(
     options.onFinished?.()
   }, { deep: true })
 
-  watch(() => unref(options.disabled), (disabled) => {
+  watch(() => toValue(options.disabled), (disabled) => {
     if (disabled) {
       currentId++
 
@@ -251,5 +251,5 @@ export function useTransition(
     currentId++
   })
 
-  return computed(() => unref(options.disabled) ? sourceVal() : outputRef.value)
+  return computed(() => toValue(options.disabled) ? sourceVal() : outputRef.value)
 }

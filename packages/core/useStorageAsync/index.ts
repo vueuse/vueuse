@@ -1,5 +1,5 @@
-import type { MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { isFunction, resolveUnref, watchWithFilter } from '@vueuse/shared'
+import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import { isFunction, toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
@@ -17,11 +17,11 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
   serializer?: SerializerAsync<T>
 }
 
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean>
-export function useStorageAsync(key: string, initialValue: MaybeComputedRef<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number>
-export function useStorageAsync<T>(key: string, initialValue: MaybeComputedRef<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
-export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeComputedRef<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number>
+export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
 
 /**
  * Reactive Storage in with async support.
@@ -34,7 +34,7 @@ export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeCom
  */
 export function useStorageAsync<T extends(string | number | boolean | object | null)>(
   key: string,
-  initialValue: MaybeComputedRef<T>,
+  initialValue: MaybeRefOrGetter<T>,
   storage: StorageLikeAsync | undefined,
   options: UseStorageAsyncOptions<T> = {},
 ): RemovableRef<T> {
@@ -52,7 +52,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     },
   } = options
 
-  const rawInit: T = resolveUnref(initialValue)
+  const rawInit: T = toValue(initialValue)
   const type = guessSerializerType<T>(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>

@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { isClient, resolveUnref, toRefs } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { isClient, toRefs, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -11,35 +11,35 @@ export interface UseDraggableOptions {
    *
    * @default false
    */
-  exact?: MaybeComputedRef<boolean>
+  exact?: MaybeRefOrGetter<boolean>
 
   /**
    * Prevent events defaults
    *
    * @default false
    */
-  preventDefault?: MaybeComputedRef<boolean>
+  preventDefault?: MaybeRefOrGetter<boolean>
 
   /**
    * Prevent events propagation
    *
    * @default false
    */
-  stopPropagation?: MaybeComputedRef<boolean>
+  stopPropagation?: MaybeRefOrGetter<boolean>
 
   /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
    */
-  draggingElement?: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>
+  draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
    * Handle that triggers the drag event
    *
    * @default target
    */
-  handle?: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>
+  handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
 
   /**
    * Pointer types that listen to.
@@ -53,7 +53,7 @@ export interface UseDraggableOptions {
    *
    * @default { x: 0, y: 0 }
    */
-  initialValue?: MaybeComputedRef<Position>
+  initialValue?: MaybeRefOrGetter<Position>
 
   /**
    * Callback when the dragging starts. Return `false` to prevent dragging.
@@ -86,7 +86,7 @@ export interface UseDraggableOptions {
  * @param options
  */
 export function useDraggable(
-  target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
+  target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options: UseDraggableOptions = {},
 ) {
   const {
@@ -104,7 +104,7 @@ export function useDraggable(
   } = options
 
   const position = ref<Position>(
-    resolveUnref(initialValue) ?? { x: 0, y: 0 },
+    toValue(initialValue) ?? { x: 0, y: 0 },
   )
 
   const pressedDelta = ref<Position>()
@@ -116,18 +116,18 @@ export function useDraggable(
   }
 
   const handleEvent = (e: PointerEvent) => {
-    if (resolveUnref(preventDefault))
+    if (toValue(preventDefault))
       e.preventDefault()
-    if (resolveUnref(stopPropagation))
+    if (toValue(stopPropagation))
       e.stopPropagation()
   }
 
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
-    if (resolveUnref(exact) && e.target !== resolveUnref(target))
+    if (toValue(exact) && e.target !== toValue(target))
       return
-    const rect = resolveUnref(target)!.getBoundingClientRect()
+    const rect = toValue(target)!.getBoundingClientRect()
     const pos = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,

@@ -2,8 +2,8 @@ import { nextTick } from 'vue'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
-  const addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
-  const matchMediaSpy = vitest.spyOn(window, 'matchMedia')
+  const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+  const matchMediaSpy = vi.spyOn(window, 'matchMedia')
   beforeEach(() => {
     addEventListenerSpy.mockReset()
     matchMediaSpy.mockReset()

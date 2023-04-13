@@ -1,6 +1,6 @@
 import { readonly, ref } from 'vue-demi'
-import type { AnyFn, MaybeComputedRef, Stoppable } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import type { AnyFn, MaybeRefOrGetter, Stoppable } from '../utils'
+import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
@@ -22,7 +22,7 @@ export interface UseTimeoutFnOptions {
  */
 export function useTimeoutFn<CallbackFn extends AnyFn>(
   cb: CallbackFn,
-  interval: MaybeComputedRef<number>,
+  interval: MaybeRefOrGetter<number>,
   options: UseTimeoutFnOptions = {},
 ): Stoppable<Parameters<CallbackFn> | []> {
   const {
@@ -53,7 +53,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
       timer = null
 
       cb(...args)
-    }, resolveUnref(interval))
+    }, toValue(interval))
   }
 
   if (immediate) {

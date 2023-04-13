@@ -1,5 +1,5 @@
-import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
+import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
+import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
@@ -73,12 +73,12 @@ export interface UseFetchReturn<T> {
 
   // methods
   get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
   json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -146,7 +146,7 @@ export interface UseFetchOptions {
    *
    * @default false
    */
-  refetch?: MaybeComputedRef<boolean>
+  refetch?: MaybeRefOrGetter<boolean>
 
   /**
    * Initial data before the request finished
@@ -185,7 +185,7 @@ export interface CreateFetchOptions {
   /**
    * The base URL that will be prefixed to all urls unless urls are absolute
    */
-  baseUrl?: MaybeComputedRef<string>
+  baseUrl?: MaybeRefOrGetter<string>
 
   /**
    * Determine the inherit behavior for beforeFetch, afterFetch, onFetchError
@@ -252,10 +252,10 @@ export function createFetch(config: CreateFetchOptions = {}) {
   const _options = config.options || {}
   const _fetchOptions = config.fetchOptions || {}
 
-  function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
+  function useFactoryFetch(url: MaybeRefOrGetter<string>, ...args: any[]) {
     const computedUrl = computed(() => {
-      const baseUrl = resolveUnref(config.baseUrl)
-      const targetUrl = resolveUnref(url)
+      const baseUrl = toValue(config.baseUrl)
+      const targetUrl = toValue(url)
 
       return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
@@ -304,11 +304,11 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeComputedRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeComputedRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeComputedRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
-export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
@@ -394,7 +394,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      const payload = resolveUnref(config.payload)
+      const payload = toValue(config.payload)
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
         : payload as BodyInit
@@ -402,7 +402,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
     let isCanceled = false
     const context: BeforeFetchContext = {
-      url: resolveUnref(url),
+      url: toValue(url),
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
@@ -476,11 +476,11 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     })
   }
 
-  const refetch = resolveRef(options.refetch)
+  const refetch = toRef(options.refetch)
   watch(
     [
       refetch,
-      resolveRef(url),
+      toRef(url),
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
@@ -529,14 +529,14 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           watch(
             [
               refetch,
-              resolveRef(config.payload),
+              toRef(config.payload),
             ],
             ([refetch]) => refetch && execute(),
             { deep: true },
           )
         }
 
-        const rawPayload = resolveUnref(config.payload)
+        const rawPayload = toValue(config.payload)
         // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
         // The only case we can deduce the content type and `fetch` can't
         if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))

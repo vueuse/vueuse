@@ -4,7 +4,7 @@ import { watchImmediate } from '.'
 describe('watchImmediate', () => {
   it('should watch twice, once for immediate and one for value change', async () => {
     let currentRun = 1
-    const spy = vitest.fn((valUpdate) => {
+    const spy = vi.fn((valUpdate) => {
       if (currentRun === 1)
         expect(valUpdate).toEqual('vue-use')
 

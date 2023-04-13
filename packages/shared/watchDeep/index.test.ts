@@ -3,7 +3,7 @@ import { watchDeep } from '.'
 
 describe('watchDeep', () => {
   it('should work when nested value is updated', async () => {
-    const spy = vitest.fn((objectUpdate) => {
+    const spy = vi.fn((objectUpdate) => {
       expect(objectUpdate).toEqual({ foo: { bar: { deep: 10 } } })
     })
 

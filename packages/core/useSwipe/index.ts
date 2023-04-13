@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, reactive, ref } from 'vue-demi'
@@ -57,7 +57,7 @@ export interface UseSwipeReturn {
  * @param options
  */
 export function useSwipe(
-  target: MaybeComputedRef<EventTarget | null | undefined>,
+  target: MaybeRefOrGetter<EventTarget | null | undefined>,
   options: UseSwipeOptions = {},
 ): UseSwipeReturn {
   const {

@@ -1,12 +1,12 @@
 import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
 import { nextTick, ref } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
-import type { MapOldSources, MapSources, MaybeComputedRef } from '../utils'
+import { toValue } from '../toValue'
+import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Immediate> {
-  count: MaybeComputedRef<number>
+  count: MaybeRefOrGetter<number>
 }
 
 export interface WatchAtMostReturn {
@@ -36,7 +36,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
     source,
     (...args) => {
       current.value += 1
-      if (current.value >= resolveUnref(count))
+      if (current.value >= toValue(count))
         nextTick(() => stop())
 
       cb(...args)

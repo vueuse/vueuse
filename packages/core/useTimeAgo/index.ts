@@ -1,7 +1,7 @@
-import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
-import { computed, unref } from 'vue-demi'
+import { computed } from 'vue-demi'
 import { useNow } from '../useNow'
 
 export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
@@ -131,16 +131,16 @@ export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extend
  * @see https://vueuse.org/useTimeAgo
  * @param options
  */
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeComputedRef<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeComputedRef<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
+export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
+export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
+export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,
     updateInterval = 30_000,
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-  const timeAgo = computed(() => formatTimeAgo(new Date(resolveUnref(time)), options, unref(now.value)))
+  const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now.value)))
 
   if (exposeControls) {
     return {

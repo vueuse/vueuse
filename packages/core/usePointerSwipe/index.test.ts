@@ -49,9 +49,9 @@ describe('usePointerSwipe', () => {
   })
 
   beforeEach(() => {
-    onSwipeStart = vitest.fn((e: PointerEvent) => {})
-    onSwipe = vitest.fn((e: PointerEvent) => {})
-    onSwipeEnd = vitest.fn((e: PointerEvent, direction: any) => {})
+    onSwipeStart = vi.fn((e: PointerEvent) => {})
+    onSwipe = vi.fn((e: PointerEvent) => {})
+    onSwipeEnd = vi.fn((e: PointerEvent, direction: any) => {})
   })
 
   it('threshold is not exceeded', () => {
