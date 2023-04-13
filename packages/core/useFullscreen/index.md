@@ -14,7 +14,7 @@ import { useFullscreen } from '@vueuse/core'
 const { isFullscreen, enter, exit, toggle } = useFullscreen()
 ```
 
-Fullscreen specified element
+Fullscreen specified element. Some platforms (like iOS's Safari) only allow fullscreen on video elements.
 
 ```ts
 const el = ref<HTMLElement | null>(null)

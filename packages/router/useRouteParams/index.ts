@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick, unref } from 'vue-demi'
+import { computed, nextTick } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
+import { toValue } from '@vueuse/shared'
 import type { ReactiveRouteOptions } from '../_types'
 
 export function useRouteParams(name: string): Ref<null | string | string[]>
@@ -25,7 +26,7 @@ export function useRouteParams<T extends string | string[]>(
     },
     set(v) {
       nextTick(() => {
-        router[unref(mode)]({ ...route, params: { ...route.params, [name]: v } })
+        router[toValue(mode)]({ ...route, params: { ...route.params, [name]: v } })
       })
     },
   })

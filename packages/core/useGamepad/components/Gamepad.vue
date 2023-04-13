@@ -6,7 +6,7 @@ import Controller from './Controller.vue'
 const props = defineProps<{ gamepad: Gamepad }>()
 
 const supportsVibration = computed(() => props.gamepad.hapticActuators.length > 0)
-const vibrate = () => {
+function vibrate() {
   if (supportsVibration.value) {
     const actuator: any = props.gamepad.hapticActuators[0]
     actuator.playEffect('dual-rumble', {

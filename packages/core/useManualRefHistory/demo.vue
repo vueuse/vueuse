@@ -2,7 +2,9 @@
 import { useCounter } from '@vueuse/shared'
 import { formatDate, useManualRefHistory } from '@vueuse/core'
 
-const format = (ts: number) => formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
+function format(ts: number) {
+  return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
+}
 
 const { inc, dec, count } = useCounter()
 const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(count, { capacity: 10 })

@@ -3,7 +3,7 @@ import { refAutoReset } from '@vueuse/core'
 
 const message = refAutoReset('Default message', 1000)
 
-const setMessage = () => {
+function setMessage() {
   message.value = 'Changed'
 }
 </script>

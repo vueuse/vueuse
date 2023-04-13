@@ -6,7 +6,11 @@
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #5d6f5d;
+
   --vp-code-block-bg: rgba(125,125,125,0.04);
+  --vp-code-copy-code-bg: rgba(125,125,125,0.1);
+  --vp-code-copy-code-hover-bg: rgba(125,125,125,0.2);
+
   --vp-c-disabled-bg: rgba(125,125,125,0.2);
   /* fix contrast on gray cards: used by --vp-c-text-2 */
   --vp-c-text-light-2: rgba(56 56 56 / 70%);

@@ -39,6 +39,7 @@ Optionally, you can get the return value of the function using promise operation
 
 ```js
 import { useDebounceFn } from '@vueuse/core'
+
 const debouncedRequest = useDebounceFn(() => 'response', 1000)
 
 debouncedRequest().then((value) => {
@@ -56,6 +57,7 @@ Since unhandled rejection error is quite annoying when developer doesn't need th
 
 ```js
 import { useDebounceFn } from '@vueuse/core'
+
 const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
 
 debouncedRequest()

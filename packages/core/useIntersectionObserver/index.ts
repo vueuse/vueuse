@@ -2,7 +2,7 @@ import { watch } from 'vue-demi'
 import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
@@ -10,7 +10,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeElementRef
+  root?: MaybeComputedElementRef
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
@@ -32,7 +32,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   callback: IntersectionObserverCallback,
   options: UseIntersectionObserverOptions = {},
 ) {

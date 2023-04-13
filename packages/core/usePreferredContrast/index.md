@@ -18,6 +18,6 @@ const preferredContrast = usePreferredContrast()
 
 ```html
 <UsePreferredContrast v-slot="{ contrast }">
-  Preferred Color Scheme: {{ contrast }}
-<UsePreferredContrast>
+  Preferred Contrast: {{ contrast }}
+</UsePreferredContrast>
 ```

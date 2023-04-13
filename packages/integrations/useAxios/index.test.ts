@@ -15,7 +15,7 @@ describe('useAxios', () => {
   test('params: url', async () => {
     const { isFinished, data, then } = useAxios(url)
     expect(isFinished.value).toBeFalsy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(data.value.id).toBe(1)
@@ -28,7 +28,7 @@ describe('useAxios', () => {
   test('params: url config', async () => {
     const { isFinished, then } = useAxios(url, config)
     expect(isFinished.value).toBeFalsy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then()
       .then((result) => {
@@ -43,7 +43,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     execute('https://jsonplaceholder.typicode.com/todos/2')
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     const result = await then(undefined, onRejected)
     expect(result.data.value.id).toBe(2)
@@ -54,7 +54,7 @@ describe('useAxios', () => {
   test('params: url instance', async () => {
     const { isFinished, then } = useAxios(path, instance)
     expect(isFinished.value).toBeFalsy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -68,7 +68,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     execute()
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -80,7 +80,7 @@ describe('useAxios', () => {
   test('params: url config instance', async () => {
     const { isFinished, then } = useAxios(path, config, instance)
     expect(isFinished.value).toBeFalsy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -94,7 +94,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     execute()
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -108,7 +108,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     execute(undefined, config)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -122,7 +122,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(url)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -136,7 +136,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(url)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     const result = await then(undefined, onRejected)
     expect(result.data.value.id).toBe(1)
@@ -149,7 +149,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(path)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -163,7 +163,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     const res = execute(path)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     const result = await res.then(undefined, onRejected)
     expect(result.data.value.id).toBe(1)
@@ -177,7 +177,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
     execute(path)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
@@ -192,7 +192,7 @@ describe('useAxios', () => {
     const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data.value[0].postId).toBe(1)
@@ -236,7 +236,7 @@ describe('useAxios', () => {
     }
     execute({ data: requestData })
     expect(isLoading.value).toBeTruthy()
-    const onRejected = vitest.fn()
+    const onRejected = vi.fn()
 
     await then((result) => {
       expect(result.data).toBeDefined()
@@ -263,7 +263,7 @@ describe('useAxios', () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     execute('https://jsonplaceholder.typicode.com/todos/2').then((result) => {
-      expect(result.error.value?.message).toBe('aborted')
+      expect((result.error.value as Error)?.message).toBe('aborted')
       expect(isFinished.value).toBeTruthy()
       expect(isLoading.value).toBeFalsy()
       expect(isAborted.value).toBeTruthy()
@@ -282,7 +282,7 @@ describe('useAxios', () => {
   })
 
   test('should call onSuccess when success', async () => {
-    const onSuccess = vitest.fn()
+    const onSuccess = vi.fn()
     const { execute, isLoading, isFinished, data } = useAxios(url, config, { ...options, onSuccess })
     expect(isLoading.value).toBeFalsy()
     await execute()
@@ -292,11 +292,22 @@ describe('useAxios', () => {
   })
 
   test('should call onError when error', async () => {
-    const onError = vitest.fn()
+    const onError = vi.fn()
     const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
     expect(isLoading.value).toBeFalsy()
     await execute('https://jsonplaceholder.typicode.com/todos/2/3')
     expect(onError).toHaveBeenCalledWith(error.value)
+    expect(isFinished.value).toBeTruthy()
+    expect(isLoading.value).toBeFalsy()
+  })
+
+  test('should call onFinish', async () => {
+    const onFinish = vi.fn()
+    const { execute, isLoading, isFinished } = useAxios(url, config, { ...options, onFinish })
+    expect(isLoading.value).toBeFalsy()
+
+    await execute()
+    expect(onFinish).toHaveBeenCalled()
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
   })

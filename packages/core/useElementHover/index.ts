@@ -1,17 +1,22 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
 export interface UseElementHoverOptions extends ConfigurableWindow {
   delayEnter?: number
   delayLeave?: number
 }
 
-export function useElementHover(el: MaybeComputedRef<EventTarget | null | undefined>, options: UseElementHoverOptions = {}): Ref<boolean> {
-  const delayEnter = options ? options.delayEnter : 0
-  const delayLeave = options ? options.delayLeave : 0
+export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefined>, options: UseElementHoverOptions = {}): Ref<boolean> {
+  const {
+    delayEnter = 0,
+    delayLeave = 0,
+    window = defaultWindow,
+  } = options
+
   const isHovered = ref(false)
   let timer: ReturnType<typeof setTimeout> | undefined
 
