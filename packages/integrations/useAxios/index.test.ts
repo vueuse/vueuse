@@ -181,9 +181,24 @@ describe('useAxios', () => {
 
     await then((result) => {
       expect(result.data.value.id).toBe(1)
-      expect(isLoading.value).toBeFalsy()
-      expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
+    expect(isLoading.value).toBeFalsy()
+
+    expect(onRejected).toBeCalledTimes(0)
+  })
+
+  test('execute rejects on error', async () => {
+    const { isLoading, then, execute } = useAxios(config, instance)
+    expect(isLoading.value).toBeFalsy()
+    execute(`${path}/wrong-url`)
+    expect(isLoading.value).toBeTruthy()
+    const onResolved = vitest.fn()
+    const onRejected = vitest.fn()
+
+    await then(onResolved, onRejected)
+    expect(isLoading.value).toBeFalsy()
+    expect(onResolved).toBeCalledTimes(0)
+    expect(onRejected).toBeCalledTimes(1)
   })
 
   test('calling axios with config change(param/data etc.) only', async () => {
@@ -262,14 +277,16 @@ describe('useAxios', () => {
   test('should abort when loading', async () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
-    execute('https://jsonplaceholder.typicode.com/todos/2').then((result) => {
-      expect((result.error.value as Error)?.message).toBe('aborted')
-      expect(isFinished.value).toBeTruthy()
-      expect(isLoading.value).toBeFalsy()
-      expect(isAborted.value).toBeTruthy()
-    })
+    let error: any
+    const promise = execute('https://jsonplaceholder.typicode.com/todos/2')
+      .catch((e) => {
+        error = e
+      })
     abort('aborted')
+    await promise
     expect(isAborted.value).toBeTruthy()
+    expect(isFinished.value).toBeTruthy()
+    expect(error).toBeDefined()
   })
 
   test('missing url', async () => {
@@ -277,8 +294,10 @@ describe('useAxios', () => {
     console.error = vi.fn()
     // @ts-expect-error mock undefined url
     const { execute } = useAxios(undefined, config, options)
-    const { error } = await execute()
-    expect(error.value).toBeDefined()
+    let error: any
+    await execute()
+      .catch(e => error = e)
+    expect(error).toBeDefined()
   })
 
   test('should call onSuccess when success', async () => {
@@ -296,6 +315,7 @@ describe('useAxios', () => {
     const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
     expect(isLoading.value).toBeFalsy()
     await execute('https://jsonplaceholder.typicode.com/todos/2/3')
+      .catch(() => {})
     expect(onError).toHaveBeenCalledWith(error.value)
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
@@ -321,9 +341,9 @@ describe('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData, resetOnExecute: true })
     expect(data.value).toEqual(initialData)
-    await execute()
+    await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312')
+    await execute('/todos/312').catch(() => {})
     expect(data.value).toEqual(initialData)
   })
 
@@ -342,9 +362,9 @@ describe('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
     expect(data.value).toEqual(initialData)
-    await execute()
+    await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312')
+    await execute('/todos/312').catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
   })
 
