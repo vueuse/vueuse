@@ -31,7 +31,7 @@ export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   parse?: (v: Serialized) => Raw
 
   /**
-   * Deserialize data from the history
+   * set data source
    */
   setSource?: (source: Ref<Raw>, v: Raw) => void
 }
@@ -98,8 +98,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   reset: () => void
 }
 
-const fnBypass = <F, T>(v: F) => v as unknown as T
-const fnSetSource = <F>(source: Ref<F>, value: F) => source.value = value
+function fnBypass<F, T>(v: F) {
+  return v as unknown as T
+}
+function fnSetSource<F>(source: Ref<F>, value: F) {
+  return source.value = value
+}
 
 type FnCloneOrBypass<F, T> = (v: F) => T
 

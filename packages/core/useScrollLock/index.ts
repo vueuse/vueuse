@@ -1,12 +1,17 @@
 import { computed, ref, watch } from 'vue-demi'
-import type { Fn, MaybeComputedRef } from '@vueuse/shared'
-import { isIOS, resolveRef, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
 
 function checkOverflowScroll(ele: Element): boolean {
   const style = window.getComputedStyle(ele)
-  if (style.overflowX === 'scroll' || style.overflowY === 'scroll') {
+  if (
+    style.overflowX === 'scroll'
+    || style.overflowY === 'scroll'
+    || (style.overflowX === 'auto' && ele.clientHeight < ele.scrollHeight)
+    || (style.overflowY === 'auto' && ele.clientWidth < ele.scrollWidth)
+  ) {
     return true
   }
   else {
@@ -45,14 +50,14 @@ function preventDefault(rawEvent: TouchEvent): boolean {
  * @param element
  */
 export function useScrollLock(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
 ) {
   const isLocked = ref(initialState)
   let stopTouchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
-  watch(resolveRef(element), (el) => {
+  watch(toRef(element), (el) => {
     if (el) {
       const ele = el as HTMLElement
       initialOverflow = ele.style.overflow
@@ -64,7 +69,7 @@ export function useScrollLock(
   })
 
   const lock = () => {
-    const ele = (resolveUnref(element) as HTMLElement)
+    const ele = (toValue(element) as HTMLElement)
     if (!ele || isLocked.value)
       return
     if (isIOS) {
@@ -80,7 +85,7 @@ export function useScrollLock(
   }
 
   const unlock = () => {
-    const ele = (resolveUnref(element) as HTMLElement)
+    const ele = (toValue(element) as HTMLElement)
     if (!ele || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()

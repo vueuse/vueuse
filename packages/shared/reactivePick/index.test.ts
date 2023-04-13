@@ -44,4 +44,41 @@ describe('reactivePick', () => {
       bar: 'bar2',
     })
   })
+  it('should work with predicate', () => {
+    const source = reactive({
+      foo: 'foo',
+      bar: 'bar',
+      baz: 'baz',
+      qux: true,
+    })
+    const state = reactivePick(source, (value, key) => {
+      return key !== 'bar' && value !== true
+    })
+
+    expect(state).toEqual({
+      foo: 'foo',
+      baz: 'baz',
+    })
+
+    source.foo = 'foo2'
+
+    expect(state).toEqual({
+      foo: 'foo2',
+      baz: 'baz',
+    })
+
+    source.bar = 'bar1'
+
+    expect(state).toEqual({
+      foo: 'foo2',
+      baz: 'baz',
+    })
+
+    source.qux = false
+    expect(state).toEqual({
+      foo: 'foo2',
+      baz: 'baz',
+      qux: false,
+    })
+  })
 })

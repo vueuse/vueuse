@@ -18,13 +18,13 @@ const { trigger, ignoreUpdates } = watchTriggerable(
   },
 )
 
-const clear = () => {
+function clear() {
   ignoreUpdates(() => {
     source.value = 0
     log.value = ''
   })
 }
-const update = () => {
+function update() {
   source.value++
 }
 </script>

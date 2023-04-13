@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve } = require('node:path')
 
 const restricted = [
   'vue',
@@ -9,8 +9,7 @@ const restricted = [
   resolve(__dirname, 'packages/shared/index.ts'),
   {
     name: 'vue-demi',
-    importNames: ['onMounted', 'onUnmounted'],
-    message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+    importNames: ['onMounted', 'onUnmounted', 'unref', 'toRef'],
   },
 ]
 

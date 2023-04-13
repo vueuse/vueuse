@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Fn, MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -143,7 +143,7 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param url
  */
 export function useWebSocket<Data = any>(
-  url: MaybeComputedRef<string | URL | undefined>,
+  url: MaybeRefOrGetter<string | URL | undefined>,
   options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {
@@ -159,7 +159,7 @@ export function useWebSocket<Data = any>(
   const data: Ref<Data | null> = ref(null)
   const status = ref<WebSocketStatus>('CLOSED')
   const wsRef = ref<WebSocket | undefined>()
-  const urlRef = resolveRef(url)
+  const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined
   let heartbeatResume: Fn | undefined

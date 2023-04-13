@@ -15,8 +15,8 @@ describe('useEventListener', () => {
 
   beforeEach(() => {
     target = document.createElement('div')
-    removeSpy = vitest.spyOn(target, 'removeEventListener')
-    addSpy = vitest.spyOn(target, 'addEventListener')
+    removeSpy = vi.spyOn(target, 'removeEventListener')
+    addSpy = vi.spyOn(target, 'addEventListener')
   })
 
   it('should be defined', () => {
@@ -24,7 +24,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both none array', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const event = 'click'
 
     beforeEach(() => {
@@ -53,7 +53,7 @@ describe('useEventListener', () => {
   })
 
   describe('given array of events but single listener', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const events = ['click', 'scroll', 'blur', 'resize']
 
     beforeEach(() => {
@@ -84,7 +84,7 @@ describe('useEventListener', () => {
   })
 
   describe('given single event but array of listeners', () => {
-    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const event = 'click'
 
     beforeEach(() => {
@@ -115,7 +115,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both array of events and listeners', () => {
-    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const events = ['click', 'scroll', 'blur', 'resize', 'custom-event']
 
     beforeEach(() => {
@@ -184,7 +184,7 @@ describe('useEventListener', () => {
 
     function testTarget(useTarget: boolean) {
       it(`should ${getTargetName(useTarget)} listen event`, async () => {
-      // @ts-expect-error mock different args
+        // @ts-expect-error mock different args
         const stop = useEventListener(...getArgs(useTarget))
 
         trigger(useTarget)
@@ -195,7 +195,7 @@ describe('useEventListener', () => {
       })
 
       it(`should ${getTargetName(useTarget)} manually stop listening event`, async () => {
-      // @ts-expect-error mock different args
+        // @ts-expect-error mock different args
         const stop = useEventListener(...getArgs(useTarget))
 
         stop()
@@ -226,5 +226,27 @@ describe('useEventListener', () => {
 
     testTarget(false)
     testTarget(true)
+  })
+
+  it.skipIf(isVue2)('should auto re-register', async () => {
+    const target = ref()
+    const listener = vi.fn()
+    const options = ref<any>(false)
+    useEventListener(target, 'click', listener, options)
+
+    const el = document.createElement('div')
+    const addSpy = vi.spyOn(el, 'addEventListener')
+    const removeSpy = vi.spyOn(el, 'removeEventListener')
+    target.value = el
+    await nextTick()
+    expect(addSpy).toHaveBeenCalledTimes(1)
+    expect(addSpy).toHaveBeenLastCalledWith('click', listener, false)
+    expect(removeSpy).toHaveBeenCalledTimes(0)
+
+    options.value = true
+    await nextTick()
+    expect(addSpy).toHaveBeenCalledTimes(2)
+    expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
+    expect(removeSpy).toHaveBeenCalledTimes(1)
   })
 })

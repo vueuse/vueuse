@@ -11,7 +11,9 @@ const options = ref({
 
 const { share, isSupported } = useShare(options)
 
-const startShare = () => share().catch(err => err)
+function startShare() {
+  return share().catch(err => err)
+}
 </script>
 
 <template>

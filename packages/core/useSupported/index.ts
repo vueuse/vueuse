@@ -1,14 +1,13 @@
-import { tryOnMounted } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { computed } from 'vue-demi'
+import { useMounted } from '../useMounted'
 
-export function useSupported(callback: () => unknown, sync = false) {
-  const isSupported = ref() as Ref<boolean>
+export function useSupported(callback: () => unknown) {
+  const isMounted = useMounted()
 
-  const update = () => isSupported.value = Boolean(callback())
-
-  update()
-
-  tryOnMounted(update, sync)
-  return isSupported
+  return computed(() => {
+    // to trigger the ref
+    // eslint-disable-next-line no-unused-expressions
+    isMounted.value
+    return Boolean(callback())
+  })
 }

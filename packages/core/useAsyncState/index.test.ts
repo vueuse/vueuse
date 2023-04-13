@@ -70,4 +70,9 @@ describe('useAsyncState', () => {
     expect(onError).toHaveBeenCalled()
     expect(onError).toHaveBeenCalledWith(new Error('error'))
   })
+
+  it('should work with throwError', async () => {
+    const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
+    await expect(execute()).rejects.toThrowError('error')
+  })
 })
