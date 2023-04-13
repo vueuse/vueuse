@@ -2,9 +2,9 @@
 // by https://github.com/wobsoriano
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, shallowRef, unref, watch } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -73,7 +73,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
 
     recognition.continuous = continuous
     recognition.interimResults = interimResults
-    recognition.lang = unref(lang)
+    recognition.lang = toValue(lang)
 
     recognition.onstart = () => {
       isFinal.value = false
@@ -103,7 +103,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
 
     recognition.onend = () => {
       isListening.value = false
-      recognition!.lang = unref(lang)
+      recognition!.lang = toValue(lang)
     }
 
     watch(isListening, () => {

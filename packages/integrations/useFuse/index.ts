@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import type { ComputedRef } from 'vue-demi'
-import { computed, ref, unref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 
@@ -41,7 +41,7 @@ export function useFuse<DataItem>(
     const resolved = toValue(options)
     // This will also be recomputed when `data` changes, as it causes a change
     // to the Fuse instance, which is tracked here.
-    if (resolved?.matchAllWhenSearchEmpty && !unref(search))
+    if (resolved?.matchAllWhenSearchEmpty && !toValue(search))
       return toValue(data).map((item, index) => ({ item, refIndex: index }))
 
     const limit = resolved?.resultLimit

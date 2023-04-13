@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, reactive, ref, unref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
+import { noop, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -166,14 +166,14 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         if (!(prop in refs)) {
           if (/[+_-]/.test(prop)) {
             const keys = prop.split(/[+_-]/g).map(i => i.trim())
-            refs[prop] = computed(() => keys.every(key => unref(proxy[key])))
+            refs[prop] = computed(() => keys.every(key => toValue(proxy[key])))
           }
           else {
             refs[prop] = ref(false)
           }
         }
         const r = Reflect.get(target, prop, rec)
-        return useReactive ? unref(r) : r
+        return useReactive ? toValue(r) : r
       },
     },
   )

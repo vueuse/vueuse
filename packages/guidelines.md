@@ -27,12 +27,12 @@ Read also: [Best Practice](./guide/best-practice.md)
 Use `shallowRef` instead of `ref` when wrapping large amounts of data.
 
 ```ts
-export function useFetch<T>(url: MaybeRef<string>) {
+export function useFetch<T>(url: MaybeRefOrGetter<string>) {
   // use `shallowRef` to prevent deep reactivity
   const data = shallowRef<T | undefined>()
   const error = shallowRef<Error | undefined>()
 
-  fetch(unref(url))
+  fetch(toValue(url))
     .then(r => r.json())
     .then(r => data.value = r)
     .catch(e => error.value = e)
@@ -169,12 +169,12 @@ so the user is able to await the function. This is especially useful in the case
 - The return type should be an intersection between the return type and a PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>`
 
 ```ts
-export function useFetch<T>(url: MaybeRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const data = shallowRef<T | undefined>()
   const error = shallowRef<Error | undefined>()
   const isFinished = ref(false)
 
-  fetch(unref(url))
+  fetch(toValue(url))
     .then(r => r.json())
     .then(r => data.value = r)
     .catch(e => error.value = e)

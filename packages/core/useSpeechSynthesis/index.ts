@@ -1,7 +1,7 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -69,8 +69,8 @@ export function useSpeechSynthesis(text: MaybeRefOrGetter<string>, options: UseS
   }
 
   const bindEventsForUtterance = (utterance: SpeechSynthesisUtterance) => {
-    utterance.lang = unref(lang)
-    utterance.voice = unref(options.voice) || null
+    utterance.lang = toValue(lang)
+    utterance.voice = toValue(options.voice) || null
     utterance.pitch = pitch
     utterance.rate = rate
     utterance.volume = volume

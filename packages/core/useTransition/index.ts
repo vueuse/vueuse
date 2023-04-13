@@ -1,4 +1,4 @@
-import { computed, ref, unref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue-demi'
 import { isFunction, isNumber, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
@@ -137,18 +137,18 @@ function toVec(t: number | number[] | undefined) {
  */
 export function executeTransition<T extends number | number[]>(
   source: Ref<T>,
-  from: MaybeRef<T>,
-  to: MaybeRef<T>,
+  from: MaybeRefOrGetter<T>,
+  to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {},
 ): PromiseLike<void> {
-  const fromVal = unref(from)
-  const toVal = unref(to)
+  const fromVal = toValue(from)
+  const toVal = toValue(to)
   const v1 = toVec(fromVal)
   const v2 = toVec(toVal)
-  const duration = unref(options.duration) ?? 1000
+  const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-  const trans = unref(options.transition) ?? linear
+  const trans = toValue(options.transition) ?? linear
 
   const ease = isFunction(trans) ? trans : createEasingFunction(trans)
 
@@ -216,13 +216,13 @@ export function useTransition(
   const outputRef = ref(sourceVal())
 
   watch(sourceVal, async (to) => {
-    if (unref(options.disabled))
+    if (toValue(options.disabled))
       return
 
     const id = ++currentId
 
     if (options.delay)
-      await promiseTimeout(unref(options.delay))
+      await promiseTimeout(toValue(options.delay))
 
     if (id !== currentId)
       return
@@ -239,7 +239,7 @@ export function useTransition(
     options.onFinished?.()
   }, { deep: true })
 
-  watch(() => unref(options.disabled), (disabled) => {
+  watch(() => toValue(options.disabled), (disabled) => {
     if (disabled) {
       currentId++
 
@@ -251,5 +251,5 @@ export function useTransition(
     currentId++
   })
 
-  return computed(() => unref(options.disabled) ? sourceVal() : outputRef.value)
+  return computed(() => toValue(options.disabled) ? sourceVal() : outputRef.value)
 }

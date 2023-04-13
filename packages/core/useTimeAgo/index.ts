@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
-import { computed, unref } from 'vue-demi'
+import { computed } from 'vue-demi'
 import { useNow } from '../useNow'
 
 export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
@@ -140,7 +140,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-  const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, unref(now.value)))
+  const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now.value)))
 
   if (exposeControls) {
     return {

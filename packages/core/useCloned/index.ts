@@ -1,6 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { ComputedRef, WatchOptions } from 'vue-demi'
-import { isRef, ref, unref, watch } from 'vue-demi'
+import { isRef, ref, watch } from 'vue-demi'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
@@ -49,7 +50,7 @@ export function useCloned<T>(
   } = options
 
   function sync() {
-    cloned.value = clone(unref(source))
+    cloned.value = clone(toValue(source))
   }
 
   if (!manual && isRef(source)) {
