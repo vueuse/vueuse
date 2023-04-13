@@ -1,5 +1,5 @@
 import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
@@ -60,8 +60,8 @@ export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseS
   const isPlaying = ref(false)
   const status = ref<UseSpeechSynthesisStatus>('init')
 
-  const spokenText = resolveRef(text || '')
-  const lang = resolveRef(options.lang || 'en-US')
+  const spokenText = toRef(text || '')
+  const lang = toRef(options.lang || 'en-US')
   const error = shallowRef(undefined) as Ref<SpeechSynthesisErrorEvent | undefined>
 
   const toggle = (value = !isPlaying.value) => {

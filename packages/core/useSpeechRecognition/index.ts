@@ -2,7 +2,7 @@
 // by https://github.com/wobsoriano
 
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, unref, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
@@ -45,7 +45,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     window = defaultWindow,
   } = options
 
-  const lang = resolveRef(options.lang || 'en-US')
+  const lang = toRef(options.lang || 'en-US')
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')

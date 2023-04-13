@@ -2,7 +2,7 @@
 
 import { ref, watchEffect } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -39,7 +39,7 @@ export function useMediaQuery(query: MaybeComputedRef<string>, options: Configur
 
     cleanup()
 
-    mediaQuery = window!.matchMedia(resolveRef(query).value)
+    mediaQuery = window!.matchMedia(toRef(query).value)
     matches.value = !!mediaQuery?.matches
 
     if (!mediaQuery)

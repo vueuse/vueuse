@@ -3,7 +3,7 @@
 import type { Ref } from 'vue-demi'
 import { readonly, shallowRef, watch } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef } from '@vueuse/shared'
+import { toRef } from '@vueuse/shared'
 
 /**
  * Holds the previous value of a ref.
@@ -16,7 +16,7 @@ export function usePrevious<T>(value: MaybeComputedRef<T>, initialValue?: T) {
   const previous = shallowRef<T | undefined>(initialValue)
 
   watch(
-    resolveRef(value),
+    toRef(value),
     (_, oldValue) => {
       previous.value = oldValue
     },

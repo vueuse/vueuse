@@ -1,5 +1,5 @@
 import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, resolveRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
+import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
@@ -476,11 +476,11 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     })
   }
 
-  const refetch = resolveRef(options.refetch)
+  const refetch = toRef(options.refetch)
   watch(
     [
       refetch,
-      resolveRef(url),
+      toRef(url),
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
@@ -529,7 +529,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           watch(
             [
               refetch,
-              resolveRef(config.payload),
+              toRef(config.payload),
             ],
             ([refetch]) => refetch && execute(),
             { deep: true },

@@ -1,5 +1,5 @@
 import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
-import { resolveRef, useIntervalFn } from '@vueuse/shared'
+import { toRef, useIntervalFn } from '@vueuse/shared'
 import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
@@ -46,7 +46,7 @@ export function useVibrate(options?: UseVibrateOptions) {
 
   const isSupported = useSupported(() => typeof navigator !== 'undefined' && 'vibrate' in navigator)
 
-  const patternRef = resolveRef(pattern)
+  const patternRef = toRef(pattern)
   let intervalControls: Pausable | undefined
 
   const vibrate = (pattern = patternRef.value) => {

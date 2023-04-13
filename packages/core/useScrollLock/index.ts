@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue-demi'
 import type { Fn, MaybeComputedRef } from '@vueuse/shared'
-import { isIOS, resolveRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
 
@@ -57,7 +57,7 @@ export function useScrollLock(
   let stopTouchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow']
 
-  watch(resolveRef(element), (el) => {
+  watch(toRef(element), (el) => {
     if (el) {
       const ele = el as HTMLElement
       initialOverflow = ele.style.overflow
