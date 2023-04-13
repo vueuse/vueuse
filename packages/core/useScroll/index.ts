@@ -170,14 +170,22 @@ export function useScroll(
     const scrollLeft = eventTarget.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
-    arrivedState.left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
-    arrivedState.right
-      = Math.abs(scrollLeft) + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
+    const right = Math.abs(scrollLeft)
+      + eventTarget.clientWidth >= eventTarget.scrollWidth
+      - (offset.right || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
     if (display === 'flex' && flexDirection === 'row-reverse') {
-      const temp = arrivedState.left
-      arrivedState.left = arrivedState.right
-      arrivedState.right = temp
+      arrivedState.left = right
+      arrivedState.right = left
     }
+    else {
+      arrivedState.left = left
+      arrivedState.right = right
+    }
+
     internalX.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
@@ -188,18 +196,25 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    arrivedState.top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
-    arrivedState.bottom
-      = Math.abs(scrollTop) + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+    const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
+    const bottom = Math.abs(scrollTop)
+      + eventTarget.clientHeight >= eventTarget.scrollHeight
+      - (offset.bottom || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
     /**
      * reverse columns and rows behave exactly the other way around,
      * bottom is treated as top and top is treated as the negative version of bottom
      */
     if (display === 'flex' && flexDirection === 'column-reverse') {
-      const temp = arrivedState.top
-      arrivedState.top = arrivedState.bottom
-      arrivedState.bottom = temp
+      arrivedState.top = bottom
+      arrivedState.bottom = top
     }
+    else {
+      arrivedState.top = top
+      arrivedState.bottom = bottom
+    }
+
     internalY.value = scrollTop
 
     isScrolling.value = true
