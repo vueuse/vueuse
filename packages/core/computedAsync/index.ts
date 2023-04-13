@@ -26,9 +26,7 @@ export interface AsyncComputedOptions {
   /**
    * Use shallowRef
    *
-   * The default value will be changed to `true` in the next major version
-   *
-   * @default false
+   * @default true
    */
   shallow?: boolean
 
@@ -65,7 +63,7 @@ export function computedAsync<T>(
   const {
     lazy = false,
     evaluating = undefined,
-    shallow = false,
+    shallow = true,
     onError = noop,
   } = options
 

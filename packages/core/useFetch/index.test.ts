@@ -10,19 +10,21 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vitest.spyOn(window, 'fetch') as SpyInstance<any>
-let onFetchErrorSpy = vitest.fn()
-let onFetchResponseSpy = vitest.fn()
-let onFetchFinallySpy = vitest.fn()
+let fetchSpy = vi.spyOn(window, 'fetch') as SpyInstance<any>
+let onFetchErrorSpy = vi.fn()
+let onFetchResponseSpy = vi.fn()
+let onFetchFinallySpy = vi.fn()
 
-const fetchSpyHeaders = (idx = 0) => fetchSpy.mock.calls[idx][1]!.headers
+function fetchSpyHeaders(idx = 0) {
+  return fetchSpy.mock.calls[idx][1]!.headers
+}
 
 describe('useFetch', () => {
   beforeEach(() => {
-    fetchSpy = vitest.spyOn(window, 'fetch')
-    onFetchErrorSpy = vitest.fn()
-    onFetchResponseSpy = vitest.fn()
-    onFetchFinallySpy = vitest.fn()
+    fetchSpy = vi.spyOn(window, 'fetch')
+    onFetchErrorSpy = vi.fn()
+    onFetchResponseSpy = vi.fn()
+    onFetchFinallySpy = vi.fn()
   })
 
   test('should have status code of 200 and message of Hello World', async () => {
@@ -90,8 +92,9 @@ describe('useFetch', () => {
   })
 
   test('should throw error', async () => {
-    const error1 = await useFetch('https://example.com?status=400').execute(true).catch(err => err)
-    const error2 = await useFetch('https://example.com?status=600').execute(true).catch(err => err)
+    const options = { immediate: false }
+    const error1 = await useFetch('https://example.com?status=400', options).execute(true).catch(err => err)
+    const error2 = await useFetch('https://example.com?status=600', options).execute(true).catch(err => err)
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
@@ -200,20 +203,20 @@ describe('useFetch', () => {
       baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
-          ctx.data.title = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.title += ' Local'
+        ctx.error += ' Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+      expect(error.value).toEqual('Global Local')
     })
   })
 
@@ -272,23 +275,23 @@ describe('useFetch', () => {
       baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
-          ctx.data.title = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
-          ctx.data.title += ' Local'
+          ctx.error += ' Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
+      expect(error.value).toEqual('Global Local')
     })
   })
 
@@ -345,21 +348,20 @@ describe('useFetch', () => {
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
-          ctx.data.global = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.local = 'Local'
+        ctx.error = 'Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
-      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+      expect(error.value).toEqual('Local')
     })
   })
 
@@ -422,24 +424,23 @@ describe('useFetch', () => {
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
-          ctx.data.global = 'Global'
+          ctx.error = 'Global'
           return ctx
         },
       },
     })
-    const { data } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
-          ctx.data.local = 'Local'
+          ctx.error = 'Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
-      expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
-      expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
+      expect(error.value).toEqual('Local')
     })
   })
 
@@ -537,23 +538,24 @@ describe('useFetch', () => {
   })
 
   test('should run the onFetchError function', async () => {
-    const { data, statusCode } = useFetch('https://example.com?status=400&json', {
+    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
-        ctx.data.title = 'Hunter x Hunter'
+        ctx.error = 'Internal Server Error'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(statusCode.value).toEqual(400)
-      expect(data.value).toEqual(expect.objectContaining({ title: 'Hunter x Hunter' }))
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toBeNull()
     })
   })
 
   test('should run the onFetchError function when network error', async () => {
-    const { data, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
+    const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
       onFetchError(ctx) {
-        ctx.data = { title: 'Hunter x Hunter' }
+        ctx.error = 'Internal Server Error'
 
         return ctx
       },
@@ -561,12 +563,13 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(statusCode.value).toStrictEqual(500)
-      expect(data.value).toEqual({ title: 'Hunter x Hunter' })
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toBeNull()
     })
   })
 
   test('should emit onFetchResponse event', async () => {
-    const onResponseSpy = vitest.fn()
+    const onResponseSpy = vi.fn()
     const { onFetchResponse } = useFetch('https://example.com')
 
     onFetchResponse(onResponseSpy)

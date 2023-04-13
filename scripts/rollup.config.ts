@@ -1,5 +1,5 @@
-import fs from 'fs'
-import { resolve } from 'path'
+import fs from 'node:fs'
+import { resolve } from 'node:path'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
@@ -33,7 +33,7 @@ const externals = [
   '@vueuse/metadata',
 ]
 
-const esbuildMinifer = (options: ESBuildOptions) => {
+function esbuildMinifer(options: ESBuildOptions) {
   const { renderChunk } = esbuild(options)
 
   return {

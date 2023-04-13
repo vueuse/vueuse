@@ -32,7 +32,7 @@ export interface UseMemoizeCache<Key, Value> {
 /**
  * Fallback for Vue 2 not able to make a reactive Map
  */
-const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
+function getMapVue2Compat<Value>(): UseMemoizeCache<CacheKey, Value> {
   const data: Record<CacheKey, Value> = reactive({})
   return {
     get: key => data[key],

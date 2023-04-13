@@ -12,6 +12,7 @@ Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/e
 
 ```html
 <script setup>
+import { computed } from 'vue'
 import { useGamepad } from '@vueuse/core'
 
 const { isSupported, gamepads } = useGamepad()
@@ -30,6 +31,8 @@ const gamepad = computed(() => gamepads.find(g => g.mapping === 'standard'))
 Currently the Gamepad API does not have event support to update the state of the gamepad. To update the gamepad state, `requestAnimationFrame` is used to poll for gamepad changes. You can control this polling by using the `pause` and `resume` functions provided by `useGamepad`
 
 ```ts
+import { useGamepad } from '@vueuse/core'
+
 const { pause, resume, gamepads } = useGamepad()
 
 pause()
@@ -62,8 +65,10 @@ onDisconnected((index) => {
 > The Gamepad Haptics API is sparse, so check the [compatibility table](https://developer.mozilla.org/en-US/docs/Web/API/GamepadHapticActuator#browser_compatibility) before using.
 
 ```ts
+import { computed } from 'vue'
+
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
-const vibrate = () => {
+function vibrate() {
   if (supportsVibration.value) {
     const actuator = gamepad.hapticActuators[0]
     actuator.playEffect('dual-rumble', {
@@ -90,10 +95,10 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 </script>
 
 <template>
-  <span>{{ controller.buttons.a.pressed }}<span>
-  <span>{{ controller.buttons.b.pressed }}<span>
-  <span>{{ controller.buttons.x.pressed }}<span>
-  <span>{{ controller.buttons.y.pressed }}<span>
+  <span>{{ controller.buttons.a.pressed }}</span>
+  <span>{{ controller.buttons.b.pressed }}</span>
+  <span>{{ controller.buttons.x.pressed }}</span>
+  <span>{{ controller.buttons.y.pressed }}</span>
 </template>
 ```
 

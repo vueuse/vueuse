@@ -8,7 +8,7 @@ const debouncedFn = useDebounceFn(() => {
   updated.value += 1
 }, 1000, { maxWait: 5000 })
 
-const clickedFn = () => {
+function clickedFn() {
   clicked.value += 1
   debouncedFn()
 }

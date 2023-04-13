@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import { ref, watchEffect } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -14,7 +14,7 @@ import { useSupported } from '../useSupported'
  * @param query
  * @param options
  */
-export function useMediaQuery(query: MaybeComputedRef<string>, options: ConfigurableWindow = {}) {
+export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
@@ -39,8 +39,11 @@ export function useMediaQuery(query: MaybeComputedRef<string>, options: Configur
 
     cleanup()
 
-    mediaQuery = window!.matchMedia(resolveRef(query).value)
-    matches.value = mediaQuery.matches
+    mediaQuery = window!.matchMedia(toRef(query).value)
+    matches.value = !!mediaQuery?.matches
+
+    if (!mediaQuery)
+      return
 
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', update)

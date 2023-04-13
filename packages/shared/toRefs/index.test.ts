@@ -56,7 +56,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed objects', () => {
-    const spy = vitest.fn()
+    const spy = vi.fn()
     const obj = computed<{ a: string; b: number }>({
       get() {
         return { a: 'a', b: 0 }
@@ -77,7 +77,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed arrays', () => {
-    const spy = vitest.fn()
+    const spy = vi.fn()
     const arr = computed<any[]>({
       get() {
         return ['a', 0]
