@@ -4,7 +4,7 @@ neverBuiltDependencies:
   - electron
 
 overrides:
-  vue-demi: 0.13.11
+  vue-demi: 0.14.0
 
 importers:
 
@@ -233,8 +233,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
 
   packages/core:
     dependencies:
@@ -248,8 +248,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
 
   packages/electron:
     dependencies:
@@ -257,8 +257,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
     devDependencies:
       electron:
         specifier: ^13.1.0
@@ -273,8 +273,8 @@ importers:
         specifier: '>=9.0.0'
         version: 9.18.0
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
 
   packages/integrations:
     dependencies:
@@ -285,8 +285,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
     devDependencies:
       '@types/nprogress':
         specifier: ^0.2.0
@@ -340,8 +340,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
 
   packages/metadata: {}
 
@@ -363,8 +363,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(@types/node@18.15.11)(eslint@8.38.0)(rollup@2.79.1)(typescript@5.0.4)
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
     devDependencies:
       '@nuxt/schema':
         specifier: ^3.4.1
@@ -379,8 +379,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
     devDependencies:
       vue-router:
         specifier: ^4.1.6
@@ -392,8 +392,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
     devDependencies:
       rxjs:
         specifier: ^6.6.7
@@ -402,8 +402,8 @@ importers:
   packages/shared:
     dependencies:
       vue-demi:
-        specifier: 0.13.11
-        version: 0.13.11(vue@3.2.47)
+        specifier: 0.14.0
+        version: 0.14.0(vue@3.2.47)
 
 packages:
 
@@ -4509,7 +4509,7 @@ packages:
       '@types/web-bluetooth': 0.0.16
       '@vueuse/metadata': 9.13.0
       '@vueuse/shared': 9.13.0(vue@3.2.47)
-      vue-demi: 0.13.11(vue@3.2.47)
+      vue-demi: 0.14.0(vue@3.2.47)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -4534,7 +4534,7 @@ packages:
   /@vueuse/shared@9.13.0(vue@3.2.47):
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
     dependencies:
-      vue-demi: 0.13.11(vue@3.2.47)
+      vue-demi: 0.14.0(vue@3.2.47)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -12745,8 +12745,8 @@ packages:
       ufo: 1.1.1
     dev: false
 
-  /vue-demi@0.13.11(vue@3.2.47):
-    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
+  /vue-demi@0.14.0(vue@3.2.47):
+    resolution: {integrity: sha512-gt58r2ogsNQeVoQ3EhoUAvUsH9xviydl0dWJj7dabBC/2L4uBId7ujtCwDRD0JhkGsV1i0CtfLAeyYKBht9oWg==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true

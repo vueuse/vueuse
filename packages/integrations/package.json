@@ -163,7 +163,7 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "*"
+    "vue-demi": ">=0.14.0"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
