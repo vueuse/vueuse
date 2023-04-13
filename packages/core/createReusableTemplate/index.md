@@ -148,7 +148,7 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 </template>
 ```
 
-::: info
+::: warning
 Dot notation is not supported in Vue 2.
 :::
 
