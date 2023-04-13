@@ -1,20 +1,20 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
 import { computed, isRef, reactive, watch } from 'vue-demi'
 import { noop, syncRef, toValue } from '@vueuse/shared'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { useClamp } from '../../math/useClamp'
 
 export interface UseOffsetPaginationOptions {
   /**
    * Total number of items.
    */
-  total?: MaybeRef<number>
+  total?: MaybeRefOrGetter<number>
 
   /**
    * The number of items to display per page.
    * @default 10
    */
-  pageSize?: MaybeRef<number>
+  pageSize?: MaybeRefOrGetter<number>
 
   /**
    * The current page number.

@@ -1,4 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
 import { isString, toRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
@@ -18,7 +18,7 @@ export interface UseFaviconOptions extends ConfigurableDocument {
  * @param options
  */
 export function useFavicon(
-  newIcon: MaybeRefOrGetter<string | null | undefined>,
+  newIcon: ReadonlyRefOrGetter<string | null | undefined>,
   options?: UseFaviconOptions
 ): ComputedRef<string | null | undefined>
 export function useFavicon(
