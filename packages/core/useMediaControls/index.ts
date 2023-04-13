@@ -1,6 +1,6 @@
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { createEventHook, isNumber, isObject, isString, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -183,7 +183,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const disableTrack = (track?: number | UseMediaTextTrack) => {
     usingElRef<HTMLMediaElement>(target, (el) => {
       if (track) {
-        const id = isNumber(track) ? track : track.id
+        const id = typeof track === 'number' ? track : track.id
         el.textTracks[id].mode = 'disabled'
       }
       else {
@@ -204,7 +204,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    */
   const enableTrack = (track: number | UseMediaTextTrack, disableTracks = true) => {
     usingElRef<HTMLMediaElement>(target, (el) => {
-      const id = isNumber(track) ? track : track.id
+      const id = typeof track === 'number' ? track : track.id
 
       if (disableTracks)
         disableTrack()
@@ -254,7 +254,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     // Merge sources into an array
-    if (isString(src))
+    if (typeof src === 'string')
       sources = [{ src }]
     else if (Array.isArray(src))
       sources = src

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { isFunction, toValue, watchWithFilter } from '@vueuse/shared'
+import { toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
@@ -80,7 +80,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       }
       else if (mergeDefaults) {
         const value = await serializer.read(rawValue)
-        if (isFunction(mergeDefaults))
+        if (typeof mergeDefaults === 'function')
           data.value = mergeDefaults(value, rawInit)
         else if (type === 'object' && !Array.isArray(value))
           data.value = { ...(rawInit as any), ...value }

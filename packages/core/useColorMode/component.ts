@@ -9,6 +9,8 @@ export const UseColorMode = /* #__PURE__ */ defineComponent<UseColorModeOptions>
     const mode = useColorMode(props)
     const data = reactive({
       mode,
+      system: mode.system,
+      store: mode.store,
     })
 
     return () => {

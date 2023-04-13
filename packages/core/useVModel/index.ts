@@ -1,4 +1,4 @@
-import { isDef, isFunction } from '@vueuse/shared'
+import { isDef } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
@@ -92,7 +92,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   const cloneFn = (val: P[K]) => !clone
     ? val
-    : isFunction(clone)
+    : typeof clone === 'function'
       ? clone(val)
       : cloneFnJSON(val)
 

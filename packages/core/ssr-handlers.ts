@@ -1,4 +1,4 @@
-import type { Awaitable } from '@vueuse/shared'
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
 
 export interface StorageLikeAsync {
   getItem(key: string): Awaitable<string | null>
@@ -18,7 +18,7 @@ export interface StorageLike {
 export interface SSRHandlersMap {
   getDefaultStorage: () => StorageLike | undefined
   getDefaultStorageAsync: () => StorageLikeAsync | undefined
-  updateHTMLAttrs: (selector: string, attribute: string, value: string) => void
+  updateHTMLAttrs: (selector: string | MaybeRefOrGetter<HTMLElement | null | undefined>, attribute: string, value: string) => void
 }
 
 const _global
@@ -28,12 +28,20 @@ const _global
       ? window
       : typeof global !== 'undefined'
         ? global
-        : typeof self !== 'undefined' ? self : {}
+        : typeof self !== 'undefined'
+          ? self
+          : {}
+
 const globalKey = '__vueuse_ssr_handlers__'
-// @ts-expect-error inject global
-_global[globalKey] = _global[globalKey] || {}
-// @ts-expect-error inject global
-const handlers: Partial<SSRHandlersMap> = _global[globalKey]
+const handlers = /* @__PURE__ */ getHandlers()
+
+function getHandlers() {
+  if (!(globalKey in _global))
+    // @ts-expect-error inject global
+    _global[globalKey] = _global[globalKey] || {}
+  // @ts-expect-error inject global
+  return _global[globalKey] as Partial<SSRHandlersMap>
+}
 
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T]): SSRHandlersMap[T]
 export function getSSRHandler<T extends keyof SSRHandlersMap>(key: T, fallback: SSRHandlersMap[T] | undefined): SSRHandlersMap[T] | undefined

@@ -131,3 +131,5 @@ export type MapSources<T> = {
 export type MapOldSources<T, Immediate> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never;
 }
+
+export type Mutable<T> = { -readonly [P in keyof T]: T[P] }

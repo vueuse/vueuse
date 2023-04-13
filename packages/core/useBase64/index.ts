@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { isRef, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, isFunction, toValue } from '@vueuse/shared'
+import { isClient, toValue } from '@vueuse/shared'
 import { getDefaultSerialization } from './serialization'
 
 export interface ToDataURLOptions {
@@ -94,7 +94,7 @@ export function useBase64(
     return promise.value
   }
 
-  if (isRef(target) || isFunction(target))
+  if (isRef(target) || typeof target === 'function')
     watch(target, execute, { immediate: true })
   else
     execute()
