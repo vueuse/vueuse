@@ -31,7 +31,7 @@ export function extendRef<R extends Ref<any>, Extend extends object>(ref: R, ext
   // compatibility: Vue 2.7 or above
   if (!isVue3 || !version.startsWith('2.7.')) {
     if (process.env.NODE_ENV !== 'production')
-      throw new Error('[VueUse] extendRef is only works on Vue 2.7 or above.')
+      throw new Error('[VueUse] extendRef only works in Vue 2.7 or above.')
     return
   }
 

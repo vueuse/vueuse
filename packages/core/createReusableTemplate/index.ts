@@ -1,6 +1,6 @@
 import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent } from 'vue-demi'
-import { __onlyVue27Plus, makeDestructurable } from '@vueuse/shared'
+import { defineComponent, isVue3, version } from 'vue-demi'
+import { makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
   Bindings extends object,
@@ -27,7 +27,12 @@ export function createReusableTemplate<
   Bindings extends object,
   Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
 >(name?: string) {
-  __onlyVue27Plus()
+  // compatibility: Vue 2.7 or above
+  if (!isVue3 || !version.startsWith('2.7.')) {
+    if (process.env.NODE_ENV !== 'production')
+      throw new Error('[VueUse] createReusableTemplate only works in Vue 2.7 or above.')
+    return
+  }
 
   let render: Slot | undefined
 
