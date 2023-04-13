@@ -1,5 +1,4 @@
-import type { Awaitable } from '@vueuse/shared'
-import { type Ref } from 'vue-demi'
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
 
 export interface StorageLikeAsync {
   getItem(key: string): Awaitable<string | null>
@@ -19,7 +18,7 @@ export interface StorageLike {
 export interface SSRHandlersMap {
   getDefaultStorage: () => StorageLike | undefined
   getDefaultStorageAsync: () => StorageLikeAsync | undefined
-  updateHTMLAttrs: (selector: string | Ref<null>, attribute: string, value: string) => void
+  updateHTMLAttrs: (selector: string | MaybeRefOrGetter<HTMLElement | null | undefined>, attribute: string, value: string) => void
 }
 
 const _global
