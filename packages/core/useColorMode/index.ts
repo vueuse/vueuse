@@ -83,7 +83,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    * Disable transition on switch
    *
    * @see https://paco.me/writing/disable-theme-transitions
-   * @default false
+   * @default true
    */
   disableTransition?: boolean
 }
@@ -113,8 +113,7 @@ export function useColorMode<T extends string = BasicColorSchema>(
     listenToStorageChanges = true,
     storageRef,
     emitAuto,
-    // TODO: switch to true in v10
-    disableTransition = false,
+    disableTransition = true,
   } = options
 
   const modes = {
