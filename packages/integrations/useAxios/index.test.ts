@@ -341,9 +341,9 @@ describe('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData, resetOnExecute: true })
     expect(data.value).toEqual(initialData)
-    await execute()
+    await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312')
+    await execute('/todos/312').catch(() => {})
     expect(data.value).toEqual(initialData)
   })
 
@@ -362,9 +362,9 @@ describe('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
     expect(data.value).toEqual(initialData)
-    await execute()
+    await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312')
+    await execute('/todos/312').catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
   })
 
