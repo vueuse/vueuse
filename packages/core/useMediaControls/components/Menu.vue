@@ -11,8 +11,12 @@ useEventListener('keydown', (e) => {
     isOpen.value = false
 })
 
-const open = () => isOpen.value = true
-const close = () => isOpen.value = false
+function open() {
+  return isOpen.value = true
+}
+function close() {
+  return isOpen.value = false
+}
 </script>
 
 <template>

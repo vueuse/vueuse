@@ -2,17 +2,17 @@
 import { useTimeAgo } from '@vueuse/core'
 import { computed } from 'vue'
 import { functions } from '@vueuse/metadata'
+import exportSizes from '../../../export-size.json'
 
 const props = defineProps<{ fn: string }>()
-
 const info = computed(() => functions.find(i => i.name === props.fn))
-const format = (ts: number) => ago(-1, 'day')
 const lastUpdated = useTimeAgo(new Date(info.value?.lastUpdated || 0))
-const link = computed(() => `/functions\#category=${encodeURIComponent(info.value.category)}`)
+const link = computed(() => `/functions\#category=${encodeURIComponent(info.value!.category!)}`)
 
-const getFunctionLink = (fn: string) => {
+const exportSize = exportSizes[info.value!.name as keyof typeof exportSizes]
+function getFunctionLink(fn: string) {
   const info = functions.find(i => i.name === fn)
-  return info?.docs.replace(/https?:\/\/vueuse\.org\//g, '/')
+  return info?.docs?.replace(/https?:\/\/vueuse\.org\//g, '/')
 }
 </script>
 
@@ -22,6 +22,10 @@ const getFunctionLink = (fn: string) => {
       Category
     </div>
     <div><a :href="link">{{ info.category }}</a></div>
+    <div opacity="50">
+      Export Size
+    </div>
+    <div> {{ exportSize }}</div>
     <template v-if="info.package !== 'core' && info.package !== 'shared'">
       <div opacity="50">
         Package
@@ -39,7 +43,7 @@ const getFunctionLink = (fn: string) => {
         Alias
       </div>
       <div flex="~ gap-1 wrap">
-        <code v-for="a, idx of info.alias" :key="idx" class="!py-0">{{ a }}</code>
+        <code v-for="(a, idx) of info.alias" :key="idx" class="!py-0">{{ a }}</code>
       </div>
     </template>
     <template v-if="info.related?.length">
@@ -48,7 +52,7 @@ const getFunctionLink = (fn: string) => {
       </div>
       <div flex="~ gap-1 wrap">
         <a
-          v-for="name, idx of info.related"
+          v-for="(name, idx) of info.related"
           :key="idx"
           class="!py-0"
           :href="getFunctionLink(name)"

@@ -1,6 +1,8 @@
-import { isDef } from '@vueuse/shared'
+import { isDef, isFunction } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import type { CloneFn } from '../useCloned'
+import { cloneFnJSON } from '../useCloned'
 
 export interface UseVModelOptions<T> {
   /**
@@ -29,6 +31,21 @@ export interface UseVModelOptions<T> {
    * @default undefined
    */
   defaultValue?: T
+  /**
+   * Clone the props.
+   * Accepts a custom clone function.
+   * When setting to `true`, it will use `JSON.parse(JSON.stringify(value))` to clone.
+   *
+   * @default false
+   */
+  clone?: boolean | CloneFn<T>
+  /**
+   * The hook before triggering the emit event can be used for form validation.
+   * if false is returned, the emit event will not be triggered.
+   *
+   * @default undefined
+   */
+  shouldEmit?: (v: T) => boolean
 }
 
 /**
@@ -46,10 +63,12 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   options: UseVModelOptions<P[K]> = {},
 ) {
   const {
+    clone = false,
     passive = false,
     eventName,
     deep = false,
     defaultValue,
+    shouldEmit,
   } = options
 
   const vm = getCurrentInstance()
@@ -71,19 +90,43 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   event = eventName || event || `update:${key!.toString()}`
 
-  const getValue = () => isDef(props[key!]) ? props[key!] : defaultValue
+  const cloneFn = (val: P[K]) => !clone
+    ? val
+    : isFunction(clone)
+      ? clone(val)
+      : cloneFnJSON(val)
+
+  const getValue = () => isDef(props[key!])
+    ? cloneFn(props[key!])
+    : defaultValue
+
+  const triggerEmit = (value: P[K]) => {
+    if (shouldEmit) {
+      if (shouldEmit(value))
+        _emit(event, value)
+    }
+    else {
+      _emit(event, value)
+    }
+  }
 
   if (passive) {
-    const proxy = ref<P[K]>(getValue()!)
+    const initialValue = getValue()
+    const proxy = ref<P[K]>(initialValue!)
 
-    watch(() => props[key!], v => proxy.value = v as UnwrapRef<P[K]>)
+    watch(
+      () => props[key!],
+      v => proxy.value = cloneFn(v) as UnwrapRef<P[K]>,
+    )
 
-    watch(proxy, (v) => {
-      if (v !== props[key!] || deep)
-        _emit(event, v)
-    }, {
-      deep,
-    })
+    watch(
+      proxy,
+      (v) => {
+        if (v !== props[key!] || deep)
+          triggerEmit(v as P[K])
+      },
+      { deep },
+    )
 
     return proxy
   }
@@ -93,7 +136,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
         return getValue()!
       },
       set(value) {
-        _emit(event, value)
+        triggerEmit(value)
       },
     })
   }

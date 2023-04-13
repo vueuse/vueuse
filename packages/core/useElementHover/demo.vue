@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useElementHover } from '@vueuse/core'
 
-const el = ref()
-const isHovered = useElementHover(el)
+const el = ref<HTMLButtonElement>()
+const isHovered = useElementHover(el, { delayEnter: 200, delayLeave: 600 })
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { computed, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
@@ -24,11 +24,11 @@ export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry
 export interface UseResizeObserverOptions extends ConfigurableWindow {
   /**
    * Sets which box model the observer will observe changes to. Possible values
-   * are `content-box` (the default), and `border-box`.
+   * are `content-box` (the default), `border-box` and `device-pixel-content-box`.
    *
    * @default 'content-box'
    */
-  box?: 'content-box' | 'border-box'
+  box?: ResizeObserverBoxOptions
 }
 
 declare class ResizeObserver {
@@ -47,7 +47,7 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef,
+  target: MaybeComputedElementRef | MaybeComputedElementRef[],
   callback: ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ) {
@@ -62,17 +62,23 @@ export function useResizeObserver(
     }
   }
 
-  const stopWatch = watch(
-    () => unrefElement(target),
-    (el) => {
-      cleanup()
+  const targets = computed(() =>
+    Array.isArray(target)
+      ? target.map(el => unrefElement(el))
+      : [unrefElement(target)],
+  )
 
-      if (isSupported.value && window && el) {
+  const stopWatch = watch(
+    targets,
+    (els) => {
+      cleanup()
+      if (isSupported.value && window) {
         observer = new ResizeObserver(callback)
-        observer!.observe(el, observerOptions)
+        for (const _el of els)
+          _el && observer!.observe(_el, observerOptions)
       }
     },
-    { immediate: true, flush: 'post' },
+    { immediate: true, flush: 'post', deep: true },
   )
 
   const stop = () => {

@@ -102,10 +102,11 @@ By default, we have some [preconfigured alias for common practices](https://gith
 
 ### Conditionally Disable
 
-You might have some `<input />` elements in your apps, and you don't want to trigger the magic keys handling when users focused on those inputs. There is an example of using `useActiveElement` and `and` to do that.
+You might have some `<input />` elements in your apps, and you don't want to trigger the magic keys handling when users focused on those inputs. There is an example of using `useActiveElement` and `logicAnd` to do that.
 
 ```ts
-import { and, useActiveElement, useMagicKeys, whenever } from '@vueuse/core'
+import { useActiveElement, useMagicKeys, whenever } from '@vueuse/core'
+import { logicAnd } from '@vueuse/math'
 
 const activeElement = useActiveElement()
 const notUsingInput = computed(() =>
@@ -115,7 +116,7 @@ const notUsingInput = computed(() =>
 
 const { tab } = useMagicKeys()
 
-whenever(and(tab, notUsingInput), () => {
+whenever(logicAnd(tab, notUsingInput), () => {
   console.log('Tab has been pressed outside of inputs!')
 })
 ```

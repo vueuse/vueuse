@@ -1,6 +1,7 @@
-import { ref } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -13,6 +14,12 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
    * @default true
    */
   listenOrientation?: boolean
+
+  /**
+   * Whether the scrollbar should be included in the width and height
+   * @default true
+   */
+  includeScrollbar?: boolean
 }
 
 /**
@@ -27,6 +34,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     initialWidth = Infinity,
     initialHeight = Infinity,
     listenOrientation = true,
+    includeScrollbar = true,
   } = options
 
   const width = ref(initialWidth)
@@ -34,8 +42,14 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   const update = () => {
     if (window) {
-      width.value = window.innerWidth
-      height.value = window.innerHeight
+      if (includeScrollbar) {
+        width.value = window.innerWidth
+        height.value = window.innerHeight
+      }
+      else {
+        width.value = window.document.documentElement.clientWidth
+        height.value = window.document.documentElement.clientHeight
+      }
     }
   }
 
@@ -43,8 +57,10 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  if (listenOrientation)
-    useEventListener('orientationchange', update, { passive: true })
+  if (listenOrientation) {
+    const matches = useMediaQuery('(orientation: portrait)')
+    watch(matches, () => update())
+  }
 
   return { width, height }
 }

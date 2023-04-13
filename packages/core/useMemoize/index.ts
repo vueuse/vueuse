@@ -1,3 +1,4 @@
+import { hasOwn } from '@vueuse/shared'
 import { del, isVue2, reactive, set } from 'vue-demi'
 
 type CacheKey = any
@@ -31,12 +32,12 @@ export interface UseMemoizeCache<Key, Value> {
 /**
  * Fallback for Vue 2 not able to make a reactive Map
  */
-const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
+function getMapVue2Compat<Value>(): UseMemoizeCache<CacheKey, Value> {
   const data: Record<CacheKey, Value> = reactive({})
   return {
     get: key => data[key],
     set: (key, value) => set(data, key, value),
-    has: key => Object.prototype.hasOwnProperty.call(data, key),
+    has: key => hasOwn(data, key),
     delete: key => del(data, key),
     clear: () => {
       Object.keys(data).forEach((key) => {
@@ -49,7 +50,7 @@ const getMapVue2Compat = <Value>(): UseMemoizeCache<CacheKey, Value> => {
 /**
  * Memoized function
  */
-export interface UseMemoizeReturn <Result, Args extends unknown[]> {
+export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   /**
    * Get result from cache or call memoized function
    */
@@ -77,7 +78,7 @@ export interface UseMemoizeReturn <Result, Args extends unknown[]> {
 }
 
 export interface UseMemoizeOptions<Result, Args extends unknown[]> {
-  getKey?: (...args: Args) => string
+  getKey?: (...args: Args) => string | number
   cache?: UseMemoizeCache<CacheKey, Result>
 }
 
@@ -109,7 +110,7 @@ export function useMemoize<Result, Args extends unknown[]>(
   /**
    * Load data and save in cache
    */
-  const _loadData = (key: string, ...args: Args): Result => {
+  const _loadData = (key: string | number, ...args: Args): Result => {
     cache.set(key, resolver(...args))
     return cache.get(key) as Result
   }

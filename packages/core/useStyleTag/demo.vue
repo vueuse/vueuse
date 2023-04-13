@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { useStyleTag } from '@vueuse/core'
 
-const { id, css, load, unload, isLoaded } = useStyleTag('.demo { background: #ad4c2e50 }')
+const customCSS = `
+.demo { background: #ad4c2e50; }
+.demo textarea { background: lightyellow; }
+`.trim()
+
+const { id, css, load, unload, isLoaded } = useStyleTag(customCSS)
 </script>
 
 <template>

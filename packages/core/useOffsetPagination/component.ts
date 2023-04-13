@@ -2,7 +2,7 @@ import { defineComponent, reactive } from 'vue-demi'
 import { useOffsetPagination } from '@vueuse/core'
 import type { UseOffsetPaginationOptions } from '.'
 
-export const UseOffsetPagination = defineComponent<UseOffsetPaginationOptions>({
+export const UseOffsetPagination = /* #__PURE__ */ defineComponent<UseOffsetPaginationOptions>({
   name: 'UseOffsetPagination',
   props: [
     'total',
@@ -21,15 +21,15 @@ export const UseOffsetPagination = defineComponent<UseOffsetPaginationOptions>({
     const data = reactive(useOffsetPagination({
       ...props,
       onPageChange(...args) {
-        props.onPageChange?.(...args as unknown as [])
+        props.onPageChange?.(...args)
         emit('page-change', ...args)
       },
       onPageSizeChange(...args) {
-        props.onPageSizeChange?.(...args as unknown as [])
+        props.onPageSizeChange?.(...args)
         emit('page-size-change', ...args)
       },
       onPageCountChange(...args) {
-        props.onPageCountChange?.(...args as unknown as [])
+        props.onPageCountChange?.(...args)
         emit('page-count-change', ...args)
       },
     }))

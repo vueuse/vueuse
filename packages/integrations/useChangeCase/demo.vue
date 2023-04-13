@@ -2,6 +2,7 @@
 import { computed, ref, shallowReadonly } from 'vue-demi'
 import { useChangeCase } from '.'
 import type { ChangeCaseType } from '.'
+
 const arr: Array<ChangeCaseType> = [
   'camelCase',
   'capitalCase',

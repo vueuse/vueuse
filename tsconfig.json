@@ -42,7 +42,7 @@
   ],
   "exclude": [
     "node_modules",
-    "**/**/*.md",
+    "**/*.md",
     "**/dist",
     "packages/.test",
     "packages/_docs"

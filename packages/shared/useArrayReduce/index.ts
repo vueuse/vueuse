@@ -1,7 +1,7 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
+import type { MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
@@ -15,7 +15,7 @@ export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, c
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<T, T, T>,
 ): ComputedRef<T>
 
@@ -30,9 +30,9 @@ export function useArrayReduce<T>(
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T, U>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<U, T, U>,
-  initialValue: MaybeComputedRef<U>,
+  initialValue: MaybeRefOrGetter<U>,
 ): ComputedRef<U>
 
 /**
@@ -46,18 +46,18 @@ export function useArrayReduce<T, U>(
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: ((...p: any[]) => any),
   ...args: any[]
 ): ComputedRef<T> {
-  const reduceCallback = (sum: any, value: any, index: number) => reducer(resolveUnref(sum), resolveUnref(value), index)
+  const reduceCallback = (sum: any, value: any, index: number) => reducer(toValue(sum), toValue(value), index)
 
   return computed(() => {
-    const resolved = resolveUnref(list)
+    const resolved = toValue(list)
     // Depending on the behavior of reduce, undefined is also a valid initialization value,
     // and this code will distinguish the behavior between them.
     return args.length
-      ? resolved.reduce(reduceCallback, resolveUnref(args[0]))
+      ? resolved.reduce(reduceCallback, toValue(args[0]))
       : resolved.reduce(reduceCallback)
   })
 }

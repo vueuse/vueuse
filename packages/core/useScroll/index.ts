@@ -1,6 +1,6 @@
-import { reactive, ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -48,6 +48,14 @@ export interface UseScrollOptions {
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
+
+  /**
+   * Optionally specify a scroll behavior of `auto` (default, not smooth scrolling) or
+   * `smooth` (for smooth scrolling) which takes effect when changing the `x` or `y` refs.
+   *
+   * @default 'auto'
+   */
+  behavior?: MaybeRefOrGetter<ScrollBehavior>
 }
 
 /**
@@ -67,7 +75,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  */
 
 export function useScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -85,10 +93,45 @@ export function useScroll(
       capture: false,
       passive: true,
     },
+    behavior = 'auto',
   } = options
 
-  const x = ref(0)
-  const y = ref(0)
+  const internalX = ref(0)
+  const internalY = ref(0)
+
+  // Use a computed for x and y because we want to write the value to the refs
+  // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
+  const x = computed({
+    get() {
+      return internalX.value
+    },
+    set(x) {
+      scrollTo(x, undefined)
+    },
+  })
+
+  const y = computed({
+    get() {
+      return internalY.value
+    },
+    set(y) {
+      scrollTo(undefined, y)
+    },
+  })
+
+  function scrollTo(_x: number | undefined, _y: number | undefined) {
+    const _element = toValue(element)
+
+    if (!_element)
+      return
+
+    (_element instanceof Document ? document.body : _element)?.scrollTo({
+      top: toValue(_y) ?? y.value,
+      left: toValue(_x) ?? x.value,
+      behavior: toValue(behavior),
+    })
+  }
+
   const isScrolling = ref(false)
   const arrivedState = reactive({
     left: true,
@@ -103,14 +146,19 @@ export function useScroll(
     bottom: false,
   })
 
-  const onScrollEnd = useDebounceFn((e: Event) => {
+  const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
+
     isScrolling.value = false
     directions.left = false
     directions.right = false
     directions.top = false
     directions.bottom = false
     onStop(e)
-  }, throttle + idle)
+  }
+  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
   const onScrollHandler = (e: Event) => {
     const eventTarget = (
@@ -118,12 +166,12 @@ export function useScroll(
     ) as HTMLElement
 
     const scrollLeft = eventTarget.scrollLeft
-    directions.left = scrollLeft < x.value
-    directions.right = scrollLeft > x.value
+    directions.left = scrollLeft < internalX.value
+    directions.right = scrollLeft > internalY.value
     arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
     arrivedState.right
       = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
-    x.value = scrollLeft
+    internalX.value = scrollLeft
 
     let scrollTop = eventTarget.scrollTop
 
@@ -131,22 +179,29 @@ export function useScroll(
     if (e.target === document && !scrollTop)
       scrollTop = document.body.scrollTop
 
-    directions.top = scrollTop < y.value
-    directions.bottom = scrollTop > y.value
+    directions.top = scrollTop < internalY.value
+    directions.bottom = scrollTop > internalY.value
     arrivedState.top = scrollTop <= 0 + (offset.top || 0)
     arrivedState.bottom
       = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
-    y.value = scrollTop
+    internalY.value = scrollTop
 
     isScrolling.value = true
-    onScrollEnd(e)
+    onScrollEndDebounced(e)
     onScroll(e)
   }
 
   useEventListener(
     element,
     'scroll',
-    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
+    throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
+    eventListenerOptions,
+  )
+
+  useEventListener(
+    element,
+    'scrollend',
+    onScrollEnd,
     eventListenerOptions,
   )
 

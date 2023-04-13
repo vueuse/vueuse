@@ -1,10 +1,12 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { Fn } from '@vueuse/shared'
-import { tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+
+const DEFAULT_PING_MESSAGE = 'ping'
 
 export interface UseWebSocketOptions {
   onConnected?: (ws: WebSocket) => void
@@ -23,7 +25,7 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string
+    message?: string | ArrayBuffer | Blob
 
     /**
      * Interval, in milliseconds
@@ -31,6 +33,13 @@ export interface UseWebSocketOptions {
      * @default 1000
      */
     interval?: number
+
+    /**
+     * Heartbeat response timeout, in milliseconds
+     *
+     * @default 1000
+     */
+    pongTimeout?: number
   }
 
   /**
@@ -134,7 +143,7 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param url
  */
 export function useWebSocket<Data = any>(
-  url: string,
+  url: MaybeRefOrGetter<string | URL | undefined>,
   options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {
@@ -150,6 +159,7 @@ export function useWebSocket<Data = any>(
   const data: Ref<Data | null> = ref(null)
   const status = ref<WebSocketStatus>('CLOSED')
   const wsRef = ref<WebSocket | undefined>()
+  const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined
   let heartbeatResume: Fn | undefined
@@ -158,6 +168,8 @@ export function useWebSocket<Data = any>(
   let retried = 0
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
+
+  let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
@@ -176,6 +188,11 @@ export function useWebSocket<Data = any>(
     }
   }
 
+  const resetHeartbeat = () => {
+    clearTimeout(pongTimeoutWait)
+    pongTimeoutWait = undefined
+  }
+
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
     if (!wsRef.value || status.value !== 'OPEN') {
       if (useBuffer)
@@ -188,10 +205,12 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
-    const ws = new WebSocket(url, protocols)
+    if (explicitlyClosed || typeof urlRef.value === 'undefined')
+      return
+
+    const ws = new WebSocket(urlRef.value, protocols)
     wsRef.value = ws
     status.value = 'CONNECTING'
-    explicitlyClosed = false
 
     ws.onopen = () => {
       status.value = 'OPEN'
@@ -227,6 +246,15 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      if (options.heartbeat) {
+        resetHeartbeat()
+        const {
+          message = DEFAULT_PING_MESSAGE,
+        } = resolveNestedOptions(options.heartbeat)
+        if (e.data === message)
+          return
+      }
+
       data.value = e.data
       onMessage?.(ws!, e)
     }
@@ -234,12 +262,21 @@ export function useWebSocket<Data = any>(
 
   if (options.heartbeat) {
     const {
-      message = 'ping',
+      message = DEFAULT_PING_MESSAGE,
       interval = 1000,
+      pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
-      () => send(message, false),
+      () => {
+        send(message, false)
+        if (pongTimeoutWait != null)
+          return
+        pongTimeoutWait = setTimeout(() => {
+          // auto-reconnect will be trigger with ws.onclose()
+          close()
+        }, pongTimeout)
+      },
       interval,
       { immediate: false },
     )
@@ -248,9 +285,6 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (immediate)
-    _init()
-
   if (autoClose) {
     useEventListener(window, 'beforeunload', () => close())
     tryOnScopeDispose(close)
@@ -258,9 +292,13 @@ export function useWebSocket<Data = any>(
 
   const open = () => {
     close()
+    explicitlyClosed = false
     retried = 0
     _init()
   }
+
+  if (immediate)
+    watch(urlRef, open, { immediate: true })
 
   return {
     data,

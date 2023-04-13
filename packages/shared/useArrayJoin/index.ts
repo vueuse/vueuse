@@ -1,7 +1,7 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
+import type { MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 /**
  * Reactive `Array.join`
@@ -13,8 +13,8 @@ import { computed } from 'vue-demi'
  * @returns {string} a string with all array elements joined. If arr.length is 0, the empty string is returned.
  */
 export function useArrayJoin(
-  list: MaybeComputedRef<MaybeComputedRef<any>[]>,
-  separator?: MaybeComputedRef<string>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<any>[]>,
+  separator?: MaybeRefOrGetter<string>,
 ): ComputedRef<string> {
-  return computed(() => resolveUnref(list).map(i => resolveUnref(i)).join(resolveUnref(separator)))
+  return computed(() => toValue(list).map(i => toValue(i)).join(toValue(separator)))
 }
