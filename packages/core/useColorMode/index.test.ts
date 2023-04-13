@@ -11,14 +11,12 @@ describe('useColorMode', () => {
   vi.mock('../usePreferredDark', () => {
     const mockPreferredDark = ref(false)
     return {
-      usePreferredDark: [true, ...new Array(8).fill(false), true].reduce((fn, v) => fn.mockImplementationOnce(() => {
-        mockPreferredDark.value = v
-        return mockPreferredDark
-      }), vi.fn()),
+      usePreferredDark: () => mockPreferredDark,
     }
   })
 
   beforeEach(() => {
+    usePreferredDark().value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -28,9 +26,11 @@ describe('useColorMode', () => {
     vi.resetModules()
   })
 
-  it('should translate auto mode when prefer dark', () => {
+  it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
+    usePreferredDark().value = true
+    await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
@@ -109,11 +109,18 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark()
+    usePreferredDark().value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
+  })
+
+  it('should use state to access mode & preference', () => {
+    const state = useColorMode()
+    expect(state.store.value).toBe('auto')
+    expect(state.system.value).toBe('light')
+    expect(state.value).toBe('light')
   })
 })
