@@ -37,7 +37,7 @@ export interface UsePointerOptions extends ConfigurableWindow {
   target?: MaybeRef<EventTarget | null | undefined> | Document | Window
 }
 
-const defaultState: UsePointerState = /* #__PURE__ */ {
+const defaultState: UsePointerState = /*#__PURE__*/ {
   x: 0,
   y: 0,
   pointerId: 0,
@@ -49,7 +49,7 @@ const defaultState: UsePointerState = /* #__PURE__ */ {
   twist: 0,
   pointerType: null,
 }
-const keys = /* #__PURE__ */ Object.keys(defaultState) as (keyof UsePointerState)[]
+const keys = /*#__PURE__*/ Object.keys(defaultState) as (keyof UsePointerState)[]
 
 /**
  * Reactive pointer state.

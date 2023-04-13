@@ -7,7 +7,7 @@ export interface OnClickOutsideProps extends RenderableComponent {
   options?: OnClickOutsideOptions
 }
 
-export const OnClickOutside = /* #__PURE__ */ defineComponent<OnClickOutsideProps>({
+export const OnClickOutside = /*#__PURE__*/ defineComponent<OnClickOutsideProps>({
   name: 'OnClickOutside',
   props: ['as', 'options'] as unknown as undefined,
   emits: ['trigger'],
