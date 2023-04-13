@@ -89,8 +89,6 @@ export function increaseWithUnit(target: string | number, delta: number): string
 
 /**
  * Create a new subset object by giving keys
- *
- * @category Object
  */
 export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((n, k) => {
@@ -100,6 +98,15 @@ export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[
     }
     return n
   }, {} as Pick<O, T>)
+}
+
+/**
+ * Create a new subset object by omit giving keys
+ */
+export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return Object.fromEntries(Object.entries(obj).filter(([key, value]) => {
+    return (!omitUndefined || value !== undefined) && !keys.includes(key as T)
+  })) as Omit<O, T>
 }
 
 export function objectEntries<T extends object>(obj: T) {
