@@ -28,6 +28,13 @@ export interface UseDraggableOptions {
   stopPropagation?: MaybeRefOrGetter<boolean>
 
   /**
+   * Whether dispatch events in capturing phase
+   *
+   * @default true
+   */
+  capture?: boolean
+
+  /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
@@ -166,9 +173,10 @@ export function useDraggable(
   }
 
   if (isClient) {
-    useEventListener(draggingHandle, 'pointerdown', start, true)
-    useEventListener(draggingElement, 'pointermove', move, true)
-    useEventListener(draggingElement, 'pointerup', end, true)
+    const config = { capture: options.capture ?? true }
+    useEventListener(draggingHandle, 'pointerdown', start, config)
+    useEventListener(draggingElement, 'pointermove', move, config)
+    useEventListener(draggingElement, 'pointerup', end, config)
   }
 
   return {
