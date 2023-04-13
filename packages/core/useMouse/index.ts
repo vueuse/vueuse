@@ -85,8 +85,8 @@ export function useMouse(options: UseMouseOptions = {}) {
         y.value = touch.clientY
       }
       else if (type === 'screen') {
-        x.value = event.screenX
-        y.value = event.screenY
+        x.value = touch.screenX
+        y.value = touch.screenY
       }
       sourceType.value = 'touch'
     }
