@@ -4,6 +4,7 @@ import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
 import type { ConfigurableWindow } from '../_configurable'
+
 export interface UseFocusWithinReturn {
   /**
    * True if the element or any of its descendants are focused

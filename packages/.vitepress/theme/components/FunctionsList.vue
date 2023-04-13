@@ -135,12 +135,12 @@ function toggleSort(method: string) {
       </label>
     </div>
   </div>
-  <div h="1px" bg="$vp-c-divider-light" m="t-4" />
+  <div h="1px" bg="$vp-c-divider" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
     <i i-carbon-search m="r-2" opacity="50" />
     <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
-  <div h="1px" bg="$vp-c-divider-light" m="b-4" />
+  <div h="1px" bg="$vp-c-divider" m="b-4" />
   <div flex="~ col" gap="2" class="relative" p="t-5">
     <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
       <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">
@@ -173,9 +173,9 @@ function toggleSort(method: string) {
 
 <style scoped lang="postcss">
 input {
-  --tw-ring-offset-width: 1px !important;
-  --tw-ring-color: #8885 !important;
-  --tw-ring-offset-color: transparent !important;
+  --un-ring-offset-width: 1px !important;
+  --un-ring-color: #8885 !important;
+  --un-ring-offset-color: transparent !important;
 }
 
 .checkbox {

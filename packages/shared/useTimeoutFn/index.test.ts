@@ -4,7 +4,7 @@ import { useTimeoutFn } from '.'
 
 describe('useTimeoutFn', () => {
   it('supports reactive intervals', async () => {
-    const callback = vitest.fn()
+    const callback = vi.fn()
     const interval = ref(0)
     const { start } = useTimeoutFn(callback, interval)
 
@@ -23,7 +23,7 @@ describe('useTimeoutFn', () => {
   })
 
   it('supports getting pending status', async () => {
-    const callback = vitest.fn()
+    const callback = vi.fn()
     const { start, isPending } = useTimeoutFn(callback, 0, { immediate: false })
 
     expect(isPending.value).toBe(false)

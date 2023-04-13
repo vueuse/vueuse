@@ -15,7 +15,9 @@ const UNITS = [
   { max: Infinity, value: 31536000000, name: 'year' },
 ]
 
-const fullDateFormatter = (value: any) => new Date(value).toISOString().slice(0, 10)
+function fullDateFormatter(value: any) {
+  return new Date(value).toISOString().slice(0, 10)
+}
 
 function getNeededTimeChange(type: TimeUnit, count: number, adjustSecond?: number) {
   const unit = UNITS.find(i => i.name === type)
@@ -46,11 +48,11 @@ describe('useTimeAgo', () => {
   test('control now', async () => {
     vi.useRealTimers()
     const { resume, pause, timeAgo } = useTimeAgo(baseTime, { controls: true, showSecond: true, updateInterval: 500 })
-    await promiseTimeout(100)
+    await promiseTimeout(400)
     expect(timeAgo.value).toBe('0 second ago')
 
     pause()
-    await promiseTimeout(1000)
+    await promiseTimeout(700)
     expect(timeAgo.value).toBe('0 second ago')
 
     resume()

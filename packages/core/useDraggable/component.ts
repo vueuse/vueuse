@@ -1,7 +1,7 @@
 import { computed, defineComponent, h, reactive, ref } from 'vue-demi'
 import type { UseDraggableOptions } from '@vueuse/core'
 import { isClient, useDraggable, useStorage } from '@vueuse/core'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { Position, RenderableComponent } from '../types'
 
 export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
@@ -30,13 +30,14 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'pointerTypes',
     'as',
     'handle',
+    'axis',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const handle = computed(() => props.handle ?? target.value)
     const storageValue = props.storageKey && useStorage(
       props.storageKey,
-      resolveUnref(props.initialValue) || { x: 0, y: 0 },
+      toValue(props.initialValue) || { x: 0, y: 0 },
       isClient
         ? props.storageType === 'session'
           ? sessionStorage

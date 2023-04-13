@@ -7,7 +7,7 @@ describe('useMutationObserver', () => {
   })
 
   it('should work with attributes', async () => {
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     const target = document.createElement('div')
     target.setAttribute('id', 'header')
@@ -32,7 +32,7 @@ describe('useMutationObserver', () => {
   it('should work with childList', async () => {
     const target = document.createElement('div')
 
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     useMutationObserver(target, cb, {
       childList: true,
@@ -45,7 +45,7 @@ describe('useMutationObserver', () => {
 
   it('should work with subtree', async () => {
     const target = document.createElement('div')
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     useMutationObserver(target, cb, {
       subtree: true,
@@ -65,7 +65,7 @@ describe('useMutationObserver', () => {
 
   it('should work with characterData', async () => {
     const target = document.createTextNode('123')
-    const cb = vitest.fn()
+    const cb = vi.fn()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     useMutationObserver(target, cb, {
@@ -83,7 +83,7 @@ describe('useMutationObserver', () => {
 
   it('should work with attributeFilter', async () => {
     const target = document.createElement('div')
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     useMutationObserver(target, cb, {
       attributes: true,
@@ -101,7 +101,7 @@ describe('useMutationObserver', () => {
 
   it('should work with attributeOldValue', async () => {
     const target = document.createElement('div')
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     useMutationObserver(target, cb, {
       attributes: true,
@@ -125,7 +125,7 @@ describe('useMutationObserver', () => {
 
   it('should work with characterDataOldValue', async () => {
     const target = document.createTextNode('123')
-    const cb = vitest.fn()
+    const cb = vi.fn()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     useMutationObserver(target, cb, {
@@ -150,7 +150,7 @@ describe('useMutationObserver', () => {
 
   it('should work with stop', async () => {
     const target = document.createElement('div')
-    const cb = vitest.fn()
+    const cb = vi.fn()
 
     const { stop } = useMutationObserver(target, cb, {
       attributes: true,

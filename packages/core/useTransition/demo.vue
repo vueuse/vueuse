@@ -9,7 +9,7 @@ const baseNumber = ref(0)
 
 const baseVector = ref([0, 0])
 
-const easeOutElastic = (n: number) => {
+function easeOutElastic(n: number) {
   return n === 0
     ? 0
     : n === 1
@@ -32,7 +32,7 @@ const vector = useTransition(baseVector, {
   transition: TransitionPresets.easeOutExpo,
 })
 
-const toggle = () => {
+function toggle() {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
   baseVector.value = [rand(0, 100), rand(0, 100)]
 }
