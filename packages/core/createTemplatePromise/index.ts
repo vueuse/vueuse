@@ -69,7 +69,8 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
   if (!isVue3) {
     if (process.env.NODE_ENV !== 'production')
       throw new Error('[VueUse] createTemplatePromise only works in Vue 3 or above.')
-    return null as any
+    // @ts-expect-error incompatible
+    return
   }
 
   let index = 0
