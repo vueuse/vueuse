@@ -129,6 +129,10 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 </template>
 ```
 
+::: info
+Dot notation is not supported in Vue 2.
+:::
+
 ### Passing Slots
 
 It's also possible to pass slots back from `<ReuseTemplate>`. You can access the slots on `<DefineTemplate>` from `$slots`:
@@ -157,7 +161,13 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 </template>
 ```
 
+::: info
+Passing slots does not work in Vue 2.
+:::
+
 ## References
+
+This function is migrated from [vue-reuse-template](https://github.com/antfu/vue-reuse-template).
 
 Existing Vue discussions/issues about reusing template:
 
@@ -168,6 +178,3 @@ Alternative Approaches:
 - [Vue Macros - `namedTemplate`](https://vue-macros.sxzz.moe/features/named-template.html)
 - [`unplugin-@vueuse/core`](https://github.com/liulinboyi/unplugin-@vueuse/core)
 
-::: info
-This function is migrated from [vue-reuse-template](https://github.com/antfu/vue-reuse-template)
-:::

@@ -1,6 +1,6 @@
 import type { DefineComponent, Slot } from 'vue-demi'
 import { defineComponent } from 'vue-demi'
-import { makeDestructurable } from '@vueuse/shared'
+import { __onlyVue27Plus, makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
   Bindings extends object,
@@ -27,12 +27,16 @@ export function createReusableTemplate<
   Bindings extends object,
   Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
 >(name?: string) {
+  __onlyVue27Plus()
+
   let render: Slot | undefined
 
-  const define = defineComponent((_, { slots }) => {
-    return () => {
-      render = slots.default
-    }
+  const define = defineComponent({
+    setup(_, { slots }) {
+      return () => {
+        render = slots.default
+      }
+    },
   }) as DefineTemplateComponent<Bindings, Slots>
 
   const reuse = defineComponent({
@@ -40,7 +44,7 @@ export function createReusableTemplate<
     setup(_, { attrs, slots }) {
       return () => {
         if (!render && process.env.NODE_ENV !== 'production')
-          throw new Error(`[vueuse] Failed to find the definition of template${name ? ` "${name}"` : ''}`)
+          throw new Error(`[VueUse] Failed to find the definition of template${name ? ` "${name}"` : ''}`)
         return render?.({ ...attrs, $slots: slots })
       }
     },
