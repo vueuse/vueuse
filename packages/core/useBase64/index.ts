@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { isRef, ref, watch } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isClient, isFunction, resolveUnref } from '@vueuse/shared'
+import { isClient, isFunction, toValue } from '@vueuse/shared'
 import { getDefaultSerialization } from './serialization'
 
 export interface ToDataURLOptions {
@@ -47,7 +47,7 @@ export function useBase64(
 
     promise.value = new Promise<string>((resolve, reject) => {
       try {
-        const _target = resolveUnref(target)
+        const _target = toValue(target)
         if (_target == null) {
           resolve('')
         }

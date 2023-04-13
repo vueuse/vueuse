@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { noop, toValue, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -98,14 +98,14 @@ export function useScriptTag(
     // Local variable defining if the <script> tag should be appended or not.
     let shouldAppend = false
 
-    let el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
+    let el = document.querySelector<HTMLScriptElement>(`script[src="${toValue(src)}"]`)
 
     // Script tag not found, preparing the element for appending
     if (!el) {
       el = document.createElement('script')
       el.type = type
       el.async = async
-      el.src = resolveUnref(src)
+      el.src = toValue(src)
 
       // Optional attributes
       if (defer)
@@ -171,7 +171,7 @@ export function useScriptTag(
     if (scriptTag.value)
       scriptTag.value = null
 
-    const el = document.querySelector<HTMLScriptElement>(`script[src="${resolveUnref(src)}"]`)
+    const el = document.querySelector<HTMLScriptElement>(`script[src="${toValue(src)}"]`)
     if (el)
       document.head.removeChild(el)
   }

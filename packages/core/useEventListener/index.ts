@@ -1,5 +1,5 @@
 import type { Arrayable, Fn, MaybeComputedRef } from '@vueuse/shared'
-import { isString, noop, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
+import { isString, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -139,7 +139,7 @@ export function useEventListener(...args: any[]) {
   }
 
   const stopWatch = watch(
-    () => [unrefElement(target as unknown as MaybeElementRef), resolveUnref(options)],
+    () => [unrefElement(target as unknown as MaybeElementRef), toValue(options)],
     ([el, options]) => {
       cleanup()
       if (!el)

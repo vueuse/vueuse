@@ -1,4 +1,4 @@
-import { defaultDocument, resolveUnref, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
+import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { ConfigurableDocument, MaybeComputedRef } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
 import { nextTick } from 'vue-demi'
@@ -62,7 +62,7 @@ export function moveArrayElement<T>(
   from: number,
   to: number,
 ): void {
-  const array = resolveUnref(list)
+  const array = toValue(list)
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
     nextTick(() => array.splice(to, 0, element))

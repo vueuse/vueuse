@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, tryOnMounted } from '@vueuse/shared'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { shallowRef, watch } from 'vue-demi'
 import { unrefElement } from '../unrefElement'
@@ -17,7 +17,7 @@ export function useParentElement(
   }
 
   tryOnMounted(update)
-  watch(() => resolveUnref(element), update)
+  watch(() => toValue(element), update)
 
   return parentElement
 }

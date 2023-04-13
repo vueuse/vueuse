@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 import type { MaybeComputedRef, MaybeRef } from '../utils'
 
 export type Reactified<T, Computed extends boolean> = T extends (...args: infer A) => infer R
@@ -24,7 +24,7 @@ export interface ReactifyOptions<T extends boolean> {
  * @param fn - Source function
  */
 export function reactify<T extends Function, K extends boolean = true>(fn: T, options?: ReactifyOptions<K>): Reactified<T, K> {
-  const unrefFn = options?.computedGetter === false ? unref : resolveUnref
+  const unrefFn = options?.computedGetter === false ? unref : toValue
   return function (this: any, ...args: any[]) {
     return computed(() => fn.apply(this, args.map(i => unrefFn(i))))
   } as any

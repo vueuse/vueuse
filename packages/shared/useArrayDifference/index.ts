@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import { isString } from '../utils'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 function defaultComparator<T>(value: T, othVal: T) {
   return value === othVal
@@ -26,5 +26,5 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
     const key = compareFn as keyof T
     compareFn = (value: T, othVal: T) => value[key] === othVal[key]
   }
-  return computed(() => resolveUnref(list).filter(x => resolveUnref(values).findIndex(y => compareFn(x, y)) === -1))
+  return computed(() => toValue(list).filter(x => toValue(values).findIndex(y => compareFn(x, y)) === -1))
 }

@@ -1,6 +1,6 @@
 import type { WatchOptions, WatchSource } from 'vue-demi'
 import { isRef, watch } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 import type { ElementOf, MaybeComputedRef, ShallowUnwrapRef } from '../utils'
 import { promiseTimeout } from '../utils'
 
@@ -93,7 +93,7 @@ function createUntil<T>(r: any, isNot = false) {
     if (timeout != null) {
       promises.push(
         promiseTimeout(timeout, throwOnTimeout)
-          .then(() => resolveUnref(r))
+          .then(() => toValue(r))
           .finally(() => stop?.()),
       )
     }
@@ -128,10 +128,10 @@ function createUntil<T>(r: any, isNot = false) {
     if (timeout != null) {
       promises.push(
         promiseTimeout(timeout, throwOnTimeout)
-          .then(() => resolveUnref(r))
+          .then(() => toValue(r))
           .finally(() => {
             stop?.()
-            return resolveUnref(r)
+            return toValue(r)
           }),
       )
     }
@@ -161,7 +161,7 @@ function createUntil<T>(r: any, isNot = false) {
   ) {
     return toMatch((v) => {
       const array = Array.from(v as any)
-      return array.includes(value) || array.includes(resolveUnref(value))
+      return array.includes(value) || array.includes(toValue(value))
     }, options)
   }
 
@@ -177,7 +177,7 @@ function createUntil<T>(r: any, isNot = false) {
     }, options)
   }
 
-  if (Array.isArray(resolveUnref(r))) {
+  if (Array.isArray(toValue(r))) {
     const instance: UntilArrayInstance<T> = {
       toMatch,
       toContains,

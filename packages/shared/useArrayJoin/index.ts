@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 /**
  * Reactive `Array.join`
@@ -16,5 +16,5 @@ export function useArrayJoin(
   list: MaybeComputedRef<MaybeComputedRef<any>[]>,
   separator?: MaybeComputedRef<string>,
 ): ComputedRef<string> {
-  return computed(() => resolveUnref(list).map(i => resolveUnref(i)).join(resolveUnref(separator)))
+  return computed(() => toValue(list).map(i => toValue(i)).join(toValue(separator)))
 }

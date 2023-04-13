@@ -1,6 +1,6 @@
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 export type DateLike = Date | number | string | undefined
 
@@ -99,7 +99,7 @@ export function normalizeDate(date: DateLike) {
  */
 
 export function useDateFormat(date: MaybeComputedRef<DateLike>, formatStr: MaybeComputedRef<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}) {
-  return computed(() => formatDate(normalizeDate(resolveUnref(date)), resolveUnref(formatStr), options))
+  return computed(() => formatDate(normalizeDate(toValue(date)), toValue(formatStr), options))
 }
 
 export type UseDateFormatReturn = ReturnType<typeof useDateFormat>

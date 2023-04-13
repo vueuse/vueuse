@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 // Polyfill for node version < 18
 function findLast<T>(arr: T[], cb: (element: T, index: number, array: T[]) => boolean): T | undefined {
@@ -27,11 +27,11 @@ export function useArrayFindLast<T>(
   fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => boolean,
 ): ComputedRef<T | undefined> {
   return computed(() =>
-    resolveUnref<T | undefined>(
+    toValue<T | undefined>(
       !Array.prototype.findLast
-        ? findLast(resolveUnref(list), (element, index, array) => fn(resolveUnref(element), index, array))
-        : resolveUnref(list)
-          .findLast((element, index, array) => fn(resolveUnref(element), index, array)),
+        ? findLast(toValue(list), (element, index, array) => fn(toValue(element), index, array))
+        : toValue(list)
+          .findLast((element, index, array) => fn(toValue(element), index, array)),
     ),
   )
 }

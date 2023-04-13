@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
 import type { MaybeComputedRefArgs } from '../utils'
-import { resolveUnrefArgsFlat } from '../utils'
+import { toValueArgsFlat } from '../utils'
 
 export function useAverage(array: MaybeComputedRef<MaybeComputedRef<number>[]>): ComputedRef<number>
 export function useAverage(...args: MaybeComputedRef<number>[]): ComputedRef<number>
@@ -14,7 +14,7 @@ export function useAverage(...args: MaybeComputedRef<number>[]): ComputedRef<num
  */
 export function useAverage(...args: MaybeComputedRefArgs<number>): ComputedRef<number> {
   return computed(() => {
-    const array = resolveUnrefArgsFlat(args)
+    const array = toValueArgsFlat(args)
     return array.reduce((sum, v) => sum += v, 0) / array.length
   })
 }

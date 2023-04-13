@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue-demi'
 import type { Fn, MaybeComputedRef } from '@vueuse/shared'
-import { isIOS, resolveRef, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
+import { isIOS, resolveRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
 
@@ -69,7 +69,7 @@ export function useScrollLock(
   })
 
   const lock = () => {
-    const ele = (resolveUnref(element) as HTMLElement)
+    const ele = (toValue(element) as HTMLElement)
     if (!ele || isLocked.value)
       return
     if (isIOS) {
@@ -85,7 +85,7 @@ export function useScrollLock(
   }
 
   const unlock = () => {
-    const ele = (resolveUnref(element) as HTMLElement)
+    const ele = (toValue(element) as HTMLElement)
     if (!ele || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()

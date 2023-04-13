@@ -1,6 +1,6 @@
 import type { ComponentPublicInstance } from 'vue-demi'
 import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 
 export type VueInstance = ComponentPublicInstance
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
@@ -15,6 +15,6 @@ export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extend
  * @param elRef
  */
 export function unrefElement<T extends MaybeElement>(elRef: MaybeComputedElementRef<T>): UnRefElementReturn<T> {
-  const plain = resolveUnref(elRef)
+  const plain = toValue(elRef)
   return (plain as VueInstance)?.$el ?? plain
 }

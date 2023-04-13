@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { computed, shallowRef, watch } from 'vue-demi'
-import { resolveRef, resolveUnref } from '@vueuse/shared'
+import { resolveRef, toValue } from '@vueuse/shared'
 import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
 
 export interface UseCycleListOptions<T> {
@@ -32,7 +32,7 @@ export function useCycleList<T>(list: MaybeComputedRef<T[]>, options?: UseCycleL
 
   const index = computed<number>({
     get() {
-      const targetList = resolveUnref<T[]>(list)
+      const targetList = toValue<T[]>(list)
 
       let index = options?.getIndexOf
         ? options.getIndexOf(state.value, targetList)
@@ -70,7 +70,7 @@ export function useCycleList<T>(list: MaybeComputedRef<T[]>, options?: UseCycleL
   }
 
   function getInitialValue() {
-    return resolveUnref(options?.initialValue ?? resolveUnref<T[]>(list)[0]) ?? undefined
+    return toValue(options?.initialValue ?? toValue<T[]>(list)[0]) ?? undefined
   }
 
   watch(listRef, () => set(index.value))

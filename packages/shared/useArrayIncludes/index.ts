@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import { containsProp, isObject } from '../utils'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 export type UseArrayIncludesComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeComputedRef<T>[]) => boolean)
 
@@ -54,16 +54,16 @@ export function useArrayIncludes<T, V = any>(
 
   if (typeof comparator === 'string') {
     const key = comparator as keyof T
-    comparator = (element: T, value: V) => element[key] === resolveUnref(value)
+    comparator = (element: T, value: V) => element[key] === toValue(value)
   }
 
-  comparator = comparator ?? ((element: T, value: T) => element === resolveUnref(value))
+  comparator = comparator ?? ((element: T, value: T) => element === toValue(value))
 
   return computed(() =>
-    resolveUnref(list)
+    toValue(list)
       .slice(formIndex)
       .some((element, index, array) =>
-        comparator(resolveUnref(element), resolveUnref(value), index, resolveUnref(array)),
+        comparator(toValue(element), toValue(value), index, toValue(array)),
       ),
   )
 }

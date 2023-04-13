@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 import type { MaybeComputedRef } from '../utils'
 
 export interface UseToNumberOptions {
@@ -39,7 +39,7 @@ export function useToNumber(
   } = options
 
   return computed(() => {
-    let resolved = resolveUnref(value)
+    let resolved = toValue(value)
     if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
     if (nanToZero && isNaN(resolved))

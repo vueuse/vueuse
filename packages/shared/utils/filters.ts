@@ -1,5 +1,5 @@
 import { readonly, ref } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 import { noop } from './is'
 import type { AnyFn, ArgumentsType, MaybeComputedRef, Pausable } from './types'
 
@@ -78,8 +78,8 @@ export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFi
   }
 
   const filter: EventFilter = (invoke) => {
-    const duration = resolveUnref(ms)
-    const maxDuration = resolveUnref(options.maxWait)
+    const duration = toValue(ms)
+    const maxDuration = toValue(options.maxWait)
 
     if (timer)
       _clearTimeout(timer)
@@ -142,7 +142,7 @@ export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, le
   }
 
   const filter: EventFilter = (_invoke) => {
-    const duration = resolveUnref(ms)
+    const duration = toValue(ms)
     const elapsed = Date.now() - lastExec
     const invoke = () => {
       return lastValue = _invoke()

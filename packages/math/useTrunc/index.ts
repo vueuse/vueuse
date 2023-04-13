@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 
 /**
  * Reactive `Math.trunc`.
@@ -9,5 +9,5 @@ import { resolveUnref } from '@vueuse/shared'
  * @see https://vueuse.org/useTrunc
  */
 export function useTrunc(value: MaybeComputedRef<number>): ComputedRef<number> {
-  return computed<number>(() => Math.trunc(resolveUnref(value)))
+  return computed<number>(() => Math.trunc(toValue(value)))
 }

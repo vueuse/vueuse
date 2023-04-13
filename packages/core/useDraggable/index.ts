@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { isClient, resolveUnref, toRefs } from '@vueuse/shared'
+import { isClient, toRefs, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -104,7 +104,7 @@ export function useDraggable(
   } = options
 
   const position = ref<Position>(
-    resolveUnref(initialValue) ?? { x: 0, y: 0 },
+    toValue(initialValue) ?? { x: 0, y: 0 },
   )
 
   const pressedDelta = ref<Position>()
@@ -116,18 +116,18 @@ export function useDraggable(
   }
 
   const handleEvent = (e: PointerEvent) => {
-    if (resolveUnref(preventDefault))
+    if (toValue(preventDefault))
       e.preventDefault()
-    if (resolveUnref(stopPropagation))
+    if (toValue(stopPropagation))
       e.stopPropagation()
   }
 
   const start = (e: PointerEvent) => {
     if (!filterEvent(e))
       return
-    if (resolveUnref(exact) && e.target !== resolveUnref(target))
+    if (toValue(exact) && e.target !== toValue(target))
       return
-    const rect = resolveUnref(target)!.getBoundingClientRect()
+    const rect = toValue(target)!.getBoundingClientRect()
     const pos = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,

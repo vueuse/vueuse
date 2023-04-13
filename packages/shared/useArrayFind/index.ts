@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 /**
  * Reactive `Array.find`
@@ -17,9 +17,9 @@ export function useArrayFind<T>(
   fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => boolean,
 ): ComputedRef<T | undefined> {
   return computed(() =>
-    resolveUnref<T | undefined>(
-      resolveUnref(list)
-        .find((element, index, array) => fn(resolveUnref(element), index, array)),
+    toValue<T | undefined>(
+      toValue(list)
+        .find((element, index, array) => fn(toValue(element), index, array)),
     ),
   )
 }

@@ -1,6 +1,6 @@
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeComputedRef, MaybeRef } from '@vueuse/shared'
-import { createEventHook, isNumber, isObject, isString, resolveUnref, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isNumber, isObject, isString, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -114,8 +114,8 @@ export interface UseMediaTextTrack {
  * Automatically check if the ref exists and if it does run the cb fn
  */
 function usingElRef<T = any>(source: MaybeComputedRef<any>, cb: (el: T) => void) {
-  if (resolveUnref(source))
-    cb(resolveUnref(source))
+  if (toValue(source))
+    cb(toValue(source))
 }
 
 /**
@@ -243,11 +243,11 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!document)
       return
 
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
-    const src = resolveUnref(options.src)
+    const src = toValue(options.src)
     let sources: UseMediaSource[] = []
 
     if (!src)
@@ -285,7 +285,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   // Remove source error listeners
   tryOnScopeDispose(() => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -296,7 +296,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * Watch volume and change player volume when volume prop changes
    */
   watch(volume, (vol) => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -304,7 +304,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   watch(muted, (mute) => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -312,7 +312,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   watch(rate, (rate) => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -326,8 +326,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!document)
       return
 
-    const textTracks = resolveUnref(options.tracks)
-    const el = resolveUnref(target)
+    const textTracks = toValue(options.tracks)
+    const el = toValue(target)
 
     if (!textTracks || !textTracks.length || !el)
       return
@@ -364,7 +364,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * the timeupdate event would cause the media to stutter.
    */
   const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(currentTime, (time) => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -376,16 +376,16 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    * a function
    */
   const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(playing, (isPlaying) => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
     isPlaying ? el.play() : el.pause()
   })
 
-  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (resolveUnref(target))!.currentTime))
-  useEventListener(target, 'durationchange', () => duration.value = (resolveUnref(target))!.duration)
-  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((resolveUnref(target))!.buffered))
+  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (toValue(target))!.currentTime))
+  useEventListener(target, 'durationchange', () => duration.value = (toValue(target))!.duration)
+  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((toValue(target))!.buffered))
   useEventListener(target, 'seeking', () => seeking.value = true)
   useEventListener(target, 'seeked', () => seeking.value = false)
   useEventListener(target, 'waiting', () => waiting.value = true)
@@ -393,7 +393,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     waiting.value = false
     ended.value = false
   })
-  useEventListener(target, 'ratechange', () => rate.value = (resolveUnref(target))!.playbackRate)
+  useEventListener(target, 'ratechange', () => rate.value = (toValue(target))!.playbackRate)
   useEventListener(target, 'stalled', () => stalled.value = true)
   useEventListener(target, 'ended', () => ended.value = true)
   useEventListener(target, 'pause', () => ignorePlayingUpdates(() => playing.value = false))
@@ -401,7 +401,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true)
   useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false)
   useEventListener(target, 'volumechange', () => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 
@@ -417,7 +417,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const listeners: Fn[] = []
 
   const stop = watch([target], () => {
-    const el = resolveUnref(target)
+    const el = toValue(target)
     if (!el)
       return
 

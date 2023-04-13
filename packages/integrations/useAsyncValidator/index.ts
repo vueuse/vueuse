@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, resolveUnref, until } from '@vueuse/shared'
+import { resolveRef, toValue, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue-demi'
@@ -72,7 +72,7 @@ export function useAsyncValidator(
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
-  const validator = computed(() => new AsyncValidatorSchema(resolveUnref(rules)))
+  const validator = computed(() => new AsyncValidatorSchema(toValue(rules)))
 
   const execute = async (): Promise<UseAsyncValidatorExecuteReturn> => {
     isFinished.value = false

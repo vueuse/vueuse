@@ -1,5 +1,5 @@
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -75,7 +75,7 @@ export function onKeyStroke(...args: any[]) {
   } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
-    if (e.repeat && resolveUnref(dedupe))
+    if (e.repeat && toValue(dedupe))
       return
 
     if (predicate(e))

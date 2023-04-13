@@ -1,5 +1,5 @@
 import type { MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { isFunction, resolveUnref, watchWithFilter } from '@vueuse/shared'
+import { isFunction, toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
@@ -52,7 +52,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     },
   } = options
 
-  const rawInit: T = resolveUnref(initialValue)
+  const rawInit: T = toValue(initialValue)
   const type = guessSerializerType<T>(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>

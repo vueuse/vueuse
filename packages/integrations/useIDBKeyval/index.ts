@@ -1,5 +1,5 @@
 import type { ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
 import { del, get, set, update } from 'idb-keyval'
@@ -58,7 +58,7 @@ export function useIDBKeyval<T>(
   const isFinished = ref(false)
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
 
-  const rawInit: T = resolveUnref(initialValue)
+  const rawInit: T = toValue(initialValue)
 
   async function read() {
     try {

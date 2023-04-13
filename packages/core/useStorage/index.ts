@@ -1,6 +1,6 @@
 import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
-import { isFunction, pausableWatch, resolveUnref } from '@vueuse/shared'
+import { isFunction, pausableWatch, toValue } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -159,7 +159,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (!storage)
     return data
 
-  const rawInit: T = resolveUnref(defaults)
+  const rawInit: T = toValue(defaults)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 

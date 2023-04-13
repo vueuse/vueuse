@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 
 export interface UsePrecisionOptions {
   /**
@@ -23,9 +23,9 @@ export function usePrecision(
   options?: MaybeComputedRef<UsePrecisionOptions>,
 ): ComputedRef<number> {
   return computed<number>(() => {
-    const _value = resolveUnref(value)
-    const _digits = resolveUnref(digits)
+    const _value = toValue(value)
+    const _digits = toValue(digits)
     const power = 10 ** _digits
-    return Math[resolveUnref(options)?.math || 'round'](_value * power) / power
+    return Math[toValue(options)?.math || 'round'](_value * power) / power
   })
 }

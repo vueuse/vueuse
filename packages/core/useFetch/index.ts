@@ -1,5 +1,5 @@
 import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
+import { containsProp, createEventHook, resolveRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
@@ -254,8 +254,8 @@ export function createFetch(config: CreateFetchOptions = {}) {
 
   function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
     const computedUrl = computed(() => {
-      const baseUrl = resolveUnref(config.baseUrl)
-      const targetUrl = resolveUnref(url)
+      const baseUrl = toValue(config.baseUrl)
+      const targetUrl = toValue(url)
 
       return (baseUrl && !isAbsoluteURL(targetUrl))
         ? joinPaths(baseUrl, targetUrl)
@@ -394,7 +394,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      const payload = resolveUnref(config.payload)
+      const payload = toValue(config.payload)
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
         : payload as BodyInit
@@ -402,7 +402,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
     let isCanceled = false
     const context: BeforeFetchContext = {
-      url: resolveUnref(url),
+      url: toValue(url),
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
@@ -536,7 +536,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           )
         }
 
-        const rawPayload = resolveUnref(config.payload)
+        const rawPayload = toValue(config.payload)
         // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
         // The only case we can deduce the content type and `fetch` can't
         if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))

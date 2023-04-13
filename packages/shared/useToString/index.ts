@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 import type { MaybeComputedRef } from '../utils'
 
 /**
@@ -11,5 +11,5 @@ import type { MaybeComputedRef } from '../utils'
 export function useToString(
   value: MaybeComputedRef<unknown>,
 ): ComputedRef<string> {
-  return computed(() => `${resolveUnref(value)}`)
+  return computed(() => `${toValue(value)}`)
 }

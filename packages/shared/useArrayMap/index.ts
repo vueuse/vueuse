@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 /**
  * Reactive `Array.map`
@@ -16,5 +16,5 @@ export function useArrayMap<T, U = T>(
   list: MaybeComputedRef<MaybeComputedRef<T>[]>,
   fn: (element: T, index: number, array: T[]) => U,
 ): ComputedRef<U[]> {
-  return computed(() => resolveUnref(list).map(i => resolveUnref(i)).map(fn))
+  return computed(() => toValue(list).map(i => toValue(i)).map(fn))
 }

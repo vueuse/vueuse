@@ -1,5 +1,5 @@
 import { computed, ref, unref, watch } from 'vue-demi'
-import { isFunction, isNumber, identity as linear, promiseTimeout, resolveUnref, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, isNumber, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
 
@@ -208,9 +208,9 @@ export function useTransition(
   let currentId = 0
 
   const sourceVal = () => {
-    const v = resolveUnref(source)
+    const v = toValue(source)
 
-    return isNumber(v) ? v : v.map(resolveUnref<number>)
+    return isNumber(v) ? v : v.map(toValue<number>)
   }
 
   const outputRef = ref(sourceVal())
@@ -227,7 +227,7 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(resolveUnref<number>) : resolveUnref(to)
+    const toVal = Array.isArray(to) ? to.map(toValue<number>) : toValue(to)
 
     options.onStarted?.()
 

@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import { toValue } from '../toValue'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
@@ -50,14 +50,14 @@ export function useArrayReduce<T>(
   reducer: ((...p: any[]) => any),
   ...args: any[]
 ): ComputedRef<T> {
-  const reduceCallback = (sum: any, value: any, index: number) => reducer(resolveUnref(sum), resolveUnref(value), index)
+  const reduceCallback = (sum: any, value: any, index: number) => reducer(toValue(sum), toValue(value), index)
 
   return computed(() => {
-    const resolved = resolveUnref(list)
+    const resolved = toValue(list)
     // Depending on the behavior of reduce, undefined is also a valid initialization value,
     // and this code will distinguish the behavior between them.
     return args.length
-      ? resolved.reduce(reduceCallback, resolveUnref(args[0]))
+      ? resolved.reduce(reduceCallback, toValue(args[0]))
       : resolved.reduce(reduceCallback)
   })
 }

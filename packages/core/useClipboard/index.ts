@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref, useTimeoutFn } from '@vueuse/shared'
+import { toValue, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 import type { WindowEventName } from '../useEventListener'
@@ -85,7 +85,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeComputedRef<strin
       useEventListener(event as WindowEventName, updateText)
   }
 
-  async function copy(value = resolveUnref(source)) {
+  async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
       if (isClipboardApiSupported.value)
         await navigator!.clipboard.writeText(value)
