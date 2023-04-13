@@ -1,6 +1,7 @@
 ---
 category: Reactivity
 related: toValue
+alias: resolveRef
 ---
 
 # toRef

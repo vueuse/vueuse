@@ -54,6 +54,9 @@ export const packages: PackageManifest[] = [
       'fs',
       'path',
       'url',
+      'node:fs',
+      'node:path',
+      'node:url',
     ],
   },
   {
