@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -16,7 +17,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default 'html'
    */
-  selector?: string
+  selector?: string | MaybeRefOrGetter<HTMLElement | null | undefined>
 
   /**
    * HTML attribute applying the target element
@@ -136,14 +137,15 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
     (selector, attribute, value) => {
-      const el = window?.document.querySelector(selector)
+      const el = typeof selector === 'string'
+        ? window?.document.querySelector(selector)
+        : toValue(selector)
       if (!el)
         return
 
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
-        style.type = 'text/css'
         style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
         window!.document.head.appendChild(style)
       }
