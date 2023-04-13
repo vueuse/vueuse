@@ -172,4 +172,4 @@ const result = await dialog.open({
 
 This is like reinventing a new DSL in the script to express the UI template.
 
-So this library is introduce to **express the UI in Vue's template instead of the script**, as where they are supposed to be, and being able to be called programmatically.
+So this function allows **expressing the UI in templates instead of scripts**, where it is supposed to be, while still being able to be manipulated programmatically.
