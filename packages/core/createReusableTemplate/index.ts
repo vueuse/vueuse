@@ -38,7 +38,7 @@ export function createReusableTemplate<
   Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
 >(): ReusableTemplatePair<Bindings, Slots> {
   // compatibility: Vue 2.7 or above
-  if (!isVue3 || !version.startsWith('2.7.')) {
+  if (!isVue3 && !version.startsWith('2.7.')) {
     if (process.env.NODE_ENV !== 'production')
       throw new Error('[VueUse] createReusableTemplate only works in Vue 2.7 or above.')
     // @ts-expect-error incompatible
