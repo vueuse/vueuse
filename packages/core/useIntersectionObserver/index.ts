@@ -65,7 +65,7 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [unrefElement(target), unrefElement(root)] as const,
+      () => [unrefElement(target), unrefElement(root), isActive.value] as const,
       ([el, root]) => {
         cleanup()
 
@@ -97,6 +97,7 @@ export function useIntersectionObserver(
   const stop = () => {
     cleanup()
     stopWatch()
+    isActive.value = false
   }
 
   tryOnScopeDispose(stop)
