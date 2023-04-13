@@ -2,7 +2,7 @@
  * Colors
  * -------------------------------------------------------------------------- */
 
- :root {
+:root {
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #5d6f5d;
@@ -13,7 +13,7 @@
 
   --vp-c-disabled-bg: rgba(125,125,125,0.2);
   /* fix contrast on gray cards: used by --vp-c-text-2 */
-  --vp-c-text-light-2: rgba(56 56 56 / 70%);
+  --vp-c-text-dark-2: rgba(56 56 56 / 70%);
 }
 
 .dark {
