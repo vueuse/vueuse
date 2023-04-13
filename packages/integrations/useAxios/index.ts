@@ -164,7 +164,15 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   )
     options = args[args.length - 1]
 
-  const { initialData, shallow, onSuccess = noop, onError = noop, immediate, resetOnExecute = false } = options
+  const {
+    initialData,
+    shallow,
+    onSuccess = noop,
+    onError = noop,
+    immediate,
+    resetOnExecute = false,
+  } = options
+
   const response = shallowRef<AxiosResponse<T>>()
   const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
   const isFinished = ref(false)
@@ -234,6 +242,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       .finally(() => loading(false))
     return { then }
   }
+
   if (immediate && url)
     (execute as StrictUseAxiosReturn<T, R, D>['execute'])()
 
