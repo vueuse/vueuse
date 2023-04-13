@@ -93,7 +93,6 @@ export function useMouse(options: UseMouseOptions = {}) {
         x.value = touch.screenX
         y.value = touch.screenY
       }
-
       sourceType.value = 'touch'
     }
   }
