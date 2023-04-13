@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "*"
+    "vue-demi": ">=0.14.0"
   },
   "devDependencies": {
     "rxjs": "^6.6.7"
