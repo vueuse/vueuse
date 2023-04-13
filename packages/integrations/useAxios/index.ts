@@ -1,10 +1,10 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { isString, until } from '@vueuse/shared'
-import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
-import axios from 'axios'
+import { isString, noop, until } from '@vueuse/shared'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import axios, { AxiosError } from 'axios'
 
-export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
+export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   /**
    * Axios Response
    */
@@ -33,7 +33,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
   /**
    * Any errors that may have occurred
    */
-  error: ShallowRef<AxiosError<T, D> | undefined>
+  error: ShallowRef<unknown | undefined>
 
   /**
    * Aborts the current request
@@ -41,36 +41,12 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any> {
   abort: (message?: string | undefined) => void
 
   /**
-   * isFinished alias
-   * @deprecated use `isFinished` instead
-   */
-  finished: Ref<boolean>
-
-  /**
-   * isLoading alias
-   * @deprecated use `isLoading` instead
-   */
-  loading: Ref<boolean>
-
-  /**
-   * isAborted alias
-   * @deprecated use `isAborted` instead
-   */
-  aborted: Ref<boolean>
-
-  /**
-   * abort alias
+   * Alias to `abort`
    */
   cancel: (message?: string | undefined) => void
 
   /**
-   * isAborted alias
-   * @deprecated use `isCanceled` instead
-   */
-  canceled: Ref<boolean>
-
-  /**
-   * isAborted alias
+   * Alice to `isAborted`
    */
   isCanceled: Ref<boolean>
 }
@@ -86,18 +62,44 @@ export interface EasyUseAxiosReturn<T, R, D> extends UseAxiosReturn<T, R, D> {
    */
   execute: (url: string, config?: AxiosRequestConfig<D>) => PromiseLike<EasyUseAxiosReturn<T, R, D>>
 }
-export interface UseAxiosOptions {
+export interface UseAxiosOptions<T = any> {
   /**
    * Will automatically run axios request when `useAxios` is used
    *
    */
   immediate?: boolean
+
   /**
    * Use shallowRef.
    *
    * @default true
    */
   shallow?: boolean
+
+  /**
+   * Callback when error is caught.
+   */
+  onError?: (e: unknown) => void
+
+  /**
+   * Callback when success is caught.
+   */
+  onSuccess?: (data: T) => void
+
+  /**
+   * Initial data to use
+   */
+  initialData?: T
+
+  /**
+   * Sets the state to initialState before executing the promise.
+   */
+  resetOnExecute?: boolean
+
+  /**
+   * Callback when request is finished.
+   */
+  onFinish?: () => void
 }
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
@@ -118,7 +120,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const argsPlaceholder = isString(url) ? 1 : 0
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
-  let options: UseAxiosOptions = { immediate: !!argsPlaceholder, shallow: true }
+  let options: UseAxiosOptions<T> = {
+    immediate: !!argsPlaceholder,
+    shallow: true,
+  }
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -144,19 +149,31 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   )
     options = args[args.length - 1]
 
+  const {
+    initialData,
+    shallow,
+    onSuccess = noop,
+    onError = noop,
+    immediate,
+    resetOnExecute = false,
+  } = options
+
   const response = shallowRef<AxiosResponse<T>>()
-  const data = options.shallow ? shallowRef<T>() : ref<T>()
+  const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
-  const error = shallowRef<AxiosError<T>>()
+  const error = shallowRef<unknown>()
 
-  const cancelToken: CancelTokenSource = axios.CancelToken.source()
+  const cancelTokenSource = axios.CancelToken.source
+  let cancelToken: CancelTokenSource = cancelTokenSource()
+
   const abort = (message?: string) => {
     if (isFinished.value || !isLoading.value)
       return
 
     cancelToken.cancel(message)
+    cancelToken = cancelTokenSource()
     isAborted.value = true
     isLoading.value = false
     isFinished.value = false
@@ -164,6 +181,14 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const loading = (loading: boolean) => {
     isLoading.value = loading
     isFinished.value = !loading
+  }
+
+  /**
+   * Reset data to initialData
+   */
+  const resetData = () => {
+    if (resetOnExecute)
+      data.value = initialData!
   }
   const waitUntilFinished = () =>
     new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
@@ -178,34 +203,45 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     error.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
-      : url ?? ''
+      : url ?? config.url
+
+    if (_url === undefined) {
+      error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
+      isFinished.value = true
+      return { then }
+    }
+    resetData()
+    abort()
     loading(true)
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
-        data.value = r.data
+        const result = r.data
+        data.value = result
+        onSuccess(result)
       })
       .catch((e: any) => {
         error.value = e
+        onError(e)
       })
-      .finally(() => loading(false))
+      .finally(() => {
+        options.onFinish?.()
+        loading(false)
+      })
     return { then }
   }
-  if (options.immediate && url)
+
+  if (immediate && url)
     (execute as StrictUseAxiosReturn<T, R, D>['execute'])()
 
   const result = {
     response,
     data,
     error,
-    finished: isFinished,
-    loading: isLoading,
     isFinished,
     isLoading,
     cancel: abort,
     isAborted,
-    canceled: isAborted,
-    aborted: isAborted,
     isCanceled: isAborted,
     abort,
     execute,

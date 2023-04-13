@@ -2,7 +2,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
 
-const heavyTask = () => {
+function heavyTask() {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
   const numbers: number[] = Array(5_000_000).fill(undefined).map(randomNumber)
   numbers.sort()
@@ -17,14 +17,14 @@ const running = computed(() => workerStatus.value === 'RUNNING')
 const data = ref<number[] | null>(null)
 const runner = ref('')
 
-const baseSort = async () => {
+async function baseSort() {
   data.value = null
   await nextTick()
   data.value = heavyTask()
   runner.value = 'Main'
 }
 
-const workerSort = async () => {
+async function workerSort() {
   data.value = null
   await nextTick()
   data.value = await workerFn()
@@ -35,7 +35,7 @@ const workerSort = async () => {
 <template>
   <p>Current Time: <b>{{ computedTime }}</b></p>
   <note class="mb-2">
-    This is a demo showing sort for large array (5 milion numbers) with or w/o WebWorker.<br>Clock stops when UI blocking happens.
+    This is a demo showing sort for large array (5 million numbers) with or w/o WebWorker.<br>Clock stops when UI blocking happens.
   </note>
   <button @click="baseSort">
     Sort in Main Thread
@@ -43,7 +43,7 @@ const workerSort = async () => {
   <button v-if="!running" @click="workerSort">
     Sort in Worker
   </button>
-  <button v-else class="orange" @click="workerTerminate">
+  <button v-else class="orange" @click="workerTerminate('PENDING')">
     Terminate Worker
   </button>
   <p v-if="data">

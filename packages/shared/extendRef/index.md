@@ -8,7 +8,7 @@ Add extra attributes to Ref.
 
 ## Usage
 
-> This function is **NOT compatible with Vue 2**.
+> This function is **NOT compatible with Vue 2.6 or below**.
 
 > Please note the extra attribute will not be accessible in Vue's template.
 

@@ -1,6 +1,6 @@
-import { execSync } from 'child_process'
-import path from 'path'
-import consola from 'consola'
+import { execSync } from 'node:child_process'
+import path from 'node:path'
+import { consola } from 'consola'
 import { version } from '../package.json'
 import { packages } from '../meta/packages'
 

@@ -1,7 +1,7 @@
 import { defineComponent, reactive } from 'vue-demi'
 import { useBrowserLocation } from '@vueuse/core'
 
-export const UseBrowserLocation = defineComponent({
+export const UseBrowserLocation = /* #__PURE__ */ defineComponent({
   name: 'UseBrowserLocation',
   setup(props, { slots }) {
     const data = reactive(useBrowserLocation())

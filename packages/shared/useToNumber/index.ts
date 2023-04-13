@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
-import type { MaybeComputedRef } from '../utils'
+import { toValue } from '../toValue'
+import type { MaybeRefOrGetter } from '../utils'
 
 export interface UseToNumberOptions {
   /**
@@ -29,7 +29,7 @@ export interface UseToNumberOptions {
  * Computed reactive object.
  */
 export function useToNumber(
-  value: MaybeComputedRef<number | string>,
+  value: MaybeRefOrGetter<number | string>,
   options: UseToNumberOptions = {},
 ): ComputedRef<number> {
   const {
@@ -39,7 +39,7 @@ export function useToNumber(
   } = options
 
   return computed(() => {
-    let resolved = resolveUnref(value)
+    let resolved = toValue(value)
     if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
     if (nanToZero && isNaN(resolved))

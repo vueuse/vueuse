@@ -2,10 +2,11 @@
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
 export type EventHookOff<T = any> = (fn: (param: T) => void) => void
-export type EventHookTrigger<T = any> = (param: T) => void
+export type EventHookTrigger<T = any> = (param: T) => Promise<unknown[]>
 
 export interface EventHook<T = any> {
   on: EventHookOn<T>
@@ -19,24 +20,25 @@ export interface EventHook<T = any> {
  * @see https://vueuse.org/createEventHook
  */
 export function createEventHook<T = any>(): EventHook<T> {
-  const fns: Array<(param: T) => void> = []
+  const fns: Set<(param: T) => void> = new Set()
 
   const off = (fn: (param: T) => void) => {
-    const index = fns.indexOf(fn)
-    if (index !== -1)
-      fns.splice(index, 1)
+    fns.delete(fn)
   }
 
   const on = (fn: (param: T) => void) => {
-    fns.push(fn)
+    fns.add(fn)
+    const offFn = () => off(fn)
+
+    tryOnScopeDispose(offFn)
 
     return {
-      off: () => off(fn),
+      off: offFn,
     }
   }
 
   const trigger = (param: T) => {
-    fns.forEach(fn => fn(param))
+    return Promise.all(Array.from(fns).map(fn => fn(param)))
   }
 
   return {

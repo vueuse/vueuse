@@ -2,6 +2,11 @@
 category: Component
 ---
 
+::: info
+Please consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) if you are looking for more features.
+:::
+
+
 # useVirtualList
 
 Create virtual lists with ease. Virtual lists (sometimes called [*virtual scrollers*](https://akryum.github.io/vue-virtual-scroller/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
@@ -101,3 +106,5 @@ const { list, containerProps, wrapperProps } = useVirtualList(
   </template>
 </UseVirtualList>
 ```
+
+To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.

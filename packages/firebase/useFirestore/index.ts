@@ -2,12 +2,12 @@ import type { Ref } from 'vue-demi'
 import { computed, isRef, ref, watch } from 'vue-demi'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
 import type { MaybeRef } from '@vueuse/shared'
-import { isDef, tryOnScopeDispose } from '@vueuse/shared'
+import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
 
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void
-  autoDispose?: boolean
+  autoDispose?: boolean | number
 }
 
 export type FirebaseDocRef<T> =
@@ -98,9 +98,18 @@ export function useFirestore<T extends DocumentData>(
     }
   }, { immediate: true })
 
-  if (autoDispose) {
+  if (autoDispose === true) {
+    // Dispose the request now.
     tryOnScopeDispose(() => {
       close()
+    })
+  }
+  else if (typeof autoDispose === 'number') {
+    // Dispose the request after timeout.
+    tryOnScopeDispose(() => {
+      useTimeoutFn(() => {
+        close()
+      }, autoDispose)
     })
   }
 

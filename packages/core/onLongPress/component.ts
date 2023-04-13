@@ -7,7 +7,7 @@ export interface OnLongPressProps extends RenderableComponent {
   options?: OnLongPressOptions
 }
 
-export const OnLongPress = defineComponent<OnLongPressProps>({
+export const OnLongPress = /* #__PURE__ */ defineComponent<OnLongPressProps>({
   name: 'OnLongPress',
   props: ['as', 'options'] as unknown as undefined,
   emits: ['trigger'],

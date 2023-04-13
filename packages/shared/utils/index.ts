@@ -92,7 +92,7 @@ export function increaseWithUnit(target: string | number, delta: number): string
  *
  * @category Object
  */
-export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((n, k) => {
     if (k in obj) {
       if (!omitUndefined || obj[k] !== undefined)
@@ -100,4 +100,8 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
     }
     return n
   }, {} as Pick<O, T>)
+}
+
+export function objectEntries<T extends object>(obj: T) {
+  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
 }

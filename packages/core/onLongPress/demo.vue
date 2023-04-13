@@ -7,11 +7,11 @@ const htmlRefOptions = ref<HTMLElement | null>(null)
 
 const longPressed = ref(false)
 
-const onLongPressCallback = (e: PointerEvent) => {
+function onLongPressCallback(e: PointerEvent) {
   longPressed.value = true
 }
 
-const reset = () => {
+function reset() {
   longPressed.value = false
 }
 

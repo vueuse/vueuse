@@ -25,7 +25,7 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
    *
    * @default undefined
    */
-  onChanged?: (isDark: boolean) => void
+  onChanged?: (isDark: boolean, defaultHandler: ((mode: BasicColorSchema) => void), mode: BasicColorSchema) => void
 }
 
 /**
@@ -45,7 +45,7 @@ export function useDark(options: UseDarkOptions = {}) {
     ...options,
     onChanged: (mode, defaultHandler) => {
       if (options.onChanged)
-        options.onChanged?.(mode === 'dark')
+        options.onChanged?.(mode === 'dark', defaultHandler, mode)
       else
         defaultHandler(mode)
     },
