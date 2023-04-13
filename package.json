@@ -60,7 +60,7 @@
     "@vueuse/shared": "workspace:*",
     "axios": "^1.3.5",
     "bumpp": "^9.1.0",
-    "consola": "^3.0.1",
+    "consola": "^3.0.2",
     "cross-env": "^7.0.3",
     "esbuild-register": "^3.4.2",
     "eslint": "^8.38.0",
