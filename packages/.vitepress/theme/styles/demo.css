@@ -5,6 +5,7 @@
   position: relative;
   margin-bottom: 10px;
   border-radius: 8px;
+  z-index: 50;
   transition: background-color 0.5s;
 }
 
@@ -36,8 +37,6 @@
 }
 
 .demo {
-  z-index: 1;
-  
   p {
     margin: 0.5rem 0 ;
   }
