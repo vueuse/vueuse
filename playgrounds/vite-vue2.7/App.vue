@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useMouse } from '@vueuse/core'
-
-const { x, y } = useMouse()
+import createTemplatePromise from './components/createTemplatePromise.vue'
+import useMouse from './components/useMouse.vue'
 </script>
 
 <template>
   <div>
-    Hello {{ x }}, {{ y }}
+    <useMouse />
+    <hr>
+    <createTemplatePromise />
   </div>
 </template>

@@ -1,12 +1,11 @@
 import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent } from 'vue-demi'
-import { __onlyVue27Plus, makeDestructurable } from '@vueuse/shared'
+import { defineComponent, isVue3, version } from 'vue-demi'
+import { makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
   Bindings extends object,
   Slots extends Record<string, Slot | undefined>,
-  Props = {},
-> = DefineComponent<Props> & {
+> = DefineComponent<{}> & {
   new(): { $slots: { default(_: Bindings & { $slots: Slots }): any } }
 }
 
@@ -15,6 +14,17 @@ export type ReuseTemplateComponent<
   Slots extends Record<string, Slot | undefined>,
 > = DefineComponent<Bindings> & {
   new(): { $slots: Slots }
+}
+
+export type ReusableTemplatePair<
+  Bindings extends object,
+  Slots extends Record<string, Slot | undefined>,
+> = [
+  DefineTemplateComponent<Bindings, Slots>,
+  ReuseTemplateComponent<Bindings, Slots>,
+] & {
+  define: DefineTemplateComponent<Bindings, Slots>
+  reuse: ReuseTemplateComponent<Bindings, Slots>
 }
 
 /**
@@ -26,8 +36,14 @@ export type ReuseTemplateComponent<
 export function createReusableTemplate<
   Bindings extends object,
   Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
->(name?: string) {
-  __onlyVue27Plus()
+>(): ReusableTemplatePair<Bindings, Slots> {
+  // compatibility: Vue 2.7 or above
+  if (!isVue3 && !version.startsWith('2.7.')) {
+    if (process.env.NODE_ENV !== 'production')
+      throw new Error('[VueUse] createReusableTemplate only works in Vue 2.7 or above.')
+    // @ts-expect-error incompatible
+    return
+  }
 
   let render: Slot | undefined
 
@@ -44,7 +60,7 @@ export function createReusableTemplate<
     setup(_, { attrs, slots }) {
       return () => {
         if (!render && process.env.NODE_ENV !== 'production')
-          throw new Error(`[VueUse] Failed to find the definition of template${name ? ` "${name}"` : ''}`)
+          throw new Error('[VueUse] Failed to find the definition of reusable template')
         return render?.({ ...attrs, $slots: slots })
       }
     },
@@ -52,6 +68,6 @@ export function createReusableTemplate<
 
   return makeDestructurable(
     { define, reuse },
-    [define, reuse] as const,
-  )
+    [define, reuse],
+  ) as any
 }

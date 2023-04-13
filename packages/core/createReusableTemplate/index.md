@@ -7,6 +7,7 @@ outline: deep
 
 Define and reuse template inside the component scope.
 
+
 ## Motivation
 
 It's common to have the need to reuse some part of the template. For example:
@@ -179,7 +180,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 </template>
 ```
 
-::: info
+::: warning
 Passing slots does not work in Vue 2.
 :::
 
@@ -195,4 +196,3 @@ Alternative Approaches:
 
 - [Vue Macros - `namedTemplate`](https://vue-macros.sxzz.moe/features/named-template.html)
 - [`unplugin-@vueuse/core`](https://github.com/liulinboyi/unplugin-@vueuse/core)
-
