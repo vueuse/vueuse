@@ -7,11 +7,11 @@ import type { Position } from '../types'
 
 export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
-   * Mouse position based by page, client, or relative to previous position
+   * Mouse position based by page, client, screen, or relative to previous position
    *
    * @default 'page'
    */
-  type?: 'page' | 'client' | 'movement'
+  type?: 'page' | 'client' | 'screen' | 'movement'
 
   /**
    * Listen to `touchmove` events
@@ -64,6 +64,10 @@ export function useMouse(options: UseMouseOptions = {}) {
       x.value = event.clientX
       y.value = event.clientY
     }
+    else if (type === 'screen') {
+      x.value = event.screenX
+      y.value = event.screenY
+    }
     else if (type === 'movement') {
       x.value = event.movementX
       y.value = event.movementY
@@ -84,6 +88,10 @@ export function useMouse(options: UseMouseOptions = {}) {
       else if (type === 'client') {
         x.value = touch.clientX
         y.value = touch.clientY
+      }
+      else if (type === 'screen') {
+        x.value = touch.screenX
+        y.value = touch.screenY
       }
       sourceType.value = 'touch'
     }
