@@ -1,6 +1,6 @@
 import { useMutationObserver } from '@vueuse/core'
 import { computed, ref, watch } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -25,7 +25,7 @@ export interface UseCssVarOptions extends ConfigurableWindow {
  * @param options
  */
 export function useCssVar(
-  prop: MaybeComputedRef<string>,
+  prop: MaybeRefOrGetter<string>,
   target?: MaybeElementRef,
   options: UseCssVarOptions = {},
 ) {

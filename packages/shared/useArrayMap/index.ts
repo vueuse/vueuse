@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 /**
@@ -13,7 +13,7 @@ import { toValue } from '../toValue'
  * @returns {Array} a new array with each element being the result of the callback function.
  */
 export function useArrayMap<T, U = T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => U,
 ): ComputedRef<U[]> {
   return computed(() => toValue(list).map(i => toValue(i)).map(fn))

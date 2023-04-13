@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 /**
@@ -13,8 +13,8 @@ import { toValue } from '../toValue'
  * @returns {string} a string with all array elements joined. If arr.length is 0, the empty string is returned.
  */
 export function useArrayJoin(
-  list: MaybeComputedRef<MaybeComputedRef<any>[]>,
-  separator?: MaybeComputedRef<string>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<any>[]>,
+  separator?: MaybeRefOrGetter<string>,
 ): ComputedRef<string> {
   return computed(() => toValue(list).map(i => toValue(i)).join(toValue(separator)))
 }

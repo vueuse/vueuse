@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 /**
@@ -13,8 +13,8 @@ import { toValue } from '../toValue'
  * @returns {number} the index of the first element in the array that passes the test. Otherwise, "-1".
  */
 export function useArrayFindIndex<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
-  fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => unknown,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
+  fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => unknown,
 ): ComputedRef<number> {
   return computed(() => toValue(list).findIndex((element, index, array) => fn(toValue(element), index, array)))
 }

@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Fn, MaybeComputedRef } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
@@ -143,7 +143,7 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param url
  */
 export function useWebSocket<Data = any>(
-  url: MaybeComputedRef<string | URL | undefined>,
+  url: MaybeRefOrGetter<string | URL | undefined>,
   options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {

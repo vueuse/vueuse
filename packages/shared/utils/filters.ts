@@ -1,7 +1,7 @@
 import { readonly, ref } from 'vue-demi'
 import { toValue } from '../toValue'
 import { noop } from './is'
-import type { AnyFn, ArgumentsType, MaybeComputedRef, Pausable } from './types'
+import type { AnyFn, ArgumentsType, MaybeRefOrGetter, Pausable } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -30,7 +30,7 @@ export interface DebounceFilterOptions {
    * The maximum time allowed to be delayed before it's invoked.
    * In milliseconds.
    */
-  maxWait?: MaybeComputedRef<number>
+  maxWait?: MaybeRefOrGetter<number>
 
   /**
    * Whether to reject the last call if it's been cancel.
@@ -66,7 +66,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param ms
  * @param options
  */
-export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFilterOptions = {}) {
+export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
   let lastRejector: AnyFn = noop
@@ -125,7 +125,7 @@ export function debounceFilter(ms: MaybeComputedRef<number>, options: DebounceFi
  * @param [leading=true]
  * @param [rejectOnCancel=false]
  */
-export function throttleFilter(ms: MaybeComputedRef<number>, trailing = true, leading = true, rejectOnCancel = false) {
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing = true, leading = true, rejectOnCancel = false) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   let isLeading = true

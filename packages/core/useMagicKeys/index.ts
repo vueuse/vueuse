@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, reactive, ref, unref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
@@ -19,7 +19,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    *
    * @default window
    */
-  target?: MaybeComputedRef<EventTarget>
+  target?: MaybeRefOrGetter<EventTarget>
 
   /**
    * Alias map for keys, all the keys should be lowercase

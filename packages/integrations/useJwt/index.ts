@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 import jwt_decode from 'jwt-decode'
 import type { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
@@ -35,7 +35,7 @@ export function useJwt<
   Header extends object = JwtHeader,
   Fallback = null,
 >(
-  encodedJwt: MaybeComputedRef<string>,
+  encodedJwt: MaybeRefOrGetter<string>,
   options: UseJwtOptions<Fallback> = {},
 ): UseJwtReturn<Payload, Header, Fallback> {
   const {

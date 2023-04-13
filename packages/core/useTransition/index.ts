@@ -1,7 +1,7 @@
 import { computed, ref, unref, watch } from 'vue-demi'
 import { isFunction, isNumber, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
 /**
  * Cubic bezier points
@@ -186,13 +186,13 @@ export function executeTransition<T extends number | number[]>(
 }
 
 // option 1: reactive number
-export function useTransition(source: MaybeComputedRef<number>, options?: UseTransitionOptions): ComputedRef<number>
+export function useTransition(source: MaybeRefOrGetter<number>, options?: UseTransitionOptions): ComputedRef<number>
 
 // option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeComputedRef<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
 
 // option 3: reactive array of numbers
-export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
+export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
 
 /**
  * Follow value with a transition.
@@ -202,7 +202,7 @@ export function useTransition<T extends MaybeComputedRef<number[]>>(source: T, o
  * @param options
  */
 export function useTransition(
-  source: MaybeComputedRef<number | number[]> | MaybeComputedRef<number>[],
+  source: MaybeRefOrGetter<number | number[]> | MaybeRefOrGetter<number>[],
   options: UseTransitionOptions = {},
 ): Ref<any> {
   let currentId = 0

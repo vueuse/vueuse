@@ -1,5 +1,5 @@
 import { computed, reactive, ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
@@ -55,7 +55,7 @@ export interface UseScrollOptions {
    *
    * @default 'auto'
    */
-  behavior?: MaybeComputedRef<ScrollBehavior>
+  behavior?: MaybeRefOrGetter<ScrollBehavior>
 }
 
 /**
@@ -75,7 +75,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  */
 
 export function useScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {

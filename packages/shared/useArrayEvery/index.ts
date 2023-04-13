@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 /**
@@ -13,8 +13,8 @@ import { toValue } from '../toValue'
  * @returns {boolean} **true** if the `fn` function returns a **truthy** value for every element from the array. Otherwise, **false**.
  */
 export function useArrayEvery<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
-  fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => unknown,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
+  fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => unknown,
 ): ComputedRef<boolean> {
   return computed(() => toValue(list).every((element, index, array) => fn(toValue(element), index, array)))
 }

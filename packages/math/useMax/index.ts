@@ -1,11 +1,11 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { MaybeComputedRefArgs } from '../utils'
 import { toValueArgsFlat } from '../utils'
 
-export function useMax(array: MaybeComputedRef<MaybeComputedRef<number>[]>): ComputedRef<number>
-export function useMax(...args: MaybeComputedRef<number>[]): ComputedRef<number>
+export function useMax(array: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>
+export function useMax(...args: MaybeRefOrGetter<number>[]): ComputedRef<number>
 
 /**
  * Reactively get maximum of values.

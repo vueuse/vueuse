@@ -1,4 +1,4 @@
-import type { ConfigurableFlush, MaybeComputedRef, RemovableRef } from '@vueuse/shared'
+import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
@@ -42,7 +42,7 @@ export interface UseIDBOptions extends ConfigurableFlush {
  */
 export function useIDBKeyval<T>(
   key: IDBValidKey,
-  initialValue: MaybeComputedRef<T>,
+  initialValue: MaybeRefOrGetter<T>,
   options: UseIDBOptions = {},
 ): { data: RemovableRef<T>; isFinished: Ref<boolean> } {
   const {

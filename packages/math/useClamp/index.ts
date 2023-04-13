@@ -1,18 +1,18 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isReadonly, ref } from 'vue-demi'
-import type { MaybeComputedRef, MaybeReadonlyRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { clamp, isFunction, toValue } from '@vueuse/shared'
 
 export function useClamp(
-  value: MaybeReadonlyRef<number>,
-  min: MaybeComputedRef<number>,
-  max: MaybeComputedRef<number>,
+  value: MaybeRefOrGetter<number>,
+  min: MaybeRefOrGetter<number>,
+  max: MaybeRefOrGetter<number>,
 ): ComputedRef<number>
 
 export function useClamp(
-  value: MaybeRef<number>,
-  min: MaybeComputedRef<number>,
-  max: MaybeComputedRef<number>,
+  value: MaybeRefOrGetter<number>,
+  min: MaybeRefOrGetter<number>,
+  max: MaybeRefOrGetter<number>,
 ): Ref<number>
 
 /**
@@ -23,7 +23,7 @@ export function useClamp(
  * @param min
  * @param max
  */
-export function useClamp(value: MaybeComputedRef<number>, min: MaybeComputedRef<number>, max: MaybeComputedRef<number>) {
+export function useClamp(value: MaybeRefOrGetter<number>, min: MaybeRefOrGetter<number>, max: MaybeRefOrGetter<number>) {
   if (isFunction(value) || isReadonly(value))
     return computed(() => clamp(toValue(value), toValue(min), toValue(max)))
 

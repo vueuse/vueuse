@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue-demi'
-import type { Fn, MaybeComputedRef } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
@@ -50,7 +50,7 @@ function preventDefault(rawEvent: TouchEvent): boolean {
  * @param element
  */
 export function useScrollLock(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
 ) {
   const isLocked = ref(initialState)

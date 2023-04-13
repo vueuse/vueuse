@@ -1,15 +1,15 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import { isString } from '../utils'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 function defaultComparator<T>(value: T, othVal: T) {
   return value === othVal
 }
 
-export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, key?: keyof T): ComputedRef<T[]>
-export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: MaybeComputedRef<T[]>, compareFn?: (value: T, othVal: T) => boolean): ComputedRef<T[]>
+export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, key?: keyof T): ComputedRef<T[]>
+export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, compareFn?: (value: T, othVal: T) => boolean): ComputedRef<T[]>
 
 /**
  * Reactive get array difference of two array
@@ -18,8 +18,8 @@ export function useArrayDifference<T>(list: MaybeComputedRef<T[]>, values: Maybe
  * @param args
  */
 export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
-  const list: MaybeComputedRef<T[]> = args[0]
-  const values: MaybeComputedRef<T[]> = args[1]
+  const list: MaybeRefOrGetter<T[]> = args[0]
+  const values: MaybeRefOrGetter<T[]> = args[1]
   let compareFn = args[2] ?? defaultComparator
 
   if (isString(compareFn)) {

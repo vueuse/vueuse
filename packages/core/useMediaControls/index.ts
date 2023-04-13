@@ -1,5 +1,5 @@
 import { ref, watch, watchEffect } from 'vue-demi'
-import type { Fn, MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { createEventHook, isNumber, isObject, isString, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
@@ -58,12 +58,12 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * The source for the media, may either be a string, a `UseMediaSource` object, or a list
    * of `UseMediaSource` objects.
    */
-  src?: MaybeComputedRef<string | UseMediaSource | UseMediaSource[]>
+  src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>
 
   /**
    * A list of text tracks for the media
    */
-  tracks?: MaybeComputedRef<UseMediaTextTrackSource[]>
+  tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>
 }
 
 export interface UseMediaTextTrack {
@@ -113,7 +113,7 @@ export interface UseMediaTextTrack {
 /**
  * Automatically check if the ref exists and if it does run the cb fn
  */
-function usingElRef<T = any>(source: MaybeComputedRef<any>, cb: (el: T) => void) {
+function usingElRef<T = any>(source: MaybeRefOrGetter<any>, cb: (el: T) => void) {
   if (toValue(source))
     cb(toValue(source))
 }

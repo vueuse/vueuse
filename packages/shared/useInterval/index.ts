@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
-import type { MaybeComputedRef, Pausable } from '../utils'
+import type { MaybeRefOrGetter, Pausable } from '../utils'
 import { useIntervalFn } from '../useIntervalFn'
 
 export interface UseIntervalOptions<Controls extends boolean> {
@@ -36,9 +36,9 @@ export interface UseIntervalControls {
  * @param interval
  * @param options
  */
-export function useInterval(interval?: MaybeComputedRef<number>, options?: UseIntervalOptions<false>): Ref<number>
-export function useInterval(interval: MaybeComputedRef<number>, options: UseIntervalOptions<true>): UseIntervalControls & Pausable
-export function useInterval(interval: MaybeComputedRef<number> = 1000, options: UseIntervalOptions<boolean> = {}) {
+export function useInterval(interval?: MaybeRefOrGetter<number>, options?: UseIntervalOptions<false>): Ref<number>
+export function useInterval(interval: MaybeRefOrGetter<number>, options: UseIntervalOptions<true>): UseIntervalControls & Pausable
+export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     immediate = true,

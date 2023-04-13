@@ -1,4 +1,4 @@
-import type { MaybeComputedRef, MaybeReadonlyRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { isFunction, isString, toRef } from '@vueuse/shared'
 import type { ComputedRef, Ref, WritableComputedRef } from 'vue-demi'
 import { unref, watch } from 'vue-demi'
@@ -29,7 +29,7 @@ export type UseTitleOptionsBase =
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
 export function useTitle(
-  newTitle: MaybeReadonlyRef<string | null | undefined>,
+  newTitle: MaybeRefOrGetter<string | null | undefined>,
   options?: UseTitleOptions,
 ): ComputedRef<string | null | undefined>
 
@@ -46,7 +46,7 @@ export function useTitle(
  * @param options
  */
 export function useTitle(
-  newTitle: MaybeComputedRef<string | null | undefined> = null,
+  newTitle: MaybeRefOrGetter<string | null | undefined> = null,
   options: UseTitleOptions = {},
 ) {
   /*

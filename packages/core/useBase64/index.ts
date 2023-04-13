@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { isRef, ref, watch } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, isFunction, toValue } from '@vueuse/shared'
 import { getDefaultSerialization } from './serialization'
 
@@ -25,15 +25,15 @@ export interface UseBase64Return {
   execute: () => Promise<string>
 }
 
-export function useBase64(target: MaybeComputedRef<string>): UseBase64Return
-export function useBase64(target: MaybeComputedRef<Blob>): UseBase64Return
-export function useBase64(target: MaybeComputedRef<ArrayBuffer>): UseBase64Return
-export function useBase64(target: MaybeComputedRef<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64(target: MaybeComputedRef<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64<T extends Record<string, unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Map<string, unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T extends Set<unknown>>(target: MaybeComputedRef<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
-export function useBase64<T>(target: MaybeComputedRef<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<string>): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<Blob>): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<ArrayBuffer>): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64<T extends Record<string, unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Map<string, unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T extends Set<unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
+export function useBase64<T>(target: MaybeRefOrGetter<T[]>, options?: UseBase64ObjectOptions<T[]>): UseBase64Return
 export function useBase64(
   target: any,
   options?: any,

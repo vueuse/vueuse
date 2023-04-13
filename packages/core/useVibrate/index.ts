@@ -1,4 +1,4 @@
-import type { MaybeComputedRef, Pausable } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -18,7 +18,7 @@ export interface UseVibrateOptions extends ConfigurableNavigator {
    * @default []
    *
    */
-  pattern?: MaybeComputedRef<number[] | number>
+  pattern?: MaybeRefOrGetter<number[] | number>
   /**
    * Interval to run a persistent vibration, in ms
    *

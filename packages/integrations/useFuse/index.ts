@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js'
 import type { ComputedRef } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 
 export type FuseOptions<T> = Fuse.IFuseOptions<T>
@@ -12,9 +12,9 @@ export interface UseFuseOptions<T> {
 }
 
 export function useFuse<DataItem>(
-  search: MaybeComputedRef<string>,
-  data: MaybeComputedRef<DataItem[]>,
-  options?: MaybeComputedRef<UseFuseOptions<DataItem>>,
+  search: MaybeRefOrGetter<string>,
+  data: MaybeRefOrGetter<DataItem[]>,
+  options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
 ) {
   const createFuse = () => {
     return new Fuse(

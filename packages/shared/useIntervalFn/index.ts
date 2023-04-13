@@ -1,7 +1,7 @@
 import { isRef, ref, watch } from 'vue-demi'
 import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { Fn, MaybeComputedRef, Pausable } from '../utils'
+import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
 import { isClient, isFunction } from '../utils'
 
 export interface UseIntervalFnOptions {
@@ -27,7 +27,7 @@ export interface UseIntervalFnOptions {
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeComputedRef<number> = 1000, options: UseIntervalFnOptions = {}): Pausable {
+export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): Pausable {
   const {
     immediate = true,
     immediateCallback = false,

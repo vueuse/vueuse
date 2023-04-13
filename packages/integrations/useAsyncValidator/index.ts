@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toRef, toValue, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
@@ -54,8 +54,8 @@ export interface UseAsyncValidatorOptions {
  * @see https://github.com/yiminghe/async-validator
  */
 export function useAsyncValidator(
-  value: MaybeComputedRef<Record<string, any>>,
-  rules: MaybeComputedRef<Rules>,
+  value: MaybeRefOrGetter<Record<string, any>>,
+  rules: MaybeRefOrGetter<Rules>,
   options: UseAsyncValidatorOptions = {},
 ): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
   const {

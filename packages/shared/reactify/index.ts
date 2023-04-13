@@ -1,10 +1,10 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed, unref } from 'vue-demi'
 import { toValue } from '../toValue'
-import type { MaybeComputedRef, MaybeRef } from '../utils'
+import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 
 export type Reactified<T, Computed extends boolean> = T extends (...args: infer A) => infer R
-  ? (...args: { [K in keyof A]: Computed extends true ? MaybeComputedRef<A[K]> : MaybeRef<A[K]> }) => ComputedRef<R>
+  ? (...args: { [K in keyof A]: Computed extends true ? MaybeRefOrGetter<A[K]> : MaybeRef<A[K]> }) => ComputedRef<R>
   : never
 
 export interface ReactifyOptions<T extends boolean> {

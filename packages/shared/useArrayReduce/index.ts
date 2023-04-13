@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
@@ -15,7 +15,7 @@ export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, c
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<T, T, T>,
 ): ComputedRef<T>
 
@@ -30,9 +30,9 @@ export function useArrayReduce<T>(
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T, U>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<U, T, U>,
-  initialValue: MaybeComputedRef<U>,
+  initialValue: MaybeRefOrGetter<U>,
 ): ComputedRef<U>
 
 /**
@@ -46,7 +46,7 @@ export function useArrayReduce<T, U>(
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
  */
 export function useArrayReduce<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: ((...p: any[]) => any),
   ...args: any[]
 ): ComputedRef<T> {

@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
+import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
 /**
@@ -13,8 +13,8 @@ import { toValue } from '../toValue'
  * @returns the first element in the array that satisfies the provided testing function. Otherwise, undefined is returned.
  */
 export function useArrayFind<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
-  fn: (element: T, index: number, array: MaybeComputedRef<T>[]) => boolean,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
+  fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => boolean,
 ): ComputedRef<T | undefined> {
   return computed(() =>
     toValue<T | undefined>(

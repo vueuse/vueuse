@@ -1,4 +1,4 @@
-import type { MaybeComputedRef, MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, ref, shallowRef, unref, watch } from 'vue-demi'
@@ -14,7 +14,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 'en-US'
    */
-  lang?: MaybeComputedRef<string>
+  lang?: MaybeRefOrGetter<string>
   /**
    * Gets and sets the pitch at which the utterance will be spoken at.
    *
@@ -46,7 +46,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
  * @param options
  */
-export function useSpeechSynthesis(text: MaybeComputedRef<string>, options: UseSpeechSynthesisOptions = {}) {
+export function useSpeechSynthesis(text: MaybeRefOrGetter<string>, options: UseSpeechSynthesisOptions = {}) {
   const {
     pitch = 1,
     rate = 1,

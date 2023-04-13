@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
@@ -55,7 +55,7 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
  * @param options
  */
 export function useScriptTag(
-  src: MaybeComputedRef<string>,
+  src: MaybeRefOrGetter<string>,
   onLoaded: (el: HTMLScriptElement) => void = noop,
   options: UseScriptTagOptions = {},
 ) {

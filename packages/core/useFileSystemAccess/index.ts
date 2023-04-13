@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, unref, watch } from 'vue-demi'
-import type { Awaitable, MaybeComputedRef } from '@vueuse/shared'
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -85,7 +85,7 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
   /**
    * file data type
    */
-  dataType?: MaybeComputedRef<'Text' | 'ArrayBuffer' | 'Blob'>
+  dataType?: MaybeRefOrGetter<'Text' | 'ArrayBuffer' | 'Blob'>
 }
 
 /**

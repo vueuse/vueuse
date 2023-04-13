@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { createGenericProjection } from '../createGenericProjection'
 import type { ProjectorFunction, UseProjection } from '../createGenericProjection'
 
@@ -7,8 +7,8 @@ function defaultNumericProjector(input: number, from: readonly [number, number],
 }
 
 export function createProjection(
-  fromDomain: MaybeComputedRef<readonly [number, number]>,
-  toDomain: MaybeComputedRef<readonly [number, number]>,
+  fromDomain: MaybeRefOrGetter<readonly [number, number]>,
+  toDomain: MaybeRefOrGetter<readonly [number, number]>,
   projector: ProjectorFunction<number, number> = defaultNumericProjector,
 ): UseProjection<number, number> {
   return createGenericProjection(fromDomain, toDomain, projector)
