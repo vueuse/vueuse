@@ -110,7 +110,26 @@ const [DefineBar, ReuseBar] = createReusableTemplate<{ items: string[] }>()
 </template>
 ```
 
-Optionally, if you are not a fan of array destructuring, the following usage is also legal:
+Optionally, if you are not a fan of array destructuring, the following usages are also legal:
+
+```html
+<script setup lang="ts">
+import { createReusableTemplate } from '@vueuse/core'
+
+const {
+  define: DefineFoo,
+  reuse: ReuseFoo,
+} = createReusableTemplate<{ msg: string }>()
+</script>
+
+<template>
+  <DefineFoo v-slot="{ msg }">
+    <div>Hello {{ msg.toUpperCase() }}</div>
+  </DefineFoo>
+
+  <ReuseFoo msg="World" />
+</template>
+```
 
 ```html
 <script setup lang="ts">
@@ -121,7 +140,6 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 
 <template>
   <TemplateFoo.define v-slot="{ msg }">
-    <!-- `msg` is typed as `string` -->
     <div>Hello {{ msg.toUpperCase() }}</div>
   </TemplateFoo.define>
 
