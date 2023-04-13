@@ -1,9 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { useRoute, useRouter } from 'vue-router'
 
-type QueryValue = null | undefined | string | string[]
-
-export type DefaultTransformFn<T = Required<QueryValue>> = (val: Required<QueryValue>) => T
+export type RouterQueryValue = null | undefined | string | string[]
 
 export interface ReactiveRouteOptions {
   /**
@@ -24,9 +22,9 @@ export interface ReactiveRouteOptions {
   router?: ReturnType<typeof useRouter>
 }
 
-export interface ReactiveRouteOptionsWithTransform<T extends DefaultTransformFn = DefaultTransformFn> extends ReactiveRouteOptions {
+export interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOptions {
   /**
    * Function to transform data before return
    */
-  transform?: T
+  transform?: (val: V) => R
 }
