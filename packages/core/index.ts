@@ -1,5 +1,6 @@
 export * from './computedAsync'
 export * from './computedInject'
+export * from './createReusableTemplate'
 export * from './createUnrefFn'
 export * from './onClickOutside'
 export * from './onKeyStroke'
