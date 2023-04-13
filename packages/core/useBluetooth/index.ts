@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 
@@ -55,9 +55,9 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   const isSupported = useSupported(() => navigator && 'bluetooth' in navigator)
 
-  const device = ref<undefined | BluetoothDevice>(undefined)
+  const device = shallowRef<undefined | BluetoothDevice>(undefined)
 
-  const error = ref<unknown | null>(null)
+  const error = shallowRef<unknown | null>(null)
 
   watch(device, () => {
     connectToBluetoothGATTServer()

@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/rxjs?color=a1b858)](https://www.npmjs.com/package/@vueuse/rxjs)
 
-> This is an add-on of [VueUse](https://github.com/antfu), enables of a natural way the use of RxJS.
+> This is an add-on of [VueUse](https://github.com/antfu), enabling a natural way of using RxJS.
 
 ## Install
 

@@ -74,7 +74,7 @@ function onFileInput(e: Event) {
 
 <style scoped>
 textarea {
-  min-width: 0px !important;
+  min-width: 0 !important;
   width: 100%;
 }
 </style>

@@ -47,7 +47,7 @@ if (speech.isSupported.value) {
 
 const sampled = ref<string[]>([])
 
-const start = () => {
+function start() {
   color.value = 'transparent'
   speech.result.value = ''
   sampled.value = sample(colors, 5)

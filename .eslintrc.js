@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve } = require('node:path')
 
 const restricted = [
   'vue',
@@ -9,8 +9,7 @@ const restricted = [
   resolve(__dirname, 'packages/shared/index.ts'),
   {
     name: 'vue-demi',
-    importNames: ['onMounted', 'onUnmounted'],
-    message: 'Use tryOnMounted and tryOnScopeDispose instead.',
+    importNames: ['onMounted', 'onUnmounted', 'unref', 'toRef'],
   },
 ]
 
@@ -20,11 +19,8 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: '@antfu/eslint-config',
+  extends: '@antfu',
   rules: {
-    'react/no-string-refs': 'off',
-    'react/no-unknown-property': 'off',
-    'react/display-name': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',
     'vue/no-template-shadow': 'off',
@@ -57,7 +53,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
+      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'demo.client.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {
         'no-alert': 'off',
         'no-console': 'off',
@@ -66,6 +62,7 @@ module.exports = {
         'no-restricted-imports': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-redeclare': 'off',
+        'unused-imports/no-unused-vars': 'off',
       },
     },
     {

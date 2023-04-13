@@ -3,7 +3,7 @@ import type { MouseInElementOptions } from '@vueuse/core'
 import { useMouseInElement } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 
-export const UseMouseInElement = defineComponent<MouseInElementOptions & RenderableComponent>({
+export const UseMouseInElement = /* #__PURE__ */ defineComponent<MouseInElementOptions & RenderableComponent>({
   name: 'UseMouseElement',
   props: ['handleOutside', 'as'] as unknown as undefined,
   setup(props, { slots }) {

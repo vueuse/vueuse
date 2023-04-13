@@ -6,14 +6,12 @@ const mounted = ref(false)
 const { width, height } = useWindowSize()
 const color = useColorMode()
 
-const data = useAxios('/api/data')
-
 onMounted(() => {
   mounted.value = true
 })
 
 const state = reactive({ width, height, color })
-const toggleMode = () => {
+function toggleMode() {
   state.color = state.color === 'light' ? 'dark' : 'light'
 }
 </script>

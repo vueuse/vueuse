@@ -7,11 +7,11 @@ related: useLocalStorage, useSessionStorage, useStorageAsync
 
 Reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
-::: tip
-When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage.html). Use explicit import if you want to use the function from VueUse.
-:::
-
 ## Usage
+
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage). Use explicit import if you want to use the function from VueUse.
+:::
 
 ```js
 import { useStorage } from '@vueuse/core'
@@ -41,7 +41,7 @@ localStorage.setItem('my-store', '{"hello": "hello"}')
 
 const state = useStorage('my-store', { hello: 'hi', greeting: 'hello' }, localStorage)
 
-console.log(state.greeting) // undefined, since the value is not presented in storage
+console.log(state.value.greeting) // undefined, since the value is not presented in storage
 ```
 
 To solve that, you can enable `mergeDefaults` option.

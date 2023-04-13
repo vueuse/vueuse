@@ -11,14 +11,14 @@ const { ignoreUpdates } = watchIgnorable(
   { flush: 'sync' },
 )
 
-const clear = () => {
+function clear() {
   source.value = 0
   log.value = ''
 }
-const update = () => {
+function update() {
   source.value++
 }
-const ignoredUpdate = () => {
+function ignoredUpdate() {
   ignoreUpdates(() => {
     source.value++
   })

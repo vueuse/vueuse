@@ -8,13 +8,15 @@ interface Value {
 }
 
 const value = ref<Value>({ value: 42, extra: 0 })
-const comparator = (a: Value, b: Value) => a.value === b.value
+function comparator(a: Value, b: Value) {
+  return a.value === b.value
+}
 const cachedValue = useCached(value, comparator)
 
 const inputValue = ref(value.value.value)
 const inputExtra = ref(value.value.extra)
 
-const onSyncClick = () => {
+function onSyncClick() {
   value.value = {
     value: inputValue.value,
     extra: inputExtra.value,

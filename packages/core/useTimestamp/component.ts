@@ -2,7 +2,7 @@ import { defineComponent, reactive } from 'vue-demi'
 import type { UseTimestampOptions } from '@vueuse/core'
 import { useTimestamp } from '@vueuse/core'
 
-export const UseTimestamp = defineComponent<Omit<UseTimestampOptions<true>, 'controls'>>({
+export const UseTimestamp = /* #__PURE__ */ defineComponent<Omit<UseTimestampOptions<true>, 'controls'>>({
   name: 'UseTimestamp',
   props: ['immediate', 'interval', 'offset'] as unknown as undefined,
   setup(props, { slots }) {

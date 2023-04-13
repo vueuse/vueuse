@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useCycleList } from '@vueuse/core'
+import { ref } from 'vue'
 
-const list = [
+const list = ref([
   'Dog',
   'Cat',
   'Lizard',
@@ -10,7 +11,7 @@ const list = [
   'Dolphin',
   'Octopus',
   'Seal',
-]
+])
 
 const { state, next, prev } = useCycleList(list)
 </script>

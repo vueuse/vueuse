@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "9.2.0",
+  "version": "10.0.0-beta.3",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -86,6 +86,21 @@
       "types": "./useAsyncValidator/component.d.ts",
       "require": "./useAsyncValidator/component.cjs",
       "import": "./useAsyncValidator/component.mjs"
+    },
+    "./useIDBKeyval": {
+      "types": "./useIDBKeyval.d.ts",
+      "require": "./useIDBKeyval.cjs",
+      "import": "./useIDBKeyval.mjs"
+    },
+    "./useSortable": {
+      "types": "./useSortable.d.ts",
+      "require": "./useSortable.cjs",
+      "import": "./useSortable.mjs"
+    },
+    "./useSortable/component": {
+      "types": "./useSortable/component.d.ts",
+      "require": "./useSortable/component.cjs",
+      "import": "./useSortable/component.mjs"
     }
   },
   "main": "./index.cjs",
@@ -100,9 +115,11 @@
     "drauu": "*",
     "focus-trap": "*",
     "fuse.js": "*",
+    "idb-keyval": "*",
     "jwt-decode": "*",
     "nprogress": "*",
     "qrcode": "*",
+    "sortablejs": "*",
     "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
@@ -124,6 +141,9 @@
     "fuse.js": {
       "optional": true
     },
+    "idb-keyval": {
+      "optional": true
+    },
     "jwt-decode": {
       "optional": true
     },
@@ -135,6 +155,9 @@
     },
     "universal-cookie": {
       "optional": true
+    },
+    "sortablejs": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -145,15 +168,18 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.5.0",
+    "@types/sortablejs": "^1.15.1",
     "async-validator": "^4.2.5",
-    "axios": "^0.27.2",
+    "axios": "^1.3.5",
     "change-case": "^4.1.2",
-    "drauu": "^0.3.1",
-    "focus-trap": "^6.9.4",
+    "drauu": "^0.3.2",
+    "focus-trap": "^7.4.0",
     "fuse.js": "^6.6.2",
+    "idb-keyval": "^6.2.0",
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.1",
+    "sortablejs": "^1.15.0",
     "universal-cookie": "^4.0.4"
   }
 }

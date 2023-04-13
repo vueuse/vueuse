@@ -54,6 +54,9 @@ export const packages: PackageManifest[] = [
       'fs',
       'path',
       'url',
+      'node:fs',
+      'node:path',
+      'node:url',
     ],
   },
   {
@@ -88,6 +91,9 @@ export const packages: PackageManifest[] = [
       '@vueuse/shared',
       'fuse.js',
       'async-validator',
+      'idb-keyval',
+      'sortablejs',
+      'node:http',
     ],
     globals: {
       'axios': 'axios',
@@ -100,6 +106,8 @@ export const packages: PackageManifest[] = [
       'fuse.js': 'Fuse',
       'change-case': 'changeCase',
       'async-validator': 'AsyncValidator',
+      'idb-keyval': 'idbKeyval',
+      'sortablejs': 'Sortable',
     },
   },
   {

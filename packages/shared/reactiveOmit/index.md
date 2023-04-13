@@ -8,7 +8,9 @@ Reactively omit fields from a reactive object.
 
 ## Usage
 
-```js
+### Basic Usage
+
+```ts
 import { reactiveOmit } from '@vueuse/core'
 
 const obj = reactive({
@@ -19,6 +21,22 @@ const obj = reactive({
 })
 
 const picked = reactiveOmit(obj, 'x', 'elementX') // { y: number, elementY: number }
+```
+
+### Predicate Usage
+
+```ts
+import { reactiveOmit } from '@vueuse/core'
+
+const obj = reactive({
+  bar: 'bar',
+  baz: 'should be omit',
+  foo: 'foo2',
+  qux: true,
+})
+
+const picked = reactiveOmit(obj, (key, value) => key === 'baz' || value === true)
+// { bar: string, foo: string }
 ```
 
 ### Scenarios

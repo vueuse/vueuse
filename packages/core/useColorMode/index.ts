@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -16,7 +17,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default 'html'
    */
-  selector?: string
+  selector?: string | MaybeRefOrGetter<HTMLElement | null | undefined>
 
   /**
    * HTML attribute applying the target element
@@ -39,7 +40,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
 
   /**
    * A custom handler for handle the updates.
-   * When specified, the default behavior will be overridded.
+   * When specified, the default behavior will be overridden.
    *
    * @default undefined
    */
@@ -77,6 +78,14 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    * @default undefined
    */
   emitAuto?: boolean
+
+  /**
+   * Disable transition on switch
+   *
+   * @see https://paco.me/writing/disable-theme-transitions
+   * @default false
+   */
+  disableTransition?: boolean
 }
 
 /**
@@ -96,6 +105,8 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     listenToStorageChanges = true,
     storageRef,
     emitAuto,
+    // TODO: switch to true in v10
+    disableTransition = false,
   } = options
 
   const modes = {
@@ -114,7 +125,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
 
   const state = computed<T | BasicColorSchema>({
     get() {
-      return store.value === 'auto' && !emitAuto
+      return (store.value === 'auto' && !emitAuto)
         ? preferredMode.value
         : store.value
     },
@@ -126,9 +137,18 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
     (selector, attribute, value) => {
-      const el = window?.document.querySelector(selector)
+      const el = typeof selector === 'string'
+        ? window?.document.querySelector(selector)
+        : toValue(selector)
       if (!el)
         return
+
+      let style: HTMLStyleElement | undefined
+      if (disableTransition) {
+        style = window!.document.createElement('style')
+        style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
+        window!.document.head.appendChild(style)
+      }
 
       if (attribute === 'class') {
         const current = value.split(/\s/g)
@@ -144,6 +164,13 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
       }
       else {
         el.setAttribute(attribute, value)
+      }
+
+      if (disableTransition) {
+        // Calling getComputedStyle forces the browser to redraw
+        // @ts-expect-error unused variable
+        const _ = window!.getComputedStyle(style!).opacity
+        document.head.removeChild(style!)
       }
     })
 

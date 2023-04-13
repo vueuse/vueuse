@@ -2,7 +2,7 @@ import { defineComponent, reactive } from 'vue-demi'
 import { useOffsetPagination } from '@vueuse/core'
 import type { UseOffsetPaginationOptions } from '.'
 
-export const UseOffsetPagination = defineComponent<UseOffsetPaginationOptions>({
+export const UseOffsetPagination = /* #__PURE__ */ defineComponent<UseOffsetPaginationOptions>({
   name: 'UseOffsetPagination',
   props: [
     'total',

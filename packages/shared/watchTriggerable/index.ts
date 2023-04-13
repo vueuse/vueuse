@@ -1,9 +1,10 @@
 import type { WatchSource } from 'vue-demi'
-import { isReactive, unref } from 'vue-demi'
+import { isReactive } from 'vue-demi'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
 import { watchIgnorable } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
+import { toValue } from '../toValue'
 
 // Watch that can be triggered manually
 // A `watch` wrapper that supports manual triggering of `WatchCallback`, which returns an additional `trigger` to execute a `WatchCallback` immediately.
@@ -72,14 +73,8 @@ function getWatchSources(sources: any) {
   if (isReactive(sources))
     return sources
   if (Array.isArray(sources))
-    return sources.map(item => getOneWatchSource(item))
-  return getOneWatchSource(sources)
-}
-
-function getOneWatchSource(source: Readonly<WatchSource<unknown>>) {
-  return typeof source === 'function'
-    ? source()
-    : unref(source)
+    return sources.map(item => toValue(item))
+  return toValue(sources)
 }
 
 // For calls triggered by trigger, the old value is unknown, so it cannot be returned

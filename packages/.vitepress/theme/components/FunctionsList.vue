@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
+import type { Ref } from 'vue'
+import { computed, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useEventListener, useUrlSearchParams } from '@vueuse/core'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
@@ -9,16 +10,17 @@ const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
 
 useEventListener('click', (e) => {
+  // @ts-expect-error cast
   if (e.target.tagName === 'A')
     window.dispatchEvent(new Event('hashchange'))
 })
 
 const query = useUrlSearchParams('hash-params', { removeFalsyValues: true })
-const search = toRef(query, 'search')
-const category = toRef(query, 'category')
-const hasComponent = toRef(query, 'component')
-const hasDirective = toRef(query, 'directive')
-const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated'>
+const search = toRef(query, 'search') as Ref<string | null>
+const category = toRef(query, 'category') as Ref<string | null>
+const hasComponent = toRef(query, 'component') as any as Ref<boolean>
+const hasDirective = toRef(query, 'directive') as any as Ref<boolean>
+const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated' | null>
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
 
@@ -46,7 +48,7 @@ const result = computed(() => {
     else if (sortMethod.value === 'name')
       fns.sort((a, b) => a.name.localeCompare(b.name))
     else
-      fns.sort((a, b) => categoryNames.indexOf(a.category) - categoryNames.indexOf(b.category))
+      fns.sort((a, b) => categoryNames.indexOf(a.category || '') - categoryNames.indexOf(b.category || ''))
     return fns
   }
 })
@@ -56,7 +58,7 @@ const hasFilters = computed(() => Boolean(search.value || category.value || hasC
 function resetFilters() {
   sortMethod.value = null
   category.value = null
-  hasComponent.value = null
+  hasComponent.value = false
   search.value = null
 }
 
@@ -65,7 +67,7 @@ function toggleCategory(cate: string) {
 }
 
 function toggleSort(method: string) {
-  sortMethod.value = method
+  sortMethod.value = method as any
 }
 </script>
 
@@ -133,12 +135,12 @@ function toggleSort(method: string) {
       </label>
     </div>
   </div>
-  <div h="1px" bg="$vp-c-divider-light" m="t-4" />
+  <div h="1px" bg="$vp-c-divider" m="t-4" />
   <div flex="~" class="children:my-auto" p="2">
     <i i-carbon-search m="r-2" opacity="50" />
     <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
-  <div h="1px" bg="$vp-c-divider-light" m="b-4" />
+  <div h="1px" bg="$vp-c-divider" m="b-4" />
   <div flex="~ col" gap="2" class="relative" p="t-5">
     <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
       <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">
@@ -171,9 +173,9 @@ function toggleSort(method: string) {
 
 <style scoped lang="postcss">
 input {
-  --tw-ring-offset-width: 1px !important;
-  --tw-ring-color: #8885 !important;
-  --tw-ring-offset-color: transparent !important;
+  --un-ring-offset-width: 1px !important;
+  --un-ring-color: #8885 !important;
+  --un-ring-offset-color: transparent !important;
 }
 
 .checkbox {

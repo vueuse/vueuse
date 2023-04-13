@@ -1,17 +1,24 @@
-import { SwipeDirection } from '../useSwipe'
 import type { UsePointerSwipeOptions } from './index'
 import { usePointerSwipe } from './index'
 
-const mockPointerEventInit = (x: number, y: number): PointerEventInit => ({
-  clientX: x,
-  clientY: y,
-})
+function mockPointerEventInit(x: number, y: number): PointerEventInit {
+  return {
+    clientX: x,
+    clientY: y,
+  }
+}
 
-const mockPointerDown = (x: number, y: number) => new PointerEvent('pointerdown', mockPointerEventInit(x, y))
-const mockPointerMove = (x: number, y: number) => new PointerEvent('pointermove', mockPointerEventInit(x, y))
-const mockPointerUp = (x: number, y: number) => new PointerEvent('pointerup', mockPointerEventInit(x, y))
+function mockPointerDown(x: number, y: number) {
+  return new PointerEvent('pointerdown', mockPointerEventInit(x, y))
+}
+function mockPointerMove(x: number, y: number) {
+  return new PointerEvent('pointermove', mockPointerEventInit(x, y))
+}
+function mockPointerUp(x: number, y: number) {
+  return new PointerEvent('pointerup', mockPointerEventInit(x, y))
+}
 
-const mockPointerEvents = (target: Element, coords: Array<number[]>) => {
+function mockPointerEvents(target: Element, coords: Array<number[]>) {
   coords.forEach(([x, y], i) => {
     if (i === 0)
       target.dispatchEvent(mockPointerDown(x, y))
@@ -42,9 +49,9 @@ describe('usePointerSwipe', () => {
   })
 
   beforeEach(() => {
-    onSwipeStart = vitest.fn((e: PointerEvent) => {})
-    onSwipe = vitest.fn((e: PointerEvent) => {})
-    onSwipeEnd = vitest.fn((e: PointerEvent, direction: SwipeDirection) => {})
+    onSwipeStart = vi.fn((e: PointerEvent) => {})
+    onSwipe = vi.fn((e: PointerEvent) => {})
+    onSwipeEnd = vi.fn((e: PointerEvent, direction: any) => {})
   })
 
   it('threshold is not exceeded', () => {
@@ -65,7 +72,7 @@ describe('usePointerSwipe', () => {
     expect(onSwipeStart).toHaveBeenCalledOnce()
     expect(onSwipe).toHaveBeenCalledOnce()
     expect(onSwipeEnd).toHaveBeenCalledOnce()
-    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.RIGHT)
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), 'right')
   })
 
   it('threshold is exceeded in between', () => {
@@ -76,7 +83,7 @@ describe('usePointerSwipe', () => {
     expect(onSwipeStart).toHaveBeenCalledOnce()
     expect(onSwipe).toHaveBeenCalledTimes(2)
     expect(onSwipeEnd).toHaveBeenCalledOnce()
-    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), SwipeDirection.NONE)
+    expect(onSwipeEnd).toHaveBeenCalledWith(expect.anything(), 'none')
   })
 
   it('reactivity', () => {
@@ -84,28 +91,82 @@ describe('usePointerSwipe', () => {
 
     target.dispatchEvent(mockPointerDown(0, 0))
     expect(isSwiping.value).toBeFalsy()
-    expect(direction.value).toBe(SwipeDirection.NONE)
+    expect(direction.value).toBe('none')
     expect(distanceX.value).toBe(0)
     expect(distanceY.value).toBe(0)
 
     target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
     expect(isSwiping.value).toBeTruthy()
-    expect(direction.value).toBe(SwipeDirection.RIGHT)
+    expect(direction.value).toBe('right')
     expect(distanceX.value).toBe(-threshold)
     expect(distanceY.value).toBe(-threshold / 2)
 
     target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('right')
+    expect(distanceX.value).toBe(-threshold)
+    expect(distanceY.value).toBe(-threshold / 2)
+  })
+
+  it('not reactivity when pointer types not matched', () => {
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, { ...options(), pointerTypes: ['touch'] })
+
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    target.dispatchEvent(mockPointerUp(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+  })
+
+  it('not reactivity when pointer not down', () => {
+    const { isSwiping, direction, distanceX, distanceY } = usePointerSwipe(target, options())
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+  })
+
+  it('stop', () => {
+    const { isSwiping, direction, distanceX, distanceY, stop } = usePointerSwipe(target, { ...options(), pointerTypes: ['touch'] })
+
+    target.dispatchEvent(mockPointerDown(0, 0))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
+
+    stop()
+
+    target.dispatchEvent(mockPointerMove(threshold, threshold / 2))
+    expect(isSwiping.value).toBeFalsy()
+    expect(direction.value).toBe('none')
+    expect(distanceX.value).toBe(0)
+    expect(distanceY.value).toBe(0)
   })
 
   const directionTests = [
-    [SwipeDirection.UP, [[0, 2 * threshold], [0, threshold], [0, threshold]]],
-    [SwipeDirection.DOWN, [[0, 0], [0, threshold], [0, threshold]]],
-    [SwipeDirection.LEFT, [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
-    [SwipeDirection.RIGHT, [[0, 0], [threshold, 0], [threshold, 0]]],
+    ['up', [[0, 2 * threshold], [0, threshold], [0, threshold]]],
+    ['down', [[0, 0], [0, threshold], [0, threshold]]],
+    ['left', [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
+    ['right', [[0, 0], [threshold, 0], [threshold, 0]]],
   ]
 
   directionTests.forEach((config) => {
-    const _direction = config[0] as unknown as SwipeDirection
+    const _direction = config[0]
     const coords = config[1] as unknown as number[][]
 
     it(`detects swipes to the ${_direction}`, () => {

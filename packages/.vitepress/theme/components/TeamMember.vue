@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CoreTeam } from '../contributors'
+import type { CoreTeam } from '../../../contributors'
 
 defineProps<{
   data: CoreTeam
@@ -45,9 +45,9 @@ defineProps<{
         :aria-label="`Sponsor ${data.name}`"
       />
     </div>
-    <div v-if="data.functions || data.packages" bg-gray:5 mb2 p2 rounded grid="~ cols-[20px_1fr] gap-y-2" items-start w="5/6" mxa>
+    <div v-if="data.functions || data.packages" bg-gray:5 mb2 p3 rounded grid="~ cols-[20px_1fr] gap-x-1 gap-y-2" items-start w="5/6" mxa>
       <template v-if="data.functions">
-        <div op50 i-carbon:function-math title="Functions" />
+        <div op50 ma i-carbon:function-math title="Functions" />
         <div flex="~ col gap-1" text-left text-sm w-max>
           <a v-for="f of data.functions" :key="f" :href="`/${f}`" target="_blank">
             <code>{{ f }}</code>
@@ -55,7 +55,7 @@ defineProps<{
         </div>
       </template>
       <template v-if="data.packages">
-        <div op50 i-carbon-cube title="Packages" />
+        <div op50 ma i-carbon-cube title="Packages" />
         <div flex="~ col gap-1" text-left text-sm w-max>
           <a v-for="f of data.packages" :key="f" href="/add-ons">
             <code>@vueuse/{{ f }}</code>

@@ -8,7 +8,7 @@ const { start, isPending } = useTimeoutFn(() => {
   text.value = 'Fired!'
 }, 3000)
 
-const restart = () => {
+function restart() {
   text.value = defaultText
   start()
 }

@@ -18,6 +18,6 @@ const preferredMotion = usePreferredReducedMotion()
 
 ```html
 <UsePreferredReducedMotion v-slot="{ motion }">
-  Preferred Color Scheme: {{ motion }}
-<UsePreferredReducedMotion>
+  Preferred Reduced Motion: {{ motion }}
+</UsePreferredReducedMotion>
 ```

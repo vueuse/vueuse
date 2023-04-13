@@ -1,7 +1,9 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick, unref } from 'vue-demi'
+import { computed, nextTick } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import type { DefaultTransformFn, ReactiveRouteOptionsWithTransform } from '../_types'
+
+let _queue: Record<string, any> = {}
 
 export function useRouteQuery(
   name: string
@@ -38,8 +40,11 @@ export function useRouteQuery<T extends string | string[]>(
       return transform(data)
     },
     set(v) {
+      _queue[name] = (v === defaultValue || v === null) ? undefined : v
+
       nextTick(() => {
-        router[unref(mode)]({ query: { ...route.query, [name]: v === defaultValue || v === null ? undefined : v } })
+        router[toValue(mode)]({ ...route, query: { ...route.query, ..._queue } })
+        nextTick(() => _queue = {})
       })
     },
   })

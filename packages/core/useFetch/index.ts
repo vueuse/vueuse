@@ -1,6 +1,6 @@
+import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
+import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import type { EventHookOn, Fn, MaybeComputedRef, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, resolveRef, resolveUnref, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -26,7 +26,7 @@ export interface UseFetchReturn<T> {
   error: Ref<any>
 
   /**
-   * The fetch response body, may either be JSON or text
+   * The fetch response body on success, may either be JSON or text
    */
   data: Ref<T | null>
 
@@ -73,12 +73,12 @@ export interface UseFetchReturn<T> {
 
   // methods
   get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options(payload?: MaybeComputedRef<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
   json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -90,11 +90,11 @@ export interface UseFetchReturn<T> {
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
+type Combination = 'overwrite' | 'chain'
 
 const payloadMapping: Record<string, string> = {
   json: 'application/json',
   text: 'text/plain',
-  formData: 'multipart/form-data',
 }
 
 export interface BeforeFetchContext {
@@ -146,7 +146,7 @@ export interface UseFetchOptions {
    *
    * @default false
    */
-  refetch?: MaybeComputedRef<boolean>
+  refetch?: MaybeRefOrGetter<boolean>
 
   /**
    * Initial data before the request finished
@@ -183,9 +183,15 @@ export interface UseFetchOptions {
 
 export interface CreateFetchOptions {
   /**
-   * The base URL that will be prefixed to all urls
+   * The base URL that will be prefixed to all urls unless urls are absolute
    */
-  baseUrl?: MaybeComputedRef<string>
+  baseUrl?: MaybeRefOrGetter<string>
+
+  /**
+   * Determine the inherit behavior for beforeFetch, afterFetch, onFetchError
+   * @default 'chain'
+   */
+  combination?: Combination
 
   /**
    * Default Options for the useFetch function
@@ -205,7 +211,12 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+}
+
+// A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+function isAbsoluteURL(url: string) {
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -214,25 +225,42 @@ function headersToObject(headers: HeadersInit | undefined) {
   return headers
 }
 
-function chainCallbacks<T = any>(...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
-  return (ctx: T) => {
-    callbacks.forEach(async (callback) => {
-      if (callback)
-        ctx = { ...ctx, ...(await callback(ctx)) }
-    })
-    return ctx
+function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ctx: T) => void | Partial<T> | Promise<void | Partial<T>>) | undefined)[]) {
+  if (combination === 'overwrite') {
+    // use last callback
+    return async (ctx: T) => {
+      const callback = callbacks[callbacks.length - 1]
+      if (callback !== undefined)
+        await callback(ctx)
+      return ctx
+    }
+  }
+  else {
+    // chaining and combine result
+    return async (ctx: T) => {
+      await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {
+        if (callback)
+          ctx = { ...ctx, ...(await callback(ctx)) }
+      }), Promise.resolve())
+      return ctx
+    }
   }
 }
 
 export function createFetch(config: CreateFetchOptions = {}) {
+  const _combination = config.combination || 'chain' as Combination
   const _options = config.options || {}
   const _fetchOptions = config.fetchOptions || {}
 
-  function useFactoryFetch(url: MaybeComputedRef<string>, ...args: any[]) {
-    const computedUrl = computed(() => config.baseUrl
-      ? joinPaths(resolveUnref(config.baseUrl), resolveUnref(url))
-      : resolveUnref(url),
-    )
+  function useFactoryFetch(url: MaybeRefOrGetter<string>, ...args: any[]) {
+    const computedUrl = computed(() => {
+      const baseUrl = toValue(config.baseUrl)
+      const targetUrl = toValue(url)
+
+      return (baseUrl && !isAbsoluteURL(targetUrl))
+        ? joinPaths(baseUrl, targetUrl)
+        : targetUrl
+    })
 
     let options = _options
     let fetchOptions = _fetchOptions
@@ -243,9 +271,9 @@ export function createFetch(config: CreateFetchOptions = {}) {
         options = {
           ...options,
           ...args[0],
-          beforeFetch: chainCallbacks(_options.beforeFetch, args[0].beforeFetch),
-          afterFetch: chainCallbacks(_options.afterFetch, args[0].afterFetch),
-          onFetchError: chainCallbacks(_options.onFetchError, args[0].onFetchError),
+          beforeFetch: combineCallbacks(_combination, _options.beforeFetch, args[0].beforeFetch),
+          afterFetch: combineCallbacks(_combination, _options.afterFetch, args[0].afterFetch),
+          onFetchError: combineCallbacks(_combination, _options.onFetchError, args[0].onFetchError),
         }
       }
       else {
@@ -264,9 +292,9 @@ export function createFetch(config: CreateFetchOptions = {}) {
       options = {
         ...options,
         ...args[1],
-        beforeFetch: chainCallbacks(_options.beforeFetch, args[1].beforeFetch),
-        afterFetch: chainCallbacks(_options.afterFetch, args[1].afterFetch),
-        onFetchError: chainCallbacks(_options.onFetchError, args[1].onFetchError),
+        beforeFetch: combineCallbacks(_combination, _options.beforeFetch, args[1].beforeFetch),
+        afterFetch: combineCallbacks(_combination, _options.afterFetch, args[1].afterFetch),
+        onFetchError: combineCallbacks(_combination, _options.onFetchError, args[1].onFetchError),
       }
     }
 
@@ -276,11 +304,11 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeComputedRef<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeComputedRef<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeComputedRef<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
-export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
@@ -321,7 +349,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
-  const data = shallowRef<T | null>(initialData)
+  const data = shallowRef<T | null>(initialData || null)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
@@ -329,8 +357,15 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   let timer: Stoppable | undefined
 
   const abort = () => {
-    if (supportsAbort && controller)
-      controller.abort()
+    if (supportsAbort) {
+      controller?.abort()
+      controller = new AbortController()
+      controller.signal.onabort = () => aborted.value = true
+      fetchOptions = {
+        ...fetchOptions,
+        signal: controller.signal,
+      }
+    }
   }
 
   const loading = (isLoading: boolean) => {
@@ -342,20 +377,12 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   const execute = async (throwOnFailed = false) => {
+    abort()
+
     loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
-    controller = undefined
-
-    if (supportsAbort) {
-      controller = new AbortController()
-      controller.signal.onabort = () => aborted.value = true
-      fetchOptions = {
-        ...fetchOptions,
-        signal: controller.signal,
-      }
-    }
 
     const defaultFetchOptions: RequestInit = {
       method: config.method,
@@ -367,14 +394,21 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      const payload = resolveUnref(config.payload)
+      const payload = toValue(config.payload)
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
         : payload as BodyInit
     }
 
     let isCanceled = false
-    const context: BeforeFetchContext = { url: resolveUnref(url), options: { ...defaultFetchOptions, ...fetchOptions }, cancel: () => { isCanceled = true } }
+    const context: BeforeFetchContext = {
+      url: toValue(url),
+      options: {
+        ...defaultFetchOptions,
+        ...fetchOptions,
+      },
+      cancel: () => { isCanceled = true },
+    }
 
     if (options.beforeFetch)
       Object.assign(context, await options.beforeFetch(context))
@@ -407,14 +441,15 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
 
           responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch && statusCode.value >= 200 && statusCode.value < 300)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-
-          data.value = responseData
-
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok)
+          if (!fetchResponse.ok) {
+            data.value = initialData || null
             throw new Error(fetchResponse.statusText)
+          }
+
+          if (options.afterFetch)
+            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+          data.value = responseData
 
           responseEvent.trigger(fetchResponse)
           return resolve(fetchResponse)
@@ -423,8 +458,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
-            ({ data: responseData, error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
-          data.value = responseData
+            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
           error.value = errorData
 
           errorEvent.trigger(fetchError)
@@ -442,11 +476,11 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
     })
   }
 
-  const refetch = resolveRef(options.refetch)
+  const refetch = toRef(options.refetch)
   watch(
     [
       refetch,
-      resolveRef(url),
+      toRef(url),
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
@@ -495,17 +529,17 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
           watch(
             [
               refetch,
-              resolveRef(config.payload),
+              toRef(config.payload),
             ],
             ([refetch]) => refetch && execute(),
             { deep: true },
           )
         }
 
-        const rawPayload = resolveUnref(config.payload)
-        // Set the payload to json type only if it's not provided and a literal object is provided
+        const rawPayload = toValue(config.payload)
+        // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
         // The only case we can deduce the content type and `fetch` can't
-        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype)
+        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))
           config.payloadType = 'json'
 
         return {
@@ -545,7 +579,7 @@ export function useFetch<T>(url: MaybeComputedRef<string>, ...args: any[]): UseF
   }
 
   if (options.immediate)
-    setTimeout(execute, 0)
+    Promise.resolve().then(() => execute())
 
   return {
     ...shell,

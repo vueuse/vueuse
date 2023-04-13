@@ -25,7 +25,7 @@ describe('useJwt', () => {
   })
 
   test('decode jwt error', () => {
-    const onErrorSpy = vitest.fn()
+    const onErrorSpy = vi.fn()
 
     const { header, payload } = useJwt(ref('bad-token'), { onError: onErrorSpy })
     expect(header.value).toBe(null)
