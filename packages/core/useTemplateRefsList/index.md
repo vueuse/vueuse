@@ -6,7 +6,9 @@ category: Component
 
 Shorthand for binding refs to template elements and components inside `v-for`.
 
-> This function only works for Vue 3.x.
+::: warning
+This function only works for Vue 3
+:::
 
 ## Usage
 

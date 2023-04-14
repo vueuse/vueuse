@@ -1,5 +1,5 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -53,10 +53,10 @@ export interface UsePointerSwipeReturn {
  * @param options
  */
 export function usePointerSwipe(
-  target: MaybeComputedRef<HTMLElement | null | undefined>,
+  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
   options: UsePointerSwipeOptions = {},
 ): UsePointerSwipeReturn {
-  const targetRef = resolveRef(target)
+  const targetRef = toRef(target)
   const {
     threshold = 50,
     onSwipe,

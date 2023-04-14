@@ -1,8 +1,0 @@
-{
-  "exclude": [
-    "eslint-plugin-markdown",
-    "rxjs",
-    "electron",
-    "msw"
-  ]
-}

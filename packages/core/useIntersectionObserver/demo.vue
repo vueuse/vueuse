@@ -6,7 +6,7 @@ const root = ref(null)
 const target = ref(null)
 const isVisible = ref(false)
 
-useIntersectionObserver(
+const { isActive, pause, resume } = useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     isVisible.value = isIntersecting
@@ -16,6 +16,15 @@ useIntersectionObserver(
 </script>
 
 <template>
+  <div class="text-center">
+    <label class="checkbox">
+      <input
+        :checked="isActive" type="checkbox" name="enabled"
+        @input="($event.target as HTMLInputElement)!.checked ? resume() : pause() "
+      >
+      <span>Enable</span>
+    </label>
+  </div>
   <div ref="root" class="root">
     <p class="notice">
       Scroll me down!
@@ -40,7 +49,7 @@ useIntersectionObserver(
 .root {
   border: 2px dashed #ccc;
   height: 200px;
-  margin: 0 2rem 1rem;
+  margin: 2rem 1rem;
   overflow-y: scroll;
 }
 .notice {

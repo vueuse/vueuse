@@ -6,13 +6,10 @@ import { watch } from 'vue-demi'
  *
  * @see https://vueuse.org/watchImmediate
  */
-export function watchImmediate<T>(source: WatchSource<T | false | null | undefined>, cb: WatchCallback<T>, options?: WatchOptions) {
+export function watchImmediate<T>(source: WatchSource<T>, cb: WatchCallback<T>, options?: Omit<WatchOptions, 'immediate'>) {
   return watch(
     source,
-    (v, ov, onInvalidate) => {
-      if (v)
-        cb(v, ov, onInvalidate)
-    },
+    cb,
     {
       ...options,
       immediate: true,

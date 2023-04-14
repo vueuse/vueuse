@@ -1,6 +1,6 @@
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import type { MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 export type DateLike = Date | number | string | undefined
 
@@ -19,8 +19,8 @@ export interface UseDateFormatOptions {
   customMeridiem?: (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => string
 }
 
-const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
-const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+const REGEX_PARSE = /*#__PURE__*/ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
+const REGEX_FORMAT = /*#__PURE__*/ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
@@ -98,8 +98,8 @@ export function normalizeDate(date: DateLike) {
  * @param options - UseDateFormatOptions
  */
 
-export function useDateFormat(date: MaybeComputedRef<DateLike>, formatStr: MaybeComputedRef<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}) {
-  return computed(() => formatDate(normalizeDate(resolveUnref(date)), resolveUnref(formatStr), options))
+export function useDateFormat(date: MaybeRefOrGetter<DateLike>, formatStr: MaybeRefOrGetter<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}) {
+  return computed(() => formatDate(normalizeDate(toValue(date)), toValue(formatStr), options))
 }
 
 export type UseDateFormatReturn = ReturnType<typeof useDateFormat>

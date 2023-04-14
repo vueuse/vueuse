@@ -54,6 +54,9 @@ export const packages: PackageManifest[] = [
       'fs',
       'path',
       'url',
+      'node:fs',
+      'node:path',
+      'node:url',
     ],
   },
   {
@@ -90,6 +93,7 @@ export const packages: PackageManifest[] = [
       'async-validator',
       'idb-keyval',
       'sortablejs',
+      'node:http',
     ],
     globals: {
       'axios': 'axios',

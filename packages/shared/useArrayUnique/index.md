@@ -12,6 +12,7 @@ reactive unique array
 
 ```js
 import { useArrayUnique } from '@vueuse/core'
+
 const item1 = ref(0)
 const item2 = ref(1)
 const item3 = ref(1)

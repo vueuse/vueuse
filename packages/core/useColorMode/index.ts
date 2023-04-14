@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -16,7 +17,7 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    *
    * @default 'html'
    */
-  selector?: string
+  selector?: string | MaybeRefOrGetter<HTMLElement | null | undefined>
 
   /**
    * HTML attribute applying the target element
@@ -82,10 +83,16 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
    * Disable transition on switch
    *
    * @see https://paco.me/writing/disable-theme-transitions
-   * @default false
+   * @default true
    */
   disableTransition?: boolean
 }
+
+export type UseColorModeReturn<T extends string = BasicColorSchema> =
+  Ref<T> & {
+    store: Ref<T>
+    system: Ref<'light' | 'dark'>
+  }
 
 /**
  * Reactive color mode with auto data persistence.
@@ -93,7 +100,9 @@ export interface UseColorModeOptions<T extends string = BasicColorSchema> extend
  * @see https://vueuse.org/useColorMode
  * @param options
  */
-export function useColorMode<T extends string = BasicColorSchema>(options: UseColorModeOptions<T> = {}) {
+export function useColorMode<T extends string = BasicColorSchema>(
+  options: UseColorModeOptions<T> = {},
+): UseColorModeReturn<T> {
   const {
     selector = 'html',
     attribute = 'class',
@@ -104,8 +113,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     listenToStorageChanges = true,
     storageRef,
     emitAuto,
-    // TODO: switch to true in v10
-    disableTransition = false,
+    disableTransition = true,
   } = options
 
   const modes = {
@@ -116,7 +124,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   } as Record<BasicColorSchema | T, string>
 
   const preferredDark = usePreferredDark({ window })
-  const preferredMode = computed(() => preferredDark.value ? 'dark' : 'light')
+  const system = computed(() => preferredDark.value ? 'dark' : 'light')
 
   const store = storageRef || (storageKey == null
     ? ref(initialValue) as Ref<T | BasicColorSchema>
@@ -125,7 +133,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const state = computed<T | BasicColorSchema>({
     get() {
       return (store.value === 'auto' && !emitAuto)
-        ? preferredMode.value
+        ? system.value
         : store.value
     },
     set(v) {
@@ -136,14 +144,15 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
     (selector, attribute, value) => {
-      const el = window?.document.querySelector(selector)
+      const el = typeof selector === 'string'
+        ? window?.document.querySelector(selector)
+        : toValue(selector)
       if (!el)
         return
 
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
-        style.type = 'text/css'
         style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
         window!.document.head.appendChild(style)
       }
@@ -173,7 +182,7 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
     })
 
   function defaultOnChanged(mode: T | BasicColorSchema) {
-    const resolvedMode = mode === 'auto' ? preferredMode.value : mode
+    const resolvedMode = mode === 'auto' ? system.value : mode
     updateHTMLAttrs(selector, attribute, modes[resolvedMode] ?? resolvedMode)
   }
 
@@ -185,10 +194,17 @@ export function useColorMode<T extends string = BasicColorSchema>(options: UseCo
   }
 
   watch(state, onChanged, { flush: 'post', immediate: true })
+
   if (emitAuto)
-    watch(preferredMode, () => onChanged(state.value), { flush: 'post' })
+    watch(system, () => onChanged(state.value), { flush: 'post' })
 
   tryOnMounted(() => onChanged(state.value))
 
-  return state
+  try {
+    return Object.assign(state, { store, system }) as UseColorModeReturn<T>
+  }
+  catch (e) {
+    // In Vue 2.6, ref might not be extensible
+    return state as any as UseColorModeReturn<T>
+  }
 }

@@ -27,6 +27,7 @@ const picked = reactivePick(obj, 'x', 'elementX') // { x: number, elementX: numb
 
 ```ts
 import { reactivePick } from '@vueuse/core'
+
 const source = reactive({
   foo: 'foo',
   bar: 'bar',

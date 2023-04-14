@@ -1,6 +1,7 @@
-import { defaultDocument, resolveUnref, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
-import type { ConfigurableDocument, MaybeComputedRef } from '@vueuse/core'
+import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
+import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
+import { nextTick } from 'vue-demi'
 
 export interface UseSortableReturn {
   /**
@@ -15,9 +16,9 @@ export interface UseSortableReturn {
 
 export type UseSortableOptions = Options & ConfigurableDocument
 
-export function useSortable<T>(selector: string, list: MaybeComputedRef<T[]>,
+export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeComputedRef<HTMLElement | null | undefined>, list: MaybeComputedRef<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<HTMLElement | null | undefined>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 /**
  * Wrapper for sortablejs.
@@ -26,8 +27,8 @@ export function useSortable<T>(el: MaybeComputedRef<HTMLElement | null | undefin
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeComputedRef<HTMLElement | null | undefined> | string,
-  list: MaybeComputedRef<T[]>,
+  el: MaybeRefOrGetter<HTMLElement | null | undefined> | string,
+  list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
   let sortable: Sortable
@@ -57,11 +58,13 @@ export function useSortable<T>(
 }
 
 export function moveArrayElement<T>(
-  list: MaybeComputedRef<T[]>,
+  list: MaybeRefOrGetter<T[]>,
   from: number,
   to: number,
 ): void {
-  const array = resolveUnref(list)
-  if (to >= 0 && to < array.length)
-    array.splice(to, 0, array.splice(from, 1)[0])
+  const array = toValue(list)
+  if (to >= 0 && to < array.length) {
+    const element = array.splice(from, 1)[0]
+    nextTick(() => array.splice(to, 0, element))
+  }
 }

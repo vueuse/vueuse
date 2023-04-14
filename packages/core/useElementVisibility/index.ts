@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { useIntersectionObserver } from '../useIntersectionObserver'
@@ -6,7 +6,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow {
-  scrollTarget?: MaybeComputedRef<HTMLElement | undefined | null>
+  scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
 }
 
 /**

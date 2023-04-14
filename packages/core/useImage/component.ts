@@ -4,7 +4,7 @@ import type { UseImageOptions } from '../useImage'
 
 import type { RenderableComponent } from '../types'
 
-export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & RenderableComponent>({
+export const UseImage = /*#__PURE__*/ defineComponent<UseImageOptions & RenderableComponent>({
   name: 'UseImage',
   props: [
     'src',

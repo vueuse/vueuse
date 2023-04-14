@@ -2,6 +2,7 @@ import { Vue2, install, isVue2 } from 'vue-demi'
 import './polyfillFetch'
 import './polyfillPointerEvents'
 import './polyfillIndexedDb'
+import './polyfillMatchMedia'
 import { beforeAll, beforeEach } from 'vitest'
 
 function setupVueSwitch() {

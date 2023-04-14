@@ -15,8 +15,8 @@ describe('useEventListener', () => {
 
   beforeEach(() => {
     target = document.createElement('div')
-    removeSpy = vitest.spyOn(target, 'removeEventListener')
-    addSpy = vitest.spyOn(target, 'addEventListener')
+    removeSpy = vi.spyOn(target, 'removeEventListener')
+    addSpy = vi.spyOn(target, 'addEventListener')
   })
 
   it('should be defined', () => {
@@ -24,7 +24,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both none array', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const event = 'click'
 
     beforeEach(() => {
@@ -53,7 +53,7 @@ describe('useEventListener', () => {
   })
 
   describe('given array of events but single listener', () => {
-    const listener = vitest.fn()
+    const listener = vi.fn()
     const events = ['click', 'scroll', 'blur', 'resize']
 
     beforeEach(() => {
@@ -84,7 +84,7 @@ describe('useEventListener', () => {
   })
 
   describe('given single event but array of listeners', () => {
-    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const event = 'click'
 
     beforeEach(() => {
@@ -115,7 +115,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both array of events and listeners', () => {
-    const listeners = [vitest.fn(), vitest.fn(), vitest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const events = ['click', 'scroll', 'blur', 'resize', 'custom-event']
 
     beforeEach(() => {

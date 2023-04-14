@@ -1,5 +1,5 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -8,14 +8,14 @@ export type KeyFilter = true | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
 export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
-  target?: MaybeComputedRef<EventTarget | null | undefined>
+  target?: MaybeRefOrGetter<EventTarget | null | undefined>
   passive?: boolean
   /**
    * Set to `true` to ignore repeated events when the key is being held down.
    *
    * @default false
    */
-  dedupe?: MaybeComputedRef<boolean>
+  dedupe?: MaybeRefOrGetter<boolean>
 }
 
 function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
@@ -75,7 +75,7 @@ export function onKeyStroke(...args: any[]) {
   } = options
   const predicate = createKeyPredicate(key)
   const listener = (e: KeyboardEvent) => {
-    if (e.repeat && resolveUnref(dedupe))
+    if (e.repeat && toValue(dedupe))
       return
 
     if (predicate(e))

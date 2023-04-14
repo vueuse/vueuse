@@ -47,6 +47,7 @@ Can be passed into `options` for customization
 ```ts
 import { ref } from 'vue'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+
 const input = ref('helloWorld')
 const changeCase = useChangeCase(input, 'camelCase', {
   delimiter: '-',

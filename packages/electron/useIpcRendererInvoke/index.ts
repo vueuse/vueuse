@@ -1,4 +1,3 @@
-import { isString } from '@vueuse/shared'
 import type { IpcRenderer } from 'electron'
 import type { Ref } from 'vue-demi'
 import { shallowRef } from 'vue-demi'
@@ -32,7 +31,7 @@ export function useIpcRendererInvoke<T>(...args: any[]): Ref<T | null> {
   let channel: string
   let invokeArgs: any[]
 
-  if (isString(args[0])) {
+  if (typeof args[0] === 'string') {
     [channel, ...invokeArgs] = args
     ipcRenderer = window.require ? window.require('electron').ipcRenderer : undefined
   }
