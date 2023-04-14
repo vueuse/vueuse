@@ -8,8 +8,13 @@ import type { Import, Preset } from 'unimport'
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const disabledFunctions = [
-  'useFetch',
+  // Vue 3 built-in
   'toRefs',
+  'toRef',
+  'toValue',
+
+  // Nuxt built-in
+  'useFetch',
   'useCookie',
   'useHead',
   'useTitle',
