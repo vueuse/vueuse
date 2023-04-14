@@ -12,9 +12,7 @@ export type UseAsyncCallbackReturn<Fn extends AnyPromiseFn> =
  * Using async functions
  *
  * @see https://vueuse.org/useAsyncCallback
- * @param target
- * @param keyframes
- * @param options
+ * @param fn
  */
 export function useAsyncCallback<T extends AnyPromiseFn>(fn: T): UseAsyncCallbackReturn<T> {
   const error = ref()
