@@ -19,11 +19,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
 }
 
 /**
- * @deprecated Use `RemovableRef`
- */
-export type RemoveableRef<T> = RemovableRef<T>
-
-/**
  * Maybe it's a ref, or a plain value
  *
  * ```ts
@@ -36,19 +31,15 @@ export type MaybeRef<T> = T | Ref<T>
  * Maybe it's a ref, or a plain value, or a getter function
  *
  * ```ts
- * type MaybeComputedRef<T> = (() => T) | T | Ref<T> | ComputedRef<T>
+ * type MaybeRefOrGetter<T> = (() => T) | T | Ref<T> | ComputedRef<T>
  * ```
  */
-export type MaybeComputedRef<T> = MaybeReadonlyRef<T> | MaybeRef<T>
+export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T)
 
 /**
- * Maybe it's a computed ref, or a getter function
- *
- * ```ts
- * type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
- * ```
+ * Maybe it's a computed ref, or a readonly value, or a getter function
  */
-export type MaybeReadonlyRef<T> = (() => T) | ComputedRef<T>
+export type ReadonlyRefOrGetter<T> = ComputedRef<T> | (() => T)
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
@@ -114,11 +105,6 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   start: (...args: StartFnArgs) => void
 }
 
-/**
- * @deprecated Use `Stoppable`
- */
-export type Stopable = Stoppable
-
 export interface ConfigurableFlush {
   /**
    * Timing for monitoring changes, refer to WatchOptions for more details
@@ -145,3 +131,5 @@ export type MapSources<T> = {
 export type MapOldSources<T, Immediate> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never;
 }
+
+export type Mutable<T> = { -readonly [P in keyof T]: T[P] }

@@ -1,4 +1,4 @@
-import { isString, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import type { IpcRenderer } from 'electron'
 import type { IpcRendererListener } from '../_types'
 
@@ -29,7 +29,7 @@ export function useIpcRendererOn(...args: any[]): IpcRenderer {
   let channel: string
   let listener: IpcRendererListener
 
-  if (isString(args[0])) {
+  if (typeof args[0] === 'string') {
     [channel, listener] = args
     ipcRenderer = window.require ? window.require('electron').ipcRenderer : undefined
   }

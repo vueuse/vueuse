@@ -5,21 +5,21 @@ import { onKeyStroke } from '@vueuse/core'
 const translateX = ref(0)
 const translateY = ref(0)
 
-onKeyStroke(['w', 'W', 'ArrowUp'], (e: KeyboardEvent) => {
+onKeyStroke(['w', 'W', 'ArrowUp'], () => {
   translateY.value -= 10
 })
 
-onKeyStroke(['s', 'S', 'ArrowDown'], (e: KeyboardEvent) => {
+onKeyStroke(['s', 'S', 'ArrowDown'], () => {
   translateY.value += 10
 })
 
-onKeyStroke(['a', 'A', 'ArrowLeft'], (e: KeyboardEvent) => {
+onKeyStroke(['a', 'A', 'ArrowLeft'], () => {
   translateX.value -= 10
 })
 
-onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
+onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   translateX.value += 10
-})
+}, { dedupe: true })
 </script>
 
 <template>
@@ -28,7 +28,8 @@ onKeyStroke(['d', 'D', 'ArrowRight'], (e: KeyboardEvent) => {
       <div class="ball" :style="{ transform: `translate(${translateX}px, ${translateY}px)` }" />
     </div>
     <div class="text-center mt-4">
-      Use the arrow keys or w a s d keys to control the movement of the ball.
+      <p>Use the arrow keys or w a s d keys to control the movement of the ball.</p>
+      <p>Repeated events are ignored on the key `d` or `->`.</p>
     </div>
   </div>
 </template>

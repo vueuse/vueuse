@@ -22,7 +22,9 @@ import { createUnrefFn } from '@vueuse/core'
 const url = ref('https://httpbin.org/post')
 const data = ref({ foo: 'bar' })
 
-const post = (url, data) => fetch(url, { data })
+function post(url, data) {
+  return fetch(url, { data })
+}
 const unrefPost = createUnrefFn(post)
 
 post(url, data) /* ❌ Will throw an error because the arguments are refs */

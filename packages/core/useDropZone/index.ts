@@ -1,6 +1,6 @@
 import { ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
@@ -9,7 +9,7 @@ export interface UseDropZoneReturn {
 }
 
 export function useDropZone(
-  target: MaybeComputedRef<HTMLElement | null | undefined>,
+  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
   onDrop?: (files: File[] | null) => void,
 ): UseDropZoneReturn {
   const isOverDropZone = ref(false)

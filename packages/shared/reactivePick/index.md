@@ -8,7 +8,9 @@ Reactively pick fields from a reactive object.
 
 ## Usage
 
-```js
+### Basic Usage
+
+```ts
 import { reactivePick } from '@vueuse/core'
 
 const obj = reactive({
@@ -21,6 +23,22 @@ const obj = reactive({
 const picked = reactivePick(obj, 'x', 'elementX') // { x: number, elementX: number }
 ```
 
+### Predicate Usage
+
+```ts
+import { reactivePick } from '@vueuse/core'
+
+const source = reactive({
+  foo: 'foo',
+  bar: 'bar',
+  baz: 'baz',
+  qux: true,
+})
+const state = reactivePick(source, (value, key) => key !== 'bar' && value !== true)
+// { foo: string, baz: string }
+source.qux = false
+// { foo: string, baz: string, qux: boolean }
+````
 ### Scenarios
 
 #### Selectively passing props to child

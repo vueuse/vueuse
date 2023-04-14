@@ -1,4 +1,4 @@
-import { isDef, isFunction } from '@vueuse/shared'
+import { isDef } from '@vueuse/shared'
 import type { UnwrapRef } from 'vue-demi'
 import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
@@ -39,6 +39,13 @@ export interface UseVModelOptions<T> {
    * @default false
    */
   clone?: boolean | CloneFn<T>
+  /**
+   * The hook before triggering the emit event can be used for form validation.
+   * if false is returned, the emit event will not be triggered.
+   *
+   * @default undefined
+   */
+  shouldEmit?: (v: T) => boolean
 }
 
 /**
@@ -61,6 +68,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     eventName,
     deep = false,
     defaultValue,
+    shouldEmit,
   } = options
 
   const vm = getCurrentInstance()
@@ -84,13 +92,23 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   const cloneFn = (val: P[K]) => !clone
     ? val
-    : isFunction(clone)
+    : typeof clone === 'function'
       ? clone(val)
       : cloneFnJSON(val)
 
   const getValue = () => isDef(props[key!])
     ? cloneFn(props[key!])
     : defaultValue
+
+  const triggerEmit = (value: P[K]) => {
+    if (shouldEmit) {
+      if (shouldEmit(value))
+        _emit(event, value)
+    }
+    else {
+      _emit(event, value)
+    }
+  }
 
   if (passive) {
     const initialValue = getValue()
@@ -105,7 +123,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
       proxy,
       (v) => {
         if (v !== props[key!] || deep)
-          _emit(event, v)
+          triggerEmit(v as P[K])
       },
       { deep },
     )
@@ -118,7 +136,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
         return getValue()!
       },
       set(value) {
-        _emit(event, value)
+        triggerEmit(value)
       },
     })
   }

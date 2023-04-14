@@ -4,7 +4,7 @@ import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
-    const func = vitest.fn(() => 'data')
+    const func = vi.fn(() => 'data')
 
     const data = computed(func)
 
@@ -23,7 +23,7 @@ describe('computedAsync', () => {
   })
 
   it('is not lazy by default', async () => {
-    const func = vitest.fn(() => Promise.resolve('data'))
+    const func = vi.fn(() => Promise.resolve('data'))
 
     const data = computedAsync(func)
 
@@ -38,7 +38,7 @@ describe('computedAsync', () => {
 
   it('call onError when error is thrown', async () => {
     let errorMessage
-    const func = vitest.fn(async () => {
+    const func = vi.fn(async () => {
       throw new Error('An Error Message')
     })
 
@@ -60,7 +60,7 @@ describe('computedAsync', () => {
   })
 
   it('is lazy if configured', async () => {
-    const func = vitest.fn(async () => 'data')
+    const func = vi.fn(async () => 'data')
 
     const data = computedAsync(func, undefined, { lazy: true })
 
@@ -200,7 +200,7 @@ describe('computedAsync', () => {
   })
 
   test('cancel is called', async () => {
-    const onCancel = vitest.fn()
+    const onCancel = vi.fn()
     const evaluating = ref(false)
 
     const data = ref('initial')
@@ -236,7 +236,7 @@ describe('computedAsync', () => {
   })
 
   test('cancel is called for lazy', async () => {
-    const onCancel = vitest.fn()
+    const onCancel = vi.fn()
 
     const data = ref('initial')
     const uppercase = computedAsync((cancel) => {

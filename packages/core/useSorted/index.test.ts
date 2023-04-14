@@ -1,4 +1,4 @@
-import { unref } from 'vue'
+import { toValue } from '@vueuse/shared'
 import { useSorted } from '.'
 
 interface User {
@@ -53,8 +53,8 @@ describe('useSorted', () => {
 
   it('should pure sort function', () => {
     const sorted = useSorted(arr)
-    expect(unref(sorted)).toMatchObject(arrSorted)
-    expect(unref(arr)).toMatchInlineSnapshot(`
+    expect(toValue(sorted)).toMatchObject(arrSorted)
+    expect(toValue(arr)).toMatchInlineSnapshot(`
       [
         10,
         3,
@@ -74,14 +74,14 @@ describe('useSorted', () => {
     const dirtyArr = [...arr]
     const sorted = useSorted(dirtyArr, (a, b) => a - b, { dirty: true })
 
-    expect(unref(sorted)).toMatchObject(arrSorted)
-    expect(unref(dirtyArr)).toMatchObject(unref(sorted))
+    expect(toValue(sorted)).toMatchObject(arrSorted)
+    expect(toValue(dirtyArr)).toMatchObject(toValue(sorted))
   })
 
   it('should sort object', () => {
     const sorted = useSorted(objArr, (a, b) => a.age - b.age)
 
-    expect(unref(sorted)).toMatchObject(objectSorted)
+    expect(toValue(sorted)).toMatchObject(objectSorted)
   })
 
   it('should sort object by options.compareFn', () => {
@@ -89,6 +89,6 @@ describe('useSorted', () => {
       compareFn: (a, b) => a.age - b.age,
     })
 
-    expect(unref(sorted)).toMatchObject(objectSorted)
+    expect(toValue(sorted)).toMatchObject(objectSorted)
   })
 })

@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { computed, isRef, unref, watchEffect } from 'vue-demi'
+import { toValue } from '@vueuse/shared'
+import { computed, isRef, watchEffect } from 'vue-demi'
 
 export type UseSortedCompareFn<T = any> = (a: T, b: T) => number
 
@@ -60,11 +61,11 @@ export function useSorted(...args: any[]) {
   } = options
 
   if (!dirty)
-    return computed(() => sortFn([...unref(source)], compareFn))
+    return computed(() => sortFn([...toValue(source)], compareFn))
 
   // dirty
   watchEffect(() => {
-    const result = sortFn(unref(source), compareFn)
+    const result = sortFn(toValue(source), compareFn)
     if (isRef(source))
       source.value = result
     else

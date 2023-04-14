@@ -12,6 +12,7 @@ Reactive `Array.findIndex`
 
 ```js
 import { useArrayFindIndex } from '@vueuse/core'
+
 const item1 = ref(0)
 const item2 = ref(2)
 const item3 = ref(4)
@@ -28,6 +29,7 @@ item1.value = 1
 
 ```js
 import { useArrayFindIndex } from '@vueuse/core'
+
 const list = ref([0, 2, 4, 6, 8])
 const result = useArrayFindIndex(list, i => i % 2 === 0)
 // result.value: 0

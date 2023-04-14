@@ -1,16 +1,25 @@
-import { watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
+import type { Pausable } from '@vueuse/shared'
 import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
 export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
+   * Start the IntersectionObserver immediately on creation
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeElementRef
+  root?: MaybeComputedElementRef
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
@@ -23,6 +32,11 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   threshold?: number | number[]
 }
 
+export interface UseIntersectionObserverReturn extends Pausable {
+  isSupported: Ref<boolean>
+  stop: () => void
+}
+
 /**
  * Detects that a target element's visibility.
  *
@@ -32,29 +46,31 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   callback: IntersectionObserverCallback,
   options: UseIntersectionObserverOptions = {},
-) {
+): UseIntersectionObserverReturn {
   const {
     root,
     rootMargin = '0px',
     threshold = 0.1,
     window = defaultWindow,
+    immediate = true,
   } = options
 
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
 
   let cleanup = noop
+  const isActive = ref(immediate)
 
   const stopWatch = isSupported.value
     ? watch(
-      () => ({
-        el: unrefElement(target),
-        root: unrefElement(root),
-      }),
-      ({ el, root }) => {
+      () => [unrefElement(target), unrefElement(root), isActive.value] as const,
+      ([el, root]) => {
         cleanup()
+
+        if (!isActive.value)
+          return
 
         if (!el)
           return
@@ -62,7 +78,7 @@ export function useIntersectionObserver(
         const observer = new IntersectionObserver(
           callback,
           {
-            root,
+            root: unrefElement(root),
             rootMargin,
             threshold,
           },
@@ -74,21 +90,28 @@ export function useIntersectionObserver(
           cleanup = noop
         }
       },
-      { immediate: true, flush: 'post' },
+      { immediate, flush: 'post' },
     )
     : noop
 
   const stop = () => {
     cleanup()
     stopWatch()
+    isActive.value = false
   }
 
   tryOnScopeDispose(stop)
 
   return {
     isSupported,
+    isActive,
+    pause() {
+      cleanup()
+      isActive.value = false
+    },
+    resume() {
+      isActive.value = true
+    },
     stop,
   }
 }
-
-export type UseIntersectionObserverReturn = ReturnType<typeof useIntersectionObserver>

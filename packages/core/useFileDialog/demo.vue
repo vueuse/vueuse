@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { useFileDialog } from '.'
 
-const { files, open, reset } = useFileDialog()
+const { files, open, reset, onChange } = useFileDialog()
+onChange((files) => {
+  /** do something with files */
+})
 </script>
 
 <template>

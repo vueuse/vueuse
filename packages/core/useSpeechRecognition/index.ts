@@ -1,10 +1,10 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveRef, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, shallowRef, unref, watch } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -28,7 +28,7 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
    *
    * @default 'en-US'
    */
-  lang?: MaybeComputedRef<string>
+  lang?: MaybeRefOrGetter<string>
 }
 
 /**
@@ -45,7 +45,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     window = defaultWindow,
   } = options
 
-  const lang = resolveRef(options.lang || 'en-US')
+  const lang = toRef(options.lang || 'en-US')
   const isListening = ref(false)
   const isFinal = ref(false)
   const result = ref('')
@@ -73,7 +73,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
 
     recognition.continuous = continuous
     recognition.interimResults = interimResults
-    recognition.lang = unref(lang)
+    recognition.lang = toValue(lang)
 
     recognition.onstart = () => {
       isFinal.value = false
@@ -103,7 +103,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
 
     recognition.onend = () => {
       isListening.value = false
-      recognition!.lang = unref(lang)
+      recognition!.lang = toValue(lang)
     }
 
     watch(isListening, () => {

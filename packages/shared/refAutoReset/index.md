@@ -14,7 +14,7 @@ import { refAutoReset } from '@vueuse/core'
 
 const message = refAutoReset('default message', 1000)
 
-const setMessage = () => {
+function setMessage() {
   // here the value will change to 'message has set' but after 1000ms, it will change to 'default message'
   message.value = 'message has set'
 }

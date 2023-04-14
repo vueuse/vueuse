@@ -43,6 +43,21 @@ const mode = useColorMode({
 }) // Ref<'dark' | 'light' | 'dim' | 'cafe'>
 ```
 
+## Advanced Usage
+
+You can also explicit access to the system preference and storaged user override mode.
+
+```js
+import { useColorMode } from '@vueuse/core'
+
+const { system, store } = useColorMode()
+
+system.value // 'dark' | 'light'
+store.value // 'dark' | 'light' | 'auto'
+
+const myColorMode = computed(() => store.value === 'auto' ? system.value : store.value)
+```
+
 ## Component Usage
 
 ```html

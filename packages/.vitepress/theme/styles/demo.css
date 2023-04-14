@@ -5,6 +5,7 @@
   position: relative;
   margin-bottom: 10px;
   border-radius: 8px;
+  z-index: 50;
   transition: background-color 0.5s;
 }
 
@@ -117,7 +118,7 @@
     display: block;
     font-size: 0.9rem;
     padding: 0.5em 1em 0.4em 1em;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     border-radius: 4px;
     outline: none;
     background: var(--vp-c-bg);
@@ -132,7 +133,7 @@
   }
 
   input:focus {
-    border: 1px solid var(--vp-c-divider-dark-1);
+    border: 1px solid var(--vp-c-border);
   }
 
   pre,
@@ -157,7 +158,7 @@
     padding: 1rem;
     width: 200px;
     height: 200px;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     border-radius: 4px;
     background: white;
     outline: none;
@@ -171,7 +172,7 @@
     bottom: 0;
     right: 0;
     padding: 1rem 2rem;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     background: var(--vp-c-bg);
     z-index: 100;
     min-width: 100px;
@@ -181,6 +182,11 @@
     border-width: 2px;
     border-style: dashed;
     padding: 1rem;
+  }
+
+  dialog {
+    z-index: 1000000;
+    background: var(--vp-c-bg);
   }
 }
 

@@ -1,7 +1,6 @@
 import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue-demi'
 import { customRef, ref, watch } from 'vue-demi'
 import type { Fn } from '../utils'
-import { isFunction } from '../utils'
 
 export interface ComputedWithControlRefExtra {
   /**
@@ -45,8 +44,8 @@ export function computedWithControl<T, S>(
 
   watch(source, update, { flush: 'sync' })
 
-  const get = isFunction(fn) ? fn : fn.get
-  const set = isFunction(fn) ? undefined : fn.set
+  const get = typeof fn === 'function' ? fn : fn.get
+  const set = typeof fn === 'function' ? undefined : fn.set
 
   const result = customRef<T>((_track, _trigger) => {
     track = _track
