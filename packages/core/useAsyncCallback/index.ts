@@ -4,7 +4,7 @@ import type { AnyPromiseFn } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 
-type UseAsyncCallbackReturn<Fn extends AnyPromiseFn> =
+export type UseAsyncCallbackReturn<Fn extends AnyPromiseFn> =
   readonly [Fn, Ref<boolean>, Ref<any>] &
   { execute: Fn; loading: Ref<boolean>; error: Ref<any> }
 
