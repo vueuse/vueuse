@@ -148,7 +148,9 @@ export function executeTransition<T extends number | number[]>(
   const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-  const trans = toValue(options.transition) ?? linear
+  const trans = typeof options.transition === 'function'
+    ? options.transition
+    : (toValue(options.transition) ?? linear)
 
   const ease = typeof trans === 'function'
     ? trans
