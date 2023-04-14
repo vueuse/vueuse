@@ -1,10 +1,11 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Pausable } from '@vueuse/shared'
-import { noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
+import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed } from '@vue/reactivity'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
-import type { MaybeComputedElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
@@ -46,7 +47,7 @@ export interface UseIntersectionObserverReturn extends Pausable {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeComputedElementRef,
+  target: MaybeComputedElementRef | MaybeRefOrGetter<MaybeElement[]> | MaybeComputedElementRef[],
   callback: IntersectionObserverCallback,
   options: UseIntersectionObserverOptions = {},
 ): UseIntersectionObserverReturn {
@@ -59,20 +60,23 @@ export function useIntersectionObserver(
   } = options
 
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
+  const targets = computed(() => {
+    const _target = toValue(target)
+    return (Array.isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
+  })
 
   let cleanup = noop
   const isActive = ref(immediate)
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [unrefElement(target), unrefElement(root), isActive.value] as const,
-      ([el, root]) => {
+      () => [targets.value, unrefElement(root), isActive.value] as const,
+      ([targets, root]) => {
         cleanup()
-
         if (!isActive.value)
           return
 
-        if (!el)
+        if (targets.length)
           return
 
         const observer = new IntersectionObserver(
@@ -83,7 +87,8 @@ export function useIntersectionObserver(
             threshold,
           },
         )
-        observer.observe(el)
+
+        targets.forEach(el => el && observer.observe(el))
 
         cleanup = () => {
           observer.disconnect()
