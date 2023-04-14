@@ -49,7 +49,7 @@ onKeyStroke('A', (e) => {
 The callback will trigger only once when pressing `A` and **hold down**.
 
 ```js
-import { onKeyStroke, onKeyStrokeOnce } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 
 // use `autoRepeat` option
 onKeyStroke('A', (e) => {
