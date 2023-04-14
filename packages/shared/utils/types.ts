@@ -9,6 +9,10 @@ export type Fn = () => void
  * Any function
  */
 export type AnyFn = (...args: any[]) => any
+/**
+ * Any Promise function
+ */
+export type AnyPromiseFn = (...args: any[]) => Promise<any>
 
 /**
  * A ref that allow to set null or undefined
