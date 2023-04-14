@@ -1,5 +1,5 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, nextTick, reactive, ref, watch, watchEffect } from 'vue-demi'
 import type { Position } from '../types'
@@ -15,7 +15,7 @@ export interface UseContextMenuOptions {
    *
    * @default true
    */
-  hideOnClick?: MaybeComputedRef<boolean>
+  hideOnClick?: MaybeRefOrGetter<boolean>
 
   /**
    * Enable the context menu only when the mouse is clicking this element,
@@ -208,7 +208,7 @@ export function useContextMenu(
     useEventListener(['scroll', 'click', 'resize', 'blur'], hide),
     useEventListener('contextmenu', hide, { capture: true }),
     useEventListener(menuElementRef, 'click', (e) => {
-      if (!resolveUnref(hideOnClick)) {
+      if (!toValue(hideOnClick)) {
         // hide it only when clicking outside of the menu,
         // so stopPropagation when clicking on itself.
         e.stopPropagation()
