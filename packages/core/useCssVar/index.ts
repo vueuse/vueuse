@@ -1,7 +1,7 @@
-import { useMutationObserver } from '@vueuse/core'
 import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
+import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
