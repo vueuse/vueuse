@@ -1,4 +1,4 @@
-import type { Ref, ToRef } from 'vue-demi'
+import type { ComputedRef, Ref, ToRef } from 'vue-demi'
 import {
   customRef,
   readonly,
@@ -12,6 +12,8 @@ import { noop } from '../utils'
 /**
  * Normalize value/ref/getter to `ref` or `computed`.
  */
+export function toRef<T>(r: () => T): Readonly<Ref<T>>
+export function toRef<T>(r: ComputedRef<T>): ComputedRef<T>
 export function toRef<T>(r: MaybeRefOrGetter<T>): Ref<T>
 export function toRef<T>(r: T): Ref<T>
 export function toRef<T extends object, K extends keyof T>(object: T, key: K): ToRef<T[K]>
