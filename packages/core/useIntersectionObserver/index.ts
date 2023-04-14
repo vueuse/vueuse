@@ -1,7 +1,8 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed } from '@vue/reactivity'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
@@ -46,7 +47,7 @@ export interface UseIntersectionObserverReturn extends Pausable {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeComputedElementRef | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRef | MaybeRefOrGetter<MaybeElement[]> | MaybeComputedElementRef[],
   callback: IntersectionObserverCallback,
   options: UseIntersectionObserverOptions = {},
 ): UseIntersectionObserverReturn {
@@ -59,23 +60,23 @@ export function useIntersectionObserver(
   } = options
 
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
+  const targets = computed(() => {
+    const _target = toValue(target)
+    return (Array.isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
+  })
 
   let cleanup = noop
   const isActive = ref(immediate)
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [target, unrefElement(root), isActive.value] as const,
-      ([newTarget, root]) => {
+      () => [targets.value, unrefElement(root), isActive.value] as const,
+      ([targets, root]) => {
         cleanup()
-        const plain = toValue(newTarget)
-        const isArray = Array.isArray(plain)
-        const el = !isArray ? unrefElement(newTarget as MaybeComputedElementRef) : undefined
-
         if (!isActive.value)
           return
 
-        if ((!isArray && !el) || !el)
+        if (targets.length)
           return
 
         const observer = new IntersectionObserver(
@@ -87,13 +88,7 @@ export function useIntersectionObserver(
           },
         )
 
-        isArray
-          ? plain.forEach((e) => {
-            const el = unrefElement(e)
-            if (el)
-              observer.observe(el)
-          })
-          : observer.observe(el)
+        targets.forEach(el => el && observer.observe(el))
 
         cleanup = () => {
           observer.disconnect()
