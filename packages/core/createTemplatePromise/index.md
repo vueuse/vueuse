@@ -7,6 +7,10 @@ outline: deep
 
 Template as Promise. Useful for constructing custom Dialogs, Modals, Toasts, etc.
 
+::: warning
+This function only works for Vue 3
+:::
+
 ## Usage
 
 ```html
@@ -29,10 +33,6 @@ async function open() {
 </template>
 ```
 
-::: tip
-This function is migrated from [vue-template-promise](https://github.com/antfu/vue-template-promise)
-:::
-
 ## Features
 
 - **Programmatic** - call your UI as a promise
@@ -40,6 +40,8 @@ This function is migrated from [vue-template-promise](https://github.com/antfu/v
 - **TypeScript** - full type safety via generic type
 - **Renderless** - you take full control of the UI
 - **Transition** - use support Vue transition
+
+This function is migrated from [vue-template-promise](https://github.com/antfu/vue-template-promise)
 
 ## Usage
 
