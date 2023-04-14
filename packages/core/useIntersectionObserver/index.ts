@@ -1,10 +1,10 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
-import type { Pausable } from '@vueuse/shared'
-import { noop, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
+import { noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
-import type { MaybeComputedElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
@@ -46,7 +46,7 @@ export interface UseIntersectionObserverReturn extends Pausable {
  * @param options
  */
 export function useIntersectionObserver(
-  target: MaybeComputedElementRef,
+  target: MaybeComputedElementRef | MaybeRefOrGetter<MaybeElement[]>,
   callback: IntersectionObserverCallback,
   options: UseIntersectionObserverOptions = {},
 ): UseIntersectionObserverReturn {
@@ -65,14 +65,17 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [unrefElement(target), unrefElement(root), isActive.value] as const,
-      ([el, root]) => {
+      () => [target, unrefElement(root), isActive.value] as const,
+      ([newTarget, root]) => {
         cleanup()
+        const plain = toValue(newTarget)
+        const isArray = Array.isArray(plain)
+        const el = !isArray ? unrefElement(newTarget as MaybeComputedElementRef) : undefined
 
         if (!isActive.value)
           return
 
-        if (!el)
+        if ((!isArray && !el) || !el)
           return
 
         const observer = new IntersectionObserver(
@@ -83,7 +86,14 @@ export function useIntersectionObserver(
             threshold,
           },
         )
-        observer.observe(el)
+
+        isArray
+          ? plain.forEach((e) => {
+            const el = unrefElement(e)
+            if (el)
+              observer.observe(el)
+          })
+          : observer.observe(el)
 
         cleanup = () => {
           observer.disconnect()
