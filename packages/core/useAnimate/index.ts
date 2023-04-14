@@ -61,7 +61,7 @@ export interface UseAnimateReturn {
 
 type AnimateStoreKeys = Extract<keyof Animation, 'startTime' | 'currentTime' | 'timeline' | 'playbackRate' | 'pending' | 'playState' | 'replaceState'>
 
-type AnimateSrote = Mutable<Pick<Animation, AnimateStoreKeys>>
+type AnimateStore = Mutable<Pick<Animation, AnimateStoreKeys>>
 
 /**
  * Reactive Web Animations API
@@ -103,7 +103,7 @@ export function useAnimate(
   const isSupported = useSupported(() => window && HTMLElement && 'animate' in HTMLElement.prototype)
 
   const animate = shallowRef<Animation | undefined>(undefined)
-  const store = shallowReactive<AnimateSrote>({
+  const store = shallowReactive<AnimateStore>({
     startTime: null,
     currentTime: null,
     timeline: null,
