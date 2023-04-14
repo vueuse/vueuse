@@ -76,7 +76,7 @@ export function useIntersectionObserver(
         if (!isActive.value)
           return
 
-        if (targets.length)
+        if (!targets.length)
           return
 
         const observer = new IntersectionObserver(
