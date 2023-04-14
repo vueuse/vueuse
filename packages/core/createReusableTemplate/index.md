@@ -56,7 +56,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 - `<ReuseTemplate>` will render the template provided by `<DefineTemplate>`.
 - `<DefineTemplate>` must be used before `<ReuseTemplate>`.
 
-> **Note**: It's recommanded to extract as separate components whenever possible. Abusing this function might lead to bad practices for your codebase.
+> **Note**: It's recommended to extract as separate components whenever possible. Abusing this function might lead to bad practices for your codebase.
 
 ### Passing Data
 
