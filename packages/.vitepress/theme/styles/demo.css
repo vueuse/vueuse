@@ -5,7 +5,7 @@
   position: relative;
   margin-bottom: 10px;
   border-radius: 8px;
-  z-index: 50;
+  z-index: 30;
   transition: background-color 0.5s;
 }
 
