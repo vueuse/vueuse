@@ -39,6 +39,5 @@
   "vite.vitepressBase": "packages",
   "vite.vitepressAutoRouting": true,
   "vite.buildCommand": "npm run docs:build",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSave": false
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
