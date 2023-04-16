@@ -67,7 +67,7 @@ You can also pass data to the template using slots:
 
 ```html
 <script setup>
-import { createReusableTemplate} from '@vueuse/core'
+import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 </script>
