@@ -1,6 +1,6 @@
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { createEventHook, isObject, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isArray, isObject, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -256,7 +256,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     // Merge sources into an array
     if (typeof src === 'string')
       sources = [{ src }]
-    else if (Array.isArray(src))
+    else if (isArray(src))
       sources = src
     else if (isObject(src))
       sources = [src]

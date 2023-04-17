@@ -1,6 +1,7 @@
 import type { Reactified, ReactifyOptions } from '../reactify'
 import { reactify } from '../reactify'
 import type { AnyFn } from '../utils'
+import { isArray } from '../utils'
 
 export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends AnyFn ? Reactified<T[K], S> : T[K] }
 
@@ -22,7 +23,7 @@ export function reactifyObject<T extends object, S extends boolean = true>(obj: 
 export function reactifyObject<T extends object, S extends boolean = true>(obj: T, optionsOrKeys: ReactifyObjectOptions<S> | (keyof T)[] = {}): ReactifyNested<T, keyof T, S> {
   let keys: string[] = []
   let options: ReactifyOptions<S> | undefined
-  if (Array.isArray(optionsOrKeys)) {
+  if (isArray(optionsOrKeys)) {
     keys = optionsOrKeys as string[]
   }
   else {

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import { isArray, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 
@@ -25,7 +25,7 @@ function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
   else if (typeof keyFilter === 'string')
     return (event: KeyboardEvent) => event.key === keyFilter
 
-  else if (Array.isArray(keyFilter))
+  else if (isArray(keyFilter))
     return (event: KeyboardEvent) => keyFilter.includes(event.key)
 
   return () => true

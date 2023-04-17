@@ -1,5 +1,5 @@
 import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import { isArray, toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
 import { del, get, set, update } from 'idb-keyval'
@@ -86,7 +86,7 @@ export function useIDBKeyval<T>(
       }
       else {
         // IndexedDB does not support saving proxies, convert from proxy before saving
-        if (Array.isArray(data.value))
+        if (isArray(data.value))
           await update(key, () => (JSON.parse(JSON.stringify(data.value))))
         else if (typeof data.value === 'object')
           await update(key, () => ({ ...data.value }))

@@ -1,5 +1,6 @@
 import { isRef, ref } from 'vue-demi'
 import { toValue } from '../toValue'
+import { isArray } from '../utils'
 import { useToggle } from '.'
 
 describe('useToggle', () => {
@@ -11,7 +12,7 @@ describe('useToggle', () => {
     const result = useToggle()
     const [value, toggle] = result
 
-    expect(Array.isArray(result)).toBe(true)
+    expect(isArray(result)).toBe(true)
     expect(result.length).toBe(2)
 
     expect(typeof toggle).toBe('function')
@@ -23,7 +24,7 @@ describe('useToggle', () => {
     const result = useToggle(true)
     const [value, toggle] = result
 
-    expect(Array.isArray(result)).toBe(true)
+    expect(isArray(result)).toBe(true)
     expect(result.length).toBe(2)
 
     expect(typeof toggle).toBe('function')

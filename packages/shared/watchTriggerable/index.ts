@@ -1,6 +1,7 @@
 import type { WatchSource } from 'vue-demi'
 import { isReactive } from 'vue-demi'
 import type { MapOldSources, MapSources } from '../utils'
+import { isArray } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
 import { watchIgnorable } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
@@ -72,14 +73,14 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
 function getWatchSources(sources: any) {
   if (isReactive(sources))
     return sources
-  if (Array.isArray(sources))
+  if (isArray(sources))
     return sources.map(item => toValue(item))
   return toValue(sources)
 }
 
 // For calls triggered by trigger, the old value is unknown, so it cannot be returned
 function getOldValue(source: any) {
-  return Array.isArray(source)
+  return isArray(source)
     ? source.map(() => undefined)
     : undefined
 }

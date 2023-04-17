@@ -1,4 +1,4 @@
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { isArray, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -63,7 +63,7 @@ export function useResizeObserver(
   }
 
   const targets = computed(() =>
-    Array.isArray(target)
+    isArray(target)
       ? target.map(el => unrefElement(el))
       : [unrefElement(target)],
   )

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { isArray, noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { computed } from '@vue/reactivity'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -62,7 +62,7 @@ export function useIntersectionObserver(
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
   const targets = computed(() => {
     const _target = toValue(target)
-    return (Array.isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
+    return (isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
   })
 
   let cleanup = noop

@@ -1,6 +1,7 @@
 import type { WatchOptions, WatchSource } from 'vue-demi'
 import { watch } from 'vue-demi'
 import { toValue } from '../toValue'
+import { isArray } from '../utils'
 
 export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue: OV, added: V, removed: OV, onCleanup: (cleanupFn: () => void) => void) => any
 
@@ -18,7 +19,7 @@ export function watchArray<T, Immediate extends Readonly<boolean> = false>(
     ? []
     : [...(source instanceof Function
         ? source()
-        : Array.isArray(source)
+        : isArray(source)
           ? source
           : toValue(source)),
       ]

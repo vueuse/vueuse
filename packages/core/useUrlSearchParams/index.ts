@@ -1,5 +1,5 @@
 import { reactive } from 'vue-demi'
-import { pausableWatch } from '@vueuse/shared'
+import { isArray, pausableWatch } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -104,7 +104,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
       const params = new URLSearchParams('')
       Object.keys(state).forEach((key) => {
         const mapEntry = state[key]
-        if (Array.isArray(mapEntry))
+        if (isArray(mapEntry))
           mapEntry.forEach(value => params.append(key, value))
         else if (removeNullishValues && mapEntry == null)
           params.delete(key)

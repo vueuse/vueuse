@@ -2,7 +2,7 @@ import type { WatchOptions, WatchSource } from 'vue-demi'
 import { isRef, watch } from 'vue-demi'
 import { toValue } from '../toValue'
 import type { ElementOf, MaybeRefOrGetter, ShallowUnwrapRef } from '../utils'
-import { promiseTimeout } from '../utils'
+import { isArray, promiseTimeout } from '../utils'
 
 export interface UntilToMatchOptions {
   /**
@@ -177,7 +177,7 @@ function createUntil<T>(r: any, isNot = false) {
     }, options)
   }
 
-  if (Array.isArray(toValue(r))) {
+  if (isArray(toValue(r))) {
     const instance: UntilArrayInstance<T> = {
       toMatch,
       toContains,

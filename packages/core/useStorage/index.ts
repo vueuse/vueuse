@@ -1,6 +1,6 @@
 import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, toValue } from '@vueuse/shared'
+import { isArray, pausableWatch, toValue } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -224,7 +224,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       const value = serializer.read(rawValue)
       if (typeof mergeDefaults === 'function')
         return mergeDefaults(value, rawInit)
-      else if (type === 'object' && !Array.isArray(value))
+      else if (type === 'object' && !isArray(value))
         return { ...rawInit as any, ...value }
       return value
     }

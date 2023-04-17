@@ -1,4 +1,5 @@
 import type { MaybeRef } from '@vueuse/shared'
+import { isArray } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
 
@@ -47,7 +48,7 @@ export function useStepper<T extends string | number>(steps: MaybeRef<T[]>, init
 export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
 export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any, any, any> {
   const stepsRef = ref<any[]>(steps)
-  const stepNames = computed<any[]>(() => Array.isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))
+  const stepNames = computed<any[]>(() => isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))
   const index = ref(stepNames.value.indexOf(initialStep ?? stepNames.value[0]))
   const current = computed(() => at(index.value))
   const isFirst = computed(() => index.value === 0)
@@ -56,7 +57,7 @@ export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any,
   const previous = computed(() => stepNames.value[index.value - 1])
 
   function at(index: number) {
-    if (Array.isArray(stepsRef.value))
+    if (isArray(stepsRef.value))
       return stepsRef.value[index]
 
     return stepsRef.value[stepNames.value[index]]

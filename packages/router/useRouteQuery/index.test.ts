@@ -1,3 +1,4 @@
+import { isArray } from '@vueuse/shared'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
@@ -21,7 +22,7 @@ describe('useRouteQuery', () => {
     const router = {} as any
     const route = getRoute()
     const transform = Number
-    const toArray = (param: string | string[] | null) => Array.isArray(param) ? param : [param]
+    const toArray = (param: string | string[] | null) => isArray(param) ? param : [param]
 
     const page = useRouteQuery('page', '1', { transform, route, router })
     const perPage = useRouteQuery('perPage', '15', { transform, route, router })

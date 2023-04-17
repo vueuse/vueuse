@@ -1,3 +1,5 @@
+import { isArray } from '@vueuse/shared'
+
 const defaults = {
   array: (v: unknown[]) => JSON.stringify(v),
   object: (v: Record<string, unknown>) => JSON.stringify(v),
@@ -14,7 +16,7 @@ export function getDefaultSerialization<T extends Object>(target: T) {
     return defaults.map
   else if (target instanceof Set)
     return defaults.set
-  else if (Array.isArray(target))
+  else if (isArray(target))
     return defaults.array
   else
     return defaults.object

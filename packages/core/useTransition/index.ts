@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue-demi'
-import { identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { isArray, identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
@@ -168,7 +168,7 @@ export function executeTransition<T extends number | number[]>(
       const alpha = ease((now - startedAt) / duration)
       const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
 
-      if (Array.isArray(source.value))
+      if (isArray(source.value))
         (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
       else if (typeof source.value === 'number')
         (source.value as number) = arr[0]
@@ -231,7 +231,7 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(toValue<number>) : toValue(to)
+    const toVal = isArray(to) ? to.map(toValue<number>) : toValue(to)
 
     options.onStarted?.()
 

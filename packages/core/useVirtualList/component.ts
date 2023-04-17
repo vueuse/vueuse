@@ -1,6 +1,6 @@
 import { defineComponent, h, toRefs } from 'vue-demi'
 import type { UseVirtualListOptions } from '@vueuse/core'
-import { useVirtualList } from '@vueuse/core'
+import { isArray, useVirtualList } from '@vueuse/core'
 
 export interface UseVirtualListProps {
   /**
@@ -36,7 +36,7 @@ export const UseVirtualList = /*#__PURE__*/ defineComponent<UseVirtualListProps>
     const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(listRef, props.options)
     expose({ scrollTo })
 
-    typeof containerProps.style === 'object' && !Array.isArray(containerProps.style) && (containerProps.style.height = props.height || '300px')
+    typeof containerProps.style === 'object' && !isArray(containerProps.style) && (containerProps.style.height = props.height || '300px')
 
     return () => h('div',
       { ...containerProps },

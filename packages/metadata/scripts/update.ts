@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
 import fg from 'fast-glob'
 import Git from 'simple-git'
+import { isArray } from '@vueuse/shared'
 import { packages } from '../../../meta/packages'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { getCategories } from '../utils'
@@ -90,7 +91,7 @@ export async function readMetadata() {
       let related = frontmatter.related
       if (typeof related === 'string')
         related = related.split(',').map(s => s.trim()).filter(Boolean)
-      else if (Array.isArray(related))
+      else if (isArray(related))
         related = related.map(s => s.trim()).filter(Boolean)
 
       let description = (md
