@@ -3,7 +3,7 @@ html.dark {
 }
 
 .vp-doc h2 {
-  border-top: 0px;
+  border-top: 0;
   margin-top: 10px;
 }
 
@@ -18,5 +18,12 @@ html.dark {
 #app a:focus-visible,
 #app button:focus-visible,
 #app input[type="checkbox"]:focus-visible {
-  @apply outline-1 outline-primary ring-2 ring-primary;
+  --at-apply: outline-1 outline-primary ring-2 ring-primary;
+}
+
+/* Vue School Banner */
+#bb-banner {
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
 }

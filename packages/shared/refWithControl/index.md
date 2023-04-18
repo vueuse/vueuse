@@ -6,7 +6,11 @@ related: computedWithControl
 
 # refWithControl
 
-Fine-grained controls over ref and its reactivity. (Vue 3 Only)
+Fine-grained controls over ref and its reactivity.
+
+::: warning
+This function only works for Vue 3
+:::
 
 ## Usage
 

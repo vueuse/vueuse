@@ -41,7 +41,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [14.x, 16.x, 18.x]
+        node: [16.x, 18.x]
       fail-fast: false
 
     steps:
@@ -73,3 +73,7 @@ jobs:
 
       - name: Test Vue 2
         run: pnpm run test:2
+
+      - if: matrix.node == '18.x'
+        name: Playground Smoke Test
+        run: cd playgrounds && bash ./build.sh

@@ -6,6 +6,8 @@ Add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bind
 
 > ⚠️ This package only work with [Firebase 9 or above with the modular style](https://firebase.google.com/docs/web/modular-upgrade). For legacy versions, use `@vueuse/firebase@8` instead.
 
+> 💡 Give a try to [VueFire](https://vuefire.vuejs.org/) if you are looking for a more complete solution!
+
 ## Install
 
 <pre class='language-bash'>

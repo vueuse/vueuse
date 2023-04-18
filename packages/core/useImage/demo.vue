@@ -5,7 +5,7 @@ import { ref } from 'vue'
 const imageOptions = ref({ src: 'https://place.dog/300/200' })
 const { isLoading, error } = useImage(imageOptions, { delay: 2000 })
 
-const change = () => {
+function change() {
   const time = new Date().getTime()
   imageOptions.value.src = `https://place.dog/300/200?t=${time}`
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CoreTeam } from '../contributors'
+import type { CoreTeam } from '../../../contributors'
 
 defineProps<{
   data: CoreTeam

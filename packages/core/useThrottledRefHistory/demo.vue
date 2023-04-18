@@ -4,7 +4,9 @@ import { useCounter } from '@vueuse/shared'
 import { formatDate, useThrottledRefHistory } from '@vueuse/core'
 import type { Ref } from 'vue'
 
-const format = (ts: number) => formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
+function format(ts: number) {
+  return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
+}
 const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()

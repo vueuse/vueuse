@@ -30,4 +30,6 @@ export const coreCategoryNames = categoryNames
 export const addonCategoryNames = categoryNames
   .filter(f => f.startsWith('@'))
 
-export const getFunction = (name: string) => metadata.functions.find(f => f.name === name)
+export function getFunction(name: string) {
+  return metadata.functions.find(f => f.name === name)
+}

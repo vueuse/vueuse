@@ -4,6 +4,7 @@ export const currentVersion = `v${version}`
 
 export const versions = [
   { version: currentVersion },
+  { version: 'v9.13.0', link: 'https://v9-13-0.vueuse.org/' },
   { version: 'v8.9.4', link: 'https://v8-9-4.vueuse.org/' },
   { version: 'v7.7.1', link: 'https://v7-7-1.vueuse.org/' },
   { version: 'v6.7.6', link: 'https://v6-7-6.vueuse.org/' },

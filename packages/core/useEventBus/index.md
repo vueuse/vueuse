@@ -13,7 +13,7 @@ import { useEventBus } from '@vueuse/core'
 
 const bus = useEventBus<string>('news')
 
-const listener = (event: string) => {
+function listener(event: string) {
   console.log(`news: ${event}`)
 }
 

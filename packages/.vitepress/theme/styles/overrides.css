@@ -1,0 +1,8 @@
+.custom-block-title {
+  opacity: 0.5;
+  font-size: 12px;
+  margin-top: -5px !important;
+  margin-bottom: -10px !important;
+  filter: saturate(0.6);
+  letter-spacing: 0.5px;
+}

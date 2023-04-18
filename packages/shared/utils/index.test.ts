@@ -1,5 +1,5 @@
 import { isVue3, ref } from 'vue-demi'
-import { __onlyVue3, assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isBoolean, isClient, isDef, isFunction, isIOS, isNumber, isObject, isString, isWindow, noop, now, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -16,6 +16,15 @@ describe('utils', () => {
   it('objectPick', () => {
     expect(objectPick({ a: 1, b: 2, c: 3 }, ['a', 'b'])).toEqual({ a: 1, b: 2 })
     expect(objectPick({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({ a: 1, b: 2 })
+  })
+
+  it('objectOmit', () => {
+    const obj = { a: 1, b: 2, c: 3 }
+
+    expect(objectOmit(obj, ['a', 'b'])).toEqual({ c: 3 })
+    expect(obj).toEqual({ a: 1, b: 2, c: 3 })
+    expect(objectOmit({ a: 1, b: 2, c: undefined }, ['a', 'b'], true)).toEqual({})
+    expect(objectOmit({ a: 1, b: 2, c: undefined }, ['b', 'c'], true)).toEqual({ a: 1 })
   })
 })
 
@@ -64,35 +73,53 @@ describe('promise', () => {
 
 describe('filters', () => {
   beforeEach(() => {
-    vitest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   it('should debounce', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
     const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
 
     setTimeout(filter, 200)
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
     setTimeout(filter, 500)
-    vitest.advanceTimersByTime(500)
+    vi.advanceTimersByTime(500)
     expect(debouncedFilterSpy).toHaveBeenCalledOnce()
   })
 
   it('should debounce twice', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
     const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
 
     setTimeout(filter, 500)
-    vitest.advanceTimersByTime(500)
+    vi.advanceTimersByTime(500)
     setTimeout(filter, 1000)
-    vitest.advanceTimersByTime(2000)
+    vi.advanceTimersByTime(2000)
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('should resolve & reject debounced fn', async () => {
+    const debouncedSum = createFilterWrapper(
+      debounceFilter(500, { rejectOnCancel: true }),
+      (a: number, b: number) => a + b,
+    )
+
+    const five = debouncedSum(2, 3)
+    let nine
+    setTimeout(() => {
+      nine = debouncedSum(4, 5)
+    }, 200)
+
+    vi.runAllTimers()
+
+    await expect(five).rejects.toBeUndefined()
+    await expect(nine).resolves.toBe(9)
+  })
+
   it('should debounce with ref', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
     const debounceTime = ref(0)
     const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
 
@@ -101,27 +128,27 @@ describe('filters', () => {
     filter()
     setTimeout(filter, 200)
 
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should throttle', () => {
-    const debouncedFilterSpy = vitest.fn()
-    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+    const throttledFilterSpy = vi.fn()
+    const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)
 
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
 
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should throttle evenly', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
 
     const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
@@ -129,7 +156,7 @@ describe('filters', () => {
     setTimeout(() => filter(2), 1000)
     setTimeout(() => filter(3), 2000)
 
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
     expect(debouncedFilterSpy).toHaveBeenCalledWith(1)
@@ -138,7 +165,7 @@ describe('filters', () => {
   })
 
   it('should throttle with ref', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
     const throttle = ref(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
@@ -149,33 +176,92 @@ describe('filters', () => {
     setTimeout(filter, 600)
     setTimeout(filter, 900)
 
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should not duplicate single event', () => {
-    const debouncedFilterSpy = vitest.fn()
+    const debouncedFilterSpy = vi.fn()
     const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
     setTimeout(filter, 500)
 
-    vitest.runAllTimers()
+    vi.runAllTimers()
 
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should get trailing value', () => {
+    const sumSpy = vi.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter(1000, true),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(6 + 7)
+
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(4)
+    expect(result).resolves.toBe(10 + 11)
+  })
+
+  it('should get leading value', () => {
+    const sumSpy = vi.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter(1000, false),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(1)
+    expect(result).resolves.toBe(2 + 3)
+
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(8 + 9)
   })
 })
 
 describe('is', () => {
   beforeEach(() => {
     console.warn = vi.fn()
-  })
-
-  it('should be boolean', () => {
-    expect(isBoolean(true)).toBeTruthy()
-    expect(isBoolean(false)).toBeTruthy()
-    expect(0).toBeFalsy()
-    expect('').toBeFalsy()
   })
 
   it('should be client', () => {
@@ -200,31 +286,10 @@ describe('is', () => {
     expect(isDef(undefined)).toBeFalsy()
   })
 
-  it('should be function', () => {
-    expect(isFunction(() => {})).toBeTruthy()
-    expect(isFunction(() => {})).toBeTruthy()
-  })
-
-  it('should be number', () => {
-    expect(isNumber(1)).toBeTruthy()
-    expect(isNumber('1')).toBeFalsy()
-  })
-
-  it('should be string', () => {
-    expect(isString('')).toBeTruthy()
-    expect(isString(0)).toBeFalsy()
-  })
-
   it('should be object', () => {
     expect(isObject({})).toBeTruthy()
     expect(isObject(null)).toBeFalsy()
     expect(isObject([])).toBeFalsy()
-  })
-
-  it('should be window', () => {
-    // Object.prototype.toString.call(window) is '[object global]'
-    expect(isWindow(window)).toBeFalsy()
-    expect(isWindow({})).toBeFalsy()
   })
 
   it('should be now', () => {
@@ -267,18 +332,7 @@ describe('is', () => {
 
 describe('compatibility', () => {
   it('should export module', () => {
-    expect(__onlyVue3).toBeDefined()
     expect(directiveHooks).toBeDefined()
-  })
-
-  it('__onlyVues', () => {
-    if (isVue3) {
-      expect(__onlyVue3()).toBeUndefined()
-    }
-    else {
-      expect(() => __onlyVue3()).toThrowError('[VueUse] this function is only works on Vue 3.')
-      expect(() => __onlyVue3('func')).toThrowError('[VueUse] func is only works on Vue 3.')
-    }
   })
 
   it('directiveHooks', () => {

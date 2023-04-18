@@ -1,5 +1,5 @@
-import { readonly, ref, unref, watch } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { readonly, ref, watch } from 'vue-demi'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRef } from '@vueuse/shared'
 
 /**
@@ -19,7 +19,7 @@ export function useObjectUrl(object: MaybeRef<Blob | MediaSource | undefined>) {
   }
 
   watch(
-    () => unref(object),
+    () => toValue(object),
     (newObject) => {
       release()
 

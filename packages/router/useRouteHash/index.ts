@@ -1,5 +1,6 @@
-import { computed, nextTick, unref } from 'vue-demi'
+import { computed, nextTick } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
+import { toValue } from '@vueuse/shared'
 import type { ReactiveRouteOptions } from '../_types'
 
 export function useRouteHash(
@@ -16,7 +17,7 @@ export function useRouteHash(
     },
     set(v) {
       nextTick(() => {
-        router[unref(mode)]({ ...route, hash: v })
+        router[toValue(mode)]({ ...route, hash: v })
       })
     },
   })

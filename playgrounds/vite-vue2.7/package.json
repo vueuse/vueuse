@@ -1,0 +1,19 @@
+{
+  "name": "vite-vue2.7",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.38.4",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vueuse/core": "file:../../packages/core/dist",
+    "@vueuse/metadata": "file:../../packages/metadata/dist",
+    "@vueuse/shared": "file:../../packages/shared/dist",
+    "eslint": "^8.38.0",
+    "vite": "^4.2.1",
+    "vue": "^2.7"
+  }
+}
