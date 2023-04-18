@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref, unref } from "vue-demi"
+import { computed, ComputedRef, Ref, unref, warn } from "vue-demi"
 
 type DurationUnits = 'Y' | 'M' | 'w' | 'd' | 'h' | 'm' | 's' | '甲子'
 
@@ -41,10 +41,10 @@ export function useDuration(duration: string | Ref<string>, date: number | Date 
       if (units.includes(unit)) {
         durationTime += timeValue * Units[unit]
       } else {
-        throw new TypeError(`unknow unit ${unit}`)
+        warn(`unknow unit ${unit}`)
       }
     } else {
-      throw TypeError(`can't process this time format: ${dur}`)
+      warn(`can't process this time format: ${dur}`)
     }
   }
   let durDate = new Date()
