@@ -1,5 +1,6 @@
 import type { JwtHeader, JwtPayload } from 'jwt-decode'
 import { ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { useJwt } from '.'
 
 interface CustomJwtHeader extends JwtHeader {
@@ -13,7 +14,7 @@ interface CustomJwtPayload extends JwtPayload {
 describe('useJwt', () => {
   const encodedJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
 
-  test('decoded jwt', () => {
+  it('decoded jwt', () => {
     const { header, payload } = useJwt(encodedJwt)
     expect(header.value?.alg).toBe('HS256')
     // NOTE: ts-ignore can be removed as soon as jwt-decode > v3.1.2 was released
@@ -24,7 +25,7 @@ describe('useJwt', () => {
     expect(payload.value?.iat).toBe(1516239022)
   })
 
-  test('decode jwt error', () => {
+  it('decode jwt error', () => {
     const onErrorSpy = vi.fn()
 
     const { header, payload } = useJwt(ref('bad-token'), { onError: onErrorSpy })
@@ -35,13 +36,13 @@ describe('useJwt', () => {
 
   const encodedCustomJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImZvbyI6ImJhciJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJmb28iOiJiYXIifQ.S5QwvREUfgEdpB1ljG_xN6NI3HubQ79xx6J1J4dsJmg')
 
-  test('decoded jwt with custom fields', () => {
+  it('decoded jwt with custom fields', () => {
     const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(encodedCustomJwt)
     expect(header.value?.foo).toBe('bar')
     expect(payload.value?.foo).toBe('bar')
   })
 
-  test('reactivity', () => {
+  it('reactivity', () => {
     const jwt = ref(encodedJwt.value)
     const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(jwt)
     expect(header.value?.foo).toBeUndefined()

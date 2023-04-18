@@ -1,6 +1,7 @@
 import { promiseTimeout, timestamp } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
+import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
 import { useTimeAgo } from '.'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
@@ -45,7 +46,7 @@ describe('useTimeAgo', () => {
     vi.useRealTimers()
   })
 
-  test('control now', async () => {
+  it('control now', async () => {
     vi.useRealTimers()
     const { resume, pause, timeAgo } = useTimeAgo(baseTime, { controls: true, showSecond: true, updateInterval: 500 })
     await promiseTimeout(400)
@@ -60,16 +61,16 @@ describe('useTimeAgo', () => {
     expect(timeAgo.value).toBe('2 seconds ago')
   })
 
-  test('get undefined when time is invalid', () => {
+  it('get undefined when time is invalid', () => {
     expect(useTimeAgo('invalid date').value).toBe('')
   })
 
   describe('just now', () => {
-    test('just now', () => {
+    it('just now', () => {
       expect(useTimeAgo(baseTime).value).toBe('just now')
     })
 
-    test('just now using custom formatter', () => {
+    it('just now using custom formatter', () => {
       // @ts-expect-error mock messages
       expect(useTimeAgo(baseTime, { messages: { second: '{0}', future: '{0}' }, showSecond: true }).value).toBe('0')
     })
@@ -112,138 +113,138 @@ describe('useTimeAgo', () => {
   })
 
   describe('minute', () => {
-    test('future: 1 minute', () => {
+    it('future: 1 minute', () => {
       changeValue.value = getNeededTimeChange('minute', 1)
       expect(useTimeAgo(changeTime).value).toBe('in 1 minute')
     })
 
-    test('past: 1 minute', () => {
+    it('past: 1 minute', () => {
       changeValue.value = -getNeededTimeChange('minute', 1)
       expect(useTimeAgo(changeTime).value).toBe('1 minute ago')
     })
 
-    test('future: 10 minutes', () => {
+    it('future: 10 minutes', () => {
       changeValue.value = getNeededTimeChange('minute', 10)
       expect(useTimeAgo(changeTime).value).toBe('in 10 minutes')
     })
 
-    test('past: 10 minutes', () => {
+    it('past: 10 minutes', () => {
       changeValue.value = -getNeededTimeChange('minute', 10)
       expect(useTimeAgo(changeTime).value).toBe('10 minutes ago')
     })
   })
 
   describe('hour', () => {
-    test('future: 1 hour', () => {
+    it('future: 1 hour', () => {
       changeValue.value = getNeededTimeChange('hour', 1)
       expect(useTimeAgo(changeTime).value).toBe('in 1 hour')
     })
 
-    test('past: 1 hour', () => {
+    it('past: 1 hour', () => {
       changeValue.value = -getNeededTimeChange('hour', 1)
       expect(useTimeAgo(changeTime).value).toBe('1 hour ago')
     })
 
-    test('future: 10 hours', () => {
+    it('future: 10 hours', () => {
       changeValue.value = getNeededTimeChange('hour', 10)
       expect(useTimeAgo(changeTime).value).toBe('in 10 hours')
     })
 
-    test('past: 10 hours', () => {
+    it('past: 10 hours', () => {
       changeValue.value = -getNeededTimeChange('hour', 10)
       expect(useTimeAgo(changeTime).value).toBe('10 hours ago')
     })
   })
 
   describe('day', () => {
-    test('future: 1 day', () => {
+    it('future: 1 day', () => {
       changeValue.value = getNeededTimeChange('day', 1)
       expect(useTimeAgo(changeTime).value).toBe('tomorrow')
     })
 
-    test('past: 1 day', () => {
+    it('past: 1 day', () => {
       changeValue.value = -getNeededTimeChange('day', 1)
       expect(useTimeAgo(changeTime).value).toBe('yesterday')
     })
 
-    test('future: 3 days', () => {
+    it('future: 3 days', () => {
       changeValue.value = getNeededTimeChange('day', 3)
       expect(useTimeAgo(changeTime).value).toBe('in 3 days')
     })
 
-    test('past: 3 days', () => {
+    it('past: 3 days', () => {
       changeValue.value = -getNeededTimeChange('day', 3)
       expect(useTimeAgo(changeTime).value).toBe('3 days ago')
     })
   })
 
   describe('week', () => {
-    test('future: 1 week', () => {
+    it('future: 1 week', () => {
       changeValue.value = getNeededTimeChange('week', 1)
       expect(useTimeAgo(changeTime).value).toBe('next week')
     })
 
-    test('past: 1 week', () => {
+    it('past: 1 week', () => {
       changeValue.value = -getNeededTimeChange('week', 1)
       expect(useTimeAgo(changeTime).value).toBe('last week')
     })
 
-    test('future: 3 weeks', () => {
+    it('future: 3 weeks', () => {
       changeValue.value = getNeededTimeChange('week', 3)
       expect(useTimeAgo(changeTime).value).toBe('in 3 weeks')
     })
 
-    test('past: 3 weeks', () => {
+    it('past: 3 weeks', () => {
       changeValue.value = -getNeededTimeChange('week', 3)
       expect(useTimeAgo(changeTime).value).toBe('3 weeks ago')
     })
   })
 
   describe('month', () => {
-    test('future: 1 month', () => {
+    it('future: 1 month', () => {
       changeValue.value = getNeededTimeChange('month', 1)
       expect(useTimeAgo(changeTime).value).toBe('next month')
     })
 
-    test('past: 1 month', () => {
+    it('past: 1 month', () => {
       changeValue.value = -getNeededTimeChange('month', 1)
       expect(useTimeAgo(changeTime).value).toBe('last month')
     })
 
-    test('future: 3 months', () => {
+    it('future: 3 months', () => {
       changeValue.value = getNeededTimeChange('month', 3)
       expect(useTimeAgo(changeTime).value).toBe('in 3 months')
     })
 
-    test('past: 3 months', () => {
+    it('past: 3 months', () => {
       changeValue.value = -getNeededTimeChange('month', 3)
       expect(useTimeAgo(changeTime).value).toBe('3 months ago')
     })
   })
 
   describe('year', () => {
-    test('future: 1 year', () => {
+    it('future: 1 year', () => {
       changeValue.value = getNeededTimeChange('year', 1)
       expect(useTimeAgo(changeTime).value).toBe('next year')
     })
 
-    test('past: 1 year', () => {
+    it('past: 1 year', () => {
       changeValue.value = -getNeededTimeChange('year', 1)
       expect(useTimeAgo(changeTime).value).toBe('last year')
     })
 
-    test('future: 3 years', () => {
+    it('future: 3 years', () => {
       changeValue.value = getNeededTimeChange('year', 3)
       expect(useTimeAgo(changeTime).value).toBe('in 3 years')
     })
 
-    test('past: 3 years', () => {
+    it('past: 3 years', () => {
       changeValue.value = -getNeededTimeChange('year', 3)
       expect(useTimeAgo(changeTime).value).toBe('3 years ago')
     })
   })
 
-  test('rounding', () => {
+  it('rounding', () => {
     changeValue.value = getNeededTimeChange('day', 5.49)
     expect(useTimeAgo(changeTime).value).toBe('in 5 days')
     expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('in 6 days')
@@ -252,7 +253,7 @@ describe('useTimeAgo', () => {
     expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 5.49 days')
   })
 
-  test('rounding unit fallback', () => {
+  it('rounding unit fallback', () => {
     changeValue.value = getNeededTimeChange('month', 11.5)
     expect(useTimeAgo(changeTime).value).toBe('next year')
     expect(useTimeAgo(changeTime, { rounding: 'ceil' }).value).toBe('next year')
@@ -261,7 +262,7 @@ describe('useTimeAgo', () => {
     expect(useTimeAgo(changeTime, { rounding: 3 }).value).toBe('in 0.945 year')
   })
 
-  test('custom units', () => {
+  it('custom units', () => {
     changeValue.value = getNeededTimeChange('day', 14)
     expect(useTimeAgo(changeTime).value).toBe('in 2 weeks')
     expect(useTimeAgo(changeTime, {

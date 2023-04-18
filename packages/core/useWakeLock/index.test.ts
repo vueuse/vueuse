@@ -1,5 +1,6 @@
 import { nextTick } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
+import { describe, expect, it } from 'vitest'
 import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 

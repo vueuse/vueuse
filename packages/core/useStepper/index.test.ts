@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useStepper } from '.'
 
 describe('useStepper', () => {
@@ -7,7 +8,7 @@ describe('useStepper', () => {
   })
 
   describe('common', () => {
-    test('steps are reactive', () => {
+    it('steps are reactive', () => {
       const flag = ref(true)
       const steps = reactive({
         first: {

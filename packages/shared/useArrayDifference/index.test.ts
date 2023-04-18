@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
-import { useArrayDifference } from './index'
+import { describe, expect, it } from 'vitest'
+import { useArrayDifference } from '.'
 
 describe('useArrayDifference', () => {
   it('should be defined', () => {

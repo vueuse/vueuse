@@ -1,12 +1,13 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useAbs } from '.'
 
 describe('useAbs', () => {
-  test('should be defined', () => {
+  it('should be defined', () => {
     expect(useAbs).toBeDefined()
   })
 
-  test('this should work', () => {
+  it('this should work', () => {
     const original = ref(-1)
     const abs = useAbs(original)
 
@@ -22,7 +23,7 @@ describe('useAbs', () => {
     expect(abs.value).toBe(0)
   })
 
-  test('getter', () => {
+  it('getter', () => {
     const original = ref(-1)
     const abs = useAbs(() => original.value)
 

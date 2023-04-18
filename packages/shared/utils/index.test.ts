@@ -1,4 +1,5 @@
 import { isVue3, ref } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {

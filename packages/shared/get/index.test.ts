@@ -1,15 +1,16 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { get } from '.'
 
 describe('get', () => {
-  test('unref', () => {
+  it('unref', () => {
     const a = ref(42)
 
     expect(get(a)).toBe(42)
     expect(get(42)).toBe(42)
   })
 
-  test('ref object', () => {
+  it('ref object', () => {
     const reactive = ref({ foo: 'bar' })
     const plain = { foo: 'bar' }
 
@@ -22,7 +23,7 @@ describe('get', () => {
     expect(get(plain, 'bar')).toBeUndefined()
   })
 
-  test('ref array', () => {
+  it('ref array', () => {
     const reactive = ref([1, 2, 3])
     const plain = [1, 2, 3]
 

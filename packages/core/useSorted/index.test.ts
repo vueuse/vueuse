@@ -1,4 +1,5 @@
 import { toValue } from '@vueuse/shared'
+import { describe, expect, it } from 'vitest'
 import { useSorted } from '.'
 
 interface User {

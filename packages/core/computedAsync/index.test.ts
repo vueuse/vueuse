@@ -1,5 +1,6 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
+import { describe, expect, it, vi } from 'vitest'
 import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
@@ -153,7 +154,7 @@ describe('computedAsync', () => {
     expect(double.value).toBe(8)
   })
 
-  test('evaluating works', async () => {
+  it('evaluating works', async () => {
     const evaluating = ref(false)
 
     const data = computedAsync(() =>
@@ -171,7 +172,7 @@ describe('computedAsync', () => {
     expect(data.value).toBe('data')
   })
 
-  test('triggers', async () => {
+  it('triggers', async () => {
     const counter = ref(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
@@ -199,7 +200,7 @@ describe('computedAsync', () => {
     expect(other.value).toBe(5)
   })
 
-  test('cancel is called', async () => {
+  it('cancel is called', async () => {
     const onCancel = vi.fn()
     const evaluating = ref(false)
 
@@ -235,7 +236,7 @@ describe('computedAsync', () => {
     expect(uppercase.value).toBe('FINAL')
   })
 
-  test('cancel is called for lazy', async () => {
+  it('cancel is called for lazy', async () => {
     const onCancel = vi.fn()
 
     const data = ref('initial')

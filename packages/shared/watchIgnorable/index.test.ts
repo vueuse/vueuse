@@ -1,13 +1,14 @@
 import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { ignorableWatch, watchIgnorable } from '.'
 
 describe('watchIgnorable', () => {
-  test('export module', () => {
+  it('export module', () => {
     expect(watchIgnorable).toBeDefined()
     expect(ignorableWatch).toBeDefined()
   })
 
-  test('ignore async updates', async () => {
+  it('ignore async updates', async () => {
     const source = ref(0)
     const target = ref(0)
     const { ignoreUpdates } = watchIgnorable(source, value => target.value = value)
@@ -34,7 +35,7 @@ describe('watchIgnorable', () => {
     expect(target.value).toBe(5)
   })
 
-  test('ignore prev async updates', async () => {
+  it('ignore prev async updates', async () => {
     const source = ref(0)
     const target = ref(0)
     const { ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value)
@@ -59,7 +60,7 @@ describe('watchIgnorable', () => {
     expect(target.value).toBe(5)
   })
 
-  test('ignore sync updates', () => {
+  it('ignore sync updates', () => {
     const source = ref(0)
     const target = ref(0)
     const { ignoreUpdates, ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value, { flush: 'sync' })
@@ -86,7 +87,7 @@ describe('watchIgnorable', () => {
     expect(target.value).toBe(5)
   })
 
-  test('stop watch', async () => {
+  it('stop watch', async () => {
     const source = ref(0)
     const callback = vi.fn()
     const { stop } = watchIgnorable(source, callback)

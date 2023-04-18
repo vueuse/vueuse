@@ -1,22 +1,23 @@
 import { isRef, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useProjection } from '.'
 
 describe('useProjection', () => {
-  test('should be defined', () => {
+  it('should be defined', () => {
     expect(useProjection).toBeDefined()
   })
 
-  test('returns a ref', () => {
+  it('returns a ref', () => {
     expect(isRef(useProjection(ref(5), [0, 10], [0, 100]))).toBe(true)
   })
 
-  test('projects correctly', () => {
+  it('projects correctly', () => {
     expect(useProjection(5, [0, 10], [0, 100]).value).toBe(50)
     expect(useProjection(3, [0, 10], [0, 100]).value).toBe(30)
     expect(useProjection(4, [0, 44], [0, 132]).value).toBe(12)
   })
 
-  test('is reactive', () => {
+  it('is reactive', () => {
     const inputRef = ref(5)
     const projection = useProjection(inputRef, [0, 10], [0, 100])
     expect(isRef(projection)).toBe(true)
@@ -30,7 +31,7 @@ describe('useProjection', () => {
     expect(projection.value).toBe(23)
   })
 
-  test('works with getter functions', () => {
+  it('works with getter functions', () => {
     expect(useProjection(() => 5, [0, 10], [0, 100]).value).toBe(50)
     expect(useProjection(() => 3, [0, 10], [0, 100]).value).toBe(30)
     expect(useProjection(() => 4, [0, 44], [0, 132]).value).toBe(12)

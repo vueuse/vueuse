@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { effectScope, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { promiseTimeout } from '../utils'
 import { autoResetRef, refAutoReset } from '.'
 

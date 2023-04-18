@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { retry } from '../../.test'
 import { useAsyncQueue } from '.'
 

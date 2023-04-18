@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer'
-import { useBase64 } from '@vueuse/core'
-import { describe, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { useBase64 } from '.'
 
 function decode(encoded: string) {
   const decodedStr = Buffer.from(encoded.split(',')[1], 'base64').toString('utf-8')

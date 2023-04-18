@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { nextTwoTick } from '../../.test'
 import { useCached } from '.'
 

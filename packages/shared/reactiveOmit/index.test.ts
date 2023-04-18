@@ -1,4 +1,5 @@
 import { isVue2, reactive } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { reactiveOmit } from '.'
 
 interface TargetObject {

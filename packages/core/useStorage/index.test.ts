@@ -1,5 +1,6 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { isVue3, ref } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTwoTick, useSetup } from '../../.test'
 import { StorageSerializers, customStorageEventName, useStorage } from '.'
 

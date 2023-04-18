@@ -5,7 +5,6 @@
   position: relative;
   margin-bottom: 10px;
   border-radius: 8px;
-  z-index: 5;
   transition: background-color 0.5s;
 }
 
@@ -14,7 +13,6 @@
   position: absolute;
   top: 0;
   right: 10px;
-  z-index: 2;
   font-size: 12px;
   font-weight: 500;
   transition: color 0.5s;
