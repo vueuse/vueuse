@@ -247,6 +247,16 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
   }
 }
 
+const enum FetchAbortReason {
+  EXECUTE = 'EXECUTE',
+  TIMEOUT = 'TIMEOUT',
+  MANUAL = 'MANUAL',
+}
+
+function isReExecuted(signal?: AbortSignal): boolean {
+  return Boolean(signal && signal.aborted && signal.reason === FetchAbortReason.EXECUTE)
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   const _combination = config.combination || 'chain' as Combination
   const _options = config.options || {}
@@ -309,10 +319,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseF
 export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
 export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
-  const supportsAbort = typeof AbortController === 'function'
-
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
+
   interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'GET',
@@ -338,6 +347,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     timeout,
   } = options
 
+  const supportsAbort = typeof defaultWindow?.AbortController === 'function'
+
   // Event Hooks
   const responseEvent = createEventHook<Response>()
   const errorEvent = createEventHook<any>()
@@ -353,18 +364,26 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
 
-  let controller: AbortController | undefined
+  let controller: AbortController | null = null
   let timer: Stoppable | undefined
 
-  const abort = () => {
-    if (supportsAbort) {
-      controller?.abort()
-      controller = new AbortController()
-      controller.signal.onabort = () => aborted.value = true
-      fetchOptions = {
-        ...fetchOptions,
-        signal: controller.signal,
-      }
+  const abort = (reason: FetchAbortReason) => {
+    if (!supportsAbort)
+      return
+
+    switch (reason) {
+      case FetchAbortReason.EXECUTE:
+        aborted.value = false
+        controller?.abort(reason)
+        controller = new AbortController()
+        break
+
+      case FetchAbortReason.TIMEOUT:
+      case FetchAbortReason.MANUAL:
+        aborted.value = true
+        controller?.abort(reason)
+        controller = null
+        break
     }
   }
 
@@ -374,15 +393,15 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   if (timeout)
-    timer = useTimeoutFn(abort, timeout, { immediate: false })
+    timer = useTimeoutFn(() => abort(FetchAbortReason.TIMEOUT), timeout, { immediate: false })
 
   const execute = async (throwOnFailed = false) => {
-    abort()
+    abort(FetchAbortReason.EXECUTE)
+    const signal = controller?.signal
 
     loading(true)
     error.value = null
     statusCode.value = null
-    aborted.value = false
 
     const defaultFetchOptions: RequestInit = {
       method: config.method,
@@ -415,7 +434,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
     if (isCanceled || !fetch) {
       loading(false)
-      return Promise.resolve(null)
+      controller = null
+      return null
     }
 
     let responseData: any = null
@@ -423,57 +443,72 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     if (timer)
       timer.start()
 
-    return new Promise<Response | null>((resolve, reject) => {
-      fetch(
+    try {
+      const fetchResponse = await fetch(
         context.url,
         {
           ...defaultFetchOptions,
           ...context.options,
+          ...(signal ? { signal } : null),
           headers: {
             ...headersToObject(defaultFetchOptions.headers),
             ...headersToObject(context.options?.headers),
           },
         },
       )
-        .then(async (fetchResponse) => {
-          response.value = fetchResponse
-          statusCode.value = fetchResponse.status
 
-          responseData = await fetchResponse[config.type]()
+      response.value = fetchResponse
+      statusCode.value = fetchResponse.status
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok) {
-            data.value = initialData || null
-            throw new Error(fetchResponse.statusText)
-          }
+      responseData = await fetchResponse[config.type]()
 
-          if (options.afterFetch)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
-          data.value = responseData
+      // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+      if (!fetchResponse.ok) {
+        data.value = initialData || null
+        throw new Error(fetchResponse.statusText)
+      }
 
-          responseEvent.trigger(fetchResponse)
-          return resolve(fetchResponse)
-        })
-        .catch(async (fetchError) => {
-          let errorData = fetchError.message || fetchError.name
+      if (options.afterFetch)
+        ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
 
-          if (options.onFetchError)
-            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
-          error.value = errorData
+      data.value = responseData
+      responseEvent.trigger(fetchResponse)
 
-          errorEvent.trigger(fetchError)
-          if (throwOnFailed)
-            return reject(fetchError)
+      return fetchResponse
+    }
+    catch (fetchError) {
+      if (
+        fetchError instanceof DOMException
+        && (fetchError.name === 'AbortError' || fetchError.code === DOMException.ABORT_ERR)
+        && isReExecuted(signal)
+      ) {
+        // Handle abort of previous incompleted request
+        return null
+      }
 
-          return resolve(null)
-        })
-        .finally(() => {
-          loading(false)
-          if (timer)
-            timer.stop()
-          finallyEvent.trigger(null)
-        })
-    })
+      let errorData = (fetchError as Error).message || (fetchError as Error).name
+
+      if (options.onFetchError)
+        ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
+
+      error.value = errorData
+      errorEvent.trigger(fetchError)
+
+      if (throwOnFailed)
+        throw fetchError
+    }
+    finally {
+      if (!isReExecuted(signal)) {
+        loading(false)
+        controller = null
+        finallyEvent.trigger(null)
+      }
+
+      if (timer)
+        timer.stop()
+    }
+
+    return null
   }
 
   const refetch = toRef(options.refetch)
@@ -495,8 +530,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     isFetching,
     canAbort,
     aborted,
-    abort,
     execute,
+    abort: () => abort(FetchAbortReason.MANUAL),
 
     onFetchResponse: responseEvent.on,
     onFetchError: errorEvent.on,

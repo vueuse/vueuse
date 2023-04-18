@@ -17,6 +17,7 @@ const {
   isFetching,
   isFinished,
   canAbort,
+  aborted,
   execute,
 } = useFetch(url, { refetch }).get()
 
@@ -24,6 +25,7 @@ const text = stringify(reactive({
   isFinished,
   isFetching,
   canAbort,
+  aborted,
   statusCode,
   error,
   data: computed(() => {
@@ -62,10 +64,10 @@ const text = stringify(reactive({
     </div>
 
     <input v-model="url" type="text">
-    <button @click="execute">
+    <button @click="execute()">
       Execute
     </button>
-    <button @click="toggleRefetch">
+    <button @click="toggleRefetch()">
       <i v-if="refetch" inline-block align-middle i-carbon-checkmark />
       <i v-else inline-block align-middle i-carbon-error />
 
