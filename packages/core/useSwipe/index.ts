@@ -126,6 +126,8 @@ export function useSwipe(
 
   const stops = [
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
+      if (e.touches.length !== 1)
+        return
       if (listenerOptions.capture && !listenerOptions.passive)
         e.preventDefault()
       const [x, y] = getTouchEventCoords(e)
