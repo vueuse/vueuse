@@ -1,4 +1,5 @@
 import type { Mock } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed } from 'vue-demi'
 import type { UseMemoizeCache } from '.'
 import { useMemoize } from '.'

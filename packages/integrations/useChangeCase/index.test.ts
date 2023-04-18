@@ -1,5 +1,6 @@
 import type { Options } from 'change-case'
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import type { ChangeCaseType } from '.'
 import { useChangeCase } from '.'
 
@@ -77,14 +78,14 @@ describe('useChangeCase', () => {
   };
 
   (Object.keys(obj) as Array<keyof ObjectTypes>).forEach((key) => {
-    test(`base ${key}`, () => {
+    it(`base ${key}`, () => {
       const changeCase = useChangeCase(helloWorld, key)
       expect(changeCase.value).toBe(obj[key].helloWorld)
       changeCase.value = vueuse
       expect(changeCase.value).toBe(obj[key].vueuse)
     })
 
-    test(`ref ${key}`, () => {
+    it(`ref ${key}`, () => {
       const input = ref(helloWorld)
       const changeCase = useChangeCase(input, key)
       expect(changeCase.value).toBe(obj[key].helloWorld)
@@ -92,7 +93,7 @@ describe('useChangeCase', () => {
       expect(changeCase.value).toBe(obj[key].vueuse)
     })
 
-    test(`options ${key}`, () => {
+    it(`options ${key}`, () => {
       const options: Options = {
         delimiter: '-',
       }
@@ -102,7 +103,7 @@ describe('useChangeCase', () => {
       expect(changeCase.value).toBe(obj[key].delimiterVueuse)
     })
 
-    test(`function ${key}`, () => {
+    it(`function ${key}`, () => {
       const input = () => helloWorld
       const changeCase = useChangeCase(input, key)
       expect(changeCase.value).toBe(obj[key].helloWorld)

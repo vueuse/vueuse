@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { get, set } from 'idb-keyval'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useIDBKeyval } from '.'
 
 const cache = {} as any

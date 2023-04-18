@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
-import { useArrayFilter } from '../useArrayFilter'
+import { describe, expect, it } from 'vitest'
+import { useArrayFilter } from '.'
 
 describe('useArrayFilter', () => {
   it('should be defined', () => {

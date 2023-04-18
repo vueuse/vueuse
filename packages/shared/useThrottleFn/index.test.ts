@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
-import { useThrottleFn } from '../useThrottleFn'
+import { describe, expect, it, vi } from 'vitest'
+import { useThrottleFn } from '.'
 
 describe('useThrottleFn', () => {
   it('should be defined', () => {

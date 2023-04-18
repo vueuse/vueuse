@@ -6,6 +6,7 @@
 import { setupServer } from 'msw/node'
 import type { RestContext, RestRequest } from 'msw'
 import { rest } from 'msw'
+import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'

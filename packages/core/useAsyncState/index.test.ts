@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
-import { useAsyncState } from '../useAsyncState'
+import { describe, expect, it, vi } from 'vitest'
+import { useAsyncState } from '.'
 
 describe('useAsyncState', () => {
   it('should be defined', () => {

@@ -1,4 +1,5 @@
 import { nextTick } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useCounter } from '../../shared/useCounter'
 import { useSetup } from '../../.test'
 import { events } from './internal'

@@ -1,5 +1,5 @@
 import { defineComponent, isVue3 } from 'vue-demi'
-
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'

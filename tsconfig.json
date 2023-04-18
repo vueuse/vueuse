@@ -29,7 +29,6 @@
     },
     "types": [
       "vitest",
-      "vitest/globals",
       "@types/web-bluetooth"
     ]
   },

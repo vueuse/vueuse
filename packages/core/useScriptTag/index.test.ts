@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
 

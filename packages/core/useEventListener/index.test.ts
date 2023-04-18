@@ -1,5 +1,6 @@
 import type { Fn } from '@vueuse/shared'
 import type { SpyInstance } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { noop } from '@vueuse/shared'
 import { isVue2 } from 'vue-demi'
 import type { Ref } from 'vue'

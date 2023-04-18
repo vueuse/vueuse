@@ -1,6 +1,7 @@
 import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
@@ -27,7 +28,7 @@ describe('useFetch', () => {
     onFetchFinallySpy = vi.fn()
   })
 
-  test('should have status code of 200 and message of Hello World', async () => {
+  it('should have status code of 200 and message of Hello World', async () => {
     const { statusCode, data } = useFetch('https://example.com?text=hello')
 
     await retry(() => {
@@ -37,7 +38,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should be able to use the Headers object', async () => {
+  it('should be able to use the Headers object', async () => {
     const myHeaders = new Headers()
     myHeaders.append('Authorization', 'test')
 
@@ -48,14 +49,14 @@ describe('useFetch', () => {
     })
   })
 
-  test('should parse response as json', async () => {
+  it('should parse response as json', async () => {
     const { data } = useFetch(jsonUrl).json()
     await retry(() => {
       expect(data.value).toEqual(jsonMessage)
     })
   })
 
-  test('should use custom fetch', async () => {
+  it('should use custom fetch', async () => {
     let count = 0
     await useFetch('https://example.com/', {
       fetch: <typeof window.fetch>((input, init) => {
@@ -82,7 +83,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should have an error on 400', async () => {
+  it('should have an error on 400', async () => {
     const { error, statusCode } = useFetch('https://example.com?status=400')
 
     await retry(() => {
@@ -91,7 +92,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should throw error', async () => {
+  it('should throw error', async () => {
     const options = { immediate: false }
     const error1 = await useFetch('https://example.com?status=400', options).execute(true).catch(err => err)
     const error2 = await useFetch('https://example.com?status=600', options).execute(true).catch(err => err)
@@ -102,7 +103,7 @@ describe('useFetch', () => {
     expect(error2.message).toBe('')
   })
 
-  test('should abort request and set aborted to true', async () => {
+  it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch('https://example.com')
     setTimeout(() => abort(), 0)
     await retry(() => expect(aborted.value).toBe(true))
@@ -111,26 +112,26 @@ describe('useFetch', () => {
     await retry(() => expect(aborted.value).toBe(true))
   })
 
-  test('should not call if immediate is false', async () => {
+  it('should not call if immediate is false', async () => {
     useFetch('https://example.com', { immediate: false })
     await retry(() => expect(fetchSpy).toBeCalledTimes(0))
   })
 
-  test('should refetch if refetch is set to true', async () => {
+  it('should refetch if refetch is set to true', async () => {
     const url = ref('https://example.com')
     useFetch(url, { refetch: true })
     url.value = 'https://example.com?text'
     await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
-  test('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
+  it('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
     const param = ref({ num: 1 })
     useFetch('https://example.com', { refetch: true }).post(param)
     param.value.num = 2
     await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
-  test('should create an instance of useFetch with baseUrls', async () => {
+  it('should create an instance of useFetch with baseUrls', async () => {
     const baseUrl = 'https://example.com'
     const targetUrl = `${baseUrl}/test`
     const fetchHeaders = { Authorization: 'test' }
@@ -154,7 +155,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain beforeFetch function when using a factory instance', async () => {
+  it('should chain beforeFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -176,7 +177,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain afterFetch function when using a factory instance', async () => {
+  it('should chain afterFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -198,7 +199,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain onFetchError function when using a factory instance', async () => {
+  it('should chain onFetchError function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -220,7 +221,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should chain beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -245,7 +246,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should chain afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -270,7 +271,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should chain onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should chain onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
@@ -295,7 +296,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite beforeFetch function when using a factory instance', async () => {
+  it('should overwrite beforeFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -318,7 +319,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite afterFetch function when using a factory instance', async () => {
+  it('should overwrite afterFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -342,7 +343,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite onFetchError function when using a factory instance', async () => {
+  it('should overwrite onFetchError function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -365,7 +366,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should overwrite beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -391,7 +392,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should overwrite afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -418,7 +419,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should overwrite onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
+  it('should overwrite onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       combination: 'overwrite',
@@ -444,7 +445,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should run the beforeFetch function and add headers to the request', async () => {
+  it('should run the beforeFetch function and add headers to the request', async () => {
     useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
       beforeFetch({ options }) {
         options.headers = {
@@ -461,7 +462,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should run the beforeFetch has default headers', async () => {
+  it('should run the beforeFetch has default headers', async () => {
     useFetch('https://example.com', {
       beforeFetch({ options }) {
         expect(options.headers).toBeDefined()
@@ -470,7 +471,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should run the beforeFetch function and cancel the request', async () => {
+  it('should run the beforeFetch function and cancel the request', async () => {
     const { execute } = useFetch('https://example.com', {
       immediate: false,
       beforeFetch({ cancel }) {
@@ -482,7 +483,7 @@ describe('useFetch', () => {
     expect(fetchSpy).toBeCalledTimes(0)
   })
 
-  test('should run the afterFetch function', async () => {
+  it('should run the afterFetch function', async () => {
     const { data } = useFetch(jsonUrl, {
       afterFetch(ctx) {
         ctx.data.title = 'Hunter x Hunter'
@@ -495,7 +496,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('async chained beforeFetch and afterFetch should be executed in order', async () => {
+  it('async chained beforeFetch and afterFetch should be executed in order', async () => {
     const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
 
     const useMyFetch = createFetch({
@@ -537,7 +538,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should run the onFetchError function', async () => {
+  it('should run the onFetchError function', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
@@ -552,7 +553,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should run the onFetchError function when network error', async () => {
+  it('should run the onFetchError function when network error', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
@@ -568,7 +569,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should emit onFetchResponse event', async () => {
+  it('should emit onFetchResponse event', async () => {
     const onResponseSpy = vi.fn()
     const { onFetchResponse } = useFetch('https://example.com')
 
@@ -578,7 +579,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should emit onFetchResponse event', async () => {
+  it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(onFetchResponseSpy)
@@ -591,7 +592,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should emit onFetchError event', async () => {
+  it('should emit onFetchError event', async () => {
     const { onFetchError, onFetchFinally, onFetchResponse } = useFetch('https://example.com?status=400')
 
     onFetchError(onFetchErrorSpy)
@@ -605,17 +606,17 @@ describe('useFetch', () => {
     })
   })
 
-  test('setting the request method w/ get and return type w/ json', async () => {
+  it('setting the request method w/ get and return type w/ json', async () => {
     const { data } = useFetch(jsonUrl).get().json()
     await retry(() => expect(data.value).toEqual(jsonMessage))
   })
 
-  test('setting the request method w/ post and return type w/ text', async () => {
+  it('setting the request method w/ post and return type w/ text', async () => {
     const { data } = useFetch(jsonUrl).post().text()
     await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
   })
 
-  test('allow setting response type before doing request', async () => {
+  it('allow setting response type before doing request', async () => {
     const shell = useFetch(jsonUrl, {
       immediate: false,
     }).get().text()
@@ -624,7 +625,7 @@ describe('useFetch', () => {
     await retry(() => expect(shell.data.value).toEqual(jsonMessage))
   })
 
-  test('not allowed setting request method and response type while doing request', async () => {
+  it('not allowed setting request method and response type while doing request', async () => {
     const shell = useFetch(jsonUrl).get().text()
     const { isFetching, data } = shell
     await until(isFetching).toBe(true)
@@ -636,7 +637,7 @@ describe('useFetch', () => {
     })
   })
 
-  test('should abort request when timeout reached', async () => {
+  it('should abort request when timeout reached', async () => {
     const { aborted, execute } = useFetch('https://example.com?delay=100', { timeout: 10 })
 
     await retry(() => expect(aborted.value).toBeTruthy())
@@ -644,25 +645,25 @@ describe('useFetch', () => {
     await retry(() => expect(aborted.value).toBeTruthy())
   })
 
-  test('should not abort request when timeout is not reached', async () => {
+  it('should not abort request when timeout is not reached', async () => {
     const { data } = useFetch(jsonUrl, { timeout: 100 }).json()
     await retry(() => expect(data.value).toEqual(jsonMessage))
   })
 
-  test('should await request', async () => {
+  it('should await request', async () => {
     const { data } = await useFetch(jsonUrl).get()
     expect(data.value).toEqual(JSON.stringify(jsonMessage))
     expect(fetchSpy).toBeCalledTimes(1)
   })
 
-  test('should await json response', async () => {
+  it('should await json response', async () => {
     const { data } = await useFetch(jsonUrl).json()
 
     expect(data.value).toEqual(jsonMessage)
     expect(fetchSpy).toBeCalledTimes(1)
   })
 
-  test('should abort previous request', async () => {
+  it('should abort previous request', async () => {
     const { onFetchResponse, execute } = useFetch('https://example.com', { immediate: false })
 
     onFetchResponse(onFetchResponseSpy)

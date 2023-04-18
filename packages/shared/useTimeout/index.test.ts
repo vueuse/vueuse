@@ -1,4 +1,5 @@
-import { useTimeout } from '../useTimeout'
+import { describe, expect, it } from 'vitest'
+import { useTimeout } from '.'
 
 describe('useTimeout', () => {
   it('works', () => {

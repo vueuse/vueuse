@@ -1,4 +1,5 @@
 import { promiseTimeout } from '@vueuse/shared'
+import { describe, expect, it, vi } from 'vitest'
 import { useTimestamp } from '.'
 
 describe('useTimestamp', () => {
