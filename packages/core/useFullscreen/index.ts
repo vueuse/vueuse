@@ -76,6 +76,15 @@ export function useFullscreen(
     ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
   })
 
+  const fullscreenElement = computed<'fullscreenElement' | undefined>(() => {
+    return [
+      'fullscreenElement',
+      'webkitFullscreenElement',
+      'mozFullScreenElement',
+      'msFullscreenElement',
+    ].find(m => (document && m in document)) as any
+  })
+
   const isSupported = useSupported(() =>
     targetRef.value
     && document
@@ -83,6 +92,12 @@ export function useFullscreen(
     && exitMethod.value !== undefined
     && fullscreenEnabled.value !== undefined,
   )
+
+  const isCurrentElementFullScreen = (): boolean => {
+    if (fullscreenElement.value)
+      return document?.[fullscreenElement.value] === targetRef.value
+    return false
+  }
 
   const isElementFullScreen = (): boolean => {
     if (fullscreenEnabled.value) {
@@ -139,7 +154,9 @@ export function useFullscreen(
   }
 
   const handlerCallback = () => {
-    isFullscreen.value = isElementFullScreen()
+    const isElementFullScreenValue = isElementFullScreen()
+    if (!isElementFullScreenValue || (isElementFullScreenValue && isCurrentElementFullScreen()))
+      isFullscreen.value = isElementFullScreenValue
   }
 
   useEventListener(document, eventHandlers, handlerCallback, false)
