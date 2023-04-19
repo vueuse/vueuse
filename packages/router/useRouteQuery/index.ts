@@ -1,17 +1,15 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick } from 'vue-demi'
+import { computed, nextTick, ref } from 'vue-demi'
 import { toValue } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
-import type { ReactiveRouteOptionsWithTransform, RouterQueryValue } from '../_types'
-
-let _queue: Record<string, any> = {}
+import type { ReactiveRouteOptionsWithTransform, RouteDefaultValue } from '../_types'
 
 export function useRouteQuery(
   name: string
 ): Ref<null | string | string[]>
 
 export function useRouteQuery<
-  T extends RouterQueryValue = RouterQueryValue,
+  T extends RouteDefaultValue = RouteDefaultValue,
   K = T,
 >(
   name: string,
@@ -20,7 +18,7 @@ export function useRouteQuery<
 ): Ref<K>
 
 export function useRouteQuery<
-  T extends RouterQueryValue = RouterQueryValue,
+  T extends RouteDefaultValue = RouteDefaultValue,
   K = T,
 >(
   name: string,
@@ -33,18 +31,17 @@ export function useRouteQuery<
     router = useRouter(),
     transform = value => value as any as K,
   } = options
+  const _query: Ref<any> = ref(route.query[name] ?? defaultValue)
 
   return computed<any>({
     get() {
-      const data = route.query[name] ?? defaultValue
-      return transform(data as T)
+      return transform(_query.value ?? defaultValue)
     },
     set(v) {
-      _queue[name] = (v === defaultValue || v === null) ? undefined : v
+      _query.value = (v === defaultValue || v === null) ? undefined : v
 
       nextTick(() => {
-        router[toValue(mode)]({ ...route, query: { ...route.query, ..._queue } })
-        nextTick(() => _queue = {})
+        router[toValue(mode)]({ ...route, query: { ...route.query, [name]: _query.value } })
       })
     },
   })

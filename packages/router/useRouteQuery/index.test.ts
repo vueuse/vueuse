@@ -1,13 +1,10 @@
+import type { Ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
   const getRoute = (query: Record<string, any> = {}) => ({
-    query: {
-      search: 'vue3',
-      page: '1',
-      ...query,
-    },
+    query,
     fullPath: '',
     hash: '',
     matched: [],
@@ -20,7 +17,10 @@ describe('useRouteQuery', () => {
 
   it('should return transformed value', () => {
     const router = {} as any
-    const route = getRoute()
+    const route = getRoute({
+      search: 'vue3',
+      page: '1',
+    })
     const transform = Number
     const toArray = (param: string | string[] | null) => Array.isArray(param) ? param : [param]
 
@@ -31,5 +31,20 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
     expect(perPage.value).toBe(15)
     expect(tags.value).toEqual(['vite'])
+  })
+
+  it('should re-evaluate the value immediately', () => {
+    const router = { replace: () => {} } as any
+    const route = getRoute({
+      search: 'vue3',
+    })
+
+    const code: Ref<any> = useRouteQuery('code', 'foo', { route, router })
+    const search: Ref<any> = useRouteQuery('search', null, { route, router })
+
+    code.value = 'bar'
+
+    expect(code.value).toBe('bar')
+    expect(search.value).toBe('vue3')
   })
 })

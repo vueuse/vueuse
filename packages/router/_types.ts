@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { useRoute, useRouter } from 'vue-router'
 
-export type RouterQueryValue = null | undefined | string | string[]
+export type RouteDefaultValue = null | undefined | string | string[]
 
 export interface ReactiveRouteOptions {
   /**
