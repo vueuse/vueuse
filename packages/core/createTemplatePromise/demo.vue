@@ -38,7 +38,7 @@ function asyncFn() {
     </button>
   </div>
   <TemplatePromise v-slot="{ resolve, args, isResolving }">
-    <div class="fixed inset-0 bg-black/10 flex items-center">
+    <div class="fixed inset-0 bg-black/10 flex items-center z-30">
       <dialog open class="border-gray/10 shadow rounded ma">
         <div>Dialog {{ args[0] }}</div>
         <p>Open console to see logs</p>
