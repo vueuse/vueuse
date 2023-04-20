@@ -1,4 +1,4 @@
-import { noop, promiseTimeout } from '@vueuse/shared'
+import { noop, promiseTimeout, until } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
@@ -78,7 +78,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data, Params, Shallow> {
+): UseAsyncStateReturn<Data, Params, Shallow> & PromiseLike<UseAsyncStateReturn<Data, Params, Shallow>> {
   const {
     immediate = true,
     delay = 0,
@@ -129,11 +129,27 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   if (immediate)
     execute(delay)
 
-  return {
+  const shell: UseAsyncStateReturn<Data, Params, Shallow> = {
     state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
     isReady,
     isLoading,
     error,
     execute,
+  }
+
+  function waitUntilIsLoaded() {
+    return new Promise<UseAsyncStateReturn<Data, Params, Shallow>>((resolve, reject) => {
+      until(isLoading).toBe(false)
+        .then(() => resolve(shell))
+        .catch(reject)
+    })
+  }
+
+  return {
+    ...shell,
+    then(onFulfilled, onRejected) {
+      return waitUntilIsLoaded()
+        .then(onFulfilled, onRejected)
+    },
   }
 }
