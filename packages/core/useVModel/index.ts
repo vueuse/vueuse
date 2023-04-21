@@ -88,6 +88,11 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     }
   }
 
+  if (!key || (key && !props[key])) {
+    console.warn(`useVModel() called with prop "${String(key)}" which is not declared.`)
+    return ref() as any
+  }
+
   event = eventName || event || `update:${key!.toString()}`
 
   const cloneFn = (val: P[K]) => !clone
