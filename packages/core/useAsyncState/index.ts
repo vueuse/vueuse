@@ -2,13 +2,17 @@ import { noop, promiseTimeout, until } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 
-export interface UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> {
+export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
   execute: (delay?: number, ...args: Params) => Promise<Data>
 }
+
+export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
+  UseAsyncStateReturnBase<Data, Params, Shallow>
+  & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**
@@ -78,7 +82,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data, Params, Shallow> & PromiseLike<UseAsyncStateReturn<Data, Params, Shallow>> {
+): UseAsyncStateReturn<Data, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
@@ -129,7 +133,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   if (immediate)
     execute(delay)
 
-  const shell: UseAsyncStateReturn<Data, Params, Shallow> = {
+  const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
     state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
     isReady,
     isLoading,
@@ -138,7 +142,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   }
 
   function waitUntilIsLoaded() {
-    return new Promise<UseAsyncStateReturn<Data, Params, Shallow>>((resolve, reject) => {
+    return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
       until(isLoading).toBe(false)
         .then(() => resolve(shell))
         .catch(reject)
