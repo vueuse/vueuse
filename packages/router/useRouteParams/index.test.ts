@@ -1,9 +1,9 @@
-import { nextTick } from 'vue-demi'
+import { effectScope, nextTick, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteParams } from '.'
 
-describe('useRouteQuery', () => {
+describe('useRouteParams', () => {
   const getRoute = (params: Record<string, any> = {}) => ({
     params,
     query: {},
@@ -88,5 +88,59 @@ describe('useRouteQuery', () => {
 
     expect(page.value).toBe(10)
     expect(lang.value).toBe('pt-BR')
+  })
+
+  it('should reset state on scope dispose', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+    const scopeA = effectScope()
+    const scopeB = effectScope()
+
+    let page: Ref<any> = ref(null)
+    let lang: Ref<any> = ref(null)
+    let code: Ref<any> = ref(null)
+    let slug: Ref<any> = ref(null)
+
+    await scopeA.run(async () => {
+      page = useRouteParams('page', null, { route, router })
+      lang = useRouteParams('lang', null, { route, router })
+
+      page.value = 2
+      lang.value = 'pt-BR'
+
+      await nextTick()
+    })
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('pt-BR')
+    expect(route.params.page).toBe(2)
+    expect(route.params.lang).toBe('pt-BR')
+
+    await scopeB.run(async () => {
+      code = useRouteParams('code', null, { route, router })
+      slug = useRouteParams('slug', null, { route, router })
+
+      code.value = 'xyz'
+      slug.value = 'vueuse'
+
+      await nextTick()
+    })
+
+    expect(code.value).toBe('xyz')
+    expect(slug.value).toBe('vueuse')
+    expect(route.params.code).toBe('xyz')
+    expect(route.params.slug).toBe('vueuse')
+
+    scopeB.stop()
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('pt-BR')
+    expect(code.value).toBeNull()
+    expect(slug.value).toBeNull()
+
+    scopeA.stop()
+
+    expect(page.value).toBeNull()
+    expect(lang.value).toBeNull()
   })
 })

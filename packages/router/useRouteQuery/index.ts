@@ -4,7 +4,7 @@ import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
-let _query: Record<string, any> = {}
+const _cache = new WeakMap()
 
 export function useRouteQuery(
   name: string
@@ -34,26 +34,34 @@ export function useRouteQuery<
     transform = value => value as any as K,
   } = options
 
-  _query[name] = route.query[name]
+  if (!_cache.has(route))
+    _cache.set(route, new Map())
+
+  const _query: Map<string, any> = _cache.get(route)
 
   tryOnScopeDispose(() => {
-    _query = {}
+    _query.delete(name)
   })
+
+  _query.set(name, route.query[name])
 
   return customRef<any>((track, trigger) => ({
     get() {
       track()
 
-      const data = _query[name] ?? defaultValue
+      const data = _query.get(name) ?? defaultValue
       return transform(data as T)
     },
     set(v) {
-      _query[name] = (v === defaultValue || v === null) ? undefined : v
+      _query.set(name, (v === defaultValue || v === null) ? undefined : v)
 
       trigger()
 
       nextTick(() => {
-        router[toValue(mode)]({ ...route, query: { ...route.query, ..._query } })
+        router[toValue(mode)]({
+          ...route,
+          query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+        })
       })
     },
   }))
