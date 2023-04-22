@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/math",
-  "version": "10.0.2",
+  "version": "10.1.0",
   "description": "Math functions for VueUse",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/monorepo",
-  "version": "10.0.2",
+  "version": "10.1.0",
   "private": true,
   "packageManager": "pnpm@8.2.0",
   "description": "Collection of essential Vue Composition Utilities",
