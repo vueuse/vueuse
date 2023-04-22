@@ -27,6 +27,13 @@ describe('useAsyncState', () => {
     expect(state.value).toBe(2)
   })
 
+  it('should work with await', async () => {
+    const asyncState = useAsyncState(p1, 0, { immediate: true })
+    expect(asyncState.isLoading.value).toBeTruthy()
+    await asyncState
+    expect(asyncState.isLoading.value).toBeFalsy()
+  })
+
   it('should work with isLoading', () => {
     const { execute, isLoading } = useAsyncState(p1, 0, { immediate: false })
     expect(isLoading.value).toBeFalsy()
