@@ -76,14 +76,12 @@ export function useFullscreen(
     ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
   })
 
-  const fullscreenElement = computed<'fullscreenElement' | undefined>(() => {
-    return [
-      'fullscreenElement',
-      'webkitFullscreenElement',
-      'mozFullScreenElement',
-      'msFullscreenElement',
-    ].find(m => (document && m in document)) as any
-  })
+  const fullscreenElementMethod = [
+    'fullscreenElement',
+    'webkitFullscreenElement',
+    'mozFullScreenElement',
+    'msFullscreenElement',
+  ].find(m => (document && m in document)) as 'fullscreenElement' | undefined
 
   const isSupported = useSupported(() =>
     targetRef.value
@@ -94,8 +92,8 @@ export function useFullscreen(
   )
 
   const isCurrentElementFullScreen = (): boolean => {
-    if (fullscreenElement.value)
-      return document?.[fullscreenElement.value] === targetRef.value
+    if (fullscreenElementMethod)
+      return document?.[fullscreenElementMethod] === targetRef.value
     return false
   }
 
