@@ -1,15 +1,18 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick, ref } from 'vue-demi'
+import { customRef, nextTick } from 'vue-demi'
+import type { RouteParamValueRaw } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
-import { toValue } from '@vueuse/shared'
-import type { ReactiveRouteOptionsWithTransform, RouteDefaultValue } from '../_types'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { ReactiveRouteOptionsWithTransform } from '../_types'
+
+let _params: Record<string, any> = {}
 
 export function useRouteParams(
   name: string
 ): Ref<null | string | string[]>
 
 export function useRouteParams<
-  T extends RouteDefaultValue = RouteDefaultValue,
+  T extends RouteParamValueRaw = RouteParamValueRaw,
   K = T,
 >(
   name: string,
@@ -18,7 +21,7 @@ export function useRouteParams<
 ): Ref<K>
 
 export function useRouteParams<
-  T extends RouteDefaultValue = RouteDefaultValue,
+  T extends RouteParamValueRaw = RouteParamValueRaw,
   K = T,
 >(
   name: string,
@@ -31,18 +34,28 @@ export function useRouteParams<
     router = useRouter(),
     transform = value => value as any as K,
   } = options
-  const _param: Ref<any> = ref(route.params[name] ?? defaultValue)
 
-  return computed<any>({
+  _params[name] = route.params[name]
+
+  tryOnScopeDispose(() => {
+    _params = {}
+  })
+
+  return customRef<any>((track, trigger) => ({
     get() {
-      return transform(_param.value ?? defaultValue)
+      track()
+
+      const data = _params[name] ?? defaultValue
+      return transform(data as T)
     },
     set(v) {
-      _param.value = (v === defaultValue || v === null) ? undefined : v
+      _params[name] = (v === defaultValue || v === null) ? undefined : v
+
+      trigger()
 
       nextTick(() => {
-        router[toValue(mode)]({ ...route, params: { ...route.params, [name]: _param.value } })
+        router[toValue(mode)]({ ...route, params: { ...route.params, ..._params } })
       })
     },
-  })
+  }))
 }

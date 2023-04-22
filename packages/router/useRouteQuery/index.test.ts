@@ -1,5 +1,6 @@
-import type { Ref } from 'vue-demi'
+import { nextTick } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import type { Ref } from 'vue-demi'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
@@ -13,6 +14,10 @@ describe('useRouteQuery', () => {
     params: {},
     path: '',
     redirectedFrom: undefined,
+  })
+
+  it('should export', () => {
+    expect(useRouteQuery).toBeDefined()
   })
 
   it('should return transformed value', () => {
@@ -34,10 +39,10 @@ describe('useRouteQuery', () => {
   })
 
   it('should re-evaluate the value immediately', () => {
-    const router = { replace: () => {} } as any
-    const route = getRoute({
+    let route = getRoute({
       search: 'vue3',
     })
+    const router = { replace: (r: any) => route = r } as any
 
     const code: Ref<any> = useRouteQuery('code', 'foo', { route, router })
     const search: Ref<any> = useRouteQuery('search', null, { route, router })
@@ -46,5 +51,38 @@ describe('useRouteQuery', () => {
 
     expect(code.value).toBe('bar')
     expect(search.value).toBe('vue3')
+  })
+
+  it('should update the route', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const code: Ref<any> = useRouteQuery('code', null, { route, router })
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+    const lang: Ref<any> = useRouteQuery('lang', null, { route, router })
+
+    code.value = 'bar'
+    page.value = '1'
+    lang.value = 'en'
+
+    await nextTick()
+
+    expect(code.value).toBe('bar')
+    expect(route.query.code).toBe('bar')
+    expect(page.value).toBe('1')
+    expect(route.query.page).toBe('1')
+    expect(lang.value).toBe('en')
+    expect(route.query.lang).toBe('en')
+  })
+
+  it('should return default value', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const page: Ref<any> = useRouteQuery('page', 2, { route, router })
+    const lang: Ref<any> = useRouteQuery('lang', 'pt-BR', { route, router })
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('pt-BR')
   })
 })
