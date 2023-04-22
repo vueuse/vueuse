@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnMounted } from '@vueuse/shared'
+import { computed, watch } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toRef, toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
@@ -32,7 +32,7 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    *
    * @default 'auto'
    */
-  initialValue?: MaybeRef<T | BasicColorSchema>
+  initialValue?: MaybeRefOrGetter<T | BasicColorSchema>
 
   /**
    * Prefix when adding value to the attribute
@@ -130,11 +130,17 @@ export function useColorMode<T extends string = BasicColorMode>(
   const preferredDark = usePreferredDark({ window })
   const system = computed(() => preferredDark.value ? 'dark' : 'light')
 
-  const store = storageRef || (storageKey == null
-    ? ref(initialValue) as Ref<T | BasicColorSchema>
-    : useStorage<T | BasicColorSchema>(storageKey, initialValue, storage, { window, listenToStorageChanges }))
+  const store = storageRef || (
+    storageKey == null
+      ? toRef(initialValue) as Ref<T | BasicColorSchema>
+      : useStorage<T | BasicColorSchema>(storageKey, initialValue, storage, { window, listenToStorageChanges })
+  )
 
-  const state = computed<T | BasicColorMode>(() => store.value === 'auto' ? system.value : store.value)
+  const state = computed<T | BasicColorMode>(() =>
+    store.value === 'auto'
+      ? system.value
+      : store.value,
+  )
 
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
@@ -191,14 +197,20 @@ export function useColorMode<T extends string = BasicColorMode>(
 
   tryOnMounted(() => onChanged(state.value))
 
+  const auto = computed({
+    get() {
+      return emitAuto ? store.value : state.value
+    },
+    set(v) {
+      store.value = v
+    },
+  })
+
   try {
-    return Object.assign(computed({
-      get() { return emitAuto ? store.value : state.value },
-      set(v) { store.value = v },
-    }), { store, system, state }) as UseColorModeReturn<T>
+    return Object.assign(auto, { store, system, state }) as UseColorModeReturn<T>
   }
   catch (e) {
     // In Vue 2.6, ref might not be extensible
-    return state as any as UseColorModeReturn<T>
+    return auto as any as UseColorModeReturn<T>
   }
 }
