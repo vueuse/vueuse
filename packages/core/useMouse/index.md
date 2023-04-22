@@ -21,17 +21,19 @@ The `dragover` event is used to track mouse position while dragging.
 const { x, y } = useMouse({ touch: false })
 ```
 
-## Usage With Extractor
+## Custom Extractor
+
+It's also possible to provide a custom extractor function to get the position from the event.
 
 ```js
-import { type UseMouseExtractFn, useMouse, useParentElement } from '@vueuse/core'
+import { type UseMouseEventExtractor, useMouse, useParentElement } from '@vueuse/core'
 
 const parentEl = useParentElement()
 
-const extractor: UseMouseExtractFn = event => (
+const extractor: UseMouseEventExtractor = event => (
   event instanceof Touch
     ? null
-    : { x: event.offsetX, y: event.offsetY }
+    : [event.offsetX, event.offsetY]
 )
 
 const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })

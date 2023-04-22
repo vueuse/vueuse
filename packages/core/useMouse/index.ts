@@ -5,9 +5,9 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export type MouseCoordType = 'page' | 'client' | 'screen' | 'movement'
-export type MouseSourceType = 'mouse' | 'touch' | null
-export type UseMouseExtractFn = (event: MouseEvent | Touch) => { x: number; y: number } | null | undefined
+export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement'
+export type UseMouseSourceType = 'mouse' | 'touch' | null
+export type UseMouseEventExtractor = (event: MouseEvent | Touch) => [x: number, y: number] | null | undefined
 
 export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
@@ -15,7 +15,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
    *
    * @default 'page'
    */
-  type?: MouseCoordType | UseMouseExtractFn
+  type?: UseMouseCoordType | UseMouseEventExtractor
 
   /**
    * Listen events on `target` element
@@ -44,14 +44,14 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   initialValue?: Position
 }
 
-const EXTRACTORS: Record<MouseCoordType, UseMouseExtractFn> = {
-  page: event => ({ x: event.pageX, y: event.pageY }),
-  client: event => ({ x: event.clientX, y: event.clientY }),
-  screen: event => ({ x: event.screenX, y: event.screenY }),
+const BuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
+  page: event => [event.pageX, event.pageY],
+  client: event => [event.clientX, event.clientY],
+  screen: event => [event.screenX, event.screenY],
   movement: event => (
     event instanceof Touch
       ? null
-      : { x: event.movementX, y: event.movementY }
+      : [event.movementX, event.movementY]
   ),
 } as const
 
@@ -74,27 +74,26 @@ export function useMouse(options: UseMouseOptions = {}) {
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
-  const sourceType = ref<MouseSourceType>(null)
+  const sourceType = ref<UseMouseSourceType>(null)
 
   const extractor = typeof type === 'function'
     ? type
-    : EXTRACTORS[type]
+    : BuiltinExtractors[type]
 
   const mouseHandler = (event: MouseEvent) => {
-    const xyValue = extractor(event)
+    const result = extractor(event)
 
-    if (xyValue) {
-      ({ x: x.value, y: y.value } = xyValue)
+    if (result) {
+      [x.value, y.value] = result
       sourceType.value = 'mouse'
     }
   }
 
   const touchHandler = (event: TouchEvent) => {
     if (event.touches.length > 0) {
-      const xyValue = extractor(event.touches[0])
-
-      if (xyValue) {
-        ({ x: x.value, y: y.value } = xyValue)
+      const result = extractor(event.touches[0])
+      if (result) {
+        [x.value, y.value] = result
         sourceType.value = 'touch'
       }
     }

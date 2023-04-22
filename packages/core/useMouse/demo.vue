@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
-import { type UseMouseExtractFn, useMouse, useParentElement } from '@vueuse/core'
+import { useMouse, useParentElement } from '@vueuse/core'
+import type { UseMouseEventExtractor } from '@vueuse/core'
 
 const parentEl = useParentElement()
 
 const mouseDefault = reactive(useMouse())
 const textDefault = stringify(mouseDefault)
 
-const extractor: UseMouseExtractFn = event => (
+const extractor: UseMouseEventExtractor = event => (
   event instanceof Touch
     ? null
-    : { x: event.offsetX, y: event.offsetY }
+    : [event.offsetX, event.offsetY]
 )
 
 const mouseWithExtractor = reactive(useMouse({ target: parentEl, type: extractor }))
