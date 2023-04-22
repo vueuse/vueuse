@@ -66,7 +66,7 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
   }
-  return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match]())
+  return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match]?.() || match)
 }
 
 export function normalizeDate(date: DateLike) {

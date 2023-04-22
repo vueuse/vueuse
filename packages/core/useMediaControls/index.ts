@@ -293,30 +293,30 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   /**
-   * Watch volume and change player volume when volume prop changes
+   * Apply composable state to the element, also when element is changed
    */
-  watch(volume, (vol) => {
+  watch([target, volume], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.volume = vol
+    el.volume = volume.value
   })
 
-  watch(muted, (mute) => {
+  watch([target, muted], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.muted = mute
+    el.muted = muted.value
   })
 
-  watch(rate, (rate) => {
+  watch([target, rate], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.playbackRate = rate
+    el.playbackRate = rate.value
   })
 
   /**

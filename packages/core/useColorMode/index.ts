@@ -1,13 +1,15 @@
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, toValue, tryOnMounted } from '@vueuse/shared'
+import { toRef, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
 import { useStorage } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { usePreferredDark } from '../usePreferredDark'
+import type { MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 
 export type BasicColorMode = 'light' | 'dark'
 export type BasicColorSchema = BasicColorMode | 'auto'
@@ -18,7 +20,7 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    *
    * @default 'html'
    */
-  selector?: string | MaybeRefOrGetter<HTMLElement | null | undefined>
+  selector?: string | MaybeElementRef
 
   /**
    * HTML attribute applying the target element
@@ -147,7 +149,7 @@ export function useColorMode<T extends string = BasicColorMode>(
     (selector, attribute, value) => {
       const el = typeof selector === 'string'
         ? window?.document.querySelector(selector)
-        : toValue(selector)
+        : unrefElement(selector)
       if (!el)
         return
 

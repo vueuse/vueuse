@@ -1,5 +1,6 @@
 import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { describe, expect, it, vi } from 'vitest'
 import { useAxios } from '.'
 
 describe('useAxios', () => {
@@ -12,7 +13,7 @@ describe('useAxios', () => {
   })
   const options = { immediate: false }
   const path = '/todos/1'
-  test('params: url', async () => {
+  it('params: url', async () => {
     const { isFinished, data, then } = useAxios(url)
     expect(isFinished.value).toBeFalsy()
     const onRejected = vi.fn()
@@ -25,7 +26,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url config', async () => {
+  it('params: url config', async () => {
     const { isFinished, then } = useAxios(url, config)
     expect(isFinished.value).toBeFalsy()
     const onRejected = vi.fn()
@@ -38,7 +39,7 @@ describe('useAxios', () => {
       }, onRejected)
   })
 
-  test('params: url config options', async () => {
+  it('params: url config options', async () => {
     const { isLoading, execute, then } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     execute('https://jsonplaceholder.typicode.com/todos/2')
@@ -51,7 +52,7 @@ describe('useAxios', () => {
     expect(onRejected).toBeCalledTimes(0)
   })
 
-  test('params: url instance', async () => {
+  it('params: url instance', async () => {
     const { isFinished, then } = useAxios(path, instance)
     expect(isFinished.value).toBeFalsy()
     const onRejected = vi.fn()
@@ -63,7 +64,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url instance options', async () => {
+  it('params: url instance options', async () => {
     const { isLoading, execute, then } = useAxios(path, instance, options)
     expect(isLoading.value).toBeFalsy()
     execute()
@@ -77,7 +78,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url config instance', async () => {
+  it('params: url config instance', async () => {
     const { isFinished, then } = useAxios(path, config, instance)
     expect(isFinished.value).toBeFalsy()
     const onRejected = vi.fn()
@@ -89,7 +90,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url config instance options', async () => {
+  it('params: url config instance options', async () => {
     const { isLoading, then, execute } = useAxios(path, config, instance, options)
     expect(isLoading.value).toBeFalsy()
     execute()
@@ -103,7 +104,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params: url config instance options, execute: config', async () => {
+  it('params: url config instance options, execute: config', async () => {
     const { isLoading, then, execute } = useAxios(path, config, instance, options)
     expect(isLoading.value).toBeFalsy()
     execute(undefined, config)
@@ -117,7 +118,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params no url: nil', async () => {
+  it('params no url: nil', async () => {
     const { isLoading, execute } = useAxios()
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(url)
@@ -131,7 +132,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params no url: config', async () => {
+  it('params no url: config', async () => {
     const { isLoading, execute } = useAxios(config)
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(url)
@@ -144,7 +145,7 @@ describe('useAxios', () => {
     expect(onRejected).toBeCalledTimes(0)
   })
 
-  test('params no url: instance', async () => {
+  it('params no url: instance', async () => {
     const { isLoading, execute } = useAxios(instance)
     expect(isLoading.value).toBeFalsy()
     const { then } = execute(path)
@@ -158,7 +159,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('params no url: config instance', async () => {
+  it('params no url: config instance', async () => {
     const { isLoading, execute } = useAxios(config, instance)
     expect(isLoading.value).toBeFalsy()
     const res = execute(path)
@@ -172,7 +173,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
   })
 
-  test('execute is awaitable', async () => {
+  it('execute is awaitable', async () => {
     const { isLoading, then, execute } = useAxios(config, instance)
     expect(isLoading.value).toBeFalsy()
     execute(path)
@@ -187,13 +188,13 @@ describe('useAxios', () => {
     expect(onRejected).toBeCalledTimes(0)
   })
 
-  test('execute rejects on error', async () => {
+  it('execute rejects on error', async () => {
     const { isLoading, then, execute } = useAxios(config, instance)
     expect(isLoading.value).toBeFalsy()
     execute(`${path}/wrong-url`)
     expect(isLoading.value).toBeTruthy()
-    const onResolved = vitest.fn()
-    const onRejected = vitest.fn()
+    const onResolved = vi.fn()
+    const onRejected = vi.fn()
 
     await then(onResolved, onRejected)
     expect(isLoading.value).toBeFalsy()
@@ -201,7 +202,7 @@ describe('useAxios', () => {
     expect(onRejected).toBeCalledTimes(1)
   })
 
-  test('calling axios with config change(param/data etc.) only', async () => {
+  it('calling axios with config change(param/data etc.) only', async () => {
     const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
     expect(isLoading.value).toBeFalsy()
     const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
@@ -226,7 +227,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('use generic type', async () => {
+  it('use generic type', async () => {
     interface ReqType {
       title: string
       body: string
@@ -264,7 +265,7 @@ describe('useAxios', () => {
     }, onRejected)
   })
 
-  test('should not abort when finished', async () => {
+  it('should not abort when finished', async () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     await execute('https://jsonplaceholder.typicode.com/todos/2')
@@ -274,7 +275,7 @@ describe('useAxios', () => {
     expect(isAborted.value).toBeFalsy()
   })
 
-  test('should abort when loading', async () => {
+  it('should abort when loading', async () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     let error: any
@@ -289,7 +290,7 @@ describe('useAxios', () => {
     expect(error).toBeDefined()
   })
 
-  test('missing url', async () => {
+  it('missing url', async () => {
     // prevent stderr in jsdom xhr
     console.error = vi.fn()
     // @ts-expect-error mock undefined url
@@ -300,7 +301,7 @@ describe('useAxios', () => {
     expect(error).toBeDefined()
   })
 
-  test('should call onSuccess when success', async () => {
+  it('should call onSuccess when success', async () => {
     const onSuccess = vi.fn()
     const { execute, isLoading, isFinished, data } = useAxios(url, config, { ...options, onSuccess })
     expect(isLoading.value).toBeFalsy()
@@ -310,7 +311,7 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
   })
 
-  test('should call onError when error', async () => {
+  it('should call onError when error', async () => {
     const onError = vi.fn()
     const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
     expect(isLoading.value).toBeFalsy()
@@ -321,12 +322,12 @@ describe('useAxios', () => {
     expect(isLoading.value).toBeFalsy()
   })
 
-  test('should use initialData', async () => {
+  it('should use initialData', async () => {
     const { data } = useAxios(url, config, { ...options, initialData: { value: 1 } })
     expect(data.value).toEqual({ value: 1 })
   })
 
-  test('should reset data when execute', async () => {
+  it('should reset data when execute', async () => {
     interface ResType {
       id: number
       title: string
@@ -347,7 +348,7 @@ describe('useAxios', () => {
     expect(data.value).toEqual(initialData)
   })
 
-  test('should not reset data when execute', async () => {
+  it('should not reset data when execute', async () => {
     interface ResType {
       id: number
       title: string
@@ -368,7 +369,7 @@ describe('useAxios', () => {
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
   })
 
-  test('should call onFinish', async () => {
+  it('should call onFinish', async () => {
     const onFinish = vi.fn()
     const { execute, isLoading, isFinished } = useAxios(url, config, { ...options, onFinish })
     expect(isLoading.value).toBeFalsy()

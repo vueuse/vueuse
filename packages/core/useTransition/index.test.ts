@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { executeTransition, useTransition } from '.'
 
 function expectBetween(val: number, floor: number, ceiling: number) {

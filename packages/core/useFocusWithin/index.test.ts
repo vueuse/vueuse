@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { useFocusWithin } from '.'
 
 describe('useFocusWithin', () => {

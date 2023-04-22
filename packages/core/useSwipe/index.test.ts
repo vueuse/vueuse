@@ -1,4 +1,5 @@
-import { useSwipe } from './index'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useSwipe } from '.'
 
 describe('useSwipe', () => {
   const target = document.createElement('div')

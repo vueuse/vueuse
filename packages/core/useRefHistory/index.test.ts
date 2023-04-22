@@ -1,8 +1,9 @@
 import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useRefHistory } from '.'
 
 describe('useRefHistory - sync', () => {
-  test('sync: should record', () => {
+  it('sync: should record', () => {
     const v = ref(0)
     const { history } = useRefHistory(v, { flush: 'sync' })
 
@@ -16,7 +17,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('sync: should be able to undo and redo', () => {
+  it('sync: should be able to undo and redo', () => {
     const v = ref(0)
     const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
 
@@ -62,7 +63,7 @@ describe('useRefHistory - sync', () => {
     expect(canRedo.value).toBe(false)
   })
 
-  test('sync: object with deep', () => {
+  it('sync: object with deep', () => {
     const v = ref({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
 
@@ -84,7 +85,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
-  test('sync: shallow watch with clone', () => {
+  it('sync: shallow watch with clone', () => {
     const v = ref({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
 
@@ -111,7 +112,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[0].snapshot).not.toBe(v.value)
   })
 
-  test('sync: dump + parse', () => {
+  it('sync: dump + parse', () => {
     const v = ref({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       flush: 'sync',
@@ -134,7 +135,7 @@ describe('useRefHistory - sync', () => {
     expect(v.value.a).toBe('bar')
   })
 
-  test('sync: commit', () => {
+  it('sync: commit', () => {
     const v = ref(0)
     const { commit, history } = useRefHistory(v, { flush: 'sync' })
 
@@ -148,7 +149,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('sync: without batch', () => {
+  it('sync: without batch', () => {
     const v = ref({ foo: 1, bar: 'one' })
     const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
@@ -164,7 +165,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[2].snapshot).toEqual({ foo: 1, bar: 'one' })
   })
 
-  test('sync: with batch', () => {
+  it('sync: with batch', () => {
     const v = ref({ foo: 1, bar: 'one' })
     const { history, batch } = useRefHistory(v, { flush: 'sync', deep: true })
 
@@ -191,7 +192,7 @@ describe('useRefHistory - sync', () => {
     expect(history.value[1].snapshot).toEqual({ foo: 1, bar: 'one' })
   })
 
-  test('sync: pause and resume', () => {
+  it('sync: pause and resume', () => {
     const v = ref(1)
     const { history, pause, resume, last } = useRefHistory(v, { flush: 'sync' })
 
@@ -227,7 +228,7 @@ describe('useRefHistory - sync', () => {
     expect(last.value.snapshot).toBe(4)
   })
 
-  test('sync: reset', () => {
+  it('sync: reset', () => {
     const v = ref(0)
     const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 
@@ -282,7 +283,7 @@ describe('useRefHistory - sync', () => {
     expect(redoStack.value[0].snapshot).toBe(3)
   })
 
-  test('sync: dispose', () => {
+  it('sync: dispose', () => {
     const v = ref(0)
     const { history, dispose, last } = useRefHistory(v, { flush: 'sync' })
 
@@ -300,7 +301,7 @@ describe('useRefHistory - sync', () => {
 })
 
 describe('useRefHistory - pre', () => {
-  test('pre: should record', async () => {
+  it('pre: should record', async () => {
     const v = ref(0)
     const { history } = useRefHistory(v)
 
@@ -315,7 +316,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('pre: should be able to undo and redo', async () => {
+  it('pre: should be able to undo and redo', async () => {
     const v = ref(0)
     const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v)
 
@@ -365,7 +366,7 @@ describe('useRefHistory - pre', () => {
     expect(canRedo.value).toBe(false)
   })
 
-  test('pre: object with deep', async () => {
+  it('pre: object with deep', async () => {
     const v = ref({ foo: 'bar' })
     const { history } = useRefHistory(v, { deep: true })
 
@@ -383,7 +384,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[0].snapshot).not.toBe(history.value[1].snapshot)
   })
 
-  test('pre: dump + parse', async () => {
+  it('pre: dump + parse', async () => {
     const v = ref({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       deep: true,
@@ -407,7 +408,7 @@ describe('useRefHistory - pre', () => {
     expect(v.value.a).toBe('bar')
   })
 
-  test('pre: commit', async () => {
+  it('pre: commit', async () => {
     const v = ref(0)
     const { commit, history, undo } = useRefHistory(v)
 
@@ -430,7 +431,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value[1].snapshot).toBe(0)
   })
 
-  test('pre: pause and resume', async () => {
+  it('pre: pause and resume', async () => {
     const v = ref(1)
     const { history, pause, resume, last } = useRefHistory(v)
 
@@ -471,7 +472,7 @@ describe('useRefHistory - pre', () => {
     expect(last.value.snapshot).toBe(4)
   })
 
-  test('pre: reset', async () => {
+  it('pre: reset', async () => {
     const v = ref(0)
     const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
 
@@ -531,7 +532,7 @@ describe('useRefHistory - pre', () => {
     expect(redoStack.value[0].snapshot).toBe(3)
   })
 
-  test('pre: auto batching', async () => {
+  it('pre: auto batching', async () => {
     const v = ref(0)
     const { history } = useRefHistory(v)
 
@@ -557,7 +558,7 @@ describe('useRefHistory - pre', () => {
     expect(history.value.length).toBe(3)
   })
 
-  test('pre: dispose', async () => {
+  it('pre: dispose', async () => {
     const v = ref(0)
     const { history, dispose, last } = useRefHistory(v)
 

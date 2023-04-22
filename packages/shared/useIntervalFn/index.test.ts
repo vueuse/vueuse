@@ -1,7 +1,8 @@
 import { effectScope, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Pausable } from '../utils'
-import { useIntervalFn } from './index'
+import { useIntervalFn } from '.'
 
 describe('useIntervalFn', () => {
   let callback = vi.fn()

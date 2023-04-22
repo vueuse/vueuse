@@ -1,8 +1,8 @@
 import { nextTwoTick } from 'packages/.test'
-import { expect, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue-demi'
 import { usePreferredDark } from '../usePreferredDark'
-import { useColorMode } from './index'
+import { useColorMode } from '.'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'

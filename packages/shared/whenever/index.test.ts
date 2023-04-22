@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useSetup } from '../../.test'
 import { toValue } from '../toValue'
 import { whenever } from '.'
