@@ -1,34 +1,30 @@
-import { computed, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, toRefs, toValue } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import type { PointerType, Position } from '../types'
+import { computed, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import type { PointerType, Position } from '../types'
+import { useEventListener } from '../useEventListener'
+
+export interface ActiveCallback {
+  (state: Position, evt: PointerEvent): false | void
+}
+
+export interface PassiveCallback {
+  (state: Position, evt: PointerEvent): any
+}
+
+export type Axis = 'both' | 'x' | 'y'
 
 export interface UseDraggableOptions {
   /**
-   * Only start the dragging when click on the element directly
+   * Axis to drag on.
    *
-   * @default false
+   * @default 'both'
    */
-  exact?: MaybeRefOrGetter<boolean>
+  axis?: Axis
 
   /**
-   * Prevent events defaults
-   *
-   * @default false
-   */
-  preventDefault?: MaybeRefOrGetter<boolean>
-
-  /**
-   * Prevent events propagation
-   *
-   * @default false
-   */
-  stopPropagation?: MaybeRefOrGetter<boolean>
-
-  /**
-   * Whether dispatch events in capturing phase
+   * Whether dispatch events in capturing phase.
    *
    * @default true
    */
@@ -39,21 +35,23 @@ export interface UseDraggableOptions {
    *
    * @default window
    */
-  draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>
+  draggingElement?: MaybeRefOrGetter<
+    Document | HTMLElement | SVGElement | Window | null | undefined
+  >
 
   /**
-   * Handle that triggers the drag event
+   * Only start the dragging when click on the element directly.
+   *
+   * @default false
+   */
+  exact?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Handle that triggers the drag event.
    *
    * @default target
    */
   handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
-
-  /**
-   * Pointer types that listen to.
-   *
-   * @default ['mouse', 'touch', 'pen']
-   */
-  pointerTypes?: PointerType[]
 
   /**
    * Initial position of the element.
@@ -63,26 +61,50 @@ export interface UseDraggableOptions {
   initialValue?: MaybeRefOrGetter<Position>
 
   /**
-   * Callback when the dragging starts. Return `false` to prevent dragging.
+   * Callback when dragging end.
    */
-  onStart?: (position: Position, event: PointerEvent) => void | false
+  onEnd?: PassiveCallback
 
   /**
    * Callback during dragging.
    */
-  onMove?: (position: Position, event: PointerEvent) => void
+  onMove?: PassiveCallback
 
   /**
-   * Callback when dragging end.
+   * Callback when the dragging starts. Return `false` to prevent dragging.
    */
-  onEnd?: (position: Position, event: PointerEvent) => void
+  onStart?: ActiveCallback
 
   /**
-   * Axis to drag on.
+   * Pointer types that listen to.
    *
-   * @default 'both'
+   * @default ['mouse', 'pen', 'touch']
    */
-  axis?: 'x' | 'y' | 'both'
+  pointerTypes?: PointerType[]
+
+  /**
+   * Prevent events defaults.
+   *
+   * @default false
+   */
+  preventDefault?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Prevent events propagation.
+   *
+   * @default false
+   */
+  stopPropagation?: MaybeRefOrGetter<boolean>
+}
+
+function vecSub(v: Position, w: Position) {
+  return { x: v.x - w.x, y: v.y - w.y }
+}
+function isXAxis(axis: Axis) {
+  return axis === 'both' || axis === 'x'
+}
+function isYAxis(axis: Axis) {
+  return axis === 'both' || axis === 'y'
 }
 
 /**
@@ -97,96 +119,127 @@ export function useDraggable(
   options: UseDraggableOptions = {},
 ) {
   const {
+    capture,
+    exact,
+    initialValue,
+    onEnd,
+    onMove,
+    onStart,
     pointerTypes,
     preventDefault,
     stopPropagation,
-    exact,
-    onMove,
-    onEnd,
-    onStart,
-    initialValue,
     axis = 'both',
-    draggingElement = defaultWindow,
-    handle: draggingHandle = target,
+    draggingElement: container = defaultWindow,
+    handle = target,
   } = options
 
-  const position = ref<Position>(
-    toValue(initialValue) ?? { x: 0, y: 0 },
-  )
+  const position = ref<Position>(toValue(initialValue) ?? { x: 0, y: 0 })
+  const startEvent = ref<PointerEvent | null>(null)
+  const history: PointerEvent[] = []
 
-  const pressedDelta = ref<Position>()
+  const hitTest = (ev: PointerEvent) =>
+    toValue(exact) ? ev.target === toValue(target) : true
 
-  const filterEvent = (e: PointerEvent) => {
-    if (pointerTypes)
-      return pointerTypes.includes(e.pointerType as PointerType)
-    return true
+  const isDragStarted = () => startEvent.value != null
+
+  const isTypeSupported = (ev: PointerEvent) =>
+    pointerTypes?.includes(ev.pointerType as PointerType) !== false
+
+  const shouldStartDrag = (ev: PointerEvent) =>
+    onStart?.(toValue(position), ev) !== false
+
+  const onPointerDown = (ev: PointerEvent) => {
+    if (hitTest(ev) && shouldStartDrag(ev)) {
+      history.push(ev)
+      startEvent.value = ev
+    }
   }
 
-  const handleEvent = (e: PointerEvent) => {
+  const onPointerMove = (ev: PointerEvent) => {
+    if (!isDragStarted())
+      return
+
+    const delta = vecSub(ev, history.at(-1)!)
+    const x = position.value.x + (isXAxis(axis) ? delta.x : 0)
+    const y = position.value.y + (isYAxis(axis) ? delta.y : 0)
+
+    position.value = { x, y }
+    history.push(ev)
+    onMove?.(toValue(position), ev)
+  }
+
+  const onPointerUp = (ev: PointerEvent) => {
+    history.length = 0
+
+    if (!isDragStarted())
+      return
+
+    startEvent.value = null
+    onEnd?.(toValue(position), ev)
+  }
+
+  const handleEvent = (ev: PointerEvent) => {
+    if (!isTypeSupported(ev))
+      return
+
     if (toValue(preventDefault))
-      e.preventDefault()
+      ev.preventDefault()
+
     if (toValue(stopPropagation))
-      e.stopPropagation()
-  }
+      ev.stopPropagation()
 
-  const start = (e: PointerEvent) => {
-    if (!filterEvent(e))
-      return
-    if (toValue(exact) && e.target !== toValue(target))
-      return
-    const rect = toValue(target)!.getBoundingClientRect()
-    const pos = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+    switch (ev.type) {
+      case 'pointerdown':
+        onPointerDown(ev)
+        break
+      case 'pointermove':
+        onPointerMove(ev)
+        break
+      case 'pointercancel':
+      case 'pointerup':
+        onPointerUp(ev)
+        break
+      default:
+        break
     }
-    if (onStart?.(pos, e) === false)
-      return
-    pressedDelta.value = pos
-    handleEvent(e)
-  }
-  const move = (e: PointerEvent) => {
-    if (!filterEvent(e))
-      return
-    if (!pressedDelta.value)
-      return
-
-    let { x, y } = position.value
-    if (axis === 'x' || axis === 'both')
-      x = e.clientX - pressedDelta.value.x
-    if (axis === 'y' || axis === 'both')
-      y = e.clientY - pressedDelta.value.y
-    position.value = {
-      x,
-      y,
-    }
-    onMove?.(position.value, e)
-    handleEvent(e)
-  }
-  const end = (e: PointerEvent) => {
-    if (!filterEvent(e))
-      return
-    if (!pressedDelta.value)
-      return
-    pressedDelta.value = undefined
-    onEnd?.(position.value, e)
-    handleEvent(e)
   }
 
   if (isClient) {
-    const config = { capture: options.capture ?? true }
-    useEventListener(draggingHandle, 'pointerdown', start, config)
-    useEventListener(draggingElement, 'pointermove', move, config)
-    useEventListener(draggingElement, 'pointerup', end, config)
-  }
+    const addEventListenerOptions = { capture }
+    useEventListener(
+      handle,
+      'pointerdown',
+      handleEvent,
+      addEventListenerOptions,
+    )
 
-  return {
-    ...toRefs(position),
-    position,
-    isDragging: computed(() => !!pressedDelta.value),
-    style: computed(
-      () => `left:${position.value.x}px;top:${position.value.y}px;`,
-    ),
+    useEventListener(
+      container,
+      'pointermove',
+      handleEvent,
+      addEventListenerOptions,
+    )
+
+    useEventListener(
+      container,
+      'pointercancel',
+      handleEvent,
+      addEventListenerOptions,
+    )
+
+    useEventListener(
+      container,
+      'pointerup',
+      handleEvent,
+      addEventListenerOptions,
+    )
   }
+  const isDragging = computed(isDragStarted)
+  const style = computed(
+    () => `left: ${position.value.x}px; top: ${position.value.y}px;`,
+  )
+
+  return { ...toRefs(position), isDragging, position, style }
 }
 
 export type UseDraggableReturn = ReturnType<typeof useDraggable>
