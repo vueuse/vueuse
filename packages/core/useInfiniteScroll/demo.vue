@@ -8,17 +8,8 @@ const data = ref([1])
 useInfiniteScroll(
   el,
   () => {
-    console.log('fetching data')
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const length = data.value.length + 1
-
-        data.value.push(...Array.from({ length: 5 }, (_, i) => length + i))
-
-        resolve()
-      }, 1000)
-    })
+    const length = data.value.length + 1
+    data.value.push(...Array.from({ length: 5 }, (_, i) => length + i))
   },
   { distance: 10 },
 )

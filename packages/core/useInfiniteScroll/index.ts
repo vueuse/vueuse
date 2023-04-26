@@ -74,6 +74,7 @@ export function useInfiniteScroll(
         ])
           .finally(() => {
             promise.value = null
+            el.dispatchEvent(new Event('scroll'))
             nextTick(() => checkAndLoad())
           })
       }
