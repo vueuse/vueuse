@@ -5,8 +5,6 @@ import { useInfiniteScroll } from '@vueuse/core'
 const el = ref<HTMLElement | null>(null)
 const data = ref([1])
 
-console.log('hello world')
-
 useInfiniteScroll(
   el,
   () => {
