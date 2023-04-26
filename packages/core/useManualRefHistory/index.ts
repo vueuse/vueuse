@@ -88,7 +88,7 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   clear: () => void
 
   /**
-   * Create new a new history record
+   * Create a new history record
    */
   commit: () => void
 
