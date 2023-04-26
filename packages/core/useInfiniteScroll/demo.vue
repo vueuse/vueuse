@@ -5,11 +5,22 @@ import { useInfiniteScroll } from '@vueuse/core'
 const el = ref<HTMLElement | null>(null)
 const data = ref([1])
 
+console.log('hello world')
+
 useInfiniteScroll(
   el,
   () => {
-    const length = data.value.length + 1
-    data.value.push(...Array.from({ length: 5 }, (_, i) => length + i))
+    console.log('fetching data')
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const length = data.value.length + 1
+
+        data.value.push(...Array.from({ length: 5 }, (_, i) => length + i))
+
+        resolve()
+      }, 1000)
+    })
   },
   { distance: 10 },
 )
