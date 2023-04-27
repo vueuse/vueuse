@@ -27,6 +27,16 @@ useEventListener(element, 'keydown', (e) => {
 })
 ```
 
+Please note, however, that the `document` could be undefined in some environments, e.g., in a server-side rendered application. 
+
+In that case, be sure to protect the usage of the composable by using it only when the component mounts (using the `onMounted` lifecycle hook, for example):
+
+```ts
+onMounted(() => useEventListener(document, 'keydown', (e) => {
+  console.log(e.key)
+}))
+```
+
 ```html
 <template>
   <div v-if="cond" ref="element">Div1</div>
