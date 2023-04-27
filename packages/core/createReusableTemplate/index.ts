@@ -1,5 +1,5 @@
 import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent, isVue3, version } from 'vue-demi'
+import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 import { makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
@@ -45,12 +45,12 @@ export function createReusableTemplate<
     return
   }
 
-  let render: Slot | undefined
+  const render = shallowRef<Slot | undefined>()
 
   const define = defineComponent({
     setup(_, { slots }) {
       return () => {
-        render = slots.default
+        render.value = slots.default
       }
     },
   }) as DefineTemplateComponent<Bindings, Slots>
@@ -59,9 +59,9 @@ export function createReusableTemplate<
     inheritAttrs: false,
     setup(_, { attrs, slots }) {
       return () => {
-        if (!render && process.env.NODE_ENV !== 'production')
+        if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        return render?.({ ...attrs, $slots: slots })
+        return render.value?.({ ...attrs, $slots: slots })
       }
     },
   }) as ReuseTemplateComponent<Bindings, Slots>
