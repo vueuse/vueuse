@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/monorepo",
+  "type": "module",
   "version": "10.1.0",
   "private": true,
   "packageManager": "pnpm@8.2.0",
