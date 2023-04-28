@@ -14,7 +14,7 @@ export type UseEventSourceOptions = EventSourceInit
  * @param events
  * @param options
  */
-export function useEventSource(url: string, events: Array<string> = [], options: UseEventSourceOptions = {}) {
+export function useEventSource(url: string | URL, events: Array<string> = [], options: UseEventSourceOptions = {}) {
   const event: Ref<string | null> = ref(null)
   const data: Ref<string | null> = ref(null)
   const status = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
