@@ -27,16 +27,6 @@ useEventListener(element, 'keydown', (e) => {
 })
 ```
 
-Please note, however, that the `document` could be undefined in some environments, e.g., in a server-side rendered application. 
-
-In that case, be sure to protect the usage of the composable by using it only when the component mounts (using the `onMounted` lifecycle hook, for example):
-
-```ts
-onMounted(() => useEventListener(document, 'keydown', (e) => {
-  console.log(e.key)
-}))
-```
-
 ```html
 <template>
   <div v-if="cond" ref="element">Div1</div>
@@ -54,4 +44,15 @@ const cleanup = useEventListener(document, 'keydown', (e) => {
 })
 
 cleanup() // This will unregister the listener.
+```
+
+Note if you components also run in SSR (Server Side Rendering), you might get errors (like `document is not defined`) because DOM APIs like `document` and `window` are not available in Node.js. To avoid that you can put the logic inside `onMounted` hook.
+
+```ts
+// onMounted will only be called in the client side, so it guarantees the DOM APIs are available.
+onMounted(() => {
+  useEventListener(document, 'keydown', (e) => {
+    console.log(e.key)
+  })
+})
 ```
