@@ -11,18 +11,37 @@ export interface UseImageOptions {
   srcset?: string
   /** Image sizes for different page layouts */
   sizes?: string
+  /** Image alternative information */
+  alt?: string
+  /** Image classes */
+  class?: string
+  /** Image loading */
+  loading?: HTMLImageElement['loading']
+  /** Image CORS settings */
+  crossorigin?: string
 }
 
 async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image()
-    const { src, srcset, sizes } = options
+    const { src, srcset, sizes, class: clazz, loading, crossorigin } = options
 
     img.src = src
+
     if (srcset)
       img.srcset = srcset
+
     if (sizes)
       img.sizes = sizes
+
+    if (clazz)
+      img.className = clazz
+
+    if (loading)
+      img.loading = loading
+
+    if (crossorigin)
+      img.crossOrigin = crossorigin
 
     img.onload = () => resolve(img)
     img.onerror = reject

@@ -11,6 +11,10 @@ export const UseImage = /*#__PURE__*/ defineComponent<UseImageOptions & Renderab
     'srcset',
     'sizes',
     'as',
+    'alt',
+    'class',
+    'loading',
+    'crossorigin',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const data = reactive(useImage(props))
