@@ -26,5 +26,9 @@ describe('usePrecision', () => {
     expect(result.value).toMatchInlineSnapshot('45.12')
     base.value = -45.159
     expect(result.value).toMatchInlineSnapshot('-45.16')
+    base.value = 2.3
+    expect(result.value).toMatchInlineSnapshot('2.3')
+    base.value = -2.3
+    expect(result.value).toMatchInlineSnapshot('-2.3')
   })
 })
