@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, h, ref } from 'vue-demi'
 import { onClickOutside } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
 import type { OnClickOutsideOptions } from '.'
@@ -9,7 +9,7 @@ export interface OnClickOutsideProps extends RenderableComponent {
 
 export const OnClickOutside = /*#__PURE__*/ defineComponent<OnClickOutsideProps>({
   name: 'OnClickOutside',
-  props: ['options'] as unknown as undefined,
+  props: ['as', 'options'] as unknown as undefined,
   emits: ['trigger'],
   setup(props, { slots, emit }) {
     const target = ref()
@@ -19,7 +19,7 @@ export const OnClickOutside = /*#__PURE__*/ defineComponent<OnClickOutsideProps>
 
     return () => {
       if (slots.default)
-        return slots.default({ target })
+        return props.as === null ? slots.default({ target }) : h(props.as || 'div', { ref: target }, slots.default())
     }
   },
 })

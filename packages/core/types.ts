@@ -13,7 +13,7 @@ export interface RenderableComponent {
    *
    * @default 'div'
    */
-  as?: Object | string
+  as?: Object | string | null
 }
 
 export type PointerType = 'mouse' | 'touch' | 'pen'
