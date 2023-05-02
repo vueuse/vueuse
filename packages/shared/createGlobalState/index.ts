@@ -1,5 +1,6 @@
 import { effectScope } from 'vue-demi'
 import type { AnyFn } from '../utils'
+
 /**
  * Keep states in the global scope to be reusable across Vue instances.
  *
