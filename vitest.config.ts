@@ -21,7 +21,6 @@ export default defineConfig({
     __VUE_PROD_DEVTOOLS__: 'false',
   },
   test: {
-    globals: true,
     environment: 'jsdom',
     setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
     reporters: 'dot',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useTextDirection } from './index'
+import { useTextDirection } from '.'
 
 const dir = useTextDirection({
   selector: '#_useTextDirectionDemo',

@@ -1,4 +1,5 @@
 import { defineComponent, h, isVue2, nextTick, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { mount } from '../../.test'
 import { useParentElement } from '.'
 

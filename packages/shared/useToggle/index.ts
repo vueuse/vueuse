@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { isRef, ref } from 'vue-demi'
-import { toValue } from '../toValue'
 import type { MaybeRef, MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>

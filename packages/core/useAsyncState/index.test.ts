@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
-import { useAsyncState } from '../useAsyncState'
+import { describe, expect, it, vi } from 'vitest'
+import { useAsyncState } from '.'
 
 describe('useAsyncState', () => {
   it('should be defined', () => {
@@ -24,6 +25,13 @@ describe('useAsyncState', () => {
     expect(state.value).toBe(0)
     await execute(0, 2)
     expect(state.value).toBe(2)
+  })
+
+  it('should work with await', async () => {
+    const asyncState = useAsyncState(p1, 0, { immediate: true })
+    expect(asyncState.isLoading.value).toBeTruthy()
+    await asyncState
+    expect(asyncState.isLoading.value).toBeFalsy()
   })
 
   it('should work with isLoading', () => {

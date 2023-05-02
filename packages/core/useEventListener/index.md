@@ -45,3 +45,14 @@ const cleanup = useEventListener(document, 'keydown', (e) => {
 
 cleanup() // This will unregister the listener.
 ```
+
+Note if you components also run in SSR (Server Side Rendering), you might get errors (like `document is not defined`) because DOM APIs like `document` and `window` are not available in Node.js. To avoid that you can put the logic inside `onMounted` hook.
+
+```ts
+// onMounted will only be called in the client side, so it guarantees the DOM APIs are available.
+onMounted(() => {
+  useEventListener(document, 'keydown', (e) => {
+    console.log(e.key)
+  })
+})
+```

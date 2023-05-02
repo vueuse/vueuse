@@ -1,5 +1,6 @@
 import { ref } from 'vue-demi'
-import { useArraySome } from '../useArraySome'
+import { describe, expect, it } from 'vitest'
+import { useArraySome } from '.'
 
 describe('useArraySome', () => {
   it('should be defined', () => {

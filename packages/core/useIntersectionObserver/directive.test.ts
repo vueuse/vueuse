@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { vIntersectionObserver } from './directive'
 import type { UseIntersectionObserverOptions } from '.'
 

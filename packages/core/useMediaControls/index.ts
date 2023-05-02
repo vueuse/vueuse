@@ -1,6 +1,6 @@
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { createEventHook, isNumber, isObject, isString, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -183,7 +183,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const disableTrack = (track?: number | UseMediaTextTrack) => {
     usingElRef<HTMLMediaElement>(target, (el) => {
       if (track) {
-        const id = isNumber(track) ? track : track.id
+        const id = typeof track === 'number' ? track : track.id
         el.textTracks[id].mode = 'disabled'
       }
       else {
@@ -204,7 +204,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
    */
   const enableTrack = (track: number | UseMediaTextTrack, disableTracks = true) => {
     usingElRef<HTMLMediaElement>(target, (el) => {
-      const id = isNumber(track) ? track : track.id
+      const id = typeof track === 'number' ? track : track.id
 
       if (disableTracks)
         disableTrack()
@@ -254,7 +254,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     // Merge sources into an array
-    if (isString(src))
+    if (typeof src === 'string')
       sources = [{ src }]
     else if (Array.isArray(src))
       sources = src
@@ -293,30 +293,30 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   })
 
   /**
-   * Watch volume and change player volume when volume prop changes
+   * Apply composable state to the element, also when element is changed
    */
-  watch(volume, (vol) => {
+  watch([target, volume], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.volume = vol
+    el.volume = volume.value
   })
 
-  watch(muted, (mute) => {
+  watch([target, muted], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.muted = mute
+    el.muted = muted.value
   })
 
-  watch(rate, (rate) => {
+  watch([target, rate], () => {
     const el = toValue(target)
     if (!el)
       return
 
-    el.playbackRate = rate
+    el.playbackRate = rate.value
   })
 
   /**

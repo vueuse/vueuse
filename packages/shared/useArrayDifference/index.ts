@@ -1,6 +1,5 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import { isString } from '../utils'
 import type { MaybeRefOrGetter } from '../utils'
 import { toValue } from '../toValue'
 
@@ -22,9 +21,10 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
   const values: MaybeRefOrGetter<T[]> = args[1]
   let compareFn = args[2] ?? defaultComparator
 
-  if (isString(compareFn)) {
+  if (typeof compareFn === 'string') {
     const key = compareFn as keyof T
     compareFn = (value: T, othVal: T) => value[key] === othVal[key]
   }
+
   return computed(() => toValue(list).filter(x => toValue(values).findIndex(y => compareFn(x, y)) === -1))
 }

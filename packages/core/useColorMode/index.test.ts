@@ -1,8 +1,8 @@
 import { nextTwoTick } from 'packages/.test'
-import { expect, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue-demi'
 import { usePreferredDark } from '../usePreferredDark'
-import { useColorMode } from './index'
+import { useColorMode } from '.'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
@@ -117,10 +117,10 @@ describe('useColorMode', () => {
     expect(htmlEl?.className).toMatch(/dark/)
   })
 
-  it('should use state to access mode & preference', () => {
-    const state = useColorMode()
-    expect(state.store.value).toBe('auto')
-    expect(state.system.value).toBe('light')
-    expect(state.value).toBe('light')
+  it('should be able access the store & system preference', () => {
+    const mode = useColorMode()
+    expect(mode.store.value).toBe('auto')
+    expect(mode.system.value).toBe('light')
+    expect(mode.state.value).toBe('light')
   })
 })

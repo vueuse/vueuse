@@ -1,4 +1,5 @@
 import { computed, isVue3, reactive, ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { toRefs } from '.'
 
 describe('toRefs', () => {

@@ -18,7 +18,7 @@ export interface UseDraggableProps extends UseDraggableOptions, RenderableCompon
   storageType?: 'local' | 'session'
 }
 
-export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
+export const UseDraggable = /*#__PURE__*/ defineComponent<UseDraggableProps>({
   name: 'UseDraggable',
   props: [
     'storageKey',

@@ -125,6 +125,8 @@ export interface ConfigurableFlushSync {
 }
 
 // Internal Types
+export type MultiWatchSources = (WatchSource<unknown> | object)[]
+
 export type MapSources<T> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never;
 }

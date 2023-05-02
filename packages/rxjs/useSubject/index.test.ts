@@ -1,5 +1,6 @@
 import { BehaviorSubject, Subject } from 'rxjs'
 import { first, skip } from 'rxjs/operators'
+import { describe, expect, it } from 'vitest'
 import { useInjectedSetup } from '../../.test'
 import { useSubject } from '.'
 

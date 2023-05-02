@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { executeTransition, useTransition } from '.'
 
 function expectBetween(val: number, floor: number, ceiling: number) {
@@ -152,6 +153,26 @@ describe('useTransition', () => {
 
     await promiseTimeout(50)
     expect(linear).toBeCalled()
+    expectBetween(transition.value, 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(1)
+  })
+
+  it('supports non-linear custom easing functions', async () => {
+    const source = ref(0)
+    const easeInQuad = vi.fn(n => n * n)
+    const transition = useTransition(source, {
+      duration: 100,
+      transition: easeInQuad,
+    })
+
+    expect(easeInQuad).not.toBeCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(easeInQuad).toBeCalled()
     expectBetween(transition.value, 0, 1)
 
     await promiseTimeout(100)

@@ -49,12 +49,12 @@ onKeyStroke('A', (e) => {
 The callback will trigger only once when pressing `A` and **hold down**.
 
 ```js
-import { onKeyStroke, onKeyStrokeOnce } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 
 // use `autoRepeat` option
 onKeyStroke('A', (e) => {
   console.log('Key A pressed')
-}, { autoRepeat: false })
+}, { dedupe: false })
 ```
 
 Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)

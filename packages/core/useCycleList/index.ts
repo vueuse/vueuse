@@ -32,7 +32,7 @@ export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleL
 
   const index = computed<number>({
     get() {
-      const targetList = toValue<T[]>(list)
+      const targetList = listRef.value
 
       let index = options?.getIndexOf
         ? options.getIndexOf(state.value, targetList)

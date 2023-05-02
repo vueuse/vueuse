@@ -1,8 +1,9 @@
 import { nextTick, reactive, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { watchTriggerable } from '.'
 
 describe('watchTriggerable', () => {
-  test('this should work', async () => {
+  it('this should work', async () => {
     const source = ref(0)
     const effect = ref(0)
     let cleanupCount = -1
@@ -34,7 +35,7 @@ describe('watchTriggerable', () => {
     expect(cleanupCount).toBe(2)
   })
 
-  test('source array', async () => {
+  it('source array', async () => {
     const source1 = ref(0)
     const source2 = reactive({ a: 'a' })
     const effect1 = ref(-1)
@@ -62,7 +63,7 @@ describe('watchTriggerable', () => {
     expect(cleanupCount).toBe(0)
   })
 
-  test('source reactive object', async () => {
+  it('source reactive object', async () => {
     const source = reactive({ a: 'a' })
     const effect = ref('')
     let cleanupCount = 0
@@ -84,7 +85,7 @@ describe('watchTriggerable', () => {
     expect(cleanupCount).toBe(1)
   })
 
-  test('trigger should await', async () => {
+  it('trigger should await', async () => {
     const source = ref(1)
     const effect = ref(0)
     const { trigger } = watchTriggerable(source, async (value) => {

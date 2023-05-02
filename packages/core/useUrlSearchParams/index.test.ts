@@ -1,4 +1,5 @@
 import { isVue3, nextTick } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {
@@ -36,7 +37,7 @@ describe('useUrlSearchParams', () => {
     'hash-params',
   ] as const).forEach((mode) => {
     describe(`${mode} mode`, () => {
-      test('return initial params', async () => {
+      it('return initial params', async () => {
         if (mode === 'hash')
           window.location.hash = '#/test/?foo=bar'
         else if (mode === 'hash-params')
@@ -50,7 +51,7 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBe('bar')
       })
 
-      test('return initialValue', async () => {
+      it('return initialValue', async () => {
         const initialValue = { foo: 'bar' }
         const params1 = useUrlSearchParams(mode, { initialValue })
         // @ts-expect-error test window=null
@@ -60,7 +61,7 @@ describe('useUrlSearchParams', () => {
         expect(params2.foo).toBe('bar')
       })
 
-      test('update params on poststate event', async () => {
+      it('update params on poststate event', async () => {
         const params = useUrlSearchParams(mode)
         expect(params.foo).toBeUndefined()
 
@@ -104,7 +105,7 @@ describe('useUrlSearchParams', () => {
         expect(params.foo).toBe('')
       })
 
-      test('stop poststate event', async () => {
+      it('stop poststate event', async () => {
         const params = useUrlSearchParams(mode, { write: false })
         expect(params.foo).toBeUndefined()
 
@@ -123,7 +124,7 @@ describe('useUrlSearchParams', () => {
       })
 
       if (isVue3) {
-        test('update browser location on params change', async () => {
+        it('update browser location on params change', async () => {
           const params = useUrlSearchParams(mode)
 
           params.foo = 'bar'
@@ -158,7 +159,7 @@ describe('useUrlSearchParams', () => {
           }
         })
 
-        test('array url search param', async () => {
+        it('array url search param', async () => {
           const params = useUrlSearchParams(mode)
           expect(params.foo).toBeUndefined()
           params.foo = ['bar1', 'bar2']
@@ -178,7 +179,7 @@ describe('useUrlSearchParams', () => {
         })
       }
 
-      test('generic url search params', () => {
+      it('generic url search params', () => {
         interface CustomUrlParams extends Record<string, any> {
           customFoo: number | undefined
         }
@@ -208,7 +209,7 @@ describe('useUrlSearchParams', () => {
     })
   })
 
-  test('hash url without params', () => {
+  it('hash url without params', () => {
     window.location.hash = '#/test/'
     const params = useUrlSearchParams('hash')
     expect(params).toEqual({})

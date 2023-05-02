@@ -1,4 +1,5 @@
 import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useConfirmDialog } from '.'
 
 describe('useConfirmDialog', () => {

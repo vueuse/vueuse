@@ -1,5 +1,5 @@
 import { useCloned } from '@vueuse/core'
-import { expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick, ref } from 'vue-demi'
 
 describe('useCloned', () => {

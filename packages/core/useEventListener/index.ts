@@ -1,5 +1,5 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isString, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -111,7 +111,7 @@ export function useEventListener(...args: any[]) {
   let listeners: Arrayable<Function>
   let options: MaybeRefOrGetter<boolean | AddEventListenerOptions> | undefined
 
-  if (isString(args[0]) || Array.isArray(args[0])) {
+  if (typeof args[0] === 'string' || Array.isArray(args[0])) {
     [events, listeners, options] = args
     target = defaultWindow
   }

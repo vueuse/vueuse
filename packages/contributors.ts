@@ -164,6 +164,15 @@ const coreTeamMembers: CoreTeam[] = [
     description: 'Building delightful open source<br>Nuxt freelance developer',
     packages: ['schema-org'],
   },
+  {
+    avatar: contributorsAvatars['Alfred-Skyblue'],
+    name: 'Alfred-Skyblue',
+    github: 'Alfred-Skyblue',
+    description: 'open source enthusiast',
+    functions: [
+      'useSortable',
+    ],
+  },
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))
 

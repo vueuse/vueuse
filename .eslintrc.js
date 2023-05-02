@@ -2,6 +2,9 @@ const { resolve } = require('node:path')
 
 const restricted = [
   'vue',
+  '@vue/reactivity',
+  '@vue/runtime-core',
+  '@vue/runtime-dom',
   '@vue/composition-api',
   '..',
   '../..',
@@ -47,6 +50,19 @@ module.exports = {
             paths: [
               ...restricted,
               '@vueuse/shared',
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['packages/core/**/index.ts'],
+      rules: {
+        'no-restricted-imports': ['error',
+          {
+            paths: [
+              ...restricted,
+              '@vueuse/core',
             ],
           },
         ],

@@ -13,7 +13,6 @@
   position: absolute;
   top: 0;
   right: 10px;
-  z-index: 2;
   font-size: 12px;
   font-weight: 500;
   transition: color 0.5s;
@@ -181,6 +180,11 @@
     border-width: 2px;
     border-style: dashed;
     padding: 1rem;
+  }
+
+  dialog {
+    z-index: 1000000;
+    background: var(--vp-c-bg);
   }
 }
 

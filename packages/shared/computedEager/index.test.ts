@@ -1,4 +1,5 @@
 import { computed, ref, watch } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTwoTick } from '../../.test'
 import { computedEager } from '.'
 

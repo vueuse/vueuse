@@ -1,5 +1,6 @@
 import { isVue3, ref } from 'vue-demi'
-import { __onlyVue3, assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isBoolean, isClient, isDef, isFunction, isIOS, isNumber, isObject, isString, isWindow, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -264,13 +265,6 @@ describe('is', () => {
     console.warn = vi.fn()
   })
 
-  it('should be boolean', () => {
-    expect(isBoolean(true)).toBeTruthy()
-    expect(isBoolean(false)).toBeTruthy()
-    expect(0).toBeFalsy()
-    expect('').toBeFalsy()
-  })
-
   it('should be client', () => {
     expect(isClient).toBeTruthy()
   })
@@ -293,31 +287,10 @@ describe('is', () => {
     expect(isDef(undefined)).toBeFalsy()
   })
 
-  it('should be function', () => {
-    expect(isFunction(() => {})).toBeTruthy()
-    expect(isFunction(() => {})).toBeTruthy()
-  })
-
-  it('should be number', () => {
-    expect(isNumber(1)).toBeTruthy()
-    expect(isNumber('1')).toBeFalsy()
-  })
-
-  it('should be string', () => {
-    expect(isString('')).toBeTruthy()
-    expect(isString(0)).toBeFalsy()
-  })
-
   it('should be object', () => {
     expect(isObject({})).toBeTruthy()
     expect(isObject(null)).toBeFalsy()
     expect(isObject([])).toBeFalsy()
-  })
-
-  it('should be window', () => {
-    // Object.prototype.toString.call(window) is '[object global]'
-    expect(isWindow(window)).toBeFalsy()
-    expect(isWindow({})).toBeFalsy()
   })
 
   it('should be now', () => {
@@ -360,18 +333,7 @@ describe('is', () => {
 
 describe('compatibility', () => {
   it('should export module', () => {
-    expect(__onlyVue3).toBeDefined()
     expect(directiveHooks).toBeDefined()
-  })
-
-  it('__onlyVues', () => {
-    if (isVue3) {
-      expect(__onlyVue3()).toBeUndefined()
-    }
-    else {
-      expect(() => __onlyVue3()).toThrowError('[VueUse] this function is only works on Vue 3.')
-      expect(() => __onlyVue3('func')).toThrowError('[VueUse] func is only works on Vue 3.')
-    }
   })
 
   it('directiveHooks', () => {

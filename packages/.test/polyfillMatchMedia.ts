@@ -1,3 +1,5 @@
+import { vi } from 'vitest'
+
 window.matchMedia = window.matchMedia || vi.fn().mockImplementation((query) => {
   return {
     matches: false,

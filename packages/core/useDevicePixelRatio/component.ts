@@ -1,7 +1,7 @@
 import { defineComponent, reactive } from 'vue-demi'
 import { useDevicePixelRatio } from '@vueuse/core'
 
-export const UseDevicePixelRatio = /* #__PURE__ */ defineComponent({
+export const UseDevicePixelRatio = /*#__PURE__*/ defineComponent({
   name: 'UseDevicePixelRatio',
   setup(props, { slots }) {
     const data = reactive({

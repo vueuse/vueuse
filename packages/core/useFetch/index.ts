@@ -230,18 +230,20 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
     // use last callback
     return async (ctx: T) => {
       const callback = callbacks[callbacks.length - 1]
-      if (callback !== undefined)
-        await callback(ctx)
+      if (callback)
+        return { ...ctx, ...(await callback(ctx)) }
+
       return ctx
     }
   }
   else {
     // chaining and combine result
     return async (ctx: T) => {
-      await callbacks.reduce((prevCallback, callback) => prevCallback.then(async () => {
+      for (const callback of callbacks) {
         if (callback)
           ctx = { ...ctx, ...(await callback(ctx)) }
-      }), Promise.resolve())
+      }
+
       return ctx
     }
   }
