@@ -32,6 +32,37 @@ So this function is made to provide a way for defining and reusing templates ins
 In the previous example, we could refactor it to:
 
 ```html
+<script>
+import { createReusableTemplate } from '@vueuse/core';
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+
+export default {
+  components: {
+    DefineTemplate,
+    ReuseTemplate,
+  },
+  setup() {},
+}
+</script>
+
+<template>
+  <DefineTemplate>
+    <!-- something complex -->
+  </DefineTemplate>
+
+  <dialog v-if="showInDialog">
+    <ReuseTemplate />
+  </dialog>
+  <div v-else>
+    <ReuseTemplate />
+  </div>
+</template>
+```
+
+### `<script setup>`
+
+```html
 <script setup>
 import { createReusableTemplate } from '@vueuse/core'
 
