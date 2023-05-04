@@ -44,8 +44,7 @@ export function useCssVar(
 
   if (observe) {
     useMutationObserver(elRef, updateCssVar, {
-      attributes:
-      true,
+      attributeFilter: ['style'],
       window,
     })
   }
