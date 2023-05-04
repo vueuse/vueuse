@@ -35,6 +35,22 @@ useInfiniteScroll(
 </template>
 ```
 
+To stop infinite scrolling, unset the target element. This will prevent the callback from firing, and will turn off all scroll listeners.
+
+```js
+const isComplete = ref(false)
+
+useInfiniteScroll(
+  computed(() => !isComplete.value && el.value),
+  async () => {
+    if (hasLoadedEverything)
+      isComplete.value = true
+    else
+      await loadMoreStuff()
+  }
+)
+```
+
 ## Directive Usage
 
 ```html

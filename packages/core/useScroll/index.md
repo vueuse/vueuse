@@ -66,6 +66,16 @@ const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
 const { x, y } = useScroll(el, { behavior })
 ```
 
+### Manually re-measuring
+
+When your container changes, you may want to force a re-measurement to occur. This can be done with the returned `measure` function.
+
+```js
+const { measure } = useScroll(el)
+
+measure()
+```
+
 ## Directive Usage
 
 ```html
