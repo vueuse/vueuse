@@ -12,6 +12,7 @@ import { toRef } from '../'
 export function toShallowRef<T>(r: () => T): Readonly<Ref<T>>
 export function toShallowRef<T>(r: ComputedRef<T>): ComputedRef<T>
 export function toShallowRef<T>(r: Ref<T>): Ref<T>
+export function toShallowRef<T>(r: MaybeRefOrGetter<T>): ShallowRef<T>
 export function toShallowRef<T>(r: T): ShallowRef<T>
 export function toShallowRef<T>(r: MaybeRefOrGetter<T>) {
   return (isRef(r) || typeof r === 'function')
