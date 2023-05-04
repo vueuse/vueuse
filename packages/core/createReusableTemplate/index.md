@@ -32,37 +32,6 @@ So this function is made to provide a way for defining and reusing templates ins
 In the previous example, we could refactor it to:
 
 ```html
-<script>
-import { createReusableTemplate } from '@vueuse/core';
-
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
-
-export default {
-  components: {
-    DefineTemplate,
-    ReuseTemplate,
-  },
-  setup() {},
-}
-</script>
-
-<template>
-  <DefineTemplate>
-    <!-- something complex -->
-  </DefineTemplate>
-
-  <dialog v-if="showInDialog">
-    <ReuseTemplate />
-  </dialog>
-  <div v-else>
-    <ReuseTemplate />
-  </div>
-</template>
-```
-
-### `<script setup>`
-
-```html
 <script setup>
 import { createReusableTemplate } from '@vueuse/core'
 
@@ -88,6 +57,37 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 - `<DefineTemplate>` must be used before `<ReuseTemplate>`.
 
 > **Note**: It's recommended to extract as separate components whenever possible. Abusing this function might lead to bad practices for your codebase.
+
+### Options API
+
+When using with [Options API](https://vuejs.org/guide/introduction.html#api-styles), you will need to define `createReusableTemplate` outside of the component setup and pass to the `components` option in order to use them in the template.
+
+```html
+<script>
+import { defineComponent } from 'vue'
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
+
+export default defineComponent({
+  components: {
+    DefineTemplate,
+    ReuseTemplate,
+  },
+  setup() {
+    // ...
+  },
+})
+</script>
+
+<template>
+  <DefineTemplate v-slot="{ data, msg, anything }">
+    <div>{{ data }} passed from usage</div>
+  </DefineTemplate>
+
+  <ReuseTemplate :data="data" msg="The first usage" />
+</template>
+```
 
 ### Passing Data
 
