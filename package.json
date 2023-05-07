@@ -123,5 +123,8 @@
     "*.{js,ts,tsx,vue,md}": [
       "eslint --cache --fix"
     ]
+  },
+  "dependencies": {
+    "@vue/theme": "^2.2.1"
   }
 }
