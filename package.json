@@ -52,6 +52,7 @@
     "@vitest/ui": "^0.30.1",
     "@vue/compiler-sfc": "^3.2.47",
     "@vue/test-utils": "^2.3.2",
+    "@vue/theme": "^2.2.1",
     "@vueuse/core": "workspace:*",
     "@vueuse/integrations": "workspace:*",
     "@vueuse/math": "workspace:*",
@@ -123,8 +124,5 @@
     "*.{js,ts,tsx,vue,md}": [
       "eslint --cache --fix"
     ]
-  },
-  "dependencies": {
-    "@vue/theme": "^2.2.1"
   }
 }
