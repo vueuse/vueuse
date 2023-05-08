@@ -78,7 +78,7 @@ function restoreOutline(e: Event) {
         </label>
         <VTSwitch
           class="api-switch"
-          aria-label="prefer composition api"
+          aria-label="prefer typescript api"
           :aria-checked="preferTs"
           @click="toggleTS()"
         />
@@ -171,6 +171,18 @@ function restoreOutline(e: Event) {
 </style>
 
 <style>
+.ts-api {
+  display: none;
+}
+
+.prefer-ts .js-api {
+  display: none;
+}
+
+.prefer-ts .ts-api {
+  display: initial;
+}
+
 .prefer-ts .api-switch .vt-switch-check {
   transform: translateX(18px);
 }
