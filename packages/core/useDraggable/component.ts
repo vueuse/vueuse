@@ -31,6 +31,9 @@ export const UseDraggable = /*#__PURE__*/ defineComponent<UseDraggableProps>({
     'as',
     'handle',
     'axis',
+    'onStart',
+    'onMove',
+    'onEnd',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
@@ -45,7 +48,8 @@ export const UseDraggable = /*#__PURE__*/ defineComponent<UseDraggableProps>({
         : undefined,
     )
     const initialValue = storageValue || props.initialValue || { x: 0, y: 0 }
-    const onEnd = (position: Position) => {
+    const onEnd = (position: Position, event: PointerEvent) => {
+      props.onEnd?.(position, event)
       if (!storageValue)
         return
       storageValue.value.x = position.x
