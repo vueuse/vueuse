@@ -102,7 +102,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     }
   }
 
-  event = eventName || event || `update:${key!.toString()}`
+  event = event || `update:${key!.toString()}`
 
   const cloneFn = (val: P[K]) => !clone
     ? val
