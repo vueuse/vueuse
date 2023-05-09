@@ -388,10 +388,15 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((toValue(target))!.buffered))
   useEventListener(target, 'seeking', () => seeking.value = true)
   useEventListener(target, 'seeked', () => seeking.value = false)
-  useEventListener(target, 'waiting', () => waiting.value = true)
+  useEventListener(target, ['waiting', 'loadstart'], () => {
+    waiting.value = true
+    ignorePlayingUpdates(() => playing.value = false)
+  })
+  useEventListener(target, 'loadeddata', () => waiting.value = false)
   useEventListener(target, 'playing', () => {
     waiting.value = false
     ended.value = false
+    ignorePlayingUpdates(() => playing.value = true)
   })
   useEventListener(target, 'ratechange', () => rate.value = (toValue(target))!.playbackRate)
   useEventListener(target, 'stalled', () => stalled.value = true)
