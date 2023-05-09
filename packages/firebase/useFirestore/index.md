@@ -34,6 +34,21 @@ const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
 const userData = useFirestore(userQuery, null)
 ```
 
+## Typescript Example
+```
+const converter = <T>() => ({
+  toFirestore: (data: PartialWithFieldValue<T>) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as T,
+});
+
+const userQuery = computed(
+  () =>
+    userId.value &&
+    doc(db, 'users', userId.value).withConverter(converter<UserData>())
+);
+const userData = useFirestore<UserData>(userQuery, null);
+```
+
 ## Share across instances
 
 You can reuse the db reference by passing `autoDispose: false`. You can also set an amount of milliseconds before auto disposing the db reference.
