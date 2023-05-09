@@ -1,17 +1,17 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick } from 'vue-demi'
-import { toValue } from '@vueuse/shared'
+import { customRef, nextTick } from 'vue-demi'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
-import type { ReactiveRouteOptionsWithTransform, RouterQueryValue } from '../_types'
+import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
-let _queue: Record<string, any> = {}
+const _cache = new WeakMap()
 
 export function useRouteQuery(
   name: string
 ): Ref<null | string | string[]>
 
 export function useRouteQuery<
-  T extends RouterQueryValue = RouterQueryValue,
+  T extends RouteQueryValueRaw = RouteQueryValueRaw,
   K = T,
 >(
   name: string,
@@ -20,7 +20,7 @@ export function useRouteQuery<
 ): Ref<K>
 
 export function useRouteQuery<
-  T extends RouterQueryValue = RouterQueryValue,
+  T extends RouteQueryValueRaw = RouteQueryValueRaw,
   K = T,
 >(
   name: string,
@@ -34,18 +34,35 @@ export function useRouteQuery<
     transform = value => value as any as K,
   } = options
 
-  return computed<any>({
+  if (!_cache.has(route))
+    _cache.set(route, new Map())
+
+  const _query: Map<string, any> = _cache.get(route)
+
+  tryOnScopeDispose(() => {
+    _query.delete(name)
+  })
+
+  _query.set(name, route.query[name])
+
+  return customRef<any>((track, trigger) => ({
     get() {
-      const data = route.query[name] ?? defaultValue
+      track()
+
+      const data = _query.get(name) ?? defaultValue
       return transform(data as T)
     },
     set(v) {
-      _queue[name] = (v === defaultValue || v === null) ? undefined : v
+      _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+
+      trigger()
 
       nextTick(() => {
-        router[toValue(mode)]({ ...route, query: { ...route.query, ..._queue } })
-        nextTick(() => _queue = {})
+        router[toValue(mode)]({
+          ...route,
+          query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+        })
       })
     },
-  })
+  }))
 }
