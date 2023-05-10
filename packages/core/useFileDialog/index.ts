@@ -19,16 +19,16 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    */
   capture?: string
   /**
-   * Clear value when open file dialog.
+   * Reset when open file dialog.
    * @default false
    */
-  openToClear?: Boolean
+  reset?: boolean
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
   multiple: true,
   accept: '*',
-  openToClear: false,
+  reset: false,
 }
 
 export interface UseFileDialogReturn {
@@ -81,7 +81,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.accept = _options.accept!
     if (hasOwn(_options, 'capture'))
       input.capture = _options.capture!
-    if (_options.openToClear)
+    if (_options.reset)
       reset()
     input.click()
   }
