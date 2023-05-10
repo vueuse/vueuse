@@ -93,12 +93,14 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
         shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
-      const el = unrefElement(target)
-      if (
-        window.document.activeElement?.tagName === 'IFRAME'
-        && !el?.contains(window.document.activeElement)
-      )
-        handler(event as any)
+      setTimeout(() => {
+        const el = unrefElement(target)
+        if (
+          window.document.activeElement?.tagName === 'IFRAME'
+          && !el?.contains(window.document.activeElement)
+        )
+          handler(event as any)
+      }, 0)
     }),
   ].filter(Boolean) as Fn[]
 

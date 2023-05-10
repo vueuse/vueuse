@@ -290,6 +290,23 @@ describe('useAxios', () => {
     expect(error).toBeDefined()
   })
 
+  it('should be loading on re-execute', async () => {
+    const onError = vi.fn()
+    const { isLoading, execute } = useAxios(url, config, { ...options, onError })
+
+    execute().catch(() => {})
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(isLoading.value).toBeTruthy()
+
+    execute().catch(() => {})
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(isLoading.value).toBeTruthy()
+
+    await execute().catch(() => {})
+    expect(isLoading.value).toBeFalsy()
+    expect(onError).toBeCalledTimes(2)
+  })
+
   it('missing url', async () => {
     // prevent stderr in jsdom xhr
     console.error = vi.fn()

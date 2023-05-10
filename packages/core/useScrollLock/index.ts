@@ -9,8 +9,8 @@ function checkOverflowScroll(ele: Element): boolean {
   if (
     style.overflowX === 'scroll'
     || style.overflowY === 'scroll'
-    || (style.overflowX === 'auto' && ele.clientHeight < ele.scrollHeight)
-    || (style.overflowY === 'auto' && ele.clientWidth < ele.scrollWidth)
+    || (style.overflowX === 'auto' && ele.clientWidth < ele.scrollWidth)
+    || (style.overflowY === 'auto' && ele.clientHeight < ele.scrollHeight)
   ) {
     return true
   }
