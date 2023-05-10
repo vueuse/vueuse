@@ -20,6 +20,12 @@ Touching is enabled by default. To make it only detects mouse changes, set `touc
 const { pressed } = useMousePressed({ touch: false })
 ```
 
+To only capture `mousedown` and `mouseup` on specific mouse button, set `mouseButton` to `left` or `mid` or `right` 
+
+```js
+const { pressed } = useMousePressed({ mouseButton: 'left' })
+```
+
 To only capture `mousedown` and `touchstart` on specific element, you can specify `target` by passing a ref of the element. 
 
 

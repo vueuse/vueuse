@@ -2,7 +2,8 @@ import { computed, ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { UseMouseSourceType } from '../useMouse'
+import { MouseButtonMap } from '../useMouse'
+import type { UseMouseButton, UseMouseSourceType } from '../useMouse'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -32,6 +33,11 @@ export interface MousePressedOptions extends ConfigurableWindow {
    * Element target to be capture the click
    */
   target?: MaybeElementRef
+
+  /**
+   * Mouse button to be captured
+   */
+  mouseButton?: UseMouseButton
 }
 
 /**
@@ -58,16 +64,25 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     }
   }
 
-  const onPressed = (srcType: UseMouseSourceType) => () => {
+  const target = computed(() => unrefElement(options.target) || window)
+
+  const onPressed = (srcType: UseMouseSourceType) => (e: MouseEvent) => {
+    const mouseButton = MouseButtonMap[options.mouseButton || '']
+    if (mouseButton !== undefined && mouseButton !== e.button)
+      return
+    if (options.mouseButton === 'right')
+      useEventListener(target, 'contextmenu', (event) => { event.preventDefault() })
+
     pressed.value = true
     sourceType.value = srcType
   }
-  const onReleased = () => {
+  const onReleased = (e: MouseEvent) => {
+    const mouseButton = MouseButtonMap[options.mouseButton || '']
+    if (mouseButton !== undefined && mouseButton !== e.button && options.mouseButton !== 'right')
+      return
     pressed.value = false
     sourceType.value = null
   }
-
-  const target = computed(() => unrefElement(options.target) || window)
 
   useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true })
 

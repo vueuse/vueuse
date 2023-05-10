@@ -7,8 +7,14 @@ import type { Position } from '../types'
 
 export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement'
 export type UseMouseSourceType = 'mouse' | 'touch' | null
+export type UseMouseButton = 'left' | 'right' | 'mid'
 export type UseMouseEventExtractor = (event: MouseEvent | Touch) => [x: number, y: number] | null | undefined
 
+export const MouseButtonMap: { [key: string]: number } = {
+  left: 0,
+  middle: 1,
+  right: 2,
+}
 export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Mouse position based by page, client, screen, or relative to previous position
