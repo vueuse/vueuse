@@ -38,6 +38,13 @@ export interface DebounceFilterOptions {
    * @default false
    */
   rejectOnCancel?: boolean
+
+  /**
+   * Whether to invoke the function immediate.
+   *
+   * @default false
+   */
+  immediate?: boolean
 }
 
 /**
@@ -80,6 +87,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   const filter: EventFilter = (invoke) => {
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
+    const shouldCallImmediately = !timer && options.immediate
 
     if (timer)
       _clearTimeout(timer)
@@ -104,12 +112,21 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         }, maxDuration)
       }
 
-      // Create the regular timer. Clears the max timer on invoke
-      timer = setTimeout(() => {
+      if (shouldCallImmediately) {
         if (maxTimer)
           _clearTimeout(maxTimer)
         maxTimer = null
         resolve(invoke())
+      }
+
+      // Create the regular timer. Clears the max timer on invoke
+      timer = setTimeout(() => {
+        if (maxTimer)
+          _clearTimeout(maxTimer)
+        if (!shouldCallImmediately) {
+          maxTimer = null
+          resolve(invoke())
+        }
       }, duration)
     })
   }
