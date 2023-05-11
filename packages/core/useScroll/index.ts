@@ -161,6 +161,9 @@ export function useScroll(
   const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
   const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
+    if (target === window)
+      target = target.document
+
     const el = (
       target === document ? (target as Document).documentElement : target
     ) as HTMLElement
