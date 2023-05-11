@@ -74,7 +74,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param options
  */
 export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
-  let timer: ReturnType<typeof setTimeout> | undefined
+  let timer: ReturnType<typeof setTimeout> | undefined | null
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
   let lastRejector: AnyFn = noop
 
@@ -123,10 +123,11 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       timer = setTimeout(() => {
         if (maxTimer)
           _clearTimeout(maxTimer)
-        if (!shouldCallImmediately) {
+        if (!options.immediate) {
           maxTimer = null
           resolve(invoke())
         }
+        timer = null
       }, duration)
     })
   }
