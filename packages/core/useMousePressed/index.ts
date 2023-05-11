@@ -78,7 +78,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
   }
   const onReleased = (e: MouseEvent) => {
     const mouseButton = MouseButtonMap[options.mouseButton || '']
-    if (mouseButton !== undefined && mouseButton !== e.button && options.mouseButton !== 'right')
+    if (mouseButton !== undefined && mouseButton !== e.button)
       return
     pressed.value = false
     sourceType.value = null
