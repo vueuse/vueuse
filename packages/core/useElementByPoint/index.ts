@@ -32,7 +32,7 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     document = defaultDocument,
     multiple,
     interval = 'requestAnimationFrame',
-    immediate,
+    immediate = true,
   } = options
 
   const isSupported = useSupported(() => {
