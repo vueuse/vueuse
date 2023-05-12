@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vitepress'
 import { VTIconChevronDown, VTSwitch } from '@vue/theme'
 
-const preferTsKey = 'vueuse-docs-prefer-ts'
+const preferJsKey = 'vueuse-docs-prefer-js'
 
 const hasStorage = typeof localStorage !== 'undefined'
 function get(key: string, defaultValue = false): boolean {
@@ -12,7 +12,7 @@ function get(key: string, defaultValue = false): boolean {
     ? JSON.parse(localStorage.getItem(key) || String(defaultValue))
     : defaultValue
 }
-const preferTs = ref(get(preferTsKey))
+const preferJs = ref(get(preferJsKey))
 
 const isOpen = ref(true)
 const route = useRoute()
@@ -38,7 +38,7 @@ function useToggleFn(
   }
 }
 
-const toggleTS = useToggleFn(preferTsKey, preferTs, 'prefer-ts')
+const toggleJS = useToggleFn(preferJsKey, preferJs, 'prefer-js')
 
 const show = computed(() => {
   return route.path.match(/^\/(shared|core|components|math|router|integrations|rxjs|firebase|electron)/)
@@ -73,18 +73,18 @@ function restoreOutline(e: Event) {
     </button>
     <div id="preference-switches" :hidden="!isOpen" :aria-hidden="!isOpen">
       <div class="switch-container">
-        <label class="js-label" @click="toggleTS(false)">
-          Javascript
+        <label class="ts-label" @click="toggleJS(false)">
+          Typescript
         </label>
         <VTSwitch
           class="api-switch"
-          aria-label="prefer typescript api"
-          :aria-checked="preferTs"
-          @click="toggleTS()"
+          aria-label="prefer javscript api"
+          :aria-checked="preferJs"
+          @click="toggleJS()"
         />
         <label
-          class="ts-label" @click="toggleTS(true)"
-        >Typescript</label>
+          class="js-label" @click="toggleJS(true)"
+        >Javascript</label>
       </div>
     </div>
   </div>
@@ -171,28 +171,28 @@ function restoreOutline(e: Event) {
 </style>
 
 <style>
-.ts-api {
+.js-api {
   display: none;
 }
 
-.prefer-ts .js-api {
+.prefer-js .ts-api {
   display: none;
 }
 
-.prefer-ts .ts-api {
+.prefer-js .js-api {
   display: initial;
 }
 
-.prefer-ts .api-switch .vt-switch-check {
+.prefer-js .api-switch .vt-switch-check {
   transform: translateX(18px);
 }
 
-.ts-label,
-.prefer-ts .options-label {
+.js-label,
+.prefer-js .options-label {
   color: var(--vt-c-text-3);
 }
 
-.prefer-ts .ts-label {
+.prefer-js .js-label {
   color: var(--vt-c-text-1);
 }
 </style>
