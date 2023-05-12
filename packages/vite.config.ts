@@ -8,6 +8,7 @@ import UnoCSS from 'unocss/vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../scripts/changelog'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+import { TypescriptTranspileTransform } from './.vitepress/plugins/tsToJsTransform'
 import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
 
@@ -31,6 +32,7 @@ export default defineConfig(async () => {
     plugins: [
       // custom
       MarkdownTransform(),
+      TypescriptTranspileTransform(),
       ChangeLog(changeLog),
       Contributors(contributions),
 
