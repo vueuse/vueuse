@@ -4,7 +4,7 @@ import {
   shallowRef,
 } from 'vue-demi'
 import type { MaybeRefOrGetter } from '../utils'
-import { toRef } from '../'
+import { toRef } from '../toRef'
 
 /**
  * Normalize value/ref/getter to `shallowRef` or `computed`.
