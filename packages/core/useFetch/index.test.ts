@@ -205,19 +205,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
+          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { error } = useMyFetch('test?status=400&json', {
+    const { data, error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
         ctx.error += ' Local'
+        ctx.data += ' Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
+      expect(data.value).toEqual('Global Local')
     })
   })
 
@@ -277,22 +280,25 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
+          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { error } = useMyFetch(
+    const { error, data } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
           ctx.error += ' Local'
+          ctx.data += ' Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
+      expect(data.value).toEqual('Global Local')
     })
   })
 
@@ -350,19 +356,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
+          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { error } = useMyFetch('test?status=400&json', {
+    const { data, error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Local'
+        ctx.data = 'Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')
+      expect(data.value).toEqual('Local')
     })
   })
 
@@ -426,22 +435,25 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
+          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { error } = useMyFetch(
+    const { data, error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
           ctx.error = 'Local'
+          ctx.data = 'Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')
+      expect(data.value).toEqual('Local')
     })
   })
 
@@ -542,6 +554,24 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(statusCode.value).toEqual(400)
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toEqual('Internal Server Error')
+    })
+  })
+
+  it('should not return data in onFetchError when allowFetchErrorReturnData is false', async () => {
+    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
+      allowFetchErrorReturnData: false,
+      onFetchError(ctx) {
+        ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
         return ctx
       },
     }).json()
@@ -557,7 +587,24 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
+        return ctx
+      },
+    }).json()
 
+    await retry(() => {
+      expect(statusCode.value).toStrictEqual(500)
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toEqual('Internal Server Error')
+    })
+  })
+
+  it('should not return data in onFetchError when allowFetchErrorReturnData is false and network error', async () => {
+    const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
+      allowFetchErrorReturnData: false,
+      onFetchError(ctx) {
+        ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
         return ctx
       },
     }).json()

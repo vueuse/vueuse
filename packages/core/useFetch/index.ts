@@ -164,6 +164,12 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
+   * Allow `onFetchError` hook to return data
+   * @default true
+   */
+  allowFetchErrorReturnData?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -211,7 +217,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'allowFetchErrorReturnData')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -314,7 +320,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
+  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0, allowFetchErrorReturnData: true }
   interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'GET',
@@ -465,8 +471,10 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           let errorData = fetchError.message || fetchError.name
 
           if (options.onFetchError)
-            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
+            ({ error: errorData, data: responseData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
           error.value = errorData
+          if (options.allowFetchErrorReturnData)
+            data.value = responseData
 
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
