@@ -126,6 +126,25 @@ const { data } = useFetch(url, {
     return ctx
   },
 })
+console.log(data.value) // { title: 'Hunter x Hunter' }
+```
+
+You can also disallow `onFetchError` to modifies the response data by passing `false` to `allowFetchErrorReturnData` option.
+```ts
+const { data } = useFetch(url, {
+  allowFetchErrorReturnData: false,
+  onFetchError(ctx) {
+    // ctx.data can be null when 5xx response
+    if (ctx.data === null)
+      ctx.data = { title: 'Hunter x Hunter' } // Modifies the response data no longer works
+
+    ctx.error = new Error('Custom Error') // Modifies the error
+
+    return ctx
+  },
+})
+
+console.log(data.value) // null
 ```
 
 ### Setting the request method and return type
