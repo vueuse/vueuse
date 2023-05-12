@@ -13,8 +13,8 @@ export function TypescriptTranspileTransform(): Plugin {
       const tsPattern = /<div class="ts-api">\n\n\`\`\`typescript([\s\S]*?)\`\`\`\n\n<\/div>/g
       const transpileOptions = {
         module: ts.ModuleKind.ESNext,
-        target: ts.ScriptTarget.ES5,
-        moduleResolution: ts.ModuleResolutionKind.NodeNext,
+        target: ts.ScriptTarget.ES2017,
+        moduleResolution: ts.ModuleResolutionKind.Node10,
         esModuleInterop: true,
         sourceMap: false,
         declaration: false,
