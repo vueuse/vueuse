@@ -18,11 +18,17 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
   capture?: string
+  /**
+   * Reset when open file dialog.
+   * @default false
+   */
+  reset?: boolean
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
   multiple: true,
   accept: '*',
+  reset: false,
 }
 
 export interface UseFileDialogReturn {
@@ -57,6 +63,12 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     }
   }
 
+  const reset = () => {
+    files.value = null
+    if (input)
+      input.value = ''
+  }
+
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
     if (!input)
       return
@@ -69,14 +81,9 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.accept = _options.accept!
     if (hasOwn(_options, 'capture'))
       input.capture = _options.capture!
-
+    if (_options.reset)
+      reset()
     input.click()
-  }
-
-  const reset = () => {
-    files.value = null
-    if (input)
-      input.value = ''
   }
 
   return {
