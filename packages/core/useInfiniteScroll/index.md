@@ -41,7 +41,7 @@ To stop infinite scrolling, unset the target element. This will prevent the call
 const isComplete = ref(false)
 
 useInfiniteScroll(
-  computed(() => !isComplete.value && el.value),
+  computed(() => !isComplete.value ? el.value : null),
   async () => {
     if (hasLoadedEverything)
       isComplete.value = true
