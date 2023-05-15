@@ -1,11 +1,11 @@
+import { noop } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { reactive, ref } from 'vue-demi'
-import { noop } from '@vueuse/shared'
 
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>
 
 export interface UseAsyncQueueResult<T> {
-  state: 'pending' | 'fulfilled' | 'rejected'
+  state: 'aborted' | 'fulfilled' | 'pending' | 'rejected'
   data: T | null
 }
 
@@ -33,6 +33,11 @@ export interface UseAsyncQueueOptions {
    *
    */
   onFinished?: () => void
+
+  /**
+   * A AbortSignal that can be used to abort the task.
+   */
+  signal?: AbortSignal
 }
 
 /**
@@ -53,14 +58,21 @@ export function useAsyncQueue<T = any>(tasks: UseAsyncQueueTask<any>[], options:
     interrupt = true,
     onError = noop,
     onFinished = noop,
+    signal,
   } = options
 
-  const promiseState: Record<UseAsyncQueueResult<T>['state'], UseAsyncQueueResult<T>['state']> = {
+  const promiseState: Record<
+    UseAsyncQueueResult<T>['state'],
+    UseAsyncQueueResult<T>['state']
+  > = {
+    aborted: 'aborted',
+    fulfilled: 'fulfilled',
     pending: 'pending',
     rejected: 'rejected',
-    fulfilled: 'fulfilled',
   }
+
   const initialResult = Array.from(new Array(tasks.length), () => ({ state: promiseState.pending, data: null }))
+
   const result = reactive(initialResult) as UseAsyncQueueResult<T>[]
 
   const activeIndex = ref<number>(-1)
@@ -80,26 +92,57 @@ export function useAsyncQueue<T = any>(tasks: UseAsyncQueueTask<any>[], options:
   }
 
   tasks.reduce((prev, curr) => {
-    return prev.then((prevRes) => {
-      if (result[activeIndex.value]?.state === promiseState.rejected && interrupt) {
-        onFinished()
-        return
-      }
+    return prev
+      .then((prevRes) => {
+        if (signal?.aborted) {
+          updateResult(promiseState.aborted, new Error('aborted'))
+          return
+        }
 
-      return curr(prevRes).then((currentRes: any) => {
-        updateResult(promiseState.fulfilled, currentRes)
-        activeIndex.value === tasks.length - 1 && onFinished()
-        return currentRes
+        if (
+          result[activeIndex.value]?.state === promiseState.rejected
+          && interrupt
+        ) {
+          onFinished()
+          return
+        }
+
+        const done = curr(prevRes).then((currentRes: any) => {
+          updateResult(promiseState.fulfilled, currentRes)
+          activeIndex.value === tasks.length - 1 && onFinished()
+          return currentRes
+        })
+
+        if (!signal)
+          return done
+
+        return Promise.race([done, whenAborted(signal)])
       })
-    }).catch((e) => {
-      updateResult(promiseState.rejected, e)
-      onError()
-      return e
-    })
+      .catch((e) => {
+        if (signal?.aborted) {
+          updateResult(promiseState.aborted, e)
+          return e
+        }
+
+        updateResult(promiseState.rejected, e)
+        onError()
+        return e
+      })
   }, Promise.resolve())
 
   return {
     activeIndex,
     result,
   }
+}
+
+function whenAborted(signal: AbortSignal): Promise<never> {
+  return new Promise((resolve, reject) => {
+    const error = new Error('aborted')
+
+    if (signal.aborted)
+      reject(error)
+    else
+      signal.addEventListener('abort', () => reject(error), { once: true })
+  })
 }

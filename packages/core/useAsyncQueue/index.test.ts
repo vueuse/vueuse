@@ -104,4 +104,36 @@ describe('useAsyncQueue', () => {
       expect(finalTaskSpy).toHaveBeenCalledOnce()
     })
   })
+
+  it('should cancel the tasks', async () => {
+    const controller = new AbortController()
+    const { activeIndex, result } = useAsyncQueue([p1], {
+      signal: controller.signal,
+    })
+    controller.abort()
+    await retry(() => {
+      expect(activeIndex.value).toBe(0)
+      expect(result).toHaveLength(1)
+      expect(result[activeIndex.value]).toMatchInlineSnapshot(`
+        {
+          "data": [Error: aborted],
+          "state": "aborted",
+        }
+      `)
+    })
+  })
+
+  it('should abort the tasks when AbortSignal.abort is triggered', async () => {
+    const controller = new AbortController()
+    const abort = () => controller.abort()
+    const finalTaskSpy = vi.fn(() => Promise.resolve('data'))
+    const { activeIndex, result } = useAsyncQueue([p1, abort, finalTaskSpy], {
+      signal: controller.signal,
+    })
+    await retry(() => {
+      expect(activeIndex.value).toBe(2)
+      expect(result).toHaveLength(3)
+      expect(finalTaskSpy).not.toHaveBeenCalled()
+    })
+  })
 })
