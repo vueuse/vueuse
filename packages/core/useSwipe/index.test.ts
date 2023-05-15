@@ -77,19 +77,23 @@ describe('useSwipe', () => {
   })
 
   it('reactivity', () => {
-    const { isSwiping, direction, lengthX, lengthY } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
+    const { isSwiping, direction, lengthX, lengthY,distance } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
     target.dispatchEvent(mockTouchStart(0, 0))
     expect(isSwiping.value).toBeFalsy()
     expect(direction.value).toBe('none')
     expect(lengthX.value).toBe(0)
     expect(lengthY.value).toBe(0)
+    expect(distance.value).toBe(0)
+
 
     target.dispatchEvent(mockTouchMove(threshold, 5))
     expect(isSwiping.value).toBeTruthy()
     expect(direction.value).toBe('right')
     expect(lengthX.value).toBe(-threshold)
     expect(lengthY.value).toBe(-5)
+    expect(distance.value).toBe(Math.sqrt(lengthX.value ** 2 + lengthY.value ** 2))
+
 
     target.dispatchEvent(mockTouchEnd(threshold, 5))
   })

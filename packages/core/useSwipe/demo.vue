@@ -14,7 +14,7 @@ function reset() {
   opacity.value = 1
 }
 
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(
+const { direction, isSwiping, lengthX, lengthY,distance } = useSwipe(
   target, {
     passive: false,
     onSwipe(e: TouchEvent) {
@@ -55,7 +55,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
     </div>
     <p class="status">
       Direction: {{ direction ? direction : '-' }} <br>
-      lengthX: {{ lengthX }} | lengthY: {{ lengthY }}
+      lengthX: {{ lengthX }} | lengthY: {{ lengthY }}<br>
+      distance:{{ distance }}
     </p>
   </div>
 </template>

@@ -46,6 +46,7 @@ export interface UseSwipeReturn {
   coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
   lengthY: ComputedRef<number>
+  distance: ComputedRef<number>
   stop: () => void
 }
 
@@ -74,6 +75,8 @@ export function useSwipe(
 
   const diffX = computed(() => coordsStart.x - coordsEnd.x)
   const diffY = computed(() => coordsStart.y - coordsEnd.y)
+  const distance = computed(() => Math.sqrt(diffX.value ** 2 + diffY.value ** 2))
+
 
   const { max, abs } = Math
   const isThresholdExceeded = computed(() => max(abs(diffX.value), abs(diffY.value)) >= threshold)
@@ -161,6 +164,7 @@ export function useSwipe(
     coordsEnd,
     lengthX: diffX,
     lengthY: diffY,
+    distance,
     stop,
   }
 }
