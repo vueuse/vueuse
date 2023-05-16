@@ -42,7 +42,7 @@
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.4.3",
     "nuxt": "^3.4.3",
-    "vue-demi": ">=0.14.0"
+    "vue-demi": ">=0.14.1"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.4.3",

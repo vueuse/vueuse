@@ -33,6 +33,6 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "vue-demi": ">=0.14.0"
+    "vue-demi": ">=0.14.1"
   }
 }
