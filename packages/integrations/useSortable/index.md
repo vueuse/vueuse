@@ -95,7 +95,11 @@ useSortable(el, list, {
   onUpdate: (e) => {
     // do something
     moveArrayElement(list.value, e.oldIndex, e.newIndex)
-    // do something
+    // nextTick required here as moveArrayElement is executed in a microtas
+    // so we need to wait until the next tick until that is finished.
+    nextTick(() => {
+      /* do something */
+    })
   }
 })
 ```
