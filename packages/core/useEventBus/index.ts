@@ -39,12 +39,13 @@ export interface UseEventBusReturn<T, P> {
   reset: () => void
 }
 
-export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
+export function useEventBus<T = unknown, P = any>(key?: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
   const scope = getCurrentScope()
+  const resolvedKey = key ?? Symbol('unprovided key') as EventBusIdentifier<T>
   function on(listener: EventBusListener<T, P>) {
-    const listeners = (events.get(key) || new Set())
+    const listeners = (events.get(resolvedKey) || new Set())
     listeners.add(listener)
-    events.set(key, listeners)
+    events.set(resolvedKey, listeners)
 
     const _off = () => off(listener)
     // auto unsubscribe when scope get disposed
@@ -64,7 +65,7 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
   }
 
   function off(listener: EventBusListener<T>): void {
-    const listeners = events.get(key)
+    const listeners = events.get(resolvedKey)
     if (!listeners)
       return
 
@@ -75,11 +76,11 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
   }
 
   function reset() {
-    events.delete(key)
+    events.delete(resolvedKey)
   }
 
   function emit(event?: T, payload?: P) {
-    events.get(key)?.forEach(v => v(event, payload))
+    events.get(resolvedKey)?.forEach(v => v(event, payload))
   }
 
   return { on, once, off, emit, reset }
