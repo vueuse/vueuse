@@ -15,16 +15,16 @@ const people: IObjectTag[] = [
   { name: 'Evan', rating: 10000 },
 ]
 
-const { tags: fruitTags, toggleTag: toggleFruitTag, isTagInTags: isFruitTagToggled, clearTags: clearFruits } = useTags()
+const { tags: fruitTags, toggleTag: toggleFruitTag, isTagInTags: isFruitTagToggled, clearTags: clearFruits, isClear: isFruitTagsClear } = useTags()
 
-const { tags: peopleTags, toggleTag: togglePeopleTag, isTagInTags: isPeopleTagEnabled, clearTags: clearPeople } = useTags<IObjectTag>(people, 'rating')
+const { tags: peopleTags, toggleTag: togglePeopleTag, isTagInTags: isPeopleTagEnabled, clearTags: clearPeople, isClear: isPeopleTagsClear } = useTags<IObjectTag>(people, 'rating')
 </script>
 
 <template>
   <div class="container">
     <ul>
       <li>
-        <button :class="fruitTags.length === 0 && 'toggled'" @click="clearFruits">
+        <button :class="isFruitTagsClear && 'toggled'" @click="clearFruits">
           All fruits
         </button>
       </li>
@@ -37,7 +37,7 @@ const { tags: peopleTags, toggleTag: togglePeopleTag, isTagInTags: isPeopleTagEn
 
     <ul>
       <li>
-        <button :class="peopleTags.length === 0 && 'toggled'" @click="clearPeople">
+        <button :class="isPeopleTagsClear && 'toggled'" @click="clearPeople">
           All fruits
         </button>
       </li>
@@ -47,6 +47,8 @@ const { tags: peopleTags, toggleTag: togglePeopleTag, isTagInTags: isPeopleTagEn
         </button>
       </li>
     </ul>
+
+    {{ JSON.stringify([peopleTags, fruitTags]) }}
   </div>
 </template>
 

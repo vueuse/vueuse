@@ -1,4 +1,4 @@
-import { ref } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import type { Ref } from 'vue-demi'
 
 type TPrimitive = number | string | boolean | null | undefined
@@ -7,6 +7,12 @@ type TKey = string | symbol | number
 export function useTags<T extends string | Record<U, TPrimitive>, U extends keyof T = keyof T>(initialTags?: T[], accessProperty?: U) {
   const tags = ref<T[]>(initialTags ?? []) as Ref<T[]>
 
+  /**
+   * Compares two tags
+   * @param obj_one Tag one
+   * @param obj_two Tag two
+   * @returns boolean of comparison between two tags
+   */
   function compareObjects(obj_one: T, obj_two: T) {
     if (typeof obj_one === 'string' || typeof obj_two === 'string')
       return
@@ -27,6 +33,11 @@ export function useTags<T extends string | Record<U, TPrimitive>, U extends keyo
     }
   }
 
+  /**
+   * Check if tag is toggled
+   * @param tag Tag itself
+   * @returns true if tag is toggled is tags, false otherwise
+   */
   function isTagInTags(tag: T) {
     const isobj = isObject(tag)
     if (isobj) {
@@ -41,6 +52,10 @@ export function useTags<T extends string | Record<U, TPrimitive>, U extends keyo
     }
   }
 
+  /**
+   * Removes tag
+   * @param tag Tag itself
+   */
   function removeTag(tag: T) {
     const isobj = isObject(tag)
 
@@ -58,15 +73,27 @@ export function useTags<T extends string | Record<U, TPrimitive>, U extends keyo
     }
   }
 
+  /**
+   * Toggles tag
+   * @param tag Tag itself
+   */
   function toggleTag(tag: T) {
     isTagInTags(tag) ? removeTag(tag) : tags.value.push(tag)
   }
 
+  /**
+   * Untoggles all tags
+   */
   function clearTags() {
     tags.value = []
   }
 
-  return { tags, toggleTag, isTagInTags, clearTags }
+  /**
+   * Checks if there is no tags enabled
+   */
+  const isClear = computed<boolean>(() => tags.value.length === 0)
+
+  return { tags, toggleTag, isTagInTags, clearTags, isClear }
 }
 
 function isObject(value: unknown): value is Record<TKey, TPrimitive> {
