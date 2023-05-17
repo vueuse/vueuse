@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: createEventHook
 ---
 
 # useEventBus
@@ -12,6 +13,9 @@ A basic event bus.
 import { useEventBus } from '@vueuse/core'
 
 const bus = useEventBus<string>('news')
+
+// Can be created without a key for usage in a single location
+const anonymousBus = useEventBus<string>()
 
 function listener(event: string) {
   console.log(`news: ${event}`)
