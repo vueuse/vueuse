@@ -39,32 +39,6 @@ describe('useEventBus', () => {
     reset()
     expect(events).toEqual(emptyMap)
   })
-
-  it('not off non-exist listener', () => {
-    const bus1 = useEventBus<number>('foo')
-    const bus2 = useEventBus<number>('bar')
-    const listener = vi.fn()
-
-    bus1.on(listener)
-    bus2.off(listener)
-
-    expect(events.get('foo')).toBeDefined()
-    expect(events.get('bar')).toBeUndefined()
-  })
-  it('not off other events listener', () => {
-    const bus1 = useEventBus<number>('foo')
-    const bus2 = useEventBus<number>('bar')
-    const listener1 = vi.fn()
-    const listener2 = vi.fn()
-
-    bus1.on(listener1)
-    bus2.on(listener2)
-    bus1.off(listener2)
-    bus2.off(listener1)
-
-    expect(events.get('foo')).toBeDefined()
-    expect(events.get('bar')).toBeDefined()
-  })
   it('useEventBus off event', () => {
     const { emit, on, reset } = useEventBus<number>('useEventBus-off')
     const { count, inc } = useCounter(0)
@@ -136,5 +110,34 @@ describe('useEventBus', () => {
     off(listener)
     expect(listener).toBeCalledTimes(1)
     expect(events).toEqual(emptyMap)
+  })
+
+  describe('off ignores non-existent', () => {
+    it('not off non-exist listener', () => {
+      const bus1 = useEventBus<number>('foo')
+      const bus2 = useEventBus<number>('bar')
+      const listener = vi.fn()
+
+      bus1.on(listener)
+      bus2.off(listener)
+
+      expect(events.get('foo')).toBeDefined()
+      expect(events.get('bar')).toBeUndefined()
+    })
+
+    it('not off other events listener', () => {
+      const bus1 = useEventBus<number>('foo')
+      const bus2 = useEventBus<number>('bar')
+      const listener1 = vi.fn()
+      const listener2 = vi.fn()
+
+      bus1.on(listener1)
+      bus2.on(listener2)
+      bus1.off(listener2)
+      bus2.off(listener1)
+
+      expect(events.get('foo')).toBeDefined()
+      expect(events.get('bar')).toBeDefined()
+    })
   })
 })
