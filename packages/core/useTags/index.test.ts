@@ -18,23 +18,27 @@ const objectTags: IObjectTag[] = [
 
 describe('it works', () => {
   it('works', () => {
-    const { toggleTag, clearTags, tags, isTagInTags } = useTags()
+    const { toggleTag, clearTags, tags, isTagInTags, isClear } = useTags()
 
-    expect(tags.value.length)
+    expect(tags.value.length).toEqual(0)
+
+    expect(isClear.value).toEqual(true)
 
     toggleTag(tag)
 
     expect(tags.value.length).toEqual(1)
 
+    expect(isClear.value).toEqual(false)
+
     expect(isTagInTags(tag)).toEqual(true)
 
     clearTags()
 
-    expect(tags.value.length).toEqual(0)
+    expect(isClear.value).toEqual(true)
   })
 
   it('works with objects', () => {
-    const { toggleTag, clearTags, tags, isTagInTags } = useTags()
+    const { toggleTag, clearTags, tags, isTagInTags, isClear } = useTags()
 
     toggleTag(objectTag)
 
@@ -44,11 +48,11 @@ describe('it works', () => {
 
     clearTags()
 
-    expect(tags.value.length).toEqual(0)
+    expect(isClear.value).toEqual(true)
   })
 
   it('works with initial tags', () => {
-    const { toggleTag, clearTags, tags, isTagInTags } = useTags(objectTags)
+    const { toggleTag, clearTags, tags, isTagInTags, isClear } = useTags(objectTags)
 
     expect(tags.value.length).toEqual(3)
 
@@ -62,7 +66,7 @@ describe('it works', () => {
 
     clearTags()
 
-    expect(tags.value.length).toEqual(0)
+    expect(isClear.value).toEqual(true)
   })
 
   it('works with access property', () => {
