@@ -58,7 +58,7 @@ export function useSortable<T>(
 
   const stop = () => sortable?.destroy()
 
-  function option<K extends keyof Sortable.Options>(name: K, value?: Sortable.Options[K]) {
+  const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
     if (value !== undefined)
       sortable?.option(name, value)
     else
