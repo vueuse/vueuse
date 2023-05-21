@@ -68,7 +68,9 @@ export function useInfiniteScroll(
       ? el.scrollHeight <= el.clientHeight
       : el.scrollWidth <= el.clientWidth
 
-    if (state.arrivedState[direction] || isNarrower) {
+    const isDisplay = el.clientHeight !== 0 && el.clientWidth !== 0
+
+    if (isDisplay && (state.arrivedState[direction] || isNarrower)) {
       if (!promise.value) {
         promise.value = Promise.all([
           onLoadMore(state),
