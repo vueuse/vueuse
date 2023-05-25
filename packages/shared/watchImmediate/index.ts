@@ -7,19 +7,19 @@ import type { MapOldSources, MapSources, MultiWatchSources } from '../utils/type
 export function watchImmediate<T extends Readonly<MultiWatchSources>>(
   source: T,
   cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
-  options?: Omit<WatchOptions<true>, 'deep'>
+  options?: Omit<WatchOptions<true>, 'immediate'>
 ): WatchStopHandle
 
 export function watchImmediate<T>(
   source: WatchSource<T>,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'deep'>
+  options?: Omit<WatchOptions<true>, 'immediate'>
 ): WatchStopHandle
 
 export function watchImmediate<T extends object>(
   source: T,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'deep'>
+  options?: Omit<WatchOptions<true>, 'immediate'>
 ): WatchStopHandle
 
 /**
