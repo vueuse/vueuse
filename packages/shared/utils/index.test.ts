@@ -134,6 +134,59 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
   })
 
+  it('should support a `leading` option', () => {
+    const debouncedFilterSpy = vi.fn()
+
+    const filter = createFilterWrapper(
+      debounceFilter(500, { leading: true }),
+      debouncedFilterSpy,
+    )
+
+    filter()
+    filter()
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+    vi.runAllTimers()
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+  })
+
+  it('should support a `maxWait` option', () => {
+    const debouncedFilterSpy = vi.fn()
+    const filter = createFilterWrapper(
+      debounceFilter(100, { maxWait: 200 }),
+      debouncedFilterSpy,
+    )
+
+    filter()
+    filter()
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(0)
+
+    setTimeout(() => {
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+      filter()
+      filter()
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+    }, 300)
+
+    vi.runAllTimers()
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+  })
+
+  it('should queue a trailing call for subsequent debounced calls after `maxWait`', () => {
+    const debouncedFilterSpy = vi.fn()
+
+    const filter = createFilterWrapper(
+      debounceFilter(200, { maxWait: 200 }),
+      debouncedFilterSpy,
+    )
+
+    filter()
+    setTimeout(filter, 190)
+    setTimeout(filter, 200)
+    setTimeout(filter, 210)
+    vi.runAllTimers()
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+  })
+
   it('should throttle', () => {
     const throttledFilterSpy = vi.fn()
     const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)

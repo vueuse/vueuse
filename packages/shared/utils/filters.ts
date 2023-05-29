@@ -38,6 +38,20 @@ export interface DebounceFilterOptions {
    * @default false
    */
   rejectOnCancel?: boolean
+
+  /**
+   * Specify invoking on the leading edge of the timeout.
+   *
+   * @default false
+   */
+  leading?: boolean
+
+  /**
+   * Specify invoking on the trailing edge of the timeout.
+   *
+   * @default true
+   */
+  trailing?: boolean
 }
 
 /**
@@ -67,51 +81,82 @@ export const bypassFilter: EventFilter = (invoke) => {
  * @param options
  */
 export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
-  let timer: ReturnType<typeof setTimeout> | undefined
-  let maxTimer: ReturnType<typeof setTimeout> | undefined | null
+  let lastInvokeTime = 0
   let lastRejector: AnyFn = noop
+  let lastValue: any
+  let timer: ReturnType<typeof setTimeout> | undefined
 
-  const _clearTimeout = (timer: ReturnType<typeof setTimeout>) => {
-    clearTimeout(timer)
-    lastRejector()
-    lastRejector = noop
+  const clear = () => {
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
+      lastRejector()
+      lastRejector = noop
+    }
   }
 
-  const filter: EventFilter = (invoke) => {
+  const filter: EventFilter = (fn) => {
+    const { leading, maxWait, rejectOnCancel, trailing = true } = options
     const duration = toValue(ms)
-    const maxDuration = toValue(options.maxWait)
+    const maxDuration = Math.max(toValue(maxWait) || 0, duration)
+    const didTimeout = timer != null
+    const withMaxWait = maxWait != null
+    const timeStamp = Date.now()
 
-    if (timer)
-      _clearTimeout(timer)
+    clear()
 
-    if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
-      if (maxTimer) {
-        _clearTimeout(maxTimer)
-        maxTimer = null
-      }
-      return Promise.resolve(invoke())
+    const invoke = (time: number) => {
+      lastInvokeTime = time
+      return (lastValue = fn())
     }
 
-    return new Promise((resolve, reject) => {
-      lastRejector = options.rejectOnCancel ? reject : resolve
-      // Create the maxTimer. Clears the regular timer on invoke
-      if (maxDuration && !maxTimer) {
-        maxTimer = setTimeout(() => {
-          if (timer)
-            _clearTimeout(timer)
-          maxTimer = null
-          resolve(invoke())
-        }, maxDuration)
-      }
+    if (duration <= 0 || (withMaxWait && maxDuration <= 0))
+      return Promise.resolve(invoke(timeStamp))
 
-      // Create the regular timer. Clears the max timer on invoke
-      timer = setTimeout(() => {
-        if (maxTimer)
-          _clearTimeout(maxTimer)
-        maxTimer = null
-        resolve(invoke())
-      }, duration)
-    })
+    if (withMaxWait) {
+      if (!didTimeout && !leading)
+        lastInvokeTime = timeStamp
+
+      const elapsedTime = timeStamp - lastInvokeTime
+
+      if (elapsedTime >= maxDuration && (didTimeout || leading)) {
+        invoke(timeStamp)
+      }
+      else if (trailing) {
+        const timeRemaining = Math.max(
+          0,
+          Math.min(duration - elapsedTime, maxDuration - elapsedTime),
+        )
+
+        lastValue = new Promise((resolve, reject) => {
+          lastRejector = rejectOnCancel ? reject : resolve
+
+          timer = setTimeout(() => {
+            timer = undefined
+            resolve(invoke(Date.now()))
+          }, timeRemaining)
+        })
+      }
+    }
+    else {
+      const elapsedTime = timeStamp - lastInvokeTime
+
+      if (elapsedTime >= duration && !didTimeout && leading) {
+        invoke(timeStamp)
+      }
+      else if (trailing) {
+        lastValue = new Promise((resolve, reject) => {
+          lastRejector = rejectOnCancel ? reject : resolve
+
+          timer = setTimeout(() => {
+            timer = undefined
+            resolve(invoke(Date.now()))
+          }, duration)
+        })
+      }
+    }
+
+    return lastValue
   }
 
   return filter
@@ -126,59 +171,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
  * @param [rejectOnCancel=false]
  */
 export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing = true, leading = true, rejectOnCancel = false) {
-  let lastExec = 0
-  let timer: ReturnType<typeof setTimeout> | undefined
-  let isLeading = true
-  let lastRejector: AnyFn = noop
-  let lastValue: any
-
-  const clear = () => {
-    if (timer) {
-      clearTimeout(timer)
-      timer = undefined
-      lastRejector()
-      lastRejector = noop
-    }
-  }
-
-  const filter: EventFilter = (_invoke) => {
-    const duration = toValue(ms)
-    const elapsed = Date.now() - lastExec
-    const invoke = () => {
-      return lastValue = _invoke()
-    }
-
-    clear()
-
-    if (duration <= 0) {
-      lastExec = Date.now()
-      return invoke()
-    }
-
-    if (elapsed > duration && (leading || !isLeading)) {
-      lastExec = Date.now()
-      invoke()
-    }
-    else if (trailing) {
-      lastValue = new Promise((resolve, reject) => {
-        lastRejector = rejectOnCancel ? reject : resolve
-        timer = setTimeout(() => {
-          lastExec = Date.now()
-          isLeading = true
-          resolve(invoke())
-          clear()
-        }, Math.max(0, duration - elapsed))
-      })
-    }
-
-    if (!leading && !timer)
-      timer = setTimeout(() => isLeading = true, duration)
-
-    isLeading = false
-    return lastValue
-  }
-
-  return filter
+  return debounceFilter(ms, { leading, trailing, rejectOnCancel, maxWait: ms })
 }
 
 /**
