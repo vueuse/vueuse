@@ -1,0 +1,43 @@
+{
+  "name": "@vueuse/fsapi",
+  "version": "8.4.2",
+  "description": "Utilities for client file-system access",
+  "keywords": [
+    "vue",
+    "vue-use",
+    "filesystem",
+    "fileSystemAccessApi",
+    "utils"
+  ],
+  "license": "MIT",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/fsApi"
+  },
+  "funding": "https://github.com/sponsors/antfu",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "sideEffects": false,
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/fsapi#readme",
+  "dependencies": {
+    "@vueuse/core": "workspace:*",
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": "*"
+  }
+}
