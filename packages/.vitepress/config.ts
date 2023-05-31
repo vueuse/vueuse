@@ -1,14 +1,6 @@
-// @ts-expect-error missing type
-import base from '@vue/theme/config'
+import { defineConfig } from 'vitepress'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
-import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../../packages/metadata/metadata'
-import highlight from './plugins/highlight'
-
-const themeConfig = async () => {
-  const config = await base()
-  config.markdown.highlight = await highlight()
-  return config
-}
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -38,44 +30,58 @@ const Links = [
   { text: 'Add-ons', link: '/add-ons' },
   { text: 'Ecosystem', link: '/ecosystem' },
   { text: 'Export Size', link: '/export-size' },
-  { text: 'Recent Updated', link: '/recent-updated' },
+  { text: 'Recent Updated', link: '/functions.html#sort=updated' },
+  { text: 'Why no translations?', link: '/why-no-translations' },
+]
+
+const Learn = [
+  { text: 'Premium Video Course', link: 'https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse' },
 ]
 
 const DefaultSideBar = [
   { text: 'Guide', items: Guide },
   { text: 'Core Functions', items: CoreCategories },
   { text: 'Add-ons', items: AddonCategories },
+  { text: 'Learn', items: Learn },
   { text: 'Links', items: Links },
 ]
 
 const FunctionsSideBar = getFunctionsSideBar()
 
-/**
- * @type {import('vitepress').UserConfig}
- */
-const config = {
-  extends: themeConfig,
-
+export default defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
+  ignoreDeadLinks: true,
+
+  markdown: {
+    theme: {
+      light: 'vitesse-light',
+      dark: 'vitesse-dark',
+    },
+  },
 
   themeConfig: {
     logo: '/favicon.svg',
-    repo: 'vueuse/vueuse',
-    docsDir: 'packages',
+    editLink: {
+      pattern: 'https://github.com/vueuse/vueuse/tree/main/packages/:path',
+      text: 'Suggest changes to this page',
+    },
 
-    editLinks: true,
-    editLinkText: 'Edit this page',
-    lastUpdated: 'Last Updated',
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2020-PRESENT Anthony Fu and VueUse contributors',
+    },
 
     algolia: {
-      apiKey: 'a99ef8de1b2b27949975ce96642149c6',
+      appId: 'NBQWY48OOR',
+      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
       indexName: 'vueuse',
     },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vueuse/vueuse' },
+      { icon: 'discord', link: 'https://chat.antfu.me' },
       { icon: 'twitter', link: 'https://twitter.com/vueuse' },
     ],
 
@@ -84,6 +90,7 @@ const config = {
         text: 'Guide',
         items: [
           { text: 'Guide', items: Guide },
+          { text: 'Learn', items: Learn },
           { text: 'Links', items: Links },
         ],
       },
@@ -127,7 +134,7 @@ const config = {
                 }
               : {
                   text: i.version,
-                  link: i.link,
+                  link: i.link!,
                 },
             ),
           },
@@ -142,8 +149,6 @@ const config = {
       '/ecosystem': DefaultSideBar,
       '/guidelines': DefaultSideBar,
       '/export-size': DefaultSideBar,
-      '/recent-updated': DefaultSideBar,
-
       '/functions': FunctionsSideBar,
       '/core/': FunctionsSideBar,
       '/shared/': FunctionsSideBar,
@@ -152,6 +157,7 @@ const config = {
       '/rxjs/': FunctionsSideBar,
       '/integrations/': FunctionsSideBar,
       '/firebase/': FunctionsSideBar,
+      '/math/': FunctionsSideBar,
     },
   },
   head: [
@@ -165,13 +171,14 @@ const config = {
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
     ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
 
     ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap' }],
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap' }],
   ],
-}
+})
 
 function getFunctionsSideBar() {
   const links = []
@@ -189,12 +196,10 @@ function getFunctionsSideBar() {
         link: i.external || `/${i.package}/${i.name}/`,
       })),
       link: name.startsWith('@')
-        ? functions[0].external || `/${functions[0].package}/README`
+        ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })
   }
 
   return links
 }
-
-export default config

@@ -8,7 +8,7 @@ Transition between values
 
 ## Usage
 
-For simple transitions, provide a numeric source value to watch. When changed, the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+Define a numeric source value to follow, and when changed the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
 ```js
 import { ref } from 'vue'
@@ -74,7 +74,7 @@ The following transitions are available via the `TransitionPresets` constant.
 For more complex transitions, a custom function can be provided.
 
 ```js
-const easeOutElastic = (n) => {
+function easeOutElastic(n) {
   return n === 0
     ? 0
     : n === 1
@@ -102,3 +102,13 @@ useTransition(source, {
 ```
 
 To temporarily stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
+
+For more control, transitions can be executed manually by using `executeTransition`. This function returns a promise that resolves upon completion. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
+
+```js
+import { executeTransition } from '@vueuse/core'
+
+await executeTransition(source, from, to, {
+  duration: 1000,
+})
+```

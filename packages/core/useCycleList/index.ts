@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { computed, shallowRef } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { computed, shallowRef, watch } from 'vue-demi'
+import { toRef, toValue } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
 export interface UseCycleListOptions<T> {
   /**
@@ -25,14 +26,17 @@ export interface UseCycleListOptions<T> {
  *
  * @see https://vueuse.org/useCycleList
  */
-export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
-  const state = shallowRef(options?.initialValue ?? list[0]) as Ref<T>
+export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleListOptions<T>): UseCycleListReturn<T> {
+  const state = shallowRef(getInitialValue()) as Ref<T>
+  const listRef = toRef(list)
 
   const index = computed<number>({
     get() {
+      const targetList = listRef.value
+
       let index = options?.getIndexOf
-        ? options.getIndexOf(state.value, list)
-        : list.indexOf(state.value)
+        ? options.getIndexOf(state.value, targetList)
+        : targetList.indexOf(state.value)
 
       if (index < 0)
         index = options?.fallbackIndex ?? 0
@@ -45,9 +49,10 @@ export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
   })
 
   function set(i: number) {
-    const length = list.length
+    const targetList = listRef.value
+    const length = targetList.length
     const index = (i % length + length) % length
-    const value = list[index]
+    const value = targetList[index]
     state.value = value
     return value
   }
@@ -64,10 +69,23 @@ export function useCycleList<T>(list: T[], options?: UseCycleListOptions<T>) {
     return shift(-n)
   }
 
+  function getInitialValue() {
+    return toValue(options?.initialValue ?? toValue<T[]>(list)[0]) ?? undefined
+  }
+
+  watch(listRef, () => set(index.value))
+
   return {
     state,
     index,
     next,
     prev,
   }
+}
+
+export interface UseCycleListReturn<T> {
+  state: Ref<T>
+  index: Ref<number>
+  next: (n?: number) => T
+  prev: (n?: number) => T
 }

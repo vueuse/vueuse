@@ -10,7 +10,7 @@ import { defaultWindow } from '../_configurable'
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000
 
-export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
+export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Event names that listen to for detected user activity
    *
@@ -34,6 +34,7 @@ export interface IdleOptions extends ConfigurableWindow, ConfigurableEventFilter
 export interface UseIdleReturn {
   idle: Ref<boolean>
   lastActive: Ref<number>
+  reset: () => void
 }
 
 /**
@@ -45,7 +46,7 @@ export interface UseIdleReturn {
  */
 export function useIdle(
   timeout: number = oneMinute,
-  options: IdleOptions = {},
+  options: UseIdleOptions = {},
 ): UseIdleReturn {
   const {
     initialState = false,
@@ -59,13 +60,17 @@ export function useIdle(
 
   let timer: any
 
+  const reset = () => {
+    idle.value = false
+    clearTimeout(timer)
+    timer = setTimeout(() => idle.value = true, timeout)
+  }
+
   const onEvent = createFilterWrapper(
     eventFilter,
     () => {
-      idle.value = false
       lastActive.value = timestamp()
-      clearTimeout(timer)
-      timer = setTimeout(() => idle.value = true, timeout)
+      reset()
     },
   )
 
@@ -80,9 +85,13 @@ export function useIdle(
           onEvent()
       })
     }
+
+    reset()
   }
 
-  timer = setTimeout(() => idle.value = true, timeout)
-
-  return { idle, lastActive }
+  return {
+    idle,
+    lastActive,
+    reset,
+  }
 }

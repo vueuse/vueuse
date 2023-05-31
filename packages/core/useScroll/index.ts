@@ -1,6 +1,6 @@
-import { reactive, ref } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
-import { noop, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions {
@@ -48,7 +48,23 @@ export interface UseScrollOptions {
    * @default {capture: false, passive: true}
    */
   eventListenerOptions?: boolean | AddEventListenerOptions
+
+  /**
+   * Optionally specify a scroll behavior of `auto` (default, not smooth scrolling) or
+   * `smooth` (for smooth scrolling) which takes effect when changing the `x` or `y` refs.
+   *
+   * @default 'auto'
+   */
+  behavior?: MaybeRefOrGetter<ScrollBehavior>
 }
+
+/**
+ * We have to check if the scroll amount is close enough to some threshold in order to
+ * more accurately calculate arrivedState. This is because scrollTop/scrollLeft are non-rounded
+ * numbers, while scrollHeight/scrollWidth and clientHeight/clientWidth are rounded.
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#determine_if_an_element_has_been_totally_scrolled
+ */
+const ARRIVED_STATE_THRESHOLD_PIXELS = 1
 
 /**
  * Reactive scroll.
@@ -59,7 +75,7 @@ export interface UseScrollOptions {
  */
 
 export function useScroll(
-  element: MaybeRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -77,10 +93,45 @@ export function useScroll(
       capture: false,
       passive: true,
     },
+    behavior = 'auto',
   } = options
 
-  const x = ref(0)
-  const y = ref(0)
+  const internalX = ref(0)
+  const internalY = ref(0)
+
+  // Use a computed for x and y because we want to write the value to the refs
+  // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
+  const x = computed({
+    get() {
+      return internalX.value
+    },
+    set(x) {
+      scrollTo(x, undefined)
+    },
+  })
+
+  const y = computed({
+    get() {
+      return internalY.value
+    },
+    set(y) {
+      scrollTo(undefined, y)
+    },
+  })
+
+  function scrollTo(_x: number | undefined, _y: number | undefined) {
+    const _element = toValue(element)
+
+    if (!_element)
+      return
+
+    (_element instanceof Document ? document.body : _element)?.scrollTo({
+      top: toValue(_y) ?? y.value,
+      left: toValue(_x) ?? x.value,
+      behavior: toValue(behavior),
+    })
+  }
+
   const isScrolling = ref(false)
   const arrivedState = reactive({
     left: true,
@@ -95,49 +146,105 @@ export function useScroll(
     bottom: false,
   })
 
-  if (element) {
-    const onScrollEnd = useDebounceFn((e: Event) => {
-      isScrolling.value = false
-      directions.left = false
-      directions.right = false
-      directions.top = false
-      directions.bottom = false
-      onStop(e)
-    }, throttle + idle)
+  const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
 
-    const onScrollHandler = (e: Event) => {
-      const eventTarget = (
-        e.target === document ? (e.target as Document).documentElement : e.target
-      ) as HTMLElement
+    isScrolling.value = false
+    directions.left = false
+    directions.right = false
+    directions.top = false
+    directions.bottom = false
+    onStop(e)
+  }
+  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
-      const scrollLeft = eventTarget.scrollLeft
-      directions.left = scrollLeft < x.value
-      directions.right = scrollLeft > x.value
-      arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
-      arrivedState.right
-          = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0)
-      x.value = scrollLeft
+  const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
+    const el = (
+      target === window
+        ? (target as Window).document.documentElement
+        : target === document ? (target as Document).documentElement : target
+    ) as HTMLElement
 
-      const scrollTop = eventTarget.scrollTop
-      directions.top = scrollTop < y.value
-      directions.bottom = scrollTop > y.value
-      arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-      arrivedState.bottom
-          = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0)
-      y.value = scrollTop
+    const { display, flexDirection } = getComputedStyle(el)
 
-      isScrolling.value = true
-      onScrollEnd(e)
-      onScroll(e)
+    const scrollLeft = el.scrollLeft
+    directions.left = scrollLeft < internalX.value
+    directions.right = scrollLeft > internalX.value
+
+    const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
+    const right = Math.abs(scrollLeft)
+      + el.clientWidth >= el.scrollWidth
+      - (offset.right || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    if (display === 'flex' && flexDirection === 'row-reverse') {
+      arrivedState.left = right
+      arrivedState.right = left
+    }
+    else {
+      arrivedState.left = left
+      arrivedState.right = right
     }
 
-    useEventListener(
-      element,
-      'scroll',
-      throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
-      eventListenerOptions,
-    )
+    internalX.value = scrollLeft
+
+    let scrollTop = el.scrollTop
+
+    // patch for mobile compatible
+    if (target === document && !scrollTop)
+      scrollTop = document.body.scrollTop
+
+    directions.top = scrollTop < internalY.value
+    directions.bottom = scrollTop > internalY.value
+    const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
+    const bottom = Math.abs(scrollTop)
+      + el.clientHeight >= el.scrollHeight
+      - (offset.bottom || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    /**
+     * reverse columns and rows behave exactly the other way around,
+     * bottom is treated as top and top is treated as the negative version of bottom
+     */
+    if (display === 'flex' && flexDirection === 'column-reverse') {
+      arrivedState.top = bottom
+      arrivedState.bottom = top
+    }
+    else {
+      arrivedState.top = top
+      arrivedState.bottom = bottom
+    }
+
+    internalY.value = scrollTop
   }
+
+  const onScrollHandler = (e: Event) => {
+    const eventTarget = (
+      e.target === document ? (e.target as Document).documentElement : e.target
+    ) as HTMLElement
+
+    setArrivedState(eventTarget)
+
+    isScrolling.value = true
+    onScrollEndDebounced(e)
+    onScroll(e)
+  }
+
+  useEventListener(
+    element,
+    'scroll',
+    throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
+    eventListenerOptions,
+  )
+
+  useEventListener(
+    element,
+    'scrollend',
+    onScrollEnd,
+    eventListenerOptions,
+  )
 
   return {
     x,
@@ -145,6 +252,12 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    measure() {
+      const _element = toValue(element)
+
+      if (_element)
+        setArrivedState(_element)
+    },
   }
 }
 

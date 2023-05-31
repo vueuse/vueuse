@@ -6,10 +6,13 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.33"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.1",
-    "vite": "^2.9.7"
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vueuse/core": "file:../../packages/core/dist",
+    "@vueuse/metadata": "file:../../packages/metadata/dist",
+    "@vueuse/shared": "file:../../packages/shared/dist",
+    "vite": "^4.3.6"
   }
 }

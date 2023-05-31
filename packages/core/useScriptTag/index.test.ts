@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
 
@@ -8,7 +9,7 @@ describe('useScriptTag', () => {
     document.head.querySelector(`script[src="${src}"]`)
 
   it('should add script tag', async () => {
-    const appendChildListener = vitest.spyOn(document.head, 'appendChild')
+    const appendChildListener = vi.spyOn(document.head, 'appendChild')
 
     expect(appendChildListener).not.toBeCalled()
 
@@ -28,7 +29,7 @@ describe('useScriptTag', () => {
   })
 
   it('should re-use the same src for multiple loads', async () => {
-    const addChildListener = vitest.spyOn(document.head, 'appendChild')
+    const addChildListener = vi.spyOn(document.head, 'appendChild')
 
     expect(addChildListener).not.toBeCalled()
 
@@ -55,7 +56,7 @@ describe('useScriptTag', () => {
   })
 
   it('should support custom attributes', async () => {
-    const appendChildListener = vitest.spyOn(document.head, 'appendChild')
+    const appendChildListener = vi.spyOn(document.head, 'appendChild')
 
     expect(appendChildListener).not.toBeCalled()
 
@@ -81,7 +82,7 @@ describe('useScriptTag', () => {
   })
 
   it('should remove script tag on unmount', async () => {
-    const removeChildListener = vitest.spyOn(document.head, 'removeChild')
+    const removeChildListener = vi.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
 
@@ -111,7 +112,7 @@ describe('useScriptTag', () => {
   })
 
   it('should remove script tag on unload call', async () => {
-    const removeChildListener = vitest.spyOn(document.head, 'removeChild')
+    const removeChildListener = vi.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
 
@@ -145,7 +146,7 @@ describe('useScriptTag', () => {
   })
 
   it('should remove script tag on unload call after multiple loads', async () => {
-    const removeChildListener = vitest.spyOn(document.head, 'removeChild')
+    const removeChildListener = vi.spyOn(document.head, 'removeChild')
 
     expect(removeChildListener).not.toBeCalled()
 

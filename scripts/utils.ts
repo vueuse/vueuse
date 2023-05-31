@@ -1,14 +1,12 @@
-import { join, resolve } from 'path'
+import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
-import parser from 'prettier/parser-typescript'
-import prettier from 'prettier'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { $fetch } from 'ohmyfetch'
-import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
+import { packages } from '../meta/packages'
 
 export const git = Git()
 
@@ -35,20 +33,16 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
     .replace(/export {}/g, '')
 
+  const prettier = await import('prettier')
   return prettier
     .format(
       types,
       {
         semi: false,
         parser: 'typescript',
-        plugins: [parser],
       },
     )
     .trim()
-}
-
-export function hasDemo(pkg: string, name: string) {
-  return fs.existsSync(join(DIR_SRC, pkg, name, 'demo.vue'))
 }
 
 export async function updateImport({ packages, functions }: PackageIndexes) {
@@ -97,6 +91,9 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     }
 
     await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
+
+    // temporary file for export-size
+    await fs.remove(join(dir, 'index.mjs'))
   }
 }
 
@@ -266,15 +263,15 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.mjs`,
-            require: `./${i.name}.cjs`,
             types: `./${i.name}.d.ts`,
+            require: `./${i.name}.cjs`,
+            import: `./${i.name}.mjs`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
-              import: `./${i.name}/component.mjs`,
-              require: `./${i.name}/component.cjs`,
               types: `./${i.name}/component.d.ts`,
+              require: `./${i.name}/component.cjs`,
+              import: `./${i.name}/component.mjs`,
             }
           }
         })

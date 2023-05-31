@@ -1,17 +1,25 @@
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { isPackageExists } from 'local-pkg'
 import { defineNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
+import type { Import, Preset } from 'unimport'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const disabledFunctions = [
-  'useFetch',
+  // Vue 3 built-in
   'toRefs',
+  'toRef',
+  'toValue',
+
+  // Nuxt built-in
+  'useFetch',
   'useCookie',
   'useHead',
   'useTitle',
+  'useStorage',
+  'useImage',
 ]
 
 const packages = [
@@ -22,6 +30,7 @@ const packages = [
   'firebase',
   'rxjs',
   'sound',
+  'math',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
@@ -33,7 +42,7 @@ export interface VueUseNuxtOptions {
   autoImports?: boolean
 
   /**
-   * @expiremental
+   * @experimental
    * @default false
    */
   ssrHandlers?: boolean
@@ -45,7 +54,7 @@ export interface VueUseNuxtOptions {
  *
  * ```ts
  * // nuxt.config.js
- * export deafult {
+ * export default {
  *   buildModules: [
  *     '@vueuse/nuxt'
  *   ]
@@ -69,7 +78,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       config.optimizeDeps.exclude.push(...fullPackages)
     })
 
-    // add pacages to transpile target for alias resolution
+    // add packages to transpile target for alias resolution
     nuxt.options.build = nuxt.options.build || {}
     nuxt.options.build.transpile = nuxt.options.build.transpile || []
     nuxt.options.build.transpile.push(...fullPackages)
@@ -81,10 +90,23 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       nuxt.options.build.transpile.push(pluginPath)
     }
 
+    // @ts-expect-error - private API
+    nuxt.hook('devtools:customTabs', (iframeTabs) => {
+      iframeTabs.push({
+        name: 'vueuse',
+        title: 'VueUse',
+        icon: 'i-logos-vueuse',
+        view: {
+          type: 'iframe',
+          src: 'https://vueuse.org/functions.html',
+        },
+      })
+    })
+
     if (options.autoImports) {
-      // auto Import
-      nuxt.hook('autoImports:sources', (sources: any[]) => {
-        if (sources.find(i => fullPackages.includes(i.from)))
+      // auto import
+      nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
+        if (sources.find(i => fullPackages.includes((i as Import).from)))
           return
 
         metadata.functions.forEach((i) => {
@@ -99,24 +121,30 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (!isPackageExists(`@vueuse/${pkg}`))
             continue
 
-          const functions = metadata
+          const imports = metadata
             .functions
-            .filter(i => (i.package === 'core' || i.package === 'shared') && !i.internal)
-
-          if (functions.length) {
-            const imports = metadata
-              .functions
-              .filter(i => i.package === pkg && !i.internal)
-              .flatMap(i => [i.name, ...i.alias || []])
-              .filter(i => i.length >= 4 && !disabledFunctions.includes(i))
-
-            sources.push({
-              from: `@vueuse/${pkg}`,
-              names: imports,
-              imports,
-              priority: -1,
+            .filter(i => i.package === pkg && !i.internal)
+            .flatMap((i): Import[] => {
+              const names = [i.name, ...i.alias || []]
+              return names.map(n => ({
+                from: `@vueuse/${i.importPath || i.package}`,
+                name: n,
+                as: n,
+                priority: -1,
+                meta: {
+                  description: i.description,
+                  docsUrl: i.docs,
+                  category: i.category,
+                },
+              }))
             })
-          }
+            .filter(i => i.name.length >= 4 && !disabledFunctions.includes(i.name))
+
+          sources.push({
+            from: '@vueuse/core',
+            imports,
+            priority: -1,
+          })
         }
       })
     }

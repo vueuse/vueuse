@@ -21,6 +21,13 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default {}
    */
   initialValue?: T
+
+  /**
+   * Write back to `window.history` automatically
+   *
+   * @default true
+   */
+  write?: boolean
 }
 
 /**
@@ -38,13 +45,14 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     initialValue = {},
     removeNullishValues = true,
     removeFalsyValues = false,
+    write: enableWrite = true,
     window = defaultWindow!,
   } = options
 
   if (!window)
     return reactive(initialValue) as T
 
-  const state: Record<string, any> = reactive(initialValue)
+  const state: Record<string, any> = reactive({})
 
   function getRawParams() {
     if (mode === 'history') {
@@ -64,9 +72,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     const stringified = params.toString()
 
     if (mode === 'history')
-      return `${stringified ? `?${stringified}` : ''}${location.hash || ''}`
+      return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
     if (mode === 'hash-params')
-      return `${location.search || ''}${stringified ? `#${stringified}` : ''}`
+      return `${window.location.search || ''}${stringified ? `#${stringified}` : ''}`
     const hash = window.location.hash || '#'
     const index = hash.indexOf('?')
     if (index > 0)
@@ -116,12 +124,19 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (shouldUpdate)
       updateState(params)
 
-    window.history.replaceState({}, '', window.location.pathname + constructQuery(params))
+    window.history.replaceState(
+      window.history.state,
+      window.document.title,
+      window.location.pathname + constructQuery(params),
+    )
 
     resume()
   }
 
   function onChanged() {
+    if (!enableWrite)
+      return
+
     write(read(), true)
   }
 
@@ -129,7 +144,11 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   if (mode !== 'history')
     useEventListener(window, 'hashchange', onChanged, false)
 
-  updateState(read())
+  const initial = read()
+  if (initial.keys().next().value)
+    updateState(initial)
+  else
+    Object.assign(state, initialValue)
 
   return state as T
 }

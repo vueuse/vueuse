@@ -40,7 +40,7 @@ onResult((result) => {
 })
 
 onError((error) => {
-  console.errr(error)
+  console.error(error)
 })
 </script>
 ```

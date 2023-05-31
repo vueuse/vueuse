@@ -4,14 +4,15 @@
  */
 
 import { setupServer } from 'msw/node'
-import type { DefaultRequestBody, PathParams, RestContext, RestRequest } from 'msw'
+import type { RestContext, RestRequest } from 'msw'
 import { rest } from 'msw'
+import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
 const baseUrl = 'https://example.com'
 
-const commonTransformers = (req: RestRequest<DefaultRequestBody, PathParams>, _: any, ctx: RestContext) => {
+function commonTransformers(req: RestRequest, _: any, ctx: RestContext) {
   const t = []
   const qs = req.url.searchParams
 

@@ -1,20 +1,25 @@
-import { VPTheme } from '@vue/theme'
+import DefaultTheme from 'vitepress/theme'
 import { handleRedirects } from './redirects'
 
-import './styles/code.css'
+import './styles/main.css'
 import './styles/demo.css'
 import './styles/utils.css'
-import 'uno.css'
+import './styles/vars.css'
 import './styles/overrides.css'
+import 'uno.css'
 
-const theme: any = {
-  ...VPTheme,
+export default {
+  ...DefaultTheme,
   enhanceApp(ctx: any) {
-    VPTheme.enhanceApp?.(ctx)
-
     if (typeof window !== 'undefined')
       handleRedirects(ctx.router)
   },
 }
 
-export default theme
+// Vue School banner, skip on SSG or in an iframe
+if (typeof window !== 'undefined' && window.self === window.top) {
+  const script = document.createElement('script')
+  script.async = true
+  script.src = 'https://vueschool.io/banner.js?affiliate=vueuse&type=bottom'
+  document.head.appendChild(script)
+}

@@ -1,6 +1,6 @@
 import { defineComponent, h, ref } from 'vue-demi'
 import { createInjectionState } from '@vueuse/shared'
-import { expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mount } from '../../.test'
 
 const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {

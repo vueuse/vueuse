@@ -1,4 +1,6 @@
-import { isRef, ref, unref } from 'vue-demi'
+import { isRef, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
+import { toValue } from '../toValue'
 import { useToggle } from '.'
 
 describe('useToggle', () => {
@@ -15,7 +17,7 @@ describe('useToggle', () => {
 
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
-    expect(unref(value)).toBe(false)
+    expect(toValue(value)).toBe(false)
   })
 
   it('default result with initialValue', () => {
@@ -27,7 +29,7 @@ describe('useToggle', () => {
 
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
-    expect(unref(value)).toBe(true)
+    expect(toValue(value)).toBe(true)
   })
 
   it('should toggle', () => {
@@ -35,10 +37,10 @@ describe('useToggle', () => {
     const [value, toggle] = result
 
     expect(toggle()).toBe(true)
-    expect(unref(value)).toBe(true)
+    expect(toValue(value)).toBe(true)
 
     expect(toggle()).toBe(false)
-    expect(unref(value)).toBe(false)
+    expect(toValue(value)).toBe(false)
   })
 
   it('should receive toggle param', () => {
@@ -46,10 +48,10 @@ describe('useToggle', () => {
     const [value, toggle] = result
 
     expect(toggle(false)).toBe(false)
-    expect(unref(value)).toBe(false)
+    expect(toValue(value)).toBe(false)
 
     expect(toggle(true)).toBe(true)
-    expect(unref(value)).toBe(true)
+    expect(toValue(value)).toBe(true)
   })
 
   it('ref initialValue', () => {
@@ -59,16 +61,16 @@ describe('useToggle', () => {
     expect(typeof toggle).toBe('function')
 
     expect(toggle()).toBe(false)
-    expect(unref(isDark)).toBe(false)
+    expect(toValue(isDark)).toBe(false)
 
     expect(toggle()).toBe(true)
-    expect(unref(isDark)).toBe(true)
+    expect(toValue(isDark)).toBe(true)
 
     expect(toggle(false)).toBe(false)
-    expect(unref(isDark)).toBe(false)
+    expect(toValue(isDark)).toBe(false)
 
     expect(toggle(true)).toBe(true)
-    expect(unref(isDark)).toBe(true)
+    expect(toValue(isDark)).toBe(true)
   })
 
   it('should toggle with truthy & falsy', () => {
@@ -78,19 +80,19 @@ describe('useToggle', () => {
       falsyValue: 'OFF',
     })
 
-    expect(unref(status)).toBe('ON')
+    expect(toValue(status)).toBe('ON')
     expect(typeof toggle).toBe('function')
 
     expect(toggle()).toBe('OFF')
-    expect(unref(status)).toBe('OFF')
+    expect(toValue(status)).toBe('OFF')
 
     expect(toggle()).toBe('ON')
-    expect(unref(status)).toBe('ON')
+    expect(toValue(status)).toBe('ON')
 
     expect(toggle('OFF')).toBe('OFF')
-    expect(unref(status)).toBe('OFF')
+    expect(toValue(status)).toBe('OFF')
 
     expect(toggle('ON')).toBe('ON')
-    expect(unref(status)).toBe('ON')
+    expect(toValue(status)).toBe('ON')
   })
 })

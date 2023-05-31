@@ -1,15 +1,18 @@
 import { nextTick } from 'vue'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
-  const addEventListenerSpy = vitest.spyOn(window, 'addEventListener')
-
+  const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+  const matchMediaSpy = vi.spyOn(window, 'matchMedia')
   beforeEach(() => {
     addEventListenerSpy.mockReset()
+    matchMediaSpy.mockReset()
   })
 
   afterAll(() => {
     addEventListenerSpy.mockRestore()
+    matchMediaSpy.mockRestore()
   })
 
   it('should be defined', () => {
@@ -23,8 +26,15 @@ describe('useWindowSize', () => {
     expect(height.value).toBe(window.innerHeight)
   })
 
+  it('should exclude scrollbar', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, includeScrollbar: false })
+
+    expect(width.value).toBe(window.document.documentElement.clientWidth)
+    expect(height.value).toBe(window.document.documentElement.clientHeight)
+  })
+
   it('sets handler for window "resize" event', async () => {
-    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+    useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
 
     await nextTick()
 
@@ -33,5 +43,17 @@ describe('useWindowSize', () => {
     const call = addEventListenerSpy.mock.calls[0] as any
     expect(call[0]).toEqual('resize')
     expect(call[2]).toEqual({ passive: true })
+  })
+
+  it('sets handler for window.matchMedia("(orientation: portrait)") change event', async () => {
+    useWindowSize({ initialWidth: 100, initialHeight: 200 })
+
+    await nextTick()
+
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1)
+
+    expect(matchMediaSpy).toHaveBeenCalledTimes(1)
+    const call = matchMediaSpy.mock.calls[0] as any
+    expect(call[0]).toEqual('(orientation: portrait)')
   })
 })

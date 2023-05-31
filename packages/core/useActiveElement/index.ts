@@ -1,7 +1,9 @@
-import { computed, ref } from 'vue-demi'
+import { computedWithControl } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
+export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {}
 
 /**
  * Reactive `document.activeElement`
@@ -9,18 +11,23 @@ import { defaultWindow } from '../_configurable'
  * @see https://vueuse.org/useActiveElement
  * @param options
  */
-export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {
+export function useActiveElement<T extends HTMLElement>(options: UseActiveElementOptions = {}) {
   const { window = defaultWindow } = options
-  const counter = ref(0)
+  const document = options.document ?? window?.document
+  const activeElement = computedWithControl(
+    () => null,
+    () => document?.activeElement as T | null | undefined,
+  )
 
   if (window) {
-    useEventListener(window, 'blur', () => counter.value += 1, true)
-    useEventListener(window, 'focus', () => counter.value += 1, true)
+    useEventListener(window, 'blur', (event) => {
+      if (event.relatedTarget !== null)
+        return
+
+      activeElement.trigger()
+    }, true)
+    useEventListener(window, 'focus', activeElement.trigger, true)
   }
 
-  return computed(() => {
-    // eslint-disable-next-line no-unused-expressions
-    counter.value
-    return window?.document.activeElement as T | null | undefined
-  })
+  return activeElement
 }

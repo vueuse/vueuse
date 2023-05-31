@@ -1,5 +1,6 @@
 ---
 category: Utilities
+related: refThrottled, refDebounced, useDebounceFn
 ---
 
 # useThrottleFn
@@ -17,15 +18,8 @@ const throttledFn = useThrottleFn(() => {
   // do something, it will be called at most 1 time per second
 }, 1000)
 
-document.addEventListener('resize', throttledFn)
+window.addEventListener('resize', throttledFn)
 ```
-
-## Related Functions
-
-- `useThrottle`
-- `useThrottleFn`
-- `useDebounce`
-- `useDebounceFn`
 
 ## Recommended Reading
 

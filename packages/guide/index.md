@@ -1,5 +1,7 @@
 # Get Started
 
+<CourseLink href="https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse">Learn VueUse with video</CourseLink>
+
 VueUse is a collection of utility functions based on [Composition API](https://v3.vuejs.org/guide/composition-api-introduction.html). We assume you are already familiar with the basic ideas of [Composition API](https://v3.vuejs.org/guide/composition-api-introduction.html) before you continue.
 
 ## Installation
@@ -39,6 +41,17 @@ From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nu
 npm i -D @vueuse/nuxt @vueuse/core
 ```
 
+Nuxt 3
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: [
+    '@vueuse/nuxt',
+  ],
+})
+```
+
+Nuxt 2
 ```ts
 // nuxt.config.js
 export default {

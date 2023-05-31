@@ -1,8 +1,10 @@
 import type { Ref } from 'vue-demi'
-import { computed, ref, unref, watch } from 'vue-demi'
-import type { Awaitable, MaybeRef } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 /**
  * window.showOpenFilePicker parameters
@@ -84,12 +86,12 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
   /**
    * file data type
    */
-  dataType?: MaybeRef<'Text' | 'ArrayBuffer' | 'Blob'>
+  dataType?: MaybeRefOrGetter<'Text' | 'ArrayBuffer' | 'Blob'>
 }
 
 /**
  * Create and read and write local files.
- * @see https://vueuse.org/useElementByPoint
+ * @see https://vueuse.org/useFileSystemAccess
  * @param options
  */
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Text' }): UseFileSystemAccessReturn<string>
@@ -100,9 +102,10 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const {
     window: _window = defaultWindow,
     dataType = 'Text',
-  } = unref(options)
+  } = options
+
   const window = _window as FileSystemAccessWindow
-  const isSupported = Boolean(window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
+  const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
   const fileHandle = ref<FileSystemFileHandle>()
   const data = ref<string | ArrayBuffer | Blob>()
@@ -114,25 +117,25 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const fileLastModified = computed(() => file.value?.lastModified ?? 0)
 
   async function open(_options: UseFileSystemAccessCommonOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
-    const [handle] = await window.showOpenFilePicker({ ...unref(options), ..._options })
+    const [handle] = await window.showOpenFilePicker({ ...toValue(options), ..._options })
     fileHandle.value = handle
     await updateFile()
     await updateData()
   }
 
   async function create(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
-    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...options, ..._options })
     data.value = undefined
     await updateFile()
     await updateData()
   }
 
   async function save(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     if (!fileHandle.value)
@@ -148,10 +151,10 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function saveAs(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
-    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...options, ..._options })
 
     if (data.value) {
       const writableStream = await fileHandle.value.createWritable()
@@ -167,15 +170,16 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function updateData() {
-    if (unref(dataType) === 'Text')
+    const type = toValue(dataType)
+    if (type === 'Text')
       data.value = await file.value?.text()
-    if (unref(dataType) === 'ArrayBuffer')
+    else if (type === 'ArrayBuffer')
       data.value = await file.value?.arrayBuffer()
-    if (unref(dataType) === 'Blob')
+    else if (type === 'Blob')
       data.value = file.value
   }
 
-  watch(() => unref(dataType), updateData)
+  watch(() => toValue(dataType), updateData)
 
   return {
     isSupported,
@@ -194,7 +198,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
 }
 
 export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   data: Ref<T | undefined>
   file: Ref<File | undefined>
   fileName: Ref<string>

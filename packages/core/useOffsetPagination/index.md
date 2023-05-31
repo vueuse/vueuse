@@ -28,7 +28,7 @@ const {
 } = useOffsetPagination({
   total: database.value.length,
   page: 1,
-  pageSize,
+  pageSize: 10,
   onPageChange: fetchData,
   onPageSizeChange: fetchData,
 })

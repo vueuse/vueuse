@@ -1,9 +1,9 @@
 import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { vOnKeyStroke } from './directive'
-import type { KeyStrokeOptions } from '.'
+import type { OnKeyStrokeOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -51,7 +51,7 @@ describe('vOnKeyStroke', () => {
   describe('given options', () => {
     beforeEach(() => {
       onUpdate = vi.fn()
-      const options: KeyStrokeOptions = {
+      const options: OnKeyStrokeOptions = {
         passive: false,
       }
       wrapper = mount(App, {

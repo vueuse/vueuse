@@ -1,8 +1,9 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { syncRefs } from '.'
 
 describe('syncRefs', () => {
-  it('should work', () => {
+  it('should work with array', () => {
     const source = ref('foo')
     const target1 = ref('bar')
     const target2 = ref('bar2')
@@ -23,5 +24,24 @@ describe('syncRefs', () => {
 
     expect(target1.value).toBe('bar')
     expect(target2.value).toBe('bar')
+  })
+
+  it('should work with non-array', () => {
+    const source = ref('foo')
+    const target = ref('bar')
+
+    const stop = syncRefs(source, target)
+
+    expect(target.value).toBe('foo')
+
+    source.value = 'bar'
+
+    expect(target.value).toBe('bar')
+
+    stop()
+
+    source.value = 'bar2'
+
+    expect(target.value).toBe('bar')
   })
 })

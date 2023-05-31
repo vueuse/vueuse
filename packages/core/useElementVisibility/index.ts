@@ -1,12 +1,12 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { tryOnMounted } from '@vueuse/shared'
-import { ref, unref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { ref } from 'vue-demi'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import { useIntersectionObserver } from '../useIntersectionObserver'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
-  scrollTarget?: MaybeRef<Element | null | undefined>
+export interface UseElementVisibilityOptions extends ConfigurableWindow {
+  scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
 }
 
 /**
@@ -17,34 +17,21 @@ export interface VisibilityScrollTargetOptions extends ConfigurableWindow {
  * @param options
  */
 export function useElementVisibility(
-  element: MaybeRef<Element | null | undefined>,
-  { window = defaultWindow, scrollTarget }: VisibilityScrollTargetOptions = {},
+  element: MaybeComputedElementRef,
+  { window = defaultWindow, scrollTarget }: UseElementVisibilityOptions = {},
 ) {
   const elementIsVisible = ref(false)
 
-  const testBounding = () => {
-    if (!window)
-      return
-
-    const document = window.document
-    if (!unref(element)) {
-      elementIsVisible.value = false
-    }
-    else {
-      const rect = (unref(element) as HTMLElement).getBoundingClientRect()
-      elementIsVisible.value = (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight)
-          && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-          && rect.bottom >= 0
-          && rect.right >= 0
-      )
-    }
-  }
-
-  tryOnMounted(testBounding)
-
-  if (window)
-    tryOnMounted(() => useEventListener(unref(scrollTarget) || window, 'scroll', testBounding, { capture: false, passive: true }))
+  useIntersectionObserver(
+    element,
+    ([{ isIntersecting }]) => {
+      elementIsVisible.value = isIntersecting
+    },
+    {
+      root: scrollTarget,
+      window,
+    },
+  )
 
   return elementIsVisible
 }

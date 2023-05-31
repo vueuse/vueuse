@@ -1,0 +1,29 @@
+html.dark {
+  color-scheme: dark;
+}
+
+.vp-doc h2 {
+  border-top: 0;
+  margin-top: 10px;
+}
+
+.VPMenuLink .link {
+  line-height: 28px !important;
+}
+
+.VPSidebarGroup .link {
+  padding: 3px 0 !important;
+}
+
+#app a:focus-visible,
+#app button:focus-visible,
+#app input[type="checkbox"]:focus-visible {
+  --at-apply: outline-1 outline-primary ring-2 ring-primary;
+}
+
+/* Vue School Banner */
+#bb-banner {
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+}

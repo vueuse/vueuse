@@ -1,4 +1,20 @@
-const { resolve } = require('path')
+const { resolve } = require('node:path')
+
+const restricted = [
+  'vue',
+  '@vue/reactivity',
+  '@vue/runtime-core',
+  '@vue/runtime-dom',
+  '@vue/composition-api',
+  '..',
+  '../..',
+  resolve(__dirname, 'packages/core/index.ts'),
+  resolve(__dirname, 'packages/shared/index.ts'),
+  {
+    name: 'vue-demi',
+    importNames: ['onMounted', 'onUnmounted', 'unref', 'toRef'],
+  },
+]
 
 module.exports = {
   root: true,
@@ -6,11 +22,8 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: '@antfu/eslint-config',
+  extends: '@antfu',
   rules: {
-    'react/no-string-refs': 'off',
-    'react/no-unknown-property': 'off',
-    'react/display-name': 'off',
     'vue/no-deprecated-functional-template': 'off',
     'vue/one-component-per-file': 'off',
     'vue/no-template-shadow': 'off',
@@ -19,18 +32,7 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
-        paths: [
-          'vue',
-          '@vue/composition-api',
-          '..',
-          '../..',
-          resolve(__dirname, 'packages/core/index.ts'),
-          {
-            name: 'vue-demi',
-            importNames: ['onMounted', 'onUnmounted'],
-            message: 'Use tryOnMounted and tryOnScopeDispose instead.',
-          },
-        ],
+        paths: restricted,
       },
     ],
     'node/no-callback-literal': 'off',
@@ -41,7 +43,33 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'scripts/*.ts', '*.test.ts'],
+      files: ['packages/shared/**/*.ts'],
+      rules: {
+        'no-restricted-imports': ['error',
+          {
+            paths: [
+              ...restricted,
+              '@vueuse/shared',
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['packages/core/**/index.ts'],
+      rules: {
+        'no-restricted-imports': ['error',
+          {
+            paths: [
+              ...restricted,
+              '@vueuse/core',
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['**/*.md', '**/*.md/*.*', 'demo.vue', 'demo.client.vue', 'scripts/*.ts', '*.test.ts'],
       rules: {
         'no-alert': 'off',
         'no-console': 'off',
@@ -50,6 +78,7 @@ module.exports = {
         'no-restricted-imports': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-redeclare': 'off',
+        'unused-imports/no-unused-vars': 'off',
       },
     },
     {

@@ -23,12 +23,13 @@
       "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"],
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
+      "@vueuse/math": ["./packages/math/index.ts"],
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"]
     },
     "types": [
       "vitest",
-      "vitest/globals"
+      "@types/web-bluetooth"
     ]
   },
   "include": [
@@ -40,8 +41,7 @@
   ],
   "exclude": [
     "node_modules",
-    "**/**/*.stories.tsx",
-    "**/**/*.md",
+    "**/*.md",
     "**/dist",
     "packages/.test",
     "packages/_docs"

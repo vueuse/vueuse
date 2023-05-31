@@ -1,4 +1,5 @@
 import { reactive, ref, watch } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { set } from '.'
 
 describe('set', () => {

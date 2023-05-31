@@ -1,16 +1,14 @@
-import { useSetup } from '../../.test'
-import { useTimeout } from '../useTimeout'
+import { describe, expect, it } from 'vitest'
+import { useTimeout } from '.'
 
 describe('useTimeout', () => {
   it('works', () => {
-    useSetup(() => {})
     const ready = useTimeout(10)
     expect(ready.value).toEqual(false)
     setTimeout(() => expect(ready.value).toEqual(true), 10)
   })
 
   it('works with controls', () => {
-    useSetup(() => {})
     const { ready } = useTimeout(10, { controls: true })
     expect(ready.value).toEqual(false)
     setTimeout(() => expect(ready.value).toEqual(true), 10)

@@ -5,6 +5,7 @@ import type { EventHook } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface WebNotificationOptions {
   /**
@@ -81,7 +82,6 @@ export interface WebNotificationOptions {
 }
 
 export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
-
 }
 
 /**
@@ -93,44 +93,43 @@ export interface UseWebNotificationOptions extends WebNotificationOptions, Confi
  * @param defaultOptions of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
  */
-export const useWebNotification = (
-  defaultOptions: UseWebNotificationOptions = {},
-) => {
+export function useWebNotification(defaultOptions: UseWebNotificationOptions = {}) {
   const {
     window = defaultWindow,
   } = defaultOptions
 
-  const isSupported: boolean = !!window && 'Notification' in window
+  const isSupported = useSupported(() => !!window && 'Notification' in window)
 
   const notification: Ref<Notification | null> = ref(null)
 
   // Request permission to use web notifications:
   const requestPermission = async () => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     if ('permission' in Notification && Notification.permission !== 'denied')
       await Notification.requestPermission()
   }
 
-  const onClick: EventHook = createEventHook<Event>()
-  const onShow: EventHook = createEventHook<Event>()
-  const onError: EventHook = createEventHook<Event>()
-  const onClose: EventHook = createEventHook<Event>()
+  const { on: onClick, trigger: clickTrigger }: EventHook = createEventHook<Event>()
+  const { on: onShow, trigger: showTrigger }: EventHook = createEventHook<Event>()
+  const { on: onError, trigger: errorTrigger }: EventHook = createEventHook<Event>()
+  const { on: onClose, trigger: closeTrigger }: EventHook = createEventHook<Event>()
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
-    if (!isSupported)
+    if (!isSupported.value)
       return
 
     await requestPermission()
     const options = Object.assign({}, defaultOptions, overrides)
     notification.value = new Notification(options.title || '', options)
 
-    notification.value.onclick = (event: Event) => onClick.trigger(event)
-    notification.value.onshow = (event: Event) => onShow.trigger(event)
-    notification.value.onerror = (event: Event) => onError.trigger(event)
-    notification.value.onclose = (event: Event) => onClose.trigger(event)
+    notification.value.onclick = clickTrigger
+    notification.value.onshow = showTrigger
+    notification.value.onerror = errorTrigger
+    notification.value.onclose = closeTrigger
+
     return notification.value
   }
 
@@ -143,7 +142,7 @@ export const useWebNotification = (
 
   // On mount, attempt to request permission:
   tryOnMounted(async () => {
-    if (isSupported)
+    if (isSupported.value)
       await requestPermission()
   })
 
@@ -154,7 +153,7 @@ export const useWebNotification = (
   // the user (e.g.the user already read the notification on the webpage).
   // Most modern browsers dismiss notifications automatically after a few
   // moments(around four seconds).
-  if (isSupported && window) {
+  if (isSupported.value && window) {
     const document = window.document
     useEventListener(document, 'visibilitychange', (e: Event) => {
       e.preventDefault()
@@ -176,3 +175,5 @@ export const useWebNotification = (
     onClose,
   }
 }
+
+export type UseWebNotificationReturn = ReturnType<typeof useWebNotification>

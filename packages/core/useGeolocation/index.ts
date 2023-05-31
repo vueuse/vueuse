@@ -1,12 +1,15 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
-export interface GeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {}
+export interface UseGeolocationOptions extends Partial<PositionOptions>, ConfigurableNavigator {
+  immediate?: boolean
+}
 
 /**
  * Reactive Geolocation API.
@@ -14,18 +17,19 @@ export interface GeolocationOptions extends Partial<PositionOptions>, Configurab
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export function useGeolocation(options: GeolocationOptions = {}) {
+export function useGeolocation(options: UseGeolocationOptions = {}) {
   const {
     enableHighAccuracy = true,
     maximumAge = 30000,
     timeout = 27000,
     navigator = defaultNavigator,
+    immediate = true,
   } = options
 
-  const isSupported = navigator && 'geolocation' in navigator
+  const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
   const locatedAt: Ref<number | null> = ref(null)
-  const error = ref<GeolocationPositionError | null>(null)
+  const error = shallowRef<GeolocationPositionError | null>(null)
   const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
     latitude: Infinity,
@@ -44,21 +48,30 @@ export function useGeolocation(options: GeolocationOptions = {}) {
 
   let watcher: number
 
-  if (isSupported) {
-    watcher = navigator!.geolocation.watchPosition(
-      updatePosition,
-      err => error.value = err,
-      {
-        enableHighAccuracy,
-        maximumAge,
-        timeout,
-      },
-    )
+  function resume() {
+    if (isSupported.value) {
+      watcher = navigator!.geolocation.watchPosition(
+        updatePosition,
+        err => error.value = err,
+        {
+          enableHighAccuracy,
+          maximumAge,
+          timeout,
+        },
+      )
+    }
+  }
+
+  if (immediate)
+    resume()
+
+  function pause() {
+    if (watcher && navigator)
+      navigator.geolocation.clearWatch(watcher)
   }
 
   tryOnScopeDispose(() => {
-    if (watcher && navigator)
-      navigator.geolocation.clearWatch(watcher)
+    pause()
   })
 
   return {
@@ -66,6 +79,8 @@ export function useGeolocation(options: GeolocationOptions = {}) {
     coords,
     locatedAt,
     error,
+    resume,
+    pause,
   }
 }
 

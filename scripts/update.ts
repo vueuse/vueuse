@@ -10,8 +10,8 @@ async function run() {
     updateFunctionsMD(metadata),
     updateFunctionREADME(metadata),
     updatePackageJSON(metadata),
-    updateCountBadge(metadata),
-    updateContributors(),
+    process.env.NETLIFY && updateCountBadge(metadata),
+    process.env.NETLIFY && updateContributors(),
   ])
 
   await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')

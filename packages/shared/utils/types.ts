@@ -1,18 +1,14 @@
-import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
 
 /**
- * Any function
+ * Void function
  */
 export type Fn = () => void
 
 /**
- * Maybe it's a ref, or not.
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
+ * Any function
  */
-export type MaybeRef<T> = T | Ref<T>
+export type AnyFn = (...args: any[]) => any
 
 /**
  * A ref that allow to set null or undefined
@@ -23,9 +19,27 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
 }
 
 /**
- * @deprecated Use `RemovableRef`
+ * Maybe it's a ref, or a plain value
+ *
+ * ```ts
+ * type MaybeRef<T> = T | Ref<T>
+ * ```
  */
-export type RemoveableRef<T> = RemovableRef<T>
+export type MaybeRef<T> = T | Ref<T>
+
+/**
+ * Maybe it's a ref, or a plain value, or a getter function
+ *
+ * ```ts
+ * type MaybeRefOrGetter<T> = (() => T) | T | Ref<T> | ComputedRef<T>
+ * ```
+ */
+export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T)
+
+/**
+ * Maybe it's a computed ref, or a readonly value, or a getter function
+ */
+export type ReadonlyRefOrGetter<T> = ComputedRef<T> | (() => T)
 
 /**
  * Make all the nested attributes of an object or array to MaybeRef<T>
@@ -42,6 +56,8 @@ export type DeepMaybeRef<T> = T extends Ref<infer V>
     ? { [K in keyof T]: DeepMaybeRef<T[K]> }
     : MaybeRef<T>
 
+export type Arrayable<T> = T[] | T
+
 /**
  * Infers the element type of an array
  */
@@ -51,11 +67,15 @@ export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
 
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
+
+export type PromisifyFn<T extends AnyFn> = (...args: ArgumentsType<T>) => Promise<ReturnType<T>>
+
 export interface Pausable {
   /**
-   * A ref indicate whether a pusable instance is active
+   * A ref indicate whether a pausable instance is active
    */
-  isActive: Ref<boolean>
+  isActive: Readonly<Ref<boolean>>
 
   /**
    * Temporary pause the effect from executing
@@ -68,11 +88,11 @@ export interface Pausable {
   resume: Fn
 }
 
-export interface Stoppable {
+export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  isPending: Ref<boolean>
+  isPending: Readonly<Ref<boolean>>
 
   /**
    * Stop the effect from executing
@@ -82,13 +102,8 @@ export interface Stoppable {
   /**
    * Start the effects
    */
-  start: Fn
+  start: (...args: StartFnArgs) => void
 }
-
-/**
- * @deprecated Use `Stoppable`
- */
-export type Stopable = Stoppable
 
 export interface ConfigurableFlush {
   /**
@@ -110,9 +125,13 @@ export interface ConfigurableFlushSync {
 }
 
 // Internal Types
+export type MultiWatchSources = (WatchSource<unknown> | object)[]
+
 export type MapSources<T> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never;
 }
 export type MapOldSources<T, Immediate> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never;
 }
+
+export type Mutable<T> = { -readonly [P in keyof T]: T[P] }

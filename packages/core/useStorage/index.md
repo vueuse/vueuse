@@ -1,5 +1,6 @@
 ---
 category: State
+related: useLocalStorage, useSessionStorage, useStorageAsync
 ---
 
 # useStorage
@@ -7,6 +8,10 @@ category: State
 Reactive [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)/[SessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 ## Usage
+
+::: tip
+When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage). Use explicit import if you want to use the function from VueUse.
+:::
 
 ```js
 import { useStorage } from '@vueuse/core'
@@ -25,6 +30,45 @@ const id = useStorage('my-id', 'some-string-id', sessionStorage) // returns Ref<
 
 // delete data from storage
 state.value = null
+```
+
+## Merge Defaults
+
+By default, `useStorage` will use the value from storage if it presents and ignores the default value. Be aware that when you adding more properties to the default value, the key might be undefined if client's storage does not have that key.
+
+```ts
+localStorage.setItem('my-store', '{"hello": "hello"}')
+
+const state = useStorage('my-store', { hello: 'hi', greeting: 'hello' }, localStorage)
+
+console.log(state.value.greeting) // undefined, since the value is not presented in storage
+```
+
+To solve that, you can enable `mergeDefaults` option.
+
+```ts
+localStorage.setItem('my-store', '{"hello": "nihao"}')
+
+const state = useStorage(
+  'my-store',
+  { hello: 'hi', greeting: 'hello' },
+  localStorage,
+  { mergeDefaults: true } // <--
+)
+
+console.log(state.hello) // 'nihao', from storage
+console.log(state.greeting) // 'hello', from merged default value
+```
+
+When setting it to true, it will perform a **shallow merge** for objects. You can pass a function to perform custom merge (e.g. deep merge), for example:
+
+```ts
+const state = useStorage(
+  'my-store',
+  { hello: 'hi', greeting: 'hello' },
+  localStorage,
+  { mergeDefaults: (storageValue, defaults) => deepMerge(defaults, storageValue) } // <--
+)
 ```
 
 ## Custom Serialization

@@ -1,10 +1,11 @@
 import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { computedAsync } from '.'
+import { describe, expect, it, vi } from 'vitest'
+import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
   it('is lazy', () => {
-    const func = vitest.fn(() => 'data')
+    const func = vi.fn(() => 'data')
 
     const data = computed(func)
 
@@ -17,8 +18,13 @@ describe('computed', () => {
 })
 
 describe('computedAsync', () => {
+  it('export module', () => {
+    expect(computedAsync).toBeDefined()
+    expect(asyncComputed).toBeDefined()
+  })
+
   it('is not lazy by default', async () => {
-    const func = vitest.fn(() => Promise.resolve('data'))
+    const func = vi.fn(() => Promise.resolve('data'))
 
     const data = computedAsync(func)
 
@@ -33,7 +39,7 @@ describe('computedAsync', () => {
 
   it('call onError when error is thrown', async () => {
     let errorMessage
-    const func = vitest.fn(async () => {
+    const func = vi.fn(async () => {
       throw new Error('An Error Message')
     })
 
@@ -55,7 +61,7 @@ describe('computedAsync', () => {
   })
 
   it('is lazy if configured', async () => {
-    const func = vitest.fn(async () => 'data')
+    const func = vi.fn(async () => 'data')
 
     const data = computedAsync(func, undefined, { lazy: true })
 
@@ -148,7 +154,7 @@ describe('computedAsync', () => {
     expect(double.value).toBe(8)
   })
 
-  test('evaluating works', async () => {
+  it('evaluating works', async () => {
     const evaluating = ref(false)
 
     const data = computedAsync(() =>
@@ -166,7 +172,7 @@ describe('computedAsync', () => {
     expect(data.value).toBe('data')
   })
 
-  test('triggers', async () => {
+  it('triggers', async () => {
     const counter = ref(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
@@ -194,21 +200,22 @@ describe('computedAsync', () => {
     expect(other.value).toBe(5)
   })
 
-  test('cancel is called', async () => {
-    const onCancel = vitest.fn()
+  it('cancel is called', async () => {
+    const onCancel = vi.fn()
+    const evaluating = ref(false)
 
     const data = ref('initial')
     const uppercase = computedAsync((cancel) => {
-      cancel(() => onCancel())
+      cancel(onCancel)
 
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 0)
+        setTimeout(resolve.bind(null, uppercased), 5)
       })
-    })
+    }, '', evaluating)
 
-    expect(uppercase.value).toBeUndefined()
+    expect(uppercase.value).toBe('')
 
     await promiseTimeout(10)
 
@@ -229,8 +236,8 @@ describe('computedAsync', () => {
     expect(uppercase.value).toBe('FINAL')
   })
 
-  test('cancel is called for lazy', async () => {
-    const onCancel = vitest.fn()
+  it('cancel is called for lazy', async () => {
+    const onCancel = vi.fn()
 
     const data = ref('initial')
     const uppercase = computedAsync((cancel) => {
@@ -239,7 +246,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 0)
+        setTimeout(resolve.bind(null, uppercased), 5)
       })
     }, '', { lazy: true })
 

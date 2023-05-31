@@ -6,4 +6,6 @@ category: State
 
 Reactive Storage in with async support.
 
-Prefer to `useStorage`.
+## Usage
+
+Please refer to `useStorage`.

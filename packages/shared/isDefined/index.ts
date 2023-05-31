@@ -1,4 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
+
+// eslint-disable-next-line no-restricted-imports
 import { unref } from 'vue-demi'
 
 export function isDefined<T>(v: Ref<T>): v is Ref<Exclude<T, null | undefined>>

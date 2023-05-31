@@ -1,5 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import { isClient } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { isClient, toRef } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
 
@@ -11,10 +11,10 @@ import QRCode from 'qrcode'
  * @param options
  */
 export function useQRCode(
-  text: MaybeRef<string>,
+  text: MaybeRefOrGetter<string>,
   options?: QRCode.QRCodeToDataURLOptions,
 ) {
-  const src = ref(text)
+  const src = toRef(text)
   const result = ref('')
 
   watch(

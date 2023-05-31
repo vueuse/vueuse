@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { useFocusWithin } from '.'
 
 describe('useFocusWithin', () => {
@@ -58,6 +59,26 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeTruthy()
 
     grandchild.value?.blur()
+    expect(focused.value).toBeFalsy()
+  })
+
+  it('should the state of target always be falsy when document.activeElement invalid', () => {
+    const mockWindow = new Proxy(window, {
+      get: (target, prop: any) => {
+        if (prop === 'document')
+          return { ...document, activeElement: null }
+
+        return window[prop]
+      },
+    })
+    const { focused } = useFocusWithin(parent, { window: mockWindow })
+
+    expect(focused.value).toBeFalsy()
+
+    parent.value.focus()
+    expect(focused.value).toBeFalsy()
+
+    child.value.focus()
     expect(focused.value).toBeFalsy()
   })
 })

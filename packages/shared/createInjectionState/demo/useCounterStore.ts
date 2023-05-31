@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue-demi'
-import { createInjectionState } from '@vueuse/shared'
+import { createInjectionState } from '../../createInjectionState'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state

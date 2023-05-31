@@ -1,5 +1,6 @@
 ---
 category: Sensors
+related: useDevicesList, usePermission
 ---
 
 # useUserMedia
@@ -40,12 +41,9 @@ const currentCamera = computed(() => cameras.value[0]?.deviceId)
 const currentMicrophone = computed(() => microphones.value[0]?.deviceId)
 
 const { stream } = useUserMedia({
-  videoDeviceId: currentCamera,
-  audioDeviceId: currentMicrophone,
+  constraints: {
+    video: { deviceId: currentCamera },
+    audio: { deviceId: currentMicrophone, }
+  }
 })
 ```
-
-## Related Functions
-
-- `useDevicesList`
-- `usePermission`

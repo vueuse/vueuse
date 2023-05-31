@@ -1,10 +1,10 @@
 import { defineComponent, isVue3 } from 'vue-demi'
-
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 
-import { vOnLongPress } from './directive'
+import { VOnLongPress, vOnLongPress } from './directive'
 import type { OnLongPressOptions } from '.'
 
 const App = defineComponent({
@@ -29,6 +29,11 @@ const App = defineComponent({
 describe('vOnLongPress', () => {
   let onLongPress = vi.fn()
   let wrapper: VueWrapper<any>
+
+  it('export module', () => {
+    expect(vOnLongPress).toBeDefined()
+    expect(VOnLongPress).toBeDefined()
+  })
 
   describe('given no options', () => {
     beforeEach(() => {

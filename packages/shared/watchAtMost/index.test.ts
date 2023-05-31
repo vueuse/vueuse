@@ -1,10 +1,11 @@
 import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { watchAtMost } from '.'
 
 describe('watchAtMost', () => {
   it('should work', async () => {
     const num = ref(0)
-    const spy = vitest.fn()
+    const spy = vi.fn()
 
     const { count } = watchAtMost(num, spy, {
       count: 2,

@@ -13,7 +13,7 @@ export type WebWorkerStatus =
   | 'ERROR'
   | 'TIMEOUT_EXPIRED'
 
-export interface WebWorkerOptions extends ConfigurableWindow {
+export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
    * Number of milliseconds before killing the worker
    *
@@ -33,10 +33,8 @@ export interface WebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
-  fn: T,
-  options: WebWorkerOptions = {},
-) => {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
+  options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
     timeout,
@@ -113,7 +111,6 @@ export const useWebWorkerFn = <T extends (...fnArgs: any[]) => any>(
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {
-      /* eslint-disable-next-line no-console */
       console.error(
         '[useWebWorkerFn] You can only run one instance of the worker at a time.',
       )

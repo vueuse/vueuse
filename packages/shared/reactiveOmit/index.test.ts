@@ -1,4 +1,5 @@
 import { isVue2, reactive } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { reactiveOmit } from '.'
 
 interface TargetObject {
@@ -55,5 +56,29 @@ describe('reactiveOmit', () => {
         "qux": true,
       }
     `)
+  })
+
+  it('should work with predicate', () => {
+    const source = reactive<TargetObject>({
+      foo: 'foo',
+      bar: 'bar',
+      baz: 'baz',
+      qux: true,
+    })
+
+    const state = reactiveOmit(source, (value, key) =>
+      key === 'bar' || key === 'baz' || value === true,
+    )
+
+    expect(state).toEqual({
+      foo: 'foo',
+    })
+
+    source.qux = false
+
+    expect(state).toEqual({
+      foo: 'foo',
+      qux: false,
+    })
   })
 })

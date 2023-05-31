@@ -28,7 +28,7 @@ const speech = useSpeechRecognition({
 
 const color = ref('transparent')
 
-if (speech.isSupported) {
+if (speech.isSupported.value) {
   // @ts-expect-error missing types
   const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
   const speechRecognitionList = new SpeechGrammarList()
@@ -47,7 +47,7 @@ if (speech.isSupported) {
 
 const sampled = ref<string[]>([])
 
-const start = () => {
+function start() {
   color.value = 'transparent'
   speech.result.value = ''
   sampled.value = sample(colors, 5)

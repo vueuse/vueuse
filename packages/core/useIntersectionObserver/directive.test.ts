@@ -1,9 +1,9 @@
 import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { vIntersectionObserver } from './directive'
-import type { IntersectionObserverOptions } from '.'
+import type { UseIntersectionObserverOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -51,7 +51,7 @@ describe('vIntersectionObserver', () => {
   describe('given options', () => {
     beforeEach(() => {
       onIntersectionObserver = vi.fn()
-      const options: IntersectionObserverOptions = {
+      const options: UseIntersectionObserverOptions = {
         rootMargin: '10px',
       }
       wrapper = mount(App, {

@@ -2,7 +2,11 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/firebase?color=a1b858)](https://www.npmjs.com/package/@vueuse/firebase)
 
-> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bindings for Firebase.
+Add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bindings for Firebase.
+
+> ⚠️ This package only work with [Firebase 9 or above with the modular style](https://firebase.google.com/docs/web/modular-upgrade). For legacy versions, use `@vueuse/firebase@8` instead.
+
+> 💡 Give a try to [VueFire](https://vuefire.vuejs.org/) if you are looking for a more complete solution!
 
 ## Install
 

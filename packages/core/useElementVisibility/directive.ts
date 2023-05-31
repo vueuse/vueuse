@@ -2,12 +2,12 @@ import { watch } from 'vue-demi'
 import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
 
-import type { VisibilityScrollTargetOptions } from '.'
+import type { UseElementVisibilityOptions } from '.'
 import { useElementVisibility } from '.'
 
 type BindingValueFunction = (state: boolean) => void
 
-type BindingValueArray = [BindingValueFunction, VisibilityScrollTargetOptions]
+type BindingValueArray = [BindingValueFunction, UseElementVisibilityOptions]
 
 export const vElementVisibility: ObjectDirective<
 HTMLElement,

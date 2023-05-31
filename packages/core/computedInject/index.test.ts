@@ -1,8 +1,9 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { Key, useInjectedSetup } from '../../.test'
 import { computedInject } from '.'
 
-describe('useCounter', () => {
+describe('computedInject', () => {
   it('should be defined', () => {
     expect(computedInject).toBeDefined()
   })

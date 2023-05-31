@@ -8,12 +8,12 @@ const countSubject = new BehaviorSubject(0)
 const count = useSubject(countSubject)
 
 onMounted(() => {
-  // eslint-disable-next-line no-console
   watch(count, value => console.info('from watcher:', value))
 
-  // eslint-disable-next-line no-console
   const subscription = countSubject.subscribe(value => console.info('from subscriber: ', value))
-  tryOnScopeDispose(() => { subscription.unsubscribe() })
+  tryOnScopeDispose(() => {
+    subscription.unsubscribe()
+  })
 })
 </script>
 

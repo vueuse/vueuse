@@ -29,6 +29,14 @@ export const packages: PackageManifest[] = [
     ],
   },
   {
+    name: 'math',
+    display: 'Math',
+    description: 'Math functions for VueUse',
+    external: [
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'nuxt',
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',
@@ -46,6 +54,9 @@ export const packages: PackageManifest[] = [
       'fs',
       'path',
       'url',
+      'node:fs',
+      'node:path',
+      'node:url',
     ],
   },
   {
@@ -79,6 +90,10 @@ export const packages: PackageManifest[] = [
       '@vueuse/core',
       '@vueuse/shared',
       'fuse.js',
+      'async-validator',
+      'idb-keyval',
+      'sortablejs',
+      'node:http',
     ],
     globals: {
       'axios': 'axios',
@@ -90,6 +105,9 @@ export const packages: PackageManifest[] = [
       'drauu': 'Drauu',
       'fuse.js': 'Fuse',
       'change-case': 'changeCase',
+      'async-validator': 'AsyncValidator',
+      'idb-keyval': 'idbKeyval',
+      'sortablejs': 'Sortable',
     },
   },
   {
@@ -115,10 +133,14 @@ export const packages: PackageManifest[] = [
     external: [
       'firebase',
       'firebase/app',
+      'firebase/database',
+      'firebase/firestore',
     ],
     globals: {
       'firebase': 'firebase',
       'firebase/app': 'firebase',
+      'firebase/database': 'firebase',
+      'firebase/firestore': 'firebase',
     },
   },
   {

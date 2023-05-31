@@ -2,12 +2,13 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface NavigatorLanguageState {
-  isSupported: boolean
+  isSupported: Ref<boolean>
   /**
    *
    * ISO 639-1 standard Language Code
@@ -35,16 +36,16 @@ export interface NavigatorLanguageState {
  * @see https://vueuse.org/useNavigatorLanguage
  *
  */
-export const useNavigatorLanguage = (options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> => {
+export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> {
   const { window = defaultWindow } = options
 
   const navigator = window?.navigator
 
-  const isSupported = Boolean(navigator && 'language' in navigator)
+  const isSupported = useSupported(() => navigator && 'language' in navigator)
 
   const language = ref<string | undefined>(navigator?.language)
 
-  // Listen to when to user changes langauge:
+  // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language

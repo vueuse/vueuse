@@ -1,7 +1,9 @@
-import { ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface UseBroadcastChannelOptions extends ConfigurableWindow {
   /**
@@ -18,18 +20,18 @@ export interface UseBroadcastChannelOptions extends ConfigurableWindow {
  * @param options
  *
  */
-export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
+export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): UseBroadcastChannelReturn<D, P> {
   const {
     name,
     window = defaultWindow,
   } = options
 
-  const isSupported = window && 'BroadcastChannel' in window
+  const isSupported = useSupported(() => window && 'BroadcastChannel' in window)
   const isClosed = ref(false)
 
   const channel = ref<BroadcastChannel | undefined>()
   const data = ref()
-  const error = ref<Event | null>(null)
+  const error = shallowRef<Event | null>(null)
 
   const post = (data: unknown) => {
     if (channel.value)
@@ -42,7 +44,7 @@ export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
     isClosed.value = true
   }
 
-  if (isSupported) {
+  if (isSupported.value) {
     tryOnMounted(() => {
       error.value = null
       channel.value = new BroadcastChannel(name)
@@ -76,4 +78,12 @@ export const useBroadcastChannel = (options: UseBroadcastChannelOptions) => {
   }
 }
 
-export type UseBroadcastChannelReturn = ReturnType<typeof useBroadcastChannel>
+export interface UseBroadcastChannelReturn<D, P> {
+  isSupported: Ref<boolean>
+  channel: Ref<BroadcastChannel | undefined>
+  data: Ref<D>
+  post: (data: P) => void
+  close: () => void
+  error: Ref<Event | null>
+  isClosed: Ref<boolean>
+}

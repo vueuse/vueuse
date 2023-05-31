@@ -4,7 +4,9 @@ category: '@Integrations'
 
 # useChangeCase
 
-wrapper for [`change-case`](https://github.com/blakeembrey/change-case)
+Reactive wrapper for [`change-case`](https://github.com/blakeembrey/change-case).
+
+Subsitutes `useCamelCase`, `usePascalCase`, `useSnakeCase`, `useSentenceCase`, `useCapitalize`, etc.
 
 ## Install
 
@@ -43,8 +45,9 @@ or passing a `ref` to it, the returned `computed` will change along with the sou
 Can be passed into `options` for customization
 
 ```ts
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+
 const input = ref('helloWorld')
 const changeCase = useChangeCase(input, 'camelCase', {
   delimiter: '-',

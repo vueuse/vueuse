@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { nextTwoTick } from '../../.test'
 import { useCached } from '.'
 
@@ -18,7 +19,21 @@ describe('useCached', () => {
     expect(useCached).toBeDefined()
   })
 
-  it('should work', async () => {
+  it('should work with default comparator', async () => {
+    const booleanRef = ref(true)
+
+    const cachedBooleanRef = useCached(booleanRef)
+    await nextTwoTick()
+
+    expect(cachedBooleanRef.value).toBe(booleanRef.value)
+
+    booleanRef.value = false
+    await nextTwoTick()
+
+    expect(cachedBooleanRef.value).toBe(booleanRef.value)
+  })
+
+  it('should work with custom comparator', async () => {
     const arrayRef = ref([1])
     const initialArrayValue = arrayRef.value
 

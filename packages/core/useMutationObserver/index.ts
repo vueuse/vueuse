@@ -2,10 +2,11 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface MutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
+export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 
 /**
  * Watch for changes being made to the DOM tree.
@@ -19,11 +20,11 @@ export interface MutationObserverOptions extends MutationObserverInit, Configura
 export function useMutationObserver(
   target: MaybeElementRef,
   callback: MutationCallback,
-  options: MutationObserverOptions = {},
+  options: UseMutationObserverOptions = {},
 ) {
   const { window = defaultWindow, ...mutationOptions } = options
   let observer: MutationObserver | undefined
-  const isSupported = window && 'MutationObserver' in window
+  const isSupported = useSupported(() => window && 'MutationObserver' in window)
 
   const cleanup = () => {
     if (observer) {
@@ -37,7 +38,7 @@ export function useMutationObserver(
     (el) => {
       cleanup()
 
-      if (isSupported && window && el) {
+      if (isSupported.value && window && el) {
         observer = new MutationObserver(callback)
         observer!.observe(el, mutationOptions)
       }
