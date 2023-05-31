@@ -164,6 +164,14 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
+   * Throw if the http status code is not a 2xx code.
+   * (this deviates from stock FetchAPI behavior)
+   *
+   * @default true
+   */
+  throwOnErrCodes?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -211,7 +219,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'throwOnErrCodes', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -444,7 +452,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           responseData = await fetchResponse[config.type]()
 
           // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok) {
+          if (options.throwOnErrCodes && !fetchResponse.ok) {
             data.value = initialData || null
             throw new Error(fetchResponse.statusText)
           }
