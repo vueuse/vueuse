@@ -128,6 +128,21 @@ const { data } = useFetch(url, {
 })
 ```
 
+### Swallowing errors
+
+You can disable the `throwOnErrCodes` option to handle error-codes like the native FetchAPI does, which is to just accept them.
+
+By default, `useFetch` skips parsing the body and throws early to provide the `error`
+object when it encounters any response code that is not `200: Ok`; disabling `throwOnErrCodes` continues parsing
+like a normal success when it encounters error codes.
+
+You can implement your own error-detection yourself by throwing inside the `afterFetch()` function.
+
+```ts
+const { data } = useFetch('bad-url/400', { throwOnErrCodes: false })
+console.log(data.value) // null
+```
+
 ### Setting the request method and return type
 
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`

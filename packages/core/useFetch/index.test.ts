@@ -92,6 +92,15 @@ describe('useFetch', () => {
     })
   })
 
+  it('should not have an error on when not throwOnErrCodes', async () => {
+    const { error, statusCode, data } = useFetch('https://example.com?status=400', { throwOnErrCodes: false })
+    await retry(() => {
+      expect(data.value).toBe('')
+      expect(statusCode.value).toBe(400)
+      expect(error.value).toBe(null)
+    })
+  })
+
   it('should throw error', async () => {
     const options = { immediate: false }
     const error1 = await useFetch('https://example.com?status=400', options).execute(true).catch(err => err)
