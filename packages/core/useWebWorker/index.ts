@@ -6,9 +6,11 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
+type PostMessage = typeof Worker.prototype['postMessage']
+
 export interface UseWebWorkerReturn<Data = any> {
   data: Ref<Data>
-  post: typeof Worker.prototype['postMessage']
+  post: PostMessage
   terminate: () => void
   worker: ShallowRef<Worker | undefined>
 }
@@ -51,11 +53,11 @@ export function useWebWorker<Data = any>(
   const data: Ref<any> = ref(null)
   const worker = shallowRef<Worker>()
 
-  const post: typeof Worker.prototype['postMessage'] = function post(val: any) {
+  const post: PostMessage = (...args) => {
     if (!worker.value)
       return
 
-    worker.value.postMessage(val)
+    worker.value.postMessage(...args as Parameters<PostMessage>)
   }
 
   const terminate: typeof Worker.prototype['terminate'] = function terminate() {
