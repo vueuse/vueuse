@@ -48,7 +48,7 @@ export default {
 ```html
 <script setup lang="ts">
 import { vElementSize } from '@vueuse/components'
-function onResize({ width, height }: { width: number; height: number }) {
+function onResize({ width, height }: { width: number, height: number }) {
   console.log(width, height)
 }
 </script>
