@@ -578,6 +578,22 @@ describe('useFetch', () => {
     })
   })
 
+  it('should act like error code on custom throw inside afterFetch', async () => {
+    const { error, statusCode, data } = useFetch('https://example.com?status=400',
+      {
+        throwOnErrCodes: false,
+        afterFetch(ctx) {
+          throw new Error('custom fetch error')
+          return ctx
+        },
+      })
+    await retry(() => {
+      expect(data.value).toBeNull()
+      expect(statusCode.value).toStrictEqual(400)
+      expect(error.value).toBe('custom fetch error')
+    })
+  })
+
   it('should emit onFetchResponse event', async () => {
     const onResponseSpy = vi.fn()
     const { onFetchResponse } = useFetch('https://example.com')
