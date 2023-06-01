@@ -4,7 +4,7 @@ category: Watch
 
 # watchDeep
 
-Shorthand for watching value with {deep: true}
+Shorthand for watching value with `{deep: true}`
 
 ## Usage
 
