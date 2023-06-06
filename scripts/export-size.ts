@@ -38,6 +38,7 @@ async function run() {
 
     md += markdownTable([
       ['Function', 'min+gzipped'],
+      // eslint-disable-next-line antfu/no-cjs-exports
       ...exports.map((i) => {
         mdJSON[i.name] = filesize(i.minzipped)
         return [`\`${i.name}\``, filesize(i.minzipped)]

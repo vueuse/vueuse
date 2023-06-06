@@ -163,7 +163,7 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.1"
+    "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
@@ -173,7 +173,7 @@
     "axios": "^1.4.0",
     "change-case": "^4.1.2",
     "drauu": "^0.3.2",
-    "focus-trap": "^7.4.1",
+    "focus-trap": "^7.4.3",
     "fuse.js": "^6.6.2",
     "idb-keyval": "^6.2.1",
     "jwt-decode": "^3.1.2",

@@ -35,6 +35,6 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.1"
+    "vue-demi": ">=0.14.5"
   }
 }
