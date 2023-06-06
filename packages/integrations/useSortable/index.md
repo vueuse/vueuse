@@ -48,9 +48,17 @@ import { ref } from 'vue'
 const el = ref<HTMLElement | null>(null)
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
-useSortable(el, list, {
-  handle: '.handle'
+const animation = 200
+
+const { option } = useSortable(el, list, {
+  handle: '.handle',
+  // or option set
+  // animation
 })
+
+// You can use the option method to set and get the option of Sortable
+option('animation', animation)
+// option('animation') // 200
 </script>
 
 <template>
