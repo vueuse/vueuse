@@ -156,7 +156,8 @@ export function useColorMode<T extends string = BasicColorMode>(
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
-        style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
+        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+        style.appendChild(document.createTextNode(styleString))
         window!.document.head.appendChild(style)
       }
 

@@ -4,7 +4,9 @@ category: Browser
 
 # useScriptTag
 
-Script tag injecting.
+Creates a script tag, with support for automaticly unloading (deleting) the script tag on unmount.
+
+If a script tag already exists for the given URL, `useScriptTag()` will not create another script tag, but keep in mind that, depending on how you use it, `useScriptTag()` it might have already loaded then unloaded that particular JS file from a previous call of `useScriptTag()`.
 
 ## Usage
 

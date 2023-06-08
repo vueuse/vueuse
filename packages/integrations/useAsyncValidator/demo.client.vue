@@ -66,7 +66,7 @@ const { pass, isFinished, errorFields } = useAsyncValidator(form, rules)
     <div>
       Age
       <input
-        v-model="form.age"
+        v-model.number="form.age"
         :class="{ '!border-red': errorFields?.age?.length }"
         type="number"
         placeholder="Age"

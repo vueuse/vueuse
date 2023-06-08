@@ -53,7 +53,7 @@ export function useCloned<T>(
     cloned.value = clone(toValue(source))
   }
 
-  if (!manual && isRef(source)) {
+  if (!manual && (isRef(source) || typeof source === 'function')) {
     watch(source, sync, {
       ...options,
       deep,
