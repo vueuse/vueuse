@@ -254,8 +254,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
     pauseWatch()
     try {
-      const newData = read(event)
-      if (typeof newData !== 'object' || serializer.write(newData) !== serializer.write(data.value))
+      if (event?.newValue !== serializer.write(data.value))
         data.value = read(event)
     }
     catch (e) {
