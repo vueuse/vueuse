@@ -22,6 +22,13 @@ export interface UseEyeDropperOptions {
    * @default ''
    */
   initialValue?: string
+
+  /**
+   * Throw error if not supported.
+   *
+   * @default false
+   */
+  throwError?: boolean
 }
 
 /**
@@ -31,7 +38,10 @@ export interface UseEyeDropperOptions {
  * @param initialValue string
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
-  const { initialValue = '' } = options
+  const {
+    initialValue = '',
+    throwError = false,
+  } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)
   const sRGBHex = ref(initialValue)
 
@@ -43,10 +53,18 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
       const result = await eyeDropper.open(openOptions)
       sRGBHex.value = result.sRGBHex
       return result
-    } catch {}
+    }
+    catch (e) {
+      if (throwError)
+        throw e
+    }
   }
 
-  return { isSupported, sRGBHex, open }
+  return {
+    isSupported,
+    sRGBHex,
+    open,
+  }
 }
 
 export type UseEyeDropperReturn = ReturnType<typeof useEyeDropper>
