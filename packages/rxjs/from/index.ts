@@ -1,6 +1,6 @@
 import { Observable, fromEvent as fromEventRx, from as fromRxjs } from 'rxjs'
 import type { ObservableInput } from 'rxjs'
-import { filter, mergeMap } from 'rxjs/operators'
+import { filter, switchMap } from 'rxjs/operators'
 import type { Ref, WatchOptions } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
 import { isRef, watch } from 'vue-demi'
@@ -24,7 +24,7 @@ export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: stri
   if (isRef<T>(value)) {
     return from(value, { immediate: true }).pipe(
       filter(value => value instanceof HTMLElement),
-      mergeMap(value => fromEventRx(value, event)),
+      switchMap(value => fromEventRx(value, event)),
     )
   }
   return fromEventRx(value, event)
