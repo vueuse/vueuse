@@ -46,6 +46,6 @@
   },
   "devDependencies": {
     "@nuxt/schema": "^3.5.3",
-    "unimport": "^3.0.7"
+    "unimport": "^3.0.8"
   }
 }

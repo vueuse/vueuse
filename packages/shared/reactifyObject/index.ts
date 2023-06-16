@@ -41,7 +41,7 @@ export function reactifyObject<T extends object, S extends boolean = true>(obj: 
         return [
           key,
           typeof value === 'function'
-            ? reactify(value.bind(obj), options)
+            ? reactify((value as any).bind(obj), options)
             : value,
         ]
       }),
