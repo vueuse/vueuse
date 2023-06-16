@@ -3,7 +3,7 @@ import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from 
 import { tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 
 export function useTimeoutPoll(fn: () => Awaitable<void>, interval: MaybeRefOrGetter<number>, timeoutPollOptions?: UseTimeoutFnOptions): Pausable {
-  const { start } = useTimeoutFn(loop, interval)
+  const { start } = useTimeoutFn(loop, interval, { immediate: false })
 
   const isActive = ref(false)
 
