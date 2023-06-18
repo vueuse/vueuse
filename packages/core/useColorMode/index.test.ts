@@ -1,6 +1,6 @@
-import { nextTwoTick } from 'packages/.test'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue-demi'
+import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
 import { useColorMode } from '.'
 
