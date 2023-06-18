@@ -1,5 +1,9 @@
 name: Publish Package
 
+permissions:
+  id-token: write
+  contents: write
+
 on:
   push:
     tags:
@@ -7,8 +11,6 @@ on:
 
 jobs:
   publish-npm:
-    permissions:
-      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
