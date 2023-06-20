@@ -143,4 +143,18 @@ describe('useRouteParams', () => {
     expect(page.value).toBeNull()
     expect(lang.value).toBeNull()
   })
+
+  it('should route correctly when setting value equal to defaultValue', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const page = useRouteParams('page', 1, { transform: Number, route, router })
+
+    page.value = 1
+
+    await nextTick()
+
+    expect(page.value).toBe(1)
+    expect(route.params.page).toBe(1)
+  })
 })
