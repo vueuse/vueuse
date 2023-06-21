@@ -264,7 +264,7 @@ export function useWebSocket<Data = any>(
     const {
       message = DEFAULT_PING_MESSAGE,
       interval = 1000,
-      pongTimeout = 1000,
+      pongTimeout = null,
     } = resolveNestedOptions(options.heartbeat)
 
     const { pause, resume } = useIntervalFn(
