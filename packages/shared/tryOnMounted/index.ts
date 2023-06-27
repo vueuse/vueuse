@@ -9,8 +9,9 @@ import type { Fn } from '../utils'
  * @param sync if set to false, it will run in the nextTick() of Vue
  */
 export function tryOnMounted(fn: Fn, sync = true) {
-  if (getCurrentInstance())
-    onMounted(fn)
+  const instance = getCurrentInstance()
+  if (instance)
+    onMounted(fn, instance)
   else if (sync)
     fn()
   else

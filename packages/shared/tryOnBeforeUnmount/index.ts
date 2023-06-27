@@ -7,6 +7,7 @@ import type { Fn } from '../utils'
  * @param fn
  */
 export function tryOnBeforeUnmount(fn: Fn) {
-  if (getCurrentInstance())
-    onBeforeUnmount(fn)
+  const instance = getCurrentInstance()
+  if (instance)
+    onBeforeUnmount(fn, instance)
 }

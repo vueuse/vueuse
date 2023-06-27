@@ -8,6 +8,7 @@ import type { Fn } from '../utils'
  * @param fn
  */
 export function tryOnUnmounted(fn: Fn) {
-  if (getCurrentInstance())
-    onUnmounted(fn)
+  const instance = getCurrentInstance()
+  if (instance)
+    onUnmounted(fn, instance)
 }

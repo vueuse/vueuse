@@ -8,8 +8,9 @@ import type { Fn } from '../utils'
  * @param sync if set to false, it will run in the nextTick() of Vue
  */
 export function tryOnBeforeMount(fn: Fn, sync = true) {
-  if (getCurrentInstance())
-    onBeforeMount(fn)
+  const instance = getCurrentInstance()
+  if (instance)
+    onBeforeMount(fn, instance)
   else if (sync)
     fn()
   else
