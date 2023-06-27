@@ -1,4 +1,4 @@
-import { customRef, nextTick } from 'vue-demi'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ReactiveRouteOptions, RouteHashValueRaw } from '../_types'
@@ -19,7 +19,7 @@ export function useRouteHash(
     _hash = undefined
   })
 
-  return customRef<RouteHashValueRaw>((track, trigger) => ({
+  const proxy = customRef<RouteHashValueRaw>((track, trigger) => ({
     get() {
       track()
 
@@ -35,4 +35,10 @@ export function useRouteHash(
       })
     },
   }))
+
+  watch(() => route.hash, (newValue) => {
+    proxy.value = newValue
+  })
+
+  return proxy
 }

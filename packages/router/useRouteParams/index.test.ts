@@ -1,10 +1,10 @@
-import { effectScope, nextTick, ref } from 'vue-demi'
+import { effectScope, nextTick, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteParams } from '.'
 
 describe('useRouteParams', () => {
-  const getRoute = (params: Record<string, any> = {}) => ({
+  const getRoute = (params: Record<string, any> = {}) => reactive({
     params,
     query: {},
     fullPath: '',
@@ -142,5 +142,20 @@ describe('useRouteParams', () => {
 
     expect(page.value).toBeNull()
     expect(lang.value).toBeNull()
+  })
+
+  it('should change the value when the route changes', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const lang: Ref<any> = useRouteParams('lang', null, { route, router })
+
+    expect(lang.value).toBeNull()
+
+    route.params.lang = 'en'
+
+    await nextTick()
+
+    expect(lang.value).toBe('en')
   })
 })

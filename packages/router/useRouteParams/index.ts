@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { customRef, nextTick } from 'vue-demi'
-import type { RouteParamValueRaw } from 'vue-router'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import type { RouteParamValueRaw } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 
 const _cache = new WeakMap()
@@ -46,7 +46,7 @@ export function useRouteParams<
 
   _params.set(name, route.params[name])
 
-  return customRef<any>((track, trigger) => ({
+  const proxy = customRef<any>((track, trigger) => ({
     get() {
       track()
 
@@ -63,4 +63,10 @@ export function useRouteParams<
       })
     },
   }))
+
+  watch(() => route.params[name], (newValue) => {
+    proxy.value = newValue
+  })
+
+  return proxy as Ref<K>
 }

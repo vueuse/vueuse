@@ -1,9 +1,9 @@
-import { nextTick } from 'vue-demi'
+import { nextTick, reactive } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import { useRouteHash } from '.'
 
 describe('useRouteHash', () => {
-  const getRoute = (hash?: any) => ({
+  const getRoute = (hash?: any) => reactive({
     query: {},
     fullPath: '',
     hash,
@@ -61,5 +61,18 @@ describe('useRouteHash', () => {
 
     expect(hash.value).toBe('baz')
     expect(route.hash).toBeUndefined()
+  })
+
+  it('should change the value when the route changes', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const hash = useRouteHash('baz', { route, router })
+
+    route.hash = 'foo'
+
+    await nextTick()
+
+    expect(hash.value).toBe('foo')
   })
 })
