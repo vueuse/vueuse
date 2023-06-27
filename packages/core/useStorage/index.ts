@@ -171,8 +171,6 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', update)
-    // issue #3186
-    window.dispatchEvent(new Event('storage'))
     useEventListener(window, customStorageEventName, updateFromCustomEvent)
   }
 
@@ -191,10 +189,12 @@ export function useStorage<T extends (string | number | boolean | object | null)
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
 
-          // send custom event to communicate within same page
-          // importantly this should _not_ be a StorageEvent since those cannot
-          // be constructed with a non-built-in storage area
           if (window) {
+            // issue #3186
+            window.dispatchEvent(new Event('storage'))
+            // send custom event to communicate within same page
+            // importantly this should _not_ be a StorageEvent since those cannot
+            // be constructed with a non-built-in storage area
             window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
               detail: {
                 key,
