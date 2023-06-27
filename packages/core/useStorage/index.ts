@@ -125,7 +125,7 @@ export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<
  *
  * @see https://vueuse.org/useStorage
  */
-export function useStorage<T extends(string | number | boolean | object | null)>(
+export function useStorage<T extends (string | number | boolean | object | null)>(
   key: string,
   defaults: MaybeRefOrGetter<T>,
   storage: StorageLike | undefined,
@@ -171,6 +171,8 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', update)
+    // issue #3168
+    window.dispatchEvent(new Event('storage'))
     useEventListener(window, customStorageEventName, updateFromCustomEvent)
   }
 
