@@ -171,7 +171,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   if (window && listenToStorageChanges) {
     useEventListener(window, 'storage', update)
-    // issue #3168
+    // issue #3186
     window.dispatchEvent(new Event('storage'))
     useEventListener(window, customStorageEventName, updateFromCustomEvent)
   }
