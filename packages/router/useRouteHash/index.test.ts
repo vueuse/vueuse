@@ -71,8 +71,6 @@ describe('useRouteHash', () => {
 
     route.hash = 'foo'
 
-    await nextTick()
-
     expect(hash.value).toBe('foo')
   })
 })

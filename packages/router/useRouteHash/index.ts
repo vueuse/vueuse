@@ -19,26 +19,37 @@ export function useRouteHash(
     _hash = undefined
   })
 
-  const proxy = customRef<RouteHashValueRaw>((track, trigger) => ({
-    get() {
-      track()
+  let _trigger: () => void
 
-      return _hash || defaultValue
-    },
-    set(v) {
-      _hash = v === null ? undefined : v
+  const proxy = customRef<RouteHashValueRaw>((track, trigger) => {
+    _trigger = trigger
 
-      trigger()
+    return {
+      get() {
+        track()
 
-      nextTick(() => {
-        router[toValue(mode)]({ ...route, hash: _hash as string })
-      })
-    },
-  }))
+        return _hash || defaultValue
+      },
+      set(v) {
+        _hash = v === null ? undefined : v
 
-  watch(() => route.hash, (newValue) => {
-    proxy.value = newValue
+        trigger()
+
+        nextTick(() => {
+          router[toValue(mode)]({ ...route, hash: _hash as string })
+        })
+      },
+    }
   })
+
+  watch(
+    () => route.hash,
+    () => {
+      _hash = route.hash
+      _trigger()
+    },
+    { flush: 'sync' },
+  )
 
   return proxy
 }
