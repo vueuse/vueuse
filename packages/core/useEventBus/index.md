@@ -36,7 +36,7 @@ Listeners registered inside of components `setup` will be unregistered automatic
 
 ## TypeScript
 
-Using `EventBusKey` is the key to bind the event type to the key, similar to Vue's [`InjectionKey`](https://antfu.me/notes#typed-provide-and-inject-in-vue) util.
+Using `EventBusKey` is the key to bind the event type to the key, similar to Vue's [`InjectionKey`](https://antfu.me/posts/typed-provide-and-inject-in-vue) util.
 
 ```ts
 // fooKey.ts
