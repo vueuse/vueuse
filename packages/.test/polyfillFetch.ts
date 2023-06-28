@@ -1,9 +1,7 @@
-import nodeFetch from 'node-fetch'
+import { AbortController, fetch } from 'node-fetch-native'
 
-// @ts-expect-error remove XMLHttpRequest from global scope to prevent it from being used in tests
-globalThis.XMLHttpRequest = undefined
-
-// @ts-expect-error override
-globalThis.fetch = nodeFetch
+globalThis.AbortController = AbortController
+window.AbortController = AbortController
+window.fetch = fetch
 
 export {}

@@ -99,8 +99,8 @@ describe('useFetch', () => {
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
-    expect(error2.name).toBe('Error')
-    expect(error2.message).toBe('')
+    expect(error2.name).toBe('RangeError')
+    expect(error2.message).toBe('init["status"] must be in the range of 200 to 599, inclusive.')
   })
 
   it('should abort request and set aborted to true', async () => {
@@ -668,10 +668,12 @@ describe('useFetch', () => {
 
     onFetchResponse(onFetchResponseSpy)
 
-    execute()
-    execute()
-    execute()
-    execute()
+    await Promise.all([
+      execute(),
+      execute(),
+      execute(),
+      execute(),
+    ])
 
     await retry(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
