@@ -1,9 +1,11 @@
 import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { describe, expect, it, vi } from 'vitest'
+import { isBelowNode18 } from 'packages/.test'
 import { useAxios } from '.'
 
-describe('useAxios', () => {
+// The tests does not run properly below node 18
+describe.skipIf(isBelowNode18)('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
   const config: RawAxiosRequestConfig = {
     method: 'GET',
