@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/components",
-  "version": "10.1.2",
+  "version": "10.2.1",
   "description": "Renderless components for VueUse",
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",
@@ -35,6 +35,6 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.1"
+    "vue-demi": ">=0.14.5"
   }
 }

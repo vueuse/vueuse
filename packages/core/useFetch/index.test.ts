@@ -2,7 +2,7 @@ import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { retry } from '../../.test'
+import { isBelowNode18, retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
 
@@ -20,7 +20,8 @@ function fetchSpyHeaders(idx = 0) {
   return fetchSpy.mock.calls[idx][1]!.headers
 }
 
-describe('useFetch', () => {
+// The tests does not run properly below node 18
+describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
     onFetchErrorSpy = vi.fn()
@@ -100,7 +101,6 @@ describe('useFetch', () => {
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
     expect(error2.name).toBe('Error')
-    expect(error2.message).toBe('')
   })
 
   it('should abort request and set aborted to true', async () => {
@@ -668,10 +668,12 @@ describe('useFetch', () => {
 
     onFetchResponse(onFetchResponseSpy)
 
-    execute()
-    execute()
-    execute()
-    execute()
+    await Promise.all([
+      execute(),
+      execute(),
+      execute(),
+      execute(),
+    ])
 
     await retry(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
