@@ -1,7 +1,7 @@
 import { until } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick, ref } from 'vue-demi'
 import { isBelowNode18, retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
@@ -31,6 +31,32 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should have status code of 200 and message of Hello World', async () => {
     const { statusCode, data } = useFetch('https://example.com?text=hello')
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
+  })
+
+  it('query option show generate correct URL and should have correct response', async () => {
+    const { statusCode, data } = useFetch('https://example.com', {
+      query: { text: 'hello' },
+    })
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
+  })
+
+  it('query option should accept ref values', async () => {
+    const text = ref('hello')
+
+    const { statusCode, data } = useFetch('https://example.com', {
+      query: { text },
+    })
 
     await retry(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
