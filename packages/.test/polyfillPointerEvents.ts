@@ -1,5 +1,5 @@
 // polyfill for jsdom (https://github.com/jsdom/jsdom/pull/2666)
-if (!global.PointerEvent) {
+if (!globalThis.PointerEvent) {
   class PointerEvent extends MouseEvent {
     public pointerId?: number
 
@@ -8,7 +8,7 @@ if (!global.PointerEvent) {
       this.pointerId = params.pointerId
     }
   }
-  global.PointerEvent = PointerEvent as any
+  globalThis.PointerEvent = PointerEvent as any
 }
 
 export {}

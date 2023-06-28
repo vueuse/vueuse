@@ -160,20 +160,22 @@ export function useScroll(
   }
   const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
-  const onScrollHandler = (e: Event) => {
-    const eventTarget = (
-      e.target === document ? (e.target as Document).documentElement : e.target
+  const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
+    const el = (
+      target === window
+        ? (target as Window).document.documentElement
+        : target === document ? (target as Document).documentElement : target
     ) as HTMLElement
 
-    const { display, flexDirection } = getComputedStyle(eventTarget)
+    const { display, flexDirection } = getComputedStyle(el)
 
-    const scrollLeft = eventTarget.scrollLeft
+    const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
     const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
     const right = Math.abs(scrollLeft)
-      + eventTarget.clientWidth >= eventTarget.scrollWidth
+      + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
 
@@ -188,17 +190,17 @@ export function useScroll(
 
     internalX.value = scrollLeft
 
-    let scrollTop = eventTarget.scrollTop
+    let scrollTop = el.scrollTop
 
     // patch for mobile compatible
-    if (e.target === document && !scrollTop)
+    if (target === document && !scrollTop)
       scrollTop = document.body.scrollTop
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
     const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
     const bottom = Math.abs(scrollTop)
-      + eventTarget.clientHeight >= eventTarget.scrollHeight
+      + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
 
@@ -216,6 +218,14 @@ export function useScroll(
     }
 
     internalY.value = scrollTop
+  }
+
+  const onScrollHandler = (e: Event) => {
+    const eventTarget = (
+      e.target === document ? (e.target as Document).documentElement : e.target
+    ) as HTMLElement
+
+    setArrivedState(eventTarget)
 
     isScrolling.value = true
     onScrollEndDebounced(e)
@@ -242,6 +252,12 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    measure() {
+      const _element = toValue(element)
+
+      if (_element)
+        setArrivedState(_element)
+    },
   }
 }
 

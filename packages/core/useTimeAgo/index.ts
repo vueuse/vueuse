@@ -140,7 +140,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-  const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now.value)))
+  const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now)))
 
   if (exposeControls) {
     return {

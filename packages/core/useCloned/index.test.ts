@@ -29,6 +29,18 @@ describe('useCloned', () => {
     expect(cloned.value).toEqual(data.value)
   })
 
+  it('works with getter function', async () => {
+    const data = ref({ test: 'test' })
+
+    const { cloned } = useCloned(() => data.value)
+
+    data.value.test = 'success'
+
+    await nextTick()
+
+    expect(cloned.value).toEqual(data.value)
+  })
+
   it('works with refs and manual sync', async () => {
     const data = ref({ test: 'test' })
 

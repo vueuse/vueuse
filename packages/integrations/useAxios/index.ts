@@ -46,7 +46,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   cancel: (message?: string | undefined) => void
 
   /**
-   * Alice to `isAborted`
+   * Alias to `isAborted`
    */
   isCanceled: Ref<boolean>
 }
@@ -204,6 +204,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     catch: (...args) => waitUntilFinished().catch(...args),
   } as Promise<OverallUseAxiosReturn<T, R, D>>
 
+  let executeCounter = 0
   const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
     const _url = typeof executeUrl === 'string'
@@ -218,6 +219,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     resetData()
     abort()
     loading(true)
+
+    executeCounter += 1
+    const currentExecuteCounter = executeCounter
+
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
@@ -231,7 +236,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       })
       .finally(() => {
         options.onFinish?.()
-        loading(false)
+        if (currentExecuteCounter === executeCounter)
+          loading(false)
       })
     return promise
   }

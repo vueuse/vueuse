@@ -46,7 +46,8 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     if (!isActive.value || !window)
       return
 
-    const delta = timestamp - previousFrameTimestamp
+    const delta = timestamp - (previousFrameTimestamp || timestamp)
+
     fn({ delta, timestamp })
 
     previousFrameTimestamp = timestamp

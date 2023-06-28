@@ -4,7 +4,7 @@ category: Watch
 
 # watchImmediate
 
-Shorthand for watching value with {immediate: true}
+Shorthand for watching value with `{immediate: true}`
 
 ## Usage
 

@@ -1,9 +1,11 @@
 import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { describe, expect, it, vi } from 'vitest'
+import { isBelowNode18 } from 'packages/.test'
 import { useAxios } from '.'
 
-describe('useAxios', () => {
+// The tests does not run properly below node 18
+describe.skipIf(isBelowNode18)('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
   const config: RawAxiosRequestConfig = {
     method: 'GET',
@@ -288,6 +290,23 @@ describe('useAxios', () => {
     expect(isAborted.value).toBeTruthy()
     expect(isFinished.value).toBeTruthy()
     expect(error).toBeDefined()
+  })
+
+  it('should be loading on re-execute', async () => {
+    const onError = vi.fn()
+    const { isLoading, execute } = useAxios(url, config, { ...options, onError })
+
+    execute().catch(() => {})
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(isLoading.value).toBeTruthy()
+
+    execute().catch(() => {})
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(isLoading.value).toBeTruthy()
+
+    await execute().catch(() => {})
+    expect(isLoading.value).toBeFalsy()
+    expect(onError).toBeCalledTimes(2)
   })
 
   it('missing url', async () => {

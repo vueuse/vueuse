@@ -115,7 +115,7 @@ export function useFullscreen(
   }
 
   async function exit() {
-    if (!isSupported.value)
+    if (!isSupported.value || !isFullscreen.value)
       return
     if (exitMethod.value) {
       if (document?.[exitMethod.value] != null) {
@@ -134,7 +134,7 @@ export function useFullscreen(
   }
 
   async function enter() {
-    if (!isSupported.value)
+    if (!isSupported.value || isFullscreen.value)
       return
 
     if (isElementFullScreen())

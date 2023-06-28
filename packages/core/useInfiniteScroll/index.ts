@@ -58,8 +58,10 @@ export function useInfiniteScroll(
   const isLoading = computed(() => !!promise.value)
 
   function checkAndLoad() {
+    state.measure()
+
     const el = toValue(element) as HTMLElement
-    if (!el)
+    if (!el || !el.offsetParent)
       return
 
     const isNarrower = (direction === 'bottom' || direction === 'top')

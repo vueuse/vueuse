@@ -41,8 +41,8 @@ export function useElementSize(
         const $elem = unrefElement(target)
         if ($elem) {
           const styles = window.getComputedStyle($elem)
-          width.value = parseFloat(styles.width)
-          height.value = parseFloat(styles.height)
+          width.value = Number.parseFloat(styles.width)
+          height.value = Number.parseFloat(styles.height)
         }
       }
       else {
