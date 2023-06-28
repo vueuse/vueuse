@@ -1,7 +1,6 @@
-import { AbortController, fetch } from 'node-fetch-native'
+import nodeFetch from 'node-fetch'
 
-globalThis.AbortController = AbortController
-window.AbortController = AbortController
-window.fetch = fetch
+// @ts-expect-error polyfill
+window.fetch = nodeFetch
 
 export {}
