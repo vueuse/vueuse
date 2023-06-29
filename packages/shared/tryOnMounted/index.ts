@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { getCurrentInstance, nextTick, onMounted } from 'vue-demi'
+import { type ComponentInternalInstance, getCurrentInstance, nextTick, onMounted } from 'vue-demi'
 import type { Fn } from '../utils'
 
 /**
@@ -7,9 +7,10 @@ import type { Fn } from '../utils'
  *
  * @param fn
  * @param sync if set to false, it will run in the nextTick() of Vue
+ * @param target
  */
-export function tryOnMounted(fn: Fn, sync = true) {
-  const instance = getCurrentInstance()
+export function tryOnMounted(fn: Fn, sync = true, target?: ComponentInternalInstance | null) {
+  const instance = target || getCurrentInstance()
   if (instance)
     onMounted(fn, instance)
   else if (sync)
