@@ -62,9 +62,6 @@ export const bypassFilter: EventFilter = (invoke) => {
 
 /**
  * Create an EventFilter that debounce the events
- *
- * @param ms
- * @param options
  */
 export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
   let timer: ReturnType<typeof setTimeout> | undefined
@@ -117,6 +114,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   return filter
 }
 
+// TODO v11: refactor the params to object
 /**
  * Create an EventFilter that throttle the events
  *

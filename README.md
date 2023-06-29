@@ -45,7 +45,7 @@ export default {
     // tracks mouse position
     const { x, y } = useMouse()
 
-    // is user prefers dark theme
+    // if user prefers dark theme
     const isDark = usePreferredDark()
 
     // persist state in localStorage
