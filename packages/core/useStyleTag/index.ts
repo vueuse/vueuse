@@ -74,7 +74,6 @@ export function useStyleTag(
     const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
 
     if (!el.isConnected) {
-      el.type = 'text/css'
       el.id = id
       if (options.media)
         el.media = options.media
