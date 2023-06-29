@@ -142,7 +142,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBeNull()
   })
 
-  it('should change the value when the route changes', async () => {
+  it('should change the value when the route changes', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
@@ -151,8 +151,6 @@ describe('useRouteQuery', () => {
     expect(page.value).toBeNull()
 
     route.query.page = '2'
-
-    await nextTick()
 
     expect(page.value).toBe('2')
   })

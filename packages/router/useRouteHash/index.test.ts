@@ -63,7 +63,7 @@ describe('useRouteHash', () => {
     expect(route.hash).toBeUndefined()
   })
 
-  it('should change the value when the route changes', async () => {
+  it('should change the value when the route changes', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 

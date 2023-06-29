@@ -46,27 +46,39 @@ export function useRouteParams<
 
   _params.set(name, route.params[name])
 
-  const proxy = customRef<any>((track, trigger) => ({
-    get() {
-      track()
+  let _trigger: () => void
 
-      const data = _params.get(name) ?? defaultValue
-      return transform(data as T)
-    },
-    set(v) {
+  const proxy = customRef<any>((track, trigger) => {
+    _trigger = trigger
+
+    return {
+      get() {
+        track()
+
+        const data = _params.get(name) ?? defaultValue
+        return transform(data as T)
+      },
+      set(v) {
+        _params.set(name, (v === defaultValue || v === null) ? undefined : v)
+
+        trigger()
+
+        nextTick(() => {
+          router[toValue(mode)]({ ...route, params: { ...route.params, ...Object.fromEntries(_params.entries()) } })
+        })
+      },
+    }
+  })
+
+  watch(
+    () => route.params[name],
+    (v) => {
       _params.set(name, (v === defaultValue || v === null) ? undefined : v)
 
-      trigger()
-
-      nextTick(() => {
-        router[toValue(mode)]({ ...route, params: { ...route.params, ...Object.fromEntries(_params.entries()) } })
-      })
+      _trigger()
     },
-  }))
-
-  watch(() => route.params[name], (newValue) => {
-    proxy.value = newValue
-  })
+    { flush: 'sync' },
+  )
 
   return proxy as Ref<K>
 }

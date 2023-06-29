@@ -45,30 +45,42 @@ export function useRouteQuery<
 
   _query.set(name, route.query[name])
 
-  const proxy = customRef<any>((track, trigger) => ({
-    get() {
-      track()
+  let _trigger: () => void
 
-      const data = _query.get(name) ?? defaultValue
-      return transform(data as T)
-    },
-    set(v) {
+  const proxy = customRef<any>((track, trigger) => {
+    _trigger = trigger
+
+    return {
+      get() {
+        track()
+
+        const data = _query.get(name) ?? defaultValue
+        return transform(data as T)
+      },
+      set(v) {
+        _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+
+        trigger()
+
+        nextTick(() => {
+          router[toValue(mode)]({
+            ...route,
+            query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+          })
+        })
+      },
+    }
+  })
+
+  watch(
+    () => route.query[name],
+    (v) => {
       _query.set(name, (v === defaultValue || v === null) ? undefined : v)
 
-      trigger()
-
-      nextTick(() => {
-        router[toValue(mode)]({
-          ...route,
-          query: { ...route.query, ...Object.fromEntries(_query.entries()) },
-        })
-      })
+      _trigger()
     },
-  }))
-
-  watch(() => route.query[name], (newValue) => {
-    proxy.value = newValue
-  })
+    { flush: 'sync' },
+  )
 
   return proxy as any as Ref<K>
 }

@@ -144,7 +144,7 @@ describe('useRouteParams', () => {
     expect(lang.value).toBeNull()
   })
 
-  it('should change the value when the route changes', async () => {
+  it('should change the value when the route changes', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
@@ -153,8 +153,6 @@ describe('useRouteParams', () => {
     expect(lang.value).toBeNull()
 
     route.params.lang = 'en'
-
-    await nextTick()
 
     expect(lang.value).toBe('en')
   })
