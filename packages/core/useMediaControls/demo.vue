@@ -9,7 +9,7 @@ import Spinner from './components/Spinner.vue'
 
 const video = ref<HTMLVideoElement>()
 const loop = ref(false)
-const poster = 'https://durian.blender.org/wp-content/uploads/2010/06/01a_comp_000197.jpg'
+const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
 const controls = useMediaControls(video, {
   src: {
