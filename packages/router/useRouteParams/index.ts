@@ -1,6 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { customRef, nextTick } from 'vue-demi'
-import type { RouteParamValueRaw } from 'vue-router'
+import type { RouteLocationRaw, RouteParamValueRaw } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
@@ -57,9 +57,10 @@ export function useRouteParams<
       _params.set(name, (v === defaultValue || v === null) ? undefined : v)
 
       trigger()
-
       nextTick(() => {
-        router[toValue(mode)]({ ...route, params: { ...route.params, ...Object.fromEntries(_params.entries()) } })
+        const { name: pathName, path, ...otherRouteParams } = route
+        const routeParams = { name: pathName, ...otherRouteParams }
+        router[toValue(mode)]({ ...routeParams, params: { ...route.params, ...Object.fromEntries(_params.entries()) } } as RouteLocationRaw)
       })
     },
   }))
