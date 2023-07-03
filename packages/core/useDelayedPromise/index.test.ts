@@ -7,20 +7,20 @@ describe('useDelayedPromise', () => {
   })
 
   it('should resolve after specified delay', async () => {
-    const promise = new Promise(resolve => setTimeout(resolve, 100))
-
     const useDelayedPromiseSpy = vi.fn(useDelayedPromise)
 
     vi.useFakeTimers()
 
-    await useDelayedPromiseSpy(promise, 500)
+    const promise = new Promise(resolve => setTimeout(resolve, 100))
+
+    const delayedPromiseSpy = useDelayedPromiseSpy(promise, 500)
 
     vi.advanceTimersByTime(499)
 
-    expect(useDelayedPromiseSpy).toHaveBeenCalledTimes(0)
+    await expect(delayedPromiseSpy).resolves.toHaveReturnedTimes(0)
 
-    vi.advanceTimersToNextTimer()
+    vi.advanceTimersByTime(1)
 
-    expect(useDelayedPromiseSpy).toHaveBeenCalledOnce()
+    await expect(delayedPromiseSpy).resolves.toHaveReturnedTimes(1)
   })
 })
