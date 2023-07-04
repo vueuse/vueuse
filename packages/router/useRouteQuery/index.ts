@@ -67,9 +67,12 @@ export function useRouteQuery<
         trigger()
 
         nextTick(() => {
+          const { params, query, hash } = route
+
           router[toValue(mode)]({
-            ...route,
-            query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+            params,
+            query: { ...query, ...Object.fromEntries(_query.entries()) },
+            hash,
           })
         })
       },

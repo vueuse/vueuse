@@ -68,7 +68,15 @@ export function useRouteParams<
         trigger()
 
         nextTick(() => {
-          router[toValue(mode)]({params: { ...route.params, ...Object.fromEntries(_params.entries()) } } as LocationAsRelativeRaw)
+          const { params, query, hash } = route
+          router[toValue(mode)]({
+            params: {
+              ...params,
+              ...Object.fromEntries(_params.entries()),
+            },
+            query,
+            hash,
+          } as LocationAsRelativeRaw)
         })
       },
     }

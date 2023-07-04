@@ -39,7 +39,9 @@ export function useRouteHash(
         trigger()
 
         nextTick(() => {
-          router[toValue(mode)]({ ...route, hash: _hash as string })
+          const { params, query } = route
+
+          router[toValue(mode)]({ params, query, hash: _hash as string })
         })
       },
     }

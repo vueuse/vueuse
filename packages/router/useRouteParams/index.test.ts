@@ -180,4 +180,22 @@ describe('useRouteParams', () => {
     await nextTick()
     expect(path.value).toBe('bar/b')
   })
+
+  it('should keep current query and hash', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    route.query = { foo: 'bar' }
+    route.hash = '#hash'
+
+    const id: Ref<any> = useRouteParams('id', null, { route, router })
+
+    id.value = '2'
+
+    await nextTick()
+
+    expect(id.value).toBe('2')
+    expect(route.hash).toBe('#hash')
+    expect(route.query).toEqual({ foo: 'bar' })
+  })
 })
