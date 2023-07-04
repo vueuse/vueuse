@@ -150,8 +150,31 @@ describe('useRouteQuery', () => {
 
     expect(page.value).toBeNull()
 
-    route.query.page = '2'
+    route.query = { page: '2' }
 
     expect(page.value).toBe('2')
+  })
+
+  it ('should differentiate null and undefined', () => {
+    let route = getRoute({
+      page: 1,
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const lang: Ref<any> = useRouteQuery('lang', undefined, { route, router })
+
+    expect(lang.value).toBeUndefined()
+
+    route.query = { ...route.query, lang: null }
+
+    expect(lang.value).toBeNull()
+
+    const code: Ref<any> = useRouteQuery('code', null, { route, router })
+
+    expect(code.value).toBeNull()
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+
+    expect(page.value).toBe(1)
   })
 })

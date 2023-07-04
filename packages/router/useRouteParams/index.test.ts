@@ -152,7 +152,7 @@ describe('useRouteParams', () => {
 
     expect(lang.value).toBeNull()
 
-    route.params.lang = 'en'
+    route.params = { lang: 'en' }
 
     expect(lang.value).toBe('en')
   })

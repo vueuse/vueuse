@@ -31,6 +31,9 @@ export function useRouteHash(
         return _hash || defaultValue
       },
       set(v) {
+        if (v === _hash)
+          return
+
         _hash = v === null ? undefined : v
 
         trigger()

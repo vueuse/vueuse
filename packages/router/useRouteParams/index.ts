@@ -55,11 +55,15 @@ export function useRouteParams<
       get() {
         track()
 
-        const data = _params.get(name) ?? defaultValue
-        return transform(data as T)
+        const data = _params.get(name)
+
+        return transform(data !== undefined ? data : defaultValue)
       },
       set(v) {
-        _params.set(name, (v === null) ? undefined : v)
+        if (_params.get(name) === v)
+          return
+
+        _params.set(name, v)
 
         trigger()
 
@@ -73,7 +77,7 @@ export function useRouteParams<
   watch(
     () => route.params[name],
     (v) => {
-      _params.set(name, (v === defaultValue || v === null) ? undefined : v)
+      _params.set(name, v)
 
       _trigger()
     },

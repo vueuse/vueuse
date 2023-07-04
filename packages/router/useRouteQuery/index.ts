@@ -54,11 +54,15 @@ export function useRouteQuery<
       get() {
         track()
 
-        const data = _query.get(name) ?? defaultValue
-        return transform(data as T)
+        const data = _query.get(name)
+
+        return transform(data !== undefined ? data : defaultValue)
       },
       set(v) {
-        _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+        if (_query.get(name) === v)
+          return
+
+        _query.set(name, v)
 
         trigger()
 
@@ -75,7 +79,7 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
-      _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+      _query.set(name, v)
 
       _trigger()
     },
