@@ -14,9 +14,16 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
 export function useActiveElement<T extends HTMLElement>(options: UseActiveElementOptions = {}) {
   const { window = defaultWindow } = options
   const document = options.document ?? window?.document
+  const getDeepestActiveElement = () => {
+    let element = document?.activeElement;
+    while (element?.shadowRoot) {
+        element = element?.shadowRoot?.activeElement;
+    }
+    return element;
+  };
   const activeElement = computedWithControl(
     () => null,
-    () => document?.activeElement as T | null | undefined,
+    () => getDeepestActiveElement() as T | null | undefined,
   )
 
   if (window) {
