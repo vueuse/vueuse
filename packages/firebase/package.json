@@ -24,23 +24,19 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
     "./*": "./*",
     "./useAuth": {
-      "types": "./useAuth.d.ts",
       "require": "./useAuth.cjs",
       "import": "./useAuth.mjs"
     },
     "./useFirestore": {
-      "types": "./useFirestore.d.ts",
       "require": "./useFirestore.cjs",
       "import": "./useFirestore.mjs"
     },
     "./useRTDB": {
-      "types": "./useRTDB.d.ts",
       "require": "./useRTDB.cjs",
       "import": "./useRTDB.mjs"
     }
@@ -49,7 +45,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "firebase": ">=9.0.0"
   },

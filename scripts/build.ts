@@ -22,6 +22,8 @@ const FILES_COPY_LOCAL = [
   '*.cjs',
   '*.mjs',
   '*.d.ts',
+  '*.d.cts',
+  '*.d.mts',
 ]
 
 assert(process.cwd() !== __dirname)

@@ -22,13 +22,11 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
     "./*": "./*",
     "./metadata": {
-      "types": "./metadata.d.ts",
       "require": "./metadata.cjs",
       "import": "./metadata.mjs"
     }
@@ -37,7 +35,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "dependencies": {
     "@types/web-bluetooth": "^0.0.17",
     "@vueuse/metadata": "workspace:*",
