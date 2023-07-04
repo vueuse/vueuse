@@ -59,7 +59,7 @@ export function useRouteParams<
         return transform(data as T)
       },
       set(v) {
-        _params.set(name, (v === defaultValue || v === null) ? undefined : v)
+        _params.set(name, (v === null) ? undefined : v)
 
         trigger()
 
