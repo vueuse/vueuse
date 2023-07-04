@@ -1,0 +1,46 @@
+{
+  "name": "@vueuse/web-extension",
+  "version": "10.2.1",
+  "description": "Web extensions modules for VueUse",
+  "author": "Muhammad Ubaid Raza<https://mubaidr.js.org/>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/mubaidr",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/web-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/web-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils",
+    "web-extension",
+    "chrome"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*"
+  },
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+    "@types/chrome": "^0.0.239"
+  },
+  "dependencies": {
+    "@vueuse/shared": "workspace:*",
+    "vue-demi": ">=0.14.5"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.239"
+  }
+}
