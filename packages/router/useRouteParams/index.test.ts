@@ -170,4 +170,14 @@ describe('useRouteParams', () => {
     expect(page.value).toBe(1)
     expect(route.params.page).toBe(1)
   })
+
+  it('should url parameters will be encoded', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+    const path: Ref<any> = useRouteParams('path', null, { route, router })
+    path.value = 'bar/b'
+
+    await nextTick()
+    expect(path.value).toBe('bar/b')
+  })
 })
