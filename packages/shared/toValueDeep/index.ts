@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter, Ref } from 'vue-demi'
-import { isRef, toValue } from 'vue-demi'
+import { isRef, isVue2, toValue } from 'vue-demi'
+import { toValue as _toValue } from '../toValue'
 
 export type ToValueDeep<T> = T extends Ref<infer V>
   ? ToValueDeep<V>
@@ -12,7 +13,7 @@ export type ToValueDeep<T> = T extends Ref<infer V>
       : T
 
 export function toValueDeep<T>(value: MaybeRefOrGetter<T>): ToValueDeep<T> {
-  const _val = toValue(value)
+  const _val = isVue2 ? _toValue(value) : toValue(value)
 
   if (isRef(_val)) {
     return toValueDeep<T>(_val)
