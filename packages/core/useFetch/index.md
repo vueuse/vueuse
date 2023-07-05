@@ -5,7 +5,7 @@ category: Network
 # useFetch
 
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
-they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
+they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options.
 
 <CourseLink href="https://vueschool.io/lessons/vueuse-utilities-usefetch-and-reactify?friend=vueuse">Learn useFetch with this FREE video lesson from Vue School!</CourseLink>
 
@@ -26,6 +26,7 @@ const { isFetching, error, data } = useFetch(url)
 ```
 
 ### Asynchronous Usage
+
 `useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
 it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Offical Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
 
@@ -56,6 +57,25 @@ const { execute } = useFetch(url, { immediate: false })
 
 execute()
 ```
+
+### Query parameters as an object
+
+`useFetch` also accepts `query` option to generate URL query params automatically from an object. `query` object can also work with existing query preset in the URL.
+
+```ts
+useFetch('https://my-api.com/users', { query: { sortBy: 'username' } })
+
+// Object query will be merged with existing query in the URL
+useFetch('https://my-api.com/users?q=john', { query: { sortBy: 'username' } })
+
+// It can also accept reactive values
+const sortBy = ref('username')
+useFetch('https://my-api.com/users', { query: { sortBy }, refetch: true })
+```
+
+::: warning
+When using reactive values in `query` option, make sure to set `refetch` to `true` to make sure the request is refetched when the reactive value changes.
+:::
 
 ### Aborting a request
 
@@ -114,6 +134,7 @@ const { data } = useFetch(url, {
 ```
 
 The `onFetchError` option can intercept the response data and error before it is updated.
+
 ```ts
 const { data } = useFetch(url, {
   onFetchError(ctx) {
