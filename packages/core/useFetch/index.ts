@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isRef, reactive, ref, shallowRef, toRaw, watch } from 'vue-demi'
+import { computed, isRef, reactive, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -415,14 +415,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       if (!options.query)
         return urlValue
 
-      // toValue but deep
-      const newSearchParams = new URLSearchParams(
-        toRaw(
-          reactive(
-            toValue(options.query),
-          ),
-        ),
-      )
+      const newSearchParams = new URLSearchParams(toValue(reactive(options.query)))
 
       // eslint-disable-next-line no-console
       console.log('newSearchParams :>> ', newSearchParams.toString())
@@ -523,6 +516,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     [
       refetch,
       toRef(url),
+      () => options.query,
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
