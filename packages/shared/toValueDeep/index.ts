@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Ref } from 'vue-demi'
 import { isRef, toValue } from 'vue-demi'
 
-type ToValueDeep<T> = T extends Ref<infer V>
+export type ToValueDeep<T> = T extends Ref<infer V>
   ? ToValueDeep<V>
   : T extends Array<infer U>
     ? Array<ToValueDeep<U>>
