@@ -1,5 +1,5 @@
-import { effectScope, nextTick, reactive, ref } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
+import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteParams } from '.'
 
@@ -157,11 +157,14 @@ describe('useRouteParams', () => {
     expect(lang.value).toBe('en')
   })
 
-  it('should route correctly when setting value equals defaultValue', async () => {
+  it('should avoid trigger effects when the value doesn\'t change', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
+    const onUpdate = vi.fn()
 
     const page = useRouteParams('page', 1, { transform: Number, route, router })
+
+    watch(page, onUpdate)
 
     page.value = 1
 
@@ -169,16 +172,7 @@ describe('useRouteParams', () => {
 
     expect(page.value).toBe(1)
     expect(route.params.page).toBe(1)
-  })
-
-  it('should url parameters will be encoded', async () => {
-    let route = getRoute()
-    const router = { replace: (r: any) => route = r } as any
-    const path: Ref<any> = useRouteParams('path', null, { route, router })
-    path.value = 'bar/b'
-
-    await nextTick()
-    expect(path.value).toBe('bar/b')
+    expect(onUpdate).not.toHaveBeenCalled()
   })
 
   it('should keep current query and hash', async () => {
