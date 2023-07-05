@@ -417,9 +417,6 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
       const newSearchParams = new URLSearchParams(toValue(reactive(options.query)))
 
-      // eslint-disable-next-line no-console
-      console.log('newSearchParams :>> ', newSearchParams.toString())
-
       // Here, newSearchParams.size always return `undefined` & tests fail
       if (!newSearchParams.toString())
         return urlValue
