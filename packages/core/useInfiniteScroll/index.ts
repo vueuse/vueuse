@@ -61,7 +61,7 @@ export function useInfiniteScroll(
     state.measure()
 
     const el = toValue(element) as HTMLElement
-    if (!el || !el.offsetParent)
+    if (!el || el.offsetParent === null)
       return
 
     const isNarrower = (direction === 'bottom' || direction === 'top')
