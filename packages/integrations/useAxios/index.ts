@@ -46,7 +46,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   cancel: (message?: string | undefined) => void
 
   /**
-   * Alice to `isAborted`
+   * Alias to `isAborted`
    */
   isCanceled: Ref<boolean>
 }

@@ -16,7 +16,7 @@ const displayX = computed({
     return x.value.toFixed(1)
   },
   set(val) {
-    x.value = parseFloat(val)
+    x.value = Number.parseFloat(val)
   },
 })
 const displayY = computed({
@@ -24,7 +24,7 @@ const displayY = computed({
     return y.value.toFixed(1)
   },
   set(val) {
-    y.value = parseFloat(val)
+    y.value = Number.parseFloat(val)
   },
 })
 </script>

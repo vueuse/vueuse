@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/rxjs",
-  "version": "10.1.2",
+  "version": "10.2.1",
   "description": "Enables RxJS reactive functions in Vue",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.0"
+    "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
     "rxjs": "^6.6.7"

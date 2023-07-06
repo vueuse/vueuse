@@ -130,7 +130,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
     watch(
       () => props[key!],
-      v => proxy.value = cloneFn(v) as UnwrapRef<P[K]>,
+      v => (proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>,
     )
 
     watch(
