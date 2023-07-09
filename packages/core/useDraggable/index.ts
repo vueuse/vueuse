@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, toRefs, toValue } from '@vueuse/shared'
+import { isClient, toRefs, toValue, tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -96,6 +96,10 @@ export function useDraggable(
   target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options: UseDraggableOptions = {},
 ) {
+  let draggingElement: any = defaultWindow
+  tryOnMounted(() => {
+    draggingElement = options?.draggingElement ?? defaultWindow
+  })
   const {
     pointerTypes,
     preventDefault,
@@ -106,10 +110,8 @@ export function useDraggable(
     onStart,
     initialValue,
     axis = 'both',
-    draggingElement = defaultWindow,
     handle: draggingHandle = target,
   } = options
-
   const position = ref<Position>(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
@@ -150,11 +152,12 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
 
+    const draggingElementRect = toValue(draggingElement)?.getBoundingClientRect?.()
     let { x, y } = position.value
     if (axis === 'x' || axis === 'both')
-      x = e.clientX - pressedDelta.value.x
+      x = e.clientX - pressedDelta.value.x - (draggingElementRect?.x || 0)
     if (axis === 'y' || axis === 'both')
-      y = e.clientY - pressedDelta.value.y
+      y = e.clientY - pressedDelta.value.y - (draggingElementRect?.y || 0)
     position.value = {
       x,
       y,
@@ -175,8 +178,8 @@ export function useDraggable(
   if (isClient) {
     const config = { capture: options.capture ?? true }
     useEventListener(draggingHandle, 'pointerdown', start, config)
-    useEventListener(draggingElement, 'pointermove', move, config)
-    useEventListener(draggingElement, 'pointerup', end, config)
+    useEventListener(draggingHandle, 'pointermove', move, config)
+    useEventListener(draggingHandle, 'pointerup', end, config)
   }
 
   return {

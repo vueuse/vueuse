@@ -5,13 +5,15 @@ import { useDraggable } from '@vueuse/core'
 import { UseDraggable as Draggable } from './component'
 
 const el = ref<HTMLElement | null>(null)
+const targetBoxEl = ref<HTMLElement | null>(null)
 const handle = ref<HTMLElement | null>(null)
 
 const innerWidth = isClient ? window.innerWidth : 200
 
 const { x, y, style } = useDraggable(el, {
-  initialValue: { x: innerWidth / 4.2, y: 80 },
+  initialValue: { x: 0, y: 0 },
   preventDefault: true,
+  draggingElement: targetBoxEl,
 })
 </script>
 
@@ -20,18 +22,23 @@ const { x, y, style } = useDraggable(el, {
     <p italic op50 text-center>
       Check the floating boxes
     </p>
-    <div
-      ref="el"
-      p="x-4 y-2"
-      border="~ gray-400/30 rounded"
-      shadow="~ hover:lg"
-      class="fixed bg-$vp-c-bg select-none cursor-move z-24"
-      style="touch-action:none;"
-      :style="style"
-    >
-      👋 Drag me!
-      <div class="text-sm opacity-50">
-        I am at {{ Math.round(x) }}, {{ Math.round(y) }}
+    <div ref="targetBoxEl" class="relative">
+      <div
+        ref="el"
+        p="x-4 y-2"
+        border="~ gray-400/30 rounded"
+        shadow="~ hover:lg"
+        class="absolute bg-$vp-c-bg select-none cursor-move z-24"
+        style="touch-action:none;"
+        :style="style"
+      >
+        👋 Drag me!
+        <div class="text-xs opacity-50">
+          Relative to parentNode instead of Window
+        </div>
+        <div class="text-sm opacity-50">
+          I am at {{ Math.round(x) }}, {{ Math.round(y) }}
+        </div>
       </div>
     </div>
 
