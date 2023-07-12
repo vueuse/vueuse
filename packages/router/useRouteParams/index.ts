@@ -2,6 +2,7 @@ import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { LocationAsRelativeRaw, RouteParamValueRaw } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 
@@ -16,7 +17,7 @@ export function useRouteParams<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
@@ -25,7 +26,7 @@ export function useRouteParams<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
@@ -57,7 +58,7 @@ export function useRouteParams<
 
         const data = _params.get(name)
 
-        return transform(data !== undefined ? data : defaultValue)
+        return transform(data !== undefined ? data : toValue(defaultValue))
       },
       set(v) {
         if (_params.get(name) === v)

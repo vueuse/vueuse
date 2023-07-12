@@ -1,12 +1,13 @@
 import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptions, RouteHashValueRaw } from '../_types'
 
 let _hash: RouteHashValueRaw
 
 export function useRouteHash(
-  defaultValue?: RouteHashValueRaw,
+  defaultValue?: MaybeRefOrGetter<RouteHashValueRaw>,
   {
     mode = 'replace',
     route = useRoute(),
@@ -28,7 +29,7 @@ export function useRouteHash(
       get() {
         track()
 
-        return _hash || defaultValue
+        return _hash || toValue(defaultValue)
       },
       set(v) {
         if (v === _hash)

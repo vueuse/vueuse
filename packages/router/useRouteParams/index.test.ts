@@ -192,4 +192,24 @@ describe('useRouteParams', () => {
     expect(route.hash).toBe('#hash')
     expect(route.query).toEqual({ foo: 'bar' })
   })
+
+  it('should allow ref or getter as default value', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const defaultPage = ref(1)
+    const defaultLang = () => 'pt-BR'
+
+    const page: Ref<any> = useRouteParams('page', defaultPage, { route, router })
+    const lang: Ref<any> = useRouteParams('lang', defaultLang, { route, router })
+
+    expect(page.value).toBe(1)
+    expect(lang.value).toBe('pt-BR')
+
+    page.value = 2
+    lang.value = 'en-US'
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('en-US')
+  })
 })

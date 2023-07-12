@@ -2,6 +2,7 @@ import { customRef, nextTick, watch } from 'vue-demi'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
 import type { Ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
 const _cache = new WeakMap()
@@ -15,7 +16,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
@@ -24,7 +25,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
@@ -56,7 +57,7 @@ export function useRouteQuery<
 
         const data = _query.get(name)
 
-        return transform(data !== undefined ? data : defaultValue)
+        return transform(data !== undefined ? data : toValue(defaultValue))
       },
       set(v) {
         if (_query.get(name) === v)

@@ -1,4 +1,4 @@
-import { nextTick, reactive } from 'vue-demi'
+import { nextTick, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import { useRouteHash } from '.'
 
@@ -72,5 +72,20 @@ describe('useRouteHash', () => {
     route.hash = 'foo'
 
     expect(hash.value).toBe('foo')
+  })
+
+  it('should allow ref or getter as default value', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const defaultTarget = ref('foo')
+
+    const target = useRouteHash(defaultTarget, { route, router })
+
+    expect(target.value).toBe('foo')
+
+    target.value = 'bar'
+
+    expect(target.value).toBe('bar')
   })
 })
