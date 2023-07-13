@@ -64,6 +64,22 @@ describe.skipIf(isVue2)('createReusableTemplate', () => {
     expect(wrapper.text()).toBe('{"msg":"Foo"}{"msg":"Bar"}')
   })
 
+  it('attrs', () => {
+    const [DefineFoo, ReuseFoo] = createReusableTemplate()
+
+    const wrapper = mount({
+      render() {
+        return h(Fragment, null, [
+          h(DefineFoo, () => h('div', { class: 'foo' })),
+          h(ReuseFoo, { id: 'bar', class: 'bar' }),
+        ])
+      },
+    })
+
+    expect(wrapper.get('#bar')).toBeDefined()
+    expect(wrapper.get('#bar').classes()).toEqual(['foo', 'bar'])
+  })
+
   it('slots', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate<{ msg: string }, { default: Slot }>()
 

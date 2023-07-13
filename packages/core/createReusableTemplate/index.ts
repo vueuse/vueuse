@@ -56,12 +56,12 @@ export function createReusableTemplate<
   }) as DefineTemplateComponent<Bindings, Slots>
 
   const reuse = defineComponent({
-    inheritAttrs: false,
     setup(_, { attrs, slots }) {
       return () => {
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        return render.value?.({ ...attrs, $slots: slots })
+        const vnodes = render.value?.({ ...attrs, $slots: slots })
+        return vnodes?.length === 1 ? vnodes[0] : vnodes
       }
     },
   }) as ReuseTemplateComponent<Bindings, Slots>
