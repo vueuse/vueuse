@@ -122,7 +122,7 @@ export function useScroll(
   function scrollTo(_x: number | undefined, _y: number | undefined) {
     const _element = toValue(element)
 
-    if (!_element)
+    if (typeof document === 'undefined' || !_element)
       return
 
     (_element instanceof Document ? document.body : _element)?.scrollTo({
@@ -255,7 +255,7 @@ export function useScroll(
     measure() {
       const _element = toValue(element)
 
-      if (_element)
+      if (typeof document !== 'undefined' && _element)
         setArrivedState(_element)
     },
   }
