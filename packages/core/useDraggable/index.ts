@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, toRefs, toValue, tryOnMounted } from '@vueuse/shared'
+import { isClient, toRefs, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import { defaultWindow } from '../_configurable'
@@ -97,9 +97,7 @@ export function useDraggable(
   options: UseDraggableOptions = {},
 ) {
   let draggingElement: any = defaultWindow
-  tryOnMounted(() => {
-    draggingElement = options?.draggingElement ?? defaultWindow
-  })
+  let draggingElementRect: any
   const {
     pointerTypes,
     preventDefault,
@@ -152,7 +150,8 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
 
-    const draggingElementRect = toValue(draggingElement)?.getBoundingClientRect?.()
+    draggingElement = options?.draggingElement ?? defaultWindow
+    draggingElementRect = toValue(draggingElement)?.getBoundingClientRect?.()
     let { x, y } = position.value
     if (axis === 'x' || axis === 'both')
       x = e.clientX - pressedDelta.value.x - (draggingElementRect?.x || 0)
@@ -178,8 +177,8 @@ export function useDraggable(
   if (isClient) {
     const config = { capture: options.capture ?? true }
     useEventListener(draggingHandle, 'pointerdown', start, config)
-    useEventListener(draggingHandle, 'pointermove', move, config)
-    useEventListener(draggingHandle, 'pointerup', end, config)
+    useEventListener(draggingElement, 'pointermove', move, config)
+    useEventListener(draggingElement, 'pointerup', end, config)
   }
 
   return {
