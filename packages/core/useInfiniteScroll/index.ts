@@ -58,7 +58,7 @@ export function useInfiniteScroll(
   const promise = ref<any>()
   const isLoading = computed(() => !!promise.value)
   // Document and Window cannot be observed by IntersectionObserver
-  const observerElement = computed(() => {
+  const observedElement = computed<HTMLElement | SVGElement | null | undefined>(() => {
     const el = toValue(element)
     if (el instanceof Window)
       return window.document.documentElement
@@ -68,17 +68,18 @@ export function useInfiniteScroll(
 
     return el
   })
-  const isElementVisible = useElementVisibility(observerElement)
+  const isElementVisible = useElementVisibility(observedElement)
 
   function checkAndLoad() {
     state.measure()
 
-    if (!observerElement.value || !isElementVisible.value)
+    if (!observedElement.value || !isElementVisible.value)
       return
 
+    const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
     const isNarrower = (direction === 'bottom' || direction === 'top')
-      ? observerElement.value.scrollHeight <= observerElement.value.clientHeight
-      : observerElement.value.scrollWidth <= observerElement.value.clientWidth
+      ? scrollHeight <= clientHeight
+      : scrollWidth <= clientWidth
 
     if (state.arrivedState[direction] || isNarrower) {
       if (!promise.value) {
