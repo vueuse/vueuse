@@ -101,6 +101,11 @@
       "types": "./useSortable/component.d.ts",
       "require": "./useSortable/component.cjs",
       "import": "./useSortable/component.mjs"
+    },
+    "./useMasonry": {
+      "types": "./useMasonry.d.ts",
+      "require": "./useMasonry.cjs",
+      "import": "./useMasonry.mjs"
     }
   },
   "main": "./index.cjs",
