@@ -96,9 +96,7 @@ export function useInfiniteScroll(
 
   watch(
     () => [state.arrivedState[direction], isElementVisible.value],
-    (newState) => {
-      checkAndLoad()
-    },
+    checkAndLoad,
     { immediate: true },
   )
 
