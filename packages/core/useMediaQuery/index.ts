@@ -2,7 +2,7 @@
 
 import { ref, watchEffect } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -21,39 +21,44 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
 
+  const handler = (event: MediaQueryListEvent) => {
+    matches.value = event.matches
+  }
+
   const cleanup = () => {
     if (!mediaQuery)
       return
     if ('removeEventListener' in mediaQuery)
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      mediaQuery.removeEventListener('change', update)
+      mediaQuery.removeEventListener('change', handler)
     else
       // @ts-expect-error deprecated API
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      mediaQuery.removeListener(update)
+      mediaQuery.removeListener(handler)
   }
 
-  const update = () => {
+  const stopWatch = watchEffect(() => {
     if (!isSupported.value)
       return
 
     cleanup()
 
-    mediaQuery = window!.matchMedia(toRef(query).value)
+    mediaQuery = window!.matchMedia(toValue(query))
     matches.value = !!mediaQuery?.matches
 
     if (!mediaQuery)
       return
 
     if ('addEventListener' in mediaQuery)
-      mediaQuery.addEventListener('change', update)
+      mediaQuery.addEventListener('change', handler)
     else
       // @ts-expect-error deprecated API
-      mediaQuery.addListener(update)
-  }
-  watchEffect(update)
+      mediaQuery.addListener(handler)
+  })
 
-  tryOnScopeDispose(() => cleanup())
+  tryOnScopeDispose(() => {
+    stopWatch()
+    cleanup()
+    mediaQuery = undefined
+  })
 
   return matches
 }
