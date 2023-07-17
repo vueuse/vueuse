@@ -6,7 +6,6 @@ import { useInfiniteScroll } from '.'
 
 vi.mock('../useElementVisibility')
 describe('useInfiniteScroll', () => {
-  const scrollEvent = new Event('scroll')
   it('should be defined', () => {
     expect(useInfiniteScroll).toBeDefined()
   })
@@ -41,25 +40,29 @@ describe('useInfiniteScroll', () => {
   })
 
   it('should call the loadMore handler, when user scrolls', async () => {
-    vi.useFakeTimers({
-      toFake: ['setTimeout'],
-    })
+    const mockElementScrollHeight = 100
     const mockHandler = vi.fn()
-    const mockElement = givenMockElement()
+    const mockElement = givenMockElement({
+      scrollHeight: mockElementScrollHeight,
+    })
     givenElementVisibilityRefMock(true)
 
     useInfiniteScroll(mockElement, mockHandler)
-    expect(mockHandler).toHaveBeenCalledTimes(1)
-
-    await vi.advanceTimersToNextTimer()
+    mockElement.scrollTop = mockElementScrollHeight
+    mockElement.dispatchEvent(new Event('scroll'))
     await flushPromises()
-    mockElement.dispatchEvent(scrollEvent)
 
-    expect(mockHandler).toHaveBeenCalledTimes(2)
+    expect(mockHandler).toHaveBeenCalledTimes(1)
   })
 
-  function givenMockElement() {
-    return document.createElement('div')
+  function givenMockElement({
+    scrollHeight = 0,
+  } = {}): HTMLDivElement {
+    const mockElement = document.createElement('div')
+    Object.defineProperty(mockElement, 'scrollHeight', {
+      value: scrollHeight,
+    })
+    return mockElement
   }
 
   function givenElementVisibilityRefMock(defaultValue: boolean) {
