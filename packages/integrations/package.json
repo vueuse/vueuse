@@ -166,8 +166,10 @@
     }
   },
   "dependencies": {
+    "@types/masonry-layout": "^4.2.5",
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
+    "masonry-layout": "^4.2.2",
     "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
