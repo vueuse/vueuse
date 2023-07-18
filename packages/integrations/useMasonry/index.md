@@ -50,3 +50,5 @@ const { redraw } = useMasonry(
 
 <style scoped></style>
 ```
+
+For more, see the [docs](https://masonry.desandro.com/)
