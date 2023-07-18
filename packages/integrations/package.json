@@ -122,6 +122,7 @@
     "fuse.js": "*",
     "idb-keyval": "*",
     "jwt-decode": "*",
+    "masonry-layout": "*",
     "nprogress": "*",
     "qrcode": "*",
     "sortablejs": "*",
@@ -163,13 +164,15 @@
     },
     "sortablejs": {
       "optional": true
+    },
+    "masonry-layout": {
+      "optional": true
     }
   },
   "dependencies": {
     "@types/masonry-layout": "^4.2.5",
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "masonry-layout": "^4.2.2",
     "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
@@ -184,6 +187,7 @@
     "fuse.js": "^6.6.2",
     "idb-keyval": "^6.2.1",
     "jwt-decode": "^3.1.2",
+    "masonry-layout": "^4.2.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
     "sortablejs": "^1.15.0",

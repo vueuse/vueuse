@@ -1,18 +1,19 @@
 import { unrefElement } from '@vueuse/core'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import Masonry from 'masonry-layout'
+import { nextTick } from 'vue-demi'
 
 export type UseMasonryOptions = Masonry.Options
 
 export interface UseMasonryReturn {
   /**
-   * Start the Masonry instance.
+   * Starts the Masonry instance.
    */
   start(): void
 
   /**
-   * Stop the Masonry instance.
+   * Stops the Masonry instance.
    */
   stop(): void
 
@@ -132,6 +133,7 @@ export function useMasonry(
     if (!target)
       return
     masonry = new Masonry(target as HTMLElement, { ...options })
+    redraw()
   }
 
   /**
@@ -277,9 +279,9 @@ export function useMasonry(
     masonry.layout?.()
   }
 
-  tryOnMounted(start)
+  tryOnMounted(() => nextTick(start))
 
-  tryOnScopeDispose(stop)
+  tryOnUnmounted(stop)
 
   return {
     start,

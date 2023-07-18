@@ -13,78 +13,40 @@ npm install masonry-layout
 
 ## Usage
 
-### Use template ref
-
 ```vue
 <script setup lang="ts">
-import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
+import { type Ref, onMounted, ref } from 'vue-demi'
+import { useMasonry } from '.'
 
-const el = ref<HTMLElement | null>(null)
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+const list = [
+  'https://iph.href.lu/300x200',
+  'https://iph.href.lu/200x300',
+  'https://iph.href.lu/300x200',
+  'https://iph.href.lu/180x320',
+  'https://iph.href.lu/300x200',
+  'https://iph.href.lu/200x300',
+  'https://iph.href.lu/200x300',
+  'https://iph.href.lu/300x200',
+  'https://iph.href.lu/200x300',
+  'https://iph.href.lu/180x320',
+]
 
-useSortable(el, list)
+const containerRef: Ref<HTMLElement | null> = ref(null)
+
+const { redraw } = useMasonry(
+  containerRef,
+  { itemSelector: '.items', columnWidth: 200 }
+)
 </script>
 
 <template>
-  <div ref="el">
-    <div v-for="item in list" :key="item.id">
-      {{ item.name }}
-    </div>
+  <div ref="containerRef" style="min-height: 500px;overflow-y: scroll;">
+    <img v-for="i, idx in list" :key="idx" :src="i" class="items" style="width: 30%;" @load="redraw">
   </div>
+  <button @click="redraw">
+    redraw
+  </button>
 </template>
-```
 
-### Use specifies the selector to operate on
-
-```vue
-<script setup lang="ts">
-import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
-
-const el = ref<HTMLElement | null>(null)
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
-
-const animation = 200
-
-const { option } = useSortable(el, list, {
-  handle: '.handle',
-  // or option set
-  // animation
-})
-
-// You can use the option method to set and get the option of Sortable
-option('animation', animation)
-// option('animation') // 200
-</script>
-
-<template>
-  <div ref="el">
-    <div v-for="item in list" :key="item.id">
-      <span>{{ item.name }}</span>
-      <span class="handle">*</span>
-    </div>
-  </div>
-</template>
-```
-
-### Use a selector to get the root element
-
-```vue
-<script setup lang="ts">
-import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
-
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
-
-useSortable('#dv', list)
-</script>
-
-<template>
-  <div id="dv">
-    <div v-for="item in list" :key="item.id">
-      <span>{{ item.name }}</span>
-    </div>
-  </div>
-</template>
+<style scoped></style>
 ```
