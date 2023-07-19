@@ -24,8 +24,8 @@ export interface UseCssVarOptions extends ConfigurableWindow {
  * @param target
  * @param options
  */
-export function useCssVar(
-  prop: MaybeRefOrGetter<string>,
+export function useCssVar<T extends `--${string}`>(
+  prop: MaybeRefOrGetter<T>,
   target?: MaybeElementRef,
   options: UseCssVarOptions = {},
 ) {
