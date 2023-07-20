@@ -42,16 +42,14 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
     cleanup()
 
     mediaQuery = window!.matchMedia(toValue(query))
-    matches.value = !!mediaQuery?.matches
-
-    if (!mediaQuery)
-      return
 
     if ('addEventListener' in mediaQuery)
       mediaQuery.addEventListener('change', handler)
     else
       // @ts-expect-error deprecated API
       mediaQuery.addListener(handler)
+
+    matches.value = mediaQuery.matches
   })
 
   tryOnScopeDispose(() => {
