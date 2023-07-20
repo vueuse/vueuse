@@ -32,6 +32,14 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   touch?: boolean
 
   /**
+   * Customize scrollTarget to listen to `scroll` events for type `page`
+   * Set to `null` or `undefined` to disable
+   *
+   * @default null
+   */
+  scrollTarget?: MaybeRefOrGetter<Window | EventTarget | null | undefined>
+
+  /**
    * Reset to initial value when `touchend` event fired
    *
    * @default false
@@ -69,8 +77,11 @@ export function useMouse(options: UseMouseOptions = {}) {
     initialValue = { x: 0, y: 0 },
     window = defaultWindow,
     target = window,
+    scrollTarget = window,
     eventFilter,
   } = options
+
+  let _prevMouseEvent: MouseEvent | TouchEvent | null = null
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
@@ -82,6 +93,7 @@ export function useMouse(options: UseMouseOptions = {}) {
 
   const mouseHandler = (event: MouseEvent) => {
     const result = extractor(event)
+    _prevMouseEvent = event
 
     if (result) {
       [x.value, y.value] = result
@@ -99,6 +111,15 @@ export function useMouse(options: UseMouseOptions = {}) {
     }
   }
 
+  const scrollHandler = () => {
+    if (!_prevMouseEvent || !window || type !== 'page')
+      return
+    if (_prevMouseEvent instanceof MouseEvent) {
+      x.value = _prevMouseEvent.clientX + window.scrollX
+      y.value = _prevMouseEvent.clientY + window.scrollY
+    }
+  }
+
   const reset = () => {
     x.value = initialValue.x
     y.value = initialValue.y
@@ -112,6 +133,10 @@ export function useMouse(options: UseMouseOptions = {}) {
     ? (event: TouchEvent) => eventFilter(() => touchHandler(event), {} as any)
     : (event: TouchEvent) => touchHandler(event)
 
+  const scrollHandlerWrapper = eventFilter
+    ? () => eventFilter(() => scrollHandler(), {} as any)
+    : () => scrollHandler()
+
   if (target) {
     useEventListener(target, 'mousemove', mouseHandlerWrapper, { passive: true })
     useEventListener(target, 'dragover', mouseHandlerWrapper, { passive: true })
@@ -121,6 +146,8 @@ export function useMouse(options: UseMouseOptions = {}) {
       if (resetOnTouchEnds)
         useEventListener(target, 'touchend', reset, { passive: true })
     }
+    if (scrollTarget && type === 'page')
+      useEventListener(scrollTarget, 'scroll', scrollHandlerWrapper, { passive: true })
   }
 
   return {
