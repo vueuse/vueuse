@@ -72,7 +72,25 @@ export function useEventListener<E extends keyof DocumentEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 4: Custom event target with event type infer
+ * Overload 4: Explicitly HTMLElement target
+ *
+ * @see https://vueuse.org/useEventListener
+ * @param target
+ * @param event
+ * @param listener
+ * @param options
+ */
+export function useEventListener<K extends keyof HTMLElementEventMap>(
+  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
+  event: K,
+  listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+  options?: boolean | AddEventListenerOptions
+): () => void
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 5: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -90,7 +108,7 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 5: Custom event target fallback
+ * Overload 6: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  * @param target
