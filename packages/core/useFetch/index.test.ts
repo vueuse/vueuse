@@ -148,7 +148,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
     await retry(() => {
       expect(fetchSpy).toHaveBeenCalledTimes(4)
-      new Array(4).fill(0).forEach((x, i) => {
+      Array.from({ length: 4 }).fill(0).forEach((x, i) => {
         expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
       })
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)

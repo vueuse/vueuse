@@ -5,7 +5,7 @@ import { useEventListener } from '../useEventListener'
 
 function getRangesFromSelection(selection: Selection) {
   const rangeCount = selection.rangeCount ?? 0
-  const ranges = new Array(rangeCount)
+  const ranges = Array.from({ length: rangeCount })
   for (let i = 0; i < rangeCount; i++) {
     const range = selection.getRangeAt(i)
     ranges[i] = range
