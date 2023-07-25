@@ -11,7 +11,7 @@ async function run() {
     updateFunctionsMD(metadata),
     updateFunctionREADME(metadata),
     updatePackageJSON(metadata),
-    process.env.NETLIFY && updateCountBadge(metadata),
+    updateCountBadge(metadata),
     process.env.NETLIFY && updateContributors(),
   ])
 
