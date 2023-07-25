@@ -71,7 +71,7 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
 
 export function normalizeDate(date: DateLike) {
   if (date === null)
-    return new Date(NaN) // null is invalid
+    return new Date(Number.NaN) // null is invalid
   if (date === undefined)
     return new Date()
   if (date instanceof Date)
