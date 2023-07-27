@@ -53,7 +53,7 @@ describe('until', () => {
   it('should toBeNaN', async () => {
     const r = ref(0)
     setTimeout(() => {
-      r.value = NaN
+      r.value = Number.NaN
     }, 100)
 
     expect(await until(r).toBeNaN()).toBeNaN()

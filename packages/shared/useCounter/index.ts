@@ -16,8 +16,8 @@ export function useCounter(initialValue = 0, options: UseCounterOptions = {}) {
   const count = ref(initialValue)
 
   const {
-    max = Infinity,
-    min = -Infinity,
+    max = Number.POSITIVE_INFINITY,
+    min = Number.NEGATIVE_INFINITY,
   } = options
 
   const inc = (delta = 1) => count.value = Math.min(max, count.value + delta)
