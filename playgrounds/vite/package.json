@@ -14,5 +14,10 @@
     "@vueuse/metadata": "file:../../packages/metadata/dist",
     "@vueuse/shared": "file:../../packages/shared/dist",
     "vite": "^4.4.7"
+  },
+  "resolutions": {
+    "@vueuse/core": "file:../../packages/core/dist",
+    "@vueuse/metadata": "file:../../packages/metadata/dist",
+    "@vueuse/shared": "file:../../packages/shared/dist"
   }
 }
