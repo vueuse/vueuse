@@ -1,5 +1,5 @@
 import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
+import { camelize, defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 import { makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
@@ -61,7 +61,13 @@ export function createReusableTemplate<
       return () => {
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        return render.value?.({ ...attrs, $slots: slots })
+
+        const camelizedAttrs = Object.entries(attrs).reduce((acc, [key, value]) => {
+          acc[camelize(key)] = value
+          return acc
+        }, {})
+
+        return render.value?.({ ...camelizedAttrs, $slots: slots })
       }
     },
   }) as ReuseTemplateComponent<Bindings, Slots>
