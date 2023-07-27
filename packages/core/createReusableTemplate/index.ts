@@ -65,7 +65,7 @@ export function createReusableTemplate<
         const camelizedAttrs = Object.entries(attrs).reduce((acc, [key, value]) => {
           acc[camelize(key)] = value
           return acc
-        }, {})
+        }, {} as Record<string, any>)
 
         return render.value?.({ ...camelizedAttrs, $slots: slots })
       }
