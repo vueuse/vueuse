@@ -1,6 +1,7 @@
 import type { ToRefs } from 'vue-demi'
 import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
-import type { MaybeRef } from '../utils'
+import { toValue } from '../toValue'
+import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 
 export interface ToRefsOptions {
   /**
@@ -8,7 +9,7 @@ export interface ToRefsOptions {
    *
    * @default true
    */
-  replaceRef?: boolean
+  replaceRef?: MaybeRefOrGetter<boolean>
 }
 
 /**
@@ -28,14 +29,14 @@ export function toRefs<T extends object>(
     ? new Array(objectRef.value.length)
     : {}
 
-  const { replaceRef = true } = options
-
   for (const key in objectRef.value) {
     result[key] = customRef<T[typeof key]>(() => ({
       get() {
         return objectRef.value[key]
       },
       set(v) {
+        const replaceRef = toValue(options.replaceRef) ?? true
+
         if (replaceRef) {
           if (Array.isArray(objectRef.value)) {
             const copy: any = [...objectRef.value]
