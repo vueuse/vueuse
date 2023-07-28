@@ -1,6 +1,7 @@
-import { toRef, toValue } from '../index'
+import { toRef } from '../toRef'
+import { toValue } from '../toValue'
 
-import type { MaybeRef } from '../index'
+import type { MaybeRef } from '../utils/types'
 
 export interface UseCounterOptions {
   min?: number
