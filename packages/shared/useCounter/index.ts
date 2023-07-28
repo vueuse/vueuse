@@ -1,4 +1,6 @@
-import { ref } from 'vue-demi'
+import { toRef, toValue } from '../index'
+
+import type { MaybeRef } from '../index'
 
 export interface UseCounterOptions {
   min?: number
@@ -12,8 +14,9 @@ export interface UseCounterOptions {
  * @param [initialValue=0]
  * @param {Object} options
  */
-export function useCounter(initialValue = 0, options: UseCounterOptions = {}) {
-  const count = ref(initialValue)
+export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCounterOptions = {}) {
+  let _initialValue = toValue(initialValue)
+  const count = toRef(initialValue)
 
   const {
     max = Number.POSITIVE_INFINITY,
@@ -24,8 +27,8 @@ export function useCounter(initialValue = 0, options: UseCounterOptions = {}) {
   const dec = (delta = 1) => count.value = Math.max(min, count.value - delta)
   const get = () => count.value
   const set = (val: number) => (count.value = Math.max(min, Math.min(max, val)))
-  const reset = (val = initialValue) => {
-    initialValue = val
+  const reset = (val = _initialValue) => {
+    _initialValue = val
     return set(val)
   }
 
