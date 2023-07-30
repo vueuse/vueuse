@@ -696,4 +696,28 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
     })
   })
+
+  it('should be generated payloadType on execute', async () => {
+    const form = ref()
+    const { execute } = useFetch('https://example.com').post(form)
+
+    form.value = { x: 1 }
+    await execute()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()['Content-Type']).toBe('application/json')
+    })
+  })
+
+  it('should be generated payloadType on execute', async () => {
+    const form = ref<any>({ x: 1 })
+    const { execute } = useFetch('https://example.com').post(form)
+
+    form.value = new FormData()
+    await execute()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()['Content-Type']).toBe(undefined)
+    })
+  })
 })
