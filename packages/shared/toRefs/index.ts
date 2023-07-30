@@ -15,7 +15,7 @@ export function toRefs<T extends object>(
     return _toRefs(objectRef)
 
   const result: any = Array.isArray(objectRef.value)
-    ? new Array(objectRef.value.length)
+    ? Array.from({ length: objectRef.value.length })
     : {}
 
   for (const key in objectRef.value) {

@@ -1,6 +1,6 @@
 import type { DefineComponent, Slot } from 'vue-demi'
 import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
-import { makeDestructurable } from '@vueuse/shared'
+import { camelize, makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
   Bindings extends object,
@@ -34,8 +34,7 @@ export type ReusableTemplatePair<
  * @see https://vueuse.org/createReusableTemplate
  */
 export function createReusableTemplate<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
+  Bindings extends object, Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
 >(): ReusableTemplatePair<Bindings, Slots> {
   // compatibility: Vue 2.7 or above
   if (!isVue3 && !version.startsWith('2.7.')) {
@@ -61,7 +60,7 @@ export function createReusableTemplate<
       return () => {
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        return render.value?.({ ...attrs, $slots: slots })
+        return render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
       }
     },
   }) as ReuseTemplateComponent<Bindings, Slots>
@@ -70,4 +69,11 @@ export function createReusableTemplate<
     { define, reuse },
     [define, reuse],
   ) as any
+}
+
+function keysToCamelKebabCase(obj: Record<string, any>) {
+  const newObj: typeof obj = {}
+  for (const key in obj)
+    newObj[camelize(key)] = obj[key]
+  return newObj
 }

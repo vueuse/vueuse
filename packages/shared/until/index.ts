@@ -71,7 +71,7 @@ function createUntil<T>(r: any, isNot = false) {
     condition: (v: any) => boolean,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
   ): Promise<T> {
-    let stop: Function | null = null
+    let stop: (() => void) | null = null
     const watcher = new Promise<T>((resolve) => {
       stop = watch(
         r,
@@ -106,7 +106,7 @@ function createUntil<T>(r: any, isNot = false) {
       return toMatch(v => v === value, options)
 
     const { flush = 'sync', deep = false, timeout, throwOnTimeout } = options ?? {}
-    let stop: Function | null = null
+    let stop: (() => void) | null = null
     const watcher = new Promise<T>((resolve) => {
       stop = watch(
         [r, value],
