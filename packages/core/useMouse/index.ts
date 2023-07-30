@@ -113,13 +113,12 @@ export function useMouse(options: UseMouseOptions = {}) {
     : (event: TouchEvent) => touchHandler(event)
 
   if (target) {
-    useEventListener(target, 'mousemove', mouseHandlerWrapper, { passive: true })
-    useEventListener(target, 'dragover', mouseHandlerWrapper, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
     if (touch && type !== 'movement') {
-      useEventListener(target, 'touchstart', touchHandlerWrapper, { passive: true })
-      useEventListener(target, 'touchmove', touchHandlerWrapper, { passive: true })
+      useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
       if (resetOnTouchEnds)
-        useEventListener(target, 'touchend', reset, { passive: true })
+        useEventListener(target, 'touchend', reset, listenerOptions)
     }
   }
 
