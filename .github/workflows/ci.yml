@@ -11,6 +11,8 @@ on:
       - main
       - next
 
+  merge_group: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -41,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [16.x, 18.x]
+        node: [16.x, 18.x, 20.x]
       fail-fast: false
 
     steps:

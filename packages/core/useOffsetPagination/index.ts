@@ -54,7 +54,7 @@ export function useOffsetPagination(options: Omit<UseOffsetPaginationOptions, 't
 export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn
 export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn {
   const {
-    total = Infinity,
+    total = Number.POSITIVE_INFINITY,
     pageSize = 10,
     page = 1,
     onPageChange = noop,
@@ -62,7 +62,7 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
     onPageCountChange = noop,
   } = options
 
-  const currentPageSize = useClamp(pageSize, 1, Infinity)
+  const currentPageSize = useClamp(pageSize, 1, Number.POSITIVE_INFINITY)
 
   const pageCount = computed(() => Math.max(
     1,
