@@ -17,7 +17,7 @@ export const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
-  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
+  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.mts`)
 
   if (!fs.existsSync(typingFilepath))
     return
@@ -242,7 +242,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       directory: `packages/${name}`,
     }
     packageJSON.main = './index.cjs'
-    packageJSON.types = './index.d.ts'
+    packageJSON.types = './index.d.cts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
@@ -252,7 +252,6 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       '.': {
         import: './index.mjs',
         require: './index.cjs',
-        types: './index.d.ts',
       },
       './*': './*',
       ...packageJSON.exports,
@@ -263,13 +262,11 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            types: `./${i.name}.d.ts`,
             require: `./${i.name}.cjs`,
             import: `./${i.name}.mjs`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
-              types: `./${i.name}/component.d.ts`,
               require: `./${i.name}/component.cjs`,
               import: `./${i.name}/component.mjs`,
             }

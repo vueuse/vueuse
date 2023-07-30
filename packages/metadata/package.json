@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/metadata",
-  "version": "10.2.1",
+  "version": "10.3.0",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -21,7 +21,6 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
@@ -29,7 +28,7 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "files": [
     "index.*"
   ],

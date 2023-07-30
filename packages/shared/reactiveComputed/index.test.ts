@@ -1,5 +1,5 @@
 import { isVue2, nextTick, ref, watch, watchEffect } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { reactiveComputed } from '.'
 
 describe('reactiveComputed', () => {
@@ -8,9 +8,10 @@ describe('reactiveComputed', () => {
 
     const state = reactiveComputed(() => {
       return {
-        count: count.value,
+        count,
       }
     })
+    expectTypeOf(state).toEqualTypeOf<{ count: number }>()
 
     expect(state.count).toBe(0)
 

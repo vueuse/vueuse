@@ -5,6 +5,7 @@ import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 
 export interface UseRTDBOptions {
+  errorHandler?: (err: Error) => void
   autoDispose?: boolean
 }
 
@@ -18,6 +19,7 @@ export function useRTDB<T = any>(
   options: UseRTDBOptions = {},
 ) {
   const {
+    errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
   } = options
   const data = ref(undefined) as Ref<T | undefined>
@@ -26,7 +28,7 @@ export function useRTDB<T = any>(
     data.value = snapshot.val()
   }
 
-  const off = onValue(docRef, update)
+  const off = onValue(docRef, update, errorHandler)
 
   if (autoDispose)
     tryOnScopeDispose(() => off())

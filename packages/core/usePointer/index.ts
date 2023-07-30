@@ -75,9 +75,9 @@ export function usePointer(options: UsePointerOptions = {}) {
   }
 
   if (target) {
-    useEventListener(target, 'pointerdown', handler, { passive: true })
-    useEventListener(target, 'pointermove', handler, { passive: true })
-    useEventListener(target, 'pointerleave', () => isInside.value = false, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(target, ['pointerdown', 'pointermove', 'pointerup'], handler, listenerOptions)
+    useEventListener(target, 'pointerleave', () => isInside.value = false, listenerOptions)
   }
 
   return {

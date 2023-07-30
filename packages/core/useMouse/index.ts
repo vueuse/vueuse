@@ -138,13 +138,12 @@ export function useMouse(options: UseMouseOptions = {}) {
     : () => scrollHandler()
 
   if (target) {
-    useEventListener(target, 'mousemove', mouseHandlerWrapper, { passive: true })
-    useEventListener(target, 'dragover', mouseHandlerWrapper, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
     if (touch && type !== 'movement') {
-      useEventListener(target, 'touchstart', touchHandlerWrapper, { passive: true })
-      useEventListener(target, 'touchmove', touchHandlerWrapper, { passive: true })
+      useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
       if (resetOnTouchEnds)
-        useEventListener(target, 'touchend', reset, { passive: true })
+        useEventListener(target, 'touchend', reset, listenerOptions)
     }
     if (scrollTarget && type === 'page')
       useEventListener(scrollTarget, 'scroll', scrollHandlerWrapper, { passive: true })
