@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
-export interface UseMagicKeysOptions<Reactive extends Boolean> {
+export interface UseMagicKeysOptions<Reactive extends boolean> {
   /**
    * Returns a reactive object instead of an object of refs
    *
@@ -56,7 +56,7 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type UseMagicKeysReturn<Reactive extends Boolean> =
+export type UseMagicKeysReturn<Reactive extends boolean> =
   Readonly<
   Omit<Reactive extends true
     ? Record<string, boolean>

@@ -18,7 +18,7 @@ describe('reactify', () => {
   it('two args', () => {
     const base = ref(0)
     const exponent = ref(0)
-    // eslint-disable-next-line no-restricted-properties
+
     const pow = reactify(Math.pow)
     const result = pow(base, exponent)
 
@@ -41,7 +41,7 @@ describe('reactify', () => {
 
   it('mixed with literal', () => {
     const base = ref(0)
-    // eslint-disable-next-line no-restricted-properties
+
     const pow = reactify(Math.pow)
     const result = pow(base, 2)
 
@@ -65,7 +65,6 @@ describe('reactify', () => {
   })
 
   it('Pythagorean theorem', () => {
-    // eslint-disable-next-line no-restricted-properties
     const pow = reactify(Math.pow)
     const sqrt = reactify(Math.sqrt)
     const add = reactify((a: number, b: number) => a + b)
