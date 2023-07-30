@@ -80,10 +80,10 @@ export function useEventListener<E extends keyof DocumentEventMap>(
  * @param listener
  * @param options
  */
-export function useEventListener<K extends keyof HTMLElementEventMap>(
+export function useEventListener<E extends keyof HTMLElementEventMap>(
   target: MaybeRefOrGetter<HTMLElement | null | undefined>,
-  event: K,
-  listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+  event: Arrayable<E>,
+  listener: (this: HTMLElement, ev: HTMLElementEventMap[E]) => any,
   options?: boolean | AddEventListenerOptions
 ): () => void
 

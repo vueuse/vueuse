@@ -1,10 +1,10 @@
-import { effectScope, nextTick, ref } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
+import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteParams } from '.'
 
 describe('useRouteParams', () => {
-  const getRoute = (params: Record<string, any> = {}) => ({
+  const getRoute = (params: Record<string, any> = {}) => reactive({
     params,
     query: {},
     fullPath: '',
@@ -142,5 +142,74 @@ describe('useRouteParams', () => {
 
     expect(page.value).toBeNull()
     expect(lang.value).toBeNull()
+  })
+
+  it('should change the value when the route changes', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const lang: Ref<any> = useRouteParams('lang', null, { route, router })
+
+    expect(lang.value).toBeNull()
+
+    route.params = { lang: 'en' }
+
+    expect(lang.value).toBe('en')
+  })
+
+  it('should avoid trigger effects when the value doesn\'t change', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteParams('page', 1, { transform: Number, route, router })
+
+    watch(page, onUpdate)
+
+    page.value = 1
+
+    await nextTick()
+
+    expect(page.value).toBe(1)
+    expect(route.params.page).toBe(1)
+    expect(onUpdate).not.toHaveBeenCalled()
+  })
+
+  it('should keep current query and hash', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    route.query = { foo: 'bar' }
+    route.hash = '#hash'
+
+    const id: Ref<any> = useRouteParams('id', null, { route, router })
+
+    id.value = '2'
+
+    await nextTick()
+
+    expect(id.value).toBe('2')
+    expect(route.hash).toBe('#hash')
+    expect(route.query).toEqual({ foo: 'bar' })
+  })
+
+  it('should allow ref or getter as default value', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const defaultPage = ref(1)
+    const defaultLang = () => 'pt-BR'
+
+    const page: Ref<any> = useRouteParams('page', defaultPage, { route, router })
+    const lang: Ref<any> = useRouteParams('lang', defaultLang, { route, router })
+
+    expect(page.value).toBe(1)
+    expect(lang.value).toBe('pt-BR')
+
+    page.value = 2
+    lang.value = 'en-US'
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('en-US')
   })
 })

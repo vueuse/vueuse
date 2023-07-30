@@ -393,10 +393,15 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
     if (config.payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
+      const payload = toValue(config.payload)
+      // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
+      // The only case we can deduce the content type and `fetch` can't
+      if (!config.payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype && !(payload instanceof FormData))
+        config.payloadType = 'json'
+
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      const payload = toValue(config.payload)
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
         : payload as BodyInit
@@ -537,12 +542,6 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             { deep: true },
           )
         }
-
-        const rawPayload = toValue(config.payload)
-        // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
-        // The only case we can deduce the content type and `fetch` can't
-        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))
-          config.payloadType = 'json'
 
         return {
           ...shell,
