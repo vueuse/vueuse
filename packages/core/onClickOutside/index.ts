@@ -51,6 +51,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     _iOSWorkaround = true
     Array.from(window.document.body.children)
       .forEach(el => el.addEventListener('click', noop))
+    window.document.documentElement.addEventListener('click', noop)
   }
 
   let shouldListen = true

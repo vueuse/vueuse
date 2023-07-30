@@ -48,6 +48,23 @@ describe('useFocus', () => {
     await retry(() => expect(document.activeElement).not.toBe(target.value))
   })
 
+  it('should only focus when :focus-visible matches with focusVisible=true', () => {
+    const { focused } = useFocus(target, { focusVisible: true })
+
+    let event = new Event('focus')
+    Object.defineProperty(event, 'target', { value: { matches: () => true }, enumerable: true })
+    target.value?.dispatchEvent(event)
+    expect(focused.value).toBeTruthy()
+
+    target.value?.dispatchEvent(new Event('blur'))
+    expect(focused.value).toBeFalsy()
+
+    event = new Event('focus')
+    Object.defineProperty(event, 'target', { value: { matches: () => false }, enumerable: true })
+    target.value?.dispatchEvent(event)
+    expect(focused.value).toBeFalsy()
+  })
+
   describe('when target is missing', () => {
     it('should initialize properly', () => {
       const { focused } = useFocus(null)

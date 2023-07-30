@@ -31,8 +31,8 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
 export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
     window = defaultWindow,
-    initialWidth = Infinity,
-    initialHeight = Infinity,
+    initialWidth = Number.POSITIVE_INFINITY,
+    initialHeight = Number.POSITIVE_INFINITY,
     listenOrientation = true,
     includeScrollbar = true,
   } = options

@@ -2,6 +2,7 @@ export * from './is'
 export * from './filters'
 export * from './types'
 export * from './compatibility'
+export * from './port'
 
 export function promiseTimeout(
   ms: number,
