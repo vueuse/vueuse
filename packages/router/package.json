@@ -23,7 +23,6 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
@@ -33,7 +32,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "vue-router": ">=4.0.0-rc.1"
   },

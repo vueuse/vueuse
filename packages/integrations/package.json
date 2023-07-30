@@ -22,83 +22,67 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
     "./*": "./*",
     "./useAsyncValidator": {
-      "types": "./useAsyncValidator.d.ts",
       "require": "./useAsyncValidator.cjs",
       "import": "./useAsyncValidator.mjs"
     },
     "./useAxios": {
-      "types": "./useAxios.d.ts",
       "require": "./useAxios.cjs",
       "import": "./useAxios.mjs"
     },
     "./useCookies": {
-      "types": "./useCookies.d.ts",
       "require": "./useCookies.cjs",
       "import": "./useCookies.mjs"
     },
     "./useDrauu": {
-      "types": "./useDrauu.d.ts",
       "require": "./useDrauu.cjs",
       "import": "./useDrauu.mjs"
     },
     "./useFocusTrap": {
-      "types": "./useFocusTrap.d.ts",
       "require": "./useFocusTrap.cjs",
       "import": "./useFocusTrap.mjs"
     },
     "./useFocusTrap/component": {
-      "types": "./useFocusTrap/component.d.ts",
       "require": "./useFocusTrap/component.cjs",
       "import": "./useFocusTrap/component.mjs"
     },
     "./useFuse": {
-      "types": "./useFuse.d.ts",
       "require": "./useFuse.cjs",
       "import": "./useFuse.mjs"
     },
     "./useJwt": {
-      "types": "./useJwt.d.ts",
       "require": "./useJwt.cjs",
       "import": "./useJwt.mjs"
     },
     "./useNProgress": {
-      "types": "./useNProgress.d.ts",
       "require": "./useNProgress.cjs",
       "import": "./useNProgress.mjs"
     },
     "./useQRCode": {
-      "types": "./useQRCode.d.ts",
       "require": "./useQRCode.cjs",
       "import": "./useQRCode.mjs"
     },
     "./useChangeCase": {
-      "types": "./useChangeCase.d.ts",
       "require": "./useChangeCase.cjs",
       "import": "./useChangeCase.mjs"
     },
     "./useAsyncValidator/component": {
-      "types": "./useAsyncValidator/component.d.ts",
       "require": "./useAsyncValidator/component.cjs",
       "import": "./useAsyncValidator/component.mjs"
     },
     "./useIDBKeyval": {
-      "types": "./useIDBKeyval.d.ts",
       "require": "./useIDBKeyval.cjs",
       "import": "./useIDBKeyval.mjs"
     },
     "./useSortable": {
-      "types": "./useSortable.d.ts",
       "require": "./useSortable.cjs",
       "import": "./useSortable.mjs"
     },
     "./useSortable/component": {
-      "types": "./useSortable/component.d.ts",
       "require": "./useSortable/component.cjs",
       "import": "./useSortable/component.mjs"
     }
@@ -107,7 +91,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "async-validator": "*",
     "axios": "*",
