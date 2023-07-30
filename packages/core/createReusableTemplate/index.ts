@@ -27,6 +27,15 @@ export type ReusableTemplatePair<
   reuse: ReuseTemplateComponent<Bindings, Slots>
 }
 
+export interface CreateReusableTemplateOptions {
+  /**
+   * Inherit attrs from reuse component.
+   *
+   * @default true
+   */
+  inheritAttrs?: boolean
+}
+
 /**
  * This function creates `define` and `reuse` components in pair,
  * It also allow to pass a generic to bind with type.
@@ -34,8 +43,11 @@ export type ReusableTemplatePair<
  * @see https://vueuse.org/createReusableTemplate
  */
 export function createReusableTemplate<
-  Bindings extends object, Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
->(): ReusableTemplatePair<Bindings, Slots> {
+  Bindings extends object,
+  Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
+>(
+  options: CreateReusableTemplateOptions = {},
+): ReusableTemplatePair<Bindings, Slots> {
   // compatibility: Vue 2.7 or above
   if (!isVue3 && !version.startsWith('2.7.')) {
     if (process.env.NODE_ENV !== 'production')
@@ -43,6 +55,10 @@ export function createReusableTemplate<
     // @ts-expect-error incompatible
     return
   }
+
+  const {
+    inheritAttrs = true,
+  } = options
 
   const render = shallowRef<Slot | undefined>()
 
@@ -55,12 +71,13 @@ export function createReusableTemplate<
   }) as DefineTemplateComponent<Bindings, Slots>
 
   const reuse = defineComponent({
-    inheritAttrs: false,
+    inheritAttrs,
     setup(_, { attrs, slots }) {
       return () => {
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        return render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
+        const vnode = render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
+        return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }
     },
   }) as ReuseTemplateComponent<Bindings, Slots>
