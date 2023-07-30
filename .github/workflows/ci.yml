@@ -11,6 +11,8 @@ on:
       - main
       - next
 
+  merge_group:
+
 jobs:
   lint:
     runs-on: ubuntu-latest
