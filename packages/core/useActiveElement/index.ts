@@ -5,11 +5,11 @@ import { defaultWindow } from '../_configurable'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
-   * Search actively deeply in shadow dom
+   * Search active element deeply inside shadow dom
    *
    * @default true
    */
-  deepActiveElement?: boolean
+  deep?: boolean
 }
 
 /**
@@ -23,13 +23,13 @@ export function useActiveElement<T extends HTMLElement>(
 ) {
   const {
     window = defaultWindow,
-    deepActiveElement = true,
+    deep = true,
   } = options
   const document = options.document ?? window?.document
 
   const getDeepActiveElement = () => {
     let element = document?.activeElement
-    if (deepActiveElement) {
+    if (deep) {
       while (element?.shadowRoot)
         element = element?.shadowRoot?.activeElement
     }
