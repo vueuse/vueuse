@@ -105,7 +105,6 @@ export default defineConfig(async () => {
         'qrcode',
         'tslib',
         'fuse.js',
-        'vitepress',
         'universal-cookie',
       ],
     },
