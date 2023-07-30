@@ -64,6 +64,5 @@ export function onLongPress(
   }
 
   useEventListener(elementRef, 'pointerdown', onDown, listenerOptions)
-  useEventListener(elementRef, 'pointerup', clear, listenerOptions)
-  useEventListener(elementRef, 'pointerleave', clear, listenerOptions)
+  useEventListener(elementRef, ['pointerup', 'pointerleave'], clear, listenerOptions)
 }

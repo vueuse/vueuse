@@ -71,7 +71,7 @@ export function useAsyncQueue<T = any>(tasks: UseAsyncQueueTask<any>[], options:
     rejected: 'rejected',
   }
 
-  const initialResult = Array.from(new Array(tasks.length), () => ({ state: promiseState.pending, data: null }))
+  const initialResult = Array.from(Array.from({ length: tasks.length }), () => ({ state: promiseState.pending, data: null }))
 
   const result = reactive(initialResult) as UseAsyncQueueResult<T>[]
 

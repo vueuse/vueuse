@@ -1,10 +1,10 @@
-import { effectScope, nextTick, ref } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
+import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
-  const getRoute = (query: Record<string, any> = {}) => ({
+  const getRoute = (query: Record<string, any> = {}) => reactive({
     query,
     fullPath: '',
     hash: '',
@@ -46,6 +46,8 @@ describe('useRouteQuery', () => {
 
     const code: Ref<any> = useRouteQuery('code', 'foo', { route, router })
     const search: Ref<any> = useRouteQuery('search', null, { route, router })
+
+    expect(code.value).toBe('foo')
 
     code.value = 'bar'
 
@@ -138,5 +140,97 @@ describe('useRouteQuery', () => {
 
     expect(page.value).toBeNull()
     expect(lang.value).toBeNull()
+  })
+
+  it('should change the value when the route changes', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+
+    expect(page.value).toBeNull()
+
+    route.query = { page: '2' }
+
+    expect(page.value).toBe('2')
+  })
+
+  it ('should differentiate null and undefined', () => {
+    let route = getRoute({
+      page: 1,
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const lang: Ref<any> = useRouteQuery('lang', undefined, { route, router })
+
+    expect(lang.value).toBeUndefined()
+
+    route.query = { ...route.query, lang: null }
+
+    expect(lang.value).toBeNull()
+
+    const code: Ref<any> = useRouteQuery('code', null, { route, router })
+
+    expect(code.value).toBeNull()
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+
+    expect(page.value).toBe(1)
+  })
+
+  it('should avoid trigger effects when the value doesn\'t change', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteQuery('page', 1, { transform: Number, route, router })
+
+    watch(page, onUpdate)
+
+    page.value = 1
+
+    await nextTick()
+
+    expect(page.value).toBe(1)
+    expect(route.query.page).toBe(1)
+    expect(onUpdate).not.toHaveBeenCalled()
+  })
+
+  it('should keep current query and hash', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    route.params = { foo: 'bar' }
+    route.hash = '#hash'
+
+    const id: Ref<any> = useRouteQuery('id', null, { route, router })
+
+    id.value = '2'
+
+    await nextTick()
+
+    expect(id.value).toBe('2')
+    expect(route.hash).toBe('#hash')
+    expect(route.params).toEqual({ foo: 'bar' })
+  })
+
+  it('should allow ref or getter as default value', () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const defaultPage = ref(1)
+    const defaultLang = () => 'pt-BR'
+
+    const page: Ref<any> = useRouteQuery('page', defaultPage, { route, router })
+    const lang: Ref<any> = useRouteQuery('lang', defaultLang, { route, router })
+
+    expect(page.value).toBe(1)
+    expect(lang.value).toBe('pt-BR')
+
+    page.value = 2
+    lang.value = 'en-US'
+
+    expect(page.value).toBe(2)
+    expect(lang.value).toBe('en-US')
   })
 })

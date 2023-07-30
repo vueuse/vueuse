@@ -167,7 +167,7 @@ describe('useOffsetPagination', () => {
       pageRef.value = -1
       expect(currentPage.value).toBe(1)
 
-      pageRef.value = Infinity
+      pageRef.value = Number.POSITIVE_INFINITY
       expect(currentPage.value).toBe(4)
     })
   })
