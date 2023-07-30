@@ -4,10 +4,20 @@ import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {
   const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
-  const matchMediaSpy = vi.spyOn(window, 'matchMedia')
+  const matchMediaSpy = vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }))
+
   beforeEach(() => {
-    addEventListenerSpy.mockReset()
-    matchMediaSpy.mockReset()
+    addEventListenerSpy.mockClear()
+    matchMediaSpy.mockClear()
   })
 
   afterAll(() => {
