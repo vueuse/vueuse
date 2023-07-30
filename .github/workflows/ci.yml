@@ -11,7 +11,7 @@ on:
       - main
       - next
 
-  merge_group:
+  merge_group: {}
 
 jobs:
   lint:
