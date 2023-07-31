@@ -1,10 +1,9 @@
 import { until } from '@vueuse/shared'
+import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isBelowNode18, retry } from '../../.test'
-import { nextTick, ref } from 'vue-demi'
 import { createFetch, useFetch } from '.'
-import { retry } from '../../.test'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
