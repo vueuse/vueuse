@@ -167,7 +167,7 @@ export interface UseFetchOptions {
    * Allow `onFetchError` hook to return data
    * @default true
    */
-  allowFetchErrorReturnData?: boolean
+  returnDataOnFetchError?: boolean
 
   /**
    * Will run immediately before the fetch request is dispatched
@@ -217,7 +217,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'allowFetchErrorReturnData')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'returnDataOnFetchError')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -320,7 +320,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0, allowFetchErrorReturnData: true }
+  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0, returnDataOnFetchError: true }
   interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
   const config: InternalConfig = {
     method: 'GET',
@@ -473,7 +473,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           if (options.onFetchError)
             ({ error: errorData, data: responseData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
           error.value = errorData
-          if (options.allowFetchErrorReturnData)
+          if (options.returnDataOnFetchError)
             data.value = responseData
 
           errorEvent.trigger(fetchError)

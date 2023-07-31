@@ -1,9 +1,10 @@
 import { until } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isBelowNode18, retry } from '../../.test'
+import { nextTick, ref } from 'vue-demi'
 import { createFetch, useFetch } from '.'
+import { retry } from '../../.test'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
@@ -566,9 +567,9 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
-  it('should not return data in onFetchError when allowFetchErrorReturnData is false', async () => {
+  it('should not return data in onFetchError when returnDataOnFetchError is false', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
-      allowFetchErrorReturnData: false,
+      returnDataOnFetchError: false,
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
         ctx.data = 'Internal Server Error'
@@ -599,9 +600,9 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
-  it('should not return data in onFetchError when allowFetchErrorReturnData is false and network error', async () => {
+  it('should not return data in onFetchError when returnDataOnFetchError is false and network error', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
-      allowFetchErrorReturnData: false,
+      returnDataOnFetchError: false,
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
         ctx.data = 'Internal Server Error'
