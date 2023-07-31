@@ -20,13 +20,13 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 1
    */
-  pitch?: SpeechSynthesisUtterance['pitch']
+  pitch?: MaybeRefOrGetter<SpeechSynthesisUtterance['pitch']>
   /**
    * Gets and sets the speed at which the utterance will be spoken at.
    *
    * @default 1
    */
-  rate?: SpeechSynthesisUtterance['rate']
+  rate?: MaybeRefOrGetter<SpeechSynthesisUtterance['rate']>
   /**
    * Gets and sets the voice that will be used to speak the utterance.
    */
@@ -71,8 +71,8 @@ export function useSpeechSynthesis(text: MaybeRefOrGetter<string>, options: UseS
   const bindEventsForUtterance = (utterance: SpeechSynthesisUtterance) => {
     utterance.lang = toValue(lang)
     utterance.voice = toValue(options.voice) || null
-    utterance.pitch = pitch
-    utterance.rate = rate
+    utterance.pitch = toValue(pitch)
+    utterance.rate = toValue(rate)
     utterance.volume = volume
 
     utterance.onstart = () => {

@@ -2,8 +2,10 @@ import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface UseScrollOptions {
+export interface UseScrollOptions extends ConfigurableWindow {
   /**
    * Throttle time for scroll event, it’s disabled by default.
    *
@@ -94,6 +96,7 @@ export function useScroll(
       passive: true,
     },
     behavior = 'auto',
+    window = defaultWindow,
   } = options
 
   const internalX = ref(0)
@@ -120,12 +123,14 @@ export function useScroll(
   })
 
   function scrollTo(_x: number | undefined, _y: number | undefined) {
-    const _element = toValue(element)
+    if (!window)
+      return
 
+    const _element = toValue(element)
     if (!_element)
       return
 
-    (_element instanceof Document ? document.body : _element)?.scrollTo({
+    (_element instanceof Document ? window.document.body : _element)?.scrollTo({
       top: toValue(_y) ?? y.value,
       left: toValue(_x) ?? x.value,
       behavior: toValue(behavior),
@@ -161,10 +166,13 @@ export function useScroll(
   const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
   const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
+    if (!window)
+      return
+
     const el = (
       target === window
         ? (target as Window).document.documentElement
-        : target === document ? (target as Document).documentElement : target
+        : target === window.document ? (target as Document).documentElement : target
     ) as HTMLElement
 
     const { display, flexDirection } = getComputedStyle(el)
@@ -193,8 +201,8 @@ export function useScroll(
     let scrollTop = el.scrollTop
 
     // patch for mobile compatible
-    if (target === document && !scrollTop)
-      scrollTop = document.body.scrollTop
+    if (target === window.document && !scrollTop)
+      scrollTop = window.document.body.scrollTop
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
@@ -221,8 +229,11 @@ export function useScroll(
   }
 
   const onScrollHandler = (e: Event) => {
+    if (!window)
+      return
+
     const eventTarget = (
-      e.target === document ? (e.target as Document).documentElement : e.target
+      e.target === window.document ? (e.target as Document).documentElement : e.target
     ) as HTMLElement
 
     setArrivedState(eventTarget)
@@ -255,7 +266,7 @@ export function useScroll(
     measure() {
       const _element = toValue(element)
 
-      if (_element)
+      if (window && _element)
         setArrivedState(_element)
     },
   }

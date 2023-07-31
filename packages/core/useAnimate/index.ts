@@ -265,9 +265,7 @@ export function useAnimate(
     onReady?.(animate.value)
   }
 
-  useEventListener(animate, 'cancel', syncPause)
-  useEventListener(animate, 'finish', syncPause)
-  useEventListener(animate, 'remove', syncPause)
+  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)
