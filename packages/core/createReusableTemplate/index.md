@@ -215,6 +215,12 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 Passing slots does not work in Vue 2.
 :::
 
+## Caveats
+
+- As opposed to Vue's built-in boolean prop transform, props defined as `boolean` that were passed without `v-bind` will be resolved into an empty string rather than `true`.
+
+- As opposed to Vue's built-in boolean prop transform, props defined as `boolean` that were not passed will be resolved into an `undefined` rather than `false`.
+
 ## References
 
 This function is migrated from [vue-reuse-template](https://github.com/antfu/vue-reuse-template).
