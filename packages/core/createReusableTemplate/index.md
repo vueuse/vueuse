@@ -183,6 +183,10 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 Dot notation is not supported in Vue 2.
 :::
 
+::: warning
+Passing boolean props without `v-bind` is not supported. See the [Caveats](#boolean-props) section for more details.
+:::
+
 ### Passing Slots
 
 It's also possible to pass slots back from `<ReuseTemplate>`. You can access the slots on `<DefineTemplate>` from `$slots`:
@@ -217,9 +221,37 @@ Passing slots does not work in Vue 2.
 
 ## Caveats
 
-- As opposed to Vue's built-in boolean prop transform, props defined as `boolean` that were passed without `v-bind` will be resolved into an empty string rather than `true`.
+### Boolean props
 
-- As opposed to Vue's built-in boolean prop transform, props defined as `boolean` that were not passed will be resolved into an `undefined` rather than `false`.
+As opposed to Vue's behavior, props defined as `boolean` that were passed without `v-bind` or absent will be resolved into an empty string or `undefined` respectively:
+
+```html
+<script setup lang="ts">
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
+  value?: boolean
+}>()
+</script>
+
+<template>
+  <DefineTemplate v-slot="{ value }">
+    {{ typeof value }}: {{ value }}
+  </DefineTemplate>
+
+  <ReuseTemplate :value="true" />
+  <!-- boolean: true -->
+
+  <ReuseTemplate :value="false" />
+  <!-- boolean: false -->
+
+  <ReuseTemplate value />
+  <!-- string: -->
+
+  <ReuseTemplate />
+  <!-- undefined: -->
+</template>
+```
 
 ## References
 
