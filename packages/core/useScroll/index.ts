@@ -170,9 +170,9 @@ export function useScroll(
       return
 
     const el = (
-      target === window
+      (target as Window).document
         ? (target as Window).document.documentElement
-        : target === window.document ? (target as Document).documentElement : target
+        : (target as Document).documentElement ?? target
     ) as HTMLElement
 
     const { display, flexDirection } = getComputedStyle(el)
@@ -233,7 +233,7 @@ export function useScroll(
       return
 
     const eventTarget = (
-      e.target === window.document ? (e.target as Document).documentElement : e.target
+      (e.target as Document).documentElement ?? e.target
     ) as HTMLElement
 
     setArrivedState(eventTarget)
