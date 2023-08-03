@@ -10,12 +10,11 @@ Use timeout to poll something. It's will trigger callback after last task is don
 
 ```ts
 import { useTimeoutPoll } from '@vueuse/core'
-import { promiseTimeout } from '@vueuse/shared'
 
 const count = ref(0)
 
 async function fetchData() {
-  await promiseTimeout(1000)
+  await new Promise(resolve => setTimeout(resolve, 1000))
   count.value++
 }
 
