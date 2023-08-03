@@ -8096,7 +8096,7 @@ packages:
     resolution: {integrity: sha512-7CGd4ZQu5M/FgQLlcgcsY858wf+ukg1ma5M95FACSfC54+88vm594Nv6C3NqWfk8wyK1u+E3SzvVsxr7bwONmg==}
     engines: {node: '>=14'}
     dependencies:
-      cliui: github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
+      cliui: git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
     dev: true
@@ -8188,7 +8188,7 @@ packages:
       rrweb-cssom: 0.6.0
       saxes: 6.0.0
       symbol-tree: 3.2.4
-      tough-cookie: 4.1.2
+      tough-cookie: 4.1.3
       w3c-xmlserializer: 4.0.0
       webidl-conversions: 7.0.0
       whatwg-encoding: 2.0.0
@@ -11627,8 +11627,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /tough-cookie@4.1.2:
-    resolution: {integrity: sha512-G9fqXWoYFZgTc2z8Q5zaHy/vJMjm+WV0AkAeHxVCQiEB1b+dGvWzFW6QV07cY5jQ5gRkeid2qIkzkxUnmoQZUQ==}
+  /tough-cookie@4.1.3:
+    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
     engines: {node: '>=6'}
     dependencies:
       psl: 1.9.0
@@ -13141,8 +13141,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
-    resolution: {tarball: https://codeload.github.com/isaacs/cliui/tar.gz/9f97090165675fdda63a79c29bc36bb1033506b0}
+  git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
+    resolution: {commit: 9f97090165675fdda63a79c29bc36bb1033506b0, repo: git@github.com:isaacs/cliui.git, type: git}
     name: cliui
     version: 8.0.1
     engines: {node: '>=12'}
