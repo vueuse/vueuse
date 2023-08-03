@@ -63,7 +63,7 @@ export function useRouteQuery<
           return
 
         query = v
-        _queriesQueue.set(name, v)
+        _queriesQueue.set(name, (v === defaultValue || v === null) ? undefined : v)
 
         trigger()
 
