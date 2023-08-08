@@ -93,7 +93,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const isClipboardReadSupported = useSupported(() => (navigator && 'clipboard' in navigator) && navigator.clipboard.readText)
-  const isSupported = computed(() => (isClipboardApiSupported.value && isClipboardReadSupported.value) || legacy)
+  const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
@@ -104,7 +104,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         text.value = value
       })
     }
-    else {
+    else if (legacy) {
       text.value = legacyRead()
     }
   }
