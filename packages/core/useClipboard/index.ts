@@ -132,7 +132,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     ta.style.opacity = '0'
     document.body.appendChild(ta)
     ta.select()
-    document.execCommand('copy')
+    const copyResult = document.execCommand('copy')
+    if (!copyResult)
+      throw new Error('[useClipboard] Fail to copy with legacy method')
     ta.remove()
   }
 
