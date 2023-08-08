@@ -34,3 +34,5 @@ const { text, copy, copied, isSupported, isClipboardApiSupported, isClipboardRea
 ```
 
 Set `legacy: true` to keep the ability to copy if [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is not available. It will handle copy with [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) as fallback.
+
+Set `read: true` to also automatically update `text` when user copy / cut text (i.e. [copy / cut events](https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent) triggered)
