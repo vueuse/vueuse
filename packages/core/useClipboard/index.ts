@@ -99,7 +99,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    if (isClipboardApiSupported.value) {
+    if (isClipboardReadSupported.value) {
       navigator!.clipboard.readText().then((value) => {
         text.value = value
       })
