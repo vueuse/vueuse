@@ -38,6 +38,8 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface UseClipboardReturn<Optional> {
+  isClipboardApiSupported: ComputedRef<boolean>
+  isClipboardReadSupported: ComputedRef<boolean>
   isSupported: ComputedRef<boolean>
   text: Ref<string>
   copied: Ref<boolean>
@@ -110,6 +112,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   }
 
   return {
+    isClipboardApiSupported,
+    isClipboardReadSupported,
     isSupported,
     text: text as ComputedRef<string>,
     copied: copied as ComputedRef<boolean>,
