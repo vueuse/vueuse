@@ -38,11 +38,39 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface UseClipboardReturn<Optional> {
+  /**
+   * Whether Clipboard API is supported or not
+   */
   isClipboardApiSupported: ComputedRef<boolean>
+
+  /**
+   * Firefox does support Clipboard API, but only writing
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/readText#browser_compatibility
+   */
   isClipboardReadSupported: ComputedRef<boolean>
+
+  /**
+   * Whether it is possible to copy text via JS or not
+   */
   isSupported: ComputedRef<boolean>
+
+  /**
+   * The current text inside the clipboard
+   */
   text: Ref<string>
+
+  /**
+   * Status where the target text is copied
+   */
   copied: Ref<boolean>
+
+  /**
+   * The function for Copying the text
+   *
+   * @param {string} text to be copied
+   * @returns {Promise<void>}
+   */
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
 }
 
@@ -64,7 +92,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   } = options
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
-  const isSupported = computed(() => isClipboardApiSupported.value || legacy)
+  const isClipboardReadSupported = useSupported(() => (navigator && 'clipboard' in navigator) && navigator.clipboard.readText)
+  const isSupported = computed(() => (isClipboardApiSupported.value && isClipboardReadSupported.value) || legacy)
   const text = ref('')
   const copied = ref(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
