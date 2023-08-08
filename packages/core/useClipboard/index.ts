@@ -38,9 +38,9 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface UseClipboardReturn<Optional> {
-  isSupported: Ref<boolean>
-  text: ComputedRef<string>
-  copied: ComputedRef<boolean>
+  isSupported: ComputedRef<boolean>
+  text: Ref<string>
+  copied: Ref<boolean>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
 }
 
