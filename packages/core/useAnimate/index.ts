@@ -222,7 +222,7 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    el && update()
+    el && update(true)
   })
 
   watch(() => keyframes, (value) => {
