@@ -1,6 +1,6 @@
 import { isDef } from '@vueuse/shared'
 import type { Ref, UnwrapRef, WritableComputedRef } from 'vue-demi'
-import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, nextTick, ref, watch } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
 import { cloneFnJSON } from '../useCloned'
 
@@ -127,16 +127,23 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   if (passive) {
     const initialValue = getValue()
     const proxy = ref<P[K]>(initialValue!)
+    let isUpdating = false
 
     watch(
       () => props[key!],
-      v => (proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>,
+      (v) => {
+        if (!isUpdating) {
+          isUpdating = true
+          ;(proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>
+          nextTick(() => isUpdating = false)
+        }
+      },
     )
 
     watch(
       proxy,
       (v) => {
-        if (v !== props[key!] || deep)
+        if (!isUpdating && (v !== props[key!] || deep))
           triggerEmit(v as P[K])
       },
       { deep },
