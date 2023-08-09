@@ -25,3 +25,29 @@ export const isIOS = /*#__PURE__*/ getIsIOS()
 function getIsIOS() {
   return isClient && /*#__PURE__*/ window?.navigator?.userAgent && /*#__PURE__*/ /iP(ad|hone|od)/.test(/*#__PURE__*/ window.navigator.userAgent)
 }
+
+export const shallowEqual = (a: any, b: any) => {
+  if (Object.is(a, b))
+    return true
+
+  if (
+    typeof a !== 'object'
+    || typeof b !== 'object'
+    || a === null
+    || b === null
+  )
+    return false
+
+  const aKeys = Object.keys(a)
+  const bKeys = Object.keys(b)
+
+  if (aKeys.length !== bKeys.length)
+    return false
+
+  for (let i = 0; i < aKeys.length; ++i) {
+    if (!hasOwn(b, aKeys[i]) || !Object.is(a[aKeys[i]], b[bKeys[i]]))
+      return false
+  }
+
+  return true
+}

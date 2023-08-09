@@ -39,4 +39,33 @@ export default {
 </script>
 ```
 
+## Directive Usage
+
+```vue {20}
+<script setup lang="ts">
+import { vResizeObserver } from '@vueuse/components'
+import { ref } from 'vue'
+
+const disabled = ref(false)
+
+function onResize(entries) {
+  const [entry] = entries
+  console.log(entry)
+}
+
+function toggle() {
+  disabled.value = !disabled.value
+}
+</script>
+
+<template>
+  <div>
+    <button @click="toggle">
+      toggle
+    </button>
+    <textarea v-resize-observer:[disabled]="onResize" />
+  </div>
+</template>
+```
+
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
