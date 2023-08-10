@@ -1,4 +1,5 @@
 import { ref, watch } from 'vue-demi'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
@@ -36,7 +37,7 @@ export function useMouseInElement(
   const elementWidth = ref(0)
   const isOutside = ref(true)
 
-  let stop = () => {}
+  let stop = noop
 
   if (window) {
     stop = watch(
@@ -53,8 +54,8 @@ export function useMouseInElement(
           height,
         } = el.getBoundingClientRect()
 
-        elementPositionX.value = left + window.pageXOffset
-        elementPositionY.value = top + window.pageYOffset
+        elementPositionX.value = left + window.scrollX
+        elementPositionY.value = top + window.scrollY
         elementHeight.value = height
         elementWidth.value = width
 
@@ -72,9 +73,9 @@ export function useMouseInElement(
       { immediate: true },
     )
 
-    useEventListener(document, 'mouseleave', () => {
-      isOutside.value = true
-    })
+    useEventListener(document, 'mouseleave', () => { isOutside.value = true }, { passive: true })
+
+    tryOnScopeDispose(stop)
   }
 
   return {
