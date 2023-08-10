@@ -9,7 +9,7 @@ const _cache = new WeakMap()
 
 export function useRouteQuery(
   name: string
-): Ref<null | string | string[]>
+): Ref<null | string | string[] | undefined>
 
 export function useRouteQuery<
   T extends RouteQueryValueRaw = RouteQueryValueRaw,
