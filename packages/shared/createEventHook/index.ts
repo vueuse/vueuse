@@ -28,14 +28,14 @@ export function createEventHook<T = any>(): EventHook<T> {
 
   const on = (fn: (param: T) => void) => {
     fns.add(fn)
-    const offFn = () => off(fn)
-
-    tryOnScopeDispose(offFn)
-
     return {
-      off: offFn,
+      off: () => off(fn),
     }
   }
+
+  tryOnScopeDispose(() => {
+    fns.clear()
+  })
 
   const trigger = (param: T) => {
     return Promise.all(Array.from(fns).map(fn => fn(param)))
