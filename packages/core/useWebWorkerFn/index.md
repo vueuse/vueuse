@@ -45,7 +45,7 @@ const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
   numbers => numbers.map(pow),
   {
     timeout: 50000,
-    localDeps: () => [pow]
+    localDependencies: () => [pow]
   },
 )
 ```
