@@ -2,14 +2,16 @@
 import { computed, nextTick, ref } from 'vue'
 import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
 
+const pow = (value: number) => value * value
+const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
+
 function heavyTask() {
-  const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
-  const numbers: number[] = Array(5_000_000).fill(undefined).map(randomNumber)
+  const numbers: number[] = Array(5_000_000).fill(null).map(randomNumber)
   numbers.sort()
-  return numbers.slice(0, 5)
+  return numbers.slice(0, 5).map(pow)
 }
 
-const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask)
+const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(heavyTask, { localDependencies: () => [pow, randomNumber] })
 const time = useTimestamp()
 const computedTime = useDateFormat(time, 'YYYY-MM-DD HH:mm:ss SSS')
 const running = computed(() => workerStatus.value === 'RUNNING')

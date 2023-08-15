@@ -24,6 +24,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
    * An array that contains the external dependencies needed to run the worker
    */
   dependencies?: string[]
+  localDependencies?: () => unknown[]
 }
 
 /**
@@ -37,6 +38,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
   options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
+    localDependencies = () => [],
     timeout,
     window = defaultWindow,
   } = options
@@ -62,7 +64,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
   tryOnScopeDispose(workerTerminate)
 
   const generateWorker = () => {
-    const blobUrl = createWorkerBlobUrl(fn, dependencies)
+    const blobUrl = createWorkerBlobUrl(fn, dependencies, localDependencies)
     const newWorker: Worker & { _url?: string } = new Worker(blobUrl)
     newWorker._url = blobUrl
 

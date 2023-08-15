@@ -18,7 +18,7 @@ const { workerFn } = useWebWorkerFn(() => {
 })
 ```
 
-### With dependencies
+### With remote dependencies
 
 ```ts {7-9}
 import { useWebWorkerFn } from '@vueuse/core'
@@ -30,6 +30,22 @@ const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
     dependencies: [
       'https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js', // dateFns
     ],
+  },
+)
+```
+
+### With local dependencies
+
+```ts {9-9}
+import { useWebWorkerFn } from '@vueuse/core'
+
+const pow = (a: number) => a * a
+
+const { workerFn, workerStatus, workerTerminate } = useWebWorkerFn(
+  numbers => numbers.map(pow),
+  {
+    timeout: 50000,
+    localDeps: () => [pow]
   },
 )
 ```
