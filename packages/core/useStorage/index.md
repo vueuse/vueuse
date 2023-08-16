@@ -56,7 +56,7 @@ const state = useStorage(
   { mergeDefaults: true } // <--
 )
 
-console.log(state.value.stats) // 'nihao', from storage
+console.log(state.value.hello) // 'nihao', from storage
 console.log(state.value.greeting) // 'hello', from merged default value
 ```
 
