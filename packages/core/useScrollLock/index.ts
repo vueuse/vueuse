@@ -43,6 +43,19 @@ function preventDefault(rawEvent: TouchEvent): boolean {
   return false
 }
 
+function getTargetElement(
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
+): HTMLElement | SVGElement | null | undefined {
+  const el = toValue(element)
+  if (el instanceof Window)
+    return window.document.documentElement
+
+  if (el instanceof Document)
+    return document.documentElement
+
+  return el
+}
+
 /**
  * Lock scrolling of the element.
  *
@@ -58,8 +71,9 @@ export function useScrollLock(
   let initialOverflow: CSSStyleDeclaration['overflow']
 
   watch(toRef(element), (el) => {
-    if (el) {
-      const ele = el as HTMLElement
+    const target = getTargetElement(el)
+    if (target) {
+      const ele = target as HTMLElement
       initialOverflow = ele.style.overflow
       if (isLocked.value)
         ele.style.overflow = 'hidden'
@@ -69,7 +83,7 @@ export function useScrollLock(
   })
 
   const lock = () => {
-    const ele = (toValue(element) as HTMLElement)
+    const ele = getTargetElement(element)
     if (!ele || isLocked.value)
       return
     if (isIOS) {
@@ -85,7 +99,7 @@ export function useScrollLock(
   }
 
   const unlock = () => {
-    const ele = (toValue(element) as HTMLElement)
+    const ele = getTargetElement(element)
     if (!ele || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()
