@@ -40,6 +40,10 @@ export interface DebounceFilterOptions {
   rejectOnCancel?: boolean
 }
 
+interface CurResolver {
+  value: AnyFn
+}
+
 /**
  * @internal
  */
@@ -67,6 +71,9 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   let timer: ReturnType<typeof setTimeout> | undefined
   let maxTimer: ReturnType<typeof setTimeout> | undefined | null
   let lastRejector: AnyFn = noop
+  const curResolver: CurResolver = {
+    value: noop,
+  }
 
   const _clearTimeout = (timer: ReturnType<typeof setTimeout>) => {
     clearTimeout(timer)
@@ -91,22 +98,23 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
 
     return new Promise((resolve, reject) => {
       lastRejector = options.rejectOnCancel ? reject : resolve
-      // Create the maxTimer. Clears the regular timer on invoke
+      curResolver.value = resolve
+      // Create the maxTimer. Clears the regular timer after invoke
       if (maxDuration && !maxTimer) {
         maxTimer = setTimeout(() => {
+          curResolver.value(invoke())
           if (timer)
             _clearTimeout(timer)
           maxTimer = null
-          resolve(invoke())
         }, maxDuration)
       }
 
-      // Create the regular timer. Clears the max timer on invoke
+      // Create the regular timer. Clears the max timer after invoke
       timer = setTimeout(() => {
+        resolve(invoke())
         if (maxTimer)
           _clearTimeout(maxTimer)
         maxTimer = null
-        resolve(invoke())
       }, duration)
     })
   }
