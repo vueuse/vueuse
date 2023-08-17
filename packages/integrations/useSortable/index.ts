@@ -83,17 +83,11 @@ export function moveArrayElement<T>(
 
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
-    array.splice(to, 0, element)
-
-    const update = (fn: Function) => {
-      fn()
-      // @ts-expect-error is ref
-      list.value = array
-    }
-    (_valueIsRef
-      ? update
-      : nextTick)(() => {
+    nextTick(() => {
       array.splice(to, 0, element)
+      // When list is ref, assign array to list.value
+      if (_valueIsRef)
+        list.value = array
     })
   }
 }
