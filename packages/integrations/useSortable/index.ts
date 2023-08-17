@@ -1,7 +1,7 @@
 import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
-import { nextTick } from 'vue-demi'
+import { isRef, nextTick } from 'vue-demi'
 
 export interface UseSortableReturn {
   /**
@@ -77,9 +77,23 @@ export function moveArrayElement<T>(
   from: number,
   to: number,
 ): void {
-  const array = toValue(list)
+  const _valueIsRef = isRef(list)
+  // When the list is a ref, make a shallow copy of it to avoid repeatedly triggering side effects when moving elements
+  const array = _valueIsRef ? [...toValue(list)] : toValue(list)
+
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
-    nextTick(() => array.splice(to, 0, element))
+    array.splice(to, 0, element)
+
+    const update = (fn: Function) => {
+      fn()
+      // @ts-expect-error is ref
+      list.value = array
+    }
+    (_valueIsRef
+      ? update
+      : nextTick)(() => {
+      array.splice(to, 0, element)
+    })
   }
 }
