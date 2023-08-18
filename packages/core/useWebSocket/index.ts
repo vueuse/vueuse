@@ -176,6 +176,7 @@ export function useWebSocket<Data = any>(
     if (!wsRef.value)
       return
     explicitlyClosed = true
+    resetHeartbeat()
     heartbeatPause?.()
     wsRef.value.close(code, reason)
   }
