@@ -1,7 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { customRef, nextTick } from 'vue-demi'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
+import type { Ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
 const _cache = new WeakMap()
@@ -15,7 +16,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
@@ -24,7 +25,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
@@ -45,24 +46,49 @@ export function useRouteQuery<
 
   _query.set(name, route.query[name])
 
-  return customRef<any>((track, trigger) => ({
-    get() {
-      track()
+  let _trigger: () => void
 
-      const data = _query.get(name) ?? defaultValue
-      return transform(data as T)
-    },
-    set(v) {
-      _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+  const proxy = customRef<any>((track, trigger) => {
+    _trigger = trigger
 
-      trigger()
+    return {
+      get() {
+        track()
 
-      nextTick(() => {
-        router[toValue(mode)]({
-          ...route,
-          query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+        const data = _query.get(name)
+
+        return transform(data !== undefined ? data : toValue(defaultValue))
+      },
+      set(v) {
+        if (_query.get(name) === v)
+          return
+
+        _query.set(name, v)
+
+        trigger()
+
+        nextTick(() => {
+          const { params, query, hash } = route
+
+          router[toValue(mode)]({
+            params,
+            query: { ...query, ...Object.fromEntries(_query.entries()) },
+            hash,
+          })
         })
-      })
+      },
+    }
+  })
+
+  watch(
+    () => route.query[name],
+    (v) => {
+      _query.set(name, v)
+
+      _trigger()
     },
-  }))
+    { flush: 'sync' },
+  )
+
+  return proxy as any as Ref<K>
 }

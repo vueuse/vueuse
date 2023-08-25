@@ -1,4 +1,4 @@
-import { computed, isVue3, reactive, ref } from 'vue-demi'
+import { computed, isVue3, reactive, ref, watchSyncEffect } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
 import { toRefs } from '.'
 
@@ -96,6 +96,44 @@ describe('toRefs', () => {
 
     refs[1].value = 1
     expect(spy).toHaveBeenLastCalledWith(['a', 1])
+  })
+
+  it('should trigger unwanted effects with replaceRef = false', () => {
+    const spy = vi.fn()
+    const obj = ref({
+      a: 'a',
+      b: 0,
+    })
+
+    const { a, b } = toRefs(obj, { replaceRef: true })
+    expect(a.value).toBe('a')
+    expect(b.value).toBe(0)
+
+    watchSyncEffect(() => spy(a.value))
+
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    b.value = 1
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
+
+  it('should not trigger unwanted effects with replaceRef = false', () => {
+    const spy = vi.fn()
+    const obj = ref({
+      a: 'a',
+      b: 0,
+    })
+
+    const { a, b } = toRefs(obj, { replaceRef: false })
+    expect(a.value).toBe('a')
+    expect(b.value).toBe(0)
+
+    watchSyncEffect(() => spy(a.value))
+
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    b.value = 1
+    expect(spy).toHaveBeenCalledTimes(1)
   })
 
   it('should save instance of class', () => {

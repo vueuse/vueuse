@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/firebase",
-  "version": "10.2.1",
+  "version": "10.3.0",
   "description": "Enables realtime bindings for Firebase",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -24,32 +24,28 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "require": "./index.cjs",
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*",
     "./useAuth": {
-      "types": "./useAuth.d.ts",
-      "require": "./useAuth.cjs",
-      "import": "./useAuth.mjs"
+      "import": "./useAuth.mjs",
+      "require": "./useAuth.cjs"
     },
     "./useFirestore": {
-      "types": "./useFirestore.d.ts",
-      "require": "./useFirestore.cjs",
-      "import": "./useFirestore.mjs"
+      "import": "./useFirestore.mjs",
+      "require": "./useFirestore.cjs"
     },
     "./useRTDB": {
-      "types": "./useRTDB.d.ts",
-      "require": "./useRTDB.cjs",
-      "import": "./useRTDB.mjs"
+      "import": "./useRTDB.mjs",
+      "require": "./useRTDB.cjs"
     }
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "firebase": ">=9.0.0"
   },

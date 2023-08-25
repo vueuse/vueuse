@@ -6,7 +6,7 @@ import type { UseResizeObserverOptions } from '../useResizeObserver'
 
 export const UseElementSize = /*#__PURE__*/ defineComponent<ElementSize & UseResizeObserverOptions & RenderableComponent>({
   name: 'UseElementSize',
-  props: ['width', 'height', 'box'] as unknown as undefined,
+  props: ['width', 'height', 'box', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const data = reactive(useElementSize(target, { width: props.width, height: props.height }, { box: props.box }))

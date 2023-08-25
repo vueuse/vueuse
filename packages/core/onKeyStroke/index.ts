@@ -35,7 +35,7 @@ export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => v
 export function onKeyStroke(handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
 
 /**
- * Listen for keyboard keys being stroked.
+ * Listen for keyboard keystrokes.
  *
  * @see https://vueuse.org/onKeyStroke
  */

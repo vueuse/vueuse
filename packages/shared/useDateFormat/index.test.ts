@@ -104,4 +104,9 @@ describe('useDateFormat', () => {
       expect(useDateFormat(new Date(dateStr), formatStr, { customMeridiem }).value).toBe(expected)
     })
   })
+
+  it('formatDate', () => {
+    expect(formatDate(new Date('Sun Jul 30 2023 21:15:42 GMT+0800'), 'd'))
+      .toMatchInlineSnapshot('"0"')
+  })
 })

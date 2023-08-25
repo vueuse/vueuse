@@ -66,12 +66,12 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
   }
-  return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 || matches[match]?.() || match)
+  return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 ?? matches[match]?.() ?? match)
 }
 
 export function normalizeDate(date: DateLike) {
   if (date === null)
-    return new Date(NaN) // null is invalid
+    return new Date(Number.NaN) // null is invalid
   if (date === undefined)
     return new Date()
   if (date instanceof Date)

@@ -1,9 +1,11 @@
-import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
-import type { UnwrapNestedRefs } from 'vue-demi'
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
+import type { UnwrapNestedRefs } from 'vue-demi'
+import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
+import { useElementVisibility } from '../useElementVisibility'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
+import { resolveElement } from '../_resolve-element'
 
 export interface UseInfiniteScrollOptions extends UseScrollOptions {
   /**
@@ -57,16 +59,23 @@ export function useInfiniteScroll(
   const promise = ref<any>()
   const isLoading = computed(() => !!promise.value)
 
+  // Document and Window cannot be observed by IntersectionObserver
+  const observedElement = computed<HTMLElement | SVGElement | null | undefined>(() => {
+    return resolveElement(toValue(element))
+  })
+
+  const isElementVisible = useElementVisibility(observedElement)
+
   function checkAndLoad() {
     state.measure()
 
-    const el = toValue(element) as HTMLElement
-    if (!el || !el.offsetParent)
+    if (!observedElement.value || !isElementVisible.value)
       return
 
+    const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
     const isNarrower = (direction === 'bottom' || direction === 'top')
-      ? el.scrollHeight <= el.clientHeight
-      : el.scrollWidth <= el.clientWidth
+      ? scrollHeight <= clientHeight
+      : scrollWidth <= clientWidth
 
     if (state.arrivedState[direction] || isNarrower) {
       if (!promise.value) {
@@ -83,7 +92,7 @@ export function useInfiniteScroll(
   }
 
   watch(
-    () => [state.arrivedState[direction], toValue(element)],
+    () => [state.arrivedState[direction], isElementVisible.value],
     checkAndLoad,
     { immediate: true },
   )

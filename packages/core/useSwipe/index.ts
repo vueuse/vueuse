@@ -147,8 +147,7 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', onTouchEnd, listenerOptions),
-    useEventListener(target, 'touchcancel', onTouchEnd, listenerOptions),
+    useEventListener(target, ['touchend', 'touchcancel'], onTouchEnd, listenerOptions),
   ]
 
   const stop = () => stops.forEach(s => s())

@@ -13,8 +13,8 @@ describe('useToNumber', () => {
 
     value.value = 'hi'
 
-    expect(float.value).toBe(NaN)
-    expect(int.value).toBe(NaN)
+    expect(float.value).toBe(Number.NaN)
+    expect(int.value).toBe(Number.NaN)
 
     value.value = 123.4
 

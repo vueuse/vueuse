@@ -44,7 +44,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   initialValue?: Position
 }
 
-const BuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
+const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
   page: event => [event.pageX, event.pageY],
   client: event => [event.clientX, event.clientY],
   screen: event => [event.screenX, event.screenY],
@@ -78,7 +78,7 @@ export function useMouse(options: UseMouseOptions = {}) {
 
   const extractor = typeof type === 'function'
     ? type
-    : BuiltinExtractors[type]
+    : UseMouseBuiltinExtractors[type]
 
   const mouseHandler = (event: MouseEvent) => {
     const result = extractor(event)
@@ -113,13 +113,12 @@ export function useMouse(options: UseMouseOptions = {}) {
     : (event: TouchEvent) => touchHandler(event)
 
   if (target) {
-    useEventListener(target, 'mousemove', mouseHandlerWrapper, { passive: true })
-    useEventListener(target, 'dragover', mouseHandlerWrapper, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
     if (touch && type !== 'movement') {
-      useEventListener(target, 'touchstart', touchHandlerWrapper, { passive: true })
-      useEventListener(target, 'touchmove', touchHandlerWrapper, { passive: true })
+      useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
       if (resetOnTouchEnds)
-        useEventListener(target, 'touchend', reset, { passive: true })
+        useEventListener(target, 'touchend', reset, listenerOptions)
     }
   }
 
