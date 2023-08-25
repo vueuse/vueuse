@@ -3,6 +3,7 @@ import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 
 import { useEventListener } from '../useEventListener'
+import { resolveElement } from '../_resolve-element'
 
 function checkOverflowScroll(ele: Element): boolean {
   const style = window.getComputedStyle(ele)
@@ -58,8 +59,9 @@ export function useScrollLock(
   let initialOverflow: CSSStyleDeclaration['overflow']
 
   watch(toRef(element), (el) => {
-    if (el) {
-      const ele = el as HTMLElement
+    const target = resolveElement(toValue(el))
+    if (target) {
+      const ele = target as HTMLElement
       initialOverflow = ele.style.overflow
       if (isLocked.value)
         ele.style.overflow = 'hidden'
@@ -69,27 +71,27 @@ export function useScrollLock(
   })
 
   const lock = () => {
-    const ele = (toValue(element) as HTMLElement)
-    if (!ele || isLocked.value)
+    const el = resolveElement(toValue(element))
+    if (!el || isLocked.value)
       return
     if (isIOS) {
       stopTouchMoveListener = useEventListener(
-        ele,
+        el,
         'touchmove',
         (e) => { preventDefault(e as TouchEvent) },
         { passive: false },
       )
     }
-    ele.style.overflow = 'hidden'
+    el.style.overflow = 'hidden'
     isLocked.value = true
   }
 
   const unlock = () => {
-    const ele = (toValue(element) as HTMLElement)
-    if (!ele || !isLocked.value)
+    const el = resolveElement(toValue(element))
+    if (!el || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()
-    ele.style.overflow = initialOverflow
+    el.style.overflow = initialOverflow
     isLocked.value = false
   }
 

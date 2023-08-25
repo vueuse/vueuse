@@ -24,8 +24,8 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*"
   },
@@ -45,6 +45,6 @@
   },
   "devDependencies": {
     "@nuxt/schema": "^3.6.5",
-    "unimport": "^3.1.0"
+    "unimport": "^3.2.0"
   }
 }

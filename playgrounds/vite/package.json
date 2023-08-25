@@ -9,11 +9,11 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^4.3.3",
     "@vueuse/core": "file:../../packages/core/dist",
     "@vueuse/metadata": "file:../../packages/metadata/dist",
     "@vueuse/shared": "file:../../packages/shared/dist",
-    "vite": "^4.4.7"
+    "vite": "^4.4.9"
   },
   "resolutions": {
     "@vueuse/core": "file:../../packages/core/dist",

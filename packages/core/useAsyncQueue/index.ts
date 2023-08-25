@@ -4,6 +4,9 @@ import { reactive, ref } from 'vue-demi'
 
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>
 
+type MapQueueTask<T extends any[]> = {
+  [K in keyof T]: UseAsyncQueueTask<T[K]>
+}
 export interface UseAsyncQueueResult<T> {
   state: 'aborted' | 'fulfilled' | 'pending' | 'rejected'
   data: T | null
@@ -47,19 +50,16 @@ export interface UseAsyncQueueOptions {
  * @param tasks
  * @param options
  */
-export function useAsyncQueue<T1>(tasks: [UseAsyncQueueTask<T1>], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<[UseAsyncQueueResult<T1>]>
-export function useAsyncQueue<T1, T2>(tasks: [UseAsyncQueueTask<T1>, UseAsyncQueueTask<T2>], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<[UseAsyncQueueResult<T1>, UseAsyncQueueResult<T2>]>
-export function useAsyncQueue<T1, T2, T3>(tasks: [UseAsyncQueueTask<T1>, UseAsyncQueueTask<T2>, UseAsyncQueueTask<T3>], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<[UseAsyncQueueResult<T1>, UseAsyncQueueResult<T2>, UseAsyncQueueResult<T3>]>
-export function useAsyncQueue<T1, T2, T3, T4>(tasks: [UseAsyncQueueTask<T1>, UseAsyncQueueTask<T2>, UseAsyncQueueTask<T3>, UseAsyncQueueTask<T4>], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<[UseAsyncQueueResult<T1>, UseAsyncQueueResult<T2>, UseAsyncQueueResult<T3>, UseAsyncQueueResult<T4>]>
-export function useAsyncQueue<T1, T2, T3, T4, T5>(tasks: [UseAsyncQueueTask<T1>, UseAsyncQueueTask<T2>, UseAsyncQueueTask<T3>, UseAsyncQueueTask<T4>, UseAsyncQueueTask<T5>], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<[UseAsyncQueueResult<T1>, UseAsyncQueueResult<T2>, UseAsyncQueueResult<T3>, UseAsyncQueueResult<T4>, UseAsyncQueueResult<T5>]>
-export function useAsyncQueue<T>(tasks: UseAsyncQueueTask<T>[], options?: UseAsyncQueueOptions): UseAsyncQueueReturn<UseAsyncQueueResult<T>[]>
-export function useAsyncQueue<T = any>(tasks: UseAsyncQueueTask<any>[], options: UseAsyncQueueOptions = {}): UseAsyncQueueReturn<UseAsyncQueueResult<T>[]> {
+export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
+  tasks: S & Array<UseAsyncQueueTask<any>>,
+  options?: UseAsyncQueueOptions,
+): UseAsyncQueueReturn<{ [P in keyof T]: UseAsyncQueueResult<T[P]> }> {
   const {
     interrupt = true,
     onError = noop,
     onFinished = noop,
     signal,
-  } = options
+  } = options || {}
 
   const promiseState: Record<
     UseAsyncQueueResult<T>['state'],
@@ -73,7 +73,7 @@ export function useAsyncQueue<T = any>(tasks: UseAsyncQueueTask<any>[], options:
 
   const initialResult = Array.from(Array.from({ length: tasks.length }), () => ({ state: promiseState.pending, data: null }))
 
-  const result = reactive(initialResult) as UseAsyncQueueResult<T>[]
+  const result = reactive(initialResult) as { [P in keyof T]: UseAsyncQueueResult<T[P]> }
 
   const activeIndex = ref<number>(-1)
 
