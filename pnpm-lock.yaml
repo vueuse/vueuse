@@ -2954,7 +2954,7 @@ packages:
       '@types/long': 4.0.2
       lodash.camelcase: 4.3.0
       long: 4.0.0
-      protobufjs: 6.11.3
+      protobufjs: 6.11.4
       yargs: 16.2.0
 
   /@grpc/proto-loader@0.7.6:
@@ -8105,7 +8105,7 @@ packages:
     resolution: {integrity: sha512-7CGd4ZQu5M/FgQLlcgcsY858wf+ukg1ma5M95FACSfC54+88vm594Nv6C3NqWfk8wyK1u+E3SzvVsxr7bwONmg==}
     engines: {node: '>=14'}
     dependencies:
-      cliui: github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
+      cliui: git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
     dev: true
@@ -10300,8 +10300,8 @@ packages:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
     dev: true
 
-  /protobufjs@6.11.3:
-    resolution: {integrity: sha512-xL96WDdCZYdU7Slin569tFX712BxsxslWwAfAhCYjQKGTq7dAU91Lomy6nLLhh/dyGhk/YH4TwTSRxTzhuHyZg==}
+  /protobufjs@6.11.4:
+    resolution: {integrity: sha512-5kQWPaJHi1WoCpjTGszzQ32PG2F4+wRY6BmAT4Vfw56Q2FZ4YZzK20xUYQH4YkfehY1e6QSICrJquM6xXZNcrw==}
     hasBin: true
     requiresBuild: true
     dependencies:
@@ -13160,8 +13160,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
-    resolution: {tarball: https://codeload.github.com/isaacs/cliui/tar.gz/9f97090165675fdda63a79c29bc36bb1033506b0}
+  git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
+    resolution: {commit: 9f97090165675fdda63a79c29bc36bb1033506b0, repo: git@github.com:isaacs/cliui.git, type: git}
     name: cliui
     version: 8.0.1
     engines: {node: '>=12'}
