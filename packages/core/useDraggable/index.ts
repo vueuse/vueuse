@@ -42,6 +42,13 @@ export interface UseDraggableOptions {
   draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
+   * Element for calculating bounds (If not set, it will use the event's target).
+   *
+   * @default undefined
+   */
+  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
+
+  /**
    * Handle that triggers the drag event
    *
    * @default target
@@ -107,6 +114,7 @@ export function useDraggable(
     initialValue,
     axis = 'both',
     draggingElement = defaultWindow,
+    containerElement,
     handle: draggingHandle = target,
   } = options
 
@@ -134,7 +142,8 @@ export function useDraggable(
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
-    const rect = toValue(target)!.getBoundingClientRect()
+    const container = toValue(containerElement) ?? toValue(target)
+    const rect = container!.getBoundingClientRect()
     const pos = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,

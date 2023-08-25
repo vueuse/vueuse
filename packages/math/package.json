@@ -23,8 +23,8 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*"
   },

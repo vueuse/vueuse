@@ -22,13 +22,13 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*",
     "./metadata": {
-      "require": "./metadata.cjs",
-      "import": "./metadata.mjs"
+      "import": "./metadata.mjs",
+      "require": "./metadata.cjs"
     }
   },
   "main": "./index.cjs",
