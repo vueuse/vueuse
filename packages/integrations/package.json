@@ -27,64 +27,64 @@
     },
     "./*": "./*",
     "./useAsyncValidator": {
-      "require": "./useAsyncValidator.cjs",
-      "import": "./useAsyncValidator.mjs"
+      "import": "./useAsyncValidator.mjs",
+      "require": "./useAsyncValidator.cjs"
     },
     "./useAxios": {
-      "require": "./useAxios.cjs",
-      "import": "./useAxios.mjs"
+      "import": "./useAxios.mjs",
+      "require": "./useAxios.cjs"
     },
     "./useCookies": {
-      "require": "./useCookies.cjs",
-      "import": "./useCookies.mjs"
+      "import": "./useCookies.mjs",
+      "require": "./useCookies.cjs"
     },
     "./useDrauu": {
-      "require": "./useDrauu.cjs",
-      "import": "./useDrauu.mjs"
+      "import": "./useDrauu.mjs",
+      "require": "./useDrauu.cjs"
     },
     "./useFocusTrap": {
-      "require": "./useFocusTrap.cjs",
-      "import": "./useFocusTrap.mjs"
+      "import": "./useFocusTrap.mjs",
+      "require": "./useFocusTrap.cjs"
     },
     "./useFocusTrap/component": {
-      "require": "./useFocusTrap/component.cjs",
-      "import": "./useFocusTrap/component.mjs"
+      "import": "./useFocusTrap/component.mjs",
+      "require": "./useFocusTrap/component.cjs"
     },
     "./useFuse": {
-      "require": "./useFuse.cjs",
-      "import": "./useFuse.mjs"
+      "import": "./useFuse.mjs",
+      "require": "./useFuse.cjs"
     },
     "./useJwt": {
-      "require": "./useJwt.cjs",
-      "import": "./useJwt.mjs"
+      "import": "./useJwt.mjs",
+      "require": "./useJwt.cjs"
     },
     "./useNProgress": {
-      "require": "./useNProgress.cjs",
-      "import": "./useNProgress.mjs"
+      "import": "./useNProgress.mjs",
+      "require": "./useNProgress.cjs"
     },
     "./useQRCode": {
-      "require": "./useQRCode.cjs",
-      "import": "./useQRCode.mjs"
+      "import": "./useQRCode.mjs",
+      "require": "./useQRCode.cjs"
     },
     "./useChangeCase": {
-      "require": "./useChangeCase.cjs",
-      "import": "./useChangeCase.mjs"
+      "import": "./useChangeCase.mjs",
+      "require": "./useChangeCase.cjs"
     },
     "./useAsyncValidator/component": {
-      "require": "./useAsyncValidator/component.cjs",
-      "import": "./useAsyncValidator/component.mjs"
+      "import": "./useAsyncValidator/component.mjs",
+      "require": "./useAsyncValidator/component.cjs"
     },
     "./useIDBKeyval": {
-      "require": "./useIDBKeyval.cjs",
-      "import": "./useIDBKeyval.mjs"
+      "import": "./useIDBKeyval.mjs",
+      "require": "./useIDBKeyval.cjs"
     },
     "./useSortable": {
-      "require": "./useSortable.cjs",
-      "import": "./useSortable.mjs"
+      "import": "./useSortable.mjs",
+      "require": "./useSortable.cjs"
     },
     "./useSortable/component": {
-      "require": "./useSortable/component.cjs",
-      "import": "./useSortable/component.mjs"
+      "import": "./useSortable/component.mjs",
+      "require": "./useSortable/component.cjs"
     }
   },
   "main": "./index.cjs",

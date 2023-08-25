@@ -29,16 +29,16 @@
     },
     "./*": "./*",
     "./useAuth": {
-      "require": "./useAuth.cjs",
-      "import": "./useAuth.mjs"
+      "import": "./useAuth.mjs",
+      "require": "./useAuth.cjs"
     },
     "./useFirestore": {
-      "require": "./useFirestore.cjs",
-      "import": "./useFirestore.mjs"
+      "import": "./useFirestore.mjs",
+      "require": "./useFirestore.cjs"
     },
     "./useRTDB": {
-      "require": "./useRTDB.cjs",
-      "import": "./useRTDB.mjs"
+      "import": "./useRTDB.mjs",
+      "require": "./useRTDB.cjs"
     }
   },
   "main": "./index.cjs",

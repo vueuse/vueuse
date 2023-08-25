@@ -265,13 +265,13 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            require: `./${i.name}.cjs`,
             import: `./${i.name}.mjs`,
+            require: `./${i.name}.cjs`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
-              require: `./${i.name}/component.cjs`,
               import: `./${i.name}/component.mjs`,
+              require: `./${i.name}/component.cjs`,
             }
           }
         })
