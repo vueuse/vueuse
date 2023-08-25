@@ -81,7 +81,15 @@ export interface WebNotificationOptions {
   vibrate?: number[]
 }
 
-export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
+export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
+  /**
+   * Request for permissions onMounted if it's not granted.
+   *
+   * Can be disabled and calling `ensurePermissions` to grant afterwords.
+   *
+   * @default true
+   */
+  requestPermissions?: boolean
 }
 
 /**
@@ -93,22 +101,33 @@ export interface UseWebNotificationOptions extends WebNotificationOptions, Confi
  * @param defaultOptions of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
  */
-export function useWebNotification(defaultOptions: UseWebNotificationOptions = {}) {
+export function useWebNotification(
+  options: UseWebNotificationOptions = {},
+) {
   const {
     window = defaultWindow,
-  } = defaultOptions
+    requestPermissions: _requestForPermissions = true,
+  } = options
+
+  const defaultWebNotificationOptions: WebNotificationOptions = options
 
   const isSupported = useSupported(() => !!window && 'Notification' in window)
 
+  const permissionGranted = ref(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+
   const notification: Ref<Notification | null> = ref(null)
 
-  // Request permission to use web notifications:
-  const requestPermission = async () => {
+  const ensurePermissions = async () => {
     if (!isSupported.value)
       return
 
-    if ('permission' in Notification && Notification.permission !== 'denied')
-      await Notification.requestPermission()
+    if (!permissionGranted.value && Notification.permission !== 'denied') {
+      const result = await Notification.requestPermission()
+      if (result === 'granted')
+        permissionGranted.value = true
+    }
+
+    return permissionGranted.value
   }
 
   const { on: onClick, trigger: clickTrigger }: EventHook = createEventHook<Event>()
@@ -118,11 +137,13 @@ export function useWebNotification(defaultOptions: UseWebNotificationOptions = {
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
-    if (!isSupported.value)
+    // If either the browser does not support notifications or the user has
+    // not granted permission, do nothing:
+    if (!isSupported.value && !permissionGranted.value)
       return
 
-    await requestPermission()
-    const options = Object.assign({}, defaultOptions, overrides)
+    const options = Object.assign({}, defaultWebNotificationOptions, overrides)
+
     notification.value = new Notification(options.title || '', options)
 
     notification.value.onclick = clickTrigger
@@ -141,10 +162,8 @@ export function useWebNotification(defaultOptions: UseWebNotificationOptions = {
   }
 
   // On mount, attempt to request permission:
-  tryOnMounted(async () => {
-    if (isSupported.value)
-      await requestPermission()
-  })
+  if (_requestForPermissions)
+    tryOnMounted(ensurePermissions)
 
   // Attempt cleanup of the notification:
   tryOnScopeDispose(close)
@@ -167,6 +186,8 @@ export function useWebNotification(defaultOptions: UseWebNotificationOptions = {
   return {
     isSupported,
     notification,
+    ensurePermissions,
+    permissionGranted,
     show,
     close,
     onClick,

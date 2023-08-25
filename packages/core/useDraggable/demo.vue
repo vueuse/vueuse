@@ -23,7 +23,7 @@ const { x, y, style } = useDraggable(el, {
     <div
       ref="el"
       p="x-4 y-2"
-      border="~ gray-400/30 rounded"
+      border="~ gray-800/30 rounded"
       shadow="~ hover:lg"
       class="fixed bg-$vp-c-bg select-none cursor-move z-24"
       style="touch-action:none;"

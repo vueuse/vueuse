@@ -1,4 +1,5 @@
 import { join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'
@@ -11,6 +12,8 @@ import { packages } from '../meta/packages'
 export const git = Git()
 
 export const DOCS_URL = 'https://vueuse.org'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export const DIR_ROOT = resolve(__dirname, '..')
 export const DIR_SRC = resolve(__dirname, '../packages')
@@ -34,14 +37,14 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/export {}/g, '')
 
   const prettier = await import('prettier')
-  return prettier
+  return (await prettier
     .format(
       types,
       {
         semi: false,
         parser: 'typescript',
       },
-    )
+    ))
     .trim()
 }
 
