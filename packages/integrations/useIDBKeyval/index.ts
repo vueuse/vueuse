@@ -32,7 +32,12 @@ export interface UseIDBOptions extends ConfigurableFlush {
    * @default true
    */
   writeDefaults?: boolean
+}
 
+export interface UseIDBKeyvalReturn<T> {
+  data: RemovableRef<T>
+  isFinished: Ref<boolean>
+  set(value: T): Promise<void>
 }
 
 /**
@@ -45,7 +50,7 @@ export function useIDBKeyval<T>(
   key: IDBValidKey,
   initialValue: MaybeRefOrGetter<T>,
   options: UseIDBOptions = {},
-): { data: RemovableRef<T>; isFinished: Ref<boolean>; set(value: T): Promise<void> } {
+): UseIDBKeyvalReturn<T> {
   const {
     flush = 'pre',
     deep = true,
@@ -100,7 +105,10 @@ export function useIDBKeyval<T>(
     }
   }
 
-  const { pause: pauseWatch, resume: resumeWatch } = watchPausable(data, () => write(), { flush, deep })
+  const {
+    pause: pauseWatch,
+    resume: resumeWatch,
+  } = watchPausable(data, () => write(), { flush, deep })
 
   async function setData(value: T): Promise<void> {
     pauseWatch()
@@ -109,5 +117,9 @@ export function useIDBKeyval<T>(
     resumeWatch()
   }
 
-  return { set: setData, isFinished, data: data as RemovableRef<T> }
+  return {
+    set: setData,
+    isFinished,
+    data: data as RemovableRef<T>,
+  }
 }
