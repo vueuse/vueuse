@@ -40,7 +40,7 @@ function commonTransformers(req: RestRequest, _: any, ctx: RestContext) {
  * @example https://example.com?status=301&text=thanks&delay=1000
  *          will respond in 1000ms with statusCode 300 and the response body "thanks" as a string
  */
-export const server = setupServer(
+const server = setupServer(
   rest.post(baseUrl, (req, res, ctx) => {
     // Support all the normal examples (delay, status, text, and json)
     const t = commonTransformers(req, res, ctx)
