@@ -166,7 +166,7 @@ export interface UseFetchOptions {
   /**
    * Allow `onFetchError` hook to mutate the data
    *
-   * @default true
+   * @default false
    */
   updateDataOnFetchError?: boolean
 
@@ -325,7 +325,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     immediate: true,
     refetch: false,
     timeout: 0,
-    updateDataOnFetchError: true,
+    updateDataOnFetchError: false,
   }
 
   interface InternalConfig {
