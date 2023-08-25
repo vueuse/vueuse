@@ -164,11 +164,11 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
-   * Allow `onFetchError` hook to mutate the data
+   * Allow update the `data` ref when fetch error whenever provided, or mutated in the `onFetchError` callback
    *
    * @default false
    */
-  updateDataOnFetchError?: boolean
+  updateDataOnError?: boolean
 
   /**
    * Will run immediately before the fetch request is dispatched
@@ -218,7 +218,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnFetchError')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -325,7 +325,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     immediate: true,
     refetch: false,
     timeout: 0,
-    updateDataOnFetchError: false,
+    updateDataOnError: false,
   }
 
   interface InternalConfig {
@@ -496,7 +496,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           }
 
           error.value = errorData
-          if (options.updateDataOnFetchError)
+          if (options.updateDataOnError)
             data.value = responseData
 
           errorEvent.trigger(fetchError)

@@ -554,9 +554,9 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
-  it('should return data in onFetchError when updateDataOnFetchError is true', async () => {
+  it('should return data in onFetchError when updateDataOnError is true', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
-      updateDataOnFetchError: true,
+      updateDataOnError: true,
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
         ctx.data = 'Internal Server Error'
