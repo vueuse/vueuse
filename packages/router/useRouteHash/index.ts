@@ -1,12 +1,13 @@
-import { customRef, nextTick } from 'vue-demi'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptions, RouteHashValueRaw } from '../_types'
 
 let _hash: RouteHashValueRaw
 
 export function useRouteHash(
-  defaultValue?: RouteHashValueRaw,
+  defaultValue?: MaybeRefOrGetter<RouteHashValueRaw>,
   {
     mode = 'replace',
     route = useRoute(),
@@ -19,20 +20,42 @@ export function useRouteHash(
     _hash = undefined
   })
 
-  return customRef<RouteHashValueRaw>((track, trigger) => ({
-    get() {
-      track()
+  let _trigger: () => void
 
-      return _hash || defaultValue
+  const proxy = customRef<RouteHashValueRaw>((track, trigger) => {
+    _trigger = trigger
+
+    return {
+      get() {
+        track()
+
+        return _hash || toValue(defaultValue)
+      },
+      set(v) {
+        if (v === _hash)
+          return
+
+        _hash = v === null ? undefined : v
+
+        trigger()
+
+        nextTick(() => {
+          const { params, query } = route
+
+          router[toValue(mode)]({ params, query, hash: _hash as string })
+        })
+      },
+    }
+  })
+
+  watch(
+    () => route.hash,
+    () => {
+      _hash = route.hash
+      _trigger()
     },
-    set(v) {
-      _hash = v === null ? undefined : v
+    { flush: 'sync' },
+  )
 
-      trigger()
-
-      nextTick(() => {
-        router[toValue(mode)]({ ...route, hash: _hash as string })
-      })
-    },
-  }))
+  return proxy
 }

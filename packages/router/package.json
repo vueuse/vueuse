@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "10.2.0",
+  "version": "10.3.0",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -23,7 +23,6 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
@@ -33,7 +32,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "vue-router": ">=4.0.0-rc.1"
   },
@@ -42,6 +41,6 @@
     "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
-    "vue-router": "^4.2.2"
+    "vue-router": "^4.2.4"
   }
 }

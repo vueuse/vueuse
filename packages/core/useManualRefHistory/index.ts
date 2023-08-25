@@ -165,7 +165,7 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
     last.value = _createHistoryRecord()
 
     if (options.capacity && undoStack.value.length > options.capacity)
-      undoStack.value.splice(options.capacity, Infinity)
+      undoStack.value.splice(options.capacity, Number.POSITIVE_INFINITY)
     if (redoStack.value.length)
       redoStack.value.splice(0, redoStack.value.length)
   }

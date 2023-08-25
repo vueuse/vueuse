@@ -4,7 +4,7 @@ category: Sensors
 
 # onKeyStroke
 
-Listen for keyboard key being stroked.
+Listen for keyboard keystrokes.
 
 ## Usage
 

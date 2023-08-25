@@ -129,10 +129,11 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
     if (dts !== false) {
       configs.push({
         input,
-        output: {
-          file: `packages/${name}/dist/${fn}.d.ts`,
-          format: 'es',
-        },
+        output: [
+          { file: `packages/${name}/dist/${fn}.d.cts` },
+          { file: `packages/${name}/dist/${fn}.d.mts` },
+          { file: `packages/${name}/dist/${fn}.d.ts` }, // for node10 compatibility
+        ],
         plugins: [
           pluginDts,
         ],
@@ -168,10 +169,11 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
 
       configs.push({
         input: `packages/${name}/${fn}/component.ts`,
-        output: {
-          file: `packages/${name}/dist/${fn}/component.d.ts`,
-          format: 'es',
-        },
+        output: [
+          { file: `packages/${name}/dist/${fn}/component.d.cts` },
+          { file: `packages/${name}/dist/${fn}/component.d.mts` },
+          { file: `packages/${name}/dist/${fn}/component.d.ts` }, // for node10 compatibility
+        ],
         plugins: [
           pluginDts,
         ],

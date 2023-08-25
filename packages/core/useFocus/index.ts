@@ -12,6 +12,13 @@ export interface UseFocusOptions extends ConfigurableWindow {
    * @default false
    */
   initialValue?: boolean
+
+  /**
+   * Replicate the :focus-visible behavior of CSS
+   *
+   * @default false
+   */
+  focusVisible?: boolean
 }
 
 export interface UseFocusReturn {
@@ -30,12 +37,15 @@ export interface UseFocusReturn {
  * @param options
  */
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
-  const { initialValue = false } = options
+  const { initialValue = false, focusVisible = false } = options
 
   const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
 
-  useEventListener(targetElement, 'focus', () => innerFocused.value = true)
+  useEventListener(targetElement, 'focus', (event) => {
+    if (!focusVisible || (event.target as HTMLElement).matches?.(':focus-visible'))
+      innerFocused.value = true
+  })
   useEventListener(targetElement, 'blur', () => innerFocused.value = false)
 
   const focused = computed({

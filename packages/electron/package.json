@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "10.2.0",
+  "version": "10.3.0",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -24,7 +24,6 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "require": "./index.cjs",
       "import": "./index.mjs"
     },
@@ -32,7 +31,7 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "types": "./index.d.cts",
   "peerDependencies": {
     "electron": ">=9.0.0"
   },
