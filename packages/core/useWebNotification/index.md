@@ -51,18 +51,3 @@ onClose((evt: Event) => {
   // Do something with the notification on:close event...
 })
 ```
-
-The web notification permissions API can also be called onMounted lifecycle hook as:
-
-const {
-  isSupported,
-  notification,
-  show,
-  close,
-  onClick,
-  onShow,
-  onError,
-  onClose,
-} = useWebNotification({
-  requestOnMounted: true
-})

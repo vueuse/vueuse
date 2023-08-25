@@ -83,8 +83,9 @@ export interface WebNotificationOptions {
 
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   /**
-   * Request for permissions immediately if it's not granted,
-   * otherwise label and deviceIds could be empty
+   * Request for permissions onMounted if it's not granted.
+   *
+   * Can be disabled and calling `ensurePermissions` to grant afterwords.
    *
    * @default true
    */
