@@ -8105,7 +8105,7 @@ packages:
     resolution: {integrity: sha512-7CGd4ZQu5M/FgQLlcgcsY858wf+ukg1ma5M95FACSfC54+88vm594Nv6C3NqWfk8wyK1u+E3SzvVsxr7bwONmg==}
     engines: {node: '>=14'}
     dependencies:
-      cliui: github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
+      cliui: git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
     dev: true
@@ -9212,7 +9212,7 @@ packages:
     dependencies:
       hosted-git-info: 2.8.9
       resolve: 1.22.3
-      semver: 5.7.1
+      semver: 5.7.2
       validate-npm-package-license: 3.0.4
     dev: true
 
@@ -10855,8 +10855,8 @@ packages:
     dev: true
     optional: true
 
-  /semver@5.7.1:
-    resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
+  /semver@5.7.2:
+    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
     dev: true
 
@@ -13160,8 +13160,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
-    resolution: {tarball: https://codeload.github.com/isaacs/cliui/tar.gz/9f97090165675fdda63a79c29bc36bb1033506b0}
+  git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
+    resolution: {commit: 9f97090165675fdda63a79c29bc36bb1033506b0, repo: git@github.com:isaacs/cliui.git, type: git}
     name: cliui
     version: 8.0.1
     engines: {node: '>=12'}
