@@ -4,7 +4,6 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
-import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -62,7 +61,6 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     legacy = false,
   } = options
 
-  const events = ['copy', 'cut']
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
@@ -80,10 +78,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     }
   }
 
-  if (isSupported.value && read) {
-    for (const event of events)
-      useEventListener(event as WindowEventName, updateText)
-  }
+  if (isSupported.value && read)
+    useEventListener(['copy', 'cut'], updateText)
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {

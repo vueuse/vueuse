@@ -49,6 +49,6 @@ describe('useMin', () => {
 
   it('should accept zero arg', () => {
     const v = useMin()
-    expect(v.value).toBe(Infinity)
+    expect(v.value).toBe(Number.POSITIVE_INFINITY)
   })
 })

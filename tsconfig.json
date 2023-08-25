@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2020",
     "module": "esnext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "strict": true,
     "strictNullChecks": true,

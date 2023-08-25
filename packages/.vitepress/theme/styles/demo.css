@@ -109,7 +109,7 @@
   }
 
   textarea[readonly] {
-    background: var(--vp-c-bg-light);
+    background: var(--vp-c-bg-soft);
   }
 
   input[type='text'], input[type='search'], input[type='number'] {
@@ -141,14 +141,14 @@
   }
 
   .code-block {
-    background-color: var(--vp-c-bg-mute) !important;
+    background-color: var(--vp-c-bg-soft) !important;
     padding: 4px 8px;
     margin: 12px 0;
     border-radius: 4px;
   }
 
   code {
-    background-color: var(--vp-c-bg-mute) !important;
+    background-color: var(--vp-c-bg-soft) !important;
   }
 
   .resizer {

@@ -1,3 +1,4 @@
+import process from 'node:process'
 import fs from 'fs-extra'
 import { metadata } from '../packages/metadata/metadata'
 import { updateContributors, updateCountBadge, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
@@ -10,7 +11,7 @@ async function run() {
     updateFunctionsMD(metadata),
     updateFunctionREADME(metadata),
     updatePackageJSON(metadata),
-    process.env.NETLIFY && updateCountBadge(metadata),
+    updateCountBadge(metadata),
     process.env.NETLIFY && updateContributors(),
   ])
 

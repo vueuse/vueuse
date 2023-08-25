@@ -32,8 +32,8 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
   const error = shallowRef<GeolocationPositionError | null>(null)
   const coords: Ref<GeolocationPosition['coords']> = ref({
     accuracy: 0,
-    latitude: Infinity,
-    longitude: Infinity,
+    latitude: Number.POSITIVE_INFINITY,
+    longitude: Number.POSITIVE_INFINITY,
     altitude: null,
     altitudeAccuracy: null,
     heading: null,
