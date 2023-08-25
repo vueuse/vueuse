@@ -114,6 +114,7 @@ const { data } = useFetch(url, {
 ```
 
 The `onFetchError` option can intercept the response data and error before it is updated.
+
 ```ts
 const { data } = useFetch(url, {
   onFetchError(ctx) {
@@ -126,10 +127,12 @@ const { data } = useFetch(url, {
     return ctx
   },
 })
+
 console.log(data.value) // { title: 'Hunter x Hunter' }
 ```
 
 You can also disallow `onFetchError` to modifies the response data by passing `false` to `returnDataOnFetchError` option.
+
 ```ts
 const { data } = useFetch(url, {
   returnDataOnFetchError: false,

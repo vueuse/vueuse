@@ -205,22 +205,19 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
-          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { data, error } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
         ctx.error += ' Local'
-        ctx.data += ' Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
-      expect(data.value).toEqual('Global Local')
     })
   })
 
@@ -280,25 +277,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
-          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { error, data } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
           ctx.error += ' Local'
-          ctx.data += ' Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
-      expect(data.value).toEqual('Global Local')
     })
   })
 
@@ -356,22 +350,19 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
-          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { data, error } = useMyFetch('test?status=400&json', {
+    const { error } = useMyFetch('test?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Local'
-        ctx.data = 'Local'
         return ctx
       },
     }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')
-      expect(data.value).toEqual('Local')
     })
   })
 
@@ -435,25 +426,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
-          ctx.data = 'Global'
           return ctx
         },
       },
     })
-    const { data, error } = useMyFetch(
+    const { error } = useMyFetch(
       'test?status=400&json',
       { method: 'GET' },
       {
         onFetchError(ctx) {
           ctx.error = 'Local'
-          ctx.data = 'Local'
           return ctx
         },
       }).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')
-      expect(data.value).toEqual('Local')
     })
   })
 
@@ -562,13 +550,13 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await retry(() => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
-      expect(data.value).toEqual('Internal Server Error')
+      expect(data.value).toBeNull()
     })
   })
 
-  it('should not return data in onFetchError when returnDataOnFetchError is false', async () => {
+  it('should return data in onFetchError when returnDataOnFetchError is true', async () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
-      returnDataOnFetchError: false,
+      returnDataOnFetchError: true,
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
         ctx.data = 'Internal Server Error'
@@ -579,7 +567,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await retry(() => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
-      expect(data.value).toBeNull()
+      expect(data.value).toEqual('Internal Server Error')
     })
   })
 

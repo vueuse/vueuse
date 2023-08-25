@@ -165,7 +165,8 @@ export interface UseFetchOptions {
 
   /**
    * Allow `onFetchError` hook to return data
-   * @default true
+   *
+   * @default false
    */
   returnDataOnFetchError?: boolean
 
@@ -320,8 +321,20 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0, returnDataOnFetchError: true }
-  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
+  let options: UseFetchOptions = {
+    immediate: true,
+    refetch: false,
+    timeout: 0,
+    returnDataOnFetchError: false,
+  }
+
+  interface InternalConfig {
+    method: HttpMethod
+    type: DataType
+    payload: unknown
+    payloadType?: string
+  }
+
   const config: InternalConfig = {
     method: 'GET',
     type: 'text' as DataType,
@@ -460,8 +473,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             throw new Error(fetchResponse.statusText)
           }
 
-          if (options.afterFetch)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+          if (options.afterFetch) {
+            ({ data: responseData } = await options.afterFetch({
+              data: responseData,
+              response: fetchResponse,
+            }))
+          }
           data.value = responseData
 
           responseEvent.trigger(fetchResponse)
@@ -470,8 +487,13 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         .catch(async (fetchError) => {
           let errorData = fetchError.message || fetchError.name
 
-          if (options.onFetchError)
-            ({ error: errorData, data: responseData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
+          if (options.onFetchError) {
+            ({ error: errorData, data: responseData } = await options.onFetchError({
+              data: responseData,
+              error: fetchError,
+              response: response.value,
+            }))
+          }
           error.value = errorData
           if (options.returnDataOnFetchError)
             data.value = responseData
