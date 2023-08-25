@@ -32,6 +32,13 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   touch?: boolean
 
   /**
+   * Listen to `scroll` events on window, only effective on type `page`
+   *
+   * @default true
+   */
+  scroll?: boolean
+
+  /**
    * Reset to initial value when `touchend` event fired
    *
    * @default false
@@ -69,8 +76,11 @@ export function useMouse(options: UseMouseOptions = {}) {
     initialValue = { x: 0, y: 0 },
     window = defaultWindow,
     target = window,
+    scroll = true,
     eventFilter,
   } = options
+
+  let _prevMouseEvent: MouseEvent | null = null
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
@@ -82,6 +92,7 @@ export function useMouse(options: UseMouseOptions = {}) {
 
   const mouseHandler = (event: MouseEvent) => {
     const result = extractor(event)
+    _prevMouseEvent = event
 
     if (result) {
       [x.value, y.value] = result
@@ -99,6 +110,17 @@ export function useMouse(options: UseMouseOptions = {}) {
     }
   }
 
+  const scrollHandler = () => {
+    if (!_prevMouseEvent || !window)
+      return
+    const pos = extractor(_prevMouseEvent)
+
+    if (_prevMouseEvent instanceof MouseEvent && pos) {
+      x.value = pos[0] + window.scrollX
+      y.value = pos[1] + window.scrollY
+    }
+  }
+
   const reset = () => {
     x.value = initialValue.x
     y.value = initialValue.y
@@ -112,6 +134,10 @@ export function useMouse(options: UseMouseOptions = {}) {
     ? (event: TouchEvent) => eventFilter(() => touchHandler(event), {} as any)
     : (event: TouchEvent) => touchHandler(event)
 
+  const scrollHandlerWrapper = eventFilter
+    ? () => eventFilter(() => scrollHandler(), {} as any)
+    : () => scrollHandler()
+
   if (target) {
     const listenerOptions = { passive: true }
     useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
@@ -120,6 +146,8 @@ export function useMouse(options: UseMouseOptions = {}) {
       if (resetOnTouchEnds)
         useEventListener(target, 'touchend', reset, listenerOptions)
     }
+    if (scroll && type === 'page')
+      useEventListener(window, 'scroll', scrollHandlerWrapper, { passive: true })
   }
 
   return {
