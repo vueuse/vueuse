@@ -1,5 +1,4 @@
-import type { Ref, WatchStopHandle } from 'vue-demi'
-import { watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 import type { WatchPausableReturn } from '../watchPausable'
 import { pausableWatch } from '../watchPausable'
