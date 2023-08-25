@@ -2,6 +2,7 @@ import path from 'node:path'
 import assert from 'node:assert'
 import { execSync as exec } from 'node:child_process'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import fg from 'fast-glob'
 import { consola } from 'consola'
@@ -10,6 +11,7 @@ import { packages } from '../meta/packages'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const watch = process.argv.includes('--watch')
 
@@ -82,6 +84,3 @@ async function cli() {
 export {
   build,
 }
-
-if (require.main === module)
-  cli()

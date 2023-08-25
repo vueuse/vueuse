@@ -44,7 +44,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   initialValue?: Position
 }
 
-const BuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
+const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
   page: event => [event.pageX, event.pageY],
   client: event => [event.clientX, event.clientY],
   screen: event => [event.screenX, event.screenY],
@@ -78,7 +78,7 @@ export function useMouse(options: UseMouseOptions = {}) {
 
   const extractor = typeof type === 'function'
     ? type
-    : BuiltinExtractors[type]
+    : UseMouseBuiltinExtractors[type]
 
   const mouseHandler = (event: MouseEvent) => {
     const result = extractor(event)
