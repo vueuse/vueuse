@@ -1,4 +1,5 @@
-import { type ComponentInternalInstance, getCurrentInstance, nextTick, onBeforeMount } from 'vue-demi'
+import { getCurrentInstance, nextTick, onBeforeMount } from 'vue-demi'
+import type { ComponentInternalInstance } from 'vue-demi'
 import type { Fn } from '../utils'
 
 /**

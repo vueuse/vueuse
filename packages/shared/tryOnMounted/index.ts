@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-restricted-imports
-import { type ComponentInternalInstance, getCurrentInstance, nextTick, onMounted } from 'vue-demi'
+import { getCurrentInstance, nextTick, onMounted } from 'vue-demi'
+import type { ComponentInternalInstance } from 'vue-demi'
 import type { Fn } from '../utils'
 
 /**
