@@ -254,7 +254,8 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
     pauseWatch()
     try {
-      data.value = read(event)
+      if (event?.newValue !== serializer.write(data.value))
+        data.value = read(event)
     }
     catch (e) {
       onError(e)
