@@ -131,11 +131,11 @@ const { data } = useFetch(url, {
 console.log(data.value) // { title: 'Hunter x Hunter' }
 ```
 
-You can also disallow `onFetchError` to modifies the response data by passing `false` to `returnDataOnFetchError` option.
+You can also disallow `onFetchError` to modifies the response data by passing `false` to `updateDataOnFetchError` option.
 
 ```ts
 const { data } = useFetch(url, {
-  returnDataOnFetchError: false,
+  updateDataOnFetchError: false,
   onFetchError(ctx) {
     // ctx.data can be null when 5xx response
     if (ctx.data === null)
