@@ -40,6 +40,6 @@
     "vue-demi": ">=0.14.5"
   },
   "devDependencies": {
-    "electron": "^13.1.0"
+    "electron": "^18.3.7"
   }
 }

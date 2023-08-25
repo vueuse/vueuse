@@ -267,8 +267,8 @@ importers:
         version: 0.14.5(vue@3.3.4)
     devDependencies:
       electron:
-        specifier: ^13.1.0
-        version: 13.6.9
+        specifier: ^18.3.7
+        version: 18.3.7
 
   packages/firebase:
     dependencies:
@@ -3782,8 +3782,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node@14.18.43:
-    resolution: {integrity: sha512-n3eFEaoem0WNwLux+k272P0+aq++5o05bA9CfiwKPdYPB5ZambWKdWoeHy7/OJiizMhzg27NLaZ6uzjLTzXceQ==}
+  /@types/node@16.18.46:
+    resolution: {integrity: sha512-Mnq3O9Xz52exs3mlxMcQuA7/9VFe/dXcrgAyfjLkABIqxXKOgBRjyazTxUbjsxDa4BP7hhPliyjVTP9RDP14xg==}
     dev: true
 
   /@types/node@20.5.6:
@@ -6107,13 +6107,13 @@ packages:
   /electron-to-chromium@1.4.345:
     resolution: {integrity: sha512-znGhOQK2TUYLICgS25uaM0a7pHy66rSxbre7l762vg9AUoCcJK+Bu+HCPWpjL/U/kK8/Hf+6E0szAUJSyVYb3Q==}
 
-  /electron@13.6.9:
-    resolution: {integrity: sha512-Es/sBy85NIuqsO9MW41PUCpwIkeinlTQ7g0ainfnmRAM2rmog3GBxVCaoV5dzEjwTF7TKG1Yr/E7Z3qHmlfWAg==}
+  /electron@18.3.7:
+    resolution: {integrity: sha512-SDvX0VYejR1xw9PrJyvnyiDcuIhdzFVaA1NaRN2LEWXr5R6mEFl8NVTM+i5dtxMm2SHP/FPnkvmsWZs6MHijqg==}
     engines: {node: '>= 8.6'}
     hasBin: true
     dependencies:
       '@electron/get': 1.14.1
-      '@types/node': 14.18.43
+      '@types/node': 16.18.46
       extract-zip: 1.7.0
     transitivePeerDependencies:
       - supports-color
@@ -8105,7 +8105,7 @@ packages:
     resolution: {integrity: sha512-7CGd4ZQu5M/FgQLlcgcsY858wf+ukg1ma5M95FACSfC54+88vm594Nv6C3NqWfk8wyK1u+E3SzvVsxr7bwONmg==}
     engines: {node: '>=14'}
     dependencies:
-      cliui: github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
+      cliui: git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
     dev: true
@@ -8544,6 +8544,7 @@ packages:
   /lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+    requiresBuild: true
     dependencies:
       yallist: 4.0.0
 
@@ -10298,6 +10299,7 @@ packages:
 
   /proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
+    requiresBuild: true
     dev: true
 
   /protobufjs@6.11.3:
@@ -13160,8 +13162,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  github.com/isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
-    resolution: {tarball: https://codeload.github.com/isaacs/cliui/tar.gz/9f97090165675fdda63a79c29bc36bb1033506b0}
+  git@github.com+isaacs/cliui/9f97090165675fdda63a79c29bc36bb1033506b0:
+    resolution: {commit: 9f97090165675fdda63a79c29bc36bb1033506b0, repo: git@github.com:isaacs/cliui.git, type: git}
     name: cliui
     version: 8.0.1
     engines: {node: '>=12'}
