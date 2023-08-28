@@ -164,7 +164,7 @@ export function useEventListener(...args: any[]) {
         return
 
       // create a clone of options, to avoid it being changed reactively on removal
-      const optionsClone = isObject(options) ? { ...options } : undefined
+      const optionsClone = isObject(options) ? { ...options } : options
       cleanups.push(
         ...(events as string[]).flatMap((event) => {
           return (listeners as Function[]).map(listener => register(el, event, listener, optionsClone))
