@@ -44,7 +44,7 @@ function esbuildMinifer(options: ESBuildOptions) {
   }
 }
 
-for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target } of packages) {
+for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target = 'es2018' } of packages) {
   if (build === false)
     continue
 
