@@ -5,6 +5,7 @@ import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
 import { useElementVisibility } from '../useElementVisibility'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
+import { resolveElement } from '../_resolve-element'
 
 export interface UseInfiniteScrollOptions extends UseScrollOptions {
   /**
@@ -57,17 +58,12 @@ export function useInfiniteScroll(
 
   const promise = ref<any>()
   const isLoading = computed(() => !!promise.value)
+
   // Document and Window cannot be observed by IntersectionObserver
   const observedElement = computed<HTMLElement | SVGElement | null | undefined>(() => {
-    const el = toValue(element)
-    if (el instanceof Window)
-      return window.document.documentElement
-
-    if (el instanceof Document)
-      return document.documentElement
-
-    return el
+    return resolveElement(toValue(element))
   })
+
   const isElementVisible = useElementVisibility(observedElement)
 
   function checkAndLoad() {

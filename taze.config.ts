@@ -6,9 +6,9 @@ export default defineConfig({
     'rxjs',
     'electron',
     'msw',
+    'vue2',
   ],
   packageMode: {
     vue: 'minor',
-    prettier: 'minor',
   },
 })

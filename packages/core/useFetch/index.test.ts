@@ -542,6 +542,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
         return ctx
       },
     }).json()
@@ -550,6 +551,23 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
       expect(data.value).toBeNull()
+    })
+  })
+
+  it('should return data in onFetchError when updateDataOnError is true', async () => {
+    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
+      updateDataOnError: true,
+      onFetchError(ctx) {
+        ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(statusCode.value).toEqual(400)
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toEqual('Internal Server Error')
     })
   })
 

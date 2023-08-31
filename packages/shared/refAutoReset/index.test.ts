@@ -30,6 +30,14 @@ describe('refAutoReset', () => {
     expect(val.value).toBe('default')
   })
 
+  it('should be reset with maybeRef', async () => {
+    const val = refAutoReset(() => [123], () => 10)
+    val.value = [999]
+    expect(val.value).toEqual([999])
+    await new Promise(resolve => setTimeout(resolve, 11))
+    expect(val.value).toEqual([123])
+  })
+
   it('should change afterMs', async () => {
     const afterMs = ref(150)
     const val = refAutoReset('default', afterMs)
