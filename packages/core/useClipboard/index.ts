@@ -69,9 +69,9 @@ export interface UseClipboardReturn<Optional> {
    * The function for Copying the text
    *
    * @param {string} text to be copied
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
-  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
+  copy: Optional extends true ? (text?: string) => Promise<boolean> : (text: string) => Promise<boolean>
 }
 
 /**
@@ -114,15 +114,26 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value)
-        await navigator!.clipboard.writeText(value)
-      else
-        legacyCopy(value)
+      if (isClipboardApiSupported.value) {
+        try {
+          await navigator!.clipboard.writeText(value)
+        }
+        catch {
+          return false
+        }
+      }
+      else {
+        if (legacyCopy(value) === false)
+          return false
+      }
 
       text.value = value
       copied.value = true
       timeout.start()
+
+      return true
     }
+    return false
   }
 
   function legacyCopy(value: string) {
@@ -134,8 +145,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     ta.select()
     const copyResult = document.execCommand('copy')
     if (!copyResult)
-      throw new Error('[useClipboard] Fail to copy with legacy method')
+      return false
     ta.remove()
+    return true
   }
 
   function legacyRead() {
