@@ -1,4 +1,4 @@
-import { computed, isReadonly, ref } from 'vue-demi'
+import { computed, customRef, isReadonly, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
 import { useClamp } from '.'
 
@@ -54,6 +54,34 @@ describe('useClamp', () => {
   it('should work with computed', () => {
     const baseRef = ref(10)
     const value = computed(() => baseRef.value)
+    const min = ref(0)
+    const max = ref(100)
+
+    const v = useClamp(value, min, max)
+
+    expect(v.value).toBe(10)
+
+    baseRef.value = -10
+    expect(v.value).toBe(0)
+
+    baseRef.value = 110
+    expect(v.value).toBe(100)
+
+    expect(isReadonly(v)).toBeTruthy()
+  })
+
+  it('should work with customRef', () => {
+    const baseRef = ref(10)
+    const value = customRef((track, trigger) => ({
+      get: () => {
+        track()
+        return baseRef.value
+      },
+      set: (v: number) => {
+        baseRef.value = v
+        trigger()
+      },
+    }))
     const min = ref(0)
     const max = ref(100)
 
