@@ -1,9 +1,15 @@
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isReadonly, isRef, ref } from 'vue-demi'
+import { computed, isReadonly, isRef, isVue2, ref } from 'vue-demi'
 import type { MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
 import { clamp, toValue } from '@vueuse/shared'
 
 function isCustomRef(value: MaybeRefOrGetter<number>) {
+  if (isVue2 && isRef(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, 'value')
+
+    return descriptor?.get?.name !== 'reactiveGetter' && descriptor?.set?.name !== 'reactiveSetter'
+  }
+
   return isRef(value) && '_get' in value && '_set' in value
 }
 
