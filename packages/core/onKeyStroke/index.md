@@ -90,6 +90,14 @@ Or
 onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 
+### Ignore elements
+
+```js
+onKeyStroke(true, (e) => {
+  e.preventDefault()
+}, { ignoreElements: ['input', templateRef, event => true] })
+```
+
 
 ## Shorthands
 

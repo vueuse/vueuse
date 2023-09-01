@@ -6,6 +6,8 @@ import { defaultWindow } from '../_configurable'
 export type KeyPredicate = (event: KeyboardEvent) => boolean
 export type KeyFilter = true | string | string[] | KeyPredicate
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup'
+
+type IgnoreElementCase = MaybeRefOrGetter<(string | HTMLElement | ((event: KeyboardEvent) => boolean))>
 export interface OnKeyStrokeOptions {
   eventName?: KeyStrokeEventName
   target?: MaybeRefOrGetter<EventTarget | null | undefined>
@@ -16,6 +18,7 @@ export interface OnKeyStrokeOptions {
    * @default false
    */
   dedupe?: MaybeRefOrGetter<boolean>
+  ignoreElements?: IgnoreElementCase[]
 }
 
 function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
@@ -72,10 +75,29 @@ export function onKeyStroke(...args: any[]) {
     eventName = 'keydown',
     passive = false,
     dedupe = false,
+    ignoreElements = [] as IgnoreElementCase[],
   } = options
   const predicate = createKeyPredicate(key)
+
+  function isIgnoredCase(e: KeyboardEvent) {
+    return ignoreElements.some((ignoreCase: any) => {
+      if (typeof ignoreCase === 'function')
+        return ignoreCase(e) as boolean
+
+      const rawCase = toValue(ignoreCase)
+
+      if (typeof rawCase === 'string' && e.target)
+        return (e.target as HTMLElement).tagName === rawCase.toUpperCase()
+
+      else if (rawCase instanceof HTMLElement)
+        return rawCase === e.target
+
+      return false
+    })
+  }
+
   const listener = (e: KeyboardEvent) => {
-    if (e.repeat && toValue(dedupe))
+    if ((e.repeat && toValue(dedupe)) || isIgnoredCase(e))
       return
 
     if (predicate(e))

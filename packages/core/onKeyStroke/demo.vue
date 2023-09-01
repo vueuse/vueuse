@@ -5,31 +5,35 @@ import { onKeyStroke } from '@vueuse/core'
 const translateX = ref(0)
 const translateY = ref(0)
 
+const options = { ignoreElements: ['input'] }
+
 onKeyStroke(['w', 'W', 'ArrowUp'], () => {
   translateY.value -= 10
-})
+}, options)
 
 onKeyStroke(['s', 'S', 'ArrowDown'], () => {
   translateY.value += 10
-})
+}, options)
 
 onKeyStroke(['a', 'A', 'ArrowLeft'], () => {
   translateX.value -= 10
-})
+}, options)
 
 onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   translateX.value += 10
-}, { dedupe: true })
+}, { dedupe: true, ...options })
 </script>
 
 <template>
   <div>
+    <input type="text" placeholder="Ignored input" class="input">
     <div class="container border-base">
       <div class="ball" :style="{ transform: `translate(${translateX}px, ${translateY}px)` }" />
     </div>
     <div class="text-center mt-4">
       <p>Use the arrow keys or w a s d keys to control the movement of the ball.</p>
       <p>Repeated events are ignored on the key `d` or `->`.</p>
+      <p>Define tags, elements or custom handlers to ignore events.</p>
     </div>
   </div>
 </template>
@@ -46,6 +50,11 @@ onKeyStroke(['d', 'D', 'ArrowRight'], () => {
   overflow: hidden;
   border: 1px solid #a1a1a130;
   border-radius: 5px;
+}
+
+.input[type="text"] {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ball {
