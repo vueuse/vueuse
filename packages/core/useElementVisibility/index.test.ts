@@ -41,7 +41,7 @@ describe('useElementVisibility', () => {
     it('passes a callback to useIntersectionObserver that sets visibility to false only when isIntersecting is false', () => {
       const isVisible = useElementVisibility(el)
       const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting } as IntersectionObserverEntry], {} as IntersectionObserver)
+      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
 
       // It should be false initially
       expect(isVisible.value).toBe(false)
@@ -56,6 +56,34 @@ describe('useElementVisibility', () => {
 
       // And it should become false again if isIntersecting = false
       callMockCallbackWithIsIntersectingValue(false)
+      expect(isVisible.value).toBe(false)
+    })
+
+    it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {
+      const isVisible = useElementVisibility(el)
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean; time: number }[]) => {
+        callback?.(entries as IntersectionObserverEntry[], {} as IntersectionObserver)
+      }
+
+      // It should be false initially
+      expect(isVisible.value).toBe(false)
+
+      // It should take the latest value of isIntersecting
+      callMockCallbackWithIsIntersectingValues(
+        { isIntersecting: false, time: 1 },
+        { isIntersecting: false, time: 2 },
+        { isIntersecting: true, time: 3 },
+      )
+      expect(isVisible.value).toBe(true)
+
+      // It should take the latest even when entries are out of order
+      callMockCallbackWithIsIntersectingValues(
+        { isIntersecting: true, time: 1 },
+        { isIntersecting: false, time: 3 },
+        { isIntersecting: true, time: 2 },
+      )
+
       expect(isVisible.value).toBe(false)
     })
 
