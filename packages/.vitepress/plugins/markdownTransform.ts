@@ -1,6 +1,7 @@
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
+import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
@@ -52,6 +53,55 @@ export function MarkdownTransform(): Plugin {
           .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
           .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n\n')
           .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnMoreDirectives />\n\n')
+
+        const prettier = await import('prettier')
+
+        code = await replaceAsync(code, /\n```ts\n(.+?)\n```\n/gs, async (_, snippet) => {
+          const formattedTS = (await prettier
+            .format(
+              snippet,
+              {
+                semi: false,
+                parser: 'typescript',
+              },
+            ))
+            .trim()
+
+          const result = ts.transpileModule(formattedTS, {
+            compilerOptions: {
+              target: 99,
+            },
+          })
+          const js = result.outputText
+          const formattedJS = (await prettier
+            .format(
+              js,
+              {
+                semi: false,
+                parser: 'typescript',
+              },
+            ))
+            .trim()
+          if (formattedJS === formattedTS)
+            return _
+          return `
+<CodeToggle>
+<div class="code-block-ts">
+
+\`\`\`ts
+${formattedTS}
+\`\`\`
+
+</div>
+<div class="code-block-js">
+
+\`\`\`js
+${formattedJS}
+\`\`\`
+
+</div>
+</CodeToggle>\n`
+        })
       }
 
       return code
@@ -154,4 +204,13 @@ import Demo from \'./${demoPath}\'
     footer,
     header,
   }
+}
+
+function replaceAsync(str: string, match: RegExp, replacer: (substring: string, ...args: any[]) => Promise<string>) {
+  const promises: Promise<string>[] = []
+  str.replace(match, (...args) => {
+    promises.push(replacer(...args))
+    return ''
+  })
+  return Promise.all(promises).then(replacements => str.replace(match, () => replacements.shift()!))
 }
