@@ -39,13 +39,6 @@ const extractor: UseMouseEventExtractor = event => (
 const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })
 ```
 
-Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
-The `dragover` event is used to track mouse position while dragging.
-
-```js
-const { x, y } = useMouse({ touch: false })
-```
-
 ## Component Usage
 
 ```html
