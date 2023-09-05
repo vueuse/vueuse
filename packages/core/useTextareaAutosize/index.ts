@@ -28,7 +28,6 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
 
     let height = ''
 
-    textarea.value!.style.height = '1px'
     textareaScrollHeight.value = textarea.value?.scrollHeight
 
     // If style target is provided update its height
@@ -38,7 +37,9 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
     else
       height = `${textareaScrollHeight.value}px`
 
-    textarea.value!.style.height = height
+    // If the text's height is greater than the target's height, adapt the target's height to the text's height
+    if (textarea.value?.scrollHeight > textarea.value?.clientHeight)
+      textarea.value!.style.height = height
 
     options?.onResize?.()
   }
