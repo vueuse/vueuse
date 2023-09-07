@@ -60,9 +60,6 @@ export function useMouseInElement(
 
         const elX = x.value - elementPositionX.value
         const elY = y.value - elementPositionY.value
-        isOutside.value = width === 0 || height === 0
-          || elX < 0 || elY < 0
-          || elX > width || elY > height
 
         if (handleOutside || !isOutside.value) {
           elementX.value = elX
@@ -72,8 +69,12 @@ export function useMouseInElement(
       { immediate: true },
     )
 
-    useEventListener(document, 'mouseleave', () => {
+    useEventListener(targetRef, 'mouseleave', () => {
       isOutside.value = true
+    })
+
+    useEventListener(targetRef, 'mouseover', () => {
+      isOutside.value = false
     })
   }
 
