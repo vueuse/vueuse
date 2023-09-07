@@ -53,7 +53,7 @@ export interface UseAnimateReturn {
   pending: ComputedRef<boolean>
   playState: ComputedRef<AnimationPlayState>
   replaceState: ComputedRef<AnimationReplaceState>
-  startTime: WritableComputedRef<number | null>
+  startTime: WritableComputedRef<CSSNumberish | number | null>
   currentTime: WritableComputedRef<CSSNumberish | null>
   timeline: WritableComputedRef<AnimationTimeline | null>
   playbackRate: WritableComputedRef<number>
@@ -117,7 +117,7 @@ export function useAnimate(
   const playState = computed(() => store.playState)
   const replaceState = computed(() => store.replaceState)
 
-  const startTime = computed({
+  const startTime = computed<CSSNumberish | number | null>({
     get() {
       return store.startTime
     },
@@ -265,9 +265,7 @@ export function useAnimate(
     onReady?.(animate.value)
   }
 
-  useEventListener(animate, 'cancel', syncPause)
-  useEventListener(animate, 'finish', syncPause)
-  useEventListener(animate, 'remove', syncPause)
+  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)

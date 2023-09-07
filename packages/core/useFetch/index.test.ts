@@ -2,7 +2,7 @@ import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
 import type { SpyInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { retry } from '../../.test'
+import { isBelowNode18, retry } from '../../.test'
 import { createFetch, useFetch } from '.'
 import '../../.test/mockServer'
 
@@ -20,7 +20,8 @@ function fetchSpyHeaders(idx = 0) {
   return fetchSpy.mock.calls[idx][1]!.headers
 }
 
-describe('useFetch', () => {
+// The tests does not run properly below node 18
+describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
     onFetchErrorSpy = vi.fn()
@@ -100,7 +101,6 @@ describe('useFetch', () => {
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
     expect(error2.name).toBe('Error')
-    expect(error2.message).toBe('')
   })
 
   it('should abort request and set aborted to true', async () => {
@@ -148,7 +148,7 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(fetchSpy).toHaveBeenCalledTimes(4)
-      new Array(4).fill(0).forEach((x, i) => {
+      Array.from({ length: 4 }).fill(0).forEach((x, i) => {
         expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
       })
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)
@@ -542,6 +542,7 @@ describe('useFetch', () => {
     const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
         return ctx
       },
     }).json()
@@ -550,6 +551,23 @@ describe('useFetch', () => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
       expect(data.value).toBeNull()
+    })
+  })
+
+  it('should return data in onFetchError when updateDataOnError is true', async () => {
+    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
+      updateDataOnError: true,
+      onFetchError(ctx) {
+        ctx.error = 'Internal Server Error'
+        ctx.data = 'Internal Server Error'
+        return ctx
+      },
+    }).json()
+
+    await retry(() => {
+      expect(statusCode.value).toEqual(400)
+      expect(error.value).toEqual('Internal Server Error')
+      expect(data.value).toEqual('Internal Server Error')
     })
   })
 
@@ -668,10 +686,12 @@ describe('useFetch', () => {
 
     onFetchResponse(onFetchResponseSpy)
 
-    execute()
-    execute()
-    execute()
-    execute()
+    await Promise.all([
+      execute(),
+      execute(),
+      execute(),
+      execute(),
+    ])
 
     await retry(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
@@ -692,6 +712,30 @@ describe('useFetch', () => {
 
     await retry(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
+    })
+  })
+
+  it('should be generated payloadType on execute', async () => {
+    const form = ref()
+    const { execute } = useFetch('https://example.com').post(form)
+
+    form.value = { x: 1 }
+    await execute()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()['Content-Type']).toBe('application/json')
+    })
+  })
+
+  it('should be generated payloadType on execute', async () => {
+    const form = ref<any>({ x: 1 })
+    const { execute } = useFetch('https://example.com').post(form)
+
+    form.value = new FormData()
+    await execute()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()['Content-Type']).toBe(undefined)
     })
   })
 })

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import type { Awaitable } from '@vueuse/shared'
 import type { MaybeElementRef } from './unrefElement'
 

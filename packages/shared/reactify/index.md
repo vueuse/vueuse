@@ -42,6 +42,8 @@ console.log(sum.value) // 7
 
 An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
 
+<!-- eslint-skip -->
+
 ```ts
 import { reactify } from '@vueuse/core'
 

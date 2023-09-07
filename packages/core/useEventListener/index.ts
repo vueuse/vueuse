@@ -1,5 +1,5 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -72,7 +72,25 @@ export function useEventListener<E extends keyof DocumentEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 4: Custom event target with event type infer
+ * Overload 4: Explicitly HTMLElement target
+ *
+ * @see https://vueuse.org/useEventListener
+ * @param target
+ * @param event
+ * @param listener
+ * @param options
+ */
+export function useEventListener<E extends keyof HTMLElementEventMap>(
+  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
+  event: Arrayable<E>,
+  listener: (this: HTMLElement, ev: HTMLElementEventMap[E]) => any,
+  options?: boolean | AddEventListenerOptions
+): () => void
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 5: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -90,7 +108,7 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 5: Custom event target fallback
+ * Overload 6: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -145,9 +163,11 @@ export function useEventListener(...args: any[]) {
       if (!el)
         return
 
+      // create a clone of options, to avoid it being changed reactively on removal
+      const optionsClone = isObject(options) ? { ...options } : options
       cleanups.push(
         ...(events as string[]).flatMap((event) => {
-          return (listeners as Function[]).map(listener => register(el, event, listener, options))
+          return (listeners as Function[]).map(listener => register(el, event, listener, optionsClone))
         }),
       )
     },

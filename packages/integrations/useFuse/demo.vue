@@ -108,8 +108,8 @@ watch(resultLimitString, () => {
     resultLimit.value = undefined
   }
   else {
-    const float = parseFloat(resultLimitString.value)
-    if (!isNaN(float)) {
+    const float = Number.parseFloat(resultLimitString.value)
+    if (!Number.isNaN(float)) {
       resultLimit.value = Math.round(float)
       resultLimitString.value = resultLimit.value.toString()
     }
@@ -160,7 +160,7 @@ const { results } = useFuse(search, data, options)
         </label>
         <label class="checkbox">
           <input v-model="isCaseSensitive" type="checkbox">
-          <span>Case Sensistive</span>
+          <span>Case Sensitive</span>
         </label>
         <label class="checkbox">
           <input v-model="matchAllWhenSearchEmpty" type="checkbox">

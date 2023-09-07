@@ -1,6 +1,7 @@
-import type { Ref, WatchStopHandle } from 'vue-demi'
-import { watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
+import type { WatchPausableReturn } from '../watchPausable'
+import { pausableWatch } from '../watchPausable'
 
 export interface SyncRefOptions<L, R = L> extends ConfigurableFlushSync {
   /**
@@ -47,30 +48,38 @@ export function syncRef<L, R = L>(left: Ref<L>, right: Ref<R>, options: SyncRefO
     transform = {},
   } = options
 
-  let watchLeft: WatchStopHandle
-  let watchRight: WatchStopHandle
+  const watchers: WatchPausableReturn[] = []
 
   const transformLTR = transform.ltr ?? (v => v)
   const transformRTL = transform.rtl ?? (v => v)
 
   if (direction === 'both' || direction === 'ltr') {
-    watchLeft = watch(
+    watchers.push(pausableWatch(
       left,
-      newValue => right.value = transformLTR(newValue) as R,
+      (newValue) => {
+        watchers.forEach(w => w.pause())
+        right.value = transformLTR(newValue) as R
+        watchers.forEach(w => w.resume())
+      },
       { flush, deep, immediate },
-    )
+    ))
   }
 
   if (direction === 'both' || direction === 'rtl') {
-    watchRight = watch(
+    watchers.push(pausableWatch(
       right,
-      newValue => left.value = transformRTL(newValue) as L,
+      (newValue) => {
+        watchers.forEach(w => w.pause())
+        left.value = transformRTL(newValue) as L
+        watchers.forEach(w => w.resume())
+      },
       { flush, deep, immediate },
-    )
+    ))
   }
 
-  return () => {
-    watchLeft?.()
-    watchRight?.()
+  const stop = () => {
+    watchers.forEach(w => w.stop())
   }
+
+  return stop
 }
