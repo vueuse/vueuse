@@ -1,4 +1,4 @@
-import { join, resolve } from 'path'
+import { join, resolve } from 'node:path'
 import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
 import filesize from 'filesize'
@@ -38,6 +38,7 @@ async function run() {
 
     md += markdownTable([
       ['Function', 'min+gzipped'],
+      // eslint-disable-next-line antfu/no-cjs-exports
       ...exports.map((i) => {
         mdJSON[i.name] = filesize(i.minzipped)
         return [`\`${i.name}\``, filesize(i.minzipped)]

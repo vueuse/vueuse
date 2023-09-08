@@ -2,8 +2,7 @@
 // @ts-expect-error missing types
 import _contributors from '/virtual-contributors'
 import { computed } from 'vue'
-import type { ContributorInfo } from '../@vueuse/metadata'
-import { renderCommitMessage } from '../utils'
+import type { ContributorInfo } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
 

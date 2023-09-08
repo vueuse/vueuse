@@ -1,14 +1,17 @@
-import path from 'path'
-import assert from 'assert'
-import { execSync as exec } from 'child_process'
+import path from 'node:path'
+import assert from 'node:assert'
+import { execSync as exec } from 'node:child_process'
+import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import fg from 'fast-glob'
-import consola from 'consola'
+import { consola } from 'consola'
 import { metadata } from '../packages/metadata/metadata'
 import { packages } from '../meta/packages'
 import { version } from '../package.json'
 import { updateImport } from './utils'
 
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const watch = process.argv.includes('--watch')
 
@@ -22,13 +25,15 @@ const FILES_COPY_LOCAL = [
   '*.cjs',
   '*.mjs',
   '*.d.ts',
+  '*.d.cts',
+  '*.d.mts',
 ]
 
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
   for (const { name } of packages) {
-    const packageRoot = path.resolve(__dirname, '..', 'packages', name)
+    const packageRoot = path.resolve(rootDir, 'packages', name)
     const packageDist = path.resolve(packageRoot, 'dist')
 
     if (name === 'core')
@@ -79,6 +84,3 @@ async function cli() {
 export {
   build,
 }
-
-if (require.main === module)
-  cli()

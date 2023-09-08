@@ -1,6 +1,7 @@
-import { ref } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
+import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -30,8 +31,8 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
 export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
     window = defaultWindow,
-    initialWidth = Infinity,
-    initialHeight = Infinity,
+    initialWidth = Number.POSITIVE_INFINITY,
+    initialHeight = Number.POSITIVE_INFINITY,
     listenOrientation = true,
     includeScrollbar = true,
   } = options
@@ -56,8 +57,10 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  if (listenOrientation)
-    useEventListener('orientationchange', update, { passive: true })
+  if (listenOrientation) {
+    const matches = useMediaQuery('(orientation: portrait)')
+    watch(matches, () => update())
+  }
 
   return { width, height }
 }

@@ -1,11 +1,11 @@
 import type { Ref } from 'vue-demi'
 import { isRef, ref } from 'vue-demi'
-import { resolveUnref } from '../resolveUnref'
-import type { MaybeComputedRef, MaybeRef } from '../utils'
+import type { MaybeRef, MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 export interface UseToggleOptions<Truthy, Falsy> {
-  truthyValue?: MaybeComputedRef<Truthy>
-  falsyValue?: MaybeComputedRef<Falsy>
+  truthyValue?: MaybeRefOrGetter<Truthy>
+  falsyValue?: MaybeRefOrGetter<Falsy>
 }
 
 export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
@@ -36,9 +36,9 @@ export function useToggle(
       return _value.value
     }
     else {
-      const truthy = resolveUnref(truthyValue)
+      const truthy = toValue(truthyValue)
       _value.value = _value.value === truthy
-        ? resolveUnref(falsyValue)
+        ? toValue(falsyValue)
         : truthy
       return _value.value
     }

@@ -81,8 +81,15 @@ export interface WebNotificationOptions {
   vibrate?: number[]
 }
 
-export interface UseWebNotificationOptions extends WebNotificationOptions, ConfigurableWindow {
-
+export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
+  /**
+   * Request for permissions onMounted if it's not granted.
+   *
+   * Can be disabled and calling `ensurePermissions` to grant afterwords.
+   *
+   * @default true
+   */
+  requestPermissions?: boolean
 }
 
 /**
@@ -94,44 +101,56 @@ export interface UseWebNotificationOptions extends WebNotificationOptions, Confi
  * @param defaultOptions of type WebNotificationOptions
  * @param methods of type WebNotificationMethods
  */
-export const useWebNotification = (
-  defaultOptions: UseWebNotificationOptions = {},
-) => {
+export function useWebNotification(
+  options: UseWebNotificationOptions = {},
+) {
   const {
     window = defaultWindow,
-  } = defaultOptions
+    requestPermissions: _requestForPermissions = true,
+  } = options
+
+  const defaultWebNotificationOptions: WebNotificationOptions = options
 
   const isSupported = useSupported(() => !!window && 'Notification' in window)
 
+  const permissionGranted = ref(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+
   const notification: Ref<Notification | null> = ref(null)
 
-  // Request permission to use web notifications:
-  const requestPermission = async () => {
+  const ensurePermissions = async () => {
     if (!isSupported.value)
       return
 
-    if ('permission' in Notification && Notification.permission !== 'denied')
-      await Notification.requestPermission()
+    if (!permissionGranted.value && Notification.permission !== 'denied') {
+      const result = await Notification.requestPermission()
+      if (result === 'granted')
+        permissionGranted.value = true
+    }
+
+    return permissionGranted.value
   }
 
-  const onClick: EventHook = createEventHook<Event>()
-  const onShow: EventHook = createEventHook<Event>()
-  const onError: EventHook = createEventHook<Event>()
-  const onClose: EventHook = createEventHook<Event>()
+  const { on: onClick, trigger: clickTrigger }: EventHook = createEventHook<Event>()
+  const { on: onShow, trigger: showTrigger }: EventHook = createEventHook<Event>()
+  const { on: onError, trigger: errorTrigger }: EventHook = createEventHook<Event>()
+  const { on: onClose, trigger: closeTrigger }: EventHook = createEventHook<Event>()
 
   // Show notification method:
   const show = async (overrides?: WebNotificationOptions) => {
-    if (!isSupported.value)
+    // If either the browser does not support notifications or the user has
+    // not granted permission, do nothing:
+    if (!isSupported.value && !permissionGranted.value)
       return
 
-    await requestPermission()
-    const options = Object.assign({}, defaultOptions, overrides)
+    const options = Object.assign({}, defaultWebNotificationOptions, overrides)
+
     notification.value = new Notification(options.title || '', options)
 
-    notification.value.onclick = (event: Event) => onClick.trigger(event)
-    notification.value.onshow = (event: Event) => onShow.trigger(event)
-    notification.value.onerror = (event: Event) => onError.trigger(event)
-    notification.value.onclose = (event: Event) => onClose.trigger(event)
+    notification.value.onclick = clickTrigger
+    notification.value.onshow = showTrigger
+    notification.value.onerror = errorTrigger
+    notification.value.onclose = closeTrigger
+
     return notification.value
   }
 
@@ -143,10 +162,8 @@ export const useWebNotification = (
   }
 
   // On mount, attempt to request permission:
-  tryOnMounted(async () => {
-    if (isSupported.value)
-      await requestPermission()
-  })
+  if (_requestForPermissions)
+    tryOnMounted(ensurePermissions)
 
   // Attempt cleanup of the notification:
   tryOnScopeDispose(close)
@@ -169,6 +186,8 @@ export const useWebNotification = (
   return {
     isSupported,
     notification,
+    ensurePermissions,
+    permissionGranted,
     show,
     close,
     onClick,

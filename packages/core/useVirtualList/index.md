@@ -4,7 +4,11 @@ category: Component
 
 # useVirtualList
 
-Create virtual lists with ease. Virtual lists (sometimes called [*virtual scrollers*](https://akryum.github.io/vue-virtual-scroller/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
+::: warning
+Consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead, if you are looking for more features.
+:::
+
+Create virtual lists with ease. Virtual lists (sometimes called [*virtual scrollers*](https://vue-virtual-scroller-demo.netlify.app/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
 
 ## Usage
 
@@ -27,9 +31,10 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 | State      | Type     | Description                                                                                     |
 |------------|----------|-------------------------------------------------------------------------------------------------|
 | itemHeight | `number` | ensure that the total height of the `wrapper` element is calculated correctly.*                 |
+| itemWidth  | `number` | ensure that the total width of the `wrapper` element is calculated correctly.*                  |
 | overscan   | `number` | number of pre-rendered DOM nodes. Prevents whitespace between items if you scroll very quickly. |
 
-\* The `itemHeight` must be kept in sync with the height of each row rendered. If you are seeing extra whitespace or jitter when scrolling to the bottom of the list, ensure the `itemHeight` is the same height as the row.
+\* The `itemHeight` or `itemWidth` must be kept in sync with the height of each row rendered. If you are seeing extra whitespace or jitter when scrolling to the bottom of the list, ensure the `itemHeight` or `itemWidth` is the same height as the row.
 
 ### Reactive list
 
@@ -63,6 +68,33 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 </template>
 ```
 
+### Horizontal list
+
+```typescript
+import { useVirtualList } from '@vueuse/core'
+
+const allItems = Array.from(Array(99999).keys())
+
+const { list, containerProps, wrapperProps } = useVirtualList(
+  allItems,
+  {
+    itemWidth: 200,
+  },
+)
+```
+
+```html
+<template>
+  <div v-bind="containerProps" style="height: 300px">
+    <div v-bind="wrapperProps">
+      <div v-for="item in list" :key="item.index" style="width: 200px">
+        Row: {{ item.data }}
+      </div>
+    </div>
+  </div>
+</template>
+```
+
 ## Component Usage
 
 ```html
@@ -73,3 +105,5 @@ const { list, containerProps, wrapperProps } = useVirtualList(
   </template>
 </UseVirtualList>
 ```
+
+To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.

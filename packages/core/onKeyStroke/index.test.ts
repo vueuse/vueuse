@@ -1,4 +1,4 @@
-import { vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import type { KeyStrokeEventName } from '.'
@@ -13,8 +13,8 @@ describe('onKeyStroke', () => {
     callBackFn = vi.fn()
   })
 
-  function createKeyEvent(key: string, type: KeyStrokeEventName) {
-    const ev = new KeyboardEvent(type, { key })
+  function createKeyEvent(key: string, type: KeyStrokeEventName, repeat = false) {
+    const ev = new KeyboardEvent(type, { key, repeat })
     element.value.dispatchEvent(ev)
   }
 
@@ -71,6 +71,15 @@ describe('onKeyStroke', () => {
     createKeyEvent('B', 'keydown')
     createKeyEvent('A', 'keypress')
     createKeyEvent('B', 'keypress')
+    expect(callBackFn).toBeCalledTimes(1)
+  })
+
+  it('ignore repeated events', () => {
+    onKeyStroke('A', callBackFn, { target: element, dedupe: true })
+    createKeyEvent('A', 'keydown', false)
+    createKeyEvent('A', 'keydown', true)
+    createKeyEvent('A', 'keydown', true)
+    createKeyEvent('A', 'keydown', true)
     expect(callBackFn).toBeCalledTimes(1)
   })
 })

@@ -1,4 +1,5 @@
 import { isVue2, nextTick } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { useVModel } from '.'
 
 describe('useVModel', () => {
@@ -34,7 +35,7 @@ describe('useVModel', () => {
   })
 
   it('should emit on value change', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock)
     data.value = 'changed'
@@ -43,7 +44,7 @@ describe('useVModel', () => {
   })
 
   it('should use eventName if set', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
     data.value = 'changed'
@@ -52,7 +53,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ passive', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const props = {
       ...defaultProps(),
@@ -68,7 +69,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ object props type', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const props = {
       ...defaultProps(),
@@ -86,7 +87,7 @@ describe('useVModel', () => {
   })
 
   it('should emit w/ array props type', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const props = {
       ...defaultProps(),
@@ -113,7 +114,7 @@ describe('useVModel', () => {
       d: null,
       e: undefined,
     }
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data' })
     const dataA = useVModel(props, 'a', emitMock, { defaultValue: 'default-data' })
@@ -139,7 +140,7 @@ describe('useVModel', () => {
       d: null as string | null,
       e: undefined as string | undefined,
     }
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const data = useVModel(props, 'data', emitMock, { defaultValue: 'default-data', passive: true })
     const dataA = useVModel(props, 'a', emitMock, { defaultValue: 'default-data', passive: true })
@@ -157,7 +158,7 @@ describe('useVModel', () => {
   })
 
   it('Should work with classes', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     class SomeClass {
       num1 = 1
@@ -173,13 +174,14 @@ describe('useVModel', () => {
 
     await nextTick()
 
-    const emitValue = (emitMock as any).calls[0][1]
+    expect(emitMock).toBeCalledTimes(1)
+    const emitValue = emitMock.mock.calls[0][1]
 
     expect(emitValue instanceof SomeClass).toBeTruthy()
   })
 
   it('should clone object', async () => {
-    const emitMock = vitest.fn()
+    const emitMock = vi.fn()
 
     const props = {
       person: {
@@ -206,8 +208,8 @@ describe('useVModel', () => {
   })
 
   it('should deep clone object with clone function', async () => {
-    const emitMock = vitest.fn()
-    const clone = vitest.fn(x => JSON.parse(JSON.stringify(x)))
+    const emitMock = vi.fn()
+    const clone = vi.fn(x => JSON.parse(JSON.stringify(x)))
 
     const props = {
       person: {
@@ -228,5 +230,41 @@ describe('useVModel', () => {
       age: 18,
       child: { age: 2 },
     })
+  })
+
+  it('should trigger beforeEmit', async () => {
+    const emitMock = vi.fn()
+    const beforeEmitMock = vi.fn()
+    let res = ''
+    const beforeEmit = (value: string) => {
+      res = value
+      beforeEmitMock()
+      return true
+    }
+    const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
+    data.value = 'changed'
+
+    expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
+    expect(beforeEmitMock).toHaveBeenCalled()
+    await nextTick()
+    expect(res).toBe('changed')
+  })
+
+  it('should not  trigger beforeEmit (return false)', async () => {
+    const emitMock = vi.fn()
+    const beforeEmitMock = vi.fn()
+    let res = ''
+    const beforeEmit = (value: string) => {
+      res = value
+      beforeEmitMock()
+      return false
+    }
+    const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
+    data.value = 'changed'
+
+    expect(emitMock).not.toHaveBeenCalled()
+    expect(beforeEmitMock).toHaveBeenCalled()
+    await nextTick()
+    expect(res).toBe('changed')
   })
 })

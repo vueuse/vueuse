@@ -66,14 +66,14 @@ console.log(history.value)
 
 #### Custom Clone Function
 
-`useRefHistory` only embeds the minimal clone function `x => JSON.parse(JSON.stringify(x))`. To use a full featured or custom clone function, you can set up via the `dump` options.
+`useRefHistory` only embeds the minimal clone function `x => JSON.parse(JSON.stringify(x))`. To use a full featured or custom clone function, you can set up via the `clone` options.
 
 For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
 
-const refHistory = useRefHistory(target, { dump: structuredClone })
+const refHistory = useRefHistory(target, { clone: structuredClone })
 ```
 
 Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
@@ -82,7 +82,7 @@ Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
 import { cloneDeep } from 'lodash-es'
 import { useRefHistory } from '@vueuse/core'
 
-const refHistory = useRefHistory(target, { dump: cloneDeep })
+const refHistory = useRefHistory(target, { clone: cloneDeep })
 ```
 
 Or a more lightweight [`klona`](https://github.com/lukeed/klona):
@@ -91,12 +91,12 @@ Or a more lightweight [`klona`](https://github.com/lukeed/klona):
 import { klona } from 'klona'
 import { useRefHistory } from '@vueuse/core'
 
-const refHistory = useRefHistory(target, { dump: klona })
+const refHistory = useRefHistory(target, { clone: klona })
 ```
 
 #### Custom Dump and Parse Function
 
-Instead of using the `clone` param, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
+Instead of using the `clone` options, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
 
 ```ts
 import { useRefHistory } from '@vueuse/core'
@@ -158,8 +158,8 @@ const r = ref({ names: [], version: 1 })
 const { history, batch } = useRefHistory(r, { flush: 'sync' })
 
 batch(() => {
-  r.names.push('Lena')
-  r.version++
+  r.value.names.push('Lena')
+  r.value.version++
 })
 
 console.log(history.value)
@@ -173,7 +173,7 @@ If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a 
 
 ```ts
 const arr = ref([1, 2, 3])
-const { history, batch } = useRefHistory(r, { deep: true, flush: 'sync' })
+const { history, batch } = useRefHistory(arr, { deep: true, flush: 'sync' })
 
 batch(() => {
   arr.value.splice(1, 1) // batch ensures only one history point is generated

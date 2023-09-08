@@ -4,6 +4,7 @@ import { unrefElement } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
 import { useMouse } from '../useMouse'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
@@ -72,6 +73,10 @@ export function useMouseInElement(
       },
       { immediate: true },
     )
+
+    useEventListener(document, 'mouseleave', () => {
+      isOutside.value = true
+    })
   }
 
   return {

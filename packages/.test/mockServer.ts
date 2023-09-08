@@ -6,12 +6,13 @@
 import { setupServer } from 'msw/node'
 import type { RestContext, RestRequest } from 'msw'
 import { rest } from 'msw'
+import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
 const baseUrl = 'https://example.com'
 
-const commonTransformers = (req: RestRequest, _: any, ctx: RestContext) => {
+function commonTransformers(req: RestRequest, _: any, ctx: RestContext) {
   const t = []
   const qs = req.url.searchParams
 
@@ -39,7 +40,7 @@ const commonTransformers = (req: RestRequest, _: any, ctx: RestContext) => {
  * @example https://example.com?status=301&text=thanks&delay=1000
  *          will respond in 1000ms with statusCode 300 and the response body "thanks" as a string
  */
-export const server = setupServer(
+const server = setupServer(
   rest.post(baseUrl, (req, res, ctx) => {
     // Support all the normal examples (delay, status, text, and json)
     const t = commonTransformers(req, res, ctx)

@@ -1,8 +1,8 @@
-import { nextTwoTick } from 'packages/.test'
-import { expect, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue-demi'
+import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
-import { useColorMode } from './index'
+import { useColorMode } from '.'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
@@ -11,14 +11,12 @@ describe('useColorMode', () => {
   vi.mock('../usePreferredDark', () => {
     const mockPreferredDark = ref(false)
     return {
-      usePreferredDark: [true, ...new Array(8).fill(false), true].reduce((fn, v) => fn.mockImplementationOnce(() => {
-        mockPreferredDark.value = v
-        return mockPreferredDark
-      }), vi.fn()),
+      usePreferredDark: () => mockPreferredDark,
     }
   })
 
   beforeEach(() => {
+    usePreferredDark().value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -28,9 +26,11 @@ describe('useColorMode', () => {
     vi.resetModules()
   })
 
-  it('should translate auto mode when prefer dark', () => {
+  it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
+    usePreferredDark().value = true
+    await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
@@ -109,11 +109,18 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark()
+    usePreferredDark().value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
+  })
+
+  it('should be able access the store & system preference', () => {
+    const mode = useColorMode()
+    expect(mode.store.value).toBe('auto')
+    expect(mode.system.value).toBe('light')
+    expect(mode.state.value).toBe('light')
   })
 })

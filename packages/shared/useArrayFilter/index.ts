@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '../utils'
-import { resolveUnref } from '../resolveUnref'
+import type { MaybeRefOrGetter } from '../utils'
+import { toValue } from '../toValue'
 
 /**
  * Reactive `Array.filter`
@@ -13,8 +13,8 @@ import { resolveUnref } from '../resolveUnref'
  * @returns {Array} a shallow copy of a portion of the given array, filtered down to just the elements from the given array that pass the test implemented by the provided function. If no elements pass the test, an empty array will be returned.
  */
 export function useArrayFilter<T>(
-  list: MaybeComputedRef<MaybeComputedRef<T>[]>,
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => boolean,
 ): ComputedRef<T[]> {
-  return computed(() => resolveUnref(list).map(i => resolveUnref(i)).filter(fn))
+  return computed(() => toValue(list).map(i => toValue(i)).filter(fn))
 }

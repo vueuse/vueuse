@@ -1,19 +1,25 @@
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { isPackageExists } from 'local-pkg'
 import { defineNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
-import type { Import } from 'unimport'
+import type { Import, Preset } from 'unimport'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const disabledFunctions = [
-  'useFetch',
+  // Vue 3 built-in
   'toRefs',
+  'toRef',
+  'toValue',
+
+  // Nuxt built-in
+  'useFetch',
   'useCookie',
   'useHead',
   'useTitle',
   'useStorage',
+  'useImage',
 ]
 
 const packages = [
@@ -84,10 +90,23 @@ export default defineNuxtModule<VueUseNuxtOptions>({
       nuxt.options.build.transpile.push(pluginPath)
     }
 
+    // @ts-expect-error - private API
+    nuxt.hook('devtools:customTabs', (iframeTabs) => {
+      iframeTabs.push({
+        name: 'vueuse',
+        title: 'VueUse',
+        icon: 'i-logos-vueuse',
+        view: {
+          type: 'iframe',
+          src: 'https://vueuse.org/functions.html',
+        },
+      })
+    })
+
     if (options.autoImports) {
       // auto import
-      nuxt.hook('imports:sources', (sources: any[]) => {
-        if (sources.find(i => fullPackages.includes(i.from)))
+      nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
+        if (sources.find(i => fullPackages.includes((i as Import).from)))
           return
 
         metadata.functions.forEach((i) => {
@@ -112,6 +131,11 @@ export default defineNuxtModule<VueUseNuxtOptions>({
                 name: n,
                 as: n,
                 priority: -1,
+                meta: {
+                  description: i.description,
+                  docsUrl: i.docs,
+                  category: i.category,
+                },
               }))
             })
             .filter(i => i.name.length >= 4 && !disabledFunctions.includes(i.name))

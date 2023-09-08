@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { syncRef } from '.'
 
 describe('syncRef', () => {
@@ -50,18 +51,18 @@ describe('syncRef', () => {
 
   it('works with mutual convertors', () => {
     const left = ref(10)
-    const right = ref(1)
+    const right = ref(2)
 
     syncRef(left, right, {
       transform: {
         ltr: left => left * 2,
-        rtl: right => Math.round(right / 2),
+        rtl: right => Math.floor(right / 3),
       },
     })
 
     // check immediately sync
     expect(right.value).toBe(20)
-    expect(left.value).toBe(10)
+    expect(left.value).toBe(6)
 
     left.value = 30
     expect(right.value).toBe(60)
@@ -69,7 +70,7 @@ describe('syncRef', () => {
 
     right.value = 10
     expect(right.value).toBe(10)
-    expect(left.value).toBe(5)
+    expect(left.value).toBe(3)
   })
 
   it('works with only rtl convertor', () => {

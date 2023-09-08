@@ -1,4 +1,4 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, reactive, ref } from 'vue-demi'
@@ -7,13 +7,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
 
-export enum SwipeDirection {
-  UP = 'UP',
-  RIGHT = 'RIGHT',
-  DOWN = 'DOWN',
-  LEFT = 'LEFT',
-  NONE = 'NONE',
-}
+export type UseSwipeDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 
 export interface UseSwipeOptions extends ConfigurableWindow {
   /**
@@ -41,13 +35,13 @@ export interface UseSwipeOptions extends ConfigurableWindow {
   /**
    * Callback on swipe ends
    */
-  onSwipeEnd?: (e: TouchEvent, direction: SwipeDirection) => void
+  onSwipeEnd?: (e: TouchEvent, direction: UseSwipeDirection) => void
 }
 
 export interface UseSwipeReturn {
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
-  direction: ComputedRef<SwipeDirection | null>
+  direction: ComputedRef<UseSwipeDirection>
   coordsStart: Readonly<Position>
   coordsEnd: Readonly<Position>
   lengthX: ComputedRef<number>
@@ -63,7 +57,7 @@ export interface UseSwipeReturn {
  * @param options
  */
 export function useSwipe(
-  target: MaybeComputedRef<EventTarget | null | undefined>,
+  target: MaybeRefOrGetter<EventTarget | null | undefined>,
   options: UseSwipeOptions = {},
 ): UseSwipeReturn {
   const {
@@ -86,19 +80,19 @@ export function useSwipe(
 
   const isSwiping = ref(false)
 
-  const direction = computed(() => {
+  const direction = computed((): UseSwipeDirection => {
     if (!isThresholdExceeded.value)
-      return SwipeDirection.NONE
+      return 'none'
 
     if (abs(diffX.value) > abs(diffY.value)) {
       return diffX.value > 0
-        ? SwipeDirection.LEFT
-        : SwipeDirection.RIGHT
+        ? 'left'
+        : 'right'
     }
     else {
       return diffY.value > 0
-        ? SwipeDirection.UP
-        : SwipeDirection.DOWN
+        ? 'up'
+        : 'down'
     }
   })
 
@@ -132,6 +126,8 @@ export function useSwipe(
 
   const stops = [
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
+      if (e.touches.length !== 1)
+        return
       if (listenerOptions.capture && !listenerOptions.passive)
         e.preventDefault()
       const [x, y] = getTouchEventCoords(e)
@@ -141,6 +137,8 @@ export function useSwipe(
     }, listenerOptions),
 
     useEventListener(target, 'touchmove', (e: TouchEvent) => {
+      if (e.touches.length !== 1)
+        return
       const [x, y] = getTouchEventCoords(e)
       updateCoordsEnd(x, y)
       if (!isSwiping.value && isThresholdExceeded.value)
@@ -149,8 +147,7 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', onTouchEnd, listenerOptions),
-    useEventListener(target, 'touchcancel', onTouchEnd, listenerOptions),
+    useEventListener(target, ['touchend', 'touchcancel'], onTouchEnd, listenerOptions),
   ]
 
   const stop = () => stops.forEach(s => s())

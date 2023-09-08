@@ -28,47 +28,57 @@ const { pass, isFinished, errorFields } = useAsyncValidator(form, rules)
 
 <template>
   <div>
-    pass:
+    <code>pass:</code>
     <BooleanDisplay :value="pass" />
   </div>
   <div>
-    isFinished:
+    <code>isFinished:</code>
     <BooleanDisplay :value="isFinished" />
   </div>
 
-  <div class="bg-base border-main rounded shadow max-w-96 p-8">
+  <hr>
+
+  <div flex="~ col gap-2">
     <div>
-      email:
+      Email
       <input
-        v-model="form.email" :class="{ '!border-red': errorFields?.email?.length }" type="text"
-        placeholder="email"
+        v-model="form.email"
+        :class="{ '!border-red': errorFields?.email?.length }"
+        type="text"
+        placeholder="Email"
       >
       <div v-if="errorFields?.email?.length" text-red>
         {{ errorFields.email[0].message }}
       </div>
     </div>
     <div>
-      name:
+      Name
       <input
-        v-model="form.name" :class="{ '!border-red': errorFields?.name?.length }" type="text"
-        placeholder="name"
+        v-model="form.name"
+        :class="{ '!border-red': errorFields?.name?.length }"
+        type="text"
+        placeholder="Name"
       >
-      <div v-if=" errorFields?.name?.length" text-red>
+      <div v-if="errorFields?.name?.length" text-red>
         {{ errorFields.name[0].message }}
       </div>
     </div>
     <div>
-      age:
+      Age
       <input
-        v-model="form.age" :class="{ '!border-red': errorFields?.age?.length }" type="number"
-        placeholder="age"
+        v-model.number="form.age"
+        :class="{ '!border-red': errorFields?.age?.length }"
+        type="number"
+        placeholder="Age"
       >
-      <div v-if=" errorFields?.age?.length" text-red>
+      <div v-if="errorFields?.age?.length" text-red>
         {{ errorFields.age[0].message }}
       </div>
     </div>
-    <button :disabled="!pass">
-      submit
-    </button>
+    <div>
+      <button :disabled="!pass">
+        Submit
+      </button>
+    </div>
   </div>
 </template>

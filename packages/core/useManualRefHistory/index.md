@@ -51,12 +51,12 @@ commit()
 
 #### Custom Clone Function
 
-To use a full featured or custom clone function, you can set up via the `dump` options.
+To use a full featured or custom clone function, you can set up via the `clone` options.
 
 For example, using [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone):
 
 ```ts
-import { cloneDeep } from 'lodash-es'
+import { useManualRefHistory } from '@vueuse/core'
 
 const refHistory = useManualRefHistory(target, { clone: structuredClone })
 ```
@@ -81,7 +81,7 @@ const refHistory = useManualRefHistory(target, { clone: klona })
 
 #### Custom Dump and Parse Function
 
-Instead of using the `clone` param, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
+Instead of using the `clone` options, you can pass custom functions to control the serialization and parsing. In case you do not need history values to be objects, this can save an extra clone when undoing. It is also useful in case you want to have the snapshots already stringified to be saved to local storage for example.
 
 ```ts
 import { useManualRefHistory } from '@vueuse/core'

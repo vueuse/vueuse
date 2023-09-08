@@ -1,12 +1,12 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, reactive, ref, unref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { defaultWindow } from '../_configurable'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
-export interface UseMagicKeysOptions<Reactive extends Boolean> {
+export interface UseMagicKeysOptions<Reactive extends boolean> {
   /**
    * Returns a reactive object instead of an object of refs
    *
@@ -19,7 +19,7 @@ export interface UseMagicKeysOptions<Reactive extends Boolean> {
    *
    * @default window
    */
-  target?: MaybeComputedRef<EventTarget>
+  target?: MaybeRefOrGetter<EventTarget>
 
   /**
    * Alias map for keys, all the keys should be lowercase
@@ -56,7 +56,7 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type UseMagicKeysReturn<Reactive extends Boolean> =
+export type UseMagicKeysReturn<Reactive extends boolean> =
   Readonly<
   Omit<Reactive extends true
     ? Record<string, boolean>
@@ -81,7 +81,10 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
-  const obj = { toJSON() { return {} }, current }
+  const obj = {
+    toJSON() { return {} },
+    current,
+  }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
   const usedKeys = new Set<string>()
@@ -96,6 +99,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   function reset() {
+    current.clear()
     for (const key of usedKeys)
       setRefs(key, false)
   }
@@ -162,14 +166,14 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
         if (!(prop in refs)) {
           if (/[+_-]/.test(prop)) {
             const keys = prop.split(/[+_-]/g).map(i => i.trim())
-            refs[prop] = computed(() => keys.every(key => unref(proxy[key])))
+            refs[prop] = computed(() => keys.every(key => toValue(proxy[key])))
           }
           else {
             refs[prop] = ref(false)
           }
         }
         const r = Reflect.get(target, prop, rec)
-        return useReactive ? unref(r) : r
+        return useReactive ? toValue(r) : r
       },
     },
   )

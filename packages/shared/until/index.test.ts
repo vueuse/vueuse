@@ -2,16 +2,80 @@ import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { invoke } from '@vueuse/shared'
 import type { Equal, Expect } from '@type-challenges/utils'
+import { describe, expect, it, vi } from 'vitest'
 import { until } from '.'
 
 describe('until', () => {
-  it('should work', () => {
+  it('should toBe', () => {
     return new Promise<void>((resolve, reject) => {
+      const r1 = ref(0)
+      const r2 = ref(0)
+
+      invoke(async () => {
+        expect(r1.value).toBe(0)
+        expect(r2.value).toBe(0)
+        let x = await until(r1).toBe(1)
+        expect(x).toBe(1)
+        x = await until(r2).toBe(ref(2))
+        expect(x).toBe(2)
+        resolve()
+      }).catch(reject)
+
+      setTimeout(() => {
+        r1.value = 1
+        r2.value = 1
+      }, 100)
+
+      setTimeout(() => {
+        r2.value = 2
+      }, 200)
+    })
+  })
+
+  it('should toBeTruthy', async () => {
+    const r = ref(false)
+    setTimeout(() => {
+      r.value = true
+    }, 100)
+
+    expect(await until(r).toBeTruthy()).toBeTruthy()
+  })
+
+  it('should toBeUndefined', async () => {
+    const r = ref<boolean | undefined>(false)
+    setTimeout(() => {
+      r.value = undefined
+    }, 100)
+
+    expect(await until(r).toBeUndefined()).toBeUndefined()
+  })
+
+  it('should toBeNaN', async () => {
+    const r = ref(0)
+    setTimeout(() => {
+      r.value = Number.NaN
+    }, 100)
+
+    expect(await until(r).toBeNaN()).toBeNaN()
+  })
+
+  it('should toBe timeout with ref', async () => {
+    const r = ref(0)
+    const reject = vi.fn()
+    await invoke(async () => {
+      await until(r).toBe(ref(1), { timeout: 200, throwOnTimeout: true })
+    }).catch(reject)
+
+    expect(reject).toHaveBeenCalledWith('Timeout')
+  })
+
+  it('should work for changedTimes', async () => {
+    await new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
-        const x = await until(r).toBe(1)
+        const x = await until(r).changed()
         expect(x).toBe(1)
         resolve()
       }).catch(reject)
@@ -20,10 +84,7 @@ describe('until', () => {
         r.value = 1
       }, 100)
     })
-  })
-
-  it('should work for changedTimes', () => {
-    return new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {

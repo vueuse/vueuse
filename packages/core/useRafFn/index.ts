@@ -1,8 +1,20 @@
-import { ref } from 'vue-demi'
-import type { Fn, Pausable } from '@vueuse/shared'
+import { readonly, ref } from 'vue-demi'
+import type { Pausable } from '@vueuse/shared'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
+export interface UseRafFnCallbackArguments {
+  /**
+   * Time elapsed between this and the last frame.
+   */
+  delta: number
+
+  /**
+   * Time elapsed since the creation of the web page. See {@link https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp#the_time_origin Time origin}.
+   */
+  timestamp: DOMHighResTimeStamp
+}
 
 export interface UseRafFnOptions extends ConfigurableWindow {
   /**
@@ -20,27 +32,32 @@ export interface UseRafFnOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useRafFn(fn: Fn, options: UseRafFnOptions = {}): Pausable {
+export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
     window = defaultWindow,
   } = options
 
   const isActive = ref(false)
+  let previousFrameTimestamp = 0
   let rafId: null | number = null
 
-  function loop() {
+  function loop(timestamp: DOMHighResTimeStamp) {
     if (!isActive.value || !window)
       return
 
-    fn()
+    const delta = timestamp - (previousFrameTimestamp || timestamp)
+
+    fn({ delta, timestamp })
+
+    previousFrameTimestamp = timestamp
     rafId = window.requestAnimationFrame(loop)
   }
 
   function resume() {
     if (!isActive.value && window) {
       isActive.value = true
-      loop()
+      rafId = window.requestAnimationFrame(loop)
     }
   }
 
@@ -58,7 +75,7 @@ export function useRafFn(fn: Fn, options: UseRafFnOptions = {}): Pausable {
   tryOnScopeDispose(pause)
 
   return {
-    isActive,
+    isActive: readonly(isActive),
     pause,
     resume,
   }

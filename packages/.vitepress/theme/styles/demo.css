@@ -13,10 +13,8 @@
   position: absolute;
   top: 0;
   right: 10px;
-  z-index: 2;
   font-size: 12px;
   font-weight: 500;
-  color: var(--vp-c-text-dark-3);
   transition: color 0.5s;
 }
 
@@ -67,9 +65,9 @@
   }
 
   button.red {
-    --c-brand: #f56c6c;
-    --c-brand-dark: #e41c1c;
-    --c-brand-active: #e94c4c;
+    --vp-c-brand: #f56c6c;
+    --vp-c-brand-dark: #e41c1c;
+    --vp-c-brand-active: #e94c4c;
   }
 
   button:hover {
@@ -102,7 +100,7 @@
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
     border-radius: 4px;
-    box-shadow: var(--vp-c-divider) 0px 0px 0px 1px;
+    box-shadow: var(--vp-c-divider) 0 0 0 1px;
     margin: 0.5rem 0;
     outline: none;
     background: var(--vp-c-bg);
@@ -111,14 +109,14 @@
   }
 
   textarea[readonly] {
-    background: var(--vp-c-bg-light);
+    background: var(--vp-c-bg-soft);
   }
 
   input[type='text'], input[type='search'], input[type='number'] {
     display: block;
     font-size: 0.9rem;
     padding: 0.5em 1em 0.4em 1em;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     border-radius: 4px;
     outline: none;
     background: var(--vp-c-bg);
@@ -133,7 +131,7 @@
   }
 
   input:focus {
-    border: 1px solid var(--vp-c-divider-dark-1);
+    border: 1px solid var(--vp-c-border);
   }
 
   pre,
@@ -143,14 +141,14 @@
   }
 
   .code-block {
-    background-color: var(--vp-c-bg-mute) !important;
+    background-color: var(--vp-c-bg-soft) !important;
     padding: 4px 8px;
     margin: 12px 0;
     border-radius: 4px;
   }
 
   code {
-    background-color: var(--vp-c-bg-mute) !important;
+    background-color: var(--vp-c-bg-soft) !important;
   }
 
   .resizer {
@@ -158,14 +156,13 @@
     padding: 1rem;
     width: 200px;
     height: 200px;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     border-radius: 4px;
     background: white;
     outline: none;
     white-space: pre;
     overflow-wrap: normal;
     overflow: hidden;
-    overflow-x: hidden;
   }
 
   .float {
@@ -173,7 +170,7 @@
     bottom: 0;
     right: 0;
     padding: 1rem 2rem;
-    border: 1px solid var(--vp-c-divider-light);
+    border: 1px solid var(--vp-c-divider);
     background: var(--vp-c-bg);
     z-index: 100;
     min-width: 100px;
@@ -183,6 +180,11 @@
     border-width: 2px;
     border-style: dashed;
     padding: 1rem;
+  }
+
+  dialog {
+    z-index: 1000000;
+    background: var(--vp-c-bg);
   }
 }
 

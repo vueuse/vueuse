@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useGeolocation } from '@vueuse/core'
 
-const { coords, locatedAt, error } = useGeolocation()
+const { coords, locatedAt, error, resume, pause } = useGeolocation()
 </script>
 
 <template>
-  <pre lang="json">{{
+  <div>
+    <pre lang="json">{{
     JSON.stringify(
       {
         coords: {
@@ -24,4 +25,11 @@ const { coords, locatedAt, error } = useGeolocation()
       2,
     )
   }}</pre>
+    <button @click="pause">
+      Pause watch
+    </button>
+    <button @click="resume">
+      Start watch
+    </button>
+  </div>
 </template>

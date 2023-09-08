@@ -1,6 +1,7 @@
-import type { MaybeComputedRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { ComputedRef, WatchOptions } from 'vue-demi'
-import { isRef, ref, unref, watch } from 'vue-demi'
+import { isRef, ref, watch } from 'vue-demi'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
@@ -36,7 +37,7 @@ export function cloneFnJSON<T>(source: T): T {
 }
 
 export function useCloned<T>(
-  source: MaybeComputedRef<T>,
+  source: MaybeRefOrGetter<T>,
   options: UseClonedOptions = {},
 ) {
   const cloned = ref<T>({} as T)
@@ -49,10 +50,10 @@ export function useCloned<T>(
   } = options
 
   function sync() {
-    cloned.value = clone(unref(source))
+    cloned.value = clone(toValue(source))
   }
 
-  if (!manual && isRef(source)) {
+  if (!manual && (isRef(source) || typeof source === 'function')) {
     watch(source, sync, {
       ...options,
       deep,

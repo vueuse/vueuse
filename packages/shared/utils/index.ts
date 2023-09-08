@@ -2,6 +2,7 @@ export * from './is'
 export * from './filters'
 export * from './types'
 export * from './compatibility'
+export * from './port'
 
 export function promiseTimeout(
   ms: number,
@@ -81,7 +82,7 @@ export function increaseWithUnit(target: string | number, delta: number): string
     return target + delta
   const value = target.match(/^-?[0-9]+\.?[0-9]*/)?.[0] || ''
   const unit = target.slice(value.length)
-  const result = (parseFloat(value) + delta)
+  const result = (Number.parseFloat(value) + delta)
   if (Number.isNaN(result))
     return target
   return result + unit
@@ -89,10 +90,8 @@ export function increaseWithUnit(target: string | number, delta: number): string
 
 /**
  * Create a new subset object by giving keys
- *
- * @category Object
  */
-export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((n, k) => {
     if (k in obj) {
       if (!omitUndefined || obj[k] !== undefined)
@@ -100,4 +99,17 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
     }
     return n
   }, {} as Pick<O, T>)
+}
+
+/**
+ * Create a new subset object by omit giving keys
+ */
+export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return Object.fromEntries(Object.entries(obj).filter(([key, value]) => {
+    return (!omitUndefined || value !== undefined) && !keys.includes(key as T)
+  })) as Omit<O, T>
+}
+
+export function objectEntries<T extends object>(obj: T) {
+  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
 }

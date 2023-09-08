@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useMax } from '.'
 
 describe('useMax', () => {
@@ -48,6 +49,6 @@ describe('useMax', () => {
 
   it('should accept zero arg', () => {
     const v = useMax()
-    expect(v.value).toBe(-Infinity)
+    expect(v.value).toBe(Number.NEGATIVE_INFINITY)
   })
 })

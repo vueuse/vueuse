@@ -1,5 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { retry } from '../../.test'
 import { useFocus } from '.'
 
@@ -45,6 +46,23 @@ describe('useFocus', () => {
 
     focused.value = false
     await retry(() => expect(document.activeElement).not.toBe(target.value))
+  })
+
+  it('should only focus when :focus-visible matches with focusVisible=true', () => {
+    const { focused } = useFocus(target, { focusVisible: true })
+
+    let event = new Event('focus')
+    Object.defineProperty(event, 'target', { value: { matches: () => true }, enumerable: true })
+    target.value?.dispatchEvent(event)
+    expect(focused.value).toBeTruthy()
+
+    target.value?.dispatchEvent(new Event('blur'))
+    expect(focused.value).toBeFalsy()
+
+    event = new Event('focus')
+    Object.defineProperty(event, 'target', { value: { matches: () => false }, enumerable: true })
+    target.value?.dispatchEvent(event)
+    expect(focused.value).toBeFalsy()
   })
 
   describe('when target is missing', () => {

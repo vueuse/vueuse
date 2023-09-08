@@ -1,6 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { computed, ref, unref, watch } from 'vue-demi'
-import type { Awaitable, MaybeComputedRef } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -85,7 +86,7 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
   /**
    * file data type
    */
-  dataType?: MaybeComputedRef<'Text' | 'ArrayBuffer' | 'Blob'>
+  dataType?: MaybeRefOrGetter<'Text' | 'ArrayBuffer' | 'Blob'>
 }
 
 /**
@@ -93,6 +94,7 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
  * @see https://vueuse.org/useFileSystemAccess
  * @param options
  */
+export function useFileSystemAccess(): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Text' }): UseFileSystemAccessReturn<string>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'ArrayBuffer' }): UseFileSystemAccessReturn<ArrayBuffer>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Blob' }): UseFileSystemAccessReturn<Blob>
@@ -101,7 +103,8 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const {
     window: _window = defaultWindow,
     dataType = 'Text',
-  } = unref(options)
+  } = options
+
   const window = _window as FileSystemAccessWindow
   const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
@@ -117,7 +120,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   async function open(_options: UseFileSystemAccessCommonOptions = {}) {
     if (!isSupported.value)
       return
-    const [handle] = await window.showOpenFilePicker({ ...unref(options), ..._options })
+    const [handle] = await window.showOpenFilePicker({ ...toValue(options), ..._options })
     fileHandle.value = handle
     await updateFile()
     await updateData()
@@ -126,7 +129,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   async function create(_options: UseFileSystemAccessShowSaveFileOptions = {}) {
     if (!isSupported.value)
       return
-    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...options, ..._options })
     data.value = undefined
     await updateFile()
     await updateData()
@@ -152,7 +155,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
     if (!isSupported.value)
       return
 
-    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...unref(options), ..._options })
+    fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...options, ..._options })
 
     if (data.value) {
       const writableStream = await fileHandle.value.createWritable()
@@ -168,15 +171,16 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function updateData() {
-    if (unref(dataType) === 'Text')
+    const type = toValue(dataType)
+    if (type === 'Text')
       data.value = await file.value?.text()
-    if (unref(dataType) === 'ArrayBuffer')
+    else if (type === 'ArrayBuffer')
       data.value = await file.value?.arrayBuffer()
-    if (unref(dataType) === 'Blob')
+    else if (type === 'Blob')
       data.value = file.value
   }
 
-  watch(() => unref(dataType), updateData)
+  watch(() => toValue(dataType), updateData)
 
   return {
     isSupported,

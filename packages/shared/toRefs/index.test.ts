@@ -1,4 +1,5 @@
-import { computed, isVue3, reactive, ref } from 'vue-demi'
+import { computed, isVue3, reactive, ref, watchSyncEffect } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { toRefs } from '.'
 
 describe('toRefs', () => {
@@ -31,7 +32,7 @@ describe('toRefs', () => {
     expect(refs[1].value).toBe(1)
   })
 
-  it('should return refs when a object ref was passed', () => {
+  it('should return refs when an object ref was passed', () => {
     const obj = ref({ a: 'a', b: 0 })
     const refs = toRefs(obj)
     expect(refs.a.value).toBe('a')
@@ -43,7 +44,7 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(1)
   })
 
-  it('should return refs when a array ref was passed', () => {
+  it('should return refs when an array ref was passed', () => {
     const arr = ref(['a', 0])
     const refs = toRefs(arr)
     expect(refs[0].value).toBe('a')
@@ -56,7 +57,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed objects', () => {
-    const spy = vitest.fn()
+    const spy = vi.fn()
     const obj = computed<{ a: string; b: number }>({
       get() {
         return { a: 'a', b: 0 }
@@ -77,7 +78,7 @@ describe('toRefs', () => {
   })
 
   it('should work correctly with writable computed arrays', () => {
-    const spy = vitest.fn()
+    const spy = vi.fn()
     const arr = computed<any[]>({
       get() {
         return ['a', 0]
@@ -95,6 +96,44 @@ describe('toRefs', () => {
 
     refs[1].value = 1
     expect(spy).toHaveBeenLastCalledWith(['a', 1])
+  })
+
+  it('should trigger unwanted effects with replaceRef = false', () => {
+    const spy = vi.fn()
+    const obj = ref({
+      a: 'a',
+      b: 0,
+    })
+
+    const { a, b } = toRefs(obj, { replaceRef: true })
+    expect(a.value).toBe('a')
+    expect(b.value).toBe(0)
+
+    watchSyncEffect(() => spy(a.value))
+
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    b.value = 1
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
+
+  it('should not trigger unwanted effects with replaceRef = false', () => {
+    const spy = vi.fn()
+    const obj = ref({
+      a: 'a',
+      b: 0,
+    })
+
+    const { a, b } = toRefs(obj, { replaceRef: false })
+    expect(a.value).toBe('a')
+    expect(b.value).toBe(0)
+
+    watchSyncEffect(() => spy(a.value))
+
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    b.value = 1
+    expect(spy).toHaveBeenCalledTimes(1)
   })
 
   it('should save instance of class', () => {

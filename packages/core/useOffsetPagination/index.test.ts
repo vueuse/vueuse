@@ -1,4 +1,5 @@
 import { isRef, nextTick, ref } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from '.'
 import { useOffsetPagination } from '.'
 
@@ -166,7 +167,7 @@ describe('useOffsetPagination', () => {
       pageRef.value = -1
       expect(currentPage.value).toBe(1)
 
-      pageRef.value = Infinity
+      pageRef.value = Number.POSITIVE_INFINITY
       expect(currentPage.value).toBe(4)
     })
   })

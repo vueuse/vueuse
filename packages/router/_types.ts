@@ -1,5 +1,9 @@
 import type { MaybeRef } from '@vueuse/shared'
-import type { useRoute, useRouter } from 'vue-router'
+import type { RouteParamValueRaw, useRoute, useRouter } from 'vue-router'
+
+export type RouteQueryValueRaw = RouteParamValueRaw | string[]
+
+export type RouteHashValueRaw = string | null | undefined
 
 export interface ReactiveRouteOptions {
   /**
@@ -18,4 +22,11 @@ export interface ReactiveRouteOptions {
    * Router instance, use `useRouter()` if not given
    */
   router?: ReturnType<typeof useRouter>
+}
+
+export interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOptions {
+  /**
+   * Function to transform data before return
+   */
+  transform?: (val: V) => R
 }

@@ -1,4 +1,5 @@
-import { join, relative, resolve } from 'path'
+import { join, relative, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
@@ -7,6 +8,8 @@ import Git from 'simple-git'
 import { packages } from '../../../meta/packages'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { getCategories } from '../utils'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export const DOCS_URL = 'https://vueuse.org'
 export const DIR_PACKAGE = resolve(__dirname, '..')

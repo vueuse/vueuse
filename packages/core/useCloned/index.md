@@ -15,7 +15,7 @@ const original = ref({ key: 'value' })
 
 const { cloned } = useCloned(original)
 
-original.key = 'some new value'
+original.value.key = 'some new value'
 
 console.log(cloned.value.key) // 'some new value'
 ```
@@ -29,7 +29,7 @@ const original = ref({ key: 'value' })
 
 const { cloned, sync } = useCloned(original, { manual: true })
 
-original.key = 'manual'
+original.value.key = 'manual'
 
 console.log(cloned.value.key) // 'value'
 

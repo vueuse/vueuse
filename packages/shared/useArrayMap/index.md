@@ -12,6 +12,7 @@ Reactive `Array.map`
 
 ```js
 import { useArrayMap } from '@vueuse/core'
+
 const item1 = ref(0)
 const item2 = ref(2)
 const item3 = ref(4)
@@ -28,6 +29,7 @@ item1.value = 1
 
 ```js
 import { useArrayMap } from '@vueuse/core'
+
 const list = ref([0, 1, 2, 3, 4])
 const result = useArrayMap(list, i => i * 2)
 // result.value: [0, 2, 4, 6, 8]

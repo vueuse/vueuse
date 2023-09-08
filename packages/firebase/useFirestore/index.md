@@ -30,13 +30,15 @@ const posts = useFirestore(postsQuery)
 // you can use the boolean value to tell a query when it is ready to run
 // when it gets falsy value, return the initial value
 const userId = ref('')
-const userQuery = computed(() => !!userId.value && doc(db, 'users', userId.value))
+const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
 const userData = useFirestore(userQuery, null)
 ```
 
 ## Share across instances
 
-You can reuse the db reference by passing `autoDispose: false`
+You can reuse the db reference by passing `autoDispose: false`. You can also set an amount of milliseconds before auto disposing the db reference.
+
+Note : Getting a not disposed db reference again don't cost a Firestore read.
 
 ```ts
 const todos = useFirestore(collection(db, 'todos'), undefined, { autoDispose: false })

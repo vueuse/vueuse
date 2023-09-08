@@ -1,4 +1,7 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
+import process from 'node:process'
+import { createRequire } from 'node:module'
+import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -11,13 +14,15 @@ import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
 import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
 
+const require = createRequire(import.meta.url)
+
 export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
     getChangeLog(process.env.CI ? 1000 : 100),
     getFunctionContributors(),
   ])
 
-  return {
+  return <UserConfig>{
     server: {
       hmr: {
         overlay: false,
@@ -78,6 +83,7 @@ export default defineConfig(async () => {
         '@vueuse/shared': resolve(__dirname, 'shared/index.ts'),
         '@vueuse/core': resolve(__dirname, 'core/index.ts'),
         '@vueuse/math': resolve(__dirname, 'math/index.ts'),
+        '@vueuse/integrations/useFocusTrap': resolve(__dirname, 'integrations/useFocusTrap/index.ts'),
         '@vueuse/integrations': resolve(__dirname, 'integrations/index.ts'),
         '@vueuse/components': resolve(__dirname, 'components/index.ts'),
         '@vueuse/metadata': resolve(__dirname, 'metadata/index.ts'),
@@ -105,6 +111,13 @@ export default defineConfig(async () => {
         'fuse.js',
         'universal-cookie',
       ],
+    },
+    css: {
+      postcss: {
+        plugins: [
+          require('postcss-nested'),
+        ],
+      },
     },
   }
 })

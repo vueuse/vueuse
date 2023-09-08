@@ -4,7 +4,9 @@ import { useWakeLock } from '@vueuse/core'
 
 const wakeLock = reactive(useWakeLock())
 const text = computed(() => wakeLock.isActive ? 'OFF' : 'ON')
-const onClick = () => wakeLock.isActive ? wakeLock.request('screen') : wakeLock.release()
+function onClick() {
+  return wakeLock.isActive ? wakeLock.release() : wakeLock.request('screen')
+}
 </script>
 
 <template>

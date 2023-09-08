@@ -1,4 +1,4 @@
-import { isFunction, timestamp } from '@vueuse/shared'
+import { timestamp } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, markRaw, ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
@@ -31,7 +31,7 @@ export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   parse?: (v: Serialized) => Raw
 
   /**
-   * Deserialize data from the history
+   * set data source
    */
   setSource?: (source: Ref<Raw>, v: Raw) => void
 }
@@ -88,7 +88,7 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   clear: () => void
 
   /**
-   * Create new a new history record
+   * Create a new history record
    */
   commit: () => void
 
@@ -98,17 +98,31 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   reset: () => void
 }
 
-const fnBypass = <F, T>(v: F) => v as unknown as T
-const fnSetSource = <F>(source: Ref<F>, value: F) => source.value = value
+function fnBypass<F, T>(v: F) {
+  return v as unknown as T
+}
+function fnSetSource<F>(source: Ref<F>, value: F) {
+  return source.value = value
+}
 
 type FnCloneOrBypass<F, T> = (v: F) => T
 
 function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<R, S>
+  return (clone
+    ? typeof clone === 'function'
+      ? clone
+      : cloneFnJSON
+    : fnBypass
+  ) as unknown as FnCloneOrBypass<R, S>
 }
 
 function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
-  return (clone ? isFunction(clone) ? clone : cloneFnJSON : fnBypass) as unknown as FnCloneOrBypass<S, R>
+  return (clone
+    ? typeof clone === 'function'
+      ? clone
+      : cloneFnJSON
+    : fnBypass
+  ) as unknown as FnCloneOrBypass<S, R>
 }
 
 /**
@@ -151,7 +165,7 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
     last.value = _createHistoryRecord()
 
     if (options.capacity && undoStack.value.length > options.capacity)
-      undoStack.value.splice(options.capacity, Infinity)
+      undoStack.value.splice(options.capacity, Number.POSITIVE_INFINITY)
     if (redoStack.value.length)
       redoStack.value.splice(0, redoStack.value.length)
   }

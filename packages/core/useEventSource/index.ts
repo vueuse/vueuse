@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref, shallowRef } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
@@ -14,12 +14,12 @@ export type UseEventSourceOptions = EventSourceInit
  * @param events
  * @param options
  */
-export function useEventSource(url: string, events: Array<string> = [], options: UseEventSourceOptions = {}) {
+export function useEventSource(url: string | URL, events: Array<string> = [], options: UseEventSourceOptions = {}) {
   const event: Ref<string | null> = ref(null)
   const data: Ref<string | null> = ref(null)
   const status = ref('CONNECTING') as Ref<'OPEN' | 'CONNECTING' | 'CLOSED'>
   const eventSource = ref(null) as Ref<EventSource | null>
-  const error = ref(null) as Ref<Event | null>
+  const error = shallowRef(null) as Ref<Event | null>
 
   const {
     withCredentials = false,

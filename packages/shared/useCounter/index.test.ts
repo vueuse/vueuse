@@ -1,4 +1,6 @@
-import { useCounter } from '../useCounter'
+import { describe, expect, it } from 'vitest'
+import { ref } from 'vue-demi'
+import { useCounter } from '.'
 
 describe('useCounter', () => {
   it('should be defined', () => {
@@ -36,8 +38,49 @@ describe('useCounter', () => {
     expect(get()).toBe(25)
   })
 
+  it('should be update initial & counter', () => {
+    const initial = ref(0)
+    const { count, inc, dec, get, set, reset } = useCounter(initial)
+
+    expect(count.value).toBe(0)
+    expect(initial.value).toBe(0)
+    expect(get()).toBe(0)
+    inc()
+    expect(initial.value).toBe(1)
+    expect(count.value).toBe(1)
+    expect(get()).toBe(1)
+    inc(2)
+    expect(count.value).toBe(3)
+    expect(initial.value).toBe(3)
+    expect(get()).toBe(3)
+    dec()
+    expect(count.value).toBe(2)
+    expect(initial.value).toBe(2)
+    expect(get()).toBe(2)
+    dec(5)
+    expect(count.value).toBe(-3)
+    expect(initial.value).toBe(-3)
+    expect(get()).toBe(-3)
+    set(100)
+    expect(count.value).toBe(100)
+    expect(initial.value).toBe(100)
+    expect(get()).toBe(100)
+    reset()
+    expect(count.value).toBe(0)
+    expect(initial.value).toBe(0)
+    expect(get()).toBe(0)
+    reset(25)
+    expect(count.value).toBe(25)
+    expect(initial.value).toBe(25)
+    expect(get()).toBe(25)
+    reset()
+    expect(count.value).toBe(25)
+    expect(initial.value).toBe(25)
+    expect(get()).toBe(25)
+  })
+
   it('should be update limited counter', () => {
-    const { count, inc, dec, get } = useCounter(1, { min: -2, max: 15 })
+    const { count, inc, dec, get, set, reset } = useCounter(1, { min: -2, max: 15 })
 
     expect(count.value).toBe(1)
     expect(get()).toBe(1)
@@ -51,6 +94,24 @@ describe('useCounter', () => {
     expect(count.value).toBe(12)
     expect(get()).toBe(12)
     dec(20)
+    expect(count.value).toBe(-2)
+    expect(get()).toBe(-2)
+    reset()
+    expect(count.value).toBe(1)
+    expect(get()).toBe(1)
+    set(20)
+    expect(count.value).toBe(15)
+    expect(get()).toBe(15)
+    set(-10)
+    expect(count.value).toBe(-2)
+    expect(get()).toBe(-2)
+    reset()
+    expect(count.value).toBe(1)
+    expect(get()).toBe(1)
+    reset(20)
+    expect(count.value).toBe(15)
+    expect(get()).toBe(15)
+    reset(-10)
     expect(count.value).toBe(-2)
     expect(get()).toBe(-2)
   })

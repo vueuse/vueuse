@@ -1,5 +1,9 @@
 name: Publish Package
 
+permissions:
+  id-token: write
+  contents: write
+
 on:
   push:
     tags:
@@ -17,10 +21,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
@@ -34,5 +38,5 @@ jobs:
       - run: pnpm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true
           NODE_OPTIONS: --max-old-space-size=6144
-

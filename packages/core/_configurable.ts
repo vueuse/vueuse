@@ -14,6 +14,13 @@ export interface ConfigurableDocument {
   document?: Document
 }
 
+export interface ConfigurableDocumentOrShadowRoot {
+  /*
+   * Specify a custom `document` instance or a shadow root, e.g. working with iframes or in testing environments.
+   */
+  document?: DocumentOrShadowRoot
+}
+
 export interface ConfigurableNavigator {
   /*
    * Specify a custom `navigator` instance, e.g. working with iframes or in testing environments.
@@ -28,7 +35,7 @@ export interface ConfigurableLocation {
   location?: Location
 }
 
-export const defaultWindow = /* #__PURE__ */ isClient ? window : undefined
-export const defaultDocument = /* #__PURE__ */ isClient ? window.document : undefined
-export const defaultNavigator = /* #__PURE__ */ isClient ? window.navigator : undefined
-export const defaultLocation = /* #__PURE__ */ isClient ? window.location : undefined
+export const defaultWindow = /*#__PURE__*/ isClient ? window : undefined
+export const defaultDocument = /*#__PURE__*/ isClient ? window.document : undefined
+export const defaultNavigator = /*#__PURE__*/ isClient ? window.navigator : undefined
+export const defaultLocation = /*#__PURE__*/ isClient ? window.location : undefined

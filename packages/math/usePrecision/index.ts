@@ -1,7 +1,28 @@
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
+
+/**
+ * Accuracy of handling numerical values.
+ *
+ * @param value - The value
+ * @param power - The power
+ * @returns The result of multiplying the value with the power
+ */
+function accurateMultiply(value: number, power: number): number {
+  const valueStr = value.toString()
+
+  if (value > 0 && valueStr.includes('.')) {
+    const decimalPlaces = valueStr.split('.')[1].length
+    const multiplier = 10 ** decimalPlaces ?? 1
+
+    return (value * multiplier * power) / multiplier
+  }
+  else {
+    return value * power
+  }
+}
 
 export interface UsePrecisionOptions {
   /**
@@ -18,14 +39,14 @@ export interface UsePrecisionOptions {
  * @see https://vueuse.org/usePrecision
  */
 export function usePrecision(
-  value: MaybeComputedRef<number>,
-  digits: MaybeComputedRef<number>,
-  options?: MaybeComputedRef<UsePrecisionOptions>,
-): ComputedRef<number | string> {
-  return computed<number | string>(() => {
-    const _value = resolveUnref(value)
-    const _digits = resolveUnref(digits)
+  value: MaybeRefOrGetter<number>,
+  digits: MaybeRefOrGetter<number>,
+  options?: MaybeRefOrGetter<UsePrecisionOptions>,
+): ComputedRef<number> {
+  return computed<number>(() => {
+    const _value = toValue(value)
+    const _digits = toValue(digits)
     const power = 10 ** _digits
-    return Math[resolveUnref(options)?.math || 'round'](_value * power) / power
+    return Math[toValue(options)?.math || 'round'](accurateMultiply(_value, power)) / power
   })
 }

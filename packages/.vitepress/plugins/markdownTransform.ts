@@ -1,4 +1,4 @@
-import { join, resolve } from 'path'
+import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { packages } from '../../../meta/packages'
@@ -26,7 +26,7 @@ export function MarkdownTransform(): Plugin {
           if (ending === ']') // already a link
             return _
           const fn = getFunction(name)!
-          return `[\`${fn.name}\`](${fn.docs})`
+          return `[\`${fn.name}\`](${fn.docs}) `
         },
       )
       // convert links to relative
@@ -37,9 +37,9 @@ export function MarkdownTransform(): Plugin {
       const name = functionNames.find(n => n.toLowerCase() === _name.toLowerCase()) || _name
 
       if (functionNames.includes(name) && i === 'index.md') {
-        const frontmatterEnds = code.indexOf('---\n\n') + 4
-        const firstSubheader = code.search(/\n## \w/)
-        const sliceIndex = firstSubheader < 0 ? frontmatterEnds : firstSubheader
+        const frontmatterEnds = code.indexOf('---\n\n')
+        const firstHeader = code.search(/\n#{2,6}\s.+/)
+        const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
         const { footer, header } = await getFunctionMarkdown(pkg, name)
 
@@ -78,7 +78,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 ## Type Declarations
 
 <details>
-<summary op50 italic>Show Type Declarations</summary>
+<summary op50 italic cursor-pointer select-none>Show Type Declarations</summary>
 
 ${code}
 

@@ -41,19 +41,26 @@ Using these you can manage the currently selected track. `selectedTrack` will
 be `-1` if there is no selected track.
 
 ```html
+
 <script setup lang="ts">
-const { tracks, enableTrack } = useMediaControls(video, { 
-  src: 'video.mp4',
-  tracks: [
-    {
-      default: true,
-      src: './subtitles.vtt',
-      kind: 'subtitles',
-      label: 'English',
-      srcLang: 'en',
-    },
-  ]
-})
+import { useMediaControls } from '@vueuse/core'
+import { ref } from 'vue'
+  const video = ref()
+  const {
+    tracks,
+    enableTrack
+  } = useMediaControls(video, {
+    src: 'video.mp4',
+    tracks: [
+      {
+        default: true,
+        src: './subtitles.vtt',
+        kind: 'subtitles',
+        label: 'English',
+        srcLang: 'en',
+      },
+    ]
+  })
 </script>
 
 <template>

@@ -1,14 +1,14 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
-import { isString, until } from '@vueuse/shared'
-import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
-import axios from 'axios'
+import { noop, until } from '@vueuse/shared'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import axios, { AxiosError } from 'axios'
 
-export interface UseAxiosReturn<T, D> {
+export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   /**
    * Axios Response
    */
-  response: ShallowRef<AxiosResponse<T, D> | undefined>
+  response: ShallowRef<R | undefined>
 
   /**
    * Axios response data
@@ -33,7 +33,7 @@ export interface UseAxiosReturn<T, D> {
   /**
    * Any errors that may have occurred
    */
-  error: ShallowRef<AxiosError<T, D> | undefined>
+  error: ShallowRef<unknown | undefined>
 
   /**
    * Aborts the current request
@@ -41,84 +41,89 @@ export interface UseAxiosReturn<T, D> {
   abort: (message?: string | undefined) => void
 
   /**
-   * isFinished alias
-   * @deprecated use `isFinished` instead
-   */
-  finished: Ref<boolean>
-
-  /**
-   * isLoading alias
-   * @deprecated use `isLoading` instead
-   */
-  loading: Ref<boolean>
-
-  /**
-   * isAborted alias
-   * @deprecated use `isAborted` instead
-   */
-  aborted: Ref<boolean>
-
-  /**
-   * abort alias
+   * Alias to `abort`
    */
   cancel: (message?: string | undefined) => void
 
   /**
-   * isAborted alias
-   * @deprecated use `isCanceled` instead
-   */
-  canceled: Ref<boolean>
-
-  /**
-   * isAborted alias
+   * Alias to `isAborted`
    */
   isCanceled: Ref<boolean>
 }
-export interface StrictUseAxiosReturn<T, D> extends UseAxiosReturn<T, D> {
+export interface StrictUseAxiosReturn<T, R, D> extends UseAxiosReturn<T, R, D> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string | AxiosRequestConfig<D>, config?: AxiosRequestConfig<D>) => PromiseLike<StrictUseAxiosReturn<T, D>>
+  execute: (url?: string | AxiosRequestConfig<D>, config?: AxiosRequestConfig<D>) => Promise<StrictUseAxiosReturn<T, R, D>>
 }
-export interface EasyUseAxiosReturn<T, D> extends UseAxiosReturn<T, D> {
+export interface EasyUseAxiosReturn<T, R, D> extends UseAxiosReturn<T, R, D> {
   /**
    * Manually call the axios request
    */
-  execute: (url: string, config?: AxiosRequestConfig<D>) => PromiseLike<EasyUseAxiosReturn<T, D>>
+  execute: (url: string, config?: AxiosRequestConfig<D>) => Promise<EasyUseAxiosReturn<T, R, D>>
 }
-export interface UseAxiosOptions {
+export interface UseAxiosOptions<T = any> {
   /**
    * Will automatically run axios request when `useAxios` is used
    *
    */
   immediate?: boolean
+
   /**
    * Use shallowRef.
    *
    * @default true
    */
   shallow?: boolean
-}
-type OverallUseAxiosReturn<T, D> = StrictUseAxiosReturn<T, D> | EasyUseAxiosReturn<T, D>
 
-export function useAxios<T = any, D = any>(url: string, config?: AxiosRequestConfig<D>, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D = any>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, D> & PromiseLike<StrictUseAxiosReturn<T, D>>
-export function useAxios<T = any, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
-export function useAxios<T = any, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
-export function useAxios<T = any, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, D> & PromiseLike<EasyUseAxiosReturn<T, D>>
+  /**
+   * Callback when error is caught.
+   */
+  onError?: (e: unknown) => void
+
+  /**
+   * Callback when success is caught.
+   */
+  onSuccess?: (data: T) => void
+
+  /**
+   * Initial data to use
+   */
+  initialData?: T
+
+  /**
+   * Sets the state to initialState before executing the promise.
+   */
+  resetOnExecute?: boolean
+
+  /**
+   * Callback when request is finished.
+   */
+  onFinish?: () => void
+}
+type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
+
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>, options?: UseAxiosOptions): StrictUseAxiosReturn<T, R, D> & Promise<StrictUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(url: string, instance?: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, R, D> & Promise<StrictUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: UseAxiosOptions): StrictUseAxiosReturn<T, R, D> & Promise<StrictUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 
 /**
  * Wrapper for axios.
  *
  * @see https://vueuse.org/useAxios
  */
-export function useAxios<T = any, D = any>(...args: any[]): OverallUseAxiosReturn<T, D> & PromiseLike<OverallUseAxiosReturn<T, D>> {
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
-  const argsPlaceholder = isString(url) ? 1 : 0
+  const argsPlaceholder = typeof url === 'string' ? 1 : 0
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
-  let options: UseAxiosOptions = { immediate: !!argsPlaceholder, shallow: true }
+  let options: UseAxiosOptions<T> = {
+    immediate: !!argsPlaceholder,
+    shallow: true,
+  }
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -144,75 +149,117 @@ export function useAxios<T = any, D = any>(...args: any[]): OverallUseAxiosRetur
   )
     options = args[args.length - 1]
 
+  const {
+    initialData,
+    shallow,
+    onSuccess = noop,
+    onError = noop,
+    immediate,
+    resetOnExecute = false,
+  } = options
+
   const response = shallowRef<AxiosResponse<T>>()
-  const data = options.shallow ? shallowRef<T>() : ref<T>()
+  const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
   const isFinished = ref(false)
   const isLoading = ref(false)
   const isAborted = ref(false)
-  const error = shallowRef<AxiosError<T>>()
+  const error = shallowRef<unknown>()
 
-  const cancelToken: CancelTokenSource = axios.CancelToken.source()
+  const cancelTokenSource = axios.CancelToken.source
+  let cancelToken: CancelTokenSource = cancelTokenSource()
+
   const abort = (message?: string) => {
     if (isFinished.value || !isLoading.value)
       return
 
     cancelToken.cancel(message)
+    cancelToken = cancelTokenSource()
     isAborted.value = true
     isLoading.value = false
     isFinished.value = false
   }
+
   const loading = (loading: boolean) => {
     isLoading.value = loading
     isFinished.value = !loading
   }
+
+  /**
+   * Reset data to initialData
+   */
+  const resetData = () => {
+    if (resetOnExecute)
+      data.value = initialData!
+  }
+
   const waitUntilFinished = () =>
-    new Promise<OverallUseAxiosReturn<T, D>>((resolve, reject) => {
+    new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
       until(isFinished).toBe(true)
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        .then(() => resolve(result))
-        .catch(reject)
+        .then(() => error.value ? reject(error.value) : resolve(result))
     })
-  const then: PromiseLike<OverallUseAxiosReturn<T, D>>['then'] = (onFulfilled, onRejected) =>
-    waitUntilFinished().then(onFulfilled, onRejected)
-  const execute: OverallUseAxiosReturn<T, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
+
+  const promise = {
+    then: (...args) => waitUntilFinished().then(...args),
+    catch: (...args) => waitUntilFinished().catch(...args),
+  } as Promise<OverallUseAxiosReturn<T, R, D>>
+
+  let executeCounter = 0
+  const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
-      : url ?? ''
+      : url ?? config.url
+
+    if (_url === undefined) {
+      error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
+      isFinished.value = true
+      return promise
+    }
+    resetData()
+    abort()
     loading(true)
+
+    executeCounter += 1
+    const currentExecuteCounter = executeCounter
+
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
         response.value = r
-        data.value = r.data
+        const result = r.data
+        data.value = result
+        onSuccess(result)
       })
       .catch((e: any) => {
         error.value = e
+        onError(e)
       })
-      .finally(() => loading(false))
-    return { then }
+      .finally(() => {
+        options.onFinish?.()
+        if (currentExecuteCounter === executeCounter)
+          loading(false)
+      })
+    return promise
   }
-  if (options.immediate && url)
-    (execute as StrictUseAxiosReturn<T, D>['execute'])()
+
+  if (immediate && url)
+    (execute as StrictUseAxiosReturn<T, R, D>['execute'])()
 
   const result = {
     response,
     data,
     error,
-    finished: isFinished,
-    loading: isLoading,
     isFinished,
     isLoading,
     cancel: abort,
     isAborted,
-    canceled: isAborted,
-    aborted: isAborted,
     isCanceled: isAborted,
     abort,
     execute,
-  } as OverallUseAxiosReturn<T, D>
+  } as OverallUseAxiosReturn<T, R, D>
 
   return {
     ...result,
-    then,
+    ...promise,
   }
 }

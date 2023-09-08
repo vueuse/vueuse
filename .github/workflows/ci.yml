@@ -11,9 +11,12 @@ on:
       - main
       - next
 
+  merge_group: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -23,7 +26,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           cache: pnpm
 
       - name: Setup
@@ -40,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [14.x, 16.x]
+        node: [16.x, 18.x, 20.x]
       fail-fast: false
 
     steps:
@@ -72,3 +75,7 @@ jobs:
 
       - name: Test Vue 2
         run: pnpm run test:2
+
+      - if: matrix.node == '18.x'
+        name: Playground Smoke Test
+        run: cd playgrounds && bash ./build.sh

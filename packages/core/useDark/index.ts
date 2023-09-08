@@ -1,8 +1,6 @@
 import { computed } from 'vue-demi'
-import { defaultWindow } from '../_configurable'
-import { usePreferredDark } from '../usePreferredDark'
-import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
 import { useColorMode } from '../useColorMode'
+import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
 
 export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchema>, 'modes' | 'onChanged'> {
   /**
@@ -25,7 +23,7 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
    *
    * @default undefined
    */
-  onChanged?: (isDark: boolean) => void
+  onChanged?: (isDark: boolean, defaultHandler: ((mode: BasicColorSchema) => void), mode: BasicColorSchema) => void
 }
 
 /**
@@ -38,14 +36,13 @@ export function useDark(options: UseDarkOptions = {}) {
   const {
     valueDark = 'dark',
     valueLight = '',
-    window = defaultWindow,
   } = options
 
   const mode = useColorMode({
     ...options,
     onChanged: (mode, defaultHandler) => {
       if (options.onChanged)
-        options.onChanged?.(mode === 'dark')
+        options.onChanged?.(mode === 'dark', defaultHandler, mode)
       else
         defaultHandler(mode)
     },
@@ -55,17 +52,16 @@ export function useDark(options: UseDarkOptions = {}) {
     },
   })
 
-  const preferredDark = usePreferredDark({ window })
-
   const isDark = computed<boolean>({
     get() {
       return mode.value === 'dark'
     },
     set(v) {
-      if (v === preferredDark.value)
+      const modeVal = v ? 'dark' : 'light'
+      if (mode.system.value === modeVal)
         mode.value = 'auto'
       else
-        mode.value = v ? 'dark' : 'light'
+        mode.value = modeVal
     },
   })
 

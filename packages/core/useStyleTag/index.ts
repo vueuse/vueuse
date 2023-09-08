@@ -66,17 +66,19 @@ export function useStyleTag(
 
   const cssRef = ref(css)
 
-  let stop = () => {}
+  let stop = () => { }
   const load = () => {
     if (!document)
       return
 
     const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
-    el.type = 'text/css'
-    el.id = id
-    if (options.media)
-      el.media = options.media
-    document.head.appendChild(el)
+
+    if (!el.isConnected) {
+      el.id = id
+      if (options.media)
+        el.media = options.media
+      document.head.appendChild(el)
+    }
 
     if (isLoaded.value)
       return
@@ -84,7 +86,7 @@ export function useStyleTag(
     stop = watch(
       cssRef,
       (value) => {
-        el.innerText = value
+        el.textContent = value
       },
       { immediate: true },
     )

@@ -9,11 +9,11 @@ import Spinner from './components/Spinner.vue'
 
 const video = ref<HTMLVideoElement>()
 const loop = ref(false)
-const poster = 'https://bitmovin.com/wp-content/uploads/2016/06/sintel-poster.jpg'
+const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
 const controls = useMediaControls(video, {
   src: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f1/Sintel_movie_4K.webm/Sintel_movie_4K.webm.1080p.vp9.webm',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Sintel_movie_4K.webm',
     type: 'video/webm',
   },
   tracks: [
@@ -51,7 +51,9 @@ const {
 } = controls
 const text = stringify(reactive(controls))
 const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
-const formatDuration = (seconds: number) => new Date(1000 * seconds).toISOString().slice(14, 19)
+function formatDuration(seconds: number) {
+  return new Date(1000 * seconds).toISOString().slice(14, 19)
+}
 </script>
 
 <template>

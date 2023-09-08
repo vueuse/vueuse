@@ -1,5 +1,7 @@
+import { vi } from 'vitest'
+
 // Like `until` but works off of any assertion, not application code.
-export const retry = (assertion: Function, { interval = 1, timeout = 100 } = {}) => {
+export function retry(assertion: Function, { interval = 1, timeout = 100 } = {}) {
   return new Promise((resolve, reject) => {
     const startTime = Date.now()
 
@@ -14,7 +16,7 @@ export const retry = (assertion: Function, { interval = 1, timeout = 100 } = {})
       }, interval)
       try {
         // If useFakeTimers hasn't been called, this will throw
-        vitest.advanceTimersByTime(interval)
+        vi.advanceTimersByTime(interval)
       }
       catch (e) { /* Expected to throw */ }
     }

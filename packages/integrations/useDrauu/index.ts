@@ -45,7 +45,7 @@ export function useDrauu(
 
   const onChangedHook = createEventHook<void>()
   const onCanceledHook = createEventHook<void>()
-  const onCommittedHook = createEventHook<void>()
+  const onCommittedHook = createEventHook<SVGElement | undefined>()
   const onStartHook = createEventHook<void>()
   const onEndHook = createEventHook<void>()
   const canUndo = ref(false)
@@ -108,7 +108,7 @@ export function useDrauu(
 
       disposables = [
         drauuInstance.value.on('canceled', () => onCanceledHook.trigger()),
-        drauuInstance.value.on('committed', () => onCommittedHook.trigger()),
+        drauuInstance.value.on('committed', (node: SVGElement | undefined) => onCommittedHook.trigger(node)),
         drauuInstance.value.on('start', () => onStartHook.trigger()),
         drauuInstance.value.on('end', () => onEndHook.trigger()),
         drauuInstance.value.on('changed', () => {

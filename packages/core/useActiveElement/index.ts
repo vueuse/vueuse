@@ -1,7 +1,16 @@
 import { computedWithControl } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
+import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+
+export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
+  /**
+   * Search active element deeply inside shadow dom
+   *
+   * @default true
+   */
+  deep?: boolean
+}
 
 /**
  * Reactive `document.activeElement`
@@ -9,15 +18,35 @@ import { defaultWindow } from '../_configurable'
  * @see https://vueuse.org/useActiveElement
  * @param options
  */
-export function useActiveElement<T extends HTMLElement>(options: ConfigurableWindow = {}) {
-  const { window = defaultWindow } = options
+export function useActiveElement<T extends HTMLElement>(
+  options: UseActiveElementOptions = {},
+) {
+  const {
+    window = defaultWindow,
+    deep = true,
+  } = options
+  const document = options.document ?? window?.document
+
+  const getDeepActiveElement = () => {
+    let element = document?.activeElement
+    if (deep) {
+      while (element?.shadowRoot)
+        element = element?.shadowRoot?.activeElement
+    }
+    return element
+  }
+
   const activeElement = computedWithControl(
     () => null,
-    () => window?.document.activeElement as T | null | undefined,
+    () => getDeepActiveElement() as T | null | undefined,
   )
 
   if (window) {
-    useEventListener(window, 'blur', activeElement.trigger, true)
+    useEventListener(window, 'blur', (event) => {
+      if (event.relatedTarget !== null)
+        return
+      activeElement.trigger()
+    }, true)
     useEventListener(window, 'focus', activeElement.trigger, true)
   }
 

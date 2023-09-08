@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useToNumber } from '.'
 
 describe('useToNumber', () => {
@@ -12,8 +13,8 @@ describe('useToNumber', () => {
 
     value.value = 'hi'
 
-    expect(float.value).toBe(NaN)
-    expect(int.value).toBe(NaN)
+    expect(float.value).toBe(Number.NaN)
+    expect(int.value).toBe(Number.NaN)
 
     value.value = 123.4
 

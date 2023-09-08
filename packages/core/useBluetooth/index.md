@@ -66,7 +66,7 @@ const batteryPercent = ref<undefined | number>()
 
 const isGettingBatteryLevels = ref(false)
 
-const getBatteryLevels = async () => {
+async function getBatteryLevels() {
   isGettingBatteryLevels.value = true
 
   // Get the battery service:
@@ -93,7 +93,7 @@ const { stop } = pausableWatch(isConnected, (newIsConnected) => {
     return
   // Attempt to get the battery levels of the device:
   getBatteryLevels()
-  // We only want to run this on the initial connection, as we will use a event listener to handle updates:
+  // We only want to run this on the initial connection, as we will use an event listener to handle updates:
   stop()
 })
 ```

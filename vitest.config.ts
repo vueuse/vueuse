@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -21,16 +21,18 @@ export default defineConfig({
     __VUE_PROD_DEVTOOLS__: 'false',
   },
   test: {
-    globals: true,
     environment: 'jsdom',
     setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
     reporters: 'dot',
-    deps: {
-      inline: [
-        'vue2',
-        '@vue/composition-api',
-        'vue-demi',
-      ],
+    server: {
+      deps: {
+        inline: [
+          'vue2',
+          '@vue/composition-api',
+          'vue-demi',
+          'msw',
+        ],
+      },
     },
   },
   ssr: {

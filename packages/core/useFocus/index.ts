@@ -1,10 +1,9 @@
 import type { Ref } from 'vue-demi'
-import { computed, watch } from 'vue-demi'
-import { isDef } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
-import { useActiveElement } from '../useActiveElement'
 import type { ConfigurableWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UseFocusOptions extends ConfigurableWindow {
   /**
@@ -13,6 +12,13 @@ export interface UseFocusOptions extends ConfigurableWindow {
    * @default false
    */
   initialValue?: boolean
+
+  /**
+   * Replicate the :focus-visible behavior of CSS
+   *
+   * @default false
+   */
+  focusVisible?: boolean
 }
 
 export interface UseFocusReturn {
@@ -31,23 +37,34 @@ export interface UseFocusReturn {
  * @param options
  */
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
-  const { initialValue = false } = options
+  const { initialValue = false, focusVisible = false } = options
 
-  const activeElement = useActiveElement(options)
+  const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
+
+  useEventListener(targetElement, 'focus', (event) => {
+    if (!focusVisible || (event.target as HTMLElement).matches?.(':focus-visible'))
+      innerFocused.value = true
+  })
+  useEventListener(targetElement, 'blur', () => innerFocused.value = false)
+
   const focused = computed({
-    get() {
-      return isDef(activeElement.value) && isDef(targetElement.value) && activeElement.value === targetElement.value
-    },
+    get: () => innerFocused.value,
     set(value: boolean) {
-      if (!value && focused.value)
+      if (!value && innerFocused.value)
         targetElement.value?.blur()
-      if (value && !focused.value)
+      else if (value && !innerFocused.value)
         targetElement.value?.focus()
     },
   })
 
-  watch(targetElement, () => { focused.value = initialValue }, { immediate: true, flush: 'post' })
+  watch(
+    targetElement,
+    () => {
+      focused.value = initialValue
+    },
+    { immediate: true, flush: 'post' },
+  )
 
   return { focused }
 }

@@ -18,7 +18,9 @@ export interface CoreTeam {
 
 const contributorsAvatars: Record<string, string> = {}
 
-const getAvatarUrl = (name: string) => `https://github.com/${name}.png`
+function getAvatarUrl(name: string) {
+  return `https://github.com/${name}.png`
+}
 
 const contributorList = (contributors as string[]).reduce((acc, name) => {
   contributorsAvatars[name] = getAvatarUrl(name)
@@ -161,6 +163,15 @@ const coreTeamMembers: CoreTeam[] = [
     sponsors: true,
     description: 'Building delightful open source<br>Nuxt freelance developer',
     packages: ['schema-org'],
+  },
+  {
+    avatar: contributorsAvatars['Alfred-Skyblue'],
+    name: 'Alfred-Skyblue',
+    github: 'Alfred-Skyblue',
+    description: 'open source enthusiast',
+    functions: [
+      'useSortable',
+    ],
   },
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))

@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useTrunc } from '.'
 
 // Returns:
@@ -34,11 +35,11 @@ describe('useTrunk', () => {
     base.value = -0.2
     expect(result.value).toBe(-0)
 
-    base.value = Infinity
-    expect(result.value).toBe(Infinity)
-    base.value = -Infinity
-    expect(result.value).toBe(-Infinity)
-    base.value = NaN
-    expect(result.value).toBe(NaN)
+    base.value = Number.POSITIVE_INFINITY
+    expect(result.value).toBe(Number.POSITIVE_INFINITY)
+    base.value = Number.NEGATIVE_INFINITY
+    expect(result.value).toBe(Number.NEGATIVE_INFINITY)
+    base.value = Number.NaN
+    expect(result.value).toBe(Number.NaN)
   })
 })

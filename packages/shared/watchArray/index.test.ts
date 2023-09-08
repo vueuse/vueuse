@@ -1,9 +1,10 @@
 import { nextTick, reactive, ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
 import { watchArray } from '.'
 
 describe('watchArray', () => {
   it('should work when two lists are different', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 1, 4])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([1, 4])
@@ -18,7 +19,7 @@ describe('watchArray', () => {
   })
 
   it('should work when two lists are identical', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 2, 3])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([])
@@ -33,7 +34,7 @@ describe('watchArray', () => {
   })
 
   it('should work with list push', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 2, 3, 4])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([4])
@@ -48,7 +49,7 @@ describe('watchArray', () => {
   })
 
   it('should work with list splice', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 5, 6, 7, 3])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([5, 6, 7])
@@ -63,7 +64,7 @@ describe('watchArray', () => {
   })
 
   it('should work with reactive source', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 2, 3, 4])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([4])
@@ -78,7 +79,7 @@ describe('watchArray', () => {
   })
 
   it('should work with functional source', async () => {
-    const spy = vitest.fn((newList, oldList, added, removed) => {
+    const spy = vi.fn((newList, oldList, added, removed) => {
       expect(newList).toEqual([1, 2, 3, 4])
       expect(oldList).toEqual([1, 2, 3])
       expect(added).toEqual([4])
@@ -93,7 +94,7 @@ describe('watchArray', () => {
   })
 
   it('should work when immediate is true', async () => {
-    const spy = vitest.fn()
+    const spy = vi.fn()
 
     const num = ref([1, 2, 3])
     watchArray(() => num.value, spy, { immediate: true })

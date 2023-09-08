@@ -1,91 +1,15 @@
-import { nextTick } from 'vue-demi'
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useElementVisibility } from '.'
 
 describe('useElementVisibility', () => {
   let el: HTMLDivElement
-  const overLeft = document.documentElement.clientWidth + 100
-  const overTop = document.documentElement.clientHeight + 100
-  const rect = {
-    y: 0,
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-  } as DOMRect
-  function scrollTrigger() {
-    window.dispatchEvent(new Event('scroll'))
-  }
-  function mockGetBoundingClientRect(values: DOMRect[]) {
-    const mocker = values.reduce((f, result) => f.mockReturnValueOnce(result), vi.fn())
-    // prevent error when other tests trigger scroll
-    mocker.mockImplementation(() => rect)
-    return mocker
-  }
 
   beforeEach(() => {
     el = document.createElement('div')
-    window.innerWidth = document.documentElement.clientWidth
-    window.innerHeight = document.documentElement.clientHeight
-    document.body.appendChild(el)
   })
 
   it('should work when el is not an element', async () => {
     const visible = useElementVisibility(null)
-    expect(visible.value).toBeFalsy()
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeFalsy()
-  })
-
-  it('should work when scrollY', async () => {
-    el.getBoundingClientRect = mockGetBoundingClientRect([
-      rect,
-      { ...rect, top: overTop },
-      rect,
-      { ...rect, top: overTop },
-    ])
-
-    const visible = useElementVisibility(el)
-    expect(visible.value).toBeTruthy()
-
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeFalsy()
-
-    window.innerHeight = 0
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeTruthy()
-
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeFalsy()
-  })
-
-  it('should work when scrollX', async () => {
-    el.getBoundingClientRect = mockGetBoundingClientRect([
-      rect,
-      { ...rect, left: overLeft },
-      rect,
-      { ...rect, left: overLeft },
-    ])
-
-    const visible = useElementVisibility(el)
-    expect(visible.value).toBeTruthy()
-
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeFalsy()
-
-    window.innerWidth = 0
-    scrollTrigger()
-    await nextTick()
-    expect(visible.value).toBeTruthy()
-
-    scrollTrigger()
-    await nextTick()
     expect(visible.value).toBeFalsy()
   })
 
@@ -93,5 +17,60 @@ describe('useElementVisibility', () => {
     // @ts-expect-error set window null
     const visible = useElementVisibility(el, { window: null })
     expect(visible.value).toBeFalsy()
+  })
+
+  describe('when internally using useIntersectionObserver', async () => {
+    const { useIntersectionObserver } = await import('../useIntersectionObserver')
+
+    beforeAll(() => {
+      vi.resetAllMocks()
+      vi.mock('../useIntersectionObserver')
+    })
+
+    it('should call useIntersectionObserver internally', () => {
+      expect(useIntersectionObserver).toHaveBeenCalledTimes(0)
+      useElementVisibility(el)
+      expect(useIntersectionObserver).toHaveBeenCalledTimes(1)
+    })
+
+    it('passes the given element to useIntersectionObserver', () => {
+      useElementVisibility(el)
+      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[0]).toBe(el)
+    })
+
+    it('passes a callback to useIntersectionObserver that sets visibility to false only when isIntersecting is false', () => {
+      const isVisible = useElementVisibility(el)
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      // It should be false initially
+      expect(isVisible.value).toBe(false)
+
+      // It should still be false if the callback doesn't get an isIntersecting = true
+      callMockCallbackWithIsIntersectingValue(false)
+      expect(isVisible.value).toBe(false)
+
+      // But it should become true if the callback gets an isIntersecting = true
+      callMockCallbackWithIsIntersectingValue(true)
+      expect(isVisible.value).toBe(true)
+
+      // And it should become false again if isIntersecting = false
+      callMockCallbackWithIsIntersectingValue(false)
+      expect(isVisible.value).toBe(false)
+    })
+
+    it('passes the given window to useIntersectionObserver', () => {
+      const mockWindow = {} as Window
+
+      useElementVisibility(el, { window: mockWindow })
+      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]).toContain({ window: mockWindow })
+    })
+
+    it('uses the given scrollTarget as the root element in useIntersectionObserver', () => {
+      const mockScrollTarget = document.createElement('div')
+
+      useElementVisibility(el, { scrollTarget: mockScrollTarget })
+      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]).toContain({ root: mockScrollTarget })
+    })
   })
 })

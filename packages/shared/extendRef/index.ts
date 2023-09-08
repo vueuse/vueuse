@@ -1,6 +1,5 @@
 import type { Ref, ShallowUnwrapRef } from 'vue-demi'
-import { isRef } from 'vue-demi'
-import { __onlyVue3 } from '../utils/compatibility'
+import { isRef, isVue3, version } from 'vue-demi'
 
 export interface ExtendRefOptions<Unwrap extends boolean = boolean> {
   /**
@@ -29,7 +28,12 @@ export function extendRef<R extends Ref<any>, Extend extends object, Options ext
 
 // implementation
 export function extendRef<R extends Ref<any>, Extend extends object>(ref: R, extend: Extend, { enumerable = false, unwrap = true }: ExtendRefOptions = {}) {
-  __onlyVue3()
+  // compatibility: Vue 2.7 or above
+  if (!isVue3 && !version.startsWith('2.7.')) {
+    if (process.env.NODE_ENV !== 'production')
+      throw new Error('[VueUse] extendRef only works in Vue 2.7 or above.')
+    return
+  }
 
   for (const [key, value] of Object.entries(extend)) {
     if (key === 'value')

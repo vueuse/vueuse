@@ -1,5 +1,5 @@
 import { useCloned } from '@vueuse/core'
-import { expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick, ref } from 'vue-demi'
 
 describe('useCloned', () => {
@@ -21,6 +21,18 @@ describe('useCloned', () => {
     const data = ref({ test: 'test' })
 
     const { cloned } = useCloned(data)
+
+    data.value.test = 'success'
+
+    await nextTick()
+
+    expect(cloned.value).toEqual(data.value)
+  })
+
+  it('works with getter function', async () => {
+    const data = ref({ test: 'test' })
+
+    const { cloned } = useCloned(() => data.value)
 
     data.value.test = 'success'
 

@@ -1,4 +1,5 @@
 import { ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { reactify } from '.'
 
 describe('reactify', () => {
@@ -17,6 +18,7 @@ describe('reactify', () => {
   it('two args', () => {
     const base = ref(0)
     const exponent = ref(0)
+
     const pow = reactify(Math.pow)
     const result = pow(base, exponent)
 
@@ -39,6 +41,7 @@ describe('reactify', () => {
 
   it('mixed with literal', () => {
     const base = ref(0)
+
     const pow = reactify(Math.pow)
     const result = pow(base, 2)
 

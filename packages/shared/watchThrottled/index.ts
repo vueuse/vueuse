@@ -1,10 +1,10 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import type { MapOldSources, MapSources, MaybeComputedRef } from '../utils'
+import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
 import { throttleFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchThrottledOptions<Immediate> extends WatchOptions<Immediate> {
-  throttle?: MaybeComputedRef<number>
+  throttle?: MaybeRefOrGetter<number>
   trailing?: boolean
   leading?: boolean
 }

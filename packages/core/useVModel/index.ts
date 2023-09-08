@@ -1,17 +1,17 @@
-import { isDef, isFunction } from '@vueuse/shared'
-import type { UnwrapRef } from 'vue-demi'
-import { computed, getCurrentInstance, isVue2, ref, watch } from 'vue-demi'
+import { isDef } from '@vueuse/shared'
+import type { Ref, UnwrapRef, WritableComputedRef } from 'vue-demi'
+import { computed, getCurrentInstance, isVue2, nextTick, ref, watch } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
 import { cloneFnJSON } from '../useCloned'
 
-export interface UseVModelOptions<T> {
+export interface UseVModelOptions<T, Passive extends boolean = false> {
   /**
    * When passive is set to `true`, it will use `watch` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
    *
    * @default false
    */
-  passive?: boolean
+  passive?: Passive
   /**
    * When eventName is set, it's value will be used to overwrite the emit event name.
    *
@@ -39,7 +39,28 @@ export interface UseVModelOptions<T> {
    * @default false
    */
   clone?: boolean | CloneFn<T>
+  /**
+   * The hook before triggering the emit event can be used for form validation.
+   * if false is returned, the emit event will not be triggered.
+   *
+   * @default undefined
+   */
+  shouldEmit?: (v: T) => boolean
 }
+
+export function useVModel<P extends object, K extends keyof P, Name extends string>(
+  props: P,
+  key?: K,
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: UseVModelOptions<P[K], false>,
+): WritableComputedRef<P[K]>
+
+export function useVModel<P extends object, K extends keyof P, Name extends string>(
+  props: P,
+  key?: K,
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: UseVModelOptions<P[K], true>,
+): Ref<UnwrapRef<P[K]>>
 
 /**
  * Shorthand for v-model binding, props + emit -> ref
@@ -49,11 +70,11 @@ export interface UseVModelOptions<T> {
  * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
  * @param emit
  */
-export function useVModel<P extends object, K extends keyof P, Name extends string>(
+export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
   props: P,
   key?: K,
   emit?: (name: Name, ...args: any[]) => void,
-  options: UseVModelOptions<P[K]> = {},
+  options: UseVModelOptions<P[K], Passive> = {},
 ) {
   const {
     clone = false,
@@ -61,6 +82,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     eventName,
     deep = false,
     defaultValue,
+    shouldEmit,
   } = options
 
   const vm = getCurrentInstance()
@@ -80,11 +102,11 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     }
   }
 
-  event = eventName || event || `update:${key!.toString()}`
+  event = event || `update:${key!.toString()}`
 
   const cloneFn = (val: P[K]) => !clone
     ? val
-    : isFunction(clone)
+    : typeof clone === 'function'
       ? clone(val)
       : cloneFnJSON(val)
 
@@ -92,20 +114,37 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     ? cloneFn(props[key!])
     : defaultValue
 
+  const triggerEmit = (value: P[K]) => {
+    if (shouldEmit) {
+      if (shouldEmit(value))
+        _emit(event, value)
+    }
+    else {
+      _emit(event, value)
+    }
+  }
+
   if (passive) {
     const initialValue = getValue()
     const proxy = ref<P[K]>(initialValue!)
+    let isUpdating = false
 
     watch(
       () => props[key!],
-      v => proxy.value = cloneFn(v) as UnwrapRef<P[K]>,
+      (v) => {
+        if (!isUpdating) {
+          isUpdating = true
+          ;(proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>
+          nextTick(() => isUpdating = false)
+        }
+      },
     )
 
     watch(
       proxy,
       (v) => {
-        if (v !== props[key!] || deep)
-          _emit(event, v)
+        if (!isUpdating && (v !== props[key!] || deep))
+          triggerEmit(v as P[K])
       },
       { deep },
     )
@@ -118,7 +157,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
         return getValue()!
       },
       set(value) {
-        _emit(event, value)
+        triggerEmit(value)
       },
     })
   }

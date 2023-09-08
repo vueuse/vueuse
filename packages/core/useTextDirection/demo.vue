@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useTextDirection } from './index'
+import { useTextDirection } from '.'
 
 const dir = useTextDirection({
   selector: '#_useTextDirectionDemo',
@@ -12,7 +12,7 @@ const text = computed(() =>
     : 'This paragraph is in English but incorrectly goes right to left.',
 )
 
-const handleOnClick = () => {
+function handleOnClick() {
   dir.value = dir.value === 'rtl' ? 'ltr' : 'rtl'
 }
 </script>

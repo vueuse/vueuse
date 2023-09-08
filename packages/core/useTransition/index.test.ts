@@ -1,11 +1,65 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { ref } from 'vue-demi'
-import { useTransition } from '.'
+import { describe, expect, it, vi } from 'vitest'
+import { executeTransition, useTransition } from '.'
 
-const expectBetween = (val: number, floor: number, ceiling: number) => {
+function expectBetween(val: number, floor: number, ceiling: number) {
   expect(val).to.be.greaterThan(floor)
   expect(val).to.be.lessThan(ceiling)
 }
+
+describe('executeTransition', () => {
+  it('transitions between numbers', async () => {
+    const source = ref(0)
+
+    const trans = executeTransition(source, 0, 1, { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value, 0.25, 0.75)
+
+    await trans
+
+    expect(source.value).toBe(1)
+  })
+
+  it('transitions between vectors', async () => {
+    const source = ref([0, 0, 0])
+
+    const trans = executeTransition(source, [0, 1, 2], [1, 2, 3], { duration: 50 })
+
+    await promiseTimeout(25)
+
+    expectBetween(source.value[0], 0, 1)
+    expectBetween(source.value[1], 1, 2)
+    expectBetween(source.value[2], 2, 3)
+
+    await trans
+
+    expect(source.value[0]).toBe(1)
+    expect(source.value[1]).toBe(2)
+    expect(source.value[2]).toBe(3)
+  })
+
+  it('transitions can be aborted', async () => {
+    let abort = false
+
+    const source = ref(0)
+
+    const trans = executeTransition(source, 0, 1, {
+      abort: () => abort,
+      duration: 50,
+    })
+
+    await promiseTimeout(25)
+
+    abort = true
+
+    await trans
+
+    expectBetween(source.value, 0, 1)
+  })
+})
 
 describe('useTransition', () => {
   it('transitions between numbers', async () => {
@@ -30,6 +84,25 @@ describe('useTransition', () => {
     expect(transition.value).toEqual([0, 0])
 
     source.value = [1, 1]
+
+    await promiseTimeout(50)
+    expectBetween(transition.value[0], 0, 1)
+    expectBetween(transition.value[1], 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value[0]).toBe(1)
+    expect(transition.value[1]).toBe(1)
+  })
+
+  it('transitions between refs', async () => {
+    const source1 = ref(0)
+    const source2 = ref(0)
+    const transition = useTransition([source1, source2], { duration: 100 })
+
+    expect(transition.value).toEqual([0, 0])
+
+    source1.value = 1
+    source2.value = 1
 
     await promiseTimeout(50)
     expectBetween(transition.value[0], 0, 1)
@@ -68,7 +141,7 @@ describe('useTransition', () => {
 
   it('supports custom easing functions', async () => {
     const source = ref(0)
-    const linear = vitest.fn(n => n)
+    const linear = vi.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
       transition: linear,
@@ -80,6 +153,26 @@ describe('useTransition', () => {
 
     await promiseTimeout(50)
     expect(linear).toBeCalled()
+    expectBetween(transition.value, 0, 1)
+
+    await promiseTimeout(100)
+    expect(transition.value).toBe(1)
+  })
+
+  it('supports non-linear custom easing functions', async () => {
+    const source = ref(0)
+    const easeInQuad = vi.fn(n => n * n)
+    const transition = useTransition(source, {
+      duration: 100,
+      transition: easeInQuad,
+    })
+
+    expect(easeInQuad).not.toBeCalled()
+
+    source.value = 1
+
+    await promiseTimeout(50)
+    expect(easeInQuad).toBeCalled()
     expectBetween(transition.value, 0, 1)
 
     await promiseTimeout(100)
@@ -105,8 +198,8 @@ describe('useTransition', () => {
 
   it('supports dynamic transitions', async () => {
     const source = ref(0)
-    const first = vitest.fn(n => n)
-    const second = vitest.fn(n => n)
+    const first = vi.fn(n => n)
+    const second = vi.fn(n => n)
     const easingFn = ref(first)
 
     useTransition(source, {
@@ -159,8 +252,8 @@ describe('useTransition', () => {
 
   it('fires onStarted and onFinished callbacks', async () => {
     const source = ref(0)
-    const onStarted = vitest.fn()
-    const onFinished = vitest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       duration: 100,
@@ -187,8 +280,8 @@ describe('useTransition', () => {
 
   it('clears pending transitions before starting a new one', async () => {
     const source = ref(0)
-    const onStarted = vitest.fn()
-    const onFinished = vitest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       delay: 100,
@@ -208,7 +301,7 @@ describe('useTransition', () => {
   })
 
   it('can be disabled for sychronous changes', async () => {
-    const onStarted = vitest.fn()
+    const onStarted = vi.fn()
     const disabled = ref(false)
     const source = ref(0)
 
@@ -226,5 +319,23 @@ describe('useTransition', () => {
     expect(onStarted).not.toBeCalled()
     disabled.value = false
     expect(transition.value).toBe(1)
+  })
+
+  it('begins transition from where previous transition was interrupted', async () => {
+    const source = ref(0)
+
+    const transition = useTransition(source, {
+      duration: 100,
+    })
+
+    source.value = 1
+
+    await promiseTimeout(50)
+
+    source.value = 0
+
+    await promiseTimeout(25)
+
+    expectBetween(transition.value, 0, 0.5)
   })
 })

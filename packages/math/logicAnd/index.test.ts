@@ -1,4 +1,6 @@
-import { ref, unref } from 'vue-demi'
+import { ref } from 'vue-demi'
+import { toValue } from '@vueuse/core'
+import { describe, expect, it } from 'vitest'
 import { logicAnd } from '.'
 
 describe('logicAnd', () => {
@@ -7,31 +9,31 @@ describe('logicAnd', () => {
   })
 
   it('returns true when given no args', () => {
-    expect(unref(logicAnd())).toBe(true)
+    expect(toValue(logicAnd())).toBe(true)
   })
 
   it('returns true only when all arguments are truthy', () => {
-    expect(unref(logicAnd(ref(true), ref(true)))).toBe(true)
-    expect(unref(logicAnd(ref('foo'), ref(true)))).toBe(true)
-    expect(unref(logicAnd(ref('foo'), ref(1)))).toBe(true)
+    expect(toValue(logicAnd(ref(true), ref(true)))).toBe(true)
+    expect(toValue(logicAnd(ref('foo'), ref(true)))).toBe(true)
+    expect(toValue(logicAnd(ref('foo'), ref(1)))).toBe(true)
 
-    expect(unref(logicAnd(ref(true), ref(false)))).toBe(false)
-    expect(unref(logicAnd(ref('foo'), ref(0)))).toBe(false)
+    expect(toValue(logicAnd(ref(true), ref(false)))).toBe(false)
+    expect(toValue(logicAnd(ref('foo'), ref(0)))).toBe(false)
   })
 
   it('works with values', () => {
-    expect(unref(logicAnd(true))).toBe(true)
-    expect(unref(logicAnd('foo'))).toBe(true)
+    expect(toValue(logicAnd(true))).toBe(true)
+    expect(toValue(logicAnd('foo'))).toBe(true)
 
-    expect(unref(logicAnd(true, false))).toBe(false)
-    expect(unref(logicAnd(0))).toBe(false)
+    expect(toValue(logicAnd(true, false))).toBe(false)
+    expect(toValue(logicAnd(0))).toBe(false)
   })
 
   it('works with getter functions', () => {
-    expect(unref(logicAnd(() => true))).toBe(true)
-    expect(unref(logicAnd(() => 'foo'))).toBe(true)
+    expect(toValue(logicAnd(() => true))).toBe(true)
+    expect(toValue(logicAnd(() => 'foo'))).toBe(true)
 
-    expect(unref(logicAnd(() => true, () => false))).toBe(false)
-    expect(unref(logicAnd(() => 0))).toBe(false)
+    expect(toValue(logicAnd(() => true, () => false))).toBe(false)
+    expect(toValue(logicAnd(() => 0))).toBe(false)
   })
 })

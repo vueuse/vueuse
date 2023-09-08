@@ -36,7 +36,7 @@ export interface NavigatorLanguageState {
  * @see https://vueuse.org/useNavigatorLanguage
  *
  */
-export const useNavigatorLanguage = (options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> => {
+export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> {
   const { window = defaultWindow } = options
 
   const navigator = window?.navigator

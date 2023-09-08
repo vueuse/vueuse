@@ -2,14 +2,36 @@
  * Colors
  * -------------------------------------------------------------------------- */
 
- :root {
+:root {
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
+  --vp-c-brand-light: #55da9e;
+  --vp-c-brand-dark: #2e8f5c;
+  --vp-c-brand-active: #3ecf7a;
+  --vp-c-brand-lighter: #69e8af;
+
+
   --vp-c-text-code: #5d6f5d;
+
   --vp-code-block-bg: rgba(125,125,125,0.04);
+  --vp-code-copy-code-bg: rgba(125,125,125,0.1);
+  --vp-code-copy-code-hover-bg: rgba(125,125,125,0.2);
+
   --vp-c-disabled-bg: rgba(125,125,125,0.2);
   /* fix contrast on gray cards: used by --vp-c-text-2 */
   --vp-c-text-light-2: rgba(56 56 56 / 70%);
+  --vp-c-text-dark-2: rgba(56 56 56 / 70%);
+
+  --vp-custom-block-info-bg: transparent;
+  --vp-custom-block-tip-bg: transparent;
+
+  --vp-custom-block-warning-bg: #d9a40605;
+  --vp-custom-block-warning-text: #d9a406;
+  --vp-custom-block-warning-border: #d9a40630;
+
+  --vp-custom-block-tip-bg: #44bd8705;
+  --vp-custom-block-tip-text: #44bd87;
+  --vp-custom-block-tip-border: #44bd8730;
 }
 
 .dark {

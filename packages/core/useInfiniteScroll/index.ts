@@ -1,9 +1,11 @@
+import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import type { UnwrapNestedRefs } from 'vue-demi'
-import { nextTick, reactive, watch } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { resolveUnref } from '@vueuse/shared'
+import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
+import { useElementVisibility } from '../useElementVisibility'
 import type { UseScrollOptions } from '../useScroll'
 import { useScroll } from '../useScroll'
+import { resolveElement } from '../_resolve-element'
 
 export interface UseInfiniteScrollOptions extends UseScrollOptions {
   /**
@@ -21,11 +23,11 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
   direction?: 'top' | 'bottom' | 'left' | 'right'
 
   /**
-   * Whether to preserve the current scroll position when loading more items.
+   * The interval time between two load more (to avoid too many invokes).
    *
-   * @default false
+   * @default 100
    */
-  preserveScrollPosition?: boolean
+  interval?: number
 }
 
 /**
@@ -34,11 +36,15 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
  * @see https://vueuse.org/useInfiniteScroll
  */
 export function useInfiniteScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
-  onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => void | Promise<void>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => Awaitable<void>,
   options: UseInfiniteScrollOptions = {},
 ) {
-  const direction = options.direction ?? 'bottom'
+  const {
+    direction = 'bottom',
+    interval = 100,
+  } = options
+
   const state = reactive(useScroll(
     element,
     {
@@ -50,27 +56,48 @@ export function useInfiniteScroll(
     },
   ))
 
-  watch(
-    () => state.arrivedState[direction],
-    async (v) => {
-      if (v) {
-        const elem = resolveUnref(element) as Element
-        const previous = {
-          height: elem?.scrollHeight ?? 0,
-          width: elem?.scrollWidth ?? 0,
-        }
+  const promise = ref<any>()
+  const isLoading = computed(() => !!promise.value)
 
-        await onLoadMore(state)
+  // Document and Window cannot be observed by IntersectionObserver
+  const observedElement = computed<HTMLElement | SVGElement | null | undefined>(() => {
+    return resolveElement(toValue(element))
+  })
 
-        if (options.preserveScrollPosition && elem) {
-          nextTick(() => {
-            elem.scrollTo({
-              top: elem.scrollHeight - previous.height,
-              left: elem.scrollWidth - previous.width,
-            })
+  const isElementVisible = useElementVisibility(observedElement)
+
+  function checkAndLoad() {
+    state.measure()
+
+    if (!observedElement.value || !isElementVisible.value)
+      return
+
+    const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
+    const isNarrower = (direction === 'bottom' || direction === 'top')
+      ? scrollHeight <= clientHeight
+      : scrollWidth <= clientWidth
+
+    if (state.arrivedState[direction] || isNarrower) {
+      if (!promise.value) {
+        promise.value = Promise.all([
+          onLoadMore(state),
+          new Promise(resolve => setTimeout(resolve, interval)),
+        ])
+          .finally(() => {
+            promise.value = null
+            nextTick(() => checkAndLoad())
           })
-        }
       }
-    },
+    }
+  }
+
+  watch(
+    () => [state.arrivedState[direction], isElementVisible.value],
+    checkAndLoad,
+    { immediate: true },
   )
+
+  return {
+    isLoading,
+  }
 }

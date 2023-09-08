@@ -1,10 +1,11 @@
 import type { Mock } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed } from 'vue-demi'
 import type { UseMemoizeCache } from '.'
 import { useMemoize } from '.'
 
 describe('useMemoize', () => {
-  const resolver = vitest.fn()
+  const resolver = vi.fn()
 
   beforeEach(() => {
     resolver.mockReset()
@@ -45,7 +46,7 @@ describe('useMemoize', () => {
     })
 
     it('should cache without arguments', () => {
-      const _resolver = vitest.fn(() => 'result')
+      const _resolver = vi.fn(() => 'result')
       const memo = useMemoize(_resolver)
 
       expect(memo()).toBe('result')
@@ -54,7 +55,7 @@ describe('useMemoize', () => {
     })
 
     it('should cache with multiple arguments', () => {
-      const _resolver = vitest.fn((arg1: number, arg2: number) => `result-${arg1}-${arg2}`)
+      const _resolver = vi.fn((arg1: number, arg2: number) => `result-${arg1}-${arg2}`)
       const memo = useMemoize(_resolver)
 
       expect(memo(1, 1)).toBe('result-1-1')
@@ -148,7 +149,7 @@ describe('useMemoize', () => {
   describe('options', () => {
     describe('getKey', () => {
       it('should use custom key', () => {
-        const getKey = vitest.fn((arg1: number) => arg1 % 2) as any
+        const getKey = vi.fn((arg1: number) => arg1 % 2) as any
         const memo = useMemoize(resolver, { getKey })
 
         expect(memo(1)).toBe('result-1')
@@ -170,11 +171,11 @@ describe('useMemoize', () => {
 
       beforeEach(() => {
         cache = {
-          get: vitest.fn(key => key),
-          set: vitest.fn(),
-          has: vitest.fn(() => true),
-          delete: vitest.fn(),
-          clear: vitest.fn(),
+          get: vi.fn(key => key),
+          set: vi.fn(),
+          has: vi.fn(() => true),
+          delete: vi.fn(),
+          clear: vi.fn(),
         }
       })
 

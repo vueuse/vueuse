@@ -4,9 +4,13 @@ import { useSpeechSynthesis } from '@vueuse/core'
 
 const voice = ref<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 const text = ref('Hello, everyone! Good morning!')
+const pitch = ref(1)
+const rate = ref(1)
 
 const speech = useSpeechSynthesis(text, {
   voice,
+  pitch,
+  rate,
 })
 
 let synth: SpeechSynthesis
@@ -24,7 +28,7 @@ onMounted(() => {
   }
 })
 
-const play = () => {
+function play() {
   if (speech.status.value === 'pause') {
     console.log('resume')
     window.speechSynthesis.resume()
@@ -34,12 +38,12 @@ const play = () => {
   }
 }
 
-const pause = () => {
+function pause() {
   window.speechSynthesis.pause()
 }
 
-const stop = () => {
-  window.speechSynthesis.cancel()
+function stop() {
+  speech.stop()
 }
 </script>
 
@@ -58,7 +62,7 @@ const stop = () => {
 
       <br>
       <label class="font-bold mr-2">Language</label>
-      <div bg="$vp-c-bg" border="$vp-c-divider-light 1" inline-flex items-center relative rounded>
+      <div bg="$vp-c-bg" border="$vp-c-divider 1" inline-flex items-center relative rounded>
         <i i-carbon-language absolute left-2 opacity-80 pointer-events-none />
         <select v-model="voice" px-8 border-0 bg-transparent h-9 rounded appearance-none>
           <option bg="$vp-c-bg" disabled>
@@ -74,6 +78,22 @@ const stop = () => {
           </option>
         </select>
         <i i-carbon-chevron-down absolute right-2 opacity-80 pointer-events-none />
+      </div>
+
+      <br>
+      <div inline-flex items-center>
+        <label class="font-bold mr-2">Pitch</label>
+        <div class="mt-1" inline-flex>
+          <input v-model="pitch" type="range" min="0.5" max="2" step="0.1">
+        </div>
+      </div>
+
+      <br>
+      <div inline-flex items-center>
+        <label class="font-bold mr-3">Rate</label>
+        <div class="mt-1" inline-flex>
+          <input v-model="rate" type="range" min="0.5" max="2" step="0.1">
+        </div>
       </div>
 
       <div class="mt-2">

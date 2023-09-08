@@ -2,7 +2,6 @@ import type { WebFrame } from 'electron'
 import type { Ref } from 'vue-demi'
 import { isRef, ref, watch } from 'vue-demi'
 import type { MaybeRef } from '@vueuse/shared'
-import { isNumber } from '@vueuse/shared'
 
 export function useZoomLevel(level: MaybeRef<number>): Ref<number>
 export function useZoomLevel(webFrame: WebFrame, level: MaybeRef<number>): Ref<number>
@@ -21,8 +20,8 @@ export function useZoomLevel(...args: any[]): Ref<number> {
 
   if (
     args.length === 0
-        || (isRef(args[0]) && isNumber(args[0].value))
-        || isNumber(args[0])
+        || (isRef(args[0]) && typeof args[0].value === 'number')
+        || typeof args[0] === 'number'
   ) {
     webFrame = window.require ? window.require('electron').webFrame : undefined
     newLevel = args.length > 0 ? ref(args[0]) : null
@@ -40,7 +39,7 @@ export function useZoomLevel(...args: any[]): Ref<number> {
   watch(
     level,
     (f, o) => {
-      if (isNumber(f) && f !== o)
+      if (typeof f === 'number' && f !== o)
         webFrame?.setZoomLevel(f)
     }, { immediate: true })
 

@@ -1,9 +1,11 @@
 import { computed, reactive, ref } from 'vue-demi'
-import type { MaybeComputedRef } from '@vueuse/shared'
-import { noop, resolveUnref, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import type { ConfigurableWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 
-export interface UseScrollOptions {
+export interface UseScrollOptions extends ConfigurableWindow {
   /**
    * Throttle time for scroll event, it’s disabled by default.
    *
@@ -55,7 +57,7 @@ export interface UseScrollOptions {
    *
    * @default 'auto'
    */
-  behavior?: MaybeComputedRef<ScrollBehavior>
+  behavior?: MaybeRefOrGetter<ScrollBehavior>
 }
 
 /**
@@ -75,7 +77,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  */
 
 export function useScroll(
-  element: MaybeComputedRef<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -94,6 +96,7 @@ export function useScroll(
       passive: true,
     },
     behavior = 'auto',
+    window = defaultWindow,
   } = options
 
   const internalX = ref(0)
@@ -120,15 +123,17 @@ export function useScroll(
   })
 
   function scrollTo(_x: number | undefined, _y: number | undefined) {
-    const _element = resolveUnref(element)
+    if (!window)
+      return
 
+    const _element = toValue(element)
     if (!_element)
       return
 
-    (_element instanceof Document ? document.body : _element)?.scrollTo({
-      top: resolveUnref(_y) ?? y.value,
-      left: resolveUnref(_x) ?? x.value,
-      behavior: resolveUnref(behavior),
+    (_element instanceof Document ? window.document.body : _element)?.scrollTo({
+      top: toValue(_y) ?? y.value,
+      left: toValue(_x) ?? x.value,
+      behavior: toValue(behavior),
     })
   }
 
@@ -146,50 +151,109 @@ export function useScroll(
     bottom: false,
   })
 
-  const onScrollEnd = useDebounceFn((e: Event) => {
+  const onScrollEnd = (e: Event) => {
+    // dedupe if support native scrollend event
+    if (!isScrolling.value)
+      return
+
     isScrolling.value = false
     directions.left = false
     directions.right = false
     directions.top = false
     directions.bottom = false
     onStop(e)
-  }, throttle + idle)
+  }
+  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
 
-  const onScrollHandler = (e: Event) => {
-    const eventTarget = (
-      e.target === document ? (e.target as Document).documentElement : e.target
+  const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
+    if (!window)
+      return
+
+    const el = (
+      (target as Window).document
+        ? (target as Window).document.documentElement
+        : (target as Document).documentElement ?? target
     ) as HTMLElement
 
-    const scrollLeft = eventTarget.scrollLeft
+    const { display, flexDirection } = getComputedStyle(el)
+
+    const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
-    directions.right = scrollLeft > internalY.value
-    arrivedState.left = scrollLeft <= 0 + (offset.left || 0)
-    arrivedState.right
-      = scrollLeft + eventTarget.clientWidth >= eventTarget.scrollWidth - (offset.right || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+    directions.right = scrollLeft > internalX.value
+
+    const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
+    const right = Math.abs(scrollLeft)
+      + el.clientWidth >= el.scrollWidth
+      - (offset.right || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    if (display === 'flex' && flexDirection === 'row-reverse') {
+      arrivedState.left = right
+      arrivedState.right = left
+    }
+    else {
+      arrivedState.left = left
+      arrivedState.right = right
+    }
+
     internalX.value = scrollLeft
 
-    let scrollTop = eventTarget.scrollTop
+    let scrollTop = el.scrollTop
 
     // patch for mobile compatible
-    if (e.target === document && !scrollTop)
-      scrollTop = document.body.scrollTop
+    if (target === window.document && !scrollTop)
+      scrollTop = window.document.body.scrollTop
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    arrivedState.top = scrollTop <= 0 + (offset.top || 0)
-    arrivedState.bottom
-      = scrollTop + eventTarget.clientHeight >= eventTarget.scrollHeight - (offset.bottom || 0) - ARRIVED_STATE_THRESHOLD_PIXELS
+    const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
+    const bottom = Math.abs(scrollTop)
+      + el.clientHeight >= el.scrollHeight
+      - (offset.bottom || 0)
+      - ARRIVED_STATE_THRESHOLD_PIXELS
+
+    /**
+     * reverse columns and rows behave exactly the other way around,
+     * bottom is treated as top and top is treated as the negative version of bottom
+     */
+    if (display === 'flex' && flexDirection === 'column-reverse') {
+      arrivedState.top = bottom
+      arrivedState.bottom = top
+    }
+    else {
+      arrivedState.top = top
+      arrivedState.bottom = bottom
+    }
+
     internalY.value = scrollTop
+  }
+
+  const onScrollHandler = (e: Event) => {
+    if (!window)
+      return
+
+    const eventTarget = (
+      (e.target as Document).documentElement ?? e.target
+    ) as HTMLElement
+
+    setArrivedState(eventTarget)
 
     isScrolling.value = true
-    onScrollEnd(e)
+    onScrollEndDebounced(e)
     onScroll(e)
   }
 
   useEventListener(
     element,
     'scroll',
-    throttle ? useThrottleFn(onScrollHandler, throttle) : onScrollHandler,
+    throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
+    eventListenerOptions,
+  )
+
+  useEventListener(
+    element,
+    'scrollend',
+    onScrollEnd,
     eventListenerOptions,
   )
 
@@ -199,6 +263,12 @@ export function useScroll(
     isScrolling,
     arrivedState,
     directions,
+    measure() {
+      const _element = toValue(element)
+
+      if (window && _element)
+        setArrivedState(_element)
+    },
   }
 }
 

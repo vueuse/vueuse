@@ -1,6 +1,8 @@
 import type { Ref } from 'vue-demi'
-import { nextTick, ref, unref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it } from 'vitest'
 import { useSetup } from '../../.test'
+import { toValue } from '../toValue'
 import { whenever } from '.'
 
 describe('whenever', () => {
@@ -36,22 +38,22 @@ describe('whenever', () => {
       }
     })
 
-    expect(unref(vm.watchCount)).toEqual(0)
+    expect(toValue(vm.watchCount)).toEqual(0)
 
     vm.changeNumber(2)
     await nextTick()
-    expect(unref(vm.watchCount)).toEqual(1)
-    expect(unref(vm.watchValue)).toEqual(2)
+    expect(toValue(vm.watchCount)).toEqual(1)
+    expect(toValue(vm.watchValue)).toEqual(2)
 
     vm.changeNumber(0)
     await nextTick()
-    expect(unref(vm.watchCount)).toEqual(1)
-    expect(unref(vm.watchValue)).toEqual(2)
+    expect(toValue(vm.watchCount)).toEqual(1)
+    expect(toValue(vm.watchValue)).toEqual(2)
 
     vm.changeNumber(3)
     await nextTick()
-    expect(unref(vm.watchCount)).toEqual(2)
-    expect(unref(vm.watchValue)).toEqual(3)
+    expect(toValue(vm.watchCount)).toEqual(2)
+    expect(toValue(vm.watchValue)).toEqual(3)
 
     vm.unmount()
   })

@@ -2,7 +2,7 @@ import { computed, ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { MouseSourceType } from '../useMouse'
+import type { UseMouseSourceType } from '../useMouse'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -49,7 +49,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
   } = options
 
   const pressed = ref(initialValue)
-  const sourceType = ref<MouseSourceType>(null)
+  const sourceType = ref<UseMouseSourceType>(null)
 
   if (!window) {
     return {
@@ -58,7 +58,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     }
   }
 
-  const onPressed = (srcType: MouseSourceType) => () => {
+  const onPressed = (srcType: UseMouseSourceType) => () => {
     pressed.value = true
     sourceType.value = srcType
   }

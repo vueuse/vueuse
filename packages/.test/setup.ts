@@ -1,9 +1,11 @@
 import { Vue2, install, isVue2 } from 'vue-demi'
+import { beforeAll, beforeEach } from 'vitest'
 import './polyfillFetch'
 import './polyfillPointerEvents'
-import { beforeAll, beforeEach } from 'vitest'
+import './polyfillIndexedDb'
+import './polyfillMatchMedia'
 
-const setupVueSwitch = () => {
+function setupVueSwitch() {
   if (isVue2) {
     Vue2.config.productionTip = false
     Vue2.config.devtools = false
