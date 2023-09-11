@@ -16,7 +16,7 @@ const { vertices, edges } = useSquare(size, center)
         Parameters
       </h4>
       <div class="mb-3">
-        <label class="mr-2">Side Length: <span style="display: inline-block; width: 40px; font-weight: bold">{{ size }}</span></label>
+        <label class="mr-2">Size: <span style="display: inline-block; width: 40px; font-weight: bold">{{ size }}</span></label>
         <input v-model="size" class="slider" type="range" min="0" max="500">
       </div>
       <div class="mb-3">

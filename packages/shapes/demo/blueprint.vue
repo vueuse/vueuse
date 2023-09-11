@@ -59,8 +59,8 @@ tryOnMounted(() => {
       ctx.arc(Math.round(centerX + vertex.x), Math.round(centerY + vertex.y), 8, 0, Math.PI * 2, true)
       ctx.fill()
       ctx.fillStyle = '#114d32'
-      ctx.font = 'bold 16px Inter'
-      ctx.fillText(`(${vertex.x},${vertex.y})`, Math.round(centerX + vertex.x + 16), Math.round(centerY + vertex.y - 16))
+      ctx.font = 'bold 18px Inter'
+      ctx.fillText(`(${vertex.x},${vertex.y})`, Math.round(centerX + vertex.x + 18), Math.round(centerY + vertex.y - 18))
     }
 
     // Draw edges
