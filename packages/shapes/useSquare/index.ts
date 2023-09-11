@@ -59,8 +59,8 @@ export function useSquare(sideLength: MaybeRefOrGetter<number> = 0, center: Mayb
   function getPosition(percentage: MaybeRefOrGetter<number> = 0): { x: number; y: number } {
     const perimeter = toValue(sideLength) * 4
     const pointPosition = toValue(percentage) * perimeter
-    let x = 0
-    let y = 0
+    let x: number
+    let y: number
 
     if (pointPosition <= toValue(sideLength)) {
       // Top edge
