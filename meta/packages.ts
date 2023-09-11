@@ -154,4 +154,14 @@ export const packages: PackageManifest[] = [
     ],
     iife: false,
   },
+  {
+    name: 'shapes',
+    display: 'Shapes',
+    description: 'Shape functions for VueUse',
+    author: 'Simon Le Marchant<https://github.com/MarchantWeb>',
+    addon: true,
+    external: [
+      '@vueuse/shared',
+    ],
+  },
 ]
