@@ -16,5 +16,5 @@ const circle = useCircle(radius)
 
 // Calculate a position around the boundary of the circle
 const percentage = ref(0.25)
-const position = circle.getPosition(percentage) // { x: 25, y: 25 }
+const position = circle.getPosition(percentage) // { x: 0, y: 50 }
 ```
