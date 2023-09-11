@@ -16,6 +16,11 @@ export function useCircle(radius: MaybeRefOrGetter<number> = 0, center: MaybeRef
   x: number
   y: number
 }> = { x: 0, y: 0 }): Circle {
+  /**
+   * Returns the position of a point on the circle's perimeter.
+   * Pass in a percentage to get the position of a point on the perimeter (0-1).
+   * @param percentage
+   */
   function getPosition(percentage: MaybeRefOrGetter<number> = 0): { x: number; y: number } {
     return {
       x: +(toValue(center).x + (Math.cos((360 * toValue(percentage)) * (Math.PI / 180)) * toValue(radius))).toFixed(10),
