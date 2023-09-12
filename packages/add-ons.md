@@ -119,5 +119,4 @@ Electron renderer process modules for VueUse
   - [`useZoomFactor`](https://vueuse.org/electron/useZoomFactor/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor
   - [`useZoomLevel`](https://vueuse.org/electron/useZoomLevel/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level
 
-
 <!--ADDONS_LIST_ENDS-->
