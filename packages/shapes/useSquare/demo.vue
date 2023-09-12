@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Blueprint from '../demo/blueprint.vue'
+import Blueprint from '../blueprint.vue'
 import { useSquare } from '.'
 
 const size = ref(300)
