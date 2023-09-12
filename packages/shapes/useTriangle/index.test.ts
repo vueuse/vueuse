@@ -8,27 +8,25 @@ describe('useTriangle', () => {
   })
 
   it('should generate three vertices', () => {
-    const triangle = useTriangle(50)
+    const triangle = useTriangle({ sideLength: 50 })
     expect(triangle.vertices.value.length).toBe(3)
   })
 
   it('should generate three edges', () => {
-    const triangle = useTriangle(50)
+    const triangle = useTriangle({ sideLength: 50 })
     expect(triangle.edges.value.length).toBe(3)
   })
 
   it('should accept refs', () => {
-    const baseLength = ref(50)
-
-    const triangle = useTriangle(baseLength)
+    const sideLength = ref(50)
+    const triangle = useTriangle({ sideLength })
     expect(triangle.vertices.value.length).toBe(3)
     expect(triangle.edges.value.length).toBe(3)
   })
 
   it('should accept refs in position method', () => {
     const position = ref(0.25)
-
-    const triangle = useTriangle(50)
+    const triangle = useTriangle({ sideLength: 50 })
     const pos = triangle.getPosition(position)
     expect(pos).toBeDefined()
     expect(pos).toHaveProperty('x')

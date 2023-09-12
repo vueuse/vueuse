@@ -1,6 +1,11 @@
 import { toValue } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 
+interface CircleConfig {
+  radius?: MaybeRefOrGetter<number>
+  center?: MaybeRefOrGetter<{ x: number; y: number }>
+}
+
 interface Circle {
   getPosition: (percentage: MaybeRefOrGetter<number>) => { x: number; y: number }
 }
@@ -9,13 +14,12 @@ interface Circle {
  * Composable for working with circles.
  *
  * @see https://vueuse.org/useCircle
- * @param radius - radius of the circle
- * @param center - center of the circle {x, y}
+ * @param config - Configuration object for the circle
  */
-export function useCircle(radius: MaybeRefOrGetter<number> = 0, center: MaybeRefOrGetter<{
-  x: number
-  y: number
-}> = { x: 0, y: 0 }): Circle {
+export function useCircle(config?: CircleConfig): Circle {
+  const radius = config?.radius ?? 0
+  const center = config?.center ?? { x: 0, y: 0 }
+
   /**
    * Returns the position of a point on the circle's perimeter.
    * Pass in a percentage to get the position of a point on the perimeter (0-1).

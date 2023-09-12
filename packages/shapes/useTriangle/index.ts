@@ -4,16 +4,21 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { Edge, Vertex } from '../types'
 
+interface TriangleConfig {
+  sideLength?: MaybeRefOrGetter<number>
+  center?: MaybeRefOrGetter<{ x: number; y: number }>
+}
+
 interface Triangle {
   getPosition: (percentage: MaybeRefOrGetter<number>) => { x: number; y: number }
   vertices: ComputedRef<Vertex[]>
   edges: ComputedRef<Edge[]>
 }
 
-export function useTriangle(sideLength: MaybeRefOrGetter<number> = 0, center: MaybeRefOrGetter<{
-  x: number
-  y: number
-}> = { x: 0, y: 0 }): Triangle {
+export function useTriangle(config?: TriangleConfig): Triangle {
+  const sideLength = config?.sideLength ?? 0
+  const center = config?.center ?? { x: 0, y: 0 }
+
   const halfSide = computed(() => +(toValue(sideLength)) / 2)
   const height = computed(() => (Math.sqrt(3) / 2) * +(toValue(sideLength)))
 

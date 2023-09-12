@@ -4,16 +4,21 @@ import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
 import type { Edge, Vertex } from '../types'
 
+interface SquareConfig {
+  sideLength?: MaybeRefOrGetter<number>
+  center?: MaybeRefOrGetter<{ x: number; y: number }>
+}
+
 interface Square {
   getPosition: (percentage: MaybeRefOrGetter<number>) => { x: number; y: number }
   vertices: ComputedRef<Vertex[]>
   edges: ComputedRef<Edge[]>
 }
 
-export function useSquare(sideLength: MaybeRefOrGetter<number> = 0, center: MaybeRefOrGetter<{
-  x: number
-  y: number
-}> = { x: 0, y: 0 }): Square {
+export function useSquare(config?: SquareConfig): Square {
+  const sideLength = config?.sideLength ?? 0
+  const center = config?.center ?? { x: 0, y: 0 }
+
   const halfSize = computed(() => +(toValue(sideLength)) / 2)
 
   const vertices = computed(() => [

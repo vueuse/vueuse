@@ -8,7 +8,7 @@ describe('useCircle', () => {
   })
 
   it('should accept numbers', () => {
-    const circle = useCircle(50)
+    const circle = useCircle({ radius: 50 })
     expect(circle.getPosition(0.25)).toStrictEqual({
       x: 0,
       y: 50,
@@ -17,8 +17,7 @@ describe('useCircle', () => {
 
   it('should accept refs', () => {
     const radius = ref(50)
-
-    const circle = useCircle(radius)
+    const circle = useCircle({ radius })
     expect(circle.getPosition(0.25)).toStrictEqual({
       x: 0,
       y: 50,
@@ -27,8 +26,7 @@ describe('useCircle', () => {
 
   it('should accept refs in position method', () => {
     const position = ref(0.25)
-
-    const circle = useCircle(50)
+    const circle = useCircle({ radius: 50 })
     expect(circle.getPosition(position)).toStrictEqual({
       x: 0,
       y: 50,
