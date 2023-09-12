@@ -60,7 +60,7 @@ tryOnMounted(() => {
       ctx.fill()
       ctx.fillStyle = '#114d32'
       ctx.font = 'bold 18px Inter'
-      ctx.fillText(`(${vertex.x},${vertex.y})`, Math.round(centerX + vertex.x + 18), Math.round(centerY + vertex.y - 18))
+      ctx.fillText(`${Math.round(vertex.x)}, ${Math.round(vertex.y)}`, Math.round(centerX + vertex.x + 18), Math.round(centerY + vertex.y - 18))
     }
 
     // Draw edges
