@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, ref, toRefs } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
-import type { Edge, Vertex } from '../types'
+import type { Edge, Vertex } from './types'
 
 const props = defineProps<{
   vertices: Array<Vertex>
