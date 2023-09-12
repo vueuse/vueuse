@@ -1,7 +1,7 @@
 import type { RawAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { describe, expect, it, vi } from 'vitest'
-import { isBelowNode18 } from 'packages/.test'
+import { isBelowNode18 } from '../../.test'
 import { useAxios } from '.'
 
 // The tests does not run properly below node 18

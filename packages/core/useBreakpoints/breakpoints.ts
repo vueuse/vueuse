@@ -92,3 +92,15 @@ export const breakpointsMasterCss = {
   '3xl': 1920,
   '4xl': 2560,
 }
+
+/**
+ * Breakpoints from PrimeFlex
+ *
+ * @see https://www.primefaces.org/primeflex/setup
+ */
+export const breakpointsPrimeFlex = {
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+}

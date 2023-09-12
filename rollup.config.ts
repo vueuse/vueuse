@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import { resolve } from 'node:path'
+import { createRequire } from 'node:module'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
@@ -8,8 +9,9 @@ import { PluginPure as pure } from 'rollup-plugin-pure'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { functions } from '@vueuse/metadata'
-import { packages } from '../meta/packages'
+import { packages } from './meta/packages'
 
+const require = createRequire(import.meta.url)
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
 
@@ -42,7 +44,7 @@ function esbuildMinifer(options: ESBuildOptions) {
   }
 }
 
-for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target } of packages) {
+for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target = 'es2018' } of packages) {
   if (build === false)
     continue
 

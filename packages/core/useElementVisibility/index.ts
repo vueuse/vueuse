@@ -30,6 +30,7 @@ export function useElementVisibility(
     {
       root: scrollTarget,
       window,
+      threshold: 0,
     },
   )
 

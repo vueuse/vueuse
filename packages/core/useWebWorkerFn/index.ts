@@ -84,7 +84,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
 
     newWorker.onerror = (e: ErrorEvent) => {
       const { reject = () => {} } = promise.value
-
+      e.preventDefault()
       reject(e)
       workerTerminate('ERROR')
     }

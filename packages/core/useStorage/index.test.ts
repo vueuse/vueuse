@@ -1,5 +1,5 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { isVue3, ref } from 'vue-demi'
+import { isVue3, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTwoTick, useSetup } from '../../.test'
 import { StorageSerializers, customStorageEventName, useStorage } from '.'
@@ -164,10 +164,12 @@ describe('useStorage', () => {
       data: 123,
     })
 
+    const storeRaw = toRaw(store.value)
     store.value.name = 'b'
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storeRaw).toBe(toRaw(store.value))
 
     store.value.data = 321
     await nextTwoTick()
