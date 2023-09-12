@@ -62,7 +62,7 @@ Schema.org for Vue. Supports typed and automated Google Rich Results
 ## Shapes - [`@vueuse/shapes`](https://github.com/vueuse/shapes) <carbon-link class="external-link"/>
 Vue composables for working with shapes. Built for creative programming projects.
 
-- ✨ 2+ shape functions, including `useCircle`, `useSquare` and more.
+- ✨ 3+ shape functions including `useCircle`, `useSquare`, `useTriangle` and more.
 - 📐 Built-in refs for edges, vertices and other shape properties.
 - 💎 Simple demos for each shape composable.
 - 🔥 Built with **Vue** Composition API.
