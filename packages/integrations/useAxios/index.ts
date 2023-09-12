@@ -225,6 +225,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
+        if (isAborted.value)
+          return
         response.value = r
         const result = r.data
         data.value = result
