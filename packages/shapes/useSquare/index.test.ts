@@ -7,6 +7,16 @@ describe('useSquare', () => {
     expect(useSquare).toBeDefined()
   })
 
+  it('should generate four vertices', () => {
+    const square = useSquare(50)
+    expect(square.vertices.value.length).toBe(4)
+  })
+
+  it('should generate four edges', () => {
+    const square = useSquare(50)
+    expect(square.edges.value.length).toBe(4)
+  })
+
   it('should accept numbers', () => {
     const square = useSquare(50)
     expect(square.getPosition(0)).toStrictEqual({
