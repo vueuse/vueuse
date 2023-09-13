@@ -13,6 +13,7 @@ The `useTriangle` function accepts a single configuration object as an argument,
 | Property     | Default          | Description                              |
 |:-------------|:-----------------|:-----------------------------------------|
 | `sideLength` | `0`              | The length of each side of the triangle. |
+| `rotation`   | `0`              | The rotation of the triangle in degrees. |
 | `center`     | `{ x: 0, y: 0 }` | A 2D Vector for center of the triangle.  |
 
 ## Usage

@@ -13,6 +13,7 @@ The `useSquare` function accepts a single configuration object as an argument, w
 | Property     | Default          | Description                            |
 |:-------------|:-----------------|:---------------------------------------|
 | `sideLength` | `0`              | The length of each side of the square. |
+| `rotation`   | `0`              | The rotation of the square in degrees. |
 | `center`     | `{ x: 0, y: 0 }` | A 2D Vector for center of the square.  |
 
 ## Usage

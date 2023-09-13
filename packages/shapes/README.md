@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/shapes?color=a1b858)](https://www.npmjs.com/package/@vueuse/shapes)
 
-> Vue composables for working with 2D shape data. Built for creative programming projects that think outside the box.
+> Vue composables for working with 2D shape data.
 
 ## Features
 

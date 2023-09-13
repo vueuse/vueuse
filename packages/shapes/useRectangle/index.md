@@ -10,11 +10,12 @@ Composable for working with rectangles.
 
 The `useRectangle` function accepts a single configuration object as an argument, where each property has a default value if not provided.
 
-| Property     | Default          | Description                                  |
-|:-------------|:-----------------|:---------------------------------------------|
-| `width`      | `0`              | The width of the rectangle.                  |
-| `height`     | `0`              | The height of the rectangle.                 |
-| `center`     | `{ x: 0, y: 0 }` | A 2D Vector for center of the rectangle.     |
+| Property   | Default          | Description                               |
+|:-----------|:-----------------|:------------------------------------------|
+| `width`    | `0`              | The width of the rectangle.               |
+| `height`   | `0`              | The height of the rectangle.              |
+| `rotation` | `0`              | The rotation of the rectangle in degrees. |
+| `center`   | `{ x: 0, y: 0 }` | A 2D Vector for center of the rectangle.  |
 
 ## Usage
 
