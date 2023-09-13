@@ -2,12 +2,11 @@ import { toValue } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed } from 'vue-demi'
-import type { Edge, Vertex } from '../types'
+import type { Edge, ShapeConfig, Vertex } from '../types'
+import { useShapeBase } from '../useShapeBase'
 
-interface SquareConfig {
+interface SquareConfig extends ShapeConfig {
   sideLength?: MaybeRefOrGetter<number>
-  center?: MaybeRefOrGetter<{ x: number; y: number }>
-  rotation?: MaybeRefOrGetter<number>
 }
 
 interface Square {
@@ -17,21 +16,15 @@ interface Square {
 }
 
 export function useSquare(config?: SquareConfig): Square {
+  // Configuration
+  const {
+    center,
+    rotatePoint,
+  } = useShapeBase(config)
   const sideLength = config?.sideLength ?? 0
-  const center = config?.center ?? { x: 0, y: 0 }
-  const rotation = config?.rotation ?? 0
-
   const halfSize = computed(() => +(toValue(sideLength)) / 2)
 
-  const rotatePoint = (x: number, y: number) => {
-    const dx = x - +(toValue(center).x)
-    const dy = y - +(toValue(center).y)
-    return {
-      x: +(toValue(center).x) + dx * Math.cos(toValue(rotation) * (Math.PI / 180)) - dy * Math.sin(toValue(rotation) * (Math.PI / 180)),
-      y: +(toValue(center).y) + dx * Math.sin(toValue(rotation) * (Math.PI / 180)) + dy * Math.cos(toValue(rotation) * (Math.PI / 180)),
-    }
-  }
-
+  // Vertices
   const vertices = computed(() => [
     rotatePoint(+(toValue(center).x) - halfSize.value, +(toValue(center).y) - halfSize.value),
     rotatePoint(+(toValue(center).x) + halfSize.value, +(toValue(center).y) - halfSize.value),
@@ -39,13 +32,30 @@ export function useSquare(config?: SquareConfig): Square {
     rotatePoint(+(toValue(center).x) - halfSize.value, +(toValue(center).y) + halfSize.value),
   ])
 
+  // Edges
   const edges = computed(() => [
-    { from: vertices.value[0], to: vertices.value[1] },
-    { from: vertices.value[1], to: vertices.value[2] },
-    { from: vertices.value[2], to: vertices.value[3] },
-    { from: vertices.value[3], to: vertices.value[0] },
+    {
+      from: vertices.value[0],
+      to: vertices.value[1],
+    },
+    {
+      from: vertices.value[1],
+      to: vertices.value[2],
+    },
+    {
+      from: vertices.value[2],
+      to: vertices.value[3],
+    },
+    {
+      from: vertices.value[3],
+      to: vertices.value[0],
+    },
   ])
 
+  /**
+   * Get the position of a point on the square
+   * @param percentage
+   */
   function getPosition(percentage: MaybeRefOrGetter<number> = 0): { x: number; y: number } {
     const perimeter = toValue(sideLength) * 4
     const pointPosition = toValue(percentage) * perimeter
@@ -74,7 +84,10 @@ export function useSquare(config?: SquareConfig): Square {
 
     // Rotate the point
     const rotatedPoint = rotatePoint(x, y)
-    return { x: +(rotatedPoint.x).toFixed(10), y: +(rotatedPoint.y).toFixed(10) }
+    return {
+      x: +(rotatedPoint.x).toFixed(10),
+      y: +(rotatedPoint.y).toFixed(10),
+    }
   }
 
   return {

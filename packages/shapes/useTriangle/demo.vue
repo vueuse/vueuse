@@ -5,7 +5,8 @@ import { useTriangle } from '.'
 
 const sideLength = ref(300)
 const center = ref({ x: 0, y: 0 })
-const { vertices, edges } = useTriangle({ sideLength, center })
+const rotation = ref(0)
+const { vertices, edges } = useTriangle({ sideLength, center, rotation })
 </script>
 
 <template>
@@ -18,6 +19,10 @@ const { vertices, edges } = useTriangle({ sideLength, center })
       <div class="control-group">
         <label class="mr-2">Side Length: <span>{{ sideLength }}</span></label>
         <input v-model="sideLength" class="slider" type="range" min="0" max="500">
+      </div>
+      <div class="control-group">
+        <label class="mr-2">Rotation: <span>{{ rotation }}</span></label>
+        <input v-model="rotation" class="slider" type="range" min="0" max="360">
       </div>
       <div class="control-group">
         <label class="mr-2">Center X: <span>{{ center.x }}</span></label>
