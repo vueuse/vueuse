@@ -7,6 +7,7 @@ import type { Edge, Vertex } from '../types'
 interface SquareConfig {
   sideLength?: MaybeRefOrGetter<number>
   center?: MaybeRefOrGetter<{ x: number; y: number }>
+  rotation?: MaybeRefOrGetter<number>
 }
 
 interface Square {
@@ -18,14 +19,24 @@ interface Square {
 export function useSquare(config?: SquareConfig): Square {
   const sideLength = config?.sideLength ?? 0
   const center = config?.center ?? { x: 0, y: 0 }
+  const rotation = config?.rotation ?? 0
 
   const halfSize = computed(() => +(toValue(sideLength)) / 2)
 
+  const rotatePoint = (x: number, y: number) => {
+    const dx = x - +(toValue(center).x)
+    const dy = y - +(toValue(center).y)
+    return {
+      x: +(toValue(center).x) + dx * Math.cos(toValue(rotation) * (Math.PI / 180)) - dy * Math.sin(toValue(rotation) * (Math.PI / 180)),
+      y: +(toValue(center).y) + dx * Math.sin(toValue(rotation) * (Math.PI / 180)) + dy * Math.cos(toValue(rotation) * (Math.PI / 180)),
+    }
+  }
+
   const vertices = computed(() => [
-    { x: +(toValue(center).x) - halfSize.value, y: +(toValue(center).y) - halfSize.value },
-    { x: +(toValue(center).x) + halfSize.value, y: +(toValue(center).y) - halfSize.value },
-    { x: +(toValue(center).x) + halfSize.value, y: +(toValue(center).y) + halfSize.value },
-    { x: +(toValue(center).x) - halfSize.value, y: +(toValue(center).y) + halfSize.value },
+    rotatePoint(+(toValue(center).x) - halfSize.value, +(toValue(center).y) - halfSize.value),
+    rotatePoint(+(toValue(center).x) + halfSize.value, +(toValue(center).y) - halfSize.value),
+    rotatePoint(+(toValue(center).x) + halfSize.value, +(toValue(center).y) + halfSize.value),
+    rotatePoint(+(toValue(center).x) - halfSize.value, +(toValue(center).y) + halfSize.value),
   ])
 
   const edges = computed(() => [
@@ -38,8 +49,7 @@ export function useSquare(config?: SquareConfig): Square {
   function getPosition(percentage: MaybeRefOrGetter<number> = 0): { x: number; y: number } {
     const perimeter = toValue(sideLength) * 4
     const pointPosition = toValue(percentage) * perimeter
-    let x: number
-    let y: number
+    let x: number, y: number
 
     if (pointPosition <= toValue(sideLength)) {
       // Top edge
@@ -62,7 +72,9 @@ export function useSquare(config?: SquareConfig): Square {
       y = vertices.value[3].y - (pointPosition - toValue(sideLength) * 3)
     }
 
-    return { x: +(x).toFixed(10), y: +(y).toFixed(10) }
+    // Rotate the point
+    const rotatedPoint = rotatePoint(x, y)
+    return { x: +(rotatedPoint.x).toFixed(10), y: +(rotatedPoint.y).toFixed(10) }
   }
 
   return {
