@@ -112,6 +112,7 @@ Electron renderer process modules for VueUse
 ## Shapes - [`@vueuse/shapes`](https://vueuse.org/shapes/README.html)
 Shape functions for VueUse
   - [`useCircle`](https://vueuse.org/shapes/useCircle/) — composable for working with circles
+  - [`useRectangle`](https://vueuse.org/shapes/useRectangle/) — composable for working with rectangles
   - [`useSquare`](https://vueuse.org/shapes/useSquare/) — composable for working with squares
   - [`useTriangle`](https://vueuse.org/shapes/useTriangle/) — composable for working with triangles
 
