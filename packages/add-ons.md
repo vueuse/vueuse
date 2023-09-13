@@ -59,17 +59,6 @@ Schema.org for Vue. Supports typed and automated Google Rich Results
 
 > Created and maintained by [@harlan-zw](https://github.com/harlan-zw)
 
-## Shapes - [`@vueuse/shapes`](https://github.com/vueuse/shapes) <carbon-link class="external-link"/>
-Vue composables for working with shapes. Built for creative programming projects.
-
-- ✨ 3+ shape functions including `useCircle`, `useSquare`, `useTriangle` and more.
-- 📐 Built-in refs for edges, vertices and other shape properties.
-- 💎 Simple demos for each shape composable.
-- 🔥 Built with **Vue** Composition API.
-- ✨ Built with **TypeScript**.
-
-> Created and maintained by [@MarchantWeb](https://github.com/MarchantWeb)
-
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--ADDONS_LIST_STARTS-->
 ## Router - [`@vueuse/router`](https://vueuse.org/router/README.html)
@@ -118,5 +107,13 @@ Electron renderer process modules for VueUse
   - [`useIpcRendererOn`](https://vueuse.org/electron/useIpcRendererOn/) — use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted
   - [`useZoomFactor`](https://vueuse.org/electron/useZoomFactor/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor
   - [`useZoomLevel`](https://vueuse.org/electron/useZoomLevel/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom level
+
+
+## Shapes - [`@vueuse/shapes`](https://vueuse.org/shapes/README.html)
+Shape functions for VueUse
+  - [`useCircle`](https://vueuse.org/shapes/useCircle/) — composable for working with circles
+  - [`useSquare`](https://vueuse.org/shapes/useSquare/) — composable for working with squares
+  - [`useTriangle`](https://vueuse.org/shapes/useTriangle/) — composable for working with triangles
+
 
 <!--ADDONS_LIST_ENDS-->
