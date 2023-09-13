@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { Ref } from 'vue-demi'
 import { onBeforeUnmount, ref, toRefs } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import type { Edge, Vertex } from './types'
@@ -7,7 +8,7 @@ const props = defineProps<{
   vertices: Array<Vertex>
   edges: Array<Edge>
 }>()
-const canvas = ref<HTMLCanvasElement | null>(null)
+const canvas = ref(null) as any as Ref<HTMLCanvasElement>
 let animationId: number
 
 const {
@@ -17,16 +18,16 @@ const {
 
 tryOnMounted(() => {
   const dpi = window.devicePixelRatio
-  const ctx = canvas.value?.getContext('2d')
-  const style_height = +getComputedStyle(canvas.value!).getPropertyValue('height').slice(0, -2)
-  const style_width = +getComputedStyle(canvas.value!).getPropertyValue('width').slice(0, -2)
+  const ctx = canvas.value.getContext('2d')
+  const style_height = +getComputedStyle(canvas.value).getPropertyValue('height').slice(0, -2)
+  const style_width = +getComputedStyle(canvas.value).getPropertyValue('width').slice(0, -2)
 
   // now scale the canvas
-  canvas.value!.setAttribute('height', String(style_height * dpi))
-  canvas.value!.setAttribute('width', String(style_width * dpi))
+  canvas.value.setAttribute('height', String(style_height * dpi))
+  canvas.value.setAttribute('width', String(style_width * dpi))
 
-  const width = canvas.value!.width
-  const height = canvas.value!.height
+  const width = canvas.value.width
+  const height = canvas.value.height
   const centerX = width / 2
   const centerY = height / 2
 
@@ -34,6 +35,8 @@ tryOnMounted(() => {
 
   function draw(t: number) {
     const dt = t - lastRenderTime
+    if (!ctx)
+      return
 
     if (dt < 1000 / 120) {
       animationId = requestAnimationFrame(draw)
