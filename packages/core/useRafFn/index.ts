@@ -23,6 +23,8 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * @default true
    */
   immediate?: boolean
+  interval?: number
+  isLoop?: boolean
 }
 
 /**
@@ -36,6 +38,8 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   const {
     immediate = true,
     window = defaultWindow,
+    interval = 0,
+    isLoop = true,
   } = options
 
   const isActive = ref(false)
@@ -46,11 +50,15 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     if (!isActive.value || !window)
       return
 
-    const delta = timestamp - (previousFrameTimestamp || timestamp)
-
-    fn({ delta, timestamp })
-
-    previousFrameTimestamp = timestamp
+    const delta = timestamp - previousFrameTimestamp
+    if (delta >= interval) {
+      fn({ delta, timestamp })
+      previousFrameTimestamp = timestamp
+      if (!isLoop) {
+        pause()
+        return
+      }
+    }
     rafId = window.requestAnimationFrame(loop)
   }
 
