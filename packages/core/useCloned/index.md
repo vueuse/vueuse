@@ -4,7 +4,7 @@ category: Utilities
 
 # useCloned
 
-Reactive clone of a ref. By default, it use `JSON.parse(JSON.stringify())` to do the clone.
+Reactive clone of a ref. By default, it uses `JSON.parse(JSON.stringify())` to do the clone.
 
 ## Usage
 
