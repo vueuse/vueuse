@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import Blueprint from '../blueprint.vue'
 import { useTriangle } from '.'
 
-const sideLength = ref(300)
+const sideLength = ref(180)
 const center = ref({ x: 0, y: 0 })
 const rotation = ref(0)
 const { vertices, edges } = useTriangle({ sideLength, center, rotation })
