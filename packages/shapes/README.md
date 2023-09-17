@@ -6,7 +6,7 @@
 
 ## Features
 
-- ✨ 4+ shape composables for making reactive 2D shapes.
+- ✨ 5+ shape composables for making reactive 2D shapes.
 - 📐 Built-in refs for edges, vertices and other shape properties.
 - 💎 Simple demos for each shape composable.
 - 🔥 Built with **Vue** Composition API.
@@ -23,6 +23,7 @@ npm i <b>@vueuse/shapes</b> @vueuse/core
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
   - [`useCircle`](https://vueuse.org/shapes/useCircle/) — composable for working with circles
+  - [`usePolygon`](https://vueuse.org/shapes/usePolygon/) — composable for working with polygons
   - [`useRectangle`](https://vueuse.org/shapes/useRectangle/) — composable for working with rectangles
   - [`useSquare`](https://vueuse.org/shapes/useSquare/) — composable for working with squares
   - [`useTriangle`](https://vueuse.org/shapes/useTriangle/) — composable for working with triangles
