@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, onDeactivated, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
@@ -149,6 +149,13 @@ export function useScroll(
     right: false,
     top: false,
     bottom: false,
+  })
+
+  onDeactivated(() => {
+    internalX.value = internalY.value = 0
+
+    arrivedState.left = arrivedState.top = true
+    arrivedState.right = arrivedState.bottom = false
   })
 
   const onScrollEnd = (e: Event) => {
