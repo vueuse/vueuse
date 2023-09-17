@@ -30,7 +30,7 @@ export function usePolygon(config?: PolygonConfig): Polygon {
   const vertices = computed(() => {
     const list = []
     const isEven = toValue(sides) % 2 === 0
-    let initialRotation = 0
+    let initialRotation: number
 
     if (isEven) {
       // if the polygon has an even number of sides, we rotate the polygon to start at 3 o'clock (flat side on x-axis).

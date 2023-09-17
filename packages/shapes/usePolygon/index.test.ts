@@ -19,7 +19,10 @@ describe('usePolygon', () => {
 
   it('should accept numbers', () => {
     const polygon = usePolygon({ sides: 5, sideLength: 50 })
-    // Add assertion for getPosition here based on your polygon setup
+    const pos = polygon.getPosition(0.5)
+    expect(pos).toBeDefined()
+    expect(pos).toHaveProperty('x')
+    expect(pos).toHaveProperty('y')
   })
 
   it('should accept refs', () => {
