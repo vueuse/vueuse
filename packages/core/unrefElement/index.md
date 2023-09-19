@@ -4,7 +4,7 @@ category: Component
 
 # unrefElement
 
-Unref for dom element.
+Retrieves the underlying DOM element from a Vue ref or component instance
 
 ## Usage
 
@@ -18,8 +18,8 @@ Unref for dom element.
 import { ref, onMounted } from 'vue'
 import { unrefElement } from '@vueuse/core'
 
-const div = ref() // will be bind to the <div> element
-const hello = ref() // will be bind to the HelloWorld Component
+const div = ref() // will be bound to the <div> element
+const hello = ref() // will be bound to the HelloWorld Component
 
 onMounted(() => {
   console.log(unrefElement(div)) // the <div> element
