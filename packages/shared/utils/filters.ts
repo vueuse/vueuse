@@ -1,7 +1,7 @@
 import { readonly, ref } from 'vue-demi'
 import { toValue } from '../toValue'
 import { noop } from './is'
-import type { AnyFn, ArgumentsType, MaybeRefOrGetter, Pausable } from './types'
+import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -14,7 +14,7 @@ export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> 
 export type EventFilter<Args extends any[] = any[], This = any, Invoke extends AnyFn = AnyFn> = (
   invoke: Invoke,
   options: FunctionWrapperOptions<Args, This>
-) => ReturnType<Invoke> | Promise<ReturnType<Invoke>>
+) => ReturnType<Invoke> | Promisify<ReturnType<Invoke>>
 
 export interface ConfigurableEventFilter {
   /**
@@ -45,7 +45,7 @@ export interface DebounceFilterOptions {
  */
 export function createFilterWrapper<T extends AnyFn>(filter: EventFilter, fn: T) {
   function wrapper(this: any, ...args: ArgumentsType<T>) {
-    return new Promise<ReturnType<T>>((resolve, reject) => {
+    return new Promise<Awaited<ReturnType<T>>>((resolve, reject) => {
       // make sure it's a promise
       Promise.resolve(filter(() => fn.apply(this, args), { fn, thisArg: this, args }))
         .then(resolve)
