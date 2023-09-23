@@ -7,7 +7,7 @@ type RawCookies = Record<string, string>
 
 /**
  * Creates a new {@link useCookies} function
- * @param {object} req - incoming http request (for SSR)
+ * @param req - incoming http request (for SSR)
  * @see https://github.com/reactivestack/cookies/tree/master/packages/universal-cookie universal-cookie
  * @description Creates universal-cookie instance using request (default is window.document.cookie) and returns {@link useCookies} function with provided universal-cookie instance
  */
@@ -22,11 +22,11 @@ export function createCookies(req?: IncomingMessage) {
 
 /**
  * Reactive methods to work with cookies (use {@link createCookies} method instead if you are using SSR)
- * @param {string[]|null|undefined} dependencies - array of watching cookie's names. Pass empty array if don't want to watch cookies changes.
- * @param {object} options
- * @param {boolean} options.doNotParse - don't try parse value as JSON
- * @param {boolean} options.autoUpdateDependencies - automatically update watching dependencies
- * @param {object} cookies - universal-cookie instance
+ * @param dependencies - array of watching cookie's names. Pass empty array if don't want to watch cookies changes.
+ * @param options
+ * @param options.doNotParse - don't try parse value as JSON
+ * @param options.autoUpdateDependencies - automatically update watching dependencies
+ * @param cookies - universal-cookie instance
  */
 export function useCookies(
   dependencies?: string[] | null,

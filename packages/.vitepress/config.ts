@@ -136,8 +136,7 @@ export default defineConfig({
               : {
                   text: i.version,
                   link: i.link!,
-                },
-            ),
+                }),
           },
         ],
 

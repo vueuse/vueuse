@@ -113,7 +113,9 @@ export function useFocusTrap(
       // Focus if immediate is set to true
       if (immediate)
         activate()
-    }, { flush: 'post' })
+    },
+    { flush: 'post' },
+  )
 
   // Cleanup on unmount
   tryOnScopeDispose(() => deactivate())

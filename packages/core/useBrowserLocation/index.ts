@@ -8,7 +8,14 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 const WRITABLE_PROPERTIES = [
-  'hash', 'host', 'hostname', 'href', 'pathname', 'port', 'protocol', 'search',
+  'hash',
+  'host',
+  'hostname',
+  'href',
+  'pathname',
+  'port',
+  'protocol',
+  'search',
 ] as const
 
 export interface BrowserLocationState {

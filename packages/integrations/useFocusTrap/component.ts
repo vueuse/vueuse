@@ -25,7 +25,9 @@ export const UseFocusTrap = /* #__PURE__ */ defineComponent <ComponentUseFocusTr
           return
         trap = createFocusTrap(el, props.options || {})
         activate()
-      }, { flush: 'post' })
+      },
+      { flush: 'post' },
+    )
 
     // Cleanup on unmount
     onScopeDispose(() => deactivate())

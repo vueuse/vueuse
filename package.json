@@ -36,7 +36,7 @@
     "watch": "esno scripts/build-run.ts --watch"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.43.1",
+    "@antfu/eslint-config": "^1.0.0-beta.5",
     "@antfu/ni": "^0.21.8",
     "@iconify/json": "^2.2.119",
     "@rollup/plugin-json": "^6.0.0",
@@ -46,7 +46,6 @@
     "@types/js-yaml": "^4.0.6",
     "@types/md5": "^2.3.2",
     "@types/node": "^20.6.3",
-    "@types/prettier": "^3.0.0",
     "@types/remove-markdown": "^0.3.1",
     "@types/semver": "^7.5.2",
     "@vitest/coverage-c8": "^0.33.0",
@@ -63,6 +62,7 @@
     "consola": "^3.2.3",
     "esbuild-register": "^3.5.0",
     "eslint": "8.50.0",
+    "eslint-plugin-antfu": "1.0.0-beta.6",
     "esno": "^0.17.0",
     "export-size": "^0.6.0",
     "fake-indexeddb": "^4.0.2",

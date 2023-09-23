@@ -88,13 +88,15 @@ describe('useTimeAgo', () => {
       test(`${text}: less than 1 second`, () => {
         changeValue.value = getNeededTimeChange('minute', 1, -59.6) * (isFuture ? 1 : -1)
         expect(useTimeAgo(changeTime, { showSecond: true }).value).toBe(
-          isFuture ? 'in 0 second' : '0 second ago')
+          isFuture ? 'in 0 second' : '0 second ago',
+        )
       })
 
       test(`${text}: less than 1 minute/ with showSecond`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime, { showSecond: true }).value).toBe(
-          isFuture ? 'in 59 seconds' : '59 seconds ago')
+          isFuture ? 'in 59 seconds' : '59 seconds ago',
+        )
       })
 
       test(`${text}: less than 1 minute but more than 10 seconds with showSecond`, () => {

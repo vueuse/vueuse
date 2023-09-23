@@ -66,7 +66,9 @@ export function useConfirmDialog<
   RevealData = any,
   ConfirmData = any,
   CancelData = any,
->(revealed: Ref<boolean> = ref(false)): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
+>(
+  revealed: Ref<boolean> = ref(false),
+): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   const confirmHook: EventHook = createEventHook<ConfirmData>()
   const cancelHook: EventHook = createEventHook<CancelData>()
   const revealHook: EventHook = createEventHook<RevealData>()

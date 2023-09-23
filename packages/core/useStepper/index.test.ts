@@ -35,7 +35,7 @@ describe('useStepper', () => {
         last: 'Last',
       })
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // eslint-disable-next-line ts/ban-ts-comment
       // @ts-expect-error
       stepper.goTo('unexisting step')
       expect(stepper.current.value).toBe('First')

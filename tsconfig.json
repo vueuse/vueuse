@@ -33,6 +33,7 @@
     "skipLibCheck": true
   },
   "include": [
+    "*.ts",
     "packages",
     "packages/.vitepress/components/*.vue",
     "packages/.vitepress/*.ts",

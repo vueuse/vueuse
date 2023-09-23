@@ -9,7 +9,7 @@ Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also acc
 ## Usage
 
 <!-- eslint-disable array-bracket-spacing -->
-<!-- eslint-disable @typescript-eslint/no-redeclare -->
+<!-- eslint-disable ts/no-redeclare -->
 
 ```ts
 import { toRefs } from '@vueuse/core'

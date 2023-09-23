@@ -27,11 +27,9 @@ import { Subject } from 'rxjs'
 const subject = new Subject()
 
 // setup()
-const subjectRef = useSubject(subject,
-  {
-    onError: (err) => {
-      console.log(err.message) // "oops"
-    },
+const subjectRef = useSubject(subject, {
+  onError: (err) => {
+    console.log(err.message) // "oops"
   },
-)
+},)
 ```

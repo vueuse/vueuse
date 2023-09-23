@@ -111,8 +111,7 @@ import { logicAnd } from '@vueuse/math'
 const activeElement = useActiveElement()
 const notUsingInput = computed(() =>
   activeElement.value?.tagName !== 'INPUT'
-  && activeElement.value?.tagName !== 'TEXTAREA',
-)
+  && activeElement.value?.tagName !== 'TEXTAREA',)
 
 const { tab } = useMagicKeys()
 
