@@ -27,7 +27,6 @@ whenever(ready, () => console.log(state))
 watch(ready, (isReady) => {
   if (isReady)
     console.log(state)
-
 })
 ```
 
@@ -39,7 +38,6 @@ Same as `watch`, the callback will be called with `cb(value, oldValue, onInvalid
 whenever(height, (current, lastHeight) => {
   if (current > lastHeight)
     console.log(`Increasing height by ${current - lastHeight}`)
-
 })
 ```
 

@@ -131,7 +131,6 @@ const { ctrl_s } = useMagicKeys({
   onEventFired(e) {
     if (e.ctrlKey && e.key === 's' && e.type === 'keydown')
       e.preventDefault()
-
   },
 })
 

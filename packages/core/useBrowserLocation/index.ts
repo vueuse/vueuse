@@ -30,9 +30,9 @@ export interface BrowserLocationState {
  * Reactive browser location.
  *
  * @see https://vueuse.org/useBrowserLocation
- * @param options
  */
-export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
+export function useBrowserLocation(options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
   const refs = Object.fromEntries(
     WRITABLE_PROPERTIES.map(key => [key, ref()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>

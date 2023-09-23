@@ -20,8 +20,8 @@ export const rand = (min: number, max: number) => {
 }
 export const hasOwn = <T extends object, K extends keyof T>(val: T, key: K): key is K => Object.prototype.hasOwnProperty.call(val, key)
 
-export const isIOS = /*#__PURE__*/ getIsIOS()
+export const isIOS = /* #__PURE__ */ getIsIOS()
 
 function getIsIOS() {
-  return isClient && /*#__PURE__*/ window?.navigator?.userAgent && /*#__PURE__*/ /iP(ad|hone|od)/.test(/*#__PURE__*/ window.navigator.userAgent)
+  return isClient && /* #__PURE__ */ window?.navigator?.userAgent && /* #__PURE__ */ /iP(ad|hone|od)/.test(/* #__PURE__ */ window.navigator.userAgent)
 }

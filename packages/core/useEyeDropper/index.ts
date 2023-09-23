@@ -28,7 +28,6 @@ export interface UseEyeDropperOptions {
  * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
  *
  * @see https://vueuse.org/useEyeDropper
- * @param initialValue string
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options

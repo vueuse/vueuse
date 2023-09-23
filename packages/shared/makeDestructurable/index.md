@@ -21,7 +21,7 @@ const bar = 1024
 
 const obj = makeDestructurable(
   { foo, bar } as const,
-  [ foo, bar ] as const,
+  [foo, bar] as const,
 )
 ```
 
@@ -32,5 +32,5 @@ Usage:
 
 ```ts
 let { foo, bar } = obj
-let [ foo, bar ] = obj
+let [foo, bar] = obj
 ```

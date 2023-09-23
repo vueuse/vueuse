@@ -12,8 +12,8 @@ export interface UseCounterOptions {
  * Basic counter with utility functions.
  *
  * @see https://vueuse.org/useCounter
- * @param [initialValue=0]
- * @param {Object} options
+ * @param [initialValue]
+ * @param {object} options
  */
 export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCounterOptions = {}) {
   let _initialValue = unref(initialValue)
