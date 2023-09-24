@@ -1,9 +1,10 @@
 import { ref, watch } from 'vue-demi'
 import { tryOnMounted } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
-import type { MaybeComputedElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef, MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
+import { type UseIntersectionObserverOptions, useIntersectionObserver } from '../useIntersectionObserver'
 
 export interface UseElementBoundingOptions {
   /**
@@ -19,12 +20,25 @@ export interface UseElementBoundingOptions {
    * @default true
    */
   windowResize?: boolean
+
   /**
    * Listen to window scroll event
    *
    * @default true
    */
   windowScroll?: boolean
+
+  /**
+   * Observe target intersection
+   */
+  intersectionObserver?: boolean | UseIntersectionObserverOptions
+
+  /**
+   * Auto-pause bounding calculations when the target is not intersecting (it requires intersectionObserver to be enabled)
+   *
+   * @default true
+   */
+  intersectionAutoPause?: boolean
 
   /**
    * Immediately call update on component mounted
@@ -48,6 +62,8 @@ export function useElementBounding(
     reset = true,
     windowResize = true,
     windowScroll = true,
+    intersectionObserver = false,
+    intersectionAutoPause = true,
     immediate = true,
   } = options
 
@@ -59,8 +75,12 @@ export function useElementBounding(
   const width = ref(0)
   const x = ref(0)
   const y = ref(0)
+  const visible = ref<boolean | undefined>(undefined)
 
-  function update() {
+  function update(force?: boolean) {
+    if (!force && intersectionObserver && intersectionAutoPause && !visible.value)
+      return
+
     const el = unrefElement(target)
 
     if (!el) {
@@ -89,13 +109,21 @@ export function useElementBounding(
     y.value = rect.y
   }
 
-  useResizeObserver(target, update)
+  useResizeObserver(target, () => update())
   watch(() => unrefElement(target), ele => !ele && update())
 
   if (windowScroll)
-    useEventListener('scroll', update, { capture: true, passive: true })
+    useEventListener('scroll', () => update(), { capture: true, passive: true })
   if (windowResize)
-    useEventListener('resize', update, { passive: true })
+    useEventListener('resize', () => update(), { passive: true })
+  if (intersectionObserver) {
+    useIntersectionObserver(target as MaybeElementRef, ([{ isIntersecting }]) => (visible.value = isIntersecting), {
+      threshold: 0,
+      ...typeof intersectionObserver === 'boolean'
+        ? null
+        : intersectionObserver,
+    })
+  }
 
   tryOnMounted(() => {
     if (immediate)
@@ -111,6 +139,7 @@ export function useElementBounding(
     width,
     x,
     y,
+    visible,
     update,
   }
 }
