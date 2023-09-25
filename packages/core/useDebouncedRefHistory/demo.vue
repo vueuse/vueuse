@@ -12,7 +12,8 @@ const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()
 const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(
-  count, { capacity: 10, debounce: delay },
+  count,
+  { capacity: 10, debounce: delay },
 )
 </script>
 

@@ -161,9 +161,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
   }
 }
 
-function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>,
-  getViewCapacity: ReturnType<typeof createGetViewCapacity>,
-  { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
+function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
   return () => {
     const element = containerRef.value
     if (element) {

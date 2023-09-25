@@ -13,7 +13,8 @@ export interface UseObservableOptions<I> {
 
 export function useObservable<H, I = undefined>(
   observable: Observable<H>,
-  options?: UseObservableOptions<I | undefined>): Readonly<Ref<H | I>> {
+  options?: UseObservableOptions<I | undefined>,
+): Readonly<Ref<H | I>> {
   const value = ref<H | I | undefined>(options?.initialValue)
   const subscription = observable.subscribe({
     next: val => (value.value = (val as UnwrapRef<H>)),
