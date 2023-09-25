@@ -15,7 +15,8 @@ function reset() {
 }
 
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(
-  target, {
+  target,
+  {
     passive: false,
     onSwipe(e: TouchEvent) {
       if (containerWidth.value) {
@@ -40,7 +41,8 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
         opacity.value = 1
       }
     },
-  })
+  },
+)
 </script>
 
 <template>

@@ -265,7 +265,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           options.headers = { ...options.headers, Local: 'foo' }
           return { options }
         },
-      })
+      },
+    )
 
     await retry(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Global: 'foo', Local: 'foo' })
@@ -290,7 +291,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.data.title += ' Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
@@ -315,7 +317,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.error += ' Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
@@ -411,7 +414,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           options.headers = { ...options.headers, Local: 'foo' }
           return { options }
         },
-      })
+      },
+    )
 
     await retry(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
@@ -437,7 +441,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.data.local = 'Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
@@ -464,7 +469,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.error = 'Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')

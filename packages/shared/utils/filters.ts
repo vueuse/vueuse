@@ -119,9 +119,9 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
  * Create an EventFilter that throttle the events
  *
  * @param ms
- * @param [trailing=true]
- * @param [leading=true]
- * @param [rejectOnCancel=false]
+ * @param [trailing]
+ * @param [leading]
+ * @param [rejectOnCancel]
  */
 export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing = true, leading = true, rejectOnCancel = false) {
   let lastExec = 0

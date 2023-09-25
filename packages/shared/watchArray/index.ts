@@ -20,8 +20,7 @@ export function watchArray<T, Immediate extends Readonly<boolean> = false>(
         ? source()
         : Array.isArray(source)
           ? source
-          : toValue(source)),
-      ]
+          : toValue(source))]
 
   return watch(source as WatchSource<T[]>, (newList, _, onCleanup) => {
     const oldListRemains = Array.from({ length: oldList.length })
