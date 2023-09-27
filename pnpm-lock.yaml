@@ -218,8 +218,8 @@ importers:
         specifier: ^0.16.5
         version: 0.16.5(vite@4.4.9)(workbox-build@7.0.0)(workbox-window@7.0.0)
       vitepress:
-        specifier: 1.0.0-rc.15
-        version: 1.0.0-rc.15(@algolia/client-search@4.20.0)(@types/node@20.6.3)(axios@1.5.0)(fuse.js@6.6.2)(search-insights@2.6.0)
+        specifier: 1.0.0-rc.4
+        version: 1.0.0-rc.4(@algolia/client-search@4.20.0)(@types/node@20.6.3)(axios@1.5.0)(fuse.js@6.6.2)(search-insights@2.6.0)
       vitest:
         specifier: ^0.34.5
         version: 0.34.5(@vitest/ui@0.34.5)(jsdom@22.1.0)
@@ -4908,7 +4908,6 @@ packages:
     dependencies:
       vite: 4.4.9(@types/node@20.6.3)
       vue: 3.3.4
-    dev: false
 
   /@vitest/coverage-c8@0.33.0(vitest@0.34.5):
     resolution: {integrity: sha512-DaF1zJz4dcOZS4k/neiQJokmOWqsGXwhthfmUdPGorXIQHjdPvV6JQSYhQDI41MyI8c+IieQUdIDs5XAMHtDDw==}
@@ -5570,6 +5569,10 @@ packages:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.0
+    dev: true
+
+  /body-scroll-lock@4.0.0-beta.0:
+    resolution: {integrity: sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==}
     dev: true
 
   /boolbase@1.0.0:
@@ -13162,20 +13165,17 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /vitepress@1.0.0-rc.15(@algolia/client-search@4.20.0)(@types/node@20.6.3)(axios@1.5.0)(fuse.js@6.6.2)(search-insights@2.6.0):
-    resolution: {integrity: sha512-5criiHoEibkT/du7t6wQ2xQVsuTNuirQZbMAi0M9Hp0YzJoJvEX68Ej9p2PtNC84bYb/CxAh5QkMtMutk03lHw==}
+  /vitepress@1.0.0-rc.4(@algolia/client-search@4.20.0)(@types/node@20.6.3)(axios@1.5.0)(fuse.js@6.6.2)(search-insights@2.6.0):
+    resolution: {integrity: sha512-JCQ89Bm6ECUTnyzyas3JENo00UDJeK8q1SUQyJYou+4Yz5BKEc/F3O21cu++DnUT2zXc0kvQ2Aj4BZCc/nioXQ==}
     hasBin: true
-    peerDependencies:
-      markdown-it-mathjax3: ^4.3.2
-    peerDependenciesMeta:
-      markdown-it-mathjax3:
-        optional: true
     dependencies:
       '@docsearch/css': 3.5.2
       '@docsearch/js': 3.5.2(@algolia/client-search@4.20.0)(search-insights@2.6.0)
+      '@vitejs/plugin-vue': 4.3.4(vite@4.4.9)(vue@3.3.4)
       '@vue/devtools-api': 6.5.0
       '@vueuse/core': 10.4.1(vue@3.3.4)
       '@vueuse/integrations': 10.4.1(axios@1.5.0)(focus-trap@7.5.2)(fuse.js@6.6.2)(vue@3.3.4)
+      body-scroll-lock: 4.0.0-beta.0
       focus-trap: 7.5.2
       mark.js: 8.11.1
       minisearch: 6.1.0
