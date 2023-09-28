@@ -33,30 +33,32 @@ export function useEventSource(url: string | URL, events: Array<string> = [], op
     }
   }
 
-  const es = new EventSource(url, { withCredentials })
+  if (typeof EventSource !== "undefined") {
+    const es = new EventSource(url, { withCredentials })
 
-  eventSource.value = es
-
-  es.onopen = () => {
-    status.value = 'OPEN'
-    error.value = null
-  }
-
-  es.onerror = (e) => {
-    status.value = 'CLOSED'
-    error.value = e
-  }
-
-  es.onmessage = (e: MessageEvent) => {
-    event.value = null
-    data.value = e.data
-  }
-
-  for (const event_name of events) {
-    useEventListener(es, event_name, (e: Event & { data?: string }) => {
-      event.value = event_name
-      data.value = e.data || null
-    })
+    eventSource.value = es
+  
+    es.onopen = () => {
+      status.value = 'OPEN'
+      error.value = null
+    }
+  
+    es.onerror = (e) => {
+      status.value = 'CLOSED'
+      error.value = e
+    }
+  
+    es.onmessage = (e: MessageEvent) => {
+      event.value = null
+      data.value = e.data
+    }
+  
+    for (const event_name of events) {
+      useEventListener(es, event_name, (e: Event & { data?: string }) => {
+        event.value = event_name
+        data.value = e.data || null
+      })
+    }
   }
 
   tryOnScopeDispose(() => {
