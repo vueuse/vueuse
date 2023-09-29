@@ -88,8 +88,7 @@ export function useFullscreen(
     && document
     && requestMethod.value !== undefined
     && exitMethod.value !== undefined
-    && fullscreenEnabled.value !== undefined,
-  )
+    && fullscreenEnabled.value !== undefined)
 
   const isCurrentElementFullScreen = (): boolean => {
     if (fullscreenElementMethod)

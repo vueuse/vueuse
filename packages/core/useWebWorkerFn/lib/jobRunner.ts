@@ -6,9 +6,9 @@
  * This function can be used as a wrapper, only inside a Worker
  * because it depends by "postMessage".
  *
- * @param {Function} userFunc {Function} fn the function to run with web worker
+ * @param userFunc {Function} fn the function to run with web worker
  *
- * @returns {Function} returns a function that accepts the parameters
+ * @returns returns a function that accepts the parameters
  * to be passed to the "userFunc" function
  */
 function jobRunner(userFunc: Function) {
