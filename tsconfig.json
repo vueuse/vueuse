@@ -41,6 +41,7 @@
     "vitest.config.ts"
   ],
   "exclude": [
+    "unocss.config.ts",
     "node_modules",
     "**/*.md",
     "**/dist",
