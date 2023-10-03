@@ -5,7 +5,6 @@ import { getCurrentInstance, onMounted, ref } from 'vue-demi'
  * Mounted state in ref.
  *
  * @see https://vueuse.org/useMounted
- * @param options
  */
 export function useMounted() {
   const isMounted = ref(false)

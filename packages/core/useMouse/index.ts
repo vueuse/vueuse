@@ -55,10 +55,9 @@ const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtracto
   page: event => [event.pageX, event.pageY],
   client: event => [event.clientX, event.clientY],
   screen: event => [event.screenX, event.screenY],
-  movement: event => (
-    event instanceof Touch
-      ? null
-      : [event.movementX, event.movementY]
+  movement: event => (event instanceof Touch
+    ? null
+    : [event.movementX, event.movementY]
   ),
 } as const
 
