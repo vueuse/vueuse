@@ -14,6 +14,7 @@ export interface UseRafFnCallbackArguments {
    * Time elapsed since the creation of the web page. See {@link https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp#the_time_origin Time origin}.
    */
   timestamp: DOMHighResTimeStamp
+
 }
 
 export interface UseRafFnOptions extends ConfigurableWindow {
@@ -23,6 +24,12 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * @default true
    */
   immediate?: boolean
+  /**
+   * The maximum delta value in milliseconds for a frame to be considered valid.
+   *
+   * @default undefined
+   */
+  fpsLimit?: number
 }
 
 /**
@@ -35,10 +42,12 @@ export interface UseRafFnOptions extends ConfigurableWindow {
 export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
+    fpsLimit = undefined,
     window = defaultWindow,
   } = options
 
   const isActive = ref(false)
+  const interval: null | number = fpsLimit ? 1000 / fpsLimit : null
   let previousFrameTimestamp = 0
   let rafId: null | number = null
 
@@ -47,6 +56,11 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
       return
 
     const delta = timestamp - (previousFrameTimestamp || timestamp)
+
+    if (interval && delta < interval) {
+      rafId = window.requestAnimationFrame(loop)
+      return
+    }
 
     fn({ delta, timestamp })
 
