@@ -8,7 +8,7 @@ type UseVirtualListItemSize = number | ((index: number) => number)
 export interface UseHorizontalVirtualListOptions extends UseVirtualListOptionsBase {
 
   /**
-   * item width, accept a pixel value or a function that returns the height
+   * item width, accept a pixel value or a function that returns the width
    *
    * @default 0
    */
