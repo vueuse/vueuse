@@ -1,4 +1,6 @@
-import { type InjectionKey, inject, provide } from 'vue-demi'
+import type { InjectionKey } from 'vue-demi'
+import { provideLocal } from '../provideLocal'
+import { injectLocal } from '../injectLocal'
 
 export interface CreateInjectionStateOptions<Return> {
   /**
@@ -20,9 +22,9 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
   const key: string | InjectionKey<Return> = options?.injectionKey || Symbol('InjectionState')
   const useProvidingState = (...args: Arguments) => {
     const state = composable(...args)
-    provide(key, state)
+    provideLocal(key, state)
     return state
   }
-  const useInjectedState = () => inject(key)
+  const useInjectedState = () => injectLocal(key)
   return [useProvidingState, useInjectedState]
 }

@@ -61,6 +61,7 @@ export function useDrauu(
     dasharray: undefined,
     fill: 'transparent',
     mode: 'draw',
+    ...options?.brush,
   })
 
   watch(brush, () => {

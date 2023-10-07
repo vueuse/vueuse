@@ -59,4 +59,23 @@ describe('createInjectionState', () => {
 
     mount(RootComponent)
   })
+
+  it('allow call provideLocal and injectLocal in same component', () => {
+    const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
+      const count = ref(initialValue)
+      return count
+    })
+
+    const CanProvidingStateAndInjectedStateInSameComponent = defineComponent({
+      setup() {
+        useProvideCountState(114514)
+        const count = useCountState()!
+        expect(count.value).toBe(114514)
+
+        return () => h('div')
+      },
+    })
+
+    mount(CanProvidingStateAndInjectedStateInSameComponent)
+  })
 })
