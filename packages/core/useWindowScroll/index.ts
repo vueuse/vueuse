@@ -9,7 +9,8 @@ import { defaultWindow } from '../_configurable'
  * @see https://vueuse.org/useWindowScroll
  * @param options
  */
-export function useWindowScroll({ window = defaultWindow }: ConfigurableWindow = {}) {
+export function useWindowScroll(options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
   if (!window) {
     return {
       x: ref(0),

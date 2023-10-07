@@ -41,7 +41,7 @@ describe('watchTriggerable', () => {
     const effect1 = ref(-1)
     const effect2 = ref('z')
     let cleanupCount = -1
-    const { trigger } = watchTriggerable([source1, () => source2.a], ([value1, value2], [old1, old2], onCleanup) => {
+    const { trigger } = watchTriggerable([source1, () => source2.a], ([value1, value2], _, onCleanup) => {
       onCleanup(() => {
         cleanupCount = value1
       })

@@ -10,7 +10,7 @@ If a script tag already exists for the given URL, `useScriptTag()` will not crea
 
 ## Usage
 
-```js
+```ts
 import { useScriptTag } from '@vueuse/core'
 
 useScriptTag(

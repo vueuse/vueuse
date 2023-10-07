@@ -5,7 +5,7 @@ import matter from 'gray-matter'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import { getCategories } from '../packages/metadata/utils'
 import { packages } from '../meta/packages'
 

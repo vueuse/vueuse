@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { reactifyObject } from '.'
 
 describe('reactifyObject', () => {
-  it('Math', () => {
+  it('math', () => {
     const { pow } = reactifyObject(Math, { includeOwnProperties: true })
 
     const base = ref(0)
@@ -27,7 +27,7 @@ describe('reactifyObject', () => {
     expect(result.value).toBe(27)
   })
 
-  it('JSON', () => {
+  it('jSON', () => {
     const { stringify, parse } = reactifyObject(JSON)
 
     const base = ref('{"foo":"bar"}')
