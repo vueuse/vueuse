@@ -25,8 +25,24 @@ const RootComponent = defineComponent({
   },
 })
 
-describe('computedWithControl', () => {
+describe('createInjectionState simple example', () => {
   it('should work', () => {
     mount(RootComponent)
+  })
+})
+
+const CanProvidingStateAndInjectedStateInSameComponent = defineComponent({
+  setup() {
+    useProvideCountState(114514)
+    const count = useCountState()!
+    expect(count.value).toBe(114514)
+
+    return () => h('div')
+  },
+})
+
+describe('allow call useProvidingState and useInjectedState in same component', () => {
+  it('should work', () => {
+    mount(CanProvidingStateAndInjectedStateInSameComponent)
   })
 })
