@@ -1,48 +1,81 @@
-import { defineComponent, h, ref } from 'vue-demi'
+import { type InjectionKey, type Ref, defineComponent, h, inject, ref } from 'vue-demi'
 import { createInjectionState } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
 import { mount } from '../../.test'
 
-const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
-  const count = ref(initialValue)
-  return count
-})
+describe('createInjectionState', () => {
+  it('should work 1', () => {
+    const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
+      const count = ref(initialValue)
+      return count
+    })
 
-const ChildComponent = defineComponent({
-  setup() {
-    const count = useCountState()
-    expect(count?.value).toBe(0)
+    const ChildComponent = defineComponent({
+      setup() {
+        const count = useCountState()
+        expect(count?.value).toBe(0)
 
-    return () => h('div')
-  },
-})
+        return () => h('div')
+      },
+    })
 
-const RootComponent = defineComponent({
-  setup() {
-    useProvideCountState(0)
+    const RootComponent = defineComponent({
+      setup() {
+        useProvideCountState(0)
 
-    return () => h(ChildComponent)
-  },
-})
+        return () => h(ChildComponent)
+      },
+    })
 
-describe('createInjectionState simple example', () => {
-  it('should work', () => {
     mount(RootComponent)
   })
-})
 
-const CanProvidingStateAndInjectedStateInSameComponent = defineComponent({
-  setup() {
-    useProvideCountState(114514)
-    const count = useCountState()!
-    expect(count.value).toBe(114514)
+  it('should work (custom key)', () => {
+    const KEY: InjectionKey<Ref<number>> = Symbol('count-state')
 
-    return () => h('div')
-  },
-})
+    const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
+      const count = ref(initialValue)
+      return count
+    }, { injectionKey: KEY })
 
-describe('allow call useProvidingState and useInjectedState in same component', () => {
-  it('should work', () => {
+    const ChildComponent = defineComponent({
+      setup() {
+        const count = useCountState()
+        expect(count?.value).toBe(0)
+        const count2 = inject(KEY)
+        expect(count2?.value).toBe(0)
+
+        return () => h('div')
+      },
+    })
+
+    const RootComponent = defineComponent({
+      setup() {
+        useProvideCountState(0)
+
+        return () => h(ChildComponent)
+      },
+    })
+
+    mount(RootComponent)
+  })
+
+  it('allow call provideLocal and injectLocal in same component', () => {
+    const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
+      const count = ref(initialValue)
+      return count
+    })
+
+    const CanProvidingStateAndInjectedStateInSameComponent = defineComponent({
+      setup() {
+        useProvideCountState(114514)
+        const count = useCountState()!
+        expect(count.value).toBe(114514)
+
+        return () => h('div')
+      },
+    })
+
     mount(CanProvidingStateAndInjectedStateInSameComponent)
   })
 })
