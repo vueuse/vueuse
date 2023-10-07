@@ -58,7 +58,8 @@ if('serviceWorker' in navigator) {
   })
 }
 </script>
-</head>`).trim()
+</head>`,
+      ).trim()
     }
 
     await fs.writeFile(file, html, 'utf-8')
