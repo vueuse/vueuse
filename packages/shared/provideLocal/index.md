@@ -1,0 +1,18 @@
+---
+category: Utilities
+---
+
+# provideLocal
+
+`provide` with ability to call `injectLocal` to obtain the value after call provide in the same component.
+
+## Usage
+
+```vue
+<script setup>
+import { provideLocal, injectLocal } from '@vueuse/core'
+
+provideLocal('MyInjectionKey', 1)
+const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
+</script>
+```
