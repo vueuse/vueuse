@@ -4,7 +4,7 @@ category: State
 
 # provideLocal
 
-`provide` with ability to call `injectLocal` to obtain the value after call provide in the same component.
+Extended `provide` with ability to call `injectLocal` to obtain the value in the same component.
 
 ## Usage
 

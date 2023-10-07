@@ -4,7 +4,7 @@ category: State
 
 # injectLocal
 
-`inject` with ability to call `injectProvide` to provide the value in the same component.
+Extended `inject` with ability to call `provideLocal` to provide the value in the same component.
 
 ## Usage
 
