@@ -1,6 +1,6 @@
-import { type InjectionKey } from 'vue-demi'
-import {provideLocal} from '../provideLocal'
-import {injectLocal} from '../injectLocal'
+import type { InjectionKey } from 'vue-demi'
+import { provideLocal } from '../provideLocal'
+import { injectLocal } from '../injectLocal'
 
 /**
  * Create global state that can be injected into components.

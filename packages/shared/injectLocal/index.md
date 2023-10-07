@@ -1,5 +1,5 @@
 ---
-category: Utilities
+category: State
 ---
 
 # injectLocal
@@ -10,7 +10,7 @@ category: Utilities
 
 ```vue
 <script setup>
-import { provideLocal, injectLocal } from '@vueuse/core'
+import { injectLocal, provideLocal } from '@vueuse/core'
 
 provideLocal('MyInjectionKey', 1)
 const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
