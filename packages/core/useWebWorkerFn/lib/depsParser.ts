@@ -3,8 +3,8 @@
  * Concatenates the dependencies into a comma separated string.
  * this string will then be passed as an argument to the "importScripts" function
  *
- * @param {Array.<String>} deps array of string
- * @returns {String} a string composed by the concatenation of the array
+ * @param deps array of string
+ * @returns a string composed by the concatenation of the array
  * elements "deps" and "importScripts".
  *
  * @example
