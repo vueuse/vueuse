@@ -13,7 +13,7 @@ export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: Maybe
 /**
  * Reactive get array difference of two array
  * @see https://vueuse.org/useArrayDifference
- * @returns {Array} - the difference of two array
+ * @returns - the difference of two array
  * @param args
  */
 export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {

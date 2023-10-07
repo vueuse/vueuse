@@ -8,7 +8,14 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 const WRITABLE_PROPERTIES = [
-  'hash', 'host', 'hostname', 'href', 'pathname', 'port', 'protocol', 'search',
+  'hash',
+  'host',
+  'hostname',
+  'href',
+  'pathname',
+  'port',
+  'protocol',
+  'search',
 ] as const
 
 export interface BrowserLocationState {
@@ -30,9 +37,9 @@ export interface BrowserLocationState {
  * Reactive browser location.
  *
  * @see https://vueuse.org/useBrowserLocation
- * @param options
  */
-export function useBrowserLocation({ window = defaultWindow }: ConfigurableWindow = {}) {
+export function useBrowserLocation(options: ConfigurableWindow = {}) {
+  const { window = defaultWindow } = options
   const refs = Object.fromEntries(
     WRITABLE_PROPERTIES.map(key => [key, ref()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>

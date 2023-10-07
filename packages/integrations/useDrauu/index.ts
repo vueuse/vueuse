@@ -116,7 +116,9 @@ export function useDrauu(
           onChangedHook.trigger()
         }),
       ]
-    }, { flush: 'post' })
+    },
+    { flush: 'post' },
+  )
 
   tryOnScopeDispose(() => cleanup())
 

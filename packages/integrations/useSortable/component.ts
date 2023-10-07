@@ -2,7 +2,7 @@ import { type PropType, defineComponent, h, reactive, ref } from 'vue-demi'
 import { useVModel } from '@vueuse/core'
 import { type UseSortableOptions, useSortable } from '.'
 
-export const UseSortable = /*#__PURE__*/ defineComponent({
+export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',
   model: { // Compatible with vue2
     prop: 'modelValue',
