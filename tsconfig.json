@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
-    "module": "esnext",
-    "rootDir": ".",
-    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
+    "rootDir": ".",
+    "module": "esnext",
+    "moduleResolution": "Bundler",
     "paths": {
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
@@ -17,18 +17,18 @@
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"]
     },
+    "resolveJsonModule": true,
     "types": [
       "vitest",
       "@types/web-bluetooth"
     ],
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationDir": "./types",
-    "esModuleInterop": true,
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
