@@ -293,7 +293,7 @@ export function useWebSocket<Data = any>(
   }
 
   const open = () => {
-    if (!isClient || !isWorker)
+    if (!isClient && !isWorker)
       return
     close()
     explicitlyClosed = false
