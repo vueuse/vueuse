@@ -19,6 +19,9 @@ function onDrop(files: File[] | null) {
 }
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
+
+// Using dataTypes to specify the types of data to be received.
+// useDropZone(dropZoneRef, {dataTypes: ["image/jpeg"]})
 </script>
 
 <template>
