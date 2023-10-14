@@ -287,7 +287,7 @@ export function useWebSocket<Data = any>(
     heartbeatResume = resume
   }
 
-  if (autoClose) {
+  if (autoClose && isClient) {
     useEventListener('beforeunload', () => close())
     tryOnScopeDispose(close)
   }
