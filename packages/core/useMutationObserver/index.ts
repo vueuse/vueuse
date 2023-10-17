@@ -46,6 +46,10 @@ export function useMutationObserver(
     { immediate: true },
   )
 
+  const takeRecords = () => {
+    return observer?.takeRecords()
+  }
+
   const stop = () => {
     cleanup()
     stopWatch()
@@ -56,6 +60,7 @@ export function useMutationObserver(
   return {
     isSupported,
     stop,
+    takeRecords,
   }
 }
 
