@@ -97,9 +97,6 @@ export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotifi
  *
  * @see https://vueuse.org/useWebNotification
  * @see https://developer.mozilla.org/en-US/docs/Web/API/notification
- * @param title
- * @param defaultOptions of type WebNotificationOptions
- * @param methods of type WebNotificationMethods
  */
 export function useWebNotification(
   options: UseWebNotificationOptions = {},
@@ -139,7 +136,7 @@ export function useWebNotification(
   const show = async (overrides?: WebNotificationOptions) => {
     // If either the browser does not support notifications or the user has
     // not granted permission, do nothing:
-    if (!isSupported.value && !permissionGranted.value)
+    if (!isSupported.value || !permissionGranted.value)
       return
 
     const options = Object.assign({}, defaultWebNotificationOptions, overrides)

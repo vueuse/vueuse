@@ -11,9 +11,14 @@ const delay: Ref<number> = ref(1000)
 
 const { count, inc, dec } = useCounter()
 const { history, undo, redo, canUndo, canRedo } = useThrottledRefHistory(
-  count, {
-    deep: true, throttle: delay, capacity: 10, trailing: true,
-  })
+  count,
+  {
+    deep: true,
+    throttle: delay,
+    capacity: 10,
+    trailing: true,
+  },
+)
 </script>
 
 <template>

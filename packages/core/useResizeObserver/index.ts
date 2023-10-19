@@ -65,8 +65,7 @@ export function useResizeObserver(
   const targets = computed(() =>
     Array.isArray(target)
       ? target.map(el => unrefElement(el))
-      : [unrefElement(target)],
-  )
+      : [unrefElement(target)])
 
   const stopWatch = watch(
     targets,

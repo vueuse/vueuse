@@ -13,12 +13,12 @@ export async function getChangeLog(count = 200) {
   if (cache)
     return cache
 
-  const logs = (await git.log({ maxCount: count })).all.filter(i =>
-    i.message.includes('chore: release')
-    || i.message.includes('!')
-    || i.message.startsWith('feat')
-    || i.message.startsWith('fix'),
-  ) as CommitInfo[]
+  const logs = (await git.log({ maxCount: count })).all.filter((i) => {
+    return i.message.includes('chore: release')
+        || i.message.includes('!')
+        || i.message.startsWith('feat')
+        || i.message.startsWith('fix')
+  }) as CommitInfo[]
 
   for (const log of logs) {
     if (log.message.includes('chore: release')) {

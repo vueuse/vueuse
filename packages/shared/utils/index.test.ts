@@ -311,7 +311,7 @@ describe('is', () => {
     expect(rand(1, 2)).not.toBe(rand(1, 2))
   }, { retry: 20 })
 
-  it('should be rand', () => {
+  it('hasOwn', () => {
     class Parent {a = 1}
     class Child extends Parent {}
     function F() {}

@@ -47,7 +47,9 @@ export function useZoomFactor(...args: any[]): Ref<number> {
 
       if (typeof f === 'number' && f !== o)
         webFrame?.setZoomFactor(f)
-    }, { immediate: true })
+    },
+    { immediate: true },
+  )
 
   return factor
 }
