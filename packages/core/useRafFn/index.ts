@@ -56,16 +56,15 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
       return
 
     const delta = timestamp - (previousFrameTimestamp || timestamp)
+    previousFrameTimestamp = timestamp
 
     if (intervalLimit && delta < intervalLimit) {
-      previousFrameTimestamp = timestamp
       rafId = window.requestAnimationFrame(loop)
       return
     }
 
     fn({ delta, timestamp })
 
-    previousFrameTimestamp = timestamp
     rafId = window.requestAnimationFrame(loop)
   }
 
