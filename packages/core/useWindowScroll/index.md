@@ -12,4 +12,6 @@ Reactive window scroll
 import { useWindowScroll } from '@vueuse/core'
 
 const { x, y } = useWindowScroll()
+x.value = 100
+y.value = 100
 ```
