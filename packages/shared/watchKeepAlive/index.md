@@ -15,9 +15,7 @@ import { watchKeepAlive } from '@vueuse/core'
 
 watchKeepAlive(
   source,
-  () => { console.log('trigger!') }, // triggered it at most 3 times
-  {
-    count: 3, // the number of times triggered
-  },
+  () => { console.log('trigger!') }, // triggered
+  options
 )
 ```
