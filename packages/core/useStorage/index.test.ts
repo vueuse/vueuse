@@ -1,7 +1,7 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { isVue3, ref, toRaw } from 'vue-demi'
+import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTwoTick, useSetup } from '../../.test'
+import { mount, nextTwoTick, useSetup } from '../../.test'
 import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
@@ -466,5 +466,24 @@ describe('useStorage', () => {
     expect(ref.value).toBe(0)
     ref.value = 1
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
+  })
+
+  it('waitOnMounted', async () => {
+    storage.setItem(KEY, 'random')
+
+    const vm = mount(defineComponent({
+      setup() {
+        const basicRef = useStorage(KEY, '', storage, { waitOnMounted: true })
+        expect(basicRef.value).toBe('')
+
+        return {
+          basicRef,
+        }
+      },
+    }))
+
+    await nextTick()
+
+    expect(vm.basicRef).toBe('random')
   })
 })
