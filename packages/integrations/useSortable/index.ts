@@ -51,7 +51,7 @@ export function useSortable<T>(
 
   const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    if (!target)
+    if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
