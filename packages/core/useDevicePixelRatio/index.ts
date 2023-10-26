@@ -6,11 +6,12 @@ import { type ConfigurableWindow, defaultWindow } from '../_configurable'
  * Reactively track `window.devicePixelRatio`.
  *
  * @see https://vueuse.org/useDevicePixelRatio
- * @param options
  */
-export function useDevicePixelRatio({
-  window = defaultWindow,
-}: ConfigurableWindow = {}) {
+export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
+  const {
+    window = defaultWindow,
+  } = options
+
   const pixelRatio = ref(1)
 
   if (window) {

@@ -141,8 +141,7 @@ export function useColorMode<T extends string = BasicColorMode>(
   const state = computed<T | BasicColorMode>(() =>
     store.value === 'auto'
       ? system.value
-      : store.value,
-  )
+      : store.value)
 
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
@@ -183,7 +182,8 @@ export function useColorMode<T extends string = BasicColorMode>(
         const _ = window!.getComputedStyle(style!).opacity
         document.head.removeChild(style!)
       }
-    })
+    },
+  )
 
   function defaultOnChanged(mode: T | BasicColorMode) {
     updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)

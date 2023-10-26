@@ -8,9 +8,9 @@ import { defaultWindow } from '../_configurable'
  * Reactively track window focus with `window.onfocus` and `window.onblur`.
  *
  * @see https://vueuse.org/useWindowFocus
- * @param options
  */
-export function useWindowFocus({ window = defaultWindow }: ConfigurableWindow = {}): Ref<boolean> {
+export function useWindowFocus(options: ConfigurableWindow = {}): Ref<boolean> {
+  const { window = defaultWindow } = options
   if (!window)
     return ref(false)
 
