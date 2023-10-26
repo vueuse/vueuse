@@ -71,7 +71,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    if (isClipboardApiSupported.value && permissionRead) {
+    if (isClipboardApiSupported.value && permissionRead.value !== 'denied') {
       navigator!.clipboard.readText().then((value) => {
         text.value = value
       })
