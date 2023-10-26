@@ -86,7 +86,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value && permissionWrite)
+      if (isClipboardApiSupported.value && permissionWrite.value !== 'denied')
         await navigator!.clipboard.writeText(value)
       else
         legacyCopy(value)
