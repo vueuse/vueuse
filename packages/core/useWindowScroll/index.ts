@@ -13,7 +13,9 @@ export interface UseWindowScrollOptions extends ConfigurableWindow {
  * @see https://vueuse.org/useWindowScroll
  * @param options
  */
-export function useWindowScroll({ window = defaultWindow, behavior = 'auto' }: UseWindowScrollOptions = {}) {
+
+export function useWindowScroll(options: UseWindowScrollOptions = {}) {
+  const { window = defaultWindow, behavior = 'auto' } = options
   if (!window) {
     return {
       x: ref(0),

@@ -106,3 +106,30 @@ const { increment } = useCounterStore()!
   </button>
 </template>
 ```
+
+## Provide a custom InjectionKey
+
+
+```ts
+// useCounterStore.ts
+import { computed, ref } from 'vue'
+import { createInjectionState } from '@vueuse/shared'
+
+// custom injectionKey
+const CounterStoreKey = 'counter-store'
+
+const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
+  // state
+  const count = ref(initialValue)
+
+  // getters
+  const double = computed(() => count.value * 2)
+
+  // actions
+  function increment() {
+    count.value++
+  }
+
+  return { count, double, increment }
+}, { injectionKey: CounterStoreKey })
+```

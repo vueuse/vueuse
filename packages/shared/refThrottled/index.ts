@@ -8,8 +8,8 @@ import { useThrottleFn } from '../useThrottleFn'
  *
  * @param value Ref value to be watched with throttle effect
  * @param  delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
- * @param [trailing=true] if true, update the value again after the delay time is up
- * @param [leading=true] if true, update the value on the leading edge of the ms timeout
+ * @param [trailing] if true, update the value again after the delay time is up
+ * @param [leading] if true, update the value on the leading edge of the ms timeout
  */
 export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true) {
   if (delay <= 0)

@@ -92,7 +92,6 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
 /**
  * Create and read and write local files.
  * @see https://vueuse.org/useFileSystemAccess
- * @param options
  */
 export function useFileSystemAccess(): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Text' }): UseFileSystemAccessReturn<string>

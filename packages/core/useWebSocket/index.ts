@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { isClient, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -186,7 +186,7 @@ export function useWebSocket<Data = any>(
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
-    if (!wsRef.value)
+    if (!isClient || !wsRef.value)
       return
     explicitlyClosed = true
     resetHeartbeat()
@@ -288,11 +288,13 @@ export function useWebSocket<Data = any>(
   }
 
   if (autoClose) {
-    useEventListener(window, 'beforeunload', () => close())
+    useEventListener('beforeunload', () => close())
     tryOnScopeDispose(close)
   }
 
   const open = () => {
+    if (!isClient)
+      return
     close()
     explicitlyClosed = false
     retried = 0

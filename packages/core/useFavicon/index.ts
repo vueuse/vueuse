@@ -38,9 +38,19 @@ export function useFavicon(
   const favicon = toRef(newIcon)
 
   const applyIcon = (icon: string) => {
-    document?.head
+    const elements = document?.head
       .querySelectorAll<HTMLLinkElement>(`link[rel*="${rel}"]`)
-      .forEach(el => el.href = `${baseUrl}${icon}`)
+    if (!elements || elements.length === 0) {
+      const link = document?.createElement('link')
+      if (link) {
+        link.rel = rel
+        link.href = `${baseUrl}${icon}`
+        link.type = `image/${icon.split('.').pop()}`
+        document?.head.append(link)
+      }
+      return
+    }
+    elements?.forEach(el => el.href = `${baseUrl}${icon}`)
   }
 
   watch(

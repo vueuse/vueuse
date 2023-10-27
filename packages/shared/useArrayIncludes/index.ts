@@ -15,6 +15,13 @@ export interface UseArrayIncludesOptions<T, V> {
   comparator?: UseArrayIncludesComparatorFn<T, V> | keyof T
 }
 
+/**
+ * Reactive `Array.includes`
+ *
+ * @see https://vueuse.org/useArrayIncludes
+ *
+ * @returns true if the `value` is found in the array. Otherwise, false.
+ */
 export function useArrayIncludes<T, V = any>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   value: MaybeRefOrGetter<V>,
@@ -30,14 +37,6 @@ export function useArrayIncludes<T, V = any>(
   value: MaybeRefOrGetter<V>,
   options?: UseArrayIncludesOptions<T, V>,
 ): ComputedRef<boolean>
-/**
- * Reactive `Array.includes`
- *
- * @see https://vueuse.org/useArrayIncludes
- *
- * @returns {boolean} true if the `value` is found in the array. Otherwise, false.
- * @param args
- */
 export function useArrayIncludes<T, V = any>(
   ...args: any[]
 ): ComputedRef<boolean> {
@@ -62,8 +61,10 @@ export function useArrayIncludes<T, V = any>(
   return computed(() =>
     toValue(list)
       .slice(formIndex)
-      .some((element, index, array) =>
-        comparator(toValue(element), toValue(value), index, toValue(array)),
-      ),
-  )
+      .some((element, index, array) => comparator(
+        toValue(element),
+        toValue(value),
+        index,
+        toValue(array),
+      )))
 }
