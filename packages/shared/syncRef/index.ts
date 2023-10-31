@@ -142,14 +142,14 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
  * 4. A ∩ B = ∅
  * @param left
  * @param right
- * @param args
+ * @param [options?]
  */
 export function syncRef<L, R, D extends Direction = 'both'>(
   left: Ref<L>,
   right: Ref<R>,
-  ...args: Equal<L, R> extends true
-    ? [SyncRefOptions<L, R, D>?]
-    : [SyncRefOptions<L, R, D>]
+  ...[options]: Equal<L, R> extends true
+    ? [options?: SyncRefOptions<L, R, D>]
+    : [options: SyncRefOptions<L, R, D>]
 ) {
   const {
     flush = 'sync',
@@ -157,7 +157,7 @@ export function syncRef<L, R, D extends Direction = 'both'>(
     immediate = true,
     direction = 'both',
     transform = {},
-  } = args[0] || {}
+  } = options || {}
 
   const watchers: WatchPausableReturn[] = []
 
