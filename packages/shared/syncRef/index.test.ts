@@ -241,5 +241,13 @@ describe('syncRef', () => {
 
     // @ts-expect-error lack of options
     syncRef(ref0, refString)()
+
+    syncRef(ref0, refNumBoolean, {
+      direction: 'ltr',
+    })()
+
+    syncRef(refNumBoolean, ref0, {
+      direction: 'rtl',
+    })
   })
 })

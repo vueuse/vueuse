@@ -94,7 +94,7 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
       }
     : IncludeButNotEqual<L, R> extends true
       ? {
-          transform: SpecificFieldPartial<Pick<Transform<L, R>, 'ltr'>, 'ltr'>
+          transform?: SpecificFieldPartial<Pick<Transform<L, R>, 'ltr'>, 'ltr'>
         }
       : IncludeButNotEqual<R, L> extends true
         ? {
@@ -119,7 +119,7 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
         }
       : IncludeButNotEqual<R, L> extends true
         ? {
-            transform: SpecificFieldPartial<Pick<Transform<L, R>, 'rtl'>, 'rtl'>
+            transform?: SpecificFieldPartial<Pick<Transform<L, R>, 'rtl'>, 'rtl'>
           }
         : IntersectButNotEqual<L, R> extends true
           ? {
@@ -144,7 +144,7 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
  * @param right
  * @param [options?]
  */
-export function syncRef<L, R, D extends Direction = 'both'>(
+export function syncRef<L, R, D extends Direction>(
   left: Ref<L>,
   right: Ref<R>,
   ...[options]: Equal<L, R> extends true
