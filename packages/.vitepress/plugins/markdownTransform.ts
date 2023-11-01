@@ -1,6 +1,8 @@
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
+import ts from 'typescript'
+import { format } from 'prettier'
 import { packages } from '../../../meta/packages'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
@@ -40,6 +42,35 @@ export function MarkdownTransform(): Plugin {
         const frontmatterEnds = code.indexOf('---\n\n')
         const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
+
+        // Insert JS/TS code blocks
+        code = await replaceAsync(code, /\n```ts\n(.+?)\n```\n/gs, async (_, snippet) => {
+          const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+          const js = ts.transpileModule(formattedTS, {
+            compilerOptions: { target: 99 },
+          })
+          const formattedJS = (await format(js.outputText, { semi: false, singleQuote: true, parser: 'typescript' }))
+            .trim()
+          if (formattedJS === formattedTS)
+            return _
+          return `
+<CodeToggle>
+<div class="code-block-ts">
+
+\`\`\`ts
+${formattedTS}
+\`\`\`
+
+</div>
+<div class="code-block-js">
+
+\`\`\`js
+${formattedJS}
+\`\`\`
+
+</div>
+</CodeToggle>\n`
+        })
 
         const { footer, header } = await getFunctionMarkdown(pkg, name)
 
@@ -154,4 +185,13 @@ import Demo from \'./${demoPath}\'
     footer,
     header,
   }
+}
+
+function replaceAsync(str: string, match: RegExp, replacer: (substring: string, ...args: any[]) => Promise<string>) {
+  const promises: Promise<string>[] = []
+  str.replace(match, (...args) => {
+    promises.push(replacer(...args))
+    return ''
+  })
+  return Promise.all(promises).then(replacements => str.replace(match, () => replacements.shift()!))
 }
