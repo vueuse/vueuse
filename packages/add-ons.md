@@ -114,7 +114,6 @@ Shape functions for VueUse
   - [`useCircle`](https://vueuse.org/shapes/useCircle/) — composable for working with circles
   - [`usePolygon`](https://vueuse.org/shapes/usePolygon/) — composable for working with polygons
   - [`useRectangle`](https://vueuse.org/shapes/useRectangle/) — composable for working with rectangles
-  - [`useSquare`](https://vueuse.org/shapes/useSquare/) — composable for working with squares
   - [`useTriangle`](https://vueuse.org/shapes/useTriangle/) — composable for working with triangles
 
 

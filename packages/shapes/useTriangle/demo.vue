@@ -3,10 +3,11 @@ import { ref } from 'vue'
 import Blueprint from '../blueprint.vue'
 import { useTriangle } from '.'
 
-const sideLength = ref(180)
+const base = ref(100)
+const height = ref(100)
 const center = ref({ x: 0, y: 0 })
 const rotation = ref(0)
-const { vertices, edges } = useTriangle({ sideLength, center, rotation })
+const { vertices, edges } = useTriangle({ base, height, center, rotation })
 </script>
 
 <template>
@@ -17,8 +18,12 @@ const { vertices, edges } = useTriangle({ sideLength, center, rotation })
         Parameters
       </h4>
       <div class="control-group">
-        <label class="mr-2">Side Length: <span>{{ sideLength }}</span></label>
-        <input v-model="sideLength" class="slider" type="range" min="0" max="500">
+        <label class="mr-2">Base: <span>{{ base }}</span></label>
+        <input v-model="base" class="slider" type="range" min="0" max="500">
+      </div>
+      <div class="control-group">
+        <label class="mr-2">Height: <span>{{ height }}</span></label>
+        <input v-model="height" class="slider" type="range" min="0" max="500">
       </div>
       <div class="control-group">
         <label class="mr-2">Rotation: <span>{{ rotation }}</span></label>

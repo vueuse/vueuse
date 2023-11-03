@@ -2,15 +2,15 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/shapes?color=a1b858)](https://www.npmjs.com/package/@vueuse/shapes)
 
-> Vue composables for working with 2D shape data.
+> Vue composables for working with reactive 2D shapes.
 
 ## Features
 
-- ✨ 5+ shape composables for making reactive 2D shapes.
-- 📐 Built-in refs for edges, vertices and other shape properties.
-- 💎 Simple demos for each shape composable.
+- 💎 A single `usePolygon` composable that handles most common shapes.
+- ✨ Standalone composables for non-polygonal shapes like circles and rectangles.
+- 📐 Composables return refs for edges, vertices, etc.
 - 🔥 Built with **Vue** Composition API.
-- ✨ Built with **TypeScript**.
+- 📒 Written in **TypeScript**.
 
 ## Install
 
@@ -25,7 +25,6 @@ npm i <b>@vueuse/shapes</b> @vueuse/core
   - [`useCircle`](https://vueuse.org/shapes/useCircle/) — composable for working with circles
   - [`usePolygon`](https://vueuse.org/shapes/usePolygon/) — composable for working with polygons
   - [`useRectangle`](https://vueuse.org/shapes/useRectangle/) — composable for working with rectangles
-  - [`useSquare`](https://vueuse.org/shapes/useSquare/) — composable for working with squares
   - [`useTriangle`](https://vueuse.org/shapes/useTriangle/) — composable for working with triangles
 
 

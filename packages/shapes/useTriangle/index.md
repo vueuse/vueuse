@@ -10,20 +10,22 @@ Composable for working with triangles.
 
 The `useTriangle` function accepts a single configuration object as an argument, where each property has a default value if not provided.
 
-| Property     | Default          | Description                              |
-|:-------------|:-----------------|:-----------------------------------------|
-| `sideLength` | `0`              | The length of each side of the triangle. |
-| `rotation`   | `0`              | The rotation of the triangle in degrees. |
-| `center`     | `{ x: 0, y: 0 }` | A 2D Vector for center of the triangle.  |
+| Property   | Default          | Description                              |
+|:-----------|:-----------------|:-----------------------------------------|
+| `base`     | `0`              | The base of the triangle.                |
+| `height`   | `0`              | The height of the triangle.              |
+| `rotation` | `0`              | The rotation of the triangle in degrees. |
+| `center`   | `{ x: 0, y: 0 }` | A 2D Vector for center of the triangle.  |
 
 ## Usage
 
 ```ts
 import { useTriangle } from '@vueuse/shapes'
 
-const sideLength = ref(50)
+const base = ref(50)
+const height = ref(100)
 const center = ref({ x: 0, y: 0 })
-const { vertices, edges, getPosition } = useTriangle({ sideLength, center })
+const { vertices, edges, getPosition } = useTriangle({ base, height, center })
 
 // Calculate a position around the boundary of the triangle
 const percentage = ref(0.25)
