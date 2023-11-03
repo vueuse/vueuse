@@ -25,9 +25,9 @@ import { useRectangle } from '@vueuse/shapes'
 const width = ref(50)
 const height = ref(100)
 const center = ref({ x: 0, y: 0 })
-const { vertices, edges } = useRectangle({ width, height, center })
+const { vertices, edges, getPosition } = useRectangle({ width, height, center })
 
 // Calculate a position around the boundary of the rectangle
 const percentage = ref(0.25)
-const position = rectangle.getPosition(percentage) // { x: 50, y: -25 }
+const position = getPosition(percentage) // { x: 50, y: -25 }
 ```

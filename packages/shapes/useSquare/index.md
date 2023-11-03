@@ -23,9 +23,9 @@ import { useSquare } from '@vueuse/shapes'
 
 const sideLength = ref(50)
 const center = ref({ x: 0, y: 0 })
-const { vertices, edges } = useSquare({ sideLength, center })
+const { vertices, edges, getPosition } = useSquare({ sideLength, center })
 
 // Calculate a position around the boundary of the square
 const percentage = ref(0.25)
-const position = square.getPosition(percentage) // { x: 50, y: -25 }
+const position = getPosition(percentage) // { x: 50, y: -25 }
 ```

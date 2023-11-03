@@ -25,9 +25,9 @@ import { usePolygon } from '@vueuse/shapes'
 const sides = ref(5)
 const sideLength = ref(50)
 const center = ref({ x: 0, y: 0 })
-const { vertices, edges } = usePolygon({ sides, sideLength, center })
+const { vertices, edges, getPosition } = usePolygon({ sides, sideLength, center })
 
 // Calculate a position around the boundary of the polygon
 const percentage = ref(0.25)
-const position = polygon.getPosition(percentage) // Will return a 2D Vector depending on the sides and sideLength values
+const position = getPosition(percentage) // Will return a 2D Vector depending on the sides and sideLength values
 ```
