@@ -21,9 +21,9 @@ The `useCircle` function accepts a single configuration object as an argument, w
 import { useCircle } from '@vueuse/shapes'
 
 const radius = ref(50)
-const circle = useCircle({ radius })
+const { getPosition } = useCircle({ radius })
 
 // Calculate a position around the boundary of the circle
 const percentage = ref(0.25)
-const position = circle.getPosition(percentage) // { x: 0, y: 50 }
+const position = getPosition(percentage) // { x: 0, y: 50 }
 ```
