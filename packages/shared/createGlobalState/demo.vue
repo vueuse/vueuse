@@ -7,8 +7,7 @@ const useState = createGlobalState(() =>
     name: 'Banana',
     color: 'Yellow',
     size: 'Medium',
-  }),
-)
+  }))
 
 const state = useState()
 const text = stringify(state)

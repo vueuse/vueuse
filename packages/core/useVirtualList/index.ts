@@ -8,7 +8,7 @@ type UseVirtualListItemSize = number | ((index: number) => number)
 export interface UseHorizontalVirtualListOptions extends UseVirtualListOptionsBase {
 
   /**
-   * item width, accept a pixel value or a function that returns the height
+   * item width, accept a pixel value or a function that returns the width
    *
    * @default 0
    */
@@ -161,9 +161,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
   }
 }
 
-function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>,
-  getViewCapacity: ReturnType<typeof createGetViewCapacity>,
-  { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
+function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
   return () => {
     const element = containerRef.value
     if (element) {
