@@ -142,11 +142,11 @@ export function useDraggable(
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
-    const container = toValue(containerElement) ?? toValue(target)
-    const rect = container!.getBoundingClientRect()
+    const containerRect = toValue(containerElement)?.getBoundingClientRect()
+    const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: e.clientX - (toValue(containerElement) ? targetRect.left - containerRect!.left : targetRect.left),
+      y: e.clientY - (toValue(containerElement) ? targetRect.top - containerRect!.top : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
