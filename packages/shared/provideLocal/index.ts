@@ -11,7 +11,7 @@ import { localProvidedStateMap } from './map'
  * ```
  */
 export const provideLocal: typeof provide = (key, value) => {
-  const instance = getCurrentInstance()
+  const instance = getCurrentInstance()?.proxy
   if (instance == null)
     throw new Error('provideLocal must be called in setup')
 
