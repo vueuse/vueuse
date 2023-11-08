@@ -4,7 +4,7 @@ category: State
 
 # useAsyncState
 
-Reactive async state. Will not block your setup function and will trigger changes once the promise is ready.
+Reactive async state. Will not block your setup function and will trigger changes once the promise is ready. The state is a `shallowRef` by default.
 
 ## Usage
 

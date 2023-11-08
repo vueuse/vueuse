@@ -125,7 +125,7 @@ describe('useStorage', () => {
     expect(storage.getItem(KEY)).toBeFalsy()
   })
 
-  it('string', async () => {
+  it('string 2', async () => {
     storageState.set(KEY, '0')
 
     const store = useStorage(KEY, '1', storage)

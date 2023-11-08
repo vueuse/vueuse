@@ -136,7 +136,7 @@ export function useWebNotification(
   const show = async (overrides?: WebNotificationOptions) => {
     // If either the browser does not support notifications or the user has
     // not granted permission, do nothing:
-    if (!isSupported.value && !permissionGranted.value)
+    if (!isSupported.value || !permissionGranted.value)
       return
 
     const options = Object.assign({}, defaultWebNotificationOptions, overrides)

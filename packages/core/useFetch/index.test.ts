@@ -594,16 +594,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should emit onFetchResponse event', async () => {
-    const onResponseSpy = vi.fn()
-    const { onFetchResponse } = useFetch('https://example.com')
-
-    onFetchResponse(onResponseSpy)
-    await retry(() => {
-      expect(onResponseSpy).toHaveBeenCalledOnce()
-    })
-  })
-
-  it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(onFetchResponseSpy)
@@ -733,7 +723,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
-  it('should be generated payloadType on execute', async () => {
+  it('should be generated payloadType on execute with formdata', async () => {
     const form = ref<any>({ x: 1 })
     const { execute } = useFetch('https://example.com').post(form)
 
