@@ -467,4 +467,19 @@ describe('useStorage', () => {
     ref.value = 1
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
   })
+
+  it.each([
+    1,
+    'a',
+    [1, 2],
+    { a: 1 },
+    new Map([[1, 2]]),
+    new Set([1, 2]),
+  ])('should work in conjunction with defaults', (value) => {
+    const basicRef = useStorage(KEY, () => value, storage)
+    expect(basicRef.value).toEqual(value)
+    storage.removeItem(KEY)
+    const objectRef = useStorage(KEY, value, storage)
+    expect(objectRef.value).toEqual(value)
+  })
 })
