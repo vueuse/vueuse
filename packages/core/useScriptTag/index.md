@@ -4,9 +4,9 @@ category: Browser
 
 # useScriptTag
 
-Creates a script tag, with support for automaticly unloading (deleting) the script tag on unmount.
+Creates a script tag, with support for automatically unloading (deleting) the script tag on unmount.
 
-If a script tag already exists for the given URL, `useScriptTag()` will not create another script tag, but keep in mind that, depending on how you use it, `useScriptTag()` it might have already loaded then unloaded that particular JS file from a previous call of `useScriptTag()`.
+If a script tag already exists for the given URL, `useScriptTag()` will not create another script tag, but keep in mind that depending on how you use it, `useScriptTag()` might have already loaded then unloaded that particular JS file from a previous call of `useScriptTag()`.
 
 ## Usage
 
@@ -22,9 +22,9 @@ useScriptTag(
 )
 ```
 
-The script will be automatically loaded on the component mounted and removed when the component on unmounting.
+The script will be automatically loaded when the component is mounted and removed when the component is unmounted.
 
-## Configurations
+## Configuration
 
 Set `manual: true` to have manual control over the timing to load the script.
 
