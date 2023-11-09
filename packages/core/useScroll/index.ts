@@ -1,6 +1,6 @@
 import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -249,6 +249,10 @@ export function useScroll(
     throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
     eventListenerOptions,
   )
+
+  tryOnMounted(() => {
+    setArrivedState(toValue(element))
+  })
 
   useEventListener(
     element,
