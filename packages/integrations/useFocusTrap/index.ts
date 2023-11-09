@@ -58,11 +58,11 @@ export interface UseFocusTrapReturn {
  * Reactive focus-trap
  *
  * @see https://vueuse.org/useFocusTrap
- * @param target The target element to trap focus within
- * @param options Focus trap options
- * @param autoFocus Focus trap automatically when mounted
  */
-export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptions = {}): UseFocusTrapReturn {
+export function useFocusTrap(
+  target: MaybeElementRef,
+  options: UseFocusTrapOptions = {},
+): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
 
   const { immediate, ...focusTrapOptions } = options
@@ -113,7 +113,9 @@ export function useFocusTrap(target: MaybeElementRef, options: UseFocusTrapOptio
       // Focus if immediate is set to true
       if (immediate)
         activate()
-    }, { flush: 'post' })
+    },
+    { flush: 'post' },
+  )
 
   // Cleanup on unmount
   tryOnScopeDispose(() => deactivate())

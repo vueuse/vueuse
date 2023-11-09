@@ -21,12 +21,14 @@ function uniqueElementsBy<T>(
 /**
  * reactive unique array
  * @see https://vueuse.org/useArrayUnique
- * @param {Array} list - the array was called upon.
+ * @param list - the array was called upon.
  * @param compareFn
- * @returns {Array} A computed ref that returns a unique array of items.
+ * @returns A computed ref that returns a unique array of items.
  */
 export function useArrayUnique<T>(
-  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>, compareFn?: (a: T, b: T, array: T[]) => boolean): ComputedRef<T[]> {
+  list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
+  compareFn?: (a: T, b: T, array: T[]) => boolean,
+): ComputedRef<T[]> {
   return computed<T[]>(() => {
     const resolvedList = toValue(list).map(element => toValue(element))
     return compareFn ? uniqueElementsBy(resolvedList, compareFn) : uniq(resolvedList)

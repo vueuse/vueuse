@@ -22,6 +22,14 @@ export interface MousePressedOptions extends ConfigurableWindow {
   drag?: boolean
 
   /**
+   * Add event listerners with the `capture` option set to `true`
+   * (see [MDN](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#capture))
+   *
+   * @default false
+   */
+  capture?: boolean
+
+  /**
    * Initial values
    *
    * @default false
@@ -44,6 +52,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
   const {
     touch = true,
     drag = true,
+    capture = false,
     initialValue = false,
     window = defaultWindow,
   } = options
@@ -69,23 +78,23 @@ export function useMousePressed(options: MousePressedOptions = {}) {
 
   const target = computed(() => unrefElement(options.target) || window)
 
-  useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true })
+  useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true, capture })
 
-  useEventListener(window, 'mouseleave', onReleased, { passive: true })
-  useEventListener(window, 'mouseup', onReleased, { passive: true })
+  useEventListener(window, 'mouseleave', onReleased, { passive: true, capture })
+  useEventListener(window, 'mouseup', onReleased, { passive: true, capture })
 
   if (drag) {
-    useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true })
+    useEventListener(target, 'dragstart', onPressed('mouse'), { passive: true, capture })
 
-    useEventListener(window, 'drop', onReleased, { passive: true })
-    useEventListener(window, 'dragend', onReleased, { passive: true })
+    useEventListener(window, 'drop', onReleased, { passive: true, capture })
+    useEventListener(window, 'dragend', onReleased, { passive: true, capture })
   }
 
   if (touch) {
-    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true })
+    useEventListener(target, 'touchstart', onPressed('touch'), { passive: true, capture })
 
-    useEventListener(window, 'touchend', onReleased, { passive: true })
-    useEventListener(window, 'touchcancel', onReleased, { passive: true })
+    useEventListener(window, 'touchend', onReleased, { passive: true, capture })
+    useEventListener(window, 'touchcancel', onReleased, { passive: true, capture })
   }
 
   return {

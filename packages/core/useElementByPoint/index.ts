@@ -28,7 +28,8 @@ export interface UseElementByPointReturn<Multiple extends boolean = false> exten
  */
 export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M> {
   const {
-    x, y,
+    x,
+    y,
     document = defaultDocument,
     multiple,
     interval = 'requestAnimationFrame',
