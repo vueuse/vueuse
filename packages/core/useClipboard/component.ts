@@ -4,7 +4,7 @@ import type { UseClipboardOptions } from '@vueuse/core'
 
 interface UseClipboardProps<Source = string> extends UseClipboardOptions<Source> {}
 
-export const UseClipboard = /*#__PURE__*/ defineComponent<UseClipboardProps>({
+export const UseClipboard = /* #__PURE__ */ defineComponent<UseClipboardProps>({
   name: 'UseClipboard',
   props: [
     'source',
