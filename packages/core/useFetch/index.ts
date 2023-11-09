@@ -398,7 +398,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   let executeCounter = 0
-  
+
   const execute = async (throwOnFailed = false) => {
     abort()
 
@@ -406,7 +406,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     error.value = null
     statusCode.value = null
     aborted.value = false
-    
+
     executeCounter += 1
     const currentExecuteCounter = executeCounter
 
