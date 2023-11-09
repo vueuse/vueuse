@@ -1,3 +1,4 @@
+import { tryOnMounted } from '@vueuse/shared'
 import { computed, ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
@@ -57,6 +58,14 @@ export function useElementSize(
     },
     options,
   )
+
+  tryOnMounted(() => {
+    const ele = unrefElement(target)
+    if (ele) {
+      width.value = 'offsetWidth' in ele ? ele.offsetWidth : initialSize.width
+      height.value = 'offsetHeight' in ele ? ele.offsetHeight : initialSize.height
+    }
+  })
 
   const stop2 = watch(
     () => unrefElement(target),
