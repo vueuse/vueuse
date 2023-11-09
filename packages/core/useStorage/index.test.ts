@@ -468,12 +468,12 @@ describe('useStorage', () => {
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
   })
 
-  it('waitOnMounted', async () => {
+  it('initOnMounted', async () => {
     storage.setItem(KEY, 'random')
 
     const vm = mount(defineComponent({
       setup() {
-        const basicRef = useStorage(KEY, '', storage, { waitOnMounted: true })
+        const basicRef = useStorage(KEY, '', storage, { initOnMounted: true })
         expect(basicRef.value).toBe('')
 
         return {
