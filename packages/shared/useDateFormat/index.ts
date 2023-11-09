@@ -29,6 +29,12 @@ function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, 
   return isLowercase ? m.toLowerCase() : m
 }
 
+function formatOrdinal(num: number) {
+  const suffixes = ['th', 'st', 'nd', 'rd']
+  const v = num % 100
+  return num + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0])
+}
+
 export function formatDate(date: Date, formatStr: string, options: UseDateFormatOptions = {}) {
   const years = date.getFullYear()
   const month = date.getMonth()
@@ -40,28 +46,28 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
   const matches: Record<string, () => string | number> = {
-    Yo: () => `${years}${['st', 'nd', 'rd'][years % 10 - 1] || 'th'}`,
+    Yo: () => formatOrdinal(years),
     YY: () => String(years).slice(-2),
     YYYY: () => years,
     M: () => month + 1,
-    Mo: () => `${month + 1}${['st', 'nd', 'rd'][month % 10] || 'th'}`,
+    Mo: () => formatOrdinal(month + 1),
     MM: () => `${month + 1}`.padStart(2, '0'),
     MMM: () => date.toLocaleDateString(options.locales, { month: 'short' }),
     MMMM: () => date.toLocaleDateString(options.locales, { month: 'long' }),
     D: () => String(days),
-    Do: () => `${days}${['st', 'nd', 'rd'][days % 10 - 1] || 'th'}`,
+    Do: () => formatOrdinal(days),
     DD: () => `${days}`.padStart(2, '0'),
     H: () => String(hours),
-    Ho: () => `${hours}${['st', 'nd', 'rd'][hours % 10 - 1] || 'th'}`,
+    Ho: () => formatOrdinal(hours),
     HH: () => `${hours}`.padStart(2, '0'),
     h: () => `${hours % 12 || 12}`.padStart(1, '0'),
-    ho: () => `${hours % 12 || 12}${['st', 'nd', 'rd'][hours % 10 - 1] || 'th'}`,
+    ho: () => formatOrdinal(hours % 12 || 12),
     hh: () => `${hours % 12 || 12}`.padStart(2, '0'),
     m: () => String(minutes),
-    mo: () => `${minutes}${['st', 'nd', 'rd'][minutes % 10 - 1] || 'th'}`,
+    mo: () => formatOrdinal(minutes),
     mm: () => `${minutes}`.padStart(2, '0'),
     s: () => String(seconds),
-    so: () => `${seconds}${['st', 'nd', 'rd'][seconds % 10 - 1] || 'th'}`,
+    so: () => formatOrdinal(seconds),
     ss: () => `${seconds}`.padStart(2, '0'),
     SSS: () => `${milliseconds}`.padStart(3, '0'),
     d: () => day,
