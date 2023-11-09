@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -288,12 +288,13 @@ export function useWebSocket<Data = any>(
   }
 
   if (autoClose) {
-    useEventListener('beforeunload', () => close())
+    if (isClient)
+      useEventListener('beforeunload', () => close())
     tryOnScopeDispose(close)
   }
 
   const open = () => {
-    if (!isClient)
+    if (!isClient && !isWorker)
       return
     close()
     explicitlyClosed = false

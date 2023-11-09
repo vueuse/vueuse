@@ -1,5 +1,6 @@
 /* eslint-disable antfu/top-level-function */
 export const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
+export const isWorker = typeof WorkerGlobalScope !== 'undefined' && globalThis instanceof WorkerGlobalScope
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
 export const notNullish = <T = any>(val?: T | null | undefined): val is T => val != null
 export const assert = (condition: boolean, ...infos: any[]) => {
