@@ -49,7 +49,7 @@ const root = ref(null)
 
 const isVisible = ref(false)
 
-function onIntersectionObserver([{ isIntersecting }]) {
+function onIntersectionObserver([{ isIntersecting }]: IntersectionObserverEntry[]) {
   isVisible.value = isIntersecting
 }
 

@@ -145,7 +145,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     },
   } = options
 
-  const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
 
   if (!storage) {
     try {

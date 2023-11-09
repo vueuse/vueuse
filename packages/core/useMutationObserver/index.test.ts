@@ -166,4 +166,25 @@ describe('useMutationObserver', () => {
     await promiseTimeout(10)
     expect(cb).toHaveBeenCalledTimes(1)
   })
+
+  it('should work with takeRecords', async () => {
+    const target = document.createElement('div')
+    const cb = vi.fn()
+
+    const { takeRecords } = useMutationObserver(target, cb, {
+      attributes: true,
+    })
+
+    target.setAttribute('id', 'footer')
+    await promiseTimeout(10)
+    expect(cb).toHaveBeenCalledTimes(1)
+
+    target.setAttribute('id', 'header')
+    const records = takeRecords()
+
+    await promiseTimeout(10)
+    expect(records).toHaveLength(1)
+    expect(records![0].target).toBe(target)
+    expect(cb).toHaveBeenCalledTimes(1)
+  })
 })

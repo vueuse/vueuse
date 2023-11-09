@@ -39,7 +39,7 @@ export function useSortable<T>(
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
-  let sortable: Sortable
+  let sortable: Sortable | undefined
 
   const { document = defaultDocument, ...resetOptions } = options
 
@@ -51,12 +51,15 @@ export function useSortable<T>(
 
   const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    if (!target)
+    if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
 
-  const stop = () => sortable?.destroy()
+  const stop = () => {
+    sortable?.destroy()
+    sortable = undefined
+  }
 
   const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
     if (value !== undefined)

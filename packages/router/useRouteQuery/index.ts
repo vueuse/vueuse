@@ -1,11 +1,12 @@
 import { customRef, nextTick, watch } from 'vue-demi'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
+import type { Router } from 'vue-router'
 import type { Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
-const _cache = new WeakMap()
+const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
   name: string
@@ -35,16 +36,16 @@ export function useRouteQuery<
     transform = value => value as any as K,
   } = options
 
-  if (!_cache.has(route))
-    _cache.set(route, new Map())
+  if (!_queue.has(router))
+    _queue.set(router, new Map())
 
-  const _query: Map<string, any> = _cache.get(route)
+  const _queriesQueue = _queue.get(router)!
+
+  let query = route.query[name] as any
 
   tryOnScopeDispose(() => {
-    _query.delete(name)
+    query = undefined
   })
-
-  _query.set(name, route.query[name])
 
   let _trigger: () => void
 
@@ -55,24 +56,29 @@ export function useRouteQuery<
       get() {
         track()
 
-        const data = _query.get(name)
-
-        return transform(data !== undefined ? data : toValue(defaultValue))
+        return transform(query !== undefined ? query : toValue(defaultValue))
       },
       set(v) {
-        if (_query.get(name) === v)
+        if (query === v)
           return
 
-        _query.set(name, v)
+        query = v
+        _queriesQueue.set(name, v)
 
         trigger()
 
         nextTick(() => {
+          if (_queriesQueue.size === 0)
+            return
+
+          const newQueries = Object.fromEntries(_queriesQueue.entries())
+          _queriesQueue.clear()
+
           const { params, query, hash } = route
 
           router[toValue(mode)]({
             params,
-            query: { ...query, ...Object.fromEntries(_query.entries()) },
+            query: { ...query, ...newQueries },
             hash,
           })
         })
@@ -83,7 +89,7 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
-      _query.set(name, v)
+      query = v
 
       _trigger()
     },
