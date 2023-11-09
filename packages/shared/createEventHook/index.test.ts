@@ -27,6 +27,18 @@ describe('createEventHook', () => {
     expect(message).toBe('Hello World')
   })
 
+  it('should trigger event with no params', () => {
+    let timesFired = 0
+
+    const { on: onResult, trigger } = createEventHook()
+
+    onResult(() => timesFired++)
+    trigger()
+    trigger()
+
+    expect(timesFired).toBe(2)
+  })
+
   it('should add and remove event listener', () => {
     const listener = vi.fn()
     const { on, off, trigger } = createEventHook<string>()

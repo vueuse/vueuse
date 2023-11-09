@@ -90,8 +90,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      if (el)
-        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
+      shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
