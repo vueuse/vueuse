@@ -1,5 +1,5 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { isVue3, ref } from 'vue-demi'
+import { isVue3, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTwoTick, useSetup } from '../../.test'
 import { StorageSerializers, customStorageEventName, useStorage } from '.'
@@ -125,7 +125,7 @@ describe('useStorage', () => {
     expect(storage.getItem(KEY)).toBeFalsy()
   })
 
-  it('string', async () => {
+  it('string 2', async () => {
     storageState.set(KEY, '0')
 
     const store = useStorage(KEY, '1', storage)
@@ -164,10 +164,12 @@ describe('useStorage', () => {
       data: 123,
     })
 
+    const storeRaw = toRaw(store.value)
     store.value.name = 'b'
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storeRaw).toBe(toRaw(store.value))
 
     store.value.data = 321
     await nextTwoTick()
@@ -464,5 +466,20 @@ describe('useStorage', () => {
     expect(ref.value).toBe(0)
     ref.value = 1
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
+  })
+
+  it.each([
+    1,
+    'a',
+    [1, 2],
+    { a: 1 },
+    new Map([[1, 2]]),
+    new Set([1, 2]),
+  ])('should work in conjunction with defaults', (value) => {
+    const basicRef = useStorage(KEY, () => value, storage)
+    expect(basicRef.value).toEqual(value)
+    storage.removeItem(KEY)
+    const objectRef = useStorage(KEY, value, storage)
+    expect(objectRef.value).toEqual(value)
   })
 })

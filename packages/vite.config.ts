@@ -1,5 +1,7 @@
 import { resolve } from 'node:path'
 import process from 'node:process'
+import { createRequire } from 'node:module'
+import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -12,13 +14,15 @@ import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
 import { ChangeLog } from './.vitepress/plugins/changelog'
 import { Contributors } from './.vitepress/plugins/contributors'
 
+const require = createRequire(import.meta.url)
+
 export default defineConfig(async () => {
   const [changeLog, contributions] = await Promise.all([
     getChangeLog(process.env.CI ? 1000 : 100),
     getFunctionContributors(),
   ])
 
-  return {
+  return <UserConfig>{
     server: {
       hmr: {
         overlay: false,
@@ -107,6 +111,13 @@ export default defineConfig(async () => {
         'fuse.js',
         'universal-cookie',
       ],
+    },
+    css: {
+      postcss: {
+        plugins: [
+          require('postcss-nested'),
+        ],
+      },
     },
   }
 })

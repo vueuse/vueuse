@@ -1,5 +1,5 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -163,9 +163,11 @@ export function useEventListener(...args: any[]) {
       if (!el)
         return
 
+      // create a clone of options, to avoid it being changed reactively on removal
+      const optionsClone = isObject(options) ? { ...options } : options
       cleanups.push(
         ...(events as string[]).flatMap((event) => {
-          return (listeners as Function[]).map(listener => register(el, event, listener, options))
+          return (listeners as Function[]).map(listener => register(el, event, listener, optionsClone))
         }),
       )
     },

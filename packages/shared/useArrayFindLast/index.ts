@@ -17,7 +17,7 @@ function findLast<T>(arr: T[], cb: (element: T, index: number, array: T[]) => bo
  * Reactive `Array.findLast`
  *
  * @see https://vueuse.org/useArrayFindLast
- * @param {Array} list - the array was called upon.
+ * @param list - the array was called upon.
  * @param fn - a function to test each element.
  *
  * @returns the last element in the array that satisfies the provided testing function. Otherwise, undefined is returned.
@@ -32,6 +32,5 @@ export function useArrayFindLast<T>(
         ? findLast(toValue(list), (element, index, array) => fn(toValue(element), index, array))
         : toValue(list)
           .findLast((element, index, array) => fn(toValue(element), index, array)),
-    ),
-  )
+    ))
 }

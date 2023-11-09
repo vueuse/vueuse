@@ -157,10 +157,11 @@ describe('computedAsync', () => {
   it('evaluating works', async () => {
     const evaluating = ref(false)
 
-    const data = computedAsync(() =>
-      new Promise(resolve => setTimeout(() => resolve('data'), 0)),
-    undefined,
-    evaluating)
+    const data = computedAsync(
+      () => new Promise(resolve => setTimeout(() => resolve('data'), 0)),
+      undefined,
+      evaluating,
+    )
 
     await nextTick()
     expect(data.value).toBeUndefined()

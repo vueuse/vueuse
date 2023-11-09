@@ -44,9 +44,11 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
  *
  * @see https://vueuse.org/useSpeechSynthesis
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
- * @param options
  */
-export function useSpeechSynthesis(text: MaybeRefOrGetter<string>, options: UseSpeechSynthesisOptions = {}) {
+export function useSpeechSynthesis(
+  text: MaybeRefOrGetter<string>,
+  options: UseSpeechSynthesisOptions = {},
+) {
   const {
     pitch = 1,
     rate = 1,

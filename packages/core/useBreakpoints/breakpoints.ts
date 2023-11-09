@@ -17,6 +17,7 @@ export const breakpointsTailwind = {
  * @see https://getbootstrap.com/docs/5.0/layout/breakpoints
  */
 export const breakpointsBootstrapV5 = {
+  xs: 0,
   sm: 576,
   md: 768,
   lg: 992,
@@ -91,4 +92,16 @@ export const breakpointsMasterCss = {
   '2xl': 1600,
   '3xl': 1920,
   '4xl': 2560,
+}
+
+/**
+ * Breakpoints from PrimeFlex
+ *
+ * @see https://www.primefaces.org/primeflex/setup
+ */
+export const breakpointsPrimeFlex = {
+  sm: 576,
+  md: 768,
+  lg: 992,
+  xl: 1200,
 }
