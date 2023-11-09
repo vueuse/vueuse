@@ -97,4 +97,157 @@ describe('syncRef', () => {
     expect(right.value).toBe(10)
     expect(left.value).toBe(5)
   })
+
+  it('ts works', () => {
+    const ref0 = ref(0)
+    const ref1 = ref(1)
+    const refString = ref('1')
+    const refNumString = ref<number | string>(1)
+    const refNumBoolean = ref<number | boolean>(1)
+    // L = A && direction === 'both'
+    syncRef(ref0, ref1)()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+      transform: {},
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+      transform: {
+        ltr: v => v,
+      },
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+      transform: {
+        rtl: v => v,
+      },
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+      transform: {
+        ltr: v => v,
+        rtl: v => v,
+      },
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'both',
+      transform: {
+        // @ts-expect-error wrong type, should be (left: L) => R
+        ltr: v => v.toString(),
+        rtl: v => v,
+      },
+    })()
+    // L = A && direction === 'ltr'
+    syncRef(ref0, ref1, {
+      direction: 'ltr',
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'ltr',
+      transform: {},
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'ltr',
+      transform: {
+        ltr: v => v,
+      },
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'ltr',
+      transform: {
+      // @ts-expect-error wrong transform type, should be ltr
+        rtl: v => v,
+      },
+    })()
+    // L = A && direction === 'rtl'
+    syncRef(ref0, ref1, {
+      direction: 'rtl',
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'rtl',
+      transform: {},
+    })()
+    syncRef(ref0, ref1, {
+      direction: 'rtl',
+      transform: {
+        rtl: v => v,
+      },
+    })()
+    // L ⊆ R && direction === 'both'
+    // @ts-expect-error wrong type, should provide transform
+    syncRef(ref0, refNumString, {
+      direction: 'both',
+    })()
+    syncRef(ref0, refNumString, {
+      direction: 'both',
+      transform: {
+        ltr: v => v.toString(),
+        rtl: v => Number(v),
+      },
+    })()
+    // L ⊆ R && direction === 'ltr'
+    syncRef(ref0, refNumString, {
+      direction: 'ltr',
+      transform: {
+        ltr: v => v.toString(),
+      },
+    })()
+    // L ⊆ R && direction === 'rtl'
+    syncRef(ref0, refNumString, {
+      direction: 'ltr',
+      transform: {
+        ltr: v => Number(v),
+      },
+    })()
+    // L ∩ R = ∅ && direction === 'both'
+    syncRef(ref0, refString, {
+      direction: 'both',
+      transform: {
+        ltr: v => v.toString(),
+        rtl: v => Number(v),
+      },
+    })()
+    // L ∩ R = ∅ && direction === 'ltr'
+    syncRef(ref0, refString, {
+      direction: 'ltr',
+      transform: {
+        ltr: v => v.toString(),
+      },
+    })()
+    // L ∩ R = ∅ && direction === 'rtl'
+    syncRef(ref0, refString, {
+      direction: 'rtl',
+      transform: {
+        rtl: v => Number(v),
+      },
+    })()
+    // L ∩ R = ∅ && direction === 'both'
+    syncRef(ref0, refString, {
+      direction: 'both',
+      // @ts-expect-error wrong type, should provide ltr
+      transform: {
+        rtl: v => Number(v),
+      },
+    })()
+    // L ∩ R ≠ ∅
+    syncRef(refNumString, refNumBoolean, {
+      transform: {
+        ltr: v => Number(v),
+        rtl: v => Number(v),
+      },
+    })
+
+    // @ts-expect-error lack of options
+    syncRef(ref0, refString)()
+
+    syncRef(ref0, refNumBoolean, {
+      direction: 'ltr',
+    })()
+
+    syncRef(refNumBoolean, ref0, {
+      direction: 'rtl',
+    })
+  })
 })

@@ -44,6 +44,8 @@ function preventDefault(rawEvent: TouchEvent): boolean {
   return false
 }
 
+const elInitialOverflow = new WeakMap<HTMLElement, CSSStyleDeclaration['overflow']>()
+
 /**
  * Lock scrolling of the element.
  *
@@ -62,7 +64,8 @@ export function useScrollLock(
     const target = resolveElement(toValue(el))
     if (target) {
       const ele = target as HTMLElement
-      initialOverflow = ele.style.overflow
+      if (!elInitialOverflow.get(ele))
+        elInitialOverflow.set(ele, initialOverflow)
       if (isLocked.value)
         ele.style.overflow = 'hidden'
     }
@@ -91,7 +94,8 @@ export function useScrollLock(
     if (!el || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()
-    el.style.overflow = initialOverflow
+    el.style.overflow = elInitialOverflow.get(el as HTMLElement) ?? ''
+    elInitialOverflow.delete(el as HTMLElement)
     isLocked.value = false
   }
 
