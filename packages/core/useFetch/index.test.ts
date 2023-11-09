@@ -62,7 +62,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await useFetch('https://example.com/', {
       fetch: <typeof window.fetch>((input, init) => {
         count = 1
-        return window.fetch(input, init)
+        return window.fetch(input as string, init)
       }),
     })
 

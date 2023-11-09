@@ -11,9 +11,9 @@
     "@vueuse/core": "file:../../packages/core/dist",
     "@vueuse/metadata": "file:../../packages/metadata/dist",
     "@vueuse/shared": "file:../../packages/shared/dist",
-    "eslint": "^8.51.0",
-    "vite": "^4.4.11",
-    "vue": "^2.7.14"
+    "eslint": "^8.53.0",
+    "vite": "^4.5.0",
+    "vue": "^2.7.15"
   },
   "resolutions": {
     "@vueuse/core": "file:../../packages/core/dist",
