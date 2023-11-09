@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
+import { computed, onActivated, onDeactivated } from 'vue-demi'
 import { useNow } from '../useNow'
 
 export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
@@ -71,6 +71,12 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
    * @default 30_000
    */
   updateInterval?: number
+
+  /**
+   * <KeepAlive>
+   * Use in background. When component is deactivated.
+   */
+  background?: boolean
 }
 
 export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
@@ -137,10 +143,22 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
   const {
     controls: exposeControls = false,
     updateInterval = 30_000,
+    background = false,
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
   const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now)))
+
+  onDeactivated(() => {
+    if (background)
+      return
+
+    controls.pause()
+  })
+
+  onActivated(() => {
+    controls.resume()
+  })
 
   if (exposeControls) {
     return {
