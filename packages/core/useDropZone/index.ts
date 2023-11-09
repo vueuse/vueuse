@@ -14,7 +14,11 @@ export interface UseDropZoneReturn {
 }
 
 export interface UseDropZoneOptions {
-  dataTypes?: MaybeRef<string[]>
+  /**
+   * Allowed data types, if not set, all data types are allowed.
+   * Also can be a function to check the data types.
+   */
+  dataTypes?: MaybeRef<string[]> | ((types: readonly string[]) => boolean)
   onDrop?: (files: File[] | null, event: DragEvent) => void
   onEnter?: (files: File[] | null, event: DragEvent) => void
   onLeave?: (files: File[] | null, event: DragEvent) => void
@@ -39,7 +43,11 @@ export function useDropZone(
     useEventListener<DragEvent>(target, 'dragenter', (event) => {
       if (_options.dataTypes && event.dataTransfer) {
         const dataTypes = unref(_options.dataTypes)
-        isDataTypeIncluded = dataTypes ? dataTypes.some(item => event.dataTransfer!.types.includes(item)) : true
+        isDataTypeIncluded = typeof dataTypes === 'function'
+          ? dataTypes(event.dataTransfer!.types)
+          : dataTypes
+            ? dataTypes.some(item => event.dataTransfer!.types.includes(item))
+            : true
         if (!isDataTypeIncluded)
           return
       }

@@ -38,6 +38,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 useEventListener(pngRef, 'dragstart', (event) => {
   event.dataTransfer?.setData('image/png', '/vue.png')
 })
+
 const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { dataTypes: ['image/png'], onDrop: onImageDrop })
 </script>
 
