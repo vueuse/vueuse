@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core'
 
-const { x, y } = useWindowScroll()
+const { x, y } = useWindowScroll({ behavior: 'smooth' })
 </script>
 
 <template>
@@ -18,6 +18,12 @@ const { x, y } = useWindowScroll()
       y: {{ y }}
     </div>
   </div>
+  <button @click="x += 200">
+    scroll X
+  </button>
+  <button @click="y += 200">
+    scroll Y
+  </button>
 </template>
 
 <style scoped>
