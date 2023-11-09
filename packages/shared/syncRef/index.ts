@@ -1,4 +1,4 @@
-import { type Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import type { ConfigurableFlushSync } from '../utils'
 import type { WatchPausableReturn } from '../watchPausable'
 import { pausableWatch } from '../watchPausable'
@@ -119,7 +119,6 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
    * @default 'both'
    */
   direction?: D
-
 } & TransformType<D, L, R>
 
 /**
@@ -130,9 +129,6 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
  * 2. L ∩ R ≠ ∅
  * 3. L ⊆ R
  * 4. L ∩ R = ∅
- * @param left
- * @param right
- * @param [options?]
  */
 export function syncRef<L, R, D extends Direction>(
   left: Ref<L>,
