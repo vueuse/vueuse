@@ -74,7 +74,7 @@ export function useElementSize(
   return {
     width,
     height,
-    stop
+    stop,
   }
 }
 
