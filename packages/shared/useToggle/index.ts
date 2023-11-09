@@ -15,7 +15,7 @@ export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(init
  * A boolean ref with a toggler
  *
  * @see https://vueuse.org/useToggle
- * @param [initialValue=false]
+ * @param [initialValue]
  */
 export function useToggle(
   initialValue: MaybeRef<boolean> = false,

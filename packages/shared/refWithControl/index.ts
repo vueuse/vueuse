@@ -20,11 +20,11 @@ export interface ControlledRefOptions<T> {
 
 /**
  * Explicitly define the deps of computed.
- *
- * @param source
- * @param fn
  */
-export function refWithControl<T>(initial: T, options: ControlledRefOptions<T> = {}) {
+export function refWithControl<T>(
+  initial: T,
+  options: ControlledRefOptions<T> = {},
+) {
   let source = initial
   let track: Fn
   let trigger: Fn

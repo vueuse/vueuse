@@ -119,7 +119,7 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
     return renderList
   })
 
-  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+  // eslint-disable-next-line ts/prefer-ts-expect-error
   // @ts-ignore There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
   component.start = start
 

@@ -87,6 +87,29 @@ describe('onLongPress', () => {
     expect(onParentLongPressCallback).toHaveBeenCalledTimes(0)
   }
 
+  async function stopEventListeners(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const stop = onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { stop: true } })
+
+    // before calling stop, the callback should be called
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await promiseTimeout(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+
+    stop()
+
+    // before calling stop, the callback should no longer be called
+    onLongPressCallback.mockClear()
+
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await promiseTimeout(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
@@ -97,6 +120,7 @@ describe('onLongPress', () => {
       it('should not tirgger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
       it('should stop propagation', () => stopPropagation(isRef))
+      it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
     })
   }
 

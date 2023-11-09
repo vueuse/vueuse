@@ -1,5 +1,7 @@
 export * from './from'
 export * from './toObserver'
+export * from './useExtractedObservable'
 export * from './useObservable'
 export * from './useSubject'
 export * from './useSubscription'
+export * from './watchExtractedObservable'
