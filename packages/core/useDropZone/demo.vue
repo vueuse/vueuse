@@ -45,55 +45,58 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { 
 <template>
   <div class="flex flex-col gap-2">
     <div class="w-full h-auto relative">
-      <p>Drop files into dropZone</p>
-      <img src="/favicon.ico" alt="Drop me">
+      <p>Drop files on to drop zones</p>
 
-      <div
-        ref="dropZoneRef"
-        class="flex flex-col w-full min-h-200px h-auto bg-gray-400/10 justify-center items-center mt-6"
-      >
-        <div>
-          isOverDropZone:
-          <BooleanDisplay :value="isOverDropZone" />
-        </div>
-        <div class="flex flex-wrap justify-center items-center">
-          <div v-for="(file, index) in filesData" :key="index" class="w-200px bg-black-200/10 ma-2 pa-6">
-            <p>Name: {{ file.name }}</p>
-            <p>Size: {{ file.size }}</p>
-            <p>Type: {{ file.type }}</p>
-            <p>Last modified: {{ file.lastModified }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="w-full h-auto relative">
-      <p>Drop image/png into dropZone</p>
       <div class="flex gap-6">
         <div class="flex flex-col items-center">
-          <img ref="pngRef" src="/vue.png" alt="Drop me">
-          <span>png file</span>
+          <img ref="pngRef" src="/vue.png" alt="Drag me" h-10>
+          <span>PNG</span>
         </div>
         <div class="flex flex-col items-center">
-          <img src="/favicon-32x32.png" alt="Drop me">
-          <span>ico file</span>
+          <img src="/favicon.svg" alt="Drag me" h-10>
+          <span>SVG</span>
         </div>
       </div>
 
-      <div
-        ref="imageDropZoneRef"
-        class="flex flex-col w-full min-h-200px h-auto bg-gray-400/10 justify-center items-center mt-6"
-      >
-        <div>
-          isOverImageDropZone:
-          <BooleanDisplay :value="isOverImageDropZone" />
+      <div grid="~ cols-2 gap-2">
+        <div
+          ref="dropZoneRef"
+          class="flex flex-col w-full min-h-200px h-auto bg-gray-400/10 justify-center items-center mt-6 rounded"
+        >
+          <div font-bold mb2>
+            General DropZone
+          </div>
+          <div>
+            isOverDropZone:
+            <BooleanDisplay :value="isOverDropZone" />
+          </div>
+          <div class="flex flex-wrap justify-center items-center">
+            <div v-for="(file, index) in filesData" :key="index" class="w-200px bg-black-200/10 ma-2 pa-6">
+              <p>Name: {{ file.name }}</p>
+              <p>Size: {{ file.size }}</p>
+              <p>Type: {{ file.type }}</p>
+              <p>Last modified: {{ file.lastModified }}</p>
+            </div>
+          </div>
         </div>
-        <div class="flex flex-wrap justify-center items-center">
-          <div v-for="(file, index) in imageFilesData" :key="index" class="w-200px bg-black-200/10 ma-2 pa-6">
-            <p>Name: {{ file.name }}</p>
-            <p>Size: {{ file.size }}</p>
-            <p>Type: {{ file.type }}</p>
-            <p>Last modified: {{ file.lastModified }}</p>
+        <div
+          ref="imageDropZoneRef"
+          class="flex flex-col w-full min-h-200px h-auto bg-gray-400/10 justify-center items-center mt-6 rounded"
+        >
+          <div font-bold mb2>
+            Image DropZone
+          </div>
+          <div>
+            isOverDropZone:
+            <BooleanDisplay :value="isOverImageDropZone" />
+          </div>
+          <div class="flex flex-wrap justify-center items-center">
+            <div v-for="(file, index) in imageFilesData" :key="index" class="w-200px bg-black-200/10 ma-2 pa-6">
+              <p>Name: {{ file.name }}</p>
+              <p>Size: {{ file.size }}</p>
+              <p>Type: {{ file.type }}</p>
+              <p>Last modified: {{ file.lastModified }}</p>
+            </div>
           </div>
         </div>
       </div>
