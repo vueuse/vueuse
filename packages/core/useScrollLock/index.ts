@@ -64,8 +64,8 @@ export function useScrollLock(
     const target = resolveElement(toValue(el))
     if (target) {
       const ele = target as HTMLElement
-      elInitialOverflow.get(ele) === undefined
-        && elInitialOverflow.set(ele, initialOverflow)
+      if (!elInitialOverflow.get(ele))
+        elInitialOverflow.set(ele, initialOverflow)
       if (isLocked.value)
         ele.style.overflow = 'hidden'
     }
