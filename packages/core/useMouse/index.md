@@ -25,25 +25,18 @@ const { x, y } = useMouse({ touch: false })
 
 It's also possible to provide a custom extractor function to get the position from the event.
 
-```js
-import { type UseMouseEventExtractor, useMouse, useParentElement } from '@vueuse/core'
+```ts
+import type { UseMouseEventExtractor } from '@vueuse/core'
+import { useMouse, useParentElement } from '@vueuse/core'
 
 const parentEl = useParentElement()
 
-const extractor: UseMouseEventExtractor = event => (
-  event instanceof Touch
-    ? null
-    : [event.offsetX, event.offsetY]
+const extractor: UseMouseEventExtractor = event => (event instanceof Touch
+  ? null
+  : [event.offsetX, event.offsetY]
 )
 
 const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })
-```
-
-Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
-The `dragover` event is used to track mouse position while dragging.
-
-```js
-const { x, y } = useMouse({ touch: false })
 ```
 
 ## Component Usage

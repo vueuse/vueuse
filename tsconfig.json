@@ -1,22 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "esnext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "declaration": true,
-    "declarationDir": "./types",
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "baseUrl": ".",
+    "target": "es2020",
     "jsx": "preserve",
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "noUnusedLocals": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "webworker"],
+    "baseUrl": ".",
+    "rootDir": ".",
+    "module": "esnext",
+    "moduleResolution": "Bundler",
     "paths": {
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
@@ -27,12 +17,23 @@
       "@vueuse/shared": ["./packages/shared/index.ts"],
       "@vueuse/shared/*": ["./packages/shared/*"]
     },
+    "resolveJsonModule": true,
     "types": [
       "vitest",
       "@types/web-bluetooth"
-    ]
+    ],
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
+    "*.ts",
     "packages",
     "packages/.vitepress/components/*.vue",
     "packages/.vitepress/*.ts",
@@ -40,6 +41,7 @@
     "vitest.config.ts"
   ],
   "exclude": [
+    "unocss.config.ts",
     "node_modules",
     "**/*.md",
     "**/dist",

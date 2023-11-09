@@ -23,12 +23,19 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @default false
    */
   reset?: boolean
+  /**
+   * Select directories instead of files.
+   * @see [HTMLInputElement webkitdirectory](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory)
+   * @default false
+   */
+  directory?: boolean
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
   multiple: true,
   accept: '*',
   reset: false,
+  directory: false,
 }
 
 export interface UseFileDialogReturn {
@@ -79,6 +86,8 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     }
     input.multiple = _options.multiple!
     input.accept = _options.accept!
+    // webkitdirectory key is not stabled, maybe replaced in the future.
+    input.webkitdirectory = _options.directory!
     if (hasOwn(_options, 'capture'))
       input.capture = _options.capture!
     if (_options.reset)

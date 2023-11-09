@@ -164,6 +164,13 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
+   * Allow update the `data` ref when fetch error whenever provided, or mutated in the `onFetchError` callback
+   *
+   * @default false
+   */
+  updateDataOnError?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -211,7 +218,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -314,8 +321,20 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
-  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
+  let options: UseFetchOptions = {
+    immediate: true,
+    refetch: false,
+    timeout: 0,
+    updateDataOnError: false,
+  }
+
+  interface InternalConfig {
+    method: HttpMethod
+    type: DataType
+    payload: unknown
+    payloadType?: string
+  }
+
   const config: InternalConfig = {
     method: 'GET',
     type: 'text' as DataType,
@@ -378,6 +397,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   if (timeout)
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
+  let executeCounter = 0
+
   const execute = async (throwOnFailed = false) => {
     abort()
 
@@ -385,6 +406,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     error.value = null
     statusCode.value = null
     aborted.value = false
+
+    executeCounter += 1
+    const currentExecuteCounter = executeCounter
 
     const defaultFetchOptions: RequestInit = {
       method: config.method,
@@ -454,8 +478,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             throw new Error(fetchResponse.statusText)
           }
 
-          if (options.afterFetch)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+          if (options.afterFetch) {
+            ({ data: responseData } = await options.afterFetch({
+              data: responseData,
+              response: fetchResponse,
+            }))
+          }
           data.value = responseData
 
           responseEvent.trigger(fetchResponse)
@@ -464,9 +492,17 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         .catch(async (fetchError) => {
           let errorData = fetchError.message || fetchError.name
 
-          if (options.onFetchError)
-            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
+          if (options.onFetchError) {
+            ({ error: errorData, data: responseData } = await options.onFetchError({
+              data: responseData,
+              error: fetchError,
+              response: response.value,
+            }))
+          }
+
           error.value = errorData
+          if (options.updateDataOnError)
+            data.value = responseData
 
           errorEvent.trigger(fetchError)
           if (throwOnFailed)
@@ -475,7 +511,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           return resolve(null)
         })
         .finally(() => {
-          loading(false)
+          if (currentExecuteCounter === executeCounter)
+            loading(false)
           if (timer)
             timer.stop()
           finallyEvent.trigger(null)

@@ -8,37 +8,37 @@ import { useSupported } from '../useSupported'
 
 export interface UseBluetoothRequestDeviceOptions {
   /**
-    *
-    * An array of BluetoothScanFilters. This filter consists of an array
-    * of BluetoothServiceUUIDs, a name parameter, and a namePrefix parameter.
-    *
-    */
+   *
+   * An array of BluetoothScanFilters. This filter consists of an array
+   * of BluetoothServiceUUIDs, a name parameter, and a namePrefix parameter.
+   *
+   */
   filters?: BluetoothLEScanFilter[] | undefined
   /**
-    *
-    * An array of BluetoothServiceUUIDs.
-    *
-    * @see https://developer.mozilla.org/en-US/docs/Web/API/BluetoothRemoteGATTService/uuid
-    *
-    */
+   *
+   * An array of BluetoothServiceUUIDs.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/BluetoothRemoteGATTService/uuid
+   *
+   */
   optionalServices?: BluetoothServiceUUID[] | undefined
 }
 
 export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, ConfigurableNavigator {
   /**
-    *
-    * A boolean value indicating that the requesting script can accept all Bluetooth
-    * devices. The default is false.
-    *
-    * !! This may result in a bunch of unrelated devices being shown
-    * in the chooser and energy being wasted as there are no filters.
-    *
-    *
-    * Use it with caution.
-    *
-    * @default false
-    *
-    */
+   *
+   * A boolean value indicating that the requesting script can accept all Bluetooth
+   * devices. The default is false.
+   *
+   * !! This may result in a bunch of unrelated devices being shown
+   * in the chooser and energy being wasted as there are no filters.
+   *
+   *
+   * Use it with caution.
+   *
+   * @default false
+   *
+   */
   acceptAllDevices?: boolean
 }
 

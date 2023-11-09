@@ -11,7 +11,10 @@ Open file dialog with ease.
 ```ts
 import { useFileDialog } from '@vueuse/core'
 
-const { files, open, reset, onChange } = useFileDialog()
+const { files, open, reset, onChange } = useFileDialog({
+  accept: 'image/*', // Set to accept only image files
+  directory: true, // Select directories instead of files if set true
+})
 
 onChange((files) => {
   /** do something with files */

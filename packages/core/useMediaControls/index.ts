@@ -135,8 +135,7 @@ function timeRangeToArray(timeRanges: TimeRanges) {
  */
 function tracksToArray(tracks: TextTrackList): UseMediaTextTrack[] {
   return Array.from(tracks)
-    .map(({ label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }, id) =>
-      ({ id, label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }))
+    .map(({ label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }, id) => ({ id, label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }))
 }
 
 const defaultOptions: UseMediaControlsOptions = {

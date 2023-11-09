@@ -42,6 +42,13 @@ export interface UseDraggableOptions {
   draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>
 
   /**
+   * Element for calculating bounds (If not set, it will use the event's target).
+   *
+   * @default undefined
+   */
+  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
+
+  /**
    * Handle that triggers the drag event
    *
    * @default target
@@ -107,6 +114,7 @@ export function useDraggable(
     initialValue,
     axis = 'both',
     draggingElement = defaultWindow,
+    containerElement,
     handle: draggingHandle = target,
   } = options
 
@@ -134,10 +142,13 @@ export function useDraggable(
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
-    const rect = toValue(target)!.getBoundingClientRect()
+
+    const container = toValue(containerElement)
+    const containerRect = container?.getBoundingClientRect?.()
+    const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: e.clientX - (container ? targetRect.left - containerRect!.left : targetRect.left),
+      y: e.clientY - (container ? targetRect.top - containerRect!.top : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
@@ -150,11 +161,20 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
 
+    const container = toValue(containerElement)
+    const containerRect = container?.getBoundingClientRect?.()
+    const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
-    if (axis === 'x' || axis === 'both')
+    if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
-    if (axis === 'y' || axis === 'both')
+      if (container)
+        x = Math.min(Math.max(0, x), containerRect!.width - targetRect!.width)
+    }
+    if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
+      if (container)
+        y = Math.min(Math.max(0, y), containerRect!.height - targetRect!.height)
+    }
     position.value = {
       x,
       y,

@@ -9,7 +9,7 @@ export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, c
  * Reactive `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
- * @param {Array} list - the array was called upon.
+ * @param list - the array was called upon.
  * @param reducer - a "reducer" function.
  *
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
@@ -23,7 +23,7 @@ export function useArrayReduce<T>(
  * Reactive `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
- * @param {Array} list - the array was called upon.
+ * @param list - the array was called upon.
  * @param reducer - a "reducer" function.
  * @param initialValue - a value to be initialized the first time when the callback is called.
  *
@@ -39,7 +39,7 @@ export function useArrayReduce<T, U>(
  * Reactive `Array.reduce`
  *
  * @see https://vueuse.org/useArrayReduce
- * @param {Array} list - the array was called upon.
+ * @param list - the array was called upon.
  * @param reducer - a "reducer" function.
  * @param args
  *

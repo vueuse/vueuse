@@ -8,9 +8,9 @@ import { defaultDocument } from '../_configurable'
  * Reactively track `document.visibilityState`.
  *
  * @see https://vueuse.org/useDocumentVisibility
- * @param options
  */
-export function useDocumentVisibility({ document = defaultDocument }: ConfigurableDocument = {}): Ref<DocumentVisibilityState> {
+export function useDocumentVisibility(options: ConfigurableDocument = {}): Ref<DocumentVisibilityState> {
+  const { document = defaultDocument } = options
   if (!document)
     return ref('visible')
 
