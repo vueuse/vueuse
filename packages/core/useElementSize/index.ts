@@ -28,7 +28,7 @@ export function useElementSize(
   const width = ref(initialSize.width)
   const height = ref(initialSize.height)
 
-  const { stop } = useResizeObserver(
+  const { stop: stop1 } = useResizeObserver(
     target,
     ([entry]) => {
       const boxSize = box === 'border-box'
@@ -61,7 +61,7 @@ export function useElementSize(
     options,
   )
 
-  watch(
+  const stop2 = watch(
     () => unrefElement(target),
     (ele) => {
       width.value = ele ? initialSize.width : 0
@@ -69,10 +69,15 @@ export function useElementSize(
     },
   )
 
+  function stop() {
+    stop1()
+    stop2()
+  }
+
   return {
     width,
     height,
-    stop,
+    stop
   }
 }
 
