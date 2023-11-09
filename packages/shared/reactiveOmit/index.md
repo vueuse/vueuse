@@ -35,7 +35,7 @@ const obj = reactive({
   qux: true,
 })
 
-const picked = reactiveOmit(obj, (key, value) => key === 'baz' || value === true)
+const picked = reactiveOmit(obj, (value, key) => key === 'baz' || value === true)
 // { bar: string, foo: string }
 ```
 
