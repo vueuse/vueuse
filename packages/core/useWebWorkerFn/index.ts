@@ -33,8 +33,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
-  options: UseWebWorkerOptions = {}) {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
     timeout,
@@ -98,16 +97,15 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
     return newWorker
   }
 
-  const callWorker = (...fnArgs: Parameters<T>) =>
-    new Promise<ReturnType<T>>((resolve, reject) => {
-      promise.value = {
-        resolve,
-        reject,
-      }
-      worker.value && worker.value.postMessage([[...fnArgs]])
+  const callWorker = (...fnArgs: Parameters<T>) => new Promise<ReturnType<T>>((resolve, reject) => {
+    promise.value = {
+      resolve,
+      reject,
+    }
+    worker.value && worker.value.postMessage([[...fnArgs]])
 
-      workerStatus.value = 'RUNNING'
-    })
+    workerStatus.value = 'RUNNING'
+  })
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {

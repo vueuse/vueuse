@@ -13,7 +13,6 @@ export type Breakpoints<K extends string = string> = Record<K, number | string>
  * Reactively viewport breakpoints
  *
  * @see https://vueuse.org/useBreakpoints
- * @param options
  */
 export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {
   function getValue(k: K, delta?: number) {

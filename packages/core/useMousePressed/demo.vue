@@ -7,8 +7,7 @@ import { useMousePressed } from '@vueuse/core'
 const el = ref<HTMLElement | null>()
 const [withTarget, toggle] = useToggle()
 const target = computed<HTMLElement | null>(() =>
-  (withTarget.value ? el.value : window) as HTMLElement,
-)
+  (withTarget.value ? el.value : window) as HTMLElement)
 
 const mouse = reactive(useMousePressed({ target }))
 const text = stringify(mouse)

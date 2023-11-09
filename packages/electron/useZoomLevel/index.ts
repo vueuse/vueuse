@@ -41,7 +41,9 @@ export function useZoomLevel(...args: any[]): Ref<number> {
     (f, o) => {
       if (typeof f === 'number' && f !== o)
         webFrame?.setZoomLevel(f)
-    }, { immediate: true })
+    },
+    { immediate: true },
+  )
 
   return level
 }

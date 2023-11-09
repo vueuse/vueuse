@@ -15,8 +15,7 @@ export interface UseLastChangedOptions<
  * @see https://vueuse.org/useLastChanged
  */
 export function useLastChanged(source: WatchSource, options?: UseLastChangedOptions<false>): Ref<number | null>
-export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<true>): Ref<number>
-export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<boolean, number>): Ref<number>
+export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<true> | UseLastChangedOptions<boolean, number>): Ref<number>
 export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<boolean, any> = {}): Ref<number | null> | Ref<number> {
   const ms = ref<number | null>(options.initialValue ?? null)
 

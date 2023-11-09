@@ -88,7 +88,7 @@ const _TransitionPresets = {
  *
  * @see https://easings.net
  */
-export const TransitionPresets = /*#__PURE__*/ Object.assign({}, { linear }, _TransitionPresets) as Record<keyof typeof _TransitionPresets, CubicBezierPoints> & { linear: EasingFunction }
+export const TransitionPresets = /* #__PURE__ */ Object.assign({}, { linear }, _TransitionPresets) as Record<keyof typeof _TransitionPresets, CubicBezierPoints> & { linear: EasingFunction }
 
 /**
  * Create an easing function from cubic bezier points.

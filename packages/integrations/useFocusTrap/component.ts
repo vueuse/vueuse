@@ -9,7 +9,7 @@ export interface ComponentUseFocusTrapOptions extends RenderableComponent {
   options?: UseFocusTrapOptions
 }
 
-export const UseFocusTrap = /*#__PURE__*/ defineComponent <ComponentUseFocusTrapOptions> ({
+export const UseFocusTrap = /* #__PURE__ */ defineComponent <ComponentUseFocusTrapOptions> ({
   name: 'UseFocusTrap',
   props: ['as', 'options'] as unknown as undefined,
   setup(props, { slots }) {
@@ -25,7 +25,9 @@ export const UseFocusTrap = /*#__PURE__*/ defineComponent <ComponentUseFocusTrap
           return
         trap = createFocusTrap(el, props.options || {})
         activate()
-      }, { flush: 'post' })
+      },
+      { flush: 'post' },
+    )
 
     // Cleanup on unmount
     onScopeDispose(() => deactivate())

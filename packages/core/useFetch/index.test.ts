@@ -62,7 +62,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await useFetch('https://example.com/', {
       fetch: <typeof window.fetch>((input, init) => {
         count = 1
-        return window.fetch(input, init)
+        return window.fetch(input as string, init)
       }),
     })
 
@@ -239,7 +239,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           options.headers = { ...options.headers, Local: 'foo' }
           return { options }
         },
-      })
+      },
+    )
 
     await retry(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Global: 'foo', Local: 'foo' })
@@ -264,7 +265,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.data.title += ' Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
@@ -289,7 +291,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.error += ' Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(error.value).toEqual('Global Local')
@@ -385,7 +388,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           options.headers = { ...options.headers, Local: 'foo' }
           return { options }
         },
-      })
+      },
+    )
 
     await retry(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
@@ -411,7 +415,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.data.local = 'Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
@@ -438,7 +443,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
           ctx.error = 'Local'
           return ctx
         },
-      }).json()
+      },
+    ).json()
 
     await retry(() => {
       expect(error.value).toEqual('Local')
@@ -588,16 +594,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should emit onFetchResponse event', async () => {
-    const onResponseSpy = vi.fn()
-    const { onFetchResponse } = useFetch('https://example.com')
-
-    onFetchResponse(onResponseSpy)
-    await retry(() => {
-      expect(onResponseSpy).toHaveBeenCalledOnce()
-    })
-  })
-
-  it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
 
     onFetchResponse(onFetchResponseSpy)
@@ -727,7 +723,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
-  it('should be generated payloadType on execute', async () => {
+  it('should be generated payloadType on execute with formdata', async () => {
     const form = ref<any>({ x: 1 })
     const { execute } = useFetch('https://example.com').post(form)
 
