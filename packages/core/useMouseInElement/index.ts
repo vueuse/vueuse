@@ -25,6 +25,8 @@ export function useMouseInElement(
     handleOutside = true,
     window = defaultWindow,
   } = options
+  const type = options.type || 'page'
+
   const { x, y, sourceType } = useMouse(options)
 
   const targetRef = ref(target ?? window?.document.body)
@@ -53,8 +55,8 @@ export function useMouseInElement(
           height,
         } = el.getBoundingClientRect()
 
-        elementPositionX.value = left + window.pageXOffset
-        elementPositionY.value = top + window.pageYOffset
+        elementPositionX.value = left + (type === 'page' ? window.pageXOffset : 0)
+        elementPositionY.value = top + (type === 'page' ? window.pageYOffset : 0)
         elementHeight.value = height
         elementWidth.value = width
 
