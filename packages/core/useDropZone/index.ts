@@ -41,12 +41,19 @@ export function useDropZone(
     }
 
     useEventListener<DragEvent>(target, 'dragenter', (event) => {
+      const items = event?.dataTransfer?.items || []
+      const types: string[] = []
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        if (item.kind === 'file')
+          types.push(item.type)
+      }
       if (_options.dataTypes && event.dataTransfer) {
         const dataTypes = unref(_options.dataTypes)
         isDataTypeIncluded = typeof dataTypes === 'function'
           ? dataTypes(event.dataTransfer!.types)
           : dataTypes
-            ? dataTypes.some(item => event.dataTransfer!.types.includes(item))
+            ? dataTypes.some(item => types.includes(item))
             : true
         if (!isDataTypeIncluded)
           return
