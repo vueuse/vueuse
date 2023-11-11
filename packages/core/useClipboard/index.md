@@ -34,3 +34,13 @@ const { text, copy, copied, isSupported } = useClipboard({ source })
 ```
 
 Set `legacy: true` to keep the ability to copy if [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is not available. It will handle copy with [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) as fallback.
+
+## Component Usage
+
+```html
+<UseClipboard source="copy me" v-slot="{ copy, copied }">
+  <button @click="copy()">
+    {{ copied ? 'Copied' : 'Copy' }}
+  </button>
+</UseClipboard>
+```

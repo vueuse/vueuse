@@ -20,13 +20,19 @@ export interface UseDateFormatOptions {
 }
 
 const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/
-const REGEX_FORMAT = /* #__PURE__ */ /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+const REGEX_FORMAT = /* #__PURE__ */ /[YMDHhms]o|\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
 
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
   if (hasPeriod)
     m = m.split('').reduce((acc, curr) => acc += `${curr}.`, '')
   return isLowercase ? m.toLowerCase() : m
+}
+
+function formatOrdinal(num: number) {
+  const suffixes = ['th', 'st', 'nd', 'rd']
+  const v = num % 100
+  return num + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0])
 }
 
 export function formatDate(date: Date, formatStr: string, options: UseDateFormatOptions = {}) {
@@ -40,21 +46,28 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
   const matches: Record<string, () => string | number> = {
+    Yo: () => formatOrdinal(years),
     YY: () => String(years).slice(-2),
     YYYY: () => years,
     M: () => month + 1,
+    Mo: () => formatOrdinal(month + 1),
     MM: () => `${month + 1}`.padStart(2, '0'),
     MMM: () => date.toLocaleDateString(options.locales, { month: 'short' }),
     MMMM: () => date.toLocaleDateString(options.locales, { month: 'long' }),
     D: () => String(days),
+    Do: () => formatOrdinal(days),
     DD: () => `${days}`.padStart(2, '0'),
     H: () => String(hours),
+    Ho: () => formatOrdinal(hours),
     HH: () => `${hours}`.padStart(2, '0'),
     h: () => `${hours % 12 || 12}`.padStart(1, '0'),
+    ho: () => formatOrdinal(hours % 12 || 12),
     hh: () => `${hours % 12 || 12}`.padStart(2, '0'),
     m: () => String(minutes),
+    mo: () => formatOrdinal(minutes),
     mm: () => `${minutes}`.padStart(2, '0'),
     s: () => String(seconds),
+    so: () => formatOrdinal(seconds),
     ss: () => `${seconds}`.padStart(2, '0'),
     SSS: () => `${milliseconds}`.padStart(3, '0'),
     d: () => day,
