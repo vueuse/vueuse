@@ -251,7 +251,7 @@ export function useScroll(
   )
 
   tryOnMounted(() => {
-    setArrivedState(toValue(element))
+    toValue(element) && setArrivedState(toValue(element))
   })
 
   useEventListener(
