@@ -59,7 +59,8 @@ export function useStyleTag(
   const isLoaded = ref(false)
 
   const {
-    document = defaultDocument, immediate = true,
+    document = defaultDocument,
+    immediate = true,
     manual = false,
     id = `vueuse_styletag_${++_id}`,
   } = options
