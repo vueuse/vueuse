@@ -169,8 +169,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   let cancelToken: CancelTokenSource = cancelTokenSource()
 
   const abort = (message?: string) => {
-    if (isFinished.value || !isLoading.value)
+    if (isFinished.value || !isLoading.value) {
+      isAborted.value = false
       return
+    }
 
     cancelToken.cancel(message)
     cancelToken = cancelTokenSource()
