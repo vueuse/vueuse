@@ -169,10 +169,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   let cancelToken: CancelTokenSource = cancelTokenSource()
 
   const abort = (message?: string) => {
-    if (isFinished.value || !isLoading.value) {
-      isAborted.value = false
+    if (isFinished.value || !isLoading.value)
       return
-    }
 
     cancelToken.cancel(message)
     cancelToken = cancelTokenSource()
@@ -224,6 +222,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
     executeCounter += 1
     const currentExecuteCounter = executeCounter
+    isAborted.value = false
 
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
       .then((r: any) => {
