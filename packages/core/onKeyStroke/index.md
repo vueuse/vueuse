@@ -54,7 +54,7 @@ import { onKeyStroke } from '@vueuse/core'
 // use `autoRepeat` option
 onKeyStroke('A', (e) => {
   console.log('Key A pressed')
-}, { dedupe: false })
+}, { dedupe: true })
 ```
 
 Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)
