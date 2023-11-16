@@ -67,7 +67,7 @@ export function onLongPress(
   const cleanup = [
     useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
     useEventListener(elementRef, ['pointerup', 'pointerleave'], clear, listenerOptions),
-  ].filter(Boolean) as Fn[]
+  ]
 
   const stop = () => cleanup.forEach(fn => fn())
 
