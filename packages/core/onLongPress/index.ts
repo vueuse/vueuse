@@ -1,4 +1,3 @@
-import type { Fn } from '@vueuse/shared'
 import { computed } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
