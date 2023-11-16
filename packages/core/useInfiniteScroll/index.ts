@@ -28,6 +28,13 @@ export interface UseInfiniteScrollOptions extends UseScrollOptions {
    * @default 100
    */
   interval?: number
+
+  /**
+   * Whether to load more immediately when mounted.
+   *
+   * @default false
+   */
+  immediate?: boolean
 }
 
 /**
@@ -43,6 +50,7 @@ export function useInfiniteScroll(
   const {
     direction = 'bottom',
     interval = 100,
+    immediate = false,
   } = options
 
   const state = reactive(useScroll(
@@ -94,7 +102,7 @@ export function useInfiniteScroll(
   watch(
     () => [state.arrivedState[direction], isElementVisible.value],
     checkAndLoad,
-    { immediate: true },
+    { immediate },
   )
 
   return {

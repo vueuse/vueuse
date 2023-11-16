@@ -10,20 +10,6 @@ describe('useInfiniteScroll', () => {
     expect(useInfiniteScroll).toBeDefined()
   })
 
-  it.each([
-    [ref(givenMockElement())],
-    [givenMockElement()],
-    [document],
-    [window],
-  ])('should calls the loadMore handler, when element is visible', (target) => {
-    const mockHandler = vi.fn()
-    givenElementVisibilityRefMock(true)
-
-    useInfiniteScroll(target, mockHandler)
-
-    expect(mockHandler).toHaveBeenCalledTimes(1)
-  })
-
   it('should calls the loadMore handler, when element visibility state form hidden to visible', async () => {
     const mockHandler = vi.fn()
     const mockElement = givenMockElement()
