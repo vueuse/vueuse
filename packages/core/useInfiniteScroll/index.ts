@@ -66,6 +66,7 @@ export function useInfiniteScroll(
 
   const promise = ref<any>()
   const isLoading = computed(() => !!promise.value)
+  const isScrollY = computed(() => direction === 'bottom' || direction === 'top')
 
   // Document and Window cannot be observed by IntersectionObserver
   const observedElement = computed<HTMLElement | SVGElement | null | undefined>(() => {
@@ -81,7 +82,7 @@ export function useInfiniteScroll(
       return
 
     const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
-    const isNarrower = (direction === 'bottom' || direction === 'top')
+    const isNarrower = isScrollY
       ? scrollHeight <= clientHeight
       : scrollWidth <= clientWidth
 
@@ -93,7 +94,14 @@ export function useInfiniteScroll(
         ])
           .finally(() => {
             promise.value = null
-            nextTick(() => checkAndLoad())
+            nextTick(() => {
+              // Determine whether scrollHeight || scrollWidth has changed, if it changes, re-detection, otherwise give a prompt
+              const { scrollHeight: currentScrollHeight, scrollWidth: currentScrollWidth } = observedElement.value as HTMLElement
+              if ((isScrollY && currentScrollHeight !== scrollHeight) || (!isScrollY && currentScrollWidth !== scrollWidth))
+                checkAndLoad()
+              else
+                console.warn(`In the current scroll direction: ${direction}, the scrollHeight || scrollWidth has not changed, please check!`)
+            })
           })
       }
     }
