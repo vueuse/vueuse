@@ -1,30 +1,43 @@
-import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import { toRef, toValue } from '@vueuse/shared'
+import type { Fn, MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
+import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
 import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-export type UseTitleOptionsBase =
-{
+export type UseTitleOptionsBase = {
   /**
-   * Observe `document.title` changes using MutationObserve
-   * Cannot be used together with `titleTemplate` option.
-   *
-   * @default false
+   * Stop watching the title when unmounted
    */
-  observe?: boolean
-}
-| {
+  stopOnUnmount?: boolean
+
   /**
-   * The template string to parse the title (e.g., '%s | My Website')
-   * Cannot be used together with `observe` option.
-   *
-   * @default '%s'
+   * Restore the original title when unmounted
+   * @param originTitle original title
+   * @returns restored title
    */
-  titleTemplate?: MaybeRef<string> | ((title: string) => string)
-}
+  restoreOnUnmount?: (originTitle: string) => string
+} & (
+  {
+    /**
+     * Observe `document.title` changes using MutationObserve
+     * Cannot be used together with `titleTemplate` option.
+     *
+     * @default false
+     */
+    observe?: boolean
+  }
+  | {
+    /**
+     * The template string to parse the title (e.g., '%s | My Website')
+     * Cannot be used together with `observe` option.
+     *
+     * @default '%s'
+     */
+    titleTemplate?: MaybeRef<string> | ((title: string) => string)
+  }
+)
 
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
@@ -56,7 +69,11 @@ export function useTitle(
   */
   const {
     document = defaultDocument,
+    restoreOnUnmount = t => t,
+    stopOnUnmount = false,
   } = options
+  const originalTitle = document?.title ?? ''
+  const stops: (Fn)[] = []
 
   const title: Ref<string | null | undefined> = toRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && typeof newTitle === 'function'
@@ -70,17 +87,19 @@ export function useTitle(
       : toValue(template).replace(/%s/g, t)
   }
 
-  watch(
-    title,
-    (t, o) => {
-      if (t !== o && document)
-        document.title = format(typeof t === 'string' ? t : '')
-    },
-    { immediate: true },
+  stops.push(
+    watch(
+      title,
+      (t, o) => {
+        if (t !== o && document)
+          document.title = format(typeof t === 'string' ? t : '')
+      },
+      { immediate: true },
+    ),
   )
 
   if ((options as any).observe && !(options as any).titleTemplate && document && !isReadonly) {
-    useMutationObserver(
+    const observer = useMutationObserver(
       document.head?.querySelector('title'),
       () => {
         if (document && document.title !== title.value)
@@ -88,7 +107,13 @@ export function useTitle(
       },
       { childList: true },
     )
+    stops.push(observer.stop)
   }
+
+  tryOnBeforeUnmount(() => {
+    title.value = restoreOnUnmount(originalTitle)
+    stopOnUnmount && stops.forEach(s => s())
+  })
 
   return title
 }
