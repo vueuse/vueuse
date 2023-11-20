@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue-demi'
+import type { MaybeRefOrGetter, Ref } from 'vue-demi'
 import { ref } from 'vue-demi'
 import { toValue } from '@vueuse/shared'
 import type { ConfigurableDocument, ConfigurableWindow } from '../_configurable'
@@ -11,7 +11,31 @@ export interface UsePrintOptions extends ConfigurableWindow, ConfigurableDocumen
   sandbox?: false | string
 }
 
-export function usePrint(initialValue?: MaybeRefOrGetter<string>, defaultOptions: UsePrintOptions = {}) {
+export interface UsePrintReturn {
+  pending: Ref<boolean>
+  printUrl: (
+    url?: MaybeRefOrGetter<string>,
+    options?: UsePrintOptions,
+  ) => Promise<void>
+  printSource: (
+    source?: MaybeRefOrGetter<string>,
+    options?: UsePrintOptions,
+  ) => Promise<void>
+}
+
+export function usePrint(): UsePrintReturn
+export function usePrint(initialValue: MaybeRefOrGetter<string>): UsePrintReturn
+export function usePrint(defaultOptions: UsePrintOptions): UsePrintReturn
+export function usePrint(
+  initialValue: MaybeRefOrGetter<string>,
+  defaultOptions: UsePrintOptions,
+): UsePrintReturn
+export function usePrint(...args: any[]): UsePrintReturn {
+  const defaultOptions: UsePrintOptions
+    = args.length === 1 ? args[0] : args[1] ?? {}
+  const initialValue: MaybeRefOrGetter<string>
+    = args.length === 1 ? undefined : args[0]
+
   const pending = ref(false)
 
   function printUrl(url?: MaybeRefOrGetter<string>, options?: UsePrintOptions) {
