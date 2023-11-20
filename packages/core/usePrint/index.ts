@@ -9,6 +9,11 @@ export interface UsePrintOptions extends ConfigurableWindow, ConfigurableDocumen
    * @default 'allow-modals allow-same-origin'
    */
   sandbox?: false | string
+
+  /**
+   * @default 0
+   */
+  delay?: number
 }
 
 export interface UsePrintReturn {
@@ -60,6 +65,7 @@ export function usePrint(...args: any[]): UsePrintReturn {
     const {
       window = defaultWindow,
       sandbox = 'allow-modals allow-same-origin',
+      delay = 0,
     } = options ?? defaultOptions
     const document = defaultOptions.document ?? window?.document
 
@@ -69,14 +75,27 @@ export function usePrint(...args: any[]): UsePrintReturn {
     pending.value = true
 
     return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | undefined
+
       function startPrint(this: HTMLIFrameElement) {
         this.contentWindow?.addEventListener('beforeunload', closePrint)
         this.contentWindow?.addEventListener('afterprint', closePrint)
 
-        this.contentWindow?.print()
+        if (timer)
+          clearTimeout(timer)
+
+        timer = setTimeout(() => {
+          timer = undefined
+          this.contentWindow?.print()
+        }, delay)
       }
 
       function closePrint(this: HTMLIFrameElement) {
+        if (timer) {
+          clearTimeout(timer)
+          timer = undefined
+        }
+
         try {
           this.remove()
         }
