@@ -9,7 +9,7 @@ import { resolveElement } from '../_resolve-element'
 
 type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined
 
-export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement> extends UseScrollOptions {
+export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = InfiniteScrollElement> extends UseScrollOptions {
   /**
    * The minimum distance between the bottom of the element and the bottom of the viewport
    *
