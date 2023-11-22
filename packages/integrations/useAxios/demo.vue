@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import { stringify } from '@vueuse/docs-utils'
 import { useAxios } from '.'
 
+const id = ref(1)
+
 const { data, isLoading, isFinished, execute } = useAxios(
-  'https://jsonplaceholder.typicode.com/todos/1',
+  computed(() => `https://jsonplaceholder.typicode.com/todos/${id.value}`),
 )
 const text = stringify(data)
 </script>
@@ -11,6 +14,9 @@ const text = stringify(data)
 <template>
   <button @click="execute()">
     Execute
+  </button>
+  <button @click="id = id + 1">
+    Change ID
   </button>
   <note>Loading: {{ isLoading.toString() }}</note>
   <note>Finished: {{ isFinished.toString() }}</note>
