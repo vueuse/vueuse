@@ -13,7 +13,7 @@ export const isObject = (val: any): val is object =>
 export const now = () => Date.now()
 export const timestamp = () => +Date.now()
 export const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
-export const noop = () => { }
+export const noop = () => {}
 export const rand = (min: number, max: number) => {
   min = Math.ceil(min)
   max = Math.floor(max)
@@ -21,7 +21,7 @@ export const rand = (min: number, max: number) => {
 }
 export const hasOwn = <T extends object, K extends keyof T>(val: T, key: K): key is K => Object.prototype.hasOwnProperty.call(val, key)
 
-export const isIpad = window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent)
+export const isIpad = /* #__PURE__ */ window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent)
 
 export const isIOS = /* #__PURE__ */ getIsIOS()
 
