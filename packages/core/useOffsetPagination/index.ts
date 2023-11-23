@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
-import { computed, isRef, reactive, watch } from 'vue-demi'
+import { computed, isReadonly, isRef, reactive, watch } from 'vue-demi'
 import { noop, syncRef, toValue } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { useClamp } from '../../math/useClamp'
@@ -74,10 +74,10 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
   const isFirstPage = computed(() => currentPage.value === 1)
   const isLastPage = computed(() => currentPage.value === pageCount.value)
 
-  if (isRef(page))
+  if (isRef(page) && !isReadonly(page)) // don't sync if page is readonly
     syncRef(page, currentPage)
 
-  if (isRef(pageSize))
+  if (isRef(pageSize) && !isReadonly(pageSize)) // don't sync if pageSize is readonly
     syncRef(pageSize, currentPageSize)
 
   function prev() {
