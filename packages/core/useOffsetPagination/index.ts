@@ -74,11 +74,17 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
   const isFirstPage = computed(() => currentPage.value === 1)
   const isLastPage = computed(() => currentPage.value === pageCount.value)
 
-  if (isRef(page) && !isReadonly(page)) // don't sync if page is readonly
-    syncRef(page, currentPage)
+  if (isRef(page)) {
+    syncRef(page, currentPage, {
+      direction: isReadonly(page) ? 'ltr' : 'both',
+    })
+  }
 
-  if (isRef(pageSize) && !isReadonly(pageSize)) // don't sync if pageSize is readonly
-    syncRef(pageSize, currentPageSize)
+  if (isRef(pageSize)) {
+    syncRef(pageSize, currentPageSize, {
+      direction: isReadonly(pageSize) ? 'ltr' : 'both',
+    })
+  }
 
   function prev() {
     currentPage.value--
