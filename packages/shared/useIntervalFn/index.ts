@@ -13,7 +13,7 @@ export interface UseIntervalFnOptions {
   immediate?: boolean
 
   /**
-   * Execute the callback immediate after calling this function
+   * Execute the callback immediate after calling this function. If false, the first callback is executed after the specified interval has elapsed.
    *
    * @default false
    */
