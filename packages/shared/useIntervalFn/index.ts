@@ -6,7 +6,7 @@ import { isClient } from '../utils'
 
 export interface UseIntervalFnOptions {
   /**
-   * Start the timer immediately
+   * Start the timer immediately. If false, you need to call resume to start the timer.
    *
    * @default true
    */
