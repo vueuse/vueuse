@@ -4,7 +4,7 @@
  */
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
-type Callback<T> = T extends void ? () => void : (param: T) => void
+type Callback<T> = [T] extends [void] ? () => void : (param: T) => void
 export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
 export type EventHookOff<T = any> = (fn: Callback<T>) => void
 export type EventHookTrigger<T = any> = (param?: T) => Promise<unknown[]>
