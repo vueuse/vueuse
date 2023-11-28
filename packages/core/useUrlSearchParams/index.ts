@@ -124,11 +124,18 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (shouldUpdate)
       updateState(params)
 
-    window.history.replaceState(
-      window.history.state,
-      window.document.title,
-      window.location.pathname + constructQuery(params),
-    )
+    const replaceUrl = window.location.pathname + constructQuery(params)
+    try {
+      // Safari throws a SecurityError when calling this function 100 times in 30 seconds
+      window.history.replaceState(
+        window.history.state,
+        window.document.title,
+        replaceUrl,
+      )
+    }
+    catch (e) {
+      window.location.replace(replaceUrl)
+    }
 
     resume()
   }
