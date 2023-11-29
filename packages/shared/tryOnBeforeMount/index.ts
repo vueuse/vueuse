@@ -1,6 +1,5 @@
-import { getCurrentInstance, nextTick, onBeforeMount } from 'vue-demi'
-import type { ComponentInternalInstance } from 'vue-demi'
-import type { Fn } from '../utils'
+import { nextTick, onBeforeMount } from 'vue-demi'
+import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**
  * Call onBeforeMount() if it's inside a component lifecycle, if not, just call the function
@@ -9,8 +8,8 @@ import type { Fn } from '../utils'
  * @param sync if set to false, it will run in the nextTick() of Vue
  * @param target
  */
-export function tryOnBeforeMount(fn: Fn, sync = true, target?: ComponentInternalInstance | null) {
-  const instance = target || getCurrentInstance()
+export function tryOnBeforeMount(fn: Fn, sync = true, target?: any) {
+  const instance = getLifeCycleTarget(target)
   if (instance)
     onBeforeMount(fn, instance)
   else if (sync)

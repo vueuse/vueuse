@@ -1,6 +1,5 @@
-import type { ComponentInternalInstance } from 'vue-demi'
-import { getCurrentInstance, onBeforeUnmount } from 'vue-demi'
-import type { Fn } from '../utils'
+import { onBeforeUnmount } from 'vue-demi'
+import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**
  * Call onBeforeUnmount() if it's inside a component lifecycle, if not, do nothing
@@ -8,8 +7,8 @@ import type { Fn } from '../utils'
  * @param fn
  * @param target
  */
-export function tryOnBeforeUnmount(fn: Fn, target?: ComponentInternalInstance | null) {
-  const instance = target || getCurrentInstance()
+export function tryOnBeforeUnmount(fn: Fn, target?: any) {
+  const instance = getLifeCycleTarget(target)
   if (instance)
     onBeforeUnmount(fn, instance)
 }

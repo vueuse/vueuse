@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-restricted-imports
-import { getCurrentInstance, onUnmounted } from 'vue-demi'
-import type { ComponentInternalInstance } from 'vue-demi'
-import type { Fn } from '../utils'
+import { onUnmounted } from 'vue-demi'
+import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**
  * Call onUnmounted() if it's inside a component lifecycle, if not, do nothing
@@ -9,8 +8,8 @@ import type { Fn } from '../utils'
  * @param fn
  * @param target
  */
-export function tryOnUnmounted(fn: Fn, target?: ComponentInternalInstance | null) {
-  const instance = target || getCurrentInstance()
+export function tryOnUnmounted(fn: Fn, target?: any) {
+  const instance = getLifeCycleTarget(target)
   if (instance)
     onUnmounted(fn, instance)
 }
