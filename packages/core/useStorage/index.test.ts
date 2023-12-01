@@ -125,6 +125,20 @@ describe('useStorage', () => {
     expect(storage.getItem(KEY)).toBeFalsy()
   })
 
+  it('remove key', async () => {
+    storage.setItem(KEY, 'random')
+
+    const store = useStorage(KEY, null, storage)
+    const store2 = useStorage(KEY, null, storage)
+    store.value = null
+
+    await nextTwoTick()
+
+    expect(store.value).toBe(null)
+    expect(store2.value).toBe(null)
+    expect(storage.getItem(KEY)).toBeFalsy()
+  })
+
   it('string 2', async () => {
     storageState.set(KEY, '0')
 
