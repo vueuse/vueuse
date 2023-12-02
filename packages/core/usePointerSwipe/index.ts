@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef } from '@vueuse/shared'
+import { toRef, whenever } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -57,6 +57,11 @@ export function usePointerSwipe(
   options: UsePointerSwipeOptions = {},
 ): UsePointerSwipeReturn {
   const targetRef = toRef(target)
+
+  // Disable scroll on for TouchEvents
+  whenever(targetRef, () =>
+    targetRef.value?.style?.setProperty('touch-action', 'none'))
+
   const {
     threshold = 50,
     onSwipe,
@@ -111,8 +116,6 @@ export function usePointerSwipe(
       if (!eventIsAllowed(e))
         return
       isPointerDown.value = true
-      // Disable scroll on for TouchEvents
-      targetRef.value?.style?.setProperty('touch-action', 'none')
       // Future pointer events will be retargeted to target until pointerup/cancel
       const eventTarget = e.target as HTMLElement | undefined
       eventTarget?.setPointerCapture(e.pointerId)
@@ -144,7 +147,6 @@ export function usePointerSwipe(
 
       isPointerDown.value = false
       isSwiping.value = false
-      targetRef.value?.style?.setProperty('touch-action', 'initial')
     }),
   ]
 
