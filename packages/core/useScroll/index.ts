@@ -169,19 +169,19 @@ export function useScroll(
     if (!window)
       return
 
-    const el = (
-      (target as Window).document
+    const el: HTMLElement = (
+      (target instanceof Window)
         ? (target as Window).document.documentElement
-        : (target as Document).documentElement ?? target
+        : (target as Document)?.documentElement ?? target
     ) as HTMLElement
 
-    const { display, flexDirection } = getComputedStyle(el)
+    const { display, flexDirection }: CSSStyleDeclaration = getComputedStyle(el)
 
     const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
+    const left = Math.abs(scrollLeft) <= (offset.left || 0)
     const right = Math.abs(scrollLeft)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
@@ -206,7 +206,7 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
+    const top = Math.abs(scrollTop) <= (offset.top || 0)
     const bottom = Math.abs(scrollTop)
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
@@ -251,11 +251,15 @@ export function useScroll(
   )
 
   tryOnMounted(() => {
-    const _element = toValue(element)
-    if (!_element)
-      return
-
-    setArrivedState(_element)
+    try {
+      const _element = toValue(element)
+      if (!_element)
+        return
+      setArrivedState(_element)
+    }
+    catch (e) {
+      // console.debug('Error setting ArrivedState for useScroll function')
+    }
   })
 
   useEventListener(
