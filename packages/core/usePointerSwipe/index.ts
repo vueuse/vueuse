@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, whenever } from '@vueuse/shared'
+import { toRef, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -58,9 +58,14 @@ export function usePointerSwipe(
 ): UsePointerSwipeReturn {
   const targetRef = toRef(target)
 
-  // Disable scroll on for TouchEvents
-  whenever(targetRef, () =>
-    targetRef.value?.style?.setProperty('touch-action', 'none'))
+  tryOnMounted(() => {
+    // Disable scroll on for TouchEvents
+    targetRef.value?.style?.setProperty('touch-action', 'none')
+    // Disable text selection on swipe
+    targetRef.value?.style?.setProperty('-webkit-user-select', 'none')
+    targetRef.value?.style?.setProperty('-ms-user-select', 'none')
+    targetRef.value?.style?.setProperty('user-select', 'none')
+  })
 
   const {
     threshold = 50,
