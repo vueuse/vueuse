@@ -454,70 +454,67 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     if (timer)
       timer.start()
 
-    return new Promise<Response | null>((resolve, reject) => {
-      fetch(
-        context.url,
-        {
-          ...defaultFetchOptions,
-          ...context.options,
-          headers: {
-            ...headersToObject(defaultFetchOptions.headers),
-            ...headersToObject(context.options?.headers),
-          },
+    return fetch(
+      context.url,
+      {
+        ...defaultFetchOptions,
+        ...context.options,
+        headers: {
+          ...headersToObject(defaultFetchOptions.headers),
+          ...headersToObject(context.options?.headers),
         },
-      )
-        .then(async (fetchResponse) => {
-          response.value = fetchResponse
-          statusCode.value = fetchResponse.status
+      },
+    )
+      .then(async (fetchResponse) => {
+        response.value = fetchResponse
+        statusCode.value = fetchResponse.status
 
-          responseData = await fetchResponse[config.type]()
+        responseData = await fetchResponse[config.type]()
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok) {
-            data.value = initialData || null
-            throw new Error(fetchResponse.statusText)
-          }
+        // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+        if (!fetchResponse.ok) {
+          data.value = initialData || null
+          throw new Error(fetchResponse.statusText)
+        }
 
-          if (options.afterFetch) {
-            ({ data: responseData } = await options.afterFetch({
-              data: responseData,
-              response: fetchResponse,
-            }))
-          }
+        if (options.afterFetch) {
+          ({ data: responseData } = await options.afterFetch({
+            data: responseData,
+            response: fetchResponse,
+          }))
+        }
+        data.value = responseData
+
+        responseEvent.trigger(fetchResponse)
+        return fetchResponse
+      })
+      .catch(async (fetchError) => {
+        let errorData = fetchError.message || fetchError.name
+
+        if (options.onFetchError) {
+          ({ error: errorData, data: responseData } = await options.onFetchError({
+            data: responseData,
+            error: fetchError,
+            response: response.value,
+          }))
+        }
+
+        error.value = errorData
+        if (options.updateDataOnError)
           data.value = responseData
 
-          responseEvent.trigger(fetchResponse)
-          return resolve(fetchResponse)
-        })
-        .catch(async (fetchError) => {
-          let errorData = fetchError.message || fetchError.name
-
-          if (options.onFetchError) {
-            ({ error: errorData, data: responseData } = await options.onFetchError({
-              data: responseData,
-              error: fetchError,
-              response: response.value,
-            }))
-          }
-
-          error.value = errorData
-          if (options.updateDataOnError)
-            data.value = responseData
-
-          errorEvent.trigger(fetchError)
-          if (throwOnFailed)
-            return reject(fetchError)
-
-          return resolve(null)
-        })
-        .finally(() => {
-          if (currentExecuteCounter === executeCounter)
-            loading(false)
-          if (timer)
-            timer.stop()
-          finallyEvent.trigger(null)
-        })
-    })
+        errorEvent.trigger(fetchError)
+        if (throwOnFailed)
+          throw fetchError
+        return null
+      })
+      .finally(() => {
+        if (currentExecuteCounter === executeCounter)
+          loading(false)
+        if (timer)
+          timer.stop()
+        finallyEvent.trigger(null)
+      })
   }
 
   const refetch = toRef(options.refetch)
