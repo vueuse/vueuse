@@ -33,6 +33,13 @@ export interface UsePointerSwipeOptions {
    * @default ['mouse', 'touch', 'pen']
    */
   pointerTypes?: PointerType[]
+
+  /**
+   * Disable text selection on swipe.
+   *
+   * @default false
+   */
+  disableTextSelect?: boolean
 }
 
 export interface UsePointerSwipeReturn {
@@ -58,20 +65,12 @@ export function usePointerSwipe(
 ): UsePointerSwipeReturn {
   const targetRef = toRef(target)
 
-  tryOnMounted(() => {
-    // Disable scroll on for TouchEvents
-    targetRef.value?.style?.setProperty('touch-action', 'none')
-    // Disable text selection on swipe
-    targetRef.value?.style?.setProperty('-webkit-user-select', 'none')
-    targetRef.value?.style?.setProperty('-ms-user-select', 'none')
-    targetRef.value?.style?.setProperty('user-select', 'none')
-  })
-
   const {
     threshold = 50,
     onSwipe,
     onSwipeEnd,
     onSwipeStart,
+    disableTextSelect = false,
   } = options
 
   const posStart = reactive<Position>({ x: 0, y: 0 })
@@ -154,6 +153,18 @@ export function usePointerSwipe(
       isSwiping.value = false
     }),
   ]
+
+  tryOnMounted(() => {
+    // Disable scroll on for TouchEvents
+    targetRef.value?.style?.setProperty('touch-action', 'none')
+
+    if (disableTextSelect) {
+    // Disable text selection on swipe
+      targetRef.value?.style?.setProperty('-webkit-user-select', 'none')
+      targetRef.value?.style?.setProperty('-ms-user-select', 'none')
+      targetRef.value?.style?.setProperty('user-select', 'none')
+    }
+  })
 
   const stop = () => stops.forEach(s => s())
 
