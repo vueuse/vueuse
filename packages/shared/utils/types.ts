@@ -148,3 +148,10 @@ export type MapOldSources<T, Immediate> = {
 }
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
+
+// https://stackoverflow.com/questions/55541275/typescript-check-for-the-any-type
+export type IfAny<T, Y, N> = 0 extends (1 & T) ? Y : N
+/**
+ * will return `true` if `T` is `any`, or `false` otherwise
+ */
+export type IsAny<T> = IfAny<T, true, false>
