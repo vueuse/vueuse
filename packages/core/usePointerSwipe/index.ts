@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef } from '@vueuse/shared'
+import { toRef, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { computed, reactive, readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
@@ -33,6 +33,13 @@ export interface UsePointerSwipeOptions {
    * @default ['mouse', 'touch', 'pen']
    */
   pointerTypes?: PointerType[]
+
+  /**
+   * Disable text selection on swipe.
+   *
+   * @default false
+   */
+  disableTextSelect?: boolean
 }
 
 export interface UsePointerSwipeReturn {
@@ -57,11 +64,13 @@ export function usePointerSwipe(
   options: UsePointerSwipeOptions = {},
 ): UsePointerSwipeReturn {
   const targetRef = toRef(target)
+
   const {
     threshold = 50,
     onSwipe,
     onSwipeEnd,
     onSwipeStart,
+    disableTextSelect = false,
   } = options
 
   const posStart = reactive<Position>({ x: 0, y: 0 })
@@ -111,8 +120,6 @@ export function usePointerSwipe(
       if (!eventIsAllowed(e))
         return
       isPointerDown.value = true
-      // Disable scroll on for TouchEvents
-      targetRef.value?.style?.setProperty('touch-action', 'none')
       // Future pointer events will be retargeted to target until pointerup/cancel
       const eventTarget = e.target as HTMLElement | undefined
       eventTarget?.setPointerCapture(e.pointerId)
@@ -144,9 +151,20 @@ export function usePointerSwipe(
 
       isPointerDown.value = false
       isSwiping.value = false
-      targetRef.value?.style?.setProperty('touch-action', 'initial')
     }),
   ]
+
+  tryOnMounted(() => {
+    // Disable scroll on for TouchEvents
+    targetRef.value?.style?.setProperty('touch-action', 'none')
+
+    if (disableTextSelect) {
+    // Disable text selection on swipe
+      targetRef.value?.style?.setProperty('-webkit-user-select', 'none')
+      targetRef.value?.style?.setProperty('-ms-user-select', 'none')
+      targetRef.value?.style?.setProperty('user-select', 'none')
+    }
+  })
 
   const stop = () => stops.forEach(s => s())
 

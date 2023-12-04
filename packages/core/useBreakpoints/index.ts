@@ -1,5 +1,6 @@
 import type { ComputedRef, Ref } from 'vue-demi'
-import { increaseWithUnit } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { increaseWithUnit, toValue } from '@vueuse/shared'
 import { computed } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
@@ -7,7 +8,7 @@ import { defaultWindow } from '../_configurable'
 
 export * from './breakpoints'
 
-export type Breakpoints<K extends string = string> = Record<K, number | string>
+export type Breakpoints<K extends string = string> = Record<K, MaybeRefOrGetter<number | string>>
 
 /**
  * Reactively viewport breakpoints
@@ -16,7 +17,7 @@ export type Breakpoints<K extends string = string> = Record<K, number | string>
  */
 export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {
   function getValue(k: K, delta?: number) {
-    let v = breakpoints[k]
+    let v = toValue(breakpoints[k])
 
     if (delta != null)
       v = increaseWithUnit(v, delta)
@@ -36,7 +37,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
   }
 
   const greaterOrEqual = (k: K) => {
-    return useMediaQuery(`(min-width: ${getValue(k)})`, options)
+    return useMediaQuery(() => `(min-width: ${getValue(k)})`, options)
   }
 
   const shortcutMethods = Object.keys(breakpoints)
@@ -51,17 +52,17 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
 
   return Object.assign(shortcutMethods, {
     greater(k: K) {
-      return useMediaQuery(`(min-width: ${getValue(k, 0.1)})`, options)
+      return useMediaQuery(() => `(min-width: ${getValue(k, 0.1)})`, options)
     },
     greaterOrEqual,
     smaller(k: K) {
-      return useMediaQuery(`(max-width: ${getValue(k, -0.1)})`, options)
+      return useMediaQuery(() => `(max-width: ${getValue(k, -0.1)})`, options)
     },
     smallerOrEqual(k: K) {
-      return useMediaQuery(`(max-width: ${getValue(k)})`, options)
+      return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
     },
     between(a: K, b: K) {
-      return useMediaQuery(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
+      return useMediaQuery(() => `(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
     isGreater(k: K) {
       return match(`(min-width: ${getValue(k, 0.1)})`)

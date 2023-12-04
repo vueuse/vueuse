@@ -68,7 +68,7 @@ export function createReusableTemplate<
         render.value = slots.default
       }
     },
-  }) as DefineTemplateComponent<Bindings, Slots>
+  }) as unknown as DefineTemplateComponent<Bindings, Slots>
 
   const reuse = defineComponent({
     inheritAttrs,
@@ -80,7 +80,7 @@ export function createReusableTemplate<
         return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }
     },
-  }) as ReuseTemplateComponent<Bindings, Slots>
+  }) as unknown as ReuseTemplateComponent<Bindings, Slots>
 
   return makeDestructurable(
     { define, reuse },
