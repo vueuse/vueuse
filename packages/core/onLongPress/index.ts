@@ -18,11 +18,11 @@ export interface OnLongPressOptions {
   modifiers?: OnLongPressModifiers
 
   /**
-   * Distance in pixels
-   *
+   * Allowance of moving distance in pixels,
+   * The action will get canceled When moving too far from the pointerdown position.
    * @default 10
    */
-  threshold?: number
+  distanceThreshold?: number | false
 }
 
 export interface OnLongPressModifiers {
@@ -77,7 +77,7 @@ export function onLongPress(
     if (options?.modifiers?.self && ev.target !== elementRef.value)
       return
 
-    if (!posStart)
+    if (!posStart || options?.distanceThreshold === false)
       return
 
     if (options?.modifiers?.prevent)
@@ -89,7 +89,7 @@ export function onLongPress(
     const dx = ev.x - posStart.x
     const dy = ev.y - posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
-    if (distance >= (options?.threshold ?? DEFAULT_THRESHOLD))
+    if (distance >= (options?.distanceThreshold ?? DEFAULT_THRESHOLD))
       clear()
   }
 
