@@ -113,6 +113,17 @@ describe('useStorage', () => {
     expect(storedValue).toBeFalsy()
   })
 
+  it('undefined value', () => {
+    storage.removeItem(KEY)
+
+    const store = useStorage(KEY, undefined, storage)
+    const storedValue = storage.getItem(KEY)
+
+    expect(store.value).toBe(undefined)
+    expect(storage.getItem(KEY)).toBe(undefined)
+    expect(storedValue).toBeFalsy()
+  })
+
   it('remove value', async () => {
     storage.setItem(KEY, 'random')
 

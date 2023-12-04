@@ -93,6 +93,19 @@ describe('createEventHook', () => {
     expect(result).toEqual([2])
   })
 
+  it('should pass union type', () => {
+    let count = 0
+
+    const { on: onResult, trigger } = createEventHook<number | string>()
+
+    // union type should be inferred
+    onResult(value => count = 2)
+    trigger(1)
+    trigger(2)
+
+    expect(count).toBe(2)
+  })
+
   it('the same listener should fire only once', () => {
     const listener = vi.fn()
     const { on, trigger, off } = createEventHook<string>()
