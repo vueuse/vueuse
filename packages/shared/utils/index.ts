@@ -1,3 +1,5 @@
+import { getCurrentInstance, isVue3 } from 'vue-demi'
+
 export * from './is'
 export * from './filters'
 export * from './types'
@@ -112,4 +114,10 @@ export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[
 
 export function objectEntries<T extends object>(obj: T) {
   return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
+}
+
+export function getLifeCycleTarget(target?: any) {
+  const instance = target || getCurrentInstance()
+
+  return isVue3 ? instance : instance?.proxy
 }

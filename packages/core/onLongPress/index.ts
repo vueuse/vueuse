@@ -1,4 +1,3 @@
-import type { Fn } from '@vueuse/shared'
 import { computed } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
@@ -103,7 +102,7 @@ export function onLongPress(
     useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
     useEventListener(elementRef, 'pointermove', onMove, listenerOptions),
     useEventListener(elementRef, ['pointerup', 'pointerleave'], clear, listenerOptions),
-  ].filter(Boolean) as Fn[]
+  ]
 
   const stop = () => cleanup.forEach(fn => fn())
 
