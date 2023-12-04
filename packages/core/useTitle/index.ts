@@ -18,7 +18,7 @@ export type UseTitleOptionsBase = {
    * @param originTitle original title
    * @returns restored title
    */
-  restoreOnUnmount?: (originTitle: string) => string
+  restoreOnUnmount?: false | (originalTitle: string, currentTitle: string) => string | null | undefined
 } & (
   {
     /**
