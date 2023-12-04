@@ -58,6 +58,13 @@ export interface UseScrollOptions extends ConfigurableWindow {
    * @default 'auto'
    */
   behavior?: MaybeRefOrGetter<ScrollBehavior>
+
+  /**
+   * On error callback
+   *
+   * Default log error to `console.error`
+   */
+  onError?: (error: unknown) => void
 }
 
 /**
@@ -97,6 +104,7 @@ export function useScroll(
     },
     behavior = 'auto',
     window = defaultWindow,
+    onError = (e) => { console.error(e) },
   } = options
 
   const internalX = ref(0)
@@ -258,7 +266,7 @@ export function useScroll(
       setArrivedState(_element)
     }
     catch (e) {
-      // console.debug('Error setting ArrivedState for useScroll function')
+      onError(e)
     }
   })
 
