@@ -1,4 +1,4 @@
-import type { Fn, MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
 import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
@@ -7,12 +7,6 @@ import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
 export type UseTitleOptionsBase = {
-  /**
-   * Stop watching the title when unmounted
-   * @default true
-   */
-  stopOnUnmount?: boolean
-
   /**
    * Restore the original title when unmounted
    * @param originTitle original title
@@ -71,10 +65,8 @@ export function useTitle(
   const {
     document = defaultDocument,
     restoreOnUnmount = t => t,
-    stopOnUnmount = true,
   } = options
   const originalTitle = document?.title ?? ''
-  const stops: (Fn)[] = []
 
   const title: Ref<string | null | undefined> = toRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && typeof newTitle === 'function'
@@ -88,19 +80,17 @@ export function useTitle(
       : toValue(template).replace(/%s/g, t)
   }
 
-  stops.push(
-    watch(
-      title,
-      (t, o) => {
-        if (t !== o && document)
-          document.title = format(typeof t === 'string' ? t : '')
-      },
-      { immediate: true },
-    ),
+  watch(
+    title,
+    (t, o) => {
+      if (t !== o && document)
+        document.title = format(typeof t === 'string' ? t : '')
+    },
+    { immediate: true },
   )
 
   if ((options as any).observe && !(options as any).titleTemplate && document && !isReadonly) {
-    const observer = useMutationObserver(
+    useMutationObserver(
       document.head?.querySelector('title'),
       () => {
         if (document && document.title !== title.value)
@@ -108,7 +98,6 @@ export function useTitle(
       },
       { childList: true },
     )
-    stops.push(observer.stop)
   }
 
   tryOnBeforeUnmount(() => {
@@ -117,8 +106,6 @@ export function useTitle(
       if (restoredTitle != null && document)
         document.title = restoredTitle
     }
-
-    stopOnUnmount && stops.forEach(s => s())
   })
 
   return title
