@@ -43,13 +43,14 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
   }
 
   const lockOrientation = (type: OrientationLockType) => {
-    if (!isSupported.value)
-      return Promise.reject(new Error('Not supported'))
-    return screenOrientation.lock(type)
+    if (isSupported.value && typeof screenOrientation.lock === 'function')
+      return screenOrientation.lock(type)
+
+    return Promise.reject(new Error('Not supported'))
   }
 
   const unlockOrientation = () => {
-    if (isSupported.value)
+    if (isSupported.value && typeof screenOrientation.unlock === 'function')
       screenOrientation.unlock()
   }
 
