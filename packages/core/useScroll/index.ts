@@ -183,7 +183,7 @@ export function useScroll(
         : (target as Document)?.documentElement ?? target
     ) as HTMLElement
 
-    const { display, flexDirection }: CSSStyleDeclaration = getComputedStyle(el)
+    const { display, flexDirection } = getComputedStyle(el)
 
     const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
