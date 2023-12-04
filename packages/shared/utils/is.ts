@@ -21,13 +21,13 @@ export const rand = (min: number, max: number) => {
 }
 export const hasOwn = <T extends object, K extends keyof T>(val: T, key: K): key is K => Object.prototype.hasOwnProperty.call(val, key)
 
-export const isIpad = /* #__PURE__ */ window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent)
-
 export const isIOS = /* #__PURE__ */ getIsIOS()
 
 function getIsIOS() {
-  return isClient && /* #__PURE__ */ (
-    (window?.navigator?.userAgent && /* #__PURE__ */ /iP(ad|hone|od)/.test(/* #__PURE__ */ window.navigator.userAgent))
-    || isIpad
+  return isClient && window?.navigator?.userAgent && (
+    (/iP(ad|hone|od)/.test(window.navigator.userAgent))
+    // The new iPad Pro Gen3 does not identify itself as iPad, but as Macintosh.
+    // https://github.com/vueuse/vueuse/issues/3577
+    || (window?.navigator?.maxTouchPoints > 2 && /iPad|Macintosh/.test(window?.navigator.userAgent))
   )
 }
