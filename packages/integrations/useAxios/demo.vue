@@ -4,12 +4,6 @@ import { useAxios } from '.'
 
 const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(
   'https://jsonplaceholder.typicode.com/todos/1',
-  {},
-  {
-    onSuccess(data) {
-      console.log('onSuccess', isAborted.value, data)
-    },
-  },
 )
 const text = stringify(data)
 </script>
@@ -23,5 +17,6 @@ const text = stringify(data)
   </button>
   <note>Loading: {{ isLoading.toString() }}</note>
   <note>Finished: {{ isFinished.toString() }}</note>
+  <note>Aborted: {{ isAborted.toString() }}</note>
   <pre lang="yaml">{{ text }}</pre>
 </template>
