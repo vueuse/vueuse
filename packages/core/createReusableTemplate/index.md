@@ -23,7 +23,7 @@ It's common to have the need to reuse some part of the template. For example:
 </template>
 ```
 
-We'd like to reuse our code as much as possible. So normally we might need to extract those duplicated parts into a component. However, in a separated component you lose the ability to access the local bindings. Defining props and emits for them can be tedious sometime.
+We'd like to reuse our code as much as possible. So normally we might need to extract those duplicated parts into a component. However, in a separated component you lose the ability to access the local bindings. Defining props and emits for them can be tedious sometimes.
 
 So this function is made to provide a way for defining and reusing templates inside the component scope.
 
