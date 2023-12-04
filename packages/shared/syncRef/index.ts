@@ -8,7 +8,7 @@ type SpecificFieldPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, 
 /**
  * A = B
  */
-type Equal<A, B> = A extends B ? (B extends A ? true : false) : false
+type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false
 
 /**
  * A ∩ B ≠ ∅
