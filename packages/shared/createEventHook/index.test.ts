@@ -39,6 +39,25 @@ describe('createEventHook', () => {
     expect(timesFired).toBe(2)
   })
 
+  it('should trigger event and pass falsy values', () => {
+    let timesFired = 0
+
+    type Falsy = false | 0 | '' | null | undefined
+    const { on: onResult, trigger } = createEventHook<Falsy>()
+
+    const values: Falsy[] = [false, 0, '', null, undefined]
+    const results: Falsy[] = []
+    onResult((value: Falsy) => {
+      timesFired++
+      results.push(value)
+    })
+    for (const value of values)
+      trigger(value)
+
+    expect(timesFired).toBe(values.length)
+    expect(results).toMatchObject(values)
+  })
+
   it('should add and remove event listener', () => {
     const listener = vi.fn()
     const { on, off, trigger } = createEventHook<string>()

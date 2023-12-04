@@ -48,8 +48,8 @@ export function createEventHook<T = any>(): EventHook<T> {
     }
   }
 
-  const trigger: EventHookTrigger<T> = (param?: T) => {
-    return Promise.all(Array.from(fns).map(fn => param ? fn(param) : (fn as Callback<void>)()))
+  const trigger: EventHookTrigger<T> = (...args) => {
+    return Promise.all(Array.from(fns).map(fn => fn(...(args as [T]))))
   }
 
   return {
