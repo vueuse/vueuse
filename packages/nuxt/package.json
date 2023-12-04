@@ -25,12 +25,12 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.mts",
-      "default": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     },
     "./*": "./*"
   },
-  "main": "./index.mjs",
+  "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "peerDependencies": {

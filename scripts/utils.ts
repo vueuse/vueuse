@@ -244,20 +244,9 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       url: 'git+https://github.com/vueuse/vueuse.git',
       directory: `packages/${name}`,
     }
-    // nuxt module is ESM-only
-    if (name !== 'nuxt') {
-      packageJSON.main = './index.cjs'
-      packageJSON.types = './index.d.cts'
-      packageJSON.module = './index.mjs'
-      packageJSON.exports = {
-        '.': {
-          import: './index.mjs',
-          require: './index.cjs',
-        },
-        './*': './*',
-        ...packageJSON.exports,
-      }
-    }
+    packageJSON.main = './index.cjs'
+    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
+    packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
