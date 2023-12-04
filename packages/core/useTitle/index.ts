@@ -9,6 +9,7 @@ import { defaultDocument } from '../_configurable'
 export type UseTitleOptionsBase = {
   /**
    * Stop watching the title when unmounted
+   * @default true
    */
   stopOnUnmount?: boolean
 
@@ -70,7 +71,7 @@ export function useTitle(
   const {
     document = defaultDocument,
     restoreOnUnmount = t => t,
-    stopOnUnmount = false,
+    stopOnUnmount = true,
   } = options
   const originalTitle = document?.title ?? ''
   const stops: (Fn)[] = []
