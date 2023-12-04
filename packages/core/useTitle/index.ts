@@ -2,7 +2,6 @@ import type { Fn, MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueus
 import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
-import { currentVersion } from 'meta/versions'
 import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -115,7 +114,7 @@ export function useTitle(
   tryOnBeforeUnmount(() => {
     if (!restoreOnUnmount)
       return
-    title.value = restoreOnUnmount(originalTitle, currentVersion)
+    title.value = restoreOnUnmount(originalTitle, title.value || '')
     stopOnUnmount && stops.forEach(s => s())
   })
 
