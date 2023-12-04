@@ -112,9 +112,12 @@ export function useTitle(
   }
 
   tryOnBeforeUnmount(() => {
-    if (!restoreOnUnmount)
-      return
-    title.value = restoreOnUnmount(originalTitle, title.value || '')
+    if (restoreOnUnmount) {
+      const restoredTitle = restoreOnUnmount(originalTitle, title.value || '')
+      if (restoredTitle != null && document)
+        document.title = restoredTitle
+    }
+
     stopOnUnmount && stops.forEach(s => s())
   })
 
