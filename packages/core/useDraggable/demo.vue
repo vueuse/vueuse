@@ -13,6 +13,8 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: innerWidth / 4.2, y: 80 },
   preventDefault: true,
 })
+
+const disabled = ref(false)
 </script>
 
 <template>
@@ -20,7 +22,7 @@ const { x, y, style } = useDraggable(el, {
     <p italic op50 text-center>
       Check the floating boxes
     </p>
-    <div
+    <!-- <div
       ref="el"
       p="x-4 y-2"
       border="~ gray-800/30 rounded"
@@ -33,7 +35,7 @@ const { x, y, style } = useDraggable(el, {
       <div class="text-sm opacity-50">
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
-    </div>
+    </div> -->
 
     <Draggable
       v-slot="{ x, y }"
@@ -42,11 +44,21 @@ const { x, y, style } = useDraggable(el, {
       shadow="~ hover:lg"
       class="fixed bg-$vp-c-bg select-none cursor-move z-24"
       :initial-value="{ x: innerWidth / 3.9, y: 150 }"
-      :prevent-default="true"
+      prevent-default
       storage-key="vueuse-draggable-pos"
       storage-type="session"
+      :disabled="disabled"
     >
       Renderless component
+      <div class="text-xs">
+        <label class="checkbox">
+          <input
+            :checked="disabled" type="checkbox" name="enabled"
+            @input="($event.target as HTMLInputElement)!.checked ? disabled = true : disabled = false "
+          >
+          <span>Disabled</span>
+        </label>
+      </div>
       <div class="text-xs opacity-50">
         Position persisted in sessionStorage
       </div>
@@ -55,7 +67,7 @@ const { x, y, style } = useDraggable(el, {
       </div>
     </Draggable>
 
-    <Draggable
+    <!-- <Draggable
       v-slot="{ x, y }"
       p="x-4 y-2"
       border="~ gray-400/30 rounded"
@@ -74,6 +86,6 @@ const { x, y, style } = useDraggable(el, {
       <div class="text-sm opacity-50">
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
-    </Draggable>
+    </Draggable> -->
   </div>
 </template>
