@@ -27,6 +27,18 @@ describe('createEventHook', () => {
     expect(message).toBe('Hello World')
   })
 
+  it('should trigger event with no params', () => {
+    let timesFired = 0
+
+    const { on: onResult, trigger } = createEventHook()
+
+    onResult(() => timesFired++)
+    trigger()
+    trigger()
+
+    expect(timesFired).toBe(2)
+  })
+
   it('should add and remove event listener', () => {
     const listener = vi.fn()
     const { on, off, trigger } = createEventHook<string>()
@@ -79,6 +91,19 @@ describe('createEventHook', () => {
 
     expect(message).toBe('Hello World')
     expect(result).toEqual([2])
+  })
+
+  it('should pass union type', () => {
+    let count = 0
+
+    const { on: onResult, trigger } = createEventHook<number | string>()
+
+    // union type should be inferred
+    onResult(value => count = 2)
+    trigger(1)
+    trigger(2)
+
+    expect(count).toBe(2)
   })
 
   it('the same listener should fire only once', () => {

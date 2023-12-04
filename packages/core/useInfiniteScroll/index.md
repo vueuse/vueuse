@@ -13,7 +13,7 @@ Infinite scrolling of the element.
 import { ref } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
 
-const el = ref<HTMLElement>(null)
+const el = ref<HTMLElement | null>(null)
 const data = ref([1, 2, 3, 4, 5, 6])
 
 useInfiniteScroll(

@@ -1,6 +1,6 @@
 import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, toValue } from '@vueuse/shared'
+import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -112,6 +112,13 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
    * @default false
    */
   shallow?: boolean
+
+  /**
+   * Wait for the component to be mounted before reading the storage.
+   *
+   * @default false
+   */
+  initOnMounted?: boolean
 }
 
 export function useStorage(key: string, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
@@ -143,9 +150,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     onError = (e) => {
       console.error(e)
     },
+    initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
 
   if (!storage) {
     try {
@@ -170,11 +178,18 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   )
 
   if (window && listenToStorageChanges) {
-    useEventListener(window, 'storage', update)
-    useEventListener(window, customStorageEventName, updateFromCustomEvent)
+    tryOnMounted(() => {
+      // this should be fine since we are in a mounted hook
+      useEventListener(window, 'storage', update)
+      useEventListener(window, customStorageEventName, updateFromCustomEvent)
+      if (initOnMounted)
+        update()
+    })
   }
 
-  update()
+  // avoid reading immediately to avoid hydration mismatch when doing SSR
+  if (!initOnMounted)
+    update()
 
   return data
 
@@ -216,7 +231,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       : storage!.getItem(key)
 
     if (rawValue == null) {
-      if (writeDefaults && rawInit !== null)
+      if (writeDefaults && rawInit != null)
         storage!.setItem(key, serializer.write(rawInit))
       return rawInit
     }

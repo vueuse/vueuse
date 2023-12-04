@@ -67,7 +67,7 @@ describe('useMutationObserver', () => {
   it('should work with characterData', async () => {
     const target = document.createTextNode('123')
     const cb = vi.fn()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line ts/ban-ts-comment
     // @ts-expect-error
     useMutationObserver(target, cb, {
       characterData: true,
@@ -127,7 +127,7 @@ describe('useMutationObserver', () => {
   it('should work with characterDataOldValue', async () => {
     const target = document.createTextNode('123')
     const cb = vi.fn()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line ts/ban-ts-comment
     // @ts-expect-error
     useMutationObserver(target, cb, {
       characterData: true,
@@ -164,6 +164,27 @@ describe('useMutationObserver', () => {
     stop()
     target.setAttribute('id', 'header')
     await promiseTimeout(10)
+    expect(cb).toHaveBeenCalledTimes(1)
+  })
+
+  it('should work with takeRecords', async () => {
+    const target = document.createElement('div')
+    const cb = vi.fn()
+
+    const { takeRecords } = useMutationObserver(target, cb, {
+      attributes: true,
+    })
+
+    target.setAttribute('id', 'footer')
+    await promiseTimeout(10)
+    expect(cb).toHaveBeenCalledTimes(1)
+
+    target.setAttribute('id', 'header')
+    const records = takeRecords()
+
+    await promiseTimeout(10)
+    expect(records).toHaveLength(1)
+    expect(records![0].target).toBe(target)
     expect(cb).toHaveBeenCalledTimes(1)
   })
 })

@@ -61,6 +61,7 @@ export function useDrauu(
     dasharray: undefined,
     fill: 'transparent',
     mode: 'draw',
+    ...options?.brush,
   })
 
   watch(brush, () => {
@@ -116,7 +117,9 @@ export function useDrauu(
           onChangedHook.trigger()
         }),
       ]
-    }, { flush: 'post' })
+    },
+    { flush: 'post' },
+  )
 
   tryOnScopeDispose(() => cleanup())
 

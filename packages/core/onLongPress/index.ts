@@ -63,6 +63,12 @@ export function onLongPress(
     once: options?.modifiers?.once,
   }
 
-  useEventListener(elementRef, 'pointerdown', onDown, listenerOptions)
-  useEventListener(elementRef, ['pointerup', 'pointerleave'], clear, listenerOptions)
+  const cleanup = [
+    useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
+    useEventListener(elementRef, ['pointerup', 'pointerleave'], clear, listenerOptions),
+  ]
+
+  const stop = () => cleanup.forEach(fn => fn())
+
+  return stop
 }
