@@ -469,7 +469,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         response.value = fetchResponse
         statusCode.value = fetchResponse.status
 
-        responseData = await fetchResponse[config.type]()
+        responseData = await fetchResponse.clone()[config.type]()
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
