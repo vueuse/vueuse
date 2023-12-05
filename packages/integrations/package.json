@@ -152,9 +152,9 @@
   "devDependencies": {
     "@types/nprogress": "^0.2.3",
     "@types/qrcode": "^1.5.5",
-    "@types/sortablejs": "^1.15.5",
+    "@types/sortablejs": "^1.15.7",
     "async-validator": "^4.2.5",
-    "axios": "^1.6.1",
+    "axios": "^1.6.2",
     "change-case": "^4.1.2",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
@@ -163,7 +163,7 @@
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
-    "sortablejs": "^1.15.0",
+    "sortablejs": "^1.15.1",
     "universal-cookie": "^6.1.1"
   }
 }

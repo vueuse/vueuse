@@ -20,7 +20,9 @@
 
 @media (min-width: 720px) {
   .demo {
-    --width: calc(100vw - var(--sidebar-width) - var(--scrollbar-width)) !important;
+    --width: calc(
+      100vw - var(--sidebar-width) - var(--scrollbar-width)
+    ) !important;
     --content-width: min(48rem, var(--width)) !important;
     --margin-left: calc(
       calc(calc(var(--content-width) - var(--width)) / 2) - 1.5rem
@@ -36,7 +38,7 @@
 
 .demo {
   p {
-    margin: 0.5rem 0 ;
+    margin: 0.5rem 0;
   }
 
   button {
@@ -93,7 +95,6 @@
     opacity: 0.8;
   }
 
-
   textarea {
     display: block;
     min-width: 20rem;
@@ -112,7 +113,9 @@
     background: var(--vp-c-bg-soft);
   }
 
-  input[type='text'], input[type='search'], input[type='number'] {
+  input[type='text'],
+  input[type='search'],
+  input[type='number'] {
     display: block;
     font-size: 0.9rem;
     padding: 0.5em 1em 0.4em 1em;
@@ -187,7 +190,6 @@
     background: var(--vp-c-bg);
   }
 }
-
 
 html.dark .demo {
   .resizer {

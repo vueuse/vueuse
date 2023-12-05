@@ -6,7 +6,7 @@ related: useThrottleFn
 # useDebounceFn
 
 Debounce execution of a function.
->
+
 > Debounce is an overloaded waiter: if you keep asking him your requests will be ignored until you stop and give him some time to think about your latest inquiry.
 
 ## Usage
@@ -71,6 +71,7 @@ debouncedRequest()
 // calling it again will cancel the previous request and gets rejected
 setTimeout(debouncedRequest, 500)
 ```
+
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)

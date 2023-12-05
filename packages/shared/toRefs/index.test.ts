@@ -58,7 +58,7 @@ describe('toRefs', () => {
 
   it('should work correctly with writable computed objects', () => {
     const spy = vi.fn()
-    const obj = computed<{ a: string; b: number }>({
+    const obj = computed<{ a: string, b: number }>({
       get() {
         return { a: 'a', b: 0 }
       },

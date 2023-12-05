@@ -17,7 +17,7 @@ html.dark {
 
 #app a:focus-visible,
 #app button:focus-visible,
-#app input[type="checkbox"]:focus-visible {
+#app input[type='checkbox']:focus-visible {
   --at-apply: outline-1 outline-primary ring-2 ring-primary;
 }
 

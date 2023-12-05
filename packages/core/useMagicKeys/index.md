@@ -146,7 +146,7 @@ By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to us
 const keys = useMagicKeys({ reactive: true })
 ```
 
-```html
+```vue
 <template>
   <div v-if="keys.shift">
     You are holding the Shift key!

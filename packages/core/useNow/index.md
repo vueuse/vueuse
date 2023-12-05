@@ -20,10 +20,16 @@ const { now, pause, resume } = useNow({ controls: true })
 
 ## Component Usage
 
-```html
-<UseNow v-slot="{ now, pause, resume }">
-  Now: {{ now }}
-  <button @click="pause()">Pause</button>
-  <button @click="resume()">Resume</button>
-</UseNow>
+```vue
+<template>
+  <UseNow v-slot="{ now, pause, resume }">
+    Now: {{ now }}
+    <button @click="pause()">
+      Pause
+    </button>
+    <button @click="resume()">
+      Resume
+    </button>
+  </UseNow>
+</template>
 ```

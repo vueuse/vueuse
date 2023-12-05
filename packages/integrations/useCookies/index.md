@@ -10,7 +10,7 @@ Wrapper for [`universal-cookie`](https://www.npmjs.com/package/universal-cookie)
 When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nuxt's built-in [`useCookie()`](https://v3.nuxtjs.org/api/composables/use-cookie). Use explicit import if you want to use the function from VueUse.
 :::
 
-## Install 
+## Install
 
 ```bash
 npm i universal-cookie
@@ -20,30 +20,34 @@ npm i universal-cookie
 
 ### Common usage
 
-```html
+```vue
+<script>
+import { defineComponent } from 'vue'
+import { useCookies } from '@vueuse/integrations/useCookies'
+
+export default defineComponent({
+  setup() {
+    const cookies = useCookies(['locale'])
+    return {
+      cookies,
+    }
+  },
+})
+</script>
+
 <template>
   <div>
     <strong>locale</strong>: {{ cookies.get('locale') }}
     <hr>
     <pre>{{ cookies.getAll() }}</pre>
-    <button @click="cookies.set('locale', 'ru-RU')">Russian</button>
-    <button @click="cookies.set('locale', 'en-US')">English</button>
+    <button @click="cookies.set('locale', 'ru-RU')">
+      Russian
+    </button>
+    <button @click="cookies.set('locale', 'en-US')">
+      English
+    </button>
   </div>
 </template>
-
-<script>
-  import { defineComponent } from 'vue'
-  import { useCookies } from '@vueuse/integrations/useCookies'
-
-  export default defineComponent({
-    setup() {
-      const cookies = useCookies(['locale'])
-      return {
-        cookies,
-      }
-    },
-  })
-</script>
 ```
 
 ## Options

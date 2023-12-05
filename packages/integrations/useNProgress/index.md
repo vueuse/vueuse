@@ -6,7 +6,7 @@ category: '@Integrations'
 
 Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress).
 
-## Install 
+## Install
 
 ```bash
 npm i nprogress

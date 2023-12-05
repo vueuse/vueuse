@@ -8,13 +8,7 @@ Tracks the visibility of an element within the viewport.
 
 ## Usage
 
-```html
-<template>
-  <div ref="target">
-    <h1>Hello world</h1>
-  </div>
-</template>
-
+```vue
 <script>
 import { ref } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
@@ -28,22 +22,30 @@ export default {
       target,
       targetIsVisible,
     }
-  }
+  },
 }
 </script>
+
+<template>
+  <div ref="target">
+    <h1>Hello world</h1>
+  </div>
+</template>
 ```
 
 ## Component Usage
 
-```html
-<UseElementVisibility v-slot="{ isVisible }">
-  Is Visible: {{ isVisible }}
-</UseElementVisibility>
+```vue
+<template>
+  <UseElementVisibility v-slot="{ isVisible }">
+    Is Visible: {{ isVisible }}
+  </UseElementVisibility>
+</template>
 ```
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { vElementVisibility } from '@vueuse/components'

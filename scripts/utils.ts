@@ -125,7 +125,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
         continue
 
       const desc = description ? ` — ${description}` : ''
-      list += `  - [\`${name}\`](${docs})${desc}\n`
+      list += `- [\`${name}\`](${docs})${desc}\n`
     }
     list += '\n'
   }

@@ -62,7 +62,7 @@ describe('useElementVisibility', () => {
     it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {
       const isVisible = useElementVisibility(el)
       const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean; time: number }[]) => {
+      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean, time: number }[]) => {
         callback?.(entries as IntersectionObserverEntry[], {} as IntersectionObserver)
       }
 

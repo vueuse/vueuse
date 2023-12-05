@@ -14,7 +14,7 @@ npm i drauu
 
 ## Usage
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { toRefs } from '@vueuse/core'
@@ -26,6 +26,6 @@ const { color, size } = toRefs(brush)
 </script>
 
 <template>
-  <svg ref="target"></svg>
+  <svg ref="target" />
 </template>
 ```

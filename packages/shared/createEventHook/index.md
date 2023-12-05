@@ -8,8 +8,8 @@ Utility for creating event hooks
 
 ## Usage
 
-
 Creating a function that uses `createEventHook`
+
 ```ts
 import { createEventHook } from '@vueuse/core'
 
@@ -29,7 +29,8 @@ export function useMyFetch(url) {
 ```
 
 Using a function that uses `createEventHook`
-```html
+
+```vue
 <script setup lang="ts">
 import { useMyFetch } from './my-fetch-function'
 
