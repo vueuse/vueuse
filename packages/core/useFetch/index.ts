@@ -8,7 +8,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
-  isFinished: Ref<boolean>
+  isFinished: ComputedRef<boolean>
 
   /**
    * The statusCode of the HTTP fetch response
@@ -33,7 +33,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the request is currently being fetched.
    */
-  isFetching: Ref<boolean>
+  isFetching: ComputedRef<boolean>
 
   /**
    * Indicates if the fetch request is able to be aborted
@@ -528,12 +528,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished,
+    isFinished: computed(() => isFinished.value),
     statusCode,
     response,
     error,
     data,
-    isFetching,
+    isFetching: computed(() => isFetching.value),
     canAbort,
     aborted,
     abort,
