@@ -15,12 +15,12 @@ html.dark {
   padding: 3px 0 !important;
 }
 
-.vp-doc a:has(>code) {
+.vp-doc a:has(> code) {
   text-decoration: none;
   color: var(--vp-c-brand-1);
 }
 
-.vp-doc a:has(>code):hover {
+.vp-doc a:has(> code):hover {
   text-decoration: underline;
 }
 
