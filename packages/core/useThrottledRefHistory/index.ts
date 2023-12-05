@@ -4,7 +4,7 @@ import type { Ref } from 'vue-demi'
 import type { UseRefHistoryOptions, UseRefHistoryReturn } from '../useRefHistory'
 import { useRefHistory } from '../useRefHistory'
 
-export type UseThrottledRefHistoryOptions<Raw, Serialized = Raw> = Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeRef<number>; trailing?: boolean }
+export type UseThrottledRefHistoryOptions<Raw, Serialized = Raw> = Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { throttle?: MaybeRef<number>, trailing?: boolean }
 
 export type UseThrottledRefHistoryReturn<Raw, Serialized = Raw> = UseRefHistoryReturn<Raw, Serialized>
 

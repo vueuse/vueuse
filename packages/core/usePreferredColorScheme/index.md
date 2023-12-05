@@ -16,8 +16,10 @@ const preferredColor = usePreferredColorScheme()
 
 ## Component Usage
 
-```html
-<UsePreferredColorScheme v-slot="{ colorScheme }">
-  Preferred Color Scheme: {{ colorScheme }}
-</UsePreferredColorScheme>
+```vue
+<template>
+  <UsePreferredColorScheme v-slot="{ colorScheme }">
+    Preferred Color Scheme: {{ colorScheme }}
+  </UsePreferredColorScheme>
+</template>
 ```

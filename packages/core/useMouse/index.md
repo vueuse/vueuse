@@ -41,9 +41,11 @@ const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })
 
 ## Component Usage
 
-```html
-<UseMouse v-slot="{ x, y }">
-  x: {{ x }}
-  y: {{ y }}
-</UseMouse>
+```vue
+<template>
+  <UseMouse v-slot="{ x, y }">
+    x: {{ x }}
+    y: {{ y }}
+  </UseMouse>
+</template>
 ```

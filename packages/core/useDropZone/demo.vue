@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useDropZone, useEventListener } from '@vueuse/core'
 
-const filesData = ref<{ name: string; size: number; type: string; lastModified: number }[]>([])
-const imageFilesData = ref<{ name: string; size: number; type: string; lastModified: number }[]>([])
+const filesData = ref<{ name: string, size: number, type: string, lastModified: number }[]>([])
+const imageFilesData = ref<{ name: string, size: number, type: string, lastModified: number }[]>([])
 
 function onDrop(files: File[] | null) {
   filesData.value = []

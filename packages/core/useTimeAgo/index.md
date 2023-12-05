@@ -16,10 +16,12 @@ const timeAgo = useTimeAgo(new Date(2021, 0, 1))
 
 ## Component Usage
 
-```html
-<UseTimeAgo v-slot="{ timeAgo }" :time="new Date(2021, 0, 1)">
-  Time Ago: {{ timeAgo }}
-</UseTimeAgo>
+```vue
+<template>
+  <UseTimeAgo v-slot="{ timeAgo }" :time="new Date(2021, 0, 1)">
+    Time Ago: {{ timeAgo }}
+  </UseTimeAgo>
+</template>
 ```
 
 ## Non-Reactivity Usage

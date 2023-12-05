@@ -20,7 +20,7 @@ export const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
-  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.mts`)
+  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
   if (!fs.existsSync(typingFilepath))
     return
@@ -125,7 +125,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
         continue
 
       const desc = description ? ` — ${description}` : ''
-      list += `  - [\`${name}\`](${docs})${desc}\n`
+      list += `- [\`${name}\`](${docs})${desc}\n`
     }
     list += '\n'
   }
@@ -137,7 +137,7 @@ export function replacer(code: string, value: string, key: string, insert: 'head
   const END = `<!--${key}_ENDS-->`
   const regex = new RegExp(`${START}[\\s\\S]*?${END}`, 'im')
 
-  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`
+  const target = value ? `${START}\n\n${value.trim()}\n\n${END}` : `${START}${END}`
 
   if (!code.match(regex)) {
     if (insert === 'none')
@@ -182,8 +182,8 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
-      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
-        stringifyFunctions(functions.filter(i => i.package === name), false)}`
+      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n\n${description?.trim()}\n\n${
+        stringifyFunctions(functions.filter(i => i.package === name), false)}`.trim()
     })
     .join('\n')
 
