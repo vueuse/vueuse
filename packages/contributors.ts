@@ -19,7 +19,7 @@ export interface CoreTeam {
 const contributorsAvatars: Record<string, string> = {}
 
 function getAvatarUrl(name: string) {
-  return `https://github.com/${name}.png`
+  return `https://avatars.githubusercontent.com/${name}?v=4`
 }
 
 const contributorList = (contributors as string[]).reduce((acc, name) => {

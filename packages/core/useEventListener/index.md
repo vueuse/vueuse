@@ -27,10 +27,14 @@ useEventListener(element, 'keydown', (e) => {
 })
 ```
 
-```html
+```vue
 <template>
-  <div v-if="cond" ref="element">Div1</div>
-  <div v-else ref="element">Div2</div>
+  <div v-if="cond" ref="element">
+    Div1
+  </div>
+  <div v-else ref="element">
+    Div2
+  </div>
 </template>
 ```
 

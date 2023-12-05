@@ -141,7 +141,7 @@ function toggleSort(method: string) {
     <input v-model="search" class="w-full" type="text" role="search" placeholder="Search...">
   </div>
   <div h="1px" bg="$vp-c-divider" m="b-4" />
-  <div flex="~ col" gap="2" class="relative" p="t-5">
+  <div flex="~ col gap-3" class="relative" p="t-5">
     <div v-if="hasFilters" class="transition mb-2 opacity-60 absolute -top-3 right-0 z-10">
       <button class="select-button flex gap-1 items-center !px-2 !py-1" @click="resetFilters()">
         <i i-carbon-filter-remove />

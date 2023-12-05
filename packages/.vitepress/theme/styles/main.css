@@ -15,9 +15,18 @@ html.dark {
   padding: 3px 0 !important;
 }
 
+.vp-doc a:has(> code) {
+  text-decoration: none;
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc a:has(> code):hover {
+  text-decoration: underline;
+}
+
 #app a:focus-visible,
 #app button:focus-visible,
-#app input[type="checkbox"]:focus-visible {
+#app input[type='checkbox']:focus-visible {
   --at-apply: outline-1 outline-primary ring-2 ring-primary;
 }
 

@@ -20,10 +20,16 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
 
 ## Component Usage
 
-```html
-<UseTimestamp v-slot="{ timestamp, pause, resume }">
-  Current Time: {{ timestamp }}
-  <button @click="pause()">Pause</button>
-  <button @click="resume()">Resume</button>
-</UseTimestamp>
+```vue
+<template>
+  <UseTimestamp v-slot="{ timestamp, pause, resume }">
+    Current Time: {{ timestamp }}
+    <button @click="pause()">
+      Pause
+    </button>
+    <button @click="resume()">
+      Resume
+    </button>
+  </UseTimestamp>
+</template>
 ```

@@ -52,6 +52,7 @@ const { pause, resume } = pausableWatch(
 ```
 
 **flush option (default: `'pre'`)**
+
 - `'pre'`: buffers invalidated effects in the same 'tick' and flushes them before rendering
 - `'post'`: async like 'pre' but fires after component updates so you can access the updated DOM
 - `'sync'`: forces the effect to always trigger synchronously

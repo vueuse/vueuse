@@ -10,7 +10,7 @@ Creates an URL for the provided `File`, `Blob`, or `MediaSource` via [URL.create
 
 ## Usage
 
-```html
+```vue
 <script setup>
 import { useObjectUrl } from '@vueuse/core'
 import { shallowRef } from 'vue'
@@ -18,13 +18,13 @@ import { shallowRef } from 'vue'
 const file = shallowRef()
 const url = useObjectUrl(file)
 
-const onFileChange = (event) => {
+function onFileChange(event) {
   file.value = event.target.files[0]
 }
 </script>
 
 <template>
-  <input type="file" @change="onFileChange" />
+  <input type="file" @change="onFileChange">
 
   <a :href="url">Open file</a>
 </template>
@@ -32,7 +32,7 @@ const onFileChange = (event) => {
 
 ## Component Usage
 
-```html
+```vue
 <template>
   <UseObjectUrl v-slot="url" :object="file">
     <a :href="url">Open file</a>
