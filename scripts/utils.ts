@@ -185,7 +185,7 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
       return `## ${display} - [\`@vueuse/${name}\`](${docs})\n\n${description?.trim()}\n\n${
         stringifyFunctions(functions.filter(i => i.package === name), false)}`.trim()
     })
-    .join('\n')
+    .join('\n\n')
 
   mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
 
