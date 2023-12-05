@@ -16,11 +16,13 @@ html.dark {
 }
 
 .vp-doc a:has(>code) {
-  text-decoration-style: dashed;
-  text-underline-offset: 5px;
-  text-decoration-color: var(--vp-c-brand-soft);
+  text-decoration: none;
+  color: var(--vp-c-brand-1);
 }
 
+.vp-doc a:has(>code):hover {
+  text-decoration: underline;
+}
 
 #app a:focus-visible,
 #app button:focus-visible,

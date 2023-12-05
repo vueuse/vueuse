@@ -4,8 +4,8 @@
 
 :root {
   --vp-c-brand-1: #44bd87;
-  --vp-c-brand-2: #3ecf7a;
-  --vp-c-brand-3: #2e8f5c;
+  --vp-c-brand-2: #249252;
+  --vp-c-brand-3: #19633b;
   --vp-c-brand-soft: #69e8af50;
 
   --vp-c-text-code: #5d6f5d;
@@ -29,6 +29,8 @@
   --vp-custom-block-tip-bg: #44bd8705;
   --vp-custom-block-tip-text: #44bd87;
   --vp-custom-block-tip-border: #44bd8730;
+
+  --vp-code-color: #729772;
 }
 
 .dark {
