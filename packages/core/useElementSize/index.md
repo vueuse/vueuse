@@ -8,14 +8,7 @@ Reactive size of an HTML element. [ResizeObserver MDN](https://developer.mozilla
 
 ## Usage
 
-```html
-<template>
-  <div ref="el">
-    Height: {{ height }}
-    Width: {{ width }}
-  </div>
-</template>
-
+```vue
 <script>
 import { ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
@@ -33,22 +26,31 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div ref="el">
+    Height: {{ height }}
+    Width: {{ width }}
+  </div>
+</template>
 ```
 
 ## Component Usage
 
-```html
-<UseElementSize v-slot="{ width, height }">
-  Width: {{ width }}
-  Height: {{ height }}
-</UseElementSize>
+```vue
+<template>
+  <UseElementSize v-slot="{ width, height }">
+    Width: {{ width }} Height: {{ height }}
+  </UseElementSize>
+</template>
 ```
+
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { vElementSize } from '@vueuse/components'
-function onResize({ width, height }: { width: number; height: number }) {
+function onResize({ width, height }: { width: number, height: number }) {
   console.log(width, height)
 }
 </script>
@@ -56,6 +58,6 @@ function onResize({ width, height }: { width: number; height: number }) {
 <template>
   <textarea v-element-size="onResize" />
   <!-- with options -->
-  <textarea v-element-size="[onResize, {width:100,height:100}, {'box':'content-box'} ]" />
+  <textarea v-element-size="[onResize, { width: 100, height: 100 }, { box: 'content-box' }]" />
 </template>
 ```

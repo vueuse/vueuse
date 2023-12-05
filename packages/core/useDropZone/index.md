@@ -8,7 +8,7 @@ Create a zone where files can be dropped.
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
 

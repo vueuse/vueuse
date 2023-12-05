@@ -27,18 +27,20 @@ const source = ref([
 const { content, copy, copied, isSupported } = useClipboardItems({ source })
 ```
 
-```html
-<div v-if="isSupported">
-  <button @click='copy(source)'>
-    <!-- by default, `copied` will be reset in 1.5s -->
-    <span v-if='!copied'>Copy</span>
-    <span v-else>Copied!</span>
-  </button>
-  <p>
-    Current copied: <code>{{ text || 'none' }}</code>
+```vue
+<template>
+  <div v-if="isSupported">
+    <button @click="copy(source)">
+      <!-- by default, `copied` will be reset in 1.5s -->
+      <span v-if="!copied">Copy</span>
+      <span v-else>Copied!</span>
+    </button>
+    <p>
+      Current copied: <code>{{ text || 'none' }}</code>
+    </p>
+  </div>
+  <p v-else>
+    Your browser does not support Clipboard API
   </p>
-</div>
-<p v-else>
-  Your browser does not support Clipboard API
-</p>
+</template>
 ```

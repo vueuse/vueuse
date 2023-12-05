@@ -8,7 +8,7 @@ Wrapper for [`sortable`](https://github.com/SortableJS/Sortable).
 
 For more information on what options can be passed, see [`Sortable.options`](https://github.com/SortableJS/Sortable#options) in the `Sortable` documentation.
 
-## Install 
+## Install
 
 ```bash
 npm i sortablejs

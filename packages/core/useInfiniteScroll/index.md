@@ -8,7 +8,7 @@ Infinite scrolling of the element.
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
@@ -37,7 +37,7 @@ useInfiniteScroll(
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { vInfiniteScroll } from '@vueuse/components'
@@ -58,7 +58,7 @@ function onLoadMore() {
   </div>
 
   <!-- with options -->
-  <div v-infinite-scroll="[onLoadMore, { 'distance' : 10 }]">
+  <div v-infinite-scroll="[onLoadMore, { distance: 10 }]">
     <div v-for="item in data" :key="item">
       {{ item }}
     </div>

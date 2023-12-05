@@ -16,9 +16,11 @@ const { width, height } = useWindowSize()
 
 ## Component Usage
 
-```html
-<UseWindowSize v-slot="{ width, height }">
-  Width: {{ width }}
-  Height: {{ height }}
-</UseWindowSize>
+```vue
+<template>
+  <UseWindowSize v-slot="{ width, height }">
+    Width: {{ width }}
+    Height: {{ height }}
+  </UseWindowSize>
+</template>
 ```

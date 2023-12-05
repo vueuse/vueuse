@@ -10,7 +10,7 @@ Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/e
 
 > Due to how the Gamepad API works, you must interact with the page using the gamepad before it will be detected.
 
-```html
+```vue
 <script setup>
 import { computed } from 'vue'
 import { useGamepad } from '@vueuse/core'
@@ -22,7 +22,7 @@ const gamepad = computed(() => gamepads.find(g => g.mapping === 'standard'))
 <template>
   <span>
     {{ gamepad.id }}
-  <span>
+  </span>
 </template>
 ```
 
@@ -87,7 +87,7 @@ To make the Gamepad API easier to use, we provide mappings to map a controller t
 
 #### Xbox360 Controller
 
-```html
+```vue
 <script setup>
 import { mapGamepadToXbox360Controller } from '@vueuse/core'
 

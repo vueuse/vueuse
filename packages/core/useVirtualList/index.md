@@ -8,7 +8,7 @@ category: Component
 Consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead, if you are looking for more features.
 :::
 
-Create virtual lists with ease. Virtual lists (sometimes called [*virtual scrollers*](https://vue-virtual-scroller-demo.netlify.app/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
+Create virtual lists with ease. Virtual lists (sometimes called [_virtual scrollers_](https://vue-virtual-scroller-demo.netlify.app/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
 
 ## Usage
 
@@ -29,9 +29,9 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 ### Config
 
 | State      | Type     | Description                                                                                     |
-|------------|----------|-------------------------------------------------------------------------------------------------|
-| itemHeight | `number` | ensure that the total height of the `wrapper` element is calculated correctly.*                 |
-| itemWidth  | `number` | ensure that the total width of the `wrapper` element is calculated correctly.*                  |
+| ---------- | -------- | ----------------------------------------------------------------------------------------------- |
+| itemHeight | `number` | ensure that the total height of the `wrapper` element is calculated correctly.\*                |
+| itemWidth  | `number` | ensure that the total width of the `wrapper` element is calculated correctly.\*                 |
 | overscan   | `number` | number of pre-rendered DOM nodes. Prevents whitespace between items if you scroll very quickly. |
 
 \* The `itemHeight` or `itemWidth` must be kept in sync with the height of each row rendered. If you are seeing extra whitespace or jitter when scrolling to the bottom of the list, ensure the `itemHeight` or `itemWidth` is the same height as the row.
@@ -54,10 +54,12 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 )
 ```
 
-```html
+```vue
 <template>
   <p>Showing {{ isEven ? 'even' : 'odd' }} items</p>
-  <button @click="toggle">Toggle Even/Odd</button>
+  <button @click="toggle">
+    Toggle Even/Odd
+  </button>
   <div v-bind="containerProps" style="height: 300px">
     <div v-bind="wrapperProps">
       <div v-for="item in list" :key="item.index" style="height: 22px">
@@ -83,7 +85,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 )
 ```
 
-```html
+```vue
 <template>
   <div v-bind="containerProps" style="height: 300px">
     <div v-bind="wrapperProps">
@@ -97,13 +99,17 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ## Component Usage
 
-```html
-<UseVirtualList :list="list" :options="options" height="300px">
-  <template #="props">
-    <!-- you can get current item of list here -->
-    <div style="height: 22px">Row {{ props.data }}</div>
-  </template>
-</UseVirtualList>
+```vue
+<template>
+  <UseVirtualList :list="list" :options="options" height="300px">
+    <template #default="props">
+      <!-- you can get current item of list here -->
+      <div style="height: 22px">
+        Row {{ props.data }}
+      </div>
+    </template>
+  </UseVirtualList>
+</template>
 ```
 
 To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.
