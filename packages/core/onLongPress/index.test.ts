@@ -115,7 +115,7 @@ describe('onLongPress', () => {
     pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true, clientX: 20, clientY: 20 })
     const moveWithinThresholdEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 17, clientY: 25 })
     const moveOutsideThresholdEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 4, clientY: 30 })
-    onLongPress(isRef ? element : element.value, onLongPressCallback, { threshold: 15, delay: 1000 })
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { distanceThreshold: 15, delay: 1000 })
     // first pointer down
     element.value.dispatchEvent(pointerdownEvent)
 
@@ -149,7 +149,7 @@ describe('onLongPress', () => {
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
-      it('should not tirgger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+      it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
       it('should stop propagation', () => stopPropagation(isRef))
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
