@@ -96,7 +96,7 @@ export interface UseDraggableOptions {
    *
    * @default false
    */
-  disabled?: boolean
+  disabled?: MaybeRefOrGetter<boolean>
 }
 
 /**
@@ -123,8 +123,9 @@ export function useDraggable(
     draggingElement = defaultWindow,
     containerElement,
     handle: draggingHandle = target,
-    disabled = false,
+    disabled,
   } = options
+
   const position = ref<Position>(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
@@ -145,7 +146,7 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
-    if (disabled || !filterEvent(e))
+    if (toValue(disabled) || !filterEvent(e))
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
@@ -163,7 +164,7 @@ export function useDraggable(
     handleEvent(e)
   }
   const move = (e: PointerEvent) => {
-    if (disabled || !filterEvent(e))
+    if (toValue(disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
       return
@@ -190,7 +191,7 @@ export function useDraggable(
     handleEvent(e)
   }
   const end = (e: PointerEvent) => {
-    if (disabled || !filterEvent(e))
+    if (toValue(disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
       return

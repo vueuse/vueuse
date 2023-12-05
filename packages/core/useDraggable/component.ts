@@ -39,6 +39,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
   setup(props, { slots }) {
     const target = ref()
     const handle = computed(() => props.handle ?? target.value)
+    const disabled = computed(() => !!props.disabled)
     const storageValue = props.storageKey && useStorage(
       props.storageKey,
       toValue(props.initialValue) || { x: 0, y: 0 },
@@ -62,6 +63,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
       handle,
       initialValue,
       onEnd,
+      disabled,
     }))
 
     return () => {
