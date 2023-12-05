@@ -15,8 +15,11 @@ const visibility = useDocumentVisibility()
 ```
 
 ## Component Usage
-```html
-<UseDocumentVisibility v-slot="{ visibility }">
-  Document Visibility: {{ visibility }}
-</UseDocumentVisibility>
+
+```vue
+<template>
+  <UseDocumentVisibility v-slot="{ visibility }">
+    Document Visibility: {{ visibility }}
+  </UseDocumentVisibility>
+</template>
 ```

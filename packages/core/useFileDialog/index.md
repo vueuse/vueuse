@@ -21,8 +21,10 @@ onChange((files) => {
 })
 ```
 
-```html
+```vue
 <template>
-  <button type="button" @click="open">Choose file</button>
+  <button type="button" @click="open">
+    Choose file
+  </button>
 </template>
 ```

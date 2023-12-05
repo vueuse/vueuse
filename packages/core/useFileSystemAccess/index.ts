@@ -65,9 +65,9 @@ interface FileSystemWritableFileStream extends WritableStream {
  */
 interface FileSystemWritableFileStreamWrite {
   (data: string | BufferSource | Blob): Promise<void>
-  (options: { type: 'write'; position: number; data: string | BufferSource | Blob }): Promise<void>
-  (options: { type: 'seek'; position: number }): Promise<void>
-  (options: { type: 'truncate'; size: number }): Promise<void>
+  (options: { type: 'write', position: number, data: string | BufferSource | Blob }): Promise<void>
+  (options: { type: 'seek', position: number }): Promise<void>
+  (options: { type: 'truncate', size: number }): Promise<void>
 }
 
 /**

@@ -49,10 +49,9 @@ export const useGlobalState = createGlobalState(
 )
 ```
 
-
 ### With Persistence
 
-Store in `localStorage` with `useStorage()`:
+Store in `localStorage` with `useStorage`:
 
 ```js
 // store.js

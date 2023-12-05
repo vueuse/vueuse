@@ -20,12 +20,12 @@ describe('useElementVisibility', () => {
   })
 
   describe('when internally using useIntersectionObserver', async () => {
-    const { useIntersectionObserver } = await import('../useIntersectionObserver')
-
     beforeAll(() => {
       vi.resetAllMocks()
       vi.mock('../useIntersectionObserver')
     })
+
+    const { useIntersectionObserver } = await import('../useIntersectionObserver')
 
     it('should call useIntersectionObserver internally', () => {
       expect(useIntersectionObserver).toHaveBeenCalledTimes(0)
@@ -62,7 +62,7 @@ describe('useElementVisibility', () => {
     it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {
       const isVisible = useElementVisibility(el)
       const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean; time: number }[]) => {
+      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean, time: number }[]) => {
         callback?.(entries as IntersectionObserverEntry[], {} as IntersectionObserver)
       }
 
@@ -91,14 +91,14 @@ describe('useElementVisibility', () => {
       const mockWindow = {} as Window
 
       useElementVisibility(el, { window: mockWindow })
-      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]).toContain({ window: mockWindow })
+      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.window).toBe(mockWindow)
     })
 
     it('uses the given scrollTarget as the root element in useIntersectionObserver', () => {
       const mockScrollTarget = document.createElement('div')
 
       useElementVisibility(el, { scrollTarget: mockScrollTarget })
-      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]).toContain({ root: mockScrollTarget })
+      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.root).toBe(mockScrollTarget)
     })
   })
 })

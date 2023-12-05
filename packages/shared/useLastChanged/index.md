@@ -24,7 +24,6 @@ console.log(lastChanged.value) // 0
 
 By default the change is recorded on the next tick (`watch()` with `flush: 'post'`). If you want to record the change immediately, pass `flush: 'sync'` as the second argument.
 
-
 ```ts
 import { useLastChanged } from '@vueuse/core'
 

@@ -6,7 +6,7 @@ category: '@Integrations'
 
 Wrapper for [`async-validator`](https://github.com/yiminghe/async-validator).
 
-## Install 
+## Install
 
 ```bash
 npm i async-validator

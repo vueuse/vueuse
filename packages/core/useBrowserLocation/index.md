@@ -18,7 +18,7 @@ const location = useBrowserLocation()
 
 ## Component Usage
 
-```html
+```vue
 <UseBrowserLocation v-slot="{ location }">
   Browser Location: {{ location }}
 </UseBrowserLocation>

@@ -10,10 +10,10 @@ Reactive `env(safe-area-inset-*)`
 
 ## Usage
 
-In order to make the page to be fully rendered in the screen, the additional attribute `viewport-fit=cover` within  `viewport` meta tag must be set firstly, the viewport meta tag may look like this:
+In order to make the page to be fully rendered in the screen, the additional attribute `viewport-fit=cover` within `viewport` meta tag must be set firstly, the viewport meta tag may look like this:
 
 ```html
-<meta name='viewport' content='initial-scale=1, viewport-fit=cover'>
+<meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
 ```
 
 Then we could use `useScreenSafeArea` in the component as shown below:
@@ -33,6 +33,10 @@ For further details, you may refer to this documentation: [Designing Websites fo
 
 ## Component Usage
 
-```html
-<UseScreenSafeArea top right bottom left>content</UseScreenSafeArea>
+```vue
+<template>
+  <UseScreenSafeArea top right bottom left>
+    content
+  </UseScreenSafeArea>
+</template>
 ```

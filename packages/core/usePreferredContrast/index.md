@@ -16,8 +16,10 @@ const preferredContrast = usePreferredContrast()
 
 ## Component Usage
 
-```html
-<UsePreferredContrast v-slot="{ contrast }">
-  Preferred Contrast: {{ contrast }}
-</UsePreferredContrast>
+```vue
+<template>
+  <UsePreferredContrast v-slot="{ contrast }">
+    Preferred Contrast: {{ contrast }}
+  </UsePreferredContrast>
+</template>
 ```

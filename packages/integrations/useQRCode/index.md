@@ -6,7 +6,7 @@ category: '@Integrations'
 
 Wrapper for [`qrcode`](https://github.com/soldair/node-qrcode).
 
-## Install 
+## Install
 
 ```bash
 npm i qrcode
@@ -32,6 +32,6 @@ const qrcode = useQRCode(text)
 ```
 
 ```html
-<input v-model="text" type="text">
+<input v-model="text" type="text" />
 <img :src="qrcode" alt="QR Code" />
 ```

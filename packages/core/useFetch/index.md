@@ -5,7 +5,7 @@ category: Network
 # useFetch
 
 Reactive [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides the ability to abort requests, intercept requests before
-they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options. 
+they are fired, automatically refetch requests when the url changes, and create your own `useFetch` with predefined options.
 
 <CourseLink href="https://vueschool.io/lessons/vueuse-utilities-usefetch-and-reactify?friend=vueuse">Learn useFetch with this FREE video lesson from Vue School!</CourseLink>
 
@@ -26,6 +26,7 @@ const { isFetching, error, data } = useFetch(url)
 ```
 
 ### Asynchronous Usage
+
 `useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
 it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Official Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
 
