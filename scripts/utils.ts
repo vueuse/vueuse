@@ -137,7 +137,7 @@ export function replacer(code: string, value: string, key: string, insert: 'head
   const END = `<!--${key}_ENDS-->`
   const regex = new RegExp(`${START}[\\s\\S]*?${END}`, 'im')
 
-  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`
+  const target = value ? `${START}\n\n${value.trim()}\n\n${END}` : `${START}${END}`
 
   if (!code.match(regex)) {
     if (insert === 'none')

@@ -3,12 +3,10 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-c-accent: #35495e;
-  --vp-c-brand: #44bd87;
-  --vp-c-brand-light: #55da9e;
-  --vp-c-brand-dark: #2e8f5c;
-  --vp-c-brand-active: #3ecf7a;
-  --vp-c-brand-lighter: #69e8af;
+  --vp-c-brand-1: #44bd87;
+  --vp-c-brand-2: #3ecf7a;
+  --vp-c-brand-3: #2e8f5c;
+  --vp-c-brand-soft: #69e8af50;
 
   --vp-c-text-code: #5d6f5d;
 

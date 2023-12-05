@@ -15,6 +15,13 @@ html.dark {
   padding: 3px 0 !important;
 }
 
+.vp-doc a:has(>code) {
+  text-decoration-style: dashed;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--vp-c-brand-soft);
+}
+
+
 #app a:focus-visible,
 #app button:focus-visible,
 #app input[type='checkbox']:focus-visible {

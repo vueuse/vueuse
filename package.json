@@ -103,7 +103,7 @@
     "vite": "^5.0.5",
     "vite-plugin-inspect": "^0.8.1",
     "vite-plugin-pwa": "^0.17.3",
-    "vitepress": "1.0.0-rc.4",
+    "vitepress": "^1.0.0-rc.31",
     "vitest": "^1.0.1",
     "vue": "^3.3.8",
     "vue2": "npm:vue@^2.7.14"

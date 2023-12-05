@@ -21,7 +21,9 @@ watch(activeElement, (el) => {
 ## Component Usage
 
 ```vue
-<UseActiveElement v-slot="{ element }">
-  Active element is {{ element.dataset.id }}
-</UseActiveElement>
+<template>
+  <UseActiveElement v-slot="{ element }">
+    Active element is {{ element.dataset.id }}
+  </UseActiveElement>
+</template>
 ```
