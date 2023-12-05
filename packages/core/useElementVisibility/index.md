@@ -9,21 +9,12 @@ Tracks the visibility of an element within the viewport.
 ## Usage
 
 ```vue
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
 
-export default {
-  setup() {
-    const target = ref(null)
-    const targetIsVisible = useElementVisibility(target)
-
-    return {
-      target,
-      targetIsVisible,
-    }
-  },
-}
+const target = ref(null)
+const targetIsVisible = useElementVisibility(target)
 </script>
 
 <template>
@@ -46,7 +37,7 @@ export default {
 ## Directive Usage
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 import { vElementVisibility } from '@vueuse/components'
 
