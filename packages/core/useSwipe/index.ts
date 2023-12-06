@@ -108,7 +108,7 @@ export function useSwipe(
     coordsEnd.y = y
   }
 
-  let listenerOptions: { passive?: boolean; capture?: boolean }
+  let listenerOptions: { passive?: boolean, capture?: boolean }
 
   const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
 
@@ -147,8 +147,7 @@ export function useSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'touchend', onTouchEnd, listenerOptions),
-    useEventListener(target, 'touchcancel', onTouchEnd, listenerOptions),
+    useEventListener(target, ['touchend', 'touchcancel'], onTouchEnd, listenerOptions),
   ]
 
   const stop = () => stops.forEach(s => s())

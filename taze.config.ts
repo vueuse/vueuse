@@ -6,7 +6,9 @@ export default defineConfig({
     'rxjs',
     'electron',
     'msw',
-    'eslint', // eslint 8.40.0 is buggy
+    'vue2',
+    // TODO: migrate
+    'vitepress',
   ],
   packageMode: {
     vue: 'minor',

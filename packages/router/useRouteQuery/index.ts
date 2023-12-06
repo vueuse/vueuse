@@ -1,10 +1,12 @@
-import type { Ref } from 'vue-demi'
-import { customRef, nextTick } from 'vue-demi'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { useRoute, useRouter } from 'vue-router'
+import type { Router } from 'vue-router'
+import type { Ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
-const _cache = new WeakMap()
+const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
   name: string
@@ -15,7 +17,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
@@ -24,7 +26,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
@@ -34,35 +36,65 @@ export function useRouteQuery<
     transform = value => value as any as K,
   } = options
 
-  if (!_cache.has(route))
-    _cache.set(route, new Map())
+  if (!_queue.has(router))
+    _queue.set(router, new Map())
 
-  const _query: Map<string, any> = _cache.get(route)
+  const _queriesQueue = _queue.get(router)!
+
+  let query = route.query[name] as any
 
   tryOnScopeDispose(() => {
-    _query.delete(name)
+    query = undefined
   })
 
-  _query.set(name, route.query[name])
+  let _trigger: () => void
 
-  return customRef<any>((track, trigger) => ({
-    get() {
-      track()
+  const proxy = customRef<any>((track, trigger) => {
+    _trigger = trigger
 
-      const data = _query.get(name) ?? defaultValue
-      return transform(data as T)
-    },
-    set(v) {
-      _query.set(name, (v === defaultValue || v === null) ? undefined : v)
+    return {
+      get() {
+        track()
 
-      trigger()
+        return transform(query !== undefined ? query : toValue(defaultValue))
+      },
+      set(v) {
+        if (query === v)
+          return
 
-      nextTick(() => {
-        router[toValue(mode)]({
-          ...route,
-          query: { ...route.query, ...Object.fromEntries(_query.entries()) },
+        query = v
+        _queriesQueue.set(name, v)
+
+        trigger()
+
+        nextTick(() => {
+          if (_queriesQueue.size === 0)
+            return
+
+          const newQueries = Object.fromEntries(_queriesQueue.entries())
+          _queriesQueue.clear()
+
+          const { params, query, hash } = route
+
+          router[toValue(mode)]({
+            params,
+            query: { ...query, ...newQueries },
+            hash,
+          })
         })
-      })
+      },
+    }
+  })
+
+  watch(
+    () => route.query[name],
+    (v) => {
+      query = v
+
+      _trigger()
     },
-  }))
+    { flush: 'sync' },
+  )
+
+  return proxy as any as Ref<K>
 }

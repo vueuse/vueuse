@@ -18,7 +18,6 @@ console.log(idle.value) // true or false
 
 Programatically resetting:
 
-
 ```js
 import { watch } from 'vue'
 import { useCounter, useIdle } from '@vueuse/core'
@@ -38,8 +37,10 @@ watch(idle, (idleValue) => {
 
 ## Component Usage
 
-```html
-<UseIdle v-slot="{ idle }" :timeout="5 * 60 * 1000">
-  Is Idle: {{ idle }}
-</UseIdle>
+```vue
+<template>
+  <UseIdle v-slot="{ idle }" :timeout="5 * 60 * 1000">
+    Is Idle: {{ idle }}
+  </UseIdle>
+</template>
 ```

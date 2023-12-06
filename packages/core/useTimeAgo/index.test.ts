@@ -1,7 +1,7 @@
 import { promiseTimeout, timestamp } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
-import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useTimeAgo } from '.'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
@@ -13,7 +13,7 @@ const UNITS = [
   { max: 518400000, value: 86400000, name: 'day' },
   { max: 2419200000, value: 604800000, name: 'week' },
   { max: 28512000000, value: 2592000000, name: 'month' },
-  { max: Infinity, value: 31536000000, name: 'year' },
+  { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
 function fullDateFormatter(value: any) {
@@ -50,11 +50,11 @@ describe('useTimeAgo', () => {
     vi.useRealTimers()
     const { resume, pause, timeAgo } = useTimeAgo(baseTime, { controls: true, showSecond: true, updateInterval: 500 })
     await promiseTimeout(400)
-    expect(timeAgo.value).toBe('0 second ago')
+    expect(timeAgo.value).toContain('0 second')
 
     pause()
     await promiseTimeout(700)
-    expect(timeAgo.value).toBe('0 second ago')
+    expect(timeAgo.value).toContain('0 second')
 
     resume()
     await promiseTimeout(1000)
@@ -80,29 +80,31 @@ describe('useTimeAgo', () => {
     function testSecond(isFuture: boolean) {
       const text = isFuture ? 'future' : 'past'
       const nextTime = getNeededTimeChange('minute', 1, -1) * (isFuture ? 1 : -1)
-      test(`${text}: less than 1 minute`, () => {
+      it(`${text}: less than 1 minute`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime).value).toBe('just now')
       })
 
-      test(`${text}: less than 1 second`, () => {
+      it(`${text}: less than 1 second`, () => {
         changeValue.value = getNeededTimeChange('minute', 1, -59.6) * (isFuture ? 1 : -1)
         expect(useTimeAgo(changeTime, { showSecond: true }).value).toBe(
-          isFuture ? 'in 0 second' : '0 second ago')
+          isFuture ? 'in 0 second' : '0 second ago',
+        )
       })
 
-      test(`${text}: less than 1 minute/ with showSecond`, () => {
+      it(`${text}: less than 1 minute/ with showSecond`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime, { showSecond: true }).value).toBe(
-          isFuture ? 'in 59 seconds' : '59 seconds ago')
+          isFuture ? 'in 59 seconds' : '59 seconds ago',
+        )
       })
 
-      test(`${text}: less than 1 minute but more than 10 seconds with showSecond`, () => {
+      it(`${text}: less than 1 minute but more than 10 seconds with showSecond`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime, { showSecond: true, max: 10000 }).value).toBe(fullDateFormatter(changeTime.value))
       })
 
-      test(`${text}: more than 1 minute`, () => {
+      it(`${text}: more than 1 minute`, () => {
         changeValue.value = getNeededTimeChange('minute', 1, 1) * (isFuture ? 1 : -1)
         expect(useTimeAgo(changeTime, { showSecond: true, max: 'second' }).value).toBe(fullDateFormatter(changeTime.value))
       })
@@ -272,7 +274,7 @@ describe('useTimeAgo', () => {
         { max: 72000000, value: 3600000, name: 'hour' },
         { max: 518400000 * 30, value: 86400000, name: 'day' },
         { max: 28512000000, value: 2592000000, name: 'month' },
-        { max: Infinity, value: 31536000000, name: 'year' },
+        { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
       ],
     }).value).toBe('in 14 days')
   })

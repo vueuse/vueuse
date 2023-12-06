@@ -1,3 +1,4 @@
+import { tryOnMounted } from '@vueuse/shared'
 import { computed, ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
@@ -14,9 +15,6 @@ export interface ElementSize {
  * Reactive size of an HTML element.
  *
  * @see https://vueuse.org/useElementSize
- * @param target
- * @param callback
- * @param options
  */
 export function useElementSize(
   target: MaybeComputedElementRef,
@@ -28,7 +26,7 @@ export function useElementSize(
   const width = ref(initialSize.width)
   const height = ref(initialSize.height)
 
-  useResizeObserver(
+  const { stop: stop1 } = useResizeObserver(
     target,
     ([entry]) => {
       const boxSize = box === 'border-box'
@@ -41,8 +39,8 @@ export function useElementSize(
         const $elem = unrefElement(target)
         if ($elem) {
           const styles = window.getComputedStyle($elem)
-          width.value = parseFloat(styles.width)
-          height.value = parseFloat(styles.height)
+          width.value = Number.parseFloat(styles.width)
+          height.value = Number.parseFloat(styles.height)
         }
       }
       else {
@@ -61,7 +59,15 @@ export function useElementSize(
     options,
   )
 
-  watch(
+  tryOnMounted(() => {
+    const ele = unrefElement(target)
+    if (ele) {
+      width.value = 'offsetWidth' in ele ? ele.offsetWidth : initialSize.width
+      height.value = 'offsetHeight' in ele ? ele.offsetHeight : initialSize.height
+    }
+  })
+
+  const stop2 = watch(
     () => unrefElement(target),
     (ele) => {
       width.value = ele ? initialSize.width : 0
@@ -69,9 +75,15 @@ export function useElementSize(
     },
   )
 
+  function stop() {
+    stop1()
+    stop2()
+  }
+
   return {
     width,
     height,
+    stop,
   }
 }
 

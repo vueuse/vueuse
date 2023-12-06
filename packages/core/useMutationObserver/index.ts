@@ -1,6 +1,6 @@
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
@@ -18,7 +18,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit, Config
  * @param options
  */
 export function useMutationObserver(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   callback: MutationCallback,
   options: UseMutationObserverOptions = {},
 ) {
@@ -46,6 +46,10 @@ export function useMutationObserver(
     { immediate: true },
   )
 
+  const takeRecords = () => {
+    return observer?.takeRecords()
+  }
+
   const stop = () => {
     cleanup()
     stopWatch()
@@ -56,6 +60,7 @@ export function useMutationObserver(
   return {
     isSupported,
     stop,
+    takeRecords,
   }
 }
 

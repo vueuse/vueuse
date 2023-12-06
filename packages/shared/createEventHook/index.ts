@@ -2,11 +2,22 @@
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
  */
+import type { IsAny } from '../utils/types'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
-export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
-export type EventHookOff<T = any> = (fn: (param: T) => void) => void
-export type EventHookTrigger<T = any> = (param: T) => Promise<unknown[]>
+// any extends void = true
+// so we need to check if T is any first
+type Callback<T> = IsAny<T> extends true
+  ? (param: any) => void
+  : (
+      [T] extends [void]
+        ? () => void
+        : (param: T) => void
+    )
+
+export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
+export type EventHookOff<T = any> = (fn: Callback<T>) => void
+export type EventHookTrigger<T = any> = (param?: T) => Promise<unknown[]>
 
 export interface EventHook<T = any> {
   on: EventHookOn<T>
@@ -20,13 +31,13 @@ export interface EventHook<T = any> {
  * @see https://vueuse.org/createEventHook
  */
 export function createEventHook<T = any>(): EventHook<T> {
-  const fns: Set<(param: T) => void> = new Set()
+  const fns: Set<Callback<T>> = new Set()
 
-  const off = (fn: (param: T) => void) => {
+  const off = (fn: Callback<T>) => {
     fns.delete(fn)
   }
 
-  const on = (fn: (param: T) => void) => {
+  const on = (fn: Callback<T>) => {
     fns.add(fn)
     const offFn = () => off(fn)
 
@@ -37,8 +48,8 @@ export function createEventHook<T = any>(): EventHook<T> {
     }
   }
 
-  const trigger = (param: T) => {
-    return Promise.all(Array.from(fns).map(fn => fn(param)))
+  const trigger: EventHookTrigger<T> = (...args) => {
+    return Promise.all(Array.from(fns).map(fn => fn(...(args as [T]))))
   }
 
   return {

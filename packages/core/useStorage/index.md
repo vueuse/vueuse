@@ -34,7 +34,7 @@ state.value = null
 
 ## Merge Defaults
 
-By default, `useStorage` will use the value from storage if it presents and ignores the default value. Be aware that when you adding more properties to the default value, the key might be undefined if client's storage does not have that key.
+By default, `useStorage` will use the value from storage if it is present and ignores the default value. Be aware that when you are adding more properties to the default value, the key might be `undefined` if client's storage does not have that key.
 
 ```ts
 localStorage.setItem('my-store', '{"hello": "hello"}')
@@ -56,8 +56,8 @@ const state = useStorage(
   { mergeDefaults: true } // <--
 )
 
-console.log(state.hello) // 'nihao', from storage
-console.log(state.greeting) // 'hello', from merged default value
+console.log(state.value.hello) // 'nihao', from storage
+console.log(state.value.greeting) // 'hello', from merged default value
 ```
 
 When setting it to true, it will perform a **shallow merge** for objects. You can pass a function to perform custom merge (e.g. deep merge), for example:

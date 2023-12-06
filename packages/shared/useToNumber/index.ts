@@ -42,7 +42,7 @@ export function useToNumber(
     let resolved = toValue(value)
     if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
-    if (nanToZero && isNaN(resolved))
+    if (nanToZero && Number.isNaN(resolved))
       resolved = 0
     return resolved
   })

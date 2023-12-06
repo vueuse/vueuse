@@ -18,6 +18,7 @@ describe('reactify', () => {
   it('two args', () => {
     const base = ref(0)
     const exponent = ref(0)
+
     const pow = reactify(Math.pow)
     const result = pow(base, exponent)
 
@@ -40,6 +41,7 @@ describe('reactify', () => {
 
   it('mixed with literal', () => {
     const base = ref(0)
+
     const pow = reactify(Math.pow)
     const result = pow(base, 2)
 
@@ -50,7 +52,7 @@ describe('reactify', () => {
     expect(result.value).toBe(100)
   })
 
-  it('JSON.stringify', () => {
+  it('jSON.stringify', () => {
     const base = ref<any>(0)
     const stringify = reactify(JSON.stringify)
     const result = stringify(base, null, 2)
@@ -62,7 +64,7 @@ describe('reactify', () => {
     expect(result.value).toBe('{\n  "foo": "bar"\n}')
   })
 
-  it('Pythagorean theorem', () => {
+  it('pythagorean theorem', () => {
     const pow = reactify(Math.pow)
     const sqrt = reactify(Math.sqrt)
     const add = reactify((a: number, b: number) => a + b)

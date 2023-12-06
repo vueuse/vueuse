@@ -141,8 +141,7 @@ export function useColorMode<T extends string = BasicColorMode>(
   const state = computed<T | BasicColorMode>(() =>
     store.value === 'auto'
       ? system.value
-      : store.value,
-  )
+      : store.value)
 
   const updateHTMLAttrs = getSSRHandler(
     'updateHTMLAttrs',
@@ -156,7 +155,8 @@ export function useColorMode<T extends string = BasicColorMode>(
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
-        style.appendChild(document.createTextNode('*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'))
+        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+        style.appendChild(document.createTextNode(styleString))
         window!.document.head.appendChild(style)
       }
 
@@ -182,7 +182,8 @@ export function useColorMode<T extends string = BasicColorMode>(
         const _ = window!.getComputedStyle(style!).opacity
         document.head.removeChild(style!)
       }
-    })
+    },
+  )
 
   function defaultOnChanged(mode: T | BasicColorMode) {
     updateHTMLAttrs(selector, attribute, modes[mode] ?? mode)

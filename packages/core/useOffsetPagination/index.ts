@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue-demi'
-import { computed, isRef, reactive, watch } from 'vue-demi'
+import { computed, isReadonly, isRef, reactive, watch } from 'vue-demi'
 import { noop, syncRef, toValue } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import { useClamp } from '../../math/useClamp'
@@ -54,7 +54,7 @@ export function useOffsetPagination(options: Omit<UseOffsetPaginationOptions, 't
 export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn
 export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOffsetPaginationReturn {
   const {
-    total = Infinity,
+    total = Number.POSITIVE_INFINITY,
     pageSize = 10,
     page = 1,
     onPageChange = noop,
@@ -62,7 +62,7 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
     onPageCountChange = noop,
   } = options
 
-  const currentPageSize = useClamp(pageSize, 1, Infinity)
+  const currentPageSize = useClamp(pageSize, 1, Number.POSITIVE_INFINITY)
 
   const pageCount = computed(() => Math.max(
     1,
@@ -74,11 +74,17 @@ export function useOffsetPagination(options: UseOffsetPaginationOptions): UseOff
   const isFirstPage = computed(() => currentPage.value === 1)
   const isLastPage = computed(() => currentPage.value === pageCount.value)
 
-  if (isRef(page))
-    syncRef(page, currentPage)
+  if (isRef(page)) {
+    syncRef(page, currentPage, {
+      direction: isReadonly(page) ? 'ltr' : 'both',
+    })
+  }
 
-  if (isRef(pageSize))
-    syncRef(pageSize, currentPageSize)
+  if (isRef(pageSize)) {
+    syncRef(pageSize, currentPageSize, {
+      direction: isReadonly(pageSize) ? 'ltr' : 'both',
+    })
+  }
 
   function prev() {
     currentPage.value--

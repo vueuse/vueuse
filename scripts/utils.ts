@@ -1,16 +1,19 @@
 import { join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'
 import Git from 'simple-git'
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import { getCategories } from '../packages/metadata/utils'
 import { packages } from '../meta/packages'
 
 export const git = Git()
 
 export const DOCS_URL = 'https://vueuse.org'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export const DIR_ROOT = resolve(__dirname, '..')
 export const DIR_SRC = resolve(__dirname, '../packages')
@@ -34,14 +37,14 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
     .replace(/export {}/g, '')
 
   const prettier = await import('prettier')
-  return prettier
+  return (await prettier
     .format(
       types,
       {
         semi: false,
         parser: 'typescript',
       },
-    )
+    ))
     .trim()
 }
 
@@ -122,7 +125,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
         continue
 
       const desc = description ? ` — ${description}` : ''
-      list += `  - [\`${name}\`](${docs})${desc}\n`
+      list += `- [\`${name}\`](${docs})${desc}\n`
     }
     list += '\n'
   }
@@ -134,7 +137,7 @@ export function replacer(code: string, value: string, key: string, insert: 'head
   const END = `<!--${key}_ENDS-->`
   const regex = new RegExp(`${START}[\\s\\S]*?${END}`, 'im')
 
-  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`
+  const target = value ? `${START}\n\n${value.trim()}\n\n${END}` : `${START}${END}`
 
   if (!code.match(regex)) {
     if (insert === 'none')
@@ -179,10 +182,10 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
-      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
-        stringifyFunctions(functions.filter(i => i.package === name), false)}`
+      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n\n${description?.trim()}\n\n${
+        stringifyFunctions(functions.filter(i => i.package === name), false)}`.trim()
     })
-    .join('\n')
+    .join('\n\n')
 
   mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
 
@@ -242,7 +245,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       directory: `packages/${name}`,
     }
     packageJSON.main = './index.cjs'
-    packageJSON.types = './index.d.ts'
+    packageJSON.types = './index.d.cts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
@@ -252,7 +255,6 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       '.': {
         import: './index.mjs',
         require: './index.cjs',
-        types: './index.d.ts',
       },
       './*': './*',
       ...packageJSON.exports,
@@ -263,15 +265,13 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         .filter(i => i.package === name)
         .forEach((i) => {
           packageJSON.exports[`./${i.name}`] = {
-            types: `./${i.name}.d.ts`,
-            require: `./${i.name}.cjs`,
             import: `./${i.name}.mjs`,
+            require: `./${i.name}.cjs`,
           }
           if (i.component) {
             packageJSON.exports[`./${i.name}/component`] = {
-              types: `./${i.name}/component.d.ts`,
-              require: `./${i.name}/component.cjs`,
               import: `./${i.name}/component.mjs`,
+              require: `./${i.name}/component.cjs`,
             }
           }
         })

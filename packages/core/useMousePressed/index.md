@@ -20,39 +20,28 @@ Touching is enabled by default. To make it only detects mouse changes, set `touc
 const { pressed } = useMousePressed({ touch: false })
 ```
 
-To only capture `mousedown` and `touchstart` on specific element, you can specify `target` by passing a ref of the element. 
+To only capture `mousedown` and `touchstart` on specific element, you can specify `target` by passing a ref of the element.
 
+```vue
+<script setup>
+const el = ref(null)
 
-```html {16-20}
+const { pressed } = useMousePressed({ target: el })
+</script>
+
 <template>
   <div ref="el">
     Only clicking on this element will trigger the update.
   </div>
 </template>
-
-<script>
-import { ref } from 'vue'
-import { useMousePressed } from '@vueuse/core'
-
-export default {
-  setup() {
-    const el = ref(null)
-
-    const { pressed } = useMousePressed({ target: el })
-
-    return {
-      el,
-      pressed,
-    }
-  }
-}
-</script>
 ```
 
 ## Component Usage
 
-```html
-<UseMousePressed v-slot="{ pressed }">
-  Is Pressed: {{ pressed }}
-</UseMousePressed>
+```vue
+<template>
+  <UseMousePressed v-slot="{ pressed }">
+    Is Pressed: {{ pressed }}
+  </UseMousePressed>
+</template>
 ```

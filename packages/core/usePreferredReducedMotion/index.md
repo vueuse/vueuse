@@ -16,8 +16,10 @@ const preferredMotion = usePreferredReducedMotion()
 
 ## Component Usage
 
-```html
-<UsePreferredReducedMotion v-slot="{ motion }">
-  Preferred Reduced Motion: {{ motion }}
-</UsePreferredReducedMotion>
+```vue
+<template>
+  <UsePreferredReducedMotion v-slot="{ motion }">
+    Preferred Reduced Motion: {{ motion }}
+  </UsePreferredReducedMotion>
+</template>
 ```

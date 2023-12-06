@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import type { Awaitable } from '@vueuse/shared'
 import type { MaybeElementRef } from './unrefElement'
 
@@ -34,7 +35,7 @@ const _global
           : {}
 
 const globalKey = '__vueuse_ssr_handlers__'
-const handlers = /*#__PURE__*/ getHandlers()
+const handlers = /* #__PURE__ */ getHandlers()
 
 function getHandlers() {
   if (!(globalKey in _global))

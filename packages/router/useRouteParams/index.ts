@@ -1,11 +1,12 @@
-import type { Ref } from 'vue-demi'
-import { customRef, nextTick } from 'vue-demi'
-import type { RouteParamValueRaw } from 'vue-router'
+import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 
-const _cache = new WeakMap()
+const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteParams(
   name: string
@@ -16,7 +17,7 @@ export function useRouteParams<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
@@ -25,7 +26,7 @@ export function useRouteParams<
   K = T,
 >(
   name: string,
-  defaultValue?: T,
+  defaultValue?: MaybeRefOrGetter<T>,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
@@ -35,32 +36,68 @@ export function useRouteParams<
     transform = value => value as any as K,
   } = options
 
-  if (!_cache.has(route))
-    _cache.set(route, new Map())
+  if (!_queue.has(router))
+    _queue.set(router, new Map())
 
-  const _params: Map<string, any> = _cache.get(route)
+  const _paramsQueue = _queue.get(router)!
+
+  let param = route.params[name] as any
 
   tryOnScopeDispose(() => {
-    _params.delete(name)
+    param = undefined
   })
 
-  _params.set(name, route.params[name])
+  let _trigger: () => void
 
-  return customRef<any>((track, trigger) => ({
-    get() {
-      track()
+  const proxy = customRef<any>((track, trigger) => {
+    _trigger = trigger
 
-      const data = _params.get(name) ?? defaultValue
-      return transform(data as T)
+    return {
+      get() {
+        track()
+
+        return transform(param !== undefined ? param : toValue(defaultValue))
+      },
+      set(v) {
+        if (param === v)
+          return
+
+        param = v
+        _paramsQueue.set(name, v)
+
+        trigger()
+
+        nextTick(() => {
+          if (_paramsQueue.size === 0)
+            return
+
+          const newParams = Object.fromEntries(_paramsQueue.entries())
+          _paramsQueue.clear()
+
+          const { params, query, hash } = route
+
+          router[toValue(mode)]({
+            params: {
+              ...params,
+              ...newParams,
+            },
+            query,
+            hash,
+          } as LocationAsRelativeRaw)
+        })
+      },
+    }
+  })
+
+  watch(
+    () => route.params[name],
+    (v) => {
+      param = v
+
+      _trigger()
     },
-    set(v) {
-      _params.set(name, (v === defaultValue || v === null) ? undefined : v)
+    { flush: 'sync' },
+  )
 
-      trigger()
-
-      nextTick(() => {
-        router[toValue(mode)]({ ...route, params: { ...route.params, ...Object.fromEntries(_params.entries()) } })
-      })
-    },
-  }))
+  return proxy as Ref<K>
 }

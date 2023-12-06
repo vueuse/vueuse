@@ -16,8 +16,10 @@ const isDark = usePreferredDark()
 
 ## Component Usage
 
-```html
-<UsePreferredDark v-slot="{ prefersDark }">
-  Prefers Dark: {{ prefersDark }}
-</UsePreferredDark>
+```vue
+<template>
+  <UsePreferredDark v-slot="{ prefersDark }">
+    Prefers Dark: {{ prefersDark }}
+  </UsePreferredDark>
+</template>
 ```

@@ -19,12 +19,14 @@ export interface UseImageOptions {
   loading?: HTMLImageElement['loading']
   /** Image CORS settings */
   crossorigin?: string
+  /** Referrer policy for fetch https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy */
+  referrerPolicy?: HTMLImageElement['referrerPolicy']
 }
 
 async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image()
-    const { src, srcset, sizes, class: clazz, loading, crossorigin } = options
+    const { src, srcset, sizes, class: clazz, loading, crossorigin, referrerPolicy } = options
 
     img.src = src
 
@@ -43,6 +45,9 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
     if (crossorigin)
       img.crossOrigin = crossorigin
 
+    if (referrerPolicy)
+      img.referrerPolicy = referrerPolicy
+
     img.onload = () => resolve(img)
     img.onerror = reject
   })
@@ -55,8 +60,7 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
  * @param options Image attributes, as used in the <img> tag
  * @param asyncStateOptions
  */
-export function useImage<Shallow extends true>(options: MaybeRefOrGetter<UseImageOptions>,
-  asyncStateOptions: UseAsyncStateOptions<Shallow> = {}) {
+export function useImage<Shallow extends true>(options: MaybeRefOrGetter<UseImageOptions>, asyncStateOptions: UseAsyncStateOptions<Shallow> = {}) {
   const state = useAsyncState<HTMLImageElement | undefined>(
     () => loadImage(toValue(options)),
     undefined,

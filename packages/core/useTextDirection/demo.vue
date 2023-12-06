@@ -9,8 +9,7 @@ const dir = useTextDirection({
 const text = computed(() =>
   dir.value === 'ltr'
     ? 'This paragraph is in English and correctly goes left to right.'
-    : 'This paragraph is in English but incorrectly goes right to left.',
-)
+    : 'This paragraph is in English but incorrectly goes right to left.')
 
 function handleOnClick() {
   dir.value = dir.value === 'rtl' ? 'ltr' : 'rtl'

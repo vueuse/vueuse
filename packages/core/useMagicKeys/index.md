@@ -111,8 +111,7 @@ import { logicAnd } from '@vueuse/math'
 const activeElement = useActiveElement()
 const notUsingInput = computed(() =>
   activeElement.value?.tagName !== 'INPUT'
-  && activeElement.value?.tagName !== 'TEXTAREA',
-)
+  && activeElement.value?.tagName !== 'TEXTAREA',)
 
 const { tab } = useMagicKeys()
 
@@ -131,7 +130,6 @@ const { ctrl_s } = useMagicKeys({
   onEventFired(e) {
     if (e.ctrlKey && e.key === 's' && e.type === 'keydown')
       e.preventDefault()
-
   },
 })
 
@@ -148,7 +146,7 @@ By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to us
 const keys = useMagicKeys({ reactive: true })
 ```
 
-```html
+```vue
 <template>
   <div v-if="keys.shift">
     You are holding the Shift key!

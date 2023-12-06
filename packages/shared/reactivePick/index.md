@@ -38,12 +38,13 @@ const state = reactivePick(source, (value, key) => key !== 'bar' && value !== tr
 // { foo: string, baz: string }
 source.qux = false
 // { foo: string, baz: string, qux: boolean }
-````
+```
+
 ### Scenarios
 
 #### Selectively passing props to child
 
-```html
+```vue
 <script setup>
 import { reactivePick } from '@vueuse/core'
 

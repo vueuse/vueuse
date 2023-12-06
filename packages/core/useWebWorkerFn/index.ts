@@ -33,8 +33,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
-  options: UseWebWorkerOptions = {}) {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
     timeout,
@@ -43,7 +42,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
 
   const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void })>({})
+  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
   const timeoutId = ref<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
@@ -84,7 +83,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
 
     newWorker.onerror = (e: ErrorEvent) => {
       const { reject = () => {} } = promise.value
-
+      e.preventDefault()
       reject(e)
       workerTerminate('ERROR')
     }
@@ -98,16 +97,15 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T,
     return newWorker
   }
 
-  const callWorker = (...fnArgs: Parameters<T>) =>
-    new Promise<ReturnType<T>>((resolve, reject) => {
-      promise.value = {
-        resolve,
-        reject,
-      }
-      worker.value && worker.value.postMessage([[...fnArgs]])
+  const callWorker = (...fnArgs: Parameters<T>) => new Promise<ReturnType<T>>((resolve, reject) => {
+    promise.value = {
+      resolve,
+      reject,
+    }
+    worker.value && worker.value.postMessage([[...fnArgs]])
 
-      workerStatus.value = 'RUNNING'
-    })
+    workerStatus.value = 'RUNNING'
+  })
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {

@@ -1,7 +1,7 @@
 import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
-import { nextTick } from 'vue-demi'
+import { isRef, nextTick } from 'vue-demi'
 
 export interface UseSortableReturn {
   /**
@@ -12,6 +12,14 @@ export interface UseSortableReturn {
    * destroy sortable instance
    */
   stop: () => void
+
+  /**
+   * Options getter/setter
+   * @param name a Sortable.Options property.
+   * @param value a value.
+   */
+  option<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]): void
+  option<K extends keyof Sortable.Options>(name: K): Sortable.Options[K]
 }
 
 export type UseSortableOptions = Options & ConfigurableDocument
@@ -31,7 +39,7 @@ export function useSortable<T>(
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
-  let sortable: Sortable
+  let sortable: Sortable | undefined
 
   const { document = defaultDocument, ...resetOptions } = options
 
@@ -43,18 +51,28 @@ export function useSortable<T>(
 
   const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    if (!target)
+    if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
 
-  const stop = () => sortable?.destroy()
+  const stop = () => {
+    sortable?.destroy()
+    sortable = undefined
+  }
+
+  const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
+    if (value !== undefined)
+      sortable?.option(name, value)
+    else
+      return sortable?.option(name)
+  }
 
   tryOnMounted(start)
 
   tryOnScopeDispose(stop)
 
-  return { stop, start }
+  return { stop, start, option }
 }
 
 export function moveArrayElement<T>(
@@ -62,9 +80,17 @@ export function moveArrayElement<T>(
   from: number,
   to: number,
 ): void {
-  const array = toValue(list)
+  const _valueIsRef = isRef(list)
+  // When the list is a ref, make a shallow copy of it to avoid repeatedly triggering side effects when moving elements
+  const array = _valueIsRef ? [...toValue(list)] : toValue(list)
+
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
-    nextTick(() => array.splice(to, 0, element))
+    nextTick(() => {
+      array.splice(to, 0, element)
+      // When list is ref, assign array to list.value
+      if (_valueIsRef)
+        list.value = array
+    })
   }
 }

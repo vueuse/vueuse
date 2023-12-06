@@ -28,11 +28,12 @@ const {
 
 You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#Properties).
 
-
 ## Component Usage
 
-```html
-<UseDeviceMotion v-slot="{ acceleration }">
-  Acceleration: {{ acceleration }}
-</UseDeviceMotion>
+```vue
+<template>
+  <UseDeviceMotion v-slot="{ acceleration }">
+    Acceleration: {{ acceleration }}
+  </UseDeviceMotion>
+</template>
 ```

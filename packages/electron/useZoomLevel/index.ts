@@ -20,8 +20,8 @@ export function useZoomLevel(...args: any[]): Ref<number> {
 
   if (
     args.length === 0
-        || (isRef(args[0]) && typeof args[0].value === 'number')
-        || typeof args[0] === 'number'
+    || (isRef(args[0]) && typeof args[0].value === 'number')
+    || typeof args[0] === 'number'
   ) {
     webFrame = window.require ? window.require('electron').webFrame : undefined
     newLevel = args.length > 0 ? ref(args[0]) : null
@@ -41,7 +41,9 @@ export function useZoomLevel(...args: any[]): Ref<number> {
     (f, o) => {
       if (typeof f === 'number' && f !== o)
         webFrame?.setZoomLevel(f)
-    }, { immediate: true })
+    },
+    { immediate: true },
+  )
 
   return level
 }

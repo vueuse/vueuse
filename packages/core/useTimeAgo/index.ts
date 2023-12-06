@@ -86,7 +86,7 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
   { max: 518400000, value: 86400000, name: 'day' },
   { max: 2419200000, value: 604800000, name: 'week' },
   { max: 28512000000, value: 2592000000, name: 'month' },
-  { max: Infinity, value: 31536000000, name: 'year' },
+  { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
 const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
@@ -129,7 +129,6 @@ export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extend
  * Reactive time ago formatter.
  *
  * @see https://vueuse.org/useTimeAgo
- * @param options
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>

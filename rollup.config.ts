@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import { resolve } from 'node:path'
+import { createRequire } from 'node:module'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
@@ -8,8 +9,9 @@ import { PluginPure as pure } from 'rollup-plugin-pure'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { functions } from '@vueuse/metadata'
-import { packages } from '../meta/packages'
+import { packages } from './meta/packages'
 
+const require = createRequire(import.meta.url)
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
 
@@ -42,7 +44,7 @@ function esbuildMinifer(options: ESBuildOptions) {
   }
 }
 
-for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target } of packages) {
+for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, target = 'es2018' } of packages) {
   if (build === false)
     continue
 
@@ -129,10 +131,11 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
     if (dts !== false) {
       configs.push({
         input,
-        output: {
-          file: `packages/${name}/dist/${fn}.d.ts`,
-          format: 'es',
-        },
+        output: [
+          { file: `packages/${name}/dist/${fn}.d.cts` },
+          { file: `packages/${name}/dist/${fn}.d.mts` },
+          { file: `packages/${name}/dist/${fn}.d.ts` }, // for node10 compatibility
+        ],
         plugins: [
           pluginDts,
         ],
@@ -168,10 +171,11 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
 
       configs.push({
         input: `packages/${name}/${fn}/component.ts`,
-        output: {
-          file: `packages/${name}/dist/${fn}/component.d.ts`,
-          format: 'es',
-        },
+        output: [
+          { file: `packages/${name}/dist/${fn}/component.d.cts` },
+          { file: `packages/${name}/dist/${fn}/component.d.mts` },
+          { file: `packages/${name}/dist/${fn}/component.d.ts` }, // for node10 compatibility
+        ],
         plugins: [
           pluginDts,
         ],

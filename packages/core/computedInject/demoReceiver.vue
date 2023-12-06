@@ -3,7 +3,7 @@ import type { InjectionKey, Ref } from 'vue-demi'
 import { defineComponent, ref } from 'vue-demi'
 import { computedInject } from '.'
 
-type OptionsRef = Ref<{ key: number; value: string }[]>
+type OptionsRef = Ref<{ key: number, value: string }[]>
 
 export const ArrayKey: InjectionKey<OptionsRef> = Symbol('array')
 

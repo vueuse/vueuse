@@ -4,11 +4,10 @@ import { useIdle, useTimestamp } from '@vueuse/core'
 
 const { idle, lastActive } = useIdle(5000)
 
-const now = useTimestamp()
+const now = useTimestamp({ interval: 1000 })
 
 const idledFor = computed(() =>
-  Math.floor((now.value - lastActive.value) / 1000),
-)
+  Math.floor((now.value - lastActive.value) / 1000))
 </script>
 
 <template>

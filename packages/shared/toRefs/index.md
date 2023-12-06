@@ -9,7 +9,7 @@ Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also acc
 ## Usage
 
 <!-- eslint-disable array-bracket-spacing -->
-<!-- eslint-disable @typescript-eslint/no-redeclare -->
+<!-- eslint-disable ts/no-redeclare -->
 
 ```ts
 import { toRefs } from '@vueuse/core'
@@ -19,27 +19,20 @@ const objRef = ref({ a: 'a', b: 0 })
 const arrRef = ref(['a', 0])
 
 const { a, b } = toRefs(objRef)
-const [ a, b ] = toRefs(arrRef)
+const [a, b] = toRefs(arrRef)
 
 const obj = reactive({ a: 'a', b: 0 })
 const arr = reactive(['a', 0])
 
 const { a, b } = toRefs(obj)
-const [ a, b ] = toRefs(arr)
+const [a, b] = toRefs(arr)
 ```
 
 ## Use-cases
 
 ### Destructuring a props object
 
-```html
-<template>
-  <div>
-    <input v-model="a" type="text" />
-    <input v-model="b" type="text" />
-  </div>
-</template>
-
+```vue
 <script lang="ts">
 import { toRefs, useVModel } from '@vueuse/core'
 
@@ -54,4 +47,11 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div>
+    <input v-model="a" type="text">
+    <input v-model="b" type="text">
+  </div>
+</template>
 ```

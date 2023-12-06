@@ -4,11 +4,11 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, ref } from 'vue-demi'
-import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { usePermission } from '../usePermission'
 
 export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
@@ -62,15 +62,16 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     legacy = false,
   } = options
 
-  const events = ['copy', 'cut']
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
+  const permissionRead = usePermission('clipboard-read')
+  const permissionWrite = usePermission('clipboard-write')
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    if (isClipboardApiSupported.value) {
+    if (isClipboardApiSupported.value && permissionRead.value !== 'denied') {
       navigator!.clipboard.readText().then((value) => {
         text.value = value
       })
@@ -80,14 +81,12 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     }
   }
 
-  if (isSupported.value && read) {
-    for (const event of events)
-      useEventListener(event as WindowEventName, updateText)
-  }
+  if (isSupported.value && read)
+    useEventListener(['copy', 'cut'], updateText)
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value)
+      if (isClipboardApiSupported.value && permissionWrite.value !== 'denied')
         await navigator!.clipboard.writeText(value)
       else
         legacyCopy(value)

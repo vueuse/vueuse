@@ -157,7 +157,7 @@ describe('useVModel', () => {
     expect(dataE.value).toBe('default-data')
   })
 
-  it('Should work with classes', async () => {
+  it('should work with classes', async () => {
     const emitMock = vi.fn()
 
     class SomeClass {

@@ -67,6 +67,12 @@ describe('useDateFormat', () => {
   it('should work with MMMM DD YYYY', () => {
     expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMMM DD YYYY', { locales: 'en-US' }).value).toBe('January 01 2022')
   })
+  it('should work with Mo Do Yo', () => {
+    expect(useDateFormat(new Date('2022-01-01 15:05:05'), 'MMMM Do Yo', { locales: 'en-US' }).value).toBe('January 1st 2022nd')
+    expect(useDateFormat(new Date('2022-12-11 15:05:05'), 'MMMM Do Yo', { locales: 'en-US' }).value).toBe('December 11th 2022nd')
+    expect(useDateFormat(new Date('2023-12-12 15:05:05'), 'MMMM Do Yo', { locales: 'en-US' }).value).toBe('December 12th 2023rd')
+    expect(useDateFormat(new Date('2024-12-23 15:05:05'), 'MMMM Do Yo', { locales: 'en-US' }).value).toBe('December 23rd 2024th')
+  })
 
   describe('meridiem', () => {
     it.each([
@@ -80,9 +86,12 @@ describe('useDateFormat', () => {
       { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss AA', expected: '03:05:05 P.M.' },
       { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss a', expected: '03:05:05 pm' },
       { dateStr: '2022-01-01 15:05:05', formatStr: 'hh:mm:ss aa', expected: '03:05:05 p.m.' },
-    ])('should work with $formatStr', ({ dateStr, formatStr, expected }) => {
-      expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
-    })
+    ])(
+      'should work with $formatStr',
+      ({ dateStr, formatStr, expected }) => {
+        expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
+      },
+    )
 
     const customMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
       const m = hours > 11 ? (isLowercase ? 'μμ' : 'ΜΜ') : (isLowercase ? 'πμ' : 'ΠΜ')
@@ -103,5 +112,10 @@ describe('useDateFormat', () => {
     ])('should work with custom meridiem with $formatStr', ({ dateStr, formatStr, expected }) => {
       expect(useDateFormat(new Date(dateStr), formatStr, { customMeridiem }).value).toBe(expected)
     })
+  })
+
+  it('formatDate', () => {
+    expect(formatDate(new Date('Sun Jul 30 2023 21:15:42 GMT+0800'), 'd'))
+      .toMatchInlineSnapshot('"0"')
   })
 })

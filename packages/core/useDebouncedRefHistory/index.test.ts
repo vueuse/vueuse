@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { useDebouncedRefHistory } from '.'
 
 describe('useDebouncedRefHistory', () => {
-  it('Once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async () => {
+  it('once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async () => {
     const v = ref(0)
 
     const { history } = useDebouncedRefHistory(v, { debounce: 10 })

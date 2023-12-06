@@ -15,7 +15,7 @@ function accurateMultiply(value: number, power: number): number {
 
   if (value > 0 && valueStr.includes('.')) {
     const decimalPlaces = valueStr.split('.')[1].length
-    const multiplier = 10 ** decimalPlaces ?? 1
+    const multiplier = 10 ** decimalPlaces
 
     return (value * multiplier * power) / multiplier
   }

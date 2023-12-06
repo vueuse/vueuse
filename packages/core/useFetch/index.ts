@@ -164,6 +164,13 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
+   * Allow update the `data` ref when fetch error whenever provided, or mutated in the `onFetchError` callback
+   *
+   * @default false
+   */
+  updateDataOnError?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -178,7 +185,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any; response: Response | null; error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -211,7 +218,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -314,8 +321,20 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}
-  let options: UseFetchOptions = { immediate: true, refetch: false, timeout: 0 }
-  interface InternalConfig { method: HttpMethod; type: DataType; payload: unknown; payloadType?: string }
+  let options: UseFetchOptions = {
+    immediate: true,
+    refetch: false,
+    timeout: 0,
+    updateDataOnError: false,
+  }
+
+  interface InternalConfig {
+    method: HttpMethod
+    type: DataType
+    payload: unknown
+    payloadType?: string
+  }
+
   const config: InternalConfig = {
     method: 'GET',
     type: 'text' as DataType,
@@ -378,6 +397,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   if (timeout)
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
+  let executeCounter = 0
+
   const execute = async (throwOnFailed = false) => {
     abort()
 
@@ -386,6 +407,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     statusCode.value = null
     aborted.value = false
 
+    executeCounter += 1
+    const currentExecuteCounter = executeCounter
+
     const defaultFetchOptions: RequestInit = {
       method: config.method,
       headers: {},
@@ -393,10 +417,15 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
     if (config.payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
+      const payload = toValue(config.payload)
+      // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
+      // The only case we can deduce the content type and `fetch` can't
+      if (!config.payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype && !(payload instanceof FormData))
+        config.payloadType = 'json'
+
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      const payload = toValue(config.payload)
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
         : payload as BodyInit
@@ -425,57 +454,67 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     if (timer)
       timer.start()
 
-    return new Promise<Response | null>((resolve, reject) => {
-      fetch(
-        context.url,
-        {
-          ...defaultFetchOptions,
-          ...context.options,
-          headers: {
-            ...headersToObject(defaultFetchOptions.headers),
-            ...headersToObject(context.options?.headers),
-          },
+    return fetch(
+      context.url,
+      {
+        ...defaultFetchOptions,
+        ...context.options,
+        headers: {
+          ...headersToObject(defaultFetchOptions.headers),
+          ...headersToObject(context.options?.headers),
         },
-      )
-        .then(async (fetchResponse) => {
-          response.value = fetchResponse
-          statusCode.value = fetchResponse.status
+      },
+    )
+      .then(async (fetchResponse) => {
+        response.value = fetchResponse
+        statusCode.value = fetchResponse.status
 
-          responseData = await fetchResponse[config.type]()
+        responseData = await fetchResponse.clone()[config.type]()
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok) {
-            data.value = initialData || null
-            throw new Error(fetchResponse.statusText)
-          }
+        // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+        if (!fetchResponse.ok) {
+          data.value = initialData || null
+          throw new Error(fetchResponse.statusText)
+        }
 
-          if (options.afterFetch)
-            ({ data: responseData } = await options.afterFetch({ data: responseData, response: fetchResponse }))
+        if (options.afterFetch) {
+          ({ data: responseData } = await options.afterFetch({
+            data: responseData,
+            response: fetchResponse,
+          }))
+        }
+        data.value = responseData
+
+        responseEvent.trigger(fetchResponse)
+        return fetchResponse
+      })
+      .catch(async (fetchError) => {
+        let errorData = fetchError.message || fetchError.name
+
+        if (options.onFetchError) {
+          ({ error: errorData, data: responseData } = await options.onFetchError({
+            data: responseData,
+            error: fetchError,
+            response: response.value,
+          }))
+        }
+
+        error.value = errorData
+        if (options.updateDataOnError)
           data.value = responseData
 
-          responseEvent.trigger(fetchResponse)
-          return resolve(fetchResponse)
-        })
-        .catch(async (fetchError) => {
-          let errorData = fetchError.message || fetchError.name
-
-          if (options.onFetchError)
-            ({ error: errorData } = await options.onFetchError({ data: responseData, error: fetchError, response: response.value }))
-          error.value = errorData
-
-          errorEvent.trigger(fetchError)
-          if (throwOnFailed)
-            return reject(fetchError)
-
-          return resolve(null)
-        })
-        .finally(() => {
+        errorEvent.trigger(fetchError)
+        if (throwOnFailed)
+          throw fetchError
+        return null
+      })
+      .finally(() => {
+        if (currentExecuteCounter === executeCounter)
           loading(false)
-          if (timer)
-            timer.stop()
-          finallyEvent.trigger(null)
-        })
-    })
+        if (timer)
+          timer.stop()
+        finallyEvent.trigger(null)
+      })
   }
 
   const refetch = toRef(options.refetch)
@@ -537,12 +576,6 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             { deep: true },
           )
         }
-
-        const rawPayload = toValue(config.payload)
-        // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
-        // The only case we can deduce the content type and `fetch` can't
-        if (!payloadType && rawPayload && Object.getPrototypeOf(rawPayload) === Object.prototype && !(rawPayload instanceof FormData))
-          config.payloadType = 'json'
 
         return {
           ...shell,

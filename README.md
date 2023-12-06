@@ -45,7 +45,7 @@ export default {
     // tracks mouse position
     const { x, y } = useMouse()
 
-    // is user prefers dark theme
+    // if user prefers dark theme
     const isDark = usePreferredDark()
 
     // persist state in localStorage
@@ -86,8 +86,9 @@ npm i @vueuse/core
 
 ### CDN
 
-```html
+```vue
 <script src="https://unpkg.com/@vueuse/shared"></script>
+
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 
@@ -95,7 +96,7 @@ It will be exposed to global as `window.VueUse`
 
 ## 🪴 Project Activity
 
-![Alt](https://repobeats.axiom.co/api/embed/a406ba7461a6a087dbdb14d4395046c948d44c51.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/a406ba7461a6a087dbdb14d4395046c948d44c51.svg 'Repobeats analytics image')
 
 ## 🧱 Contribute
 

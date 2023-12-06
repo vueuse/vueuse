@@ -59,7 +59,8 @@ export function useStyleTag(
   const isLoaded = ref(false)
 
   const {
-    document = defaultDocument, immediate = true,
+    document = defaultDocument,
+    immediate = true,
     manual = false,
     id = `vueuse_styletag_${++_id}`,
   } = options
@@ -74,7 +75,6 @@ export function useStyleTag(
     const el = (document.getElementById(id) || document.createElement('style')) as HTMLStyleElement
 
     if (!el.isConnected) {
-      el.type = 'text/css'
       el.id = id
       if (options.media)
         el.media = options.media

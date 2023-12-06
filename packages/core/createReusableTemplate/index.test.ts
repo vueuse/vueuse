@@ -64,6 +64,22 @@ describe.skipIf(isVue2)('createReusableTemplate', () => {
     expect(wrapper.text()).toBe('{"msg":"Foo"}{"msg":"Bar"}')
   })
 
+  it('attrs', () => {
+    const [DefineFoo, ReuseFoo] = createReusableTemplate()
+
+    const wrapper = mount({
+      render() {
+        return h(Fragment, null, [
+          h(DefineFoo, () => h('div', { class: 'foo' })),
+          h(ReuseFoo, { id: 'bar', class: 'bar' }),
+        ])
+      },
+    })
+
+    expect(wrapper.get('#bar')).toBeDefined()
+    expect(wrapper.get('#bar').classes()).toEqual(['foo', 'bar'])
+  })
+
   it('slots', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate<{ msg: string }, { default: Slot }>()
 
@@ -79,5 +95,22 @@ describe.skipIf(isVue2)('createReusableTemplate', () => {
     })
 
     expect(wrapper.text()).toBe('GoodbyeHi')
+  })
+
+  it('hyphen props', () => {
+    const [DefineFoo, ReuseFoo] = createReusableTemplate<{ myMsg: string }>()
+
+    const wrapper = mount({
+      render() {
+        return h(Fragment, null, [
+          h(DefineFoo, ({ $slots, ...args }: any) => h('pre', JSON.stringify(args))),
+          h(ReuseFoo, { myMsg: 'Foo' }),
+          // @ts-expect-error Vue automatically converts hyphenized props to camelCase
+          h(ReuseFoo, { 'my-msg': 'Bar' }),
+        ])
+      },
+    })
+
+    expect(wrapper.text()).toBe('{"myMsg":"Foo"}{"myMsg":"Bar"}')
   })
 })

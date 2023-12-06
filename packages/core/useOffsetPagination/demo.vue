@@ -32,7 +32,7 @@ fetchData({
   currentPageSize: pageSize.value,
 })
 
-function fetchData({ currentPage, currentPageSize }: { currentPage: number; currentPageSize: number }) {
+function fetchData({ currentPage, currentPageSize }: { currentPage: number, currentPageSize: number }) {
   fetch(currentPage, currentPageSize).then((responseData) => {
     data.value = responseData
   })

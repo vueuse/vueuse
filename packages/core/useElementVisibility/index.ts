@@ -13,23 +13,33 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow {
  * Tracks the visibility of an element within the viewport.
  *
  * @see https://vueuse.org/useElementVisibility
- * @param element
- * @param options
  */
 export function useElementVisibility(
   element: MaybeComputedElementRef,
-  { window = defaultWindow, scrollTarget }: UseElementVisibilityOptions = {},
+  options: UseElementVisibilityOptions = {},
 ) {
+  const { window = defaultWindow, scrollTarget } = options
   const elementIsVisible = ref(false)
 
   useIntersectionObserver(
     element,
-    ([{ isIntersecting }]) => {
+    (intersectionObserverEntries) => {
+      let isIntersecting = elementIsVisible.value
+
+      // Get the latest value of isIntersecting based on the entry time
+      let latestTime = 0
+      for (const entry of intersectionObserverEntries) {
+        if (entry.time >= latestTime) {
+          latestTime = entry.time
+          isIntersecting = entry.isIntersecting
+        }
+      }
       elementIsVisible.value = isIntersecting
     },
     {
       root: scrollTarget,
       window,
+      threshold: 0,
     },
   )
 

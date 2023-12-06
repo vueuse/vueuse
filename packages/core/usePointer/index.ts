@@ -37,7 +37,7 @@ export interface UsePointerOptions extends ConfigurableWindow {
   target?: MaybeRef<EventTarget | null | undefined> | Document | Window
 }
 
-const defaultState: UsePointerState = /*#__PURE__*/ {
+const defaultState: UsePointerState = /* #__PURE__ */ {
   x: 0,
   y: 0,
   pointerId: 0,
@@ -49,7 +49,7 @@ const defaultState: UsePointerState = /*#__PURE__*/ {
   twist: 0,
   pointerType: null,
 }
-const keys = /*#__PURE__*/ Object.keys(defaultState) as (keyof UsePointerState)[]
+const keys = /* #__PURE__ */ Object.keys(defaultState) as (keyof UsePointerState)[]
 
 /**
  * Reactive pointer state.
@@ -75,9 +75,9 @@ export function usePointer(options: UsePointerOptions = {}) {
   }
 
   if (target) {
-    useEventListener(target, 'pointerdown', handler, { passive: true })
-    useEventListener(target, 'pointermove', handler, { passive: true })
-    useEventListener(target, 'pointerleave', () => isInside.value = false, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(target, ['pointerdown', 'pointermove', 'pointerup'], handler, listenerOptions)
+    useEventListener(target, 'pointerleave', () => isInside.value = false, listenerOptions)
   }
 
   return {

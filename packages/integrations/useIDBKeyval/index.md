@@ -6,7 +6,6 @@ category: '@Integrations'
 
 Wrapper for [`idb-keyval`](https://www.npmjs.com/package/idb-keyval).
 
-
 ## Install idb-keyval as a peer dependency
 
 ```bash
@@ -29,6 +28,10 @@ const flag = useIDBKeyval('my-flag', true) // returns Ref<boolean>
 
 // bind number
 const count = useIDBKeyval('my-count', 0) // returns Ref<number>
+
+// awaiting IDB transaction
+await count.set(10)
+console.log('IDB transaction finished!')
 
 // delete data from idb storage
 storedObject.value = null

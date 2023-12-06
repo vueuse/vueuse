@@ -65,9 +65,9 @@ interface FileSystemWritableFileStream extends WritableStream {
  */
 interface FileSystemWritableFileStreamWrite {
   (data: string | BufferSource | Blob): Promise<void>
-  (options: { type: 'write'; position: number; data: string | BufferSource | Blob }): Promise<void>
-  (options: { type: 'seek'; position: number }): Promise<void>
-  (options: { type: 'truncate'; size: number }): Promise<void>
+  (options: { type: 'write', position: number, data: string | BufferSource | Blob }): Promise<void>
+  (options: { type: 'seek', position: number }): Promise<void>
+  (options: { type: 'truncate', size: number }): Promise<void>
 }
 
 /**
@@ -92,8 +92,8 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
 /**
  * Create and read and write local files.
  * @see https://vueuse.org/useFileSystemAccess
- * @param options
  */
+export function useFileSystemAccess(): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Text' }): UseFileSystemAccessReturn<string>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'ArrayBuffer' }): UseFileSystemAccessReturn<ArrayBuffer>
 export function useFileSystemAccess(options: UseFileSystemAccessOptions & { dataType: 'Blob' }): UseFileSystemAccessReturn<Blob>

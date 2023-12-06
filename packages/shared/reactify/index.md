@@ -8,7 +8,7 @@ alias: createReactiveFn
 Converts plain functions into reactive functions. The converted function accepts refs as its arguments and returns a ComputedRef, with proper typing.
 
 ::: tip
-Interested to see some application or looking for some pre-reactified functions? 
+Interested to see some application or looking for some pre-reactified functions?
 
 Check out [⚗️ Vue Chemistry](https://github.com/antfu/vue-chemistry)!
 :::
@@ -41,6 +41,8 @@ console.log(sum.value) // 7
 ```
 
 An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
+
+<!-- eslint-skip -->
 
 ```ts
 import { reactify } from '@vueuse/core'

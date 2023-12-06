@@ -8,7 +8,7 @@ type UseVirtualListItemSize = number | ((index: number) => number)
 export interface UseHorizontalVirtualListOptions extends UseVirtualListOptionsBase {
 
   /**
-   * item width, accept a pixel value or a function that returns the height
+   * item width, accept a pixel value or a function that returns the width
    *
    * @default 0
    */
@@ -98,7 +98,7 @@ type UseVirtualListRefArray<T> = Ref<UseVirtualListArray<T>>
 
 type UseVirtualListSource<T> = Ref<T[]> | ShallowRef<T[]>
 
-interface UseVirtualListState { start: number; end: number }
+interface UseVirtualListState { start: number, end: number }
 
 type RefState = Ref<UseVirtualListState>
 
@@ -117,7 +117,7 @@ function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResource
   const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
   const source = shallowRef(list)
 
-  const state: Ref<{ start: number; end: number }> = ref({ start: 0, end: 10 })
+  const state: Ref<{ start: number, end: number }> = ref({ start: 0, end: 10 })
 
   return { state, source, currentList, size, containerRef }
 }
@@ -161,9 +161,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
   }
 }
 
-function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>,
-  getViewCapacity: ReturnType<typeof createGetViewCapacity>,
-  { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
+function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
   return () => {
     const element = containerRef.value
     if (element) {
