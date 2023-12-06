@@ -14,7 +14,7 @@ export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends bool
   UseAsyncStateReturnBase<Data, Params, Shallow>
   & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
 
-export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
+export interface UseAsyncStateOptions<Shallow extends boolean, D = any, Params extends any[] = any> {
   /**
    * Delay for executing the promise. In milliseconds.
    *
@@ -67,6 +67,13 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
    * @default false
    */
   throwError?: boolean
+  /**
+   *
+   * When immediate is true, the immediateExecuteParams is used as a parameter for the first executing the promise
+   *
+   * @default []
+   */
+  immediateExecuteParams?: Params
 }
 
 /**
@@ -81,7 +88,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
 export function useAsyncState<Data, Params extends any[] = [], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
-  options?: UseAsyncStateOptions<Shallow, Data>,
+  options?: UseAsyncStateOptions<Shallow, Data, Params>,
 ): UseAsyncStateReturn<Data, Params, Shallow> {
   const {
     immediate = true,
@@ -91,6 +98,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
     resetOnExecute = true,
     shallow = true,
     throwError,
+    immediateExecuteParams = [],
   } = options ?? {}
   const state = shallow ? shallowRef(initialState) : ref(initialState)
   const isReady = ref(false)
@@ -131,7 +139,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   }
 
   if (immediate)
-    execute(delay)
+    execute(delay, ...immediateExecuteParams)
 
   const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
     state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,

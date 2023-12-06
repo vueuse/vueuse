@@ -19,6 +19,13 @@ describe('useAsyncState', () => {
       throw new Error('error')
     return id
   }
+  const p3 = (str: string, num: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(str + num)
+      }, 50)
+    })
+  }
 
   it('should work', async () => {
     const { execute, state } = useAsyncState(p1, 0)
@@ -82,5 +89,11 @@ describe('useAsyncState', () => {
   it('should work with throwError', async () => {
     const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
     await expect(execute()).rejects.toThrowError('error')
+  })
+
+  it('should work with immediateExecuteParams', async () => {
+    const asyncState = useAsyncState(p3, undefined, { immediateExecuteParams: ['1', 1] })
+    await asyncState
+    expect(asyncState.state.value).toBe('11')
   })
 })
