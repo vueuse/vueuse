@@ -66,6 +66,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.onchange = (event: Event) => {
       const result = event.target as HTMLInputElement
       files.value = result.files
+      result.value = ''
       trigger(files.value)
     }
   }
