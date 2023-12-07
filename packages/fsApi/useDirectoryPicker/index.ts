@@ -1,4 +1,4 @@
-import { unref } from 'vue-demi'
+import { toValue } from '@vueuse/shared'
 import type { Awaitable, MaybeRef } from '@vueuse/shared'
 import type { ConfigurableWindow } from '@vueuse/core/_configurable'
 import { defaultWindow } from '@vueuse/core/_configurable'
@@ -25,14 +25,14 @@ export type UseDirectoryPickerOptions = ConfigurableWindow & {
 export function useDirectoryPicker(options: UseDirectoryPickerOptions = {}): UseDirectoryPickerReturn {
   const {
     window: _window = defaultWindow,
-  } = unref(options)
+  } = toValue(options)
   const window = _window as FileSystemAccessWindow
   const isSupported = Boolean(window && 'showOpenDirectoryPicker' in window)
 
   async function open(_options: FileSystemAccessShowDirectoryOptions = {}) {
     if (!isSupported)
       return
-    const rawDirectory = await window.showDirectoryPicker({ ...unref(options?.defaults), ..._options })
+    const rawDirectory = await window.showDirectoryPicker({ ...toValue(options?.defaults), ..._options })
     return new FsDirectory({ directory: rawDirectory })
   }
   return {

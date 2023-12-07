@@ -1,5 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { type Ref, computed, ref, unref } from 'vue-demi'
+import { toValue } from '@vueuse/shared'
+import { type Ref, computed, ref } from 'vue-demi'
 import type {
   FileSystemDirectoryHandle,
   FileSystemFileHandle,
@@ -84,8 +85,8 @@ export class FsDirectory extends FsHandle<'directory'> {
   readonly parent?: FsDirectory
   constructor({ directory, parent }: FsDirectoryConstructorOptions) {
     super()
-    const _directory = unref(directory)
-    this.parent = parent === undefined ? undefined : unref(parent)
+    const _directory = toValue(directory)
+    this.parent = parent === undefined ? undefined : toValue(parent)
     if (_directory instanceof FsDirectory)
       this.rawHandle = ref(_directory.rawHandle)
     else
@@ -107,7 +108,7 @@ export class FsDirectory extends FsHandle<'directory'> {
       },
     ))
 
-  create = ({ name, type }: { name: string; type: FileSystemHandleKind }) => ({
+  create = ({ name, type }: { name: string, type: FileSystemHandleKind }) => ({
     file: this.createFile,
     directory: this.createDirectory,
   })[type](name)

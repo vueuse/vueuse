@@ -1,5 +1,4 @@
-import { unref } from 'vue-demi'
-import type { Awaitable, MaybeRef } from '@vueuse/shared'
+import { type Awaitable, type MaybeRef, toValue } from '@vueuse/shared'
 import type { ConfigurableWindow } from '@vueuse/core/_configurable'
 import { defaultWindow } from '@vueuse/core/_configurable'
 import type {
@@ -18,13 +17,14 @@ export type UseSaveFilePickerOpenOptions = MaybeRef<FileSystemAccessShowSaveFile
   promptSaveAs?: boolean
 }>
 
-const isRealFile = (maybeFile: MaybeRef<FsFile | FileSystemFileHandle> | undefined): maybeFile is FsFile =>
-  unref(maybeFile)?.kind === 'file'
+function isRealFile(maybeFile: MaybeRef<FsFile | FileSystemFileHandle> | undefined): maybeFile is FsFile {
+  return toValue(maybeFile)?.kind === 'file'
+}
 
 export function useSaveFilePicker(options: UseSaveFilePickerOptions = {}): UseSaveFilePickerReturn {
   const {
     window: _window = defaultWindow,
-  } = unref(options)
+  } = toValue(options)
   const window = _window as FileSystemAccessWindow
   const isSupported = Boolean(window && 'showSaveDirectoryPicker' in window)
 
@@ -36,18 +36,18 @@ export function useSaveFilePicker(options: UseSaveFilePickerOptions = {}): UseSa
       return
     const sourceFile = isRealFile(file) ? file : undefined
 
-    const { promptSaveAs } = unref(_options)
+    const { promptSaveAs } = toValue(_options)
     if (promptSaveAs && sourceFile) {
       const resultFile = new FsFile({
-        file: await window.showSaveFilePicker({ ...unref(options?.defaults), ..._options }),
+        file: await window.showSaveFilePicker({ ...toValue(options?.defaults), ..._options }),
       })
-      await resultFile.writeFromStream((await unref(sourceFile.stream)))
+      await resultFile.writeFromStream((await toValue(sourceFile.stream)))
       return resultFile
     }
 
     const rawFile = isRealFile(file)
-      ? unref(file.rawHandle)
-      : await window.showSaveFilePicker({ ...unref(options?.defaults), ..._options })
+      ? toValue(file.rawHandle)
+      : await window.showSaveFilePicker({ ...toValue(options?.defaults), ..._options })
 
     return new FsFile({ file: rawFile })
   }
@@ -59,7 +59,7 @@ export function useSaveFilePicker(options: UseSaveFilePickerOptions = {}): UseSa
     file: FsFileConstructorOptions['file'],
     _options: UseSaveFilePickerSaveAsOptions = {},
   ) {
-    return open({ ...unref(_options), promptSaveAs: true }, file)
+    return open({ ...toValue(_options), promptSaveAs: true }, file)
   }
 
   return {

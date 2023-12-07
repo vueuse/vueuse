@@ -1,5 +1,4 @@
-import { unref } from 'vue-demi'
-import type { Awaitable, MaybeRef } from '@vueuse/shared'
+import { type Awaitable, type MaybeRef, toValue } from '@vueuse/shared'
 import type { ConfigurableWindow } from '@vueuse/core/_configurable'
 import { defaultWindow } from '@vueuse/core/_configurable'
 import type {
@@ -15,14 +14,14 @@ export type UseOpenFilePickerOptions = ConfigurableWindow & {
 export function useOpenFilePicker(options: UseOpenFilePickerOptions = {}): UseOpenFilePickerReturn {
   const {
     window: _window = defaultWindow,
-  } = unref(options)
+  } = toValue(options)
   const window = _window as FileSystemAccessWindow
   const isSupported = Boolean(window && 'showOpenDirectoryPicker' in window)
 
   async function open(_options: FileSystemAccessShowOpenFileOptions = {}) {
     if (!isSupported)
       return
-    const rawFiles = await window.showOpenFilePicker({ ...unref(options?.defaults), ..._options })
+    const rawFiles = await window.showOpenFilePicker({ ...toValue(options?.defaults), ..._options })
     return rawFiles.map(rawFile => new FsFile({ file: rawFile }))
   }
   return {

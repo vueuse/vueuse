@@ -1,8 +1,10 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { type ComputedRef, type Ref, computed, ref, toRef, unref } from 'vue-demi'
+import { toRef, toValue } from '@vueuse/shared'
+import { type ComputedRef, type Ref, computed, ref } from 'vue-demi'
 import type { FileSystemFileHandle, Writable } from '../types.js'
 import { FsHandle } from '../Handle.js'
 import { FsDirectory } from '../Directory/index.js'
+
 export interface FsFileConstructorOptions {
   file: MaybeRef<FsFile | FileSystemFileHandle>
   parent?: MaybeRef<FsDirectory>
@@ -15,9 +17,9 @@ export class FsFile extends FsHandle<'file'> {
   __rawFile: Ref<File | undefined>
   constructor({ file, parent }: FsFileConstructorOptions) {
     super()
-    this.parent = parent === undefined ? undefined : unref(parent)
+    this.parent = parent === undefined ? undefined : toValue(parent)
     this.__rawFile = ref(undefined)
-    const _file = unref(file)
+    const _file = toValue(file)
     if (_file instanceof FsFile)
       this.rawHandle = ref(_file.rawHandle)
     else
@@ -48,20 +50,20 @@ export class FsFile extends FsHandle<'file'> {
 
   write = async (writable: Writable) => {
     const stream = await this.getWriteStream()
-    await stream.write(unref(writable))
+    await stream.write(toValue(writable))
     await stream.getWriter().ready
     await stream.close()
   }
 
   append = async (writable: Writable) => {
     const stream = await this.getWriteStreamAppend()
-    await stream.write(unref(writable))
+    await stream.write(toValue(writable))
     await stream.getWriter().ready
     await stream.close()
   }
 
   writeFromStream = async (readableStream: MaybeRef<ReadableStream>) => {
-    const _readableStream = unref(readableStream)
+    const _readableStream = toValue(readableStream)
     const stream = await this.getWriteStream()
     _readableStream.pipeTo(stream)
     await stream.getWriter().ready
@@ -69,7 +71,7 @@ export class FsFile extends FsHandle<'file'> {
   }
 
   appendFromStream = async (readableStream: MaybeRef<ReadableStream>) => {
-    const _readableStream = unref(readableStream)
+    const _readableStream = toValue(readableStream)
     const stream = await this.getWriteStreamAppend()
     _readableStream.pipeTo(stream)
     await stream.getWriter().ready
