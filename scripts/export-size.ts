@@ -3,6 +3,7 @@ import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
 import { filesize } from 'filesize'
 import fs from 'fs-extra'
+import { isWindows } from 'std-env'
 import { version } from '../package.json'
 import { packages } from '../meta/packages'
 
@@ -46,6 +47,10 @@ async function run() {
 
     md += '\n\n'
   }
+
+  if (isWindows)
+    md = md.replace(/\r\n/g, '\n')
+
   await fs.remove(join(packagesRoot, 'shared/index.mjs'))
   await fs.remove(join(packagesRoot, 'core/index.mjs'))
   await fs.writeFile('packages/export-size.md', md, 'utf-8')
