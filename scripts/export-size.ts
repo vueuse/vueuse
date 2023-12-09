@@ -46,6 +46,9 @@ async function run() {
 
     md += '\n\n'
   }
+
+  md = md.replace(/\r\n/g, '\n')
+
   await fs.remove(join(packagesRoot, 'shared/index.mjs'))
   await fs.remove(join(packagesRoot, 'core/index.mjs'))
   await fs.writeFile('packages/export-size.md', md, 'utf-8')

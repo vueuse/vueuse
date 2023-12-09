@@ -160,9 +160,9 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
 
     const functionMD = stringifyFunctions(functions.filter(i => i.package === name), false)
     let readme = await fs.readFile(readmePath, 'utf-8')
-    readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
+    readme = replacer(readme, functionMD, 'FUNCTIONS_LIST').trim().replace(/\r\n/g, '\n')
 
-    await fs.writeFile(readmePath, `${readme.trim()}\n`, 'utf-8')
+    await fs.writeFile(readmePath, `${readme}\n`, 'utf-8')
   }
 }
 
@@ -171,9 +171,12 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   const functionsCount = functions.filter(i => !i.internal).length
 
-  readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
+  readme = readme.replace(
+    /img\.shields\.io\/badge\/-(.+?)%20functions/,
+`img.shields.io/badge/-${functionsCount}%20functions`,
+  ).trim().replace(/\r\n/g, '\n')
 
-  await fs.writeFile('README.md', `${readme.trim()}\n`, 'utf-8')
+  await fs.writeFile('README.md', `${readme}\n`, 'utf-8')
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
@@ -187,7 +190,7 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
     })
     .join('\n\n')
 
-  mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
+  mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST').replace(/\r\n/g, '\n')
 
   await fs.writeFile('packages/add-ons.md', mdAddons, 'utf-8')
 }
@@ -209,9 +212,9 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`
+    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
-    await fs.writeFile(mdPath, `${readme.trim()}\n`, 'utf-8')
+    await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
 }
 
