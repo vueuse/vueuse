@@ -43,7 +43,7 @@ const picked = reactiveOmit(obj, (value, key) => key === 'baz' || value === true
 
 #### Selectively passing props to child
 
-```html
+```vue
 <script setup>
 import { reactiveOmit } from '@vueuse/core'
 

@@ -34,12 +34,13 @@ const link = computed(() => {
     :class="fn.deprecated ? 'op80 saturate-0' : ''"
   >
     <a
-      v-bind="link" bg="gray-400/5" p="x-1.5 y-0.5" class="rounded items-center" flex="inline gap-1 none" my-auto
+      v-bind="link"
+      my-auto
       :class="fn.deprecated ? 'line-through !decoration-solid' : ''"
     >
-      <span v-html="styledName(fn.name)" />
-      <i v-if="fn.external" i-carbon-launch class="opacity-80 text-xs" />
+      <code v-html="styledName(fn.name)" />
     </a>
+    <i v-if="fn.external" i-carbon-launch class="opacity-50 text-0.7rem" />
     <span op50>-</span>
     <span class="whitespace-wrap" v-html="renderMarkdown(fn.description)" />
   </div>

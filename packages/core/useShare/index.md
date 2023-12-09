@@ -24,7 +24,6 @@ function startShare() {
 }
 ```
 
-
 ### Passing a source ref
 
 You can pass a `ref` to it, changes from the source ref will be reflected to your sharing options.

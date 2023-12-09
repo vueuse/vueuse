@@ -6,7 +6,6 @@ category: State
 
 Create global state that can be injected into components.
 
-
 ## Usage
 
 ```ts
@@ -108,7 +107,6 @@ const { increment } = useCounterStore()!
 ```
 
 ## Provide a custom InjectionKey
-
 
 ```ts
 // useCounterStore.ts

@@ -11,6 +11,7 @@ Inject reactive `style` element in head.
 ### Basic usage
 
 Provide a CSS string, then `useStyleTag` will automatically generate an id and inject it in `<head>`.
+
 ```js
 import { useStyleTag } from '@vueuse/core'
 
@@ -30,7 +31,9 @@ This code will be injected to `<head>`:
 
 ```html
 <style id="vueuse_styletag_1">
-.foo { margin-top: 64px; }
+  .foo {
+    margin-top: 64px;
+  }
 </style>
 ```
 
@@ -47,7 +50,9 @@ useStyleTag('.foo { margin-top: 32px; }', { id: 'custom-id' })
 ```html
 <!-- injected to <head> -->
 <style id="custom-id">
-.foo { margin-top: 32px; }
+  .foo {
+    margin-top: 32px;
+  }
 </style>
 ```
 
@@ -62,6 +67,8 @@ useStyleTag('.foo { margin-top: 32px; }', { media: 'print' })
 ```html
 <!-- injected to <head> -->
 <style id="vueuse_styletag_1" media="print">
-.foo { margin-top: 32px; }
+  .foo {
+    margin-top: 32px;
+  }
 </style>
 ```

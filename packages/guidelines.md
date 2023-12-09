@@ -16,7 +16,7 @@ You can also find some reasons for those design decisions and also some tips for
 - Use `configurableWindow` (etc.) when using global variables like `window` to be flexible when working with multi-windows, testing mocks, and SSR.
 - When involved with Web APIs that are not yet implemented by the browser widely, also outputs `isSupported` flag
 - When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible
-- Use `tryOnUnmounted`  to clear the side-effects gracefully
+- Use `tryOnUnmounted` to clear the side-effects gracefully
 - Avoid using console logs
 - When the function is asynchronous, return a PromiseLike
 
@@ -110,7 +110,7 @@ We use the `controls` option allowing users to use functions with a single retur
 
 #### When to provide a `controls` option
 
-- The function is more commonly used with single `ref` or 
+- The function is more commonly used with single `ref` or
 - Examples: `useTimestamp`, `useInterval`,
 
 ```ts
@@ -201,7 +201,6 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & 
   }
 }
 ```
-
 
 ## Renderless Components
 

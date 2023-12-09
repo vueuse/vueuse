@@ -10,37 +10,43 @@ Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipbo
 
 ## Usage
 
-```js
+```vue
+<script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
 
 const source = ref('Hello')
 const { text, copy, copied, isSupported } = useClipboard({ source })
-```
+</script>
 
-```html
- <div v-if="isSupported">
-    <button @click='copy(source)'>
+<template>
+  <div v-if="isSupported">
+    <button @click="copy(source)">
       <!-- by default, `copied` will be reset in 1.5s -->
-      <span v-if='!copied'>Copy</span>
+      <span v-if="!copied">Copy</span>
       <span v-else>Copied!</span>
     </button>
-    <p>
-      Current copied: <code>{{ text || 'none' }}</code>
-    </p>
+    <p>Current copied: <code>{{ text || 'none' }}</code></p>
   </div>
   <p v-else>
     Your browser does not support Clipboard API
   </p>
+</template>
 ```
 
 Set `legacy: true` to keep the ability to copy if [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is not available. It will handle copy with [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand) as fallback.
 
 ## Component Usage
 
-```html
-<UseClipboard source="copy me" v-slot="{ copy, copied }">
-  <button @click="copy()">
-    {{ copied ? 'Copied' : 'Copy' }}
-  </button>
-</UseClipboard>
+```vue
+<template>
+  <UseClipboard v-slot="{ copy, copied }" source="copy me">
+    <button @click="copy()">
+      {{ copied ? 'Copied' : 'Copy' }}
+    </button>
+  </UseClipboard>
+</template>
+```
+
+```
+
 ```

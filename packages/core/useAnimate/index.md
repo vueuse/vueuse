@@ -12,11 +12,7 @@ Reactive [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/W
 
 The `useAnimate` function will return the animate and its control function.
 
-```html
-<template>
-  <span ref="el" style="display:inline-block">useAnimate</span>
-</template>
-
+```vue
 <script setup>
 import { ref } from 'vue'
 import { useAnimate } from '@vueuse/core'
@@ -43,6 +39,10 @@ const {
   playbackRate,
 } = useAnimate(el, { transform: 'rotate(360deg)' }, 1000)
 </script>
+
+<template>
+  <span ref="el" style="display:inline-block">useAnimate</span>
+</template>
 ```
 
 ### Custom Keyframes
