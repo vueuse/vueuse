@@ -35,7 +35,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "dependencies": {
     "@types/web-bluetooth": "^0.0.20",
     "@vueuse/metadata": "workspace:*",

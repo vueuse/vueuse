@@ -33,7 +33,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "rxjs": ">=6.0.0"
   },

@@ -45,7 +45,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "firebase": ">=9.0.0"
   },

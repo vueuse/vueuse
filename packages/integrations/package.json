@@ -91,7 +91,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "async-validator": "*",
     "axios": "*",

@@ -30,7 +30,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "dependencies": {
     "vue-demi": ">=0.14.6"
   }

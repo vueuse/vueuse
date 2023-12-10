@@ -133,7 +133,6 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
         input,
         output: [
           { file: `packages/${name}/dist/${fn}.d.cts` },
-          { file: `packages/${name}/dist/${fn}.d.mts` },
           { file: `packages/${name}/dist/${fn}.d.ts` }, // for node10 compatibility
         ],
         plugins: [
@@ -173,7 +172,6 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
         input: `packages/${name}/${fn}/component.ts`,
         output: [
           { file: `packages/${name}/dist/${fn}/component.d.cts` },
-          { file: `packages/${name}/dist/${fn}/component.d.mts` },
           { file: `packages/${name}/dist/${fn}/component.d.ts` }, // for node10 compatibility
         ],
         plugins: [
