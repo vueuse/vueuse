@@ -16,8 +16,10 @@ const languages = usePreferredLanguages()
 
 ## Component Usage
 
-```html
-<UsePreferredLanguages v-slot="{ languages }">
-  Preferred Languages: {{ languages }}
-</UsePreferredLanguages>
+```vue
+<template>
+  <UsePreferredLanguages v-slot="{ languages }">
+    Preferred Languages: {{ languages }}
+  </UsePreferredLanguages>
+</template>
 ```

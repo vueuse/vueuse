@@ -15,9 +15,9 @@ export async function getChangeLog(count = 200) {
 
   const logs = (await git.log({ maxCount: count })).all.filter((i) => {
     return i.message.includes('chore: release')
-        || i.message.includes('!')
-        || i.message.startsWith('feat')
-        || i.message.startsWith('fix')
+      || i.message.includes('!')
+      || i.message.startsWith('feat')
+      || i.message.startsWith('fix')
   }) as CommitInfo[]
 
   for (const log of logs) {

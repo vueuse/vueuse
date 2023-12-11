@@ -98,7 +98,7 @@ type UseVirtualListRefArray<T> = Ref<UseVirtualListArray<T>>
 
 type UseVirtualListSource<T> = Ref<T[]> | ShallowRef<T[]>
 
-interface UseVirtualListState { start: number; end: number }
+interface UseVirtualListState { start: number, end: number }
 
 type RefState = Ref<UseVirtualListState>
 
@@ -117,7 +117,7 @@ function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResource
   const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
   const source = shallowRef(list)
 
-  const state: Ref<{ start: number; end: number }> = ref({ start: 0, end: 10 })
+  const state: Ref<{ start: number, end: number }> = ref({ start: 0, end: 10 })
 
   return { state, source, currentList, size, containerRef }
 }

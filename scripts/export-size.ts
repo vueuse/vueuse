@@ -1,7 +1,7 @@
 import { join, resolve } from 'node:path'
 import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
-import filesize from 'filesize'
+import { filesize } from 'filesize'
 import fs from 'fs-extra'
 import { version } from '../package.json'
 import { packages } from '../meta/packages'
@@ -38,7 +38,6 @@ async function run() {
 
     md += markdownTable([
       ['Function', 'min+gzipped'],
-      // eslint-disable-next-line antfu/no-cjs-exports
       ...exports.map((i) => {
         mdJSON[i.name] = filesize(i.minzipped)
         return [`\`${i.name}\``, filesize(i.minzipped)]
@@ -47,6 +46,9 @@ async function run() {
 
     md += '\n\n'
   }
+
+  md = md.replace(/\r\n/g, '\n')
+
   await fs.remove(join(packagesRoot, 'shared/index.mjs'))
   await fs.remove(join(packagesRoot, 'core/index.mjs'))
   await fs.writeFile('packages/export-size.md', md, 'utf-8')

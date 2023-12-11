@@ -20,10 +20,13 @@ const {
 ```
 
 # Component
-```html
-<UseDevicesList v-slot="{ videoInputs, audioInputs, audioOutputs }">
-  Cameras: {{ videoInputs }}
-  Microphones: {{ audioInputs }}
-  Speakers: {{ audioOutputs }}
-</UseDevicesList>
+
+```vue
+<template>
+  <UseDevicesList v-slot="{ videoInputs, audioInputs, audioOutputs }">
+    Cameras: {{ videoInputs }}
+    Microphones: {{ audioInputs }}
+    Speakers: {{ audioOutputs }}
+  </UseDevicesList>
+</template>
 ```

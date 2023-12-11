@@ -231,7 +231,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       : storage!.getItem(key)
 
     if (rawValue == null) {
-      if (writeDefaults && rawInit !== null)
+      if (writeDefaults && rawInit != null)
         storage!.setItem(key, serializer.write(rawInit))
       return rawInit
     }

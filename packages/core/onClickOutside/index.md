@@ -8,46 +8,41 @@ Listen for clicks outside of an element. Useful for modal or dropdown.
 
 ## Usage
 
-```html {18}
+```vue
+<script setup>
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+
+const target = ref(null)
+
+onClickOutside(target, event => console.log(event))
+</script>
+
 <template>
   <div ref="target">
     Hello world
   </div>
-  <div>
-    Outside element
-  </div>
+  <div>Outside element</div>
 </template>
-
-<script>
-import { ref } from 'vue'
-import { onClickOutside } from '@vueuse/core'
-
-export default {
-  setup() {
-    const target = ref(null)
-
-    onClickOutside(target, (event) => console.log(event))
-
-    return { target }
-  }
-}
-</script>
 ```
 
 > This function uses [Event.composedPath()](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath) which is NOT supported by IE 11, Edge 18 and below. If you are targeting these browsers, we recommend you to include [this code snippet](https://gist.github.com/sibbng/13e83b1dd1b733317ce0130ef07d4efd) on your project.
 
 ## Component Usage
 
-```html
-<OnClickOutside @trigger="count++" :options="{ ignore: [/* ... */] }">
-  <div>
-    Click Outside of Me
-  </div>
-</OnClickOutside>
+```vue
+<template>
+  <OnClickOutside :options="{ ignore: [/* ... */] }" @trigger="count++">
+    <div>
+      Click Outside of Me
+    </div>
+  </OnClickOutside>
+</template>
 ```
+
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
@@ -56,7 +51,6 @@ const modal = ref(false)
 function closeModal() {
   modal.value = false
 }
-
 </script>
 
 <template>
@@ -71,7 +65,7 @@ function closeModal() {
 
 You can also set the handler as an array to set the configuration items of the instruction.
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
@@ -85,9 +79,8 @@ const onClickOutsideHandler = [
     console.log(ev)
     modal.value = false
   },
-  { ignore: [ignoreElRef] }
+  { ignore: [ignoreElRef] },
 ]
-
 </script>
 
 <template>
@@ -103,5 +96,4 @@ const onClickOutsideHandler = [
     Hello World
   </div>
 </template>
-
 ```

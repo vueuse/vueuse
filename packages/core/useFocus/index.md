@@ -36,14 +36,7 @@ const { focused } = useFocus(target, { initialValue: true })
 
 Changes of the `focused` reactive ref will automatically trigger `focus` and `blur` events for `true` and `false` values respectively. You can utilize this behavior to focus the target element as a result of another action (e.g. when a button click as shown below).
 
-```html
-<template>
-  <div>
-    <button type="button" @click="focused = true">Click me to focus input below</button>
-    <input ref="input" type="text">
-  </div>
-</template>
-
+```vue
 <script>
 import { ref } from 'vue'
 import { useFocus } from '@vueuse/core'
@@ -60,4 +53,13 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div>
+    <button type="button" @click="focused = true">
+      Click me to focus input below
+    </button>
+    <input ref="input" type="text">
+  </div>
+</template>
 ```

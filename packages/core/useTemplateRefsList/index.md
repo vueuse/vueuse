@@ -12,11 +12,7 @@ This function only works for Vue 3
 
 ## Usage
 
-```html
-<template>
-  <div v-for="i of 5" :key="i" :ref="refs.set"></div>
-</template>
-
+```vue
 <script setup lang="ts">
 import { onUpdated } from 'vue'
 import { useTemplateRefsList } from '@vueuse/core'
@@ -27,4 +23,8 @@ onUpdated(() => {
   console.log(refs)
 })
 </script>
+
+<template>
+  <div v-for="i of 5" :key="i" :ref="refs.set" />
+</template>
 ```

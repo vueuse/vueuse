@@ -72,8 +72,10 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
 
   const reset = () => {
     files.value = null
-    if (input)
+    if (input) {
       input.value = ''
+      trigger(null)
+    }
   }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {

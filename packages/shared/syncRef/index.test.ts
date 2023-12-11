@@ -249,5 +249,9 @@ describe('syncRef', () => {
     syncRef(refNumBoolean, ref0, {
       direction: 'rtl',
     })
+
+    const bool0 = ref(false)
+    const bool1 = ref(false)
+    syncRef(bool0, bool1)
   })
 })
