@@ -9,7 +9,7 @@ Wrapper for [`axios`](https://github.com/axios/axios).
 ## Install
 
 ```bash
-npm i axios
+npm i axios@^1
 ```
 
 ## Usage
