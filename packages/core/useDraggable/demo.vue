@@ -17,7 +17,7 @@ const { x, y, style } = useDraggable(el, {
 
 <template>
   <div>
-    <p italic op50 text-center>
+    <p class="italic op50 text-center">
       Check the floating boxes
     </p>
     <div
