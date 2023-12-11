@@ -1,7 +1,6 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import { useThrottleFn } from '../useThrottleFn'
-import { watchDeep } from '../watchDeep'
 import { toValue } from '../toValue'
 
 const isObject = (val: any): val is object => val !== null && typeof val === 'object'
@@ -28,10 +27,11 @@ export function refThrottled<T>(options: optionsType<T>): Ref<T> {
   const throttled: Ref<T> = ref(_isObject ? defaultClone(toValue(value)) : toValue(value)) as Ref<T>
   const updater = useThrottleFn(() => {
     throttled.value = _isObject ? defaultClone(toValue(value)) : toValue(value)
-  }, delay, trailing, leading);
+  }, delay, trailing, leading)
 
-  (_isObject ? watchDeep : watch)(value, () => updater())
-
+  watch(value, () => updater(), {
+    deep: _isObject,
+  })
   return throttled
 }
 
