@@ -22,6 +22,7 @@ const throttled = refThrottled({
 ### Trailing
 
 If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
+
 ```js
 import { refThrottled } from '@vueuse/core'
 
