@@ -13,18 +13,24 @@ Throttle changing of a ref value.
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = refThrottled(input, 1000)
+const throttled = refThrottled({
+  value: input,
+  delay: 1000
+})
 ```
 
 ### Trailing
 
 If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
-
 ```js
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = refThrottled(input, 1000, false)
+const throttled = refThrottled({
+  value: input,
+  delay: 1000,
+  trailing: false
+})
 ```
 
 ### Leading
@@ -35,7 +41,12 @@ Allows the callback to be invoked immediately (on the leading edge of the `ms` t
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
-const throttled = refThrottled(input, 1000, undefined, false)
+const throttled = refThrottled({
+  value: input,
+  delay: 1000,
+  trailing: undefined,
+  leading: false
+})
 ```
 
 ## Recommended Reading
