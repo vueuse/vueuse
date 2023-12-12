@@ -9,7 +9,7 @@ Reactive instance for [drauu](https://github.com/antfu/drauu).
 ## Install
 
 ```bash
-npm i drauu
+npm i drauu@^0
 ```
 
 ## Usage
