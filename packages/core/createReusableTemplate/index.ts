@@ -3,22 +3,22 @@ import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 import { camelize, makeDestructurable } from '@vueuse/shared'
 
 export type DefineTemplateComponent<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
-> = DefineComponent<{}> & {
+  Bindings extends Record<string, any>,
+  Slots extends Record<string, (slotProps: Record<string, any>) => any | undefined>,
+> = DefineComponent & {
   new(): { $slots: { default(_: Bindings & { $slots: Slots }): any } }
 }
 
 export type ReuseTemplateComponent<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  Slots extends Record<string, (slotProps: Record<string, any>) => any | undefined>,
 > = DefineComponent<Bindings> & {
   new(): { $slots: Slots }
 }
 
 export type ReusableTemplatePair<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  Slots extends Record<string, (slotProps: Record<string, any>) => any | undefined>,
 > = [
   DefineTemplateComponent<Bindings, Slots>,
   ReuseTemplateComponent<Bindings, Slots>,
@@ -43,8 +43,8 @@ export interface CreateReusableTemplateOptions {
  * @see https://vueuse.org/createReusableTemplate
  */
 export function createReusableTemplate<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  Slots extends Record<string, (slotProps: Record<string, any>) => any | undefined> = Record<'default', (slotProps: Record<string, any>) => any | undefined>,
 >(
   options: CreateReusableTemplateOptions = {},
 ): ReusableTemplatePair<Bindings, Slots> {
@@ -77,6 +77,7 @@ export function createReusableTemplate<
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
         const vnode = render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
+
         return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }
     },
