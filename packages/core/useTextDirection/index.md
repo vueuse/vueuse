@@ -18,10 +18,14 @@ By default, it returns `rlt` direction when dir `rtl` is applied to the `html` t
 
 ```html
 <!--ltr-->
-<html> ... </html>
+<html>
+  ...
+</html>
 
 <!--rtl-->
-<html dir="rtl"> ... </html>
+<html dir="rtl">
+  ...
+</html>
 ```
 
 ## Options

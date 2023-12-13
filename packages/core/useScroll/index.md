@@ -8,8 +8,7 @@ Reactive scroll position and state.
 
 ## Usage
 
-
-```html
+```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
 
@@ -18,11 +17,12 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </script>
 
 <template>
-  <div ref="el"></div>
+  <div ref="el" />
 </template>
 ```
 
 ### With offsets
+
 ```js
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
@@ -32,6 +32,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
 ### Setting scroll position
 
 Set the `x` and `y` values to make the element scroll to that position.
+
 ```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
@@ -54,6 +55,7 @@ const { x, y } = useScroll(el)
 ### Smooth scrolling
 
 Set `behavior: smooth` to enable smooth scrolling. The `behavior` option defaults to `auto`, which means no smooth scrolling. See the `behavior` option on [`window.scrollTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo) for more information.
+
 ```ts
 import { useScroll } from '@vueuse/core'
 
@@ -68,7 +70,7 @@ const { x, y } = useScroll(el, { behavior })
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import type { UseScrollReturn } from '@vueuse/core'
 import { vScroll } from '@vueuse/components'
@@ -88,7 +90,7 @@ function onScroll(state: UseScrollReturn) {
   </div>
 
   <!-- with options -->
-  <div v-scroll="[onScroll, { 'throttle' : 10 }]">
+  <div v-scroll="[onScroll, { throttle: 10 }]">
     <div v-for="item in data" :key="item">
       {{ item }}
     </div>

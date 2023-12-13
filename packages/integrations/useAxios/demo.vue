@@ -23,5 +23,6 @@ const text = stringify(data)
   </button>
   <note>Loading: {{ isLoading.toString() }}</note>
   <note>Finished: {{ isFinished.toString() }}</note>
+  <note>Aborted: {{ isAborted.toString() }}</note>
   <pre lang="yaml">{{ text }}</pre>
 </template>

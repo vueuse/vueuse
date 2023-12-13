@@ -734,4 +734,12 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(fetchSpyHeaders()['Content-Type']).toBe(undefined)
     })
   })
+
+  it('should be modified the request status after the request is completed', async () => {
+    const { isFetching, isFinished, execute } = useFetch('https://example.com', { immediate: false })
+
+    await execute()
+    expect(isFetching.value).toBe(false)
+    expect(isFinished.value).toBe(true)
+  })
 })

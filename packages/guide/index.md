@@ -26,8 +26,9 @@ npm i @vueuse/core
 
 ### CDN
 
-```html
+```vue
 <script src="https://unpkg.com/@vueuse/shared"></script>
+
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 
@@ -42,6 +43,7 @@ npm i -D @vueuse/nuxt @vueuse/core
 ```
 
 Nuxt 3
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -52,6 +54,7 @@ export default defineNuxtConfig({
 ```
 
 Nuxt 2
+
 ```ts
 // nuxt.config.js
 export default {
@@ -63,13 +66,13 @@ export default {
 
 And then use VueUse function anywhere in your Nuxt app. For example:
 
-```html
+```vue
 <script setup lang="ts">
 const { x, y } = useMouse()
 </script>
 
 <template>
-  <div>pos: {{x}}, {{y}}</div>
+  <div>pos: {{ x }}, {{ y }}</div>
 </template>
 ```
 

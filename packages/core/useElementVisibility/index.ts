@@ -23,7 +23,17 @@ export function useElementVisibility(
 
   useIntersectionObserver(
     element,
-    ([{ isIntersecting }]) => {
+    (intersectionObserverEntries) => {
+      let isIntersecting = elementIsVisible.value
+
+      // Get the latest value of isIntersecting based on the entry time
+      let latestTime = 0
+      for (const entry of intersectionObserverEntries) {
+        if (entry.time >= latestTime) {
+          latestTime = entry.time
+          isIntersecting = entry.isIntersecting
+        }
+      }
       elementIsVisible.value = isIntersecting
     },
     {

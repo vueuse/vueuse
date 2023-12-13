@@ -1,30 +1,38 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import { toRef, toValue } from '@vueuse/shared'
+import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { watch } from 'vue-demi'
 import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
 
-export type UseTitleOptionsBase =
-{
+export type UseTitleOptionsBase = {
   /**
-   * Observe `document.title` changes using MutationObserve
-   * Cannot be used together with `titleTemplate` option.
-   *
-   * @default false
+   * Restore the original title when unmounted
+   * @param originTitle original title
+   * @returns restored title
    */
-  observe?: boolean
-}
-| {
-  /**
-   * The template string to parse the title (e.g., '%s | My Website')
-   * Cannot be used together with `observe` option.
-   *
-   * @default '%s'
-   */
-  titleTemplate?: MaybeRef<string> | ((title: string) => string)
-}
+  restoreOnUnmount?: false | ((originalTitle: string, currentTitle: string) => string | null | undefined)
+} & (
+  {
+    /**
+     * Observe `document.title` changes using MutationObserve
+     * Cannot be used together with `titleTemplate` option.
+     *
+     * @default false
+     */
+    observe?: boolean
+  }
+  | {
+    /**
+     * The template string to parse the title (e.g., '%s | My Website')
+     * Cannot be used together with `observe` option.
+     *
+     * @default '%s'
+     */
+    titleTemplate?: MaybeRef<string> | ((title: string) => string)
+  }
+)
 
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
@@ -56,7 +64,9 @@ export function useTitle(
   */
   const {
     document = defaultDocument,
+    restoreOnUnmount = t => t,
   } = options
+  const originalTitle = document?.title ?? ''
 
   const title: Ref<string | null | undefined> = toRef(newTitle ?? document?.title ?? null)
   const isReadonly = newTitle && typeof newTitle === 'function'
@@ -89,6 +99,14 @@ export function useTitle(
       { childList: true },
     )
   }
+
+  tryOnBeforeUnmount(() => {
+    if (restoreOnUnmount) {
+      const restoredTitle = restoreOnUnmount(originalTitle, title.value || '')
+      if (restoredTitle != null && document)
+        document.title = restoredTitle
+    }
+  })
 
   return title
 }

@@ -199,7 +199,7 @@ describe('useUrlSearchParams', () => {
           initialValue: {
             foo: 'bar',
             bar: 'foo',
-          } as { foo: string | null; bar: string | boolean },
+          } as { foo: string | null, bar: string | boolean },
         })
         params.foo = null
         params.bar = false

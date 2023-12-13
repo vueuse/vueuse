@@ -100,6 +100,9 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
   const types = await getTypeDefinition(pkg, name)
 
+  if (!types)
+    console.warn(`No types found for ${pkg}/${name}`)
+
   let typingSection = ''
 
   if (types) {

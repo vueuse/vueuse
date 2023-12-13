@@ -3,7 +3,7 @@ import type { MaybeRef, Ref } from 'vue-demi'
 // eslint-disable-next-line no-restricted-imports
 import { ref, shallowRef, unref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient } from '@vueuse/shared'
+import { isClient, notNullish } from '@vueuse/shared'
 
 // eslint-disable-next-line no-restricted-imports
 import { useEventListener } from '@vueuse/core'
@@ -41,12 +41,16 @@ export function useDropZone(
     }
 
     useEventListener<DragEvent>(target, 'dragenter', (event) => {
+      const types = Array.from(event?.dataTransfer?.items || [])
+        .map(i => i.kind === 'file' ? i.type : null)
+        .filter(notNullish)
+
       if (_options.dataTypes && event.dataTransfer) {
         const dataTypes = unref(_options.dataTypes)
         isDataTypeIncluded = typeof dataTypes === 'function'
-          ? dataTypes(event.dataTransfer!.types)
+          ? dataTypes(types)
           : dataTypes
-            ? dataTypes.some(item => event.dataTransfer!.types.includes(item))
+            ? dataTypes.some(item => types.includes(item))
             : true
         if (!isDataTypeIncluded)
           return

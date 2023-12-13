@@ -17,6 +17,7 @@ function reset() {
 }
 
 const { distanceX, isSwiping } = usePointerSwipe(target, {
+  disableTextSelect: true,
   onSwipe(e: PointerEvent) {
     if (containerWidth.value) {
       if (distanceX.value < 0) {
