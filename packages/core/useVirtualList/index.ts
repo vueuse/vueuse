@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
-import type { ComputedRef, Ref, ShallowRef, StyleValue } from 'vue-demi'
-import { computed, ref, shallowRef, watch } from 'vue-demi'
+import type { ComputedRef, Ref, ShallowRef, StyleValue, WatchSource } from 'vue-demi'
+import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
 import { useElementSize } from '../useElementSize'
 
 type UseVirtualListItemSize = number | ((index: number) => number)
@@ -202,7 +202,12 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
 }
 
 function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<T[]>, calculateRange: () => void) {
-  watch([size.width, size.height, list], () => {
+  // Watch for changes in the list if it is a ref
+  const watchSources: (WatchSource<unknown> | object)[] = [size.width, size.height]
+  if (isRef(list))
+    watchSources.push(list.value)
+
+  watch(watchSources, () => {
     calculateRange()
   })
 }
