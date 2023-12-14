@@ -42,7 +42,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
 
   const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void;resolve?: (result: ReturnType<T>) => void })>({})
+  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
   const timeoutId = ref<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {

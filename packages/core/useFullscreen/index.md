@@ -23,16 +23,18 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 ```
 
 ```html
-<video ref='el'>
+<video ref="el"></video>
 ```
 
 ## Component Usage
 
-```html
-<UseFullscreen v-slot="{ toggle }">
-  <video />
-  <button @click="toggle">
-    Go Fullscreen
-  </button>
-</UseFullscreen>
+```vue
+<template>
+  <UseFullscreen v-slot="{ toggle }">
+    <video />
+    <button @click="toggle">
+      Go Fullscreen
+    </button>
+  </UseFullscreen>
+</template>
 ```

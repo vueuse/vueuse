@@ -28,9 +28,11 @@ console.log(network.isOnline)
 
 ## Component Usage
 
-```html
-<UseNetwork v-slot="{ isOnline, type }">
-  Is Online: {{ isOnline }}
-  Type: {{ type }}
-</UseNetwork>
+```vue
+<template>
+  <UseNetwork v-slot="{ isOnline, type }">
+    Is Online: {{ isOnline }}
+    Type: {{ type }}
+  </UseNetwork>
+</template>
 ```

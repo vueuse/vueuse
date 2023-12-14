@@ -44,7 +44,7 @@ source.qux = false
 
 #### Selectively passing props to child
 
-```html
+```vue
 <script setup>
 import { reactivePick } from '@vueuse/core'
 

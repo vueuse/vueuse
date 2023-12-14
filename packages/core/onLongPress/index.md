@@ -7,15 +7,16 @@ category: Sensors
 Listen for a long press on an element.
 
 Function provides modifiers in options
-  * stop
-  * once
-  * prevent
-  * capture
-  * self
+
+- stop
+- once
+- prevent
+- capture
+- self
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLongPress } from '@vueuse/core'
@@ -23,17 +24,21 @@ import { onLongPress } from '@vueuse/core'
 const htmlRefHook = ref<HTMLElement | null>(null)
 const longPressedHook = ref(false)
 
-const onLongPressCallbackHook = (e: PointerEvent) => {
+function onLongPressCallbackHook(e: PointerEvent) {
   longPressedHook.value = true
 }
-const resetHook = () => {
+function resetHook() {
   longPressedHook.value = false
 }
 
 onLongPress(
   htmlRefHook,
   onLongPressCallbackHook,
-  { modifiers: { prevent: true } }
+  {
+    modifiers: {
+      prevent: true
+    }
+  }
 )
 </script>
 
@@ -52,17 +57,17 @@ onLongPress(
 
 ## Component Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { OnLongPress } from '@vueuse/components'
 
 const longPressedComponent = ref(false)
 
-const onLongPressCallbackComponent = (e: PointerEvent) => {
+function onLongPressCallbackComponent(e: PointerEvent) {
   longPressedComponent.value = true
 }
-const resetComponent = () => {
+function resetComponent() {
   longPressedComponent.value = false
 }
 </script>
@@ -86,17 +91,17 @@ const resetComponent = () => {
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { vOnLongPress } from '@vueuse/components'
 
 const longPressedDirective = ref(false)
 
-const onLongPressCallbackDirective = (e: PointerEvent) => {
+function onLongPressCallbackDirective(e: PointerEvent) {
   longPressedDirective.value = true
 }
-const resetDirective = () => {
+function resetDirective() {
   longPressedDirective.value = false
 }
 </script>
@@ -104,12 +109,15 @@ const resetDirective = () => {
 <template>
   <p>Long Pressed: {{ longPressedDirective }}</p>
 
-  <button v-on-long-press.prevent="onLongPressCallbackDirective" class="ml-2 button small">
+  <button
+    v-on-long-press.prevent="onLongPressCallbackDirective"
+    class="ml-2 button small"
+  >
     Press long
   </button>
 
   <button
-    v-on-long-press="[onLongPressCallbackDirective, {delay: 1000, modifiers: { stop: true }}]"
+    v-on-long-press="[onLongPressCallbackDirective, { delay: 1000, modifiers: { stop: true } }]"
     class="ml-2button small"
   >
     Press long (with options)

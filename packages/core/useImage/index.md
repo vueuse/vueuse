@@ -8,7 +8,7 @@ Reactive load an image in the browser, you can wait the result to display it or 
 
 ## Usage
 
-```html
+```vue
 <script setup>
 import { useImage } from '@vueuse/core'
 
@@ -24,7 +24,7 @@ const { isLoading } = useImage({ src: avatarUrl })
 
 ## Component Usage
 
-```html
+```vue
 <template>
   <UseImage src="https://place.dog/300/200">
     <template #loading>

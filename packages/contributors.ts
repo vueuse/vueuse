@@ -19,7 +19,7 @@ export interface CoreTeam {
 const contributorsAvatars: Record<string, string> = {}
 
 function getAvatarUrl(name: string) {
-  return `https://github.com/${name}.png`
+  return `https://avatars.githubusercontent.com/${name}?v=4`
 }
 
 const contributorList = (contributors as string[]).reduce((acc, name) => {
@@ -172,6 +172,13 @@ const coreTeamMembers: CoreTeam[] = [
     functions: [
       'useSortable',
     ],
+  },
+  {
+    avatar: contributorsAvatars['Doctor-wu'],
+    name: 'Doctorwu',
+    github: 'Doctor-wu',
+    twitter: 'Doctorwu666',
+    description: 'Dangerous Coder<br>Open source enthusiast',
   },
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))
