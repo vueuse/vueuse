@@ -29,7 +29,7 @@ The following shows the default values of the options, they will be directly pas
 
 ```ts
 useSpeechRecognition({
-  lang: 'en-US',
+  lang: 'zh-CN',
   interimResults: true,
   continuous: true,
 })
