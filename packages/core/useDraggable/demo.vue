@@ -28,7 +28,7 @@ const { x, y, style } = useDraggable(el, {
         <span>Disabled drag and drop</span>
       </label>
     </div>
-    <p italic op50 text-center>
+    <p class="italic op50 text-center">
       Check the floating boxes
     </p>
     <div
