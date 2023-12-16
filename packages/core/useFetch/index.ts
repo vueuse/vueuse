@@ -228,7 +228,7 @@ function isAbsoluteURL(url: string) {
 
 function headersToObject(headers: HeadersInit | undefined) {
   if (typeof Headers !== 'undefined' && headers instanceof Headers)
-    return Object.fromEntries([...headers.entries()])
+    return Object.fromEntries(headers.entries())
   return headers
 }
 
