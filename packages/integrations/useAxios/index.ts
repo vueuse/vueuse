@@ -151,7 +151,6 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       options = args[args.length - 1]
   }
 
-
   const {
     initialData,
     shallow,
