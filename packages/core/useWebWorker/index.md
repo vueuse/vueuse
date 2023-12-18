@@ -22,5 +22,5 @@ const { data, post, terminate, worker } = useWebWorker('/path/to/worker.js')
 
 | Method    | Signature                                                                                                                                   | Description
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| post      | `(message: any, transfer: Transferable[]): void`<br>`(message: any, options?: StructuredSerializeOptions | undefined): void`                | Sends data to the worker thread. |
+| post      | `(message: any, transfer: Transferable[]): void`<br>`(message: any, options?: StructuredSerializeOptions \| undefined): void`                | Sends data to the worker thread. |
 | terminate | `() => void`                                                                                             | Stops and terminates the worker. |
