@@ -35,6 +35,8 @@ function reactiveWrapAsyncIterator<T extends (
     return {
       async next() {
         const { done, value } = await entries.next()
+        if (done)
+          return { done, value }
         const isHandle = (v: unknown): v is FileHandleInstance => v instanceof FileSystemHandle
         const isHandleEntry = (v: unknown): v is FileHandleInstanceEntry =>
           Array.isArray(v) && typeof v[0] == 'string' && isHandle(v[1])

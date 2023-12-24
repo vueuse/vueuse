@@ -1,6 +1,6 @@
 import { type Awaitable, type MaybeRef, toValue } from '@vueuse/shared'
-import type { ConfigurableWindow } from '@vueuse/core/_configurable'
-import { defaultWindow } from '@vueuse/core/_configurable'
+import type { ConfigurableWindow } from '../../core/_configurable'
+import { defaultWindow } from '../../core/_configurable'
 import type {
   FileSystemAccessShowOpenFileOptions,
   FileSystemAccessWindow,
@@ -16,7 +16,7 @@ export function useOpenFilePicker(options: UseOpenFilePickerOptions = {}): UseOp
     window: _window = defaultWindow,
   } = toValue(options)
   const window = _window as FileSystemAccessWindow
-  const isSupported = Boolean(window && 'showOpenDirectoryPicker' in window)
+  const isSupported = Boolean(window && 'showOpenFilePicker' in window)
 
   async function open(_options: FileSystemAccessShowOpenFileOptions = {}) {
     if (!isSupported)

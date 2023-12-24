@@ -1,6 +1,6 @@
 import { type Awaitable, type MaybeRef, toValue } from '@vueuse/shared'
-import type { ConfigurableWindow } from '@vueuse/core/_configurable'
-import { defaultWindow } from '@vueuse/core/_configurable'
+import type { ConfigurableWindow } from '../../core/_configurable'
+import { defaultWindow } from '../../core/_configurable'
 import type {
   FileSystemAccessShowSaveFileOptions,
   FileSystemAccessWindow,
@@ -26,7 +26,7 @@ export function useSaveFilePicker(options: UseSaveFilePickerOptions = {}): UseSa
     window: _window = defaultWindow,
   } = toValue(options)
   const window = _window as FileSystemAccessWindow
-  const isSupported = Boolean(window && 'showSaveDirectoryPicker' in window)
+  const isSupported = Boolean(window && 'showSaveFilePicker' in window)
 
   async function open(
     _options: UseSaveFilePickerOpenOptions = {},
@@ -41,7 +41,9 @@ export function useSaveFilePicker(options: UseSaveFilePickerOptions = {}): UseSa
       const resultFile = new FsFile({
         file: await window.showSaveFilePicker({ ...toValue(options?.defaults), ..._options }),
       })
-      await resultFile.writeFromStream((await toValue(sourceFile.stream)))
+      const resultStream = await toValue(sourceFile.stream)
+      if (resultStream)
+        await resultFile.writeFromStream(resultStream)
       return resultFile
     }
 

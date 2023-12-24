@@ -144,6 +144,17 @@ export const packages: PackageManifest[] = [
     },
   },
   {
+    name: 'fsApi',
+    display: 'fsApi',
+    description: 'Provides utilities for the filesystem on the client via the FileSystemAccessAPI.',
+    addon: true,
+    submodules: true,
+    external: [
+      '@vueuse/core',
+      '@vueuse/shared',
+    ],
+  },
+  {
     name: 'electron',
     display: 'Electron',
     description: 'Electron renderer process modules for VueUse',

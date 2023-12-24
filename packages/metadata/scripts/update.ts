@@ -66,7 +66,7 @@ export async function readMetadata() {
       const fn: VueUseFunction = {
         name: fnName,
         package: pkg.name,
-        lastUpdated: +await git.raw(['log', '-1', '--format=%at', tsPath]) * 1000,
+        lastUpdated: +await git.raw(['log', '-1', '--format=%at', '--', tsPath]) * 1000,
       }
 
       if (fs.existsSync(join(dir, fnName, 'component.ts')))

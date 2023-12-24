@@ -40,7 +40,7 @@ export interface FileSystemAccessShowDirectoryOptions {
   /** An id to remember selection by, to reopen at later */
   id?: string
   /** defaults to "read" for read-only access or "readwrite" for read and write access to the directory */
-  mode?: string
+  mode?: 'read' | 'readwrite'
   /** A FileSystemHandle or a well known directory ("desktop", "documents", "downloads", "music", "pictures", or "videos") to open the dialog in. */
   startIn?: FileSystemFileHandle | FileSystemDirectoryHandle | string
 }
@@ -124,9 +124,9 @@ export interface FileSystemWritableFileStream extends WritableStream {
 export type WritableData = string | BufferSource | Blob | DataView
 export type WritableArgs =
   | WritableData
-  | { type: 'write'; position: number; data: WritableData }
-  | { type: 'seek'; position: number }
-  | { type: 'truncate'; size: number }
+  | { type: 'write', position: number, data: WritableData }
+  | { type: 'seek', position: number }
+  | { type: 'truncate', size: number }
 
 /**
  * FileStream.write
@@ -150,4 +150,3 @@ export type FileSystemAccessWindow = Window & {
   FileSystemDirectoryHandle: FileSystemDirectoryHandle
   FileSystemWritableFileStream: FileSystemWritableFileStream
 }
-

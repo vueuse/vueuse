@@ -1,7 +1,19 @@
 {
   "name": "@vueuse/fsapi",
-  "version": "8.4.2",
-  "description": "Utilities for client file-system access",
+  "version": "10.7.0",
+  "description": "Provides utilities for the filesystem on the client via the FileSystemAccessAPI.",
+  "author": "Anthony Fu <https://github.com/antfu>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/fsApi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/fsApi"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
   "keywords": [
     "vue",
     "vue-use",
@@ -9,32 +21,40 @@
     "fileSystemAccessApi",
     "utils"
   ],
-  "license": "MIT",
-  "author": "Anthony Fu <https://github.com/antfu>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vueuse/vueuse.git",
-    "directory": "packages/fsApi"
-  },
-  "funding": "https://github.com/sponsors/antfu",
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
+  "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "require": "./index.cjs"
     },
-    "./*": "./*"
+    "./*": "./*",
+    "./Directory": {
+      "import": "./Directory.mjs",
+      "require": "./Directory.cjs"
+    },
+    "./File": {
+      "import": "./File.mjs",
+      "require": "./File.cjs"
+    },
+    "./useDirectoryPicker": {
+      "import": "./useDirectoryPicker.mjs",
+      "require": "./useDirectoryPicker.cjs"
+    },
+    "./useOpenFilePicker": {
+      "import": "./useOpenFilePicker.mjs",
+      "require": "./useOpenFilePicker.cjs"
+    },
+    "./useSaveFilePicker": {
+      "import": "./useSaveFilePicker.mjs",
+      "require": "./useSaveFilePicker.cjs"
+    }
   },
-  "sideEffects": false,
-  "bugs": {
-    "url": "https://github.com/vueuse/vueuse/issues"
-  },
-  "homepage": "https://github.com/vueuse/vueuse/tree/main/packages/fsapi#readme",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "unpkg": "./index.iife.min.js",
+  "jsdelivr": "./index.iife.min.js",
+  "types": "./index.d.cts",
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",

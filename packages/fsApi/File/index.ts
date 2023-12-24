@@ -15,6 +15,7 @@ export class FsFile extends FsHandle<'file'> {
   rawHandle: Ref<FileSystemFileHandle>
   readonly parent?: FsDirectory
   __rawFile: Ref<File | undefined>
+  __cacheRawFile: ComputedRef<Promise<Ref<File>>> | undefined
   constructor({ file, parent }: FsFileConstructorOptions) {
     super()
     this.parent = parent === undefined ? undefined : toValue(parent)
@@ -24,58 +25,64 @@ export class FsFile extends FsHandle<'file'> {
       this.rawHandle = ref(_file.rawHandle)
     else
       this.rawHandle = ref(_file)
+
+    this.__cacheRawFile = computed(async () => {
+      if (!toValue(this.__rawFile))
+        this.__rawFile.value = await toValue(this.rawHandle).getFile()
+
+      return (<Ref<File>>(this.__rawFile))
+    })
   }
 
+  /** invalidate the cache by setting to `undefined`, only caches file info between file updates */
   __cachedRawFile: ComputedRef<Promise<Ref<File>>> | undefined
-  __cacheRawFile = computed(async () => {
-    if (!this.__rawFile.value)
-      this.__rawFile.value = await this.rawHandle.value.getFile()
-
-    return (<Ref<File>>(this.__rawFile))
-  })
 
   /** Can only delete if there is a linked parent, otherwise the property is `undefined` */
   get delete() {
     const parent = this.parent
     if (parent instanceof FsDirectory) {
       return async () => {
-        await parent.rawHandle.value.removeEntry(this.name.value)
+        await toValue(parent.rawHandle).removeEntry(toValue(this.name))
       }
     }
     return undefined
   }
 
-  getWriteStream() { return this.rawHandle.value.createWritable({ keepExistingData: false }) }
-  getWriteStreamAppend() { return this.rawHandle.value.createWritable({ keepExistingData: true }) }
+  getWriteStream() { return toValue(this.rawHandle).createWritable({ keepExistingData: false }) }
+  getWriteStreamAppend() { return toValue(this.rawHandle).createWritable({ keepExistingData: true }) }
 
   write = async (writable: Writable) => {
     const stream = await this.getWriteStream()
-    await stream.write(toValue(writable))
-    await stream.getWriter().ready
-    await stream.close()
+    const writer = stream.getWriter()
+    await writer.ready
+    await writer.write(toValue(writable))
+    await writer.ready
+    await writer.close()
+    this.__rawFile.value = undefined
   }
 
   append = async (writable: Writable) => {
     const stream = await this.getWriteStreamAppend()
-    await stream.write(toValue(writable))
-    await stream.getWriter().ready
-    await stream.close()
+    const writer = stream.getWriter()
+    await writer.ready
+    await writer.write(toValue(writable))
+    await writer.ready
+    await writer.close()
+    this.__rawFile.value = undefined
   }
 
   writeFromStream = async (readableStream: MaybeRef<ReadableStream>) => {
     const _readableStream = toValue(readableStream)
     const stream = await this.getWriteStream()
-    _readableStream.pipeTo(stream)
-    await stream.getWriter().ready
-    await stream.close()
+    await _readableStream.pipeTo(stream)
+    this.__rawFile.value = undefined
   }
 
   appendFromStream = async (readableStream: MaybeRef<ReadableStream>) => {
     const _readableStream = toValue(readableStream)
     const stream = await this.getWriteStreamAppend()
-    _readableStream.pipeTo(stream)
-    await stream.getWriter().ready
-    await stream.close()
+    await _readableStream.pipeTo(stream)
+    this.__rawFile.value = undefined
   }
 
   /*
@@ -85,14 +92,46 @@ export class FsFile extends FsHandle<'file'> {
 
   } */
 
-  get name() { return computed(() => this.rawHandle.value.name) }
-  get MIME() { return this.__cacheRawFile.value.then(v => toRef(v.value, 'type', '')) }
-  get size() { return this.__cacheRawFile.value.then(v => toRef(v.value, 'size', 0)) }
-  get lastModified() { return this.__cacheRawFile.value.then(v => toRef(v.value, 'lastModified', 0)) }
-  get relativePath() { return this.__cacheRawFile.value.then(v => toRef(v.value, 'webkitRelativePath', '')) }
+  get name() { return computed(() => toValue(this.rawHandle).name) }
+  get MIME() {
+    return async () => {
+      const file = await toValue(this.__cacheRawFile)
+      if (!file)
+        return ref('')
+      return toRef(toValue(file), 'type', '')
+    }
+  }
+
+  get size() {
+    return async () => {
+      const file = await toValue(this.__cacheRawFile)
+      if (!file)
+        return ref(0)
+      return toRef(toValue(file), 'size', 0)
+    }
+  }
+
+  get lastModified() {
+    return async () => {
+      const file = await toValue(this.__cacheRawFile)
+      if (!file)
+        return ref(0)
+      return toRef(toValue(file), 'lastModified', 0)
+    }
+  }
+
+  get relativePath() {
+    return async () => {
+      const file = await toValue(this.__cacheRawFile)
+      if (!file)
+        return ref('')
+      return toRef(toValue(file), 'webkitRelativePath', '')
+    }
+  }
+
   webkitRelativePath = this.relativePath
   get blob() { return this.__cacheRawFile }
-  get stream() { return computed(() => this.__cacheRawFile.value.then(v => v.value.stream())) }
-  get arrayBuffer() { return computed(() => this.__cacheRawFile.value.then(v => v.value.arrayBuffer())) }
-  get text() { return computed(() => this.__cacheRawFile.value.then(v => v.value.text())) }
+  get stream() { return computed(() => toValue(this.__cacheRawFile)?.then(v => v.value.stream())) }
+  get arrayBuffer() { return computed(() => toValue(this.__cacheRawFile)?.then(v => v.value.arrayBuffer())) }
+  get text() { return computed(() => toValue(this.__cacheRawFile)?.then(v => v.value.text())) }
 }

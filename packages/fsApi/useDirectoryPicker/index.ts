@@ -1,7 +1,7 @@
 import { toValue } from '@vueuse/shared'
 import type { Awaitable, MaybeRef } from '@vueuse/shared'
-import type { ConfigurableWindow } from '@vueuse/core/_configurable'
-import { defaultWindow } from '@vueuse/core/_configurable'
+import type { ConfigurableWindow } from '../../core/_configurable'
+import { defaultWindow } from '../../core/_configurable'
 import { FsDirectory } from '../Directory/index.js'
 import type {
   FileSystemAccessShowDirectoryOptions,
@@ -27,7 +27,7 @@ export function useDirectoryPicker(options: UseDirectoryPickerOptions = {}): Use
     window: _window = defaultWindow,
   } = toValue(options)
   const window = _window as FileSystemAccessWindow
-  const isSupported = Boolean(window && 'showOpenDirectoryPicker' in window)
+  const isSupported = Boolean(window && 'showDirectoryPicker' in window)
 
   async function open(_options: FileSystemAccessShowDirectoryOptions = {}) {
     if (!isSupported)

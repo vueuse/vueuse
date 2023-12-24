@@ -108,6 +108,16 @@ Enables realtime bindings for Firebase
 - [`useFirestore`](https://vueuse.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
 - [`useRTDB`](https://vueuse.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
+## fsApi - [`@vueuse/fsApi`](https://vueuse.org/fsApi/README.html)
+
+Provides utilities for the filesystem on the client via the FileSystemAccessAPI.
+
+- [`Directory`](https://vueuse.org/fsApi/Directory/) — a file-system directory handle class that wraps the [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)'s [FileSystemDirectoryHandle](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemDirectoryHandle) class
+- [`File`](https://vueuse.org/fsApi/File/) — a file-system handle class that wraps the [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)'s [FileSystemFileHandle](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileHandle) class
+- [`useDirectoryPicker`](https://vueuse.org/fsApi/useDirectoryPicker/) — open a handle for a selected Directory using the [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)'s [showDirectoryPicker](https://developer.mozilla.org/en-US/docs/Web/API/window/showDirectoryPicker) function
+- [`useOpenFilePicker`](https://vueuse.org/fsApi/useOpenFilePicker/) — open files using the [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)'s [showOpenFilePicker](https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker) function
+- [`useSaveFilePicker`](https://vueuse.org/fsApi/useSaveFilePicker/) — create and write local files using the [FileSystemAccessAPI](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)'s [showSaveFilePicker](https://developer.mozilla.org/en-US/docs/Web/API/window/showSaveFilePicker) function
+
 ## Electron - [`@vueuse/electron`](https://vueuse.org/electron/README.html)
 
 Electron renderer process modules for VueUse
