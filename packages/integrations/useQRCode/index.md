@@ -9,7 +9,7 @@ Wrapper for [`qrcode`](https://github.com/soldair/node-qrcode).
 ## Install
 
 ```bash
-npm i qrcode
+npm i qrcode@^1
 ```
 
 ## Usage
