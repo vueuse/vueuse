@@ -5,6 +5,7 @@ import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useScreenOrientation } from '../useScreenOrientation'
 
 export interface UseParallaxOptions extends ConfigurableWindow {
   deviceOrientationTiltAdjust?: (i: number) => number
@@ -48,6 +49,7 @@ export function useParallax(
   } = options
 
   const orientation = reactive(useDeviceOrientation({ window }))
+  const screenOrientation = reactive(useScreenOrientation({ window }))
   const {
     elementX: x,
     elementY: y,
@@ -65,7 +67,23 @@ export function useParallax(
 
   const roll = computed(() => {
     if (source.value === 'deviceOrientation') {
-      const value = -orientation.beta! / 90
+      let value: number
+      switch (screenOrientation.orientation) {
+        case 'landscape-primary':
+          value = orientation.gamma! / 90
+          break
+        case 'landscape-secondary':
+          value = -orientation.gamma! / 90
+          break
+        case 'portrait-primary':
+          value = -orientation.beta! / 90
+          break
+        case 'portrait-secondary':
+          value = orientation.beta! / 90
+          break
+        default:
+          value = -orientation.beta! / 90
+      }
       return deviceOrientationRollAdjust(value)
     }
     else {
@@ -76,7 +94,23 @@ export function useParallax(
 
   const tilt = computed(() => {
     if (source.value === 'deviceOrientation') {
-      const value = orientation.gamma! / 90
+      let value: number
+      switch (screenOrientation.orientation) {
+        case 'landscape-primary':
+          value = orientation.beta! / 90
+          break
+        case 'landscape-secondary':
+          value = -orientation.beta! / 90
+          break
+        case 'portrait-primary':
+          value = orientation.gamma! / 90
+          break
+        case 'portrait-secondary':
+          value = -orientation.gamma! / 90
+          break
+        default:
+          value = orientation.gamma! / 90
+      }
       return deviceOrientationTiltAdjust(value)
     }
     else {
