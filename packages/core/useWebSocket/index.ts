@@ -302,8 +302,12 @@ export function useWebSocket<Data = any>(
     _init()
   }
 
-  if (immediate)
-    watch(urlRef, open, { immediate: true })
+  watch(urlRef, () => {
+    if(immediate)
+      open()
+    else
+      close()
+  }, { immediate: true })
 
   return {
     data,
