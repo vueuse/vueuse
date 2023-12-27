@@ -155,7 +155,7 @@
     "@types/sortablejs": "^1.15.7",
     "async-validator": "^4.2.5",
     "axios": "^1.6.3",
-    "change-case": "^5.3.0",
+    "change-case": "^4.1.2",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
     "fuse.js": "^6.6.2",
