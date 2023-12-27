@@ -30,8 +30,7 @@ function handleOnClick() {
 </template>
 
 <style scoped>
-#_useTextDirectionDemo[dir='rtl']
-p {
+#_useTextDirectionDemo[dir='rtl'] p {
   color: red;
 }
 button {

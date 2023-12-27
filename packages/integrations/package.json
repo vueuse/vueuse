@@ -107,10 +107,10 @@
     "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
-    "axios": {
+    "async-validator": {
       "optional": true
     },
-    "async-validator": {
+    "axios": {
       "optional": true
     },
     "change-case": {
@@ -137,10 +137,10 @@
     "qrcode": {
       "optional": true
     },
-    "universal-cookie": {
+    "sortablejs": {
       "optional": true
     },
-    "sortablejs": {
+    "universal-cookie": {
       "optional": true
     }
   },
@@ -154,13 +154,13 @@
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.7",
     "async-validator": "^4.2.5",
-    "axios": "^1.6.2",
-    "change-case": "^4.1.2",
+    "axios": "^1.6.3",
+    "change-case": "^5.3.0",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
-    "fuse.js": "^6.6.2",
+    "fuse.js": "^7.0.0",
     "idb-keyval": "^6.2.1",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
     "sortablejs": "^1.15.1",
