@@ -5,8 +5,7 @@ import { ref, shallowRef, unref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, notNullish } from '@vueuse/shared'
 
-// eslint-disable-next-line no-restricted-imports
-import { useEventListener } from '@vueuse/core'
+import { useEventListener } from '../useEventListener'
 
 export interface UseDropZoneReturn {
   files: Ref<File[] | null>
