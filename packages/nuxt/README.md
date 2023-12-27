@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/nuxt</b>
-</pre>
+```bash
+npm i @vueuse/nuxt
+```
 
 ```ts
 // nuxt.config
