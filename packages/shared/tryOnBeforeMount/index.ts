@@ -11,7 +11,7 @@ import { type Fn, getLifeCycleTarget } from '../utils'
 export function tryOnBeforeMount(fn: Fn, sync = true, target?: any) {
   const instance = getLifeCycleTarget(target)
   if (instance)
-    onBeforeMount(fn, instance)
+    onBeforeMount(fn, target)
   else if (sync)
     fn()
   else

@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/components</b> @vueuse/core
-</pre>
+```bash
+npm i @vueuse/components @vueuse/core
+```
 
 Learn more about [component usage](https://vueuse.org/guide/components).
 

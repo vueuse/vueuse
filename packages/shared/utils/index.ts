@@ -1,4 +1,4 @@
-import { getCurrentInstance, isVue3 } from 'vue-demi'
+import { getCurrentInstance } from 'vue-demi'
 
 export * from './is'
 export * from './filters'
@@ -117,7 +117,5 @@ export function objectEntries<T extends object>(obj: T) {
 }
 
 export function getLifeCycleTarget(target?: any) {
-  const instance = target || getCurrentInstance()
-
-  return isVue3 ? instance : instance?.proxy
+  return target || getCurrentInstance()
 }
