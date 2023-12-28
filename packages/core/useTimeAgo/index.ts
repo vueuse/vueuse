@@ -54,7 +54,7 @@ export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitN
   /**
    * Custom units
    */
-  units?: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[]
+  units?: UseTimeAgoUnit<UnitNames>[]
 }
 
 export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames> {
