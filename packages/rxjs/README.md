@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/rxjs</b> rxjs
-</pre>
+```bash
+npm i @vueuse/rxjs rxjs
+```
 
 ## Functions
 

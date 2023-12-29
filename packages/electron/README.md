@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/electron</b> electron
-</pre>
+```bash
+npm i @vueuse/electron electron
+```
 
 ## Functions
 
