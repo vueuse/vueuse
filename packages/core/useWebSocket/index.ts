@@ -303,7 +303,7 @@ export function useWebSocket<Data = any>(
   }
 
   watch(urlRef, () => {
-    if(immediate)
+    if (immediate)
       open()
     else
       close()
