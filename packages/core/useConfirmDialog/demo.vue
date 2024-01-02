@@ -96,7 +96,7 @@ dialog2.onCancel(() => {
   max-width: 100%;
   z-index: 10;
 }
-.modal-layout{
+.modal-layout {
   z-index: 20;
   left: 0;
   top: 0;

@@ -10,9 +10,9 @@ Add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bind
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/firebase</b> firebase
-</pre>
+```bash
+npm i @vueuse/firebase firebase
+```
 
 ## Functions
 

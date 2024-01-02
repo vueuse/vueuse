@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "10.7.0",
+  "version": "10.7.1",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -107,10 +107,10 @@
     "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
-    "axios": {
+    "async-validator": {
       "optional": true
     },
-    "async-validator": {
+    "axios": {
       "optional": true
     },
     "change-case": {
@@ -137,10 +137,10 @@
     "qrcode": {
       "optional": true
     },
-    "universal-cookie": {
+    "sortablejs": {
       "optional": true
     },
-    "sortablejs": {
+    "universal-cookie": {
       "optional": true
     }
   },
@@ -154,7 +154,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.7",
     "async-validator": "^4.2.5",
-    "axios": "^1.6.2",
+    "axios": "^1.6.3",
     "change-case": "^4.1.2",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
