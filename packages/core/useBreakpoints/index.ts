@@ -83,6 +83,12 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
       const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
       return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
     },
+    screenFactor() {
+      const bps = this.current()
+      return computed(() => {
+        return bps.value.length === 0 ? '' : bps.value.at(-1)
+      })
+    },
   })
 }
 
@@ -98,4 +104,5 @@ export type UseBreakpointsReturn<K extends string = string> = {
   isSmallerOrEqual(k: K): boolean
   isInBetween(a: K, b: K): boolean
   current(): ComputedRef<string[]>
+  screenFactor(): ComputedRef<string>
 } & Record<K, ComputedRef<boolean>>
