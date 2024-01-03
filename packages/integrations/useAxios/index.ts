@@ -147,8 +147,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
   ) {
-    if (args[args.length - 1] !== undefined)
-      options = args[args.length - 1]
+    options = args[args.length - 1] || {}
   }
 
   const {
