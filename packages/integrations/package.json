@@ -164,6 +164,6 @@
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
     "sortablejs": "^1.15.1",
-    "universal-cookie": "^6.1.1"
+    "universal-cookie": "^6.1.3"
   }
 }
