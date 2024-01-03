@@ -260,7 +260,7 @@ export function useScroll(
 
   tryOnMounted(() => {
     try {
-      const _element = toValue(element)
+      const _element = unrefElement(element)
       if (!_element)
         return
       setArrivedState(_element)
