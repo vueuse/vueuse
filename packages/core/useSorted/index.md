@@ -33,9 +33,11 @@ const objArr = [{
 }]
 const objSorted = useSorted(objArr, (a, b) => a.age - b.age)
 ```
+
 ### dirty mode
 
 dirty mode will change the source array.
+
 ```ts
 const source = ref([10, 3, 5, 7, 2, 1, 8, 6, 9, 4])
 const sorted = useSorted(source, (a, b) => a - b, {

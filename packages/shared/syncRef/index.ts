@@ -8,7 +8,7 @@ type SpecificFieldPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, 
 /**
  * A = B
  */
-type Equal<A, B> = A extends B ? (B extends A ? true : false) : false
+type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false
 
 /**
  * A ∩ B ≠ ∅
@@ -48,7 +48,7 @@ interface EqualType<
 }
 
 type StrictIncludeMap<IncludeType extends 'LR' | 'RL', D extends Exclude<Direction, 'both'>, L, R> = (Equal<[IncludeType, D], ['LR', 'ltr']>
-& Equal<[IncludeType, D], ['RL', 'rtl']>) extends true
+  & Equal<[IncludeType, D], ['RL', 'rtl']>) extends true
   ? {
       transform?: SpecificFieldPartial<Pick<Transform<L, R>, D>, D>
     } : {
@@ -130,7 +130,7 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
  * 3. L ⊆ R
  * 4. L ∩ R = ∅
  */
-export function syncRef<L, R, D extends Direction>(
+export function syncRef<L, R, D extends Direction = 'both'>(
   left: Ref<L>,
   right: Ref<R>,
   ...[options]: Equal<L, R> extends true

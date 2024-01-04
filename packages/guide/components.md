@@ -5,21 +5,21 @@ In v5.0, we introduced a new package, `@vueuse/components` providing renderless 
 ## Install
 
 ```bash
-$ npm i @vueuse/core @vueuse/components
+npm i @vueuse/core @vueuse/components
 ```
 
 ## Usage
 
 For example of `onClickOutside`, instead of binding the component ref for functions to consume:
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 
 const el = ref()
 
-function close () {
+function close() {
   /* ... */
 }
 
@@ -35,11 +35,11 @@ onClickOutside(el, close)
 
 We can now use the renderless component which the binding is done automatically:
 
-```html
+```vue
 <script setup>
 import { OnClickOutside } from '@vueuse/components'
 
-function close () {
+function close() {
   /* ... */
 }
 </script>
@@ -57,19 +57,23 @@ function close () {
 
 You can access return values with `v-slot`:
 
-```html
-<UseMouse v-slot="{ x, y }">
-  x: {{ x }}
-  y: {{ y }}
-</UseMouse>
+```vue
+<template>
+  <UseMouse v-slot="{ x, y }">
+    x: {{ x }}
+    y: {{ y }}
+  </UseMouse>
+</template>
 ```
 
-```html
-<UseDark v-slot="{ isDark, toggleDark }">
-  <button @click="toggleDark()">
-    Is Dark: {{ isDark }}
-  </button>
-</UseDark>
+```vue
+<template>
+  <UseDark v-slot="{ isDark, toggleDark }">
+    <button @click="toggleDark()">
+      Is Dark: {{ isDark }}
+    </button>
+  </UseDark>
+</template>
 ```
 
 Refer to each function's documentation for the detailed usage of component style.

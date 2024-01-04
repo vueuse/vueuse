@@ -1,4 +1,6 @@
 import { computed } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
+import { usePreferredDark } from '../usePreferredDark'
 import { useColorMode } from '../useColorMode'
 import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
 
@@ -36,6 +38,7 @@ export function useDark(options: UseDarkOptions = {}) {
   const {
     valueDark = 'dark',
     valueLight = '',
+    window = defaultWindow,
   } = options
 
   const mode = useColorMode({
@@ -52,13 +55,24 @@ export function useDark(options: UseDarkOptions = {}) {
     },
   })
 
+  const system = computed(() => {
+    if (mode.system) {
+      return mode.system.value
+    }
+    else {
+      // In Vue 2.6, ref not be extensible, mode.system is undefined
+      const preferredDark = usePreferredDark({ window })
+      return preferredDark.value ? 'dark' : 'light'
+    }
+  })
+
   const isDark = computed<boolean>({
     get() {
       return mode.value === 'dark'
     },
     set(v) {
       const modeVal = v ? 'dark' : 'light'
-      if (mode.system.value === modeVal)
+      if (system.value === modeVal)
         mode.value = 'auto'
       else
         mode.value = modeVal

@@ -9,12 +9,12 @@ Reactive instance for [drauu](https://github.com/antfu/drauu).
 ## Install
 
 ```bash
-npm i drauu
+npm i drauu@^0
 ```
 
 ## Usage
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { toRefs } from '@vueuse/core'
@@ -26,6 +26,6 @@ const { color, size } = toRefs(brush)
 </script>
 
 <template>
-  <svg ref="target"></svg>
+  <svg ref="target" />
 </template>
 ```

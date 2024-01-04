@@ -33,10 +33,14 @@ By default, it uses [Tailwind CSS favored dark mode](https://tailwindcss.com/doc
 
 ```html
 <!--light-->
-<html> ... </html>
+<html>
+  ...
+</html>
 
 <!--dark-->
-<html class="dark"> ... </html>
+<html class="dark">
+  ...
+</html>
 ```
 
 Still, you can also customize it to make it work with most CSS frameworks.
@@ -57,12 +61,16 @@ will work like
 ```html
 <!--light-->
 <html>
-  <body color-scheme="light"> ... </body>
+  <body color-scheme="light">
+    ...
+  </body>
 </html>
 
 <!--dark-->
 <html>
-  <body color-scheme="dark"> ... </body>
+  <body color-scheme="dark">
+    ...
+  </body>
 </html>
 ```
 
@@ -78,10 +86,12 @@ const isDark = useDark({
 
 ## Component Usage
 
-```html
-<UseDark v-slot="{ isDark, toggleDark }">
-  <button @click="toggleDark()">
-    Is Dark: {{ isDark }}
-  </button>
-</UseDark>
+```vue
+<template>
+  <UseDark v-slot="{ isDark, toggleDark }">
+    <button @click="toggleDark()">
+      Is Dark: {{ isDark }}
+    </button>
+  </UseDark>
+</template>
 ```

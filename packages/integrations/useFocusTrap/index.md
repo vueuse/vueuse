@@ -8,17 +8,17 @@ Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap).
 
 For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createfocustrapelement-createoptions) in the `focus-trap` documentation.
 
-## Install 
+## Install
 
 ```bash
-npm i focus-trap
+npm i focus-trap@^7
 ```
 
 ## Usage
 
 **Basic Usage**
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
@@ -29,11 +29,15 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 
 <template>
   <div>
-    <button @click="activate()">Activate</button>
+    <button @click="activate()">
+      Activate
+    </button>
     <div ref="target">
       <span>Has Focus: {{ hasFocus }}</span>
-      <input type="text" />
-      <button @click="deactivate()">Deactivate</button>
+      <input type="text">
+      <button @click="deactivate()">
+        Deactivate
+      </button>
     </div>
   </div>
 </template>
@@ -41,7 +45,7 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 
 **Automatically Focus**
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
@@ -52,7 +56,9 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
 
 <template>
   <div>
-    <div ref="target">...</div>
+    <div ref="target">
+      ...
+    </div>
   </div>
 </template>
 ```
@@ -61,18 +67,18 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: tru
 
 This function can't properly activate focus on elements with conditional rendering using `v-if`. This is because they do not exist in the DOM at the time of the focus activation. To solve this you need to activate on the next tick.
 
-```html
+```vue
 <script setup>
 import { nextTick, ref } from 'vue'
 
 const target = ref()
 const { activate, deactivate } = useFocusTrap(target, { immediate: true })
 
-const show = ref(false)  
+const show = ref(false)
 
-const reveal = async () => {
+async function reveal() {
   show.value = true
-  
+
   await nextTick()
   activate()
 }
@@ -80,9 +86,13 @@ const reveal = async () => {
 
 <template>
   <div>
-    <div ref="target" v-if="show">...</div>
-    
-    <button @click="reveal">Reveal and Focus</button>
+    <div v-if="show" ref="target">
+      ...
+    </div>
+
+    <button @click="reveal">
+      Reveal and Focus
+    </button>
   </div>
 </template>
 ```
@@ -91,7 +101,7 @@ const reveal = async () => {
 
 With the `UseFocusTrap` component, Focus Trap will be activated automatically on mounting this component and deactivated on unmount.
 
-```html
+```vue
 <script setup>
 import { ref } from 'vue'
 import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
@@ -101,8 +111,9 @@ const show = ref(false)
 
 <template>
   <UseFocusTrap v-if="show" :options="{ immediate: true }">
-    <div class="modal">...</div>
+    <div class="modal">
+      ...
+    </div>
   </UseFocusTrap>
 </template>
-
 ```
