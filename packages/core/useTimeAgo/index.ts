@@ -157,7 +157,7 @@ export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
     max,
     messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
     fullDateFormatter = DEFAULT_FORMATTER,
-    units = DEFAULT_UNITS,
+    units = DEFAULT_UNITS as UseTimeAgoUnit<UnitNames>[],
     showSecond = false,
     rounding = 'round',
   } = options
@@ -169,11 +169,11 @@ export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
   const diff = +now - +from
   const absDiff = Math.abs(diff)
 
-  function getValue(diff: number, unit: UseTimeAgoUnit) {
+  function getValue(diff: number, unit: UseTimeAgoUnit<UnitNames>) {
     return roundFn(Math.abs(diff) / unit.value)
   }
 
-  function format(diff: number, unit: UseTimeAgoUnit) {
+  function format(diff: number, unit: UseTimeAgoUnit<UnitNames>) {
     const val = getValue(diff, unit)
     const past = diff > 0
 
