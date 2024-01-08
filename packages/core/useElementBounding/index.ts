@@ -4,6 +4,7 @@ import { useEventListener } from '../useEventListener'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseElementBoundingOptions {
   /**
@@ -91,6 +92,10 @@ export function useElementBounding(
 
   useResizeObserver(target, update)
   watch(() => unrefElement(target), ele => !ele && update())
+  // trigger by css or style
+  useMutationObserver(target, update, {
+    attributeFilter: ['style', 'class'],
+  })
 
   if (windowScroll)
     useEventListener('scroll', update, { capture: true, passive: true })

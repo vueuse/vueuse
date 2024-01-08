@@ -102,6 +102,7 @@ describe('syncRef', () => {
     const ref0 = ref(0)
     const ref1 = ref(1)
     const refString = ref('1')
+    const refNumber = ref(1)
     const refNumString = ref<number | string>(1)
     const refNumBoolean = ref<number | boolean>(1)
     // L = A && direction === 'both'
@@ -253,5 +254,12 @@ describe('syncRef', () => {
     const bool0 = ref(false)
     const bool1 = ref(false)
     syncRef(bool0, bool1)
+
+    syncRef(refNumber, refString, {
+      // @ts-expect-error lack rtl func
+      transform: {
+        ltr: v => String(v),
+      },
+    })
   })
 })
