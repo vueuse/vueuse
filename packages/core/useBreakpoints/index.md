@@ -4,7 +4,7 @@ category: Browser
 
 # useBreakpoints
 
-Reactive viewport breakpoints.
+Reactive viewport breakpoints and screen factor.
 
 ## Usage
 
@@ -19,7 +19,10 @@ const lgAndSmaller = breakpoints.smallerOrEqual('lg') // lg and smaller
 const smallerThanLg = breakpoints.smaller('lg') // only smaller than lg
 ```
 
-```js
+To set reactive screen factor CSS class globally in the `App.vue`:
+
+```vue
+<script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints({
@@ -34,4 +37,11 @@ const screenFactor = breakpoints.screenFactor()
 
 // true or false
 const laptop = breakpoints.between('laptop', 'desktop')
+</script>
+
+<template>
+  <div :class="screenFactor">
+    ...
+  </div>
+</template>
 ```
