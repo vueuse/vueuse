@@ -27,7 +27,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
       if (isEqualityClone)
         throttled.value = 'Error refThrottled' as any
       else
-        console.error(error)
+        throw error
     }
   }
   setThrottled()
