@@ -195,28 +195,27 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function write(v: unknown) {
     try {
-      if (v == null) {
-        storage!.removeItem(key)
-      }
-      else {
-        const serialized = serializer.write(v)
-        const oldValue = storage!.getItem(key)
-        if (oldValue !== serialized) {
-          storage!.setItem(key, serialized)
+      const serialized = v == null ? null : serializer.write(v)
+      const oldValue = storage!.getItem(key)
+      if (oldValue !== serialized) {
+        if (serialized == null)
+          storage!.removeItem(key)
+        else storage!.setItem(key, serialized)
 
-          // send custom event to communicate within same page
-          // importantly this should _not_ be a StorageEvent since those cannot
-          // be constructed with a non-built-in storage area
-          if (window) {
-            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+        // send custom event to communicate within same page
+        // importantly this should _not_ be a StorageEvent since those cannot
+        // be constructed with a non-built-in storage area
+        if (window) {
+          window.dispatchEvent(
+            new CustomEvent<StorageEventLike>(customStorageEventName, {
               detail: {
                 key,
                 oldValue,
                 newValue: serialized,
                 storageArea: storage!,
               },
-            }))
-          }
+            }),
+          )
         }
       }
     }
@@ -259,7 +258,9 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     if (event && event.storageArea !== storage)
       return
 
-    if (event && event.key == null) {
+    // when the change has been invoked by storage clear() method,
+    // or the storage item has been removed from the storage.
+    if (event && (event.key == null || event.newValue == null)) {
       data.value = rawInit
       return
     }
