@@ -17,7 +17,7 @@ const { cloned } = useCloned(original)
 
 original.value.key = 'some new value'
 
-console.log(cloned.value.key) // 'some new value'
+console.log(cloned.value.key) // 'value'
 ```
 
 ## Manual cloning
