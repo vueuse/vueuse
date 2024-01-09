@@ -2,6 +2,8 @@ import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import { useThrottleFn } from '../useThrottleFn'
 
+const _defaultClone = <T>(val: T): T => JSON.parse(JSON.stringify(val))
+const isObject = (val: any): val is object => val !== null && typeof val === 'object'
 /**
  * Throttle execution of a function. Especially useful for rate limiting
  * execution of handlers on events like resize and scroll.
@@ -10,18 +12,23 @@ import { useThrottleFn } from '../useThrottleFn'
  * @param  delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
  * @param [trailing] if true, update the value again after the delay time is up
  * @param [leading] if true, update the value on the leading edge of the ms timeout
+ * @param [defaultClone] default clone function for non-primitive values
  */
-export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true) {
+export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true, defaultClone = _defaultClone) {
   if (delay <= 0)
     return value
 
-  const throttled: Ref<T> = ref(value.value as T) as Ref<T>
+  const _isObject = isObject(value.value)
+
+  const throttled: Ref<T> = ref(_isObject ? defaultClone(value.value) : value.value) as Ref<T>
 
   const updater = useThrottleFn(() => {
-    throttled.value = value.value
+    throttled.value = _isObject ? defaultClone(value.value) : value.value
   }, delay, trailing, leading)
 
-  watch(value, () => updater())
+  watch(value, () => updater(), {
+    deep: _isObject,
+  })
 
   return throttled
 }

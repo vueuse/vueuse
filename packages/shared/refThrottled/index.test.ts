@@ -1,0 +1,44 @@
+import { describe, expect, it } from 'vitest'
+import { ref } from 'vue-demi'
+import { refThrottled } from '.'
+
+describe('refThrottled', () => {
+  it('should handle string type', async () => {
+    const strRef = ref('Hello')
+    const throttledRef = refThrottled(strRef, 100)
+
+    expect(throttledRef.value).toBe('Hello')
+
+    strRef.value = 'World'
+    expect(throttledRef.value).toBe('Hello')
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(throttledRef.value).toBe('World')
+  })
+
+  it('should handle object type', async () => {
+    const objRef = ref({ key: 'value' })
+    const throttledRef = refThrottled(objRef, 100)
+
+    expect(throttledRef.value).toEqual({ key: 'value' })
+
+    objRef.value.key = 'new value'
+    expect(throttledRef.value).toEqual({ key: 'value' })
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(throttledRef.value).toEqual({ key: 'new value' })
+  })
+
+  it('should handle array type', async () => {
+    const arrRef = ref([1, 2, 3])
+    const throttledRef = refThrottled(arrRef, 100)
+
+    expect(throttledRef.value).toEqual([1, 2, 3])
+
+    arrRef.value.push(4)
+    expect(throttledRef.value).toEqual([1, 2, 3])
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(throttledRef.value).toEqual([1, 2, 3, 4])
+  })
+})
