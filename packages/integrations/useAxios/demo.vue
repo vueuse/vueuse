@@ -4,12 +4,6 @@ import { useAxios } from '.'
 
 const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(
   'https://jsonplaceholder.typicode.com/todos/1',
-  {},
-  {
-    onSuccess(data) {
-      console.log('onSuccess', isAborted.value, data)
-    },
-  },
 )
 const text = stringify(data)
 </script>
