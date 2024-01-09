@@ -32,9 +32,7 @@ describe('refThrottled', () => {
   it('should handle array type', async () => {
     const arrRef = ref([1, 2, 3])
     const throttledRef = refThrottled(arrRef, 100)
-
     expect(throttledRef.value).toEqual([1, 2, 3])
-
     arrRef.value.push(4)
     expect(throttledRef.value).toEqual([1, 2, 3])
     await new Promise(resolve => setTimeout(resolve, 200))

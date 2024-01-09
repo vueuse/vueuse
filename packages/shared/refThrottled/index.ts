@@ -1,9 +1,11 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
 import { cloneFnJSON } from '@vueuse/core'
-import { isObject } from '../utils'
 import { useThrottleFn } from '../useThrottleFn'
 
+function isReferenceType(value: any) {
+  return value !== null && (typeof value === 'object' || typeof value === 'function')
+}
 /**
  * Throttle execution of a function. Especially useful for rate limiting
  * execution of handlers on events like resize and scroll.
@@ -21,7 +23,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
   const isEqualityClone = cloneHandler === cloneFnJSON
   const setThrottled = () => {
     try {
-      throttled.value = isObject(value.value) ? cloneHandler(value.value) : value.value
+      throttled.value = isReferenceType(value.value) ? cloneHandler(value.value) : value.value
     }
     catch (error) {
       if (isEqualityClone)
@@ -36,7 +38,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
   }, delay, trailing, leading)
 
   watch(value, () => updater(), {
-    deep: isObject(value.value),
+    deep: isReferenceType(value.value),
   })
 
   return throttled
