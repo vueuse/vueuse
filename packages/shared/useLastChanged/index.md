@@ -19,7 +19,7 @@ a.value = 1
 
 await nextTick()
 
-console.log(lastChanged.value) // 0
+console.log(lastChanged.value) // 1704709379457
 ```
 
 By default the change is recorded on the next tick (`watch()` with `flush: 'post'`). If you want to record the change immediately, pass `flush: 'sync'` as the second argument.
@@ -32,5 +32,5 @@ const lastChanged = useLastChanged(a, { flush: 'sync' })
 
 a.value = 1
 
-console.log(lastChanged.value) // 0
+console.log(lastChanged.value) // 1704709379457
 ```
