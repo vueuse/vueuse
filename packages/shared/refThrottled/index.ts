@@ -33,11 +33,9 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
     }
   }
   setThrottled()
-  const updater = useThrottleFn(() => {
-    setThrottled()
-  }, delay, trailing, leading)
+  const updater = useThrottleFn(setThrottled, delay, trailing, leading)
 
-  watch(value, () => updater(), {
+  watch(value, updater, {
     deep: isReferenceType(value.value),
   })
 
