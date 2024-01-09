@@ -1,9 +1,9 @@
 import type { Ref } from 'vue-demi'
 import { ref, watch } from 'vue-demi'
+import { cloneFnJSON } from '@vueuse/core'
+import { isObject } from '../utils'
 import { useThrottleFn } from '../useThrottleFn'
 
-const _defaultClone = <T>(val: T): T => JSON.parse(JSON.stringify(val))
-const isObject = (val: any): val is object => val !== null && typeof val === 'object'
 /**
  * Throttle execution of a function. Especially useful for rate limiting
  * execution of handlers on events like resize and scroll.
@@ -12,22 +12,31 @@ const isObject = (val: any): val is object => val !== null && typeof val === 'ob
  * @param  delay  A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
  * @param [trailing] if true, update the value again after the delay time is up
  * @param [leading] if true, update the value on the leading edge of the ms timeout
- * @param [defaultClone] default clone function for non-primitive values
+ * @param [cloneHandler] By default, it use `JSON.parse(JSON.stringify(value))` to clone
  */
-export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true, defaultClone = _defaultClone) {
+export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true, cloneHandler = cloneFnJSON) {
   if (delay <= 0)
     return value
-
-  const _isObject = isObject(value.value)
-
-  const throttled: Ref<T> = ref(_isObject ? defaultClone(value.value) : value.value) as Ref<T>
-
+  const throttled = ref() as Ref<T>
+  const isEqualityClone = cloneHandler === cloneFnJSON
+  const setThrottled = () => {
+    try {
+      throttled.value = isObject(value.value) ? cloneHandler(value.value) : value.value
+    }
+    catch (error) {
+      if (isEqualityClone)
+        throttled.value = 'Error refThrottled' as any
+      else
+        console.error(error)
+    }
+  }
+  setThrottled()
   const updater = useThrottleFn(() => {
-    throttled.value = _isObject ? defaultClone(value.value) : value.value
+    setThrottled()
   }, delay, trailing, leading)
 
   watch(value, () => updater(), {
-    deep: _isObject,
+    deep: isObject(value.value),
   })
 
   return throttled

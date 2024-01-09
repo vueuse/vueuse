@@ -41,4 +41,19 @@ describe('refThrottled', () => {
 
     expect(throttledRef.value).toEqual([1, 2, 3, 4])
   })
+
+  it('should handle cloneHandler', async () => {
+    const objRef = ref({ key: 'value' })
+    const throttledRef = refThrottled(objRef, 100, true, true, () => {
+      throw new Error('cloneHandler error')
+    })
+
+    expect(throttledRef.value).toEqual({ key: 'new value' })
+
+    objRef.value.key = 'new value 2'
+    expect(throttledRef.value).toEqual({ key: 'new value' })
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(throttledRef.value).toEqual({ key: 'new value 2' })
+  })
 })
