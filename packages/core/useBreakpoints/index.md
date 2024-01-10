@@ -33,14 +33,14 @@ const breakpoints = useBreakpoints({
 })
 
 // Can be 'mobile' or 'tablet' or 'laptop' or 'desktop'
-const screenFactor = breakpoints.screenFactor()
+const mode = breakpoints.mode()
 
 // true or false
 const laptop = breakpoints.between('laptop', 'desktop')
 </script>
 
 <template>
-  <div :class="screenFactor">
+  <div :class="mode">
     ...
   </div>
 </template>
