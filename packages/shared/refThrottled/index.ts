@@ -27,7 +27,8 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
     }
     catch (error) {
       if (isEqualityClone)
-        throttled.value = 'Error refThrottled' as any
+        throttled.value = value.value
+        console.error('Some error occurred in cloneHandler, used uncloned value', error)
       else
         throw error
     }
