@@ -36,15 +36,15 @@
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.9.0",
+    "@nuxt/kit": "^3.9.1",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.5.0",
     "vue-demi": ">=0.14.6"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.9.0",
-    "nuxt": "^3.9.0",
+    "@nuxt/schema": "^3.9.1",
+    "nuxt": "^3.9.1",
     "unimport": "^3.7.1"
   }
 }
