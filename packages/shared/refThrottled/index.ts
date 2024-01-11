@@ -6,7 +6,7 @@ import { useThrottleFn } from '../useThrottleFn'
 function isReferenceType(value: any) {
   return value !== null && (typeof value === 'object' || typeof value === 'function')
 }
-interface RefThrottledOptions<T> extends Omit<WatchOptions, 'immediate' | 'deep'> {
+interface RefThrottledOptions<T> extends Pick<WatchOptions, 'immediate' | 'deep'> {
   /**
    * Ref value to be watched with throttle effect.
    */
