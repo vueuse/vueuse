@@ -1,4 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
+import TwoSlashFloatingVue from 'vitepress-plugin-twoslash/client'
 import { handleRedirects } from './redirects'
 
 import './styles/main.css'
@@ -13,6 +14,7 @@ export default {
   enhanceApp(ctx: any) {
     if (typeof window !== 'undefined')
       handleRedirects(ctx.router)
+    ctx.app.use(TwoSlashFloatingVue)
   },
 }
 
