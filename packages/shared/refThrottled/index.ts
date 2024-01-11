@@ -51,8 +51,7 @@ export function refThrottled<T>(value: Ref<T>, delay?: number, trailing?: boolea
 export function refThrottled<T>(options: RefThrottledOptions<T>): Ref<T>
 export function refThrottled<T>(...args: any[]): Ref<T> {
   const isFirstRef = isRef(args[0])
-  const value = isFirstRef ? args[0] : args[0].value
-  // const [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = isFirstRef ? args.slice(1) : args[0]
+  let value: Ref<T>
   let delay: number
   let trailing: boolean
   let leading: boolean
@@ -60,14 +59,13 @@ export function refThrottled<T>(...args: any[]): Ref<T> {
   let immediate: boolean
   let cloneHandler: (value: T) => T
   if (isFirstRef)
-    [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = args.slice(1)
+    [value, delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = args
   else
-    ({ delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON } = args[0])
-
+    ({ value, delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON } = args[0])
   if (delay <= 0)
     return value
   const isEqualityClone = cloneHandler === cloneFnJSON
-  const { sync, cloned: throttled } = useCloned(
+  const { sync, cloned: throttled } = useCloned<T>(
     value,
     {
       manual: true,
