@@ -6,6 +6,35 @@ import { useThrottleFn } from '../useThrottleFn'
 function isReferenceType(value: any) {
   return value !== null && (typeof value === 'object' || typeof value === 'function')
 }
+interface RefThrottledOptions<T> extends Omit<WatchOptions, 'immediate' | 'deep'> {
+  /**
+   * Ref value to be watched with throttle effect.
+   */
+  origin: Ref<T>
+  /**
+   * A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+   *
+   * @default 200
+   */
+  delay?: number
+  /**
+   * If true, update the value again after the delay time is up.
+   *
+   * @default true
+   */
+  trailing?: boolean
+  /**
+   * If true, update the value on the leading edge of the ms timeout.
+   *
+   * @default true
+   */
+  leading?: boolean
+  /**
+   *  By default, it use `JSON.parse(JSON.stringify(value))` to clone
+   *
+   */
+  cloneHandler?: (value: T) => T
+}
 /**
  * Throttle execution of a function. Especially useful for rate limiting
  * execution of handlers on events like resize and scroll.
@@ -18,14 +47,6 @@ function isReferenceType(value: any) {
  * @param [immediate] default true, Whether to execute immediately
  * @param [cloneHandler] By default, it use `JSON.parse(JSON.stringify(value))` to clone
  */
-interface RefThrottledOptions<T> extends Omit<WatchOptions, 'immediate' | 'deep'> {
-  origin: Ref<T>
-  delay?: number
-  trailing?: boolean
-  leading?: boolean
-  cloneHandler?: (value: T) => T
-}
-
 export function refThrottled<T>(value: Ref<T>, delay?: number, trailing?: boolean, leading?: boolean, deep?: boolean, immediate?: boolean, cloneHandler?: (value: T) => T): Ref<T>
 export function refThrottled<T>(options: RefThrottledOptions<T>): Ref<T>
 export function refThrottled<T>(...args: any[]): Ref<T> {
