@@ -45,7 +45,7 @@ describe('refThrottled', () => {
     let error = null
 
     try {
-      refThrottled(objRef, 100, true, true, () => {
+      refThrottled(objRef, 100, true, true, true, true, () => {
         throw new Error('cloneHandler error')
       })
     }
@@ -55,5 +55,20 @@ describe('refThrottled', () => {
 
     expect(error).toBeInstanceOf(Error)
     expect(error?.message).toBe('cloneHandler error')
+  })
+
+  it('should handle default cloneHandler error', async () => {
+    const objRef = ref({}) as any
+    objRef.value.self = objRef.value
+    let error = null
+    let throttledRef = null
+    try {
+      throttledRef = refThrottled(objRef, 100, true, true, true)
+    }
+    catch (e) {
+      error = e as Error
+    }
+    expect(throttledRef?.value).toEqual(objRef.value)
+    expect(error).toBeNull()
   })
 })
