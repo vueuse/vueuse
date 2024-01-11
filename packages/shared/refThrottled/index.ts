@@ -59,18 +59,10 @@ export function refThrottled<T>(...args: any[]): Ref<T> {
   let deep: boolean
   let immediate: boolean
   let cloneHandler: (value: T) => T
-  if (isFirstRef) {
+  if (isFirstRef)
     [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = args.slice(1)
-  }
-  else {
-    const { delay: pDelay = 200, trailing: pTrailing = true, leading: pLeading = true, deep: pDeep = true, immediate: pImmediate = true, cloneHandler: pCloneHandler = cloneFnJSON } = args[0]
-    delay = pDelay
-    trailing = pTrailing
-    leading = pLeading
-    deep = pDeep
-    immediate = pImmediate
-    cloneHandler = pCloneHandler
-  }
+  else
+    ({ delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON } = args[0])
 
   if (delay <= 0)
     return value
