@@ -6,11 +6,11 @@ import { useThrottleFn } from '../useThrottleFn'
 function isReferenceType(value: any) {
   return value !== null && (typeof value === 'object' || typeof value === 'function')
 }
-interface RefThrottledOptions<T> extends Pick<WatchOptions, 'immediate' | 'deep'> {
+interface RefThrottledOptions<T> extends WatchOptions {
   /**
    * Ref value to be watched with throttle effect.
    */
-  origin: Ref<T>
+  value: Ref<T>
   /**
    * A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
    *
@@ -51,8 +51,27 @@ export function refThrottled<T>(value: Ref<T>, delay?: number, trailing?: boolea
 export function refThrottled<T>(options: RefThrottledOptions<T>): Ref<T>
 export function refThrottled<T>(...args: any[]): Ref<T> {
   const isFirstRef = isRef(args[0])
-  const value = isFirstRef ? args[0] : args[0].origin
-  const [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = isFirstRef ? args.slice(1) : args[0]
+  const value = isFirstRef ? args[0] : args[0].value
+  // const [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = isFirstRef ? args.slice(1) : args[0]
+  let delay: number
+  let trailing: boolean
+  let leading: boolean
+  let deep: boolean
+  let immediate: boolean
+  let cloneHandler: (value: T) => T
+  if (isFirstRef) {
+    [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = args.slice(1)
+  }
+  else {
+    const { delay: pDelay = 200, trailing: pTrailing = true, leading: pLeading = true, deep: pDeep = true, immediate: pImmediate = true, cloneHandler: pCloneHandler = cloneFnJSON } = args[0]
+    delay = pDelay
+    trailing = pTrailing
+    leading = pLeading
+    deep = pDeep
+    immediate = pImmediate
+    cloneHandler = pCloneHandler
+  }
+
   if (delay <= 0)
     return value
   const isEqualityClone = cloneHandler === cloneFnJSON
@@ -74,6 +93,7 @@ export function refThrottled<T>(...args: any[]): Ref<T> {
           }
         }
       },
+      ...(isFirstRef ? {} : args[0]),
       deep,
       immediate,
     },

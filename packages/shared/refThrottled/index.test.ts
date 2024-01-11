@@ -6,7 +6,6 @@ describe('refThrottled', () => {
   it('should handle string type', async () => {
     const strRef = ref('Hello')
     const throttledRef = refThrottled(strRef, 100)
-
     expect(throttledRef.value).toBe('Hello')
 
     strRef.value = 'World'
@@ -70,5 +69,23 @@ describe('refThrottled', () => {
     }
     expect(throttledRef?.value).toEqual(objRef.value)
     expect(error).toBeNull()
+  })
+
+  it('should handle object options', async () => {
+    const strRef = ref('Hello')
+    const throttledRef = refThrottled(strRef, 100)
+    const objParamsThrottledRef = refThrottled({
+      value: strRef,
+      delay: 100,
+    })
+    expect(throttledRef.value).toBe('Hello')
+    expect(objParamsThrottledRef.value).toBe('Hello')
+    strRef.value = 'World'
+    expect(throttledRef.value).toBe('Hello')
+    expect(objParamsThrottledRef.value).toBe('Hello')
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(throttledRef.value).toBe('World')
+    expect(objParamsThrottledRef.value).toBe('World')
   })
 })
