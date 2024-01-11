@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { watch } from 'vue-demi'
+import type { Ref, WatchOptions } from 'vue-demi'
+import { isRef, watch } from 'vue-demi'
 import { cloneFnJSON, useCloned } from '../../core/useCloned'
 import { useThrottleFn } from '../useThrottleFn'
 
@@ -18,7 +18,20 @@ function isReferenceType(value: any) {
  * @param [immediate] default true, Whether to execute immediately
  * @param [cloneHandler] By default, it use `JSON.parse(JSON.stringify(value))` to clone
  */
-export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON) {
+interface RefThrottledOptions<T> extends Omit<WatchOptions, 'immediate' | 'deep'> {
+  origin: Ref<T>
+  delay?: number
+  trailing?: boolean
+  leading?: boolean
+  cloneHandler?: (value: T) => T
+}
+
+export function refThrottled<T>(value: Ref<T>, delay?: number, trailing?: boolean, leading?: boolean, deep?: boolean, immediate?: boolean, cloneHandler?: (value: T) => T): Ref<T>
+export function refThrottled<T>(options: RefThrottledOptions<T>): Ref<T>
+export function refThrottled<T>(...args: any[]): Ref<T> {
+  const isFirstRef = isRef(args[0])
+  const value = isFirstRef ? args[0] : args[0].origin
+  const [delay = 200, trailing = true, leading = true, deep = true, immediate = true, cloneHandler = cloneFnJSON] = isFirstRef ? args.slice(1) : args[0]
   if (delay <= 0)
     return value
   const isEqualityClone = cloneHandler === cloneFnJSON
@@ -50,7 +63,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
     deep,
   })
 
-  return throttled
+  return throttled as Ref<T>
 }
 
 // alias
