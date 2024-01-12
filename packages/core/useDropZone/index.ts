@@ -35,7 +35,38 @@ export function useDropZone(
   if (isClient) {
     const _options = typeof options === 'function' ? { onDrop: options } : options
     const getFiles = (event: DragEvent) => {
-      const list = Array.from(event.dataTransfer?.files ?? [])
+      const dataTransfer = event.dataTransfer!
+      const items = dataTransfer.items
+      let list: File[] = []
+      if (!window.webkitURL) {
+        list = Array.from(event.dataTransfer?.files ?? [])
+      }
+      else {
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i]
+          const ItemEntry = item.webkitGetAsEntry()!
+          if (ItemEntry.isFile) {
+            const fileEntry = ItemEntry as FileSystemFileEntry
+            fileEntry.file((file) => {
+              list.push(file)
+            })
+          }
+          if (ItemEntry.isDirectory) {
+            const directoryEntry = ItemEntry as FileSystemDirectoryEntry
+            const reader = directoryEntry.createReader()
+            reader.readEntries((entries) => {
+              for (let i = 0; i < entries.length; i++) {
+                const entry = entries[i] as FileSystemFileEntry
+                if (entry.isFile) {
+                  entry.file((file) => {
+                    list.push(file)
+                  })
+                }
+              }
+            })
+          }
+        }
+      }
       return (files.value = list.length === 0 ? null : list)
     }
 
