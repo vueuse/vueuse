@@ -34,40 +34,54 @@ export function useDropZone(
   let isDataTypeIncluded = true
   if (isClient) {
     const _options = typeof options === 'function' ? { onDrop: options } : options
-    const getFiles = (event: DragEvent) => {
-      const dataTransfer = event.dataTransfer!
-      const items = dataTransfer.items
-      let list: File[] = []
-      if (!window.webkitURL) {
-        list = Array.from(event.dataTransfer?.files ?? [])
-      }
-      else {
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i]
-          const ItemEntry = item.webkitGetAsEntry()!
-          if (ItemEntry.isFile) {
-            const fileEntry = ItemEntry as FileSystemFileEntry
-            fileEntry.file((file) => {
-              list.push(file)
-            })
+    const getFiles = async (event: DragEvent) => {
+      return new Promise((resolve) => {
+        const dataTransfer = event.dataTransfer!
+        const items = dataTransfer.items
+        let list: File[] = []
+        if (items[0].type === 'text/plain' || !window.webkitURL) {
+          list = Array.from(event.dataTransfer?.files ?? [])
+          resolve(list)
+        }
+        else {
+          const u = items.length
+          let k = 0
+          const returnResolve = () => {
+            if (k === u)
+              resolve(list)
           }
-          if (ItemEntry.isDirectory) {
-            const directoryEntry = ItemEntry as FileSystemDirectoryEntry
-            const reader = directoryEntry.createReader()
-            reader.readEntries((entries) => {
-              for (let i = 0; i < entries.length; i++) {
-                const entry = entries[i] as FileSystemFileEntry
-                if (entry.isFile) {
-                  entry.file((file) => {
-                    list.push(file)
-                  })
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i]
+            const ItemEntry = item.webkitGetAsEntry()!
+            if (ItemEntry.isFile) {
+              const fileEntry = ItemEntry as FileSystemFileEntry
+              fileEntry.file((file) => {
+                list.push(file)
+                k = k + 1
+                returnResolve()
+              })
+            }
+            if (ItemEntry.isDirectory) {
+              const directoryEntry = ItemEntry as FileSystemDirectoryEntry
+              const reader = directoryEntry.createReader()
+              reader.readEntries((entries) => {
+                for (let i = 0; i < entries.length; i++) {
+                  const entry = entries[i] as FileSystemFileEntry
+                  if (entry.isFile) {
+                    entry.file((file) => {
+                      list.push(file)
+                      if (i === entries.length - 1)
+                        k = k + 1
+
+                      returnResolve()
+                    })
+                  }
                 }
-              }
-            })
+              })
+            }
           }
         }
-      }
-      return (files.value = list.length === 0 ? null : list)
+      })
     }
 
     useEventListener<DragEvent>(target, 'dragenter', (event) => {
@@ -105,11 +119,12 @@ export function useDropZone(
         isOverDropZone.value = false
       _options.onLeave?.(getFiles(event), event)
     })
-    useEventListener<DragEvent>(target, 'drop', (event) => {
+    useEventListener<DragEvent>(target, 'drop', async (event) => {
       event.preventDefault()
       counter = 0
       isOverDropZone.value = false
-      _options.onDrop?.(getFiles(event), event)
+      const files = await getFiles(event)
+      _options.onDrop?.(files, event)
     })
   }
 
