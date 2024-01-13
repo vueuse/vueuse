@@ -34,8 +34,8 @@ export function useDropZone(
   let isDataTypeIncluded = true
   if (isClient) {
     const _options = typeof options === 'function' ? { onDrop: options } : options
-    const getFiles = async (event: DragEvent) => {
-      return new Promise((resolve): File[] => {
+    const getFiles = async (event: DragEvent): Promise<File[]> => {
+      return new Promise((resolve) => {
         const dataTransfer = event.dataTransfer!
         const items = dataTransfer.items
         let list: File[] = []
