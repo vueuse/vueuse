@@ -163,7 +163,7 @@
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
-    "sortablejs": "^1.15.1",
+    "sortablejs": "^1.15.2",
     "universal-cookie": "^6.1.3"
   }
 }

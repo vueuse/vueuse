@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import TwoSlashFloatingVue from 'vitepress-plugin-twoslash/client'
 import { handleRedirects } from './redirects'
+import 'vitepress-plugin-twoslash/style.css'
 
 import './styles/main.css'
 import './styles/demo.css'

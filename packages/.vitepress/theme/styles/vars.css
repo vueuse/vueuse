@@ -10,7 +10,7 @@
 
   --vp-c-text-code: #528d52;
 
-  --vp-code-block-bg: rgba(125, 125, 125, 0.04);
+  --vp-code-block-bg: #dedede;
   --vp-code-copy-code-bg: rgba(125, 125, 125, 0.1);
   --vp-code-copy-code-hover-bg: rgba(125, 125, 125, 0.2);
 
@@ -34,7 +34,7 @@
 }
 
 .dark {
-  --vp-code-block-bg: rgba(0, 0, 0, 0.2);
+  --vp-code-block-bg: var(--vp-c-bg-alt);
   --vp-c-text-code: #c0cec0;
   /* fix contrast on gray cards: check the same above (this is the default) */
   --vp-c-text-dark-2: rgba(235, 235, 235, 0.6);
