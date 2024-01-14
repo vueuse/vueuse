@@ -10,7 +10,7 @@
 
   --vp-c-text-code: #528d52;
 
-  --vp-code-block-bg: #dedede;
+  --vp-code-block-bg: rgba(125, 125, 125, 0.04);
   --vp-code-copy-code-bg: rgba(125, 125, 125, 0.1);
   --vp-code-copy-code-hover-bg: rgba(125, 125, 125, 0.2);
 
