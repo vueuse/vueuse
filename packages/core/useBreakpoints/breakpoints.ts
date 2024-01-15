@@ -26,11 +26,24 @@ export const breakpointsBootstrapV5 = {
 }
 
 /**
+ * Breakpoints from Vuetify V2
+ *
+ * @see https://v2.vuetifyjs.com/en/features/breakpoints/
+ */
+export const breakpointsVuetify = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1264,
+  xl: 1904,
+}
+
+/**
  * Breakpoints from Vuetify V3
  *
  * @see https://vuetifyjs.com/en/styles/float/#overview
  */
-export const breakpointsVuetify = {
+export const breakpointsVuetifyV3 = {
   xs: 0,
   sm: 600,
   md: 960,
