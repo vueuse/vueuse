@@ -44,7 +44,7 @@ export function MarkdownTransform(): Plugin {
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
         // Insert JS/TS code blocks
-        code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta, snippet) => {
+        code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
           const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
           const js = ts.transpileModule(formattedTS, {
             compilerOptions: { target: 99 },
@@ -57,7 +57,7 @@ export function MarkdownTransform(): Plugin {
 <CodeToggle>
 <div class="code-block-ts">
 
-\`\`\`ts${meta}
+\`\`\`ts ${meta}
 ${snippet}
 \`\`\`
 
