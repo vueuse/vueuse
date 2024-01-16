@@ -118,12 +118,13 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosR
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
   const argsPlaceholder = typeof url === 'string' ? 1 : 0
-  let defaultConfig: AxiosRequestConfig<D> = {}
-  let instance: AxiosInstance = axios
-  let options: UseAxiosOptions<T> = {
+  const defaultOptions: UseAxiosOptions<T> = {
     immediate: !!argsPlaceholder,
     shallow: true,
   }
+  let defaultConfig: AxiosRequestConfig<D> = {}
+  let instance: AxiosInstance = axios
+  let options: UseAxiosOptions<T> = defaultOptions
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -147,7 +148,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
   )
-    options = args[args.length - 1]
+    options = args[args.length - 1] || defaultOptions
 
   const {
     initialData,
