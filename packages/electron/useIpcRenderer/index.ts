@@ -90,8 +90,8 @@ export interface UseIpcRendererReturn {
  * Create a `sendSync` function
  */
 function setSendSync(ipcRenderer: IpcRenderer) {
-  return <T>(channel: string, ...args: any[]) => {
-    const result = shallowRef<T | null>(null)
+  return <T>(channel: string, ...args: any[]): Ref<T | null> => {
+    const result = shallowRef<T | null>(null) as Ref<T | null>
     result.value = ipcRenderer.sendSync(channel, ...args)
     return result
   }

@@ -10,5 +10,5 @@ import { type Fn, getLifeCycleTarget } from '../utils'
 export function tryOnBeforeUnmount(fn: Fn, target?: any) {
   const instance = getLifeCycleTarget(target)
   if (instance)
-    onBeforeUnmount(fn, instance)
+    onBeforeUnmount(fn, target)
 }

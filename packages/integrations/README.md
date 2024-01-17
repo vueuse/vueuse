@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/integrations</b>
-</pre>
+```bash
+npm i @vueuse/integrations
+```
 
 ## Functions
 
