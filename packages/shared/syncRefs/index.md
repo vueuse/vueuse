@@ -13,15 +13,24 @@ Keep target refs in sync with a source ref
 import { syncRefs } from '@vueuse/core'
 
 const source = ref('hello')
-const target = ref('target')
+const target1 = ref('target1')
+const target2 = ref('target2')
 
-const stop = syncRefs(source, target)
+const stop = syncRefs(source, [target1, target2])
 
-console.log(target.value) // hello
+console.log(target1.value) // hello
+console.log(target2.value) // hello
 
 source.value = 'foo'
 
-console.log(target.value) // foo
+console.log(target1.value) // foo
+console.log(target2.value) // foo
+```
+
+You can also pass a single ref.
+
+```ts
+const stop = syncRefs(source, target)
 ```
 
 ## Watch options
