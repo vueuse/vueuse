@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import { transformerTwoslash } from 'vitepress-plugin-twoslash'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
+import viteConfig from './vite.config'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -183,6 +184,7 @@ export default defineConfig({
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap' }],
   ],
 
+  vite: viteConfig,
 })
 
 function getFunctionsSideBar() {
