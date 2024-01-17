@@ -114,7 +114,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   return filter
 }
 
-interface throttleFilterOptions {
+interface ThrottleFilterOptions {
   /**
    * The maximum time allowed to be delayed before it's invoked.
    */
@@ -143,7 +143,7 @@ interface throttleFilterOptions {
  * @param [rejectOnCancel]
  */
 export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
-export function throttleFilter(options: throttleFilterOptions): EventFilter
+export function throttleFilter(options: ThrottleFilterOptions): EventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
