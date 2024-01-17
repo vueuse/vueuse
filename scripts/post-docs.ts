@@ -11,6 +11,9 @@ const ogSVg = fs.readFileSync('./scripts/og-template.svg', 'utf-8')
 
 async function generateSVG(fn: VueUseFunction, output: string) {
   let desc = removeMD(fn.description!)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
   desc = desc[0].toUpperCase() + desc.slice(1)
   const lines = desc.replace(/(?![^\n]{1,45}$)([^\n]{1,45})\s/g, '$1\n')
     .split('\n')
@@ -24,10 +27,16 @@ async function generateSVG(fn: VueUseFunction, output: string) {
   const svg = ogSVg.replace(/\{\{([^}]+)}}/g, (_, name: keyof typeof data) => data[name])
 
   console.log(`Generating ${output}`)
-  await sharp(Buffer.from(svg))
-    .resize(1200 * 1.1, 630 * 1.1)
-    .png()
-    .toFile(output)
+  try {
+    await sharp(Buffer.from(svg))
+      .resize(1200 * 1.1, 630 * 1.1)
+      .png()
+      .toFile(output)
+  }
+  catch (e) {
+    console.error('Error generating', { name: output, ...data, svg })
+    console.error(e)
+  }
 }
 
 export async function fix() {
