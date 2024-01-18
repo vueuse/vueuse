@@ -18,7 +18,7 @@ export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
 ) {
-  const { window = defaultWindow, scrollTarget } = options
+  const { window = defaultWindow, scrollTarget, threshold = 0 } = options
   const elementIsVisible = ref(false)
 
   useIntersectionObserver(
@@ -39,7 +39,7 @@ export function useElementVisibility(
     {
       root: scrollTarget,
       window,
-      threshold: 0,
+      threshold,
     },
   )
 
