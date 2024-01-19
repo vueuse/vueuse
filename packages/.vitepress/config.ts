@@ -174,11 +174,9 @@ export default withPwa(defineConfig({
     ['link', { rel: 'icon', href: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
     ['meta', { property: 'og:title', content: 'VueUse' }],
-    // ['meta', { property: 'og:image', content: 'https://vueuse.org/og.png' }],
     ['meta', { property: 'og:description', content: 'Collection of essential Vue Composition Utilities' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
-    // ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
     ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' }],
 

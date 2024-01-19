@@ -17,6 +17,7 @@ export async function transformHead({ pageData }: TransformContext) {
     )
     return head
   }
+
   const file = pageData.relativePath
   const dirbase = basename(dirname(file))
   const fn = functions.find(i => i.name === dirbase)
