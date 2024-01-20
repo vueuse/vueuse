@@ -88,21 +88,6 @@ if (import.meta.env.PROD) {
       ],
     }),
   )
-  // GH avatars
-  registerRoute(
-    /^https:\/\/fonts\.gstatic\.com\/.*/i,
-    new NetworkFirst({
-      cacheName: 'avatars-images-cache',
-      plugins: [
-        new CacheableResponsePlugin({ statuses: [0, 200] }),
-        // we only need a few entries
-        new ExpirationPlugin({
-          maxEntries: 150,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // <== 7 days
-        }),
-      ],
-    }),
-  )
   // antfu sponsors
   registerRoute(
     /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
