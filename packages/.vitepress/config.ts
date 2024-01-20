@@ -190,6 +190,9 @@ export default withPwa(defineConfig({
   pwa: {
     outDir: resolve(__dirname, 'dist'),
     registerType: 'autoUpdate',
+    strategies: 'injectManifest',
+    srcDir: '.vitepress/',
+    filename: 'sw.ts',
     injectRegister: 'inline',
     experimental: {
       includeAllowlist: true,
@@ -240,6 +243,10 @@ export default withPwa(defineConfig({
         type: 'image/png',
         label: `Screenshot of VueUse`,
       }],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
+      globIgnores: ['og-*.png'],
     },
     workbox: {
       clientsClaim: true,
