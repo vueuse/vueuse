@@ -1,8 +1,11 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
 import { transformerTwoslash } from 'vitepress-plugin-twoslash'
+import { withPwa } from '@vite-pwa/vitepress'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
 import viteConfig from './vite.config'
+import { transformHead } from './transformHead'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -51,7 +54,7 @@ const DefaultSideBar = [
 
 const FunctionsSideBar = getFunctionsSideBar()
 
-export default defineConfig({
+export default withPwa(defineConfig({
   title: 'VueUse',
   description: 'Collection of essential Vue Composition Utilities',
   lang: 'en-US',
@@ -167,16 +170,15 @@ export default defineConfig({
   },
   head: [
     ['meta', { name: 'theme-color', content: '#ffffff' }],
-    ['link', { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png' }],
-    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: '48x48' }],
+    ['link', { rel: 'icon', href: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Anthony Fu' }],
     ['meta', { property: 'og:title', content: 'VueUse' }],
-    ['meta', { property: 'og:image', content: 'https://vueuse.org/og.png' }],
     ['meta', { property: 'og:description', content: 'Collection of essential Vue Composition Utilities' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@antfu7' }],
-    ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' }],
 
     ['link', { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' }],
     ['link', { rel: 'preconnect', crossorigin: 'anonymous', href: 'https://fonts.gstatic.com' }],
@@ -184,8 +186,69 @@ export default defineConfig({
     ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap' }],
   ],
 
+  transformHead,
+  pwa: {
+    outDir: resolve(__dirname, 'dist'),
+    registerType: 'autoUpdate',
+    strategies: 'injectManifest',
+    srcDir: '.vitepress/',
+    filename: 'sw.ts',
+    injectRegister: 'inline',
+    manifest: {
+      id: '/',
+      name: 'VueUse',
+      short_name: 'VueUse',
+      description: 'Collection of Essential Vue Composition Utilities',
+      theme_color: '#ffffff',
+      start_url: '/',
+      lang: 'en-US',
+      dir: 'ltr',
+      orientation: 'natural',
+      display: 'standalone',
+      display_override: ['window-controls-overlay'],
+      categories: ['development', 'developer tools'],
+      icons: [
+        {
+          src: '/pwa-64x64.png',
+          sizes: '64x64',
+          type: 'image/png',
+        },
+        {
+          src: '/pwa-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/pwa-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any',
+        },
+        {
+          src: '/maskable-icon.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
+      ],
+      edge_side_panel: {
+        preferred_width: 480,
+      },
+      screenshots: [{
+        src: 'og.png',
+        sizes: '1281x641',
+        type: 'image/png',
+        label: `Screenshot of VueUse`,
+      }],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
+      globIgnores: ['og-*.png'],
+    },
+  },
+
   vite: viteConfig,
-})
+}))
 
 function getFunctionsSideBar() {
   const links = []
