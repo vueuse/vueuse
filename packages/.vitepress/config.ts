@@ -242,7 +242,7 @@ export default withPwa(defineConfig({
       }],
     },
     injectManifest: {
-      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
+      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}', 'hashmap.json'],
       globIgnores: ['og-*.png'],
     },
   },
