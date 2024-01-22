@@ -77,6 +77,13 @@ export interface UseAxiosOptions<T = any> {
   shallow?: boolean
 
   /**
+   * Use abort.
+   *
+   * @default true
+   */
+  abort?: boolean
+
+  /**
    * Callback when error is caught.
    */
   onError?: (e: unknown) => void
@@ -121,6 +128,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const defaultOptions: UseAxiosOptions<T> = {
     immediate: !!argsPlaceholder,
     shallow: true,
+    abort: true,
   }
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
@@ -218,7 +226,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       return promise
     }
     resetData()
-    abort()
+
+    if (options?.abort)
+      abort()
+
     loading(true)
 
     executeCounter += 1
