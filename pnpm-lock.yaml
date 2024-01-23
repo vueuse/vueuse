@@ -57,6 +57,9 @@ importers:
       '@types/semver':
         specifier: ^7.5.6
         version: 7.5.6
+      '@vite-pwa/vitepress':
+        specifier: ^0.3.1
+        version: 0.3.1(vite-plugin-pwa@0.17.4)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
         version: 1.2.0(vitest@1.2.0)
@@ -228,9 +231,6 @@ importers:
       vite-plugin-inspect:
         specifier: ^0.8.1
         version: 0.8.1(@nuxt/kit@3.9.1)(rollup@4.9.5)(vite@5.0.11)
-      vite-plugin-pwa:
-        specifier: ^0.17.4
-        version: 0.17.4(vite@5.0.11)(workbox-build@7.0.0)(workbox-window@7.0.0)
       vitepress:
         specifier: ^1.0.0-rc.36
         version: 1.0.0-rc.36(@algolia/client-search@4.20.0)(@types/node@20.11.0)(axios@1.6.5)(fuse.js@7.0.0)(postcss@8.4.33)(search-insights@2.6.0)(typescript@5.3.3)
@@ -4702,6 +4702,14 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: true
+
+  /@vite-pwa/vitepress@0.3.1(vite-plugin-pwa@0.17.4):
+    resolution: {integrity: sha512-krgiYQCWXUkpQCx+IHdsanFFpAzfH5pY86MARDa6as5ZNmG18mb/gC6MEahFV67V0xfMfTaNL4B8dQNzzcikLw==}
+    peerDependencies:
+      vite-plugin-pwa: '>=0.17.2 <1'
+    dependencies:
+      vite-plugin-pwa: 0.17.4(vite@5.0.11)(workbox-build@7.0.0)(workbox-window@7.0.0)
     dev: true
 
   /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.11)(vue@3.4.13):
