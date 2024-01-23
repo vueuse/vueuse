@@ -464,6 +464,21 @@ describe('useStorage', () => {
     expect(call[0].detail.key).toEqual(KEY)
     expect(call[0].detail.oldValue).toEqual('0')
     expect(call[0].detail.newValue).toEqual('1')
+
+    window.addEventListener(customStorageEventName, eventFn, { once: true })
+
+    data0.value = null
+    await nextTwoTick()
+
+    expect(data0.value).toBe(0)
+    expect(data1.value).toBe(0)
+    expect(eventFn).toHaveBeenCalledTimes(2)
+    const call2 = eventFn.mock.calls[1] as [CustomEvent]
+
+    expect(call2[0].detail.storageArea).toEqual(storage)
+    expect(call2[0].detail.key).toEqual(KEY)
+    expect(call2[0].detail.oldValue).toEqual('1')
+    expect(call2[0].detail.newValue).toEqual(null)
   })
 
   it('handle error', () => {

@@ -195,28 +195,34 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function write(v: unknown) {
     try {
+      const oldValue = storage!.getItem(key)
+
+      const dispatchWriteEvent = (newValue: string | null) => {
+        // send custom event to communicate within same page
+        // importantly this should _not_ be a StorageEvent since those cannot
+        // be constructed with a non-built-in storage area
+        if (window) {
+          window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+            detail: {
+              key,
+              oldValue,
+              newValue,
+              storageArea: storage!,
+            },
+          }))
+        }
+      }
+
       if (v == null) {
         storage!.removeItem(key)
+        dispatchWriteEvent(null)
       }
       else {
         const serialized = serializer.write(v)
-        const oldValue = storage!.getItem(key)
+
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
-
-          // send custom event to communicate within same page
-          // importantly this should _not_ be a StorageEvent since those cannot
-          // be constructed with a non-built-in storage area
-          if (window) {
-            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
-              detail: {
-                key,
-                oldValue,
-                newValue: serialized,
-                storageArea: storage!,
-              },
-            }))
-          }
+          dispatchWriteEvent(serialized)
         }
       }
     }
