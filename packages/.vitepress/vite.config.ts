@@ -5,7 +5,6 @@ import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
-import { VitePWA as PWA } from 'vite-plugin-pwa'
 import UnoCSS from 'unocss/vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
@@ -48,26 +47,6 @@ export default defineConfig({
     Icons({
       compiler: 'vue3',
       defaultStyle: 'display: inline-block',
-    }),
-    PWA({
-      outDir: resolve(__dirname, 'dist'),
-      manifest: {
-        name: 'VueUse',
-        short_name: 'VueUse',
-        theme_color: '#ffffff',
-        icons: [
-          {
-            src: '/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
     }),
     UnoCSS(),
     Inspect(),
