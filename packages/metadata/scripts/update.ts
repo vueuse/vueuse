@@ -96,12 +96,15 @@ export async function readMetadata() {
       else if (Array.isArray(related))
         related = related.map(s => s.trim()).filter(Boolean)
 
-      const fences = /(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?(?:\1 *(?=\n))/g
-      let description = md.replace(fences, '')
-      description
-        = (description
+      let description = (
+        md
+          // normalize newlines
           .replace(/\r\n/g, '\n')
-          .match(/#(?=\s).*(?:\n+)(.+?)(?:, |\. |\n|\.\n)/m) || [])[1] || ''
+          // remove ::: tip blocks
+          .replace(/(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?(?:\1 *(?=\n))/g, '')
+          // remove headers
+          .match(/#(?=\s).*(?:\n+)(.+?)(?:, |\. |\n|\.\n)/m) || []
+      )[1] || ''
 
       description = description.trim()
       description = description.charAt(0).toLowerCase() + description.slice(1)
