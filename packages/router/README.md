@@ -10,18 +10,18 @@ This package only works for Vue 3
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/router</b> vue-router@4
-</pre>
+```bash
+npm i @vueuse/router vue-router@4
+```
 
 ## Functions
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for a reactive `route.hash`
-  - [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for a reactive `route.params`
-  - [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for a reactive `route.query`
 
+- [`useRouteHash`](https://vueuse.org/router/useRouteHash/) — shorthand for a reactive `route.hash`
+- [`useRouteParams`](https://vueuse.org/router/useRouteParams/) — shorthand for a reactive `route.params`
+- [`useRouteQuery`](https://vueuse.org/router/useRouteQuery/) — shorthand for a reactive `route.query`
 
 <!--FUNCTIONS_LIST_ENDS-->
 

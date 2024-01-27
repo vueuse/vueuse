@@ -15,8 +15,11 @@ const isLeft = usePageLeave()
 ```
 
 ## Component Usage
-```html
-<UsePageLeave v-slot="{ isLeft }">
-  Has Left Page: {{ isLeft }}
-</UsePageLeave>
+
+```vue
+<template>
+  <UsePageLeave v-slot="{ isLeft }">
+    Has Left Page: {{ isLeft }}
+  </UsePageLeave>
+</template>
 ```

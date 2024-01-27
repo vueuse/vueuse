@@ -108,7 +108,7 @@ export function useSwipe(
     coordsEnd.y = y
   }
 
-  let listenerOptions: { passive?: boolean; capture?: boolean }
+  let listenerOptions: { passive?: boolean, capture?: boolean }
 
   const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
 

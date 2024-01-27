@@ -9,6 +9,7 @@ Combine computed and inject
 ## Usage
 
 In Provider Component
+
 ```ts
 import type { InjectionKey, Ref } from 'vue'
 import { provide, ref } from 'vue'
@@ -26,6 +27,7 @@ provide(ArrayKey, array)
 ```
 
 In Receiver Component
+
 ```ts
 import { computedInject } from '@vueuse/core'
 

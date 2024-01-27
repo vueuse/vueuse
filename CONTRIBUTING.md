@@ -6,7 +6,7 @@ Thanks for being interested in contributing to this project!
 >
 > As the VueUse audience continues to grow, we have been inundated with an overwhelming number of feature requests and pull requests. As a result, maintaining the project has become increasingly challenging and has stretched our capacity to its limits. As such, in the near future, we may need to slow down our acceptance of new features and prioritize the stability and quality of existing functions. **Please note that new features for VueUse may not be accepted at this time.** If you have any new ideas, we suggest that you first incorporate them into your own codebase, iterate on them to suit your needs, and assess their generalizability. If you strongly believe that your ideas are beneficial to the community, you may submit a pull request along with your use cases, and we would be happy to review and discuss them. Thank you for your understanding.
 
-## Development 
+## Development
 
 ### Setup
 
@@ -45,7 +45,7 @@ There are some notes for adding new functions
 
 New add-ons are greatly welcome!
 
-- Create a new folder under `packages/`, name it as your add-on name. 
+- Create a new folder under `packages/`, name it as your add-on name.
 - Add add-on details in `scripts/packages.ts`
 - Create `README.md` under that folder.
 - Add functions as you would do to the core package.
@@ -90,7 +90,7 @@ export default useMyFunction
 
 for `index.md` the first sentence will be displayed as the short intro in the function list, so try to keep it brief and clear.
 
-```md
+```markdown
 # useMyFunction
 
 This will be the intro. The detail descriptions...

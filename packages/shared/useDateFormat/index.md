@@ -9,7 +9,7 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 **List of all available formats (HH:mm:ss by default):**
 
 | Format | Output                   | Description                             |
-|--------| ------------------------ |-----------------------------------------|
+| ------ | ------------------------ | --------------------------------------- |
 | `Yo`   | 2018th                   | Ordinal formatted year                  |
 | `YY`   | 18                       | Two-digit year                          |
 | `YYYY` | 2018                     | Four-digit year                         |
@@ -49,13 +49,11 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 
 ### Basic
 
-```html
+```vue
 <script setup lang="ts">
-
-import { useNow, useDateFormat } from '@vueuse/core'
+import { useDateFormat, useNow } from '@vueuse/core'
 
 const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
-
 </script>
 
 <template>
@@ -65,13 +63,11 @@ const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 
 ### Use with locales
 
-```html
+```vue
 <script setup lang="ts">
-
-import { useNow, useDateFormat } from '@vueuse/core'
+import { useDateFormat, useNow } from '@vueuse/core'
 
 const formatted = useDateFormat(useNow(), 'YYYY-MM-DD (ddd)', { locales: 'en-US' })
-
 </script>
 
 <template>
@@ -81,12 +77,11 @@ const formatted = useDateFormat(useNow(), 'YYYY-MM-DD (ddd)', { locales: 'en-US'
 
 ### Use with custom meridiem
 
-```html
+```vue
 <script setup lang="ts">
-
 import { useDateFormat } from '@vueuse/core'
 
-const customMeridiem = (hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) => {
+function customMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   const m = hours > 11 ? (isLowercase ? 'μμ' : 'ΜΜ') : (isLowercase ? 'πμ' : 'ΠΜ')
   return hasPeriod ? m.split('').reduce((acc, current) => acc += `${current}.`, '') : m
 }

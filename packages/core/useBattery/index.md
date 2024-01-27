@@ -30,10 +30,12 @@ Our applications normally are not empathetic to battery level, we can make a few
 - Disable some background workers that are not critical.
 - Limit network calls and reduce CPU/Memory consumption.
 
-
 ## Component Usage
-```html
-<UseBattery v-slot="{ charging }">
-  Is Charging: {{ charging }}
-</UseBattery>
+
+```vue
+<template>
+  <UseBattery v-slot="{ charging }">
+    Is Charging: {{ charging }}
+  </UseBattery>
+</template>
 ```

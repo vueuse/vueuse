@@ -61,9 +61,10 @@ Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/A
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { vOnKeyStroke } from '@vueuse/components'
+
 function onUpdate(e: KeyboardEvent) {
   // impl...
 }
@@ -90,9 +91,8 @@ Or
 onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 
-
 ## Shorthands
 
 - `onKeyDown` - alias for `onKeyStroke(key, handler, {eventName: 'keydown'})`
 - `onKeyPressed` - alias for `onKeyStroke(key, handler, {eventName: 'keypress'})`
-- `onKeyUp` -  alias for `onKeyStroke(key, handler, {eventName: 'keyup'})`
+- `onKeyUp` - alias for `onKeyStroke(key, handler, {eventName: 'keyup'})`

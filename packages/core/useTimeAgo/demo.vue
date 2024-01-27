@@ -28,7 +28,7 @@ const timeAgo = useTimeAgo(value)
   opacity: 0.8;
   margin: 0.5rem 0;
   outline: none !important;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
 }
 
 .slider:hover {
