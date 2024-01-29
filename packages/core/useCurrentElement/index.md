@@ -14,6 +14,37 @@ import { useCurrentElement } from '@vueuse/core'
 const el = useCurrentElement() // ComputedRef<Element>
 ```
 
+Or pass a specific root vue component
+
+```vue
+<script>
+import { ref } from 'vue'
+import { useCurrentElement } from '@vueuse/core'
+
+export default {
+  setup() {
+    const rootComponentRef = ref()
+
+    const el = useCurrentElement(rootComponentRef) // ComputedRef<Element>
+    // use el any way you want
+
+    return {
+      rootComponentRef,
+      /* ... */
+    }
+  },
+}
+</script>
+
+<template>
+  <div>
+    <OtherVueComponent ref="rootComponentRef" />
+
+    <p>Hello world</p>
+  </div>
+</template>
+```
+
 ## Caveats
 
 This functions uses [`$el` under the hood](https://vuejs.org/api/component-instance.html#el).
