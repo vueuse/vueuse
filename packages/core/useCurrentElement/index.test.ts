@@ -1,9 +1,12 @@
-import { defineComponent, shallowRef } from 'vue-demi'
+import { defineComponent, isVue2, shallowRef } from 'vue-demi'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { useCurrentElement } from '.'
 
-describe('useCurrentElement', () => {
+describe.skipIf(isVue2)('useCurrentElement', () => {
+  // WARNING
+  // Because: Manual triggering only works for Vue 3 - https://vueuse.org/shared/computedWithControl/#manual-triggering
+
   it('should be defined', () => {
     expect(useCurrentElement).toBeDefined()
   })
