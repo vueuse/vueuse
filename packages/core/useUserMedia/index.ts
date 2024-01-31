@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef } from '@vueuse/shared'
+import { type MaybeRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef, watch } from 'vue-demi'
 import { useSupported } from '../useSupported'
@@ -108,6 +108,10 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     },
     { immediate: true },
   )
+
+  tryOnScopeDispose(() => {
+    stop()
+  })
 
   return {
     isSupported,
