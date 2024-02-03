@@ -9,7 +9,7 @@ Wrapper for [`idb-keyval`](https://www.npmjs.com/package/idb-keyval).
 ## Install idb-keyval as a peer dependency
 
 ```bash
-npm install idb-keyval
+npm install idb-keyval@^6
 ```
 
 ## Usage

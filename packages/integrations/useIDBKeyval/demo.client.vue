@@ -21,22 +21,22 @@ const textArray = stringify(stateArray)
 
 <template>
   <h5>Object</h5>
-  <input v-model="stateObject.name" type="text">
-  <input v-model="stateObject.color" type="text">
-  <input v-model="stateObject.size" type="text">
-  <input v-model.number="stateObject.count" type="range" min="0" step="0.01" max="1000">
+  <input v-model="stateObject.data.value.name" type="text">
+  <input v-model="stateObject.data.value.color" type="text">
+  <input v-model="stateObject.data.value.size" type="text">
+  <input v-model.number="stateObject.data.value.count" type="range" min="0" step="0.01" max="1000">
 
   <pre lang="json">{{ textObject }}</pre>
   <br>
 
   <h5>String</h5>
-  <input v-model="stateString" type="text">
+  <input v-model="stateString.data.value" type="text">
   <pre>{{ textString }}</pre>
   <br>
 
   <h5>Array</h5>
-  <input v-model="stateArray[0]" type="text">
-  <input v-model="stateArray[1]" type="text">
-  <input v-model="stateArray[2]" type="text">
+  <input v-model="stateArray.data.value[0]" type="text">
+  <input v-model="stateArray.data.value[1]" type="text">
+  <input v-model="stateArray.data.value[2]" type="text">
   <pre lang="json">{{ textArray }}</pre>
 </template>

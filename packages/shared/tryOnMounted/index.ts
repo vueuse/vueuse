@@ -10,9 +10,9 @@ import { type Fn, getLifeCycleTarget } from '../utils'
  * @param target
  */
 export function tryOnMounted(fn: Fn, sync = true, target?: any) {
-  const instance = getLifeCycleTarget(target)
+  const instance = getLifeCycleTarget()
   if (instance)
-    onMounted(fn, instance)
+    onMounted(fn, target)
   else if (sync)
     fn()
   else

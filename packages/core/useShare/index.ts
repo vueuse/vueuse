@@ -26,7 +26,7 @@ interface NavigatorWithShare {
 export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
 
-  const _navigator = (navigator as NavigatorWithShare)
+  const _navigator = navigator as NavigatorWithShare
   const isSupported = useSupported(() => _navigator && 'canShare' in _navigator)
 
   const share = async (overrideOptions: MaybeRefOrGetter<UseShareOptions> = {}) => {

@@ -6,7 +6,7 @@ These show the general configurations for most of the functions in VueUse.
 
 From v4.0, we provide the Event Filters system to give the flexibility to control when events will get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
 
-```ts
+```ts twoslash
 import { debounceFilter, throttleFilter, useLocalStorage, useMouse } from '@vueuse/core'
 
 // changes will write to localStorage with a throttled 1s
@@ -18,7 +18,7 @@ const { x, y } = useMouse({ eventFilter: debounceFilter(100) })
 
 Moreover, you can utilize `pausableFilter` to temporarily pause some events.
 
-```ts
+```ts twoslash
 import { pausableFilter, useDeviceMotion } from '@vueuse/core'
 
 const motionControl = pausableFilter()
@@ -26,11 +26,9 @@ const motionControl = pausableFilter()
 const motion = useDeviceMotion({ eventFilter: motionControl.eventFilter })
 
 motionControl.pause()
-
 // motion updates paused
 
 motionControl.resume()
-
 // motion updates resumed
 ```
 
@@ -42,8 +40,13 @@ For `watch`-like composables (e.g. `pausableWatch`, `whenever`, `useStorage`, `u
 
 In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option:
 
-```ts
+```ts twoslash
+import { ref } from 'vue'
+import { pausableWatch } from '@vueuse/core'
+
+const counter = ref(0)
 const { pause, resume } = pausableWatch(
+  counter,
   () => {
     // Safely access updated DOM
   },
@@ -63,11 +66,15 @@ const { pause, resume } = pausableWatch(
 
 From v4.0, functions that access the browser APIs will provide an option fields for you to specify the global dependencies (e.g. `window`, `document` and `navigator`). It will use the global instance by default, so for most of the time, you don't need to worry about it. This configure is useful when working with iframes and testing environments.
 
-```ts
+```ts twoslash
+// @lib: dom
+// @noErrors: 18047 2339
+import { useMouse } from '@vueuse/core'
+
 // accessing parent context
 const parentMousePos = useMouse({ window: window.parent })
 
-const iframe = document.querySelect('#my-iframe')
+const iframe = document.querySelector('#my-iframe')
 
 // accessing child context
 const childMousePos = useMouse({ window: iframe.contentWindow })

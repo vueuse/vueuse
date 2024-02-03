@@ -26,7 +26,7 @@ export function useBattery(options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
-  const isSupported = useSupported(() => navigator && 'getBattery' in navigator)
+  const isSupported = useSupported(() => navigator && 'getBattery' in navigator && typeof navigator.getBattery === 'function')
 
   const charging = ref(false)
   const chargingTime = ref(0)
