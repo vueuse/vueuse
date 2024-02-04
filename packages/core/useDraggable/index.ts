@@ -168,12 +168,12 @@ export function useDraggable(
     if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
       if (container)
-        x = Math.min(Math.max(0, x), containerRect!.width + container.scrollLeft - targetRect!.width)
+        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
     }
     if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
       if (container)
-        y = Math.min(Math.max(0, y), containerRect!.height + container.scrollTop - targetRect!.height)
+        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
     }
     position.value = {
       x,
