@@ -13,7 +13,7 @@ When using with Nuxt 3, this functions will **NOT** be auto imported in favor of
 ## Install
 
 ```bash
-npm i universal-cookie
+npm i universal-cookie@^6
 ```
 
 ## Usage

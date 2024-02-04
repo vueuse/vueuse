@@ -147,8 +147,8 @@ export function useDraggable(
     const containerRect = container?.getBoundingClientRect?.()
     const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - (container ? targetRect.left - containerRect!.left : targetRect.left),
-      y: e.clientY - (container ? targetRect.top - containerRect!.top : targetRect.top),
+      x: e.clientX - (container ? targetRect.left - containerRect!.left + container.scrollLeft : targetRect.left),
+      y: e.clientY - (container ? targetRect.top - containerRect!.top + container.scrollTop : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
@@ -168,12 +168,12 @@ export function useDraggable(
     if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
       if (container)
-        x = Math.min(Math.max(0, x), containerRect!.width - targetRect!.width)
+        x = Math.min(Math.max(0, x), containerRect!.width + container.scrollLeft - targetRect!.width)
     }
     if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
       if (container)
-        y = Math.min(Math.max(0, y), containerRect!.height - targetRect!.height)
+        y = Math.min(Math.max(0, y), containerRect!.height + container.scrollTop - targetRect!.height)
     }
     position.value = {
       x,

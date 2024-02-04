@@ -49,7 +49,7 @@ const { focused: buttonFocus } = useFocus(button)
 
 <style scoped>
 .demo-el:focus {
-  opacity: .7;
+  opacity: 0.7;
   box-shadow: 0 0 2px 1px var(--vp-c-brand);
 }
 </style>

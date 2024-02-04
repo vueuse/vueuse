@@ -6,9 +6,9 @@
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/math</b> @vueuse/core
-</pre>
+```bash
+npm i @vueuse/math @vueuse/core
+```
 
 ## License
 
