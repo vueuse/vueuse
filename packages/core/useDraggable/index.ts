@@ -162,7 +162,6 @@ export function useDraggable(
       return
 
     const container = toValue(containerElement)
-    const containerRect = container?.getBoundingClientRect?.()
     const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
     if (axis === 'x' || axis === 'both') {
