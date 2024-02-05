@@ -1,5 +1,5 @@
 import { timestamp } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Raw as MarkRaw, Ref } from 'vue-demi'
 import { computed, markRaw, ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
 import { cloneFnJSON } from '../useCloned'
@@ -9,7 +9,16 @@ export interface UseRefHistoryRecord<T> {
   timestamp: number
 }
 
-export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
+export type PromiseOr<Async extends boolean, T> = Async extends true ? Promise<T> : T
+
+export interface UseManualRefHistoryOptions<Raw, Serialized = Raw, Async extends boolean = false> {
+  /**
+   * Enable async mode, allowing you to parse/dump data asynchronously
+   *
+   * @default false
+   */
+  async?: Async
+
   /**
    * Maximum number of history to be kept. Default to unlimited.
    */
@@ -21,14 +30,16 @@ export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
    * @default false
    */
   clone?: boolean | CloneFn<Raw>
+
   /**
    * Serialize data into the history
    */
-  dump?: (v: Raw) => Serialized
+  dump?: (v: PromiseOr<Async, Raw>) => PromiseOr<Async, Serialized>
+
   /**
    * Deserialize data from the history
    */
-  parse?: (v: Serialized) => Raw
+  parse?: (v: Serialized) => PromiseOr<Async, Raw>
 
   /**
    * set data source
@@ -36,7 +47,7 @@ export interface UseManualRefHistoryOptions<Raw, Serialized = Raw> {
   setSource?: (source: Ref<Raw>, v: Raw) => void
 }
 
-export interface UseManualRefHistoryReturn<Raw, Serialized> {
+export interface UseManualRefHistoryReturn<Raw, Serialized, Async extends boolean = false> {
   /**
    * Bypassed tracking ref from the argument
    */
@@ -75,12 +86,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * Undo changes
    */
-  undo: () => void
+  undo: () => PromiseOr<Async, void>
 
   /**
    * Redo changes
    */
-  redo: () => void
+  redo: () => PromiseOr<Async, void>
 
   /**
    * Clear all the history
@@ -90,12 +101,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * Create a new history record
    */
-  commit: () => void
+  commit: () => PromiseOr<Async, void>
 
   /**
    * Reset ref's value with latest history
    */
-  reset: () => void
+  reset: () => PromiseOr<Async, void>
 }
 
 function fnBypass<F, T>(v: F) {
@@ -132,10 +143,10 @@ function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
  * @param source
  * @param options
  */
-export function useManualRefHistory<Raw, Serialized = Raw>(
+export function useManualRefHistory<Raw, Serialized = Raw, Async extends boolean = false>(
   source: Ref<Raw>,
-  options: UseManualRefHistoryOptions<Raw, Serialized> = {},
-): UseManualRefHistoryReturn<Raw, Serialized> {
+  options: UseManualRefHistoryOptions<Raw, Serialized, Async> = {},
+): UseManualRefHistoryReturn<Raw, Serialized, Async> {
   const {
     clone = false,
     dump = defaultDump<Raw, Serialized>(clone),
@@ -143,31 +154,89 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
     setSource = fnSetSource,
   } = options
 
-  function _createHistoryRecord(): UseRefHistoryRecord<Serialized> {
-    return markRaw({
-      snapshot: dump(source.value),
-      timestamp: timestamp(),
-    })
+  const _createHistoryRecord = () => {
+    const value = source.value
+
+    const dumpResult = dump(value as any)
+
+    if (dumpResult instanceof Promise) {
+      return new Promise<MarkRaw<{ snapshot: any, timestamp: number }>>((resolve) => {
+        dumpResult.then(
+          snapshot => resolve(
+            markRaw({ snapshot, timestamp: timestamp() }),
+          ),
+        )
+      })
+    }
+
+    return markRaw({ snapshot: dumpResult as Serialized, timestamp: timestamp() })
   }
 
-  const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
-
+  const last: Ref<UseRefHistoryRecord<Serialized>> = ref() as Ref<UseRefHistoryRecord<Serialized>>
   const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
   const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
 
   const _setSource = (record: UseRefHistoryRecord<Serialized>) => {
-    setSource(source, parse(record.snapshot))
+    if (options.async) {
+      return new Promise<void>((resolve) => {
+        const result = parse(record.snapshot)
+
+        if (result instanceof Promise) {
+          result.then((v) => {
+            setSource(source, v)
+            resolve()
+          })
+        }
+        else {
+          setSource(source, result as Raw)
+          resolve()
+        }
+
+        last.value = record
+      })
+    }
+
+    setSource(source, parse(record.snapshot) as Raw)
     last.value = record
   }
 
   const commit = () => {
-    undoStack.value.unshift(last.value)
-    last.value = _createHistoryRecord()
+    const before = () => {
+      undoStack.value.unshift(last.value)
+    }
 
-    if (options.capacity && undoStack.value.length > options.capacity)
-      undoStack.value.splice(options.capacity, Number.POSITIVE_INFINITY)
-    if (redoStack.value.length)
-      redoStack.value.splice(0, redoStack.value.length)
+    const after = () => {
+      if (options.capacity && undoStack.value.length > options.capacity)
+        undoStack.value.splice(options.capacity, Number.POSITIVE_INFINITY)
+
+      if (redoStack.value.length)
+        redoStack.value.splice(0, redoStack.value.length)
+    }
+
+    if (options.async) {
+      return new Promise<void>((resolve) => {
+        const historyRecord = _createHistoryRecord()
+
+        if (historyRecord instanceof Promise) {
+          historyRecord.then((v) => {
+            before()
+            last.value = v
+
+            resolve()
+          })
+        }
+        else {
+          before()
+          last.value = historyRecord
+
+          resolve()
+        }
+      }).then(after)
+    }
+
+    before()
+    last.value = _createHistoryRecord() as Awaited<ReturnType<typeof _createHistoryRecord>>
+    after()
   }
 
   const clear = () => {
@@ -180,7 +249,7 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
 
     if (state) {
       redoStack.value.unshift(last.value)
-      _setSource(state)
+      return _setSource(state)
     }
   }
 
@@ -189,18 +258,26 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
 
     if (state) {
       undoStack.value.unshift(last.value)
-      _setSource(state)
+      return _setSource(state)
     }
   }
 
   const reset = () => {
-    _setSource(last.value)
+    return _setSource(last.value)
   }
 
-  const history = computed(() => [last.value, ...undoStack.value])
+  const history = computed(() => last.value === undefined ? [] : [last.value, ...undoStack.value])
 
   const canUndo = computed(() => undoStack.value.length > 0)
   const canRedo = computed(() => redoStack.value.length > 0)
+
+  /** Init `last` */
+
+  const record = _createHistoryRecord()
+
+  record instanceof Promise
+    ? record.then(v => (last.value = v))
+    : (last.value = record)
 
   return {
     source,
@@ -212,9 +289,9 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
     canRedo,
 
     clear,
-    commit,
-    reset,
-    undo,
-    redo,
+    commit: commit as () => PromiseOr<Async, void>,
+    reset: reset as () => PromiseOr<Async, void>,
+    undo: undo as () => PromiseOr<Async, void>,
+    redo: redo as () => PromiseOr<Async, void>,
   }
 }
