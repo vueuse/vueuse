@@ -18,8 +18,8 @@ export interface UseSortableReturn {
    * @param name a Sortable.Options property.
    * @param value a value.
    */
-  option<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]): void
-  option<K extends keyof Sortable.Options>(name: K): Sortable.Options[K]
+  option<K extends keyof Sortable.Options>(this: void,name: K, value: Sortable.Options[K]): void
+  option<K extends keyof Sortable.Options>(this: void, name: K): Sortable.Options[K]
 }
 
 export type UseSortableOptions = Options & ConfigurableDocument
