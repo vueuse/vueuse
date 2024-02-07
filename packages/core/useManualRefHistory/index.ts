@@ -1,5 +1,6 @@
+import type { Awaitable } from '@vueuse/shared'
 import { timestamp } from '@vueuse/shared'
-import type { Raw as MarkRaw, Ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { computed, markRaw, ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
 import { cloneFnJSON } from '../useCloned'
@@ -85,13 +86,17 @@ export interface UseManualRefHistoryReturn<Raw, Serialized, Async extends boolea
 
   /**
    * Undo changes
+   *
+   * When `async=true`, this function may return `undefined` when no more undo steps are available. So check `canUndo` before calling it.
    */
-  undo: () => PromiseOr<Async, void>
+  undo: () => PromiseOr<Async, void> | undefined
 
   /**
    * Redo changes
+   *
+   * When `async=true`, this function may return `undefined` when no more redo steps are available. So check `canRedo` before calling it.
    */
-  redo: () => PromiseOr<Async, void>
+  redo: () => PromiseOr<Async, void> | undefined
 
   /**
    * Clear all the history
@@ -154,15 +159,15 @@ export function useManualRefHistory<Raw, Serialized = Raw, Async extends boolean
     setSource = fnSetSource,
   } = options
 
-  const _createHistoryRecord = () => {
+  const _createHistoryRecord = (): Awaitable<UseRefHistoryRecord<Serialized>> => {
     const value = source.value
 
     const dumpResult = dump(value as any)
 
     if (dumpResult instanceof Promise) {
-      return new Promise<MarkRaw<{ snapshot: any, timestamp: number }>>((resolve) => {
+      return new Promise((resolve) => {
         dumpResult.then(
-          snapshot => resolve(
+          (snapshot: Serialized) => resolve(
             markRaw({ snapshot, timestamp: timestamp() }),
           ),
         )
@@ -218,17 +223,15 @@ export function useManualRefHistory<Raw, Serialized = Raw, Async extends boolean
         const historyRecord = _createHistoryRecord()
 
         if (historyRecord instanceof Promise) {
-          historyRecord.then((v) => {
+          historyRecord.then((record) => {
             before()
-            last.value = v
-
+            last.value = record
             resolve()
           })
         }
         else {
           before()
           last.value = historyRecord
-
           resolve()
         }
       }).then(after)
@@ -291,7 +294,7 @@ export function useManualRefHistory<Raw, Serialized = Raw, Async extends boolean
     clear,
     commit: commit as () => PromiseOr<Async, void>,
     reset: reset as () => PromiseOr<Async, void>,
-    undo: undo as () => PromiseOr<Async, void>,
-    redo: redo as () => PromiseOr<Async, void>,
+    undo: undo as () => PromiseOr<Async, void> | undefined,
+    redo: redo as () => PromiseOr<Async, void> | undefined,
   }
 }
