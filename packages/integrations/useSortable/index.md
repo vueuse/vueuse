@@ -11,7 +11,7 @@ For more information on what options can be passed, see [`Sortable.options`](htt
 ## Install
 
 ```bash
-npm i sortablejs
+npm i sortablejs@^1
 ```
 
 ## Usage

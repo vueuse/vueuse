@@ -10,9 +10,9 @@ This package only works for Vue 3
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/router</b> vue-router@4
-</pre>
+```bash
+npm i @vueuse/router vue-router@4
+```
 
 ## Functions
 

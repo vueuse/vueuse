@@ -4,7 +4,7 @@ category: Array
 
 # useArrayDifference
 
-Reactive get array difference of two array
+Reactive get array difference of two arrays
 
 ## Usage
 

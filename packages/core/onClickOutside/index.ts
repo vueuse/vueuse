@@ -43,7 +43,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
-    return
+    return noop
 
   // Fixes: https://github.com/vueuse/vueuse/issues/1520
   // How it works: https://stackoverflow.com/a/39712411

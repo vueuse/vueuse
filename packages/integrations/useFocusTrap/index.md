@@ -11,7 +11,7 @@ For more information on what options can be passed, see [`createOptions`](https:
 ## Install
 
 ```bash
-npm i focus-trap
+npm i focus-trap@^7
 ```
 
 ## Usage
