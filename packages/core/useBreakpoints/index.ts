@@ -10,12 +10,21 @@ export * from './breakpoints'
 
 export type Breakpoints<K extends string = string> = Record<K, MaybeRefOrGetter<number | string>>
 
+export interface UseBreakpointsOptions extends ConfigurableWindow {
+  /**
+   * The query strategy to use for the generated shortcut methods like `.lg`
+   *
+   * @default "min-width"
+   */
+  shortcutQueryStrategy?: 'min-width' | 'max-width'
+}
+
 /**
  * Reactively viewport breakpoints
  *
  * @see https://vueuse.org/useBreakpoints
  */
-export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {
+export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: UseBreakpointsOptions = {}) {
   function getValue(k: K, delta?: number) {
     let v = toValue(breakpoints[k])
 
@@ -28,7 +37,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return v
   }
 
-  const { window = defaultWindow } = options
+  const { window = defaultWindow, shortcutQueryStrategy = 'min-width' } = options
 
   function match(query: string): boolean {
     if (!window)
@@ -40,10 +49,14 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return useMediaQuery(() => `(min-width: ${getValue(k)})`, options)
   }
 
+  const smallerOrEqual = (k: K) => {
+    return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
+  }
+
   const shortcutMethods = Object.keys(breakpoints)
     .reduce((shortcuts, k) => {
       Object.defineProperty(shortcuts, k, {
-        get: () => greaterOrEqual(k as K),
+        get: () => shortcutQueryStrategy === 'min-width' ? greaterOrEqual(k as K) : smallerOrEqual(k as K),
         enumerable: true,
         configurable: true,
       })
@@ -58,9 +71,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     smaller(k: K) {
       return useMediaQuery(() => `(max-width: ${getValue(k, -0.1)})`, options)
     },
-    smallerOrEqual(k: K) {
-      return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
-    },
+    smallerOrEqual,
     between(a: K, b: K) {
       return useMediaQuery(() => `(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
