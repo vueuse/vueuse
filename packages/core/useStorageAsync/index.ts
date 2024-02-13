@@ -60,7 +60,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
 
   if (!storage) {
     try {
-      storage = getSSRHandler('getDefaultStorage', () => defaultWindow?.localStorage)()
+      storage = getSSRHandler('getDefaultStorageAsync', () => defaultWindow?.localStorage)()
     }
     catch (e) {
       onError(e)

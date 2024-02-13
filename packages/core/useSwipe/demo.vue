@@ -89,7 +89,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(
   color: #fff;
   font-weight: bold;
   text-align: center;
-  overflow:hidden;
+  overflow: hidden;
   white-space: nowrap;
 }
 

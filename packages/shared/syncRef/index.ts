@@ -130,7 +130,7 @@ export type SyncRefOptions<L, R, D extends Direction> = ConfigurableFlushSync & 
  * 3. L ⊆ R
  * 4. L ∩ R = ∅
  */
-export function syncRef<L, R, D extends Direction>(
+export function syncRef<L, R, D extends Direction = 'both'>(
   left: Ref<L>,
   right: Ref<R>,
   ...[options]: Equal<L, R> extends true
