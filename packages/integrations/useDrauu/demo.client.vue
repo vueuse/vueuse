@@ -128,10 +128,6 @@ const { mode, color, size } = toRefs(brush)
   @apply m-0 bg-transparent text-dark-50 rounded-full border-none h-8 w-8 p-0 flex place-items-center place-content-center;
 }
 
-.dark .drauu-demo .color-button {
-  @apply ;
-}
-
 .drauu-demo .color-button:hover,
 .drauu-demo .color-button.active {
   @apply bg-light-900;
