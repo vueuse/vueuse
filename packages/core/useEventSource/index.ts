@@ -146,7 +146,9 @@ export function useEventSource<Events extends string[]>(
       status.value = 'CLOSED'
       error.value = e
 
-      if (!explicitlyClosed && options.autoReconnect) {
+      // only reconnect if EventSource isn't reconnecting by itself
+      // this is the case when the connection is closed (readyState is 2)
+      if (es.readyState === 2 && !explicitlyClosed && options.autoReconnect) {
         es.close()
         const {
           retries = -1,
