@@ -6,6 +6,8 @@ category: Browser
 
 Reactive viewport breakpoints.
 
+N.B. This API is meant to be invoked in setup method.
+
 ## Usage
 
 ```js
