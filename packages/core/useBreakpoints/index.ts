@@ -71,6 +71,11 @@ export function useBreakpoints<K extends string>(
       return shortcuts
     }, {} as Record<K, Ref<boolean>>)
 
+  function current() {
+    const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
+    return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
+  }
+
   return Object.assign(shortcutMethods, {
     greaterOrEqual,
     smallerOrEqual,
@@ -98,9 +103,10 @@ export function useBreakpoints<K extends string>(
     isInBetween(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
-    current() {
-      const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
-      return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
+    current,
+    active() {
+      const bps = current()
+      return computed(() => bps.value.length === 0 ? '' : bps.value.at(-1))
     },
   })
 }
@@ -117,4 +123,5 @@ export type UseBreakpointsReturn<K extends string = string> = {
   isSmallerOrEqual: (k: MaybeRefOrGetter<K>) => boolean
   isInBetween: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => boolean
   current: () => ComputedRef<string[]>
+  active: ComputedRef<string>
 } & Record<K, ComputedRef<boolean>>
