@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { ref } from 'vue-demi'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const smWidth = breakpointsTailwind.sm
+
+const reactiveStuff = ref<keyof typeof breakpointsTailwind>('sm')
+const isGreaterThanBreakpoint = breakpoints.greaterOrEqual(() => reactiveStuff.value)
 
 const current = breakpoints.current()
 const xs = breakpoints.smaller('sm')
@@ -25,5 +29,6 @@ const xxl = breakpoints['2xl']
     <div> lg: <BooleanDisplay :value="lg" /></div>
     <div> xl: <BooleanDisplay :value="xl" /></div>
     <div>2xl: <BooleanDisplay :value="xxl" /></div>
+    <div>greaterThanBreakPoint: <BooleanDisplay :value="isGreaterThanBreakpoint" /></div>
   </div>
 </template>
