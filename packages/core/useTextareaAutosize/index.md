@@ -6,21 +6,6 @@ category: Browser
 
 Automatically update the height of a textarea depending on the content.
 
-::: info
-It's recommended to reset the scrollbar styles for the textarea element to avoid incorrect height values for large amounts of text.
-
-```css
-textarea {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-textarea::-webkit-scrollbar {
-  display: none;
-}
-```
-:::
-
 ## Usage
 
 ### Simple example
@@ -39,6 +24,23 @@ const { textarea, input } = useTextareaAutosize()
   />
 </template>
 ```
+
+::: info
+
+It's recommended to reset the scrollbar styles for the textarea element to avoid incorrect height values for large amounts of text.
+
+```css
+textarea {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+```
+
+:::
 
 ### With `rows` attribute
 
