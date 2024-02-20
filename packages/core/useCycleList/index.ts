@@ -80,6 +80,7 @@ export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleL
     index,
     next,
     prev,
+    go: set,
   }
 }
 
@@ -88,4 +89,8 @@ export interface UseCycleListReturn<T> {
   index: Ref<number>
   next: (n?: number) => T
   prev: (n?: number) => T
+  /**
+   * Go to a specific index
+   */
+  go: (i: number) => T
 }
