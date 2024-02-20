@@ -10,23 +10,23 @@ export interface UseMemoizeCache<Key, Value> {
   /**
    * Get value for key
    */
-  get(key: Key): Value | undefined
+  get: (key: Key) => Value | undefined
   /**
    * Set value for key
    */
-  set(key: Key, value: Value): void
+  set: (key: Key, value: Value) => void
   /**
    * Return flag if key exists
    */
-  has(key: Key): boolean
+  has: (key: Key) => boolean
   /**
    * Delete value for key
    */
-  delete(key: Key): void
+  delete: (key: Key) => void
   /**
    * Clear cache
    */
-  clear(): void
+  clear: () => void
 }
 
 /**
@@ -58,19 +58,19 @@ export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   /**
    * Call memoized function and update cache
    */
-  load(...args: Args): Result
+  load: (...args: Args) => Result
   /**
    * Delete cache of given arguments
    */
-  delete(...args: Args): void
+  delete: (...args: Args) => void
   /**
    * Clear cache
    */
-  clear(): void
+  clear: () => void
   /**
    * Generate cache key for given arguments
    */
-  generateKey(...args: Args): CacheKey
+  generateKey: (...args: Args) => CacheKey
   /**
    * Cache container
    */

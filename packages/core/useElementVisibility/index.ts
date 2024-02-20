@@ -1,11 +1,12 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
+import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
-export interface UseElementVisibilityOptions extends ConfigurableWindow {
+export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
   scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
 }
 
@@ -18,7 +19,7 @@ export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
 ) {
-  const { window = defaultWindow, scrollTarget } = options
+  const { window = defaultWindow, scrollTarget, threshold = 0 } = options
   const elementIsVisible = ref(false)
 
   useIntersectionObserver(
@@ -39,7 +40,7 @@ export function useElementVisibility(
     {
       root: scrollTarget,
       window,
-      threshold: 0,
+      threshold,
     },
   )
 
