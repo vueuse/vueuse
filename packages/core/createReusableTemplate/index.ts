@@ -6,7 +6,7 @@ export type DefineTemplateComponent<
   Bindings extends object,
   Slots extends Record<string, Slot | undefined>,
 > = DefineComponent<{}> & {
-  new(): { $slots: { default(_: Bindings & { $slots: Slots }): any } }
+  new(): { $slots: { default: (_: Bindings & { $slots: Slots }) => any } }
 }
 
 export type ReuseTemplateComponent<

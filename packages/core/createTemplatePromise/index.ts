@@ -50,7 +50,7 @@ export interface TemplatePromiseOptions {
 export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<{}> & {
   new(): {
     $slots: {
-      default(_: TemplatePromiseProps<Return, Args>): any
+      default: (_: TemplatePromiseProps<Return, Args>) => any
     }
   }
 } & {

@@ -89,13 +89,13 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
 export type UseBreakpointsReturn<K extends string = string> = {
   greater: (k: K) => ComputedRef<boolean>
   greaterOrEqual: (k: K) => ComputedRef<boolean>
-  smaller(k: K): ComputedRef<boolean>
+  smaller: (k: K) => ComputedRef<boolean>
   smallerOrEqual: (k: K) => ComputedRef<boolean>
-  between(a: K, b: K): ComputedRef<boolean>
-  isGreater(k: K): boolean
-  isGreaterOrEqual(k: K): boolean
-  isSmaller(k: K): boolean
-  isSmallerOrEqual(k: K): boolean
-  isInBetween(a: K, b: K): boolean
-  current(): ComputedRef<string[]>
+  between: (a: K, b: K) => ComputedRef<boolean>
+  isGreater: (k: K) => boolean
+  isGreaterOrEqual: (k: K) => boolean
+  isSmaller: (k: K) => boolean
+  isSmallerOrEqual: (k: K) => boolean
+  isInBetween: (a: K, b: K) => boolean
+  current: () => ComputedRef<string[]>
 } & Record<K, ComputedRef<boolean>>
