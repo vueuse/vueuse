@@ -4,7 +4,10 @@ import { computedWithControl } from '@vueuse/shared'
 import type { MaybeElement, MaybeElementRef, VueInstance } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 
-export function useCurrentElement<T extends MaybeElement = MaybeElement, R extends VueInstance = VueInstance >(
+export function useCurrentElement<
+  T extends MaybeElement = MaybeElement,
+  R extends VueInstance = VueInstance,
+>(
   rootComponent?: MaybeElementRef<R>,
 ) {
   const vm = getCurrentInstance()!
@@ -13,8 +16,6 @@ export function useCurrentElement<T extends MaybeElement = MaybeElement, R exten
     () => (rootComponent ? unrefElement(rootComponent) : vm.proxy!.$el) as T,
   )
 
-  // WARNING
-  // Manual triggering only works for Vue 3 - https://vueuse.org/shared/computedWithControl/#manual-triggering
   onUpdated(currentElement.trigger)
   onMounted(currentElement.trigger)
 
