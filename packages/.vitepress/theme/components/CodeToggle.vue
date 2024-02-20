@@ -15,7 +15,7 @@ const js = preferJS
 </script>
 
 <template>
-  <div flex="~ justify-end" mb--2 mt--4>
+  <div flex="~ justify-end" mb--2 mt--2>
     <label class="flex text-xs items-center px3 gap-1 bg-$vp-code-block-bg rounded-full py1" relative>
       <input
         v-model="preferJS"

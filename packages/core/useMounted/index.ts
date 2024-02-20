@@ -9,10 +9,11 @@ import { getCurrentInstance, onMounted, ref } from 'vue-demi'
 export function useMounted() {
   const isMounted = ref(false)
 
-  if (getCurrentInstance()) {
+  const instance = getCurrentInstance()
+  if (instance) {
     onMounted(() => {
       isMounted.value = true
-    })
+    }, instance)
   }
 
   return isMounted

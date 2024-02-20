@@ -2,7 +2,7 @@ import type { Ref } from 'vue-demi'
 import { onBeforeUpdate, ref } from 'vue-demi'
 
 export type TemplateRefsList<T> = T[] & {
-  set(el: Object | null): void
+  set: (el: Object | null) => void
 }
 
 export function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>> {

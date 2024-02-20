@@ -346,6 +346,10 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     expect(data.value).toEqual({ value: 1 })
   })
 
+  it('should not crash when options is undefined', async () => {
+    await useAxios(url, config, undefined)
+  })
+
   it('should reset data when execute', async () => {
     interface ResType {
       id: number
