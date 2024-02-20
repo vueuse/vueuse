@@ -1,14 +1,14 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
+import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
-  isFinished: Ref<boolean>
+  isFinished: Readonly<Ref<boolean>>
 
   /**
    * The statusCode of the HTTP fetch response
@@ -33,7 +33,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the request is currently being fetched.
    */
-  isFetching: Ref<boolean>
+  isFetching: Readonly<Ref<boolean>>
 
   /**
    * Indicates if the fetch request is able to be aborted
@@ -72,20 +72,20 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
-  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
-  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
-  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
-  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
-  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
+  json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text: () => UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob: () => UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer: () => UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData: () => UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -528,12 +528,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished,
+    isFinished: readonly(isFinished),
+    isFetching: readonly(isFetching),
     statusCode,
     response,
     error,
     data,
-    isFetching,
     canAbort,
     aborted,
     abort,

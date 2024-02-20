@@ -37,7 +37,7 @@ export interface UseIDBOptions extends ConfigurableFlush {
 export interface UseIDBKeyvalReturn<T> {
   data: RemovableRef<T>
   isFinished: Ref<boolean>
-  set(value: T): Promise<void>
+  set: (value: T) => Promise<void>
 }
 
 /**
