@@ -180,9 +180,9 @@ export function useScroll(
       return
 
     const el: Element = (
-      (target instanceof Window)
-        ? (target as Window).document.documentElement
-        : (target as Document)?.documentElement ?? target
+      (target as Window)?.document?.documentElement
+      || (target as Document)?.documentElement
+      || unrefElement(target as HTMLElement | SVGElement)
     ) as Element
 
     const { display, flexDirection } = getComputedStyle(el)
@@ -262,7 +262,7 @@ export function useScroll(
 
   tryOnMounted(() => {
     try {
-      const _element = unrefElement(element as MaybeElementRef) // This can be a window/document
+      const _element = toValue(element)
       if (!_element)
         return
       setArrivedState(_element)
