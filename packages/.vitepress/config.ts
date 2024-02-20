@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
-import { transformerTwoslash } from 'vitepress-plugin-twoslash'
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { withPwa } from '@vite-pwa/vitepress'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { currentVersion, versions } from '../../meta/versions'
