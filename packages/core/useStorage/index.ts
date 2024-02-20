@@ -214,12 +214,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       }
 
       if (v == null) {
-        storage!.removeItem(key)
         dispatchWriteEvent(null)
+        storage!.removeItem(key)
       }
       else {
         const serialized = serializer.write(v as any)
-        const oldValue = storage!.getItem(key)
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
           dispatchWriteEvent(serialized)
