@@ -248,7 +248,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       directory: `packages/${name}`,
     }
     packageJSON.main = './index.cjs'
-    packageJSON.types = './index.d.cts'
+    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'

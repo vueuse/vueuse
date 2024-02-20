@@ -6,8 +6,8 @@ import { unrefElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 
 interface InferEventTarget<Events> {
-  addEventListener(event: Events, fn?: any, options?: any): any
-  removeEventListener(event: Events, fn?: any, options?: any): any
+  addEventListener: (event: Events, fn?: any, options?: any) => any
+  removeEventListener: (event: Events, fn?: any, options?: any) => any
 }
 
 export type WindowEventName = keyof WindowEventMap
