@@ -192,6 +192,7 @@ export function useWebSocket<Data = any>(
     resetHeartbeat()
     heartbeatPause?.()
     wsRef.value.close(code, reason)
+    wsRef.value = undefined
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -222,7 +223,6 @@ export function useWebSocket<Data = any>(
 
     ws.onclose = (ev) => {
       status.value = 'CLOSED'
-      wsRef.value = undefined
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect) {
