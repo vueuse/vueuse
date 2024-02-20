@@ -6,7 +6,7 @@ category: Browser
 
 Automatically update the height of a textarea depending on the content.
 
-::: warning
+::: info
 Don't forget to reset the scrollbar styles for the textarea element to avoid incorrect height values for large amounts of text.
 
 ```css
