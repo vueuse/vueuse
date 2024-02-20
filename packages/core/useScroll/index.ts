@@ -179,11 +179,11 @@ export function useScroll(
     if (!window)
       return
 
-    const el: HTMLElement = (
+    const el: Element = (
       (target instanceof Window)
         ? (target as Window).document.documentElement
         : (target as Document)?.documentElement ?? target
-    ) as HTMLElement
+    ) as Element
 
     const { display, flexDirection } = getComputedStyle(el)
 
