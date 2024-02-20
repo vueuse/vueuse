@@ -58,6 +58,25 @@ const { execute } = useFetch(url, { immediate: false })
 execute()
 ```
 
+### Query parameters as an object
+
+`useFetch` also accepts `query` option to generate URL query params automatically from an object. `query` object can also work with existing query preset in the URL.
+
+```ts
+useFetch('https://my-api.com/users', { query: { sortBy: 'username' } })
+
+// Object query will be merged with existing query in the URL
+useFetch('https://my-api.com/users?q=john', { query: { sortBy: 'username' } })
+
+// It can also accept reactive values
+const sortBy = ref('username')
+useFetch('https://my-api.com/users', { query: { sortBy }, refetch: true })
+```
+
+::: warning
+When using reactive values in `query` option, make sure to set `refetch` to `true` to make sure the request is refetched when the reactive value changes.
+:::
+
 ### Aborting a request
 
 A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.

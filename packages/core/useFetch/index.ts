@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
+import { computed, isRef, reactive, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -133,6 +133,11 @@ export interface UseFetchOptions {
   fetch?: typeof window.fetch
 
   /**
+   * Adds query search params to URL
+   */
+  query?: MaybeRefOrGetter<Record<string, any>>
+
+  /**
    * Will automatically run fetch when `useFetch` is used
    *
    * @default true
@@ -218,7 +223,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError', 'query')
 }
 
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
@@ -432,8 +437,33 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     }
 
     let isCanceled = false
+
+    const _url = (() => {
+      const urlValue = toValue(url)
+
+      if (!options.query)
+        return urlValue
+
+      const newSearchParams = new URLSearchParams(toValue(reactive(options.query)))
+
+      // Here, newSearchParams.size always return `undefined` & tests fail
+      if (!newSearchParams.toString())
+        return urlValue
+
+      const urlIns = new URL(urlValue)
+      const existingSearchParams = urlIns.searchParams
+      const searchParams = new URLSearchParams({
+        ...Object.fromEntries(existingSearchParams),
+        ...Object.fromEntries(newSearchParams),
+      })
+
+      const newUrl = new URL(`${urlIns.origin}${urlIns.pathname}?${searchParams}`)
+
+      return newUrl.href
+    })()
+
     const context: BeforeFetchContext = {
-      url: toValue(url),
+      url: _url,
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
@@ -522,6 +552,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     [
       refetch,
       toRef(url),
+      () => options.query,
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
