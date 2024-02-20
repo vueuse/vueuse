@@ -77,6 +77,13 @@ export interface UseAxiosOptions<T = any> {
   shallow?: boolean
 
   /**
+   * Abort previous request when a new request is made.
+   *
+   * @default true
+   */
+  abortPrevious?: boolean
+
+  /**
    * Callback when error is caught.
    */
   onError?: (e: unknown) => void
@@ -121,6 +128,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const defaultOptions: UseAxiosOptions<T> = {
     immediate: !!argsPlaceholder,
     shallow: true,
+    abortPrevious: true,
   }
   let defaultConfig: AxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
@@ -218,7 +226,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       return promise
     }
     resetData()
-    abort()
+
+    if (options.abortPrevious)
+      abort()
+
     loading(true)
 
     executeCounter += 1
