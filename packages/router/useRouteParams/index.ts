@@ -62,7 +62,7 @@ export function useRouteParams<
         if (param === v)
           return
 
-        param = v === defaultValue || v === null) ? undefined : v
+        param = (v === defaultValue || v === null) ? undefined : v
         _paramsQueue.set(name, v === defaultValue || v === null) ? undefined : v)
 
         trigger()
