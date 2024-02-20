@@ -10,7 +10,7 @@ const reactiveStuff = ref<keyof typeof breakpointsTailwind>('sm')
 const isGreaterThanBreakpoint = breakpoints.greaterOrEqual(() => reactiveStuff.value)
 
 const current = breakpoints.current()
-const mode = breakpoints.mode()
+const active = breakpoints.active()
 const xs = breakpoints.smaller('sm')
 const xse = breakpoints.smallerOrEqual('sm')
 const sm = breakpoints.between('sm', 'md')
@@ -23,7 +23,7 @@ const xxl = breakpoints['2xl']
 <template>
   <div class="font-mono">
     <div> Current breakpoints: {{ current }} </div>
-    <div> Current screen mode: {{ mode }} </div>
+    <div> Active breakpoint: {{ active }} </div>
     <div> xs(&lt;{{ smWidth }}px): <BooleanDisplay :value="xs" /></div>
     <div> xs(&lt;={{ smWidth }}px): <BooleanDisplay :value="xse" /></div>
     <div> sm: <BooleanDisplay :value="sm" /></div>

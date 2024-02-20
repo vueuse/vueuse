@@ -30,7 +30,7 @@ export const breakpointsBootstrapV5 = {
  *
  * @see https://v2.vuetifyjs.com/en/features/breakpoints/
  */
-export const breakpointsVuetify = {
+export const breakpointsVuetifyV2 = {
   xs: 0,
   sm: 600,
   md: 960,
@@ -51,6 +51,13 @@ export const breakpointsVuetifyV3 = {
   xl: 1920,
   xxl: 2560,
 }
+
+/**
+ * Alias to `breakpointsVuetifyV2`
+ *
+ * @deprecated explictly use `breakpointsVuetifyV2` or `breakpointsVuetifyV3` instead
+ */
+export const breakpointsVuetify = breakpointsVuetifyV2
 
 /**
  * Breakpoints from Ant Design

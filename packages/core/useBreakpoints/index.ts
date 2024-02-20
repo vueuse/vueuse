@@ -87,9 +87,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     current,
     active() {
       const bps = current()
-      return computed(() => {
-        return bps.value.length === 0 ? '' : bps.value.at(-1)
-      })
+      return computed(() => bps.value.length === 0 ? '' : bps.value.at(-1))
     },
   })
 }
