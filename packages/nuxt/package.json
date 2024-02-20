@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/nuxt",
+  "type": "module",
   "version": "10.7.2",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
@@ -31,7 +32,7 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "nuxt": "^3.0.0"
   },

@@ -19,6 +19,12 @@ describe('useElementVisibility', () => {
     expect(visible.value).toBeFalsy()
   })
 
+  it('should work when threshold is undefined', () => {
+    // @ts-expect-error set threshold null
+    const visible = useElementVisibility(el, { threshold: null })
+    expect(visible.value).toBeFalsy()
+  })
+
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
       vi.resetAllMocks()

@@ -28,14 +28,36 @@ export const breakpointsBootstrapV5 = {
 /**
  * Breakpoints from Vuetify V2
  *
- * @see https://vuetifyjs.com/en/features/breakpoints
+ * @see https://v2.vuetifyjs.com/en/features/breakpoints/
  */
-export const breakpointsVuetify = {
-  xs: 600,
-  sm: 960,
-  md: 1264,
-  lg: 1904,
+export const breakpointsVuetifyV2 = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1264,
+  xl: 1904,
 }
+
+/**
+ * Breakpoints from Vuetify V3
+ *
+ * @see https://vuetifyjs.com/en/styles/float/#overview
+ */
+export const breakpointsVuetifyV3 = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1280,
+  xl: 1920,
+  xxl: 2560,
+}
+
+/**
+ * Alias to `breakpointsVuetifyV2`
+ *
+ * @deprecated explictly use `breakpointsVuetifyV2` or `breakpointsVuetifyV3` instead
+ */
+export const breakpointsVuetify = breakpointsVuetifyV2
 
 /**
  * Breakpoints from Ant Design
@@ -57,10 +79,11 @@ export const breakpointsAntDesign = {
  * @see https://quasar.dev/style/breakpoints
  */
 export const breakpointsQuasar = {
-  xs: 600,
-  sm: 1024,
-  md: 1440,
-  lg: 1920,
+  xs: 0,
+  sm: 600,
+  md: 1024,
+  lg: 1440,
+  xl: 1920,
 }
 
 /**
@@ -97,7 +120,7 @@ export const breakpointsMasterCss = {
 /**
  * Breakpoints from PrimeFlex
  *
- * @see https://www.primefaces.org/primeflex/setup
+ * @see https://primeflex.org/installation
  */
 export const breakpointsPrimeFlex = {
   sm: 576,
