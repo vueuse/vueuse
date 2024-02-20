@@ -114,7 +114,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   return filter
 }
 
-interface ThrottleFilterOptions {
+export interface ThrottleFilterOptions {
   /**
    * The maximum time allowed to be delayed before it's invoked.
    */
