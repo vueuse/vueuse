@@ -92,14 +92,9 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const updateGamepadState = () => {
     const _gamepads = navigator?.getGamepads() || []
 
-    for (let i = 0; i < _gamepads.length; ++i) {
-      const gamepad = _gamepads[i]
-      if (gamepad) {
-        const index = gamepads.value.findIndex(({ index }) => index === gamepad.index)
-
-        if (index > -1)
-          gamepads.value[index] = stateFromGamepad(gamepad)
-      }
+    for (const gamepad of _gamepads) {
+      if (gamepad && gamepads.value[gamepad.index])
+        gamepads.value[gamepad.index] = stateFromGamepad(gamepad)
     }
   }
 
@@ -125,13 +120,9 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   tryOnMounted(() => {
     const _gamepads = navigator?.getGamepads() || []
 
-    if (_gamepads) {
-      for (let i = 0; i < _gamepads.length; ++i) {
-        const gamepad = _gamepads[i]
-
-        if (gamepad)
-          onGamepadConnected(gamepad)
-      }
+    for (const gamepad of _gamepads) {
+      if (gamepad && gamepads.value[gamepad.index])
+        onGamepadConnected(gamepad)
     }
   })
 
