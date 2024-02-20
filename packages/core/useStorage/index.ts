@@ -9,13 +9,13 @@ import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {
-  read(raw: string): T
-  write(value: T): string
+  read: (raw: string) => T
+  write: (value: T) => string
 }
 
 export interface SerializerAsync<T> {
-  read(raw: string): Awaitable<T>
-  write(value: T): Awaitable<string>
+  read: (raw: string) => Awaitable<T>
+  write: (value: T) => Awaitable<string>
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
@@ -199,7 +199,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         storage!.removeItem(key)
       }
       else {
-        const serialized = serializer.write(v)
+        const serialized = serializer.write(v as any)
         const oldValue = storage!.getItem(key)
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
