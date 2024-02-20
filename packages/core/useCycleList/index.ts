@@ -69,10 +69,9 @@ export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleL
     return shift(-n)
   }
 
-  function toIndex(i = 0) {
+  function go(i = 0) {
     const min = 0
     const max = listRef.value.length - 1
-
     if (i < min)
       return set(min)
     if (i > max)
@@ -91,7 +90,7 @@ export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleL
     index,
     next,
     prev,
-    toIndex,
+    go,
   }
 }
 
@@ -100,5 +99,8 @@ export interface UseCycleListReturn<T> {
   index: Ref<number>
   next: (n?: number) => T
   prev: (n?: number) => T
-  toIndex: (i?: number) => T
+  /**
+   * Go to a specific index
+   */
+  go: (i?: number) => T
 }

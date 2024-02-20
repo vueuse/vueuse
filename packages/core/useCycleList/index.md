@@ -13,7 +13,7 @@ Cycle through a list of items.
 ```ts
 import { useCycleList } from '@vueuse/core'
 
-const { state, next, prev, toIndex } = useCycleList([
+const { state, next, prev, go } = useCycleList([
   'Dog',
   'Cat',
   'Lizard',
@@ -30,7 +30,7 @@ prev()
 
 console.log(state.value) // 'Seal'
 
-toIndex(3)
+go(3)
 
 console.log(state.value) // 'Shark'
 ```
