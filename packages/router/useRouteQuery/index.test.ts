@@ -222,7 +222,7 @@ describe('useRouteQuery', () => {
     await nextTick()
 
     expect(page.value).toBe(1)
-    expect(route.query.page).toBe(1)
+    expect(route.query.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
   })
 
@@ -262,5 +262,23 @@ describe('useRouteQuery', () => {
 
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
+  })
+
+  it.each([{ value: 'default' }, { value: null }, { value: undefined }])('should reset value when $value value', async ({ value }) => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = value
+
+    await nextTick()
+
+    expect(route.query.search).toBeUndefined()
   })
 })
