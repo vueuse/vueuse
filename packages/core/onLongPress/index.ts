@@ -64,10 +64,13 @@ export function onLongPress(
   }
 
   function onRelease(ev: PointerEvent) {
-    if (options?.modifiers?.self && ev.target !== elementRef.value)
+    const [_startTimestamp, _posStart, _hasLongPressed] = [startTimestamp, posStart, hasLongPressed]
+    clear()
+
+    if (!options?.onMouseUp || !_posStart || !_startTimestamp)
       return
 
-    if (!options?.onMouseUp)
+    if (options?.modifiers?.self && ev.target !== elementRef.value)
       return
 
     if (options?.modifiers?.prevent)
@@ -76,15 +79,10 @@ export function onLongPress(
     if (options?.modifiers?.stop)
       ev.stopPropagation()
 
-    if (!posStart || !startTimestamp)
-      return
-
-    const dx = ev.x - posStart.x
-    const dy = ev.y - posStart.y
+    const dx = ev.x - _posStart.x
+    const dy = ev.y - _posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
-    options.onMouseUp(ev.timeStamp - startTimestamp, distance, hasLongPressed)
-
-    clear()
+    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed)
   }
 
   function onDown(ev: PointerEvent) {
