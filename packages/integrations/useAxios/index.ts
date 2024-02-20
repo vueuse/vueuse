@@ -227,7 +227,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     }
     resetData()
 
-    if (options.abortPrevious)
+    if (options.abortPrevious !== false)
       abort()
 
     loading(true)
