@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { nextTick, onMounted } from 'vue-demi'
-import { type Fn, getLifeCycleTarget } from '../utils'
+import type { Fn } from '../utils'
+import { getLifeCycleTarget } from '../utils'
 
 /**
  * Call onMounted() if it's inside a component lifecycle, if not, just call the function

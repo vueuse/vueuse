@@ -12,7 +12,7 @@ Uses localStorage by default, other storage sources be specified via third argum
 ## Usage
 
 ::: tip
-When using with Nuxt 3, this functions will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage). Use explicit import if you want to use the function from VueUse.
+When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nitro's built-in [`useStorage()`](https://nitro.unjs.io/guide/storage). Use explicit import if you want to use the function from VueUse.
 :::
 
 ```js
