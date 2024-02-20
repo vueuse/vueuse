@@ -37,6 +37,9 @@ async function onSave() {
       <button @click="res.open()">
         Open
       </button>
+      <button @click="res.updateData()">
+        Update
+      </button>
       <button @click="res.create()">
         New file
       </button>

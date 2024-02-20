@@ -248,7 +248,8 @@ export function useAnimate(
     if (!isSupported.value || !el)
       return
 
-    animate.value = el.animate(toValue(keyframes), animateOptions)
+    if (!animate.value)
+      animate.value = el.animate(toValue(keyframes), animateOptions)
 
     if (commitStyles)
       animate.value.commitStyles()

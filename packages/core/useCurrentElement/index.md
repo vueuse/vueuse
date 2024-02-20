@@ -14,6 +14,30 @@ import { useCurrentElement } from '@vueuse/core'
 const el = useCurrentElement() // ComputedRef<Element>
 ```
 
+Or pass a specific vue component
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useCurrentElement } from '@vueuse/core'
+
+const componentRef = ref()
+
+const el = useCurrentElement(componentRef) // ComputedRef<Element>
+</script>
+
+<template>
+  <div>
+    <OtherVueComponent ref="componentRef" />
+    <p>Hello world</p>
+  </div>
+</template>
+```
+
+::: info
+Only works for Vue 3 because it uses [computedWithControl](https://vueuse.org/shared/computedWithControl/#manual-triggering) under the hood
+:::
+
 ## Caveats
 
 This functions uses [`$el` under the hood](https://vuejs.org/api/component-instance.html#el).

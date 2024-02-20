@@ -77,7 +77,7 @@ export function useResizeObserver(
           _el && observer!.observe(_el, observerOptions)
       }
     },
-    { immediate: true, flush: 'post', deep: true },
+    { immediate: true, flush: 'post' },
   )
 
   const stop = () => {

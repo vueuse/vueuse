@@ -19,7 +19,7 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
   composable: (...args: Arguments) => Return,
   options?: CreateInjectionStateOptions<Return>,
 ): readonly [useProvidingState: (...args: Arguments) => Return, useInjectedState: () => Return | undefined] {
-  const key: string | InjectionKey<Return> = options?.injectionKey || Symbol('InjectionState')
+  const key: string | InjectionKey<Return> = options?.injectionKey || Symbol(composable.name || 'InjectionState')
   const useProvidingState = (...args: Arguments) => {
     const state = composable(...args)
     provideLocal(key, state)
