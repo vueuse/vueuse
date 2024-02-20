@@ -85,6 +85,7 @@ export function useGamepad(options: UseGamepadOptions = {}) {
       hapticActuators,
       axes: gamepad.axes.map(axes => axes),
       buttons: gamepad.buttons.map(button => ({ pressed: button.pressed, touched: button.touched, value: button.value })),
+      index: gamepad.index,
     } as Gamepad
   }
 
