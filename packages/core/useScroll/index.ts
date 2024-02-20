@@ -2,6 +2,8 @@ import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import type { MaybeElement, MaybeElementRef } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -260,7 +262,7 @@ export function useScroll(
 
   tryOnMounted(() => {
     try {
-      const _element = unrefElement(element)
+      const _element = unrefElement(element as MaybeElementRef) // This can be a window/document
       if (!_element)
         return
       setArrivedState(_element)
