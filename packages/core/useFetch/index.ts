@@ -1,14 +1,14 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isRef, ref, shallowRef, watch } from 'vue-demi'
+import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
-  isFinished: Ref<boolean>
+  isFinished: Readonly<Ref<boolean>>
 
   /**
    * The statusCode of the HTTP fetch response
@@ -33,7 +33,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the request is currently being fetched.
    */
-  isFetching: Ref<boolean>
+  isFetching: Readonly<Ref<boolean>>
 
   /**
    * Indicates if the fetch request is able to be aborted
@@ -72,20 +72,20 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get(): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options(payload?: MaybeRefOrGetter<unknown>, type?: string): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
-  json<JSON = any>(): UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
-  text(): UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
-  blob(): UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
-  arrayBuffer(): UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
-  formData(): UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
+  json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
+  text: () => UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
+  blob: () => UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
+  arrayBuffer: () => UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
+  formData: () => UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -185,7 +185,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any; response: Response | null; error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -454,70 +454,67 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     if (timer)
       timer.start()
 
-    return new Promise<Response | null>((resolve, reject) => {
-      fetch(
-        context.url,
-        {
-          ...defaultFetchOptions,
-          ...context.options,
-          headers: {
-            ...headersToObject(defaultFetchOptions.headers),
-            ...headersToObject(context.options?.headers),
-          },
+    return fetch(
+      context.url,
+      {
+        ...defaultFetchOptions,
+        ...context.options,
+        headers: {
+          ...headersToObject(defaultFetchOptions.headers),
+          ...headersToObject(context.options?.headers),
         },
-      )
-        .then(async (fetchResponse) => {
-          response.value = fetchResponse
-          statusCode.value = fetchResponse.status
+      },
+    )
+      .then(async (fetchResponse) => {
+        response.value = fetchResponse
+        statusCode.value = fetchResponse.status
 
-          responseData = await fetchResponse[config.type]()
+        responseData = await fetchResponse.clone()[config.type]()
 
-          // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-          if (!fetchResponse.ok) {
-            data.value = initialData || null
-            throw new Error(fetchResponse.statusText)
-          }
+        // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+        if (!fetchResponse.ok) {
+          data.value = initialData || null
+          throw new Error(fetchResponse.statusText)
+        }
 
-          if (options.afterFetch) {
-            ({ data: responseData } = await options.afterFetch({
-              data: responseData,
-              response: fetchResponse,
-            }))
-          }
+        if (options.afterFetch) {
+          ({ data: responseData } = await options.afterFetch({
+            data: responseData,
+            response: fetchResponse,
+          }))
+        }
+        data.value = responseData
+
+        responseEvent.trigger(fetchResponse)
+        return fetchResponse
+      })
+      .catch(async (fetchError) => {
+        let errorData = fetchError.message || fetchError.name
+
+        if (options.onFetchError) {
+          ({ error: errorData, data: responseData } = await options.onFetchError({
+            data: responseData,
+            error: fetchError,
+            response: response.value,
+          }))
+        }
+
+        error.value = errorData
+        if (options.updateDataOnError)
           data.value = responseData
 
-          responseEvent.trigger(fetchResponse)
-          return resolve(fetchResponse)
-        })
-        .catch(async (fetchError) => {
-          let errorData = fetchError.message || fetchError.name
-
-          if (options.onFetchError) {
-            ({ error: errorData, data: responseData } = await options.onFetchError({
-              data: responseData,
-              error: fetchError,
-              response: response.value,
-            }))
-          }
-
-          error.value = errorData
-          if (options.updateDataOnError)
-            data.value = responseData
-
-          errorEvent.trigger(fetchError)
-          if (throwOnFailed)
-            return reject(fetchError)
-
-          return resolve(null)
-        })
-        .finally(() => {
-          if (currentExecuteCounter === executeCounter)
-            loading(false)
-          if (timer)
-            timer.stop()
-          finallyEvent.trigger(null)
-        })
-    })
+        errorEvent.trigger(fetchError)
+        if (throwOnFailed)
+          throw fetchError
+        return null
+      })
+      .finally(() => {
+        if (currentExecuteCounter === executeCounter)
+          loading(false)
+        if (timer)
+          timer.stop()
+        finallyEvent.trigger(null)
+      })
   }
 
   const refetch = toRef(options.refetch)
@@ -531,12 +528,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished,
+    isFinished: readonly(isFinished),
+    isFetching: readonly(isFetching),
     statusCode,
     response,
     error,
     data,
-    isFetching,
     canAbort,
     aborted,
     abort,

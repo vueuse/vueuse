@@ -20,7 +20,7 @@ export const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
-  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.mts`)
+  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
   if (!fs.existsSync(typingFilepath))
     return
@@ -125,7 +125,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
         continue
 
       const desc = description ? ` — ${description}` : ''
-      list += `  - [\`${name}\`](${docs})${desc}\n`
+      list += `- [\`${name}\`](${docs})${desc}\n`
     }
     list += '\n'
   }
@@ -137,7 +137,7 @@ export function replacer(code: string, value: string, key: string, insert: 'head
   const END = `<!--${key}_ENDS-->`
   const regex = new RegExp(`${START}[\\s\\S]*?${END}`, 'im')
 
-  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`
+  const target = value ? `${START}\n\n${value.trim()}\n\n${END}` : `${START}${END}`
 
   if (!code.match(regex)) {
     if (insert === 'none')
@@ -160,9 +160,9 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
 
     const functionMD = stringifyFunctions(functions.filter(i => i.package === name), false)
     let readme = await fs.readFile(readmePath, 'utf-8')
-    readme = replacer(readme, functionMD, 'FUNCTIONS_LIST')
+    readme = replacer(readme, functionMD, 'FUNCTIONS_LIST').trim().replace(/\r\n/g, '\n')
 
-    await fs.writeFile(readmePath, `${readme.trim()}\n`, 'utf-8')
+    await fs.writeFile(readmePath, `${readme}\n`, 'utf-8')
   }
 }
 
@@ -171,9 +171,12 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   const functionsCount = functions.filter(i => !i.internal).length
 
-  readme = readme.replace(/img\.shields\.io\/badge\/-(.+?)%20functions/, `img.shields.io/badge/-${functionsCount}%20functions`)
+  readme = readme.replace(
+    /img\.shields\.io\/badge\/-(.+?)%20functions/,
+`img.shields.io/badge/-${functionsCount}%20functions`,
+  ).trim().replace(/\r\n/g, '\n')
 
-  await fs.writeFile('README.md', `${readme.trim()}\n`, 'utf-8')
+  await fs.writeFile('README.md', `${readme}\n`, 'utf-8')
 }
 
 export async function updateFunctionsMD({ packages, functions }: PackageIndexes) {
@@ -182,12 +185,12 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
   const addons = Object.values(packages)
     .filter(i => i.addon && !i.deprecated)
     .map(({ docs, name, display, description }) => {
-      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n${description}\n${
-        stringifyFunctions(functions.filter(i => i.package === name), false)}`
+      return `## ${display} - [\`@vueuse/${name}\`](${docs})\n\n${description?.trim()}\n\n${
+        stringifyFunctions(functions.filter(i => i.package === name), false)}`.trim()
     })
-    .join('\n')
+    .join('\n\n')
 
-  mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST')
+  mdAddons = replacer(mdAddons, addons, 'ADDONS_LIST').replace(/\r\n/g, '\n')
 
   await fs.writeFile('packages/add-ons.md', mdAddons, 'utf-8')
 }
@@ -209,9 +212,9 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`
+    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
-    await fs.writeFile(mdPath, `${readme.trim()}\n`, 'utf-8')
+    await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
 }
 
@@ -245,7 +248,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       directory: `packages/${name}`,
     }
     packageJSON.main = './index.cjs'
-    packageJSON.types = './index.d.cts'
+    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'

@@ -62,28 +62,30 @@ For Vue 2 the key has to be a `string` or `number`
 :::
 
 ### Customize cache mechanism
+
 By default, the results are cached within a `Map` (normal object for Vue 2). You can implement your own mechanism by passing `cache` as options with following structure:
+
 ```ts
 export interface MemoizeCache<Key, Value> {
   /**
    * Get value for key
    */
-  get (key: Key): Value | undefined
+  get: (key: Key) => Value | undefined
   /**
    * Set value for key
    */
-  set (key: Key, value: Value): void
+  set: (key: Key, value: Value) => void
   /**
    * Return flag if key exists
    */
-  has (key: Key): boolean
+  has: (key: Key) => boolean
   /**
    * Delete value for key
    */
-  delete (key: Key): void
+  delete: (key: Key) => void
   /**
    * Clear cache
    */
-  clear (): void
+  clear: () => void
 }
 ```

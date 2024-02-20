@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import type { UseMouseSourceType } from '../useMouse'
@@ -39,7 +39,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
   /**
    * Element target to be capture the click
    */
-  target?: MaybeElementRef
+  target?: MaybeComputedElementRef
 }
 
 /**

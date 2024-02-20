@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/integrations",
-  "version": "10.6.1",
+  "version": "10.7.2",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -107,10 +107,10 @@
     "universal-cookie": "*"
   },
   "peerDependenciesMeta": {
-    "axios": {
+    "async-validator": {
       "optional": true
     },
-    "async-validator": {
+    "axios": {
       "optional": true
     },
     "change-case": {
@@ -137,24 +137,24 @@
     "qrcode": {
       "optional": true
     },
-    "universal-cookie": {
+    "sortablejs": {
       "optional": true
     },
-    "sortablejs": {
+    "universal-cookie": {
       "optional": true
     }
   },
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.6"
+    "vue-demi": ">=0.14.7"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.3",
     "@types/qrcode": "^1.5.5",
-    "@types/sortablejs": "^1.15.5",
+    "@types/sortablejs": "^1.15.8",
     "async-validator": "^4.2.5",
-    "axios": "^1.6.1",
+    "axios": "^1.6.7",
     "change-case": "^4.1.2",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
@@ -163,7 +163,7 @@
     "jwt-decode": "^3.1.2",
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
-    "sortablejs": "^1.15.0",
-    "universal-cookie": "^6.1.1"
+    "sortablejs": "^1.15.2",
+    "universal-cookie": "^6.1.3"
   }
 }

@@ -4,11 +4,11 @@ category: Sensors
 
 # useScrollLock
 
-Lock scrolling of the element. 
+Lock scrolling of the element.
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 
@@ -20,13 +20,13 @@ isLocked.value = false // unlock
 </script>
 
 <template>
-  <div ref="el"></div>
+  <div ref="el" />
 </template>
 ```
 
 ## Directive Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { vScrollLock } from '@vueuse/components'
 const data = ref([1, 2, 3, 4, 5, 6])

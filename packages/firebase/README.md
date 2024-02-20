@@ -10,9 +10,9 @@ Add-on of [VueUse](https://github.com/vueuse/vueuse), enables the real-time bind
 
 ## Install
 
-<pre class='language-bash'>
-npm i <b>@vueuse/firebase</b> firebase
-</pre>
+```bash
+npm i @vueuse/firebase firebase
+```
 
 ## Functions
 
@@ -20,10 +20,10 @@ npm i <b>@vueuse/firebase</b> firebase
 
 <!--GENERATED LIST, DO NOT MODIFY MANUALLY-->
 <!--FUNCTIONS_LIST_STARTS-->
-  - [`useAuth`](https://vueuse.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
-  - [`useFirestore`](https://vueuse.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
-  - [`useRTDB`](https://vueuse.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
+- [`useAuth`](https://vueuse.org/firebase/useAuth/) — reactive [Firebase Auth](https://firebase.google.com/docs/auth) binding
+- [`useFirestore`](https://vueuse.org/firebase/useFirestore/) — reactive [Firestore](https://firebase.google.com/docs/firestore) binding
+- [`useRTDB`](https://vueuse.org/firebase/useRTDB/) — reactive [Firebase Realtime Database](https://firebase.google.com/docs/database) binding
 
 <!--FUNCTIONS_LIST_ENDS-->
 

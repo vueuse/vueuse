@@ -26,8 +26,9 @@ npm i @vueuse/core
 
 ### CDN
 
-```html
+```vue
 <script src="https://unpkg.com/@vueuse/shared"></script>
+
 <script src="https://unpkg.com/@vueuse/core"></script>
 ```
 
@@ -42,6 +43,7 @@ npm i -D @vueuse/nuxt @vueuse/core
 ```
 
 Nuxt 3
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -52,6 +54,7 @@ export default defineNuxtConfig({
 ```
 
 Nuxt 2
+
 ```ts
 // nuxt.config.js
 export default {
@@ -63,13 +66,17 @@ export default {
 
 And then use VueUse function anywhere in your Nuxt app. For example:
 
-```html
+```vue twoslash
 <script setup lang="ts">
+// ---cut-start---
+// Actually auto-imported, but here we need to tell TwoSlash about it
+import { useMouse } from '@vueuse/core'
+// ---cut-end---
 const { x, y } = useMouse()
 </script>
 
 <template>
-  <div>pos: {{x}}, {{y}}</div>
+  <div>pos: {{ x }}, {{ y }}</div>
 </template>
 ```
 
@@ -77,29 +84,25 @@ const { x, y } = useMouse()
 
 Simply importing the functions you need from `@vueuse/core`
 
-```ts
+```vue twoslash
+<script setup>
 import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
 
-export default {
-  setup() {
-    // tracks mouse position
-    const { x, y } = useMouse()
+// tracks mouse position
+const { x, y } = useMouse()
 
-    // is user prefers dark theme
-    const isDark = usePreferredDark()
+// is user prefers dark theme
+const isDark = usePreferredDark()
 
-    // persist state in localStorage
-    const store = useLocalStorage(
-      'my-storage',
-      {
-        name: 'Apple',
-        color: 'red',
-      },
-    )
-
-    return { x, y, isDark, store }
+// persist state in localStorage
+const store = useLocalStorage(
+  'my-storage',
+  {
+    name: 'Apple',
+    color: 'red',
   },
-}
+)
+</script>
 ```
 
 Refer to [functions list](/functions) for more details.

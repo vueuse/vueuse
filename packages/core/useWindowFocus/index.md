@@ -15,8 +15,11 @@ const focused = useWindowFocus()
 ```
 
 ## Component Usage
-```html
-<UseWindowFocus v-slot="{ focused }">
-  Document Focus: {{ focused }}
-</UseWindowFocus>
+
+```vue
+<template>
+  <UseWindowFocus v-slot="{ focused }">
+    Document Focus: {{ focused }}
+  </UseWindowFocus>
+</template>
 ```

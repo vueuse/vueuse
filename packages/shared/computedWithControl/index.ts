@@ -6,7 +6,7 @@ export interface ComputedWithControlRefExtra {
   /**
    * Force update the computed value.
    */
-  trigger(): void
+  trigger: () => void
 }
 
 export interface ComputedRefWithControl<T> extends ComputedRef<T>, ComputedWithControlRefExtra {}

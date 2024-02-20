@@ -18,30 +18,29 @@ Functions can be used on the template, and hooks are a handy skeleton for the bu
 
 ### Using hooks
 
-```html
+```vue
 <script setup>
 import { useConfirmDialog } from '@vueuse/core'
 
-const {
-  isRevealed,
-  reveal,
-  confirm,
-  cancel,
-  onReveal,
-  onConfirm,
-  onCancel,
-} = useConfirmDialog()
+const { isRevealed, reveal, confirm, cancel, onReveal, onConfirm, onCancel }
+    = useConfirmDialog()
 </script>
 
 <template>
-  <button @click="reveal">Reveal Modal</button>
+  <button @click="reveal">
+    Reveal Modal
+  </button>
 
   <teleport to="body">
     <div v-if="isRevealed" class="modal-bg">
       <div class="modal">
         <h2>Confirm?</h2>
-        <button @click="confirm">Yes</button>
-        <button @click="cancel">Cancel</button>
+        <button @click="confirm">
+          Yes
+        </button>
+        <button @click="cancel">
+          Cancel
+        </button>
       </div>
     </div>
   </teleport>
@@ -52,7 +51,7 @@ const {
 
 If you prefer working with promises:
 
-```html
+```vue
 <script setup>
 import { useConfirmDialog } from '@vueuse/core'
 
@@ -63,23 +62,28 @@ const {
   cancel,
 } = useConfirmDialog()
 
-const openDialog = async () => {
+async function openDialog() {
   const { data, isCanceled } = await reveal()
-  if (!isCanceled) {
+  if (!isCanceled)
     console.log(data)
-  }
 }
 </script>
 
 <template>
-  <button @click="openDialog">Show Modal</button>
+  <button @click="openDialog">
+    Show Modal
+  </button>
 
   <teleport to="body">
     <div v-if="isRevealed" class="modal-layout">
       <div class="modal">
         <h2>Confirm?</h2>
-        <button @click="confirm(true)">Yes</button>
-        <button @click="confirm(false)">No</button>
+        <button @click="confirm(true)">
+          Yes
+        </button>
+        <button @click="confirm(false)">
+          No
+        </button>
       </div>
     </div>
   </teleport>
