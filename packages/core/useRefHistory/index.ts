@@ -56,26 +56,26 @@ export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistor
   /**
    * Pause change tracking
    */
-  pause(): void
+  pause: () => void
 
   /**
    * Resume change tracking
    *
    * @param [commit] if true, a history record will be create after resuming
    */
-  resume(commit?: boolean): void
+  resume: (commit?: boolean) => void
 
   /**
    * A sugar for auto pause and auto resuming within a function scope
    *
    * @param fn
    */
-  batch(fn: (cancel: Fn) => void): void
+  batch: (fn: (cancel: Fn) => void) => void
 
   /**
    * Clear the data and stop the watch
    */
-  dispose(): void
+  dispose: () => void
 }
 
 /**

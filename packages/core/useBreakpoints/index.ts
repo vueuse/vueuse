@@ -16,8 +16,8 @@ export type Breakpoints<K extends string = string> = Record<K, MaybeRefOrGetter<
  * @see https://vueuse.org/useBreakpoints
  */
 export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, options: ConfigurableWindow = {}) {
-  function getValue(k: K, delta?: number) {
-    let v = toValue(breakpoints[k])
+  function getValue(k: MaybeRefOrGetter<K>, delta?: number) {
+    let v = toValue(breakpoints[toValue(k)])
 
     if (delta != null)
       v = increaseWithUnit(v, delta)
@@ -36,7 +36,7 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
     return window.matchMedia(query).matches
   }
 
-  const greaterOrEqual = (k: K) => {
+  const greaterOrEqual = (k: MaybeRefOrGetter<K>) => {
     return useMediaQuery(() => `(min-width: ${getValue(k)})`, options)
   }
 
@@ -50,41 +50,43 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
       return shortcuts
     }, {} as Record<K, Ref<boolean>>)
 
+  function current() {
+    const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
+    return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
+  }
+
   return Object.assign(shortcutMethods, {
-    greater(k: K) {
+    greater(k: MaybeRefOrGetter<K>) {
       return useMediaQuery(() => `(min-width: ${getValue(k, 0.1)})`, options)
     },
     greaterOrEqual,
-    smaller(k: K) {
+    smaller(k: MaybeRefOrGetter<K>) {
       return useMediaQuery(() => `(max-width: ${getValue(k, -0.1)})`, options)
     },
-    smallerOrEqual(k: K) {
+    smallerOrEqual(k: MaybeRefOrGetter<K>) {
       return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
     },
-    between(a: K, b: K) {
+    between(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) {
       return useMediaQuery(() => `(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
-    isGreater(k: K) {
+    isGreater(k: MaybeRefOrGetter<K>) {
       return match(`(min-width: ${getValue(k, 0.1)})`)
     },
-    isGreaterOrEqual(k: K) {
+    isGreaterOrEqual(k: MaybeRefOrGetter<K>) {
       return match(`(min-width: ${getValue(k)})`)
     },
-    isSmaller(k: K) {
+    isSmaller(k: MaybeRefOrGetter<K>) {
       return match(`(max-width: ${getValue(k, -0.1)})`)
     },
-    isSmallerOrEqual(k: K) {
+    isSmallerOrEqual(k: MaybeRefOrGetter<K>) {
       return match(`(max-width: ${getValue(k)})`)
     },
-    isInBetween(a: K, b: K) {
+    isInBetween(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) {
       return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
     },
-    current() {
-      const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
-      return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
-    },
-    mode() {
-      const bps = this.current()
+    current,
+    active() {
+      const bps = current()
       return computed(() => {
         return bps.value.length === 0 ? '' : bps.value.at(-1)
       })
@@ -95,14 +97,14 @@ export function useBreakpoints<K extends string>(breakpoints: Breakpoints<K>, op
 export type UseBreakpointsReturn<K extends string = string> = {
   greater: (k: K) => ComputedRef<boolean>
   greaterOrEqual: (k: K) => ComputedRef<boolean>
-  smaller(k: K): ComputedRef<boolean>
+  smaller: (k: K) => ComputedRef<boolean>
   smallerOrEqual: (k: K) => ComputedRef<boolean>
-  between(a: K, b: K): ComputedRef<boolean>
-  isGreater(k: K): boolean
-  isGreaterOrEqual(k: K): boolean
-  isSmaller(k: K): boolean
-  isSmallerOrEqual(k: K): boolean
-  isInBetween(a: K, b: K): boolean
-  current(): ComputedRef<string[]>
-  mode(): ComputedRef<string>
+  between: (a: K, b: K) => ComputedRef<boolean>
+  isGreater: (k: K) => boolean
+  isGreaterOrEqual: (k: K) => boolean
+  isSmaller: (k: K) => boolean
+  isSmallerOrEqual: (k: K) => boolean
+  isInBetween: (a: K, b: K) => boolean
+  current: () => ComputedRef<string[]>
+  active: ComputedRef<string>
 } & Record<K, ComputedRef<boolean>>

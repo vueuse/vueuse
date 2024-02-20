@@ -36,16 +36,15 @@ export interface UntilToMatchOptions {
 }
 
 export interface UntilBaseInstance<T, Not extends boolean = false> {
-  toMatch<U extends T = T>(
+  toMatch: (<U extends T = T>(
     condition: (v: T) => v is U,
     options?: UntilToMatchOptions
-  ): Not extends true ? Promise<Exclude<T, U>> : Promise<U>
-  toMatch(
+  ) => Not extends true ? Promise<Exclude<T, U>> : Promise<U>) & ((
     condition: (v: T) => boolean,
     options?: UntilToMatchOptions
-  ): Promise<T>
-  changed(options?: UntilToMatchOptions): Promise<T>
-  changedTimes(n?: number, options?: UntilToMatchOptions): Promise<T>
+  ) => Promise<T>)
+  changed: (options?: UntilToMatchOptions) => Promise<T>
+  changedTimes: (n?: number, options?: UntilToMatchOptions) => Promise<T>
 }
 
 type Falsy = false | void | null | undefined | 0 | 0n | ''
@@ -53,17 +52,17 @@ type Falsy = false | void | null | undefined | 0 | 0n | ''
 export interface UntilValueInstance<T, Not extends boolean = false> extends UntilBaseInstance<T, Not> {
   readonly not: UntilValueInstance<T, Not extends true ? false : true>
 
-  toBe<P = T>(value: MaybeRefOrGetter<P>, options?: UntilToMatchOptions): Not extends true ? Promise<T> : Promise<P>
-  toBeTruthy(options?: UntilToMatchOptions): Not extends true ? Promise<T & Falsy> : Promise<Exclude<T, Falsy>>
-  toBeNull(options?: UntilToMatchOptions): Not extends true ? Promise<Exclude<T, null>> : Promise<null>
-  toBeUndefined(options?: UntilToMatchOptions): Not extends true ? Promise<Exclude<T, undefined>> : Promise<undefined>
-  toBeNaN(options?: UntilToMatchOptions): Promise<T>
+  toBe: <P = T>(value: MaybeRefOrGetter<P>, options?: UntilToMatchOptions) => Not extends true ? Promise<T> : Promise<P>
+  toBeTruthy: (options?: UntilToMatchOptions) => Not extends true ? Promise<T & Falsy> : Promise<Exclude<T, Falsy>>
+  toBeNull: (options?: UntilToMatchOptions) => Not extends true ? Promise<Exclude<T, null>> : Promise<null>
+  toBeUndefined: (options?: UntilToMatchOptions) => Not extends true ? Promise<Exclude<T, undefined>> : Promise<undefined>
+  toBeNaN: (options?: UntilToMatchOptions) => Promise<T>
 }
 
 export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   readonly not: UntilArrayInstance<T>
 
-  toContains(value: MaybeRefOrGetter<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions): Promise<T>
+  toContains: (value: MaybeRefOrGetter<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions) => Promise<T>
 }
 
 function createUntil<T>(r: any, isNot = false) {
@@ -179,7 +178,7 @@ function createUntil<T>(r: any, isNot = false) {
 
   if (Array.isArray(toValue(r))) {
     const instance: UntilArrayInstance<T> = {
-      toMatch,
+      toMatch: toMatch as any,
       toContains,
       changed,
       changedTimes,
@@ -191,7 +190,7 @@ function createUntil<T>(r: any, isNot = false) {
   }
   else {
     const instance: UntilValueInstance<T, boolean> = {
-      toMatch,
+      toMatch: toMatch as any,
       toBe,
       toBeTruthy: toBeTruthy as any,
       toBeNull: toBeNull as any,
