@@ -2,29 +2,35 @@ import type { DefineComponent, Slot } from 'vue-demi'
 import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 import { camelize, makeDestructurable } from '@vueuse/shared'
 
+type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
+
+type GenerateSlotsFromSlotMap<T extends ObjectLiteralWithPotentialObjectLiterals> = {
+  [K in keyof T]: Slot<T[K]>
+}
+
 export type DefineTemplateComponent<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
-> = DefineComponent<{}> & {
-  new(): { $slots: { default: (_: Bindings & { $slots: Slots }) => any } }
+  Bindings extends Record<string, any>,
+  MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals,
+> = DefineComponent & {
+  new(): { $slots: { default: (_: Bindings & { $slots: GenerateSlotsFromSlotMap<MapSlotNameToSlotProps> }) => any } }
 }
 
 export type ReuseTemplateComponent<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals,
 > = DefineComponent<Bindings> & {
-  new(): { $slots: Slots }
+  new(): { $slots: GenerateSlotsFromSlotMap<MapSlotNameToSlotProps> }
 }
 
 export type ReusableTemplatePair<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals,
 > = [
-  DefineTemplateComponent<Bindings, Slots>,
-  ReuseTemplateComponent<Bindings, Slots>,
+  DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>,
+  ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>,
 ] & {
-  define: DefineTemplateComponent<Bindings, Slots>
-  reuse: ReuseTemplateComponent<Bindings, Slots>
+  define: DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
+  reuse: ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
 }
 
 export interface CreateReusableTemplateOptions {
@@ -43,11 +49,11 @@ export interface CreateReusableTemplateOptions {
  * @see https://vueuse.org/createReusableTemplate
  */
 export function createReusableTemplate<
-  Bindings extends object,
-  Slots extends Record<string, Slot | undefined> = Record<string, Slot | undefined>,
+  Bindings extends Record<string, any>,
+  MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>,
 >(
   options: CreateReusableTemplateOptions = {},
-): ReusableTemplatePair<Bindings, Slots> {
+): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
   // compatibility: Vue 2.7 or above
   if (!isVue3 && !version.startsWith('2.7.')) {
     if (process.env.NODE_ENV !== 'production')
@@ -68,7 +74,7 @@ export function createReusableTemplate<
         render.value = slots.default
       }
     },
-  }) as unknown as DefineTemplateComponent<Bindings, Slots>
+  }) as unknown as DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
 
   const reuse = defineComponent({
     inheritAttrs,
@@ -77,10 +83,11 @@ export function createReusableTemplate<
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
         const vnode = render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
+
         return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }
     },
-  }) as unknown as ReuseTemplateComponent<Bindings, Slots>
+  }) as unknown as ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
 
   return makeDestructurable(
     { define, reuse },
