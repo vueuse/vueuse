@@ -2,7 +2,7 @@ import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/
 import { toValue } from '@vueuse/shared'
 import { watchPausable } from '@vueuse/core'
 import type { Ref } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
+import { ref, shallowRef, toRaw } from 'vue-demi'
 import { del, get, set, update } from 'idb-keyval'
 
 export interface UseIDBOptions extends ConfigurableFlush {
@@ -92,12 +92,7 @@ export function useIDBKeyval<T>(
       }
       else {
         // IndexedDB does not support saving proxies, convert from proxy before saving
-        if (Array.isArray(data.value))
-          await update(key, () => (JSON.parse(JSON.stringify(data.value))))
-        else if (typeof data.value === 'object')
-          await update(key, () => ({ ...data.value }))
-        else
-          await update(key, () => (data.value))
+        await update(key, () => toRaw(data.value))
       }
     }
     catch (e) {
