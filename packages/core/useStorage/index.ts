@@ -254,10 +254,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     }
   }
 
-  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
-    update(event.detail)
-  }
-
   function update(event?: StorageEventLike) {
     if (event && event.storageArea !== storage)
       return
@@ -285,6 +281,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       else
         resumeWatch()
     }
+  }
+
+  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
+    update(event.detail)
   }
 
   return data
