@@ -87,7 +87,7 @@ export function useIDBKeyval<T>(
 
   async function write() {
     try {
-      if (data.value == null) {
+      if (data.value == null || data.value == undefined) {
         await del(key)
       }
       else {
