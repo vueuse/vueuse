@@ -191,8 +191,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (!initOnMounted)
     update()
 
-  return data
-
   function write(v: unknown) {
     try {
       const oldValue = storage!.getItem(key)
@@ -288,4 +286,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         resumeWatch()
     }
   }
+
+  return data
 }
