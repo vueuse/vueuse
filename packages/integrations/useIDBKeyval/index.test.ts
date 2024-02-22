@@ -45,9 +45,10 @@ describe('useIDBKeyval', () => {
 
   set(KEY3, 'hello')
 
-  const { data: data1 } = useIDBKeyval(KEY1, { count: 0 })
-  const { data: data2 } = useIDBKeyval(KEY2, ['foo', 'bar'])
-  const { data: data3 } = useIDBKeyval(KEY3, 'world', { shallow: true })
+  const { data: data1, isReady: isReady1 } = useIDBKeyval(KEY1, { count: 0 })
+  const { data: data2, isReady: isReady2 } = useIDBKeyval(KEY2, ['foo', 'bar'])
+  const { data: data3, isReady: isReady3 } = useIDBKeyval(KEY3, 'world', { shallow: true })
+  const { isReady: isReady4 } = useIDBKeyval(KEY4, 'test')
 
   it('get/set', async () => {
     expect(data1.value).toEqual({ count: 0 })
@@ -114,5 +115,21 @@ describe('useIDBKeyval', () => {
     await promiseTimeout(50)
 
     expect(set).toHaveBeenCalledTimes(0)
+  })
+
+  it('isReady resolves when data is loaded', async () => {
+    // 验证 isReady 方法是否按预期工作
+    await expect(isReady1()).resolves.toBeUndefined()
+    await expect(isReady2()).resolves.toBeUndefined()
+    await expect(isReady3()).resolves.toBeUndefined()
+
+    // 特别检查之前没有初始化数据的 KEY4
+    await expect(isReady4()).resolves.toBeUndefined()
+
+    // 进一步验证数据是否正确加载
+    expect(await get(KEY1)).toEqual({ count: 0 })
+    expect(await get(KEY2)).toEqual(['foo', 'bar'])
+    expect(await get(KEY3)).toEqual('hello')
+    expect(await get(KEY4)).toEqual('test')
   })
 })
