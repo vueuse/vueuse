@@ -112,7 +112,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     return document?.getSelection?.()?.toString() ?? ''
   }
 
-  function isAllowed(status: PermissionStatus | undefined) {
+  function isAllowed(status: PermissionState | undefined) {
     return status === 'granted' || status === 'prompt'
   }
 
