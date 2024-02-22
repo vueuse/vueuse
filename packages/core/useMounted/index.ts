@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { getCurrentInstance, onMounted, ref } from 'vue-demi'
+import { getCurrentInstance, isVue2, onMounted, ref } from 'vue-demi'
 
 /**
  * Mounted state in ref.
@@ -13,7 +13,7 @@ export function useMounted() {
   if (instance) {
     onMounted(() => {
       isMounted.value = true
-    }, instance)
+    }, isVue2 ? null : instance)
   }
 
   return isMounted
