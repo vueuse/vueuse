@@ -30,7 +30,7 @@ const breakpoints = useBreakpoints({
   desktop: 1280,
 })
 
-// Can be 'mobile' or 'tablet' or 'laptop' or 'desktop'``
+// Can be 'mobile' or 'tablet' or 'laptop' or 'desktop'
 const activeBreakpoint = breakpoints.active()
 
 // true or false
