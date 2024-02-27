@@ -57,4 +57,50 @@ describe('whenever', () => {
 
     vm.unmount()
   })
+
+  it('once', async () => {
+    const vm = useSetup(() => {
+      const number = ref<number | null | undefined>(1)
+      const watchCount = ref(0)
+      const watchValue: Ref<number | undefined> = ref()
+
+      whenever(number, (value) => {
+        watchCount.value += 1
+        watchValue.value = value
+        expectType<number>(value)
+        // @ts-expect-error value should be of type number
+        expectType<undefined>(value)
+        // @ts-expect-error value should be of type number
+        expectType<null>(value)
+        // @ts-expect-error value should be of type number
+        expectType<string>(value)
+      }, { once: true })
+
+      const changeNumber = (v: number) => number.value = v
+
+      return {
+        number,
+        watchCount,
+        watchValue,
+        changeNumber,
+      }
+    })
+
+    vm.changeNumber(0)
+    await nextTick()
+    expect(toValue(vm.watchCount)).toEqual(0)
+    expect(toValue(vm.watchValue)).toBeUndefined()
+
+    vm.changeNumber(1)
+    await nextTick()
+    expect(toValue(vm.watchCount)).toEqual(1)
+    expect(toValue(vm.watchValue)).toEqual(1)
+
+    vm.changeNumber(2)
+    await nextTick()
+    expect(toValue(vm.watchCount)).toEqual(1)
+    expect(toValue(vm.watchValue)).toEqual(1)
+
+    vm.unmount()
+  })
 })
