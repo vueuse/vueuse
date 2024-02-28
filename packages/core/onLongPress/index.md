@@ -21,7 +21,7 @@ Function provides modifiers in options
 import { ref } from 'vue'
 import { onLongPress } from '@vueuse/core'
 
-const htmlRefHook = ref<HTMLElement | null>(null)
+const htmlRefHook = ref<HTMLElement>()
 const longPressedHook = ref(false)
 
 function onLongPressCallbackHook(e: PointerEvent) {
