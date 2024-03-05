@@ -47,7 +47,7 @@ export function useMutationObserver(
     (targets) => {
       cleanup()
 
-      if (isSupported.value && window && targets.size) {
+      if (isSupported.value && targets.size) {
         observer = new MutationObserver(callback)
         targets.forEach(el => observer!.observe(el, mutationOptions))
       }
