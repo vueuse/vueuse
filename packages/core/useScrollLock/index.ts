@@ -58,15 +58,17 @@ export function useScrollLock(
 ) {
   const isLocked = ref(initialState)
   let stopTouchMoveListener: Fn | null = null
-  let initialOverflow: CSSStyleDeclaration['overflow']
+  let initialOverflow: CSSStyleDeclaration['overflow'] = ''
 
   watch(toRef(element), (el) => {
     const target = resolveElement(toValue(el))
     if (target) {
       const ele = target as HTMLElement
       if (!elInitialOverflow.get(ele))
-        elInitialOverflow.set(ele, initialOverflow ?? ele.style.overflow)
-      initialOverflow = ele.style.overflow
+        elInitialOverflow.set(ele, ele.style.overflow)
+
+      if (ele.style.overflow !== 'hidden')
+        initialOverflow = ele.style.overflow
 
       if (ele.style.overflow === 'hidden')
         return isLocked.value = true
