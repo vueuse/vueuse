@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/math",
-  "version": "10.7.2",
+  "version": "10.9.0",
   "description": "Math functions for VueUse",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -35,6 +35,6 @@
   "types": "./index.d.cts",
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.6"
+    "vue-demi": ">=0.14.7"
   }
 }

@@ -11,7 +11,7 @@ Create global state that can be injected into components.
 ```ts
 // useCounterStore.ts
 import { computed, ref } from 'vue'
-import { createInjectionState } from '@vueuse/shared'
+import { createInjectionState } from '@vueuse/core'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
@@ -111,7 +111,7 @@ const { increment } = useCounterStore()!
 ```ts
 // useCounterStore.ts
 import { computed, ref } from 'vue'
-import { createInjectionState } from '@vueuse/shared'
+import { createInjectionState } from '@vueuse/core'
 
 // custom injectionKey
 const CounterStoreKey = 'counter-store'

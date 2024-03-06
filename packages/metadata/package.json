@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/metadata",
   "type": "module",
-  "version": "10.7.2",
+  "version": "10.9.0",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "files": [
     "index.*"
   ],

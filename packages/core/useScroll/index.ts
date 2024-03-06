@@ -2,6 +2,7 @@ import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
+import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -58,6 +59,13 @@ export interface UseScrollOptions extends ConfigurableWindow {
    * @default 'auto'
    */
   behavior?: MaybeRefOrGetter<ScrollBehavior>
+
+  /**
+   * On error callback
+   *
+   * Default log error to `console.error`
+   */
+  onError?: (error: unknown) => void
 }
 
 /**
@@ -97,6 +105,7 @@ export function useScroll(
     },
     behavior = 'auto',
     window = defaultWindow,
+    onError = (e) => { console.error(e) },
   } = options
 
   const internalX = ref(0)
@@ -169,11 +178,11 @@ export function useScroll(
     if (!window)
       return
 
-    const el = (
-      (target as Window).document
-        ? (target as Window).document.documentElement
-        : (target as Document).documentElement ?? target
-    ) as HTMLElement
+    const el: Element = (
+      (target as Window)?.document?.documentElement
+      || (target as Document)?.documentElement
+      || unrefElement(target as HTMLElement | SVGElement)
+    ) as Element
 
     const { display, flexDirection } = getComputedStyle(el)
 
@@ -181,7 +190,7 @@ export function useScroll(
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = Math.abs(scrollLeft) <= 0 + (offset.left || 0)
+    const left = Math.abs(scrollLeft) <= (offset.left || 0)
     const right = Math.abs(scrollLeft)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
@@ -206,7 +215,7 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = Math.abs(scrollTop) <= 0 + (offset.top || 0)
+    const top = Math.abs(scrollTop) <= (offset.top || 0)
     const bottom = Math.abs(scrollTop)
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
@@ -251,11 +260,15 @@ export function useScroll(
   )
 
   tryOnMounted(() => {
-    const _element = toValue(element)
-    if (!_element)
-      return
-
-    setArrivedState(_element)
+    try {
+      const _element = toValue(element)
+      if (!_element)
+        return
+      setArrivedState(_element)
+    }
+    catch (e) {
+      onError(e)
+    }
   })
 
   useEventListener(

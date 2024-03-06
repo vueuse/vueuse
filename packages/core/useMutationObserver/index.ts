@@ -1,6 +1,7 @@
-import { tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue-demi'
-import type { MaybeComputedElementRef } from '../unrefElement'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, watch } from 'vue-demi'
+import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
@@ -18,7 +19,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit, Config
  * @param options
  */
 export function useMutationObserver(
-  target: MaybeComputedElementRef,
+  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
   callback: MutationCallback,
   options: UseMutationObserverOptions = {},
 ) {
@@ -33,17 +34,25 @@ export function useMutationObserver(
     }
   }
 
+  const targets = computed(() => {
+    const value = toValue(target)
+    const items = (Array.isArray(value) ? value : [value])
+      .map(unrefElement)
+      .filter(notNullish)
+    return new Set(items)
+  })
+
   const stopWatch = watch(
-    () => unrefElement(target),
-    (el) => {
+    () => targets.value,
+    (targets) => {
       cleanup()
 
-      if (isSupported.value && window && el) {
+      if (isSupported.value && targets.size) {
         observer = new MutationObserver(callback)
-        observer!.observe(el, mutationOptions)
+        targets.forEach(el => observer!.observe(el, mutationOptions))
       }
     },
-    { immediate: true },
+    { immediate: true, flush: 'post' },
   )
 
   const takeRecords = () => {

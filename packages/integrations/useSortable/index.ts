@@ -18,8 +18,7 @@ export interface UseSortableReturn {
    * @param name a Sortable.Options property.
    * @param value a value.
    */
-  option<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]): void
-  option<K extends keyof Sortable.Options>(name: K): Sortable.Options[K]
+  option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
 export type UseSortableOptions = Options & ConfigurableDocument
@@ -28,6 +27,7 @@ export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 export function useSortable<T>(el: MaybeRefOrGetter<HTMLElement | null | undefined>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
+
 /**
  * Wrapper for sortablejs.
  * @param el
@@ -72,7 +72,11 @@ export function useSortable<T>(
 
   tryOnScopeDispose(stop)
 
-  return { stop, start, option }
+  return {
+    stop,
+    start,
+    option: option as UseSortableReturn['option'],
+  }
 }
 
 export function moveArrayElement<T>(

@@ -14,7 +14,7 @@ import { useTextDirection } from '@vueuse/core'
 const dir = useTextDirection() // Ref<'ltr' | 'rtl' | 'auto'>
 ```
 
-By default, it returns `rlt` direction when dir `rtl` is applied to the `html` tag, for example:
+By default, it returns `rtl` direction when dir `rtl` is applied to the `html` tag, for example:
 
 ```html
 <!--ltr-->

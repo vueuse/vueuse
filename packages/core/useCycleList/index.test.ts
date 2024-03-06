@@ -33,7 +33,7 @@ describe('useCycleList', () => {
   it('should work with ref', () => {
     const list = ref(['foo', 'bar', 'fooBar'])
 
-    const { state, next, prev, index } = useCycleList(list)
+    const { state, next, prev, index, go } = useCycleList(list)
 
     expect(state.value).toBe('foo')
     expect(index.value).toBe(0)
@@ -57,6 +57,16 @@ describe('useCycleList', () => {
 
     expect(state.value).toBe('foo')
     expect(index.value).toBe(0)
+
+    go(1)
+
+    expect(state.value).toBe('bar')
+    expect(index.value).toBe(1)
+
+    go(-1)
+
+    expect(state.value).toBe('fooBar')
+    expect(index.value).toBe(2)
   })
 
   describe('when list empty', () => {
