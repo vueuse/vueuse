@@ -66,8 +66,11 @@ export function useScrollLock(
       if (!elInitialOverflow.get(ele))
         elInitialOverflow.set(ele, ele.style.overflow)
 
+      if (ele.style.overflow)
+        return isLocked.value = true
+
       if (isLocked.value)
-        ele.style.overflow = 'hidden'
+        return ele.style.overflow = 'hidden'
     }
   }, {
     immediate: true,
@@ -94,7 +97,7 @@ export function useScrollLock(
     if (!el || !isLocked.value)
       return
     isIOS && stopTouchMoveListener?.()
-    el.style.overflow = elInitialOverflow.get(el as HTMLElement) ?? ''
+    el.style.overflow = ''
     elInitialOverflow.delete(el as HTMLElement)
     isLocked.value = false
   }
