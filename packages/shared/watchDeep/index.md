@@ -15,7 +15,7 @@ import { watchDeep } from '@vueuse/core'
 
 const nestedObject = ref({ foo: { bar: { deep: 5 } } })
 
-watchDeep(nestedObject, (obj) => {
+watchDeep(nestedObject, (updated) => {
   console.log(updated)
 })
 

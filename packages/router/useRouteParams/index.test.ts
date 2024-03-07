@@ -202,7 +202,7 @@ describe('useRouteParams', () => {
     await nextTick()
 
     expect(page.value).toBe(1)
-    expect(route.params.page).toBe(1)
+    expect(route.params.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
   })
 

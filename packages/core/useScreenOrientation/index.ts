@@ -11,11 +11,11 @@ export type OrientationType = 'portrait-primary' | 'portrait-secondary' | 'lands
 export type OrientationLockType = 'any' | 'natural' | 'landscape' | 'portrait' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
 
 export interface ScreenOrientation extends EventTarget {
-  lock(orientation: OrientationLockType): Promise<void>
-  unlock(): void
+  lock: (orientation: OrientationLockType) => Promise<void>
+  unlock: () => void
   readonly type: OrientationType
   readonly angle: number
-  addEventListener(type: 'change', listener: (this: this, ev: Event) => any, useCapture?: boolean): void
+  addEventListener: (type: 'change', listener: (this: this, ev: Event) => any, useCapture?: boolean) => void
 }
 
 /**

@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/shared",
-  "version": "10.7.2",
+  "version": "10.9.0",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
@@ -32,6 +32,6 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.cts",
   "dependencies": {
-    "vue-demi": ">=0.14.6"
+    "vue-demi": ">=0.14.7"
   }
 }

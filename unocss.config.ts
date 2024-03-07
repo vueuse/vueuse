@@ -26,7 +26,7 @@ export default defineConfig({
       primary: '#3eaf7c',
     },
     fontFamily: {
-      mono: 'var(--vt-font-family-mono)',
+      mono: 'var(--vp-font-family-mono)',
     },
   },
   transformers: [

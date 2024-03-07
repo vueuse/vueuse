@@ -9,13 +9,13 @@ import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {
-  read(raw: string): T
-  write(value: T): string
+  read: (raw: string) => T
+  write: (value: T) => string
 }
 
 export interface SerializerAsync<T> {
-  read(raw: string): Awaitable<T>
-  write(value: T): Awaitable<string>
+  read: (raw: string) => Awaitable<T>
+  write: (value: T) => Awaitable<string>
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
@@ -191,32 +191,35 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (!initOnMounted)
     update()
 
-  return data
+  function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
+    // send custom event to communicate within same page
+    // importantly this should _not_ be a StorageEvent since those cannot
+    // be constructed with a non-built-in storage area
+    if (window) {
+      window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+        detail: {
+          key,
+          oldValue,
+          newValue,
+          storageArea: storage!,
+        },
+      }))
+    }
+  }
 
   function write(v: unknown) {
     try {
+      const oldValue = storage!.getItem(key)
+
       if (v == null) {
+        dispatchWriteEvent(oldValue, null)
         storage!.removeItem(key)
       }
       else {
-        const serialized = serializer.write(v)
-        const oldValue = storage!.getItem(key)
+        const serialized = serializer.write(v as any)
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
-
-          // send custom event to communicate within same page
-          // importantly this should _not_ be a StorageEvent since those cannot
-          // be constructed with a non-built-in storage area
-          if (window) {
-            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
-              detail: {
-                key,
-                oldValue,
-                newValue: serialized,
-                storageArea: storage!,
-              },
-            }))
-          }
+          dispatchWriteEvent(oldValue, serialized)
         }
       }
     }
@@ -251,10 +254,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     }
   }
 
-  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
-    update(event.detail)
-  }
-
   function update(event?: StorageEventLike) {
     if (event && event.storageArea !== storage)
       return
@@ -283,4 +282,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         resumeWatch()
     }
   }
+
+  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
+    update(event.detail)
+  }
+
+  return data
 }

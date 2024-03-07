@@ -71,7 +71,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    if (isClipboardApiSupported.value && permissionRead.value !== 'denied') {
+    if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {
       navigator!.clipboard.readText().then((value) => {
         text.value = value
       })
@@ -86,7 +86,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value && permissionWrite.value !== 'denied')
+      if (isClipboardApiSupported.value && isAllowed(permissionWrite.value))
         await navigator!.clipboard.writeText(value)
       else
         legacyCopy(value)
@@ -110,6 +110,10 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   function legacyRead() {
     return document?.getSelection?.()?.toString() ?? ''
+  }
+
+  function isAllowed(status: PermissionState | undefined) {
+    return status === 'granted' || status === 'prompt'
   }
 
   return {

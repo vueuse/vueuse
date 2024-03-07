@@ -137,7 +137,6 @@ describe('filters', () => {
   it('should throttle', () => {
     const throttledFilterSpy = vi.fn()
     const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)
-
     setTimeout(filter, 500)
     setTimeout(filter, 500)
     setTimeout(filter, 500)
@@ -351,5 +350,146 @@ describe('compatibility', () => {
         unmounted: 'unbind',
       })
     }
+  })
+})
+
+describe('optionsFilters', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  it('optionsThrottleFilter should throttle', () => {
+    const throttledFilterSpy = vi.fn()
+    const filter = createFilterWrapper(throttleFilter({
+      delay: 1000,
+    }), throttledFilterSpy)
+    setTimeout(filter, 500)
+    setTimeout(filter, 500)
+    setTimeout(filter, 500)
+    setTimeout(filter, 500)
+
+    vi.runAllTimers()
+
+    expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
+  })
+
+  it('optionsThrottleFilter should throttle evenly', () => {
+    const debouncedFilterSpy = vi.fn()
+
+    const filter = createFilterWrapper(throttleFilter({
+      delay: 1000,
+    }), debouncedFilterSpy)
+
+    setTimeout(() => filter(1), 500)
+    setTimeout(() => filter(2), 1000)
+    setTimeout(() => filter(3), 2000)
+
+    vi.runAllTimers()
+
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(1)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(2)
+    expect(debouncedFilterSpy).toHaveBeenCalledWith(3)
+  })
+
+  it('optionsThrottleFilter should throttle with ref', () => {
+    const debouncedFilterSpy = vi.fn()
+    const throttle = ref(0)
+    const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
+
+    filter()
+    throttle.value = 1000
+
+    setTimeout(filter, 300)
+    setTimeout(filter, 600)
+    setTimeout(filter, 900)
+
+    vi.runAllTimers()
+
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+  })
+
+  it('optionsThrottleFilter should not duplicate single event', () => {
+    const debouncedFilterSpy = vi.fn()
+    const filter = createFilterWrapper(throttleFilter({
+      delay: 1000,
+    }), debouncedFilterSpy)
+
+    setTimeout(filter, 500)
+
+    vi.runAllTimers()
+
+    expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('optionsThrottleFilter should get trailing value', () => {
+    const sumSpy = vi.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter({
+        delay: 1000,
+        trailing: true,
+      }),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(6 + 7)
+
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(4)
+    expect(result).resolves.toBe(10 + 11)
+  })
+
+  it('optionsThrottleFilter should get leading value', () => {
+    const sumSpy = vi.fn((a: number, b: number) => a + b)
+    const throttledSum = createFilterWrapper(
+      throttleFilter({
+        delay: 1000,
+        trailing: false,
+      }),
+      sumSpy,
+    )
+
+    let result = throttledSum(2, 3)
+    setTimeout(() => {
+      result = throttledSum(4, 5)
+    }, 600)
+    setTimeout(() => {
+      result = throttledSum(6, 7)
+    }, 900)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(1)
+    expect(result).resolves.toBe(2 + 3)
+
+    setTimeout(() => {
+      result = throttledSum(8, 9)
+    }, 1200)
+    setTimeout(() => {
+      result = throttledSum(10, 11)
+    }, 1800)
+
+    vi.runAllTimers()
+
+    expect(sumSpy).toHaveBeenCalledTimes(2)
+    expect(result).resolves.toBe(8 + 9)
   })
 })

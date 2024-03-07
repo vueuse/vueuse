@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/nuxt",
-  "version": "10.7.2",
+  "type": "module",
+  "version": "10.9.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -31,20 +32,20 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "peerDependencies": {
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.9.1",
+    "@nuxt/kit": "^3.10.2",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "^0.5.0",
-    "vue-demi": ">=0.14.6"
+    "vue-demi": ">=0.14.7"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.9.1",
-    "nuxt": "^3.9.1",
+    "@nuxt/schema": "^3.10.2",
+    "nuxt": "^3.10.2",
     "unimport": "^3.7.1"
   }
 }

@@ -24,6 +24,28 @@ source.value = 'foo'
 console.log(target.value) // foo
 ```
 
+### Sync with multiple targets
+
+You can also pass an array of refs to sync.
+
+```ts
+import { syncRefs } from '@vueuse/core'
+
+const source = ref('hello')
+const target1 = ref('target1')
+const target2 = ref('target2')
+
+const stop = syncRefs(source, [target1, target2])
+
+console.log(target1.value) // hello
+console.log(target2.value) // hello
+
+source.value = 'foo'
+
+console.log(target1.value) // foo
+console.log(target2.value) // foo
+```
+
 ## Watch options
 
 The options for `syncRefs` are similar to `watch`'s `WatchOptions` but with different default values.

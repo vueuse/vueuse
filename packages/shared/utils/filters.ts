@@ -1,4 +1,4 @@
-import { readonly, ref } from 'vue-demi'
+import { isRef, readonly, ref } from 'vue-demi'
 import { toValue } from '../toValue'
 import { noop } from './is'
 import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
@@ -114,6 +114,25 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   return filter
 }
 
+export interface ThrottleFilterOptions {
+  /**
+   * The maximum time allowed to be delayed before it's invoked.
+   */
+  delay: MaybeRefOrGetter<number>
+  /**
+   * Whether to invoke on the trailing edge of the timeout.
+   */
+  trailing?: boolean
+  /**
+   * Whether to invoke on the leading edge of the timeout.
+   */
+  leading?: boolean
+  /**
+   * Whether to reject the last call if it's been cancel.
+   */
+  rejectOnCancel?: boolean
+}
+
 // TODO v11: refactor the params to object
 /**
  * Create an EventFilter that throttle the events
@@ -123,13 +142,22 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
  * @param [leading]
  * @param [rejectOnCancel]
  */
-export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing = true, leading = true, rejectOnCancel = false) {
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
+export function throttleFilter(options: ThrottleFilterOptions): EventFilter
+export function throttleFilter(...args: any[]) {
   let lastExec = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   let isLeading = true
   let lastRejector: AnyFn = noop
   let lastValue: any
-
+  let ms: MaybeRefOrGetter<number>
+  let trailing: boolean
+  let leading: boolean
+  let rejectOnCancel: boolean
+  if (!isRef(args[0]) && typeof args[0] === 'object')
+    ({ delay: ms, trailing = true, leading = true, rejectOnCancel = false } = args[0])
+  else
+    [ms, trailing = true, leading = true, rejectOnCancel = false] = args
   const clear = () => {
     if (timer) {
       clearTimeout(timer)
