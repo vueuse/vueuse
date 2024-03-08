@@ -145,6 +145,8 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
+    if (e.button !== 0)
+      return
     if (toValue(options.disabled) || !filterEvent(e))
       return
     if (toValue(exact) && e.target !== toValue(target))
