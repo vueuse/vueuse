@@ -101,7 +101,8 @@ export function useElementBounding(
   }
 
   function update() {
-    if (!waitTillNextFrame) return recalculate()
+    if (!waitTillNextFrame)
+      return recalculate()
     requestAnimationFrame(() => recalculate())
   }
 
