@@ -33,6 +33,15 @@ export interface UseElementBoundingOptions {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Recalculate all values only at the next frame, instead of immediately when update is called.
+   *
+   * This can be useful when using this together with something like {@link useBreakpoints} and therefore the layout (which influences the bounding box of the observed element) is not updated on the this tick.
+   *
+   * @default false
+   */
+  waitTillNextFrame?: boolean
 }
 
 /**
@@ -50,6 +59,7 @@ export function useElementBounding(
     windowResize = true,
     windowScroll = true,
     immediate = true,
+    waitTillNextFrame = false,
   } = options
 
   const height = ref(0)
@@ -61,7 +71,7 @@ export function useElementBounding(
   const x = ref(0)
   const y = ref(0)
 
-  function update() {
+  function recalculate() {
     const el = unrefElement(target)
 
     if (!el) {
@@ -88,6 +98,11 @@ export function useElementBounding(
     width.value = rect.width
     x.value = rect.x
     y.value = rect.y
+  }
+
+  function update() {
+    if (!waitTillNextFrame) return recalculate()
+    requestAnimationFrame(() => recalculate())
   }
 
   useResizeObserver(target, update)
