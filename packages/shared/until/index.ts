@@ -76,7 +76,13 @@ function createUntil<T>(r: any, isNot = false) {
         r,
         (v) => {
           if (condition(v) !== isNot) {
-            stop?.()
+            if (stop) {
+              stop()
+            }
+            else {
+              // stop is null, meaning it's the immediate check
+              setTimeout(() => stop?.(), 0)
+            }
             resolve(v)
           }
         },
@@ -111,7 +117,13 @@ function createUntil<T>(r: any, isNot = false) {
         [r, value],
         ([v1, v2]) => {
           if (isNot !== (v1 === v2)) {
-            stop?.()
+            if (stop) {
+              stop()
+            }
+            else {
+              // stop is null, meaning it's the immediate check
+              setTimeout(() => stop?.(), 0)
+            }
             resolve(v1)
           }
         },

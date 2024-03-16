@@ -251,4 +251,18 @@ describe('until', () => {
       'test' as any as Expect<Equal<typeof zNot1, 2 | 3>>
     }
   })
+
+  it('should cleanup listeners at end of event loop when until condition is already satisifed', async () => {
+    const n = ref(1)
+    const n2 = ref(1)
+    await until(() => n.value).toMatch(v => v === 1)
+    // .toBe() has it's own implementation of watch() and resolve, which only gets activated when
+    // the passed value is a Ref
+    await until(() => n2.value).toBe(ref(1))
+    await new Promise(r => setTimeout(r, 0))
+    // @ts-expect-error checking private property .dep on the vue Ref
+    expect(n.dep?.size).toBeFalsy()
+    // @ts-expect-error checking private property .dep on the vue Ref
+    expect(n2.dep?.size).toBeFalsy()
+  })
 })
