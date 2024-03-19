@@ -41,7 +41,7 @@ export interface UseElementBoundingOptions {
    *
    * @default false
    */
-  waitTillNextFrame?: boolean
+  calculateOnNextFrame?: boolean
 }
 
 /**
@@ -59,7 +59,7 @@ export function useElementBounding(
     windowResize = true,
     windowScroll = true,
     immediate = true,
-    waitTillNextFrame = false,
+    calculateOnNextFrame = false,
   } = options
 
   const height = ref(0)
@@ -101,7 +101,7 @@ export function useElementBounding(
   }
 
   function update() {
-    if (!waitTillNextFrame)
+    if (!calculateOnNextFrame)
       return recalculate()
     requestAnimationFrame(() => recalculate())
   }
