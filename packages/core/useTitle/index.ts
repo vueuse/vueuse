@@ -93,7 +93,7 @@ export function useTitle(
     useMutationObserver(
       document.head?.querySelector('title'),
       () => {
-        if (document && document.title !== title.value)
+        if (document?.title !== title.value)
           title.value = format(document.title)
       },
       { childList: true },
