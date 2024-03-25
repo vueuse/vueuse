@@ -180,8 +180,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   if (window && listenToStorageChanges) {
     tryOnMounted(() => {
       // this should be fine since we are in a mounted hook
-      useEventListener(window, 'storage', update)
-      useEventListener(window, customStorageEventName, updateFromCustomEvent)
+      if (storage instanceof Storage)
+        useEventListener(window, 'storage', update)
+      else
+        useEventListener(window, customStorageEventName, updateFromCustomEvent)
+
       if (initOnMounted)
         update()
     })
@@ -195,7 +198,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     // send custom event to communicate within same page
     // importantly this should _not_ be a StorageEvent since those cannot
     // be constructed with a non-built-in storage area
-    if (window) {
+    if (window && !(storage instanceof Storage)) {
       window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
         detail: {
           key,
