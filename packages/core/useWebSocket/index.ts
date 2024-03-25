@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
@@ -303,7 +303,7 @@ export function useWebSocket<Data = any>(
   }
 
   if (immediate)
-    open()
+    watch(urlRef, open, { immediate: true })
 
   return {
     data,
