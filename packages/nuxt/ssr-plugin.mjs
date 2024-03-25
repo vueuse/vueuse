@@ -15,7 +15,7 @@ setSSRHandler('getDefaultStorage', () => {
   }
 })
 
-if (process.server) {
+if (import.meta.server) {
   setSSRHandler('updateHTMLAttrs', (selector, attr, value) => {
     if (selector === 'html') {
       useHead({
