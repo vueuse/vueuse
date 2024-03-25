@@ -5,8 +5,10 @@ alias: eagerComputed
 
 # computedEager
 
+即使计算
 Eager computed without lazy evaluation.
 
+提示💡：如果你使用的是Vue 3.4+，那你可以直接使用`computed()`。
 ::: tip
 Note💡: If you are using Vue 3.4+, you can straight use `computed` instead. Because in Vue 3.4+, if computed new value does not change, `computed`, `effect`, `watch`, `watchEffect`, `render` dependencies will not be triggered.
 Refer: https://github.com/vuejs/core/pull/5912
