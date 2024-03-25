@@ -1,5 +1,6 @@
+import type { ShallowRef } from 'vue-demi'
 import { readonly, ref } from 'vue-demi'
-import type { AnyFn, MaybeRefOrGetter, Stoppable } from '../utils'
+import type { AnyFn, MaybeRefOrGetter, Pausable, Stoppable } from '../utils'
 import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
@@ -24,12 +25,16 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
   cb: CallbackFn,
   interval: MaybeRefOrGetter<number>,
   options: UseTimeoutFnOptions = {},
-): Stoppable<Parameters<CallbackFn> | []> {
+): Stoppable<Parameters<CallbackFn> | []> & Pausable & { timeLeft: ShallowRef<number> } {
   const {
     immediate = true,
   } = options
 
   const isPending = ref(false)
+
+  const isActive = ref(false)
+  const startedAt = ref(-1)
+  const timeLeft = ref<number>(toValue(interval))
 
   let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -42,18 +47,45 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
 
   function stop() {
     isPending.value = false
+    isActive.value = false
     clear()
+  }
+
+  function setTimer(ms: number, ...args: Parameters<CallbackFn> | []) {
+    timer = setTimeout(() => {
+      isPending.value = false
+      isActive.value = false
+      timer = null
+
+      cb(...args)
+    }, ms)
   }
 
   function start(...args: Parameters<CallbackFn> | []) {
     clear()
+    startedAt.value = new Date().getTime()
     isPending.value = true
-    timer = setTimeout(() => {
-      isPending.value = false
+    isActive.value = true
+
+    setTimer(timeLeft.value, ...args)
+  }
+
+  function pause() {
+    if (timer) {
+      clearTimeout(timer)
       timer = null
 
-      cb(...args)
-    }, toValue(interval))
+      isActive.value = false
+      const diff = timeLeft.value - (new Date().getTime() - startedAt.value)
+      timeLeft.value = diff
+    }
+  }
+
+  function resume(...args: Parameters<CallbackFn> | []) {
+    startedAt.value = new Date().getTime()
+    isActive.value = true
+
+    setTimer(timeLeft.value, ...args)
   }
 
   if (immediate) {
@@ -68,5 +100,9 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
     isPending: readonly(isPending),
     start,
     stop,
+    timeLeft: readonly(timeLeft),
+    isActive: readonly(isActive),
+    pause,
+    resume,
   }
 }
