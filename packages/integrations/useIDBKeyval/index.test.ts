@@ -41,6 +41,7 @@ describe('useIDBKeyval', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     console.error = vi.fn()
+    Object.keys(cache).forEach(key => delete cache[key])
   })
 
   set(KEY3, 'hello')
@@ -114,5 +115,39 @@ describe('useIDBKeyval', () => {
     await promiseTimeout(50)
 
     expect(set).toHaveBeenCalledTimes(0)
+  })
+
+  it('isReady waits until data is loaded', async () => {
+    const initialValue = 'initial'
+    const { data, isReady } = useIDBKeyval(KEY4, initialValue)
+    let isDataLoaded = false
+
+    data.value = 'new value'
+    isReady().then(() => {
+      isDataLoaded = true
+      expect(data.value).toEqual('new value')
+    })
+
+    expect(isDataLoaded).toBe(false)
+
+    await promiseTimeout(50)
+
+    expect(isDataLoaded).toBe(true)
+  })
+
+  it('handles error correctly with isReady', async () => {
+    useIDBKeyval('ERROR_KEY', 'error')
+
+    await promiseTimeout(50)
+
+    expect(console.error).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not write default value when writeDefaults is false', async () => {
+    const { isReady } = useIDBKeyval(KEY4, 'default', { writeDefaults: false })
+
+    await isReady()
+
+    expect(set).not.toHaveBeenCalledWith(KEY4, 'default')
   })
 })
