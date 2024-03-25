@@ -243,4 +243,22 @@ describe('useRouteParams', () => {
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
   })
+
+  it('should reset value when default function value', async () => {
+    let route = getRoute({
+      page: 2,
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const page = useRouteParams('page', () => 1, { transform: Number, route, router })
+
+    expect(page.value).toBe(2)
+    expect(route.params.page).toBe(2)
+
+    page.value = 1
+
+    await nextTick()
+
+    expect(route.params.page).toBeUndefined()
+  })
 })
