@@ -109,5 +109,8 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
 
   return {
     isLoading,
+    reset() {
+      nextTick(() => checkAndLoad())
+    },
   }
 }
