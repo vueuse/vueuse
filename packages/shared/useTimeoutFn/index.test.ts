@@ -40,4 +40,33 @@ describe('useTimeoutFn', () => {
     expect(isPending.value).toBe(false)
     expect(callback).toBeCalled()
   })
+
+  it('supports pause control', async () => {
+    vi.useFakeTimers()
+
+    const callback = vi.fn()
+    const { pause, resume, isActive, timeLeft } = useTimeoutFn(callback.bind(null, 1, 2, 3), 50)
+
+    vi.advanceTimersByTime(20)
+    pause()
+    expect(isActive.value, 'Timer should not be active').toBe(false)
+    expect(timeLeft.value, 'Time left should be the original timeout minus time passed').toBe(30)
+
+    resume()
+    vi.advanceTimersByTime(20)
+    pause()
+    expect(isActive.value, 'Timer should not be active').toBe(false)
+    expect(timeLeft.value, 'Time left should be the original timeout minus time passed').toBe(10)
+
+    vi.advanceTimersByTime(11)
+    expect(timeLeft.value, 'Time left should be the same while it\'s paused').toBe(10)
+    expect(callback).not.toBeCalled()
+
+    resume()
+    expect(isActive.value, 'Timer should be active again').toBe(true)
+    vi.advanceTimersByTime(11)
+    expect(callback).toBeCalledWith(1, 2, 3)
+
+    vi.useRealTimers()
+  })
 })
