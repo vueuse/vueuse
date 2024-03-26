@@ -34,7 +34,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
 
   const isActive = ref(false)
   const startedAt = ref(-1)
-  const timeLeft = ref<number>(toValue(interval))
+  const timeLeft = ref(-1)
 
   let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -66,8 +66,9 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
     startedAt.value = new Date().getTime()
     isPending.value = true
     isActive.value = true
+    timeLeft.value = toValue(interval)
 
-    setTimer(timeLeft.value, ...args)
+    setTimer(toValue(interval), ...args)
   }
 
   function pause() {
