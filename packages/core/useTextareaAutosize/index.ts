@@ -32,24 +32,21 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
     let height = ''
 
     textarea.value.style[styleProp] = '1px'
-    const scrollHeight = textarea.value?.scrollHeight
+    textareaScrollHeight.value = textarea.value?.scrollHeight
 
     // If style target is provided update its height
     if (options?.styleTarget)
-      toValue(options.styleTarget).style[styleProp] = `${scrollHeight}px`
+      toValue(options.styleTarget).style[styleProp] = `${textareaScrollHeight.value}px`
     // else update textarea's height by updating height variable
     else
-      height = `${scrollHeight}px`
+      height = `${textareaScrollHeight.value}px`
 
     textarea.value.style[styleProp] = height
-
-    if (textareaScrollHeight.value !== scrollHeight)
-      options?.onResize?.()
-
-    textareaScrollHeight.value = scrollHeight
   }
 
   watch([input, textarea], () => nextTick(triggerResize), { immediate: true })
+
+  watch(textareaScrollHeight, () => options?.onResize?.())
 
   useResizeObserver(textarea, () => triggerResize())
 
