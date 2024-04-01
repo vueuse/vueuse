@@ -48,7 +48,7 @@ You can also provide hover options:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vElementHover } from './directive'
+import { vElementHover } from '@vueuse/components'
 
 const isHovered = ref(false)
 function onHover(hovered: boolean) {
