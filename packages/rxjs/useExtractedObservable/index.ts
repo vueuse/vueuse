@@ -97,23 +97,23 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
 
   watch(source as any, (value, oldValue, onCleanup) => {
     subscription?.unsubscribe()
+    subscription = undefined
 
     if (typeof value !== 'undefined' && value !== null) {
       const observable = extractor(value, oldValue, onCleanup)
-      subscription = observable.subscribe({
-        error: (err) => {
-          options?.onError?.(err)
-        },
-        complete: () => {
-          options?.onComplete?.()
-        },
-        next: (val) => {
-          obsRef.value = val
-        },
-      })
-    }
-    else {
-      subscription = undefined
+      if (typeof observable !== 'undefined' && observable !== null) {
+        subscription = observable.subscribe({
+          error: (err) => {
+            options?.onError?.(err)
+          },
+          complete: () => {
+            options?.onComplete?.()
+          },
+          next: (val) => {
+            obsRef.value = val
+          },
+        })
+      }
     }
   }, {
     immediate: true,

@@ -5,7 +5,7 @@ import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/share
 import { tryOnScopeDispose } from '@vueuse/shared'
 
 export type OnCleanup = (cleanupFn: () => void) => void
-export type WatchExtractedObservableCallback<Value, OldValue, ObservableElement> = (value: NonNullable<Value>, oldValue: OldValue, onCleanup: OnCleanup) => Observable<ObservableElement>
+export type WatchExtractedObservableCallback<Value, OldValue, ObservableElement> = (value: NonNullable<Value>, oldValue: OldValue, onCleanup: OnCleanup) => Observable<ObservableElement> | undefined
 
 export interface WatchExtractedObservableOptions {
   onError?: (err: unknown) => void
@@ -101,18 +101,17 @@ export function watchExtractedObservable<T = any, E = unknown, Immediate extends
 
   return watch(source as any, (value, oldValue, onCleanup) => {
     subscription?.unsubscribe()
+    subscription = undefined
 
     if (typeof value !== 'undefined' && value !== null) {
       const observable = extractor(value, oldValue, onCleanup)
-      subscription = observable.subscribe({
-        next: callback,
-        error: subscriptionOptions?.onError,
-        complete: subscriptionOptions?.onComplete,
-      })
-    }
-    else {
-      // Set to undefined to avoid calling unsubscribe multiple times on a same subscription
-      subscription = undefined
+      if (typeof observable !== 'undefined' && observable !== null) {
+        subscription = observable.subscribe({
+          next: callback,
+          error: subscriptionOptions?.onError,
+          complete: subscriptionOptions?.onComplete,
+        })
+      }
     }
   }, watchOptions)
 }
