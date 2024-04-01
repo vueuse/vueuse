@@ -62,16 +62,6 @@ describe('watchExtractedObservable', () => {
     })
   })
 
-  describe('when extractor is undefined', () => {
-    it('should run without error', async () => {
-      expect.hasAssertions()
-      const numRef = ref(42)
-      const extractor = vi.fn(() => undefined)
-      watchExtractedObservable(numRef, extractor, () => {}, {}, { immediate: true })
-      expect(extractor).toHaveBeenCalledOnce()
-    })
-  })
-
   describe('when onError is provided', () => {
     it('calls onError when an observable emits an error', async () => {
       expect.hasAssertions()

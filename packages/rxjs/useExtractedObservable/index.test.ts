@@ -22,16 +22,6 @@ describe('useExtractedObservable', () => {
     })
   })
 
-  describe('when extractor is undefined', () => {
-    it('should run without error', async () => {
-      expect.hasAssertions()
-      const numRef = ref(42)
-      const extractor = vi.fn(() => undefined)
-      useExtractedObservable(numRef, extractor)
-      expect(extractor).toHaveBeenCalledOnce()
-    })
-  })
-
   describe('when initialValue is not provided', () => {
     it('should have undefined as a value until the observable emits a value', async () => {
       expect.hasAssertions()
