@@ -1,0 +1,29 @@
+name: Reply New Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  reply-to-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reply to new issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueComment = `@${context.actor} 👋
+
+              Thank you for submitting an issue to \`VueUse\`.
+              Please ensure your submission is complete according to the \`issue\` template, so we can more effectively pinpoint and address the problem.
+            `
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: issueComment
+            })
