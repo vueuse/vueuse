@@ -13,7 +13,7 @@ export function useMounted() {
   if (instance) {
     onMounted(() => {
       isMounted.value = true
-    }, isVue2 ? null : instance)
+    }, isVue2 ? undefined : instance)
   }
 
   return isMounted
