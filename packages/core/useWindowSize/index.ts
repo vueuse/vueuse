@@ -1,4 +1,3 @@
-import { tryOnMounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
@@ -54,7 +53,6 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   }
 
   update()
-  tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
   if (listenOrientation) {
