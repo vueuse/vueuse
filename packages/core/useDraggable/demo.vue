@@ -14,6 +14,7 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: innerWidth / 4.2, y: 80 },
   preventDefault: true,
   disabled,
+  detectIframe: true,
 })
 </script>
 
@@ -88,5 +89,7 @@ const { x, y, style } = useDraggable(el, {
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
     </Draggable>
+
+    <iframe class="w-full" src="https://vuejs.org/" />
   </div>
 </template>

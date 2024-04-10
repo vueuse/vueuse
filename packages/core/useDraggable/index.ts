@@ -35,6 +35,12 @@ export interface UseDraggableOptions {
   capture?: boolean
 
   /**
+   * Avoid lose move event in iframes
+   * @default false
+   */
+  detectIframe?: boolean
+
+  /**
    * Element to attach `pointermove` and `pointerup` events to.
    *
    * @default window
@@ -110,6 +116,8 @@ export function useDraggable(
   target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options: UseDraggableOptions = {},
 ) {
+  const isMoving = ref(false)
+
   const {
     pointerTypes,
     preventDefault,
@@ -120,6 +128,7 @@ export function useDraggable(
     onStart,
     initialValue,
     axis = 'both',
+    detectIframe = false,
     draggingElement = defaultWindow,
     containerElement,
     handle: draggingHandle = target,
@@ -145,6 +154,9 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
+    if (detectIframe)
+      isMoving.value = true
+
     if (e.button !== 0)
       return
     if (toValue(options.disabled) || !filterEvent(e))
@@ -165,6 +177,22 @@ export function useDraggable(
     handleEvent(e)
   }
   const move = (e: PointerEvent) => {
+    if (detectIframe && isMoving.value === true) {
+      const iframes = document.querySelectorAll('iframe')
+      for (let i = 0; i < iframes.length; i++) {
+        if (document.querySelector(`#iframes-overlay${i}`))
+          continue
+
+        const overlay = document.createElement('div')
+        overlay.style.position = 'absolute'
+        overlay.style.top = '0'
+        overlay.style.left = '0'
+        overlay.style.width = '100%'
+        overlay.style.height = '100%'
+        overlay.id = `iframes-overlay${i}`
+        iframes[i].parentElement!.appendChild(overlay)
+      }
+    }
     if (toValue(options.disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
@@ -191,6 +219,12 @@ export function useDraggable(
     handleEvent(e)
   }
   const end = (e: PointerEvent) => {
+    if (detectIframe) {
+      isMoving.value = false
+      const overlays = document.querySelectorAll('[id^=\"iframes-overlay\"]')
+      for (let i = 0; i < overlays.length; i++)
+        overlays[i].parentElement!.removeChild(overlays[i])
+    }
     if (toValue(options.disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
