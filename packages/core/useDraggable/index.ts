@@ -183,14 +183,21 @@ export function useDraggable(
         if (document.querySelector(`#iframes-overlay${i}`))
           continue
 
+        const iframe = iframes[i]
+        let parent = iframe.parentElement
+        while (parent && window.getComputedStyle(parent).position !== 'relative')
+          parent = parent.parentElement
+
+        const iframeRect = iframe.getBoundingClientRect()
+        const parentRect = parent!.getBoundingClientRect()
         const overlay = document.createElement('div')
         overlay.style.position = 'absolute'
-        overlay.style.top = '0'
-        overlay.style.left = '0'
-        overlay.style.width = '100%'
-        overlay.style.height = '100%'
+        overlay.style.top = `${iframeRect.top - parentRect.top}px`
+        overlay.style.left = `${iframeRect.left - parentRect.left}px`
+        overlay.style.width = `${iframeRect.width}px`
+        overlay.style.height = `${iframeRect.height}px`
         overlay.id = `iframes-overlay${i}`
-        iframes[i].parentElement!.appendChild(overlay)
+        parent!.appendChild(overlay)
       }
     }
     if (toValue(options.disabled) || !filterEvent(e))
