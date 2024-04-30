@@ -39,8 +39,8 @@ export function useElementSize(
         const $elem = unrefElement(target)
         if ($elem) {
           const rect = $elem.getBoundingClientRect()
-          width.value = Number.parseFloat(rect.width)
-          height.value = Number.parseFloat(rect.height)
+          width.value = rect.width
+          height.value = rect.height
         }
       }
       else {
