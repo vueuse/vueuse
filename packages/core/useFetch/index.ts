@@ -49,7 +49,14 @@ export interface UseFetchReturn<T> {
    * Abort the fetch request
    */
   abort: Fn
-
+  /**
+   *  Cancel refresh request
+   */
+  cancelRefresh: Fn
+  /**
+   * clear all fetch cache
+   */
+  clearCache: Fn
   /**
    * Manually call the fetch
    * (default not throwing error)
@@ -72,13 +79,13 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  get: () => UseFetchResult<T>
+  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
+  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
+  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
+  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
+  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
+  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchResult<T>
 
   // type
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -88,6 +95,7 @@ export interface UseFetchReturn<T> {
   formData: () => UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
 }
 
+type UseFetchResult<T> = UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 type Combination = 'overwrite' | 'chain'
@@ -169,7 +177,29 @@ export interface UseFetchOptions {
    * @default false
    */
   updateDataOnError?: boolean
-
+  /**
+   * Auto refetch interval in millisecond
+   * @default 0
+   */
+  refresh?: number
+  /**
+   *  Allow cache the request result and reuse it if cacheResolve result is same
+   *
+   * @default false
+   */
+  cache?: boolean
+  /**
+   * Cache expiration in millisecond
+   *
+   *  @default Infinity
+   */
+  cacheExpiration?: number
+  /**
+   * The Result of cacheResolve will be used as cache key
+   *
+   *  @default url
+   */
+  cacheResolve?: (config: InternalConfig & { url: MaybeRefOrGetter<string> }) => string
   /**
    * Will run immediately before the fetch request is dispatched
    */
@@ -209,6 +239,13 @@ export interface CreateFetchOptions {
    * Options for the fetch request
    */
   fetchOptions?: RequestInit
+}
+
+interface InternalConfig {
+  method: HttpMethod
+  type: DataType
+  payload: unknown
+  payloadType?: string
 }
 
 /**
@@ -313,9 +350,9 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchResult<T>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchResult<T>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchResult<T>
 
 export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
   const supportsAbort = typeof AbortController === 'function'
@@ -324,15 +361,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   let options: UseFetchOptions = {
     immediate: true,
     refetch: false,
+    refresh: 0,
     timeout: 0,
+    cache: false,
+    cacheExpiration: Number.POSITIVE_INFINITY,
+    cacheResolve: ({ url }) => toValue(url),
     updateDataOnError: false,
-  }
-
-  interface InternalConfig {
-    method: HttpMethod
-    type: DataType
-    payload: unknown
-    payloadType?: string
   }
 
   const config: InternalConfig = {
@@ -357,6 +391,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     fetch = defaultWindow?.fetch,
     initialData,
     timeout,
+    refresh,
+    cacheExpiration,
   } = options
 
   // Event Hooks
@@ -398,9 +434,18 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     timer = useTimeoutFn(abort, timeout, { immediate: false })
 
   let executeCounter = 0
+  let interval = null
 
   const execute = async (throwOnFailed = false) => {
     abort()
+
+    // cache process
+    const cacheKey = options.cache && options.cacheResolve?.({ url, ...config })
+    const cacheData = cacheKey && useFetch._cache.get(cacheKey)?.deref()
+    if (cacheData && (!cacheExpiration || (Date.now() - cacheData.timestamp < cacheExpiration))) {
+      data.value = cacheData.data
+      return
+    }
 
     loading(true)
     error.value = null
@@ -484,6 +529,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           }))
         }
         data.value = responseData
+        if (cacheKey)
+          useFetch._cache.set(cacheKey, new WeakRef({ data: responseData, timestamp: Date.now() }))
 
         responseEvent.trigger(fetchResponse)
         return fetchResponse
@@ -517,6 +564,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       })
   }
 
+  if (refresh)
+    interval = setInterval(() => execute(), refresh)
+
   const refetch = toRef(options.refetch)
   watch(
     [
@@ -538,6 +588,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     aborted,
     abort,
     execute,
+    cancelRefresh: interval ? () => clearInterval(interval) : () => null,
+    clearCache: () => useFetch._cache = new Map(),
 
     onFetchResponse: responseEvent.on,
     onFetchError: errorEvent.on,
@@ -624,6 +676,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     },
   }
 }
+
+useFetch._cache = new Map() as unknown as Map<String, WeakRef<any>>
 
 function joinPaths(start: string, end: string): string {
   if (!start.endsWith('/') && !end.startsWith('/'))
