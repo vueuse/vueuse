@@ -118,7 +118,7 @@ function resetDirective() {
 
   <button
     v-on-long-press="[onLongPressCallbackDirective, { delay: 1000, modifiers: { stop: true } }]"
-    class="ml-2button small"
+    class="ml-2 button small"
   >
     Press long (with options)
   </button>
