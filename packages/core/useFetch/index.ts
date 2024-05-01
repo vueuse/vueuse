@@ -588,7 +588,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     aborted,
     abort,
     execute,
-    cancelRefresh: interval ? () => clearInterval(interval) : () => null,
+    cancelRefresh: () => clearInterval(interval || undefined),
     clearCache: () => useFetch._cache = new Map(),
 
     onFetchResponse: responseEvent.on,
