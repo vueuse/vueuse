@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm i @vueuse/nuxt
+npm i @vueuse/nuxt @vueuse/core
 ```
 
 ```ts
