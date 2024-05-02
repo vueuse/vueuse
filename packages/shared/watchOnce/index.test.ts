@@ -14,4 +14,18 @@ describe('watchOnce', () => {
     await nextTick()
     expect(spy).toBeCalledTimes(1)
   })
+
+  it('should watch until', async () => {
+    const num = ref(0)
+    const spy = vi.fn()
+
+    watchOnce(num, spy, { until: (value) => value === 2 })
+    num.value = 1
+    await nextTick()
+    num.value = 2
+    await nextTick()
+    num.value = 3
+    await nextTick()
+    expect(spy).toBeCalledTimes(2)
+  })
 })
