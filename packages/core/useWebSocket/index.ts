@@ -26,12 +26,12 @@ export interface UseWebSocketOptions {
      * @default 'ping'
      */
     message?: string | ArrayBuffer | Blob
-    
+
     /**
      * Response message for the heartbeat, if undefined the message will be used
      */
     responseMessage?: string | ArrayBuffer | Blob
-    
+
     /**
      * Interval, in milliseconds
      *
@@ -256,7 +256,7 @@ export function useWebSocket<Data = any>(
         resetHeartbeat()
         const {
           message = DEFAULT_PING_MESSAGE,
-          responseMessage
+          responseMessage,
         } = resolveNestedOptions(options.heartbeat)
         if (e.data === (responseMessage === undefined ? message : responseMessage))
           return
