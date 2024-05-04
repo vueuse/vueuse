@@ -1,6 +1,7 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
@@ -12,6 +13,7 @@ interface InferEventTarget<Events> {
 
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
+export type RefOrGetter<T> = Ref<T> | (() => T)
 
 export interface GeneralEventListener<E = Event> {
   (evt: E): void
@@ -30,7 +32,7 @@ export interface GeneralEventListener<E = Event> {
 export function useEventListener<E extends keyof WindowEventMap>(
   event: Arrayable<E>,
   listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
-  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+  options?: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>>
 ): Fn
 
 /**
@@ -48,7 +50,7 @@ export function useEventListener<E extends keyof WindowEventMap>(
   target: Window,
   event: Arrayable<E>,
   listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
-  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+  options?: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>>
 ): Fn
 
 /**
@@ -66,7 +68,7 @@ export function useEventListener<E extends keyof DocumentEventMap>(
   target: DocumentOrShadowRoot,
   event: Arrayable<E>,
   listener: Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>,
-  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+  options?: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>>
 ): Fn
 
 /**
@@ -84,7 +86,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
   target: MaybeRefOrGetter<HTMLElement | null | undefined>,
   event: Arrayable<E>,
   listener: (this: HTMLElement, ev: HTMLElementEventMap[E]) => any,
-  options?: boolean | AddEventListenerOptions
+  options?: Arrayable<boolean | AddEventListenerOptions>
 ): () => void
 
 /**
@@ -102,7 +104,7 @@ export function useEventListener<Names extends string, EventType = Event>(
   target: InferEventTarget<Names>,
   event: Arrayable<Names>,
   listener: Arrayable<GeneralEventListener<EventType>>,
-  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+  options?: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>>
 ): Fn
 
 /**
@@ -120,14 +122,14 @@ export function useEventListener<EventType = Event>(
   target: MaybeRefOrGetter<EventTarget | null | undefined>,
   event: Arrayable<string>,
   listener: Arrayable<GeneralEventListener<EventType>>,
-  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+  options?: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>>
 ): Fn
 
 export function useEventListener(...args: any[]) {
   let target: MaybeRefOrGetter<EventTarget> | undefined
   let events: Arrayable<string>
   let listeners: Arrayable<Function>
-  let options: MaybeRefOrGetter<boolean | AddEventListenerOptions> | undefined
+  let options: Arrayable<MaybeRefOrGetter<boolean | AddEventListenerOptions>> | undefined
 
   if (typeof args[0] === 'string' || Array.isArray(args[0])) {
     [events, listeners, options] = args
@@ -163,11 +165,21 @@ export function useEventListener(...args: any[]) {
       if (!el)
         return
 
-      // create a clone of options, to avoid it being changed reactively on removal
-      const optionsClone = isObject(options) ? { ...options } : options
       cleanups.push(
         ...(events as string[]).flatMap((event) => {
-          return (listeners as Function[]).map(listener => register(el, event, listener, optionsClone))
+          return (listeners as Function[]).map((listener, index) => {
+            let option: MaybeRefOrGetter<boolean | AddEventListenerOptions> | undefined
+            if (Array.isArray(options)) {
+              option = options[index]
+              if (option && isObject(option))
+                option = { ...option }
+            }
+            else {
+              // create a clone of options, to avoid it being changed reactively on removal
+              option = isObject(options) ? { ...(options as RefOrGetter<boolean> | MaybeRefOrGetter<AddEventListenerOptions>) } : options as boolean | undefined
+            }
+            return register(el, event, listener, option)
+          })
         }),
       )
     },
