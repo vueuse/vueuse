@@ -2,6 +2,7 @@ import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
@@ -10,6 +11,11 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
    * @default true
    */
   deep?: boolean
+  /**
+   * Track active element when it's removed from the DOM
+   * @default false
+   */
+  listenOnRemove?: boolean
 }
 
 /**
@@ -24,6 +30,7 @@ export function useActiveElement<T extends HTMLElement>(
   const {
     window = defaultWindow,
     deep = true,
+    listenOnRemove = false,
   } = options
   const document = options.document ?? window?.document
 
@@ -48,6 +55,18 @@ export function useActiveElement<T extends HTMLElement>(
       trigger()
     }, true)
     useEventListener(window, 'focus', trigger, true)
+  }
+
+  if (listenOnRemove) {
+    useMutationObserver(document as any, (mutations) => {
+      mutations.filter(m => m.removedNodes.length).map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
+        if (node === activeElement.value)
+          trigger()
+      })
+    }, {
+      childList: true,
+      subtree: true,
+    })
   }
 
   trigger()
