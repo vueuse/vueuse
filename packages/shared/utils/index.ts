@@ -119,3 +119,7 @@ export function objectEntries<T extends object>(obj: T) {
 export function getLifeCycleTarget(target?: any) {
   return target || getCurrentInstance()
 }
+
+export function deepClone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj))
+}
