@@ -1,4 +1,4 @@
-import { computedWithControl } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -36,19 +36,21 @@ export function useActiveElement<T extends HTMLElement>(
     return element
   }
 
-  const activeElement = computedWithControl(
-    () => null,
-    () => getDeepActiveElement() as T | null | undefined,
-  )
+  const activeElement = ref<T | null | undefined>()
+  const trigger = () => {
+    activeElement.value = getDeepActiveElement() as T | null | undefined
+  }
 
   if (window) {
     useEventListener(window, 'blur', (event) => {
       if (event.relatedTarget !== null)
         return
-      activeElement.trigger()
+      trigger()
     }, true)
-    useEventListener(window, 'focus', activeElement.trigger, true)
+    useEventListener(window, 'focus', trigger, true)
   }
+
+  trigger()
 
   return activeElement
 }

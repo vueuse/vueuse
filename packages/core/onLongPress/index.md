@@ -21,7 +21,7 @@ Function provides modifiers in options
 import { ref } from 'vue'
 import { onLongPress } from '@vueuse/core'
 
-const htmlRefHook = ref<HTMLElement | null>(null)
+const htmlRefHook = ref<HTMLElement>()
 const longPressedHook = ref(false)
 
 function onLongPressCallbackHook(e: PointerEvent) {
@@ -118,7 +118,7 @@ function resetDirective() {
 
   <button
     v-on-long-press="[onLongPressCallbackDirective, { delay: 1000, modifiers: { stop: true } }]"
-    class="ml-2button small"
+    class="ml-2 button small"
   >
     Press long (with options)
   </button>

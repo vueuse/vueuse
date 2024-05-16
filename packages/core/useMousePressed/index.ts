@@ -43,7 +43,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
 }
 
 /**
- * Reactive mouse position.
+ * Reactive mouse pressing state.
  *
  * @see https://vueuse.org/useMousePressed
  * @param options

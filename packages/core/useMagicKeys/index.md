@@ -72,7 +72,7 @@ whenever(keys.shift_space, () => {
 A special property `current` is provided to representing all the keys been pressed currently.
 
 ```ts
-import { useMagicKeys } from '@vueuse/core'
+import { useMagicKeys, whenever } from '@vueuse/core'
 
 const { current } = useMagicKeys()
 
