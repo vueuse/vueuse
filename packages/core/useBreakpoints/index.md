@@ -56,7 +56,7 @@ const laptop = breakpoints.between('laptop', 'desktop')
 - Master CSS: `breakpointsMasterCss`
 - Prime Flex: `breakpointsPrimeFlex`
 
-*Breakpoint presets are deliberately not auto-imported, as they do not start with `use` to have the scope of VueUse. They have to be explicitly imported:*
+_Breakpoint presets are deliberately not auto-imported, as they do not start with `use` to have the scope of VueUse. They have to be explicitly imported:_
 
 ```js
 import { breakpointsTailwind } from '@vueuse/core'
