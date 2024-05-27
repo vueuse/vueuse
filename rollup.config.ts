@@ -8,8 +8,11 @@ import json from '@rollup/plugin-json'
 import { PluginPure as pure } from 'rollup-plugin-pure'
 import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
-import { functions } from '@vueuse/metadata'
+import type { PackageIndexes } from '@vueuse/metadata'
 import { packages } from './meta/packages'
+
+const metadata = JSON.parse(fs.readFileSync('./packages/metadata/index.json', 'utf-8'))
+const functions = metadata.functions as PackageIndexes['functions']
 
 const require = createRequire(import.meta.url)
 const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')

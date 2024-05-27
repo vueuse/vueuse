@@ -1,6 +1,6 @@
 import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { createEventHook, isObject, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toRef, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
@@ -144,6 +144,7 @@ const defaultOptions: UseMediaControlsOptions = {
 }
 
 export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | undefined>, options: UseMediaControlsOptions = {}) {
+  target = toRef(target)
   options = {
     ...defaultOptions,
     ...options,
