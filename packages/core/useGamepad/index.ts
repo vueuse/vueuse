@@ -76,7 +76,9 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     if (vibrationActuator)
       hapticActuators.push(vibrationActuator)
 
+    // @ts-expect-error missing in types
     if (gamepad.hapticActuators)
+      // @ts-expect-error missing in types
       hapticActuators.push(...gamepad.hapticActuators)
 
     return {
