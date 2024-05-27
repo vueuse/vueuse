@@ -45,6 +45,7 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
     if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getDisplayMedia(constraint)
+    stream.value?.getTracks().forEach(t => t.addEventListener('ended', stop))
     return stream.value
   }
 
