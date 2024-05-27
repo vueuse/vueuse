@@ -31,7 +31,7 @@ export function useActiveElement<T extends HTMLElement>(
   const {
     window = defaultWindow,
     deep = true,
-    triggerOnRemoval: mutationObserver = false,
+    triggerOnRemoval = false,
   } = options
   const document = options.document ?? window?.document
 
@@ -58,7 +58,7 @@ export function useActiveElement<T extends HTMLElement>(
     useEventListener(window, 'focus', trigger, true)
   }
 
-  if (mutationObserver) {
+  if (triggerOnRemoval) {
     useMutationObserver(document as any, (mutations) => {
       mutations.filter(m => m.removedNodes.length)
         .map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
