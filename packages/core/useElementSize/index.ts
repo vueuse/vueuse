@@ -38,9 +38,9 @@ export function useElementSize(
       if (window && isSVG.value) {
         const $elem = unrefElement(target)
         if ($elem) {
-          const styles = window.getComputedStyle($elem)
-          width.value = Number.parseFloat(styles.width)
-          height.value = Number.parseFloat(styles.height)
+          const rect = $elem.getBoundingClientRect()
+          width.value = rect.width
+          height.value = rect.height
         }
       }
       else {

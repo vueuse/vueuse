@@ -72,7 +72,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
 
   const reset = () => {
     files.value = null
-    if (input) {
+    if (input && input.value) {
       input.value = ''
       trigger(null)
     }

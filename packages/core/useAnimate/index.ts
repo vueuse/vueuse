@@ -19,6 +19,7 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions, Configurabl
   immediate?: boolean
   /**
    * Whether to commits the end styling state of an animation to the element being animated
+   * In general, you should use `fill` option with this.
    *
    * @default false
    */
@@ -249,8 +250,6 @@ export function useAnimate(
     if (!animate.value)
       animate.value = el.animate(toValue(keyframes), animateOptions)
 
-    if (commitStyles)
-      animate.value.commitStyles()
     if (persist)
       animate.value.persist()
     if (_playbackRate !== 1)
@@ -265,6 +264,11 @@ export function useAnimate(
   }
 
   useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
+
+  useEventListener(animate, 'finish', () => {
+    if (commitStyles)
+      animate.value?.commitStyles()
+  })
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)
