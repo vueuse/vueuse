@@ -62,7 +62,7 @@ describe('useActiveElement', () => {
   })
 
   it('should update when activeElement is removed w/document', async () => {
-    const activeElement = useActiveElement({ listenOnRemove: true })
+    const activeElement = useActiveElement({ triggerOnRemoval: true })
 
     input.focus()
 
@@ -76,7 +76,7 @@ describe('useActiveElement', () => {
   })
 
   it('should update when activeElement is removed w/shadowRoot', async () => {
-    const activeElement = useActiveElement({ listenOnRemove: true, document: shadowRoot })
+    const activeElement = useActiveElement({ triggerOnRemoval: true, document: shadowRoot })
 
     shadowInput.focus()
 

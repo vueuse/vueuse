@@ -13,9 +13,10 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
   deep?: boolean
   /**
    * Track active element when it's removed from the DOM
+   * Using a MutationObserver under the hood
    * @default false
    */
-  listenOnRemove?: boolean
+  triggerOnRemoval?: boolean
 }
 
 /**
@@ -30,7 +31,7 @@ export function useActiveElement<T extends HTMLElement>(
   const {
     window = defaultWindow,
     deep = true,
-    listenOnRemove = false,
+    triggerOnRemoval: mutationObserver = false,
   } = options
   const document = options.document ?? window?.document
 
@@ -57,12 +58,13 @@ export function useActiveElement<T extends HTMLElement>(
     useEventListener(window, 'focus', trigger, true)
   }
 
-  if (listenOnRemove) {
+  if (mutationObserver) {
     useMutationObserver(document as any, (mutations) => {
-      mutations.filter(m => m.removedNodes.length).map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
-        if (node === activeElement.value)
-          trigger()
-      })
+      mutations.filter(m => m.removedNodes.length)
+        .map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
+          if (node === activeElement.value)
+            trigger()
+        })
     }, {
       childList: true,
       subtree: true,
