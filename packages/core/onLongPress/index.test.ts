@@ -142,6 +142,47 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
+  async function triggerOnMouseUp(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const onMouseUpCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { onMouseUp: onMouseUpCallback })
+
+    // first pointer down
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // wait for 250 after pointer down
+    await promiseTimeout(250)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(0)
+
+    // pointer up to cancel callback
+    pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerUpEvent)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250)
+
+    // wait for 500ms after pointer up
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+
+    // another pointer down
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // wait for 500 after pointer down
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
+
+    pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerUpEvent)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500)
+  }
+
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
@@ -154,6 +195,7 @@ describe('onLongPress', () => {
       it('should stop propagation', () => stopPropagation(isRef))
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+      it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
     })
   }
 

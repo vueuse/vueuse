@@ -76,16 +76,21 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     if (vibrationActuator)
       hapticActuators.push(vibrationActuator)
 
+    // @ts-expect-error missing in types
     if (gamepad.hapticActuators)
+      // @ts-expect-error missing in types
       hapticActuators.push(...gamepad.hapticActuators)
 
     return {
-      ...gamepad,
       id: gamepad.id,
+      index: gamepad.index,
+      connected: gamepad.connected,
+      mapping: gamepad.mapping,
+      timestamp: gamepad.timestamp,
+      vibrationActuator: gamepad.vibrationActuator,
       hapticActuators,
       axes: gamepad.axes.map(axes => axes),
       buttons: gamepad.buttons.map(button => ({ pressed: button.pressed, touched: button.touched, value: button.value })),
-      index: gamepad.index,
     } as Gamepad
   }
 
