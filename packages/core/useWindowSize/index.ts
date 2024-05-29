@@ -20,6 +20,12 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
    * @default true
    */
   includeScrollbar?: boolean
+
+  /**
+   * Whether to use the window.outerWidth and window.outerHeight instead of window.innerWidth and window.innerHeight
+   * @default false
+   */
+  useOuterSize?: boolean
 }
 
 /**
@@ -35,6 +41,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     initialHeight = Number.POSITIVE_INFINITY,
     listenOrientation = true,
     includeScrollbar = true,
+    useOuterSize = false,
   } = options
 
   const width = ref(initialWidth)
@@ -42,7 +49,11 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   const update = () => {
     if (window) {
-      if (includeScrollbar) {
+      if (useOuterSize) {
+        width.value = window.outerWidth
+        height.value = window.outerHeight
+      }
+      else if (includeScrollbar) {
         width.value = window.innerWidth
         height.value = window.innerHeight
       }
