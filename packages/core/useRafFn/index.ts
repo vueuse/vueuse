@@ -1,6 +1,6 @@
 import { readonly, ref } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { tryOnScopeDispose, useRaf } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
@@ -49,10 +49,9 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   const isActive = ref(false)
   const intervalLimit = fpsLimit ? 1000 / fpsLimit : null
   let previousFrameTimestamp = 0
-  let rafId: null | number = null
 
-  function loop(timestamp: DOMHighResTimeStamp) {
-    if (!isActive.value || !window)
+  const { cancel, request } = useRaf((timestamp: DOMHighResTimeStamp) => {
+    if (!isActive.value)
       return
 
     if (!previousFrameTimestamp)
@@ -61,29 +60,26 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     const delta = timestamp - previousFrameTimestamp
 
     if (intervalLimit && delta < intervalLimit) {
-      rafId = window.requestAnimationFrame(loop)
+      request()
       return
     }
 
     previousFrameTimestamp = timestamp
     fn({ delta, timestamp })
-    rafId = window.requestAnimationFrame(loop)
-  }
+    request()
+  })
 
   function resume() {
     if (!isActive.value && window) {
       isActive.value = true
       previousFrameTimestamp = 0
-      rafId = window.requestAnimationFrame(loop)
+      request()
     }
   }
 
   function pause() {
     isActive.value = false
-    if (rafId != null && window) {
-      window.cancelAnimationFrame(rafId)
-      rafId = null
-    }
+    cancel()
   }
 
   if (immediate)
