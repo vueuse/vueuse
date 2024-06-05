@@ -114,8 +114,10 @@ export function useWebNotification(
     // https://stackoverflow.com/questions/29774836/failed-to-construct-notification-illegal-constructor/29895431
     // https://issues.chromium.org/issues/40415865
     try {
-      // eslint-disable-next-line no-new
-      new Notification('')
+      const notification = new Notification('')
+      notification.onshow = () => {
+        notification.close()
+      }
     }
     catch (e) {
       return false
