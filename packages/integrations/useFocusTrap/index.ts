@@ -1,7 +1,8 @@
 import type { Fn, MaybeElementRef } from '@vueuse/core'
 import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
+import { notNullish } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue-demi'
 import { createFocusTrap } from 'focus-trap'
 import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
 
@@ -60,7 +61,7 @@ export interface UseFocusTrapReturn {
  * @see https://vueuse.org/useFocusTrap
  */
 export function useFocusTrap(
-  target: MaybeElementRef,
+  target: string | MaybeElementRef | (MaybeElementRef | string)[],
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
@@ -86,13 +87,16 @@ export function useFocusTrap(
     }
   }
 
-  watch(
-    () => unrefElement(target),
-    (el) => {
-      if (!el)
-        return
+  const targets = computed(() => Array.isArray(target)
+    ? target.map(el => typeof el === 'string' ? el : unrefElement(el))
+    : typeof target === 'string' ? [target] : [unrefElement(target)])
 
-      trap = createFocusTrap(el, {
+  watch(
+    targets,
+    (els) => {
+      const filterElements = els.filter(notNullish)
+
+      trap = createFocusTrap(filterElements, {
         ...focusTrapOptions,
         onActivate() {
           hasFocus.value = true
