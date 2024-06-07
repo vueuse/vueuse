@@ -15,6 +15,12 @@ export interface MousePressedOptions extends ConfigurableWindow {
   touch?: boolean
 
   /**
+   * Listen to right mouse 'mousedown' event
+   * @default true
+   */
+  right?: boolean
+
+  /**
    * Listen to `dragstart` `drop` and `dragend` events
    *
    * @default true
@@ -51,6 +57,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
 export function useMousePressed(options: MousePressedOptions = {}) {
   const {
     touch = true,
+    right = true,
     drag = true,
     capture = false,
     initialValue = false,
@@ -78,7 +85,16 @@ export function useMousePressed(options: MousePressedOptions = {}) {
 
   const target = computed(() => unrefElement(options.target) || window)
 
-  useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true, capture })
+  if (right) {
+    useEventListener(target, 'mousedown', onPressed('mouse'), { passive: true, capture })
+  }
+  else {
+    useEventListener(target, 'mousedown', (e: MouseEvent) => {
+      if (e.button === 2)
+        return
+      onPressed('mouse')()
+    }, { passive: true, capture })
+  }
 
   useEventListener(window, 'mouseleave', onReleased, { passive: true, capture })
   useEventListener(window, 'mouseup', onReleased, { passive: true, capture })

@@ -20,6 +20,12 @@ Touching is enabled by default. To make it only detects mouse changes, set `touc
 const { pressed } = useMousePressed({ touch: false })
 ```
 
+The right mouse button mousedown event is enabled by default. Set `right` to `false` disables it.
+
+```js
+const { pressed } = useMousePressed({ right: false })
+```
+
 To only capture `mousedown` and `touchstart` on specific element, you can specify `target` by passing a ref of the element.
 
 ```vue
