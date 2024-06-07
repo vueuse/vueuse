@@ -52,12 +52,14 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
 
   useResizeObserver(textarea, () => triggerResize())
 
-  tryOnMounted(() => {
-    if (options?.resize || !textarea.value)
-      return
+  if (!options?.resize) {
+    tryOnMounted(() => {
+      if (!textarea.value)
+        return
 
-    textarea.value.style.resize = 'none'
-  })
+      textarea.value.style.resize = 'none'
+    })
+  }
 
   if (options?.watch)
     watch(options.watch, triggerResize, { immediate: true, deep: true })
