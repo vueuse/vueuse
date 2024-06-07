@@ -10,7 +10,6 @@ const { textarea, input } = useTextareaAutosize()
     <textarea
       ref="textarea"
       v-model="input"
-      class="resize-none"
       placeholder="What's on your mind?"
     />
   </div>

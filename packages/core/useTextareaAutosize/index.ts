@@ -1,5 +1,5 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
 import { nextTick, ref, watch } from 'vue-demi'
 import { useResizeObserver } from '../useResizeObserver'
@@ -11,6 +11,8 @@ export interface UseTextareaAutosizeOptions {
   input?: MaybeRef<string | undefined>
   /** Watch sources that should trigger a textarea resize. */
   watch?: WatchSource | Array<WatchSource>
+  /** Textarea style's resize prop. */
+  resize?: boolean
   /** Function called when the textarea size changes. */
   onResize?: () => void
   /** Specify style target to apply the height based on textarea content. If not provided it will use textarea it self.  */
@@ -49,6 +51,13 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   watch(textareaScrollHeight, () => options?.onResize?.())
 
   useResizeObserver(textarea, () => triggerResize())
+
+  tryOnMounted(() => {
+    if (options?.resize || !textarea.value)
+      return
+
+    textarea.value.style.resize = 'none'
+  })
 
   if (options?.watch)
     watch(options.watch, triggerResize, { immediate: true, deep: true })
