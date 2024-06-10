@@ -61,7 +61,7 @@ export interface UseFocusTrapReturn {
  * @see https://vueuse.org/useFocusTrap
  */
 export function useFocusTrap(
-  target: string | MaybeComputedElementRef | (MaybeComputedElementRef | string)[] | MaybeRefOrGetter<(MaybeElement | string)[]>,
+  target: string | MaybeComputedElementRef | (MaybeComputedElementRef | string)[] | MaybeRefOrGetter<(MaybeComputedElementRef | string)[]>,
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
