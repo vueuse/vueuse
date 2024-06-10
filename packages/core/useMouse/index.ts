@@ -1,5 +1,5 @@
 import { ref } from 'vue-demi'
-import type { ConfigurableEventFilter, MaybeRefOrGetter } from '@vueuse/shared'
+import type { ConfigurableEventFilter, Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -137,22 +137,38 @@ export function useMouse(options: UseMouseOptions = {}) {
     ? () => eventFilter(() => scrollHandler(), {} as any)
     : () => scrollHandler()
 
+  const cleanupList: Fn[] = []
+
   if (target) {
     const listenerOptions = { passive: true }
-    useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
+    const cleanup = useEventListener(target, ['mousemove', 'dragover'], mouseHandlerWrapper, listenerOptions)
+    cleanupList.push(cleanup)
+
     if (touch && type !== 'movement') {
-      useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
-      if (resetOnTouchEnds)
-        useEventListener(target, 'touchend', reset, listenerOptions)
+      const cleanup = useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
+      cleanupList.push(cleanup)
+
+      if (resetOnTouchEnds) {
+        const cleanup = useEventListener(target, 'touchend', reset, listenerOptions)
+        cleanupList.push(cleanup)
+      }
     }
-    if (scroll && type === 'page')
-      useEventListener(window, 'scroll', scrollHandlerWrapper, { passive: true })
+
+    if (scroll && type === 'page') {
+      const cleanup = useEventListener(window, 'scroll', scrollHandlerWrapper, { passive: true })
+      cleanupList.push(cleanup)
+    }
+  }
+
+  const stop = () => {
+    cleanupList.forEach(clean => clean())
   }
 
   return {
     x,
     y,
     sourceType,
+    stop,
   }
 }
 

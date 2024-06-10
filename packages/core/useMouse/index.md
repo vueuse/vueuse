@@ -11,7 +11,7 @@ Reactive mouse position
 ```ts twoslash
 import { useMouse } from '@vueuse/core'
 
-const { x, y, sourceType } = useMouse()
+const { x, y, sourceType, stop } = useMouse()
 ```
 
 Touch is enabled by default. To only detect mouse changes, set `touch` to `false`.
