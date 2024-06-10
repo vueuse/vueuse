@@ -1,4 +1,4 @@
-import type { Fn, MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
+import type { Fn, MaybeComputedElementRef } from '@vueuse/core'
 import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import { type MaybeRefOrGetter, notNullish, toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
