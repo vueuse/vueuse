@@ -147,7 +147,7 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.7"
+    "vue-demi": ">=0.14.8"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.3",

@@ -40,6 +40,6 @@
     "@types/web-bluetooth": "^0.0.20",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.7"
+    "vue-demi": ">=0.14.8"
   }
 }
