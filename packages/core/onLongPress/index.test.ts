@@ -87,6 +87,102 @@ describe('onLongPress', () => {
     expect(onParentLongPressCallback).toHaveBeenCalledTimes(0)
   }
 
+  async function stopEventListeners(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const stop = onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { stop: true } })
+
+    // before calling stop, the callback should be called
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await promiseTimeout(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+
+    stop()
+
+    // before calling stop, the callback should no longer be called
+    onLongPressCallback.mockClear()
+
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await promiseTimeout(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
+  async function triggerCallbackWithThreshold(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true, clientX: 20, clientY: 20 })
+    const moveWithinThresholdEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 17, clientY: 25 })
+    const moveOutsideThresholdEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 4, clientY: 30 })
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { distanceThreshold: 15, delay: 1000 })
+    // first pointer down
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // pointer move outside threshold
+    await promiseTimeout(500)
+    element.value.dispatchEvent(moveOutsideThresholdEvent)
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+
+    // pointer up to cancel callback
+    element.value.dispatchEvent(pointerUpEvent)
+
+    // wait for 500ms after pointer up
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+
+    // another pointer down
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // pointer move within threshold
+    await promiseTimeout(500)
+    element.value.dispatchEvent(moveWithinThresholdEvent)
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+  }
+
+  async function triggerOnMouseUp(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const onMouseUpCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { onMouseUp: onMouseUpCallback })
+
+    // first pointer down
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // wait for 250 after pointer down
+    await promiseTimeout(250)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(0)
+
+    // pointer up to cancel callback
+    pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerUpEvent)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250)
+
+    // wait for 500ms after pointer up
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+
+    // another pointer down
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    // wait for 500 after pointer down
+    await promiseTimeout(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
+
+    pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerUpEvent)
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500)
+  }
+
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
@@ -94,9 +190,12 @@ describe('onLongPress', () => {
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
-      it('should not tirgger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+      it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
       it('should stop propagation', () => stopPropagation(isRef))
+      it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+      it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+      it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
     })
   }
 

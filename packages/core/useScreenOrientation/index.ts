@@ -11,11 +11,11 @@ export type OrientationType = 'portrait-primary' | 'portrait-secondary' | 'lands
 export type OrientationLockType = 'any' | 'natural' | 'landscape' | 'portrait' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
 
 export interface ScreenOrientation extends EventTarget {
-  lock(orientation: OrientationLockType): Promise<void>
-  unlock(): void
+  lock: (orientation: OrientationLockType) => Promise<void>
+  unlock: () => void
   readonly type: OrientationType
   readonly angle: number
-  addEventListener(type: 'change', listener: (this: this, ev: Event) => any, useCapture?: boolean): void
+  addEventListener: (type: 'change', listener: (this: this, ev: Event) => any, useCapture?: boolean) => void
 }
 
 /**
@@ -43,13 +43,14 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
   }
 
   const lockOrientation = (type: OrientationLockType) => {
-    if (!isSupported.value)
-      return Promise.reject(new Error('Not supported'))
-    return screenOrientation.lock(type)
+    if (isSupported.value && typeof screenOrientation.lock === 'function')
+      return screenOrientation.lock(type)
+
+    return Promise.reject(new Error('Not supported'))
   }
 
   const unlockOrientation = () => {
-    if (isSupported.value)
+    if (isSupported.value && typeof screenOrientation.unlock === 'function')
       screenOrientation.unlock()
   }
 

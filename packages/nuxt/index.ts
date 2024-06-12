@@ -31,6 +31,7 @@ const packages = [
   'rxjs',
   'sound',
   'math',
+  'router',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
@@ -75,7 +76,10 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     nuxt.hook('vite:extend', ({ config }: any) => {
       config.optimizeDeps = config.optimizeDeps || {}
       config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
-      config.optimizeDeps.exclude.push(...fullPackages)
+      for (const pkg of fullPackages) {
+        if (!config.optimizeDeps.exclude.includes(pkg))
+          config.optimizeDeps.exclude.push(pkg)
+      }
     })
 
     // add packages to transpile target for alias resolution

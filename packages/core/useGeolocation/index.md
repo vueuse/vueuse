@@ -19,19 +19,20 @@ const { coords, locatedAt, error, resume, pause } = useGeolocation()
 | coords    | [`Coordinates`](https://developer.mozilla.org/en-US/docs/Web/API/Coordinates) | information about the position retrieved like the latitude and longitude |
 | locatedAt | `Date`                                                                        | The time of the last geolocation call                                    |
 | error     | `string`                                                                      | An error message in case geolocation API fails.                          |
-| resume     | `function`                                                                      | Control function to resume updating geolocation |
-| pause      | `function`                                                                        | Control function to pause updating geolocation |
+| resume    | `function`                                                                    | Control function to resume updating geolocation                          |
+| pause     | `function`                                                                    | Control function to pause updating geolocation                           |
 
 ## Config
 
 `useGeolocation` function takes [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) object as an optional parameter.
 
-
 ## Component Usage
 
-```html
-<UseGeolocation v-slot="{ coords: { latitude, longitude } }">
-  Latitude: {{ latitude }}
-  Longitude: {{ longitude }}
-</UseGeolocation>
+```vue
+<template>
+  <UseGeolocation v-slot="{ coords: { latitude, longitude } }">
+    Latitude: {{ latitude }}
+    Longitude: {{ longitude }}
+  </UseGeolocation>
+</template>
 ```

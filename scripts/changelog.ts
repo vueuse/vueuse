@@ -1,7 +1,7 @@
 import md5 from 'md5'
 import Git from 'simple-git'
 import type { CommitInfo, ContributorInfo } from '@vueuse/metadata'
-import { functions } from '@vueuse/metadata'
+import { functions } from '../packages/metadata/metadata'
 import { uniq } from './utils'
 
 const git = Git({
@@ -15,9 +15,9 @@ export async function getChangeLog(count = 200) {
 
   const logs = (await git.log({ maxCount: count })).all.filter((i) => {
     return i.message.includes('chore: release')
-        || i.message.includes('!')
-        || i.message.startsWith('feat')
-        || i.message.startsWith('fix')
+      || i.message.includes('!')
+      || i.message.startsWith('feat')
+      || i.message.startsWith('fix')
   }) as CommitInfo[]
 
   for (const log of logs) {
@@ -30,7 +30,7 @@ export async function getChangeLog(count = 200) {
     const files = raw.replace(/\\/g, '/').trim().split('\n')
     log.functions = uniq(
       files
-        .map(i => i.match(/^packages\/\w+\/(\w+)\/\w+?\.ts$/)?.[1])
+        .map(i => i.match(/^packages\/\w+\/(\w+)\/\w+\.ts$/)?.[1])
         .filter(Boolean),
     )
   }

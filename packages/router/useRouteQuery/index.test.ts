@@ -142,6 +142,36 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBeNull()
   })
 
+  it('should not reset params to default params is disposed from other scope', async () => {
+    let route = getRoute()
+
+    const router = { replace: (r: any) => route = r } as any
+    const scopeA = effectScope()
+    const scopeB = effectScope()
+
+    route.query.page = 2
+
+    const defaultPage = 'DEFAULT_PAGE'
+    let page1: Ref<any> = ref(null)
+    await scopeA.run(async () => {
+      page1 = useRouteQuery('page', defaultPage, { route, router })
+    })
+
+    let page2: Ref<any> = ref(null)
+    await scopeB.run(async () => {
+      page2 = useRouteQuery('page', defaultPage, { route, router })
+    })
+
+    expect(page1.value).toBe(2)
+    expect(page2.value).toBe(2)
+
+    scopeA.stop()
+    await nextTick()
+
+    expect(page1.value).toBe(defaultPage)
+    expect(page2.value).toBe(2)
+  })
+
   it('should change the value when the route changes', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
@@ -155,7 +185,7 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe('2')
   })
 
-  it ('should differentiate null and undefined', () => {
+  it('should differentiate null and undefined', () => {
     let route = getRoute({
       page: 1,
     })
@@ -192,7 +222,7 @@ describe('useRouteQuery', () => {
     await nextTick()
 
     expect(page.value).toBe(1)
-    expect(route.query.page).toBe(1)
+    expect(route.query.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
   })
 
@@ -232,5 +262,23 @@ describe('useRouteQuery', () => {
 
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
+  })
+
+  it.each([{ value: 'default' }, { value: null }, { value: undefined }])('should reset value when $value value', async ({ value }) => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = value
+
+    await nextTick()
+
+    expect(route.query.search).toBeUndefined()
   })
 })

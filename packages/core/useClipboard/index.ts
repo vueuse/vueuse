@@ -8,6 +8,7 @@ import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
 import { defaultNavigator } from '../_configurable'
+import { usePermission } from '../usePermission'
 
 export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
@@ -62,13 +63,15 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   } = options
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
+  const permissionRead = usePermission('clipboard-read')
+  const permissionWrite = usePermission('clipboard-write')
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
 
   function updateText() {
-    if (isClipboardApiSupported.value) {
+    if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {
       navigator!.clipboard.readText().then((value) => {
         text.value = value
       })
@@ -83,7 +86,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value)
+      if (isClipboardApiSupported.value && isAllowed(permissionWrite.value))
         await navigator!.clipboard.writeText(value)
       else
         legacyCopy(value)
@@ -107,6 +110,10 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   function legacyRead() {
     return document?.getSelection?.()?.toString() ?? ''
+  }
+
+  function isAllowed(status: PermissionState | undefined) {
+    return status === 'granted' || status === 'prompt'
   }
 
   return {

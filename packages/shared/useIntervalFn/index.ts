@@ -13,7 +13,7 @@ export interface UseIntervalFnOptions {
   immediate?: boolean
 
   /**
-   * Execute the callback immediate after calling this function
+   * Execute the callback immediately after calling `resume`
    *
    * @default false
    */

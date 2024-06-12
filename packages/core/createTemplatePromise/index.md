@@ -13,7 +13,7 @@ This function only works for Vue 3
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
 import { createTemplatePromise } from '@vueuse/core'
 
@@ -28,7 +28,9 @@ async function open() {
 <template>
   <TemplatePromise v-slot="{ promise, resolve, reject, args }">
     <!-- your UI -->
-    <button @click="resolve('ok')">OK</button>
+    <button @click="resolve('ok')">
+      OK
+    </button>
   </TemplatePromise>
 </template>
 ```
@@ -56,11 +58,13 @@ const MyPromise = createTemplatePromise<boolean>() // with generic type
 
 In template, use `v-slot` to access the promise and resolve functions.
 
-```html
+```vue
 <template>
   <TemplatePromise v-slot="{ promise, resolve, reject, args }">
     <!-- you can have anything -->
-    <button @click="resolve('ok')">OK</button>
+    <button @click="resolve('ok')">
+      OK
+    </button>
   </TemplatePromise>
   <MyPromise v-slot="{ promise, resolve, reject, args }">
     <!-- another one -->
@@ -92,12 +96,16 @@ const result = await TemplatePromise.start('hello', 123) // Pr
 
 And in the template slot, you can access the arguments via `args` property.
 
-```html
+```vue
 <template>
   <TemplatePromise v-slot="{ args, resolve }">
-    <div>{{ args[0] }}</div> <!-- hello -->
-    <div>{{ args[1] }}</div> <!-- 123 -->
-    <button @click="resolve(true)">OK</button>
+    <div>{{ args[0] }}</div>
+    <!-- hello -->
+    <div>{{ args[1] }}</div>
+    <!-- 123 -->
+    <button @click="resolve(true)">
+      OK
+    </button>
   </TemplatePromise>
 </template>
 ```
@@ -106,7 +114,7 @@ And in the template slot, you can access the arguments via `args` property.
 
 You can use transition to animate the slot.
 
-```html
+```vue
 <script setup lang="ts">
 const TemplatePromise = createTemplatePromise<ReturnType>({
   transition: {
@@ -119,15 +127,19 @@ const TemplatePromise = createTemplatePromise<ReturnType>({
 <template>
   <TemplatePromise v-slot="{ resolve }">
     <!-- your UI -->
-    <button @click="resolve('ok')">OK</button>
+    <button @click="resolve('ok')">
+      OK
+    </button>
   </TemplatePromise>
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

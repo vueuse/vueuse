@@ -90,6 +90,13 @@ export interface UseDraggableOptions {
    * @default 'both'
    */
   axis?: 'x' | 'y' | 'both'
+
+  /**
+   * Disabled drag and drop.
+   *
+   * @default false
+   */
+  disabled?: MaybeRefOrGetter<boolean>
 }
 
 /**
@@ -138,15 +145,19 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
-    if (!filterEvent(e))
+    if (e.button !== 0)
+      return
+    if (toValue(options.disabled) || !filterEvent(e))
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
-    const container = toValue(containerElement) ?? toValue(target)
-    const rect = container!.getBoundingClientRect()
+
+    const container = toValue(containerElement)
+    const containerRect = container?.getBoundingClientRect?.()
+    const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: e.clientX - (container ? targetRect.left - containerRect!.left + container.scrollLeft : targetRect.left),
+      y: e.clientY - (container ? targetRect.top - containerRect!.top + container.scrollTop : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
@@ -154,16 +165,24 @@ export function useDraggable(
     handleEvent(e)
   }
   const move = (e: PointerEvent) => {
-    if (!filterEvent(e))
+    if (toValue(options.disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
       return
 
+    const container = toValue(containerElement)
+    const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
-    if (axis === 'x' || axis === 'both')
+    if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
-    if (axis === 'y' || axis === 'both')
+      if (container)
+        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
+    }
+    if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
+      if (container)
+        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
+    }
     position.value = {
       x,
       y,
@@ -172,7 +191,7 @@ export function useDraggable(
     handleEvent(e)
   }
   const end = (e: PointerEvent) => {
-    if (!filterEvent(e))
+    if (toValue(options.disabled) || !filterEvent(e))
       return
     if (!pressedDelta.value)
       return

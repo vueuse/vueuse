@@ -72,7 +72,7 @@ whenever(keys.shift_space, () => {
 A special property `current` is provided to representing all the keys been pressed currently.
 
 ```ts
-import { useMagicKeys } from '@vueuse/core'
+import { useMagicKeys, whenever } from '@vueuse/core'
 
 const { current } = useMagicKeys()
 
@@ -146,7 +146,7 @@ By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to us
 const keys = useMagicKeys({ reactive: true })
 ```
 
-```html
+```vue
 <template>
   <div v-if="keys.shift">
     You are holding the Shift key!

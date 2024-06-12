@@ -76,12 +76,18 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     if (vibrationActuator)
       hapticActuators.push(vibrationActuator)
 
+    // @ts-expect-error missing in types
     if (gamepad.hapticActuators)
+      // @ts-expect-error missing in types
       hapticActuators.push(...gamepad.hapticActuators)
 
     return {
-      ...gamepad,
       id: gamepad.id,
+      index: gamepad.index,
+      connected: gamepad.connected,
+      mapping: gamepad.mapping,
+      timestamp: gamepad.timestamp,
+      vibrationActuator: gamepad.vibrationActuator,
       hapticActuators,
       axes: gamepad.axes.map(axes => axes),
       buttons: gamepad.buttons.map(button => ({ pressed: button.pressed, touched: button.touched, value: button.value })),
@@ -91,14 +97,9 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   const updateGamepadState = () => {
     const _gamepads = navigator?.getGamepads() || []
 
-    for (let i = 0; i < _gamepads.length; ++i) {
-      const gamepad = _gamepads[i]
-      if (gamepad) {
-        const index = gamepads.value.findIndex(({ index }) => index === gamepad.index)
-
-        if (index > -1)
-          gamepads.value[index] = stateFromGamepad(gamepad)
-      }
+    for (const gamepad of _gamepads) {
+      if (gamepad && gamepads.value[gamepad.index])
+        gamepads.value[gamepad.index] = stateFromGamepad(gamepad)
     }
   }
 
@@ -124,13 +125,9 @@ export function useGamepad(options: UseGamepadOptions = {}) {
   tryOnMounted(() => {
     const _gamepads = navigator?.getGamepads() || []
 
-    if (_gamepads) {
-      for (let i = 0; i < _gamepads.length; ++i) {
-        const gamepad = _gamepads[i]
-
-        if (gamepad)
-          onGamepadConnected(gamepad)
-      }
+    for (const gamepad of _gamepads) {
+      if (gamepad && gamepads.value[gamepad.index])
+        onGamepadConnected(gamepad)
     }
   })
 

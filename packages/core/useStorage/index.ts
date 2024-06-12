@@ -1,6 +1,6 @@
 import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, toValue } from '@vueuse/shared'
+import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
 import type { StorageLike } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -9,13 +9,13 @@ import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {
-  read(raw: string): T
-  write(value: T): string
+  read: (raw: string) => T
+  write: (value: T) => string
 }
 
 export interface SerializerAsync<T> {
-  read(raw: string): Awaitable<T>
-  write(value: T): Awaitable<string>
+  read: (raw: string) => Awaitable<T>
+  write: (value: T) => Awaitable<string>
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
@@ -112,6 +112,13 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
    * @default false
    */
   shallow?: boolean
+
+  /**
+   * Wait for the component to be mounted before reading the storage.
+   *
+   * @default false
+   */
+  initOnMounted?: boolean
 }
 
 export function useStorage(key: string, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
@@ -143,9 +150,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     onError = (e) => {
       console.error(e)
     },
+    initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : ref)(defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
 
   if (!storage) {
     try {
@@ -170,38 +178,48 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   )
 
   if (window && listenToStorageChanges) {
-    useEventListener(window, 'storage', update)
-    useEventListener(window, customStorageEventName, updateFromCustomEvent)
+    tryOnMounted(() => {
+      // this should be fine since we are in a mounted hook
+      useEventListener(window, 'storage', update)
+      useEventListener(window, customStorageEventName, updateFromCustomEvent)
+      if (initOnMounted)
+        update()
+    })
   }
 
-  update()
+  // avoid reading immediately to avoid hydration mismatch when doing SSR
+  if (!initOnMounted)
+    update()
 
-  return data
+  function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
+    // send custom event to communicate within same page
+    // importantly this should _not_ be a StorageEvent since those cannot
+    // be constructed with a non-built-in storage area
+    if (window) {
+      window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
+        detail: {
+          key,
+          oldValue,
+          newValue,
+          storageArea: storage!,
+        },
+      }))
+    }
+  }
 
   function write(v: unknown) {
     try {
+      const oldValue = storage!.getItem(key)
+
       if (v == null) {
+        dispatchWriteEvent(oldValue, null)
         storage!.removeItem(key)
       }
       else {
-        const serialized = serializer.write(v)
-        const oldValue = storage!.getItem(key)
+        const serialized = serializer.write(v as any)
         if (oldValue !== serialized) {
           storage!.setItem(key, serialized)
-
-          // send custom event to communicate within same page
-          // importantly this should _not_ be a StorageEvent since those cannot
-          // be constructed with a non-built-in storage area
-          if (window) {
-            window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
-              detail: {
-                key,
-                oldValue,
-                newValue: serialized,
-                storageArea: storage!,
-              },
-            }))
-          }
+          dispatchWriteEvent(oldValue, serialized)
         }
       }
     }
@@ -216,7 +234,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       : storage!.getItem(key)
 
     if (rawValue == null) {
-      if (writeDefaults && rawInit !== null)
+      if (writeDefaults && rawInit != null)
         storage!.setItem(key, serializer.write(rawInit))
       return rawInit
     }
@@ -234,10 +252,6 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     else {
       return serializer.read(rawValue)
     }
-  }
-
-  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
-    update(event.detail)
   }
 
   function update(event?: StorageEventLike) {
@@ -268,4 +282,10 @@ export function useStorage<T extends(string | number | boolean | object | null)>
         resumeWatch()
     }
   }
+
+  function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
+    update(event.detail)
+  }
+
+  return data
 }

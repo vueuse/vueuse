@@ -1,6 +1,6 @@
 import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isBelowNode18, retry } from '../../.test'
 import { createFetch, useFetch } from '.'
@@ -11,7 +11,7 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as SpyInstance<any>
+let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
 let onFetchErrorSpy = vi.fn()
 let onFetchResponseSpy = vi.fn()
 let onFetchFinallySpy = vi.fn()
@@ -62,7 +62,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await useFetch('https://example.com/', {
       fetch: <typeof window.fetch>((input, init) => {
         count = 1
-        return window.fetch(input, init)
+        return window.fetch(input as string, init)
       }),
     })
 
@@ -733,5 +733,13 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await retry(() => {
       expect(fetchSpyHeaders()['Content-Type']).toBe(undefined)
     })
+  })
+
+  it('should be modified the request status after the request is completed', async () => {
+    const { isFetching, isFinished, execute } = useFetch('https://example.com', { immediate: false })
+
+    await execute()
+    expect(isFetching.value).toBe(false)
+    expect(isFinished.value).toBe(true)
   })
 })

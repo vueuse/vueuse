@@ -1,7 +1,7 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { isVue3, ref, toRaw } from 'vue-demi'
+import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTwoTick, useSetup } from '../../.test'
+import { mount, nextTwoTick, useSetup } from '../../.test'
 import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
@@ -110,6 +110,17 @@ describe('useStorage', () => {
     const storedValue = storage.getItem(KEY)
 
     expect(store.value).toBe(null)
+    expect(storedValue).toBeFalsy()
+  })
+
+  it('undefined value', () => {
+    storage.removeItem(KEY)
+
+    const store = useStorage(KEY, undefined, storage)
+    const storedValue = storage.getItem(KEY)
+
+    expect(store.value).toBe(undefined)
+    expect(storage.getItem(KEY)).toBe(undefined)
     expect(storedValue).toBeFalsy()
   })
 
@@ -453,6 +464,21 @@ describe('useStorage', () => {
     expect(call[0].detail.key).toEqual(KEY)
     expect(call[0].detail.oldValue).toEqual('0')
     expect(call[0].detail.newValue).toEqual('1')
+
+    window.addEventListener(customStorageEventName, eventFn, { once: true })
+
+    data0.value = null
+    await nextTwoTick()
+
+    expect(data0.value).toBe(0)
+    expect(data1.value).toBe(0)
+    expect(eventFn).toHaveBeenCalledTimes(2)
+    const call2 = eventFn.mock.calls[1] as [CustomEvent]
+
+    expect(call2[0].detail.storageArea).toEqual(storage)
+    expect(call2[0].detail.key).toEqual(KEY)
+    expect(call2[0].detail.oldValue).toEqual('1')
+    expect(call2[0].detail.newValue).toEqual(null)
   })
 
   it('handle error', () => {
@@ -466,5 +492,39 @@ describe('useStorage', () => {
     expect(ref.value).toBe(0)
     ref.value = 1
     expect(console.error).toHaveBeenCalledWith(new Error('write item error'))
+  })
+
+  it('initOnMounted', async () => {
+    storage.setItem(KEY, 'random')
+
+    const vm = mount(defineComponent({
+      setup() {
+        const basicRef = useStorage(KEY, '', storage, { initOnMounted: true })
+        expect(basicRef.value).toBe('')
+
+        return {
+          basicRef,
+        }
+      },
+    }))
+
+    await nextTick()
+
+    expect(vm.basicRef).toBe('random')
+  })
+
+  it.each([
+    1,
+    'a',
+    [1, 2],
+    { a: 1 },
+    new Map([[1, 2]]),
+    new Set([1, 2]),
+  ])('should work in conjunction with defaults', (value) => {
+    const basicRef = useStorage(KEY, () => value, storage)
+    expect(basicRef.value).toEqual(value)
+    storage.removeItem(KEY)
+    const objectRef = useStorage(KEY, value, storage)
+    expect(objectRef.value).toEqual(value)
   })
 })

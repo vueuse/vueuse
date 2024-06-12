@@ -18,8 +18,7 @@ export interface UseSortableReturn {
    * @param name a Sortable.Options property.
    * @param value a value.
    */
-  option<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]): void
-  option<K extends keyof Sortable.Options>(name: K): Sortable.Options[K]
+  option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
 export type UseSortableOptions = Options & ConfigurableDocument
@@ -28,6 +27,7 @@ export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 export function useSortable<T>(el: MaybeRefOrGetter<HTMLElement | null | undefined>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
+
 /**
  * Wrapper for sortablejs.
  * @param el
@@ -39,7 +39,7 @@ export function useSortable<T>(
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
-  let sortable: Sortable
+  let sortable: Sortable | undefined
 
   const { document = defaultDocument, ...resetOptions } = options
 
@@ -51,12 +51,15 @@ export function useSortable<T>(
 
   const start = () => {
     const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    if (!target)
+    if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
 
-  const stop = () => sortable?.destroy()
+  const stop = () => {
+    sortable?.destroy()
+    sortable = undefined
+  }
 
   const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
     if (value !== undefined)
@@ -69,7 +72,11 @@ export function useSortable<T>(
 
   tryOnScopeDispose(stop)
 
-  return { stop, start, option }
+  return {
+    stop,
+    start,
+    option: option as UseSortableReturn['option'],
+  }
 }
 
 export function moveArrayElement<T>(

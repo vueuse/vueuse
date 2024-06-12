@@ -65,9 +65,9 @@ interface FileSystemWritableFileStream extends WritableStream {
  */
 interface FileSystemWritableFileStreamWrite {
   (data: string | BufferSource | Blob): Promise<void>
-  (options: { type: 'write'; position: number; data: string | BufferSource | Blob }): Promise<void>
-  (options: { type: 'seek'; position: number }): Promise<void>
-  (options: { type: 'truncate'; size: number }): Promise<void>
+  (options: { type: 'write', position: number, data: string | BufferSource | Blob }): Promise<void>
+  (options: { type: 'seek', position: number }): Promise<void>
+  (options: { type: 'truncate', size: number }): Promise<void>
 }
 
 /**
@@ -121,7 +121,6 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
       return
     const [handle] = await window.showOpenFilePicker({ ...toValue(options), ..._options })
     fileHandle.value = handle
-    await updateFile()
     await updateData()
   }
 
@@ -130,7 +129,6 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
       return
     fileHandle.value = await (window as FileSystemAccessWindow).showSaveFilePicker({ ...options, ..._options })
     data.value = undefined
-    await updateFile()
     await updateData()
   }
 
@@ -170,6 +168,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 
   async function updateData() {
+    await updateFile()
     const type = toValue(dataType)
     if (type === 'Text')
       data.value = await file.value?.text()

@@ -1,3 +1,5 @@
+import { getCurrentInstance } from 'vue-demi'
+
 export * from './is'
 export * from './filters'
 export * from './types'
@@ -80,7 +82,7 @@ export function increaseWithUnit(target: string | number, delta: number): string
 export function increaseWithUnit(target: string | number, delta: number): string | number {
   if (typeof target === 'number')
     return target + delta
-  const value = target.match(/^-?[0-9]+\.?[0-9]*/)?.[0] || ''
+  const value = target.match(/^-?\d+\.?\d*/)?.[0] || ''
   const unit = target.slice(value.length)
   const result = (Number.parseFloat(value) + delta)
   if (Number.isNaN(result))
@@ -112,4 +114,8 @@ export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[
 
 export function objectEntries<T extends object>(obj: T) {
   return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
+}
+
+export function getLifeCycleTarget(target?: any) {
+  return target || getCurrentInstance()
 }

@@ -23,6 +23,13 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * @default true
    */
   immediate?: boolean
+  /**
+   * The maximum frame per second to execute the function.
+   * Set to `undefined` to disable the limit.
+   *
+   * @default undefined
+   */
+  fpsLimit?: number
 }
 
 /**
@@ -35,10 +42,12 @@ export interface UseRafFnOptions extends ConfigurableWindow {
 export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
+    fpsLimit = undefined,
     window = defaultWindow,
   } = options
 
   const isActive = ref(false)
+  const intervalLimit = fpsLimit ? 1000 / fpsLimit : null
   let previousFrameTimestamp = 0
   let rafId: null | number = null
 
@@ -46,17 +55,25 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     if (!isActive.value || !window)
       return
 
-    const delta = timestamp - (previousFrameTimestamp || timestamp)
+    if (!previousFrameTimestamp)
+      previousFrameTimestamp = timestamp
 
-    fn({ delta, timestamp })
+    const delta = timestamp - previousFrameTimestamp
+
+    if (intervalLimit && delta < intervalLimit) {
+      rafId = window.requestAnimationFrame(loop)
+      return
+    }
 
     previousFrameTimestamp = timestamp
+    fn({ delta, timestamp })
     rafId = window.requestAnimationFrame(loop)
   }
 
   function resume() {
     if (!isActive.value && window) {
       isActive.value = true
+      previousFrameTimestamp = 0
       rafId = window.requestAnimationFrame(loop)
     }
   }

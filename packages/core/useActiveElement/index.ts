@@ -1,7 +1,8 @@
-import { computedWithControl } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
@@ -10,6 +11,12 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
    * @default true
    */
   deep?: boolean
+  /**
+   * Track active element when it's removed from the DOM
+   * Using a MutationObserver under the hood
+   * @default false
+   */
+  triggerOnRemoval?: boolean
 }
 
 /**
@@ -24,6 +31,7 @@ export function useActiveElement<T extends HTMLElement>(
   const {
     window = defaultWindow,
     deep = true,
+    triggerOnRemoval = false,
   } = options
   const document = options.document ?? window?.document
 
@@ -36,19 +44,34 @@ export function useActiveElement<T extends HTMLElement>(
     return element
   }
 
-  const activeElement = computedWithControl(
-    () => null,
-    () => getDeepActiveElement() as T | null | undefined,
-  )
+  const activeElement = ref<T | null | undefined>()
+  const trigger = () => {
+    activeElement.value = getDeepActiveElement() as T | null | undefined
+  }
 
   if (window) {
     useEventListener(window, 'blur', (event) => {
       if (event.relatedTarget !== null)
         return
-      activeElement.trigger()
+      trigger()
     }, true)
-    useEventListener(window, 'focus', activeElement.trigger, true)
+    useEventListener(window, 'focus', trigger, true)
   }
+
+  if (triggerOnRemoval) {
+    useMutationObserver(document as any, (mutations) => {
+      mutations.filter(m => m.removedNodes.length)
+        .map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
+          if (node === activeElement.value)
+            trigger()
+        })
+    }, {
+      childList: true,
+      subtree: true,
+    })
+  }
+
+  trigger()
 
   return activeElement
 }

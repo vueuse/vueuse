@@ -43,7 +43,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
 
   if (!window)
-    return
+    return noop
 
   // Fixes: https://github.com/vueuse/vueuse/issues/1520
   // How it works: https://stackoverflow.com/a/39712411
@@ -90,8 +90,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'click', listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      if (el)
-        shouldListen = !e.composedPath().includes(el) && !shouldIgnore(e)
+      shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
@@ -99,8 +98,9 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
         if (
           window.document.activeElement?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)
-        )
+        ) {
           handler(event as any)
+        }
       }, 0)
     }),
   ].filter(Boolean) as Fn[]

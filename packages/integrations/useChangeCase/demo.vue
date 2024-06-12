@@ -52,7 +52,7 @@ input {
 }
 
 .radio input:checked::after {
-  content: "";
+  content: '';
   @apply absolute inset-[3px] rounded-full bg-primary;
 }
 

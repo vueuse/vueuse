@@ -1,5 +1,5 @@
 import { hasOwn } from '@vueuse/shared'
-import { del, isVue2, reactive, set } from 'vue-demi'
+import { del, isVue2, set, shallowReactive } from 'vue-demi'
 
 type CacheKey = any
 
@@ -10,30 +10,30 @@ export interface UseMemoizeCache<Key, Value> {
   /**
    * Get value for key
    */
-  get(key: Key): Value | undefined
+  get: (key: Key) => Value | undefined
   /**
    * Set value for key
    */
-  set(key: Key, value: Value): void
+  set: (key: Key, value: Value) => void
   /**
    * Return flag if key exists
    */
-  has(key: Key): boolean
+  has: (key: Key) => boolean
   /**
    * Delete value for key
    */
-  delete(key: Key): void
+  delete: (key: Key) => void
   /**
    * Clear cache
    */
-  clear(): void
+  clear: () => void
 }
 
 /**
  * Fallback for Vue 2 not able to make a reactive Map
  */
 function getMapVue2Compat<Value>(): UseMemoizeCache<CacheKey, Value> {
-  const data: Record<CacheKey, Value> = reactive({})
+  const data: Record<CacheKey, Value> = shallowReactive({})
   return {
     get: key => data[key],
     set: (key, value) => set(data, key, value),
@@ -58,19 +58,19 @@ export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   /**
    * Call memoized function and update cache
    */
-  load(...args: Args): Result
+  load: (...args: Args) => Result
   /**
    * Delete cache of given arguments
    */
-  delete(...args: Args): void
+  delete: (...args: Args) => void
   /**
    * Clear cache
    */
-  clear(): void
+  clear: () => void
   /**
    * Generate cache key for given arguments
    */
-  generateKey(...args: Args): CacheKey
+  generateKey: (...args: Args) => CacheKey
   /**
    * Cache container
    */
@@ -91,11 +91,11 @@ export function useMemoize<Result, Args extends unknown[]>(
 ): UseMemoizeReturn<Result, Args> {
   const initCache = (): UseMemoizeCache<CacheKey, Result> => {
     if (options?.cache)
-      return reactive(options.cache)
+      return shallowReactive(options.cache)
     // Use fallback for Vue 2 not able to make a reactive Map
     if (isVue2)
       return getMapVue2Compat<Result>()
-    return reactive(new Map<CacheKey, Result>())
+    return shallowReactive(new Map<CacheKey, Result>())
   }
   const cache = initCache()
 

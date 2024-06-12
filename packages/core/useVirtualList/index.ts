@@ -8,7 +8,7 @@ type UseVirtualListItemSize = number | ((index: number) => number)
 export interface UseHorizontalVirtualListOptions extends UseVirtualListOptionsBase {
 
   /**
-   * item width, accept a pixel value or a function that returns the height
+   * item width, accept a pixel value or a function that returns the width
    *
    * @default 0
    */
@@ -98,7 +98,7 @@ type UseVirtualListRefArray<T> = Ref<UseVirtualListArray<T>>
 
 type UseVirtualListSource<T> = Ref<T[]> | ShallowRef<T[]>
 
-interface UseVirtualListState { start: number; end: number }
+interface UseVirtualListState { start: number, end: number }
 
 type RefState = Ref<UseVirtualListState>
 
@@ -117,7 +117,7 @@ function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResource
   const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
   const source = shallowRef(list)
 
-  const state: Ref<{ start: number; end: number }> = ref({ start: 0, end: 10 })
+  const state: Ref<{ start: number, end: number }> = ref({ start: 0, end: 10 })
 
   return { state, source, currentList, size, containerRef }
 }
@@ -201,8 +201,8 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
   }
 }
 
-function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<T[]>, calculateRange: () => void) {
-  watch([size.width, size.height, list], () => {
+function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
+  watch([size.width, size.height, list, containerRef], () => {
     calculateRange()
   })
 }
@@ -249,7 +249,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 
   const totalWidth = createComputedTotalSize(itemWidth, source)
 
-  useWatchForSizes(size, list, calculateRange)
+  useWatchForSizes(size, list, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('horizontal', calculateRange, getDistanceLeft, containerRef)
 
@@ -295,7 +295,7 @@ function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list:
 
   const totalHeight = createComputedTotalSize(itemHeight, source)
 
-  useWatchForSizes(size, list, calculateRange)
+  useWatchForSizes(size, list, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('vertical', calculateRange, getDistanceTop, containerRef)
 

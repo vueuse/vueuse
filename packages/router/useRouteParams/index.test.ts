@@ -90,6 +90,16 @@ describe('useRouteParams', () => {
     expect(lang.value).toBe('pt-BR')
   })
 
+  // docs @see https://router.vuejs.org/guide/essentials/route-matching-syntax.html#Optional-parameters
+  it('should return default value when use vue-router optional parameters', () => {
+    let route = getRoute({ page: '' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const page: Ref<any> = useRouteParams('page', 'default', { route, router })
+
+    expect(page.value).toBe('default')
+  })
+
   it('should reset state on scope dispose', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
@@ -144,6 +154,37 @@ describe('useRouteParams', () => {
     expect(lang.value).toBeNull()
   })
 
+  it('should not reset params to default if is disposed from other scope', async () => {
+    let route = getRoute()
+
+    const router = { replace: (r: any) => route = r } as any
+
+    const scopeA = effectScope()
+    const scopeB = effectScope()
+
+    route.params.page = 2
+
+    const defaultPage = 'DEFAULT_PAGE'
+    let page1: Ref<any> = ref(null)
+    await scopeA.run(async () => {
+      page1 = useRouteParams('page', defaultPage, { route, router })
+    })
+
+    let page2: Ref<any> = ref(null)
+    await scopeB.run(async () => {
+      page2 = useRouteParams('page', defaultPage, { route, router })
+    })
+
+    expect(page1.value).toBe(2)
+    expect(page2.value).toBe(2)
+
+    scopeA.stop()
+    await nextTick()
+
+    expect(page1.value).toBe(defaultPage)
+    expect(page2.value).toBe(2)
+  })
+
   it('should change the value when the route changes', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
@@ -171,7 +212,7 @@ describe('useRouteParams', () => {
     await nextTick()
 
     expect(page.value).toBe(1)
-    expect(route.params.page).toBe(1)
+    expect(route.params.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
   })
 

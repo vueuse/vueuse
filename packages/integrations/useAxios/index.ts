@@ -1,7 +1,7 @@
 import type { Ref, ShallowRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
 import { noop, until } from '@vueuse/shared'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import axios, { AxiosError } from 'axios'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
@@ -77,6 +77,13 @@ export interface UseAxiosOptions<T = any> {
   shallow?: boolean
 
   /**
+   * Abort previous request when a new request is made.
+   *
+   * @default true
+   */
+  abortPrevious?: boolean
+
+  /**
    * Callback when error is caught.
    */
   onError?: (e: unknown) => void
@@ -118,12 +125,14 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosR
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
   const argsPlaceholder = typeof url === 'string' ? 1 : 0
-  let defaultConfig: AxiosRequestConfig<D> = {}
-  let instance: AxiosInstance = axios
-  let options: UseAxiosOptions<T> = {
+  const defaultOptions: UseAxiosOptions<T> = {
     immediate: !!argsPlaceholder,
     shallow: true,
+    abortPrevious: true,
   }
+  let defaultConfig: AxiosRequestConfig<D> = {}
+  let instance: AxiosInstance = axios
+  let options: UseAxiosOptions<T> = defaultOptions
 
   const isAxiosInstance = (val: any) => !!val?.request
 
@@ -146,8 +155,9 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   if (
     (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
-  )
-    options = args[args.length - 1]
+  ) {
+    options = args[args.length - 1] || defaultOptions
+  }
 
   const {
     initialData,
@@ -165,15 +175,14 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const isAborted = ref(false)
   const error = shallowRef<unknown>()
 
-  const cancelTokenSource = axios.CancelToken.source
-  let cancelToken: CancelTokenSource = cancelTokenSource()
+  let abortController: AbortController = new AbortController()
 
   const abort = (message?: string) => {
     if (isFinished.value || !isLoading.value)
       return
 
-    cancelToken.cancel(message)
-    cancelToken = cancelTokenSource()
+    abortController.abort(message)
+    abortController = new AbortController()
     isAborted.value = true
     isLoading.value = false
     isFinished.value = false
@@ -217,14 +226,20 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       return promise
     }
     resetData()
-    abort()
+
+    if (options.abortPrevious !== false)
+      abort()
+
     loading(true)
 
     executeCounter += 1
     const currentExecuteCounter = executeCounter
+    isAborted.value = false
 
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, cancelToken: cancelToken.token })
+    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
       .then((r: any) => {
+        if (isAborted.value)
+          return
         response.value = r
         const result = r.data
         data.value = result

@@ -6,10 +6,10 @@ category: '@Integrations'
 
 Reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress).
 
-## Install 
+## Install
 
 ```bash
-npm i nprogress
+npm i nprogress@^0
 ```
 
 ## Usage
@@ -42,7 +42,7 @@ function done() {
 
 ### Customization
 
-Just edit [nprogress.css](http://ricostacruz.com/nprogress/nprogress.css) to your liking. Tip: you probably only want to find and replace occurrences of #29d.
+Just edit [nprogress.css](https://github.com/rstacruz/nprogress/blob/master/nprogress.css) to your liking. Tip: you probably only want to find and replace occurrences of #29d.
 
 You can [configure](https://github.com/rstacruz/nprogress#configuration) it by passing an object as a second parameter.
 
