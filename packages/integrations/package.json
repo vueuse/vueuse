@@ -93,18 +93,18 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.cts",
   "peerDependencies": {
-    "async-validator": "*",
-    "axios": "*",
-    "change-case": "*",
-    "drauu": "*",
-    "focus-trap": "*",
-    "fuse.js": "*",
-    "idb-keyval": "*",
-    "jwt-decode": "*",
-    "nprogress": "*",
-    "qrcode": "*",
-    "sortablejs": "*",
-    "universal-cookie": "*"
+    "async-validator": "^4",
+    "axios": "^1",
+    "change-case": "^4",
+    "drauu": "^0.3",
+    "focus-trap": "^7",
+    "fuse.js": "^6",
+    "idb-keyval": "^6",
+    "jwt-decode": "^3",
+    "nprogress": "^0.2",
+    "qrcode": "^1.5",
+    "sortablejs": "^1",
+    "universal-cookie": "^6"
   },
   "peerDependenciesMeta": {
     "async-validator": {
