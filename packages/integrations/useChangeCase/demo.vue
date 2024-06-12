@@ -1,32 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, shallowReadonly } from 'vue-demi'
+import { ref } from 'vue-demi'
+import * as ChangeCase from 'change-case'
 import { useChangeCase } from '.'
 import type { ChangeCaseType } from '.'
 
-const arr: Array<ChangeCaseType> = [
-  'camelCase',
-  'capitalCase',
-  'constantCase',
-  'dotCase',
-  'headerCase',
-  'noCase',
-  'paramCase',
-  'pascalCase',
-  'pathCase',
-  'sentenceCase',
-  'snakeCase',
-]
-const types = shallowReadonly(arr)
+const transforms: any = Object.keys(ChangeCase).filter(v => v.endsWith('Case'))
 const input = ref('helloWorld')
-const type = ref<ChangeCaseType>(arr[0])
-const changeCase = computed(() => {
-  return useChangeCase(input, type.value)
-})
+const type = ref<ChangeCaseType>(transforms[0])
+const changeCase = useChangeCase(input, type)
 </script>
 
 <template>
   <div>
-    <label v-for="item in types" :key="item" class="radio">
+    <label v-for="item in transforms" :key="item" class="radio">
       <input v-model="type" :value="item" type="radio">
       <span>{{ item }}</span>
     </label>
@@ -34,9 +20,6 @@ const changeCase = computed(() => {
   <input v-model="input" type="text">
   <pre lang="yaml">{{ changeCase }}</pre>
 </template>
-
-<style scoped>
-</style>
 
 <style scoped lang="postcss">
 input {
@@ -46,7 +29,7 @@ input {
 }
 
 .radio {
-  width: 7rem;
+  width: 9rem;
   @apply ml-2;
   @apply inline-flex items-center my-auto cursor-pointer select-none;
 }

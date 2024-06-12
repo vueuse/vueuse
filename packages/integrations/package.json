@@ -95,7 +95,7 @@
   "peerDependencies": {
     "async-validator": "^4",
     "axios": "^1",
-    "change-case": "^4",
+    "change-case": "^5",
     "drauu": "^0.3",
     "focus-trap": "^7",
     "fuse.js": "^7",
@@ -155,7 +155,7 @@
     "@types/sortablejs": "^1.15.8",
     "async-validator": "^4.2.5",
     "axios": "^1.7.2",
-    "change-case": "^4.1.2",
+    "change-case": "^5.3.0",
     "drauu": "^0.3.7",
     "focus-trap": "^7.5.4",
     "fuse.js": "^7.0.0",
