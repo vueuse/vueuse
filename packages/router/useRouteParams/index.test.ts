@@ -90,6 +90,16 @@ describe('useRouteParams', () => {
     expect(lang.value).toBe('pt-BR')
   })
 
+  // docs @see https://router.vuejs.org/guide/essentials/route-matching-syntax.html#Optional-parameters
+  it('should return default value when use vue-router optional parameters', () => {
+    let route = getRoute({ page: '' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const page: Ref<any> = useRouteParams('page', 'default', { route, router })
+
+    expect(page.value).toBe('default')
+  })
+
   it('should reset state on scope dispose', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any

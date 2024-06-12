@@ -144,6 +144,14 @@ export function useScroll(
       left: toValue(_x) ?? x.value,
       behavior: toValue(behavior),
     })
+    const scrollContainer
+      = (_element as Window)?.document?.documentElement
+      || (_element as Document)?.documentElement
+      || (_element as Element)
+    if (x != null)
+      internalX.value = scrollContainer.scrollLeft
+    if (y != null)
+      internalY.value = scrollContainer.scrollTop
   }
 
   const isScrolling = ref(false)

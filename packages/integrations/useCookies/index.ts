@@ -51,8 +51,9 @@ export function useCookies(
         newCookies,
         previousCookies,
       )
-    )
+    ) {
       touches.value++
+    }
 
     previousCookies = newCookies
   }

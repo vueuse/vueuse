@@ -108,7 +108,20 @@ export function useWebNotification(
 
   const defaultWebNotificationOptions: WebNotificationOptions = options
 
-  const isSupported = useSupported(() => !!window && 'Notification' in window)
+  const isSupported = useSupported(() => {
+    if (!window || !('Notification' in window))
+      return false
+    // https://stackoverflow.com/questions/29774836/failed-to-construct-notification-illegal-constructor/29895431
+    // https://issues.chromium.org/issues/40415865
+    try {
+      // eslint-disable-next-line no-new
+      new Notification('')
+    }
+    catch (e) {
+      return false
+    }
+    return true
+  })
 
   const permissionGranted = ref(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
 
