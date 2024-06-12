@@ -9,7 +9,7 @@ Wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode).
 ## Install
 
 ```bash
-npm install jwt-decode@^3
+npm install jwt-decode@^4
 ```
 
 ## Usage
