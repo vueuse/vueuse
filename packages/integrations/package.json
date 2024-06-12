@@ -95,7 +95,7 @@
   "peerDependencies": {
     "async-validator": "^4",
     "axios": "^1",
-    "change-case": "^4",
+    "change-case": "^5",
     "drauu": "^0.3",
     "focus-trap": "^7",
     "fuse.js": "^6",
