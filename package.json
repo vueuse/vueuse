@@ -37,7 +37,7 @@
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.21.0",
+    "@antfu/eslint-config": "^2.21.1",
     "@antfu/ni": "^0.21.12",
     "@iconify/json": "^2.2.218",
     "@rollup/plugin-json": "^6.1.0",
@@ -78,7 +78,7 @@
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
     "jsdom": "^24.1.0",
-    "lint-staged": "^15.2.5",
+    "lint-staged": "^15.2.6",
     "markdown-table": "^3.0.3",
     "md5": "^2.3.0",
     "msw": "^2.3.0",
