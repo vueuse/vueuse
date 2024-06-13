@@ -281,4 +281,22 @@ describe('useRouteQuery', () => {
 
     expect(route.query.search).toBeUndefined()
   })
+
+  it('should reset value when default function value', async () => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', () => 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = 'default'
+
+    await nextTick()
+
+    expect(route.query.search).toBeUndefined()
+  })
 })
