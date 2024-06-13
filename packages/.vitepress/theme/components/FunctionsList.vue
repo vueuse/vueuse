@@ -5,8 +5,8 @@ import Fuse from 'fuse.js'
 import { useEventListener, useUrlSearchParams } from '@vueuse/core'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
 
-const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
-const addonCategories = categoryNames.filter(i => i.startsWith('@'))
+const coreCategories = categoryNames.filter(i => i[0] !== '@')
+const addonCategories = categoryNames.filter(i => i[0] === '@')
 const sortMethods = ['category', 'name', 'updated']
 
 useEventListener('click', (e) => {

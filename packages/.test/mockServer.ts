@@ -50,7 +50,7 @@ const server = setupServer(
       status = Number(qs.get('status'))
 
     const text = await request.text()
-    const json = text.startsWith('{') ? JSON.parse(text) : null
+    const json = text[0] === '{' ? JSON.parse(text) : null
 
     // Echo back the request payload
     if (json)

@@ -7,9 +7,9 @@ export function getCategories(functions: VueUseFunction[]): string[] {
       .map(i => i.category)
       .filter(Boolean),
   ).sort(
-    (a, b) => (a.startsWith('@') && !b.startsWith('@'))
+    (a, b) => (a[0] === '@' && b[0] !== '@')
       ? 1
-      : (b.startsWith('@') && !a.startsWith('@'))
+      : (b[0] === '@' && a[0] !== '@')
           ? -1
           : a.localeCompare(b),
   )
