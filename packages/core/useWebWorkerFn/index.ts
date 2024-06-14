@@ -47,14 +47,14 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
 
   const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  let { promise, resolve, reject } = Promise.withResolvers<ReturnType<T>>()
   const timeoutId = ref<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url && window) {
       worker.value.terminate()
       URL.revokeObjectURL(worker.value._url)
-      promise.value = {}
+      promise = null as any
       worker.value = undefined
       window.clearTimeout(timeoutId.value)
       workerStatus.value = status
@@ -71,7 +71,6 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     newWorker._url = blobUrl
 
     newWorker.onmessage = (e: MessageEvent) => {
-      const { resolve = () => { }, reject = () => { } } = promise.value
       const [status, result] = e.data as [WebWorkerStatus, ReturnType<T>]
 
       switch (status) {
@@ -87,7 +86,6 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     }
 
     newWorker.onerror = (e: ErrorEvent) => {
-      const { reject = () => { } } = promise.value
       e.preventDefault()
       reject(e)
       workerTerminate('ERROR')
@@ -102,15 +100,12 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     return newWorker
   }
 
-  const callWorker = (...fnArgs: Parameters<T>) => new Promise<ReturnType<T>>((resolve, reject) => {
-    promise.value = {
-      resolve,
-      reject,
-    }
+  const callWorker = (...fnArgs: Parameters<T>) => {
     worker.value && worker.value.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
-  })
+    return promise
+  }
 
   const workerFn = (...fnArgs: Parameters<T>) => {
     if (workerStatus.value === 'RUNNING') {
