@@ -4,6 +4,7 @@ import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { createWithResolvers } from '../createWithResolvers'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
 export type WebWorkerStatus =
@@ -47,7 +48,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
 
   const worker = ref<(Worker & { _url?: string }) | undefined>()
   const workerStatus = ref<WebWorkerStatus>('PENDING')
-  let { promise, resolve, reject } = Promise.withResolvers<ReturnType<T>>()
+  let { promise, resolve, reject } = createWithResolvers<ReturnType<T>>()
   const timeoutId = ref<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
