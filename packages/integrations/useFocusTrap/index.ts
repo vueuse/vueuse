@@ -1,4 +1,4 @@
-import type { Fn, MaybeComputedElementRef } from '@vueuse/core'
+import type { Arrayable, Fn, MaybeComputedElementRef } from '@vueuse/core'
 import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import { type MaybeRefOrGetter, notNullish, toValue } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
@@ -61,7 +61,7 @@ export interface UseFocusTrapReturn {
  * @see https://vueuse.org/useFocusTrap
  */
 export function useFocusTrap(
-  target: string | MaybeComputedElementRef | (MaybeComputedElementRef | string)[] | MaybeRefOrGetter<(MaybeComputedElementRef | string)[]>,
+  target: Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>,
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
@@ -90,7 +90,10 @@ export function useFocusTrap(
   const targets = computed(() => {
     const _targets = toValue(target)
     return (Array.isArray(_targets) ? _targets : [_targets])
-      .map(el => typeof el === 'string' ? el : unrefElement(el))
+      .map((el) => {
+        const _el = toValue(el)
+        return typeof _el === 'string' ? _el : unrefElement(_el)
+      })
       .filter(notNullish)
   })
 
