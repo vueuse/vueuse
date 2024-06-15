@@ -19,6 +19,15 @@ const {
 } = useDevicesList()
 ```
 
+## Requesting permissions
+```js
+const {
+  ensurePermissions,
+  permissionGranted,
+} = useDevicesList()
+
+await ensurePermissions()
+console.log(permissionsGranted.value)
 # Component
 
 ```vue
