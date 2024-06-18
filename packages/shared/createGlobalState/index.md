@@ -10,7 +10,7 @@ Keep states in the global scope to be reusable across Vue instances.
 ## Usage
 
 ### Without Persistence (Store in Memory)
-
+1
 ```js
 // store.js
 import { ref } from 'vue'
