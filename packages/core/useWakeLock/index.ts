@@ -43,7 +43,7 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     })
 
     whenever(
-      () => documentVisibility.value === 'visible' && requestedType.value,
+      () => documentVisibility.value === 'visible' && document?.visibilityState === 'visible' && requestedType.value,
       (type) => {
         requestedType.value = false
         forceRequest(type)
