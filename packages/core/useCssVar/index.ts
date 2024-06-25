@@ -55,13 +55,5 @@ export function useCssVar(
     { immediate: true },
   )
 
-  watch(
-    variable,
-    (val) => {
-      if (elRef.value?.style)
-        elRef.value.style.setProperty(toValue(prop), val)
-    },
-  )
-
   return variable
 }
