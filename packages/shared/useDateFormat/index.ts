@@ -10,7 +10,7 @@ export interface UseDateFormatOptions {
    *
    * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument).
    */
-  locales?: Intl.LocalesArgument
+  locales?: MaybeRefOrGetter<Intl.LocalesArgument>
 
   /**
    * A custom function to re-modify the way to display meridiem
@@ -53,8 +53,8 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     M: () => month + 1,
     Mo: () => formatOrdinal(month + 1),
     MM: () => `${month + 1}`.padStart(2, '0'),
-    MMM: () => date.toLocaleDateString(options.locales, { month: 'short' }),
-    MMMM: () => date.toLocaleDateString(options.locales, { month: 'long' }),
+    MMM: () => date.toLocaleDateString(toValue(options.locales), { month: 'short' }),
+    MMMM: () => date.toLocaleDateString(toValue(options.locales), { month: 'long' }),
     D: () => String(days),
     Do: () => formatOrdinal(days),
     DD: () => `${days}`.padStart(2, '0'),
@@ -72,9 +72,9 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     ss: () => `${seconds}`.padStart(2, '0'),
     SSS: () => `${milliseconds}`.padStart(3, '0'),
     d: () => day,
-    dd: () => date.toLocaleDateString(options.locales, { weekday: 'narrow' }),
-    ddd: () => date.toLocaleDateString(options.locales, { weekday: 'short' }),
-    dddd: () => date.toLocaleDateString(options.locales, { weekday: 'long' }),
+    dd: () => date.toLocaleDateString(toValue(options.locales), { weekday: 'narrow' }),
+    ddd: () => date.toLocaleDateString(toValue(options.locales), { weekday: 'short' }),
+    dddd: () => date.toLocaleDateString(toValue(options.locales), { weekday: 'long' }),
     A: () => meridiem(hours, minutes),
     AA: () => meridiem(hours, minutes, false, true),
     a: () => meridiem(hours, minutes, true),
