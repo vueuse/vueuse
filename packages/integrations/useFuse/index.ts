@@ -1,10 +1,11 @@
+import type { FuseResult, IFuseOptions } from 'fuse.js'
 import Fuse from 'fuse.js'
 import type { ComputedRef } from 'vue-demi'
 import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { toValue } from '@vueuse/shared'
 
-export type FuseOptions<T> = Fuse.IFuseOptions<T>
+export type FuseOptions<T> = IFuseOptions<T>
 export interface UseFuseOptions<T> {
   fuseOptions?: FuseOptions<T>
   resultLimit?: number
@@ -37,7 +38,7 @@ export function useFuse<DataItem>(
     { deep: true },
   )
 
-  const results: ComputedRef<Fuse.FuseResult<DataItem>[]> = computed(() => {
+  const results: ComputedRef<FuseResult<DataItem>[]> = computed(() => {
     const resolved = toValue(options)
     // This will also be recomputed when `data` changes, as it causes a change
     // to the Fuse instance, which is tracked here.
