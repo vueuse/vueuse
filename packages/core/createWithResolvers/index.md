@@ -4,9 +4,11 @@ category: Utilities
 
 # createWithResolvers
 
-Compatible with the latest Promise.withResolvers() static method.
+Convenient for executing `Promise` resolution and rejection functions in different scopes
 
-Convenience resolve and reject functions are now in the same scope as the Promise itself, rather than being created and used once in the executor.
+::: tip
+This method is equivalent to [Promise.withResolvers()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers) but it has stronger compatibility
+:::
 
 ## Usage
 
@@ -16,13 +18,16 @@ import { createWithResolvers } from '@vueuse/core'
 
 const { promise, resolve, reject } = createWithResolvers
 
-const msg = ref('pending')
+promise
+  .then((res) => {
+    console.log(res) // resolved
+  })
+  .catch((err) => {
+    console.log(err) // rejected
+  })
 
-promise.then((res) => {
-  console.log(res) // resolved
-})
-
-setTimeout(() => {
-  resolve('resolved')
-}, 1000)
+Promise.race([
+  setTimeout(() => resolve('resolved'), Math.ceil(Math.random() * 1000)),
+  setTimeout(() => reject('rejected'), Math.ceil(Math.random() * 1000)),
+])
 ```
