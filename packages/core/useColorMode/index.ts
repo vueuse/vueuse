@@ -152,13 +152,9 @@ export function useColorMode<T extends string = BasicColorMode>(
       if (!el)
         return
 
-      let style: HTMLStyleElement | undefined
-      if (disableTransition) {
-        style = window!.document.createElement('style')
-        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
-        style.appendChild(document.createTextNode(styleString))
-        window!.document.head.appendChild(style)
-      }
+      const classesToAdd: string[] = []
+      const classesToRemove: string[] = []
+      let attributeToChange: { key: string, value: string } | null = null
 
       if (attribute === 'class') {
         const current = value.split(/\s/g)
@@ -167,13 +163,31 @@ export function useColorMode<T extends string = BasicColorMode>(
           .filter(Boolean)
           .forEach((v) => {
             if (current.includes(v))
-              el.classList.add(v)
+              classesToAdd.push(v)
             else
-              el.classList.remove(v)
+              classesToRemove.push(v)
           })
       }
       else {
-        el.setAttribute(attribute, value)
+        attributeToChange = { key: attribute, value }
+      }
+
+      if (classesToAdd.length === 0 && classesToRemove.length === 0 && attributeToChange === null)
+        // Nothing changed so we can avoid reflowing the page
+        return
+
+      let style: HTMLStyleElement | undefined
+      if (disableTransition) {
+        style = window!.document.createElement('style')
+        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+        style.appendChild(document.createTextNode(styleString))
+        window!.document.head.appendChild(style)
+      }
+
+      classesToAdd.forEach(c => el.classList.add(c))
+      classesToRemove.forEach(c => el.classList.remove(c))
+      if (attributeToChange) {
+        el.setAttribute(attributeToChange.key, attributeToChange.value)
       }
 
       if (disableTransition) {
