@@ -123,7 +123,10 @@ export function useWebNotification(
       }
     }
     catch (e) {
-      return false
+      // Android Chrome: Uncaught TypeError: Failed to construct 'Notification': Illegal constructor. Use ServiceWorkerRegistration.showNotification() instead.
+      // @ts-expect-error catch TypeError
+      if (e.name === 'TypeError')
+        return false
     }
     return true
   })
