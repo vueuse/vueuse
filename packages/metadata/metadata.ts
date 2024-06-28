@@ -24,11 +24,11 @@ export const categories = _categories as PackageIndexes['categories']
 export const functionNames = functions.map(f => f.name)
 export const categoryNames = Array.from(categories)
   .sort((a, b) => categoriesOrder.indexOf(a) - categoriesOrder.indexOf(b))
-  .sort((a, b) => a.startsWith('@') ? 1 : b.startsWith('@') ? -1 : 0)
+  .sort((a, b) => a[0] === '@' ? 1 : b[0] === '@' ? -1 : 0)
 export const coreCategoryNames = categoryNames
-  .filter(f => !f.startsWith('@'))
+  .filter(f => f[0] !== '@')
 export const addonCategoryNames = categoryNames
-  .filter(f => f.startsWith('@'))
+  .filter(f => f[0] === '@')
 
 export function getFunction(name: string) {
   return metadata.functions.find(f => f.name === name)

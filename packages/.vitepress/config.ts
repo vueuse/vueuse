@@ -254,7 +254,7 @@ function getFunctionsSideBar() {
   const links = []
 
   for (const name of categoryNames) {
-    if (name.startsWith('_'))
+    if (name[0] === '_')
       continue
 
     const functions = metadata.functions.filter(i => i.category === name && !i.internal)
@@ -265,7 +265,7 @@ function getFunctionsSideBar() {
         text: i.name,
         link: i.external || `/${i.package}/${i.name}/`,
       })),
-      link: name.startsWith('@')
+      link: name[0] === '@'
         ? (functions[0].external || `/${functions[0].package}/README`)
         : undefined,
     })

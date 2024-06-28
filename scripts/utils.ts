@@ -110,7 +110,7 @@ export function stringifyFunctions(functions: VueUseFunction[], title = true) {
   const categories = getCategories(functions)
 
   for (const category of categories) {
-    if (category.startsWith('_'))
+    if (category[0] === '_')
       continue
 
     if (title)
