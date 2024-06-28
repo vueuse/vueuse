@@ -111,6 +111,9 @@ export function useWebNotification(
   const isSupported = useSupported(() => {
     if (!window || !('Notification' in window))
       return false
+    if (Notification.permission === 'granted')
+      return true
+
     // https://stackoverflow.com/questions/29774836/failed-to-construct-notification-illegal-constructor/29895431
     // https://issues.chromium.org/issues/40415865
     try {
