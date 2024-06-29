@@ -29,6 +29,13 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
    * @default 'en-US'
    */
   lang?: MaybeRefOrGetter<string>
+  /**
+   * A number representing the maximum returned alternatives for each result.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/maxAlternatives
+   * @default 1
+   */
+  maxAlternatives?: number
 }
 
 /**
@@ -42,6 +49,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const {
     interimResults = true,
     continuous = true,
+    maxAlternatives = 1,
     window = defaultWindow,
   } = options
 
@@ -74,6 +82,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.continuous = continuous
     recognition.interimResults = interimResults
     recognition.lang = toValue(lang)
+    recognition.maxAlternatives = maxAlternatives
 
     recognition.onstart = () => {
       isFinal.value = false
