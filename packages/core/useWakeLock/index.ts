@@ -1,8 +1,10 @@
-import { ref } from 'vue-demi'
+import { computed, ref, shallowRef } from 'vue-demi'
+import { whenever } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
 import { defaultDocument, defaultNavigator } from '../_configurable'
+import { useDocumentVisibility } from '../useDocumentVisibility'
 
 type WakeLockType = 'screen'
 
@@ -29,42 +31,53 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     navigator = defaultNavigator,
     document = defaultDocument,
   } = options
-  let wakeLock: WakeLockSentinel | null
+  const requestedType = ref<WakeLockType | false>(false)
+  const sentinel = shallowRef<WakeLockSentinel | null>(null)
+  const documentVisibility = useDocumentVisibility({ document })
   const isSupported = useSupported(() => navigator && 'wakeLock' in navigator)
-  const isActive = ref(false)
+  const isActive = computed(() => !!sentinel.value && documentVisibility.value === 'visible')
 
-  async function onVisibilityChange() {
-    if (!isSupported.value || !wakeLock)
-      return
+  if (isSupported.value) {
+    useEventListener(sentinel, 'release', () => {
+      requestedType.value = sentinel.value?.type ?? false
+    })
 
-    if (document && document.visibilityState === 'visible')
-      wakeLock = await (navigator as NavigatorWithWakeLock).wakeLock.request('screen')
-
-    isActive.value = !wakeLock.released
+    whenever(
+      () => documentVisibility.value === 'visible' && document?.visibilityState === 'visible' && requestedType.value,
+      (type) => {
+        requestedType.value = false
+        forceRequest(type)
+      },
+    )
   }
 
-  if (document)
-    useEventListener(document, 'visibilitychange', onVisibilityChange, { passive: true })
+  async function forceRequest(type: WakeLockType) {
+    await sentinel.value?.release()
+    sentinel.value = isSupported.value
+      ? await (navigator as NavigatorWithWakeLock).wakeLock.request(type)
+      : null
+  }
 
   async function request(type: WakeLockType) {
-    if (!isSupported.value)
-      return
-    wakeLock = await (navigator as NavigatorWithWakeLock).wakeLock.request(type)
-    isActive.value = !wakeLock.released
+    if (documentVisibility.value === 'visible')
+      await forceRequest(type)
+    else
+      requestedType.value = type
   }
 
   async function release() {
-    if (!isSupported.value || !wakeLock)
-      return
-    await wakeLock.release()
-    isActive.value = !wakeLock.released
-    wakeLock = null
+    requestedType.value = false
+    const s = sentinel.value
+    sentinel.value = null
+    await s?.release()
   }
 
   return {
+    sentinel,
     isSupported,
     isActive,
     request,
+    forceRequest,
     release,
   }
 }
