@@ -30,4 +30,26 @@ useResizeObserver(el, (entries) => {
 </template>
 ```
 
+## Directive Usage
+
+```vue
+<script setup lang="ts">
+import { vResizeObserver } from '@vueuse/components'
+
+const text = ref('')
+
+function onResizeObserver(entries) {
+  const [entry] = entries
+  const { width, height } = entry.contentRect
+  text.value = `width: ${width}, height: ${height}`
+}
+</script>
+
+<template>
+  <div v-resize-observer="onResizeObserver">
+    {{ text }}
+  </div>
+</template>
+```
+
 [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
