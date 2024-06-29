@@ -5,7 +5,7 @@ import Controller from './Controller.vue'
 
 const props = defineProps<{ gamepad: Gamepad }>()
 
-const supportsVibration = computed(() => props.gamepad.hapticActuators.length > 0)
+const supportsVibration = computed(() => props.gamepad?.hapticActuators?.length > 0)
 function vibrate() {
   if (supportsVibration.value) {
     const actuator: any = props.gamepad.hapticActuators[0]
