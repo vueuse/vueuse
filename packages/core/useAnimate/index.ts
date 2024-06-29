@@ -238,9 +238,7 @@ export function useAnimate(
     }
   }, { deep: true })
 
-  tryOnMounted(() => {
-    nextTick(() => update(true))
-  })
+  tryOnMounted(() => update(true), false)
 
   tryOnScopeDispose(cancel)
 
