@@ -20,6 +20,13 @@ watchEffect(() => {
   if (video.value)
     video.value.srcObject = stream.value!
 })
+
+watch(() => currentCamera.value, () => {
+  enabled.value = false
+  setTimeout(() => {
+    enabled.value = true
+  }, 100)
+})
 </script>
 
 <template>
