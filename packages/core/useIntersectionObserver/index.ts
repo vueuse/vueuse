@@ -28,6 +28,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
 
   /**
    * Either a single number or an array of numbers between 0.0 and 1.
+   * @default 0
    */
   threshold?: number | number[]
 }
@@ -53,7 +54,7 @@ export function useIntersectionObserver(
   const {
     root,
     rootMargin = '0px',
-    threshold = 0.1,
+    threshold = 0,
     window = defaultWindow,
     immediate = true,
   } = options
