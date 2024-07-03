@@ -121,11 +121,11 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   initOnMounted?: boolean
 }
 
-export function useStorage(key: string, defaults?: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, defaults?: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, defaults?: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, defaults?: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, defaults?: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage(key: string, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: string, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: string, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: string, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: string, defaults?: MaybeRefOrGetter<null | undefined>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
