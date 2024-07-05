@@ -97,6 +97,13 @@ export interface UseDraggableOptions {
    * @default false
    */
   disabled?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Mouse buttons that are allowed to trigger drag events.
+   *
+   * @default [0]
+   */
+  buttons?: number[]
 }
 
 /**
@@ -123,6 +130,7 @@ export function useDraggable(
     draggingElement = defaultWindow,
     containerElement,
     handle: draggingHandle = target,
+    buttons = [0],
   } = options
 
   const position = ref<Position>(
@@ -145,7 +153,7 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
-    if (e.button !== 0)
+    if (!buttons.includes(e.button))
       return
     if (toValue(options.disabled) || !filterEvent(e))
       return
