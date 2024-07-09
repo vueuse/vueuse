@@ -112,8 +112,8 @@ export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[
   })) as Omit<O, T>
 }
 
-export function objectEntries<T extends object>(obj: T) {
-  return Object.entries(obj) as Array<[keyof T, T[keyof T]]>
+export function objectEntries<T>(obj: T) {
+  return Object.entries(obj as object) as Array<[keyof T, T[keyof T]]>
 }
 
 export function getLifeCycleTarget(target?: any) {
