@@ -60,8 +60,8 @@ export function useMutationObserver(
   }
 
   const stop = () => {
-    cleanup()
     stopWatch()
+    cleanup()
   }
 
   tryOnScopeDispose(stop)
