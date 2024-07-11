@@ -41,13 +41,13 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
         return
       }
       const childEls = Array.from(el.children).filter(i => i instanceof HTMLElement)
-      useResizeObserver([el, ...childEls], (entries, observer) => {
+      useResizeObserver([el, ...childEls] as HTMLElement[], (entries, observer) => {
         update(el);
         (onUpdated as ResizeObserverCallback)?.(entries, observer)
       })
       if (observeMutation) {
         useMutationObserver(
-          [el, ...childEls],
+          [el, ...childEls] as HTMLElement[],
           (entries, observer) => {
             update(el);
             (onUpdated as MutationCallback)?.(entries, observer)
