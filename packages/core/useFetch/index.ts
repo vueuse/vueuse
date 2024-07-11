@@ -439,15 +439,16 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const execute = async (throwOnFailed = false) => {
     abort()
 
+    loading(true)
     // cache process
     const cacheKey = options.cache && options.cacheResolve?.({ url: toValue(url), ...config, payload: toValue(config.payload) })
     const cacheData = cacheKey && useFetch._cache.get(cacheKey)?.deref()
     if (cacheData && (!cacheExpiration || (Date.now() - cacheData.timestamp < cacheExpiration))) {
       data.value = cacheData.data
+      loading(false)
       return
     }
 
-    loading(true)
     error.value = null
     statusCode.value = null
     aborted.value = false
