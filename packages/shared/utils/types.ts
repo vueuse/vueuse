@@ -1,4 +1,6 @@
-import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, MaybeRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
+
+export type { MaybeRef, MaybeRefOrGetter } from 'vue-demi'
 
 /**
  * Void function
@@ -17,24 +19,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
   get value(): T
   set value(value: T | null | undefined)
 }
-
-/**
- * Maybe it's a ref, or a plain value
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeRef<T> = T | Ref<T>
-
-/**
- * Maybe it's a ref, or a plain value, or a getter function
- *
- * ```ts
- * type MaybeRefOrGetter<T> = (() => T) | T | Ref<T> | ComputedRef<T>
- * ```
- */
-export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T)
 
 /**
  * Maybe it's a computed ref, or a readonly value, or a getter function
