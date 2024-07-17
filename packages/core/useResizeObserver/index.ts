@@ -73,8 +73,10 @@ export function useResizeObserver(
       cleanup()
       if (isSupported.value && window) {
         observer = new ResizeObserver(callback)
-        for (const _el of els)
-          _el && observer!.observe(_el, observerOptions)
+        for (const _el of els) {
+          if (_el)
+            observer!.observe(_el, observerOptions)
+        }
       }
     },
     { immediate: true, flush: 'post' },

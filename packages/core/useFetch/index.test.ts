@@ -17,7 +17,7 @@ let onFetchResponseSpy = vi.fn()
 let onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
-  return fetchSpy.mock.calls[idx][1]!.headers
+  return (fetchSpy.mock.calls[idx][1]! as any).headers
 }
 
 // The tests does not run properly below node 18
