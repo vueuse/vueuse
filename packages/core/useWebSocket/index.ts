@@ -256,9 +256,9 @@ export function useWebSocket<Data = any>(
         resetHeartbeat()
         const {
           message = DEFAULT_PING_MESSAGE,
-          responseMessage,
+          responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === (responseMessage === undefined ? message : responseMessage))
+        if (e.data === responseMessage)
           return
       }
 
