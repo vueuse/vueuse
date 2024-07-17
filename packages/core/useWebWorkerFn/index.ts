@@ -107,7 +107,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       resolve,
       reject,
     }
-    worker.value && worker.value.postMessage([[...fnArgs]])
+    worker.value?.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
   })

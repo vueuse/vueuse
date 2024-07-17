@@ -20,8 +20,8 @@ const foo = { name: 'foo' }
 const bar = 1024
 
 const obj = makeDestructurable(
-  { foo, bar },
-  [foo, bar],
+  { foo, bar } as const,
+  [foo, bar] as const,
 )
 ```
 

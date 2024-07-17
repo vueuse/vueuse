@@ -155,8 +155,9 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   if (
     (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
     || args.length === 3 + argsPlaceholder
-  )
+  ) {
     options = args[args.length - 1] || defaultOptions
+  }
 
   const {
     initialData,

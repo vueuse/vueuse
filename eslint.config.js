@@ -53,6 +53,7 @@ export default antfu(
       'import/no-named-as-default-member': 'off',
       'node/prefer-global/process': 'off',
       'ts/unified-signatures': 'off',
+      'ts/no-unsafe-function-type': 'off',
       'ts/no-dynamic-delete': 'off',
     },
   },

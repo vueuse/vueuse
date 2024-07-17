@@ -11,14 +11,17 @@ export function retry(assertion: Function, { interval = 1, timeout = 100 } = {})
           resolve(assertion())
         }
         catch (err) {
-          Date.now() - startTime > timeout ? reject(err) : tryAgain()
+          if (Date.now() - startTime > timeout)
+            reject(err)
+          else
+            tryAgain()
         }
       }, interval)
       try {
         // If useFakeTimers hasn't been called, this will throw
         vi.advanceTimersByTime(interval)
       }
-      catch (e) { /* Expected to throw */ }
+      catch { /* Expected to throw */ }
     }
 
     tryAgain()
