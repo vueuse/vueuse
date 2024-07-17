@@ -8,7 +8,7 @@ type BindingValueFunction = IntersectionObserverCallback
 type BindingValueArray = [BindingValueFunction, UseIntersectionObserverOptions]
 
 export const vIntersectionObserver: ObjectDirective<
-HTMLElement,
+  HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {

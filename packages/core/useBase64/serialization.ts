@@ -6,7 +6,7 @@ const defaults = {
   null: () => '',
 }
 
-export function getDefaultSerialization<T extends Object>(target: T) {
+export function getDefaultSerialization<T extends object>(target: T) {
   if (!target)
     return defaults.null
 

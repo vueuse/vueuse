@@ -100,7 +100,8 @@ export function useScrollLock(
     const el = resolveElement(toValue(element))
     if (!el || !isLocked.value)
       return
-    isIOS && stopTouchMoveListener?.()
+    if (isIOS)
+      stopTouchMoveListener?.()
     el.style.overflow = initialOverflow
     elInitialOverflow.delete(el as HTMLElement)
     isLocked.value = false
