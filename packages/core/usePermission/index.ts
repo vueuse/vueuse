@@ -21,7 +21,8 @@ type DescriptorNamePolyfill =
   'payment-handler' |
   'persistent-storage' |
   'push' |
-  'speaker'
+  'speaker' |
+  'local-fonts'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
