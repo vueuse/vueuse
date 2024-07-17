@@ -221,9 +221,10 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
+const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
 function isAbsoluteURL(url: string) {
-  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
+  return reAbsolute.test(url)
 }
 
 function headersToObject(headers: HeadersInit | undefined) {

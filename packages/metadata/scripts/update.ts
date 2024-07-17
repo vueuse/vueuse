@@ -101,9 +101,9 @@ export async function readMetadata() {
           // normalize newlines
           .replace(/\r\n/g, '\n')
           // remove ::: tip blocks
-          .replace(/(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?(?:\1 *(?=\n))/g, '')
+          .replace(/(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?\1 *(?=\n)/g, '')
           // remove headers
-          .match(/#(?=\s).*(?:\n+)(.+?)(?:, |\. |\n|\.\n)/m) || []
+          .match(/#(?=\s).*\n+(.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 
       description = description.trim()

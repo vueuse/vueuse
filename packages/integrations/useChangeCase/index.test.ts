@@ -33,7 +33,7 @@ describe('useChangeCase', () => {
       delimiterHelloWorld: 'hello-world',
       delimiterVueuse: 'vue-use',
     },
-    headerCase: {
+    trainCase: {
       helloWorld: 'Hello-World',
       vueuse: 'Vue-Use',
       delimiterHelloWorld: 'Hello-World',
@@ -45,7 +45,7 @@ describe('useChangeCase', () => {
       delimiterHelloWorld: 'hello-world',
       delimiterVueuse: 'vue-use',
     },
-    paramCase: {
+    kebabCase: {
       helloWorld: 'hello-world',
       vueuse: 'vue-use',
       delimiterHelloWorld: 'hello-world',
@@ -54,6 +54,12 @@ describe('useChangeCase', () => {
     pascalCase: {
       helloWorld: 'HelloWorld',
       vueuse: 'VueUse',
+      delimiterHelloWorld: 'Hello-World',
+      delimiterVueuse: 'Vue-Use',
+    },
+    pascalSnakeCase: {
+      helloWorld: 'Hello_World',
+      vueuse: 'Vue_Use',
       delimiterHelloWorld: 'Hello-World',
       delimiterVueuse: 'Vue-Use',
     },

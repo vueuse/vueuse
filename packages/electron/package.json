@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/electron",
-  "version": "10.9.0",
+  "version": "11.0.0-beta.1",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.7"
+    "vue-demi": ">=0.14.8"
   },
   "devDependencies": {
     "electron": "^13.1.0"
