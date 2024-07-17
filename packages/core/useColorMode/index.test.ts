@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { nextTick, ref } from 'vue-demi'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
 import { useColorMode } from '.'
@@ -122,5 +122,52 @@ describe('useColorMode', () => {
     expect(mode.store.value).toBe('auto')
     expect(mode.system.value).toBe('light')
     expect(mode.state.value).toBe('light')
+  })
+
+  it('should call classList.add/classList.remove only if mode changed', async () => {
+    const target = document.createElement('div')
+
+    const mode = useColorMode({ selector: target, initialValue: 'light' })
+
+    await nextTick()
+
+    const addClass = vi.spyOn(target.classList, 'add')
+    const removeClass = vi.spyOn(target.classList, 'remove')
+
+    mode.value = 'light'
+
+    await nextTick()
+
+    expect(addClass).not.toHaveBeenCalled()
+    expect(removeClass).not.toHaveBeenCalled()
+
+    mode.value = 'dark'
+
+    await nextTick()
+
+    expect(addClass).toHaveBeenCalled()
+    expect(removeClass).toHaveBeenCalled()
+  })
+
+  it('should call setAttribute only if mode changed', async () => {
+    const target = document.createElement('div')
+
+    const mode = useColorMode({ selector: target, initialValue: 'light', attribute: 'data-color-mode' })
+
+    await nextTick()
+
+    const setAttr = vi.spyOn(target, 'setAttribute')
+
+    mode.value = 'light'
+
+    await nextTick()
+
+    expect(setAttr).not.toHaveBeenCalled()
+
+    mode.value = 'dark'
+
+    await nextTick()
+
+    expect(setAttr).toHaveBeenCalled()
   })
 })
