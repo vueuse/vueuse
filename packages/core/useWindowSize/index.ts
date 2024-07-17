@@ -17,15 +17,18 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
 
   /**
    * Whether the scrollbar should be included in the width and height
+   * Only effective when `type` is `'inner'`
+   *
    * @default true
    */
   includeScrollbar?: boolean
 
   /**
-   * Whether to use the window.outerWidth and window.outerHeight instead of window.innerWidth and window.innerHeight
-   * @default false
+   * Use `window.innerWidth` or `window.outerWidth`
+   *
+   * @default 'inner'
    */
-  useOuterSize?: boolean
+  type?: 'inner' | 'outer'
 }
 
 /**
@@ -41,7 +44,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     initialHeight = Number.POSITIVE_INFINITY,
     listenOrientation = true,
     includeScrollbar = true,
-    useOuterSize = false,
+    type = 'inner',
   } = options
 
   const width = ref(initialWidth)
@@ -49,7 +52,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   const update = () => {
     if (window) {
-      if (useOuterSize) {
+      if (type === 'outer') {
         width.value = window.outerWidth
         height.value = window.outerHeight
       }
