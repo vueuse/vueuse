@@ -191,7 +191,8 @@ export function useAnimate(
   }
 
   const reverse = () => {
-    !animate.value && update()
+    if (!animate.value)
+      update()
     try {
       animate.value?.reverse()
       syncResume()
@@ -223,11 +224,13 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    el && update()
+    if (el)
+      update()
   })
 
   watch(() => keyframes, (value) => {
-    !animate.value && update()
+    if (animate.value)
+      update()
 
     if (!unrefElement(target) && animate.value) {
       animate.value.effect = new KeyframeEffect(

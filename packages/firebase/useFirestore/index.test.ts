@@ -40,7 +40,7 @@ vi.mock('firebase/firestore', () => {
     return { path }
   })
 
-  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}, errorHandler: (err: Error) => void) => {
+  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => void, errorHandler: (err: Error) => void) => {
     if (docRef.path === 'users/error') {
       errorHandler(new Error('not found'))
       return

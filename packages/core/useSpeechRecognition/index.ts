@@ -85,14 +85,10 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     })
 
     recognition.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .map((result) => {
-          isFinal.value = result.isFinal
-          return result[0]
-        })
-        .map(result => result.transcript)
-        .join('')
+      const currentResult = event.results[event.resultIndex]
+      const { transcript } = currentResult[0]
 
+      isFinal.value = currentResult.isFinal
       result.value = transcript
       error.value = undefined
     }

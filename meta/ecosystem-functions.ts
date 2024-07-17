@@ -27,37 +27,37 @@ export const motion: VueUseFunction[] = [
     ...motionDefaults,
     name: 'useMotion',
     description: 'putting your components in motion.',
-    external: 'https://motion.vueuse.org/api/use-motion.html',
+    external: 'https://motion.vueuse.org/api/use-motion',
   },
   {
     ...motionDefaults,
     name: 'useSpring',
     description: 'spring animations.',
-    external: 'https://motion.vueuse.org/api/use-spring.html',
+    external: 'https://motion.vueuse.org/api/use-spring',
   },
   {
     ...motionDefaults,
     name: 'useMotionProperties',
     description: 'access Motion Properties for a target element.',
-    external: 'https://motion.vueuse.org/api/use-motion-properties.html',
+    external: 'https://motion.vueuse.org/api/use-motion-properties',
   },
   {
     ...motionDefaults,
     name: 'useMotionVariants',
     description: 'handle the Variants state and selection.',
-    external: 'https://motion.vueuse.org/api/use-motion-variants.html',
+    external: 'https://motion.vueuse.org/api/use-motion-variants',
   },
   {
     ...motionDefaults,
     name: 'useElementStyle',
     description: 'sync a reactive object to a target element CSS styling',
-    external: 'https://motion.vueuse.org/api/use-element-style.html',
+    external: 'https://motion.vueuse.org/api/use-element-style',
   },
   {
     ...motionDefaults,
     name: 'useElementTransform',
     description: 'sync a reactive object to a target element CSS transform.',
-    external: 'https://motion.vueuse.org/api/use-element-transform.html',
+    external: 'https://motion.vueuse.org/api/use-element-transform',
   },
 ]
 

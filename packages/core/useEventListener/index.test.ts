@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { noop } from '@vueuse/shared'
 import { isVue2 } from 'vue-demi'
@@ -11,8 +11,8 @@ describe('useEventListener', () => {
   const options = { capture: true }
   let stop: Fn
   let target: HTMLDivElement
-  let removeSpy: SpyInstance
-  let addSpy: SpyInstance
+  let removeSpy: MockInstance
+  let addSpy: MockInstance
 
   beforeEach(() => {
     target = document.createElement('div')
