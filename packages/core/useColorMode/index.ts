@@ -100,6 +100,8 @@ export type UseColorModeReturn<T extends string = BasicColorMode> =
     state: ComputedRef<T | BasicColorMode>
   }
 
+const CSS_DISABLE_TRANS = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+
 /**
  * Reactive color mode with auto data persistence.
  *
@@ -152,8 +154,8 @@ export function useColorMode<T extends string = BasicColorMode>(
       if (!el)
         return
 
-      const classesToAdd: string[] = []
-      const classesToRemove: string[] = []
+      const classesToAdd = new Set<string>()
+      const classesToRemove = new Set<string>()
       let attributeToChange: { key: string, value: string } | null = null
 
       if (attribute === 'class') {
@@ -163,29 +165,32 @@ export function useColorMode<T extends string = BasicColorMode>(
           .filter(Boolean)
           .forEach((v) => {
             if (current.includes(v))
-              classesToAdd.push(v)
+              classesToAdd.add(v)
             else
-              classesToRemove.push(v)
+              classesToRemove.add(v)
           })
       }
       else {
         attributeToChange = { key: attribute, value }
       }
 
-      if (classesToAdd.length === 0 && classesToRemove.length === 0 && attributeToChange === null)
+      if (classesToAdd.size === 0 && classesToRemove.size === 0 && attributeToChange === null)
         // Nothing changed so we can avoid reflowing the page
         return
 
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
-        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
-        style.appendChild(document.createTextNode(styleString))
+        style.appendChild(document.createTextNode(CSS_DISABLE_TRANS))
         window!.document.head.appendChild(style)
       }
 
-      classesToAdd.forEach(c => el.classList.add(c))
-      classesToRemove.forEach(c => el.classList.remove(c))
+      for (const c of classesToAdd) {
+        el.classList.add(c)
+      }
+      for (const c of classesToRemove) {
+        el.classList.remove(c)
+      }
       if (attributeToChange) {
         el.setAttribute(attributeToChange.key, attributeToChange.value)
       }
