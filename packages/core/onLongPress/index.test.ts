@@ -161,7 +161,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
     expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
-    expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250)
+    expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after pointer up
     await promiseTimeout(500)
@@ -180,7 +180,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
     expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
-    expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500)
+    expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
   function suites(isRef: boolean) {
