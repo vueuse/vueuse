@@ -3,8 +3,8 @@ import type { FunctionDirective } from 'vue-demi'
 import { useScrollLock } from '.'
 
 function onScrollLock(): FunctionDirective<
-HTMLElement,
-boolean
+  HTMLElement,
+  boolean
 > {
   let isMounted = false
   const state = ref(false)
